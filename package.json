@@ -1,0 +1,9 @@
+{
+  "name": "rescript-terrariapacket",
+  "version": "1.0.0",
+  "dependencies": {
+    "@popstarfreas/packetfactory": "^3.0.2",
+    "rescript": "^9.1.1",
+    "rescript-nodejs": "../rescript-nodejs"
+  }
+}
