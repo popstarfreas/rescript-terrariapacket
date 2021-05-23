@@ -4,6 +4,6 @@
   "dependencies": {
     "@popstarfreas/packetfactory": "^3.2.0",
     "rescript": "^9.1.1",
-    "rescript-nodejs": "../rescript-nodejs"
+    "rescript-nodejs": "popstarfreas/rescript-nodejs"
   }
 }
