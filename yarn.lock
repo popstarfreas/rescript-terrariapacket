@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@popstarfreas/packetfactory@^3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@popstarfreas/packetfactory/-/packetfactory-3.0.2.tgz#2e4b819b8a25ae4e564465a69787843b94111f42"
-  integrity sha512-xdjx8IHvd2Mb1VaizLQby/0px1A8NJwHskHkmMeVLRPdeMhlKfOfGqGKH8iCadBUKo1JX2TZPfPoXfBpiNu+Sg==
+"@popstarfreas/packetfactory@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@popstarfreas/packetfactory/-/packetfactory-3.2.0.tgz#82f6cc6ea936f254208fb9d18369853de48e2baa"
+  integrity sha512-owFigeIjX0S/0O4X55CK/hwocebfeEhqztWyt1kKbAycYc1GaBb23G37xE/xH37QpbKb7aWlrw6fF1nzZJaM7w==
   dependencies:
     utf8 "^2.1.2"
   optionalDependencies:

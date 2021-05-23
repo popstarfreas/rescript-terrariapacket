@@ -99,7 +99,7 @@ function parse(payload, fromServer) {
     case /* Liquid */0 :
         var changesCount = reader.readUInt16();
         var changes = [];
-        for(var _for = 0; _for <= changesCount; ++_for){
+        for(var _for = 0; _for < changesCount; ++_for){
           var y = reader.readInt16();
           var x = reader.readInt16();
           var amount = reader.readByte();

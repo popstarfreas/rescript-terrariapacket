@@ -253,7 +253,7 @@ module Decode = {
   let parseLiquid = (reader: PacketFactory.PacketReader.t) => {
     let changesCount = reader->readUInt16
     let changes = []
-    for _ in 0 to changesCount {
+    for _ in 0 to changesCount - 1 {
       let y = reader->readInt16
       let x = reader->readInt16
       let amount = reader->readByte
