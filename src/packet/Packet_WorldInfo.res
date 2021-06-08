@@ -55,6 +55,7 @@ type eventInfo = {
   killedEmpressOfLight: bool,
   killedQueenSlime: bool,
   getGoodWorld: bool,
+  tenthAnniversaryWorld: bool,
 }
 
 type t = {
@@ -151,6 +152,7 @@ module Decode = {
     let eventInfo5 = BitFlags.fromByte(reader->readByte)
     let eventInfo6 = BitFlags.fromByte(reader->readByte)
     let eventInfo7 = BitFlags.fromByte(reader->readByte)
+    let eventInfo8 = BitFlags.fromByte(reader->readByte)
     let shadowOrbSmashed = eventInfo1->BitFlags.flag1
     let killedBoss1 = eventInfo1->BitFlags.flag2
     let killedBoss2 = eventInfo1->BitFlags.flag3
@@ -207,6 +209,7 @@ module Decode = {
     let killedEmpressOfLight = eventInfo7->BitFlags.flag6
     let killedQueenSlime = eventInfo7->BitFlags.flag7
     let getGoodWorld = eventInfo7->BitFlags.flag8
+    let tenthAnniversaryWorld = eventInfo8->BitFlags.flag1
     {
       shadowOrbSmashed: shadowOrbSmashed,
       killedBoss1: killedBoss1,
@@ -264,6 +267,7 @@ module Decode = {
       killedEmpressOfLight: killedEmpressOfLight,
       killedQueenSlime: killedQueenSlime,
       getGoodWorld: getGoodWorld,
+      tenthAnniversaryWorld: tenthAnniversaryWorld,
     }
   }
 
@@ -502,6 +506,16 @@ module Encode = {
       ~flag7=eventInfo.killedQueenSlime,
       ~flag8=eventInfo.getGoodWorld,
     )
+    let eventInfo8 = BitFlags.fromFlags(
+      ~flag1=eventInfo.tenthAnniversaryWorld,
+      ~flag2=false,
+      ~flag3=false,
+      ~flag4=false,
+      ~flag5=false,
+      ~flag6=false,
+      ~flag7=false,
+      ~flag8=false,
+    )
     writer
     ->packByte(eventInfo1->BitFlags.toByte)
     ->packByte(eventInfo2->BitFlags.toByte)
@@ -510,6 +524,7 @@ module Encode = {
     ->packByte(eventInfo5->BitFlags.toByte)
     ->packByte(eventInfo6->BitFlags.toByte)
     ->packByte(eventInfo7->BitFlags.toByte)
+    ->packByte(eventInfo8->BitFlags.toByte)
   }
 
   let toBuffer = (self: t): NodeJs.Buffer.t => {
