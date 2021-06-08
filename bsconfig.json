@@ -12,6 +12,6 @@
     },
     "bs-dependencies": [
         "@popstarfreas/packetfactory",
-        "rescript-nodejs"
+        "@popstarfreas/rescript-nodejs"
     ]
 }
