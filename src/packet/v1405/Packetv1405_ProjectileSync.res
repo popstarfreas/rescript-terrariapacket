@@ -1,21 +1,8 @@
-type t = {
-  projectileId: int,
-  x: float,
-  y: float,
-  vx: float,
-  vy: float,
-  owner: int,
-  projectileType: int,
-  ai: (option<float>, option<float>),
-  damage: option<int>,
-  knockback: option<float>,
-  originalDamage: option<int>,
-  projectileUuid: option<int>,
-}
+type t = Packet.ProjectileSync.t
 
 module Decode = {
   let {readSingle, readInt16, readByte} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let parse = (payload: NodeJs.Buffer.t): option<t> => {
     let reader = PacketFactory.PacketReader.make(payload)
     let projectileId = reader->readInt16
     let x = reader->readSingle
@@ -68,7 +55,7 @@ module Decode = {
 
 module Encode = {
   let {packSingle, packInt16, packByte, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  let packOptionalData = (writer, self) => {
+  let packOptionalData = (writer, self: t) => {
     let (ai0, ai1) = self.ai
     let bitFlags = BitFlags.fromFlags(
       ~flag1=ai0->Belt.Option.isSome,

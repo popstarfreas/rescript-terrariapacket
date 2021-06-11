@@ -210,6 +210,10 @@ function toLatest(self) {
         };
 }
 
+function fromLatest(latest) {
+  
+}
+
 var $$Option;
 
 exports.$$Option = $$Option;
@@ -218,4 +222,5 @@ exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 exports.toLatest = toLatest;
+exports.fromLatest = fromLatest;
 /* TileFrameImportant-TerrariaPacket Not a pure module */
