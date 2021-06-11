@@ -2,7 +2,7 @@
 'use strict';
 
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
-var Packetv1405_WorldInfo$TerrariaPacket = require("./packet/Packetv1405_WorldInfo.js");
+var Packetv1405_WorldInfo$TerrariaPacket = require("./packet/v1405/Packetv1405_WorldInfo.js");
 var Packetv1405_TileSquareSend$TerrariaPacket = require("./packet/v1405/Packetv1405_TileSquareSend.js");
 
 function connectRequest(param_0) {
