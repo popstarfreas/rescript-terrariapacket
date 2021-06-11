@@ -2,6 +2,7 @@
 'use strict';
 
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
+var Packetv1405_WorldInfo$TerrariaPacket = require("./packet/Packetv1405_WorldInfo.js");
 var Packetv1405_TileSquareSend$TerrariaPacket = require("./packet/v1405/Packetv1405_TileSquareSend.js");
 
 function connectRequest(param_0) {
@@ -984,7 +985,7 @@ function convertToLatest(packet, fromServer) {
     case /* WorldInfo */6 :
         return {
                 TAG: /* WorldInfo */6,
-                _0: packet._0
+                _0: Packetv1405_WorldInfo$TerrariaPacket.convertToLatest(packet._0)
               };
     case /* InitialTileSectionsRequest */7 :
         return {
@@ -1663,10 +1664,12 @@ function convertFromLatest(packet, fromServer) {
                 _0: packet._0
               };
     case /* WorldInfo */6 :
-        return {
-                TAG: /* WorldInfo */6,
-                _0: packet._0
-              };
+        return Belt_Option.map(Packetv1405_WorldInfo$TerrariaPacket.convertFromLatest(packet._0), (function (p) {
+                      return {
+                              TAG: /* WorldInfo */6,
+                              _0: p
+                            };
+                    }));
     case /* InitialTileSectionsRequest */7 :
         return {
                 TAG: /* InitialTileSectionsRequest */7,
@@ -2855,4 +2858,4 @@ exports.clientSyncedInventory = clientSyncedInventory;
 exports.countsAsHostForGameplaySet = countsAsHostForGameplaySet;
 exports.convertToLatest = convertToLatest;
 exports.convertFromLatest = convertFromLatest;
-/* Packetv1405_TileSquareSend-TerrariaPacket Not a pure module */
+/* Packetv1405_WorldInfo-TerrariaPacket Not a pure module */

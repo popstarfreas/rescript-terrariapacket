@@ -4,7 +4,7 @@ module PlayerSlotSet = Packet_PlayerSlotSet
 module PlayerInfo = Packet_PlayerInfo
 module PlayerInventorySlot = Packet_PlayerInventorySlot
 module WorldDataRequest = Packet_WorldDataRequest
-module WorldInfo = Packet_WorldInfo
+module WorldInfo = Packetv1405_WorldInfo
 module InitialTileSectionsRequest = Packet_InitialTileSectionsRequest
 module Status = Packet_Status
 module TileSectionSend = Packet_TileSectionSend
@@ -280,7 +280,7 @@ let convertToLatest = (packet: t, fromServer: bool): Packet.t => {
   | PlayerInfo(playerInfo) => Packet.PlayerInfo(playerInfo)
   | PlayerInventorySlot(playerInventorySlot) => Packet.PlayerInventorySlot(playerInventorySlot)
   | WorldDataRequest(worldDataRequest) => Packet.WorldDataRequest(worldDataRequest)
-  | WorldInfo(worldInfo) => Packet.WorldInfo(worldInfo)
+  | WorldInfo(worldInfo) => Packet.WorldInfo(WorldInfo.convertToLatest(worldInfo))
   | InitialTileSectionsRequest(initialTileSectionsRequest) => Packet.InitialTileSectionsRequest(initialTileSectionsRequest)
   | Status(status) => Packet.Status(status)
   | TileSectionSend(tileSectionSend) => Packet.TileSectionSend(tileSectionSend)
@@ -420,7 +420,7 @@ let convertFromLatest = (packet: Packet.t, fromServer: bool): option<t> => {
   | Packet.PlayerInfo(playerInfo) => Some(PlayerInfo(playerInfo))
   | Packet.PlayerInventorySlot(playerInventorySlot) => Some(PlayerInventorySlot(playerInventorySlot))
   | Packet.WorldDataRequest(worldDataRequest) => Some(WorldDataRequest(worldDataRequest))
-  | Packet.WorldInfo(worldInfo) => Some(WorldInfo(worldInfo))
+  | Packet.WorldInfo(worldInfo) => WorldInfo.convertFromLatest(worldInfo)->Belt.Option.map(p => WorldInfo(p))
   | Packet.InitialTileSectionsRequest(initialTileSectionsRequest) => Some(InitialTileSectionsRequest(initialTileSectionsRequest))
   | Packet.Status(status) => Some(Status(status))
   | Packet.TileSectionSend(tileSectionSend) => Some(TileSectionSend(tileSectionSend))
