@@ -134,6 +134,7 @@ module NpcBuffRemovalRequest = Packet_NpcBuffRemovalRequest
 module ClientSyncedInventory = Packet_ClientSyncedInventory
 module CountsAsHostForGameplaySet = Packet_CountsAsHostForGameplaySet
 
+@deriving(accessors)
 type t =
   | ConnectRequest(ConnectRequest.t)
   | Disconnect(Disconnect.t)
