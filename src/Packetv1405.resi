@@ -4,7 +4,7 @@ module PlayerSlotSet = TerrariaPacket.Packet_PlayerSlotSet
 module PlayerInfo = TerrariaPacket.Packet_PlayerInfo
 module PlayerInventorySlot = TerrariaPacket.Packet_PlayerInventorySlot
 module WorldDataRequest = TerrariaPacket.Packet_WorldDataRequest
-module WorldInfo = TerrariaPacket.Packet_WorldInfo
+module WorldInfo = TerrariaPacket.Packetv1405_WorldInfo
 module InitialTileSectionsRequest =
 TerrariaPacket.Packet_InitialTileSectionsRequest
 module Status = TerrariaPacket.Packet_Status
