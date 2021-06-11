@@ -281,7 +281,7 @@ let parse = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => {
   }
 }
 
-/*let convert = (packet: Packetv1405.t, fromServer: bool): Packet.t => {
+let convertToLatest = (packet: Packetv1405.t, fromServer: bool): Packet.t => {
   switch packet {
   | ConnectRequest(connectRequest) => Packet.ConnectRequest(connectRequest)
   | Disconnect(disconnect) => Packet.Disconnect(disconnect)
@@ -419,4 +419,4 @@ let parse = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => {
   | ClientSyncedInventory(clientSyncedInventory) => Packet.ClientSyncedInventory(clientSyncedInventory)
   | CountsAsHostForGameplaySet(countsAsHostForGameplaySet) => Packet.CountsAsHostForGameplaySet(countsAsHostForGameplaySet)
   }
-}*/
+}
