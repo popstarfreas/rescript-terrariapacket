@@ -4,6 +4,951 @@
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
 var Packetv1405_TileSquareSend$TerrariaPacket = require("./packet/v1405/Packetv1405_TileSquareSend.js");
 
+function connectRequest(param_0) {
+  return {
+          TAG: /* ConnectRequest */0,
+          _0: param_0
+        };
+}
+
+function disconnect(param_0) {
+  return {
+          TAG: /* Disconnect */1,
+          _0: param_0
+        };
+}
+
+function playerSlotSet(param_0) {
+  return {
+          TAG: /* PlayerSlotSet */2,
+          _0: param_0
+        };
+}
+
+function playerInfo(param_0) {
+  return {
+          TAG: /* PlayerInfo */3,
+          _0: param_0
+        };
+}
+
+function playerInventorySlot(param_0) {
+  return {
+          TAG: /* PlayerInventorySlot */4,
+          _0: param_0
+        };
+}
+
+function worldDataRequest(param_0) {
+  return {
+          TAG: /* WorldDataRequest */5,
+          _0: param_0
+        };
+}
+
+function worldInfo(param_0) {
+  return {
+          TAG: /* WorldInfo */6,
+          _0: param_0
+        };
+}
+
+function initialTileSectionsRequest(param_0) {
+  return {
+          TAG: /* InitialTileSectionsRequest */7,
+          _0: param_0
+        };
+}
+
+function status(param_0) {
+  return {
+          TAG: /* Status */8,
+          _0: param_0
+        };
+}
+
+function tileSectionSend(param_0) {
+  return {
+          TAG: /* TileSectionSend */9,
+          _0: param_0
+        };
+}
+
+function tileSectionFrame(param_0) {
+  return {
+          TAG: /* TileSectionFrame */10,
+          _0: param_0
+        };
+}
+
+function playerSpawn(param_0) {
+  return {
+          TAG: /* PlayerSpawn */11,
+          _0: param_0
+        };
+}
+
+function playerUpdate(param_0) {
+  return {
+          TAG: /* PlayerUpdate */12,
+          _0: param_0
+        };
+}
+
+function playerActive(param_0) {
+  return {
+          TAG: /* PlayerActive */13,
+          _0: param_0
+        };
+}
+
+function playerHealth(param_0) {
+  return {
+          TAG: /* PlayerHealth */14,
+          _0: param_0
+        };
+}
+
+function tileModify(param_0) {
+  return {
+          TAG: /* TileModify */15,
+          _0: param_0
+        };
+}
+
+function timeSet(param_0) {
+  return {
+          TAG: /* TimeSet */16,
+          _0: param_0
+        };
+}
+
+function doorUse(param_0) {
+  return {
+          TAG: /* DoorUse */17,
+          _0: param_0
+        };
+}
+
+function tileSquareSend(param_0) {
+  return {
+          TAG: /* TileSquareSend */18,
+          _0: param_0
+        };
+}
+
+function itemDropUpdate(param_0) {
+  return {
+          TAG: /* ItemDropUpdate */19,
+          _0: param_0
+        };
+}
+
+function itemOwner(param_0) {
+  return {
+          TAG: /* ItemOwner */20,
+          _0: param_0
+        };
+}
+
+function npcUpdate(param_0) {
+  return {
+          TAG: /* NpcUpdate */21,
+          _0: param_0
+        };
+}
+
+function npcItemStrike(param_0) {
+  return {
+          TAG: /* NpcItemStrike */22,
+          _0: param_0
+        };
+}
+
+function projectileSync(param_0) {
+  return {
+          TAG: /* ProjectileSync */23,
+          _0: param_0
+        };
+}
+
+function npcStrike(param_0) {
+  return {
+          TAG: /* NpcStrike */24,
+          _0: param_0
+        };
+}
+
+function projectileDestroy(param_0) {
+  return {
+          TAG: /* ProjectileDestroy */25,
+          _0: param_0
+        };
+}
+
+function pvpToggle(param_0) {
+  return {
+          TAG: /* PvpToggle */26,
+          _0: param_0
+        };
+}
+
+function chestOpen(param_0) {
+  return {
+          TAG: /* ChestOpen */27,
+          _0: param_0
+        };
+}
+
+function chestItem(param_0) {
+  return {
+          TAG: /* ChestItem */28,
+          _0: param_0
+        };
+}
+
+function activeContainerSync(param_0) {
+  return {
+          TAG: /* ActiveContainerSync */29,
+          _0: param_0
+        };
+}
+
+function chestPlace(param_0) {
+  return {
+          TAG: /* ChestPlace */30,
+          _0: param_0
+        };
+}
+
+function healEffect(param_0) {
+  return {
+          TAG: /* HealEffect */31,
+          _0: param_0
+        };
+}
+
+function zones(param_0) {
+  return {
+          TAG: /* Zones */32,
+          _0: param_0
+        };
+}
+
+function passwordRequired(param_0) {
+  return {
+          TAG: /* PasswordRequired */33,
+          _0: param_0
+        };
+}
+
+function passwordSend(param_0) {
+  return {
+          TAG: /* PasswordSend */34,
+          _0: param_0
+        };
+}
+
+function itemOwnerRemove(param_0) {
+  return {
+          TAG: /* ItemOwnerRemove */35,
+          _0: param_0
+        };
+}
+
+function npcTalk(param_0) {
+  return {
+          TAG: /* NpcTalk */36,
+          _0: param_0
+        };
+}
+
+function playerAnimation(param_0) {
+  return {
+          TAG: /* PlayerAnimation */37,
+          _0: param_0
+        };
+}
+
+function playerMana(param_0) {
+  return {
+          TAG: /* PlayerMana */38,
+          _0: param_0
+        };
+}
+
+function manaEffect(param_0) {
+  return {
+          TAG: /* ManaEffect */39,
+          _0: param_0
+        };
+}
+
+function playerTeam(param_0) {
+  return {
+          TAG: /* PlayerTeam */40,
+          _0: param_0
+        };
+}
+
+function signRead(param_0) {
+  return {
+          TAG: /* SignRead */41,
+          _0: param_0
+        };
+}
+
+function signNew(param_0) {
+  return {
+          TAG: /* SignNew */42,
+          _0: param_0
+        };
+}
+
+function liquidSet(param_0) {
+  return {
+          TAG: /* LiquidSet */43,
+          _0: param_0
+        };
+}
+
+function playerSpawnSelf(param_0) {
+  return {
+          TAG: /* PlayerSpawnSelf */44,
+          _0: param_0
+        };
+}
+
+function playerBuffsSet(param_0) {
+  return {
+          TAG: /* PlayerBuffsSet */45,
+          _0: param_0
+        };
+}
+
+function npcSpecialEffect(param_0) {
+  return {
+          TAG: /* NpcSpecialEffect */46,
+          _0: param_0
+        };
+}
+
+function chestUnlock(param_0) {
+  return {
+          TAG: /* ChestUnlock */47,
+          _0: param_0
+        };
+}
+
+function npcBuffAdd(param_0) {
+  return {
+          TAG: /* NpcBuffAdd */48,
+          _0: param_0
+        };
+}
+
+function npcBuffUpdate(param_0) {
+  return {
+          TAG: /* NpcBuffUpdate */49,
+          _0: param_0
+        };
+}
+
+function playerBuffAdd(param_0) {
+  return {
+          TAG: /* PlayerBuffAdd */50,
+          _0: param_0
+        };
+}
+
+function npcNameUpdate(param_0) {
+  return {
+          TAG: /* NpcNameUpdate */51,
+          _0: param_0
+        };
+}
+
+function goodEvilUpdate(param_0) {
+  return {
+          TAG: /* GoodEvilUpdate */52,
+          _0: param_0
+        };
+}
+
+function harpPlay(param_0) {
+  return {
+          TAG: /* HarpPlay */53,
+          _0: param_0
+        };
+}
+
+function switchHit(param_0) {
+  return {
+          TAG: /* SwitchHit */54,
+          _0: param_0
+        };
+}
+
+function npcHomeUpdate(param_0) {
+  return {
+          TAG: /* NpcHomeUpdate */55,
+          _0: param_0
+        };
+}
+
+function bossOrInvasionSpawn(param_0) {
+  return {
+          TAG: /* BossOrInvasionSpawn */56,
+          _0: param_0
+        };
+}
+
+function playerDodge(param_0) {
+  return {
+          TAG: /* PlayerDodge */57,
+          _0: param_0
+        };
+}
+
+function paintTile(param_0) {
+  return {
+          TAG: /* PaintTile */58,
+          _0: param_0
+        };
+}
+
+function paintWall(param_0) {
+  return {
+          TAG: /* PaintWall */59,
+          _0: param_0
+        };
+}
+
+function teleport(param_0) {
+  return {
+          TAG: /* Teleport */60,
+          _0: param_0
+        };
+}
+
+function playerHealOther(param_0) {
+  return {
+          TAG: /* PlayerHealOther */61,
+          _0: param_0
+        };
+}
+
+function dimensionsUpdate(param_0) {
+  return {
+          TAG: /* DimensionsUpdate */62,
+          _0: param_0
+        };
+}
+
+function clientUuid(param_0) {
+  return {
+          TAG: /* ClientUuid */63,
+          _0: param_0
+        };
+}
+
+function chestName(param_0) {
+  return {
+          TAG: /* ChestName */64,
+          _0: param_0
+        };
+}
+
+function catchNpc(param_0) {
+  return {
+          TAG: /* CatchNpc */65,
+          _0: param_0
+        };
+}
+
+function releaseNpc(param_0) {
+  return {
+          TAG: /* ReleaseNpc */66,
+          _0: param_0
+        };
+}
+
+function travellingMerchantInventory(param_0) {
+  return {
+          TAG: /* TravellingMerchantInventory */67,
+          _0: param_0
+        };
+}
+
+function teleportationPotion(param_0) {
+  return {
+          TAG: /* TeleportationPotion */68,
+          _0: param_0
+        };
+}
+
+function anglerQuest(param_0) {
+  return {
+          TAG: /* AnglerQuest */69,
+          _0: param_0
+        };
+}
+
+function anglerQuestComplete(param_0) {
+  return {
+          TAG: /* AnglerQuestComplete */70,
+          _0: param_0
+        };
+}
+
+function anglerQuestsCompletedAmount(param_0) {
+  return {
+          TAG: /* AnglerQuestsCompletedAmount */71,
+          _0: param_0
+        };
+}
+
+function temporaryAnimationCreate(param_0) {
+  return {
+          TAG: /* TemporaryAnimationCreate */72,
+          _0: param_0
+        };
+}
+
+function invasionProgressReport(param_0) {
+  return {
+          TAG: /* InvasionProgressReport */73,
+          _0: param_0
+        };
+}
+
+function objectPlace(param_0) {
+  return {
+          TAG: /* ObjectPlace */74,
+          _0: param_0
+        };
+}
+
+function playerChestIndexSync(param_0) {
+  return {
+          TAG: /* PlayerChestIndexSync */75,
+          _0: param_0
+        };
+}
+
+function combatNumberCreate(param_0) {
+  return {
+          TAG: /* CombatNumberCreate */76,
+          _0: param_0
+        };
+}
+
+function netModuleLoad(param_0) {
+  return {
+          TAG: /* NetModuleLoad */77,
+          _0: param_0
+        };
+}
+
+function npcKillCount(param_0) {
+  return {
+          TAG: /* NpcKillCount */78,
+          _0: param_0
+        };
+}
+
+function playerStealth(param_0) {
+  return {
+          TAG: /* PlayerStealth */79,
+          _0: param_0
+        };
+}
+
+function itemForceIntoNearestChest(param_0) {
+  return {
+          TAG: /* ItemForceIntoNearestChest */80,
+          _0: param_0
+        };
+}
+
+function tileEntityUpdate(param_0) {
+  return {
+          TAG: /* TileEntityUpdate */81,
+          _0: param_0
+        };
+}
+
+function tileEntityPlace(param_0) {
+  return {
+          TAG: /* TileEntityPlace */82,
+          _0: param_0
+        };
+}
+
+function itemDropModify(param_0) {
+  return {
+          TAG: /* ItemDropModify */83,
+          _0: param_0
+        };
+}
+
+function itemFramePlace(param_0) {
+  return {
+          TAG: /* ItemFramePlace */84,
+          _0: param_0
+        };
+}
+
+function itemDropInstancedUpdate(param_0) {
+  return {
+          TAG: /* ItemDropInstancedUpdate */85,
+          _0: param_0
+        };
+}
+
+function emoteBubble(param_0) {
+  return {
+          TAG: /* EmoteBubble */86,
+          _0: param_0
+        };
+}
+
+function extraValueSync(param_0) {
+  return {
+          TAG: /* ExtraValueSync */87,
+          _0: param_0
+        };
+}
+
+function socialHandshake(param_0) {
+  return {
+          TAG: /* SocialHandshake */88,
+          _0: param_0
+        };
+}
+
+function unused(param_0) {
+  return {
+          TAG: /* Unused */89,
+          _0: param_0
+        };
+}
+
+function portalKill(param_0) {
+  return {
+          TAG: /* PortalKill */90,
+          _0: param_0
+        };
+}
+
+function playerTeleportPortal(param_0) {
+  return {
+          TAG: /* PlayerTeleportPortal */91,
+          _0: param_0
+        };
+}
+
+function npcKilledNotification(param_0) {
+  return {
+          TAG: /* NpcKilledNotification */92,
+          _0: param_0
+        };
+}
+
+function eventNotification(param_0) {
+  return {
+          TAG: /* EventNotification */93,
+          _0: param_0
+        };
+}
+
+function minionTargetUpdate(param_0) {
+  return {
+          TAG: /* MinionTargetUpdate */94,
+          _0: param_0
+        };
+}
+
+function npcTeleportPortal(param_0) {
+  return {
+          TAG: /* NpcTeleportPortal */95,
+          _0: param_0
+        };
+}
+
+function shieldStrengthsUpdate(param_0) {
+  return {
+          TAG: /* ShieldStrengthsUpdate */96,
+          _0: param_0
+        };
+}
+
+function nebulaLevelUp(param_0) {
+  return {
+          TAG: /* NebulaLevelUp */97,
+          _0: param_0
+        };
+}
+
+function moonLordCountdown(param_0) {
+  return {
+          TAG: /* MoonLordCountdown */98,
+          _0: param_0
+        };
+}
+
+function npcShopItem(param_0) {
+  return {
+          TAG: /* NpcShopItem */99,
+          _0: param_0
+        };
+}
+
+function gemLockToggle(param_0) {
+  return {
+          TAG: /* GemLockToggle */100,
+          _0: param_0
+        };
+}
+
+function smokePoof(param_0) {
+  return {
+          TAG: /* SmokePoof */101,
+          _0: param_0
+        };
+}
+
+function chatMessageSmart(param_0) {
+  return {
+          TAG: /* ChatMessageSmart */102,
+          _0: param_0
+        };
+}
+
+function wiredCannonShot(param_0) {
+  return {
+          TAG: /* WiredCannonShot */103,
+          _0: param_0
+        };
+}
+
+function massWireOperation(param_0) {
+  return {
+          TAG: /* MassWireOperation */104,
+          _0: param_0
+        };
+}
+
+function massWireOperationPay(param_0) {
+  return {
+          TAG: /* MassWireOperationPay */105,
+          _0: param_0
+        };
+}
+
+function partyToggle(param_0) {
+  return {
+          TAG: /* PartyToggle */106,
+          _0: param_0
+        };
+}
+
+function treeGrowFx(param_0) {
+  return {
+          TAG: /* TreeGrowFx */107,
+          _0: param_0
+        };
+}
+
+function crystalInvasionStart(param_0) {
+  return {
+          TAG: /* CrystalInvasionStart */108,
+          _0: param_0
+        };
+}
+
+function crystalInvasionWipeAll(param_0) {
+  return {
+          TAG: /* CrystalInvasionWipeAll */109,
+          _0: param_0
+        };
+}
+
+function minionAttackTargetUpdate(param_0) {
+  return {
+          TAG: /* MinionAttackTargetUpdate */110,
+          _0: param_0
+        };
+}
+
+function crystalInvasionSendWaitTime(param_0) {
+  return {
+          TAG: /* CrystalInvasionSendWaitTime */111,
+          _0: param_0
+        };
+}
+
+function playerDamage(param_0) {
+  return {
+          TAG: /* PlayerDamage */112,
+          _0: param_0
+        };
+}
+
+function playerDeath(param_0) {
+  return {
+          TAG: /* PlayerDeath */113,
+          _0: param_0
+        };
+}
+
+function combatTextCreate(param_0) {
+  return {
+          TAG: /* CombatTextCreate */114,
+          _0: param_0
+        };
+}
+
+function emoji(param_0) {
+  return {
+          TAG: /* Emoji */115,
+          _0: param_0
+        };
+}
+
+function tileEntityDisplayDollItemSync(param_0) {
+  return {
+          TAG: /* TileEntityDisplayDollItemSync */116,
+          _0: param_0
+        };
+}
+
+function tileEntityInteractionRequest(param_0) {
+  return {
+          TAG: /* TileEntityInteractionRequest */117,
+          _0: param_0
+        };
+}
+
+function weaponsRackTryPlacing(param_0) {
+  return {
+          TAG: /* WeaponsRackTryPlacing */118,
+          _0: param_0
+        };
+}
+
+function tileEntityHatRackItemSync(param_0) {
+  return {
+          TAG: /* TileEntityHatRackItemSync */119,
+          _0: param_0
+        };
+}
+
+function tilePickingSync(param_0) {
+  return {
+          TAG: /* TilePickingSync */120,
+          _0: param_0
+        };
+}
+
+function revengeMarkerSync(param_0) {
+  return {
+          TAG: /* RevengeMarkerSync */121,
+          _0: param_0
+        };
+}
+
+function revengeMarkerRemove(param_0) {
+  return {
+          TAG: /* RevengeMarkerRemove */122,
+          _0: param_0
+        };
+}
+
+function golfBallLandInCup(param_0) {
+  return {
+          TAG: /* GolfBallLandInCup */123,
+          _0: param_0
+        };
+}
+
+function clientFinishConnectingToServer(param_0) {
+  return {
+          TAG: /* ClientFinishConnectingToServer */124,
+          _0: param_0
+        };
+}
+
+function npcFishOut(param_0) {
+  return {
+          TAG: /* NpcFishOut */125,
+          _0: param_0
+        };
+}
+
+function npcTamper(param_0) {
+  return {
+          TAG: /* NpcTamper */126,
+          _0: param_0
+        };
+}
+
+function legacySoundPlay(param_0) {
+  return {
+          TAG: /* LegacySoundPlay */127,
+          _0: param_0
+        };
+}
+
+function foodPlatterTryPlacing(param_0) {
+  return {
+          TAG: /* FoodPlatterTryPlacing */128,
+          _0: param_0
+        };
+}
+
+function playerLuckFactorsUpdate(param_0) {
+  return {
+          TAG: /* PlayerLuckFactorsUpdate */129,
+          _0: param_0
+        };
+}
+
+function playerDead(param_0) {
+  return {
+          TAG: /* PlayerDead */130,
+          _0: param_0
+        };
+}
+
+function cavernMonsterTypeSync(param_0) {
+  return {
+          TAG: /* CavernMonsterTypeSync */131,
+          _0: param_0
+        };
+}
+
+function npcBuffRemovalRequest(param_0) {
+  return {
+          TAG: /* NpcBuffRemovalRequest */132,
+          _0: param_0
+        };
+}
+
+function clientSyncedInventory(param_0) {
+  return {
+          TAG: /* ClientSyncedInventory */133,
+          _0: param_0
+        };
+}
+
+function countsAsHostForGameplaySet(param_0) {
+  return {
+          TAG: /* CountsAsHostForGameplaySet */134,
+          _0: param_0
+        };
+}
+
 function convertToLatest(packet, fromServer) {
   switch (packet.TAG | 0) {
     case /* ConnectRequest */0 :
@@ -1773,6 +2718,141 @@ exports.CavernMonsterTypeSync = CavernMonsterTypeSync;
 exports.NpcBuffRemovalRequest = NpcBuffRemovalRequest;
 exports.ClientSyncedInventory = ClientSyncedInventory;
 exports.CountsAsHostForGameplaySet = CountsAsHostForGameplaySet;
+exports.connectRequest = connectRequest;
+exports.disconnect = disconnect;
+exports.playerSlotSet = playerSlotSet;
+exports.playerInfo = playerInfo;
+exports.playerInventorySlot = playerInventorySlot;
+exports.worldDataRequest = worldDataRequest;
+exports.worldInfo = worldInfo;
+exports.initialTileSectionsRequest = initialTileSectionsRequest;
+exports.status = status;
+exports.tileSectionSend = tileSectionSend;
+exports.tileSectionFrame = tileSectionFrame;
+exports.playerSpawn = playerSpawn;
+exports.playerUpdate = playerUpdate;
+exports.playerActive = playerActive;
+exports.playerHealth = playerHealth;
+exports.tileModify = tileModify;
+exports.timeSet = timeSet;
+exports.doorUse = doorUse;
+exports.tileSquareSend = tileSquareSend;
+exports.itemDropUpdate = itemDropUpdate;
+exports.itemOwner = itemOwner;
+exports.npcUpdate = npcUpdate;
+exports.npcItemStrike = npcItemStrike;
+exports.projectileSync = projectileSync;
+exports.npcStrike = npcStrike;
+exports.projectileDestroy = projectileDestroy;
+exports.pvpToggle = pvpToggle;
+exports.chestOpen = chestOpen;
+exports.chestItem = chestItem;
+exports.activeContainerSync = activeContainerSync;
+exports.chestPlace = chestPlace;
+exports.healEffect = healEffect;
+exports.zones = zones;
+exports.passwordRequired = passwordRequired;
+exports.passwordSend = passwordSend;
+exports.itemOwnerRemove = itemOwnerRemove;
+exports.npcTalk = npcTalk;
+exports.playerAnimation = playerAnimation;
+exports.playerMana = playerMana;
+exports.manaEffect = manaEffect;
+exports.playerTeam = playerTeam;
+exports.signRead = signRead;
+exports.signNew = signNew;
+exports.liquidSet = liquidSet;
+exports.playerSpawnSelf = playerSpawnSelf;
+exports.playerBuffsSet = playerBuffsSet;
+exports.npcSpecialEffect = npcSpecialEffect;
+exports.chestUnlock = chestUnlock;
+exports.npcBuffAdd = npcBuffAdd;
+exports.npcBuffUpdate = npcBuffUpdate;
+exports.playerBuffAdd = playerBuffAdd;
+exports.npcNameUpdate = npcNameUpdate;
+exports.goodEvilUpdate = goodEvilUpdate;
+exports.harpPlay = harpPlay;
+exports.switchHit = switchHit;
+exports.npcHomeUpdate = npcHomeUpdate;
+exports.bossOrInvasionSpawn = bossOrInvasionSpawn;
+exports.playerDodge = playerDodge;
+exports.paintTile = paintTile;
+exports.paintWall = paintWall;
+exports.teleport = teleport;
+exports.playerHealOther = playerHealOther;
+exports.dimensionsUpdate = dimensionsUpdate;
+exports.clientUuid = clientUuid;
+exports.chestName = chestName;
+exports.catchNpc = catchNpc;
+exports.releaseNpc = releaseNpc;
+exports.travellingMerchantInventory = travellingMerchantInventory;
+exports.teleportationPotion = teleportationPotion;
+exports.anglerQuest = anglerQuest;
+exports.anglerQuestComplete = anglerQuestComplete;
+exports.anglerQuestsCompletedAmount = anglerQuestsCompletedAmount;
+exports.temporaryAnimationCreate = temporaryAnimationCreate;
+exports.invasionProgressReport = invasionProgressReport;
+exports.objectPlace = objectPlace;
+exports.playerChestIndexSync = playerChestIndexSync;
+exports.combatNumberCreate = combatNumberCreate;
+exports.netModuleLoad = netModuleLoad;
+exports.npcKillCount = npcKillCount;
+exports.playerStealth = playerStealth;
+exports.itemForceIntoNearestChest = itemForceIntoNearestChest;
+exports.tileEntityUpdate = tileEntityUpdate;
+exports.tileEntityPlace = tileEntityPlace;
+exports.itemDropModify = itemDropModify;
+exports.itemFramePlace = itemFramePlace;
+exports.itemDropInstancedUpdate = itemDropInstancedUpdate;
+exports.emoteBubble = emoteBubble;
+exports.extraValueSync = extraValueSync;
+exports.socialHandshake = socialHandshake;
+exports.unused = unused;
+exports.portalKill = portalKill;
+exports.playerTeleportPortal = playerTeleportPortal;
+exports.npcKilledNotification = npcKilledNotification;
+exports.eventNotification = eventNotification;
+exports.minionTargetUpdate = minionTargetUpdate;
+exports.npcTeleportPortal = npcTeleportPortal;
+exports.shieldStrengthsUpdate = shieldStrengthsUpdate;
+exports.nebulaLevelUp = nebulaLevelUp;
+exports.moonLordCountdown = moonLordCountdown;
+exports.npcShopItem = npcShopItem;
+exports.gemLockToggle = gemLockToggle;
+exports.smokePoof = smokePoof;
+exports.chatMessageSmart = chatMessageSmart;
+exports.wiredCannonShot = wiredCannonShot;
+exports.massWireOperation = massWireOperation;
+exports.massWireOperationPay = massWireOperationPay;
+exports.partyToggle = partyToggle;
+exports.treeGrowFx = treeGrowFx;
+exports.crystalInvasionStart = crystalInvasionStart;
+exports.crystalInvasionWipeAll = crystalInvasionWipeAll;
+exports.minionAttackTargetUpdate = minionAttackTargetUpdate;
+exports.crystalInvasionSendWaitTime = crystalInvasionSendWaitTime;
+exports.playerDamage = playerDamage;
+exports.playerDeath = playerDeath;
+exports.combatTextCreate = combatTextCreate;
+exports.emoji = emoji;
+exports.tileEntityDisplayDollItemSync = tileEntityDisplayDollItemSync;
+exports.tileEntityInteractionRequest = tileEntityInteractionRequest;
+exports.weaponsRackTryPlacing = weaponsRackTryPlacing;
+exports.tileEntityHatRackItemSync = tileEntityHatRackItemSync;
+exports.tilePickingSync = tilePickingSync;
+exports.revengeMarkerSync = revengeMarkerSync;
+exports.revengeMarkerRemove = revengeMarkerRemove;
+exports.golfBallLandInCup = golfBallLandInCup;
+exports.clientFinishConnectingToServer = clientFinishConnectingToServer;
+exports.npcFishOut = npcFishOut;
+exports.npcTamper = npcTamper;
+exports.legacySoundPlay = legacySoundPlay;
+exports.foodPlatterTryPlacing = foodPlatterTryPlacing;
+exports.playerLuckFactorsUpdate = playerLuckFactorsUpdate;
+exports.playerDead = playerDead;
+exports.cavernMonsterTypeSync = cavernMonsterTypeSync;
+exports.npcBuffRemovalRequest = npcBuffRemovalRequest;
+exports.clientSyncedInventory = clientSyncedInventory;
+exports.countsAsHostForGameplaySet = countsAsHostForGameplaySet;
 exports.convertToLatest = convertToLatest;
 exports.convertFromLatest = convertFromLatest;
 /* Packetv1405_TileSquareSend-TerrariaPacket Not a pure module */

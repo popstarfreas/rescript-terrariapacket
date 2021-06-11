@@ -143,6 +143,7 @@ module NpcBuffRemovalRequest = TerrariaPacket.Packet_NpcBuffRemovalRequest
 module ClientSyncedInventory = TerrariaPacket.Packet_ClientSyncedInventory
 module CountsAsHostForGameplaySet =
 TerrariaPacket.Packet_CountsAsHostForGameplaySet
+@deriving(accessors)
 type t =
   | ConnectRequest(ConnectRequest.t)
   | Disconnect(Disconnect.t)
