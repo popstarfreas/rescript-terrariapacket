@@ -1,39 +1,12 @@
 module Option = Belt.Option
 
-type frame = {
-  x: int,
-  y: int,
-}
-
-type activeTile = {
-  tileType: int,
-  slope: int,
-  frame: option<frame>,
-}
-
-type liquid = {
-  liquidValue: int,
-  liquidType: int,
-}
-
-type tile = {
-  wire: bool,
-  halfBrick: bool,
-  actuator: bool,
-  inActive: bool,
-  wire2: bool,
-  wire3: bool,
-  wire4: bool,
-  color: option<int>,
-  wallColor: option<int>,
-  activeTile: option<activeTile>,
-  wall: option<int>,
-  liquid: option<liquid>,
-}
+type frame = Packet.TileSquareSend.frame
+type activeTile = Packet.TileSquareSend.activeTile
+type liquid = Packet.TileSquareSend.liquid
+type tile = Packet.TileSquareSend.tile
 
 type t = {
-  width: int,
-  height: int,
+  size: int,
   changeType: int,
   tileX: int,
   tileY: int,
@@ -44,11 +17,16 @@ module Decode = {
   let {readString, readInt16, readUInt16, readByte} = module(PacketFactory.PacketReader)
   let parse = (payload: NodeJs.Buffer.t) => {
     let reader = PacketFactory.PacketReader.make(payload)
+    let packedSizeAndType = reader->readUInt16
+    let changeType = if packedSizeAndType->land(32768) !== 0 {
+      reader->readByte
+    } else {
+      0
+    }
+    let width = packedSizeAndType->land(32767)
+    let height = width
     let tileX = reader->readInt16
     let tileY = reader->readInt16
-    let width = reader->readByte
-    let height = reader->readByte
-    let changeType = reader->readByte
     let tiles: array<array<tile>> = []
     for (_x in 0 to width - 1) {
       let column: array<tile> = []
@@ -72,10 +50,10 @@ module Decode = {
           | true => Some(reader->readByte)
           | false => None
         }
-        let activeTile = switch active {
+        let activeTile: option<activeTile> = switch active {
           | true => {
             let tileType = reader->readUInt16
-            let frame = switch TileFrameImportant.isImportant(tileType) {
+            let frame: option<frame> = switch TileFrameImportant.isImportant(tileType) {
               | true => Some({
                 x: reader->PacketFactory.PacketReader.readInt16,
                 y: reader->PacketFactory.PacketReader.readInt16,
@@ -98,7 +76,7 @@ module Decode = {
           | true => Some(reader->readUInt16)
           | false => None
         }
-        let liquid = switch hasLiquid {
+        let liquid: option<liquid> = switch hasLiquid {
           | true => Some({
             liquidValue: reader->readByte,
             liquidType: reader->readByte,
@@ -125,8 +103,7 @@ module Decode = {
     }
 
     Some({
-      height: height,
-      width: width,
+      size: height,
       changeType: changeType,
       tileX: tileX,
       tileY: tileY,
@@ -205,13 +182,18 @@ module Encode = {
   }
 
   let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+    let packedSizeAndType = switch self.changeType {
+      | 0 => self.size->land(32767)
+      | _ => self.size->land(32767)->lor(32768)
+    }
+    let writer = PacketFactory.ManagedPacketWriter.make()
     ->setType(PacketType.TileSquareSend->PacketType.toInt)
-    ->packInt16(self.tileX)
+    ->packUInt16(packedSizeAndType)
+    if self.changeType !== 0 {
+      writer->packByte(self.changeType)->ignore
+    }
+    writer->packInt16(self.tileX)
     ->packInt16(self.tileY)
-    ->packByte(self.width)
-    ->packByte(self.height)
-    ->packByte(self.changeType)
     ->packTiles(self.tiles)
     ->data
   }
@@ -219,3 +201,12 @@ module Encode = {
 
 let parse = Decode.parse
 let toBuffer = Encode.toBuffer
+let toLatest = (self: t): Packet.TileSquareSend.t => {
+  height: self.size,
+  width: self.size,
+  tileX: self.tileX,
+  tileY: self.tileY,
+  changeType: self.changeType,
+  tiles: self.tiles,
+}
+

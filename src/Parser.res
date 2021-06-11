@@ -262,14 +262,16 @@ let parsePayload = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServ
     )->Belt.Option.map(a => Packet.CountsAsHostForGameplaySet(a))
   }
 
-let parse = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => {
+let parse: IParser.parse<TerrariaPacket.Packet.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => {
   switch buffer->NodeJs.Buffer.length {
   | 0 | 1 | 2 => None
   | _ =>
     switch buffer->NodeJs.Buffer.unsafeGet(2)->PacketType.fromInt {
     | Some(packetType) =>
       try {
-        parsePayload(packetType, buffer, fromServer)
+        // As this module is parsing packets from the latest version to the equivalent packet data structures
+        // it won't ever need Serializing after only parsing
+        parsePayload(packetType, buffer, fromServer)->Belt.Option.map(packet => IParser.SerializeNotNecessary(packet, buffer))
       } catch {
       | e => {
           Js.log(e)
