@@ -4,6 +4,7 @@
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
 var Caml_js_exceptions = require("rescript/lib/js/caml_js_exceptions.js");
 var PacketType$TerrariaPacket = require("./PacketType.js");
+var Packetv1405$TerrariaPacket = require("./Packetv1405.js");
 var Packet_Emoji$TerrariaPacket = require("./packet/Packet_Emoji.js");
 var Packet_Zones$TerrariaPacket = require("./packet/Packet_Zones.js");
 var Packet_Status$TerrariaPacket = require("./packet/Packet_Status.js");
@@ -1091,7 +1092,7 @@ function parsePayload(packetType, payload, fromServer) {
   }
 }
 
-function parse(buffer, fromServer) {
+function simpleParse(buffer, fromServer) {
   var match = buffer.length;
   if (!(match > 2 || match < 0)) {
     return ;
@@ -1110,6 +1111,36 @@ function parse(buffer, fromServer) {
   }
 }
 
+function parse(buffer, fromServer) {
+  return Belt_Option.map(simpleParse(buffer, fromServer), (function (packet) {
+                return {
+                        TAG: /* SerializeNotNecessary */1,
+                        _0: packet,
+                        _1: buffer
+                      };
+              }));
+}
+
+function parseAsLatest(buffer, fromServer) {
+  return Belt_Option.map(simpleParse(buffer, fromServer), (function (packet) {
+                var packet$1 = Packetv1405$TerrariaPacket.toLatest(packet, fromServer);
+                if (packet$1.TAG === /* Same */0) {
+                  return {
+                          TAG: /* SerializeNotNecessary */1,
+                          _0: packet$1._0,
+                          _1: buffer
+                        };
+                } else {
+                  return {
+                          TAG: /* ShouldSerialize */0,
+                          _0: packet$1._0
+                        };
+                }
+              }));
+}
+
 exports.parsePayload = parsePayload;
+exports.simpleParse = simpleParse;
 exports.parse = parse;
-/* Packet_Status-TerrariaPacket Not a pure module */
+exports.parseAsLatest = parseAsLatest;
+/* Packetv1405-TerrariaPacket Not a pure module */

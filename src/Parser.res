@@ -262,7 +262,7 @@ let parsePayload = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServ
     )->Belt.Option.map(a => Packet.CountsAsHostForGameplaySet(a))
   }
 
-let parse: IParser.parse<TerrariaPacket.Packet.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => {
+let parse: IParser.parse<Packet.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => {
   switch buffer->NodeJs.Buffer.length {
   | 0 | 1 | 2 => None
   | _ =>

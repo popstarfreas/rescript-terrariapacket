@@ -593,7 +593,7 @@ module Encode = {
 
 let parse = Decode.parse
 let toBuffer = Encode.toBuffer
-let convertEventInfoToLatest = (self: eventInfo): Packet.WorldInfo.eventInfo => {
+let eventInfoToLatest = (self: eventInfo): Packet.WorldInfo.eventInfo => {
   shadowOrbSmashed: self.shadowOrbSmashed,
   killedBoss1: self.killedBoss1,
   killedBoss2: self.killedBoss2,
@@ -653,7 +653,7 @@ let convertEventInfoToLatest = (self: eventInfo): Packet.WorldInfo.eventInfo => 
   tenthAnniversaryWorld: false,
 }
 
-let convertToLatest = (self: t): Packet.WorldInfo.t => {
+let toLatest = (self: t): Packet.WorldInfo.t => {
   time: self.time,
   dayAndMoonInfo: self.dayAndMoonInfo,
   moonPhase: self.moonPhase,
@@ -715,7 +715,7 @@ let convertToLatest = (self: t): Packet.WorldInfo.t => {
   glowingMushroomTreeTopStyle: self.glowingMushroomTreeTopStyle,
   underworldTreeTopStyle: self.underworldTreeTopStyle,
   rain: self.rain,
-  eventInfo: convertEventInfoToLatest(self.eventInfo),
+  eventInfo: eventInfoToLatest(self.eventInfo),
   copperOreTier: self.copperOreTier,
   ironOreTier: self.ironOreTier,
   silverOreTier: self.silverOreTier,
@@ -728,7 +728,7 @@ let convertToLatest = (self: t): Packet.WorldInfo.t => {
   sandstormSeverity: self.sandstormSeverity,
 }
 
-let convertEventInfoFromLatest = (self: Packet.WorldInfo.eventInfo): eventInfo => {
+let eventInfoFromLatest = (self: Packet.WorldInfo.eventInfo): eventInfo => {
   shadowOrbSmashed: self.shadowOrbSmashed,
   killedBoss1: self.killedBoss1,
   killedBoss2: self.killedBoss2,
@@ -787,7 +787,7 @@ let convertEventInfoFromLatest = (self: Packet.WorldInfo.eventInfo): eventInfo =
   getGoodWorld: self.getGoodWorld,
 }
 
-let convertFromLatest = (self: Packet.WorldInfo.t): option<t> => Some({
+let fromLatest = (self: Packet.WorldInfo.t): option<t> => Some({
   time: self.time,
   dayAndMoonInfo: self.dayAndMoonInfo,
   moonPhase: self.moonPhase,
@@ -849,7 +849,7 @@ let convertFromLatest = (self: Packet.WorldInfo.t): option<t> => Some({
   glowingMushroomTreeTopStyle: self.glowingMushroomTreeTopStyle,
   underworldTreeTopStyle: self.underworldTreeTopStyle,
   rain: self.rain,
-  eventInfo: convertEventInfoFromLatest(self.eventInfo),
+  eventInfo: eventInfoFromLatest(self.eventInfo),
   copperOreTier: self.copperOreTier,
   ironOreTier: self.ironOreTier,
   silverOreTier: self.silverOreTier,

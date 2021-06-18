@@ -262,13 +262,15 @@ let parsePayload = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServ
     )->Belt.Option.map(a => Packetv1405.CountsAsHostForGameplaySet(a))
   }
 
-let parse = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => {
+let simpleParse = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): option<Packetv1405.t> => {
   switch buffer->NodeJs.Buffer.length {
   | 0 | 1 | 2 => None
   | _ =>
     switch buffer->NodeJs.Buffer.unsafeGet(2)->PacketType.fromInt {
     | Some(packetType) =>
       try {
+        // As this module is parsing packets from the 1405 to the equivalent packet data structures
+        // it won't ever need Serializing after only parsing - only when it gets converted will this change
         parsePayload(packetType, buffer, fromServer)
       } catch {
       | e => {
@@ -279,4 +281,17 @@ let parse = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => {
     | None => None
     }
   }
+}
+
+let parse: IParser.parse<Packetv1405.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => {
+  simpleParse(~buffer, ~fromServer)->Belt.Option.map(packet => IParser.SerializeNotNecessary(packet, buffer))
+}
+
+let parseAsLatest: IParser.parse<Packet.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => {
+  simpleParse(~buffer, ~fromServer)->Belt.Option.map(packet =>
+    switch Packetv1405.toLatest(packet, fromServer) {
+    | Same(packet) => IParser.SerializeNotNecessary(packet, buffer)
+    | NotSame(packet) => IParser.ShouldSerialize(packet)
+    }
+  )
 }
