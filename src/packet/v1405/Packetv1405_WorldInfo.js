@@ -392,7 +392,7 @@ var Encode = {
   toBuffer: toBuffer
 };
 
-function convertEventInfoToLatest(self) {
+function eventInfoToLatest(self) {
   return {
           shadowOrbSmashed: self.shadowOrbSmashed,
           killedBoss1: self.killedBoss1,
@@ -454,7 +454,7 @@ function convertEventInfoToLatest(self) {
         };
 }
 
-function convertToLatest(self) {
+function toLatest(self) {
   return {
           time: self.time,
           dayAndMoonInfo: self.dayAndMoonInfo,
@@ -517,7 +517,7 @@ function convertToLatest(self) {
           glowingMushroomTreeTopStyle: self.glowingMushroomTreeTopStyle,
           underworldTreeTopStyle: self.underworldTreeTopStyle,
           rain: self.rain,
-          eventInfo: convertEventInfoToLatest(self.eventInfo),
+          eventInfo: eventInfoToLatest(self.eventInfo),
           copperOreTier: self.copperOreTier,
           ironOreTier: self.ironOreTier,
           silverOreTier: self.silverOreTier,
@@ -531,7 +531,7 @@ function convertToLatest(self) {
         };
 }
 
-function convertEventInfoFromLatest(self) {
+function eventInfoFromLatest(self) {
   return {
           shadowOrbSmashed: self.shadowOrbSmashed,
           killedBoss1: self.killedBoss1,
@@ -592,7 +592,7 @@ function convertEventInfoFromLatest(self) {
         };
 }
 
-function convertFromLatest(self) {
+function fromLatest(self) {
   return {
           time: self.time,
           dayAndMoonInfo: self.dayAndMoonInfo,
@@ -655,7 +655,7 @@ function convertFromLatest(self) {
           glowingMushroomTreeTopStyle: self.glowingMushroomTreeTopStyle,
           underworldTreeTopStyle: self.underworldTreeTopStyle,
           rain: self.rain,
-          eventInfo: convertEventInfoFromLatest(self.eventInfo),
+          eventInfo: eventInfoFromLatest(self.eventInfo),
           copperOreTier: self.copperOreTier,
           ironOreTier: self.ironOreTier,
           silverOreTier: self.silverOreTier,
@@ -673,8 +673,8 @@ exports.Decode = Decode;
 exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-exports.convertEventInfoToLatest = convertEventInfoToLatest;
-exports.convertToLatest = convertToLatest;
-exports.convertEventInfoFromLatest = convertEventInfoFromLatest;
-exports.convertFromLatest = convertFromLatest;
+exports.eventInfoToLatest = eventInfoToLatest;
+exports.toLatest = toLatest;
+exports.eventInfoFromLatest = eventInfoFromLatest;
+exports.fromLatest = fromLatest;
 /* @popstarfreas/packetfactory/packetreader Not a pure module */

@@ -2,8 +2,27 @@
 'use strict';
 
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
+var Caml_option = require("rescript/lib/js/caml_option.js");
+var Packet_Status$TerrariaPacket = require("./packet/Packet_Status.js");
+var Packet_NpcUpdate$TerrariaPacket = require("./packet/Packet_NpcUpdate.js");
+var Packet_Disconnect$TerrariaPacket = require("./packet/Packet_Disconnect.js");
+var Packet_PlayerInfo$TerrariaPacket = require("./packet/Packet_PlayerInfo.js");
+var Packet_PlayerMana$TerrariaPacket = require("./packet/Packet_PlayerMana.js");
+var Packet_PlayerSpawn$TerrariaPacket = require("./packet/Packet_PlayerSpawn.js");
+var Packet_PlayerActive$TerrariaPacket = require("./packet/Packet_PlayerActive.js");
+var Packet_PlayerHealth$TerrariaPacket = require("./packet/Packet_PlayerHealth.js");
+var Packet_NetModuleLoad$TerrariaPacket = require("./packet/Packet_NetModuleLoad.js");
+var Packet_PlayerSlotSet$TerrariaPacket = require("./packet/Packet_PlayerSlotSet.js");
+var Packet_ItemDropUpdate$TerrariaPacket = require("./packet/Packet_ItemDropUpdate.js");
 var Packetv1405_WorldInfo$TerrariaPacket = require("./packet/v1405/Packetv1405_WorldInfo.js");
+var Packet_DimensionsUpdate$TerrariaPacket = require("./packet/Packet_DimensionsUpdate.js");
+var Packet_WorldDataRequest$TerrariaPacket = require("./packet/Packet_WorldDataRequest.js");
+var Packet_ProjectileDestroy$TerrariaPacket = require("./packet/Packet_ProjectileDestroy.js");
+var Packet_PlayerInventorySlot$TerrariaPacket = require("./packet/Packet_PlayerInventorySlot.js");
+var Packetv1405_ConnectRequest$TerrariaPacket = require("./packet/v1405/Packetv1405_ConnectRequest.js");
+var Packetv1405_ProjectileSync$TerrariaPacket = require("./packet/v1405/Packetv1405_ProjectileSync.js");
 var Packetv1405_TileSquareSend$TerrariaPacket = require("./packet/v1405/Packetv1405_TileSquareSend.js");
+var Packet_InitialTileSectionsRequest$TerrariaPacket = require("./packet/Packet_InitialTileSectionsRequest.js");
 
 function connectRequest(param_0) {
   return {
@@ -950,1370 +969,2255 @@ function countsAsHostForGameplaySet(param_0) {
         };
 }
 
-function convertToLatest(packet, fromServer) {
+function toLatest(packet, fromServer) {
   switch (packet.TAG | 0) {
     case /* ConnectRequest */0 :
         return {
-                TAG: /* ConnectRequest */0,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ConnectRequest */0,
+                  _0: packet._0
+                }
               };
     case /* Disconnect */1 :
         return {
-                TAG: /* Disconnect */1,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* Disconnect */1,
+                  _0: packet._0
+                }
               };
     case /* PlayerSlotSet */2 :
         return {
-                TAG: /* PlayerSlotSet */2,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerSlotSet */2,
+                  _0: packet._0
+                }
               };
     case /* PlayerInfo */3 :
         return {
-                TAG: /* PlayerInfo */3,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerInfo */3,
+                  _0: packet._0
+                }
               };
     case /* PlayerInventorySlot */4 :
         return {
-                TAG: /* PlayerInventorySlot */4,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerInventorySlot */4,
+                  _0: packet._0
+                }
               };
     case /* WorldDataRequest */5 :
         return {
-                TAG: /* WorldDataRequest */5,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* WorldDataRequest */5,
+                  _0: packet._0
+                }
               };
     case /* WorldInfo */6 :
         return {
-                TAG: /* WorldInfo */6,
-                _0: Packetv1405_WorldInfo$TerrariaPacket.convertToLatest(packet._0)
+                TAG: /* NotSame */1,
+                _0: {
+                  TAG: /* WorldInfo */6,
+                  _0: Packetv1405_WorldInfo$TerrariaPacket.toLatest(packet._0)
+                }
               };
     case /* InitialTileSectionsRequest */7 :
         return {
-                TAG: /* InitialTileSectionsRequest */7,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* InitialTileSectionsRequest */7,
+                  _0: packet._0
+                }
               };
     case /* Status */8 :
         return {
-                TAG: /* Status */8,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* Status */8,
+                  _0: packet._0
+                }
               };
     case /* TileSectionSend */9 :
         return {
-                TAG: /* TileSectionSend */9,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TileSectionSend */9,
+                  _0: packet._0
+                }
               };
     case /* TileSectionFrame */10 :
         return {
-                TAG: /* TileSectionFrame */10,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TileSectionFrame */10,
+                  _0: packet._0
+                }
               };
     case /* PlayerSpawn */11 :
         return {
-                TAG: /* PlayerSpawn */11,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerSpawn */11,
+                  _0: packet._0
+                }
               };
     case /* PlayerUpdate */12 :
         return {
-                TAG: /* PlayerUpdate */12,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerUpdate */12,
+                  _0: packet._0
+                }
               };
     case /* PlayerActive */13 :
         return {
-                TAG: /* PlayerActive */13,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerActive */13,
+                  _0: packet._0
+                }
               };
     case /* PlayerHealth */14 :
         return {
-                TAG: /* PlayerHealth */14,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerHealth */14,
+                  _0: packet._0
+                }
               };
     case /* TileModify */15 :
         return {
-                TAG: /* TileModify */15,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TileModify */15,
+                  _0: packet._0
+                }
               };
     case /* TimeSet */16 :
         return {
-                TAG: /* TimeSet */16,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TimeSet */16,
+                  _0: packet._0
+                }
               };
     case /* DoorUse */17 :
         return {
-                TAG: /* DoorUse */17,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* DoorUse */17,
+                  _0: packet._0
+                }
               };
     case /* TileSquareSend */18 :
         return {
-                TAG: /* TileSquareSend */18,
-                _0: Packetv1405_TileSquareSend$TerrariaPacket.toLatest(packet._0)
+                TAG: /* NotSame */1,
+                _0: {
+                  TAG: /* TileSquareSend */18,
+                  _0: Packetv1405_TileSquareSend$TerrariaPacket.toLatest(packet._0)
+                }
               };
     case /* ItemDropUpdate */19 :
         return {
-                TAG: /* ItemDropUpdate */19,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ItemDropUpdate */19,
+                  _0: packet._0
+                }
               };
     case /* ItemOwner */20 :
         return {
-                TAG: /* ItemOwner */20,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ItemOwner */20,
+                  _0: packet._0
+                }
               };
     case /* NpcUpdate */21 :
         return {
-                TAG: /* NpcUpdate */21,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcUpdate */21,
+                  _0: packet._0
+                }
               };
     case /* NpcItemStrike */22 :
         return {
-                TAG: /* NpcItemStrike */22,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcItemStrike */22,
+                  _0: packet._0
+                }
               };
     case /* ProjectileSync */23 :
         return {
-                TAG: /* ProjectileSync */23,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ProjectileSync */23,
+                  _0: packet._0
+                }
               };
     case /* NpcStrike */24 :
         return {
-                TAG: /* NpcStrike */24,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcStrike */24,
+                  _0: packet._0
+                }
               };
     case /* ProjectileDestroy */25 :
         return {
-                TAG: /* ProjectileDestroy */25,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ProjectileDestroy */25,
+                  _0: packet._0
+                }
               };
     case /* PvpToggle */26 :
         return {
-                TAG: /* PvpToggle */26,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PvpToggle */26,
+                  _0: packet._0
+                }
               };
     case /* ChestOpen */27 :
         return {
-                TAG: /* ChestOpen */27,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ChestOpen */27,
+                  _0: packet._0
+                }
               };
     case /* ChestItem */28 :
         return {
-                TAG: /* ChestItem */28,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ChestItem */28,
+                  _0: packet._0
+                }
               };
     case /* ActiveContainerSync */29 :
         return {
-                TAG: /* ActiveContainerSync */29,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ActiveContainerSync */29,
+                  _0: packet._0
+                }
               };
     case /* ChestPlace */30 :
         return {
-                TAG: /* ChestPlace */30,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ChestPlace */30,
+                  _0: packet._0
+                }
               };
     case /* HealEffect */31 :
         return {
-                TAG: /* HealEffect */31,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* HealEffect */31,
+                  _0: packet._0
+                }
               };
     case /* Zones */32 :
         return {
-                TAG: /* Zones */32,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* Zones */32,
+                  _0: packet._0
+                }
               };
     case /* PasswordRequired */33 :
         return {
-                TAG: /* PasswordRequired */33,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PasswordRequired */33,
+                  _0: packet._0
+                }
               };
     case /* PasswordSend */34 :
         return {
-                TAG: /* PasswordSend */34,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PasswordSend */34,
+                  _0: packet._0
+                }
               };
     case /* ItemOwnerRemove */35 :
         return {
-                TAG: /* ItemOwnerRemove */35,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ItemOwnerRemove */35,
+                  _0: packet._0
+                }
               };
     case /* NpcTalk */36 :
         return {
-                TAG: /* NpcTalk */36,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcTalk */36,
+                  _0: packet._0
+                }
               };
     case /* PlayerAnimation */37 :
         return {
-                TAG: /* PlayerAnimation */37,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerAnimation */37,
+                  _0: packet._0
+                }
               };
     case /* PlayerMana */38 :
         return {
-                TAG: /* PlayerMana */38,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerMana */38,
+                  _0: packet._0
+                }
               };
     case /* ManaEffect */39 :
         return {
-                TAG: /* ManaEffect */39,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ManaEffect */39,
+                  _0: packet._0
+                }
               };
     case /* PlayerTeam */40 :
         return {
-                TAG: /* PlayerTeam */40,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerTeam */40,
+                  _0: packet._0
+                }
               };
     case /* SignRead */41 :
         return {
-                TAG: /* SignRead */41,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* SignRead */41,
+                  _0: packet._0
+                }
               };
     case /* SignNew */42 :
         return {
-                TAG: /* SignNew */42,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* SignNew */42,
+                  _0: packet._0
+                }
               };
     case /* LiquidSet */43 :
         return {
-                TAG: /* LiquidSet */43,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* LiquidSet */43,
+                  _0: packet._0
+                }
               };
     case /* PlayerSpawnSelf */44 :
         return {
-                TAG: /* PlayerSpawnSelf */44,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerSpawnSelf */44,
+                  _0: packet._0
+                }
               };
     case /* PlayerBuffsSet */45 :
         return {
-                TAG: /* PlayerBuffsSet */45,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerBuffsSet */45,
+                  _0: packet._0
+                }
               };
     case /* NpcSpecialEffect */46 :
         return {
-                TAG: /* NpcSpecialEffect */46,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcSpecialEffect */46,
+                  _0: packet._0
+                }
               };
     case /* ChestUnlock */47 :
         return {
-                TAG: /* ChestUnlock */47,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ChestUnlock */47,
+                  _0: packet._0
+                }
               };
     case /* NpcBuffAdd */48 :
         return {
-                TAG: /* NpcBuffAdd */48,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcBuffAdd */48,
+                  _0: packet._0
+                }
               };
     case /* NpcBuffUpdate */49 :
         return {
-                TAG: /* NpcBuffUpdate */49,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcBuffUpdate */49,
+                  _0: packet._0
+                }
               };
     case /* PlayerBuffAdd */50 :
         return {
-                TAG: /* PlayerBuffAdd */50,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerBuffAdd */50,
+                  _0: packet._0
+                }
               };
     case /* NpcNameUpdate */51 :
         return {
-                TAG: /* NpcNameUpdate */51,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcNameUpdate */51,
+                  _0: packet._0
+                }
               };
     case /* GoodEvilUpdate */52 :
         return {
-                TAG: /* GoodEvilUpdate */52,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* GoodEvilUpdate */52,
+                  _0: packet._0
+                }
               };
     case /* HarpPlay */53 :
         return {
-                TAG: /* HarpPlay */53,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* HarpPlay */53,
+                  _0: packet._0
+                }
               };
     case /* SwitchHit */54 :
         return {
-                TAG: /* SwitchHit */54,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* SwitchHit */54,
+                  _0: packet._0
+                }
               };
     case /* NpcHomeUpdate */55 :
         return {
-                TAG: /* NpcHomeUpdate */55,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcHomeUpdate */55,
+                  _0: packet._0
+                }
               };
     case /* BossOrInvasionSpawn */56 :
         return {
-                TAG: /* BossOrInvasionSpawn */56,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* BossOrInvasionSpawn */56,
+                  _0: packet._0
+                }
               };
     case /* PlayerDodge */57 :
         return {
-                TAG: /* PlayerDodge */57,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerDodge */57,
+                  _0: packet._0
+                }
               };
     case /* PaintTile */58 :
         return {
-                TAG: /* PaintTile */58,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PaintTile */58,
+                  _0: packet._0
+                }
               };
     case /* PaintWall */59 :
         return {
-                TAG: /* PaintWall */59,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PaintWall */59,
+                  _0: packet._0
+                }
               };
     case /* Teleport */60 :
         return {
-                TAG: /* Teleport */60,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* Teleport */60,
+                  _0: packet._0
+                }
               };
     case /* PlayerHealOther */61 :
         return {
-                TAG: /* PlayerHealOther */61,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerHealOther */61,
+                  _0: packet._0
+                }
               };
     case /* DimensionsUpdate */62 :
         return {
-                TAG: /* DimensionsUpdate */62,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* DimensionsUpdate */62,
+                  _0: packet._0
+                }
               };
     case /* ClientUuid */63 :
         return {
-                TAG: /* ClientUuid */63,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ClientUuid */63,
+                  _0: packet._0
+                }
               };
     case /* ChestName */64 :
         return {
-                TAG: /* ChestName */64,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ChestName */64,
+                  _0: packet._0
+                }
               };
     case /* CatchNpc */65 :
         return {
-                TAG: /* CatchNpc */65,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* CatchNpc */65,
+                  _0: packet._0
+                }
               };
     case /* ReleaseNpc */66 :
         return {
-                TAG: /* ReleaseNpc */66,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ReleaseNpc */66,
+                  _0: packet._0
+                }
               };
     case /* TravellingMerchantInventory */67 :
         return {
-                TAG: /* TravellingMerchantInventory */67,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TravellingMerchantInventory */67,
+                  _0: packet._0
+                }
               };
     case /* TeleportationPotion */68 :
         return {
-                TAG: /* TeleportationPotion */68,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TeleportationPotion */68,
+                  _0: packet._0
+                }
               };
     case /* AnglerQuest */69 :
         return {
-                TAG: /* AnglerQuest */69,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* AnglerQuest */69,
+                  _0: packet._0
+                }
               };
     case /* AnglerQuestComplete */70 :
         return {
-                TAG: /* AnglerQuestComplete */70,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* AnglerQuestComplete */70,
+                  _0: packet._0
+                }
               };
     case /* AnglerQuestsCompletedAmount */71 :
         return {
-                TAG: /* AnglerQuestsCompletedAmount */71,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* AnglerQuestsCompletedAmount */71,
+                  _0: packet._0
+                }
               };
     case /* TemporaryAnimationCreate */72 :
         return {
-                TAG: /* TemporaryAnimationCreate */72,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TemporaryAnimationCreate */72,
+                  _0: packet._0
+                }
               };
     case /* InvasionProgressReport */73 :
         return {
-                TAG: /* InvasionProgressReport */73,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* InvasionProgressReport */73,
+                  _0: packet._0
+                }
               };
     case /* ObjectPlace */74 :
         return {
-                TAG: /* ObjectPlace */74,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ObjectPlace */74,
+                  _0: packet._0
+                }
               };
     case /* PlayerChestIndexSync */75 :
         return {
-                TAG: /* PlayerChestIndexSync */75,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerChestIndexSync */75,
+                  _0: packet._0
+                }
               };
     case /* CombatNumberCreate */76 :
         return {
-                TAG: /* CombatNumberCreate */76,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* CombatNumberCreate */76,
+                  _0: packet._0
+                }
               };
     case /* NetModuleLoad */77 :
         return {
-                TAG: /* NetModuleLoad */77,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NetModuleLoad */77,
+                  _0: packet._0
+                }
               };
     case /* NpcKillCount */78 :
         return {
-                TAG: /* NpcKillCount */78,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcKillCount */78,
+                  _0: packet._0
+                }
               };
     case /* PlayerStealth */79 :
         return {
-                TAG: /* PlayerStealth */79,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerStealth */79,
+                  _0: packet._0
+                }
               };
     case /* ItemForceIntoNearestChest */80 :
         return {
-                TAG: /* ItemForceIntoNearestChest */80,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ItemForceIntoNearestChest */80,
+                  _0: packet._0
+                }
               };
     case /* TileEntityUpdate */81 :
         return {
-                TAG: /* TileEntityUpdate */81,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TileEntityUpdate */81,
+                  _0: packet._0
+                }
               };
     case /* TileEntityPlace */82 :
         return {
-                TAG: /* TileEntityPlace */82,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TileEntityPlace */82,
+                  _0: packet._0
+                }
               };
     case /* ItemDropModify */83 :
         return {
-                TAG: /* ItemDropModify */83,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ItemDropModify */83,
+                  _0: packet._0
+                }
               };
     case /* ItemFramePlace */84 :
         return {
-                TAG: /* ItemFramePlace */84,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ItemFramePlace */84,
+                  _0: packet._0
+                }
               };
     case /* ItemDropInstancedUpdate */85 :
         return {
-                TAG: /* ItemDropInstancedUpdate */85,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ItemDropInstancedUpdate */85,
+                  _0: packet._0
+                }
               };
     case /* EmoteBubble */86 :
         return {
-                TAG: /* EmoteBubble */86,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* EmoteBubble */86,
+                  _0: packet._0
+                }
               };
     case /* ExtraValueSync */87 :
         return {
-                TAG: /* ExtraValueSync */87,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ExtraValueSync */87,
+                  _0: packet._0
+                }
               };
     case /* SocialHandshake */88 :
         return {
-                TAG: /* SocialHandshake */88,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* SocialHandshake */88,
+                  _0: packet._0
+                }
               };
     case /* Unused */89 :
         return {
-                TAG: /* Unused */89,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* Unused */89,
+                  _0: packet._0
+                }
               };
     case /* PortalKill */90 :
         return {
-                TAG: /* PortalKill */90,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PortalKill */90,
+                  _0: packet._0
+                }
               };
     case /* PlayerTeleportPortal */91 :
         return {
-                TAG: /* PlayerTeleportPortal */91,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerTeleportPortal */91,
+                  _0: packet._0
+                }
               };
     case /* NpcKilledNotification */92 :
         return {
-                TAG: /* NpcKilledNotification */92,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcKilledNotification */92,
+                  _0: packet._0
+                }
               };
     case /* EventNotification */93 :
         return {
-                TAG: /* EventNotification */93,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* EventNotification */93,
+                  _0: packet._0
+                }
               };
     case /* MinionTargetUpdate */94 :
         return {
-                TAG: /* MinionTargetUpdate */94,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* MinionTargetUpdate */94,
+                  _0: packet._0
+                }
               };
     case /* NpcTeleportPortal */95 :
         return {
-                TAG: /* NpcTeleportPortal */95,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcTeleportPortal */95,
+                  _0: packet._0
+                }
               };
     case /* ShieldStrengthsUpdate */96 :
         return {
-                TAG: /* ShieldStrengthsUpdate */96,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ShieldStrengthsUpdate */96,
+                  _0: packet._0
+                }
               };
     case /* NebulaLevelUp */97 :
         return {
-                TAG: /* NebulaLevelUp */97,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NebulaLevelUp */97,
+                  _0: packet._0
+                }
               };
     case /* MoonLordCountdown */98 :
         return {
-                TAG: /* MoonLordCountdown */98,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* MoonLordCountdown */98,
+                  _0: packet._0
+                }
               };
     case /* NpcShopItem */99 :
         return {
-                TAG: /* NpcShopItem */99,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcShopItem */99,
+                  _0: packet._0
+                }
               };
     case /* GemLockToggle */100 :
         return {
-                TAG: /* GemLockToggle */100,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* GemLockToggle */100,
+                  _0: packet._0
+                }
               };
     case /* SmokePoof */101 :
         return {
-                TAG: /* SmokePoof */101,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* SmokePoof */101,
+                  _0: packet._0
+                }
               };
     case /* ChatMessageSmart */102 :
         return {
-                TAG: /* ChatMessageSmart */102,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ChatMessageSmart */102,
+                  _0: packet._0
+                }
               };
     case /* WiredCannonShot */103 :
         return {
-                TAG: /* WiredCannonShot */103,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* WiredCannonShot */103,
+                  _0: packet._0
+                }
               };
     case /* MassWireOperation */104 :
         return {
-                TAG: /* MassWireOperation */104,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* MassWireOperation */104,
+                  _0: packet._0
+                }
               };
     case /* MassWireOperationPay */105 :
         return {
-                TAG: /* MassWireOperationPay */105,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* MassWireOperationPay */105,
+                  _0: packet._0
+                }
               };
     case /* PartyToggle */106 :
         return {
-                TAG: /* PartyToggle */106,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PartyToggle */106,
+                  _0: packet._0
+                }
               };
     case /* TreeGrowFx */107 :
         return {
-                TAG: /* TreeGrowFx */107,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TreeGrowFx */107,
+                  _0: packet._0
+                }
               };
     case /* CrystalInvasionStart */108 :
         return {
-                TAG: /* CrystalInvasionStart */108,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* CrystalInvasionStart */108,
+                  _0: packet._0
+                }
               };
     case /* CrystalInvasionWipeAll */109 :
         return {
-                TAG: /* CrystalInvasionWipeAll */109,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* CrystalInvasionWipeAll */109,
+                  _0: packet._0
+                }
               };
     case /* MinionAttackTargetUpdate */110 :
         return {
-                TAG: /* MinionAttackTargetUpdate */110,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* MinionAttackTargetUpdate */110,
+                  _0: packet._0
+                }
               };
     case /* CrystalInvasionSendWaitTime */111 :
         return {
-                TAG: /* CrystalInvasionSendWaitTime */111,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* CrystalInvasionSendWaitTime */111,
+                  _0: packet._0
+                }
               };
     case /* PlayerDamage */112 :
         return {
-                TAG: /* PlayerDamage */112,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerDamage */112,
+                  _0: packet._0
+                }
               };
     case /* PlayerDeath */113 :
         return {
-                TAG: /* PlayerDeath */113,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerDeath */113,
+                  _0: packet._0
+                }
               };
     case /* CombatTextCreate */114 :
         return {
-                TAG: /* CombatTextCreate */114,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* CombatTextCreate */114,
+                  _0: packet._0
+                }
               };
     case /* Emoji */115 :
         return {
-                TAG: /* Emoji */115,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* Emoji */115,
+                  _0: packet._0
+                }
               };
     case /* TileEntityDisplayDollItemSync */116 :
         return {
-                TAG: /* TileEntityDisplayDollItemSync */116,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TileEntityDisplayDollItemSync */116,
+                  _0: packet._0
+                }
               };
     case /* TileEntityInteractionRequest */117 :
         return {
-                TAG: /* TileEntityInteractionRequest */117,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TileEntityInteractionRequest */117,
+                  _0: packet._0
+                }
               };
     case /* WeaponsRackTryPlacing */118 :
         return {
-                TAG: /* WeaponsRackTryPlacing */118,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* WeaponsRackTryPlacing */118,
+                  _0: packet._0
+                }
               };
     case /* TileEntityHatRackItemSync */119 :
         return {
-                TAG: /* TileEntityHatRackItemSync */119,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TileEntityHatRackItemSync */119,
+                  _0: packet._0
+                }
               };
     case /* TilePickingSync */120 :
         return {
-                TAG: /* TilePickingSync */120,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TilePickingSync */120,
+                  _0: packet._0
+                }
               };
     case /* RevengeMarkerSync */121 :
         return {
-                TAG: /* RevengeMarkerSync */121,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* RevengeMarkerSync */121,
+                  _0: packet._0
+                }
               };
     case /* RevengeMarkerRemove */122 :
         return {
-                TAG: /* RevengeMarkerRemove */122,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* RevengeMarkerRemove */122,
+                  _0: packet._0
+                }
               };
     case /* GolfBallLandInCup */123 :
         return {
-                TAG: /* GolfBallLandInCup */123,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* GolfBallLandInCup */123,
+                  _0: packet._0
+                }
               };
     case /* ClientFinishConnectingToServer */124 :
         return {
-                TAG: /* ClientFinishConnectingToServer */124,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ClientFinishConnectingToServer */124,
+                  _0: packet._0
+                }
               };
     case /* NpcFishOut */125 :
         return {
-                TAG: /* NpcFishOut */125,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcFishOut */125,
+                  _0: packet._0
+                }
               };
     case /* NpcTamper */126 :
         return {
-                TAG: /* NpcTamper */126,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcTamper */126,
+                  _0: packet._0
+                }
               };
     case /* LegacySoundPlay */127 :
         return {
-                TAG: /* LegacySoundPlay */127,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* LegacySoundPlay */127,
+                  _0: packet._0
+                }
               };
     case /* FoodPlatterTryPlacing */128 :
         return {
-                TAG: /* FoodPlatterTryPlacing */128,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* FoodPlatterTryPlacing */128,
+                  _0: packet._0
+                }
               };
     case /* PlayerLuckFactorsUpdate */129 :
         return {
-                TAG: /* PlayerLuckFactorsUpdate */129,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerLuckFactorsUpdate */129,
+                  _0: packet._0
+                }
               };
     case /* PlayerDead */130 :
         return {
-                TAG: /* PlayerDead */130,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerDead */130,
+                  _0: packet._0
+                }
               };
     case /* CavernMonsterTypeSync */131 :
         return {
-                TAG: /* CavernMonsterTypeSync */131,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* CavernMonsterTypeSync */131,
+                  _0: packet._0
+                }
               };
     case /* NpcBuffRemovalRequest */132 :
         return {
-                TAG: /* NpcBuffRemovalRequest */132,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcBuffRemovalRequest */132,
+                  _0: packet._0
+                }
               };
     case /* ClientSyncedInventory */133 :
         return {
-                TAG: /* ClientSyncedInventory */133,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ClientSyncedInventory */133,
+                  _0: packet._0
+                }
               };
     case /* CountsAsHostForGameplaySet */134 :
         return {
-                TAG: /* CountsAsHostForGameplaySet */134,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* CountsAsHostForGameplaySet */134,
+                  _0: packet._0
+                }
               };
     
   }
 }
 
-function convertFromLatest(packet, fromServer) {
+function fromLatest(packet, fromServer) {
   switch (packet.TAG | 0) {
     case /* ConnectRequest */0 :
         return {
-                TAG: /* ConnectRequest */0,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ConnectRequest */0,
+                  _0: packet._0
+                }
               };
     case /* Disconnect */1 :
         return {
-                TAG: /* Disconnect */1,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* Disconnect */1,
+                  _0: packet._0
+                }
               };
     case /* PlayerSlotSet */2 :
         return {
-                TAG: /* PlayerSlotSet */2,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerSlotSet */2,
+                  _0: packet._0
+                }
               };
     case /* PlayerInfo */3 :
         return {
-                TAG: /* PlayerInfo */3,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerInfo */3,
+                  _0: packet._0
+                }
               };
     case /* PlayerInventorySlot */4 :
         return {
-                TAG: /* PlayerInventorySlot */4,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerInventorySlot */4,
+                  _0: packet._0
+                }
               };
     case /* WorldDataRequest */5 :
         return {
-                TAG: /* WorldDataRequest */5,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* WorldDataRequest */5,
+                  _0: packet._0
+                }
               };
     case /* WorldInfo */6 :
-        return Belt_Option.map(Packetv1405_WorldInfo$TerrariaPacket.convertFromLatest(packet._0), (function (p) {
+        return Belt_Option.map(Packetv1405_WorldInfo$TerrariaPacket.fromLatest(packet._0), (function (p) {
                       return {
-                              TAG: /* WorldInfo */6,
-                              _0: p
+                              TAG: /* NotSame */1,
+                              _0: {
+                                TAG: /* WorldInfo */6,
+                                _0: p
+                              }
                             };
                     }));
     case /* InitialTileSectionsRequest */7 :
         return {
-                TAG: /* InitialTileSectionsRequest */7,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* InitialTileSectionsRequest */7,
+                  _0: packet._0
+                }
               };
     case /* Status */8 :
         return {
-                TAG: /* Status */8,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* Status */8,
+                  _0: packet._0
+                }
               };
     case /* TileSectionSend */9 :
         return {
-                TAG: /* TileSectionSend */9,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TileSectionSend */9,
+                  _0: packet._0
+                }
               };
     case /* TileSectionFrame */10 :
         return {
-                TAG: /* TileSectionFrame */10,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TileSectionFrame */10,
+                  _0: packet._0
+                }
               };
     case /* PlayerSpawn */11 :
         return {
-                TAG: /* PlayerSpawn */11,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerSpawn */11,
+                  _0: packet._0
+                }
               };
     case /* PlayerUpdate */12 :
         return {
-                TAG: /* PlayerUpdate */12,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerUpdate */12,
+                  _0: packet._0
+                }
               };
     case /* PlayerActive */13 :
         return {
-                TAG: /* PlayerActive */13,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerActive */13,
+                  _0: packet._0
+                }
               };
     case /* PlayerHealth */14 :
         return {
-                TAG: /* PlayerHealth */14,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerHealth */14,
+                  _0: packet._0
+                }
               };
     case /* TileModify */15 :
         return {
-                TAG: /* TileModify */15,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TileModify */15,
+                  _0: packet._0
+                }
               };
     case /* TimeSet */16 :
         return {
-                TAG: /* TimeSet */16,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TimeSet */16,
+                  _0: packet._0
+                }
               };
     case /* DoorUse */17 :
         return {
-                TAG: /* DoorUse */17,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* DoorUse */17,
+                  _0: packet._0
+                }
               };
     case /* TileSquareSend */18 :
         return Belt_Option.map(Packetv1405_TileSquareSend$TerrariaPacket.fromLatest(packet._0), (function (p) {
                       return {
-                              TAG: /* TileSquareSend */18,
-                              _0: p
+                              TAG: /* NotSame */1,
+                              _0: {
+                                TAG: /* TileSquareSend */18,
+                                _0: p
+                              }
                             };
                     }));
     case /* ItemDropUpdate */19 :
         return {
-                TAG: /* ItemDropUpdate */19,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ItemDropUpdate */19,
+                  _0: packet._0
+                }
               };
     case /* ItemOwner */20 :
         return {
-                TAG: /* ItemOwner */20,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ItemOwner */20,
+                  _0: packet._0
+                }
               };
     case /* NpcUpdate */21 :
         return {
-                TAG: /* NpcUpdate */21,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcUpdate */21,
+                  _0: packet._0
+                }
               };
     case /* NpcItemStrike */22 :
         return {
-                TAG: /* NpcItemStrike */22,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcItemStrike */22,
+                  _0: packet._0
+                }
               };
     case /* ProjectileSync */23 :
         return {
-                TAG: /* ProjectileSync */23,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ProjectileSync */23,
+                  _0: packet._0
+                }
               };
     case /* NpcStrike */24 :
         return {
-                TAG: /* NpcStrike */24,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcStrike */24,
+                  _0: packet._0
+                }
               };
     case /* ProjectileDestroy */25 :
         return {
-                TAG: /* ProjectileDestroy */25,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ProjectileDestroy */25,
+                  _0: packet._0
+                }
               };
     case /* PvpToggle */26 :
         return {
-                TAG: /* PvpToggle */26,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PvpToggle */26,
+                  _0: packet._0
+                }
               };
     case /* ChestOpen */27 :
         return {
-                TAG: /* ChestOpen */27,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ChestOpen */27,
+                  _0: packet._0
+                }
               };
     case /* ChestItem */28 :
         return {
-                TAG: /* ChestItem */28,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ChestItem */28,
+                  _0: packet._0
+                }
               };
     case /* ActiveContainerSync */29 :
         return {
-                TAG: /* ActiveContainerSync */29,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ActiveContainerSync */29,
+                  _0: packet._0
+                }
               };
     case /* ChestPlace */30 :
         return {
-                TAG: /* ChestPlace */30,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ChestPlace */30,
+                  _0: packet._0
+                }
               };
     case /* HealEffect */31 :
         return {
-                TAG: /* HealEffect */31,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* HealEffect */31,
+                  _0: packet._0
+                }
               };
     case /* Zones */32 :
         return {
-                TAG: /* Zones */32,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* Zones */32,
+                  _0: packet._0
+                }
               };
     case /* PasswordRequired */33 :
         return {
-                TAG: /* PasswordRequired */33,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PasswordRequired */33,
+                  _0: packet._0
+                }
               };
     case /* PasswordSend */34 :
         return {
-                TAG: /* PasswordSend */34,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PasswordSend */34,
+                  _0: packet._0
+                }
               };
     case /* ItemOwnerRemove */35 :
         return {
-                TAG: /* ItemOwnerRemove */35,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ItemOwnerRemove */35,
+                  _0: packet._0
+                }
               };
     case /* NpcTalk */36 :
         return {
-                TAG: /* NpcTalk */36,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcTalk */36,
+                  _0: packet._0
+                }
               };
     case /* PlayerAnimation */37 :
         return {
-                TAG: /* PlayerAnimation */37,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerAnimation */37,
+                  _0: packet._0
+                }
               };
     case /* PlayerMana */38 :
         return {
-                TAG: /* PlayerMana */38,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerMana */38,
+                  _0: packet._0
+                }
               };
     case /* ManaEffect */39 :
         return {
-                TAG: /* ManaEffect */39,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ManaEffect */39,
+                  _0: packet._0
+                }
               };
     case /* PlayerTeam */40 :
         return {
-                TAG: /* PlayerTeam */40,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerTeam */40,
+                  _0: packet._0
+                }
               };
     case /* SignRead */41 :
         return {
-                TAG: /* SignRead */41,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* SignRead */41,
+                  _0: packet._0
+                }
               };
     case /* SignNew */42 :
         return {
-                TAG: /* SignNew */42,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* SignNew */42,
+                  _0: packet._0
+                }
               };
     case /* LiquidSet */43 :
         return {
-                TAG: /* LiquidSet */43,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* LiquidSet */43,
+                  _0: packet._0
+                }
               };
     case /* PlayerSpawnSelf */44 :
         return {
-                TAG: /* PlayerSpawnSelf */44,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerSpawnSelf */44,
+                  _0: packet._0
+                }
               };
     case /* PlayerBuffsSet */45 :
         return {
-                TAG: /* PlayerBuffsSet */45,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerBuffsSet */45,
+                  _0: packet._0
+                }
               };
     case /* NpcSpecialEffect */46 :
         return {
-                TAG: /* NpcSpecialEffect */46,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcSpecialEffect */46,
+                  _0: packet._0
+                }
               };
     case /* ChestUnlock */47 :
         return {
-                TAG: /* ChestUnlock */47,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ChestUnlock */47,
+                  _0: packet._0
+                }
               };
     case /* NpcBuffAdd */48 :
         return {
-                TAG: /* NpcBuffAdd */48,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcBuffAdd */48,
+                  _0: packet._0
+                }
               };
     case /* NpcBuffUpdate */49 :
         return {
-                TAG: /* NpcBuffUpdate */49,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcBuffUpdate */49,
+                  _0: packet._0
+                }
               };
     case /* PlayerBuffAdd */50 :
         return {
-                TAG: /* PlayerBuffAdd */50,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerBuffAdd */50,
+                  _0: packet._0
+                }
               };
     case /* NpcNameUpdate */51 :
         return {
-                TAG: /* NpcNameUpdate */51,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcNameUpdate */51,
+                  _0: packet._0
+                }
               };
     case /* GoodEvilUpdate */52 :
         return {
-                TAG: /* GoodEvilUpdate */52,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* GoodEvilUpdate */52,
+                  _0: packet._0
+                }
               };
     case /* HarpPlay */53 :
         return {
-                TAG: /* HarpPlay */53,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* HarpPlay */53,
+                  _0: packet._0
+                }
               };
     case /* SwitchHit */54 :
         return {
-                TAG: /* SwitchHit */54,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* SwitchHit */54,
+                  _0: packet._0
+                }
               };
     case /* NpcHomeUpdate */55 :
         return {
-                TAG: /* NpcHomeUpdate */55,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcHomeUpdate */55,
+                  _0: packet._0
+                }
               };
     case /* BossOrInvasionSpawn */56 :
         return {
-                TAG: /* BossOrInvasionSpawn */56,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* BossOrInvasionSpawn */56,
+                  _0: packet._0
+                }
               };
     case /* PlayerDodge */57 :
         return {
-                TAG: /* PlayerDodge */57,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerDodge */57,
+                  _0: packet._0
+                }
               };
     case /* PaintTile */58 :
         return {
-                TAG: /* PaintTile */58,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PaintTile */58,
+                  _0: packet._0
+                }
               };
     case /* PaintWall */59 :
         return {
-                TAG: /* PaintWall */59,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PaintWall */59,
+                  _0: packet._0
+                }
               };
     case /* Teleport */60 :
         return {
-                TAG: /* Teleport */60,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* Teleport */60,
+                  _0: packet._0
+                }
               };
     case /* PlayerHealOther */61 :
         return {
-                TAG: /* PlayerHealOther */61,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerHealOther */61,
+                  _0: packet._0
+                }
               };
     case /* DimensionsUpdate */62 :
         return {
-                TAG: /* DimensionsUpdate */62,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* DimensionsUpdate */62,
+                  _0: packet._0
+                }
               };
     case /* ClientUuid */63 :
         return {
-                TAG: /* ClientUuid */63,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ClientUuid */63,
+                  _0: packet._0
+                }
               };
     case /* ChestName */64 :
         return {
-                TAG: /* ChestName */64,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ChestName */64,
+                  _0: packet._0
+                }
               };
     case /* CatchNpc */65 :
         return {
-                TAG: /* CatchNpc */65,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* CatchNpc */65,
+                  _0: packet._0
+                }
               };
     case /* ReleaseNpc */66 :
         return {
-                TAG: /* ReleaseNpc */66,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ReleaseNpc */66,
+                  _0: packet._0
+                }
               };
     case /* TravellingMerchantInventory */67 :
         return {
-                TAG: /* TravellingMerchantInventory */67,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TravellingMerchantInventory */67,
+                  _0: packet._0
+                }
               };
     case /* TeleportationPotion */68 :
         return {
-                TAG: /* TeleportationPotion */68,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TeleportationPotion */68,
+                  _0: packet._0
+                }
               };
     case /* AnglerQuest */69 :
         return {
-                TAG: /* AnglerQuest */69,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* AnglerQuest */69,
+                  _0: packet._0
+                }
               };
     case /* AnglerQuestComplete */70 :
         return {
-                TAG: /* AnglerQuestComplete */70,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* AnglerQuestComplete */70,
+                  _0: packet._0
+                }
               };
     case /* AnglerQuestsCompletedAmount */71 :
         return {
-                TAG: /* AnglerQuestsCompletedAmount */71,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* AnglerQuestsCompletedAmount */71,
+                  _0: packet._0
+                }
               };
     case /* TemporaryAnimationCreate */72 :
         return {
-                TAG: /* TemporaryAnimationCreate */72,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TemporaryAnimationCreate */72,
+                  _0: packet._0
+                }
               };
     case /* InvasionProgressReport */73 :
         return {
-                TAG: /* InvasionProgressReport */73,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* InvasionProgressReport */73,
+                  _0: packet._0
+                }
               };
     case /* ObjectPlace */74 :
         return {
-                TAG: /* ObjectPlace */74,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ObjectPlace */74,
+                  _0: packet._0
+                }
               };
     case /* PlayerChestIndexSync */75 :
         return {
-                TAG: /* PlayerChestIndexSync */75,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerChestIndexSync */75,
+                  _0: packet._0
+                }
               };
     case /* CombatNumberCreate */76 :
         return {
-                TAG: /* CombatNumberCreate */76,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* CombatNumberCreate */76,
+                  _0: packet._0
+                }
               };
     case /* NetModuleLoad */77 :
         return {
-                TAG: /* NetModuleLoad */77,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NetModuleLoad */77,
+                  _0: packet._0
+                }
               };
     case /* NpcKillCount */78 :
         return {
-                TAG: /* NpcKillCount */78,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcKillCount */78,
+                  _0: packet._0
+                }
               };
     case /* PlayerStealth */79 :
         return {
-                TAG: /* PlayerStealth */79,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerStealth */79,
+                  _0: packet._0
+                }
               };
     case /* ItemForceIntoNearestChest */80 :
         return {
-                TAG: /* ItemForceIntoNearestChest */80,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ItemForceIntoNearestChest */80,
+                  _0: packet._0
+                }
               };
     case /* TileEntityUpdate */81 :
         return {
-                TAG: /* TileEntityUpdate */81,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TileEntityUpdate */81,
+                  _0: packet._0
+                }
               };
     case /* TileEntityPlace */82 :
         return {
-                TAG: /* TileEntityPlace */82,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TileEntityPlace */82,
+                  _0: packet._0
+                }
               };
     case /* ItemDropModify */83 :
         return {
-                TAG: /* ItemDropModify */83,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ItemDropModify */83,
+                  _0: packet._0
+                }
               };
     case /* ItemFramePlace */84 :
         return {
-                TAG: /* ItemFramePlace */84,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ItemFramePlace */84,
+                  _0: packet._0
+                }
               };
     case /* ItemDropInstancedUpdate */85 :
         return {
-                TAG: /* ItemDropInstancedUpdate */85,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ItemDropInstancedUpdate */85,
+                  _0: packet._0
+                }
               };
     case /* EmoteBubble */86 :
         return {
-                TAG: /* EmoteBubble */86,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* EmoteBubble */86,
+                  _0: packet._0
+                }
               };
     case /* ExtraValueSync */87 :
         return {
-                TAG: /* ExtraValueSync */87,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ExtraValueSync */87,
+                  _0: packet._0
+                }
               };
     case /* SocialHandshake */88 :
         return {
-                TAG: /* SocialHandshake */88,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* SocialHandshake */88,
+                  _0: packet._0
+                }
               };
     case /* Unused */89 :
         return {
-                TAG: /* Unused */89,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* Unused */89,
+                  _0: packet._0
+                }
               };
     case /* PortalKill */90 :
         return {
-                TAG: /* PortalKill */90,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PortalKill */90,
+                  _0: packet._0
+                }
               };
     case /* PlayerTeleportPortal */91 :
         return {
-                TAG: /* PlayerTeleportPortal */91,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerTeleportPortal */91,
+                  _0: packet._0
+                }
               };
     case /* NpcKilledNotification */92 :
         return {
-                TAG: /* NpcKilledNotification */92,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcKilledNotification */92,
+                  _0: packet._0
+                }
               };
     case /* EventNotification */93 :
         return {
-                TAG: /* EventNotification */93,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* EventNotification */93,
+                  _0: packet._0
+                }
               };
     case /* MinionTargetUpdate */94 :
         return {
-                TAG: /* MinionTargetUpdate */94,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* MinionTargetUpdate */94,
+                  _0: packet._0
+                }
               };
     case /* NpcTeleportPortal */95 :
         return {
-                TAG: /* NpcTeleportPortal */95,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcTeleportPortal */95,
+                  _0: packet._0
+                }
               };
     case /* ShieldStrengthsUpdate */96 :
         return {
-                TAG: /* ShieldStrengthsUpdate */96,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ShieldStrengthsUpdate */96,
+                  _0: packet._0
+                }
               };
     case /* NebulaLevelUp */97 :
         return {
-                TAG: /* NebulaLevelUp */97,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NebulaLevelUp */97,
+                  _0: packet._0
+                }
               };
     case /* MoonLordCountdown */98 :
         return {
-                TAG: /* MoonLordCountdown */98,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* MoonLordCountdown */98,
+                  _0: packet._0
+                }
               };
     case /* NpcShopItem */99 :
         return {
-                TAG: /* NpcShopItem */99,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcShopItem */99,
+                  _0: packet._0
+                }
               };
     case /* GemLockToggle */100 :
         return {
-                TAG: /* GemLockToggle */100,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* GemLockToggle */100,
+                  _0: packet._0
+                }
               };
     case /* SmokePoof */101 :
         return {
-                TAG: /* SmokePoof */101,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* SmokePoof */101,
+                  _0: packet._0
+                }
               };
     case /* ChatMessageSmart */102 :
         return {
-                TAG: /* ChatMessageSmart */102,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ChatMessageSmart */102,
+                  _0: packet._0
+                }
               };
     case /* WiredCannonShot */103 :
         return {
-                TAG: /* WiredCannonShot */103,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* WiredCannonShot */103,
+                  _0: packet._0
+                }
               };
     case /* MassWireOperation */104 :
         return {
-                TAG: /* MassWireOperation */104,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* MassWireOperation */104,
+                  _0: packet._0
+                }
               };
     case /* MassWireOperationPay */105 :
         return {
-                TAG: /* MassWireOperationPay */105,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* MassWireOperationPay */105,
+                  _0: packet._0
+                }
               };
     case /* PartyToggle */106 :
         return {
-                TAG: /* PartyToggle */106,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PartyToggle */106,
+                  _0: packet._0
+                }
               };
     case /* TreeGrowFx */107 :
         return {
-                TAG: /* TreeGrowFx */107,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TreeGrowFx */107,
+                  _0: packet._0
+                }
               };
     case /* CrystalInvasionStart */108 :
         return {
-                TAG: /* CrystalInvasionStart */108,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* CrystalInvasionStart */108,
+                  _0: packet._0
+                }
               };
     case /* CrystalInvasionWipeAll */109 :
         return {
-                TAG: /* CrystalInvasionWipeAll */109,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* CrystalInvasionWipeAll */109,
+                  _0: packet._0
+                }
               };
     case /* MinionAttackTargetUpdate */110 :
         return {
-                TAG: /* MinionAttackTargetUpdate */110,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* MinionAttackTargetUpdate */110,
+                  _0: packet._0
+                }
               };
     case /* CrystalInvasionSendWaitTime */111 :
         return {
-                TAG: /* CrystalInvasionSendWaitTime */111,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* CrystalInvasionSendWaitTime */111,
+                  _0: packet._0
+                }
               };
     case /* PlayerDamage */112 :
         return {
-                TAG: /* PlayerDamage */112,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerDamage */112,
+                  _0: packet._0
+                }
               };
     case /* PlayerDeath */113 :
         return {
-                TAG: /* PlayerDeath */113,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerDeath */113,
+                  _0: packet._0
+                }
               };
     case /* CombatTextCreate */114 :
         return {
-                TAG: /* CombatTextCreate */114,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* CombatTextCreate */114,
+                  _0: packet._0
+                }
               };
     case /* Emoji */115 :
         return {
-                TAG: /* Emoji */115,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* Emoji */115,
+                  _0: packet._0
+                }
               };
     case /* TileEntityDisplayDollItemSync */116 :
         return {
-                TAG: /* TileEntityDisplayDollItemSync */116,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TileEntityDisplayDollItemSync */116,
+                  _0: packet._0
+                }
               };
     case /* TileEntityInteractionRequest */117 :
         return {
-                TAG: /* TileEntityInteractionRequest */117,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TileEntityInteractionRequest */117,
+                  _0: packet._0
+                }
               };
     case /* WeaponsRackTryPlacing */118 :
         return {
-                TAG: /* WeaponsRackTryPlacing */118,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* WeaponsRackTryPlacing */118,
+                  _0: packet._0
+                }
               };
     case /* TileEntityHatRackItemSync */119 :
         return {
-                TAG: /* TileEntityHatRackItemSync */119,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TileEntityHatRackItemSync */119,
+                  _0: packet._0
+                }
               };
     case /* TilePickingSync */120 :
         return {
-                TAG: /* TilePickingSync */120,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* TilePickingSync */120,
+                  _0: packet._0
+                }
               };
     case /* RevengeMarkerSync */121 :
         return {
-                TAG: /* RevengeMarkerSync */121,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* RevengeMarkerSync */121,
+                  _0: packet._0
+                }
               };
     case /* RevengeMarkerRemove */122 :
         return {
-                TAG: /* RevengeMarkerRemove */122,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* RevengeMarkerRemove */122,
+                  _0: packet._0
+                }
               };
     case /* GolfBallLandInCup */123 :
         return {
-                TAG: /* GolfBallLandInCup */123,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* GolfBallLandInCup */123,
+                  _0: packet._0
+                }
               };
     case /* ClientFinishConnectingToServer */124 :
         return {
-                TAG: /* ClientFinishConnectingToServer */124,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ClientFinishConnectingToServer */124,
+                  _0: packet._0
+                }
               };
     case /* NpcFishOut */125 :
         return {
-                TAG: /* NpcFishOut */125,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcFishOut */125,
+                  _0: packet._0
+                }
               };
     case /* NpcTamper */126 :
         return {
-                TAG: /* NpcTamper */126,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcTamper */126,
+                  _0: packet._0
+                }
               };
     case /* LegacySoundPlay */127 :
         return {
-                TAG: /* LegacySoundPlay */127,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* LegacySoundPlay */127,
+                  _0: packet._0
+                }
               };
     case /* FoodPlatterTryPlacing */128 :
         return {
-                TAG: /* FoodPlatterTryPlacing */128,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* FoodPlatterTryPlacing */128,
+                  _0: packet._0
+                }
               };
     case /* PlayerLuckFactorsUpdate */129 :
         return {
-                TAG: /* PlayerLuckFactorsUpdate */129,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerLuckFactorsUpdate */129,
+                  _0: packet._0
+                }
               };
     case /* PlayerDead */130 :
         return {
-                TAG: /* PlayerDead */130,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* PlayerDead */130,
+                  _0: packet._0
+                }
               };
     case /* CavernMonsterTypeSync */131 :
         return {
-                TAG: /* CavernMonsterTypeSync */131,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* CavernMonsterTypeSync */131,
+                  _0: packet._0
+                }
               };
     case /* NpcBuffRemovalRequest */132 :
         return {
-                TAG: /* NpcBuffRemovalRequest */132,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* NpcBuffRemovalRequest */132,
+                  _0: packet._0
+                }
               };
     case /* ClientSyncedInventory */133 :
         return {
-                TAG: /* ClientSyncedInventory */133,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* ClientSyncedInventory */133,
+                  _0: packet._0
+                }
               };
     case /* CountsAsHostForGameplaySet */134 :
         return {
-                TAG: /* CountsAsHostForGameplaySet */134,
-                _0: packet._0
+                TAG: /* Same */0,
+                _0: {
+                  TAG: /* CountsAsHostForGameplaySet */134,
+                  _0: packet._0
+                }
               };
     
   }
+}
+
+function toBuffer(packet, fromServer) {
+  switch (packet.TAG | 0) {
+    case /* ConnectRequest */0 :
+        return Caml_option.some(Packetv1405_ConnectRequest$TerrariaPacket.toBuffer(packet._0));
+    case /* Disconnect */1 :
+        return Caml_option.some(Packet_Disconnect$TerrariaPacket.toBuffer(packet._0));
+    case /* PlayerSlotSet */2 :
+        return Caml_option.some(Packet_PlayerSlotSet$TerrariaPacket.toBuffer(packet._0));
+    case /* PlayerInfo */3 :
+        return Caml_option.some(Packet_PlayerInfo$TerrariaPacket.toBuffer(packet._0));
+    case /* PlayerInventorySlot */4 :
+        return Caml_option.some(Packet_PlayerInventorySlot$TerrariaPacket.toBuffer(packet._0));
+    case /* WorldDataRequest */5 :
+        return Caml_option.some(Packet_WorldDataRequest$TerrariaPacket.toBuffer(packet._0));
+    case /* WorldInfo */6 :
+        return Caml_option.some(Packetv1405_WorldInfo$TerrariaPacket.toBuffer(packet._0));
+    case /* InitialTileSectionsRequest */7 :
+        return Caml_option.some(Packet_InitialTileSectionsRequest$TerrariaPacket.toBuffer(packet._0));
+    case /* Status */8 :
+        return Caml_option.some(Packet_Status$TerrariaPacket.toBuffer(packet._0));
+    case /* PlayerSpawn */11 :
+        return Caml_option.some(Packet_PlayerSpawn$TerrariaPacket.toBuffer(packet._0));
+    case /* PlayerActive */13 :
+        return Caml_option.some(Packet_PlayerActive$TerrariaPacket.toBuffer(packet._0));
+    case /* PlayerHealth */14 :
+        return Caml_option.some(Packet_PlayerHealth$TerrariaPacket.toBuffer(packet._0));
+    case /* TileSquareSend */18 :
+        return Caml_option.some(Packetv1405_TileSquareSend$TerrariaPacket.toBuffer(packet._0));
+    case /* ItemDropUpdate */19 :
+        return Caml_option.some(Packet_ItemDropUpdate$TerrariaPacket.toBuffer(packet._0));
+    case /* NpcUpdate */21 :
+        return Caml_option.some(Packet_NpcUpdate$TerrariaPacket.toBuffer(packet._0));
+    case /* ProjectileSync */23 :
+        return Caml_option.some(Packetv1405_ProjectileSync$TerrariaPacket.toBuffer(packet._0));
+    case /* ProjectileDestroy */25 :
+        return Caml_option.some(Packet_ProjectileDestroy$TerrariaPacket.toBuffer(packet._0));
+    case /* PlayerMana */38 :
+        return Caml_option.some(Packet_PlayerMana$TerrariaPacket.toBuffer(packet._0));
+    case /* DimensionsUpdate */62 :
+        return Caml_option.some(Packet_DimensionsUpdate$TerrariaPacket.toBuffer(packet._0));
+    case /* NetModuleLoad */77 :
+        return Caml_option.some(Packet_NetModuleLoad$TerrariaPacket.toBuffer(packet._0));
+    default:
+      return ;
+  }
+}
+
+function serialize(parsed, fromServer) {
+  if (parsed.TAG === /* ShouldSerialize */0) {
+    return toBuffer(parsed._0, fromServer);
+  } else {
+    return Caml_option.some(parsed._1);
+  }
+}
+
+function serializeFromLatest(parsed, fromServer) {
+  if (parsed.TAG === /* ShouldSerialize */0) {
+    var match = fromLatest(parsed._0, fromServer);
+    if (match !== undefined) {
+      return toBuffer(match._0, fromServer);
+    } else {
+      return ;
+    }
+  }
+  var match$1 = fromLatest(parsed._0, fromServer);
+  if (match$1 !== undefined) {
+    if (match$1.TAG === /* Same */0) {
+      return Caml_option.some(parsed._1);
+    } else {
+      return toBuffer(match$1._0, fromServer);
+    }
+  }
+  
 }
 
 var ConnectRequest;
@@ -2856,6 +3760,8 @@ exports.cavernMonsterTypeSync = cavernMonsterTypeSync;
 exports.npcBuffRemovalRequest = npcBuffRemovalRequest;
 exports.clientSyncedInventory = clientSyncedInventory;
 exports.countsAsHostForGameplaySet = countsAsHostForGameplaySet;
-exports.convertToLatest = convertToLatest;
-exports.convertFromLatest = convertFromLatest;
-/* Packetv1405_WorldInfo-TerrariaPacket Not a pure module */
+exports.toLatest = toLatest;
+exports.fromLatest = fromLatest;
+exports.serialize = serialize;
+exports.serializeFromLatest = serializeFromLatest;
+/* Packet_Status-TerrariaPacket Not a pure module */

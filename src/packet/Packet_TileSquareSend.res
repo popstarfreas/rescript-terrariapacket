@@ -182,7 +182,7 @@ module Encode = {
       | None => ()
     }
     switch tile.wall {
-      | Some(wall) => writer->packByte(wall)->ignore
+      | Some(wall) => writer->packUInt16(wall)->ignore
       | None => ()
     }
     switch tile.liquid {

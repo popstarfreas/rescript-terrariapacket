@@ -272,282 +272,525 @@ type t =
   | ClientSyncedInventory(ClientSyncedInventory.t)
   | CountsAsHostForGameplaySet(CountsAsHostForGameplaySet.t)
 
-let convertToLatest = (packet: t, fromServer: bool): Packet.t => {
+type same<'a> =
+  | Same('a)
+  | NotSame('a)
+
+let toLatest = (packet: t, fromServer: bool): same<Packet.t> => {
   switch packet {
-  | ConnectRequest(connectRequest) => Packet.ConnectRequest(connectRequest)
-  | Disconnect(disconnect) => Packet.Disconnect(disconnect)
-  | PlayerSlotSet(playerSlotSet) => Packet.PlayerSlotSet(playerSlotSet)
-  | PlayerInfo(playerInfo) => Packet.PlayerInfo(playerInfo)
-  | PlayerInventorySlot(playerInventorySlot) => Packet.PlayerInventorySlot(playerInventorySlot)
-  | WorldDataRequest(worldDataRequest) => Packet.WorldDataRequest(worldDataRequest)
-  | WorldInfo(worldInfo) => Packet.WorldInfo(WorldInfo.convertToLatest(worldInfo))
-  | InitialTileSectionsRequest(initialTileSectionsRequest) => Packet.InitialTileSectionsRequest(initialTileSectionsRequest)
-  | Status(status) => Packet.Status(status)
-  | TileSectionSend(tileSectionSend) => Packet.TileSectionSend(tileSectionSend)
-  | TileSectionFrame(tileSectionFrame) => Packet.TileSectionFrame(tileSectionFrame)
-  | PlayerSpawn(playerSpawn) => Packet.PlayerSpawn(playerSpawn)
-  | PlayerUpdate(playerUpdate) => Packet.PlayerUpdate(playerUpdate)
-  | PlayerActive(playerActive) => Packet.PlayerActive(playerActive)
-  | PlayerHealth(playerHealth) => Packet.PlayerHealth(playerHealth)
-  | TileModify(tileModify) => Packet.TileModify(tileModify)
-  | TimeSet(timeSet) => Packet.TimeSet(timeSet)
-  | DoorUse(doorUse) => Packet.DoorUse(doorUse)
-  | TileSquareSend(tileSquareSend) => Packet.TileSquareSend(tileSquareSend->TileSquareSend.toLatest)
-  | ItemDropUpdate(itemDropUpdate) => Packet.ItemDropUpdate(itemDropUpdate)
-  | ItemOwner(itemOwner) => Packet.ItemOwner(itemOwner)
-  | NpcUpdate(npcUpdate) => Packet.NpcUpdate(npcUpdate)
-  | NpcItemStrike(npcItemStrike) => Packet.NpcItemStrike(npcItemStrike)
-  | ProjectileSync(projectileSync) => Packet.ProjectileSync(projectileSync)
-  | NpcStrike(npcStrike) => Packet.NpcStrike(npcStrike)
-  | ProjectileDestroy(projectileDestroy) => Packet.ProjectileDestroy(projectileDestroy)
-  | PvpToggle(pvpToggle) => Packet.PvpToggle(pvpToggle)
-  | ChestOpen(chestOpen) => Packet.ChestOpen(chestOpen)
-  | ChestItem(chestItem) => Packet.ChestItem(chestItem)
-  | ActiveContainerSync(activeContainerSync) => Packet.ActiveContainerSync(activeContainerSync)
-  | ChestPlace(chestPlace) => Packet.ChestPlace(chestPlace)
-  | HealEffect(healEffect) => Packet.HealEffect(healEffect)
-  | Zones(zones) => Packet.Zones(zones)
-  | PasswordRequired(passwordRequired) => Packet.PasswordRequired(passwordRequired)
-  | PasswordSend(passwordSend) => Packet.PasswordSend(passwordSend)
-  | ItemOwnerRemove(itemOwnerRemove) => Packet.ItemOwnerRemove(itemOwnerRemove)
-  | NpcTalk(npcTalk) => Packet.NpcTalk(npcTalk)
-  | PlayerAnimation(playerAnimation) => Packet.PlayerAnimation(playerAnimation)
-  | PlayerMana(playerMana) => Packet.PlayerMana(playerMana)
-  | ManaEffect(manaEffect) => Packet.ManaEffect(manaEffect)
-  | PlayerTeam(playerTeam) => Packet.PlayerTeam(playerTeam)
-  | SignRead(signRead) => Packet.SignRead(signRead)
-  | SignNew(signNew) => Packet.SignNew(signNew)
-  | LiquidSet(liquidSet) => Packet.LiquidSet(liquidSet)
-  | PlayerSpawnSelf(playerSpawnSelf) => Packet.PlayerSpawnSelf(playerSpawnSelf)
-  | PlayerBuffsSet(playerBuffsSet) => Packet.PlayerBuffsSet(playerBuffsSet)
-  | NpcSpecialEffect(npcSpecialEffect) => Packet.NpcSpecialEffect(npcSpecialEffect)
-  | ChestUnlock(chestUnlock) => Packet.ChestUnlock(chestUnlock)
-  | NpcBuffAdd(npcBuffAdd) => Packet.NpcBuffAdd(npcBuffAdd)
-  | NpcBuffUpdate(npcBuffUpdate) => Packet.NpcBuffUpdate(npcBuffUpdate)
-  | PlayerBuffAdd(playerBuffAdd) => Packet.PlayerBuffAdd(playerBuffAdd)
-  | NpcNameUpdate(npcNameUpdate) => Packet.NpcNameUpdate(npcNameUpdate)
-  | GoodEvilUpdate(goodEvilUpdate) => Packet.GoodEvilUpdate(goodEvilUpdate)
-  | HarpPlay(harpPlay) => Packet.HarpPlay(harpPlay)
-  | SwitchHit(switchHit) => Packet.SwitchHit(switchHit)
-  | NpcHomeUpdate(npcHomeUpdate) => Packet.NpcHomeUpdate(npcHomeUpdate)
-  | BossOrInvasionSpawn(bossOrInvasionSpawn) => Packet.BossOrInvasionSpawn(bossOrInvasionSpawn)
-  | PlayerDodge(playerDodge) => Packet.PlayerDodge(playerDodge)
-  | PaintTile(paintTile) => Packet.PaintTile(paintTile)
-  | PaintWall(paintWall) => Packet.PaintWall(paintWall)
-  | Teleport(teleport) => Packet.Teleport(teleport)
-  | PlayerHealOther(playerHealOther) => Packet.PlayerHealOther(playerHealOther)
-  | DimensionsUpdate(dimensionsUpdate) => Packet.DimensionsUpdate(dimensionsUpdate)
-  | ClientUuid(clientUuid) => Packet.ClientUuid(clientUuid)
-  | ChestName(chestName) => Packet.ChestName(chestName)
-  | CatchNpc(catchNpc) => Packet.CatchNpc(catchNpc)
-  | ReleaseNpc(releaseNpc) => Packet.ReleaseNpc(releaseNpc)
-  | TravellingMerchantInventory(travellingMerchantInventory) => Packet.TravellingMerchantInventory(travellingMerchantInventory)
-  | TeleportationPotion(teleportationPotion) => Packet.TeleportationPotion(teleportationPotion)
-  | AnglerQuest(anglerQuest) => Packet.AnglerQuest(anglerQuest)
-  | AnglerQuestComplete(anglerQuestComplete) => Packet.AnglerQuestComplete(anglerQuestComplete)
-  | AnglerQuestsCompletedAmount(anglerQuestsCompletedAmount) => Packet.AnglerQuestsCompletedAmount(anglerQuestsCompletedAmount)
-  | TemporaryAnimationCreate(temporaryAnimationCreate) => Packet.TemporaryAnimationCreate(temporaryAnimationCreate)
-  | InvasionProgressReport(invasionProgressReport) => Packet.InvasionProgressReport(invasionProgressReport)
-  | ObjectPlace(objectPlace) => Packet.ObjectPlace(objectPlace)
-  | PlayerChestIndexSync(playerChestIndexSync) => Packet.PlayerChestIndexSync(playerChestIndexSync)
-  | CombatNumberCreate(combatNumberCreate) => Packet.CombatNumberCreate(combatNumberCreate)
-  | NetModuleLoad(netModuleLoad) => Packet.NetModuleLoad(netModuleLoad)
-  | NpcKillCount(npcKillCount) => Packet.NpcKillCount(npcKillCount)
-  | PlayerStealth(playerStealth) => Packet.PlayerStealth(playerStealth)
-  | ItemForceIntoNearestChest(itemForceIntoNearestChest) => Packet.ItemForceIntoNearestChest(itemForceIntoNearestChest)
-  | TileEntityUpdate(tileEntityUpdate) => Packet.TileEntityUpdate(tileEntityUpdate)
-  | TileEntityPlace(tileEntityPlace) => Packet.TileEntityPlace(tileEntityPlace)
-  | ItemDropModify(itemDropModify) => Packet.ItemDropModify(itemDropModify)
-  | ItemFramePlace(itemFramePlace) => Packet.ItemFramePlace(itemFramePlace)
-  | ItemDropInstancedUpdate(itemDropInstancedUpdate) => Packet.ItemDropInstancedUpdate(itemDropInstancedUpdate)
-  | EmoteBubble(emoteBubble) => Packet.EmoteBubble(emoteBubble)
-  | ExtraValueSync(extraValueSync) => Packet.ExtraValueSync(extraValueSync)
-  | SocialHandshake(socialHandshake) => Packet.SocialHandshake(socialHandshake)
-  | Unused(unused) => Packet.Unused(unused)
-  | PortalKill(portalKill) => Packet.PortalKill(portalKill)
-  | PlayerTeleportPortal(playerTeleportPortal) => Packet.PlayerTeleportPortal(playerTeleportPortal)
-  | NpcKilledNotification(npcKilledNotification) => Packet.NpcKilledNotification(npcKilledNotification)
-  | EventNotification(eventNotification) => Packet.EventNotification(eventNotification)
-  | MinionTargetUpdate(minionTargetUpdate) => Packet.MinionTargetUpdate(minionTargetUpdate)
-  | NpcTeleportPortal(npcTeleportPortal) => Packet.NpcTeleportPortal(npcTeleportPortal)
-  | ShieldStrengthsUpdate(shieldStrengthsUpdate) => Packet.ShieldStrengthsUpdate(shieldStrengthsUpdate)
-  | NebulaLevelUp(nebulaLevelUp) => Packet.NebulaLevelUp(nebulaLevelUp)
-  | MoonLordCountdown(moonLordCountdown) => Packet.MoonLordCountdown(moonLordCountdown)
-  | NpcShopItem(npcShopItem) => Packet.NpcShopItem(npcShopItem)
-  | GemLockToggle(gemLockToggle) => Packet.GemLockToggle(gemLockToggle)
-  | SmokePoof(smokePoof) => Packet.SmokePoof(smokePoof)
-  | ChatMessageSmart(chatMessageSmart) => Packet.ChatMessageSmart(chatMessageSmart)
-  | WiredCannonShot(wiredCannonShot) => Packet.WiredCannonShot(wiredCannonShot)
-  | MassWireOperation(massWireOperation) => Packet.MassWireOperation(massWireOperation)
-  | MassWireOperationPay(massWireOperationPay) => Packet.MassWireOperationPay(massWireOperationPay)
-  | PartyToggle(partyToggle) => Packet.PartyToggle(partyToggle)
-  | TreeGrowFx(treeGrowFx) => Packet.TreeGrowFx(treeGrowFx)
-  | CrystalInvasionStart(crystalInvasionStart) => Packet.CrystalInvasionStart(crystalInvasionStart)
-  | CrystalInvasionWipeAll(crystalInvasionWipeAll) => Packet.CrystalInvasionWipeAll(crystalInvasionWipeAll)
-  | MinionAttackTargetUpdate(minionAttackTargetUpdate) => Packet.MinionAttackTargetUpdate(minionAttackTargetUpdate)
-  | CrystalInvasionSendWaitTime(crystalInvasionSendWaitTime) => Packet.CrystalInvasionSendWaitTime(crystalInvasionSendWaitTime)
-  | PlayerDamage(playerDamage) => Packet.PlayerDamage(playerDamage)
-  | PlayerDeath(playerDeath) => Packet.PlayerDeath(playerDeath)
-  | CombatTextCreate(combatTextCreate) => Packet.CombatTextCreate(combatTextCreate)
-  | Emoji(emoji) => Packet.Emoji(emoji)
-  | TileEntityDisplayDollItemSync(tileEntityDisplayDollItemSync) => Packet.TileEntityDisplayDollItemSync(tileEntityDisplayDollItemSync)
-  | TileEntityInteractionRequest(tileEntityInteractionRequest) => Packet.TileEntityInteractionRequest(tileEntityInteractionRequest)
-  | WeaponsRackTryPlacing(weaponsRackTryPlacing) => Packet.WeaponsRackTryPlacing(weaponsRackTryPlacing)
-  | TileEntityHatRackItemSync(tileEntityHatRackItemSync) => Packet.TileEntityHatRackItemSync(tileEntityHatRackItemSync)
-  | TilePickingSync(tilePickingSync) => Packet.TilePickingSync(tilePickingSync)
-  | RevengeMarkerSync(revengeMarkerSync) => Packet.RevengeMarkerSync(revengeMarkerSync)
-  | RevengeMarkerRemove(revengeMarkerRemove) => Packet.RevengeMarkerRemove(revengeMarkerRemove)
-  | GolfBallLandInCup(golfBallLandInCup) => Packet.GolfBallLandInCup(golfBallLandInCup)
-  | ClientFinishConnectingToServer(clientFinishConnectingToServer) => Packet.ClientFinishConnectingToServer(clientFinishConnectingToServer)
-  | NpcFishOut(npcFishOut) => Packet.NpcFishOut(npcFishOut)
-  | NpcTamper(npcTamper) => Packet.NpcTamper(npcTamper)
-  | LegacySoundPlay(legacySoundPlay) => Packet.LegacySoundPlay(legacySoundPlay)
-  | FoodPlatterTryPlacing(foodPlatterTryPlacing) => Packet.FoodPlatterTryPlacing(foodPlatterTryPlacing)
-  | PlayerLuckFactorsUpdate(playerLuckFactorsUpdate) => Packet.PlayerLuckFactorsUpdate(playerLuckFactorsUpdate)
-  | PlayerDead(playerDead) => Packet.PlayerDead(playerDead)
-  | CavernMonsterTypeSync(cavernMonsterTypeSync) => Packet.CavernMonsterTypeSync(cavernMonsterTypeSync)
-  | NpcBuffRemovalRequest(npcBuffRemovalRequest) => Packet.NpcBuffRemovalRequest(npcBuffRemovalRequest)
-  | ClientSyncedInventory(clientSyncedInventory) => Packet.ClientSyncedInventory(clientSyncedInventory)
-  | CountsAsHostForGameplaySet(countsAsHostForGameplaySet) => Packet.CountsAsHostForGameplaySet(countsAsHostForGameplaySet)
+  | ConnectRequest(connectRequest) => Same(Packet.ConnectRequest(connectRequest))
+  | Disconnect(disconnect) => Same(Packet.Disconnect(disconnect))
+  | PlayerSlotSet(playerSlotSet) => Same(Packet.PlayerSlotSet(playerSlotSet))
+  | PlayerInfo(playerInfo) => Same(Packet.PlayerInfo(playerInfo))
+  | PlayerInventorySlot(playerInventorySlot) =>
+    Same(Packet.PlayerInventorySlot(playerInventorySlot))
+  | WorldDataRequest(worldDataRequest) => Same(Packet.WorldDataRequest(worldDataRequest))
+  | WorldInfo(worldInfo) => NotSame(Packet.WorldInfo(WorldInfo.toLatest(worldInfo)))
+  | InitialTileSectionsRequest(initialTileSectionsRequest) =>
+    Same(Packet.InitialTileSectionsRequest(initialTileSectionsRequest))
+  | Status(status) => Same(Packet.Status(status))
+  | TileSectionSend(tileSectionSend) => Same(Packet.TileSectionSend(tileSectionSend))
+  | TileSectionFrame(tileSectionFrame) => Same(Packet.TileSectionFrame(tileSectionFrame))
+  | PlayerSpawn(playerSpawn) => Same(Packet.PlayerSpawn(playerSpawn))
+  | PlayerUpdate(playerUpdate) => Same(Packet.PlayerUpdate(playerUpdate))
+  | PlayerActive(playerActive) => Same(Packet.PlayerActive(playerActive))
+  | PlayerHealth(playerHealth) => Same(Packet.PlayerHealth(playerHealth))
+  | TileModify(tileModify) => Same(Packet.TileModify(tileModify))
+  | TimeSet(timeSet) => Same(Packet.TimeSet(timeSet))
+  | DoorUse(doorUse) => Same(Packet.DoorUse(doorUse))
+  | TileSquareSend(tileSquareSend) =>
+    NotSame(Packet.TileSquareSend(TileSquareSend.toLatest(tileSquareSend)))
+  | ItemDropUpdate(itemDropUpdate) => Same(Packet.ItemDropUpdate(itemDropUpdate))
+  | ItemOwner(itemOwner) => Same(Packet.ItemOwner(itemOwner))
+  | NpcUpdate(npcUpdate) => Same(Packet.NpcUpdate(npcUpdate))
+  | NpcItemStrike(npcItemStrike) => Same(Packet.NpcItemStrike(npcItemStrike))
+  | ProjectileSync(projectileSync) => Same(Packet.ProjectileSync(projectileSync))
+  | NpcStrike(npcStrike) => Same(Packet.NpcStrike(npcStrike))
+  | ProjectileDestroy(projectileDestroy) => Same(Packet.ProjectileDestroy(projectileDestroy))
+  | PvpToggle(pvpToggle) => Same(Packet.PvpToggle(pvpToggle))
+  | ChestOpen(chestOpen) => Same(Packet.ChestOpen(chestOpen))
+  | ChestItem(chestItem) => Same(Packet.ChestItem(chestItem))
+  | ActiveContainerSync(activeContainerSync) =>
+    Same(Packet.ActiveContainerSync(activeContainerSync))
+  | ChestPlace(chestPlace) => Same(Packet.ChestPlace(chestPlace))
+  | HealEffect(healEffect) => Same(Packet.HealEffect(healEffect))
+  | Zones(zones) => Same(Packet.Zones(zones))
+  | PasswordRequired(passwordRequired) => Same(Packet.PasswordRequired(passwordRequired))
+  | PasswordSend(passwordSend) => Same(Packet.PasswordSend(passwordSend))
+  | ItemOwnerRemove(itemOwnerRemove) => Same(Packet.ItemOwnerRemove(itemOwnerRemove))
+  | NpcTalk(npcTalk) => Same(Packet.NpcTalk(npcTalk))
+  | PlayerAnimation(playerAnimation) => Same(Packet.PlayerAnimation(playerAnimation))
+  | PlayerMana(playerMana) => Same(Packet.PlayerMana(playerMana))
+  | ManaEffect(manaEffect) => Same(Packet.ManaEffect(manaEffect))
+  | PlayerTeam(playerTeam) => Same(Packet.PlayerTeam(playerTeam))
+  | SignRead(signRead) => Same(Packet.SignRead(signRead))
+  | SignNew(signNew) => Same(Packet.SignNew(signNew))
+  | LiquidSet(liquidSet) => Same(Packet.LiquidSet(liquidSet))
+  | PlayerSpawnSelf(playerSpawnSelf) => Same(Packet.PlayerSpawnSelf(playerSpawnSelf))
+  | PlayerBuffsSet(playerBuffsSet) => Same(Packet.PlayerBuffsSet(playerBuffsSet))
+  | NpcSpecialEffect(npcSpecialEffect) => Same(Packet.NpcSpecialEffect(npcSpecialEffect))
+  | ChestUnlock(chestUnlock) => Same(Packet.ChestUnlock(chestUnlock))
+  | NpcBuffAdd(npcBuffAdd) => Same(Packet.NpcBuffAdd(npcBuffAdd))
+  | NpcBuffUpdate(npcBuffUpdate) => Same(Packet.NpcBuffUpdate(npcBuffUpdate))
+  | PlayerBuffAdd(playerBuffAdd) => Same(Packet.PlayerBuffAdd(playerBuffAdd))
+  | NpcNameUpdate(npcNameUpdate) => Same(Packet.NpcNameUpdate(npcNameUpdate))
+  | GoodEvilUpdate(goodEvilUpdate) => Same(Packet.GoodEvilUpdate(goodEvilUpdate))
+  | HarpPlay(harpPlay) => Same(Packet.HarpPlay(harpPlay))
+  | SwitchHit(switchHit) => Same(Packet.SwitchHit(switchHit))
+  | NpcHomeUpdate(npcHomeUpdate) => Same(Packet.NpcHomeUpdate(npcHomeUpdate))
+  | BossOrInvasionSpawn(bossOrInvasionSpawn) =>
+    Same(Packet.BossOrInvasionSpawn(bossOrInvasionSpawn))
+  | PlayerDodge(playerDodge) => Same(Packet.PlayerDodge(playerDodge))
+  | PaintTile(paintTile) => Same(Packet.PaintTile(paintTile))
+  | PaintWall(paintWall) => Same(Packet.PaintWall(paintWall))
+  | Teleport(teleport) => Same(Packet.Teleport(teleport))
+  | PlayerHealOther(playerHealOther) => Same(Packet.PlayerHealOther(playerHealOther))
+  | DimensionsUpdate(dimensionsUpdate) => Same(Packet.DimensionsUpdate(dimensionsUpdate))
+  | ClientUuid(clientUuid) => Same(Packet.ClientUuid(clientUuid))
+  | ChestName(chestName) => Same(Packet.ChestName(chestName))
+  | CatchNpc(catchNpc) => Same(Packet.CatchNpc(catchNpc))
+  | ReleaseNpc(releaseNpc) => Same(Packet.ReleaseNpc(releaseNpc))
+  | TravellingMerchantInventory(travellingMerchantInventory) =>
+    Same(Packet.TravellingMerchantInventory(travellingMerchantInventory))
+  | TeleportationPotion(teleportationPotion) =>
+    Same(Packet.TeleportationPotion(teleportationPotion))
+  | AnglerQuest(anglerQuest) => Same(Packet.AnglerQuest(anglerQuest))
+  | AnglerQuestComplete(anglerQuestComplete) =>
+    Same(Packet.AnglerQuestComplete(anglerQuestComplete))
+  | AnglerQuestsCompletedAmount(anglerQuestsCompletedAmount) =>
+    Same(Packet.AnglerQuestsCompletedAmount(anglerQuestsCompletedAmount))
+  | TemporaryAnimationCreate(temporaryAnimationCreate) =>
+    Same(Packet.TemporaryAnimationCreate(temporaryAnimationCreate))
+  | InvasionProgressReport(invasionProgressReport) =>
+    Same(Packet.InvasionProgressReport(invasionProgressReport))
+  | ObjectPlace(objectPlace) => Same(Packet.ObjectPlace(objectPlace))
+  | PlayerChestIndexSync(playerChestIndexSync) =>
+    Same(Packet.PlayerChestIndexSync(playerChestIndexSync))
+  | CombatNumberCreate(combatNumberCreate) => Same(Packet.CombatNumberCreate(combatNumberCreate))
+  | NetModuleLoad(netModuleLoad) => Same(Packet.NetModuleLoad(netModuleLoad))
+  | NpcKillCount(npcKillCount) => Same(Packet.NpcKillCount(npcKillCount))
+  | PlayerStealth(playerStealth) => Same(Packet.PlayerStealth(playerStealth))
+  | ItemForceIntoNearestChest(itemForceIntoNearestChest) =>
+    Same(Packet.ItemForceIntoNearestChest(itemForceIntoNearestChest))
+  | TileEntityUpdate(tileEntityUpdate) => Same(Packet.TileEntityUpdate(tileEntityUpdate))
+  | TileEntityPlace(tileEntityPlace) => Same(Packet.TileEntityPlace(tileEntityPlace))
+  | ItemDropModify(itemDropModify) => Same(Packet.ItemDropModify(itemDropModify))
+  | ItemFramePlace(itemFramePlace) => Same(Packet.ItemFramePlace(itemFramePlace))
+  | ItemDropInstancedUpdate(itemDropInstancedUpdate) =>
+    Same(Packet.ItemDropInstancedUpdate(itemDropInstancedUpdate))
+  | EmoteBubble(emoteBubble) => Same(Packet.EmoteBubble(emoteBubble))
+  | ExtraValueSync(extraValueSync) => Same(Packet.ExtraValueSync(extraValueSync))
+  | SocialHandshake(socialHandshake) => Same(Packet.SocialHandshake(socialHandshake))
+  | Unused(unused) => Same(Packet.Unused(unused))
+  | PortalKill(portalKill) => Same(Packet.PortalKill(portalKill))
+  | PlayerTeleportPortal(playerTeleportPortal) =>
+    Same(Packet.PlayerTeleportPortal(playerTeleportPortal))
+  | NpcKilledNotification(npcKilledNotification) =>
+    Same(Packet.NpcKilledNotification(npcKilledNotification))
+  | EventNotification(eventNotification) => Same(Packet.EventNotification(eventNotification))
+  | MinionTargetUpdate(minionTargetUpdate) => Same(Packet.MinionTargetUpdate(minionTargetUpdate))
+  | NpcTeleportPortal(npcTeleportPortal) => Same(Packet.NpcTeleportPortal(npcTeleportPortal))
+  | ShieldStrengthsUpdate(shieldStrengthsUpdate) =>
+    Same(Packet.ShieldStrengthsUpdate(shieldStrengthsUpdate))
+  | NebulaLevelUp(nebulaLevelUp) => Same(Packet.NebulaLevelUp(nebulaLevelUp))
+  | MoonLordCountdown(moonLordCountdown) => Same(Packet.MoonLordCountdown(moonLordCountdown))
+  | NpcShopItem(npcShopItem) => Same(Packet.NpcShopItem(npcShopItem))
+  | GemLockToggle(gemLockToggle) => Same(Packet.GemLockToggle(gemLockToggle))
+  | SmokePoof(smokePoof) => Same(Packet.SmokePoof(smokePoof))
+  | ChatMessageSmart(chatMessageSmart) => Same(Packet.ChatMessageSmart(chatMessageSmart))
+  | WiredCannonShot(wiredCannonShot) => Same(Packet.WiredCannonShot(wiredCannonShot))
+  | MassWireOperation(massWireOperation) => Same(Packet.MassWireOperation(massWireOperation))
+  | MassWireOperationPay(massWireOperationPay) =>
+    Same(Packet.MassWireOperationPay(massWireOperationPay))
+  | PartyToggle(partyToggle) => Same(Packet.PartyToggle(partyToggle))
+  | TreeGrowFx(treeGrowFx) => Same(Packet.TreeGrowFx(treeGrowFx))
+  | CrystalInvasionStart(crystalInvasionStart) =>
+    Same(Packet.CrystalInvasionStart(crystalInvasionStart))
+  | CrystalInvasionWipeAll(crystalInvasionWipeAll) =>
+    Same(Packet.CrystalInvasionWipeAll(crystalInvasionWipeAll))
+  | MinionAttackTargetUpdate(minionAttackTargetUpdate) =>
+    Same(Packet.MinionAttackTargetUpdate(minionAttackTargetUpdate))
+  | CrystalInvasionSendWaitTime(crystalInvasionSendWaitTime) =>
+    Same(Packet.CrystalInvasionSendWaitTime(crystalInvasionSendWaitTime))
+  | PlayerDamage(playerDamage) => Same(Packet.PlayerDamage(playerDamage))
+  | PlayerDeath(playerDeath) => Same(Packet.PlayerDeath(playerDeath))
+  | CombatTextCreate(combatTextCreate) => Same(Packet.CombatTextCreate(combatTextCreate))
+  | Emoji(emoji) => Same(Packet.Emoji(emoji))
+  | TileEntityDisplayDollItemSync(tileEntityDisplayDollItemSync) =>
+    Same(Packet.TileEntityDisplayDollItemSync(tileEntityDisplayDollItemSync))
+  | TileEntityInteractionRequest(tileEntityInteractionRequest) =>
+    Same(Packet.TileEntityInteractionRequest(tileEntityInteractionRequest))
+  | WeaponsRackTryPlacing(weaponsRackTryPlacing) =>
+    Same(Packet.WeaponsRackTryPlacing(weaponsRackTryPlacing))
+  | TileEntityHatRackItemSync(tileEntityHatRackItemSync) =>
+    Same(Packet.TileEntityHatRackItemSync(tileEntityHatRackItemSync))
+  | TilePickingSync(tilePickingSync) => Same(Packet.TilePickingSync(tilePickingSync))
+  | RevengeMarkerSync(revengeMarkerSync) => Same(Packet.RevengeMarkerSync(revengeMarkerSync))
+  | RevengeMarkerRemove(revengeMarkerRemove) =>
+    Same(Packet.RevengeMarkerRemove(revengeMarkerRemove))
+  | GolfBallLandInCup(golfBallLandInCup) => Same(Packet.GolfBallLandInCup(golfBallLandInCup))
+  | ClientFinishConnectingToServer(clientFinishConnectingToServer) =>
+    Same(Packet.ClientFinishConnectingToServer(clientFinishConnectingToServer))
+  | NpcFishOut(npcFishOut) => Same(Packet.NpcFishOut(npcFishOut))
+  | NpcTamper(npcTamper) => Same(Packet.NpcTamper(npcTamper))
+  | LegacySoundPlay(legacySoundPlay) => Same(Packet.LegacySoundPlay(legacySoundPlay))
+  | FoodPlatterTryPlacing(foodPlatterTryPlacing) =>
+    Same(Packet.FoodPlatterTryPlacing(foodPlatterTryPlacing))
+  | PlayerLuckFactorsUpdate(playerLuckFactorsUpdate) =>
+    Same(Packet.PlayerLuckFactorsUpdate(playerLuckFactorsUpdate))
+  | PlayerDead(playerDead) => Same(Packet.PlayerDead(playerDead))
+  | CavernMonsterTypeSync(cavernMonsterTypeSync) =>
+    Same(Packet.CavernMonsterTypeSync(cavernMonsterTypeSync))
+  | NpcBuffRemovalRequest(npcBuffRemovalRequest) =>
+    Same(Packet.NpcBuffRemovalRequest(npcBuffRemovalRequest))
+  | ClientSyncedInventory(clientSyncedInventory) =>
+    Same(Packet.ClientSyncedInventory(clientSyncedInventory))
+  | CountsAsHostForGameplaySet(countsAsHostForGameplaySet) =>
+    Same(Packet.CountsAsHostForGameplaySet(countsAsHostForGameplaySet))
   }
 }
 
-let convertFromLatest = (packet: Packet.t, fromServer: bool): option<t> => {
+let fromLatest = (packet: Packet.t, fromServer: bool): option<same<t>> => {
   switch packet {
-  | Packet.ConnectRequest(connectRequest) => Some(ConnectRequest(connectRequest))
-  | Packet.Disconnect(disconnect) => Some(Disconnect(disconnect))
-  | Packet.PlayerSlotSet(playerSlotSet) => Some(PlayerSlotSet(playerSlotSet))
-  | Packet.PlayerInfo(playerInfo) => Some(PlayerInfo(playerInfo))
-  | Packet.PlayerInventorySlot(playerInventorySlot) => Some(PlayerInventorySlot(playerInventorySlot))
-  | Packet.WorldDataRequest(worldDataRequest) => Some(WorldDataRequest(worldDataRequest))
-  | Packet.WorldInfo(worldInfo) => WorldInfo.convertFromLatest(worldInfo)->Belt.Option.map(p => WorldInfo(p))
-  | Packet.InitialTileSectionsRequest(initialTileSectionsRequest) => Some(InitialTileSectionsRequest(initialTileSectionsRequest))
-  | Packet.Status(status) => Some(Status(status))
-  | Packet.TileSectionSend(tileSectionSend) => Some(TileSectionSend(tileSectionSend))
-  | Packet.TileSectionFrame(tileSectionFrame) => Some(TileSectionFrame(tileSectionFrame))
-  | Packet.PlayerSpawn(playerSpawn) => Some(PlayerSpawn(playerSpawn))
-  | Packet.PlayerUpdate(playerUpdate) => Some(PlayerUpdate(playerUpdate))
-  | Packet.PlayerActive(playerActive) => Some(PlayerActive(playerActive))
-  | Packet.PlayerHealth(playerHealth) => Some(PlayerHealth(playerHealth))
-  | Packet.TileModify(tileModify) => Some(TileModify(tileModify))
-  | Packet.TimeSet(timeSet) => Some(TimeSet(timeSet))
-  | Packet.DoorUse(doorUse) => Some(DoorUse(doorUse))
-  | Packet.TileSquareSend(tileSquareSend) => TileSquareSend.fromLatest(tileSquareSend)->Belt.Option.map(p => TileSquareSend(p))
-  | Packet.ItemDropUpdate(itemDropUpdate) => Some(ItemDropUpdate(itemDropUpdate))
-  | Packet.ItemOwner(itemOwner) => Some(ItemOwner(itemOwner))
-  | Packet.NpcUpdate(npcUpdate) => Some(NpcUpdate(npcUpdate))
-  | Packet.NpcItemStrike(npcItemStrike) => Some(NpcItemStrike(npcItemStrike))
-  | Packet.ProjectileSync(projectileSync) => Some(ProjectileSync(projectileSync))
-  | Packet.NpcStrike(npcStrike) => Some(NpcStrike(npcStrike))
-  | Packet.ProjectileDestroy(projectileDestroy) => Some(ProjectileDestroy(projectileDestroy))
-  | Packet.PvpToggle(pvpToggle) => Some(PvpToggle(pvpToggle))
-  | Packet.ChestOpen(chestOpen) => Some(ChestOpen(chestOpen))
-  | Packet.ChestItem(chestItem) => Some(ChestItem(chestItem))
-  | Packet.ActiveContainerSync(activeContainerSync) => Some(ActiveContainerSync(activeContainerSync))
-  | Packet.ChestPlace(chestPlace) => Some(ChestPlace(chestPlace))
-  | Packet.HealEffect(healEffect) => Some(HealEffect(healEffect))
-  | Packet.Zones(zones) => Some(Zones(zones))
-  | Packet.PasswordRequired(passwordRequired) => Some(PasswordRequired(passwordRequired))
-  | Packet.PasswordSend(passwordSend) => Some(PasswordSend(passwordSend))
-  | Packet.ItemOwnerRemove(itemOwnerRemove) => Some(ItemOwnerRemove(itemOwnerRemove))
-  | Packet.NpcTalk(npcTalk) => Some(NpcTalk(npcTalk))
-  | Packet.PlayerAnimation(playerAnimation) => Some(PlayerAnimation(playerAnimation))
-  | Packet.PlayerMana(playerMana) => Some(PlayerMana(playerMana))
-  | Packet.ManaEffect(manaEffect) => Some(ManaEffect(manaEffect))
-  | Packet.PlayerTeam(playerTeam) => Some(PlayerTeam(playerTeam))
-  | Packet.SignRead(signRead) => Some(SignRead(signRead))
-  | Packet.SignNew(signNew) => Some(SignNew(signNew))
-  | Packet.LiquidSet(liquidSet) => Some(LiquidSet(liquidSet))
-  | Packet.PlayerSpawnSelf(playerSpawnSelf) => Some(PlayerSpawnSelf(playerSpawnSelf))
-  | Packet.PlayerBuffsSet(playerBuffsSet) => Some(PlayerBuffsSet(playerBuffsSet))
-  | Packet.NpcSpecialEffect(npcSpecialEffect) => Some(NpcSpecialEffect(npcSpecialEffect))
-  | Packet.ChestUnlock(chestUnlock) => Some(ChestUnlock(chestUnlock))
-  | Packet.NpcBuffAdd(npcBuffAdd) => Some(NpcBuffAdd(npcBuffAdd))
-  | Packet.NpcBuffUpdate(npcBuffUpdate) => Some(NpcBuffUpdate(npcBuffUpdate))
-  | Packet.PlayerBuffAdd(playerBuffAdd) => Some(PlayerBuffAdd(playerBuffAdd))
-  | Packet.NpcNameUpdate(npcNameUpdate) => Some(NpcNameUpdate(npcNameUpdate))
-  | Packet.GoodEvilUpdate(goodEvilUpdate) => Some(GoodEvilUpdate(goodEvilUpdate))
-  | Packet.HarpPlay(harpPlay) => Some(HarpPlay(harpPlay))
-  | Packet.SwitchHit(switchHit) => Some(SwitchHit(switchHit))
-  | Packet.NpcHomeUpdate(npcHomeUpdate) => Some(NpcHomeUpdate(npcHomeUpdate))
-  | Packet.BossOrInvasionSpawn(bossOrInvasionSpawn) => Some(BossOrInvasionSpawn(bossOrInvasionSpawn))
-  | Packet.PlayerDodge(playerDodge) => Some(PlayerDodge(playerDodge))
-  | Packet.PaintTile(paintTile) => Some(PaintTile(paintTile))
-  | Packet.PaintWall(paintWall) => Some(PaintWall(paintWall))
-  | Packet.Teleport(teleport) => Some(Teleport(teleport))
-  | Packet.PlayerHealOther(playerHealOther) => Some(PlayerHealOther(playerHealOther))
-  | Packet.DimensionsUpdate(dimensionsUpdate) => Some(DimensionsUpdate(dimensionsUpdate))
-  | Packet.ClientUuid(clientUuid) => Some(ClientUuid(clientUuid))
-  | Packet.ChestName(chestName) => Some(ChestName(chestName))
-  | Packet.CatchNpc(catchNpc) => Some(CatchNpc(catchNpc))
-  | Packet.ReleaseNpc(releaseNpc) => Some(ReleaseNpc(releaseNpc))
-  | Packet.TravellingMerchantInventory(travellingMerchantInventory) => Some(TravellingMerchantInventory(travellingMerchantInventory))
-  | Packet.TeleportationPotion(teleportationPotion) => Some(TeleportationPotion(teleportationPotion))
-  | Packet.AnglerQuest(anglerQuest) => Some(AnglerQuest(anglerQuest))
-  | Packet.AnglerQuestComplete(anglerQuestComplete) => Some(AnglerQuestComplete(anglerQuestComplete))
-  | Packet.AnglerQuestsCompletedAmount(anglerQuestsCompletedAmount) => Some(AnglerQuestsCompletedAmount(anglerQuestsCompletedAmount))
-  | Packet.TemporaryAnimationCreate(temporaryAnimationCreate) => Some(TemporaryAnimationCreate(temporaryAnimationCreate))
-  | Packet.InvasionProgressReport(invasionProgressReport) => Some(InvasionProgressReport(invasionProgressReport))
-  | Packet.ObjectPlace(objectPlace) => Some(ObjectPlace(objectPlace))
-  | Packet.PlayerChestIndexSync(playerChestIndexSync) => Some(PlayerChestIndexSync(playerChestIndexSync))
-  | Packet.CombatNumberCreate(combatNumberCreate) => Some(CombatNumberCreate(combatNumberCreate))
-  | Packet.NetModuleLoad(netModuleLoad) => Some(NetModuleLoad(netModuleLoad))
-  | Packet.NpcKillCount(npcKillCount) => Some(NpcKillCount(npcKillCount))
-  | Packet.PlayerStealth(playerStealth) => Some(PlayerStealth(playerStealth))
-  | Packet.ItemForceIntoNearestChest(itemForceIntoNearestChest) => Some(ItemForceIntoNearestChest(itemForceIntoNearestChest))
-  | Packet.TileEntityUpdate(tileEntityUpdate) => Some(TileEntityUpdate(tileEntityUpdate))
-  | Packet.TileEntityPlace(tileEntityPlace) => Some(TileEntityPlace(tileEntityPlace))
-  | Packet.ItemDropModify(itemDropModify) => Some(ItemDropModify(itemDropModify))
-  | Packet.ItemFramePlace(itemFramePlace) => Some(ItemFramePlace(itemFramePlace))
-  | Packet.ItemDropInstancedUpdate(itemDropInstancedUpdate) => Some(ItemDropInstancedUpdate(itemDropInstancedUpdate))
-  | Packet.EmoteBubble(emoteBubble) => Some(EmoteBubble(emoteBubble))
-  | Packet.ExtraValueSync(extraValueSync) => Some(ExtraValueSync(extraValueSync))
-  | Packet.SocialHandshake(socialHandshake) => Some(SocialHandshake(socialHandshake))
-  | Packet.Unused(unused) => Some(Unused(unused))
-  | Packet.PortalKill(portalKill) => Some(PortalKill(portalKill))
-  | Packet.PlayerTeleportPortal(playerTeleportPortal) => Some(PlayerTeleportPortal(playerTeleportPortal))
-  | Packet.NpcKilledNotification(npcKilledNotification) => Some(NpcKilledNotification(npcKilledNotification))
-  | Packet.EventNotification(eventNotification) => Some(EventNotification(eventNotification))
-  | Packet.MinionTargetUpdate(minionTargetUpdate) => Some(MinionTargetUpdate(minionTargetUpdate))
-  | Packet.NpcTeleportPortal(npcTeleportPortal) => Some(NpcTeleportPortal(npcTeleportPortal))
-  | Packet.ShieldStrengthsUpdate(shieldStrengthsUpdate) => Some(ShieldStrengthsUpdate(shieldStrengthsUpdate))
-  | Packet.NebulaLevelUp(nebulaLevelUp) => Some(NebulaLevelUp(nebulaLevelUp))
-  | Packet.MoonLordCountdown(moonLordCountdown) => Some(MoonLordCountdown(moonLordCountdown))
-  | Packet.NpcShopItem(npcShopItem) => Some(NpcShopItem(npcShopItem))
-  | Packet.GemLockToggle(gemLockToggle) => Some(GemLockToggle(gemLockToggle))
-  | Packet.SmokePoof(smokePoof) => Some(SmokePoof(smokePoof))
-  | Packet.ChatMessageSmart(chatMessageSmart) => Some(ChatMessageSmart(chatMessageSmart))
-  | Packet.WiredCannonShot(wiredCannonShot) => Some(WiredCannonShot(wiredCannonShot))
-  | Packet.MassWireOperation(massWireOperation) => Some(MassWireOperation(massWireOperation))
-  | Packet.MassWireOperationPay(massWireOperationPay) => Some(MassWireOperationPay(massWireOperationPay))
-  | Packet.PartyToggle(partyToggle) => Some(PartyToggle(partyToggle))
-  | Packet.TreeGrowFx(treeGrowFx) => Some(TreeGrowFx(treeGrowFx))
-  | Packet.CrystalInvasionStart(crystalInvasionStart) => Some(CrystalInvasionStart(crystalInvasionStart))
-  | Packet.CrystalInvasionWipeAll(crystalInvasionWipeAll) => Some(CrystalInvasionWipeAll(crystalInvasionWipeAll))
-  | Packet.MinionAttackTargetUpdate(minionAttackTargetUpdate) => Some(MinionAttackTargetUpdate(minionAttackTargetUpdate))
-  | Packet.CrystalInvasionSendWaitTime(crystalInvasionSendWaitTime) => Some(CrystalInvasionSendWaitTime(crystalInvasionSendWaitTime))
-  | Packet.PlayerDamage(playerDamage) => Some(PlayerDamage(playerDamage))
-  | Packet.PlayerDeath(playerDeath) => Some(PlayerDeath(playerDeath))
-  | Packet.CombatTextCreate(combatTextCreate) => Some(CombatTextCreate(combatTextCreate))
-  | Packet.Emoji(emoji) => Some(Emoji(emoji))
-  | Packet.TileEntityDisplayDollItemSync(tileEntityDisplayDollItemSync) => Some(TileEntityDisplayDollItemSync(tileEntityDisplayDollItemSync))
-  | Packet.TileEntityInteractionRequest(tileEntityInteractionRequest) => Some(TileEntityInteractionRequest(tileEntityInteractionRequest))
-  | Packet.WeaponsRackTryPlacing(weaponsRackTryPlacing) => Some(WeaponsRackTryPlacing(weaponsRackTryPlacing))
-  | Packet.TileEntityHatRackItemSync(tileEntityHatRackItemSync) => Some(TileEntityHatRackItemSync(tileEntityHatRackItemSync))
-  | Packet.TilePickingSync(tilePickingSync) => Some(TilePickingSync(tilePickingSync))
-  | Packet.RevengeMarkerSync(revengeMarkerSync) => Some(RevengeMarkerSync(revengeMarkerSync))
-  | Packet.RevengeMarkerRemove(revengeMarkerRemove) => Some(RevengeMarkerRemove(revengeMarkerRemove))
-  | Packet.GolfBallLandInCup(golfBallLandInCup) => Some(GolfBallLandInCup(golfBallLandInCup))
-  | Packet.ClientFinishConnectingToServer(clientFinishConnectingToServer) => Some(ClientFinishConnectingToServer(clientFinishConnectingToServer))
-  | Packet.NpcFishOut(npcFishOut) => Some(NpcFishOut(npcFishOut))
-  | Packet.NpcTamper(npcTamper) => Some(NpcTamper(npcTamper))
-  | Packet.LegacySoundPlay(legacySoundPlay) => Some(LegacySoundPlay(legacySoundPlay))
-  | Packet.FoodPlatterTryPlacing(foodPlatterTryPlacing) => Some(FoodPlatterTryPlacing(foodPlatterTryPlacing))
-  | Packet.PlayerLuckFactorsUpdate(playerLuckFactorsUpdate) => Some(PlayerLuckFactorsUpdate(playerLuckFactorsUpdate))
-  | Packet.PlayerDead(playerDead) => Some(PlayerDead(playerDead))
-  | Packet.CavernMonsterTypeSync(cavernMonsterTypeSync) => Some(CavernMonsterTypeSync(cavernMonsterTypeSync))
-  | Packet.NpcBuffRemovalRequest(npcBuffRemovalRequest) => Some(NpcBuffRemovalRequest(npcBuffRemovalRequest))
-  | Packet.ClientSyncedInventory(clientSyncedInventory) => Some(ClientSyncedInventory(clientSyncedInventory))
-  | Packet.CountsAsHostForGameplaySet(countsAsHostForGameplaySet) => Some(CountsAsHostForGameplaySet(countsAsHostForGameplaySet))
+  | Packet.ConnectRequest(connectRequest) => Some(Same(ConnectRequest(connectRequest)))
+  | Packet.Disconnect(disconnect) => Some(Same(Disconnect(disconnect)))
+  | Packet.PlayerSlotSet(playerSlotSet) => Some(Same(PlayerSlotSet(playerSlotSet)))
+  | Packet.PlayerInfo(playerInfo) => Some(Same(PlayerInfo(playerInfo)))
+  | Packet.PlayerInventorySlot(playerInventorySlot) =>
+    Some(Same(PlayerInventorySlot(playerInventorySlot)))
+  | Packet.WorldDataRequest(worldDataRequest) => Some(Same(WorldDataRequest(worldDataRequest)))
+  | Packet.WorldInfo(worldInfo) =>
+    WorldInfo.fromLatest(worldInfo)->Belt.Option.map(p => NotSame(WorldInfo(p)))
+  | Packet.InitialTileSectionsRequest(initialTileSectionsRequest) =>
+    Some(Same(InitialTileSectionsRequest(initialTileSectionsRequest)))
+  | Packet.Status(status) => Some(Same(Status(status)))
+  | Packet.TileSectionSend(tileSectionSend) => Some(Same(TileSectionSend(tileSectionSend)))
+  | Packet.TileSectionFrame(tileSectionFrame) => Some(Same(TileSectionFrame(tileSectionFrame)))
+  | Packet.PlayerSpawn(playerSpawn) => Some(Same(PlayerSpawn(playerSpawn)))
+  | Packet.PlayerUpdate(playerUpdate) => Some(Same(PlayerUpdate(playerUpdate)))
+  | Packet.PlayerActive(playerActive) => Some(Same(PlayerActive(playerActive)))
+  | Packet.PlayerHealth(playerHealth) => Some(Same(PlayerHealth(playerHealth)))
+  | Packet.TileModify(tileModify) => Some(Same(TileModify(tileModify)))
+  | Packet.TimeSet(timeSet) => Some(Same(TimeSet(timeSet)))
+  | Packet.DoorUse(doorUse) => Some(Same(DoorUse(doorUse)))
+  | Packet.TileSquareSend(tileSquareSend) =>
+    TileSquareSend.fromLatest(tileSquareSend)->Belt.Option.map(p => NotSame(TileSquareSend(p)))
+  | Packet.ItemDropUpdate(itemDropUpdate) => Some(Same(ItemDropUpdate(itemDropUpdate)))
+  | Packet.ItemOwner(itemOwner) => Some(Same(ItemOwner(itemOwner)))
+  | Packet.NpcUpdate(npcUpdate) => Some(Same(NpcUpdate(npcUpdate)))
+  | Packet.NpcItemStrike(npcItemStrike) => Some(Same(NpcItemStrike(npcItemStrike)))
+  | Packet.ProjectileSync(projectileSync) => Some(Same(ProjectileSync(projectileSync)))
+  | Packet.NpcStrike(npcStrike) => Some(Same(NpcStrike(npcStrike)))
+  | Packet.ProjectileDestroy(projectileDestroy) => Some(Same(ProjectileDestroy(projectileDestroy)))
+  | Packet.PvpToggle(pvpToggle) => Some(Same(PvpToggle(pvpToggle)))
+  | Packet.ChestOpen(chestOpen) => Some(Same(ChestOpen(chestOpen)))
+  | Packet.ChestItem(chestItem) => Some(Same(ChestItem(chestItem)))
+  | Packet.ActiveContainerSync(activeContainerSync) =>
+    Some(Same(ActiveContainerSync(activeContainerSync)))
+  | Packet.ChestPlace(chestPlace) => Some(Same(ChestPlace(chestPlace)))
+  | Packet.HealEffect(healEffect) => Some(Same(HealEffect(healEffect)))
+  | Packet.Zones(zones) => Some(Same(Zones(zones)))
+  | Packet.PasswordRequired(passwordRequired) => Some(Same(PasswordRequired(passwordRequired)))
+  | Packet.PasswordSend(passwordSend) => Some(Same(PasswordSend(passwordSend)))
+  | Packet.ItemOwnerRemove(itemOwnerRemove) => Some(Same(ItemOwnerRemove(itemOwnerRemove)))
+  | Packet.NpcTalk(npcTalk) => Some(Same(NpcTalk(npcTalk)))
+  | Packet.PlayerAnimation(playerAnimation) => Some(Same(PlayerAnimation(playerAnimation)))
+  | Packet.PlayerMana(playerMana) => Some(Same(PlayerMana(playerMana)))
+  | Packet.ManaEffect(manaEffect) => Some(Same(ManaEffect(manaEffect)))
+  | Packet.PlayerTeam(playerTeam) => Some(Same(PlayerTeam(playerTeam)))
+  | Packet.SignRead(signRead) => Some(Same(SignRead(signRead)))
+  | Packet.SignNew(signNew) => Some(Same(SignNew(signNew)))
+  | Packet.LiquidSet(liquidSet) => Some(Same(LiquidSet(liquidSet)))
+  | Packet.PlayerSpawnSelf(playerSpawnSelf) => Some(Same(PlayerSpawnSelf(playerSpawnSelf)))
+  | Packet.PlayerBuffsSet(playerBuffsSet) => Some(Same(PlayerBuffsSet(playerBuffsSet)))
+  | Packet.NpcSpecialEffect(npcSpecialEffect) => Some(Same(NpcSpecialEffect(npcSpecialEffect)))
+  | Packet.ChestUnlock(chestUnlock) => Some(Same(ChestUnlock(chestUnlock)))
+  | Packet.NpcBuffAdd(npcBuffAdd) => Some(Same(NpcBuffAdd(npcBuffAdd)))
+  | Packet.NpcBuffUpdate(npcBuffUpdate) => Some(Same(NpcBuffUpdate(npcBuffUpdate)))
+  | Packet.PlayerBuffAdd(playerBuffAdd) => Some(Same(PlayerBuffAdd(playerBuffAdd)))
+  | Packet.NpcNameUpdate(npcNameUpdate) => Some(Same(NpcNameUpdate(npcNameUpdate)))
+  | Packet.GoodEvilUpdate(goodEvilUpdate) => Some(Same(GoodEvilUpdate(goodEvilUpdate)))
+  | Packet.HarpPlay(harpPlay) => Some(Same(HarpPlay(harpPlay)))
+  | Packet.SwitchHit(switchHit) => Some(Same(SwitchHit(switchHit)))
+  | Packet.NpcHomeUpdate(npcHomeUpdate) => Some(Same(NpcHomeUpdate(npcHomeUpdate)))
+  | Packet.BossOrInvasionSpawn(bossOrInvasionSpawn) =>
+    Some(Same(BossOrInvasionSpawn(bossOrInvasionSpawn)))
+  | Packet.PlayerDodge(playerDodge) => Some(Same(PlayerDodge(playerDodge)))
+  | Packet.PaintTile(paintTile) => Some(Same(PaintTile(paintTile)))
+  | Packet.PaintWall(paintWall) => Some(Same(PaintWall(paintWall)))
+  | Packet.Teleport(teleport) => Some(Same(Teleport(teleport)))
+  | Packet.PlayerHealOther(playerHealOther) => Some(Same(PlayerHealOther(playerHealOther)))
+  | Packet.DimensionsUpdate(dimensionsUpdate) => Some(Same(DimensionsUpdate(dimensionsUpdate)))
+  | Packet.ClientUuid(clientUuid) => Some(Same(ClientUuid(clientUuid)))
+  | Packet.ChestName(chestName) => Some(Same(ChestName(chestName)))
+  | Packet.CatchNpc(catchNpc) => Some(Same(CatchNpc(catchNpc)))
+  | Packet.ReleaseNpc(releaseNpc) => Some(Same(ReleaseNpc(releaseNpc)))
+  | Packet.TravellingMerchantInventory(travellingMerchantInventory) =>
+    Some(Same(TravellingMerchantInventory(travellingMerchantInventory)))
+  | Packet.TeleportationPotion(teleportationPotion) =>
+    Some(Same(TeleportationPotion(teleportationPotion)))
+  | Packet.AnglerQuest(anglerQuest) => Some(Same(AnglerQuest(anglerQuest)))
+  | Packet.AnglerQuestComplete(anglerQuestComplete) =>
+    Some(Same(AnglerQuestComplete(anglerQuestComplete)))
+  | Packet.AnglerQuestsCompletedAmount(anglerQuestsCompletedAmount) =>
+    Some(Same(AnglerQuestsCompletedAmount(anglerQuestsCompletedAmount)))
+  | Packet.TemporaryAnimationCreate(temporaryAnimationCreate) =>
+    Some(Same(TemporaryAnimationCreate(temporaryAnimationCreate)))
+  | Packet.InvasionProgressReport(invasionProgressReport) =>
+    Some(Same(InvasionProgressReport(invasionProgressReport)))
+  | Packet.ObjectPlace(objectPlace) => Some(Same(ObjectPlace(objectPlace)))
+  | Packet.PlayerChestIndexSync(playerChestIndexSync) =>
+    Some(Same(PlayerChestIndexSync(playerChestIndexSync)))
+  | Packet.CombatNumberCreate(combatNumberCreate) =>
+    Some(Same(CombatNumberCreate(combatNumberCreate)))
+  | Packet.NetModuleLoad(netModuleLoad) => Some(Same(NetModuleLoad(netModuleLoad)))
+  | Packet.NpcKillCount(npcKillCount) => Some(Same(NpcKillCount(npcKillCount)))
+  | Packet.PlayerStealth(playerStealth) => Some(Same(PlayerStealth(playerStealth)))
+  | Packet.ItemForceIntoNearestChest(itemForceIntoNearestChest) =>
+    Some(Same(ItemForceIntoNearestChest(itemForceIntoNearestChest)))
+  | Packet.TileEntityUpdate(tileEntityUpdate) => Some(Same(TileEntityUpdate(tileEntityUpdate)))
+  | Packet.TileEntityPlace(tileEntityPlace) => Some(Same(TileEntityPlace(tileEntityPlace)))
+  | Packet.ItemDropModify(itemDropModify) => Some(Same(ItemDropModify(itemDropModify)))
+  | Packet.ItemFramePlace(itemFramePlace) => Some(Same(ItemFramePlace(itemFramePlace)))
+  | Packet.ItemDropInstancedUpdate(itemDropInstancedUpdate) =>
+    Some(Same(ItemDropInstancedUpdate(itemDropInstancedUpdate)))
+  | Packet.EmoteBubble(emoteBubble) => Some(Same(EmoteBubble(emoteBubble)))
+  | Packet.ExtraValueSync(extraValueSync) => Some(Same(ExtraValueSync(extraValueSync)))
+  | Packet.SocialHandshake(socialHandshake) => Some(Same(SocialHandshake(socialHandshake)))
+  | Packet.Unused(unused) => Some(Same(Unused(unused)))
+  | Packet.PortalKill(portalKill) => Some(Same(PortalKill(portalKill)))
+  | Packet.PlayerTeleportPortal(playerTeleportPortal) =>
+    Some(Same(PlayerTeleportPortal(playerTeleportPortal)))
+  | Packet.NpcKilledNotification(npcKilledNotification) =>
+    Some(Same(NpcKilledNotification(npcKilledNotification)))
+  | Packet.EventNotification(eventNotification) => Some(Same(EventNotification(eventNotification)))
+  | Packet.MinionTargetUpdate(minionTargetUpdate) =>
+    Some(Same(MinionTargetUpdate(minionTargetUpdate)))
+  | Packet.NpcTeleportPortal(npcTeleportPortal) => Some(Same(NpcTeleportPortal(npcTeleportPortal)))
+  | Packet.ShieldStrengthsUpdate(shieldStrengthsUpdate) =>
+    Some(Same(ShieldStrengthsUpdate(shieldStrengthsUpdate)))
+  | Packet.NebulaLevelUp(nebulaLevelUp) => Some(Same(NebulaLevelUp(nebulaLevelUp)))
+  | Packet.MoonLordCountdown(moonLordCountdown) => Some(Same(MoonLordCountdown(moonLordCountdown)))
+  | Packet.NpcShopItem(npcShopItem) => Some(Same(NpcShopItem(npcShopItem)))
+  | Packet.GemLockToggle(gemLockToggle) => Some(Same(GemLockToggle(gemLockToggle)))
+  | Packet.SmokePoof(smokePoof) => Some(Same(SmokePoof(smokePoof)))
+  | Packet.ChatMessageSmart(chatMessageSmart) => Some(Same(ChatMessageSmart(chatMessageSmart)))
+  | Packet.WiredCannonShot(wiredCannonShot) => Some(Same(WiredCannonShot(wiredCannonShot)))
+  | Packet.MassWireOperation(massWireOperation) => Some(Same(MassWireOperation(massWireOperation)))
+  | Packet.MassWireOperationPay(massWireOperationPay) =>
+    Some(Same(MassWireOperationPay(massWireOperationPay)))
+  | Packet.PartyToggle(partyToggle) => Some(Same(PartyToggle(partyToggle)))
+  | Packet.TreeGrowFx(treeGrowFx) => Some(Same(TreeGrowFx(treeGrowFx)))
+  | Packet.CrystalInvasionStart(crystalInvasionStart) =>
+    Some(Same(CrystalInvasionStart(crystalInvasionStart)))
+  | Packet.CrystalInvasionWipeAll(crystalInvasionWipeAll) =>
+    Some(Same(CrystalInvasionWipeAll(crystalInvasionWipeAll)))
+  | Packet.MinionAttackTargetUpdate(minionAttackTargetUpdate) =>
+    Some(Same(MinionAttackTargetUpdate(minionAttackTargetUpdate)))
+  | Packet.CrystalInvasionSendWaitTime(crystalInvasionSendWaitTime) =>
+    Some(Same(CrystalInvasionSendWaitTime(crystalInvasionSendWaitTime)))
+  | Packet.PlayerDamage(playerDamage) => Some(Same(PlayerDamage(playerDamage)))
+  | Packet.PlayerDeath(playerDeath) => Some(Same(PlayerDeath(playerDeath)))
+  | Packet.CombatTextCreate(combatTextCreate) => Some(Same(CombatTextCreate(combatTextCreate)))
+  | Packet.Emoji(emoji) => Some(Same(Emoji(emoji)))
+  | Packet.TileEntityDisplayDollItemSync(tileEntityDisplayDollItemSync) =>
+    Some(Same(TileEntityDisplayDollItemSync(tileEntityDisplayDollItemSync)))
+  | Packet.TileEntityInteractionRequest(tileEntityInteractionRequest) =>
+    Some(Same(TileEntityInteractionRequest(tileEntityInteractionRequest)))
+  | Packet.WeaponsRackTryPlacing(weaponsRackTryPlacing) =>
+    Some(Same(WeaponsRackTryPlacing(weaponsRackTryPlacing)))
+  | Packet.TileEntityHatRackItemSync(tileEntityHatRackItemSync) =>
+    Some(Same(TileEntityHatRackItemSync(tileEntityHatRackItemSync)))
+  | Packet.TilePickingSync(tilePickingSync) => Some(Same(TilePickingSync(tilePickingSync)))
+  | Packet.RevengeMarkerSync(revengeMarkerSync) => Some(Same(RevengeMarkerSync(revengeMarkerSync)))
+  | Packet.RevengeMarkerRemove(revengeMarkerRemove) =>
+    Some(Same(RevengeMarkerRemove(revengeMarkerRemove)))
+  | Packet.GolfBallLandInCup(golfBallLandInCup) => Some(Same(GolfBallLandInCup(golfBallLandInCup)))
+  | Packet.ClientFinishConnectingToServer(clientFinishConnectingToServer) =>
+    Some(Same(ClientFinishConnectingToServer(clientFinishConnectingToServer)))
+  | Packet.NpcFishOut(npcFishOut) => Some(Same(NpcFishOut(npcFishOut)))
+  | Packet.NpcTamper(npcTamper) => Some(Same(NpcTamper(npcTamper)))
+  | Packet.LegacySoundPlay(legacySoundPlay) => Some(Same(LegacySoundPlay(legacySoundPlay)))
+  | Packet.FoodPlatterTryPlacing(foodPlatterTryPlacing) =>
+    Some(Same(FoodPlatterTryPlacing(foodPlatterTryPlacing)))
+  | Packet.PlayerLuckFactorsUpdate(playerLuckFactorsUpdate) =>
+    Some(Same(PlayerLuckFactorsUpdate(playerLuckFactorsUpdate)))
+  | Packet.PlayerDead(playerDead) => Some(Same(PlayerDead(playerDead)))
+  | Packet.CavernMonsterTypeSync(cavernMonsterTypeSync) =>
+    Some(Same(CavernMonsterTypeSync(cavernMonsterTypeSync)))
+  | Packet.NpcBuffRemovalRequest(npcBuffRemovalRequest) =>
+    Some(Same(NpcBuffRemovalRequest(npcBuffRemovalRequest)))
+  | Packet.ClientSyncedInventory(clientSyncedInventory) =>
+    Some(Same(ClientSyncedInventory(clientSyncedInventory)))
+  | Packet.CountsAsHostForGameplaySet(countsAsHostForGameplaySet) =>
+    Some(Same(CountsAsHostForGameplaySet(countsAsHostForGameplaySet)))
   }
 }
+
+let toBuffer = (packet: t, fromServer: bool): option<NodeJs.Buffer.t> => {
+  switch packet {
+  | ConnectRequest(connectRequest) => Some(ConnectRequest.toBuffer(connectRequest))
+  | Disconnect(disconnect) => Some(Disconnect.toBuffer(disconnect))
+  | PlayerSlotSet(playerSlotSet) => Some(PlayerSlotSet.toBuffer(playerSlotSet))
+  | PlayerInfo(playerInfo) => Some(PlayerInfo.toBuffer(playerInfo))
+  | PlayerInventorySlot(playerInventorySlot) =>
+    Some(PlayerInventorySlot.toBuffer(playerInventorySlot))
+  | WorldDataRequest(worldDataRequest) => Some(WorldDataRequest.toBuffer(worldDataRequest))
+  | WorldInfo(worldInfo) => Some(WorldInfo.toBuffer(worldInfo))
+  | InitialTileSectionsRequest(initialTileSectionsRequest) =>
+    Some(InitialTileSectionsRequest.toBuffer(initialTileSectionsRequest))
+  | Status(status) => Some(Status.toBuffer(status))
+  | TileSectionSend(tileSectionSend) => None
+  | TileSectionFrame(tileSectionFrame) => None
+  | PlayerSpawn(playerSpawn) => Some(PlayerSpawn.toBuffer(playerSpawn))
+  | PlayerUpdate(playerUpdate) => None
+  | PlayerActive(playerActive) => Some(PlayerActive.toBuffer(playerActive))
+  | PlayerHealth(playerHealth) => Some(PlayerHealth.toBuffer(playerHealth))
+  | TileModify(tileModify) => None
+  | TimeSet(timeSet) => None
+  | DoorUse(doorUse) => None
+  | TileSquareSend(tileSquareSend) => Some(TileSquareSend.toBuffer(tileSquareSend))
+  | ItemDropUpdate(itemDropUpdate) => Some(ItemDropUpdate.toBuffer(itemDropUpdate))
+  | ItemOwner(itemOwner) => None
+  | NpcUpdate(npcUpdate) => Some(NpcUpdate.toBuffer(npcUpdate))
+  | NpcItemStrike(npcItemStrike) => None
+  | ProjectileSync(projectileSync) => Some(ProjectileSync.toBuffer(projectileSync))
+  | NpcStrike(npcStrike) => None
+  | ProjectileDestroy(projectileDestroy) => Some(ProjectileDestroy.toBuffer(projectileDestroy))
+  | PvpToggle(pvpToggle) => None
+  | ChestOpen(chestOpen) => None
+  | ChestItem(chestItem) => None
+  | ActiveContainerSync(activeContainerSync) => None
+  | ChestPlace(chestPlace) => None
+  | HealEffect(healEffect) => None
+  | Zones(zones) => None
+  | PasswordRequired(passwordRequired) => None
+  | PasswordSend(passwordSend) => None
+  | ItemOwnerRemove(itemOwnerRemove) => None
+  | NpcTalk(npcTalk) => None
+  | PlayerAnimation(playerAnimation) => None
+  | PlayerMana(playerMana) => Some(PlayerMana.toBuffer(playerMana))
+  | ManaEffect(manaEffect) => None
+  | PlayerTeam(playerTeam) => None
+  | SignRead(signRead) => None
+  | SignNew(signNew) => None
+  | LiquidSet(liquidSet) => None
+  | PlayerSpawnSelf(playerSpawnSelf) => None
+  | PlayerBuffsSet(playerBuffsSet) => None
+  | NpcSpecialEffect(npcSpecialEffect) => None
+  | ChestUnlock(chestUnlock) => None
+  | NpcBuffAdd(npcBuffAdd) => None
+  | NpcBuffUpdate(npcBuffUpdate) => None
+  | PlayerBuffAdd(playerBuffAdd) => None
+  | NpcNameUpdate(npcNameUpdate) => None
+  | GoodEvilUpdate(goodEvilUpdate) => None
+  | HarpPlay(harpPlay) => None
+  | SwitchHit(switchHit) => None
+  | NpcHomeUpdate(npcHomeUpdate) => None
+  | BossOrInvasionSpawn(bossOrInvasionSpawn) => None
+  | PlayerDodge(playerDodge) => None
+  | PaintTile(paintTile) => None
+  | PaintWall(paintWall) => None
+  | Teleport(teleport) => None
+  | PlayerHealOther(playerHealOther) => None
+  | DimensionsUpdate(dimensionsUpdate) => Some(DimensionsUpdate.toBuffer(dimensionsUpdate))
+  | ClientUuid(clientUuid) => None
+  | ChestName(chestName) => None
+  | CatchNpc(catchNpc) => None
+  | ReleaseNpc(releaseNpc) => None
+  | TravellingMerchantInventory(travellingMerchantInventory) => None
+  | TeleportationPotion(teleportationPotion) => None
+  | AnglerQuest(anglerQuest) => None
+  | AnglerQuestComplete(anglerQuestComplete) => None
+  | AnglerQuestsCompletedAmount(anglerQuestsCompletedAmount) => None
+  | TemporaryAnimationCreate(temporaryAnimationCreate) => None
+  | InvasionProgressReport(invasionProgressReport) => None
+  | ObjectPlace(objectPlace) => None
+  | PlayerChestIndexSync(playerChestIndexSync) => None
+  | CombatNumberCreate(combatNumberCreate) => None
+  | NetModuleLoad(netModuleLoad) => Some(NetModuleLoad.toBuffer(netModuleLoad))
+  | NpcKillCount(npcKillCount) => None
+  | PlayerStealth(playerStealth) => None
+  | ItemForceIntoNearestChest(itemForceIntoNearestChest) => None
+  | TileEntityUpdate(tileEntityUpdate) => None
+  | TileEntityPlace(tileEntityPlace) => None
+  | ItemDropModify(itemDropModify) => None
+  | ItemFramePlace(itemFramePlace) => None
+  | ItemDropInstancedUpdate(itemDropInstancedUpdate) => None
+  | EmoteBubble(emoteBubble) => None
+  | ExtraValueSync(extraValueSync) => None
+  | SocialHandshake(socialHandshake) => None
+  | Unused(unused) => None
+  | PortalKill(portalKill) => None
+  | PlayerTeleportPortal(playerTeleportPortal) => None
+  | NpcKilledNotification(npcKilledNotification) => None
+  | EventNotification(eventNotification) => None
+  | MinionTargetUpdate(minionTargetUpdate) => None
+  | NpcTeleportPortal(npcTeleportPortal) => None
+  | ShieldStrengthsUpdate(shieldStrengthsUpdate) => None
+  | NebulaLevelUp(nebulaLevelUp) => None
+  | MoonLordCountdown(moonLordCountdown) => None
+  | NpcShopItem(npcShopItem) => None
+  | GemLockToggle(gemLockToggle) => None
+  | SmokePoof(smokePoof) => None
+  | ChatMessageSmart(chatMessageSmart) => None
+  | WiredCannonShot(wiredCannonShot) => None
+  | MassWireOperation(massWireOperation) => None
+  | MassWireOperationPay(massWireOperationPay) => None
+  | PartyToggle(partyToggle) => None
+  | TreeGrowFx(treeGrowFx) => None
+  | CrystalInvasionStart(crystalInvasionStart) => None
+  | CrystalInvasionWipeAll(crystalInvasionWipeAll) => None
+  | MinionAttackTargetUpdate(minionAttackTargetUpdate) => None
+  | CrystalInvasionSendWaitTime(crystalInvasionSendWaitTime) => None
+  | PlayerDamage(playerDamage) => None
+  | PlayerDeath(playerDeath) => None
+  | CombatTextCreate(combatTextCreate) => None
+  | Emoji(emoji) => None
+  | TileEntityDisplayDollItemSync(tileEntityDisplayDollItemSync) => None
+  | TileEntityInteractionRequest(tileEntityInteractionRequest) => None
+  | WeaponsRackTryPlacing(weaponsRackTryPlacing) => None
+  | TileEntityHatRackItemSync(tileEntityHatRackItemSync) => None
+  | TilePickingSync(tilePickingSync) => None
+  | RevengeMarkerSync(revengeMarkerSync) => None
+  | RevengeMarkerRemove(revengeMarkerRemove) => None
+  | GolfBallLandInCup(golfBallLandInCup) => None
+  | ClientFinishConnectingToServer(clientFinishConnectingToServer) => None
+  | NpcFishOut(npcFishOut) => None
+  | NpcTamper(npcTamper) => None
+  | LegacySoundPlay(legacySoundPlay) => None
+  | FoodPlatterTryPlacing(foodPlatterTryPlacing) => None
+  | PlayerLuckFactorsUpdate(playerLuckFactorsUpdate) => None
+  | PlayerDead(playerDead) => None
+  | CavernMonsterTypeSync(cavernMonsterTypeSync) => None
+  | NpcBuffRemovalRequest(npcBuffRemovalRequest) => None
+  | ClientSyncedInventory(clientSyncedInventory) => None
+  | CountsAsHostForGameplaySet(countsAsHostForGameplaySet) => None
+  }
+}
+
+let serialize: ISerializer.serialize<t> = (~parsed: IParser.parsed<t>, ~fromServer: bool) =>
+  switch parsed {
+  | IParser.ShouldSerialize(packet) => toBuffer(packet, fromServer)
+  | IParser.SerializeNotNecessary(_, buffer) => Some(buffer)
+  }
+
+let serializeFromLatest: ISerializer.serialize<Packet.t> = (
+  ~parsed: IParser.parsed<Packet.t>,
+  ~fromServer: bool,
+) =>
+  switch parsed {
+  | IParser.ShouldSerialize(packet) =>
+    switch fromLatest(packet, fromServer) {
+    | Some(Same(packet))
+    | Some(NotSame(packet)) =>
+      toBuffer(packet, fromServer)
+    | None => None
+    }
+  | IParser.SerializeNotNecessary(packet, buffer) =>
+    switch fromLatest(packet, fromServer) {
+    | Some(Same(packet)) => Some(buffer)
+    | Some(NotSame(packet)) => toBuffer(packet, fromServer)
+    | None => None
+    }
+  }

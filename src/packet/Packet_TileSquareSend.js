@@ -161,7 +161,7 @@ function packTile(writer, tile) {
   }
   var wall = tile.wall;
   if (wall !== undefined) {
-    writer.packByte(wall);
+    writer.packUInt16(wall);
   }
   var liquid = tile.liquid;
   if (liquid !== undefined) {

@@ -13,5 +13,8 @@
     "bs-dependencies": [
         "@popstarfreas/packetfactory",
         "@popstarfreas/rescript-nodejs"
-    ]
+    ],
+    "warnings": {
+        "number": "-A"
+    }
 }
