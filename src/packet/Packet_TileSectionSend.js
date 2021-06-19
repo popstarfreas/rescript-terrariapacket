@@ -92,6 +92,7 @@ function parse(payload) {
   var tiles = [];
   var tileCache = defaultTileCache(undefined);
   var rleCount = 0;
+  console.log("TileSection(x: " + String(tileX) + ", y: " + String(tileY) + ", width: " + String(width) + ", height: " + String(height) + ")");
   if (height < 0 || width < 0) {
     return ;
   }
@@ -131,6 +132,9 @@ function parse(payload) {
             tileType = (secondByte << 8) | $$byte;
           } else {
             tileType = reader$1.readByte();
+          }
+          if (tileType > 623) {
+            console.log("Tile Type", tileType, "is out of range.");
           }
           var frame;
           if (TileFrameImportant$TerrariaPacket.isImportant(tileType)) {
@@ -208,6 +212,11 @@ function parse(payload) {
           }
           
         }
+        if (Belt_Option.eq(tileCache.wall, 315, (function (a, b) {
+                  return a > b;
+                }))) {
+          console.log("Wall Type", tileCache.wall, "is out of range.");
+        }
         var repeatCountBytes = ((BitFlags$TerrariaPacket.toByte(header5) & 192) >>> 6);
         rleCount = repeatCountBytes !== 0 ? (
             repeatCountBytes !== 1 ? reader$1.readInt16() : reader$1.readByte()
@@ -239,8 +248,11 @@ var Decode = {
 
 var Encode = {};
 
+var Int;
+
 var $$Option;
 
+exports.Int = Int;
 exports.$$Option = $$Option;
 exports.defaultTileCache = defaultTileCache;
 exports.cacheToTile = cacheToTile;

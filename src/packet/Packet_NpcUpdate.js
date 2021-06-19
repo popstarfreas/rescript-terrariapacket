@@ -80,9 +80,6 @@ function parse(payload) {
   } else {
     var lifeBytes = reader.readByte();
     switch (lifeBytes) {
-      case 0 :
-          life = undefined;
-          break;
       case 1 :
           life = {
             TAG: /* Byte */0,
@@ -95,7 +92,11 @@ function parse(payload) {
             _0: reader.readInt16()
           };
           break;
+      case 0 :
       case 3 :
+          life = undefined;
+          break;
+      case 4 :
           life = {
             TAG: /* Int32 */2,
             _0: reader.readInt32()
@@ -256,11 +257,11 @@ function packLife(writer, life) {
   }
   switch (life.TAG | 0) {
     case /* Byte */0 :
-        return writer.packByte(life._0);
+        return writer.packByte(1).packByte(life._0);
     case /* Int16 */1 :
-        return writer.packInt16(life._0);
+        return writer.packByte(2).packInt16(life._0);
     case /* Int32 */2 :
-        return writer.packInt32(life._0);
+        return writer.packByte(4).packInt32(life._0);
     
   }
 }

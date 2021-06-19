@@ -20,12 +20,14 @@ module Decode = {
     let x = reader->readInt16
     let y = reader->readInt16
     let timeRemaining = reader->readInt32
-    let context = switch reader->readByte {
+    let rawContext = reader->readByte
+    let context = switch rawContext {
     | 0 => Some(ReviveFromDeath)
     | 1 => Some(SpawningIntoWorld)
     | 2 => Some(RecallFromItem)
     | _ => None
     }
+    Js.log3("PlayerSpawnContext", rawContext, context)
 
     switch context {
     | Some(context) =>
