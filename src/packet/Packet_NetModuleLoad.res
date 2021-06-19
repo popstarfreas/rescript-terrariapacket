@@ -235,12 +235,12 @@ module Encode = {
     | Ping(ping) => pingToBuffer(ping)
     | Ambience(ambience) => ambienceToBuffer(ambience)
     | Bestiary(bestiary) => bestiaryToBuffer(bestiary)
-    | CreativeUnlocks(creativeUnlock) => Buffer.allocUnsafe(0) // creativeUnlocksToBuffer(creativeUnlock)
-    | CreativePower(creativePower) => Buffer.allocUnsafe(0) // creativePowerToBuffer(creativePower)
-    | CreativeUnlocksPlayerReport(unlockReport) => Buffer.allocUnsafe(0) // creativeUnlocksPlayerReportToBuffer(unlockReport)
-    | TeleportPylon(teleportPylon) => Buffer.allocUnsafe(0) // teleportPylonToBuffer(teleportPylon)
-    | Particles(particle) => Buffer.allocUnsafe(0) // particlesToBuffer(particle)
-    | CreativePowerPermissions(creativePowerPermission) => Buffer.allocUnsafe(0) // creativePowerPermissionsToBuffer(creativePowerPermission)
+    | CreativeUnlocks(_creativeUnlock) => Buffer.allocUnsafe(0) // creativeUnlocksToBuffer(creativeUnlock)
+    | CreativePower(_creativePower) => Buffer.allocUnsafe(0) // creativePowerToBuffer(creativePower)
+    | CreativeUnlocksPlayerReport(_unlockReport) => Buffer.allocUnsafe(0) // creativeUnlocksPlayerReportToBuffer(unlockReport)
+    | TeleportPylon(_teleportPylon) => Buffer.allocUnsafe(0) // teleportPylonToBuffer(teleportPylon)
+    | Particles(_particle) => Buffer.allocUnsafe(0) // particlesToBuffer(particle)
+    | CreativePowerPermissions(_creativePowerPermission) => Buffer.allocUnsafe(0) // creativePowerPermissionsToBuffer(creativePowerPermission)
     }
   }
 }

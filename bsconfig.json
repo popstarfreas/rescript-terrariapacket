@@ -1,5 +1,5 @@
 {
-    "name": "rescript-terrariapacket",
+    "name": "@darkgaming/rescript-terrariapacket",
     "namespace": "TerrariaPacket",
     "version": "0.1.0",
     "sources": {
@@ -15,6 +15,6 @@
         "@popstarfreas/rescript-nodejs"
     ],
     "warnings": {
-        "number": "-A"
+        "number": ""
     }
 }

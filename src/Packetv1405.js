@@ -969,7 +969,7 @@ function countsAsHostForGameplaySet(param_0) {
         };
 }
 
-function toLatest(packet, fromServer) {
+function toLatest(packet, _fromServer) {
   switch (packet.TAG | 0) {
     case /* ConnectRequest */0 :
         return {
@@ -2055,7 +2055,7 @@ function toLatest(packet, fromServer) {
   }
 }
 
-function fromLatest(packet, fromServer) {
+function fromLatest(packet, _fromServer) {
   switch (packet.TAG | 0) {
     case /* ConnectRequest */0 :
         return {
@@ -3145,7 +3145,7 @@ function fromLatest(packet, fromServer) {
   }
 }
 
-function toBuffer(packet, fromServer) {
+function toBuffer(packet, _fromServer) {
   switch (packet.TAG | 0) {
     case /* ConnectRequest */0 :
         return Caml_option.some(Packetv1405_ConnectRequest$TerrariaPacket.toBuffer(packet._0));

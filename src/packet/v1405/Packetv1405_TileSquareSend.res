@@ -210,4 +210,4 @@ let toLatest = (self: t): Packet.TileSquareSend.t => {
   tiles: self.tiles,
 }
 
-let fromLatest = (latest: Packet.TileSquareSend.t): option<t> => None
+let fromLatest = (_latest: Packet.TileSquareSend.t): option<t> => None
