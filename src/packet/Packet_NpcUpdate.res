@@ -102,7 +102,7 @@ module Decode = {
       | 0 => None
       | 1 => Some(Byte(reader->readByte))
       | 2 => Some(Int16(reader->readInt16))
-      | 3 => Some(Int32(reader->readInt32))
+      | 4 => Some(Int32(reader->readInt32))
       | _ => None
       }
     }
@@ -203,9 +203,9 @@ module Encode = {
   let packLife = (writer, life) => {
     switch life {
     | Max => writer
-    | Byte(life) => writer->packByte(life)
-    | Int16(life) => writer->packInt16(life)
-    | Int32(life) => writer->packInt32(life)
+    | Byte(life) => writer->packByte(1)->packByte(life)
+    | Int16(life) => writer->packByte(2)->packInt16(life)
+    | Int32(life) => writer->packByte(4)->packInt32(life)
     }
   }
 

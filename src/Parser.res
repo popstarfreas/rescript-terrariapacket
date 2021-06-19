@@ -44,7 +44,10 @@ let parsePayload = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServ
   | (ItemDropUpdate, true | false) =>
     Packet.ItemDropUpdate.parse(payload)->Belt.Option.map(a => Packet.ItemDropUpdate(a))
   | (ItemOwner, true | false) => Packet.ItemOwner.parse(payload)->Belt.Option.map(a => Packet.ItemOwner(a))
-  | (NpcUpdate, false) => None
+  | (NpcUpdate, false) => {
+    Js.log("Rejecting non-server NpcUpdate")
+    None
+  }
   | (NpcUpdate, true) => Packet.NpcUpdate.parse(payload)->Belt.Option.map(a => Packet.NpcUpdate(a))
   | (NpcItemStrike, true | false) =>
     Packet.NpcItemStrike.parse(payload)->Belt.Option.map(a => Packet.NpcItemStrike(a))
@@ -245,8 +248,7 @@ let parsePayload = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServ
     Packet.CrystalInvasionWipeAll.parse(
       payload,
     )->Belt.Option.map(a => Packet.CrystalInvasionWipeAll(a))
-  | (MinionAttackTargetUpdate, true) => None
-  | (MinionAttackTargetUpdate, false) =>
+  | (MinionAttackTargetUpdate, true | false) =>
     Packet.MinionAttackTargetUpdate.parse(
       payload,
     )->Belt.Option.map(a => Packet.MinionAttackTargetUpdate(a))

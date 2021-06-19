@@ -24,9 +24,9 @@ function parse(payload) {
   var x = reader.readInt16();
   var y = reader.readInt16();
   var timeRemaining = reader.readInt32();
-  var match = reader.readByte();
+  var rawContext = reader.readByte();
   var context;
-  switch (match) {
+  switch (rawContext) {
     case 0 :
         context = /* ReviveFromDeath */0;
         break;
@@ -39,6 +39,7 @@ function parse(payload) {
     default:
       context = undefined;
   }
+  console.log("PlayerSpawnContext", rawContext, context);
   if (context !== undefined) {
     return {
             playerId: playerId,

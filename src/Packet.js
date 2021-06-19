@@ -235,7 +235,48 @@ function toPacketName(packet) {
     case /* CombatNumberCreate */76 :
         return "CombatNumberCreate";
     case /* NetModuleLoad */77 :
-        return "NetModuleLoad";
+        var netModuleLoad = packet._0;
+        var tmp;
+        switch (netModuleLoad.TAG | 0) {
+          case /* Liquid */0 :
+              tmp = "Liquid";
+              break;
+          case /* ClientText */1 :
+              tmp = "ClientText(" + netModuleLoad._1 + ")";
+              break;
+          case /* ServerText */2 :
+              tmp = "ServerText(" + netModuleLoad._1.text + ")";
+              break;
+          case /* Ping */3 :
+              tmp = "Ping";
+              break;
+          case /* Ambience */4 :
+              tmp = "Ambience";
+              break;
+          case /* Bestiary */5 :
+              tmp = "Bestiary";
+              break;
+          case /* CreativeUnlocks */6 :
+              tmp = "CreativeUnlocks";
+              break;
+          case /* CreativePower */7 :
+              tmp = "CreativePower";
+              break;
+          case /* CreativeUnlocksPlayerReport */8 :
+              tmp = "CreativeUnlocksPlayerReport";
+              break;
+          case /* TeleportPylon */9 :
+              tmp = "TeleportPylon";
+              break;
+          case /* Particles */10 :
+              tmp = "Particles";
+              break;
+          case /* CreativePowerPermissions */11 :
+              tmp = "CreativePowerPermissions";
+              break;
+          
+        }
+        return "NetModuleLoad(" + tmp + ")";
     case /* NpcKillCount */78 :
         return "NpcKillCount";
     case /* PlayerStealth */79 :

@@ -346,6 +346,7 @@ function parsePayload(packetType, payload, fromServer) {
                               };
                       }));
         } else {
+          console.log("Rejecting non-server NpcUpdate");
           return ;
         }
     case /* NpcItemStrike */22 :
@@ -1133,16 +1134,12 @@ function parsePayload(packetType, payload, fromServer) {
           return ;
         }
     case /* MinionAttackTargetUpdate */110 :
-        if (fromServer) {
-          return ;
-        } else {
-          return Belt_Option.map(Packet_MinionAttackTargetUpdate$TerrariaPacket.parse(payload), (function (a) {
-                        return {
-                                TAG: /* MinionAttackTargetUpdate */110,
-                                _0: a
-                              };
-                      }));
-        }
+        return Belt_Option.map(Packet_MinionAttackTargetUpdate$TerrariaPacket.parse(payload), (function (a) {
+                      return {
+                              TAG: /* MinionAttackTargetUpdate */110,
+                              _0: a
+                            };
+                    }));
     case /* CrystalInvasionSendWaitTime */111 :
         if (fromServer) {
           return Belt_Option.map(Packet_CrystalInvasionSendWaitTime$TerrariaPacket.parse(payload), (function (a) {
