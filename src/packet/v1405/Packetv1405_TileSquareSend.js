@@ -210,7 +210,7 @@ function toLatest(self) {
         };
 }
 
-function fromLatest(latest) {
+function fromLatest(_latest) {
   
 }
 

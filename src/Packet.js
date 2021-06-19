@@ -23,7 +23,7 @@ var Packet_ProjectileDestroy$TerrariaPacket = require("./packet/Packet_Projectil
 var Packet_PlayerInventorySlot$TerrariaPacket = require("./packet/Packet_PlayerInventorySlot.js");
 var Packet_InitialTileSectionsRequest$TerrariaPacket = require("./packet/Packet_InitialTileSectionsRequest.js");
 
-function toBuffer(packet, fromServer) {
+function toBuffer(packet, _fromServer) {
   switch (packet.TAG | 0) {
     case /* ConnectRequest */0 :
         return Caml_option.some(Packet_ConnectRequest$TerrariaPacket.toBuffer(packet._0));
