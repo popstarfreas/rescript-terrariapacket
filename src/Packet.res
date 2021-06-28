@@ -277,10 +277,12 @@ let toBuffer = (packet: t, _fromServer: bool): option<NodeJs.Buffer.t> => {
   | Disconnect(disconnect) => Some(Disconnect.toBuffer(disconnect))
   | PlayerSlotSet(playerSlotSet) => Some(PlayerSlotSet.toBuffer(playerSlotSet))
   | PlayerInfo(playerInfo) => Some(PlayerInfo.toBuffer(playerInfo))
-  | PlayerInventorySlot(playerInventorySlot) => Some(PlayerInventorySlot.toBuffer(playerInventorySlot))
+  | PlayerInventorySlot(playerInventorySlot) =>
+    Some(PlayerInventorySlot.toBuffer(playerInventorySlot))
   | WorldDataRequest(worldDataRequest) => Some(WorldDataRequest.toBuffer(worldDataRequest))
   | WorldInfo(worldInfo) => Some(WorldInfo.toBuffer(worldInfo))
-  | InitialTileSectionsRequest(initialTileSectionsRequest) => Some(InitialTileSectionsRequest.toBuffer(initialTileSectionsRequest))
+  | InitialTileSectionsRequest(initialTileSectionsRequest) =>
+    Some(InitialTileSectionsRequest.toBuffer(initialTileSectionsRequest))
   | Status(status) => Some(Status.toBuffer(status))
   | TileSectionSend(_tileSectionSend) => None
   | TileSectionFrame(_tileSectionFrame) => None
@@ -411,10 +413,11 @@ let toBuffer = (packet: t, _fromServer: bool): option<NodeJs.Buffer.t> => {
   }
 }
 
-let serialize: ISerializer.serialize<t> = (~parsed: IParser.parsed<t>, ~fromServer: bool) => switch parsed {
+let serialize: ISerializer.serialize<t> = (~parsed: IParser.parsed<t>, ~fromServer: bool) =>
+  switch parsed {
   | IParser.ShouldSerialize(packet) => toBuffer(packet, fromServer)
   | IParser.SerializeNotNecessary(_, buffer) => Some(buffer)
-}
+  }
 
 let toPacketName = (packet: t): string => {
   switch packet {
@@ -439,11 +442,13 @@ let toPacketName = (packet: t): string => {
   | TileSquareSend(_tileSquareSend) => "TileSquareSend"
   | ItemDropUpdate(_itemDropUpdate) => "ItemDropUpdate"
   | ItemOwner(_itemOwner) => "ItemOwner"
-  | NpcUpdate(_npcUpdate) => "NpcUpdate"
+  | NpcUpdate({npcSlotId, npcTypeId, x, y, vx, vy, target, directionX, directionY}) =>
+    `NpcUpdate(npcSlotId: ${npcSlotId->Belt.Int.toString}, npcTypeId: ${npcTypeId->Belt.Int.toString}, x: ${x->Belt.Float.toString}, y: ${y->Belt.Float.toString}, vx: ${vx->Belt.Float.toString}, vy: ${vy->Belt.Float.toString}, target: ${target->Belt.Int.toString}, directionX: ${directionX->string_of_bool}, directionY: ${directionY->string_of_bool})`
   | NpcItemStrike(_npcItemStrike) => "NpcItemStrike"
-  | ProjectileSync(_projectileSync) => "ProjectileSync"
+  | ProjectileSync({ projectileId, x, y, vx, vy, owner, projectileType, damage, knockback }) => `ProjectileSync(projectileId: ${projectileId->Belt.Int.toString}, x: ${x->Belt.Float.toString}, y: ${y->Belt.Float.toString}, vx: ${vx->Belt.Float.toString}, vy: ${vy->Belt.Float.toString}, owner: ${owner->Belt.Int.toString}, projectileType: ${projectileType->Belt.Int.toString}, damage: ${damage->Belt.Option.mapWithDefault("None", damage => damage->Belt.Int.toString)}, knockback: ${knockback->Belt.Option.mapWithDefault("None", knockback => knockback->Belt.Float.toString)})`
   | NpcStrike(_npcStrike) => "NpcStrike"
-  | ProjectileDestroy(_projectileDestroy) => "ProjectileDestroy"
+  | ProjectileDestroy(projectileDestroy) =>
+    `ProjectileDestroy(projectileId: ${projectileDestroy.projectileId->Belt.Int.toString}, owner: ${projectileDestroy.owner->Belt.Int.toString})`
   | PvpToggle(_pvpToggle) => "PvpToggle"
   | ChestOpen(_chestOpen) => "ChestOpen"
   | ChestItem(_chestItem) => "ChestItem"
@@ -495,10 +500,13 @@ let toPacketName = (packet: t): string => {
   | ObjectPlace(_objectPlace) => "ObjectPlace"
   | PlayerChestIndexSync(_playerChestIndexSync) => "PlayerChestIndexSync"
   | CombatNumberCreate(_combatNumberCreate) => "CombatNumberCreate"
-  | NetModuleLoad(netModuleLoad) => "NetModuleLoad(" ++ switch netModuleLoad {
+  | NetModuleLoad(netModuleLoad) =>
+    "NetModuleLoad(" ++
+    switch netModuleLoad {
     | Liquid(_liquid) => "Liquid"
-    | ClientText(_commandId, message) => "ClientText("++message++")"
-    | ServerText(_playerId, text, _color) => "ServerText("++text->PacketFactory.NetworkText.text++")"
+    | ClientText(_commandId, message) => "ClientText(" ++ message ++ ")"
+    | ServerText(_playerId, text, _color) =>
+      "ServerText(" ++ text->PacketFactory.NetworkText.text ++ ")"
     | Ping(_position) => "Ping"
     | Ambience(_ambience) => "Ambience"
     | Bestiary(_bestiary) => "Bestiary"
@@ -508,7 +516,7 @@ let toPacketName = (packet: t): string => {
     | TeleportPylon(_teleportPylon) => "TeleportPylon"
     | Particles(_particle) => "Particles"
     | CreativePowerPermissions(_creativePowerPermission) => "CreativePowerPermissions"
-  } ++ ")"
+    } ++ ")"
   | NpcKillCount(_npcKillCount) => "NpcKillCount"
   | PlayerStealth(_playerStealth) => "PlayerStealth"
   | ItemForceIntoNearestChest(_itemForceIntoNearestChest) => "ItemForceIntoNearestChest"
@@ -555,7 +563,9 @@ let toPacketName = (packet: t): string => {
   | RevengeMarkerSync(_revengeMarkerSync) => "RevengeMarkerSync"
   | RevengeMarkerRemove(_revengeMarkerRemove) => "RevengeMarkerRemove"
   | GolfBallLandInCup(_golfBallLandInCup) => "GolfBallLandInCup"
-  | ClientFinishConnectingToServer(_clientFinishConnectingToServer) => "ClientFinishConnectingToServer"
+  | ClientFinishConnectingToServer(
+      _clientFinishConnectingToServer,
+    ) => "ClientFinishConnectingToServer"
   | NpcFishOut(_npcFishOut) => "NpcFishOut"
   | NpcTamper(_npcTamper) => "NpcTamper"
   | LegacySoundPlay(_legacySoundPlay) => "LegacySoundPlay"
@@ -568,4 +578,3 @@ let toPacketName = (packet: t): string => {
   | CountsAsHostForGameplaySet(_countsAsHostForGameplaySet) => "CountsAsHostForGameplaySet"
   }
 }
-
