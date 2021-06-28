@@ -2,7 +2,6 @@
 'use strict';
 
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
-var Caml_js_exceptions = require("rescript/lib/js/caml_js_exceptions.js");
 var PacketType$TerrariaPacket = require("./PacketType.js");
 var Packetv1405$TerrariaPacket = require("./Packetv1405.js");
 var Packet_Emoji$TerrariaPacket = require("./packet/Packet_Emoji.js");
@@ -343,7 +342,6 @@ function parsePayload(packetType, payload, fromServer) {
                               };
                       }));
         } else {
-          console.log("Rejecting non-server NpcUpdate");
           return ;
         }
     case /* NpcItemStrike */22 :
@@ -1371,23 +1369,17 @@ function parsePayload(packetType, payload, fromServer) {
 
 function simpleParse(buffer, fromServer) {
   var match = buffer.length;
-  if (match > 2 || match < 0) {
-    var packetType = PacketType$TerrariaPacket.fromInt(buffer[2]);
-    if (packetType !== undefined) {
-      try {
-        return parsePayload(packetType, buffer, fromServer);
-      }
-      catch (raw_e){
-        var e = Caml_js_exceptions.internalToOCamlException(raw_e);
-        console.log(e);
-        return ;
-      }
-    } else {
-      console.log("Bad packet type");
-      return ;
-    }
-  } else {
-    console.log("Bad Buffer Length");
+  if (!(match > 2 || match < 0)) {
+    return ;
+  }
+  var packetType = PacketType$TerrariaPacket.fromInt(buffer[2]);
+  if (packetType === undefined) {
+    return ;
+  }
+  try {
+    return parsePayload(packetType, buffer, fromServer);
+  }
+  catch (e){
     return ;
   }
 }

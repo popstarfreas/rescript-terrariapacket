@@ -113,7 +113,6 @@ module Decode = {
       let tiles: array<array<tile>> = []
       let tileCache = defaultTileCache()
       let rleCount = ref(0)
-      Js.log(`TileSection(x: ${tileX->Int.toString}, y: ${tileY->Int.toString}, width: ${width->Int.toString}, height: ${height->Int.toString})`)
       if height < 0 || width < 0 {
         None
       } else {
@@ -146,10 +145,6 @@ module Decode = {
                   (secondByte->lsl(8))->lor(byte)
                 } else {
                   reader->readByte
-                }
-
-                if tileType > 623 {
-                  Js.log3("Tile Type", tileType, "is out of range.")
                 }
 
                 let frame = if TileFrameImportant.isImportant(tileType) {
@@ -227,10 +222,6 @@ module Decode = {
                   let byte = reader->readByte
                   tileCache.wall = Some(byte->lsl(8)->lor(tileCache.wall->Option.getUnsafe))
                 }
-              }
-
-              if Belt.Option.eq(tileCache.wall, Some(315), (a, b) => a > b) {
-                Js.log3("Wall Type", tileCache.wall, "is out of range.")
               }
 
               let repeatCountBytes = header5->BitFlags.toByte->land(192)->lsr(6)

@@ -2,7 +2,6 @@
 'use strict';
 
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
-var Caml_js_exceptions = require("rescript/lib/js/caml_js_exceptions.js");
 var PacketType$TerrariaPacket = require("./PacketType.js");
 var Packet_Emoji$TerrariaPacket = require("./packet/Packet_Emoji.js");
 var Packet_Zones$TerrariaPacket = require("./packet/Packet_Zones.js");
@@ -346,7 +345,6 @@ function parsePayload(packetType, payload, fromServer) {
                               };
                       }));
         } else {
-          console.log("Rejecting non-server NpcUpdate");
           return ;
         }
     case /* NpcItemStrike */22 :
@@ -1390,9 +1388,7 @@ function parse(buffer, fromServer) {
                         };
                 }));
   }
-  catch (raw_e){
-    var e = Caml_js_exceptions.internalToOCamlException(raw_e);
-    console.log(e);
+  catch (e){
     return ;
   }
 }

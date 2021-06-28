@@ -27,7 +27,6 @@ module Decode = {
     | 2 => Some(RecallFromItem)
     | _ => None
     }
-    Js.log3("PlayerSpawnContext", rawContext, context)
 
     switch context {
     | Some(context) =>

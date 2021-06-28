@@ -45,7 +45,6 @@ let parsePayload = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServ
     Packet.ItemDropUpdate.parse(payload)->Belt.Option.map(a => Packet.ItemDropUpdate(a))
   | (ItemOwner, true | false) => Packet.ItemOwner.parse(payload)->Belt.Option.map(a => Packet.ItemOwner(a))
   | (NpcUpdate, false) => {
-    Js.log("Rejecting non-server NpcUpdate")
     None
   }
   | (NpcUpdate, true) => Packet.NpcUpdate.parse(payload)->Belt.Option.map(a => Packet.NpcUpdate(a))
@@ -347,7 +346,6 @@ let parse: IParser.parse<Packet.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: boo
         parsePayload(packetType, buffer, fromServer)->Belt.Option.map(packet => IParser.SerializeNotNecessary(packet, buffer))
       } catch {
       | e => {
-          Js.log(e)
           None
         }
       }

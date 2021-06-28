@@ -39,7 +39,6 @@ function parse(payload) {
     default:
       context = undefined;
   }
-  console.log("PlayerSpawnContext", rawContext, context);
   if (context !== undefined) {
     return {
             playerId: playerId,
