@@ -284,7 +284,7 @@ let toBuffer = (packet: t, _fromServer: bool): option<NodeJs.Buffer.t> => {
   | InitialTileSectionsRequest(initialTileSectionsRequest) =>
     Some(InitialTileSectionsRequest.toBuffer(initialTileSectionsRequest))
   | Status(status) => Some(Status.toBuffer(status))
-  | TileSectionSend(_tileSectionSend) => None
+  | TileSectionSend(tileSectionSend) => Some(TileSectionSend.toBuffer(tileSectionSend))
   | TileSectionFrame(_tileSectionFrame) => None
   | PlayerSpawn(playerSpawn) => Some(PlayerSpawn.toBuffer(playerSpawn))
   | PlayerUpdate(_playerUpdate) => None
@@ -445,7 +445,13 @@ let toPacketName = (packet: t): string => {
   | NpcUpdate({npcSlotId, npcTypeId, x, y, vx, vy, target, directionX, directionY}) =>
     `NpcUpdate(npcSlotId: ${npcSlotId->Belt.Int.toString}, npcTypeId: ${npcTypeId->Belt.Int.toString}, x: ${x->Belt.Float.toString}, y: ${y->Belt.Float.toString}, vx: ${vx->Belt.Float.toString}, vy: ${vy->Belt.Float.toString}, target: ${target->Belt.Int.toString}, directionX: ${directionX->string_of_bool}, directionY: ${directionY->string_of_bool})`
   | NpcItemStrike(_npcItemStrike) => "NpcItemStrike"
-  | ProjectileSync({ projectileId, x, y, vx, vy, owner, projectileType, damage, knockback }) => `ProjectileSync(projectileId: ${projectileId->Belt.Int.toString}, x: ${x->Belt.Float.toString}, y: ${y->Belt.Float.toString}, vx: ${vx->Belt.Float.toString}, vy: ${vy->Belt.Float.toString}, owner: ${owner->Belt.Int.toString}, projectileType: ${projectileType->Belt.Int.toString}, damage: ${damage->Belt.Option.mapWithDefault("None", damage => damage->Belt.Int.toString)}, knockback: ${knockback->Belt.Option.mapWithDefault("None", knockback => knockback->Belt.Float.toString)})`
+  | ProjectileSync({projectileId, x, y, vx, vy, owner, projectileType, damage, knockback}) =>
+    `ProjectileSync(projectileId: ${projectileId->Belt.Int.toString}, x: ${x->Belt.Float.toString}, y: ${y->Belt.Float.toString}, vx: ${vx->Belt.Float.toString}, vy: ${vy->Belt.Float.toString}, owner: ${owner->Belt.Int.toString}, projectileType: ${projectileType->Belt.Int.toString}, damage: ${damage->Belt.Option.mapWithDefault(
+        "None",
+        damage => damage->Belt.Int.toString,
+      )}, knockback: ${knockback->Belt.Option.mapWithDefault("None", knockback =>
+        knockback->Belt.Float.toString
+      )})`
   | NpcStrike(_npcStrike) => "NpcStrike"
   | ProjectileDestroy(projectileDestroy) =>
     `ProjectileDestroy(projectileId: ${projectileDestroy.projectileId->Belt.Int.toString}, owner: ${projectileDestroy.owner->Belt.Int.toString})`

@@ -2,12 +2,18 @@
 'use strict';
 
 var Zlib = require("zlib");
+var Caml_obj = require("rescript/lib/js/caml_obj.js");
+var Caml_array = require("rescript/lib/js/caml_array.js");
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
 var BitFlags$TerrariaPacket = require("../BitFlags.js");
 var TileSolid$TerrariaPacket = require("../TileSolid.js");
+var PacketType$TerrariaPacket = require("../PacketType.js");
+var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
 var TileFrameImportant$TerrariaPacket = require("../TileFrameImportant.js");
 var Bufferreader = require("@popstarfreas/packetfactory/bufferreader").default;
+var Bufferwriter = require("@popstarfreas/packetfactory/bufferwriter").default;
 var Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
+var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
 function defaultTileCache(param) {
   return {
@@ -47,6 +53,27 @@ function cacheToTile(cache) {
           actuator: cache.actuator,
           inActive: cache.inActive
         };
+}
+
+var isTheSameAs = Caml_obj.caml_equal;
+
+function clearTileCache(tile) {
+  tile.activeTile = undefined;
+  tile.color = undefined;
+  tile.wallColor = undefined;
+  tile.wall = undefined;
+  tile.liquid = undefined;
+  tile.lava = false;
+  tile.honey = false;
+  tile.wire = false;
+  tile.wire2 = false;
+  tile.wire3 = false;
+  tile.wire4 = false;
+  tile.halfBrick = false;
+  tile.slope = undefined;
+  tile.actuator = false;
+  tile.inActive = false;
+  
 }
 
 function readBuffer(prim0, prim1) {
@@ -102,6 +129,7 @@ function parse(payload) {
         rleCount = rleCount - 1 | 0;
         row.push(cacheToTile(tileCache));
       } else {
+        clearTileCache(tileCache);
         var header5 = BitFlags$TerrariaPacket.fromByte(reader$1.readByte());
         var match;
         if (BitFlags$TerrariaPacket.flag1(header5)) {
@@ -142,6 +170,9 @@ function parse(payload) {
             };
           } else {
             frame = Belt_Option.isSome(oldActive) && tileType === oldType ? oldActive.frame : undefined;
+          }
+          if (tileType === 4) {
+            console.log(tileType, frame);
           }
           if (BitFlags$TerrariaPacket.flag4(header3$1)) {
             tileCache.color = reader$1.readByte();
@@ -212,11 +243,13 @@ function parse(payload) {
         rleCount = repeatCountBytes !== 0 ? (
             repeatCountBytes !== 1 ? reader$1.readInt16() : reader$1.readByte()
           ) : 0;
+        row.push(cacheToTile(tileCache));
       }
     }
     tiles.push(row);
   }
   return {
+          compressed: true,
           height: height,
           width: width,
           tileX: tileX,
@@ -226,6 +259,7 @@ function parse(payload) {
 }
 
 var Decode = {
+  clearTileCache: clearTileCache,
   PacketReader: undefined,
   readBuffer: readBuffer,
   getBytesLeft: getBytesLeft,
@@ -237,7 +271,280 @@ var Decode = {
   parse: parse
 };
 
-var Encode = {};
+function getLiquidBitFlags(tile) {
+  var liquidBits = tile.honey ? /* Three */3 : (
+      tile.lava ? /* Two */2 : (
+          Belt_Option.isSome(tile.liquid) ? /* One */1 : /* Zero */0
+        )
+    );
+  switch (liquidBits) {
+    case /* Zero */0 :
+        return [
+                false,
+                false
+              ];
+    case /* One */1 :
+        return [
+                false,
+                true
+              ];
+    case /* Two */2 :
+        return [
+                true,
+                false
+              ];
+    case /* Three */3 :
+        return [
+                true,
+                true
+              ];
+    
+  }
+}
+
+function getSlopeBitFlags(tile) {
+  if (tile.halfBrick) {
+    return [
+            false,
+            false,
+            true
+          ];
+  }
+  var match = tile.slope;
+  if (match === undefined) {
+    return [
+            false,
+            false,
+            false
+          ];
+  }
+  switch (match) {
+    case 0 :
+        return [
+                false,
+                false,
+                true
+              ];
+    case 1 :
+        return [
+                false,
+                true,
+                false
+              ];
+    case 2 :
+        return [
+                false,
+                true,
+                true
+              ];
+    case 3 :
+        return [
+                true,
+                false,
+                false
+              ];
+    case 4 :
+        return [
+                true,
+                false,
+                true
+              ];
+    case 5 :
+        return [
+                true,
+                true,
+                false
+              ];
+    case 6 :
+        return [
+                true,
+                true,
+                true
+              ];
+    default:
+      return [
+              true,
+              true,
+              true
+            ];
+  }
+}
+
+function getRepeatCountByteLength(repeatCount) {
+  if (repeatCount > 255) {
+    return 2;
+  } else if (repeatCount > 0) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
+function getRepeatCountBitFlags(repeatCount) {
+  var repeatCountBytes = getRepeatCountByteLength(repeatCount);
+  switch (repeatCountBytes) {
+    case 0 :
+        return [
+                false,
+                false
+              ];
+    case 1 :
+        return [
+                false,
+                true
+              ];
+    case 2 :
+        return [
+                true,
+                false
+              ];
+    default:
+      return [
+              true,
+              false
+            ];
+  }
+}
+
+function packInt16(prim0, prim1) {
+  return prim0.packInt16(prim1);
+}
+
+function packTile(writer, tile, repeatCount) {
+  var wall = tile.wall;
+  var header3 = BitFlags$TerrariaPacket.fromFlags(false, tile.actuator, tile.inActive, Belt_Option.isSome(tile.color), Belt_Option.isSome(tile.wall) && Belt_Option.isSome(tile.wallColor), tile.wire4, wall !== undefined ? wall > 255 : false, false);
+  var match = getSlopeBitFlags(tile);
+  var header4 = BitFlags$TerrariaPacket.fromFlags(BitFlags$TerrariaPacket.toByte(header3) > 0, tile.wire, tile.wire2, tile.wire3, match[2], match[1], match[0], false);
+  var match$1 = getLiquidBitFlags(tile);
+  var match$2 = getRepeatCountBitFlags(repeatCount);
+  var activeTile = tile.activeTile;
+  var tileFlags = BitFlags$TerrariaPacket.fromFlags(BitFlags$TerrariaPacket.toByte(header4) > 0, Belt_Option.isSome(tile.activeTile), Belt_Option.isSome(tile.wall), match$1[1], match$1[0], activeTile !== undefined ? activeTile.tileType > 255 : false, match$2[1], match$2[0]);
+  writer.packByte(BitFlags$TerrariaPacket.toByte(tileFlags));
+  if (BitFlags$TerrariaPacket.flag1(tileFlags)) {
+    writer.packByte(BitFlags$TerrariaPacket.toByte(header4));
+    if (BitFlags$TerrariaPacket.flag1(header4)) {
+      writer.packByte(BitFlags$TerrariaPacket.toByte(header3));
+    }
+    
+  }
+  var activeTile$1 = tile.activeTile;
+  if (activeTile$1 !== undefined) {
+    if (BitFlags$TerrariaPacket.flag6(tileFlags)) {
+      writer.packByte(activeTile$1.tileType & 255);
+      writer.packByte(((activeTile$1.tileType & 65280) >>> 8));
+    } else {
+      writer.packByte(activeTile$1.tileType);
+    }
+    var match$3 = activeTile$1.frame;
+    if (match$3 !== undefined) {
+      writer.packInt16(match$3.x);
+      writer.packInt16(match$3.y);
+    }
+    var color = tile.color;
+    if (color !== undefined) {
+      writer.packByte(color);
+    }
+    
+  }
+  var wall$1 = tile.wall;
+  if (wall$1 !== undefined) {
+    writer.packByte(wall$1 & 255);
+    var wallColor = tile.wallColor;
+    if (wallColor !== undefined) {
+      writer.packByte(wallColor);
+    }
+    
+  }
+  var liquid = tile.liquid;
+  if (liquid !== undefined) {
+    writer.packByte(liquid);
+  }
+  var wall$2 = tile.wall;
+  if (wall$2 !== undefined && wall$2 > 255) {
+    writer.packByte((wall$2 >>> 8));
+  }
+  var match$4 = getRepeatCountByteLength(repeatCount);
+  if (match$4 !== 0) {
+    if (match$4 !== 1) {
+      writer.packInt16(repeatCount);
+    } else {
+      writer.packByte(repeatCount);
+    }
+  }
+  return writer;
+}
+
+function decidePackTile(writer, lastTile, tile) {
+  var last = lastTile.contents;
+  if (last !== undefined) {
+    if (Caml_obj.caml_equal(tile, last.tile)) {
+      last.count = last.count + 1 | 0;
+    } else {
+      packTile(writer, last.tile, last.count);
+      lastTile.contents = {
+        tile: tile,
+        count: 0
+      };
+    }
+  } else {
+    lastTile.contents = {
+      tile: tile,
+      count: 0
+    };
+  }
+  
+}
+
+function packByte(prim0, prim1) {
+  return prim0.packByte(prim1);
+}
+
+function packBuffer(prim0, prim1) {
+  return prim0.packBuffer(prim1);
+}
+
+function data(prim) {
+  return prim.data;
+}
+
+function toBuffer(self) {
+  var packetWriter = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt(/* TileSectionSend */9)).packByte(1);
+  var writer = new Bufferwriter(Buffer.allocUnsafe(64000));
+  writer.packInt32(self.tileX).packInt32(self.tileY).packInt16(self.width).packInt16(self.height);
+  var lastTile = {
+    contents: undefined
+  };
+  for(var y = 0 ,y_finish = self.height; y < y_finish; ++y){
+    for(var x = 0 ,x_finish = self.width; x < x_finish; ++x){
+      var tile = Caml_array.get(Caml_array.get(self.tiles, y), x);
+      decidePackTile(writer, lastTile, tile);
+    }
+  }
+  var lastTile$1 = lastTile.contents;
+  if (lastTile$1 !== undefined) {
+    packTile(writer, lastTile$1.tile, lastTile$1.count);
+  }
+  writer.packInt16(0);
+  writer.packInt16(0);
+  writer.packInt16(0);
+  return packetWriter.packBuffer(Zlib.deflateRawSync(writer.slicedData)).data;
+}
+
+var Encode = {
+  getLiquidBitFlags: getLiquidBitFlags,
+  getSlopeBitFlags: getSlopeBitFlags,
+  getRepeatCountByteLength: getRepeatCountByteLength,
+  getRepeatCountBitFlags: getRepeatCountBitFlags,
+  packInt16: packInt16,
+  packTile: packTile,
+  decidePackTile: decidePackTile,
+  packByte: packByte,
+  packBuffer: packBuffer,
+  setType: ManagedPacketWriter$PacketFactory.setType,
+  data: data,
+  BufferWriter: undefined,
+  toBuffer: toBuffer
+};
 
 var Int;
 
@@ -247,7 +554,9 @@ exports.Int = Int;
 exports.$$Option = $$Option;
 exports.defaultTileCache = defaultTileCache;
 exports.cacheToTile = cacheToTile;
+exports.isTheSameAs = isTheSameAs;
 exports.Decode = Decode;
 exports.Encode = Encode;
 exports.parse = parse;
+exports.toBuffer = toBuffer;
 /* zlib Not a pure module */
