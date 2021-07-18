@@ -19,6 +19,7 @@ var Packet_ConnectRequest$TerrariaPacket = require("./packet/Packet_ConnectReque
 var Packet_ItemDropUpdate$TerrariaPacket = require("./packet/Packet_ItemDropUpdate.js");
 var Packet_ProjectileSync$TerrariaPacket = require("./packet/Packet_ProjectileSync.js");
 var Packet_TileSquareSend$TerrariaPacket = require("./packet/Packet_TileSquareSend.js");
+var Packet_TileSectionSend$TerrariaPacket = require("./packet/Packet_TileSectionSend.js");
 var Packet_DimensionsUpdate$TerrariaPacket = require("./packet/Packet_DimensionsUpdate.js");
 var Packet_WorldDataRequest$TerrariaPacket = require("./packet/Packet_WorldDataRequest.js");
 var Packet_ProjectileDestroy$TerrariaPacket = require("./packet/Packet_ProjectileDestroy.js");
@@ -45,6 +46,8 @@ function toBuffer(packet, _fromServer) {
         return Caml_option.some(Packet_InitialTileSectionsRequest$TerrariaPacket.toBuffer(packet._0));
     case /* Status */8 :
         return Caml_option.some(Packet_Status$TerrariaPacket.toBuffer(packet._0));
+    case /* TileSectionSend */9 :
+        return Caml_option.some(Packet_TileSectionSend$TerrariaPacket.toBuffer(packet._0));
     case /* PlayerSpawn */11 :
         return Caml_option.some(Packet_PlayerSpawn$TerrariaPacket.toBuffer(packet._0));
     case /* PlayerActive */13 :
