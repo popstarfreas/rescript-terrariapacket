@@ -1394,6 +1394,21 @@ function parse(buffer, fromServer) {
               }));
 }
 
+function parseLazy(buffer, fromServer) {
+  return {
+          LAZY_DONE: false,
+          VAL: (function () {
+              return Belt_Option.map(simpleParse(buffer, fromServer), (function (packet) {
+                            return {
+                                    TAG: /* SerializeNotNecessary */1,
+                                    _0: packet,
+                                    _1: buffer
+                                  };
+                          }));
+            })
+        };
+}
+
 function parseAsLatest(buffer, fromServer) {
   return Belt_Option.map(simpleParse(buffer, fromServer), (function (packet) {
                 var packet$1 = Packetv1405$TerrariaPacket.toLatest(packet, fromServer);
@@ -1412,8 +1427,33 @@ function parseAsLatest(buffer, fromServer) {
               }));
 }
 
+function parseAsLatestLazy(buffer, fromServer) {
+  return {
+          LAZY_DONE: false,
+          VAL: (function () {
+              return Belt_Option.map(simpleParse(buffer, fromServer), (function (packet) {
+                            var packet$1 = Packetv1405$TerrariaPacket.toLatest(packet, fromServer);
+                            if (packet$1.TAG === /* Same */0) {
+                              return {
+                                      TAG: /* SerializeNotNecessary */1,
+                                      _0: packet$1._0,
+                                      _1: buffer
+                                    };
+                            } else {
+                              return {
+                                      TAG: /* ShouldSerialize */0,
+                                      _0: packet$1._0
+                                    };
+                            }
+                          }));
+            })
+        };
+}
+
 exports.parsePayload = parsePayload;
 exports.simpleParse = simpleParse;
 exports.parse = parse;
+exports.parseLazy = parseLazy;
 exports.parseAsLatest = parseAsLatest;
+exports.parseAsLatestLazy = parseAsLatestLazy;
 /* Packetv1405-TerrariaPacket Not a pure module */

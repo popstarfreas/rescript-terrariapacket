@@ -353,3 +353,23 @@ let parse: IParser.parse<Packet.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: boo
     }
   }
 }
+
+let parseLazy: IParser.parseLazy<Packet.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => lazy({
+  switch buffer->NodeJs.Buffer.length {
+  | 0 | 1 | 2 => None
+  | _ =>
+    switch buffer->NodeJs.Buffer.unsafeGet(2)->PacketType.fromInt {
+    | Some(packetType) =>
+      try {
+        // As this module is parsing packets from the latest version to the equivalent packet data structures
+        // it won't ever need Serializing after only parsing
+        parsePayload(packetType, buffer, fromServer)->Belt.Option.map(packet => IParser.SerializeNotNecessary(packet, buffer))
+      } catch {
+      | e => {
+          None
+        }
+      }
+    | None => None
+    }
+  }
+})
