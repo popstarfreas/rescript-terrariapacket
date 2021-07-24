@@ -146,10 +146,143 @@ module Decode = {
 }
 
 module Encode = {
-  let {packString, setType, data} = module(PacketFactory.ManagedPacketWriter)
+  let {packByte, packSingle, setType, data} = module(PacketFactory.ManagedPacketWriter)
+  type writer = PacketFactory.ManagedPacketWriter.t
+  let packControlFlags = (writer: writer, control: control, direction: direction) => {
+    writer->packByte(
+      BitFlags.fromFlags(
+        ~flag1=control.isHoldingUp,
+        ~flag2=control.isHoldingDown,
+        ~flag3=control.isHoldingLeft,
+        ~flag4=control.isHoldingRight,
+        ~flag5=control.isHoldingJump,
+        ~flag6=control.isHoldingItemUse,
+        ~flag7=switch direction {
+        | Left => false
+        | Right => true
+        },
+        ~flag8=false,
+      )->BitFlags.toByte,
+    )
+  }
+
+  let packMiscFlags1 = (
+    writer: writer,
+    pulleyDirection: option<pulleyDirection>,
+    velocity: option<Point.t<float>>,
+    vortexStealthActive: bool,
+    gravityDirection: gravityDirection,
+    shouldGuard: bool,
+    ghost: bool,
+  ) => {
+    writer->packByte(
+      BitFlags.fromFlags(
+        ~flag1=switch pulleyDirection {
+        | Some(_) => true
+        | None => false
+        },
+        ~flag2=switch pulleyDirection {
+        | Some(One) => false
+        | Some(Two) => true
+        | None => false
+        },
+        ~flag3=switch velocity {
+        | Some(_) => true
+        | None => false
+        },
+        ~flag4=vortexStealthActive,
+        ~flag5=switch gravityDirection {
+        | Normal => true
+        | Inverted => false
+        },
+        ~flag6=shouldGuard,
+        ~flag7=ghost,
+        ~flag8=false,
+      )->BitFlags.toByte,
+    )
+  }
+
+  let packMiscFlags2 = (
+    writer: writer,
+    tryKeepingHoveringUp: bool,
+    isVoidVaultEnabled: bool,
+    isSitting: bool,
+    hasFinishedAnyDd2Event: bool,
+    isPettingAnimal: bool,
+    isTheAnimalBeingPetSmall: bool,
+    potionOfReturn: option<potionOfReturn>,
+    tryKeepingHoveringDown: bool,
+  ) => {
+    writer->packByte(
+      BitFlags.fromFlags(
+        ~flag1=tryKeepingHoveringUp,
+        ~flag2=isVoidVaultEnabled,
+        ~flag3=isSitting,
+        ~flag4=hasFinishedAnyDd2Event,
+        ~flag5=isPettingAnimal,
+        ~flag6=isTheAnimalBeingPetSmall,
+        ~flag7=switch potionOfReturn {
+        | Some(_) => true
+        | None => false
+        },
+        ~flag8=tryKeepingHoveringDown,
+      )->BitFlags.toByte,
+    )
+  }
+
+  let packMiscFlags3 = (writer: writer, isSleeping: bool) => {
+    writer->packByte(
+      BitFlags.fromFlags(
+        ~flag1=isSleeping,
+        ~flag2=false,
+        ~flag3=false,
+        ~flag4=false,
+        ~flag5=false,
+        ~flag6=false,
+        ~flag7=false,
+        ~flag8=false,
+      )->BitFlags.toByte,
+    )
+  }
+
+  let packPotionOfReturn = (writer: writer, potionOfReturn: option<potionOfReturn>) => {
+    switch potionOfReturn {
+    | Some(potionOfReturn) => writer
+      ->packSingle(potionOfReturn.originalUsePosition.x)
+      ->packSingle(potionOfReturn.originalUsePosition.y)
+      ->packSingle(potionOfReturn.homePosition.x)
+      ->packSingle(potionOfReturn.homePosition.y)
+    | None => writer
+    }
+  }
+
   let toBuffer = (self: t): NodeJs.Buffer.t => {
     PacketFactory.ManagedPacketWriter.make()
     ->setType(PacketType.PlayerUpdate->PacketType.toInt)
+    ->packControlFlags(self.control, self.direction)
+    ->packMiscFlags1(
+      self.pulleyDirection,
+      self.velocity,
+      self.vortexStealthActive,
+      self.gravityDirection,
+      self.shouldGuard,
+      self.ghost,
+    )
+    ->packMiscFlags2(
+      self.tryKeepingHoveringUp,
+      self.isVoidVaultEnabled,
+      self.isSitting,
+      self.hasFinishedAnyDd2Event,
+      self.isPettingAnimal,
+      self.isTheAnimalBeingPetSmall,
+      self.potionOfReturn,
+      self.tryKeepingHoveringDown,
+    )
+    ->packMiscFlags3(self.isSleeping)
+    ->packByte(self.selectedItem)
+    ->packSingle(self.position.x)
+    ->packSingle(self.position.y)
+    ->packPotionOfReturn(self.potionOfReturn)
     ->data
   }
 }

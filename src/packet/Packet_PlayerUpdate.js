@@ -108,22 +108,56 @@ var Decode = {
   parse: parse
 };
 
-function packString(prim0, prim1) {
-  return prim0.packString(prim1);
+function packByte(prim0, prim1) {
+  return prim0.packByte(prim1);
+}
+
+function packSingle(prim0, prim1) {
+  return prim0.packSingle(prim1);
 }
 
 function data(prim) {
   return prim.data;
 }
 
+function packControlFlags(writer, control, direction) {
+  return writer.packByte(BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(control.isHoldingUp, control.isHoldingDown, control.isHoldingLeft, control.isHoldingRight, control.isHoldingJump, control.isHoldingItemUse, direction ? true : false, false)));
+}
+
+function packMiscFlags1(writer, pulleyDirection, velocity, vortexStealthActive, gravityDirection, shouldGuard, ghost) {
+  return writer.packByte(BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(pulleyDirection !== undefined, pulleyDirection !== undefined && pulleyDirection ? true : false, velocity !== undefined, vortexStealthActive, gravityDirection ? false : true, shouldGuard, ghost, false)));
+}
+
+function packMiscFlags2(writer, tryKeepingHoveringUp, isVoidVaultEnabled, isSitting, hasFinishedAnyDd2Event, isPettingAnimal, isTheAnimalBeingPetSmall, potionOfReturn, tryKeepingHoveringDown) {
+  return writer.packByte(BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(tryKeepingHoveringUp, isVoidVaultEnabled, isSitting, hasFinishedAnyDd2Event, isPettingAnimal, isTheAnimalBeingPetSmall, potionOfReturn !== undefined, tryKeepingHoveringDown)));
+}
+
+function packMiscFlags3(writer, isSleeping) {
+  return writer.packByte(BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(isSleeping, false, false, false, false, false, false, false)));
+}
+
+function packPotionOfReturn(writer, potionOfReturn) {
+  if (potionOfReturn !== undefined) {
+    return writer.packSingle(potionOfReturn.originalUsePosition.x).packSingle(potionOfReturn.originalUsePosition.y).packSingle(potionOfReturn.homePosition.x).packSingle(potionOfReturn.homePosition.y);
+  } else {
+    return writer;
+  }
+}
+
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt(/* PlayerUpdate */12)).data;
+  return packPotionOfReturn(packMiscFlags3(packMiscFlags2(packMiscFlags1(packControlFlags(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt(/* PlayerUpdate */12)), self.control, self.direction), self.pulleyDirection, self.velocity, self.vortexStealthActive, self.gravityDirection, self.shouldGuard, self.ghost), self.tryKeepingHoveringUp, self.isVoidVaultEnabled, self.isSitting, self.hasFinishedAnyDd2Event, self.isPettingAnimal, self.isTheAnimalBeingPetSmall, self.potionOfReturn, self.tryKeepingHoveringDown), self.isSleeping).packByte(self.selectedItem).packSingle(self.position.x).packSingle(self.position.y), self.potionOfReturn).data;
 }
 
 var Encode = {
-  packString: packString,
+  packByte: packByte,
+  packSingle: packSingle,
   setType: ManagedPacketWriter$PacketFactory.setType,
   data: data,
+  packControlFlags: packControlFlags,
+  packMiscFlags1: packMiscFlags1,
+  packMiscFlags2: packMiscFlags2,
+  packMiscFlags3: packMiscFlags3,
+  packPotionOfReturn: packPotionOfReturn,
   toBuffer: toBuffer
 };
 
