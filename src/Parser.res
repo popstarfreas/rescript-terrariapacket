@@ -345,7 +345,7 @@ let parse: IParser.parse<Packet.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: boo
         // it won't ever need Serializing after only parsing
         parsePayload(packetType, buffer, fromServer)->Belt.Option.map(packet => IParser.SerializeNotNecessary(packet, buffer))
       } catch {
-      | e => {
+      | _e => {
           None
         }
       }

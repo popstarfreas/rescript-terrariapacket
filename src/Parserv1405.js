@@ -1379,7 +1379,7 @@ function simpleParse(buffer, fromServer) {
   try {
     return parsePayload(packetType, buffer, fromServer);
   }
-  catch (e){
+  catch (_e){
     return ;
   }
 }

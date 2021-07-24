@@ -457,7 +457,7 @@ let simpleParse = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): option<Packetv1
         // it won't ever need Serializing after only parsing - only when it gets converted will this change
         parsePayload(packetType, buffer, fromServer)
       } catch {
-      | e => {
+      | _e => {
           None
         }
       }
