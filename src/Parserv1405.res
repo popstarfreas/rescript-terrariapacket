@@ -473,13 +473,6 @@ let parse: IParser.parse<Packetv1405.t> = (~buffer: NodeJs.Buffer.t, ~fromServer
   ))
 }
 
-let parseLazy: IParser.parseLazy<Packetv1405.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => lazy({
-  simpleParse(~buffer, ~fromServer)->Belt.Option.map(packet => IParser.SerializeNotNecessary(
-    packet,
-    buffer,
-  ))
-})
-
 let parseAsLatest: IParser.parse<Packet.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => {
   simpleParse(~buffer, ~fromServer)->Belt.Option.map(packet =>
     switch Packetv1405.toLatest(packet, fromServer) {
@@ -488,12 +481,3 @@ let parseAsLatest: IParser.parse<Packet.t> = (~buffer: NodeJs.Buffer.t, ~fromSer
     }
   )
 }
-
-let parseAsLatestLazy: IParser.parseLazy<Packet.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => lazy({
-  simpleParse(~buffer, ~fromServer)->Belt.Option.map(packet =>
-    switch Packetv1405.toLatest(packet, fromServer) {
-    | Same(packet) => IParser.SerializeNotNecessary(packet, buffer)
-    | NotSame(packet) => IParser.ShouldSerialize(packet)
-    }
-  )
-})

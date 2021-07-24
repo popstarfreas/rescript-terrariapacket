@@ -1388,39 +1388,10 @@ function parse(buffer, fromServer) {
                         };
                 }));
   }
-  catch (e){
+  catch (_e){
     return ;
   }
 }
 
-function parseLazy(buffer, fromServer) {
-  return {
-          LAZY_DONE: false,
-          VAL: (function () {
-              var match = buffer.length;
-              if (!(match > 2 || match < 0)) {
-                return ;
-              }
-              var packetType = PacketType$TerrariaPacket.fromInt(buffer[2]);
-              if (packetType === undefined) {
-                return ;
-              }
-              try {
-                return Belt_Option.map(parsePayload(packetType, buffer, fromServer), (function (packet) {
-                              return {
-                                      TAG: /* SerializeNotNecessary */1,
-                                      _0: packet,
-                                      _1: buffer
-                                    };
-                            }));
-              }
-              catch (e){
-                return ;
-              }
-            })
-        };
-}
-
 exports.parse = parse;
-exports.parseLazy = parseLazy;
 /* Packet_Status-TerrariaPacket Not a pure module */
