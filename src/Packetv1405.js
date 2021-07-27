@@ -3,6 +3,7 @@
 
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
 var Caml_option = require("rescript/lib/js/caml_option.js");
+var CamlinternalLazy = require("rescript/lib/js/camlinternalLazy.js");
 var Packet_Status$TerrariaPacket = require("./packet/Packet_Status.js");
 var Packet_NpcUpdate$TerrariaPacket = require("./packet/Packet_NpcUpdate.js");
 var Packet_Disconnect$TerrariaPacket = require("./packet/Packet_Disconnect.js");
@@ -3145,6 +3146,703 @@ function fromLatest(packet, _fromServer) {
   }
 }
 
+function toLatest$1(packet, _fromServer) {
+  switch (packet.TAG | 0) {
+    case /* ConnectRequest */0 :
+        return {
+                TAG: /* ConnectRequest */0,
+                _0: packet._0
+              };
+    case /* Disconnect */1 :
+        return {
+                TAG: /* Disconnect */1,
+                _0: packet._0
+              };
+    case /* PlayerSlotSet */2 :
+        return {
+                TAG: /* PlayerSlotSet */2,
+                _0: packet._0
+              };
+    case /* PlayerInfo */3 :
+        return {
+                TAG: /* PlayerInfo */3,
+                _0: packet._0
+              };
+    case /* PlayerInventorySlot */4 :
+        return {
+                TAG: /* PlayerInventorySlot */4,
+                _0: packet._0
+              };
+    case /* WorldDataRequest */5 :
+        return {
+                TAG: /* WorldDataRequest */5,
+                _0: packet._0
+              };
+    case /* WorldInfo */6 :
+        var worldInfo = packet._0;
+        return {
+                TAG: /* WorldInfo */6,
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: (function () {
+                      return Belt_Option.map(CamlinternalLazy.force(worldInfo), Packetv1405_WorldInfo$TerrariaPacket.toLatest);
+                    })
+                }
+              };
+    case /* InitialTileSectionsRequest */7 :
+        return {
+                TAG: /* InitialTileSectionsRequest */7,
+                _0: packet._0
+              };
+    case /* Status */8 :
+        return {
+                TAG: /* Status */8,
+                _0: packet._0
+              };
+    case /* TileSectionSend */9 :
+        return {
+                TAG: /* TileSectionSend */9,
+                _0: packet._0
+              };
+    case /* TileSectionFrame */10 :
+        return {
+                TAG: /* TileSectionFrame */10,
+                _0: packet._0
+              };
+    case /* PlayerSpawn */11 :
+        return {
+                TAG: /* PlayerSpawn */11,
+                _0: packet._0
+              };
+    case /* PlayerUpdate */12 :
+        return {
+                TAG: /* PlayerUpdate */12,
+                _0: packet._0
+              };
+    case /* PlayerActive */13 :
+        return {
+                TAG: /* PlayerActive */13,
+                _0: packet._0
+              };
+    case /* PlayerHealth */14 :
+        return {
+                TAG: /* PlayerHealth */14,
+                _0: packet._0
+              };
+    case /* TileModify */15 :
+        return {
+                TAG: /* TileModify */15,
+                _0: packet._0
+              };
+    case /* TimeSet */16 :
+        return {
+                TAG: /* TimeSet */16,
+                _0: packet._0
+              };
+    case /* DoorUse */17 :
+        return {
+                TAG: /* DoorUse */17,
+                _0: packet._0
+              };
+    case /* TileSquareSend */18 :
+        var tileSquareSend = packet._0;
+        return {
+                TAG: /* TileSquareSend */18,
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: (function () {
+                      return Belt_Option.map(CamlinternalLazy.force(tileSquareSend), Packetv1405_TileSquareSend$TerrariaPacket.toLatest);
+                    })
+                }
+              };
+    case /* ItemDropUpdate */19 :
+        return {
+                TAG: /* ItemDropUpdate */19,
+                _0: packet._0
+              };
+    case /* ItemOwner */20 :
+        return {
+                TAG: /* ItemOwner */20,
+                _0: packet._0
+              };
+    case /* NpcUpdate */21 :
+        return {
+                TAG: /* NpcUpdate */21,
+                _0: packet._0
+              };
+    case /* NpcItemStrike */22 :
+        return {
+                TAG: /* NpcItemStrike */22,
+                _0: packet._0
+              };
+    case /* ProjectileSync */23 :
+        return {
+                TAG: /* ProjectileSync */23,
+                _0: packet._0
+              };
+    case /* NpcStrike */24 :
+        return {
+                TAG: /* NpcStrike */24,
+                _0: packet._0
+              };
+    case /* ProjectileDestroy */25 :
+        return {
+                TAG: /* ProjectileDestroy */25,
+                _0: packet._0
+              };
+    case /* PvpToggle */26 :
+        return {
+                TAG: /* PvpToggle */26,
+                _0: packet._0
+              };
+    case /* ChestOpen */27 :
+        return {
+                TAG: /* ChestOpen */27,
+                _0: packet._0
+              };
+    case /* ChestItem */28 :
+        return {
+                TAG: /* ChestItem */28,
+                _0: packet._0
+              };
+    case /* ActiveContainerSync */29 :
+        return {
+                TAG: /* ActiveContainerSync */29,
+                _0: packet._0
+              };
+    case /* ChestPlace */30 :
+        return {
+                TAG: /* ChestPlace */30,
+                _0: packet._0
+              };
+    case /* HealEffect */31 :
+        return {
+                TAG: /* HealEffect */31,
+                _0: packet._0
+              };
+    case /* Zones */32 :
+        return {
+                TAG: /* Zones */32,
+                _0: packet._0
+              };
+    case /* PasswordRequired */33 :
+        return {
+                TAG: /* PasswordRequired */33,
+                _0: packet._0
+              };
+    case /* PasswordSend */34 :
+        return {
+                TAG: /* PasswordSend */34,
+                _0: packet._0
+              };
+    case /* ItemOwnerRemove */35 :
+        return {
+                TAG: /* ItemOwnerRemove */35,
+                _0: packet._0
+              };
+    case /* NpcTalk */36 :
+        return {
+                TAG: /* NpcTalk */36,
+                _0: packet._0
+              };
+    case /* PlayerAnimation */37 :
+        return {
+                TAG: /* PlayerAnimation */37,
+                _0: packet._0
+              };
+    case /* PlayerMana */38 :
+        return {
+                TAG: /* PlayerMana */38,
+                _0: packet._0
+              };
+    case /* ManaEffect */39 :
+        return {
+                TAG: /* ManaEffect */39,
+                _0: packet._0
+              };
+    case /* PlayerTeam */40 :
+        return {
+                TAG: /* PlayerTeam */40,
+                _0: packet._0
+              };
+    case /* SignRead */41 :
+        return {
+                TAG: /* SignRead */41,
+                _0: packet._0
+              };
+    case /* SignNew */42 :
+        return {
+                TAG: /* SignNew */42,
+                _0: packet._0
+              };
+    case /* LiquidSet */43 :
+        return {
+                TAG: /* LiquidSet */43,
+                _0: packet._0
+              };
+    case /* PlayerSpawnSelf */44 :
+        return {
+                TAG: /* PlayerSpawnSelf */44,
+                _0: packet._0
+              };
+    case /* PlayerBuffsSet */45 :
+        return {
+                TAG: /* PlayerBuffsSet */45,
+                _0: packet._0
+              };
+    case /* NpcSpecialEffect */46 :
+        return {
+                TAG: /* NpcSpecialEffect */46,
+                _0: packet._0
+              };
+    case /* ChestUnlock */47 :
+        return {
+                TAG: /* ChestUnlock */47,
+                _0: packet._0
+              };
+    case /* NpcBuffAdd */48 :
+        return {
+                TAG: /* NpcBuffAdd */48,
+                _0: packet._0
+              };
+    case /* NpcBuffUpdate */49 :
+        return {
+                TAG: /* NpcBuffUpdate */49,
+                _0: packet._0
+              };
+    case /* PlayerBuffAdd */50 :
+        return {
+                TAG: /* PlayerBuffAdd */50,
+                _0: packet._0
+              };
+    case /* NpcNameUpdate */51 :
+        return {
+                TAG: /* NpcNameUpdate */51,
+                _0: packet._0
+              };
+    case /* GoodEvilUpdate */52 :
+        return {
+                TAG: /* GoodEvilUpdate */52,
+                _0: packet._0
+              };
+    case /* HarpPlay */53 :
+        return {
+                TAG: /* HarpPlay */53,
+                _0: packet._0
+              };
+    case /* SwitchHit */54 :
+        return {
+                TAG: /* SwitchHit */54,
+                _0: packet._0
+              };
+    case /* NpcHomeUpdate */55 :
+        return {
+                TAG: /* NpcHomeUpdate */55,
+                _0: packet._0
+              };
+    case /* BossOrInvasionSpawn */56 :
+        return {
+                TAG: /* BossOrInvasionSpawn */56,
+                _0: packet._0
+              };
+    case /* PlayerDodge */57 :
+        return {
+                TAG: /* PlayerDodge */57,
+                _0: packet._0
+              };
+    case /* PaintTile */58 :
+        return {
+                TAG: /* PaintTile */58,
+                _0: packet._0
+              };
+    case /* PaintWall */59 :
+        return {
+                TAG: /* PaintWall */59,
+                _0: packet._0
+              };
+    case /* Teleport */60 :
+        return {
+                TAG: /* Teleport */60,
+                _0: packet._0
+              };
+    case /* PlayerHealOther */61 :
+        return {
+                TAG: /* PlayerHealOther */61,
+                _0: packet._0
+              };
+    case /* DimensionsUpdate */62 :
+        return {
+                TAG: /* DimensionsUpdate */62,
+                _0: packet._0
+              };
+    case /* ClientUuid */63 :
+        return {
+                TAG: /* ClientUuid */63,
+                _0: packet._0
+              };
+    case /* ChestName */64 :
+        return {
+                TAG: /* ChestName */64,
+                _0: packet._0
+              };
+    case /* CatchNpc */65 :
+        return {
+                TAG: /* CatchNpc */65,
+                _0: packet._0
+              };
+    case /* ReleaseNpc */66 :
+        return {
+                TAG: /* ReleaseNpc */66,
+                _0: packet._0
+              };
+    case /* TravellingMerchantInventory */67 :
+        return {
+                TAG: /* TravellingMerchantInventory */67,
+                _0: packet._0
+              };
+    case /* TeleportationPotion */68 :
+        return {
+                TAG: /* TeleportationPotion */68,
+                _0: packet._0
+              };
+    case /* AnglerQuest */69 :
+        return {
+                TAG: /* AnglerQuest */69,
+                _0: packet._0
+              };
+    case /* AnglerQuestComplete */70 :
+        return {
+                TAG: /* AnglerQuestComplete */70,
+                _0: packet._0
+              };
+    case /* AnglerQuestsCompletedAmount */71 :
+        return {
+                TAG: /* AnglerQuestsCompletedAmount */71,
+                _0: packet._0
+              };
+    case /* TemporaryAnimationCreate */72 :
+        return {
+                TAG: /* TemporaryAnimationCreate */72,
+                _0: packet._0
+              };
+    case /* InvasionProgressReport */73 :
+        return {
+                TAG: /* InvasionProgressReport */73,
+                _0: packet._0
+              };
+    case /* ObjectPlace */74 :
+        return {
+                TAG: /* ObjectPlace */74,
+                _0: packet._0
+              };
+    case /* PlayerChestIndexSync */75 :
+        return {
+                TAG: /* PlayerChestIndexSync */75,
+                _0: packet._0
+              };
+    case /* CombatNumberCreate */76 :
+        return {
+                TAG: /* CombatNumberCreate */76,
+                _0: packet._0
+              };
+    case /* NetModuleLoad */77 :
+        return {
+                TAG: /* NetModuleLoad */77,
+                _0: packet._0
+              };
+    case /* NpcKillCount */78 :
+        return {
+                TAG: /* NpcKillCount */78,
+                _0: packet._0
+              };
+    case /* PlayerStealth */79 :
+        return {
+                TAG: /* PlayerStealth */79,
+                _0: packet._0
+              };
+    case /* ItemForceIntoNearestChest */80 :
+        return {
+                TAG: /* ItemForceIntoNearestChest */80,
+                _0: packet._0
+              };
+    case /* TileEntityUpdate */81 :
+        return {
+                TAG: /* TileEntityUpdate */81,
+                _0: packet._0
+              };
+    case /* TileEntityPlace */82 :
+        return {
+                TAG: /* TileEntityPlace */82,
+                _0: packet._0
+              };
+    case /* ItemDropModify */83 :
+        return {
+                TAG: /* ItemDropModify */83,
+                _0: packet._0
+              };
+    case /* ItemFramePlace */84 :
+        return {
+                TAG: /* ItemFramePlace */84,
+                _0: packet._0
+              };
+    case /* ItemDropInstancedUpdate */85 :
+        return {
+                TAG: /* ItemDropInstancedUpdate */85,
+                _0: packet._0
+              };
+    case /* EmoteBubble */86 :
+        return {
+                TAG: /* EmoteBubble */86,
+                _0: packet._0
+              };
+    case /* ExtraValueSync */87 :
+        return {
+                TAG: /* ExtraValueSync */87,
+                _0: packet._0
+              };
+    case /* SocialHandshake */88 :
+        return {
+                TAG: /* SocialHandshake */88,
+                _0: packet._0
+              };
+    case /* Unused */89 :
+        return {
+                TAG: /* Unused */89,
+                _0: packet._0
+              };
+    case /* PortalKill */90 :
+        return {
+                TAG: /* PortalKill */90,
+                _0: packet._0
+              };
+    case /* PlayerTeleportPortal */91 :
+        return {
+                TAG: /* PlayerTeleportPortal */91,
+                _0: packet._0
+              };
+    case /* NpcKilledNotification */92 :
+        return {
+                TAG: /* NpcKilledNotification */92,
+                _0: packet._0
+              };
+    case /* EventNotification */93 :
+        return {
+                TAG: /* EventNotification */93,
+                _0: packet._0
+              };
+    case /* MinionTargetUpdate */94 :
+        return {
+                TAG: /* MinionTargetUpdate */94,
+                _0: packet._0
+              };
+    case /* NpcTeleportPortal */95 :
+        return {
+                TAG: /* NpcTeleportPortal */95,
+                _0: packet._0
+              };
+    case /* ShieldStrengthsUpdate */96 :
+        return {
+                TAG: /* ShieldStrengthsUpdate */96,
+                _0: packet._0
+              };
+    case /* NebulaLevelUp */97 :
+        return {
+                TAG: /* NebulaLevelUp */97,
+                _0: packet._0
+              };
+    case /* MoonLordCountdown */98 :
+        return {
+                TAG: /* MoonLordCountdown */98,
+                _0: packet._0
+              };
+    case /* NpcShopItem */99 :
+        return {
+                TAG: /* NpcShopItem */99,
+                _0: packet._0
+              };
+    case /* GemLockToggle */100 :
+        return {
+                TAG: /* GemLockToggle */100,
+                _0: packet._0
+              };
+    case /* SmokePoof */101 :
+        return {
+                TAG: /* SmokePoof */101,
+                _0: packet._0
+              };
+    case /* ChatMessageSmart */102 :
+        return {
+                TAG: /* ChatMessageSmart */102,
+                _0: packet._0
+              };
+    case /* WiredCannonShot */103 :
+        return {
+                TAG: /* WiredCannonShot */103,
+                _0: packet._0
+              };
+    case /* MassWireOperation */104 :
+        return {
+                TAG: /* MassWireOperation */104,
+                _0: packet._0
+              };
+    case /* MassWireOperationPay */105 :
+        return {
+                TAG: /* MassWireOperationPay */105,
+                _0: packet._0
+              };
+    case /* PartyToggle */106 :
+        return {
+                TAG: /* PartyToggle */106,
+                _0: packet._0
+              };
+    case /* TreeGrowFx */107 :
+        return {
+                TAG: /* TreeGrowFx */107,
+                _0: packet._0
+              };
+    case /* CrystalInvasionStart */108 :
+        return {
+                TAG: /* CrystalInvasionStart */108,
+                _0: packet._0
+              };
+    case /* CrystalInvasionWipeAll */109 :
+        return {
+                TAG: /* CrystalInvasionWipeAll */109,
+                _0: packet._0
+              };
+    case /* MinionAttackTargetUpdate */110 :
+        return {
+                TAG: /* MinionAttackTargetUpdate */110,
+                _0: packet._0
+              };
+    case /* CrystalInvasionSendWaitTime */111 :
+        return {
+                TAG: /* CrystalInvasionSendWaitTime */111,
+                _0: packet._0
+              };
+    case /* PlayerDamage */112 :
+        return {
+                TAG: /* PlayerDamage */112,
+                _0: packet._0
+              };
+    case /* PlayerDeath */113 :
+        return {
+                TAG: /* PlayerDeath */113,
+                _0: packet._0
+              };
+    case /* CombatTextCreate */114 :
+        return {
+                TAG: /* CombatTextCreate */114,
+                _0: packet._0
+              };
+    case /* Emoji */115 :
+        return {
+                TAG: /* Emoji */115,
+                _0: packet._0
+              };
+    case /* TileEntityDisplayDollItemSync */116 :
+        return {
+                TAG: /* TileEntityDisplayDollItemSync */116,
+                _0: packet._0
+              };
+    case /* TileEntityInteractionRequest */117 :
+        return {
+                TAG: /* TileEntityInteractionRequest */117,
+                _0: packet._0
+              };
+    case /* WeaponsRackTryPlacing */118 :
+        return {
+                TAG: /* WeaponsRackTryPlacing */118,
+                _0: packet._0
+              };
+    case /* TileEntityHatRackItemSync */119 :
+        return {
+                TAG: /* TileEntityHatRackItemSync */119,
+                _0: packet._0
+              };
+    case /* TilePickingSync */120 :
+        return {
+                TAG: /* TilePickingSync */120,
+                _0: packet._0
+              };
+    case /* RevengeMarkerSync */121 :
+        return {
+                TAG: /* RevengeMarkerSync */121,
+                _0: packet._0
+              };
+    case /* RevengeMarkerRemove */122 :
+        return {
+                TAG: /* RevengeMarkerRemove */122,
+                _0: packet._0
+              };
+    case /* GolfBallLandInCup */123 :
+        return {
+                TAG: /* GolfBallLandInCup */123,
+                _0: packet._0
+              };
+    case /* ClientFinishConnectingToServer */124 :
+        return {
+                TAG: /* ClientFinishConnectingToServer */124,
+                _0: packet._0
+              };
+    case /* NpcFishOut */125 :
+        return {
+                TAG: /* NpcFishOut */125,
+                _0: packet._0
+              };
+    case /* NpcTamper */126 :
+        return {
+                TAG: /* NpcTamper */126,
+                _0: packet._0
+              };
+    case /* LegacySoundPlay */127 :
+        return {
+                TAG: /* LegacySoundPlay */127,
+                _0: packet._0
+              };
+    case /* FoodPlatterTryPlacing */128 :
+        return {
+                TAG: /* FoodPlatterTryPlacing */128,
+                _0: packet._0
+              };
+    case /* PlayerLuckFactorsUpdate */129 :
+        return {
+                TAG: /* PlayerLuckFactorsUpdate */129,
+                _0: packet._0
+              };
+    case /* PlayerDead */130 :
+        return {
+                TAG: /* PlayerDead */130,
+                _0: packet._0
+              };
+    case /* CavernMonsterTypeSync */131 :
+        return {
+                TAG: /* CavernMonsterTypeSync */131,
+                _0: packet._0
+              };
+    case /* NpcBuffRemovalRequest */132 :
+        return {
+                TAG: /* NpcBuffRemovalRequest */132,
+                _0: packet._0
+              };
+    case /* ClientSyncedInventory */133 :
+        return {
+                TAG: /* ClientSyncedInventory */133,
+                _0: packet._0
+              };
+    case /* CountsAsHostForGameplaySet */134 :
+        return {
+                TAG: /* CountsAsHostForGameplaySet */134,
+                _0: packet._0
+              };
+    
+  }
+}
+
+var Lazy = {
+  toLatest: toLatest$1
+};
+
 function toBuffer(packet, _fromServer) {
   switch (packet.TAG | 0) {
     case /* ConnectRequest */0 :
@@ -3764,4 +4462,5 @@ exports.toLatest = toLatest;
 exports.fromLatest = fromLatest;
 exports.serialize = serialize;
 exports.serializeFromLatest = serializeFromLatest;
+exports.Lazy = Lazy;
 /* Packet_Status-TerrariaPacket Not a pure module */

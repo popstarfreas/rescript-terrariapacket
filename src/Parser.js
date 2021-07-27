@@ -1393,5 +1393,1655 @@ function parse(buffer, fromServer) {
   }
 }
 
+function parseLazy(buffer, fromServer) {
+  var match = buffer.length;
+  if (!(match > 2 || match < 0)) {
+    return ;
+  }
+  var packetType = PacketType$TerrariaPacket.fromInt(buffer[2]);
+  if (packetType === undefined) {
+    return ;
+  }
+  try {
+    switch (packetType) {
+      case /* ConnectRequest */0 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* ConnectRequest */0,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_ConnectRequest$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* Disconnect */1 :
+          if (fromServer) {
+            return {
+                    TAG: /* Disconnect */1,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_Disconnect$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* PlayerSlotSet */2 :
+          if (fromServer) {
+            return {
+                    TAG: /* PlayerSlotSet */2,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_PlayerSlotSet$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* PlayerInfo */3 :
+          return {
+                  TAG: /* PlayerInfo */3,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_PlayerInfo$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* PlayerInventorySlot */4 :
+          return {
+                  TAG: /* PlayerInventorySlot */4,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_PlayerInventorySlot$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* WorldDataRequest */5 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* WorldDataRequest */5,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_WorldDataRequest$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* WorldInfo */6 :
+          if (fromServer) {
+            return {
+                    TAG: /* WorldInfo */6,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_WorldInfo$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* InitialTileSectionsRequest */7 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* InitialTileSectionsRequest */7,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_InitialTileSectionsRequest$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* Status */8 :
+          if (fromServer) {
+            return {
+                    TAG: /* Status */8,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_Status$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* TileSectionSend */9 :
+          if (fromServer) {
+            return {
+                    TAG: /* TileSectionSend */9,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_TileSectionSend$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* TileSectionFrame */10 :
+          if (fromServer) {
+            return {
+                    TAG: /* TileSectionFrame */10,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_TileSectionFrame$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* PlayerSpawn */11 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* PlayerSpawn */11,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_PlayerSpawn$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* PlayerUpdate */12 :
+          return {
+                  TAG: /* PlayerUpdate */12,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_PlayerUpdate$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* PlayerActive */13 :
+          if (fromServer) {
+            return {
+                    TAG: /* PlayerActive */13,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_PlayerActive$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* PlayerHealth */14 :
+          return {
+                  TAG: /* PlayerHealth */14,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_PlayerHealth$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* TileModify */15 :
+          return {
+                  TAG: /* TileModify */15,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_TileModify$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* TimeSet */16 :
+          if (fromServer) {
+            return {
+                    TAG: /* TimeSet */16,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_TimeSet$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* DoorUse */17 :
+          return {
+                  TAG: /* DoorUse */17,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_DoorUse$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* TileSquareSend */18 :
+          return {
+                  TAG: /* TileSquareSend */18,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_TileSquareSend$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* ItemDropUpdate */19 :
+          return {
+                  TAG: /* ItemDropUpdate */19,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_ItemDropUpdate$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* ItemOwner */20 :
+          return {
+                  TAG: /* ItemOwner */20,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_ItemOwner$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* NpcUpdate */21 :
+          if (fromServer) {
+            return {
+                    TAG: /* NpcUpdate */21,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_NpcUpdate$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* NpcItemStrike */22 :
+          return {
+                  TAG: /* NpcItemStrike */22,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_NpcItemStrike$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* ProjectileSync */23 :
+          return {
+                  TAG: /* ProjectileSync */23,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_ProjectileSync$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* NpcStrike */24 :
+          return {
+                  TAG: /* NpcStrike */24,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_NpcStrike$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* ProjectileDestroy */25 :
+          return {
+                  TAG: /* ProjectileDestroy */25,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_ProjectileDestroy$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* PvpToggle */26 :
+          return {
+                  TAG: /* PvpToggle */26,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_PvpToggle$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* ChestOpen */27 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* ChestOpen */27,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_ChestOpen$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* ChestItem */28 :
+          return {
+                  TAG: /* ChestItem */28,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_ChestItem$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* ActiveContainerSync */29 :
+          return {
+                  TAG: /* ActiveContainerSync */29,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_ActiveContainerSync$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* ChestPlace */30 :
+          return {
+                  TAG: /* ChestPlace */30,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_ChestPlace$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* HealEffect */31 :
+          return {
+                  TAG: /* HealEffect */31,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_HealEffect$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* Zones */32 :
+          return {
+                  TAG: /* Zones */32,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_Zones$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* PasswordRequired */33 :
+          if (fromServer) {
+            return {
+                    TAG: /* PasswordRequired */33,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_PasswordRequired$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* PasswordSend */34 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* PasswordSend */34,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_PasswordSend$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* ItemOwnerRemove */35 :
+          if (fromServer) {
+            return {
+                    TAG: /* ItemOwnerRemove */35,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_ItemOwnerRemove$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* NpcTalk */36 :
+          return {
+                  TAG: /* NpcTalk */36,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_NpcTalk$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* PlayerAnimation */37 :
+          return {
+                  TAG: /* PlayerAnimation */37,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_PlayerAnimation$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* PlayerMana */38 :
+          return {
+                  TAG: /* PlayerMana */38,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_PlayerMana$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* ManaEffect */39 :
+          return {
+                  TAG: /* ManaEffect */39,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_ManaEffect$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* PlayerTeam */40 :
+          return {
+                  TAG: /* PlayerTeam */40,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_PlayerTeam$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* SignRead */41 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* SignRead */41,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_SignRead$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* SignNew */42 :
+          return {
+                  TAG: /* SignNew */42,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_SignNew$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* LiquidSet */43 :
+          return {
+                  TAG: /* LiquidSet */43,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_LiquidSet$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* PlayerSpawnSelf */44 :
+          if (fromServer) {
+            return {
+                    TAG: /* PlayerSpawnSelf */44,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_PlayerSpawnSelf$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* PlayerBuffsSet */45 :
+          return {
+                  TAG: /* PlayerBuffsSet */45,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_PlayerBuffsSet$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* NpcSpecialEffect */46 :
+          return {
+                  TAG: /* NpcSpecialEffect */46,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_NpcSpecialEffect$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* ChestUnlock */47 :
+          return {
+                  TAG: /* ChestUnlock */47,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_ChestUnlock$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* NpcBuffAdd */48 :
+          return {
+                  TAG: /* NpcBuffAdd */48,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_NpcBuffAdd$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* NpcBuffUpdate */49 :
+          if (fromServer) {
+            return {
+                    TAG: /* NpcBuffUpdate */49,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_NpcBuffUpdate$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* PlayerBuffAdd */50 :
+          return {
+                  TAG: /* PlayerBuffAdd */50,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_PlayerBuffAdd$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* NpcNameUpdate */51 :
+          return {
+                  TAG: /* NpcNameUpdate */51,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_NpcNameUpdate$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* GoodEvilUpdate */52 :
+          if (fromServer) {
+            return {
+                    TAG: /* GoodEvilUpdate */52,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_GoodEvilUpdate$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* HarpPlay */53 :
+          return {
+                  TAG: /* HarpPlay */53,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_HarpPlay$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* SwitchHit */54 :
+          return {
+                  TAG: /* SwitchHit */54,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_SwitchHit$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* NpcHomeUpdate */55 :
+          return {
+                  TAG: /* NpcHomeUpdate */55,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_NpcHomeUpdate$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* BossOrInvasionSpawn */56 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* BossOrInvasionSpawn */56,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_BossOrInvasionSpawn$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* PlayerDodge */57 :
+          return {
+                  TAG: /* PlayerDodge */57,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_PlayerDodge$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* PaintTile */58 :
+          return {
+                  TAG: /* PaintTile */58,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_PaintTile$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* PaintWall */59 :
+          return {
+                  TAG: /* PaintWall */59,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_PaintWall$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* Teleport */60 :
+          return {
+                  TAG: /* Teleport */60,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_Teleport$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* PlayerHealOther */61 :
+          return {
+                  TAG: /* PlayerHealOther */61,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_PlayerHealOther$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* DimensionsUpdate */62 :
+          return {
+                  TAG: /* DimensionsUpdate */62,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_DimensionsUpdate$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* ClientUuid */63 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* ClientUuid */63,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_ClientUuid$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* ChestName */64 :
+          return {
+                  TAG: /* ChestName */64,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_ChestName$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* CatchNpc */65 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* CatchNpc */65,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_CatchNpc$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* ReleaseNpc */66 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* ReleaseNpc */66,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_ReleaseNpc$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* TravellingMerchantInventory */67 :
+          if (fromServer) {
+            return {
+                    TAG: /* TravellingMerchantInventory */67,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_TravellingMerchantInventory$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* TeleportationPotion */68 :
+          return {
+                  TAG: /* TeleportationPotion */68,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_TeleportationPotion$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* AnglerQuest */69 :
+          if (fromServer) {
+            return {
+                    TAG: /* AnglerQuest */69,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_AnglerQuest$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* AnglerQuestComplete */70 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* AnglerQuestComplete */70,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_AnglerQuestComplete$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* AnglerQuestsCompletedAmount */71 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* AnglerQuestsCompletedAmount */71,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_AnglerQuestsCompletedAmount$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* TemporaryAnimationCreate */72 :
+          if (fromServer) {
+            return {
+                    TAG: /* TemporaryAnimationCreate */72,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_TemporaryAnimationCreate$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* InvasionProgressReport */73 :
+          if (fromServer) {
+            return {
+                    TAG: /* InvasionProgressReport */73,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_InvasionProgressReport$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* ObjectPlace */74 :
+          return {
+                  TAG: /* ObjectPlace */74,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_ObjectPlace$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* PlayerChestIndexSync */75 :
+          if (fromServer) {
+            return {
+                    TAG: /* PlayerChestIndexSync */75,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_PlayerChestIndexSync$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* CombatNumberCreate */76 :
+          if (fromServer) {
+            return {
+                    TAG: /* CombatNumberCreate */76,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_CombatNumberCreate$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* NetModuleLoad */77 :
+          return {
+                  TAG: /* NetModuleLoad */77,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_NetModuleLoad$TerrariaPacket.parse(buffer, fromServer);
+                      })
+                  }
+                };
+      case /* NpcKillCount */78 :
+          if (fromServer) {
+            return {
+                    TAG: /* NpcKillCount */78,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_NpcKillCount$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* PlayerStealth */79 :
+          return {
+                  TAG: /* PlayerStealth */79,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_PlayerStealth$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* ItemForceIntoNearestChest */80 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* ItemForceIntoNearestChest */80,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_ItemForceIntoNearestChest$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* TileEntityUpdate */81 :
+          if (fromServer) {
+            return {
+                    TAG: /* TileEntityUpdate */81,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_TileEntityUpdate$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* TileEntityPlace */82 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* TileEntityPlace */82,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_TileEntityPlace$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* ItemDropModify */83 :
+          if (fromServer) {
+            return {
+                    TAG: /* ItemDropModify */83,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_ItemDropModify$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* ItemFramePlace */84 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* ItemFramePlace */84,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_ItemFramePlace$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* ItemDropInstancedUpdate */85 :
+          return {
+                  TAG: /* ItemDropInstancedUpdate */85,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_ItemDropInstancedUpdate$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* EmoteBubble */86 :
+          if (fromServer) {
+            return {
+                    TAG: /* EmoteBubble */86,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_EmoteBubble$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* ExtraValueSync */87 :
+          return {
+                  TAG: /* ExtraValueSync */87,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_ExtraValueSync$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* SocialHandshake */88 :
+          return {
+                  TAG: /* SocialHandshake */88,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_SocialHandshake$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* Unused */89 :
+          return {
+                  TAG: /* Unused */89,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_Unused$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* PortalKill */90 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* PortalKill */90,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_PortalKill$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* PlayerTeleportPortal */91 :
+          return {
+                  TAG: /* PlayerTeleportPortal */91,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_PlayerTeleportPortal$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* NpcKilledNotification */92 :
+          if (fromServer) {
+            return {
+                    TAG: /* NpcKilledNotification */92,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_NpcKilledNotification$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* EventNotification */93 :
+          if (fromServer) {
+            return {
+                    TAG: /* EventNotification */93,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_EventNotification$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* MinionTargetUpdate */94 :
+          return {
+                  TAG: /* MinionTargetUpdate */94,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_MinionTargetUpdate$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* NpcTeleportPortal */95 :
+          return {
+                  TAG: /* NpcTeleportPortal */95,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_NpcTeleportPortal$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* ShieldStrengthsUpdate */96 :
+          if (fromServer) {
+            return {
+                    TAG: /* ShieldStrengthsUpdate */96,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_ShieldStrengthsUpdate$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* NebulaLevelUp */97 :
+          return {
+                  TAG: /* NebulaLevelUp */97,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_NebulaLevelUp$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* MoonLordCountdown */98 :
+          if (fromServer) {
+            return {
+                    TAG: /* MoonLordCountdown */98,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_MoonLordCountdown$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* NpcShopItem */99 :
+          if (fromServer) {
+            return {
+                    TAG: /* NpcShopItem */99,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_NpcShopItem$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* GemLockToggle */100 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* GemLockToggle */100,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_GemLockToggle$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* SmokePoof */101 :
+          if (fromServer) {
+            return {
+                    TAG: /* SmokePoof */101,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_SmokePoof$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* ChatMessageSmart */102 :
+          if (fromServer) {
+            return {
+                    TAG: /* ChatMessageSmart */102,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_ChatMessageSmart$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* WiredCannonShot */103 :
+          if (fromServer) {
+            return {
+                    TAG: /* WiredCannonShot */103,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_WiredCannonShot$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* MassWireOperation */104 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* MassWireOperation */104,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_MassWireOperation$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* MassWireOperationPay */105 :
+          if (fromServer) {
+            return {
+                    TAG: /* MassWireOperationPay */105,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_MassWireOperationPay$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* PartyToggle */106 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* PartyToggle */106,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_PartyToggle$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* TreeGrowFx */107 :
+          return {
+                  TAG: /* TreeGrowFx */107,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_TreeGrowFx$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* CrystalInvasionStart */108 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* CrystalInvasionStart */108,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_CrystalInvasionStart$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* CrystalInvasionWipeAll */109 :
+          if (fromServer) {
+            return {
+                    TAG: /* CrystalInvasionWipeAll */109,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_CrystalInvasionWipeAll$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* MinionAttackTargetUpdate */110 :
+          return {
+                  TAG: /* MinionAttackTargetUpdate */110,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_MinionAttackTargetUpdate$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* CrystalInvasionSendWaitTime */111 :
+          if (fromServer) {
+            return {
+                    TAG: /* CrystalInvasionSendWaitTime */111,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_CrystalInvasionSendWaitTime$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* PlayerDamage */112 :
+          return {
+                  TAG: /* PlayerDamage */112,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_PlayerDamage$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* PlayerDeath */113 :
+          return {
+                  TAG: /* PlayerDeath */113,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_PlayerDeath$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* CombatTextCreate */114 :
+          if (fromServer) {
+            return {
+                    TAG: /* CombatTextCreate */114,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_CombatTextCreate$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* Emoji */115 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* Emoji */115,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_Emoji$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* TileEntityDisplayDollItemSync */116 :
+          return {
+                  TAG: /* TileEntityDisplayDollItemSync */116,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_TileEntityDisplayDollItemSync$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* TileEntityInteractionRequest */117 :
+          return {
+                  TAG: /* TileEntityInteractionRequest */117,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_TileEntityInteractionRequest$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* WeaponsRackTryPlacing */118 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* WeaponsRackTryPlacing */118,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_WeaponsRackTryPlacing$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* TileEntityHatRackItemSync */119 :
+          return {
+                  TAG: /* TileEntityHatRackItemSync */119,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_TileEntityHatRackItemSync$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* TilePickingSync */120 :
+          return {
+                  TAG: /* TilePickingSync */120,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_TilePickingSync$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* RevengeMarkerSync */121 :
+          if (fromServer) {
+            return {
+                    TAG: /* RevengeMarkerSync */121,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_RevengeMarkerSync$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* RevengeMarkerRemove */122 :
+          if (fromServer) {
+            return {
+                    TAG: /* RevengeMarkerRemove */122,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_RevengeMarkerRemove$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* GolfBallLandInCup */123 :
+          return {
+                  TAG: /* GolfBallLandInCup */123,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_GolfBallLandInCup$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* ClientFinishConnectingToServer */124 :
+          if (fromServer) {
+            return {
+                    TAG: /* ClientFinishConnectingToServer */124,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_ClientFinishConnectingToServer$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* NpcFishOut */125 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* NpcFishOut */125,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_NpcFishOut$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* NpcTamper */126 :
+          if (fromServer) {
+            return {
+                    TAG: /* NpcTamper */126,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_NpcTamper$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* LegacySoundPlay */127 :
+          if (fromServer) {
+            return {
+                    TAG: /* LegacySoundPlay */127,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_LegacySoundPlay$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* FoodPlatterTryPlacing */128 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* FoodPlatterTryPlacing */128,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_FoodPlatterTryPlacing$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* PlayerLuckFactorsUpdate */129 :
+          return {
+                  TAG: /* PlayerLuckFactorsUpdate */129,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_PlayerLuckFactorsUpdate$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* PlayerDead */130 :
+          if (fromServer) {
+            return {
+                    TAG: /* PlayerDead */130,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_PlayerDead$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      case /* CavernMonsterTypeSync */131 :
+          return {
+                  TAG: /* CavernMonsterTypeSync */131,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_CavernMonsterTypeSync$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
+      case /* NpcBuffRemovalRequest */132 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* NpcBuffRemovalRequest */132,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_NpcBuffRemovalRequest$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* ClientSyncedInventory */133 :
+          if (fromServer) {
+            return ;
+          } else {
+            return {
+                    TAG: /* ClientSyncedInventory */133,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_ClientSyncedInventory$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          }
+      case /* CountsAsHostForGameplaySet */134 :
+          if (fromServer) {
+            return {
+                    TAG: /* CountsAsHostForGameplaySet */134,
+                    _0: {
+                      LAZY_DONE: false,
+                      VAL: (function () {
+                          return Packet_CountsAsHostForGameplaySet$TerrariaPacket.parse(buffer);
+                        })
+                    }
+                  };
+          } else {
+            return ;
+          }
+      
+    }
+  }
+  catch (_e){
+    return ;
+  }
+}
+
 exports.parse = parse;
+exports.parseLazy = parseLazy;
 /* Packet_Status-TerrariaPacket Not a pure module */

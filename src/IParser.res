@@ -5,3 +5,5 @@ type parsed<'a> =
   | ShouldSerialize('a) // The packet as parsed was modified in some way from the original buffer
   | SerializeNotNecessary('a, NodeJs.Buffer.t) // The buffer is equivalent to the parsed data
 type parse<'a> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => option<parsed<'a>>
+// Serializtion is not considered for now for simplicity
+type parseLazy<'a> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => option<'a>

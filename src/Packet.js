@@ -26,6 +26,8 @@ var Packet_ProjectileDestroy$TerrariaPacket = require("./packet/Packet_Projectil
 var Packet_PlayerInventorySlot$TerrariaPacket = require("./packet/Packet_PlayerInventorySlot.js");
 var Packet_InitialTileSectionsRequest$TerrariaPacket = require("./packet/Packet_InitialTileSectionsRequest.js");
 
+var Lazy = {};
+
 function toBuffer(packet, _fromServer) {
   switch (packet.TAG | 0) {
     case /* ConnectRequest */0 :
@@ -812,6 +814,7 @@ exports.CavernMonsterTypeSync = CavernMonsterTypeSync;
 exports.NpcBuffRemovalRequest = NpcBuffRemovalRequest;
 exports.ClientSyncedInventory = ClientSyncedInventory;
 exports.CountsAsHostForGameplaySet = CountsAsHostForGameplaySet;
+exports.Lazy = Lazy;
 exports.toBuffer = toBuffer;
 exports.serialize = serialize;
 exports.toPacketName = toPacketName;

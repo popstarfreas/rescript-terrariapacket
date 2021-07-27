@@ -1,4 +1,4 @@
-let parsePayload = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServer: bool) =>
+let parsePayload = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServer: bool): option<Packet.t> =>
   switch (packetType, fromServer) {
   | (ConnectRequest, true) => None
   | (ConnectRequest, false) =>
@@ -334,6 +334,296 @@ let parsePayload = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServ
     )->Belt.Option.map(a => Packet.CountsAsHostForGameplaySet(a))
   }
 
+let parsePayloadLazy = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServer: bool): option<Packet.Lazy.t> =>
+  switch (packetType, fromServer) {
+  | (ConnectRequest, true) => None
+  | (ConnectRequest, false) =>
+    Some(Packet.Lazy.ConnectRequest(lazy(Packet.ConnectRequest.parse(payload))))
+  | (Disconnect, false) => None
+  | (Disconnect, true) => Some(Packet.Lazy.Disconnect(lazy(Packet.Disconnect.parse(payload))))
+  | (PlayerSlotSet, false) => None
+  | (PlayerSlotSet, true) =>
+    Some(Packet.Lazy.PlayerSlotSet(lazy(Packet.PlayerSlotSet.parse(payload))))
+  | (PlayerInfo, true | false) => Some(Packet.Lazy.PlayerInfo(lazy(Packet.PlayerInfo.parse(payload))))
+  | (PlayerInventorySlot, true | false) =>
+    Some(Packet.Lazy.PlayerInventorySlot(lazy(Packet.PlayerInventorySlot.parse(payload))))
+  | (WorldDataRequest, true) => None
+  | (WorldDataRequest, false) =>
+    Some(Packet.Lazy.WorldDataRequest(lazy(Packet.WorldDataRequest.parse(payload))))
+  | (WorldInfo, false) => None
+  | (WorldInfo, true) => Some(Packet.Lazy.WorldInfo(lazy(Packet.WorldInfo.parse(payload))))
+  | (InitialTileSectionsRequest, true) => None
+  | (InitialTileSectionsRequest, false) =>
+    Some(Packet.Lazy.InitialTileSectionsRequest(lazy(Packet.InitialTileSectionsRequest.parse(payload))))
+  | (Status, false) => None
+  | (Status, true) => Some(Packet.Lazy.Status(lazy(Packet.Status.parse(payload))))
+  | (TileSectionSend, false) => None
+  | (TileSectionSend, true) =>
+    Some(Packet.Lazy.TileSectionSend(lazy(Packet.TileSectionSend.parse(payload))))
+  | (TileSectionFrame, false) => None
+  | (TileSectionFrame, true) =>
+    Some(Packet.Lazy.TileSectionFrame(lazy(Packet.TileSectionFrame.parse(payload))))
+  | (PlayerSpawn, true) => None
+  | (PlayerSpawn, false) => Some(Packet.Lazy.PlayerSpawn(lazy(Packet.PlayerSpawn.parse(payload))))
+  | (PlayerUpdate, true | false) => Some(Packet.Lazy.PlayerUpdate(lazy(Packet.PlayerUpdate.parse(payload))))
+  | (PlayerActive, false) => None
+  | (PlayerActive, true) => Some(Packet.Lazy.PlayerActive(lazy(Packet.PlayerActive.parse(payload))))
+  | (PlayerHealth, true | false) => Some(Packet.Lazy.PlayerHealth(lazy(Packet.PlayerHealth.parse(payload))))
+  | (TileModify, true | false) => Some(Packet.Lazy.TileModify(lazy(Packet.TileModify.parse(payload))))
+  | (TimeSet, false) => None
+  | (TimeSet, true) => Some(Packet.Lazy.TimeSet(lazy(Packet.TimeSet.parse(payload))))
+  | (DoorUse, true | false) => Some(Packet.Lazy.DoorUse(lazy(Packet.DoorUse.parse(payload))))
+  | (TileSquareSend, true | false) =>
+    Some(Packet.Lazy.TileSquareSend(lazy(Packet.TileSquareSend.parse(payload))))
+  | (ItemDropUpdate, true | false) =>
+    Some(Packet.Lazy.ItemDropUpdate(lazy(Packet.ItemDropUpdate.parse(payload))))
+  | (ItemOwner, true | false) => Some(Packet.Lazy.ItemOwner(lazy(Packet.ItemOwner.parse(payload))))
+  | (NpcUpdate, false) => {
+    None
+  }
+  | (NpcUpdate, true) => Some(Packet.Lazy.NpcUpdate(lazy(Packet.NpcUpdate.parse(payload))))
+  | (NpcItemStrike, true | false) =>
+    Some(Packet.Lazy.NpcItemStrike(lazy(Packet.NpcItemStrike.parse(payload))))
+  | (ProjectileSync, true | false) =>
+    Some(Packet.Lazy.ProjectileSync(lazy(Packet.ProjectileSync.parse(payload))))
+  | (NpcStrike, true | false) => Some(Packet.Lazy.NpcStrike(lazy(Packet.NpcStrike.parse(payload))))
+  | (ProjectileDestroy, true | false) =>
+    Some(Packet.Lazy.ProjectileDestroy(lazy(Packet.ProjectileDestroy.parse(payload))))
+  | (PvpToggle, true | false) => Some(Packet.Lazy.PvpToggle(lazy(Packet.PvpToggle.parse(payload))))
+  | (ChestOpen, true) => None
+  | (ChestOpen, false) => Some(Packet.Lazy.ChestOpen(lazy(Packet.ChestOpen.parse(payload))))
+  | (ChestItem, true | false) => Some(Packet.Lazy.ChestItem(lazy(Packet.ChestItem.parse(payload))))
+  | (ActiveContainerSync, true | false) =>
+    Some(Packet.Lazy.ActiveContainerSync(lazy(Packet.ActiveContainerSync.parse(payload))))
+  | (ChestPlace, true | false) => Some(Packet.Lazy.ChestPlace(lazy(Packet.ChestPlace.parse(payload))))
+  | (HealEffect, true | false) => Some(Packet.Lazy.HealEffect(lazy(Packet.HealEffect.parse(payload))))
+  | (Zones, true | false) => Some(Packet.Lazy.Zones(lazy(Packet.Zones.parse(payload))))
+  | (PasswordRequired, false) => None
+  | (PasswordRequired, true) =>
+    Some(Packet.Lazy.PasswordRequired(lazy(Packet.PasswordRequired.parse(payload))))
+  | (PasswordSend, true) => None
+  | (PasswordSend, false) => Some(Packet.Lazy.PasswordSend(lazy(Packet.PasswordSend.parse(payload))))
+  | (ItemOwnerRemove, false) => None
+  | (ItemOwnerRemove, true) =>
+    Some(Packet.Lazy.ItemOwnerRemove(lazy(Packet.ItemOwnerRemove.parse(payload))))
+  | (NpcTalk, true | false) => Some(Packet.Lazy.NpcTalk(lazy(Packet.NpcTalk.parse(payload))))
+  | (PlayerAnimation, true | false) =>
+    Some(Packet.Lazy.PlayerAnimation(lazy(Packet.PlayerAnimation.parse(payload))))
+  | (PlayerMana, true | false) => Some(Packet.Lazy.PlayerMana(lazy(Packet.PlayerMana.parse(payload))))
+  | (ManaEffect, true | false) => Some(Packet.Lazy.ManaEffect(lazy(Packet.ManaEffect.parse(payload))))
+  | (PlayerTeam, true | false) => Some(Packet.Lazy.PlayerTeam(lazy(Packet.PlayerTeam.parse(payload))))
+  | (SignRead, true) => None
+  | (SignRead, false) => Some(Packet.Lazy.SignRead(lazy(Packet.SignRead.parse(payload))))
+  | (SignNew, true | false) => Some(Packet.Lazy.SignNew(lazy(Packet.SignNew.parse(payload))))
+  | (LiquidSet, true | false) => Some(Packet.Lazy.LiquidSet(lazy(Packet.LiquidSet.parse(payload))))
+  | (PlayerSpawnSelf, false) => None
+  | (PlayerSpawnSelf, true) =>
+    Some(Packet.Lazy.PlayerSpawnSelf(lazy(Packet.PlayerSpawnSelf.parse(payload))))
+  | (PlayerBuffsSet, true | false) =>
+    Some(Packet.Lazy.PlayerBuffsSet(lazy(Packet.PlayerBuffsSet.parse(payload))))
+  | (NpcSpecialEffect, true | false) =>
+    Some(Packet.Lazy.NpcSpecialEffect(lazy(Packet.NpcSpecialEffect.parse(payload))))
+  | (ChestUnlock, true | false) => Some(Packet.Lazy.ChestUnlock(lazy(Packet.ChestUnlock.parse(payload))))
+  | (NpcBuffAdd, true | false) => Some(Packet.Lazy.NpcBuffAdd(lazy(Packet.NpcBuffAdd.parse(payload))))
+  | (NpcBuffUpdate, false) => None
+  | (NpcBuffUpdate, true) =>
+    Some(Packet.Lazy.NpcBuffUpdate(lazy(Packet.NpcBuffUpdate.parse(payload))))
+  | (PlayerBuffAdd, true | false) =>
+    Some(Packet.Lazy.PlayerBuffAdd(lazy(Packet.PlayerBuffAdd.parse(payload))))
+  | (NpcNameUpdate, true | false) =>
+    Some(Packet.Lazy.NpcNameUpdate(lazy(Packet.NpcNameUpdate.parse(payload))))
+  | (GoodEvilUpdate, false) => None
+  | (GoodEvilUpdate, true) =>
+    Some(Packet.Lazy.GoodEvilUpdate(lazy(Packet.GoodEvilUpdate.parse(payload))))
+  | (HarpPlay, true | false) => Some(Packet.Lazy.HarpPlay(lazy(Packet.HarpPlay.parse(payload))))
+  | (SwitchHit, true | false) => Some(Packet.Lazy.SwitchHit(lazy(Packet.SwitchHit.parse(payload))))
+  | (NpcHomeUpdate, true | false) =>
+    Some(Packet.Lazy.NpcHomeUpdate(lazy(Packet.NpcHomeUpdate.parse(payload))))
+  | (BossOrInvasionSpawn, true) => None
+  | (BossOrInvasionSpawn, false) =>
+    Some(Packet.Lazy.BossOrInvasionSpawn(lazy(Packet.BossOrInvasionSpawn.parse(payload))))
+  | (PlayerDodge, true | false) => Some(Packet.Lazy.PlayerDodge(lazy(Packet.PlayerDodge.parse(payload))))
+  | (PaintTile, true | false) => Some(Packet.Lazy.PaintTile(lazy(Packet.PaintTile.parse(payload))))
+  | (PaintWall, true | false) => Some(Packet.Lazy.PaintWall(lazy(Packet.PaintWall.parse(payload))))
+  | (Teleport, true | false) => Some(Packet.Lazy.Teleport(lazy(Packet.Teleport.parse(payload))))
+  | (PlayerHealOther, true | false) =>
+    Some(Packet.Lazy.PlayerHealOther(lazy(Packet.PlayerHealOther.parse(payload))))
+  | (DimensionsUpdate, true | false) =>
+    Some(Packet.Lazy.DimensionsUpdate(lazy(Packet.DimensionsUpdate.parse(payload))))
+  | (ClientUuid, true) => None
+  | (ClientUuid, false) => Some(Packet.Lazy.ClientUuid(lazy(Packet.ClientUuid.parse(payload))))
+  | (ChestName, true | false) => Some(Packet.Lazy.ChestName(lazy(Packet.ChestName.parse(payload))))
+  | (CatchNpc, true) => None
+  | (CatchNpc, false) => Some(Packet.Lazy.CatchNpc(lazy(Packet.CatchNpc.parse(payload))))
+  | (ReleaseNpc, true) => None
+  | (ReleaseNpc, false) => Some(Packet.Lazy.ReleaseNpc(lazy(Packet.ReleaseNpc.parse(payload))))
+  | (TravellingMerchantInventory, false) => None
+  | (TravellingMerchantInventory, true) =>
+    Some(Packet.Lazy.TravellingMerchantInventory(lazy(Packet.TravellingMerchantInventory.parse(payload))))
+  | (TeleportationPotion, true | false) =>
+    Some(Packet.Lazy.TeleportationPotion(lazy(Packet.TeleportationPotion.parse(payload))))
+  | (AnglerQuest, false) => None
+  | (AnglerQuest, true) => Some(Packet.Lazy.AnglerQuest(lazy(Packet.AnglerQuest.parse(payload))))
+  | (AnglerQuestComplete, true) => None
+  | (AnglerQuestComplete, false) =>
+    Some(Packet.Lazy.AnglerQuestComplete(lazy(Packet.AnglerQuestComplete.parse(payload))))
+  | (AnglerQuestsCompletedAmount, true) => None
+  | (AnglerQuestsCompletedAmount, false) =>
+    Some(Packet.Lazy.AnglerQuestsCompletedAmount(lazy(Packet.AnglerQuestsCompletedAmount.parse(payload))))
+  | (TemporaryAnimationCreate, false) => None
+  | (TemporaryAnimationCreate, true) =>
+    Some(Packet.Lazy.TemporaryAnimationCreate(lazy(Packet.TemporaryAnimationCreate.parse(payload))))
+  | (InvasionProgressReport, false) => None
+  | (InvasionProgressReport, true) =>
+    Some(Packet.Lazy.InvasionProgressReport(lazy(Packet.InvasionProgressReport.parse(payload))))
+  | (ObjectPlace, true | false) => Some(Packet.Lazy.ObjectPlace(lazy(Packet.ObjectPlace.parse(payload))))
+  | (PlayerChestIndexSync, false) => None
+  | (PlayerChestIndexSync, true) =>
+    Some(Packet.Lazy.PlayerChestIndexSync(lazy(Packet.PlayerChestIndexSync.parse(payload))))
+  | (CombatNumberCreate, false) => None
+  | (CombatNumberCreate, true) =>
+    Some(Packet.Lazy.CombatNumberCreate(lazy(Packet.CombatNumberCreate.parse(payload))))
+  | (NetModuleLoad, true | false) =>
+    Some(Packet.Lazy.NetModuleLoad(lazy(Packet.NetModuleLoad.parse(payload, fromServer))))
+  | (NpcKillCount, false) => None
+  | (NpcKillCount, true) => Some(Packet.Lazy.NpcKillCount(lazy(Packet.NpcKillCount.parse(payload))))
+  | (PlayerStealth, true | false) =>
+    Some(Packet.Lazy.PlayerStealth(lazy(Packet.PlayerStealth.parse(payload))))
+  | (ItemForceIntoNearestChest, true) => None
+  | (ItemForceIntoNearestChest, false) =>
+    Some(Packet.Lazy.ItemForceIntoNearestChest(lazy(Packet.ItemForceIntoNearestChest.parse(payload))))
+  | (TileEntityUpdate, false) => None
+  | (TileEntityUpdate, true) =>
+    Some(Packet.Lazy.TileEntityUpdate(lazy(Packet.TileEntityUpdate.parse(payload))))
+  | (TileEntityPlace, true) => None
+  | (TileEntityPlace, false) =>
+    Some(Packet.Lazy.TileEntityPlace(lazy(Packet.TileEntityPlace.parse(payload))))
+  | (ItemDropModify, false) => None
+  | (ItemDropModify, true) =>
+    Some(Packet.Lazy.ItemDropModify(lazy(Packet.ItemDropModify.parse(payload))))
+  | (ItemFramePlace, true) => None
+  | (ItemFramePlace, false) =>
+    Some(Packet.Lazy.ItemFramePlace(lazy(Packet.ItemFramePlace.parse(payload))))
+  | (ItemDropInstancedUpdate, true | false) =>
+    Some(Packet.Lazy.ItemDropInstancedUpdate(lazy(Packet.ItemDropInstancedUpdate.parse(payload))))
+  | (EmoteBubble, false) => None
+  | (EmoteBubble, true) => Some(Packet.Lazy.EmoteBubble(lazy(Packet.EmoteBubble.parse(payload))))
+  | (ExtraValueSync, true | false) =>
+    Some(Packet.Lazy.ExtraValueSync(lazy(Packet.ExtraValueSync.parse(payload))))
+  | (SocialHandshake, true | false) =>
+    Some(Packet.Lazy.SocialHandshake(lazy(Packet.SocialHandshake.parse(payload))))
+  | (Unused, true | false) => Some(Packet.Lazy.Unused(lazy(Packet.Unused.parse(payload))))
+  | (PortalKill, true) => None
+  | (PortalKill, false) => Some(Packet.Lazy.PortalKill(lazy(Packet.PortalKill.parse(payload))))
+  | (PlayerTeleportPortal, true | false) =>
+    Some(Packet.Lazy.PlayerTeleportPortal(lazy(Packet.PlayerTeleportPortal.parse(payload))))
+  | (NpcKilledNotification, false) => None
+  | (NpcKilledNotification, true) =>
+    Some(Packet.Lazy.NpcKilledNotification(lazy(Packet.NpcKilledNotification.parse(payload))))
+  | (EventNotification, false) => None
+  | (EventNotification, true) =>
+    Some(Packet.Lazy.EventNotification(lazy(Packet.EventNotification.parse(payload))))
+  | (MinionTargetUpdate, true | false) =>
+    Some(Packet.Lazy.MinionTargetUpdate(lazy(Packet.MinionTargetUpdate.parse(payload))))
+  | (NpcTeleportPortal, true | false) =>
+    Some(Packet.Lazy.NpcTeleportPortal(lazy(Packet.NpcTeleportPortal.parse(payload))))
+  | (ShieldStrengthsUpdate, false) => None
+  | (ShieldStrengthsUpdate, true) =>
+    Some(Packet.Lazy.ShieldStrengthsUpdate(lazy(Packet.ShieldStrengthsUpdate.parse(payload))))
+  | (NebulaLevelUp, true | false) =>
+    Some(Packet.Lazy.NebulaLevelUp(lazy(Packet.NebulaLevelUp.parse(payload))))
+  | (MoonLordCountdown, false) => None
+  | (MoonLordCountdown, true) =>
+    Some(Packet.Lazy.MoonLordCountdown(lazy(Packet.MoonLordCountdown.parse(payload))))
+  | (NpcShopItem, false) => None
+  | (NpcShopItem, true) => Some(Packet.Lazy.NpcShopItem(lazy(Packet.NpcShopItem.parse(payload))))
+  | (GemLockToggle, true) => None
+  | (GemLockToggle, false) =>
+    Some(Packet.Lazy.GemLockToggle(lazy(Packet.GemLockToggle.parse(payload))))
+  | (SmokePoof, false) => None
+  | (SmokePoof, true) => Some(Packet.Lazy.SmokePoof(lazy(Packet.SmokePoof.parse(payload))))
+  | (ChatMessageSmart, false) => None
+  | (ChatMessageSmart, true) =>
+    Some(Packet.Lazy.ChatMessageSmart(lazy(Packet.ChatMessageSmart.parse(payload))))
+  | (WiredCannonShot, false) => None
+  | (WiredCannonShot, true) =>
+    Some(Packet.Lazy.WiredCannonShot(lazy(Packet.WiredCannonShot.parse(payload))))
+  | (MassWireOperation, true) => None
+  | (MassWireOperation, false) =>
+    Some(Packet.Lazy.MassWireOperation(lazy(Packet.MassWireOperation.parse(payload))))
+  | (MassWireOperationPay, false) => None
+  | (MassWireOperationPay, true) =>
+    Some(Packet.Lazy.MassWireOperationPay(lazy(Packet.MassWireOperationPay.parse(payload))))
+  | (PartyToggle, true) => None
+  | (PartyToggle, false) => Some(Packet.Lazy.PartyToggle(lazy(Packet.PartyToggle.parse(payload))))
+  | (TreeGrowFx, true | false) => Some(Packet.Lazy.TreeGrowFx(lazy(Packet.TreeGrowFx.parse(payload))))
+  | (CrystalInvasionStart, true) => None
+  | (CrystalInvasionStart, false) =>
+    Some(Packet.Lazy.CrystalInvasionStart(lazy(Packet.CrystalInvasionStart.parse(payload))))
+  | (CrystalInvasionWipeAll, false) => None
+  | (CrystalInvasionWipeAll, true) =>
+    Some(Packet.Lazy.CrystalInvasionWipeAll(lazy(Packet.CrystalInvasionWipeAll.parse(payload))))
+  | (MinionAttackTargetUpdate, true | false) =>
+    Some(Packet.Lazy.MinionAttackTargetUpdate(lazy(Packet.MinionAttackTargetUpdate.parse(payload))))
+  | (CrystalInvasionSendWaitTime, false) => None
+  | (CrystalInvasionSendWaitTime, true) =>
+    Some(Packet.Lazy.CrystalInvasionSendWaitTime(lazy(Packet.CrystalInvasionSendWaitTime.parse(payload))))
+  | (PlayerDamage, true | false) => Some(Packet.Lazy.PlayerDamage(lazy(Packet.PlayerDamage.parse(payload))))
+  | (PlayerDeath, true | false) => Some(Packet.Lazy.PlayerDeath(lazy(Packet.PlayerDeath.parse(payload))))
+  | (CombatTextCreate, false) => None
+  | (CombatTextCreate, true) =>
+    Some(Packet.Lazy.CombatTextCreate(lazy(Packet.CombatTextCreate.parse(payload))))
+  | (Emoji, true) => None
+  | (Emoji, false) => Some(Packet.Lazy.Emoji(lazy(Packet.Emoji.parse(payload))))
+  | (TileEntityDisplayDollItemSync, true | false) =>
+    Some(Packet.Lazy.TileEntityDisplayDollItemSync(lazy(Packet.TileEntityDisplayDollItemSync.parse(payload))))
+  | (TileEntityInteractionRequest, true | false) =>
+    Some(Packet.Lazy.TileEntityInteractionRequest(lazy(Packet.TileEntityInteractionRequest.parse(payload))))
+  | (WeaponsRackTryPlacing, true) => None
+  | (WeaponsRackTryPlacing, false) =>
+    Some(Packet.Lazy.WeaponsRackTryPlacing(lazy(Packet.WeaponsRackTryPlacing.parse(payload))))
+  | (TileEntityHatRackItemSync, true | false) =>
+    Some(Packet.Lazy.TileEntityHatRackItemSync(lazy(Packet.TileEntityHatRackItemSync.parse(payload))))
+  | (TilePickingSync, true | false) =>
+    Some(Packet.Lazy.TilePickingSync(lazy(Packet.TilePickingSync.parse(payload))))
+  | (RevengeMarkerSync, false) => None
+  | (RevengeMarkerSync, true) =>
+    Some(Packet.Lazy.RevengeMarkerSync(lazy(Packet.RevengeMarkerSync.parse(payload))))
+  | (RevengeMarkerRemove, false) => None
+  | (RevengeMarkerRemove, true) =>
+    Some(Packet.Lazy.RevengeMarkerRemove(lazy(Packet.RevengeMarkerRemove.parse(payload))))
+  | (GolfBallLandInCup, true | false) =>
+    Some(Packet.Lazy.GolfBallLandInCup(lazy(Packet.GolfBallLandInCup.parse(payload))))
+  | (ClientFinishConnectingToServer, false) => None
+  | (ClientFinishConnectingToServer, true) =>
+    Some(Packet.Lazy.ClientFinishConnectingToServer(lazy(Packet.ClientFinishConnectingToServer.parse(payload))))
+  | (NpcFishOut, true) => None
+  | (NpcFishOut, false) => Some(Packet.Lazy.NpcFishOut(lazy(Packet.NpcFishOut.parse(payload))))
+  | (NpcTamper, false) => None
+  | (NpcTamper, true) => Some(Packet.Lazy.NpcTamper(lazy(Packet.NpcTamper.parse(payload))))
+  | (LegacySoundPlay, false) => None
+  | (LegacySoundPlay, true) =>
+    Some(Packet.Lazy.LegacySoundPlay(lazy(Packet.LegacySoundPlay.parse(payload))))
+  | (FoodPlatterTryPlacing, true) => None
+  | (FoodPlatterTryPlacing, false) =>
+    Some(Packet.Lazy.FoodPlatterTryPlacing(lazy(Packet.FoodPlatterTryPlacing.parse(payload))))
+  | (PlayerLuckFactorsUpdate, true | false) =>
+    Some(Packet.Lazy.PlayerLuckFactorsUpdate(lazy(Packet.PlayerLuckFactorsUpdate.parse(payload))))
+  | (PlayerDead, false) => None
+  | (PlayerDead, true) => Some(Packet.Lazy.PlayerDead(lazy(Packet.PlayerDead.parse(payload))))
+  | (CavernMonsterTypeSync, true | false) =>
+    Some(Packet.Lazy.CavernMonsterTypeSync(lazy(Packet.CavernMonsterTypeSync.parse(payload))))
+  | (NpcBuffRemovalRequest, true) => None
+  | (NpcBuffRemovalRequest, false) =>
+    Some(Packet.Lazy.NpcBuffRemovalRequest(lazy(Packet.NpcBuffRemovalRequest.parse(payload))))
+  | (ClientSyncedInventory, true) => None
+  | (ClientSyncedInventory, false) =>
+    Some(Packet.Lazy.ClientSyncedInventory(lazy(Packet.ClientSyncedInventory.parse(payload))))
+  | (CountsAsHostForGameplaySet, false) => None
+  | (CountsAsHostForGameplaySet, true) =>
+    Some(Packet.Lazy.CountsAsHostForGameplaySet(lazy(Packet.CountsAsHostForGameplaySet.parse(payload))))
+  }
+
 let parse: IParser.parse<Packet.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => {
   switch buffer->NodeJs.Buffer.length {
   | 0 | 1 | 2 => None
@@ -344,6 +634,26 @@ let parse: IParser.parse<Packet.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: boo
         // As this module is parsing packets from the latest version to the equivalent packet data structures
         // it won't ever need Serializing after only parsing
         parsePayload(packetType, buffer, fromServer)->Belt.Option.map(packet => IParser.SerializeNotNecessary(packet, buffer))
+      } catch {
+      | _e => {
+          None
+        }
+      }
+    | None => None
+    }
+  }
+}
+
+let parseLazy: IParser.parseLazy<Packet.Lazy.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => {
+  switch buffer->NodeJs.Buffer.length {
+  | 0 | 1 | 2 => None
+  | _ =>
+    switch buffer->NodeJs.Buffer.unsafeGet(2)->PacketType.fromInt {
+    | Some(packetType) =>
+      try {
+        // As this module is parsing packets from the latest version to the equivalent packet data structures
+        // it won't ever need Serializing after only parsing
+        parsePayloadLazy(packetType, buffer, fromServer)
       } catch {
       | _e => {
           None
