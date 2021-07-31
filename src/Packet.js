@@ -26,7 +26,285 @@ var Packet_ProjectileDestroy$TerrariaPacket = require("./packet/Packet_Projectil
 var Packet_PlayerInventorySlot$TerrariaPacket = require("./packet/Packet_PlayerInventorySlot.js");
 var Packet_InitialTileSectionsRequest$TerrariaPacket = require("./packet/Packet_InitialTileSectionsRequest.js");
 
-var Lazy = {};
+function toPacketName(packet) {
+  switch (packet.TAG | 0) {
+    case /* ConnectRequest */0 :
+        return "ConnectRequest";
+    case /* Disconnect */1 :
+        return "Disconnect";
+    case /* PlayerSlotSet */2 :
+        return "PlayerSlotSet";
+    case /* PlayerInfo */3 :
+        return "PlayerInfo";
+    case /* PlayerInventorySlot */4 :
+        return "PlayerInventorySlot";
+    case /* WorldDataRequest */5 :
+        return "WorldDataRequest";
+    case /* WorldInfo */6 :
+        return "WorldInfo";
+    case /* InitialTileSectionsRequest */7 :
+        return "InitialTileSectionsRequest";
+    case /* Status */8 :
+        return "Status";
+    case /* TileSectionSend */9 :
+        return "TileSectionSend";
+    case /* TileSectionFrame */10 :
+        return "TileSectionFrame";
+    case /* PlayerSpawn */11 :
+        return "PlayerSpawn";
+    case /* PlayerUpdate */12 :
+        return "PlayerUpdate";
+    case /* PlayerActive */13 :
+        return "PlayerActive";
+    case /* PlayerHealth */14 :
+        return "PlayerHealth";
+    case /* TileModify */15 :
+        return "TileModify";
+    case /* TimeSet */16 :
+        return "TimeSet";
+    case /* DoorUse */17 :
+        return "DoorUse";
+    case /* TileSquareSend */18 :
+        return "TileSquareSend";
+    case /* ItemDropUpdate */19 :
+        return "ItemDropUpdate";
+    case /* ItemOwner */20 :
+        return "ItemOwner";
+    case /* NpcUpdate */21 :
+        return "NpcUpdate";
+    case /* NpcItemStrike */22 :
+        return "NpcItemStrike";
+    case /* ProjectileSync */23 :
+        return "ProjecitleSync";
+    case /* NpcStrike */24 :
+        return "NpcStrike";
+    case /* ProjectileDestroy */25 :
+        return "ProjectileDestroy";
+    case /* PvpToggle */26 :
+        return "PvpToggle";
+    case /* ChestOpen */27 :
+        return "ChestOpen";
+    case /* ChestItem */28 :
+        return "ChestItem";
+    case /* ActiveContainerSync */29 :
+        return "ActiveContainerSync";
+    case /* ChestPlace */30 :
+        return "ChestPlace";
+    case /* HealEffect */31 :
+        return "HealEffect";
+    case /* Zones */32 :
+        return "Zones";
+    case /* PasswordRequired */33 :
+        return "PasswordRequired";
+    case /* PasswordSend */34 :
+        return "PasswordSend";
+    case /* ItemOwnerRemove */35 :
+        return "ItemOwnerRemove";
+    case /* NpcTalk */36 :
+        return "NpcTalk";
+    case /* PlayerAnimation */37 :
+        return "PlayerAnimation";
+    case /* PlayerMana */38 :
+        return "PlayerMana";
+    case /* ManaEffect */39 :
+        return "ManaEffect";
+    case /* PlayerTeam */40 :
+        return "PlayerTeam";
+    case /* SignRead */41 :
+        return "SignRead";
+    case /* SignNew */42 :
+        return "SignNew";
+    case /* LiquidSet */43 :
+        return "LiquidSet";
+    case /* PlayerSpawnSelf */44 :
+        return "PlayerSpawnSelf";
+    case /* PlayerBuffsSet */45 :
+        return "PlayerBuffsSet";
+    case /* NpcSpecialEffect */46 :
+        return "NpcSpecialEffect";
+    case /* ChestUnlock */47 :
+        return "ChestUnlock";
+    case /* NpcBuffAdd */48 :
+        return "NpcBuffAdd";
+    case /* NpcBuffUpdate */49 :
+        return "NpcBuffUpdate";
+    case /* PlayerBuffAdd */50 :
+        return "PlayerBuffAdd";
+    case /* NpcNameUpdate */51 :
+        return "NpcNameUpdate";
+    case /* GoodEvilUpdate */52 :
+        return "GoodEvilUpdate";
+    case /* HarpPlay */53 :
+        return "HarpPlay";
+    case /* SwitchHit */54 :
+        return "SwitchHit";
+    case /* NpcHomeUpdate */55 :
+        return "NpcHomeUpdate";
+    case /* BossOrInvasionSpawn */56 :
+        return "BossOrInvasionSpawn";
+    case /* PlayerDodge */57 :
+        return "PlayerDodge";
+    case /* PaintTile */58 :
+        return "PaintTile";
+    case /* PaintWall */59 :
+        return "PaintWall";
+    case /* Teleport */60 :
+        return "Teleport";
+    case /* PlayerHealOther */61 :
+        return "PlayerHealOther";
+    case /* DimensionsUpdate */62 :
+        return "DimensionsUpdate";
+    case /* ClientUuid */63 :
+        return "ClientUuid";
+    case /* ChestName */64 :
+        return "ChestName";
+    case /* CatchNpc */65 :
+        return "CatchNpc";
+    case /* ReleaseNpc */66 :
+        return "ReleaseNpc";
+    case /* TravellingMerchantInventory */67 :
+        return "TravellingMerchantInventory";
+    case /* TeleportationPotion */68 :
+        return "TeleportationPotion";
+    case /* AnglerQuest */69 :
+        return "AnglerQuest";
+    case /* AnglerQuestComplete */70 :
+        return "AnglerQuestComplete";
+    case /* AnglerQuestsCompletedAmount */71 :
+        return "AnglerQuestsCompletedAmount";
+    case /* TemporaryAnimationCreate */72 :
+        return "TemporaryAnimationCreate";
+    case /* InvasionProgressReport */73 :
+        return "InvasionProgressReport";
+    case /* ObjectPlace */74 :
+        return "ObjectPlace";
+    case /* PlayerChestIndexSync */75 :
+        return "PlayerChestIndexSync";
+    case /* CombatNumberCreate */76 :
+        return "CombatNumberCreate";
+    case /* NetModuleLoad */77 :
+        return "NetModuleLoad";
+    case /* NpcKillCount */78 :
+        return "NpcKillCount";
+    case /* PlayerStealth */79 :
+        return "PlayerStealth";
+    case /* ItemForceIntoNearestChest */80 :
+        return "ItemForceIntoNearestChest";
+    case /* TileEntityUpdate */81 :
+        return "TileEntityUpdate";
+    case /* TileEntityPlace */82 :
+        return "TileEntityPlace";
+    case /* ItemDropModify */83 :
+        return "ItemDropModify";
+    case /* ItemFramePlace */84 :
+        return "ItemFramePlace";
+    case /* ItemDropInstancedUpdate */85 :
+        return "ItemDropInstancedUpdate";
+    case /* EmoteBubble */86 :
+        return "EmoteBubble";
+    case /* ExtraValueSync */87 :
+        return "ExtraValueSync";
+    case /* SocialHandshake */88 :
+        return "SocialHandshake";
+    case /* Unused */89 :
+        return "Unused";
+    case /* PortalKill */90 :
+        return "PortalKill";
+    case /* PlayerTeleportPortal */91 :
+        return "PlayerTeleportPortal";
+    case /* NpcKilledNotification */92 :
+        return "NpcKilledNotification";
+    case /* EventNotification */93 :
+        return "EventNotification";
+    case /* MinionTargetUpdate */94 :
+        return "MinionTargetUpdate";
+    case /* NpcTeleportPortal */95 :
+        return "NpcTeleportPortal";
+    case /* ShieldStrengthsUpdate */96 :
+        return "ShieldStrengthsUpdate";
+    case /* NebulaLevelUp */97 :
+        return "NebulaLevelUp";
+    case /* MoonLordCountdown */98 :
+        return "MoonLordCountdown";
+    case /* NpcShopItem */99 :
+        return "NpcShopItem";
+    case /* GemLockToggle */100 :
+        return "GemLockToggle";
+    case /* SmokePoof */101 :
+        return "SmokePoof";
+    case /* ChatMessageSmart */102 :
+        return "ChatMessageSmart";
+    case /* WiredCannonShot */103 :
+        return "WiredCannonShot";
+    case /* MassWireOperation */104 :
+        return "MassWireOperation";
+    case /* MassWireOperationPay */105 :
+        return "MassWireOperationPay";
+    case /* PartyToggle */106 :
+        return "PartyToggle";
+    case /* TreeGrowFx */107 :
+        return "TreeGrowFx";
+    case /* CrystalInvasionStart */108 :
+        return "CrystalInvasionStart";
+    case /* CrystalInvasionWipeAll */109 :
+        return "CrystalInvasionWipeAll";
+    case /* MinionAttackTargetUpdate */110 :
+        return "MinionAttackTargetUpdate";
+    case /* CrystalInvasionSendWaitTime */111 :
+        return "CrystalInvasionSendWaitTime";
+    case /* PlayerDamage */112 :
+        return "PlayerDamage";
+    case /* PlayerDeath */113 :
+        return "PlayerDeath";
+    case /* CombatTextCreate */114 :
+        return "CombatTextCreate";
+    case /* Emoji */115 :
+        return "Emoji";
+    case /* TileEntityDisplayDollItemSync */116 :
+        return "TileEntityDisplayDollItemSync";
+    case /* TileEntityInteractionRequest */117 :
+        return "TileEntityInteractionRequest";
+    case /* WeaponsRackTryPlacing */118 :
+        return "WeaponsRackTryPlacing";
+    case /* TileEntityHatRackItemSync */119 :
+        return "TileEntityHatRackItemSync";
+    case /* TilePickingSync */120 :
+        return "TilePickingSync";
+    case /* RevengeMarkerSync */121 :
+        return "RevengeMarkerSync";
+    case /* RevengeMarkerRemove */122 :
+        return "RevengeMarkerRemove";
+    case /* GolfBallLandInCup */123 :
+        return "GolfBallLandInCup";
+    case /* ClientFinishConnectingToServer */124 :
+        return "ClientFinishConnectingToServer";
+    case /* NpcFishOut */125 :
+        return "NpcFishOut";
+    case /* NpcTamper */126 :
+        return "NpcTamper";
+    case /* LegacySoundPlay */127 :
+        return "LegacySoundPlay";
+    case /* FoodPlatterTryPlacing */128 :
+        return "FoodPlatterTryPlacing";
+    case /* PlayerLuckFactorsUpdate */129 :
+        return "PlayerLuckFactorsUpdate";
+    case /* PlayerDead */130 :
+        return "PlayerDead";
+    case /* CavernMonsterTypeSync */131 :
+        return "CavernMonsterTypeSync";
+    case /* NpcBuffRemovalRequest */132 :
+        return "NpcBuffRemovalRequest";
+    case /* ClientSyncedInventory */133 :
+        return "ClientSyncedInventory";
+    case /* CountsAsHostForGameplaySet */134 :
+        return "CountsAsHostForGameplaySet";
+    
+  }
+}
+
+var Lazy = {
+  toPacketName: toPacketName
+};
 
 function toBuffer(packet, _fromServer) {
   switch (packet.TAG | 0) {
@@ -85,7 +363,7 @@ function serialize(parsed, fromServer) {
   }
 }
 
-function toPacketName(packet) {
+function toPacketName$1(packet) {
   switch (packet.TAG | 0) {
     case /* ConnectRequest */0 :
         return "ConnectRequest";
@@ -817,5 +1095,5 @@ exports.CountsAsHostForGameplaySet = CountsAsHostForGameplaySet;
 exports.Lazy = Lazy;
 exports.toBuffer = toBuffer;
 exports.serialize = serialize;
-exports.toPacketName = toPacketName;
+exports.toPacketName = toPacketName$1;
 /* Packet_Status-TerrariaPacket Not a pure module */
