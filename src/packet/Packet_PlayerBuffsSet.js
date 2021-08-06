@@ -54,7 +54,7 @@ function packBuffs(writer, buffs) {
 }
 
 function toBuffer(self) {
-  return packBuffs(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt(/* HealEffect */31)).packByte(self.playerId), self.buffs).data;
+  return packBuffs(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt(/* PlayerBuffsSet */45)).packByte(self.playerId), self.buffs).data;
 }
 
 var Encode = {

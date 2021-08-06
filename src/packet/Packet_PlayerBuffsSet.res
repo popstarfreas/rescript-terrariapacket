@@ -29,7 +29,7 @@ module Encode = {
 
   let toBuffer = (self: t): NodeJs.Buffer.t => {
     PacketFactory.ManagedPacketWriter.make()
-    ->setType(PacketType.HealEffect->PacketType.toInt)
+    ->setType(PacketType.PlayerBuffsSet->PacketType.toInt)
     ->packByte(self.playerId)
     ->packBuffs(self.buffs)
     ->data
