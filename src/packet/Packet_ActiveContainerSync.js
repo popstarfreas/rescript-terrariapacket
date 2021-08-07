@@ -24,7 +24,7 @@ function parse(payload) {
   var x = reader.readInt16();
   var y = reader.readInt16();
   var nameLength = reader.readByte();
-  var name = reader.readString();
+  var name = nameLength > 0 && nameLength <= 20 ? reader.readString() : "";
   return {
           chestId: chestId,
           x: x,
@@ -58,7 +58,11 @@ function data(prim) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt(/* ActiveContainerSync */29)).packInt16(self.chestId).packInt16(self.x).packInt16(self.y).packByte(self.nameLength).packString(self.name).data;
+  var writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt(/* ActiveContainerSync */29)).packInt16(self.chestId).packInt16(self.x).packInt16(self.y).packByte(self.nameLength);
+  if (self.nameLength > 0 && self.nameLength <= 20) {
+    writer.packString(self.name);
+  }
+  return writer.data;
 }
 
 var Encode = {
