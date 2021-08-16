@@ -21,11 +21,11 @@ module Decode = {
     }
 
     Some({
-      chestId,
-      x,
-      y,
-      nameLength,
-      name,
+      chestId: chestId,
+      x: x,
+      y: y,
+      nameLength: nameLength,
+      name: name,
     })
   }
 }
@@ -33,12 +33,13 @@ module Decode = {
 module Encode = {
   let {packByte, packInt16, packString, setType, data} = module(PacketFactory.ManagedPacketWriter)
   let toBuffer = (self: t): NodeJs.Buffer.t => {
-    let writer = PacketFactory.ManagedPacketWriter.make()
-    ->setType(PacketType.ActiveContainerSync->PacketType.toInt)
-    ->packInt16(self.chestId)
-    ->packInt16(self.x)
-    ->packInt16(self.y)
-    ->packByte(self.nameLength)
+    let writer =
+      PacketFactory.ManagedPacketWriter.make()
+      ->setType(PacketType.ActiveContainerSync->PacketType.toInt)
+      ->packInt16(self.chestId)
+      ->packInt16(self.x)
+      ->packInt16(self.y)
+      ->packByte(self.nameLength)
     if self.nameLength > 0 && self.nameLength <= 20 {
       writer->packString(self.name)->ignore
     }

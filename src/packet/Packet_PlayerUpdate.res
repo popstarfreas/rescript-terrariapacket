@@ -247,7 +247,8 @@ module Encode = {
 
   let packPotionOfReturn = (writer: writer, potionOfReturn: option<potionOfReturn>) => {
     switch potionOfReturn {
-    | Some(potionOfReturn) => writer
+    | Some(potionOfReturn) =>
+      writer
       ->packSingle(potionOfReturn.originalUsePosition.x)
       ->packSingle(potionOfReturn.originalUsePosition.y)
       ->packSingle(potionOfReturn.homePosition.x)

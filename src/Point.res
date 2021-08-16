@@ -10,5 +10,6 @@ module Int = {
 
 module Float = {
   type t = t<float>
-  let toString = (self: t) => `{ x: ${self.x->Belt.Float.toString}, y: ${self.y->Belt.Float.toString} }`
+  let toString = (self: t) =>
+    `{ x: ${self.x->Belt.Float.toString}, y: ${self.y->Belt.Float.toString} }`
 }

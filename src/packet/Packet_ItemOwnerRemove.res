@@ -1,6 +1,4 @@
-type t = {
-  itemDropId: int,
-}
+type t = {itemDropId: int}
 
 module Decode = {
   let {readInt16} = module(PacketFactory.PacketReader)
@@ -8,7 +6,7 @@ module Decode = {
     let reader = PacketFactory.PacketReader.make(payload)
     let itemDropId = reader->readInt16
     Some({
-      itemDropId,
+      itemDropId: itemDropId,
     })
   }
 }

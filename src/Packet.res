@@ -527,7 +527,9 @@ module Lazy = {
     | PlayerDeath(_playerDeath) => "PlayerDeath"
     | CombatTextCreate(_combatTextCreate) => "CombatTextCreate"
     | Emoji(_emoji) => "Emoji"
-    | TileEntityDisplayDollItemSync(_tileEntityDisplayDollItemSync) => "TileEntityDisplayDollItemSync"
+    | TileEntityDisplayDollItemSync(
+        _tileEntityDisplayDollItemSync,
+      ) => "TileEntityDisplayDollItemSync"
     | TileEntityInteractionRequest(_tileEntityInteractionRequest) => "TileEntityInteractionRequest"
     | WeaponsRackTryPlacing(_weaponsRackTryPlacing) => "WeaponsRackTryPlacing"
     | TileEntityHatRackItemSync(_tileEntityHatRackItemSync) => "TileEntityHatRackItemSync"

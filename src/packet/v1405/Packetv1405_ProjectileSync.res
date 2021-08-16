@@ -37,18 +37,18 @@ module Decode = {
       None
     }
     Some({
-      projectileId,
-      x,
-      y,
-      vx,
-      vy,
-      owner,
-      projectileType,
-      ai,
-      damage,
-      knockback,
-      originalDamage,
-      projectileUuid,
+      projectileId: projectileId,
+      x: x,
+      y: y,
+      vx: vx,
+      vy: vy,
+      owner: owner,
+      projectileType: projectileType,
+      ai: ai,
+      damage: damage,
+      knockback: knockback,
+      originalDamage: originalDamage,
+      projectileUuid: projectileUuid,
     })
   }
 }
@@ -102,11 +102,13 @@ module Encode = {
   let toBuffer = (self: t): NodeJs.Buffer.t => {
     PacketFactory.ManagedPacketWriter.make()
     ->setType(PacketType.ProjectileSync->PacketType.toInt)
-    ->packInt16(switch self.projectileId {
-      | id when id == wandOfSparkingSparkProjectileId => sparkProjectileId // 954 does not exist in v1.4.0.5
-      | id when id == starCannonStarProjectileId => fallenStarProjectileId // Star Cannon Star does not exist in v1.4.0.5
+    ->packInt16(
+      switch self.projectileId {
+      | id if id == wandOfSparkingSparkProjectileId => sparkProjectileId // 954 does not exist in v1.4.0.5
+      | id if id == starCannonStarProjectileId => fallenStarProjectileId // Star Cannon Star does not exist in v1.4.0.5
       | id => id
-    })
+      },
+    )
     ->packSingle(self.x)
     ->packSingle(self.y)
     ->packSingle(self.vx)

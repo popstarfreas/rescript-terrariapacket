@@ -450,7 +450,6 @@ let toLatest = (packet: t, _fromServer: bool): same<Packet.t> => {
   }
 }
 
-
 let fromLatest = (packet: Packet.t, _fromServer: bool): option<same<t>> => {
   switch packet {
   | Packet.ConnectRequest(connectRequest) => Some(Same(ConnectRequest(connectRequest)))
@@ -775,7 +774,10 @@ module Lazy = {
     | PlayerInventorySlot(playerInventorySlot) =>
       Packet.Lazy.PlayerInventorySlot(playerInventorySlot)
     | WorldDataRequest(worldDataRequest) => Packet.Lazy.WorldDataRequest(worldDataRequest)
-    | WorldInfo(worldInfo) => Packet.Lazy.WorldInfo(lazy(worldInfo->Lazy.force->Belt.Option.map(worldInfo => WorldInfo.toLatest(worldInfo))))
+    | WorldInfo(worldInfo) =>
+      Packet.Lazy.WorldInfo(
+        lazy (worldInfo->Lazy.force->Belt.Option.map(worldInfo => WorldInfo.toLatest(worldInfo))),
+      )
     | InitialTileSectionsRequest(initialTileSectionsRequest) =>
       Packet.Lazy.InitialTileSectionsRequest(initialTileSectionsRequest)
     | Status(status) => Packet.Lazy.Status(status)
@@ -789,7 +791,13 @@ module Lazy = {
     | TimeSet(timeSet) => Packet.Lazy.TimeSet(timeSet)
     | DoorUse(doorUse) => Packet.Lazy.DoorUse(doorUse)
     | TileSquareSend(tileSquareSend) =>
-      Packet.Lazy.TileSquareSend(lazy(tileSquareSend->Lazy.force->Belt.Option.map(tileSquareSend => tileSquareSend->TileSquareSend.toLatest)))
+      Packet.Lazy.TileSquareSend(
+        lazy (
+          tileSquareSend
+          ->Lazy.force
+          ->Belt.Option.map(tileSquareSend => tileSquareSend->TileSquareSend.toLatest)
+        ),
+      )
     | ItemDropUpdate(itemDropUpdate) => Packet.Lazy.ItemDropUpdate(itemDropUpdate)
     | ItemOwner(itemOwner) => Packet.Lazy.ItemOwner(itemOwner)
     | NpcUpdate(npcUpdate) => Packet.Lazy.NpcUpdate(npcUpdate)
@@ -940,7 +948,6 @@ module Lazy = {
     }
   }
 }
-
 
 let toBuffer = (packet: t, _fromServer: bool): option<NodeJs.Buffer.t> => {
   switch packet {

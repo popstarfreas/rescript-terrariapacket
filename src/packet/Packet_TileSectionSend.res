@@ -445,15 +445,17 @@ module Encode = {
     }
 
     switch tile.wall {
-    | Some(wall) when wall > 255 =>
+    | Some(wall) if wall > 255 =>
       let _: bufferWriter = writer->packByte(wall->lsr(8))
     | Some(_) | None => ()
     }
 
     switch getRepeatCountByteLength(repeatCount) {
     | 0 => ()
-    | 1 => let _: bufferWriter = writer->packByte(repeatCount)
-    | _ => let _: bufferWriter = writer->packInt16(repeatCount)
+    | 1 =>
+      let _: bufferWriter = writer->packByte(repeatCount)
+    | _ =>
+      let _: bufferWriter = writer->packInt16(repeatCount)
     }
 
     writer
@@ -512,10 +514,7 @@ module Encode = {
     let _: bufferWriter = writer->packInt16(0) // signs length TODO: implement sign writing
     let _: bufferWriter = writer->packInt16(0) // target dummies length TODO: implement target dummy writing
 
-    packetWriter->packBuffer(
-      NodeJs.Zlib.deflateRawSync(writer->BufferWriter.slicedData)
-    )
-    ->data
+    packetWriter->packBuffer(NodeJs.Zlib.deflateRawSync(writer->BufferWriter.slicedData))->data
   }
 }
 

@@ -7,8 +7,8 @@ type flags = {
 type t = {
   max: int,
   text: PacketFactory.NetworkText.t,
-  flags,
+  flags: flags,
 }
 
-let parse: (NodeJs.Buffer.t) => option<t>
+let parse: NodeJs.Buffer.t => option<t>
 let toBuffer: t => NodeJs.Buffer.t

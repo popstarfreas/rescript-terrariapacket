@@ -24,15 +24,15 @@ module Decode = {
     let noDelay = reader->readByte
     let itemId = reader->readInt16
     Some({
-      itemDropId,
-      x,
-      y,
-      vx,
-      vy,
-      stack,
-      prefix,
-      noDelay,
-      itemId,
+      itemDropId: itemDropId,
+      x: x,
+      y: y,
+      vx: vx,
+      vy: vy,
+      stack: stack,
+      prefix: prefix,
+      noDelay: noDelay,
+      itemId: itemId,
     })
   }
 }

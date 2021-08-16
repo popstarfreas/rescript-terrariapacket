@@ -25,7 +25,8 @@ module Action = {
     | ReplaceWall
     | SlopePoundTile
 
-  let fromInt = (action: int) => switch action {
+  let fromInt = (action: int) =>
+    switch action {
     | 0 => Some(KillTile)
     | 1 => Some(PlaceTile)
     | 2 => Some(KillWall)
@@ -51,9 +52,10 @@ module Action = {
     | 22 => Some(ReplaceWall)
     | 23 => Some(SlopePoundTile)
     | _ => None
-  }
+    }
 
-  let toInt = (action: t) => switch action {
+  let toInt = (action: t) =>
+    switch action {
     | KillTile => 0
     | PlaceTile => 1
     | KillWall => 2
@@ -78,7 +80,7 @@ module Action = {
     | ReplaceTile => 21
     | ReplaceWall => 22
     | SlopePoundTile => 23
-  }
+    }
 }
 
 type t = {
@@ -100,14 +102,15 @@ module Decode = {
     let value2 = reader->readByte
 
     switch action {
-      | Some(action) => Some({
-        action,
-        tileX,
-        tileY,
-        value1,
-        value2,
+    | Some(action) =>
+      Some({
+        action: action,
+        tileX: tileX,
+        tileY: tileY,
+        value1: value1,
+        value2: value2,
       })
-      | None => None
+    | None => None
     }
   }
 }

@@ -4,7 +4,7 @@ type teleportType =
   | PlayerToPlayer
 
 type t = {
-  teleportType,
+  teleportType: teleportType,
   getPositionFromTarget: bool,
   targetId: int,
   x: float,
@@ -20,37 +20,40 @@ module Decode = {
     let flags = BitFlags.fromByte(reader->readByte)
     let getPositionFromTarget = flags->BitFlags.flag3
     let teleportType = switch (flags->BitFlags.flag1, flags->BitFlags.flag2) {
-      | (false, false) => Some(Player)
-      | (true, false) => Some(Npc)
-      | (false, true) => Some(PlayerToPlayer)
-      | (true, true) => None
+    | (false, false) => Some(Player)
+    | (true, false) => Some(Npc)
+    | (false, true) => Some(PlayerToPlayer)
+    | (true, true) => None
     }
     let targetId = reader->readInt16
     let x = reader->readSingle
     let y = reader->readSingle
     let style = reader->readByte
     let extraInfo = switch flags->BitFlags.flag4 {
-      | true => Some(reader->readInt32)
-      | false => None
+    | true => Some(reader->readInt32)
+    | false => None
     }
 
     switch teleportType {
-      | Some(teleportType) => Some({
-        teleportType,
-        getPositionFromTarget,
-        targetId,
-        x,
-        y,
-        style,
-        extraInfo,
+    | Some(teleportType) =>
+      Some({
+        teleportType: teleportType,
+        getPositionFromTarget: getPositionFromTarget,
+        targetId: targetId,
+        x: x,
+        y: y,
+        style: style,
+        extraInfo: extraInfo,
       })
-      | None => None
+    | None => None
     }
   }
 }
 
 module Encode = {
-  let {packByte, packInt16, packSingle, packInt32, setType, data} = module(PacketFactory.ManagedPacketWriter)
+  let {packByte, packInt16, packSingle, packInt32, setType, data} = module(
+    PacketFactory.ManagedPacketWriter
+  )
   let getFlags = (self: t): int => {
     BitFlags.fromFlags(
       ~flag1=self.teleportType == Npc,
@@ -64,17 +67,18 @@ module Encode = {
     )->BitFlags.toByte
   }
   let toBuffer = (self: t): NodeJs.Buffer.t => {
-    let writer = PacketFactory.ManagedPacketWriter.make()
-    ->setType(PacketType.Teleport->PacketType.toInt)
-    ->packByte(self->getFlags)
-    ->packInt16(self.targetId)
-    ->packSingle(self.x)
-    ->packSingle(self.y)
-    ->packByte(self.style)
+    let writer =
+      PacketFactory.ManagedPacketWriter.make()
+      ->setType(PacketType.Teleport->PacketType.toInt)
+      ->packByte(self->getFlags)
+      ->packInt16(self.targetId)
+      ->packSingle(self.x)
+      ->packSingle(self.y)
+      ->packByte(self.style)
 
     switch self.extraInfo {
-      | Some(extraInfo) => writer->packInt32(extraInfo)->ignore
-      | None => ()
+    | Some(extraInfo) => writer->packInt32(extraInfo)->ignore
+    | None => ()
     }
 
     writer->data

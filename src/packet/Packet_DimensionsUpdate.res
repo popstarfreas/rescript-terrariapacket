@@ -34,9 +34,7 @@ module UpdateType = {
 }
 
 module Decode = {
-  let {readString, readUInt16, readInt16} = module(
-    PacketFactory.PacketReader
-  )
+  let {readString, readUInt16, readInt16} = module(PacketFactory.PacketReader)
 
   let parseRealIpAddress = reader => {
     let ip = reader->readString
