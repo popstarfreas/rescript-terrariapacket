@@ -1,5 +1,3 @@
-type direction = Left | Right
-
 type spawnType =
   | GoblinInvasion
   | FrostInvasion
