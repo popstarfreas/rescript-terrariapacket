@@ -10,17 +10,9 @@ function readInt16(prim) {
   return prim.readInt16();
 }
 
-function readByte(prim) {
-  return prim.readByte();
-}
-
-function readSByte(prim) {
-  return prim.readSByte();
-}
-
 function parse(payload) {
   var reader = new Packetreader(payload);
-  var playerId = reader.readByte();
+  var playerId = reader.readInt16();
   var npcType = reader.readInt16();
   var spawnType;
   switch (npcType) {
@@ -81,14 +73,8 @@ function parse(payload) {
 
 var Decode = {
   readInt16: readInt16,
-  readByte: readByte,
-  readSByte: readSByte,
   parse: parse
 };
-
-function packByte(prim0, prim1) {
-  return prim0.packByte(prim1);
-}
 
 function packInt16(prim0, prim1) {
   return prim0.packInt16(prim1);
@@ -134,12 +120,11 @@ function packSpawnType(writer, spawnType) {
 }
 
 function toBuffer(self) {
-  return packSpawnType(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt(/* BossOrInvasionSpawn */56)).packByte(self.playerId), self.spawnType).data;
+  return packSpawnType(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt(/* BossOrInvasionSpawn */56)).packInt16(self.playerId), self.spawnType).data;
 }
 
 var Encode = {
   Writer: undefined,
-  packByte: packByte,
   packInt16: packInt16,
   setType: ManagedPacketWriter$PacketFactory.setType,
   data: data,

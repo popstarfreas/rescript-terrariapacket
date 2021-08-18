@@ -22,10 +22,10 @@ type t = {
 }
 
 module Decode = {
-  let {readInt16, readByte, readSByte} = module(PacketFactory.PacketReader)
+  let {readInt16} = module(PacketFactory.PacketReader)
   let parse = (payload: NodeJs.Buffer.t) => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let playerId = reader->readByte
+    let playerId = reader->readInt16
     let spawnType = switch reader->readInt16 {
     | -1 => GoblinInvasion
     | -2 => FrostInvasion
@@ -52,7 +52,7 @@ module Decode = {
 
 module Encode = {
   module Writer = PacketFactory.ManagedPacketWriter
-  let {packByte, packInt16, setType, data} = module(Writer)
+  let {packInt16, setType, data} = module(Writer)
   let packSpawnType = (writer, spawnType) =>
     switch spawnType {
     | GoblinInvasion => writer->packInt16(-1)
@@ -74,7 +74,7 @@ module Encode = {
   let toBuffer = (self: t): NodeJs.Buffer.t => {
     Writer.make()
     ->setType(PacketType.BossOrInvasionSpawn->PacketType.toInt)
-    ->packByte(self.playerId)
+    ->packInt16(self.playerId)
     ->packSpawnType(self.spawnType)
     ->data
   }
