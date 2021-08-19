@@ -45,7 +45,7 @@ module LiquidSet = Packet_LiquidSet
 module PlayerSpawnSelf = Packet_PlayerSpawnSelf
 module PlayerBuffsSet = Packet_PlayerBuffsSet
 module NpcSpecialEffect = Packet_NpcSpecialEffect
-module ChestUnlock = Packet_ChestUnlock
+module ChestOrTempleUnlock = Packet_ChestOrTempleUnlock
 module NpcBuffAdd = Packet_NpcBuffAdd
 module NpcBuffUpdate = Packet_NpcBuffUpdate
 module PlayerBuffAdd = Packet_PlayerBuffAdd
@@ -183,7 +183,7 @@ type t =
   | PlayerSpawnSelf(PlayerSpawnSelf.t)
   | PlayerBuffsSet(PlayerBuffsSet.t)
   | NpcSpecialEffect(NpcSpecialEffect.t)
-  | ChestUnlock(ChestUnlock.t)
+  | ChestOrTempleUnlock(ChestOrTempleUnlock.t)
   | NpcBuffAdd(NpcBuffAdd.t)
   | NpcBuffUpdate(NpcBuffUpdate.t)
   | PlayerBuffAdd(PlayerBuffAdd.t)
@@ -329,7 +329,7 @@ let toLatest = (packet: t, _fromServer: bool): same<Packet.t> => {
   | PlayerSpawnSelf(playerSpawnSelf) => Same(Packet.PlayerSpawnSelf(playerSpawnSelf))
   | PlayerBuffsSet(playerBuffsSet) => Same(Packet.PlayerBuffsSet(playerBuffsSet))
   | NpcSpecialEffect(npcSpecialEffect) => Same(Packet.NpcSpecialEffect(npcSpecialEffect))
-  | ChestUnlock(chestUnlock) => Same(Packet.ChestUnlock(chestUnlock))
+  | ChestOrTempleUnlock(chestOrTempleUnlock) => Same(Packet.ChestOrTempleUnlock(chestOrTempleUnlock))
   | NpcBuffAdd(npcBuffAdd) => Same(Packet.NpcBuffAdd(npcBuffAdd))
   | NpcBuffUpdate(npcBuffUpdate) => Same(Packet.NpcBuffUpdate(npcBuffUpdate))
   | PlayerBuffAdd(playerBuffAdd) => Same(Packet.PlayerBuffAdd(playerBuffAdd))
@@ -504,7 +504,7 @@ let fromLatest = (packet: Packet.t, _fromServer: bool): option<same<t>> => {
   | Packet.PlayerSpawnSelf(playerSpawnSelf) => Some(Same(PlayerSpawnSelf(playerSpawnSelf)))
   | Packet.PlayerBuffsSet(playerBuffsSet) => Some(Same(PlayerBuffsSet(playerBuffsSet)))
   | Packet.NpcSpecialEffect(npcSpecialEffect) => Some(Same(NpcSpecialEffect(npcSpecialEffect)))
-  | Packet.ChestUnlock(chestUnlock) => Some(Same(ChestUnlock(chestUnlock)))
+  | Packet.ChestOrTempleUnlock(chestOrTempleUnlock) => Some(Same(ChestOrTempleUnlock(chestOrTempleUnlock)))
   | Packet.NpcBuffAdd(npcBuffAdd) => Some(Same(NpcBuffAdd(npcBuffAdd)))
   | Packet.NpcBuffUpdate(npcBuffUpdate) => Some(Same(NpcBuffUpdate(npcBuffUpdate)))
   | Packet.PlayerBuffAdd(playerBuffAdd) => Some(Same(PlayerBuffAdd(playerBuffAdd)))
@@ -676,7 +676,7 @@ module Lazy = {
     | PlayerSpawnSelf(Lazy.t<option<PlayerSpawnSelf.t>>)
     | PlayerBuffsSet(Lazy.t<option<PlayerBuffsSet.t>>)
     | NpcSpecialEffect(Lazy.t<option<NpcSpecialEffect.t>>)
-    | ChestUnlock(Lazy.t<option<ChestUnlock.t>>)
+    | ChestOrTempleUnlock(Lazy.t<option<ChestOrTempleUnlock.t>>)
     | NpcBuffAdd(Lazy.t<option<NpcBuffAdd.t>>)
     | NpcBuffUpdate(Lazy.t<option<NpcBuffUpdate.t>>)
     | PlayerBuffAdd(Lazy.t<option<PlayerBuffAdd.t>>)
@@ -827,7 +827,7 @@ module Lazy = {
     | PlayerSpawnSelf(playerSpawnSelf) => Packet.Lazy.PlayerSpawnSelf(playerSpawnSelf)
     | PlayerBuffsSet(playerBuffsSet) => Packet.Lazy.PlayerBuffsSet(playerBuffsSet)
     | NpcSpecialEffect(npcSpecialEffect) => Packet.Lazy.NpcSpecialEffect(npcSpecialEffect)
-    | ChestUnlock(chestUnlock) => Packet.Lazy.ChestUnlock(chestUnlock)
+    | ChestOrTempleUnlock(chestOrTempleUnlock) => Packet.Lazy.ChestOrTempleUnlock(chestOrTempleUnlock)
     | NpcBuffAdd(npcBuffAdd) => Packet.Lazy.NpcBuffAdd(npcBuffAdd)
     | NpcBuffUpdate(npcBuffUpdate) => Packet.Lazy.NpcBuffUpdate(npcBuffUpdate)
     | PlayerBuffAdd(playerBuffAdd) => Packet.Lazy.PlayerBuffAdd(playerBuffAdd)
@@ -1000,7 +1000,7 @@ let toBuffer = (packet: t, _fromServer: bool): option<NodeJs.Buffer.t> => {
   | PlayerSpawnSelf(_playerSpawnSelf) => None
   | PlayerBuffsSet(_playerBuffsSet) => None
   | NpcSpecialEffect(_npcSpecialEffect) => None
-  | ChestUnlock(_chestUnlock) => None
+  | ChestOrTempleUnlock(_chestOrTempleUnlock) => None
   | NpcBuffAdd(_npcBuffAdd) => None
   | NpcBuffUpdate(_npcBuffUpdate) => None
   | PlayerBuffAdd(_playerBuffAdd) => None

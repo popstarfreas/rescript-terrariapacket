@@ -110,8 +110,8 @@ let parsePayload = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServ
     Packet.PlayerBuffsSet.parse(payload)->Belt.Option.map(a => Packet.PlayerBuffsSet(a))
   | (NpcSpecialEffect, true | false) =>
     Packet.NpcSpecialEffect.parse(payload)->Belt.Option.map(a => Packet.NpcSpecialEffect(a))
-  | (ChestUnlock, true | false) =>
-    Packet.ChestUnlock.parse(payload)->Belt.Option.map(a => Packet.ChestUnlock(a))
+  | (ChestOrTempleUnlock, true | false) =>
+    Packet.ChestOrTempleUnlock.parse(payload)->Belt.Option.map(a => Packet.ChestOrTempleUnlock(a))
   | (NpcBuffAdd, true | false) =>
     Packet.NpcBuffAdd.parse(payload)->Belt.Option.map(a => Packet.NpcBuffAdd(a))
   | (NpcBuffUpdate, false) => None
@@ -480,8 +480,8 @@ let parsePayloadLazy = (
     Some(Packet.Lazy.PlayerBuffsSet(lazy Packet.PlayerBuffsSet.parse(payload)))
   | (NpcSpecialEffect, true | false) =>
     Some(Packet.Lazy.NpcSpecialEffect(lazy Packet.NpcSpecialEffect.parse(payload)))
-  | (ChestUnlock, true | false) =>
-    Some(Packet.Lazy.ChestUnlock(lazy Packet.ChestUnlock.parse(payload)))
+  | (ChestOrTempleUnlock, true | false) =>
+    Some(Packet.Lazy.ChestOrTempleUnlock(lazy Packet.ChestOrTempleUnlock.parse(payload)))
   | (NpcBuffAdd, true | false) =>
     Some(Packet.Lazy.NpcBuffAdd(lazy Packet.NpcBuffAdd.parse(payload)))
   | (NpcBuffUpdate, false) => None

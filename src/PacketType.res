@@ -46,7 +46,7 @@ type t =
   | PlayerSpawnSelf
   | PlayerBuffsSet
   | NpcSpecialEffect
-  | ChestUnlock
+  | ChestOrTempleUnlock
   | NpcBuffAdd
   | NpcBuffUpdate
   | PlayerBuffAdd
@@ -184,7 +184,7 @@ let fromInt = n =>
   | 49 => Some(PlayerSpawnSelf)
   | 50 => Some(PlayerBuffsSet)
   | 51 => Some(NpcSpecialEffect)
-  | 52 => Some(ChestUnlock)
+  | 52 => Some(ChestOrTempleUnlock)
   | 53 => Some(NpcBuffAdd)
   | 54 => Some(NpcBuffUpdate)
   | 55 => Some(PlayerBuffAdd)
@@ -324,7 +324,7 @@ let toInt = self =>
   | PlayerSpawnSelf => 49
   | PlayerBuffsSet => 50
   | NpcSpecialEffect => 51
-  | ChestUnlock => 52
+  | ChestOrTempleUnlock => 52
   | NpcBuffAdd => 53
   | NpcBuffUpdate => 54
   | PlayerBuffAdd => 55

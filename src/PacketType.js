@@ -104,7 +104,7 @@ function fromInt(n) {
     case 51 :
         return /* NpcSpecialEffect */46;
     case 52 :
-        return /* ChestUnlock */47;
+        return /* ChestOrTempleUnlock */47;
     case 53 :
         return /* NpcBuffAdd */48;
     case 54 :
@@ -380,7 +380,7 @@ function toInt(self) {
         return 50;
     case /* NpcSpecialEffect */46 :
         return 51;
-    case /* ChestUnlock */47 :
+    case /* ChestOrTempleUnlock */47 :
         return 52;
     case /* NpcBuffAdd */48 :
         return 53;

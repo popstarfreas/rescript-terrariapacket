@@ -354,9 +354,9 @@ function npcSpecialEffect(param_0) {
         };
 }
 
-function chestUnlock(param_0) {
+function chestOrTempleUnlock(param_0) {
   return {
-          TAG: /* ChestUnlock */47,
+          TAG: /* ChestOrTempleUnlock */47,
           _0: param_0
         };
 }
@@ -1348,11 +1348,11 @@ function toLatest(packet, _fromServer) {
                   _0: packet._0
                 }
               };
-    case /* ChestUnlock */47 :
+    case /* ChestOrTempleUnlock */47 :
         return {
                 TAG: /* Same */0,
                 _0: {
-                  TAG: /* ChestUnlock */47,
+                  TAG: /* ChestOrTempleUnlock */47,
                   _0: packet._0
                 }
               };
@@ -2438,11 +2438,11 @@ function fromLatest(packet, _fromServer) {
                   _0: packet._0
                 }
               };
-    case /* ChestUnlock */47 :
+    case /* ChestOrTempleUnlock */47 :
         return {
                 TAG: /* Same */0,
                 _0: {
-                  TAG: /* ChestUnlock */47,
+                  TAG: /* ChestOrTempleUnlock */47,
                   _0: packet._0
                 }
               };
@@ -3395,9 +3395,9 @@ function toLatest$1(packet, _fromServer) {
                 TAG: /* NpcSpecialEffect */46,
                 _0: packet._0
               };
-    case /* ChestUnlock */47 :
+    case /* ChestOrTempleUnlock */47 :
         return {
-                TAG: /* ChestUnlock */47,
+                TAG: /* ChestOrTempleUnlock */47,
                 _0: packet._0
               };
     case /* NpcBuffAdd */48 :
@@ -4012,7 +4012,7 @@ var PlayerBuffsSet;
 
 var NpcSpecialEffect;
 
-var ChestUnlock;
+var ChestOrTempleUnlock;
 
 var NpcBuffAdd;
 
@@ -4235,7 +4235,7 @@ exports.LiquidSet = LiquidSet;
 exports.PlayerSpawnSelf = PlayerSpawnSelf;
 exports.PlayerBuffsSet = PlayerBuffsSet;
 exports.NpcSpecialEffect = NpcSpecialEffect;
-exports.ChestUnlock = ChestUnlock;
+exports.ChestOrTempleUnlock = ChestOrTempleUnlock;
 exports.NpcBuffAdd = NpcBuffAdd;
 exports.NpcBuffUpdate = NpcBuffUpdate;
 exports.PlayerBuffAdd = PlayerBuffAdd;
@@ -4370,7 +4370,7 @@ exports.liquidSet = liquidSet;
 exports.playerSpawnSelf = playerSpawnSelf;
 exports.playerBuffsSet = playerBuffsSet;
 exports.npcSpecialEffect = npcSpecialEffect;
-exports.chestUnlock = chestUnlock;
+exports.chestOrTempleUnlock = chestOrTempleUnlock;
 exports.npcBuffAdd = npcBuffAdd;
 exports.npcBuffUpdate = npcBuffUpdate;
 exports.playerBuffAdd = playerBuffAdd;

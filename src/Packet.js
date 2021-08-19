@@ -122,8 +122,8 @@ function toPacketName(packet) {
         return "PlayerBuffsSet";
     case /* NpcSpecialEffect */46 :
         return "NpcSpecialEffect";
-    case /* ChestUnlock */47 :
-        return "ChestUnlock";
+    case /* ChestOrTempleUnlock */47 :
+        return "ChestOrTempleUnlock";
     case /* NpcBuffAdd */48 :
         return "NpcBuffAdd";
     case /* NpcBuffUpdate */49 :
@@ -466,8 +466,8 @@ function toPacketName$1(packet) {
         return "PlayerBuffsSet";
     case /* NpcSpecialEffect */46 :
         return "NpcSpecialEffect";
-    case /* ChestUnlock */47 :
-        return "ChestUnlock";
+    case /* ChestOrTempleUnlock */47 :
+        return "ChestOrTempleUnlock";
     case /* NpcBuffAdd */48 :
         return "NpcBuffAdd";
     case /* NpcBuffUpdate */49 :
@@ -781,7 +781,7 @@ var PlayerBuffsSet;
 
 var NpcSpecialEffect;
 
-var ChestUnlock;
+var ChestOrTempleUnlock;
 
 var NpcBuffAdd;
 
@@ -1004,7 +1004,7 @@ exports.LiquidSet = LiquidSet;
 exports.PlayerSpawnSelf = PlayerSpawnSelf;
 exports.PlayerBuffsSet = PlayerBuffsSet;
 exports.NpcSpecialEffect = NpcSpecialEffect;
-exports.ChestUnlock = ChestUnlock;
+exports.ChestOrTempleUnlock = ChestOrTempleUnlock;
 exports.NpcBuffAdd = NpcBuffAdd;
 exports.NpcBuffUpdate = NpcBuffUpdate;
 exports.PlayerBuffAdd = PlayerBuffAdd;

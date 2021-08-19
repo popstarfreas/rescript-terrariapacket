@@ -45,7 +45,6 @@ var Packet_ReleaseNpc$TerrariaPacket = require("./packet/Packet_ReleaseNpc.js");
 var Packet_TileModify$TerrariaPacket = require("./packet/Packet_TileModify.js");
 var Packet_TreeGrowFx$TerrariaPacket = require("./packet/Packet_TreeGrowFx.js");
 var Packet_AnglerQuest$TerrariaPacket = require("./packet/Packet_AnglerQuest.js");
-var Packet_ChestUnlock$TerrariaPacket = require("./packet/Packet_ChestUnlock.js");
 var Packet_EmoteBubble$TerrariaPacket = require("./packet/Packet_EmoteBubble.js");
 var Packet_NpcShopItem$TerrariaPacket = require("./packet/Packet_NpcShopItem.js");
 var Packet_ObjectPlace$TerrariaPacket = require("./packet/Packet_ObjectPlace.js");
@@ -108,6 +107,7 @@ var Packet_MinionTargetUpdate$TerrariaPacket = require("./packet/Packet_MinionTa
 var Packet_ActiveContainerSync$TerrariaPacket = require("./packet/Packet_ActiveContainerSync.js");
 var Packet_AnglerQuestComplete$TerrariaPacket = require("./packet/Packet_AnglerQuestComplete.js");
 var Packet_BossOrInvasionSpawn$TerrariaPacket = require("./packet/Packet_BossOrInvasionSpawn.js");
+var Packet_ChestOrTempleUnlock$TerrariaPacket = require("./packet/Packet_ChestOrTempleUnlock.js");
 var Packet_PlayerInventorySlot$TerrariaPacket = require("./packet/Packet_PlayerInventorySlot.js");
 var Packet_RevengeMarkerRemove$TerrariaPacket = require("./packet/Packet_RevengeMarkerRemove.js");
 var Packet_TeleportationPotion$TerrariaPacket = require("./packet/Packet_TeleportationPotion.js");
@@ -546,10 +546,10 @@ function parsePayload(packetType, payload, fromServer) {
                               _0: a
                             };
                     }));
-    case /* ChestUnlock */47 :
-        return Belt_Option.map(Packet_ChestUnlock$TerrariaPacket.parse(payload), (function (a) {
+    case /* ChestOrTempleUnlock */47 :
+        return Belt_Option.map(Packet_ChestOrTempleUnlock$TerrariaPacket.parse(payload), (function (a) {
                       return {
-                              TAG: /* ChestUnlock */47,
+                              TAG: /* ChestOrTempleUnlock */47,
                               _0: a
                             };
                     }));
@@ -1950,13 +1950,13 @@ function parseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* ChestUnlock */47 :
+      case /* ChestOrTempleUnlock */47 :
           return {
-                  TAG: /* ChestUnlock */47,
+                  TAG: /* ChestOrTempleUnlock */47,
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_ChestUnlock$TerrariaPacket.parse(buffer);
+                        return Packet_ChestOrTempleUnlock$TerrariaPacket.parse(buffer);
                       })
                   }
                 };
