@@ -329,7 +329,8 @@ let toLatest = (packet: t, _fromServer: bool): same<Packet.t> => {
   | PlayerSpawnSelf(playerSpawnSelf) => Same(Packet.PlayerSpawnSelf(playerSpawnSelf))
   | PlayerBuffsSet(playerBuffsSet) => Same(Packet.PlayerBuffsSet(playerBuffsSet))
   | NpcSpecialEffect(npcSpecialEffect) => Same(Packet.NpcSpecialEffect(npcSpecialEffect))
-  | ChestOrTempleUnlock(chestOrTempleUnlock) => Same(Packet.ChestOrTempleUnlock(chestOrTempleUnlock))
+  | ChestOrTempleUnlock(chestOrTempleUnlock) =>
+    Same(Packet.ChestOrTempleUnlock(chestOrTempleUnlock))
   | NpcBuffAdd(npcBuffAdd) => Same(Packet.NpcBuffAdd(npcBuffAdd))
   | NpcBuffUpdate(npcBuffUpdate) => Same(Packet.NpcBuffUpdate(npcBuffUpdate))
   | PlayerBuffAdd(playerBuffAdd) => Same(Packet.PlayerBuffAdd(playerBuffAdd))
@@ -504,7 +505,8 @@ let fromLatest = (packet: Packet.t, _fromServer: bool): option<same<t>> => {
   | Packet.PlayerSpawnSelf(playerSpawnSelf) => Some(Same(PlayerSpawnSelf(playerSpawnSelf)))
   | Packet.PlayerBuffsSet(playerBuffsSet) => Some(Same(PlayerBuffsSet(playerBuffsSet)))
   | Packet.NpcSpecialEffect(npcSpecialEffect) => Some(Same(NpcSpecialEffect(npcSpecialEffect)))
-  | Packet.ChestOrTempleUnlock(chestOrTempleUnlock) => Some(Same(ChestOrTempleUnlock(chestOrTempleUnlock)))
+  | Packet.ChestOrTempleUnlock(chestOrTempleUnlock) =>
+    Some(Same(ChestOrTempleUnlock(chestOrTempleUnlock)))
   | Packet.NpcBuffAdd(npcBuffAdd) => Some(Same(NpcBuffAdd(npcBuffAdd)))
   | Packet.NpcBuffUpdate(npcBuffUpdate) => Some(Same(NpcBuffUpdate(npcBuffUpdate)))
   | Packet.PlayerBuffAdd(playerBuffAdd) => Some(Same(PlayerBuffAdd(playerBuffAdd)))
@@ -827,7 +829,8 @@ module Lazy = {
     | PlayerSpawnSelf(playerSpawnSelf) => Packet.Lazy.PlayerSpawnSelf(playerSpawnSelf)
     | PlayerBuffsSet(playerBuffsSet) => Packet.Lazy.PlayerBuffsSet(playerBuffsSet)
     | NpcSpecialEffect(npcSpecialEffect) => Packet.Lazy.NpcSpecialEffect(npcSpecialEffect)
-    | ChestOrTempleUnlock(chestOrTempleUnlock) => Packet.Lazy.ChestOrTempleUnlock(chestOrTempleUnlock)
+    | ChestOrTempleUnlock(chestOrTempleUnlock) =>
+      Packet.Lazy.ChestOrTempleUnlock(chestOrTempleUnlock)
     | NpcBuffAdd(npcBuffAdd) => Packet.Lazy.NpcBuffAdd(npcBuffAdd)
     | NpcBuffUpdate(npcBuffUpdate) => Packet.Lazy.NpcBuffUpdate(npcBuffUpdate)
     | PlayerBuffAdd(playerBuffAdd) => Packet.Lazy.PlayerBuffAdd(playerBuffAdd)

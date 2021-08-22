@@ -7,16 +7,18 @@ module Action = {
     | PlaceContainer
     | KillContainer
 
-  let toInt = action => switch action {
+  let toInt = action =>
+    switch action {
     | PlaceChest => 0
     | KillChest => 1
     | PlaceDresser => 2
     | KillDresser => 3
     | PlaceContainer => 4
     | KillContainer => 5
-  }
+    }
 
-  let fromInt = action => switch action {
+  let fromInt = action =>
+    switch action {
     | 0 => Some(PlaceChest)
     | 1 => Some(KillChest)
     | 2 => Some(PlaceDresser)
@@ -24,7 +26,7 @@ module Action = {
     | 4 => Some(PlaceContainer)
     | 5 => Some(KillContainer)
     | _ => None
-  }
+    }
 }
 
 type t = {
@@ -46,15 +48,16 @@ module Decode = {
     let id = reader->readInt16
 
     switch action {
-    | Some(action) => Some({
-      action: action,
-      x: x,
-      y: y,
-      style: style,
-      id: id,
-    })
+    | Some(action) =>
+      Some({
+        action: action,
+        x: x,
+        y: y,
+        style: style,
+        id: id,
+      })
     | None => None
-  }
+    }
   }
 }
 
@@ -63,12 +66,12 @@ module Encode = {
   let {packByte, packInt16, setType, data} = module(Writer)
   let packAction = (writer: Writer.t, action: Action.t): Writer.t => {
     let byte = switch action {
-      | PlaceChest => 0
-      | KillChest => 1
-      | PlaceDresser => 2
-      | KillDresser => 3
-      | PlaceContainer => 4
-      | KillContainer => 5
+    | PlaceChest => 0
+    | KillChest => 1
+    | PlaceDresser => 2
+    | KillDresser => 3
+    | PlaceContainer => 4
+    | KillContainer => 5
     }
     writer->packByte(byte)
   }

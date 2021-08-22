@@ -3,27 +3,26 @@ type teleportType =
   | MagicConch
   | DemonConch
 
-let teleportTypeToInt = (teleportType) => switch teleportType {
+let teleportTypeToInt = teleportType =>
+  switch teleportType {
   | TeleportationPotion => 0
   | MagicConch => 1
   | DemonConch => 2
-}
+  }
 
-type t = {
-  teleportType: teleportType,
-}
+type t = {teleportType: teleportType}
 
 module Decode = {
   let {readByte, readInt16} = module(PacketFactory.PacketReader)
   let parse = (payload: NodeJs.Buffer.t) => {
     let reader = PacketFactory.PacketReader.make(payload)
     let teleportType = switch reader->readByte {
-      | 0 => TeleportationPotion
-      | 1 => MagicConch
-      | _ => DemonConch
+    | 0 => TeleportationPotion
+    | 1 => MagicConch
+    | _ => DemonConch
     }
     Some({
-      teleportType,
+      teleportType: teleportType,
     })
   }
 }

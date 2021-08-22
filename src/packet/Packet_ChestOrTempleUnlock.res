@@ -13,13 +13,13 @@ module Decode = {
   let parse = (payload: NodeJs.Buffer.t) => {
     let reader = PacketFactory.PacketReader.make(payload)
     let unlockType = switch reader->readByte {
-      | 1 => Chest
-      | _ => TempleDoor
+    | 1 => Chest
+    | _ => TempleDoor
     }
     let x = reader->readInt16
     let y = reader->readInt16
     Some({
-      unlockType,
+      unlockType: unlockType,
       x: x,
       y: y,
     })

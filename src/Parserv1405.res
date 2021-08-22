@@ -128,7 +128,9 @@ let parsePayload = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServ
       a,
     ))
   | (ChestOrTempleUnlock, true | false) =>
-    Packetv1405.ChestOrTempleUnlock.parse(payload)->Belt.Option.map(a => Packetv1405.ChestOrTempleUnlock(a))
+    Packetv1405.ChestOrTempleUnlock.parse(
+      payload,
+    )->Belt.Option.map(a => Packetv1405.ChestOrTempleUnlock(a))
   | (NpcBuffAdd, true | false) =>
     Packetv1405.NpcBuffAdd.parse(payload)->Belt.Option.map(a => Packetv1405.NpcBuffAdd(a))
   | (NpcBuffUpdate, false) => None

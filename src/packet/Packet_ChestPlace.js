@@ -31,7 +31,8 @@ function fromInt(action) {
 
 var Action = {
   toInt: toInt,
-  fromInt: fromInt
+  fromInt: fromInt,
+  toString: toString
 };
 
 function readInt16(prim) {
