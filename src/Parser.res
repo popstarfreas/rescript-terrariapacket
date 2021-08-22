@@ -168,7 +168,7 @@ let parsePayload = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServ
   | (AnglerQuestComplete, true) => None
   | (AnglerQuestComplete, false) =>
     Packet.AnglerQuestComplete.parse(payload)->Belt.Option.map(a => Packet.AnglerQuestComplete(a))
-  | (AnglerQuestsCompletedAmount, true) => None
+  | (AnglerQuestsCompletedAmount, true)
   | (AnglerQuestsCompletedAmount, false) =>
     Packet.AnglerQuestsCompletedAmount.parse(
       payload,
@@ -531,7 +531,7 @@ let parsePayloadLazy = (
   | (AnglerQuestComplete, true) => None
   | (AnglerQuestComplete, false) =>
     Some(Packet.Lazy.AnglerQuestComplete(lazy Packet.AnglerQuestComplete.parse(payload)))
-  | (AnglerQuestsCompletedAmount, true) => None
+  | (AnglerQuestsCompletedAmount, true)
   | (AnglerQuestsCompletedAmount, false) =>
     Some(
       Packet.Lazy.AnglerQuestsCompletedAmount(

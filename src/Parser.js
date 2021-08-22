@@ -751,16 +751,12 @@ function parsePayload(packetType, payload, fromServer) {
                       }));
         }
     case /* AnglerQuestsCompletedAmount */71 :
-        if (fromServer) {
-          return ;
-        } else {
-          return Belt_Option.map(Packet_AnglerQuestsCompletedAmount$TerrariaPacket.parse(payload), (function (a) {
-                        return {
-                                TAG: /* AnglerQuestsCompletedAmount */71,
-                                _0: a
-                              };
-                      }));
-        }
+        return Belt_Option.map(Packet_AnglerQuestsCompletedAmount$TerrariaPacket.parse(payload), (function (a) {
+                      return {
+                              TAG: /* AnglerQuestsCompletedAmount */71,
+                              _0: a
+                            };
+                    }));
     case /* TemporaryAnimationCreate */72 :
         if (fromServer) {
           return Belt_Option.map(Packet_TemporaryAnimationCreate$TerrariaPacket.parse(payload), (function (a) {
@@ -2227,19 +2223,15 @@ function parseLazy(buffer, fromServer) {
                   };
           }
       case /* AnglerQuestsCompletedAmount */71 :
-          if (fromServer) {
-            return ;
-          } else {
-            return {
-                    TAG: /* AnglerQuestsCompletedAmount */71,
-                    _0: {
-                      LAZY_DONE: false,
-                      VAL: (function () {
-                          return Packet_AnglerQuestsCompletedAmount$TerrariaPacket.parse(buffer);
-                        })
-                    }
-                  };
-          }
+          return {
+                  TAG: /* AnglerQuestsCompletedAmount */71,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_AnglerQuestsCompletedAmount$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
       case /* TemporaryAnimationCreate */72 :
           if (fromServer) {
             return {
