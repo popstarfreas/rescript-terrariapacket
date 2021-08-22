@@ -27,6 +27,16 @@ module Action = {
     | 5 => Some(KillContainer)
     | _ => None
     }
+
+  let toString = action =>
+    switch action {
+    | PlaceChest => "PlaceChest"
+    | KillChest => "KillChest"
+    | PlaceDresser => "PlaceDresser"
+    | KillDresser => "KillDresser"
+    | PlaceContainer => "PlaceContainer"
+    | KillContainer => "KillContainer"
+    }
 }
 
 type t = {

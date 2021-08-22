@@ -29,6 +29,24 @@ function fromInt(action) {
   }
 }
 
+function toString(action) {
+  switch (action) {
+    case /* PlaceChest */0 :
+        return "PlaceChest";
+    case /* KillChest */1 :
+        return "KillChest";
+    case /* PlaceDresser */2 :
+        return "PlaceDresser";
+    case /* KillDresser */3 :
+        return "KillDresser";
+    case /* PlaceContainer */4 :
+        return "PlaceContainer";
+    case /* KillContainer */5 :
+        return "KillContainer";
+    
+  }
+}
+
 var Action = {
   toInt: toInt,
   fromInt: fromInt,
