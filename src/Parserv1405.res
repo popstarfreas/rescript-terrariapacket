@@ -483,8 +483,7 @@ let parsePayloadLazy = (
   | (TileSectionFrame, false) => None
   | (TileSectionFrame, true) =>
     Some(Packetv1405.Lazy.TileSectionFrame(lazy Packetv1405.TileSectionFrame.parse(payload)))
-  | (PlayerSpawn, true) => None
-  | (PlayerSpawn, false) =>
+  | (PlayerSpawn, true | false) =>
     Some(Packetv1405.Lazy.PlayerSpawn(lazy Packetv1405.PlayerSpawn.parse(payload)))
   | (PlayerUpdate, true | false) =>
     Some(Packetv1405.Lazy.PlayerUpdate(lazy Packetv1405.PlayerUpdate.parse(payload)))

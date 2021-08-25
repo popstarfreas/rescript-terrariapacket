@@ -33,8 +33,7 @@ let parsePayload = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServ
   | (TileSectionFrame, false) => None
   | (TileSectionFrame, true) =>
     Packet.TileSectionFrame.parse(payload)->Belt.Option.map(a => Packet.TileSectionFrame(a))
-  | (PlayerSpawn, true) => None
-  | (PlayerSpawn, false) =>
+  | (PlayerSpawn, true | false) =>
     Packet.PlayerSpawn.parse(payload)->Belt.Option.map(a => Packet.PlayerSpawn(a))
   | (PlayerUpdate, true | false) =>
     Packet.PlayerUpdate.parse(payload)->Belt.Option.map(a => Packet.PlayerUpdate(a))
@@ -414,8 +413,7 @@ let parsePayloadLazy = (
   | (TileSectionFrame, false) => None
   | (TileSectionFrame, true) =>
     Some(Packet.Lazy.TileSectionFrame(lazy Packet.TileSectionFrame.parse(payload)))
-  | (PlayerSpawn, true) => None
-  | (PlayerSpawn, false) => Some(Packet.Lazy.PlayerSpawn(lazy Packet.PlayerSpawn.parse(payload)))
+  | (PlayerSpawn, true | false) => Some(Packet.Lazy.PlayerSpawn(lazy Packet.PlayerSpawn.parse(payload)))
   | (PlayerUpdate, true | false) =>
     Some(Packet.Lazy.PlayerUpdate(lazy Packet.PlayerUpdate.parse(payload)))
   | (PlayerActive, false) => None

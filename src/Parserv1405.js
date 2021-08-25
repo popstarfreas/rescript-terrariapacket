@@ -1534,19 +1534,15 @@ function simpleParseLazy(buffer, fromServer) {
             return ;
           }
       case /* PlayerSpawn */11 :
-          if (fromServer) {
-            return ;
-          } else {
-            return {
-                    TAG: /* PlayerSpawn */11,
-                    _0: {
-                      LAZY_DONE: false,
-                      VAL: (function () {
-                          return Packet_PlayerSpawn$TerrariaPacket.parse(buffer);
-                        })
-                    }
-                  };
-          }
+          return {
+                  TAG: /* PlayerSpawn */11,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_PlayerSpawn$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
       case /* PlayerUpdate */12 :
           return {
                   TAG: /* PlayerUpdate */12,

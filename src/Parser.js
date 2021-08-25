@@ -255,16 +255,12 @@ function parsePayload(packetType, payload, fromServer) {
           return ;
         }
     case /* PlayerSpawn */11 :
-        if (fromServer) {
-          return ;
-        } else {
-          return Belt_Option.map(Packet_PlayerSpawn$TerrariaPacket.parse(payload), (function (a) {
-                        return {
-                                TAG: /* PlayerSpawn */11,
-                                _0: a
-                              };
-                      }));
-        }
+        return Belt_Option.map(Packet_PlayerSpawn$TerrariaPacket.parse(payload), (function (a) {
+                      return {
+                              TAG: /* PlayerSpawn */11,
+                              _0: a
+                            };
+                    }));
     case /* PlayerUpdate */12 :
         return Belt_Option.map(Packet_PlayerUpdate$TerrariaPacket.parse(payload), (function (a) {
                       return {
@@ -1547,19 +1543,15 @@ function parseLazy(buffer, fromServer) {
             return ;
           }
       case /* PlayerSpawn */11 :
-          if (fromServer) {
-            return ;
-          } else {
-            return {
-                    TAG: /* PlayerSpawn */11,
-                    _0: {
-                      LAZY_DONE: false,
-                      VAL: (function () {
-                          return Packet_PlayerSpawn$TerrariaPacket.parse(buffer);
-                        })
-                    }
-                  };
-          }
+          return {
+                  TAG: /* PlayerSpawn */11,
+                  _0: {
+                    LAZY_DONE: false,
+                    VAL: (function () {
+                        return Packet_PlayerSpawn$TerrariaPacket.parse(buffer);
+                      })
+                  }
+                };
       case /* PlayerUpdate */12 :
           return {
                   TAG: /* PlayerUpdate */12,
