@@ -413,7 +413,8 @@ let parsePayloadLazy = (
   | (TileSectionFrame, false) => None
   | (TileSectionFrame, true) =>
     Some(Packet.Lazy.TileSectionFrame(lazy Packet.TileSectionFrame.parse(payload)))
-  | (PlayerSpawn, true | false) => Some(Packet.Lazy.PlayerSpawn(lazy Packet.PlayerSpawn.parse(payload)))
+  | (PlayerSpawn, true | false) =>
+    Some(Packet.Lazy.PlayerSpawn(lazy Packet.PlayerSpawn.parse(payload)))
   | (PlayerUpdate, true | false) =>
     Some(Packet.Lazy.PlayerUpdate(lazy Packet.PlayerUpdate.parse(payload)))
   | (PlayerActive, false) => None
