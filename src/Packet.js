@@ -5,6 +5,7 @@ var Pervasives = require("rescript/lib/js/pervasives.js");
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
 var Caml_option = require("rescript/lib/js/caml_option.js");
 var Packet_Status$TerrariaPacket = require("./packet/Packet_Status.js");
+var Packet_NpcTamper$TerrariaPacket = require("./packet/Packet_NpcTamper.js");
 var Packet_NpcUpdate$TerrariaPacket = require("./packet/Packet_NpcUpdate.js");
 var Packet_WorldInfo$TerrariaPacket = require("./packet/Packet_WorldInfo.js");
 var Packet_Disconnect$TerrariaPacket = require("./packet/Packet_Disconnect.js");
@@ -350,6 +351,8 @@ function toBuffer(packet, _fromServer) {
         return Caml_option.some(Packet_DimensionsUpdate$TerrariaPacket.toBuffer(packet._0));
     case /* NetModuleLoad */77 :
         return Caml_option.some(Packet_NetModuleLoad$TerrariaPacket.toBuffer(packet._0));
+    case /* NpcTamper */126 :
+        return Caml_option.some(Packet_NpcTamper$TerrariaPacket.toBuffer(packet._0));
     default:
       return ;
   }

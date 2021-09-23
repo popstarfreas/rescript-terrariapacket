@@ -684,7 +684,7 @@ let toBuffer = (packet: t, _fromServer: bool): option<NodeJs.Buffer.t> => {
   | GolfBallLandInCup(_golfBallLandInCup) => None
   | ClientFinishConnectingToServer(_clientFinishConnectingToServer) => None
   | NpcFishOut(_npcFishOut) => None
-  | NpcTamper(_npcTamper) => None
+  | NpcTamper(npcTamper) => Some(NpcTamper.toBuffer(npcTamper))
   | LegacySoundPlay(_legacySoundPlay) => None
   | FoodPlatterTryPlacing(_foodPlatterTryPlacing) => None
   | PlayerLuckFactorsUpdate(_playerLuckFactorsUpdate) => None

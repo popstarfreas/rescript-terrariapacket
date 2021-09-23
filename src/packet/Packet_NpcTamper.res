@@ -51,7 +51,7 @@ module Encode = {
   )
   let packImmunityTime = (writer: writer, immunityTime: option<int>): writer => {
     switch immunityTime {
-    | Some(time) => writer->packByte(immunityTime->Option.isSome ? 1 : 0)->packInt32(time)
+    | Some(time) => writer->packByte(1)->packInt32(time)
     | None => writer->packByte(0)
     }
   }
