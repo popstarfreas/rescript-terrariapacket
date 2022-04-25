@@ -144,25 +144,32 @@ module Encode = {
   )
 
   let npcFlags1 = (self: t) => {
-    let byte = ref(0)
     let (ai0, ai1, ai2, ai3) = self.ai
-    byte := byte.contents->lor(self.directionX ? 1 : 0)
-    byte := byte.contents->lor(self.directionY ? 1 : 0)
-    byte := byte.contents->lor(ai0->Belt.Option.isSome ? 1 : 0)
-    byte := byte.contents->lor(ai1->Belt.Option.isSome ? 1 : 0)
-    byte := byte.contents->lor(ai2->Belt.Option.isSome ? 1 : 0)
-    byte := byte.contents->lor(ai3->Belt.Option.isSome ? 1 : 0)
-    byte := byte.contents->lor(self.spriteDirection ? 1 : 0)
-    byte := byte.contents->lor(self.life == Max ? 1 : 0)
-    byte.contents
+    BitFlags.fromFlags(
+      ~flag1=self.directionX,
+      ~flag2=self.directionY,
+      ~flag3=Belt.Option.isSome(ai0),
+      ~flag4=Belt.Option.isSome(ai1),
+      ~flag5=Belt.Option.isSome(ai2),
+      ~flag6=Belt.Option.isSome(ai3),
+      ~flag7=self.spriteDirection,
+      ~flag8=self.life == Max,
+    )
+    ->BitFlags.toByte
   }
 
   let npcFlags2 = (self: t) => {
-    let byte = ref(0)
-    byte := byte.contents->lor(self.playerCountScale->Belt.Option.isSome ? 1 : 0)
-    byte := byte.contents->lor(self.spawnedFromStatue ? 1 : 0)
-    byte := byte.contents->lor(self.strengthMultiplier->Belt.Option.isSome ? 1 : 0)
-    byte.contents
+    BitFlags.fromFlags(
+      ~flag1=Belt.Option.isSome(self.playerCountScale),
+      ~flag2=self.spawnedFromStatue,
+      ~flag3=Belt.Option.isSome(self.strengthMultiplier),
+      ~flag4=false,
+      ~flag5=false,
+      ~flag6=false,
+      ~flag7=false,
+      ~flag8=false,
+    )
+    ->BitFlags.toByte
   }
 
   let packAi = (writer, (ai0, ai1, ai2, ai3): ai) => {

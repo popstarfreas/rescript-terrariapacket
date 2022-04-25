@@ -172,47 +172,12 @@ function data(prim) {
 }
 
 function npcFlags1(self) {
-  var $$byte = 0;
   var match = self.ai;
-  $$byte = $$byte | (
-    self.directionX ? 1 : 0
-  );
-  $$byte = $$byte | (
-    self.directionY ? 1 : 0
-  );
-  $$byte = $$byte | (
-    Belt_Option.isSome(match[0]) ? 1 : 0
-  );
-  $$byte = $$byte | (
-    Belt_Option.isSome(match[1]) ? 1 : 0
-  );
-  $$byte = $$byte | (
-    Belt_Option.isSome(match[2]) ? 1 : 0
-  );
-  $$byte = $$byte | (
-    Belt_Option.isSome(match[3]) ? 1 : 0
-  );
-  $$byte = $$byte | (
-    self.spriteDirection ? 1 : 0
-  );
-  $$byte = $$byte | (
-    self.life === /* Max */0 ? 1 : 0
-  );
-  return $$byte;
+  return BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(self.directionX, self.directionY, Belt_Option.isSome(match[0]), Belt_Option.isSome(match[1]), Belt_Option.isSome(match[2]), Belt_Option.isSome(match[3]), self.spriteDirection, self.life === /* Max */0));
 }
 
 function npcFlags2(self) {
-  var $$byte = 0;
-  $$byte = $$byte | (
-    Belt_Option.isSome(self.playerCountScale) ? 1 : 0
-  );
-  $$byte = $$byte | (
-    self.spawnedFromStatue ? 1 : 0
-  );
-  $$byte = $$byte | (
-    Belt_Option.isSome(self.strengthMultiplier) ? 1 : 0
-  );
-  return $$byte;
+  return BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(self.playerCountScale), self.spawnedFromStatue, Belt_Option.isSome(self.strengthMultiplier), false, false, false, false, false));
 }
 
 function packAi(writer, param) {

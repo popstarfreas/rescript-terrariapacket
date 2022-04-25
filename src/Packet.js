@@ -5,25 +5,35 @@ var Pervasives = require("rescript/lib/js/pervasives.js");
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
 var Caml_option = require("rescript/lib/js/caml_option.js");
 var Packet_Status$TerrariaPacket = require("./packet/Packet_Status.js");
+var Packet_ChestItem$TerrariaPacket = require("./packet/Packet_ChestItem.js");
+var Packet_ItemOwner$TerrariaPacket = require("./packet/Packet_ItemOwner.js");
 var Packet_NpcTamper$TerrariaPacket = require("./packet/Packet_NpcTamper.js");
 var Packet_NpcUpdate$TerrariaPacket = require("./packet/Packet_NpcUpdate.js");
 var Packet_WorldInfo$TerrariaPacket = require("./packet/Packet_WorldInfo.js");
+var Packet_ChestPlace$TerrariaPacket = require("./packet/Packet_ChestPlace.js");
 var Packet_Disconnect$TerrariaPacket = require("./packet/Packet_Disconnect.js");
+var Packet_HealEffect$TerrariaPacket = require("./packet/Packet_HealEffect.js");
+var Packet_ManaEffect$TerrariaPacket = require("./packet/Packet_ManaEffect.js");
 var Packet_PlayerInfo$TerrariaPacket = require("./packet/Packet_PlayerInfo.js");
 var Packet_PlayerMana$TerrariaPacket = require("./packet/Packet_PlayerMana.js");
+var Packet_TileModify$TerrariaPacket = require("./packet/Packet_TileModify.js");
 var Packet_PlayerSpawn$TerrariaPacket = require("./packet/Packet_PlayerSpawn.js");
 var Packet_PlayerActive$TerrariaPacket = require("./packet/Packet_PlayerActive.js");
 var Packet_PlayerHealth$TerrariaPacket = require("./packet/Packet_PlayerHealth.js");
+var Packet_PlayerUpdate$TerrariaPacket = require("./packet/Packet_PlayerUpdate.js");
 var Packet_NetModuleLoad$TerrariaPacket = require("./packet/Packet_NetModuleLoad.js");
 var Packet_PlayerSlotSet$TerrariaPacket = require("./packet/Packet_PlayerSlotSet.js");
 var Packet_ConnectRequest$TerrariaPacket = require("./packet/Packet_ConnectRequest.js");
 var Packet_ItemDropUpdate$TerrariaPacket = require("./packet/Packet_ItemDropUpdate.js");
 var Packet_ProjectileSync$TerrariaPacket = require("./packet/Packet_ProjectileSync.js");
 var Packet_TileSquareSend$TerrariaPacket = require("./packet/Packet_TileSquareSend.js");
+var Packet_ItemOwnerRemove$TerrariaPacket = require("./packet/Packet_ItemOwnerRemove.js");
 var Packet_TileSectionSend$TerrariaPacket = require("./packet/Packet_TileSectionSend.js");
 var Packet_DimensionsUpdate$TerrariaPacket = require("./packet/Packet_DimensionsUpdate.js");
+var Packet_TileSectionFrame$TerrariaPacket = require("./packet/Packet_TileSectionFrame.js");
 var Packet_WorldDataRequest$TerrariaPacket = require("./packet/Packet_WorldDataRequest.js");
 var Packet_ProjectileDestroy$TerrariaPacket = require("./packet/Packet_ProjectileDestroy.js");
+var Packet_ActiveContainerSync$TerrariaPacket = require("./packet/Packet_ActiveContainerSync.js");
 var Packet_PlayerInventorySlot$TerrariaPacket = require("./packet/Packet_PlayerInventorySlot.js");
 var Packet_InitialTileSectionsRequest$TerrariaPacket = require("./packet/Packet_InitialTileSectionsRequest.js");
 
@@ -329,24 +339,44 @@ function toBuffer(packet, _fromServer) {
         return Caml_option.some(Packet_Status$TerrariaPacket.toBuffer(packet._0));
     case /* TileSectionSend */9 :
         return Caml_option.some(Packet_TileSectionSend$TerrariaPacket.toBuffer(packet._0));
+    case /* TileSectionFrame */10 :
+        return Caml_option.some(Packet_TileSectionFrame$TerrariaPacket.toBuffer(packet._0));
     case /* PlayerSpawn */11 :
         return Caml_option.some(Packet_PlayerSpawn$TerrariaPacket.toBuffer(packet._0));
+    case /* PlayerUpdate */12 :
+        return Caml_option.some(Packet_PlayerUpdate$TerrariaPacket.toBuffer(packet._0));
     case /* PlayerActive */13 :
         return Caml_option.some(Packet_PlayerActive$TerrariaPacket.toBuffer(packet._0));
     case /* PlayerHealth */14 :
         return Caml_option.some(Packet_PlayerHealth$TerrariaPacket.toBuffer(packet._0));
+    case /* TileModify */15 :
+        return Caml_option.some(Packet_TileModify$TerrariaPacket.toBuffer(packet._0));
     case /* TileSquareSend */18 :
         return Caml_option.some(Packet_TileSquareSend$TerrariaPacket.toBuffer(packet._0));
     case /* ItemDropUpdate */19 :
         return Caml_option.some(Packet_ItemDropUpdate$TerrariaPacket.toBuffer(packet._0));
+    case /* ItemOwner */20 :
+        return Caml_option.some(Packet_ItemOwner$TerrariaPacket.toBuffer(packet._0));
     case /* NpcUpdate */21 :
         return Caml_option.some(Packet_NpcUpdate$TerrariaPacket.toBuffer(packet._0));
     case /* ProjectileSync */23 :
         return Caml_option.some(Packet_ProjectileSync$TerrariaPacket.toBuffer(packet._0));
     case /* ProjectileDestroy */25 :
         return Caml_option.some(Packet_ProjectileDestroy$TerrariaPacket.toBuffer(packet._0));
+    case /* ChestItem */28 :
+        return Caml_option.some(Packet_ChestItem$TerrariaPacket.toBuffer(packet._0));
+    case /* ActiveContainerSync */29 :
+        return Caml_option.some(Packet_ActiveContainerSync$TerrariaPacket.toBuffer(packet._0));
+    case /* ChestPlace */30 :
+        return Caml_option.some(Packet_ChestPlace$TerrariaPacket.toBuffer(packet._0));
+    case /* HealEffect */31 :
+        return Caml_option.some(Packet_HealEffect$TerrariaPacket.toBuffer(packet._0));
+    case /* ItemOwnerRemove */35 :
+        return Caml_option.some(Packet_ItemOwnerRemove$TerrariaPacket.toBuffer(packet._0));
     case /* PlayerMana */38 :
         return Caml_option.some(Packet_PlayerMana$TerrariaPacket.toBuffer(packet._0));
+    case /* ManaEffect */39 :
+        return Caml_option.some(Packet_ManaEffect$TerrariaPacket.toBuffer(packet._0));
     case /* DimensionsUpdate */62 :
         return Caml_option.some(Packet_DimensionsUpdate$TerrariaPacket.toBuffer(packet._0));
     case /* NetModuleLoad */77 :
