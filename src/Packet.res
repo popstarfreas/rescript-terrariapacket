@@ -587,7 +587,8 @@ let toBuffer = (packet: t, _fromServer: bool): option<NodeJs.Buffer.t> => {
   | PvpToggle(_pvpToggle) => None
   | ChestOpen(_chestOpen) => None
   | ChestItem(chestItem) => Some(ChestItem.toBuffer(chestItem))
-  | ActiveContainerSync(activeContainerSync) => Some(ActiveContainerSync.toBuffer(activeContainerSync))
+  | ActiveContainerSync(activeContainerSync) =>
+    Some(ActiveContainerSync.toBuffer(activeContainerSync))
   | ChestPlace(chestPlace) => Some(ChestPlace.toBuffer(chestPlace))
   | HealEffect(healEffect) => Some(HealEffect.toBuffer(healEffect))
   | Zones(_zones) => None

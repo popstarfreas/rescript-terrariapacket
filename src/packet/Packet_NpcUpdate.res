@@ -154,8 +154,7 @@ module Encode = {
       ~flag6=Belt.Option.isSome(ai3),
       ~flag7=self.spriteDirection,
       ~flag8=self.life == Max,
-    )
-    ->BitFlags.toByte
+    )->BitFlags.toByte
   }
 
   let npcFlags2 = (self: t) => {
@@ -168,8 +167,7 @@ module Encode = {
       ~flag6=false,
       ~flag7=false,
       ~flag8=false,
-    )
-    ->BitFlags.toByte
+    )->BitFlags.toByte
   }
 
   let packAi = (writer, (ai0, ai1, ai2, ai3): ai) => {
