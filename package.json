@@ -8,5 +8,9 @@
     "@popstarfreas/packetfactory": "^4.3.0",
     "@popstarfreas/rescript-nodejs": "^14.1.0",
     "rescript": "^9.1.4"
+  },
+  "devDependencies": {
+    "@dusty-phillips/rescript-zora": "^3.0.1",
+    "pta": "^1.2.0"
   }
 }

@@ -18,4 +18,5 @@ let flag5: t => bool
 let flag6: t => bool
 let flag7: t => bool
 let flag8: t => bool
+let flagN: (t, int) => bool
 let toByte: t => int

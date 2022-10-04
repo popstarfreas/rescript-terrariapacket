@@ -1,20 +1,30 @@
 {
-    "name": "@darkgaming/rescript-terrariapacket",
-    "namespace": "TerrariaPacket",
-    "version": "0.1.0",
-    "sources": {
-        "dir" : "src",
-        "subdirs" : true
+  "name": "@darkgaming/rescript-terrariapacket",
+  "namespace": "TerrariaPacket",
+  "version": "0.1.0",
+  "sources": [
+    {
+      "dir": "src",
+      "subdirs": true
     },
-    "package-specs": {
-        "module": "commonjs",
-        "in-source": true
-    },
-    "bs-dependencies": [
-        "@popstarfreas/packetfactory",
-        "@popstarfreas/rescript-nodejs"
-    ],
-    "warnings": {
-        "number": ""
+    {
+      "dir": "tests",
+      "subdirs": true,
+      "type": "dev"
     }
+  ],
+  "package-specs": {
+    "module": "commonjs",
+    "in-source": true
+  },
+  "bs-dependencies": [
+    "@popstarfreas/packetfactory",
+    "@popstarfreas/rescript-nodejs"
+  ],
+  "bs-dev-dependencies": [
+    "@dusty-phillips/rescript-zora"
+  ],
+  "warnings": {
+    "number": ""
+  }
 }

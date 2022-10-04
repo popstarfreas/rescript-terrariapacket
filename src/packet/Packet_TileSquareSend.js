@@ -138,7 +138,7 @@ function packTile(writer, tile) {
             })), Belt_Option.mapWithDefault(tile.activeTile, false, (function (tile) {
               return (tile.slope & 4) === 4;
             })), tile.wire4);
-  writer.packByte(BitFlags$TerrariaPacket.toByte(flags1)).packByte(BitFlags$TerrariaPacket.toByte(flags2));
+  writer.packByte(BitFlags$TerrariaPacket.toByte(flags1)).packByte(BitFlags$TerrariaPacket.toByte(flags2)).packByte(0);
   var color = tile.color;
   if (color !== undefined) {
     writer.packByte(color);

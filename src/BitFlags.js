@@ -35,6 +35,10 @@ function fromFlags(flag1, flag2, flag3, flag4, flag5, flag6, flag7, flag8) {
   return $$byte;
 }
 
+function flagN(self, n) {
+  return (self & n) === n;
+}
+
 function flag1(__x) {
   return (__x & 1) === 1;
 }
@@ -81,5 +85,6 @@ exports.flag5 = flag5;
 exports.flag6 = flag6;
 exports.flag7 = flag7;
 exports.flag8 = flag8;
+exports.flagN = flagN;
 exports.toByte = toByte;
 /* No side effect */
