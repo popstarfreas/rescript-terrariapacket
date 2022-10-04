@@ -165,7 +165,11 @@ module Encode = {
       ~flag7=tile.activeTile->Option.mapWithDefault(false, tile => tile.slope->land(4) == 4),
       ~flag8=tile.wire4,
     )
-    writer->packByte(flags1->BitFlags.toByte)->packByte(flags2->BitFlags.toByte)->ignore
+    writer
+    ->packByte(flags1->BitFlags.toByte)
+    ->packByte(flags2->BitFlags.toByte)
+    ->packByte(0)
+    ->ignore
     switch tile.color {
     | Some(color) => writer->packByte(color)->ignore
     | None => ()

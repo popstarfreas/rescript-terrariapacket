@@ -153,6 +153,8 @@ module Decode = {
     let eventInfo6 = BitFlags.fromByte(reader->readByte)
     let eventInfo7 = BitFlags.fromByte(reader->readByte)
     let eventInfo8 = BitFlags.fromByte(reader->readByte)
+    let eventInfo9 = BitFlags.fromByte(reader->readByte)
+    let eventInfo10 = BitFlags.fromByte(reader->readByte)
     let shadowOrbSmashed = eventInfo1->BitFlags.flag1
     let killedBoss1 = eventInfo1->BitFlags.flag2
     let killedBoss2 = eventInfo1->BitFlags.flag3
@@ -516,6 +518,26 @@ module Encode = {
       ~flag7=false,
       ~flag8=false,
     )
+    let eventInfo9 = BitFlags.fromFlags(
+      ~flag1=false,
+      ~flag2=false,
+      ~flag3=false,
+      ~flag4=false,
+      ~flag5=false,
+      ~flag6=false,
+      ~flag7=false,
+      ~flag8=false,
+    )
+    let eventInfo10 = BitFlags.fromFlags(
+      ~flag1=false,
+      ~flag2=false,
+      ~flag3=false,
+      ~flag4=false,
+      ~flag5=false,
+      ~flag6=false,
+      ~flag7=false,
+      ~flag8=false,
+    )
     writer
     ->packByte(eventInfo1->BitFlags.toByte)
     ->packByte(eventInfo2->BitFlags.toByte)
@@ -525,6 +547,8 @@ module Encode = {
     ->packByte(eventInfo6->BitFlags.toByte)
     ->packByte(eventInfo7->BitFlags.toByte)
     ->packByte(eventInfo8->BitFlags.toByte)
+    ->packByte(eventInfo9->BitFlags.toByte)
+    ->packByte(eventInfo10->BitFlags.toByte)
   }
 
   let toBuffer = (self: t): NodeJs.Buffer.t => {

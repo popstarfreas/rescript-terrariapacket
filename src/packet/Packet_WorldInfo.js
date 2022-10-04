@@ -16,6 +16,8 @@ function readEventInfo(reader) {
   var eventInfo6 = BitFlags$TerrariaPacket.fromByte(reader.readByte());
   var eventInfo7 = BitFlags$TerrariaPacket.fromByte(reader.readByte());
   var eventInfo8 = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+  BitFlags$TerrariaPacket.fromByte(reader.readByte());
+  BitFlags$TerrariaPacket.fromByte(reader.readByte());
   var shadowOrbSmashed = BitFlags$TerrariaPacket.flag1(eventInfo1);
   var killedBoss1 = BitFlags$TerrariaPacket.flag2(eventInfo1);
   var killedBoss2 = BitFlags$TerrariaPacket.flag3(eventInfo1);
@@ -293,7 +295,9 @@ function packEventInfo(writer, eventInfo) {
   var eventInfo6 = BitFlags$TerrariaPacket.fromFlags(eventInfo.combatBookUsed, eventInfo.manualLanterns, eventInfo.killedSolarTower, eventInfo.killedVortexTower, eventInfo.killedNebulaTower, eventInfo.killedStardustTower, eventInfo.forceHalloween, eventInfo.forceChristmas);
   var eventInfo7 = BitFlags$TerrariaPacket.fromFlags(eventInfo.boughtCat, eventInfo.boughtDog, eventInfo.boughtBunny, eventInfo.freeCake, eventInfo.drunkWorld, eventInfo.killedEmpressOfLight, eventInfo.killedQueenSlime, eventInfo.getGoodWorld);
   var eventInfo8 = BitFlags$TerrariaPacket.fromFlags(eventInfo.tenthAnniversaryWorld, false, false, false, false, false, false, false);
-  return writer.packByte(BitFlags$TerrariaPacket.toByte(eventInfo1)).packByte(BitFlags$TerrariaPacket.toByte(eventInfo2)).packByte(BitFlags$TerrariaPacket.toByte(eventInfo3)).packByte(BitFlags$TerrariaPacket.toByte(eventInfo4)).packByte(BitFlags$TerrariaPacket.toByte(eventInfo5)).packByte(BitFlags$TerrariaPacket.toByte(eventInfo6)).packByte(BitFlags$TerrariaPacket.toByte(eventInfo7)).packByte(BitFlags$TerrariaPacket.toByte(eventInfo8));
+  var eventInfo9 = BitFlags$TerrariaPacket.fromFlags(false, false, false, false, false, false, false, false);
+  var eventInfo10 = BitFlags$TerrariaPacket.fromFlags(false, false, false, false, false, false, false, false);
+  return writer.packByte(BitFlags$TerrariaPacket.toByte(eventInfo1)).packByte(BitFlags$TerrariaPacket.toByte(eventInfo2)).packByte(BitFlags$TerrariaPacket.toByte(eventInfo3)).packByte(BitFlags$TerrariaPacket.toByte(eventInfo4)).packByte(BitFlags$TerrariaPacket.toByte(eventInfo5)).packByte(BitFlags$TerrariaPacket.toByte(eventInfo6)).packByte(BitFlags$TerrariaPacket.toByte(eventInfo7)).packByte(BitFlags$TerrariaPacket.toByte(eventInfo8)).packByte(BitFlags$TerrariaPacket.toByte(eventInfo9)).packByte(BitFlags$TerrariaPacket.toByte(eventInfo10));
 }
 
 function toBuffer(self) {
