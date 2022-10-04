@@ -88,6 +88,346 @@ let cacheToTile = (cache: tileCache): tile => {
   inActive: cache.inActive,
 }
 
+module Chest = {
+  let {readString, readInt16, readUInt16, readInt32, readByte} = module(PacketFactory.BufferReader)
+  type t = {
+    id: int,
+    x: int,
+    y: int,
+    name: string,
+  }
+
+  let parse = (reader): t => {
+    let id = reader->readInt16
+    let x = reader->readInt16
+    let y = reader->readInt16
+    let name = reader->readString
+    {id: id, x: x, y: y, name: name}
+  }
+
+  let {packByte, packInt16, packString} = module(PacketFactory.BufferWriter)
+  type bufferWriter = PacketFactory.BufferWriter.t
+
+  let pack = (writer, chest): bufferWriter => {
+    writer->packInt16(chest.id)->packInt16(chest.x)->packInt16(chest.y)->packString(chest.name)
+  }
+}
+
+module Sign = {
+  let {readString, readInt16, readUInt16, readInt32, readByte} = module(PacketFactory.BufferReader)
+  type t = {
+    id: int,
+    x: int,
+    y: int,
+    name: string,
+  }
+
+  let parse = (reader): t => {
+    let id = reader->readInt16
+    let x = reader->readInt16
+    let y = reader->readInt16
+    let name = reader->readString
+
+    {id: id, x: x, y: y, name: name}
+  }
+
+  let {packByte, packInt16, packString} = module(PacketFactory.BufferWriter)
+  type bufferWriter = PacketFactory.BufferWriter.t
+
+  let pack = (writer, sign): bufferWriter => {
+    writer->packInt16(sign.id)->packInt16(sign.x)->packInt16(sign.y)->packString(sign.name)
+  }
+}
+
+module Entity = {
+  let {readString, readInt16, readUInt16, readInt32, readByte} = module(PacketFactory.BufferReader)
+  type displayItem = {
+    netId: int,
+    prefix: int,
+    stack: int,
+  }
+
+  type displayDoll = {
+    items: array<option<displayItem>>,
+    dyes: array<option<displayItem>>,
+  }
+
+  type foodPlatter = displayItem
+  type hatRack = {
+    items: array<option<displayItem>>,
+    dyes: array<option<displayItem>>,
+  }
+
+  type itemFrame = displayItem
+  type logicSensor = {
+    checkType: int,
+    on: bool,
+  }
+  type teleportationPylon = unit
+  type trainingDummy = {npcSlotId: int}
+  type weaponsRack = displayItem
+
+  type kind =
+    | DisplayDoll(displayDoll)
+    | FoodPlatter(foodPlatter)
+    | HatRack(hatRack)
+    | ItemFrame(itemFrame)
+    | LogicSensor(logicSensor)
+    | TeleportationPylon(teleportationPylon)
+    | TrainingDummy(trainingDummy)
+    | WeaponsRack(weaponsRack)
+
+  type t = {
+    entityType: int,
+    x: int,
+    y: int,
+    entityKind: kind,
+  }
+
+  let parseTrainingDummyKind = (reader): trainingDummy => {
+    npcSlotId: reader->readInt16,
+  }
+
+  let parseDisplayItem = (reader): displayItem => {
+    let netId = reader->readInt16
+    let prefix = reader->readByte
+    let stack = reader->readInt16
+
+    {
+      netId: netId,
+      prefix: prefix,
+      stack: stack,
+    }
+  }
+
+  let parseItemFrameKind = parseDisplayItem
+
+  let parseLogicSensorKind = (reader): logicSensor => {
+    let checkType = reader->readByte
+    let on = reader->readByte == 1
+
+    {
+      checkType: checkType,
+      on: on,
+    }
+  }
+
+  let parseDisplayDollKind = (reader): displayDoll => {
+    let itemsFlags = BitFlags.fromByte(reader->readByte)
+    let dyeFlags = BitFlags.fromByte(reader->readByte)
+    let items = []
+    let dyes = []
+
+    for i in 0 to 7 {
+      if itemsFlags->BitFlags.flagN(i) {
+        let _: int = items->Js.Array2.push(Some(parseDisplayItem(reader)))
+      } else {
+        let _: int = items->Js.Array2.push(None)
+      }
+    }
+
+    for i in 0 to 7 {
+      if dyeFlags->BitFlags.flagN(i) {
+        let _: int = dyes->Js.Array2.push(Some(parseDisplayItem(reader)))
+      } else {
+        let _: int = dyes->Js.Array2.push(None)
+      }
+    }
+
+    {
+      items: items,
+      dyes: dyes,
+    }
+  }
+
+  let parseWeaponsRackKind = parseDisplayItem
+
+  let parseHatRackKind = (reader): hatRack => {
+    let flags = BitFlags.fromByte(reader->readByte)
+    let items = []
+    let dyes = []
+
+    for i in 0 to 1 {
+      if flags->BitFlags.flagN(i) {
+        let _: int = items->Js.Array2.push(Some(parseDisplayItem(reader)))
+      } else {
+        let _: int = items->Js.Array2.push(None)
+      }
+    }
+
+    for i in 0 to 1 {
+      if flags->BitFlags.flagN(i + 2) {
+        let _: int = dyes->Js.Array2.push(Some(parseDisplayItem(reader)))
+      } else {
+        let _: int = dyes->Js.Array2.push(None)
+      }
+    }
+
+    {
+      items: items,
+      dyes: dyes,
+    }
+  }
+
+  let parseFoodPlatterKind = parseDisplayItem
+
+  let parseTeleportationPylonKind = (reader): teleportationPylon => ()
+
+  let parse = (reader): result<t, string> => {
+    let entityType = reader->readByte
+    let x = reader->readInt16
+    let y = reader->readInt16
+    let entityKind = switch entityType {
+    | 0 => Ok(TrainingDummy(reader->parseTrainingDummyKind))
+    | 1 => Ok(ItemFrame(reader->parseItemFrameKind))
+    | 2 => Ok(LogicSensor(reader->parseLogicSensorKind))
+    | 3 => Ok(DisplayDoll(reader->parseDisplayDollKind))
+    | 4 => Ok(WeaponsRack(reader->parseWeaponsRackKind))
+    | 5 => Ok(HatRack(reader->parseHatRackKind))
+    | 6 => Ok(FoodPlatter(reader->parseFoodPlatterKind))
+    | 7 => Ok(TeleportationPylon(reader->parseTeleportationPylonKind))
+    | _ => Error(__LOC__ ++ "Unknown entity kind. ")
+    }
+
+    entityKind->Belt.Result.map(entityKind => {
+      {
+        entityType: entityType,
+        x: x,
+        y: y,
+        entityKind: entityKind,
+      }
+    })
+  }
+
+  let {packByte, packInt16, packString} = module(PacketFactory.BufferWriter)
+  type bufferWriter = PacketFactory.BufferWriter.t
+
+  let packTrainingDummy = (writer, trainingDummy): bufferWriter => {
+    writer->packInt16(trainingDummy.npcSlotId)
+  }
+
+  let packDisplayItem = (writer, displayItem): bufferWriter => {
+    writer->packInt16(displayItem.netId)->packByte(displayItem.prefix)->packInt16(displayItem.stack)
+  }
+
+  let packItemFrame = packDisplayItem
+
+  let packLogicSensor = (writer, logicSensorKind): bufferWriter => {
+    writer
+    ->packByte(logicSensorKind.checkType)
+    ->packByte(
+      if logicSensorKind.on {
+        1
+      } else {
+        0
+      },
+    )
+  }
+
+  let hasItem = (arr, n) => {
+    arr->Belt.Array.get(n)->Option.flatMap(a => a)->Option.isSome
+  }
+
+  let packDisplayDoll = (writer, displayDollKind: displayDoll): bufferWriter => {
+    let itemFlags = BitFlags.fromFlags(
+      ~flag1=displayDollKind.items->hasItem(0),
+      ~flag2=displayDollKind.items->hasItem(1),
+      ~flag3=displayDollKind.items->hasItem(2),
+      ~flag4=displayDollKind.items->hasItem(3),
+      ~flag5=displayDollKind.items->hasItem(4),
+      ~flag6=displayDollKind.items->hasItem(5),
+      ~flag7=displayDollKind.items->hasItem(6),
+      ~flag8=displayDollKind.items->hasItem(7),
+    )
+    let dyeFlags = BitFlags.fromFlags(
+      ~flag1=displayDollKind.dyes->hasItem(0),
+      ~flag2=displayDollKind.dyes->hasItem(1),
+      ~flag3=displayDollKind.dyes->hasItem(2),
+      ~flag4=displayDollKind.dyes->hasItem(3),
+      ~flag5=displayDollKind.dyes->hasItem(4),
+      ~flag6=displayDollKind.dyes->hasItem(5),
+      ~flag7=displayDollKind.dyes->hasItem(6),
+      ~flag8=displayDollKind.dyes->hasItem(7),
+    )
+
+    writer->packByte(itemFlags->BitFlags.toByte)->packByte(dyeFlags->BitFlags.toByte)->ignore
+
+    for i in 0 to 7 {
+      switch displayDollKind.items->Belt.Array.get(i)->Option.flatMap(a => a) {
+      | Some(item) => writer->packDisplayItem(item)->ignore
+      | None => ()
+      }
+    }
+
+    for i in 0 to 7 {
+      switch displayDollKind.dyes->Belt.Array.get(i)->Option.flatMap(a => a) {
+      | Some(item) => writer->packDisplayItem(item)->ignore
+      | None => ()
+      }
+    }
+
+    writer
+  }
+
+  let packWeaponsRack = packDisplayItem
+
+  let packHatRack = (writer, hatRackKind): bufferWriter => {
+    let flags = BitFlags.fromFlags(
+      ~flag1=hatRackKind.items->hasItem(0),
+      ~flag2=hatRackKind.items->hasItem(1),
+      ~flag3=hatRackKind.dyes->hasItem(2),
+      ~flag4=hatRackKind.dyes->hasItem(3),
+      ~flag5=false,
+      ~flag6=false,
+      ~flag7=false,
+      ~flag8=false,
+    )
+
+    writer->packByte(flags->BitFlags.toByte)->ignore
+
+    for i in 0 to 1 {
+      switch hatRackKind.items->Belt.Array.get(i)->Option.flatMap(a => a) {
+      | Some(item) => writer->packDisplayItem(item)->ignore
+      | None => ()
+      }
+    }
+
+    for i in 0 to 1 {
+      switch hatRackKind.dyes->Belt.Array.get(i)->Option.flatMap(a => a) {
+      | Some(item) => writer->packDisplayItem(item)->ignore
+      | None => ()
+      }
+    }
+
+    writer
+  }
+
+  let packFoodPlatter = packDisplayItem
+
+  let packTeleportationPylon = (writer, _teleportationPylonKind): bufferWriter => writer
+
+  let packEntityKind = (writer, entityKind): bufferWriter => {
+    switch entityKind {
+    | TrainingDummy(trainingDummy) => writer->packTrainingDummy(trainingDummy)
+    | ItemFrame(itemFrame) => writer->packItemFrame(itemFrame)
+    | LogicSensor(logicSensor) => writer->packLogicSensor(logicSensor)
+    | DisplayDoll(displayDoll) => writer->packDisplayDoll(displayDoll)
+    | WeaponsRack(weaponsRack) => writer->packWeaponsRack(weaponsRack)
+    | HatRack(hatRack) => writer->packHatRack(hatRack)
+    | FoodPlatter(foodPlatter) => writer->packFoodPlatter(foodPlatter)
+    | TeleportationPylon(teleportationPylon) => writer->packTeleportationPylon(teleportationPylon)
+    }
+  }
+
+  let pack = (writer, entity): bufferWriter => {
+    writer
+    ->packByte(entity.entityType)
+    ->packInt16(entity.x)
+    ->packInt16(entity.y)
+    ->packEntityKind(entity.entityKind)
+  }
+}
+
 type t = {
   compressed: bool,
   height: int,
@@ -95,6 +435,9 @@ type t = {
   tileX: int,
   tileY: int,
   tiles: array<array<tile>>,
+  chests: array<Chest.t>,
+  signs: array<Sign.t>,
+  entities: array<Entity.t>,
 }
 
 let isTheSameAs = (self: tile, compTile: tile) => {
@@ -182,10 +525,6 @@ module Decode = {
                   None
                 }
 
-                if tileType == 4 {
-                  Js.log2(tileType, frame)
-                }
-
                 if header3->BitFlags.flag4 {
                   tileCache.color = Some(reader->readByte)
                 }
@@ -270,14 +609,37 @@ module Decode = {
           tiles->Js.Array2.push(row)->ignore
         }
 
-        Some({
-          compressed: true,
-          height: height,
-          width: width,
-          tileX: tileX,
-          tileY: tileY,
-          tiles: tiles,
+        let chestCount = reader->readInt16
+        let chests = Belt.Array.make(chestCount, 0)->Js.Array2.map(_ => {
+          reader->Chest.parse
         })
+        let signCount = reader->readInt16
+        let signs = Belt.Array.make(signCount, 0)->Js.Array2.map(_ => {
+          reader->Sign.parse
+        })
+        let entityCount = reader->readInt16
+        let entities =
+          Belt.Array.make(entityCount, 0)
+          ->Js.Array2.map(_ => {
+            reader->Entity.parse
+          })
+          ->ResultExt.allOkOrError
+
+        switch entities {
+        | Ok(entities) =>
+          Some({
+            compressed: true,
+            height: height,
+            width: width,
+            tileX: tileX,
+            tileY: tileY,
+            tiles: tiles,
+            chests: chests,
+            signs: signs,
+            entities: entities,
+          })
+        | Error(_) => None
+        }
       }
     } else {
       None
@@ -483,9 +845,9 @@ module Encode = {
 
   let toBuffer = (self: t): NodeJs.Buffer.t => {
     let packetWriter =
-      PacketFactory.ManagedPacketWriter.make()
-      ->setType(PacketType.TileSectionSend->PacketType.toInt)
-      ->packByte(1) // Force compressed
+      PacketFactory.ManagedPacketWriter.make()->setType(
+        PacketType.TileSectionSend->PacketType.toInt,
+      )
 
     let writer = BufferWriter.make(NodeJs.Buffer.allocUnsafe(64_000))
     let _: bufferWriter =
@@ -510,9 +872,18 @@ module Encode = {
     | None => ()
     }
 
-    let _: bufferWriter = writer->packInt16(0) // chests length TODO: implement chest writing
-    let _: bufferWriter = writer->packInt16(0) // signs length TODO: implement sign writing
-    let _: bufferWriter = writer->packInt16(0) // target dummies length TODO: implement target dummy writing
+    let _: bufferWriter = writer->packInt16(self.chests->Js.Array2.length)
+    self.chests->Js.Array2.forEach(chest => {
+      writer->Chest.pack(chest)->ignore
+    })
+    let _: bufferWriter = writer->packInt16(self.signs->Js.Array2.length)
+    self.signs->Js.Array2.forEach(sign => {
+      writer->Sign.pack(sign)->ignore
+    })
+    let _: bufferWriter = writer->packInt16(self.entities->Js.Array2.length)
+    self.entities->Js.Array2.forEach(entity => {
+      writer->Entity.pack(entity)->ignore
+    })
 
     packetWriter->packBuffer(NodeJs.Zlib.deflateRawSync(writer->BufferWriter.slicedData))->data
   }

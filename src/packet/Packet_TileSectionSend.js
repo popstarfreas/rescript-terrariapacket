@@ -3,9 +3,12 @@
 
 var Zlib = require("zlib");
 var Caml_obj = require("rescript/lib/js/caml_obj.js");
+var Belt_Array = require("rescript/lib/js/belt_Array.js");
 var Caml_array = require("rescript/lib/js/caml_array.js");
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
+var Belt_Result = require("rescript/lib/js/belt_Result.js");
 var BitFlags$TerrariaPacket = require("../BitFlags.js");
+var ResultExt$TerrariaPacket = require("../ResultExt.js");
 var TileSolid$TerrariaPacket = require("../TileSolid.js");
 var PacketType$TerrariaPacket = require("../PacketType.js");
 var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
@@ -55,6 +58,465 @@ function cacheToTile(cache) {
         };
 }
 
+function readString(prim) {
+  return prim.readString();
+}
+
+function readInt16(prim) {
+  return prim.readInt16();
+}
+
+function readUInt16(prim) {
+  return prim.readUInt16();
+}
+
+function readInt32(prim) {
+  return prim.readInt32();
+}
+
+function readByte(prim) {
+  return prim.readByte();
+}
+
+function parse(reader) {
+  var id = reader.readInt16();
+  var x = reader.readInt16();
+  var y = reader.readInt16();
+  var name = reader.readString();
+  return {
+          id: id,
+          x: x,
+          y: y,
+          name: name
+        };
+}
+
+function packByte(prim0, prim1) {
+  return prim0.packByte(prim1);
+}
+
+function packInt16(prim0, prim1) {
+  return prim0.packInt16(prim1);
+}
+
+function packString(prim0, prim1) {
+  return prim0.packString(prim1);
+}
+
+function pack(writer, chest) {
+  return writer.packInt16(chest.id).packInt16(chest.x).packInt16(chest.y).packString(chest.name);
+}
+
+var Chest = {
+  readString: readString,
+  readInt16: readInt16,
+  readUInt16: readUInt16,
+  readInt32: readInt32,
+  readByte: readByte,
+  parse: parse,
+  packByte: packByte,
+  packInt16: packInt16,
+  packString: packString,
+  pack: pack
+};
+
+function readString$1(prim) {
+  return prim.readString();
+}
+
+function readInt16$1(prim) {
+  return prim.readInt16();
+}
+
+function readUInt16$1(prim) {
+  return prim.readUInt16();
+}
+
+function readInt32$1(prim) {
+  return prim.readInt32();
+}
+
+function readByte$1(prim) {
+  return prim.readByte();
+}
+
+function parse$1(reader) {
+  var id = reader.readInt16();
+  var x = reader.readInt16();
+  var y = reader.readInt16();
+  var name = reader.readString();
+  return {
+          id: id,
+          x: x,
+          y: y,
+          name: name
+        };
+}
+
+function packByte$1(prim0, prim1) {
+  return prim0.packByte(prim1);
+}
+
+function packInt16$1(prim0, prim1) {
+  return prim0.packInt16(prim1);
+}
+
+function packString$1(prim0, prim1) {
+  return prim0.packString(prim1);
+}
+
+function pack$1(writer, sign) {
+  return writer.packInt16(sign.id).packInt16(sign.x).packInt16(sign.y).packString(sign.name);
+}
+
+var Sign = {
+  readString: readString$1,
+  readInt16: readInt16$1,
+  readUInt16: readUInt16$1,
+  readInt32: readInt32$1,
+  readByte: readByte$1,
+  parse: parse$1,
+  packByte: packByte$1,
+  packInt16: packInt16$1,
+  packString: packString$1,
+  pack: pack$1
+};
+
+function readString$2(prim) {
+  return prim.readString();
+}
+
+function readInt16$2(prim) {
+  return prim.readInt16();
+}
+
+function readUInt16$2(prim) {
+  return prim.readUInt16();
+}
+
+function readInt32$2(prim) {
+  return prim.readInt32();
+}
+
+function readByte$2(prim) {
+  return prim.readByte();
+}
+
+function parseTrainingDummyKind(reader) {
+  return {
+          npcSlotId: reader.readInt16()
+        };
+}
+
+function parseDisplayItem(reader) {
+  var netId = reader.readInt16();
+  var prefix = reader.readByte();
+  var stack = reader.readInt16();
+  return {
+          netId: netId,
+          prefix: prefix,
+          stack: stack
+        };
+}
+
+function parseLogicSensorKind(reader) {
+  var checkType = reader.readByte();
+  var on = reader.readByte() === 1;
+  return {
+          checkType: checkType,
+          on: on
+        };
+}
+
+function parseDisplayDollKind(reader) {
+  var itemsFlags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+  var dyeFlags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+  var items = [];
+  var dyes = [];
+  for(var i = 0; i <= 7; ++i){
+    if (BitFlags$TerrariaPacket.flagN(itemsFlags, i)) {
+      items.push(parseDisplayItem(reader));
+    } else {
+      items.push(undefined);
+    }
+  }
+  for(var i$1 = 0; i$1 <= 7; ++i$1){
+    if (BitFlags$TerrariaPacket.flagN(dyeFlags, i$1)) {
+      dyes.push(parseDisplayItem(reader));
+    } else {
+      dyes.push(undefined);
+    }
+  }
+  return {
+          items: items,
+          dyes: dyes
+        };
+}
+
+function parseHatRackKind(reader) {
+  var flags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+  var items = [];
+  var dyes = [];
+  for(var i = 0; i <= 1; ++i){
+    if (BitFlags$TerrariaPacket.flagN(flags, i)) {
+      items.push(parseDisplayItem(reader));
+    } else {
+      items.push(undefined);
+    }
+  }
+  for(var i$1 = 0; i$1 <= 1; ++i$1){
+    if (BitFlags$TerrariaPacket.flagN(flags, i$1 + 2 | 0)) {
+      dyes.push(parseDisplayItem(reader));
+    } else {
+      dyes.push(undefined);
+    }
+  }
+  return {
+          items: items,
+          dyes: dyes
+        };
+}
+
+function parseTeleportationPylonKind(reader) {
+  
+}
+
+function parse$2(reader) {
+  var entityType = reader.readByte();
+  var x = reader.readInt16();
+  var y = reader.readInt16();
+  var entityKind;
+  switch (entityType) {
+    case 0 :
+        entityKind = {
+          TAG: /* Ok */0,
+          _0: {
+            TAG: /* TrainingDummy */6,
+            _0: {
+              npcSlotId: reader.readInt16()
+            }
+          }
+        };
+        break;
+    case 1 :
+        entityKind = {
+          TAG: /* Ok */0,
+          _0: {
+            TAG: /* ItemFrame */3,
+            _0: parseDisplayItem(reader)
+          }
+        };
+        break;
+    case 2 :
+        entityKind = {
+          TAG: /* Ok */0,
+          _0: {
+            TAG: /* LogicSensor */4,
+            _0: parseLogicSensorKind(reader)
+          }
+        };
+        break;
+    case 3 :
+        entityKind = {
+          TAG: /* Ok */0,
+          _0: {
+            TAG: /* DisplayDoll */0,
+            _0: parseDisplayDollKind(reader)
+          }
+        };
+        break;
+    case 4 :
+        entityKind = {
+          TAG: /* Ok */0,
+          _0: {
+            TAG: /* WeaponsRack */7,
+            _0: parseDisplayItem(reader)
+          }
+        };
+        break;
+    case 5 :
+        entityKind = {
+          TAG: /* Ok */0,
+          _0: {
+            TAG: /* HatRack */2,
+            _0: parseHatRackKind(reader)
+          }
+        };
+        break;
+    case 6 :
+        entityKind = {
+          TAG: /* Ok */0,
+          _0: {
+            TAG: /* FoodPlatter */1,
+            _0: parseDisplayItem(reader)
+          }
+        };
+        break;
+    case 7 :
+        entityKind = {
+          TAG: /* Ok */0,
+          _0: {
+            TAG: /* TeleportationPylon */5,
+            _0: undefined
+          }
+        };
+        break;
+    default:
+      entityKind = {
+        TAG: /* Error */1,
+        _0: "File \"Packet_TileSectionSend.res\", line 289, characters 17-24Unknown entity kind. "
+      };
+  }
+  return Belt_Result.map(entityKind, (function (entityKind) {
+                return {
+                        entityType: entityType,
+                        x: x,
+                        y: y,
+                        entityKind: entityKind
+                      };
+              }));
+}
+
+function packByte$2(prim0, prim1) {
+  return prim0.packByte(prim1);
+}
+
+function packInt16$2(prim0, prim1) {
+  return prim0.packInt16(prim1);
+}
+
+function packString$2(prim0, prim1) {
+  return prim0.packString(prim1);
+}
+
+function packTrainingDummy(writer, trainingDummy) {
+  return writer.packInt16(trainingDummy.npcSlotId);
+}
+
+function packDisplayItem(writer, displayItem) {
+  return writer.packInt16(displayItem.netId).packByte(displayItem.prefix).packInt16(displayItem.stack);
+}
+
+function packLogicSensor(writer, logicSensorKind) {
+  return writer.packByte(logicSensorKind.checkType).packByte(logicSensorKind.on ? 1 : 0);
+}
+
+function hasItem(arr, n) {
+  return Belt_Option.isSome(Belt_Option.flatMap(Belt_Array.get(arr, n), (function (a) {
+                    return a;
+                  })));
+}
+
+function packDisplayDoll(writer, displayDollKind) {
+  var itemFlags = BitFlags$TerrariaPacket.fromFlags(hasItem(displayDollKind.items, 0), hasItem(displayDollKind.items, 1), hasItem(displayDollKind.items, 2), hasItem(displayDollKind.items, 3), hasItem(displayDollKind.items, 4), hasItem(displayDollKind.items, 5), hasItem(displayDollKind.items, 6), hasItem(displayDollKind.items, 7));
+  var dyeFlags = BitFlags$TerrariaPacket.fromFlags(hasItem(displayDollKind.dyes, 0), hasItem(displayDollKind.dyes, 1), hasItem(displayDollKind.dyes, 2), hasItem(displayDollKind.dyes, 3), hasItem(displayDollKind.dyes, 4), hasItem(displayDollKind.dyes, 5), hasItem(displayDollKind.dyes, 6), hasItem(displayDollKind.dyes, 7));
+  writer.packByte(BitFlags$TerrariaPacket.toByte(itemFlags)).packByte(BitFlags$TerrariaPacket.toByte(dyeFlags));
+  for(var i = 0; i <= 7; ++i){
+    var item = Belt_Option.flatMap(Belt_Array.get(displayDollKind.items, i), (function (a) {
+            return a;
+          }));
+    if (item !== undefined) {
+      packDisplayItem(writer, item);
+    }
+    
+  }
+  for(var i$1 = 0; i$1 <= 7; ++i$1){
+    var item$1 = Belt_Option.flatMap(Belt_Array.get(displayDollKind.dyes, i$1), (function (a) {
+            return a;
+          }));
+    if (item$1 !== undefined) {
+      packDisplayItem(writer, item$1);
+    }
+    
+  }
+  return writer;
+}
+
+function packHatRack(writer, hatRackKind) {
+  var flags = BitFlags$TerrariaPacket.fromFlags(hasItem(hatRackKind.items, 0), hasItem(hatRackKind.items, 1), hasItem(hatRackKind.dyes, 2), hasItem(hatRackKind.dyes, 3), false, false, false, false);
+  writer.packByte(BitFlags$TerrariaPacket.toByte(flags));
+  for(var i = 0; i <= 1; ++i){
+    var item = Belt_Option.flatMap(Belt_Array.get(hatRackKind.items, i), (function (a) {
+            return a;
+          }));
+    if (item !== undefined) {
+      packDisplayItem(writer, item);
+    }
+    
+  }
+  for(var i$1 = 0; i$1 <= 1; ++i$1){
+    var item$1 = Belt_Option.flatMap(Belt_Array.get(hatRackKind.dyes, i$1), (function (a) {
+            return a;
+          }));
+    if (item$1 !== undefined) {
+      packDisplayItem(writer, item$1);
+    }
+    
+  }
+  return writer;
+}
+
+function packTeleportationPylon(writer, _teleportationPylonKind) {
+  return writer;
+}
+
+function packEntityKind(writer, entityKind) {
+  switch (entityKind.TAG | 0) {
+    case /* DisplayDoll */0 :
+        return packDisplayDoll(writer, entityKind._0);
+    case /* HatRack */2 :
+        return packHatRack(writer, entityKind._0);
+    case /* LogicSensor */4 :
+        return packLogicSensor(writer, entityKind._0);
+    case /* TeleportationPylon */5 :
+        return writer;
+    case /* TrainingDummy */6 :
+        return writer.packInt16(entityKind._0.npcSlotId);
+    case /* FoodPlatter */1 :
+    case /* ItemFrame */3 :
+    case /* WeaponsRack */7 :
+        return packDisplayItem(writer, entityKind._0);
+    
+  }
+}
+
+function pack$2(writer, entity) {
+  return packEntityKind(writer.packByte(entity.entityType).packInt16(entity.x).packInt16(entity.y), entity.entityKind);
+}
+
+var Entity = {
+  readString: readString$2,
+  readInt16: readInt16$2,
+  readUInt16: readUInt16$2,
+  readInt32: readInt32$2,
+  readByte: readByte$2,
+  parseTrainingDummyKind: parseTrainingDummyKind,
+  parseDisplayItem: parseDisplayItem,
+  parseItemFrameKind: parseDisplayItem,
+  parseLogicSensorKind: parseLogicSensorKind,
+  parseDisplayDollKind: parseDisplayDollKind,
+  parseWeaponsRackKind: parseDisplayItem,
+  parseHatRackKind: parseHatRackKind,
+  parseFoodPlatterKind: parseDisplayItem,
+  parseTeleportationPylonKind: parseTeleportationPylonKind,
+  parse: parse$2,
+  packByte: packByte$2,
+  packInt16: packInt16$2,
+  packString: packString$2,
+  packTrainingDummy: packTrainingDummy,
+  packDisplayItem: packDisplayItem,
+  packItemFrame: packDisplayItem,
+  packLogicSensor: packLogicSensor,
+  hasItem: hasItem,
+  packDisplayDoll: packDisplayDoll,
+  packWeaponsRack: packDisplayItem,
+  packHatRack: packHatRack,
+  packFoodPlatter: packDisplayItem,
+  packTeleportationPylon: packTeleportationPylon,
+  packEntityKind: packEntityKind,
+  pack: pack$2
+};
+
 var isTheSameAs = Caml_obj.caml_equal;
 
 function clearTileCache(tile) {
@@ -84,27 +546,27 @@ function getBytesLeft(prim) {
   return prim.bytesLeft;
 }
 
-function readString(prim) {
+function readString$3(prim) {
   return prim.readString();
 }
 
-function readInt16(prim) {
+function readInt16$3(prim) {
   return prim.readInt16();
 }
 
-function readUInt16(prim) {
+function readUInt16$3(prim) {
   return prim.readUInt16();
 }
 
-function readInt32(prim) {
+function readInt32$3(prim) {
   return prim.readInt32();
 }
 
-function readByte(prim) {
+function readByte$3(prim) {
   return prim.readByte();
 }
 
-function parse(payload) {
+function parse$3(payload) {
   var reader = new Packetreader(payload);
   var compressed = reader.readByte() === 1;
   if (!compressed) {
@@ -170,9 +632,6 @@ function parse(payload) {
             };
           } else {
             frame = Belt_Option.isSome(oldActive) && tileType === oldType ? oldActive.frame : undefined;
-          }
-          if (tileType === 4) {
-            console.log(tileType, frame);
           }
           if (BitFlags$TerrariaPacket.flag4(header3$1)) {
             tileCache.color = reader$1.readByte();
@@ -248,14 +707,32 @@ function parse(payload) {
     }
     tiles.push(row);
   }
-  return {
-          compressed: true,
-          height: height,
-          width: width,
-          tileX: tileX,
-          tileY: tileY,
-          tiles: tiles
-        };
+  var chestCount = reader$1.readInt16();
+  var chests = Belt_Array.make(chestCount, 0).map(function (param) {
+        return parse(reader$1);
+      });
+  var signCount = reader$1.readInt16();
+  var signs = Belt_Array.make(signCount, 0).map(function (param) {
+        return parse$1(reader$1);
+      });
+  var entityCount = reader$1.readInt16();
+  var entities = ResultExt$TerrariaPacket.allOkOrError(Belt_Array.make(entityCount, 0).map(function (param) {
+            return parse$2(reader$1);
+          }));
+  if (entities.TAG === /* Ok */0) {
+    return {
+            compressed: true,
+            height: height,
+            width: width,
+            tileX: tileX,
+            tileY: tileY,
+            tiles: tiles,
+            chests: chests,
+            signs: signs,
+            entities: entities._0
+          };
+  }
+  
 }
 
 var Decode = {
@@ -263,12 +740,12 @@ var Decode = {
   PacketReader: undefined,
   readBuffer: readBuffer,
   getBytesLeft: getBytesLeft,
-  readString: readString,
-  readInt16: readInt16,
-  readUInt16: readUInt16,
-  readInt32: readInt32,
-  readByte: readByte,
-  parse: parse
+  readString: readString$3,
+  readInt16: readInt16$3,
+  readUInt16: readUInt16$3,
+  readInt32: readInt32$3,
+  readByte: readByte$3,
+  parse: parse$3
 };
 
 function getLiquidBitFlags(tile) {
@@ -406,7 +883,7 @@ function getRepeatCountBitFlags(repeatCount) {
   }
 }
 
-function packInt16(prim0, prim1) {
+function packInt16$3(prim0, prim1) {
   return prim0.packInt16(prim1);
 }
 
@@ -495,7 +972,7 @@ function decidePackTile(writer, lastTile, tile) {
   
 }
 
-function packByte(prim0, prim1) {
+function packByte$3(prim0, prim1) {
   return prim0.packByte(prim1);
 }
 
@@ -508,7 +985,7 @@ function data(prim) {
 }
 
 function toBuffer(self) {
-  var packetWriter = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt(/* TileSectionSend */9)).packByte(1);
+  var packetWriter = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt(/* TileSectionSend */9));
   var writer = new Bufferwriter(Buffer.allocUnsafe(64000));
   writer.packInt32(self.tileX).packInt32(self.tileY).packInt16(self.width).packInt16(self.height);
   var lastTile = {
@@ -524,9 +1001,21 @@ function toBuffer(self) {
   if (lastTile$1 !== undefined) {
     packTile(writer, lastTile$1.tile, lastTile$1.count);
   }
-  writer.packInt16(0);
-  writer.packInt16(0);
-  writer.packInt16(0);
+  writer.packInt16(self.chests.length);
+  self.chests.forEach(function (chest) {
+        pack(writer, chest);
+        
+      });
+  writer.packInt16(self.signs.length);
+  self.signs.forEach(function (sign) {
+        pack$1(writer, sign);
+        
+      });
+  writer.packInt16(self.entities.length);
+  self.entities.forEach(function (entity) {
+        pack$2(writer, entity);
+        
+      });
   return packetWriter.packBuffer(Zlib.deflateRawSync(writer.slicedData)).data;
 }
 
@@ -535,10 +1024,10 @@ var Encode = {
   getSlopeBitFlags: getSlopeBitFlags,
   getRepeatCountByteLength: getRepeatCountByteLength,
   getRepeatCountBitFlags: getRepeatCountBitFlags,
-  packInt16: packInt16,
+  packInt16: packInt16$3,
   packTile: packTile,
   decidePackTile: decidePackTile,
-  packByte: packByte,
+  packByte: packByte$3,
   packBuffer: packBuffer,
   setType: ManagedPacketWriter$PacketFactory.setType,
   data: data,
@@ -554,9 +1043,12 @@ exports.Int = Int;
 exports.$$Option = $$Option;
 exports.defaultTileCache = defaultTileCache;
 exports.cacheToTile = cacheToTile;
+exports.Chest = Chest;
+exports.Sign = Sign;
+exports.Entity = Entity;
 exports.isTheSameAs = isTheSameAs;
 exports.Decode = Decode;
 exports.Encode = Encode;
-exports.parse = parse;
+exports.parse = parse$3;
 exports.toBuffer = toBuffer;
 /* zlib Not a pure module */
