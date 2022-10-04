@@ -706,7 +706,8 @@ let serialize: ISerializer.serialize<t> = (~parsed: IParser.parsed<t>, ~fromServ
 let toPacketName = (packet: t): string => {
   switch packet {
   | ConnectRequest(_connectRequest) => "ConnectRequest"
-  | Disconnect(_disconnect) => "Disconnect"
+  | Disconnect(disconnect) =>
+    `Disconnect(reason: "${disconnect.reason->PacketFactory.NetworkText.toString})"`
   | PlayerSlotSet(_playerSlotSet) => "PlayerSlotSet"
   | PlayerInfo(_playerInfo) => "PlayerInfo"
   | PlayerInventorySlot(_playerInventorySlot) => "PlayerInventorySlot"

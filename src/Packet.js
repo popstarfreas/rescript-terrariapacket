@@ -401,7 +401,7 @@ function toPacketName$1(packet) {
     case /* ConnectRequest */0 :
         return "ConnectRequest";
     case /* Disconnect */1 :
-        return "Disconnect";
+        return "Disconnect(reason: \"" + packet._0.reason.toString() + ")\"";
     case /* PlayerSlotSet */2 :
         return "PlayerSlotSet";
     case /* PlayerInfo */3 :
