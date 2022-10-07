@@ -210,7 +210,16 @@ function toLatest(self) {
         };
 }
 
-function fromLatest(_latest) {
+function fromLatest(latest) {
+  if (latest.width === latest.height) {
+    return {
+            size: latest.width,
+            changeType: latest.changeType,
+            tileX: latest.tileX,
+            tileY: latest.tileY,
+            tiles: latest.tiles
+          };
+  }
   
 }
 

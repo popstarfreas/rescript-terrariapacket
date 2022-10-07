@@ -215,4 +215,16 @@ let toLatest = (self: t): Packet.TileSquareSend.t => {
   tiles: self.tiles,
 }
 
-let fromLatest = (_latest: Packet.TileSquareSend.t): option<t> => None
+let fromLatest = (latest: Packet.TileSquareSend.t): option<t> => {
+  if latest.width == latest.height {
+    Some({
+      size: latest.width,
+      tileX: latest.tileX,
+      tileY: latest.tileY,
+      changeType: latest.changeType,
+      tiles: latest.tiles,
+    })
+  } else {
+    None
+  }
+}
