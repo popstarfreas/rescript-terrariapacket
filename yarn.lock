@@ -31,10 +31,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@popstarfreas/packetfactory@^4.4.1":
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/@popstarfreas/packetfactory/-/packetfactory-4.4.1.tgz#c8ad43f820a30eb6308e9be9878bdd94bd592289"
-  integrity sha512-7kw8J7K1R3mTPblijfs/KB1g3PoqNXAqsQKsw9loKUlngUzOVMEFSs/K2X7ghzCUTVujmH8EVYJWYUEL+1vLzQ==
+"@popstarfreas/packetfactory@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@popstarfreas/packetfactory/-/packetfactory-5.0.0.tgz#1bb5898498ba781f09e405275e1ef8b499c80aad"
+  integrity sha512-yBAO6L0EUuzyf2LKvezeAwG5tUsjzR3xp/1NUJ2vT5GqtXllkurfY+a1YHm46BbCcF0usE8g6Nms/oZ+IkhQbQ==
   dependencies:
     "@popstarfreas/rescript-nodejs" "github:popstarfreas/rescript-nodejs#master"
     utf8 "^2.1.2"

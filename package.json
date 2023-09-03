@@ -5,7 +5,7 @@
     "build:watch": "rescript build -w"
   },
   "dependencies": {
-    "@popstarfreas/packetfactory": "^4.4.1",
+    "@popstarfreas/packetfactory": "^5.0.0",
     "@popstarfreas/rescript-nodejs": "github:popstarfreas/rescript-nodejs#master",
     "rescript": "^10.1.0",
     "typescript": "^5.2.2"
