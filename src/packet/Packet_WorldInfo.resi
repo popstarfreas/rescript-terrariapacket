@@ -1,3 +1,4 @@
+@genType
 type eventInfo = {
   shadowOrbSmashed: bool,
   killedBoss1: bool,
@@ -58,6 +59,7 @@ type eventInfo = {
   tenthAnniversaryWorld: bool,
 }
 
+@genType
 type t = {
   time: int,
   dayAndMoonInfo: int,
@@ -133,5 +135,7 @@ type t = {
   sandstormSeverity: float,
 }
 
+@genType
 let parse: NodeJs.Buffer.t => option<t>
+@genType
 let toBuffer: t => NodeJs.Buffer.t
