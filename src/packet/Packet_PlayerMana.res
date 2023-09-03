@@ -12,9 +12,9 @@ module Decode = {
     let mana = reader->readInt16
     let maxMana = reader->readInt16
     Some({
-      playerId: playerId,
-      mana: mana,
-      maxMana: maxMana,
+      playerId,
+      mana,
+      maxMana,
     })
   }
 }

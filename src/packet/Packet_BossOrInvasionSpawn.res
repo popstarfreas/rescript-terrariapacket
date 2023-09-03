@@ -42,8 +42,8 @@ module Decode = {
     }
 
     Some({
-      playerId: playerId,
-      spawnType: spawnType,
+      playerId,
+      spawnType,
     })
   }
 }

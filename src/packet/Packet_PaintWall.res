@@ -12,9 +12,9 @@ module Decode = {
     let y = reader->readInt16
     let color = reader->readByte
     Some({
-      x: x,
-      y: y,
-      color: color,
+      x,
+      y,
+      color,
     })
   }
 }

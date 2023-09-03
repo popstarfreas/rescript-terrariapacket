@@ -12,9 +12,9 @@ module Decode = {
     let health = reader->readInt16
     let maxHealth = reader->readInt16
     Some({
-      playerId: playerId,
-      health: health,
-      maxHealth: maxHealth,
+      playerId,
+      health,
+      maxHealth,
     })
   }
 }

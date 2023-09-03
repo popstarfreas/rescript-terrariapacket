@@ -10,7 +10,7 @@ module Decode = {
     let reader = PacketFactory.PacketReader.make(payload)
     let x = reader->readInt32
     let y = reader->readInt32
-    Some({x: x, y: y})
+    Some({x, y})
   }
 }
 

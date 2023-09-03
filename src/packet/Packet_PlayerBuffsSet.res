@@ -13,8 +13,8 @@ module Decode = {
       let _: int = buffs->Js.Array2.push(reader->readUInt16)
     }
     Some({
-      playerId: playerId,
-      buffs: buffs,
+      playerId,
+      buffs,
     })
   }
 }

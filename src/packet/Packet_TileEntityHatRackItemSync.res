@@ -18,12 +18,12 @@ module Decode = {
     let stack = reader->readUInt16
     let prefix = reader->readByte
     Some({
-      playerId: playerId,
-      tileEntityId: tileEntityId,
-      itemIndex: itemIndex,
-      itemId: itemId,
-      stack: stack,
-      prefix: prefix,
+      playerId,
+      tileEntityId,
+      itemIndex,
+      itemId,
+      stack,
+      prefix,
     })
   }
 }

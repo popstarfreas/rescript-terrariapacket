@@ -116,21 +116,21 @@ module Decode = {
     switch life {
     | Some(life) =>
       Some({
-        npcSlotId: npcSlotId,
-        npcTypeId: npcTypeId,
-        x: x,
-        y: y,
-        vx: vx,
-        vy: vy,
-        target: target,
+        npcSlotId,
+        npcTypeId,
+        x,
+        y,
+        vx,
+        vy,
+        target,
         directionX: npcFlags1.directionX,
         directionY: npcFlags1.directionY,
-        ai: ai,
+        ai,
         spriteDirection: npcFlags1.spriteDirection,
-        life: life,
-        releaseOwner: releaseOwner,
-        playerCountScale: playerCountScale,
-        strengthMultiplier: strengthMultiplier,
+        life,
+        releaseOwner,
+        playerCountScale,
+        strengthMultiplier,
         spawnedFromStatue: npcFlags2.spawnedFromStatue,
       })
     | None => None

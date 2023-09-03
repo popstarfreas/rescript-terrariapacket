@@ -37,9 +37,9 @@ module Decode = {
     }
     let immunityFromPlayerId = Immunity.fromInt(reader->readInt16)
     Some({
-      npcId: npcId,
-      immunityTime: immunityTime,
-      immunityFromPlayerId: immunityFromPlayerId,
+      npcId,
+      immunityTime,
+      immunityFromPlayerId,
     })
   }
 }

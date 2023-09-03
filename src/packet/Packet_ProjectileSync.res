@@ -50,18 +50,18 @@ module Decode = {
       None
     }
     Some({
-      projectileId: projectileId,
-      x: x,
-      y: y,
-      vx: vx,
-      vy: vy,
-      owner: owner,
-      projectileType: projectileType,
-      ai: ai,
-      damage: damage,
-      knockback: knockback,
-      originalDamage: originalDamage,
-      projectileUuid: projectileUuid,
+      projectileId,
+      x,
+      y,
+      vx,
+      vy,
+      owner,
+      projectileType,
+      ai,
+      damage,
+      knockback,
+      originalDamage,
+      projectileUuid,
     })
   }
 }

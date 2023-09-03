@@ -88,9 +88,9 @@ module Decode = {
               (flags2->BitFlags.flag5 ? 1 : 0) +
               (flags2->BitFlags.flag6 ? 2 : 0) + (flags2->BitFlags.flag7 ? 4 : 0)
             Some({
-              tileType: tileType,
-              slope: slope,
-              frame: frame,
+              tileType,
+              slope,
+              frame,
             })
           }
         | false => None
@@ -110,18 +110,18 @@ module Decode = {
         let wire4 = flags2->BitFlags.flag8
         column
         ->Js.Array2.push({
-          wire: wire,
-          halfBrick: halfBrick,
-          actuator: actuator,
-          inActive: inActive,
-          wire2: wire2,
-          wire3: wire3,
-          wire4: wire4,
-          color: color,
-          wallColor: wallColor,
-          activeTile: activeTile,
-          wall: wall,
-          liquid: liquid,
+          wire,
+          halfBrick,
+          actuator,
+          inActive,
+          wire2,
+          wire3,
+          wire4,
+          color,
+          wallColor,
+          activeTile,
+          wall,
+          liquid,
         })
         ->ignore
       }
@@ -129,12 +129,12 @@ module Decode = {
     }
 
     Some({
-      height: height,
-      width: width,
-      changeType: changeType,
-      tileX: tileX,
-      tileY: tileY,
-      tiles: tiles,
+      height,
+      width,
+      changeType,
+      tileX,
+      tileY,
+      tiles,
     })
   }
 }

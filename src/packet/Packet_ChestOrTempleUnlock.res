@@ -19,9 +19,9 @@ module Decode = {
     let x = reader->readInt16
     let y = reader->readInt16
     Some({
-      unlockType: unlockType,
-      x: x,
-      y: y,
+      unlockType,
+      x,
+      y,
     })
   }
 }

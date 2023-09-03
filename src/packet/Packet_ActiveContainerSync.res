@@ -21,11 +21,11 @@ module Decode = {
     }
 
     Some({
-      chestId: chestId,
-      x: x,
-      y: y,
-      nameLength: nameLength,
-      name: name,
+      chestId,
+      x,
+      y,
+      nameLength,
+      name,
     })
   }
 }

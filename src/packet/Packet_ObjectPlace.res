@@ -25,13 +25,13 @@ module Decode = {
     | _ => Right
     }
     Some({
-      x: x,
-      y: y,
-      objectType: objectType,
-      style: style,
-      alternate: alternate,
-      random: random,
-      direction: direction,
+      x,
+      y,
+      objectType,
+      style,
+      alternate,
+      random,
+      direction,
     })
   }
 }

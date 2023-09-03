@@ -14,10 +14,10 @@ module Decode = {
     let x = reader->readSingle
     let y = reader->readSingle
     Some({
-      npcSlotId: npcSlotId,
-      extraValue: extraValue,
-      x: x,
-      y: y,
+      npcSlotId,
+      extraValue,
+      x,
+      y,
     })
   }
 }

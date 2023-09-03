@@ -31,8 +31,8 @@ module Decode = {
     let text = reader->readNetworkText
     let flags = BitFlags.fromByte(reader->readByte)
     Some({
-      max: max,
-      text: text,
+      max,
+      text,
       flags: {
         hideStatusTextPercent: flags->hasHideStatusTextPercent,
         statusTextHasShadows: flags->hasStatusTextHasShadows,

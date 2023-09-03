@@ -10,8 +10,8 @@ module Decode = {
     let projectileId = reader->readInt16
     let owner = reader->readByte
     Some({
-      projectileId: projectileId,
-      owner: owner,
+      projectileId,
+      owner,
     })
   }
 }

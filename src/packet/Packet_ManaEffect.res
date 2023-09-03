@@ -10,8 +10,8 @@ module Decode = {
     let playerId = reader->readByte
     let manaAmount = reader->readInt16
     Some({
-      playerId: playerId,
-      manaAmount: manaAmount,
+      playerId,
+      manaAmount,
     })
   }
 }

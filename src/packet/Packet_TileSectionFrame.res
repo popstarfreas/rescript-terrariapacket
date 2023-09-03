@@ -13,7 +13,7 @@ module Decode = {
     let startY = reader->readInt16
     let endX = reader->readInt16
     let endY = reader->readInt16
-    Some({startX: startX, startY: startY, endX: endX, endY: endY})
+    Some({startX, startY, endX, endY})
   }
 }
 

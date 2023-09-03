@@ -60,11 +60,11 @@ module Decode = {
     switch action {
     | Some(action) =>
       Some({
-        action: action,
-        x: x,
-        y: y,
-        style: style,
-        id: id,
+        action,
+        x,
+        y,
+        style,
+        id,
       })
     | None => None
     }

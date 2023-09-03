@@ -10,8 +10,8 @@ module Decode = {
     let x = reader->readInt16
     let y = reader->readInt16
     Some({
-      x: x,
-      y: y,
+      x,
+      y,
     })
   }
 }

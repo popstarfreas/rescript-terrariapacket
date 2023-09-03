@@ -10,8 +10,8 @@ module Decode = {
     let playerId = reader->readByte
     let healAmount = reader->readInt16
     Some({
-      playerId: playerId,
-      healAmount: healAmount,
+      playerId,
+      healAmount,
     })
   }
 }

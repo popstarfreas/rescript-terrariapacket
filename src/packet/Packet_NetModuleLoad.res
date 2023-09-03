@@ -260,10 +260,10 @@ module Decode = {
       let liquidType = reader->readByte
       changes
       ->Js.Array2.push({
-        y: y,
-        x: x,
-        amount: amount,
-        liquidType: liquidType,
+        y,
+        x,
+        amount,
+        liquidType,
       })
       ->ignore
     }
@@ -289,7 +289,7 @@ module Decode = {
     let x = reader->readSingle
     let y = reader->readSingle
 
-    Some(Ping({x: x, y: y}))
+    Some(Ping({x, y}))
   }
 
   let parseAmbience = (reader: PacketFactory.PacketReader.t) => {
@@ -297,7 +297,7 @@ module Decode = {
     let seed = reader->readInt32
     let skyEntityType = reader->readByte
 
-    Some(Ambience({playerId: playerId, seed: seed, skyEntityType: skyEntityType}))
+    Some(Ambience({playerId, seed, skyEntityType}))
   }
 
   let parseBestiary = (reader: PacketFactory.PacketReader.t) => {
@@ -311,7 +311,7 @@ module Decode = {
     }
 
     switch bestiaryUnlockType {
-    | Some(unlockType) => Some(Bestiary({unlockType: unlockType, npcId: npcId}))
+    | Some(unlockType) => Some(Bestiary({unlockType, npcId}))
     | None => None
     }
   }
@@ -319,7 +319,7 @@ module Decode = {
   let parseCreativeUnlock = (reader: PacketFactory.PacketReader.t) => {
     let itemId = reader->readInt16
     let researchedCount = reader->readUInt16
-    Some(CreativeUnlocks({itemId: itemId, researchedCount: researchedCount}))
+    Some(CreativeUnlocks({itemId, researchedCount}))
   }
 
   // TODO: Add missing power deserialize
@@ -332,7 +332,7 @@ module Decode = {
     let _ = reader->readByte
     let itemId = reader->readUInt16
     let researchedCount = reader->readUInt16
-    Some(CreativeUnlocksPlayerReport({itemId: itemId, researchedCount: researchedCount}))
+    Some(CreativeUnlocksPlayerReport({itemId, researchedCount}))
   }
 
   let parseTeleportPylon = (reader: PacketFactory.PacketReader.t) => {
@@ -349,8 +349,7 @@ module Decode = {
     }
 
     switch pylonAction {
-    | Some(pylonAction) =>
-      Some(TeleportPylon({pylonAction: pylonAction, x: x, y: y, pylonType: pylonType}))
+    | Some(pylonAction) => Some(TeleportPylon({pylonAction, x, y, pylonType}))
     | None => None
     }
   }
@@ -366,13 +365,13 @@ module Decode = {
 
     Some(
       Particles({
-        particleType: particleType,
-        x: x,
-        y: y,
-        vx: vx,
-        vy: vy,
-        shaderIndex: shaderIndex,
-        invokedByPlayer: invokedByPlayer,
+        particleType,
+        x,
+        y,
+        vx,
+        vy,
+        shaderIndex,
+        invokedByPlayer,
       }),
     )
   }
@@ -390,8 +389,7 @@ module Decode = {
     }
 
     switch powerLevel {
-    | Some(powerLevel) =>
-      Some(CreativePowerPermissions({powerType: powerType, powerLevel: powerLevel}))
+    | Some(powerLevel) => Some(CreativePowerPermissions({powerType, powerLevel}))
     | None => None
     }
   }

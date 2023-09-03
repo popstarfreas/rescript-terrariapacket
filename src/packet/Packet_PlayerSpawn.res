@@ -31,11 +31,11 @@ module Decode = {
     switch context {
     | Some(context) =>
       Some({
-        playerId: playerId,
-        x: x,
-        y: y,
-        timeRemaining: timeRemaining,
-        context: context,
+        playerId,
+        x,
+        y,
+        timeRemaining,
+        context,
       })
     | None => None
     }

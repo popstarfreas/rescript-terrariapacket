@@ -16,11 +16,11 @@ module Decode = {
     let prefix = reader->readByte
     let stack = reader->readInt16
     Some({
-      x: x,
-      y: y,
-      itemId: itemId,
-      prefix: prefix,
-      stack: stack,
+      x,
+      y,
+      itemId,
+      prefix,
+      stack,
     })
   }
 }

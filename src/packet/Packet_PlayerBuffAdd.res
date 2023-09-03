@@ -12,9 +12,9 @@ module Decode = {
     let buff = reader->readUInt16
     let time = reader->readInt32
     Some({
-      playerId: playerId,
-      buff: buff,
-      time: time,
+      playerId,
+      buff,
+      time,
     })
   }
 }

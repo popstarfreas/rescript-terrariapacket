@@ -10,8 +10,8 @@ module Decode = {
     let playerId = reader->readByte
     let active = reader->readByte !== 0
     Some({
-      playerId: playerId,
-      active: active,
+      playerId,
+      active,
     })
   }
 }

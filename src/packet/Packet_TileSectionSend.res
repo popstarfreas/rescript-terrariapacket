@@ -102,7 +102,7 @@ module Chest = {
     let x = reader->readInt16
     let y = reader->readInt16
     let name = reader->readString
-    {id: id, x: x, y: y, name: name}
+    {id, x, y, name}
   }
 
   let {packByte, packInt16, packString} = module(PacketFactory.BufferWriter)
@@ -128,7 +128,7 @@ module Sign = {
     let y = reader->readInt16
     let name = reader->readString
 
-    {id: id, x: x, y: y, name: name}
+    {id, x, y, name}
   }
 
   let {packByte, packInt16, packString} = module(PacketFactory.BufferWriter)
@@ -194,9 +194,9 @@ module Entity = {
     let stack = reader->readInt16
 
     {
-      netId: netId,
-      prefix: prefix,
-      stack: stack,
+      netId,
+      prefix,
+      stack,
     }
   }
 
@@ -207,8 +207,8 @@ module Entity = {
     let on = reader->readByte == 1
 
     {
-      checkType: checkType,
-      on: on,
+      checkType,
+      on,
     }
   }
 
@@ -235,8 +235,8 @@ module Entity = {
     }
 
     {
-      items: items,
-      dyes: dyes,
+      items,
+      dyes,
     }
   }
 
@@ -264,8 +264,8 @@ module Entity = {
     }
 
     {
-      items: items,
-      dyes: dyes,
+      items,
+      dyes,
     }
   }
 
@@ -291,10 +291,10 @@ module Entity = {
 
     entityKind->Belt.Result.map(entityKind => {
       {
-        entityType: entityType,
-        x: x,
-        y: y,
-        entityKind: entityKind,
+        entityType,
+        x,
+        y,
+        entityKind,
       }
     })
   }
@@ -518,7 +518,7 @@ module Decode = {
                 let frame = if TileFrameImportant.isImportant(tileType) {
                   let x = reader->readInt16
                   let y = reader->readInt16
-                  Some({x: x, y: y})
+                  Some({x, y})
                 } else if oldActive->Option.isSome && tileType === oldType {
                   (oldActive->Option.getUnsafe).frame
                 } else {
@@ -530,8 +530,8 @@ module Decode = {
                 }
 
                 tileCache.activeTile = Some({
-                  tileType: tileType,
-                  frame: frame,
+                  tileType,
+                  frame,
                 })
               }
 
@@ -629,14 +629,14 @@ module Decode = {
         | Ok(entities) =>
           Some({
             compressed: true,
-            height: height,
-            width: width,
-            tileX: tileX,
-            tileY: tileY,
-            tiles: tiles,
-            chests: chests,
-            signs: signs,
-            entities: entities,
+            height,
+            width,
+            tileX,
+            tileY,
+            tiles,
+            chests,
+            signs,
+            entities,
           })
         | Error(_) => None
         }
@@ -834,9 +834,9 @@ module Encode = {
         last.count = last.count + 1
       } else {
         let _: bufferWriter = writer->packTile(last.tile, last.count)
-        lastTile := Some({tile: tile, count: 0})
+        lastTile := Some({tile, count: 0})
       }
-    | None => lastTile := Some({tile: tile, count: 0})
+    | None => lastTile := Some({tile, count: 0})
     }
   }
 

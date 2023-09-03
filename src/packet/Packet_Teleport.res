@@ -37,13 +37,13 @@ module Decode = {
     switch teleportType {
     | Some(teleportType) =>
       Some({
-        teleportType: teleportType,
-        getPositionFromTarget: getPositionFromTarget,
-        targetId: targetId,
-        x: x,
-        y: y,
-        style: style,
-        extraInfo: extraInfo,
+        teleportType,
+        getPositionFromTarget,
+        targetId,
+        x,
+        y,
+        style,
+        extraInfo,
       })
     | None => None
     }
