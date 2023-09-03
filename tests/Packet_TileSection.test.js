@@ -7,19 +7,18 @@ var Zora$1 = require("zora");
 var Packet_TileSectionSend$TerrariaPacket = require("../src/packet/Packet_TileSectionSend.js");
 
 Zora$1.test("Should be the same going after encode/decode", (function (t) {
-        var data = Fs.readFileSync("tests/send_section", undefined);
+        var data = Fs.readFileSync("tests/send_section");
         var p = Packet_TileSectionSend$TerrariaPacket.parse(data);
-        return Zora.optionSome(t, p, (function (t, section) {
-                      var data = Packet_TileSectionSend$TerrariaPacket.toBuffer(section);
-                      var p = Packet_TileSectionSend$TerrariaPacket.parse(data);
-                      return Zora.optionSome(t, p, (function (t, section) {
-                                    var buf = Packet_TileSectionSend$TerrariaPacket.toBuffer(section);
-                                    console.log(data.slice(0, 20));
-                                    console.log(buf.slice(0, 20));
-                                    t.ok(buf.toString() === data.toString(), "Expected decode->encode to reproduce the same buffer");
-                                    
-                                  }));
-                    }));
+        Zora.optionSome(t, p, (function (t, section) {
+                var data = Packet_TileSectionSend$TerrariaPacket.toBuffer(section);
+                var p = Packet_TileSectionSend$TerrariaPacket.parse(data);
+                Zora.optionSome(t, p, (function (t, section) {
+                        var buf = Packet_TileSectionSend$TerrariaPacket.toBuffer(section);
+                        console.log(data.slice(0, 20));
+                        console.log(buf.slice(0, 20));
+                        t.ok(buf.toString() === data.toString(), "Expected decode->encode to reproduce the same buffer");
+                      }));
+              }));
       }));
 
 var TileSectionSend;

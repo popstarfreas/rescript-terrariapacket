@@ -5,12 +5,12 @@
     "build:watch": "rescript build -w"
   },
   "dependencies": {
-    "@popstarfreas/packetfactory": "^4.3.0",
-    "@popstarfreas/rescript-nodejs": "^14.1.0",
-    "rescript": "^9.1.4"
+    "@popstarfreas/packetfactory": "^4.4.0",
+    "@popstarfreas/rescript-nodejs": "github:popstarfreas/rescript-nodejs#master",
+    "rescript": "^10.1.0"
   },
   "devDependencies": {
-    "@dusty-phillips/rescript-zora": "^3.0.1",
+    "@dusty-phillips/rescript-zora": "^4.0.0",
     "pta": "^1.2.0"
   }
 }

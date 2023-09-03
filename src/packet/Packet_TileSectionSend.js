@@ -364,7 +364,7 @@ function parse$2(reader) {
     default:
       entityKind = {
         TAG: /* Error */1,
-        _0: "File \"Packet_TileSectionSend.res\", line 289, characters 17-24Unknown entity kind. "
+        _0: "File \"Packet_TileSectionSend.res\", line 289, characters 17-24" + "Unknown entity kind. "
       };
   }
   return Belt_Result.map(entityKind, (function (entityKind) {
@@ -517,7 +517,7 @@ var Entity = {
   pack: pack$2
 };
 
-var isTheSameAs = Caml_obj.caml_equal;
+var isTheSameAs = Caml_obj.equal;
 
 function clearTileCache(tile) {
   tile.activeTile = undefined;
@@ -535,7 +535,6 @@ function clearTileCache(tile) {
   tile.slope = undefined;
   tile.actuator = false;
   tile.inActive = false;
-  
 }
 
 function readBuffer(prim0, prim1) {
@@ -954,7 +953,7 @@ function packTile(writer, tile, repeatCount) {
 function decidePackTile(writer, lastTile, tile) {
   var last = lastTile.contents;
   if (last !== undefined) {
-    if (Caml_obj.caml_equal(tile, last.tile)) {
+    if (Caml_obj.equal(tile, last.tile)) {
       last.count = last.count + 1 | 0;
     } else {
       packTile(writer, last.tile, last.count);
@@ -969,7 +968,6 @@ function decidePackTile(writer, lastTile, tile) {
       count: 0
     };
   }
-  
 }
 
 function packByte$3(prim0, prim1) {
@@ -1004,17 +1002,14 @@ function toBuffer(self) {
   writer.packInt16(self.chests.length);
   self.chests.forEach(function (chest) {
         pack(writer, chest);
-        
       });
   writer.packInt16(self.signs.length);
   self.signs.forEach(function (sign) {
         pack$1(writer, sign);
-        
       });
   writer.packInt16(self.entities.length);
   self.entities.forEach(function (entity) {
         pack$2(writer, entity);
-        
       });
   return packetWriter.packBuffer(Zlib.deflateRawSync(writer.slicedData)).data;
 }

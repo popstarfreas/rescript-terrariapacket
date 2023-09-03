@@ -38,7 +38,6 @@ function toBuffer(self) {
   var writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt(/* TravellingMerchantInventory */67));
   self.items.forEach(function (item) {
         writer.packInt16(item);
-        
       });
   return writer.data;
 }

@@ -52,7 +52,6 @@ function toBuffer(self) {
         var writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt(/* NetModuleLoad */77)).packUInt16(/* Liquid */0).packUInt16(liquid.changes.length);
         liquid.changes.forEach(function (change) {
               writer.packInt16(change.y).packInt16(change.x).packByte(change.amount).packByte(change.liquidType);
-              
             });
         return writer.data;
     case /* ClientText */1 :

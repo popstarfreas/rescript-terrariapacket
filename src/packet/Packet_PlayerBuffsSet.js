@@ -48,7 +48,6 @@ function data(prim) {
 function packBuffs(writer, buffs) {
   buffs.forEach(function (buff) {
         writer.packUInt16(buff);
-        
       });
   return writer;
 }
