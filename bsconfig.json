@@ -28,6 +28,9 @@
   "gentypeconfig": {
     "generatedFileExtension": ".gen.ts",
     "module": "commonjs",
+    "shims": {
+      "NodeJs": "NodeJs"
+    },
     "debug": {
       "all": false,
       "basic": false

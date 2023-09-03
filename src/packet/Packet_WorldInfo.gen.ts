@@ -5,9 +5,9 @@
 // @ts-ignore: Implicit any on import
 const Packet_WorldInfoBS = require('./Packet_WorldInfo.bs');
 
-import type {BigInt_t as NodeJs_BigInt_t} from '@popstarfreas/rescript-nodejs/NodeJs.gen';
+import type {BigInt_t as NodeJs_BigInt_t} from '../../src/shims/NodeJs.shim';
 
-import type {Buffer_t as NodeJs_Buffer_t} from '@popstarfreas/rescript-nodejs/NodeJs.gen';
+import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 
 // tslint:disable-next-line:interface-over-type-literal
 export type eventInfo = {

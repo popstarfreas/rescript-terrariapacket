@@ -5,7 +5,7 @@
 // @ts-ignore: Implicit any on import
 const Packet_TileSquareSendBS = require('./Packet_TileSquareSend.bs');
 
-import type {Buffer_t as NodeJs_Buffer_t} from '@popstarfreas/rescript-nodejs/NodeJs.gen';
+import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 
 // tslint:disable-next-line:interface-over-type-literal
 export type frame = { readonly x: number; readonly y: number };
