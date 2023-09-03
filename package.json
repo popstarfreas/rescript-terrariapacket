@@ -7,7 +7,8 @@
   "dependencies": {
     "@popstarfreas/packetfactory": "^4.4.1",
     "@popstarfreas/rescript-nodejs": "github:popstarfreas/rescript-nodejs#master",
-    "rescript": "^10.1.0"
+    "rescript": "^10.1.0",
+    "typescript": "^5.2.2"
   },
   "devDependencies": {
     "@dusty-phillips/rescript-zora": "^4.0.0",
