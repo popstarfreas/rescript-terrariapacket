@@ -6,18 +6,6 @@ var Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 var PacketType$DarkgamingRescriptTerrariapacket = require("../PacketType.bs.js");
 
-function readInt16(prim) {
-  return prim.readInt16();
-}
-
-function readSingle(prim) {
-  return prim.readSingle();
-}
-
-function readByte(prim) {
-  return prim.readByte();
-}
-
 function parse(payload) {
   var reader = new Packetreader(payload);
   var itemDropId = reader.readInt16();
@@ -42,44 +30,10 @@ function parse(payload) {
         };
 }
 
-var Decode = {
-  readInt16: readInt16,
-  readSingle: readSingle,
-  readByte: readByte,
-  parse: parse
-};
-
-function packSingle(prim0, prim1) {
-  return prim0.packSingle(prim1);
-}
-
-function packInt16(prim0, prim1) {
-  return prim0.packInt16(prim1);
-}
-
-function packByte(prim0, prim1) {
-  return prim0.packByte(prim1);
-}
-
-function data(prim) {
-  return prim.data;
-}
-
 function toBuffer(self) {
   return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* ItemDropUpdate */19)).packInt16(self.itemDropId).packSingle(self.x).packSingle(self.y).packSingle(self.vx).packSingle(self.vy).packInt16(self.stack).packByte(self.prefix).packByte(self.noDelay).packInt16(self.itemId).data;
 }
 
-var Encode = {
-  packSingle: packSingle,
-  packInt16: packInt16,
-  packByte: packByte,
-  setType: ManagedPacketWriter$PacketFactory.setType,
-  data: data,
-  toBuffer: toBuffer
-};
-
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* @popstarfreas/packetfactory/packetreader Not a pure module */
