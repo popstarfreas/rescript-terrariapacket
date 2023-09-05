@@ -21,7 +21,6 @@ module Decode = {
 
 module Encode = {
   let {packByte, packUInt16, packInt32, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  type writer = PacketFactory.ManagedPacketWriter.t
   let toBuffer = (self: t): NodeJs.Buffer.t => {
     PacketFactory.ManagedPacketWriter.make()
     ->setType(PacketType.PlayerBuffAdd->PacketType.toInt)

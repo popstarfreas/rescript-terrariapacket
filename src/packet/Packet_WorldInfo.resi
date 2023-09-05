@@ -73,7 +73,7 @@ type t = {
   worldId: int,
   worldName: string,
   gameMode: int,
-  worldUniqueId: array<int>,
+  worldUniqueId: Array16.t<int>,
   worldGeneratorVersion: NodeJs.BigInt.t,
   moonType: int,
   treeBackground: int,

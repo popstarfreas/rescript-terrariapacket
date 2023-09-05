@@ -70,7 +70,7 @@ type t = {
   worldId: int,
   worldName: string,
   gameMode: int,
-  worldUniqueId: array<int>,
+  worldUniqueId: Array16.t<int>,
   worldGeneratorVersion: NodeJs.BigInt.t,
   moonType: int,
   treeBackground: int,
@@ -281,7 +281,7 @@ module Decode = {
     let worldId = reader->readInt32
     let worldName = reader->readString
     let gameMode = reader->readByte
-    let worldUniqueId = reader->readBytes(16)
+    let worldUniqueId = Array16.fromArray(reader->readBytes(16))
     let worldGeneratorVersion = reader->readUInt64
     let moonType = reader->readByte
     let treeBackground = reader->readByte
@@ -341,7 +341,7 @@ module Decode = {
     let invasionType = reader->readSByte
     let lobbyId = reader->readUInt64
     let sandstormSeverity = reader->readSingle
-    Some({
+    worldUniqueId->Belt.Option.map(worldUniqueId => {
       time,
       dayAndMoonInfo,
       moonPhase,
@@ -527,7 +527,7 @@ module Encode = {
     ->packInt32(self.worldId)
     ->packString(self.worldName)
     ->packByte(self.gameMode)
-    ->packBytes(self.worldUniqueId)
+    ->packBytes(self.worldUniqueId->Array16.asArray)
     ->packUInt64(self.worldGeneratorVersion)
     ->packByte(self.moonType)
     ->packByte(self.treeBackground)

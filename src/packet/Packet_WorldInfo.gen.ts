@@ -9,6 +9,8 @@ import type {BigInt_t as NodeJs_BigInt_t} from '../../src/shims/NodeJs.shim';
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 
+import type {t as Array16_t} from '../../src/Array16.gen';
+
 // tslint:disable-next-line:interface-over-type-literal
 export type eventInfo = {
   readonly shadowOrbSmashed: boolean; 
@@ -84,7 +86,7 @@ export type t = {
   readonly worldId: number; 
   readonly worldName: string; 
   readonly gameMode: number; 
-  readonly worldUniqueId: number[]; 
+  readonly worldUniqueId: Array16_t<number>; 
   readonly worldGeneratorVersion: NodeJs_BigInt_t; 
   readonly moonType: number; 
   readonly treeBackground: number; 
