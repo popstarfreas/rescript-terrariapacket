@@ -3,7 +3,7 @@
   "version": "1.2.0",
   "scripts": {
     "build:watch": "rescript build -w",
-    "build": "rescript build -with-deps && tsc -p .",
+    "build": "rescript build -with-deps && tsc -p ."
   },
   "dependencies": {
     "@popstarfreas/packetfactory": "^5.0.0",
