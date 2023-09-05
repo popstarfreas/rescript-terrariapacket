@@ -56,8 +56,8 @@ module SwitchHit = Packet_SwitchHit
 module NpcHomeUpdate = Packet_NpcHomeUpdate
 module BossOrInvasionSpawn = Packet_BossOrInvasionSpawn
 module PlayerDodge = Packet_PlayerDodge
-module PaintTile = Packet_PaintTile
-module PaintWall = Packet_PaintWall
+module TilePaint = Packet_TilePaint
+module WallPaint = Packet_WallPaint
 module Teleport = Packet_Teleport
 module PlayerHealOther = Packet_PlayerHealOther
 module DimensionsUpdate = Packet_DimensionsUpdate
@@ -193,8 +193,8 @@ type t =
   | NpcHomeUpdate(NpcHomeUpdate.t)
   | BossOrInvasionSpawn(BossOrInvasionSpawn.t)
   | PlayerDodge(PlayerDodge.t)
-  | PaintTile(PaintTile.t)
-  | PaintWall(PaintWall.t)
+  | TilePaint(TilePaint.t)
+  | WallPaint(WallPaint.t)
   | Teleport(Teleport.t)
   | PlayerHealOther(PlayerHealOther.t)
   | DimensionsUpdate(DimensionsUpdate.t)
@@ -337,8 +337,8 @@ module Lazy: {
     | NpcHomeUpdate(Lazy.t<option<NpcHomeUpdate.t>>)
     | BossOrInvasionSpawn(Lazy.t<option<BossOrInvasionSpawn.t>>)
     | PlayerDodge(Lazy.t<option<PlayerDodge.t>>)
-    | PaintTile(Lazy.t<option<PaintTile.t>>)
-    | PaintWall(Lazy.t<option<PaintWall.t>>)
+    | TilePaint(Lazy.t<option<TilePaint.t>>)
+    | WallPaint(Lazy.t<option<WallPaint.t>>)
     | Teleport(Lazy.t<option<Teleport.t>>)
     | PlayerHealOther(Lazy.t<option<PlayerHealOther.t>>)
     | DimensionsUpdate(Lazy.t<option<DimensionsUpdate.t>>)

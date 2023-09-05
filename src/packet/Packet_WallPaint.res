@@ -23,7 +23,7 @@ module Encode = {
   let {packByte, packInt16, setType, data} = module(PacketFactory.ManagedPacketWriter)
   let toBuffer = (self: t): NodeJs.Buffer.t => {
     PacketFactory.ManagedPacketWriter.make()
-    ->setType(PacketType.PaintWall->PacketType.toInt)
+    ->setType(PacketType.WallPaint->PacketType.toInt)
     ->packInt16(self.x)
     ->packInt16(self.y)
     ->packByte(self.color)

@@ -56,8 +56,8 @@ module SwitchHit = Packet_SwitchHit
 module NpcHomeUpdate = Packet_NpcHomeUpdate
 module BossOrInvasionSpawn = Packet_BossOrInvasionSpawn
 module PlayerDodge = Packet_PlayerDodge
-module PaintTile = Packet_PaintTile
-module PaintWall = Packet_PaintWall
+module TilePaint = Packet_TilePaint
+module WallPaint = Packet_WallPaint
 module Teleport = Packet_Teleport
 module PlayerHealOther = Packet_PlayerHealOther
 module DimensionsUpdate = Packet_DimensionsUpdate
@@ -194,8 +194,8 @@ type t =
   | NpcHomeUpdate(NpcHomeUpdate.t)
   | BossOrInvasionSpawn(BossOrInvasionSpawn.t)
   | PlayerDodge(PlayerDodge.t)
-  | PaintTile(PaintTile.t)
-  | PaintWall(PaintWall.t)
+  | TilePaint(TilePaint.t)
+  | WallPaint(WallPaint.t)
   | Teleport(Teleport.t)
   | PlayerHealOther(PlayerHealOther.t)
   | DimensionsUpdate(DimensionsUpdate.t)
@@ -342,8 +342,8 @@ let toLatest = (packet: t, _fromServer: bool): same<Packet.t> => {
   | BossOrInvasionSpawn(bossOrInvasionSpawn) =>
     Same(Packet.BossOrInvasionSpawn(bossOrInvasionSpawn))
   | PlayerDodge(playerDodge) => Same(Packet.PlayerDodge(playerDodge))
-  | PaintTile(paintTile) => Same(Packet.PaintTile(paintTile))
-  | PaintWall(paintWall) => Same(Packet.PaintWall(paintWall))
+  | TilePaint(tilePaint) => Same(Packet.TilePaint(tilePaint))
+  | WallPaint(wallPaint) => Same(Packet.WallPaint(wallPaint))
   | Teleport(teleport) => Same(Packet.Teleport(teleport))
   | PlayerHealOther(playerHealOther) => Same(Packet.PlayerHealOther(playerHealOther))
   | DimensionsUpdate(dimensionsUpdate) => Same(Packet.DimensionsUpdate(dimensionsUpdate))
@@ -518,8 +518,8 @@ let fromLatest = (packet: Packet.t, _fromServer: bool): option<same<t>> => {
   | Packet.BossOrInvasionSpawn(bossOrInvasionSpawn) =>
     Some(Same(BossOrInvasionSpawn(bossOrInvasionSpawn)))
   | Packet.PlayerDodge(playerDodge) => Some(Same(PlayerDodge(playerDodge)))
-  | Packet.PaintTile(paintTile) => Some(Same(PaintTile(paintTile)))
-  | Packet.PaintWall(paintWall) => Some(Same(PaintWall(paintWall)))
+  | Packet.TilePaint(tilePaint) => Some(Same(TilePaint(tilePaint)))
+  | Packet.WallPaint(wallPaint) => Some(Same(WallPaint(wallPaint)))
   | Packet.Teleport(teleport) => Some(Same(Teleport(teleport)))
   | Packet.PlayerHealOther(playerHealOther) => Some(Same(PlayerHealOther(playerHealOther)))
   | Packet.DimensionsUpdate(dimensionsUpdate) => Some(Same(DimensionsUpdate(dimensionsUpdate)))
@@ -689,8 +689,8 @@ module Lazy = {
     | NpcHomeUpdate(Lazy.t<option<NpcHomeUpdate.t>>)
     | BossOrInvasionSpawn(Lazy.t<option<BossOrInvasionSpawn.t>>)
     | PlayerDodge(Lazy.t<option<PlayerDodge.t>>)
-    | PaintTile(Lazy.t<option<PaintTile.t>>)
-    | PaintWall(Lazy.t<option<PaintWall.t>>)
+    | TilePaint(Lazy.t<option<TilePaint.t>>)
+    | WallPaint(Lazy.t<option<WallPaint.t>>)
     | Teleport(Lazy.t<option<Teleport.t>>)
     | PlayerHealOther(Lazy.t<option<PlayerHealOther.t>>)
     | DimensionsUpdate(Lazy.t<option<DimensionsUpdate.t>>)
@@ -842,8 +842,8 @@ module Lazy = {
     | BossOrInvasionSpawn(bossOrInvasionSpawn) =>
       Packet.Lazy.BossOrInvasionSpawn(bossOrInvasionSpawn)
     | PlayerDodge(playerDodge) => Packet.Lazy.PlayerDodge(playerDodge)
-    | PaintTile(paintTile) => Packet.Lazy.PaintTile(paintTile)
-    | PaintWall(paintWall) => Packet.Lazy.PaintWall(paintWall)
+    | TilePaint(tilePaint) => Packet.Lazy.TilePaint(tilePaint)
+    | WallPaint(wallPaint) => Packet.Lazy.WallPaint(wallPaint)
     | Teleport(teleport) => Packet.Lazy.Teleport(teleport)
     | PlayerHealOther(playerHealOther) => Packet.Lazy.PlayerHealOther(playerHealOther)
     | DimensionsUpdate(dimensionsUpdate) => Packet.Lazy.DimensionsUpdate(dimensionsUpdate)
@@ -1014,8 +1014,8 @@ let toBuffer = (packet: t, _fromServer: bool): option<NodeJs.Buffer.t> => {
   | NpcHomeUpdate(_npcHomeUpdate) => None
   | BossOrInvasionSpawn(_bossOrInvasionSpawn) => None
   | PlayerDodge(_playerDodge) => None
-  | PaintTile(_paintTile) => None
-  | PaintWall(_paintWall) => None
+  | TilePaint(_tilePaint) => None
+  | WallPaint(_wallPaint) => None
   | Teleport(_teleport) => None
   | PlayerHealOther(_playerHealOther) => None
   | DimensionsUpdate(dimensionsUpdate) => Some(DimensionsUpdate.toBuffer(dimensionsUpdate))

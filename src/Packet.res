@@ -56,8 +56,8 @@ module SwitchHit = Packet_SwitchHit
 module NpcHomeUpdate = Packet_NpcHomeUpdate
 module BossOrInvasionSpawn = Packet_BossOrInvasionSpawn
 module PlayerDodge = Packet_PlayerDodge
-module PaintTile = Packet_PaintTile
-module PaintWall = Packet_PaintWall
+module TilePaint = Packet_TilePaint
+module WallPaint = Packet_WallPaint
 module Teleport = Packet_Teleport
 module PlayerHealOther = Packet_PlayerHealOther
 module DimensionsUpdate = Packet_DimensionsUpdate
@@ -193,8 +193,8 @@ type t =
   | NpcHomeUpdate(NpcHomeUpdate.t)
   | BossOrInvasionSpawn(BossOrInvasionSpawn.t)
   | PlayerDodge(PlayerDodge.t)
-  | PaintTile(PaintTile.t)
-  | PaintWall(PaintWall.t)
+  | TilePaint(TilePaint.t)
+  | WallPaint(WallPaint.t)
   | Teleport(Teleport.t)
   | PlayerHealOther(PlayerHealOther.t)
   | DimensionsUpdate(DimensionsUpdate.t)
@@ -331,8 +331,8 @@ module Lazy = {
     | NpcHomeUpdate(Lazy.t<option<NpcHomeUpdate.t>>)
     | BossOrInvasionSpawn(Lazy.t<option<BossOrInvasionSpawn.t>>)
     | PlayerDodge(Lazy.t<option<PlayerDodge.t>>)
-    | PaintTile(Lazy.t<option<PaintTile.t>>)
-    | PaintWall(Lazy.t<option<PaintWall.t>>)
+    | TilePaint(Lazy.t<option<TilePaint.t>>)
+    | WallPaint(Lazy.t<option<WallPaint.t>>)
     | Teleport(Lazy.t<option<Teleport.t>>)
     | PlayerHealOther(Lazy.t<option<PlayerHealOther.t>>)
     | DimensionsUpdate(Lazy.t<option<DimensionsUpdate.t>>)
@@ -469,8 +469,8 @@ module Lazy = {
     | NpcHomeUpdate(_npcHomeUpdate) => "NpcHomeUpdate"
     | BossOrInvasionSpawn(_bossOrInvasionSpawn) => "BossOrInvasionSpawn"
     | PlayerDodge(_playerDodge) => "PlayerDodge"
-    | PaintTile(_paintTile) => "PaintTile"
-    | PaintWall(_paintWall) => "PaintWall"
+    | TilePaint(_tilePaint) => "TilePaint"
+    | WallPaint(_wallPaint) => "WallPaint"
     | Teleport(_teleport) => "Teleport"
     | PlayerHealOther(_playerHealOther) => "PlayerHealOther"
     | DimensionsUpdate(_dimensionsUpdate) => "DimensionsUpdate"
@@ -617,8 +617,8 @@ let toBuffer = (packet: t, _fromServer: bool): option<NodeJs.Buffer.t> => {
   | NpcHomeUpdate(_npcHomeUpdate) => None
   | BossOrInvasionSpawn(_bossOrInvasionSpawn) => None
   | PlayerDodge(_playerDodge) => None
-  | PaintTile(_paintTile) => None
-  | PaintWall(_paintWall) => None
+  | TilePaint(_tilePaint) => None
+  | WallPaint(_wallPaint) => None
   | Teleport(_teleport) => None
   | PlayerHealOther(_playerHealOther) => None
   | DimensionsUpdate(dimensionsUpdate) => Some(DimensionsUpdate.toBuffer(dimensionsUpdate))
@@ -772,8 +772,8 @@ let toPacketName = (packet: t): string => {
   | NpcHomeUpdate(_npcHomeUpdate) => "NpcHomeUpdate"
   | BossOrInvasionSpawn(_bossOrInvasionSpawn) => "BossOrInvasionSpawn"
   | PlayerDodge(_playerDodge) => "PlayerDodge"
-  | PaintTile(_paintTile) => "PaintTile"
-  | PaintWall(_paintWall) => "PaintWall"
+  | TilePaint(_tilePaint) => "TilePaint"
+  | WallPaint(_wallPaint) => "WallPaint"
   | Teleport(_teleport) => "Teleport"
   | PlayerHealOther(_playerHealOther) => "PlayerHealOther"
   | DimensionsUpdate(_dimensionsUpdate) => "DimensionsUpdate"

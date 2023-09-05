@@ -57,8 +57,8 @@ type t =
   | NpcHomeUpdate
   | BossOrInvasionSpawn
   | PlayerDodge
-  | PaintTile
-  | PaintWall
+  | TilePaint
+  | WallPaint
   | Teleport
   | PlayerHealOther
   | DimensionsUpdate
@@ -195,8 +195,8 @@ let fromInt = n =>
   | 60 => Some(NpcHomeUpdate)
   | 61 => Some(BossOrInvasionSpawn)
   | 62 => Some(PlayerDodge)
-  | 63 => Some(PaintTile)
-  | 64 => Some(PaintWall)
+  | 63 => Some(TilePaint)
+  | 64 => Some(WallPaint)
   | 65 => Some(Teleport)
   | 66 => Some(PlayerHealOther)
   | 67 => Some(DimensionsUpdate)
@@ -335,8 +335,8 @@ let toInt = self =>
   | NpcHomeUpdate => 60
   | BossOrInvasionSpawn => 61
   | PlayerDodge => 62
-  | PaintTile => 63
-  | PaintWall => 64
+  | TilePaint => 63
+  | WallPaint => 64
   | Teleport => 65
   | PlayerHealOther => 66
   | DimensionsUpdate => 67

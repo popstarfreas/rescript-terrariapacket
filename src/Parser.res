@@ -134,10 +134,10 @@ let parsePayload = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServ
     Packet.BossOrInvasionSpawn.parse(payload)->Belt.Option.map(a => Packet.BossOrInvasionSpawn(a))
   | (PlayerDodge, true | false) =>
     Packet.PlayerDodge.parse(payload)->Belt.Option.map(a => Packet.PlayerDodge(a))
-  | (PaintTile, true | false) =>
-    Packet.PaintTile.parse(payload)->Belt.Option.map(a => Packet.PaintTile(a))
-  | (PaintWall, true | false) =>
-    Packet.PaintWall.parse(payload)->Belt.Option.map(a => Packet.PaintWall(a))
+  | (TilePaint, true | false) =>
+    Packet.TilePaint.parse(payload)->Belt.Option.map(a => Packet.TilePaint(a))
+  | (WallPaint, true | false) =>
+    Packet.WallPaint.parse(payload)->Belt.Option.map(a => Packet.WallPaint(a))
   | (Teleport, true | false) =>
     Packet.Teleport.parse(payload)->Belt.Option.map(a => Packet.Teleport(a))
   | (PlayerHealOther, true | false) =>
@@ -502,8 +502,8 @@ let parsePayloadLazy = (
     Some(Packet.Lazy.BossOrInvasionSpawn(lazy Packet.BossOrInvasionSpawn.parse(payload)))
   | (PlayerDodge, true | false) =>
     Some(Packet.Lazy.PlayerDodge(lazy Packet.PlayerDodge.parse(payload)))
-  | (PaintTile, true | false) => Some(Packet.Lazy.PaintTile(lazy Packet.PaintTile.parse(payload)))
-  | (PaintWall, true | false) => Some(Packet.Lazy.PaintWall(lazy Packet.PaintWall.parse(payload)))
+  | (TilePaint, true | false) => Some(Packet.Lazy.TilePaint(lazy Packet.TilePaint.parse(payload)))
+  | (WallPaint, true | false) => Some(Packet.Lazy.WallPaint(lazy Packet.WallPaint.parse(payload)))
   | (Teleport, true | false) => Some(Packet.Lazy.Teleport(lazy Packet.Teleport.parse(payload)))
   | (PlayerHealOther, true | false) =>
     Some(Packet.Lazy.PlayerHealOther(lazy Packet.PlayerHealOther.parse(payload)))

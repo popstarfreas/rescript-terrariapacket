@@ -19,7 +19,7 @@ function parse(payload) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* PaintTile */58)).packInt16(self.x).packInt16(self.y).packByte(self.color).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* TilePaint */58)).packInt16(self.x).packInt16(self.y).packByte(self.color).data;
 }
 
 exports.parse = parse;

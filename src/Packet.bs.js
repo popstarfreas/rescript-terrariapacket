@@ -155,10 +155,10 @@ function toPacketName(packet) {
         return "BossOrInvasionSpawn";
     case /* PlayerDodge */57 :
         return "PlayerDodge";
-    case /* PaintTile */58 :
-        return "PaintTile";
-    case /* PaintWall */59 :
-        return "PaintWall";
+    case /* TilePaint */58 :
+        return "TilePaint";
+    case /* WallPaint */59 :
+        return "WallPaint";
     case /* Teleport */60 :
         return "Teleport";
     case /* PlayerHealOther */61 :
@@ -521,10 +521,10 @@ function toPacketName$1(packet) {
         return "BossOrInvasionSpawn";
     case /* PlayerDodge */57 :
         return "PlayerDodge";
-    case /* PaintTile */58 :
-        return "PaintTile";
-    case /* PaintWall */59 :
-        return "PaintWall";
+    case /* TilePaint */58 :
+        return "TilePaint";
+    case /* WallPaint */59 :
+        return "WallPaint";
     case /* Teleport */60 :
         return "Teleport";
     case /* PlayerHealOther */61 :
@@ -836,9 +836,9 @@ var BossOrInvasionSpawn;
 
 var PlayerDodge;
 
-var PaintTile;
+var TilePaint;
 
-var PaintWall;
+var WallPaint;
 
 var Teleport;
 
@@ -1048,8 +1048,8 @@ exports.SwitchHit = SwitchHit;
 exports.NpcHomeUpdate = NpcHomeUpdate;
 exports.BossOrInvasionSpawn = BossOrInvasionSpawn;
 exports.PlayerDodge = PlayerDodge;
-exports.PaintTile = PaintTile;
-exports.PaintWall = PaintWall;
+exports.TilePaint = TilePaint;
+exports.WallPaint = WallPaint;
 exports.Teleport = Teleport;
 exports.PlayerHealOther = PlayerHealOther;
 exports.DimensionsUpdate = DimensionsUpdate;

@@ -431,16 +431,16 @@ function playerDodge(param_0) {
         };
 }
 
-function paintTile(param_0) {
+function tilePaint(param_0) {
   return {
-          TAG: /* PaintTile */58,
+          TAG: /* TilePaint */58,
           _0: param_0
         };
 }
 
-function paintWall(param_0) {
+function wallPaint(param_0) {
   return {
-          TAG: /* PaintWall */59,
+          TAG: /* WallPaint */59,
           _0: param_0
         };
 }
@@ -1436,19 +1436,19 @@ function toLatest(packet, _fromServer) {
                   _0: packet._0
                 }
               };
-    case /* PaintTile */58 :
+    case /* TilePaint */58 :
         return {
                 TAG: /* Same */0,
                 _0: {
-                  TAG: /* PaintTile */58,
+                  TAG: /* TilePaint */58,
                   _0: packet._0
                 }
               };
-    case /* PaintWall */59 :
+    case /* WallPaint */59 :
         return {
                 TAG: /* Same */0,
                 _0: {
-                  TAG: /* PaintWall */59,
+                  TAG: /* WallPaint */59,
                   _0: packet._0
                 }
               };
@@ -2526,19 +2526,19 @@ function fromLatest(packet, _fromServer) {
                   _0: packet._0
                 }
               };
-    case /* PaintTile */58 :
+    case /* TilePaint */58 :
         return {
                 TAG: /* Same */0,
                 _0: {
-                  TAG: /* PaintTile */58,
+                  TAG: /* TilePaint */58,
                   _0: packet._0
                 }
               };
-    case /* PaintWall */59 :
+    case /* WallPaint */59 :
         return {
                 TAG: /* Same */0,
                 _0: {
-                  TAG: /* PaintWall */59,
+                  TAG: /* WallPaint */59,
                   _0: packet._0
                 }
               };
@@ -3450,14 +3450,14 @@ function toLatest$1(packet, _fromServer) {
                 TAG: /* PlayerDodge */57,
                 _0: packet._0
               };
-    case /* PaintTile */58 :
+    case /* TilePaint */58 :
         return {
-                TAG: /* PaintTile */58,
+                TAG: /* TilePaint */58,
                 _0: packet._0
               };
-    case /* PaintWall */59 :
+    case /* WallPaint */59 :
         return {
-                TAG: /* PaintWall */59,
+                TAG: /* WallPaint */59,
                 _0: packet._0
               };
     case /* Teleport */60 :
@@ -4034,9 +4034,9 @@ var BossOrInvasionSpawn;
 
 var PlayerDodge;
 
-var PaintTile;
+var TilePaint;
 
-var PaintWall;
+var WallPaint;
 
 var Teleport;
 
@@ -4246,8 +4246,8 @@ exports.SwitchHit = SwitchHit;
 exports.NpcHomeUpdate = NpcHomeUpdate;
 exports.BossOrInvasionSpawn = BossOrInvasionSpawn;
 exports.PlayerDodge = PlayerDodge;
-exports.PaintTile = PaintTile;
-exports.PaintWall = PaintWall;
+exports.TilePaint = TilePaint;
+exports.WallPaint = WallPaint;
 exports.Teleport = Teleport;
 exports.PlayerHealOther = PlayerHealOther;
 exports.DimensionsUpdate = DimensionsUpdate;
@@ -4381,8 +4381,8 @@ exports.switchHit = switchHit;
 exports.npcHomeUpdate = npcHomeUpdate;
 exports.bossOrInvasionSpawn = bossOrInvasionSpawn;
 exports.playerDodge = playerDodge;
-exports.paintTile = paintTile;
-exports.paintWall = paintWall;
+exports.tilePaint = tilePaint;
+exports.wallPaint = wallPaint;
 exports.teleport = teleport;
 exports.playerHealOther = playerHealOther;
 exports.dimensionsUpdate = dimensionsUpdate;

@@ -126,9 +126,9 @@ function fromInt(n) {
     case 62 :
         return /* PlayerDodge */57;
     case 63 :
-        return /* PaintTile */58;
+        return /* TilePaint */58;
     case 64 :
-        return /* PaintWall */59;
+        return /* WallPaint */59;
     case 65 :
         return /* Teleport */60;
     case 66 :
@@ -402,9 +402,9 @@ function toInt(self) {
         return 61;
     case /* PlayerDodge */57 :
         return 62;
-    case /* PaintTile */58 :
+    case /* TilePaint */58 :
         return 63;
-    case /* PaintWall */59 :
+    case /* WallPaint */59 :
         return 64;
     case /* Teleport */60 :
         return 65;

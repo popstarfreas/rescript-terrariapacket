@@ -23,11 +23,11 @@ var Packet_LiquidSet$DarkgamingRescriptTerrariapacket = require("./packet/Packet
 var Packet_NpcStrike$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NpcStrike.bs.js");
 var Packet_NpcTamper$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NpcTamper.bs.js");
 var Packet_NpcUpdate$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NpcUpdate.bs.js");
-var Packet_PaintTile$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PaintTile.bs.js");
-var Packet_PaintWall$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PaintWall.bs.js");
 var Packet_PvpToggle$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PvpToggle.bs.js");
 var Packet_SmokePoof$DarkgamingRescriptTerrariapacket = require("./packet/Packet_SmokePoof.bs.js");
 var Packet_SwitchHit$DarkgamingRescriptTerrariapacket = require("./packet/Packet_SwitchHit.bs.js");
+var Packet_TilePaint$DarkgamingRescriptTerrariapacket = require("./packet/Packet_TilePaint.bs.js");
+var Packet_WallPaint$DarkgamingRescriptTerrariapacket = require("./packet/Packet_WallPaint.bs.js");
 var Packet_WorldInfo$DarkgamingRescriptTerrariapacket = require("./packet/Packet_WorldInfo.bs.js");
 var Packet_ChestPlace$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ChestPlace.bs.js");
 var Packet_ClientUuid$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ClientUuid.bs.js");
@@ -631,17 +631,17 @@ function parsePayload(packetType, payload, fromServer) {
                               _0: a
                             };
                     }));
-    case /* PaintTile */58 :
-        return Belt_Option.map(Packet_PaintTile$DarkgamingRescriptTerrariapacket.parse(payload), (function (a) {
+    case /* TilePaint */58 :
+        return Belt_Option.map(Packet_TilePaint$DarkgamingRescriptTerrariapacket.parse(payload), (function (a) {
                       return {
-                              TAG: /* PaintTile */58,
+                              TAG: /* TilePaint */58,
                               _0: a
                             };
                     }));
-    case /* PaintWall */59 :
-        return Belt_Option.map(Packet_PaintWall$DarkgamingRescriptTerrariapacket.parse(payload), (function (a) {
+    case /* WallPaint */59 :
+        return Belt_Option.map(Packet_WallPaint$DarkgamingRescriptTerrariapacket.parse(payload), (function (a) {
                       return {
-                              TAG: /* PaintWall */59,
+                              TAG: /* WallPaint */59,
                               _0: a
                             };
                     }));
@@ -2060,23 +2060,23 @@ function parseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* PaintTile */58 :
+      case /* TilePaint */58 :
           return {
-                  TAG: /* PaintTile */58,
+                  TAG: /* TilePaint */58,
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PaintTile$DarkgamingRescriptTerrariapacket.parse(buffer);
+                        return Packet_TilePaint$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
-      case /* PaintWall */59 :
+      case /* WallPaint */59 :
           return {
-                  TAG: /* PaintWall */59,
+                  TAG: /* WallPaint */59,
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PaintWall$DarkgamingRescriptTerrariapacket.parse(buffer);
+                        return Packet_WallPaint$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
