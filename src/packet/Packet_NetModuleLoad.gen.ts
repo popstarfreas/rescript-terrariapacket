@@ -180,8 +180,8 @@ export const toBuffer: (_1:t) => NodeJs_Buffer_t = function (Arg1: any) {
   return result
 };
 
-export const parse: (_1:NodeJs_Buffer_t, _2:boolean) => (undefined | t) = function (Arg1: any, Arg2: any) {
-  const result = Curry._2(Packet_NetModuleLoadBS.parse, Arg1, Arg2);
+export const parse: (_1:NodeJs_Buffer_t, _2:{ readonly fromServer: boolean }) => (undefined | t) = function (Arg1: any, Arg2: any) {
+  const result = Curry._2(Packet_NetModuleLoadBS.parse, Arg1, Arg2.fromServer);
   return (result == null ? result : result.TAG===0
     ? {tag:"Liquid", value:result._0}
     : result.TAG===1

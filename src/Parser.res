@@ -191,7 +191,7 @@ let parsePayload = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServ
   | (CombatNumberCreate, true) =>
     Packet.CombatNumberCreate.parse(payload)->Belt.Option.map(a => Packet.CombatNumberCreate(a))
   | (NetModuleLoad, true | false) =>
-    Packet.NetModuleLoad.parse(payload, fromServer)->Belt.Option.map(a => Packet.NetModuleLoad(a))
+    Packet.NetModuleLoad.parse(payload, ~fromServer)->Belt.Option.map(a => Packet.NetModuleLoad(a))
   | (NpcKillCount, false) => None
   | (NpcKillCount, true) =>
     Packet.NpcKillCount.parse(payload)->Belt.Option.map(a => Packet.NpcKillCount(a))
@@ -552,7 +552,7 @@ let parsePayloadLazy = (
   | (CombatNumberCreate, true) =>
     Some(Packet.Lazy.CombatNumberCreate(lazy Packet.CombatNumberCreate.parse(payload)))
   | (NetModuleLoad, true | false) =>
-    Some(Packet.Lazy.NetModuleLoad(lazy Packet.NetModuleLoad.parse(payload, fromServer)))
+    Some(Packet.Lazy.NetModuleLoad(lazy Packet.NetModuleLoad.parse(payload, ~fromServer)))
   | (NpcKillCount, false) => None
   | (NpcKillCount, true) => Some(Packet.Lazy.NpcKillCount(lazy Packet.NpcKillCount.parse(payload)))
   | (PlayerStealth, true | false) =>

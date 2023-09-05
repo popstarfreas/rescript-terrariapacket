@@ -226,7 +226,7 @@ let parsePayload = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServ
   | (NetModuleLoad, true | false) =>
     Packetv1405.NetModuleLoad.parse(
       payload,
-      fromServer,
+      ~fromServer,
     )->Belt.Option.map(a => Packetv1405.NetModuleLoad(a))
   | (NpcKillCount, false) => None
   | (NpcKillCount, true) =>
@@ -652,7 +652,7 @@ let parsePayloadLazy = (
   | (CombatNumberCreate, true) =>
     Some(Packetv1405.Lazy.CombatNumberCreate(lazy Packetv1405.CombatNumberCreate.parse(payload)))
   | (NetModuleLoad, true | false) =>
-    Some(Packetv1405.Lazy.NetModuleLoad(lazy Packetv1405.NetModuleLoad.parse(payload, fromServer)))
+    Some(Packetv1405.Lazy.NetModuleLoad(lazy Packetv1405.NetModuleLoad.parse(payload, ~fromServer)))
   | (NpcKillCount, false) => None
   | (NpcKillCount, true) =>
     Some(Packetv1405.Lazy.NpcKillCount(lazy Packetv1405.NpcKillCount.parse(payload)))

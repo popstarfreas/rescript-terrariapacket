@@ -129,4 +129,4 @@ module NetModuleType: {
 @genType
 let toBuffer: t => NodeJs.Buffer.t
 @genType
-let parse: (NodeJs.Buffer.t, bool) => option<t>
+let parse: (NodeJs.Buffer.t, ~fromServer: bool) => option<t>

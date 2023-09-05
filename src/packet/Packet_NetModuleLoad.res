@@ -394,7 +394,7 @@ module Decode = {
     }
   }
 
-  let parse = (payload: NodeJs.Buffer.t, fromServer: bool) => {
+  let parse = (payload: NodeJs.Buffer.t, ~fromServer: bool) => {
     let reader = PacketFactory.PacketReader.make(payload)
     let moduleType = reader->readUInt16
     switch NetModuleType.fromInt(moduleType) {
