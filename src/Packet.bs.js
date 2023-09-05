@@ -4,38 +4,38 @@
 var Pervasives = require("rescript/lib/js/pervasives.js");
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
 var Caml_option = require("rescript/lib/js/caml_option.js");
-var Packet_Status$TerrariaPacket = require("./packet/Packet_Status.bs.js");
-var Packet_ChestItem$TerrariaPacket = require("./packet/Packet_ChestItem.bs.js");
-var Packet_ItemOwner$TerrariaPacket = require("./packet/Packet_ItemOwner.bs.js");
-var Packet_NpcTamper$TerrariaPacket = require("./packet/Packet_NpcTamper.bs.js");
-var Packet_NpcUpdate$TerrariaPacket = require("./packet/Packet_NpcUpdate.bs.js");
-var Packet_WorldInfo$TerrariaPacket = require("./packet/Packet_WorldInfo.bs.js");
-var Packet_ChestPlace$TerrariaPacket = require("./packet/Packet_ChestPlace.bs.js");
-var Packet_Disconnect$TerrariaPacket = require("./packet/Packet_Disconnect.bs.js");
-var Packet_HealEffect$TerrariaPacket = require("./packet/Packet_HealEffect.bs.js");
-var Packet_ManaEffect$TerrariaPacket = require("./packet/Packet_ManaEffect.bs.js");
-var Packet_PlayerInfo$TerrariaPacket = require("./packet/Packet_PlayerInfo.bs.js");
-var Packet_PlayerMana$TerrariaPacket = require("./packet/Packet_PlayerMana.bs.js");
-var Packet_TileModify$TerrariaPacket = require("./packet/Packet_TileModify.bs.js");
-var Packet_PlayerSpawn$TerrariaPacket = require("./packet/Packet_PlayerSpawn.bs.js");
-var Packet_PlayerActive$TerrariaPacket = require("./packet/Packet_PlayerActive.bs.js");
-var Packet_PlayerHealth$TerrariaPacket = require("./packet/Packet_PlayerHealth.bs.js");
-var Packet_PlayerUpdate$TerrariaPacket = require("./packet/Packet_PlayerUpdate.bs.js");
-var Packet_NetModuleLoad$TerrariaPacket = require("./packet/Packet_NetModuleLoad.bs.js");
-var Packet_PlayerSlotSet$TerrariaPacket = require("./packet/Packet_PlayerSlotSet.bs.js");
-var Packet_ConnectRequest$TerrariaPacket = require("./packet/Packet_ConnectRequest.bs.js");
-var Packet_ItemDropUpdate$TerrariaPacket = require("./packet/Packet_ItemDropUpdate.bs.js");
-var Packet_ProjectileSync$TerrariaPacket = require("./packet/Packet_ProjectileSync.bs.js");
-var Packet_TileSquareSend$TerrariaPacket = require("./packet/Packet_TileSquareSend.bs.js");
-var Packet_ItemOwnerRemove$TerrariaPacket = require("./packet/Packet_ItemOwnerRemove.bs.js");
-var Packet_TileSectionSend$TerrariaPacket = require("./packet/Packet_TileSectionSend.bs.js");
-var Packet_DimensionsUpdate$TerrariaPacket = require("./packet/Packet_DimensionsUpdate.bs.js");
-var Packet_TileSectionFrame$TerrariaPacket = require("./packet/Packet_TileSectionFrame.bs.js");
-var Packet_WorldDataRequest$TerrariaPacket = require("./packet/Packet_WorldDataRequest.bs.js");
-var Packet_ProjectileDestroy$TerrariaPacket = require("./packet/Packet_ProjectileDestroy.bs.js");
-var Packet_ActiveContainerSync$TerrariaPacket = require("./packet/Packet_ActiveContainerSync.bs.js");
-var Packet_PlayerInventorySlot$TerrariaPacket = require("./packet/Packet_PlayerInventorySlot.bs.js");
-var Packet_InitialTileSectionsRequest$TerrariaPacket = require("./packet/Packet_InitialTileSectionsRequest.bs.js");
+var Packet_Status$DarkgamingRescriptTerrariapacket = require("./packet/Packet_Status.bs.js");
+var Packet_ChestItem$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ChestItem.bs.js");
+var Packet_ItemOwner$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ItemOwner.bs.js");
+var Packet_NpcTamper$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NpcTamper.bs.js");
+var Packet_NpcUpdate$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NpcUpdate.bs.js");
+var Packet_WorldInfo$DarkgamingRescriptTerrariapacket = require("./packet/Packet_WorldInfo.bs.js");
+var Packet_ChestPlace$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ChestPlace.bs.js");
+var Packet_Disconnect$DarkgamingRescriptTerrariapacket = require("./packet/Packet_Disconnect.bs.js");
+var Packet_HealEffect$DarkgamingRescriptTerrariapacket = require("./packet/Packet_HealEffect.bs.js");
+var Packet_ManaEffect$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ManaEffect.bs.js");
+var Packet_PlayerInfo$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerInfo.bs.js");
+var Packet_PlayerMana$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerMana.bs.js");
+var Packet_TileModify$DarkgamingRescriptTerrariapacket = require("./packet/Packet_TileModify.bs.js");
+var Packet_PlayerSpawn$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerSpawn.bs.js");
+var Packet_PlayerActive$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerActive.bs.js");
+var Packet_PlayerHealth$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerHealth.bs.js");
+var Packet_PlayerUpdate$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerUpdate.bs.js");
+var Packet_NetModuleLoad$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NetModuleLoad.bs.js");
+var Packet_PlayerSlotSet$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerSlotSet.bs.js");
+var Packet_ConnectRequest$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ConnectRequest.bs.js");
+var Packet_ItemDropUpdate$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ItemDropUpdate.bs.js");
+var Packet_ProjectileSync$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ProjectileSync.bs.js");
+var Packet_TileSquareSend$DarkgamingRescriptTerrariapacket = require("./packet/Packet_TileSquareSend.bs.js");
+var Packet_ItemOwnerRemove$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ItemOwnerRemove.bs.js");
+var Packet_TileSectionSend$DarkgamingRescriptTerrariapacket = require("./packet/Packet_TileSectionSend.bs.js");
+var Packet_DimensionsUpdate$DarkgamingRescriptTerrariapacket = require("./packet/Packet_DimensionsUpdate.bs.js");
+var Packet_TileSectionFrame$DarkgamingRescriptTerrariapacket = require("./packet/Packet_TileSectionFrame.bs.js");
+var Packet_WorldDataRequest$DarkgamingRescriptTerrariapacket = require("./packet/Packet_WorldDataRequest.bs.js");
+var Packet_ProjectileDestroy$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ProjectileDestroy.bs.js");
+var Packet_ActiveContainerSync$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ActiveContainerSync.bs.js");
+var Packet_PlayerInventorySlot$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerInventorySlot.bs.js");
+var Packet_InitialTileSectionsRequest$DarkgamingRescriptTerrariapacket = require("./packet/Packet_InitialTileSectionsRequest.bs.js");
 
 function toPacketName(packet) {
   switch (packet.TAG | 0) {
@@ -320,69 +320,69 @@ var Lazy = {
 function toBuffer(packet, _fromServer) {
   switch (packet.TAG | 0) {
     case /* ConnectRequest */0 :
-        return Caml_option.some(Packet_ConnectRequest$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_ConnectRequest$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* Disconnect */1 :
-        return Caml_option.some(Packet_Disconnect$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_Disconnect$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* PlayerSlotSet */2 :
-        return Caml_option.some(Packet_PlayerSlotSet$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_PlayerSlotSet$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* PlayerInfo */3 :
-        return Caml_option.some(Packet_PlayerInfo$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_PlayerInfo$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* PlayerInventorySlot */4 :
-        return Caml_option.some(Packet_PlayerInventorySlot$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_PlayerInventorySlot$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* WorldDataRequest */5 :
-        return Caml_option.some(Packet_WorldDataRequest$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_WorldDataRequest$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* WorldInfo */6 :
-        return Caml_option.some(Packet_WorldInfo$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_WorldInfo$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* InitialTileSectionsRequest */7 :
-        return Caml_option.some(Packet_InitialTileSectionsRequest$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_InitialTileSectionsRequest$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* Status */8 :
-        return Caml_option.some(Packet_Status$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_Status$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* TileSectionSend */9 :
-        return Caml_option.some(Packet_TileSectionSend$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_TileSectionSend$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* TileSectionFrame */10 :
-        return Caml_option.some(Packet_TileSectionFrame$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_TileSectionFrame$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* PlayerSpawn */11 :
-        return Caml_option.some(Packet_PlayerSpawn$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_PlayerSpawn$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* PlayerUpdate */12 :
-        return Caml_option.some(Packet_PlayerUpdate$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_PlayerUpdate$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* PlayerActive */13 :
-        return Caml_option.some(Packet_PlayerActive$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_PlayerActive$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* PlayerHealth */14 :
-        return Caml_option.some(Packet_PlayerHealth$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_PlayerHealth$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* TileModify */15 :
-        return Caml_option.some(Packet_TileModify$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_TileModify$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* TileSquareSend */18 :
-        return Caml_option.some(Packet_TileSquareSend$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_TileSquareSend$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* ItemDropUpdate */19 :
-        return Caml_option.some(Packet_ItemDropUpdate$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_ItemDropUpdate$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* ItemOwner */20 :
-        return Caml_option.some(Packet_ItemOwner$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_ItemOwner$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* NpcUpdate */21 :
-        return Caml_option.some(Packet_NpcUpdate$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_NpcUpdate$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* ProjectileSync */23 :
-        return Caml_option.some(Packet_ProjectileSync$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_ProjectileSync$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* ProjectileDestroy */25 :
-        return Caml_option.some(Packet_ProjectileDestroy$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_ProjectileDestroy$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* ChestItem */28 :
-        return Caml_option.some(Packet_ChestItem$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_ChestItem$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* ActiveContainerSync */29 :
-        return Caml_option.some(Packet_ActiveContainerSync$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_ActiveContainerSync$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* ChestPlace */30 :
-        return Caml_option.some(Packet_ChestPlace$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_ChestPlace$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* HealEffect */31 :
-        return Caml_option.some(Packet_HealEffect$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_HealEffect$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* ItemOwnerRemove */35 :
-        return Caml_option.some(Packet_ItemOwnerRemove$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_ItemOwnerRemove$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* PlayerMana */38 :
-        return Caml_option.some(Packet_PlayerMana$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_PlayerMana$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* ManaEffect */39 :
-        return Caml_option.some(Packet_ManaEffect$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_ManaEffect$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* DimensionsUpdate */62 :
-        return Caml_option.some(Packet_DimensionsUpdate$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_DimensionsUpdate$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* NetModuleLoad */77 :
-        return Caml_option.some(Packet_NetModuleLoad$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_NetModuleLoad$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     case /* NpcTamper */126 :
-        return Caml_option.some(Packet_NpcTamper$TerrariaPacket.toBuffer(packet._0));
+        return Caml_option.some(Packet_NpcTamper$DarkgamingRescriptTerrariapacket.toBuffer(packet._0));
     default:
       return ;
   }
@@ -1129,4 +1129,4 @@ exports.Lazy = Lazy;
 exports.toBuffer = toBuffer;
 exports.serialize = serialize;
 exports.toPacketName = toPacketName$1;
-/* Packet_Status-TerrariaPacket Not a pure module */
+/* Packet_Status-DarkgamingRescriptTerrariapacket Not a pure module */

@@ -2,6 +2,7 @@ type commandId = string
 type message = string
 type playerId = int
 
+@genType
 type liquidChange = {
   x: int,
   y: int,
@@ -9,13 +10,16 @@ type liquidChange = {
   liquidType: int,
 }
 
+@genType
 type liquid = {changes: array<liquidChange>}
 
+@genType
 type position = {
   x: float,
   y: float,
 }
 
+@genType
 type ambience = {
   playerId: int,
   seed: int,
@@ -23,33 +27,40 @@ type ambience = {
 }
 
 type killCount = int
+@genType
 type bestiaryUnlockType =
   | Kill(killCount)
   | Sight
   | Chat
 
+@genType
 type bestiary = {
   unlockType: bestiaryUnlockType,
   npcId: int,
 }
 
+@genType
 type creativeUnlock = {
   itemId: int,
   researchedCount: int,
 }
 
+@genType
 type creativePower = {powerType: int}
 
+@genType
 type unlockReport = {
   itemId: int,
   researchedCount: int,
 }
 
+@genType
 type pylonAction =
   | Added
   | Removed
   | RequestTeleport
 
+@genType
 type teleportPylon = {
   pylonAction: pylonAction,
   x: int,
@@ -57,6 +68,7 @@ type teleportPylon = {
   pylonType: int,
 }
 
+@genType
 type particle = {
   particleType: int,
   x: float,
@@ -67,16 +79,19 @@ type particle = {
   invokedByPlayer: int,
 }
 
+@genType
 type powerLevel =
   | LockedForEveryone
   | CanBeChangedByHostAlone
   | CanBeChangedByEveryone
 
+@genType
 type creativePowerPermission = {
   powerType: int,
   powerLevel: powerLevel,
 }
 
+@genType
 type t =
   | Liquid(liquid)
   | ClientText(commandId, message)
@@ -92,6 +107,7 @@ type t =
   | CreativePowerPermissions(creativePowerPermission)
 
 module NetModuleType: {
+  @genType
   type t =
     | Liquid
     | Text
@@ -105,8 +121,12 @@ module NetModuleType: {
     | Particles
     | CreativePowerPermissions
 
+  @genType
   let fromInt: int => option<t>
+  @genType
   let toInt: t => int
 }
+@genType
 let toBuffer: t => NodeJs.Buffer.t
+@genType
 let parse: (NodeJs.Buffer.t, bool) => option<t>

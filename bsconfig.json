@@ -1,6 +1,6 @@
 {
   "name": "@darkgaming/rescript-terrariapacket",
-  "namespace": "TerrariaPacket",
+  "namespace": true,
   "version": "0.1.0",
   "sources": [
     {
@@ -29,7 +29,8 @@
     "generatedFileExtension": ".gen.ts",
     "module": "commonjs",
     "shims": {
-      "NodeJs": "NodeJs"
+      "NodeJs": "NodeJs",
+      "PacketFactory": "PacketFactory"
     },
     "debug": {
       "all": false,

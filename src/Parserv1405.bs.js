@@ -2,150 +2,150 @@
 'use strict';
 
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
-var PacketType$TerrariaPacket = require("./PacketType.bs.js");
-var Packetv1405$TerrariaPacket = require("./Packetv1405.bs.js");
-var Packet_Emoji$TerrariaPacket = require("./packet/Packet_Emoji.bs.js");
-var Packet_Zones$TerrariaPacket = require("./packet/Packet_Zones.bs.js");
-var Packet_Status$TerrariaPacket = require("./packet/Packet_Status.bs.js");
-var Packet_Unused$TerrariaPacket = require("./packet/Packet_Unused.bs.js");
-var Packet_DoorUse$TerrariaPacket = require("./packet/Packet_DoorUse.bs.js");
-var Packet_NpcTalk$TerrariaPacket = require("./packet/Packet_NpcTalk.bs.js");
-var Packet_SignNew$TerrariaPacket = require("./packet/Packet_SignNew.bs.js");
-var Packet_TimeSet$TerrariaPacket = require("./packet/Packet_TimeSet.bs.js");
-var Packet_CatchNpc$TerrariaPacket = require("./packet/Packet_CatchNpc.bs.js");
-var Packet_HarpPlay$TerrariaPacket = require("./packet/Packet_HarpPlay.bs.js");
-var Packet_SignRead$TerrariaPacket = require("./packet/Packet_SignRead.bs.js");
-var Packet_Teleport$TerrariaPacket = require("./packet/Packet_Teleport.bs.js");
-var Packet_ChestItem$TerrariaPacket = require("./packet/Packet_ChestItem.bs.js");
-var Packet_ChestName$TerrariaPacket = require("./packet/Packet_ChestName.bs.js");
-var Packet_ChestOpen$TerrariaPacket = require("./packet/Packet_ChestOpen.bs.js");
-var Packet_ItemOwner$TerrariaPacket = require("./packet/Packet_ItemOwner.bs.js");
-var Packet_LiquidSet$TerrariaPacket = require("./packet/Packet_LiquidSet.bs.js");
-var Packet_NpcStrike$TerrariaPacket = require("./packet/Packet_NpcStrike.bs.js");
-var Packet_NpcTamper$TerrariaPacket = require("./packet/Packet_NpcTamper.bs.js");
-var Packet_NpcUpdate$TerrariaPacket = require("./packet/Packet_NpcUpdate.bs.js");
-var Packet_PaintTile$TerrariaPacket = require("./packet/Packet_PaintTile.bs.js");
-var Packet_PaintWall$TerrariaPacket = require("./packet/Packet_PaintWall.bs.js");
-var Packet_PvpToggle$TerrariaPacket = require("./packet/Packet_PvpToggle.bs.js");
-var Packet_SmokePoof$TerrariaPacket = require("./packet/Packet_SmokePoof.bs.js");
-var Packet_SwitchHit$TerrariaPacket = require("./packet/Packet_SwitchHit.bs.js");
-var Packet_ChestPlace$TerrariaPacket = require("./packet/Packet_ChestPlace.bs.js");
-var Packet_ClientUuid$TerrariaPacket = require("./packet/Packet_ClientUuid.bs.js");
-var Packet_Disconnect$TerrariaPacket = require("./packet/Packet_Disconnect.bs.js");
-var Packet_HealEffect$TerrariaPacket = require("./packet/Packet_HealEffect.bs.js");
-var Packet_ManaEffect$TerrariaPacket = require("./packet/Packet_ManaEffect.bs.js");
-var Packet_NpcBuffAdd$TerrariaPacket = require("./packet/Packet_NpcBuffAdd.bs.js");
-var Packet_NpcFishOut$TerrariaPacket = require("./packet/Packet_NpcFishOut.bs.js");
-var Packet_PlayerDead$TerrariaPacket = require("./packet/Packet_PlayerDead.bs.js");
-var Packet_PlayerInfo$TerrariaPacket = require("./packet/Packet_PlayerInfo.bs.js");
-var Packet_PlayerMana$TerrariaPacket = require("./packet/Packet_PlayerMana.bs.js");
-var Packet_PlayerTeam$TerrariaPacket = require("./packet/Packet_PlayerTeam.bs.js");
-var Packet_PortalKill$TerrariaPacket = require("./packet/Packet_PortalKill.bs.js");
-var Packet_ReleaseNpc$TerrariaPacket = require("./packet/Packet_ReleaseNpc.bs.js");
-var Packet_TileModify$TerrariaPacket = require("./packet/Packet_TileModify.bs.js");
-var Packet_TreeGrowFx$TerrariaPacket = require("./packet/Packet_TreeGrowFx.bs.js");
-var Packet_AnglerQuest$TerrariaPacket = require("./packet/Packet_AnglerQuest.bs.js");
-var Packet_EmoteBubble$TerrariaPacket = require("./packet/Packet_EmoteBubble.bs.js");
-var Packet_NpcShopItem$TerrariaPacket = require("./packet/Packet_NpcShopItem.bs.js");
-var Packet_ObjectPlace$TerrariaPacket = require("./packet/Packet_ObjectPlace.bs.js");
-var Packet_PartyToggle$TerrariaPacket = require("./packet/Packet_PartyToggle.bs.js");
-var Packet_PlayerDeath$TerrariaPacket = require("./packet/Packet_PlayerDeath.bs.js");
-var Packet_PlayerDodge$TerrariaPacket = require("./packet/Packet_PlayerDodge.bs.js");
-var Packet_PlayerSpawn$TerrariaPacket = require("./packet/Packet_PlayerSpawn.bs.js");
-var Packet_NpcKillCount$TerrariaPacket = require("./packet/Packet_NpcKillCount.bs.js");
-var Packet_PasswordSend$TerrariaPacket = require("./packet/Packet_PasswordSend.bs.js");
-var Packet_PlayerActive$TerrariaPacket = require("./packet/Packet_PlayerActive.bs.js");
-var Packet_PlayerDamage$TerrariaPacket = require("./packet/Packet_PlayerDamage.bs.js");
-var Packet_PlayerHealth$TerrariaPacket = require("./packet/Packet_PlayerHealth.bs.js");
-var Packet_PlayerUpdate$TerrariaPacket = require("./packet/Packet_PlayerUpdate.bs.js");
-var Packet_GemLockToggle$TerrariaPacket = require("./packet/Packet_GemLockToggle.bs.js");
-var Packet_NebulaLevelUp$TerrariaPacket = require("./packet/Packet_NebulaLevelUp.bs.js");
-var Packet_NetModuleLoad$TerrariaPacket = require("./packet/Packet_NetModuleLoad.bs.js");
-var Packet_NpcBuffUpdate$TerrariaPacket = require("./packet/Packet_NpcBuffUpdate.bs.js");
-var Packet_NpcHomeUpdate$TerrariaPacket = require("./packet/Packet_NpcHomeUpdate.bs.js");
-var Packet_NpcItemStrike$TerrariaPacket = require("./packet/Packet_NpcItemStrike.bs.js");
-var Packet_NpcNameUpdate$TerrariaPacket = require("./packet/Packet_NpcNameUpdate.bs.js");
-var Packet_PlayerBuffAdd$TerrariaPacket = require("./packet/Packet_PlayerBuffAdd.bs.js");
-var Packet_PlayerSlotSet$TerrariaPacket = require("./packet/Packet_PlayerSlotSet.bs.js");
-var Packet_PlayerStealth$TerrariaPacket = require("./packet/Packet_PlayerStealth.bs.js");
-var Packet_ExtraValueSync$TerrariaPacket = require("./packet/Packet_ExtraValueSync.bs.js");
-var Packet_GoodEvilUpdate$TerrariaPacket = require("./packet/Packet_GoodEvilUpdate.bs.js");
-var Packet_ItemDropModify$TerrariaPacket = require("./packet/Packet_ItemDropModify.bs.js");
-var Packet_ItemDropUpdate$TerrariaPacket = require("./packet/Packet_ItemDropUpdate.bs.js");
-var Packet_ItemFramePlace$TerrariaPacket = require("./packet/Packet_ItemFramePlace.bs.js");
-var Packet_PlayerBuffsSet$TerrariaPacket = require("./packet/Packet_PlayerBuffsSet.bs.js");
-var Packetv1405_WorldInfo$TerrariaPacket = require("./packet/v1405/Packetv1405_WorldInfo.bs.js");
-var Packet_ItemOwnerRemove$TerrariaPacket = require("./packet/Packet_ItemOwnerRemove.bs.js");
-var Packet_LegacySoundPlay$TerrariaPacket = require("./packet/Packet_LegacySoundPlay.bs.js");
-var Packet_PlayerAnimation$TerrariaPacket = require("./packet/Packet_PlayerAnimation.bs.js");
-var Packet_PlayerHealOther$TerrariaPacket = require("./packet/Packet_PlayerHealOther.bs.js");
-var Packet_PlayerSpawnSelf$TerrariaPacket = require("./packet/Packet_PlayerSpawnSelf.bs.js");
-var Packet_SocialHandshake$TerrariaPacket = require("./packet/Packet_SocialHandshake.bs.js");
-var Packet_TileEntityPlace$TerrariaPacket = require("./packet/Packet_TileEntityPlace.bs.js");
-var Packet_TilePickingSync$TerrariaPacket = require("./packet/Packet_TilePickingSync.bs.js");
-var Packet_TileSectionSend$TerrariaPacket = require("./packet/Packet_TileSectionSend.bs.js");
-var Packet_WiredCannonShot$TerrariaPacket = require("./packet/Packet_WiredCannonShot.bs.js");
-var Packet_ChatMessageSmart$TerrariaPacket = require("./packet/Packet_ChatMessageSmart.bs.js");
-var Packet_CombatTextCreate$TerrariaPacket = require("./packet/Packet_CombatTextCreate.bs.js");
-var Packet_DimensionsUpdate$TerrariaPacket = require("./packet/Packet_DimensionsUpdate.bs.js");
-var Packet_NpcSpecialEffect$TerrariaPacket = require("./packet/Packet_NpcSpecialEffect.bs.js");
-var Packet_PasswordRequired$TerrariaPacket = require("./packet/Packet_PasswordRequired.bs.js");
-var Packet_TileEntityUpdate$TerrariaPacket = require("./packet/Packet_TileEntityUpdate.bs.js");
-var Packet_TileSectionFrame$TerrariaPacket = require("./packet/Packet_TileSectionFrame.bs.js");
-var Packet_WorldDataRequest$TerrariaPacket = require("./packet/Packet_WorldDataRequest.bs.js");
-var Packet_EventNotification$TerrariaPacket = require("./packet/Packet_EventNotification.bs.js");
-var Packet_GolfBallLandInCup$TerrariaPacket = require("./packet/Packet_GolfBallLandInCup.bs.js");
-var Packet_MassWireOperation$TerrariaPacket = require("./packet/Packet_MassWireOperation.bs.js");
-var Packet_MoonLordCountdown$TerrariaPacket = require("./packet/Packet_MoonLordCountdown.bs.js");
-var Packet_NpcTeleportPortal$TerrariaPacket = require("./packet/Packet_NpcTeleportPortal.bs.js");
-var Packet_ProjectileDestroy$TerrariaPacket = require("./packet/Packet_ProjectileDestroy.bs.js");
-var Packet_RevengeMarkerSync$TerrariaPacket = require("./packet/Packet_RevengeMarkerSync.bs.js");
-var Packet_CombatNumberCreate$TerrariaPacket = require("./packet/Packet_CombatNumberCreate.bs.js");
-var Packet_MinionTargetUpdate$TerrariaPacket = require("./packet/Packet_MinionTargetUpdate.bs.js");
-var Packet_ActiveContainerSync$TerrariaPacket = require("./packet/Packet_ActiveContainerSync.bs.js");
-var Packet_AnglerQuestComplete$TerrariaPacket = require("./packet/Packet_AnglerQuestComplete.bs.js");
-var Packet_BossOrInvasionSpawn$TerrariaPacket = require("./packet/Packet_BossOrInvasionSpawn.bs.js");
-var Packet_ChestOrTempleUnlock$TerrariaPacket = require("./packet/Packet_ChestOrTempleUnlock.bs.js");
-var Packet_PlayerInventorySlot$TerrariaPacket = require("./packet/Packet_PlayerInventorySlot.bs.js");
-var Packet_RevengeMarkerRemove$TerrariaPacket = require("./packet/Packet_RevengeMarkerRemove.bs.js");
-var Packet_TeleportationPotion$TerrariaPacket = require("./packet/Packet_TeleportationPotion.bs.js");
-var Packetv1405_ConnectRequest$TerrariaPacket = require("./packet/v1405/Packetv1405_ConnectRequest.bs.js");
-var Packetv1405_ProjectileSync$TerrariaPacket = require("./packet/v1405/Packetv1405_ProjectileSync.bs.js");
-var Packetv1405_TileSquareSend$TerrariaPacket = require("./packet/v1405/Packetv1405_TileSquareSend.bs.js");
-var Packet_CrystalInvasionStart$TerrariaPacket = require("./packet/Packet_CrystalInvasionStart.bs.js");
-var Packet_MassWireOperationPay$TerrariaPacket = require("./packet/Packet_MassWireOperationPay.bs.js");
-var Packet_PlayerChestIndexSync$TerrariaPacket = require("./packet/Packet_PlayerChestIndexSync.bs.js");
-var Packet_PlayerTeleportPortal$TerrariaPacket = require("./packet/Packet_PlayerTeleportPortal.bs.js");
-var Packet_CavernMonsterTypeSync$TerrariaPacket = require("./packet/Packet_CavernMonsterTypeSync.bs.js");
-var Packet_ClientSyncedInventory$TerrariaPacket = require("./packet/Packet_ClientSyncedInventory.bs.js");
-var Packet_FoodPlatterTryPlacing$TerrariaPacket = require("./packet/Packet_FoodPlatterTryPlacing.bs.js");
-var Packet_NpcBuffRemovalRequest$TerrariaPacket = require("./packet/Packet_NpcBuffRemovalRequest.bs.js");
-var Packet_NpcKilledNotification$TerrariaPacket = require("./packet/Packet_NpcKilledNotification.bs.js");
-var Packet_ShieldStrengthsUpdate$TerrariaPacket = require("./packet/Packet_ShieldStrengthsUpdate.bs.js");
-var Packet_WeaponsRackTryPlacing$TerrariaPacket = require("./packet/Packet_WeaponsRackTryPlacing.bs.js");
-var Packet_CrystalInvasionWipeAll$TerrariaPacket = require("./packet/Packet_CrystalInvasionWipeAll.bs.js");
-var Packet_InvasionProgressReport$TerrariaPacket = require("./packet/Packet_InvasionProgressReport.bs.js");
-var Packet_ItemDropInstancedUpdate$TerrariaPacket = require("./packet/Packet_ItemDropInstancedUpdate.bs.js");
-var Packet_PlayerLuckFactorsUpdate$TerrariaPacket = require("./packet/Packet_PlayerLuckFactorsUpdate.bs.js");
-var Packet_MinionAttackTargetUpdate$TerrariaPacket = require("./packet/Packet_MinionAttackTargetUpdate.bs.js");
-var Packet_TemporaryAnimationCreate$TerrariaPacket = require("./packet/Packet_TemporaryAnimationCreate.bs.js");
-var Packet_ItemForceIntoNearestChest$TerrariaPacket = require("./packet/Packet_ItemForceIntoNearestChest.bs.js");
-var Packet_TileEntityHatRackItemSync$TerrariaPacket = require("./packet/Packet_TileEntityHatRackItemSync.bs.js");
-var Packet_CountsAsHostForGameplaySet$TerrariaPacket = require("./packet/Packet_CountsAsHostForGameplaySet.bs.js");
-var Packet_InitialTileSectionsRequest$TerrariaPacket = require("./packet/Packet_InitialTileSectionsRequest.bs.js");
-var Packet_AnglerQuestsCompletedAmount$TerrariaPacket = require("./packet/Packet_AnglerQuestsCompletedAmount.bs.js");
-var Packet_CrystalInvasionSendWaitTime$TerrariaPacket = require("./packet/Packet_CrystalInvasionSendWaitTime.bs.js");
-var Packet_TravellingMerchantInventory$TerrariaPacket = require("./packet/Packet_TravellingMerchantInventory.bs.js");
-var Packet_TileEntityInteractionRequest$TerrariaPacket = require("./packet/Packet_TileEntityInteractionRequest.bs.js");
-var Packet_TileEntityDisplayDollItemSync$TerrariaPacket = require("./packet/Packet_TileEntityDisplayDollItemSync.bs.js");
-var Packet_ClientFinishConnectingToServer$TerrariaPacket = require("./packet/Packet_ClientFinishConnectingToServer.bs.js");
+var PacketType$DarkgamingRescriptTerrariapacket = require("./PacketType.bs.js");
+var Packetv1405$DarkgamingRescriptTerrariapacket = require("./Packetv1405.bs.js");
+var Packet_Emoji$DarkgamingRescriptTerrariapacket = require("./packet/Packet_Emoji.bs.js");
+var Packet_Zones$DarkgamingRescriptTerrariapacket = require("./packet/Packet_Zones.bs.js");
+var Packet_Status$DarkgamingRescriptTerrariapacket = require("./packet/Packet_Status.bs.js");
+var Packet_Unused$DarkgamingRescriptTerrariapacket = require("./packet/Packet_Unused.bs.js");
+var Packet_DoorUse$DarkgamingRescriptTerrariapacket = require("./packet/Packet_DoorUse.bs.js");
+var Packet_NpcTalk$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NpcTalk.bs.js");
+var Packet_SignNew$DarkgamingRescriptTerrariapacket = require("./packet/Packet_SignNew.bs.js");
+var Packet_TimeSet$DarkgamingRescriptTerrariapacket = require("./packet/Packet_TimeSet.bs.js");
+var Packet_CatchNpc$DarkgamingRescriptTerrariapacket = require("./packet/Packet_CatchNpc.bs.js");
+var Packet_HarpPlay$DarkgamingRescriptTerrariapacket = require("./packet/Packet_HarpPlay.bs.js");
+var Packet_SignRead$DarkgamingRescriptTerrariapacket = require("./packet/Packet_SignRead.bs.js");
+var Packet_Teleport$DarkgamingRescriptTerrariapacket = require("./packet/Packet_Teleport.bs.js");
+var Packet_ChestItem$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ChestItem.bs.js");
+var Packet_ChestName$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ChestName.bs.js");
+var Packet_ChestOpen$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ChestOpen.bs.js");
+var Packet_ItemOwner$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ItemOwner.bs.js");
+var Packet_LiquidSet$DarkgamingRescriptTerrariapacket = require("./packet/Packet_LiquidSet.bs.js");
+var Packet_NpcStrike$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NpcStrike.bs.js");
+var Packet_NpcTamper$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NpcTamper.bs.js");
+var Packet_NpcUpdate$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NpcUpdate.bs.js");
+var Packet_PaintTile$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PaintTile.bs.js");
+var Packet_PaintWall$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PaintWall.bs.js");
+var Packet_PvpToggle$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PvpToggle.bs.js");
+var Packet_SmokePoof$DarkgamingRescriptTerrariapacket = require("./packet/Packet_SmokePoof.bs.js");
+var Packet_SwitchHit$DarkgamingRescriptTerrariapacket = require("./packet/Packet_SwitchHit.bs.js");
+var Packet_ChestPlace$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ChestPlace.bs.js");
+var Packet_ClientUuid$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ClientUuid.bs.js");
+var Packet_Disconnect$DarkgamingRescriptTerrariapacket = require("./packet/Packet_Disconnect.bs.js");
+var Packet_HealEffect$DarkgamingRescriptTerrariapacket = require("./packet/Packet_HealEffect.bs.js");
+var Packet_ManaEffect$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ManaEffect.bs.js");
+var Packet_NpcBuffAdd$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NpcBuffAdd.bs.js");
+var Packet_NpcFishOut$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NpcFishOut.bs.js");
+var Packet_PlayerDead$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerDead.bs.js");
+var Packet_PlayerInfo$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerInfo.bs.js");
+var Packet_PlayerMana$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerMana.bs.js");
+var Packet_PlayerTeam$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerTeam.bs.js");
+var Packet_PortalKill$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PortalKill.bs.js");
+var Packet_ReleaseNpc$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ReleaseNpc.bs.js");
+var Packet_TileModify$DarkgamingRescriptTerrariapacket = require("./packet/Packet_TileModify.bs.js");
+var Packet_TreeGrowFx$DarkgamingRescriptTerrariapacket = require("./packet/Packet_TreeGrowFx.bs.js");
+var Packet_AnglerQuest$DarkgamingRescriptTerrariapacket = require("./packet/Packet_AnglerQuest.bs.js");
+var Packet_EmoteBubble$DarkgamingRescriptTerrariapacket = require("./packet/Packet_EmoteBubble.bs.js");
+var Packet_NpcShopItem$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NpcShopItem.bs.js");
+var Packet_ObjectPlace$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ObjectPlace.bs.js");
+var Packet_PartyToggle$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PartyToggle.bs.js");
+var Packet_PlayerDeath$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerDeath.bs.js");
+var Packet_PlayerDodge$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerDodge.bs.js");
+var Packet_PlayerSpawn$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerSpawn.bs.js");
+var Packet_NpcKillCount$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NpcKillCount.bs.js");
+var Packet_PasswordSend$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PasswordSend.bs.js");
+var Packet_PlayerActive$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerActive.bs.js");
+var Packet_PlayerDamage$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerDamage.bs.js");
+var Packet_PlayerHealth$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerHealth.bs.js");
+var Packet_PlayerUpdate$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerUpdate.bs.js");
+var Packet_GemLockToggle$DarkgamingRescriptTerrariapacket = require("./packet/Packet_GemLockToggle.bs.js");
+var Packet_NebulaLevelUp$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NebulaLevelUp.bs.js");
+var Packet_NetModuleLoad$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NetModuleLoad.bs.js");
+var Packet_NpcBuffUpdate$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NpcBuffUpdate.bs.js");
+var Packet_NpcHomeUpdate$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NpcHomeUpdate.bs.js");
+var Packet_NpcItemStrike$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NpcItemStrike.bs.js");
+var Packet_NpcNameUpdate$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NpcNameUpdate.bs.js");
+var Packet_PlayerBuffAdd$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerBuffAdd.bs.js");
+var Packet_PlayerSlotSet$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerSlotSet.bs.js");
+var Packet_PlayerStealth$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerStealth.bs.js");
+var Packet_ExtraValueSync$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ExtraValueSync.bs.js");
+var Packet_GoodEvilUpdate$DarkgamingRescriptTerrariapacket = require("./packet/Packet_GoodEvilUpdate.bs.js");
+var Packet_ItemDropModify$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ItemDropModify.bs.js");
+var Packet_ItemDropUpdate$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ItemDropUpdate.bs.js");
+var Packet_ItemFramePlace$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ItemFramePlace.bs.js");
+var Packet_PlayerBuffsSet$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerBuffsSet.bs.js");
+var Packetv1405_WorldInfo$DarkgamingRescriptTerrariapacket = require("./packet/v1405/Packetv1405_WorldInfo.bs.js");
+var Packet_ItemOwnerRemove$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ItemOwnerRemove.bs.js");
+var Packet_LegacySoundPlay$DarkgamingRescriptTerrariapacket = require("./packet/Packet_LegacySoundPlay.bs.js");
+var Packet_PlayerAnimation$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerAnimation.bs.js");
+var Packet_PlayerHealOther$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerHealOther.bs.js");
+var Packet_PlayerSpawnSelf$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerSpawnSelf.bs.js");
+var Packet_SocialHandshake$DarkgamingRescriptTerrariapacket = require("./packet/Packet_SocialHandshake.bs.js");
+var Packet_TileEntityPlace$DarkgamingRescriptTerrariapacket = require("./packet/Packet_TileEntityPlace.bs.js");
+var Packet_TilePickingSync$DarkgamingRescriptTerrariapacket = require("./packet/Packet_TilePickingSync.bs.js");
+var Packet_TileSectionSend$DarkgamingRescriptTerrariapacket = require("./packet/Packet_TileSectionSend.bs.js");
+var Packet_WiredCannonShot$DarkgamingRescriptTerrariapacket = require("./packet/Packet_WiredCannonShot.bs.js");
+var Packet_ChatMessageSmart$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ChatMessageSmart.bs.js");
+var Packet_CombatTextCreate$DarkgamingRescriptTerrariapacket = require("./packet/Packet_CombatTextCreate.bs.js");
+var Packet_DimensionsUpdate$DarkgamingRescriptTerrariapacket = require("./packet/Packet_DimensionsUpdate.bs.js");
+var Packet_NpcSpecialEffect$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NpcSpecialEffect.bs.js");
+var Packet_PasswordRequired$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PasswordRequired.bs.js");
+var Packet_TileEntityUpdate$DarkgamingRescriptTerrariapacket = require("./packet/Packet_TileEntityUpdate.bs.js");
+var Packet_TileSectionFrame$DarkgamingRescriptTerrariapacket = require("./packet/Packet_TileSectionFrame.bs.js");
+var Packet_WorldDataRequest$DarkgamingRescriptTerrariapacket = require("./packet/Packet_WorldDataRequest.bs.js");
+var Packet_EventNotification$DarkgamingRescriptTerrariapacket = require("./packet/Packet_EventNotification.bs.js");
+var Packet_GolfBallLandInCup$DarkgamingRescriptTerrariapacket = require("./packet/Packet_GolfBallLandInCup.bs.js");
+var Packet_MassWireOperation$DarkgamingRescriptTerrariapacket = require("./packet/Packet_MassWireOperation.bs.js");
+var Packet_MoonLordCountdown$DarkgamingRescriptTerrariapacket = require("./packet/Packet_MoonLordCountdown.bs.js");
+var Packet_NpcTeleportPortal$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NpcTeleportPortal.bs.js");
+var Packet_ProjectileDestroy$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ProjectileDestroy.bs.js");
+var Packet_RevengeMarkerSync$DarkgamingRescriptTerrariapacket = require("./packet/Packet_RevengeMarkerSync.bs.js");
+var Packet_CombatNumberCreate$DarkgamingRescriptTerrariapacket = require("./packet/Packet_CombatNumberCreate.bs.js");
+var Packet_MinionTargetUpdate$DarkgamingRescriptTerrariapacket = require("./packet/Packet_MinionTargetUpdate.bs.js");
+var Packet_ActiveContainerSync$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ActiveContainerSync.bs.js");
+var Packet_AnglerQuestComplete$DarkgamingRescriptTerrariapacket = require("./packet/Packet_AnglerQuestComplete.bs.js");
+var Packet_BossOrInvasionSpawn$DarkgamingRescriptTerrariapacket = require("./packet/Packet_BossOrInvasionSpawn.bs.js");
+var Packet_ChestOrTempleUnlock$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ChestOrTempleUnlock.bs.js");
+var Packet_PlayerInventorySlot$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerInventorySlot.bs.js");
+var Packet_RevengeMarkerRemove$DarkgamingRescriptTerrariapacket = require("./packet/Packet_RevengeMarkerRemove.bs.js");
+var Packet_TeleportationPotion$DarkgamingRescriptTerrariapacket = require("./packet/Packet_TeleportationPotion.bs.js");
+var Packetv1405_ConnectRequest$DarkgamingRescriptTerrariapacket = require("./packet/v1405/Packetv1405_ConnectRequest.bs.js");
+var Packetv1405_ProjectileSync$DarkgamingRescriptTerrariapacket = require("./packet/v1405/Packetv1405_ProjectileSync.bs.js");
+var Packetv1405_TileSquareSend$DarkgamingRescriptTerrariapacket = require("./packet/v1405/Packetv1405_TileSquareSend.bs.js");
+var Packet_CrystalInvasionStart$DarkgamingRescriptTerrariapacket = require("./packet/Packet_CrystalInvasionStart.bs.js");
+var Packet_MassWireOperationPay$DarkgamingRescriptTerrariapacket = require("./packet/Packet_MassWireOperationPay.bs.js");
+var Packet_PlayerChestIndexSync$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerChestIndexSync.bs.js");
+var Packet_PlayerTeleportPortal$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerTeleportPortal.bs.js");
+var Packet_CavernMonsterTypeSync$DarkgamingRescriptTerrariapacket = require("./packet/Packet_CavernMonsterTypeSync.bs.js");
+var Packet_ClientSyncedInventory$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ClientSyncedInventory.bs.js");
+var Packet_FoodPlatterTryPlacing$DarkgamingRescriptTerrariapacket = require("./packet/Packet_FoodPlatterTryPlacing.bs.js");
+var Packet_NpcBuffRemovalRequest$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NpcBuffRemovalRequest.bs.js");
+var Packet_NpcKilledNotification$DarkgamingRescriptTerrariapacket = require("./packet/Packet_NpcKilledNotification.bs.js");
+var Packet_ShieldStrengthsUpdate$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ShieldStrengthsUpdate.bs.js");
+var Packet_WeaponsRackTryPlacing$DarkgamingRescriptTerrariapacket = require("./packet/Packet_WeaponsRackTryPlacing.bs.js");
+var Packet_CrystalInvasionWipeAll$DarkgamingRescriptTerrariapacket = require("./packet/Packet_CrystalInvasionWipeAll.bs.js");
+var Packet_InvasionProgressReport$DarkgamingRescriptTerrariapacket = require("./packet/Packet_InvasionProgressReport.bs.js");
+var Packet_ItemDropInstancedUpdate$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ItemDropInstancedUpdate.bs.js");
+var Packet_PlayerLuckFactorsUpdate$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerLuckFactorsUpdate.bs.js");
+var Packet_MinionAttackTargetUpdate$DarkgamingRescriptTerrariapacket = require("./packet/Packet_MinionAttackTargetUpdate.bs.js");
+var Packet_TemporaryAnimationCreate$DarkgamingRescriptTerrariapacket = require("./packet/Packet_TemporaryAnimationCreate.bs.js");
+var Packet_ItemForceIntoNearestChest$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ItemForceIntoNearestChest.bs.js");
+var Packet_TileEntityHatRackItemSync$DarkgamingRescriptTerrariapacket = require("./packet/Packet_TileEntityHatRackItemSync.bs.js");
+var Packet_CountsAsHostForGameplaySet$DarkgamingRescriptTerrariapacket = require("./packet/Packet_CountsAsHostForGameplaySet.bs.js");
+var Packet_InitialTileSectionsRequest$DarkgamingRescriptTerrariapacket = require("./packet/Packet_InitialTileSectionsRequest.bs.js");
+var Packet_AnglerQuestsCompletedAmount$DarkgamingRescriptTerrariapacket = require("./packet/Packet_AnglerQuestsCompletedAmount.bs.js");
+var Packet_CrystalInvasionSendWaitTime$DarkgamingRescriptTerrariapacket = require("./packet/Packet_CrystalInvasionSendWaitTime.bs.js");
+var Packet_TravellingMerchantInventory$DarkgamingRescriptTerrariapacket = require("./packet/Packet_TravellingMerchantInventory.bs.js");
+var Packet_TileEntityInteractionRequest$DarkgamingRescriptTerrariapacket = require("./packet/Packet_TileEntityInteractionRequest.bs.js");
+var Packet_TileEntityDisplayDollItemSync$DarkgamingRescriptTerrariapacket = require("./packet/Packet_TileEntityDisplayDollItemSync.bs.js");
+var Packet_ClientFinishConnectingToServer$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ClientFinishConnectingToServer.bs.js");
 
 function simpleParse(buffer, fromServer) {
   var match = buffer.length;
   if (!(match > 2 || match < 0)) {
     return ;
   }
-  var packetType = PacketType$TerrariaPacket.fromInt(buffer[2]);
+  var packetType = PacketType$DarkgamingRescriptTerrariapacket.fromInt(buffer[2]);
   if (packetType === undefined) {
     return ;
   }
@@ -155,7 +155,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packetv1405_ConnectRequest$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packetv1405_ConnectRequest$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* ConnectRequest */0,
                                   _0: a
@@ -164,7 +164,7 @@ function simpleParse(buffer, fromServer) {
           }
       case /* Disconnect */1 :
           if (fromServer) {
-            return Belt_Option.map(Packet_Disconnect$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_Disconnect$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* Disconnect */1,
                                   _0: a
@@ -175,7 +175,7 @@ function simpleParse(buffer, fromServer) {
           }
       case /* PlayerSlotSet */2 :
           if (fromServer) {
-            return Belt_Option.map(Packet_PlayerSlotSet$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_PlayerSlotSet$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* PlayerSlotSet */2,
                                   _0: a
@@ -185,14 +185,14 @@ function simpleParse(buffer, fromServer) {
             return ;
           }
       case /* PlayerInfo */3 :
-          return Belt_Option.map(Packet_PlayerInfo$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_PlayerInfo$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* PlayerInfo */3,
                                 _0: a
                               };
                       }));
       case /* PlayerInventorySlot */4 :
-          return Belt_Option.map(Packet_PlayerInventorySlot$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_PlayerInventorySlot$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* PlayerInventorySlot */4,
                                 _0: a
@@ -202,7 +202,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_WorldDataRequest$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_WorldDataRequest$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* WorldDataRequest */5,
                                   _0: a
@@ -211,7 +211,7 @@ function simpleParse(buffer, fromServer) {
           }
       case /* WorldInfo */6 :
           if (fromServer) {
-            return Belt_Option.map(Packetv1405_WorldInfo$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packetv1405_WorldInfo$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* WorldInfo */6,
                                   _0: a
@@ -224,7 +224,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_InitialTileSectionsRequest$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_InitialTileSectionsRequest$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* InitialTileSectionsRequest */7,
                                   _0: a
@@ -233,7 +233,7 @@ function simpleParse(buffer, fromServer) {
           }
       case /* Status */8 :
           if (fromServer) {
-            return Belt_Option.map(Packet_Status$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_Status$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* Status */8,
                                   _0: a
@@ -244,7 +244,7 @@ function simpleParse(buffer, fromServer) {
           }
       case /* TileSectionSend */9 :
           if (fromServer) {
-            return Belt_Option.map(Packet_TileSectionSend$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_TileSectionSend$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* TileSectionSend */9,
                                   _0: a
@@ -255,7 +255,7 @@ function simpleParse(buffer, fromServer) {
           }
       case /* TileSectionFrame */10 :
           if (fromServer) {
-            return Belt_Option.map(Packet_TileSectionFrame$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_TileSectionFrame$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* TileSectionFrame */10,
                                   _0: a
@@ -265,14 +265,14 @@ function simpleParse(buffer, fromServer) {
             return ;
           }
       case /* PlayerSpawn */11 :
-          return Belt_Option.map(Packet_PlayerSpawn$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_PlayerSpawn$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* PlayerSpawn */11,
                                 _0: a
                               };
                       }));
       case /* PlayerUpdate */12 :
-          return Belt_Option.map(Packet_PlayerUpdate$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_PlayerUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* PlayerUpdate */12,
                                 _0: a
@@ -280,7 +280,7 @@ function simpleParse(buffer, fromServer) {
                       }));
       case /* PlayerActive */13 :
           if (fromServer) {
-            return Belt_Option.map(Packet_PlayerActive$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_PlayerActive$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* PlayerActive */13,
                                   _0: a
@@ -290,14 +290,14 @@ function simpleParse(buffer, fromServer) {
             return ;
           }
       case /* PlayerHealth */14 :
-          return Belt_Option.map(Packet_PlayerHealth$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_PlayerHealth$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* PlayerHealth */14,
                                 _0: a
                               };
                       }));
       case /* TileModify */15 :
-          return Belt_Option.map(Packet_TileModify$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_TileModify$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* TileModify */15,
                                 _0: a
@@ -305,7 +305,7 @@ function simpleParse(buffer, fromServer) {
                       }));
       case /* TimeSet */16 :
           if (fromServer) {
-            return Belt_Option.map(Packet_TimeSet$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_TimeSet$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* TimeSet */16,
                                   _0: a
@@ -315,28 +315,28 @@ function simpleParse(buffer, fromServer) {
             return ;
           }
       case /* DoorUse */17 :
-          return Belt_Option.map(Packet_DoorUse$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_DoorUse$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* DoorUse */17,
                                 _0: a
                               };
                       }));
       case /* TileSquareSend */18 :
-          return Belt_Option.map(Packetv1405_TileSquareSend$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packetv1405_TileSquareSend$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* TileSquareSend */18,
                                 _0: a
                               };
                       }));
       case /* ItemDropUpdate */19 :
-          return Belt_Option.map(Packet_ItemDropUpdate$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_ItemDropUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* ItemDropUpdate */19,
                                 _0: a
                               };
                       }));
       case /* ItemOwner */20 :
-          return Belt_Option.map(Packet_ItemOwner$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_ItemOwner$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* ItemOwner */20,
                                 _0: a
@@ -344,7 +344,7 @@ function simpleParse(buffer, fromServer) {
                       }));
       case /* NpcUpdate */21 :
           if (fromServer) {
-            return Belt_Option.map(Packet_NpcUpdate$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_NpcUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* NpcUpdate */21,
                                   _0: a
@@ -354,35 +354,35 @@ function simpleParse(buffer, fromServer) {
             return ;
           }
       case /* NpcItemStrike */22 :
-          return Belt_Option.map(Packet_NpcItemStrike$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_NpcItemStrike$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* NpcItemStrike */22,
                                 _0: a
                               };
                       }));
       case /* ProjectileSync */23 :
-          return Belt_Option.map(Packetv1405_ProjectileSync$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packetv1405_ProjectileSync$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* ProjectileSync */23,
                                 _0: a
                               };
                       }));
       case /* NpcStrike */24 :
-          return Belt_Option.map(Packet_NpcStrike$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_NpcStrike$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* NpcStrike */24,
                                 _0: a
                               };
                       }));
       case /* ProjectileDestroy */25 :
-          return Belt_Option.map(Packet_ProjectileDestroy$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_ProjectileDestroy$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* ProjectileDestroy */25,
                                 _0: a
                               };
                       }));
       case /* PvpToggle */26 :
-          return Belt_Option.map(Packet_PvpToggle$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_PvpToggle$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* PvpToggle */26,
                                 _0: a
@@ -392,7 +392,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_ChestOpen$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_ChestOpen$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* ChestOpen */27,
                                   _0: a
@@ -400,35 +400,35 @@ function simpleParse(buffer, fromServer) {
                         }));
           }
       case /* ChestItem */28 :
-          return Belt_Option.map(Packet_ChestItem$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_ChestItem$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* ChestItem */28,
                                 _0: a
                               };
                       }));
       case /* ActiveContainerSync */29 :
-          return Belt_Option.map(Packet_ActiveContainerSync$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_ActiveContainerSync$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* ActiveContainerSync */29,
                                 _0: a
                               };
                       }));
       case /* ChestPlace */30 :
-          return Belt_Option.map(Packet_ChestPlace$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_ChestPlace$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* ChestPlace */30,
                                 _0: a
                               };
                       }));
       case /* HealEffect */31 :
-          return Belt_Option.map(Packet_HealEffect$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_HealEffect$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* HealEffect */31,
                                 _0: a
                               };
                       }));
       case /* Zones */32 :
-          return Belt_Option.map(Packet_Zones$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_Zones$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* Zones */32,
                                 _0: a
@@ -436,7 +436,7 @@ function simpleParse(buffer, fromServer) {
                       }));
       case /* PasswordRequired */33 :
           if (fromServer) {
-            return Belt_Option.map(Packet_PasswordRequired$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_PasswordRequired$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* PasswordRequired */33,
                                   _0: a
@@ -449,7 +449,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_PasswordSend$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_PasswordSend$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* PasswordSend */34,
                                   _0: a
@@ -458,7 +458,7 @@ function simpleParse(buffer, fromServer) {
           }
       case /* ItemOwnerRemove */35 :
           if (fromServer) {
-            return Belt_Option.map(Packet_ItemOwnerRemove$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_ItemOwnerRemove$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* ItemOwnerRemove */35,
                                   _0: a
@@ -468,35 +468,35 @@ function simpleParse(buffer, fromServer) {
             return ;
           }
       case /* NpcTalk */36 :
-          return Belt_Option.map(Packet_NpcTalk$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_NpcTalk$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* NpcTalk */36,
                                 _0: a
                               };
                       }));
       case /* PlayerAnimation */37 :
-          return Belt_Option.map(Packet_PlayerAnimation$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_PlayerAnimation$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* PlayerAnimation */37,
                                 _0: a
                               };
                       }));
       case /* PlayerMana */38 :
-          return Belt_Option.map(Packet_PlayerMana$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_PlayerMana$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* PlayerMana */38,
                                 _0: a
                               };
                       }));
       case /* ManaEffect */39 :
-          return Belt_Option.map(Packet_ManaEffect$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_ManaEffect$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* ManaEffect */39,
                                 _0: a
                               };
                       }));
       case /* PlayerTeam */40 :
-          return Belt_Option.map(Packet_PlayerTeam$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_PlayerTeam$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* PlayerTeam */40,
                                 _0: a
@@ -506,7 +506,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_SignRead$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_SignRead$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* SignRead */41,
                                   _0: a
@@ -514,14 +514,14 @@ function simpleParse(buffer, fromServer) {
                         }));
           }
       case /* SignNew */42 :
-          return Belt_Option.map(Packet_SignNew$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_SignNew$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* SignNew */42,
                                 _0: a
                               };
                       }));
       case /* LiquidSet */43 :
-          return Belt_Option.map(Packet_LiquidSet$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_LiquidSet$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* LiquidSet */43,
                                 _0: a
@@ -529,7 +529,7 @@ function simpleParse(buffer, fromServer) {
                       }));
       case /* PlayerSpawnSelf */44 :
           if (fromServer) {
-            return Belt_Option.map(Packet_PlayerSpawnSelf$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_PlayerSpawnSelf$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* PlayerSpawnSelf */44,
                                   _0: a
@@ -539,28 +539,28 @@ function simpleParse(buffer, fromServer) {
             return ;
           }
       case /* PlayerBuffsSet */45 :
-          return Belt_Option.map(Packet_PlayerBuffsSet$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_PlayerBuffsSet$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* PlayerBuffsSet */45,
                                 _0: a
                               };
                       }));
       case /* NpcSpecialEffect */46 :
-          return Belt_Option.map(Packet_NpcSpecialEffect$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_NpcSpecialEffect$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* NpcSpecialEffect */46,
                                 _0: a
                               };
                       }));
       case /* ChestOrTempleUnlock */47 :
-          return Belt_Option.map(Packet_ChestOrTempleUnlock$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_ChestOrTempleUnlock$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* ChestOrTempleUnlock */47,
                                 _0: a
                               };
                       }));
       case /* NpcBuffAdd */48 :
-          return Belt_Option.map(Packet_NpcBuffAdd$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_NpcBuffAdd$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* NpcBuffAdd */48,
                                 _0: a
@@ -568,7 +568,7 @@ function simpleParse(buffer, fromServer) {
                       }));
       case /* NpcBuffUpdate */49 :
           if (fromServer) {
-            return Belt_Option.map(Packet_NpcBuffUpdate$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_NpcBuffUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* NpcBuffUpdate */49,
                                   _0: a
@@ -578,14 +578,14 @@ function simpleParse(buffer, fromServer) {
             return ;
           }
       case /* PlayerBuffAdd */50 :
-          return Belt_Option.map(Packet_PlayerBuffAdd$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_PlayerBuffAdd$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* PlayerBuffAdd */50,
                                 _0: a
                               };
                       }));
       case /* NpcNameUpdate */51 :
-          return Belt_Option.map(Packet_NpcNameUpdate$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_NpcNameUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* NpcNameUpdate */51,
                                 _0: a
@@ -593,7 +593,7 @@ function simpleParse(buffer, fromServer) {
                       }));
       case /* GoodEvilUpdate */52 :
           if (fromServer) {
-            return Belt_Option.map(Packet_GoodEvilUpdate$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_GoodEvilUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* GoodEvilUpdate */52,
                                   _0: a
@@ -603,21 +603,21 @@ function simpleParse(buffer, fromServer) {
             return ;
           }
       case /* HarpPlay */53 :
-          return Belt_Option.map(Packet_HarpPlay$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_HarpPlay$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* HarpPlay */53,
                                 _0: a
                               };
                       }));
       case /* SwitchHit */54 :
-          return Belt_Option.map(Packet_SwitchHit$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_SwitchHit$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* SwitchHit */54,
                                 _0: a
                               };
                       }));
       case /* NpcHomeUpdate */55 :
-          return Belt_Option.map(Packet_NpcHomeUpdate$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_NpcHomeUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* NpcHomeUpdate */55,
                                 _0: a
@@ -627,7 +627,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_BossOrInvasionSpawn$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_BossOrInvasionSpawn$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* BossOrInvasionSpawn */56,
                                   _0: a
@@ -635,42 +635,42 @@ function simpleParse(buffer, fromServer) {
                         }));
           }
       case /* PlayerDodge */57 :
-          return Belt_Option.map(Packet_PlayerDodge$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_PlayerDodge$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* PlayerDodge */57,
                                 _0: a
                               };
                       }));
       case /* PaintTile */58 :
-          return Belt_Option.map(Packet_PaintTile$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_PaintTile$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* PaintTile */58,
                                 _0: a
                               };
                       }));
       case /* PaintWall */59 :
-          return Belt_Option.map(Packet_PaintWall$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_PaintWall$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* PaintWall */59,
                                 _0: a
                               };
                       }));
       case /* Teleport */60 :
-          return Belt_Option.map(Packet_Teleport$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_Teleport$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* Teleport */60,
                                 _0: a
                               };
                       }));
       case /* PlayerHealOther */61 :
-          return Belt_Option.map(Packet_PlayerHealOther$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_PlayerHealOther$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* PlayerHealOther */61,
                                 _0: a
                               };
                       }));
       case /* DimensionsUpdate */62 :
-          return Belt_Option.map(Packet_DimensionsUpdate$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_DimensionsUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* DimensionsUpdate */62,
                                 _0: a
@@ -680,7 +680,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_ClientUuid$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_ClientUuid$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* ClientUuid */63,
                                   _0: a
@@ -688,7 +688,7 @@ function simpleParse(buffer, fromServer) {
                         }));
           }
       case /* ChestName */64 :
-          return Belt_Option.map(Packet_ChestName$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_ChestName$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* ChestName */64,
                                 _0: a
@@ -698,7 +698,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_CatchNpc$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_CatchNpc$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* CatchNpc */65,
                                   _0: a
@@ -709,7 +709,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_ReleaseNpc$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_ReleaseNpc$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* ReleaseNpc */66,
                                   _0: a
@@ -718,7 +718,7 @@ function simpleParse(buffer, fromServer) {
           }
       case /* TravellingMerchantInventory */67 :
           if (fromServer) {
-            return Belt_Option.map(Packet_TravellingMerchantInventory$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_TravellingMerchantInventory$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* TravellingMerchantInventory */67,
                                   _0: a
@@ -728,7 +728,7 @@ function simpleParse(buffer, fromServer) {
             return ;
           }
       case /* TeleportationPotion */68 :
-          return Belt_Option.map(Packet_TeleportationPotion$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_TeleportationPotion$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* TeleportationPotion */68,
                                 _0: a
@@ -736,7 +736,7 @@ function simpleParse(buffer, fromServer) {
                       }));
       case /* AnglerQuest */69 :
           if (fromServer) {
-            return Belt_Option.map(Packet_AnglerQuest$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_AnglerQuest$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* AnglerQuest */69,
                                   _0: a
@@ -749,7 +749,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_AnglerQuestComplete$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_AnglerQuestComplete$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* AnglerQuestComplete */70,
                                   _0: a
@@ -757,7 +757,7 @@ function simpleParse(buffer, fromServer) {
                         }));
           }
       case /* AnglerQuestsCompletedAmount */71 :
-          return Belt_Option.map(Packet_AnglerQuestsCompletedAmount$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_AnglerQuestsCompletedAmount$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* AnglerQuestsCompletedAmount */71,
                                 _0: a
@@ -765,7 +765,7 @@ function simpleParse(buffer, fromServer) {
                       }));
       case /* TemporaryAnimationCreate */72 :
           if (fromServer) {
-            return Belt_Option.map(Packet_TemporaryAnimationCreate$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_TemporaryAnimationCreate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* TemporaryAnimationCreate */72,
                                   _0: a
@@ -776,7 +776,7 @@ function simpleParse(buffer, fromServer) {
           }
       case /* InvasionProgressReport */73 :
           if (fromServer) {
-            return Belt_Option.map(Packet_InvasionProgressReport$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_InvasionProgressReport$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* InvasionProgressReport */73,
                                   _0: a
@@ -786,7 +786,7 @@ function simpleParse(buffer, fromServer) {
             return ;
           }
       case /* ObjectPlace */74 :
-          return Belt_Option.map(Packet_ObjectPlace$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_ObjectPlace$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* ObjectPlace */74,
                                 _0: a
@@ -794,7 +794,7 @@ function simpleParse(buffer, fromServer) {
                       }));
       case /* PlayerChestIndexSync */75 :
           if (fromServer) {
-            return Belt_Option.map(Packet_PlayerChestIndexSync$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_PlayerChestIndexSync$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* PlayerChestIndexSync */75,
                                   _0: a
@@ -805,7 +805,7 @@ function simpleParse(buffer, fromServer) {
           }
       case /* CombatNumberCreate */76 :
           if (fromServer) {
-            return Belt_Option.map(Packet_CombatNumberCreate$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_CombatNumberCreate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* CombatNumberCreate */76,
                                   _0: a
@@ -815,7 +815,7 @@ function simpleParse(buffer, fromServer) {
             return ;
           }
       case /* NetModuleLoad */77 :
-          return Belt_Option.map(Packet_NetModuleLoad$TerrariaPacket.parse(buffer, fromServer), (function (a) {
+          return Belt_Option.map(Packet_NetModuleLoad$DarkgamingRescriptTerrariapacket.parse(buffer, fromServer), (function (a) {
                         return {
                                 TAG: /* NetModuleLoad */77,
                                 _0: a
@@ -823,7 +823,7 @@ function simpleParse(buffer, fromServer) {
                       }));
       case /* NpcKillCount */78 :
           if (fromServer) {
-            return Belt_Option.map(Packet_NpcKillCount$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_NpcKillCount$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* NpcKillCount */78,
                                   _0: a
@@ -833,7 +833,7 @@ function simpleParse(buffer, fromServer) {
             return ;
           }
       case /* PlayerStealth */79 :
-          return Belt_Option.map(Packet_PlayerStealth$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_PlayerStealth$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* PlayerStealth */79,
                                 _0: a
@@ -843,7 +843,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_ItemForceIntoNearestChest$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_ItemForceIntoNearestChest$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* ItemForceIntoNearestChest */80,
                                   _0: a
@@ -852,7 +852,7 @@ function simpleParse(buffer, fromServer) {
           }
       case /* TileEntityUpdate */81 :
           if (fromServer) {
-            return Belt_Option.map(Packet_TileEntityUpdate$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_TileEntityUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* TileEntityUpdate */81,
                                   _0: a
@@ -865,7 +865,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_TileEntityPlace$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_TileEntityPlace$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* TileEntityPlace */82,
                                   _0: a
@@ -874,7 +874,7 @@ function simpleParse(buffer, fromServer) {
           }
       case /* ItemDropModify */83 :
           if (fromServer) {
-            return Belt_Option.map(Packet_ItemDropModify$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_ItemDropModify$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* ItemDropModify */83,
                                   _0: a
@@ -887,7 +887,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_ItemFramePlace$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_ItemFramePlace$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* ItemFramePlace */84,
                                   _0: a
@@ -895,7 +895,7 @@ function simpleParse(buffer, fromServer) {
                         }));
           }
       case /* ItemDropInstancedUpdate */85 :
-          return Belt_Option.map(Packet_ItemDropInstancedUpdate$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_ItemDropInstancedUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* ItemDropInstancedUpdate */85,
                                 _0: a
@@ -903,7 +903,7 @@ function simpleParse(buffer, fromServer) {
                       }));
       case /* EmoteBubble */86 :
           if (fromServer) {
-            return Belt_Option.map(Packet_EmoteBubble$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_EmoteBubble$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* EmoteBubble */86,
                                   _0: a
@@ -913,21 +913,21 @@ function simpleParse(buffer, fromServer) {
             return ;
           }
       case /* ExtraValueSync */87 :
-          return Belt_Option.map(Packet_ExtraValueSync$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_ExtraValueSync$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* ExtraValueSync */87,
                                 _0: a
                               };
                       }));
       case /* SocialHandshake */88 :
-          return Belt_Option.map(Packet_SocialHandshake$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_SocialHandshake$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* SocialHandshake */88,
                                 _0: a
                               };
                       }));
       case /* Unused */89 :
-          return Belt_Option.map(Packet_Unused$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_Unused$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* Unused */89,
                                 _0: a
@@ -937,7 +937,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_PortalKill$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_PortalKill$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* PortalKill */90,
                                   _0: a
@@ -945,7 +945,7 @@ function simpleParse(buffer, fromServer) {
                         }));
           }
       case /* PlayerTeleportPortal */91 :
-          return Belt_Option.map(Packet_PlayerTeleportPortal$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_PlayerTeleportPortal$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* PlayerTeleportPortal */91,
                                 _0: a
@@ -953,7 +953,7 @@ function simpleParse(buffer, fromServer) {
                       }));
       case /* NpcKilledNotification */92 :
           if (fromServer) {
-            return Belt_Option.map(Packet_NpcKilledNotification$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_NpcKilledNotification$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* NpcKilledNotification */92,
                                   _0: a
@@ -964,7 +964,7 @@ function simpleParse(buffer, fromServer) {
           }
       case /* EventNotification */93 :
           if (fromServer) {
-            return Belt_Option.map(Packet_EventNotification$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_EventNotification$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* EventNotification */93,
                                   _0: a
@@ -974,14 +974,14 @@ function simpleParse(buffer, fromServer) {
             return ;
           }
       case /* MinionTargetUpdate */94 :
-          return Belt_Option.map(Packet_MinionTargetUpdate$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_MinionTargetUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* MinionTargetUpdate */94,
                                 _0: a
                               };
                       }));
       case /* NpcTeleportPortal */95 :
-          return Belt_Option.map(Packet_NpcTeleportPortal$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_NpcTeleportPortal$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* NpcTeleportPortal */95,
                                 _0: a
@@ -989,7 +989,7 @@ function simpleParse(buffer, fromServer) {
                       }));
       case /* ShieldStrengthsUpdate */96 :
           if (fromServer) {
-            return Belt_Option.map(Packet_ShieldStrengthsUpdate$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_ShieldStrengthsUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* ShieldStrengthsUpdate */96,
                                   _0: a
@@ -999,7 +999,7 @@ function simpleParse(buffer, fromServer) {
             return ;
           }
       case /* NebulaLevelUp */97 :
-          return Belt_Option.map(Packet_NebulaLevelUp$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_NebulaLevelUp$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* NebulaLevelUp */97,
                                 _0: a
@@ -1007,7 +1007,7 @@ function simpleParse(buffer, fromServer) {
                       }));
       case /* MoonLordCountdown */98 :
           if (fromServer) {
-            return Belt_Option.map(Packet_MoonLordCountdown$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_MoonLordCountdown$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* MoonLordCountdown */98,
                                   _0: a
@@ -1018,7 +1018,7 @@ function simpleParse(buffer, fromServer) {
           }
       case /* NpcShopItem */99 :
           if (fromServer) {
-            return Belt_Option.map(Packet_NpcShopItem$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_NpcShopItem$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* NpcShopItem */99,
                                   _0: a
@@ -1031,7 +1031,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_GemLockToggle$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_GemLockToggle$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* GemLockToggle */100,
                                   _0: a
@@ -1040,7 +1040,7 @@ function simpleParse(buffer, fromServer) {
           }
       case /* SmokePoof */101 :
           if (fromServer) {
-            return Belt_Option.map(Packet_SmokePoof$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_SmokePoof$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* SmokePoof */101,
                                   _0: a
@@ -1051,7 +1051,7 @@ function simpleParse(buffer, fromServer) {
           }
       case /* ChatMessageSmart */102 :
           if (fromServer) {
-            return Belt_Option.map(Packet_ChatMessageSmart$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_ChatMessageSmart$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* ChatMessageSmart */102,
                                   _0: a
@@ -1062,7 +1062,7 @@ function simpleParse(buffer, fromServer) {
           }
       case /* WiredCannonShot */103 :
           if (fromServer) {
-            return Belt_Option.map(Packet_WiredCannonShot$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_WiredCannonShot$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* WiredCannonShot */103,
                                   _0: a
@@ -1075,7 +1075,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_MassWireOperation$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_MassWireOperation$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* MassWireOperation */104,
                                   _0: a
@@ -1084,7 +1084,7 @@ function simpleParse(buffer, fromServer) {
           }
       case /* MassWireOperationPay */105 :
           if (fromServer) {
-            return Belt_Option.map(Packet_MassWireOperationPay$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_MassWireOperationPay$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* MassWireOperationPay */105,
                                   _0: a
@@ -1097,7 +1097,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_PartyToggle$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_PartyToggle$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* PartyToggle */106,
                                   _0: a
@@ -1105,7 +1105,7 @@ function simpleParse(buffer, fromServer) {
                         }));
           }
       case /* TreeGrowFx */107 :
-          return Belt_Option.map(Packet_TreeGrowFx$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_TreeGrowFx$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* TreeGrowFx */107,
                                 _0: a
@@ -1115,7 +1115,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_CrystalInvasionStart$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_CrystalInvasionStart$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* CrystalInvasionStart */108,
                                   _0: a
@@ -1124,7 +1124,7 @@ function simpleParse(buffer, fromServer) {
           }
       case /* CrystalInvasionWipeAll */109 :
           if (fromServer) {
-            return Belt_Option.map(Packet_CrystalInvasionWipeAll$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_CrystalInvasionWipeAll$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* CrystalInvasionWipeAll */109,
                                   _0: a
@@ -1134,7 +1134,7 @@ function simpleParse(buffer, fromServer) {
             return ;
           }
       case /* MinionAttackTargetUpdate */110 :
-          return Belt_Option.map(Packet_MinionAttackTargetUpdate$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_MinionAttackTargetUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* MinionAttackTargetUpdate */110,
                                 _0: a
@@ -1142,7 +1142,7 @@ function simpleParse(buffer, fromServer) {
                       }));
       case /* CrystalInvasionSendWaitTime */111 :
           if (fromServer) {
-            return Belt_Option.map(Packet_CrystalInvasionSendWaitTime$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_CrystalInvasionSendWaitTime$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* CrystalInvasionSendWaitTime */111,
                                   _0: a
@@ -1152,14 +1152,14 @@ function simpleParse(buffer, fromServer) {
             return ;
           }
       case /* PlayerDamage */112 :
-          return Belt_Option.map(Packet_PlayerDamage$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_PlayerDamage$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* PlayerDamage */112,
                                 _0: a
                               };
                       }));
       case /* PlayerDeath */113 :
-          return Belt_Option.map(Packet_PlayerDeath$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_PlayerDeath$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* PlayerDeath */113,
                                 _0: a
@@ -1167,7 +1167,7 @@ function simpleParse(buffer, fromServer) {
                       }));
       case /* CombatTextCreate */114 :
           if (fromServer) {
-            return Belt_Option.map(Packet_CombatTextCreate$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_CombatTextCreate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* CombatTextCreate */114,
                                   _0: a
@@ -1180,7 +1180,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_Emoji$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_Emoji$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* Emoji */115,
                                   _0: a
@@ -1188,14 +1188,14 @@ function simpleParse(buffer, fromServer) {
                         }));
           }
       case /* TileEntityDisplayDollItemSync */116 :
-          return Belt_Option.map(Packet_TileEntityDisplayDollItemSync$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_TileEntityDisplayDollItemSync$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* TileEntityDisplayDollItemSync */116,
                                 _0: a
                               };
                       }));
       case /* TileEntityInteractionRequest */117 :
-          return Belt_Option.map(Packet_TileEntityInteractionRequest$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_TileEntityInteractionRequest$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* TileEntityInteractionRequest */117,
                                 _0: a
@@ -1205,7 +1205,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_WeaponsRackTryPlacing$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_WeaponsRackTryPlacing$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* WeaponsRackTryPlacing */118,
                                   _0: a
@@ -1213,14 +1213,14 @@ function simpleParse(buffer, fromServer) {
                         }));
           }
       case /* TileEntityHatRackItemSync */119 :
-          return Belt_Option.map(Packet_TileEntityHatRackItemSync$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_TileEntityHatRackItemSync$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* TileEntityHatRackItemSync */119,
                                 _0: a
                               };
                       }));
       case /* TilePickingSync */120 :
-          return Belt_Option.map(Packet_TilePickingSync$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_TilePickingSync$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* TilePickingSync */120,
                                 _0: a
@@ -1228,7 +1228,7 @@ function simpleParse(buffer, fromServer) {
                       }));
       case /* RevengeMarkerSync */121 :
           if (fromServer) {
-            return Belt_Option.map(Packet_RevengeMarkerSync$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_RevengeMarkerSync$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* RevengeMarkerSync */121,
                                   _0: a
@@ -1239,7 +1239,7 @@ function simpleParse(buffer, fromServer) {
           }
       case /* RevengeMarkerRemove */122 :
           if (fromServer) {
-            return Belt_Option.map(Packet_RevengeMarkerRemove$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_RevengeMarkerRemove$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* RevengeMarkerRemove */122,
                                   _0: a
@@ -1249,7 +1249,7 @@ function simpleParse(buffer, fromServer) {
             return ;
           }
       case /* GolfBallLandInCup */123 :
-          return Belt_Option.map(Packet_GolfBallLandInCup$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_GolfBallLandInCup$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* GolfBallLandInCup */123,
                                 _0: a
@@ -1257,7 +1257,7 @@ function simpleParse(buffer, fromServer) {
                       }));
       case /* ClientFinishConnectingToServer */124 :
           if (fromServer) {
-            return Belt_Option.map(Packet_ClientFinishConnectingToServer$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_ClientFinishConnectingToServer$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* ClientFinishConnectingToServer */124,
                                   _0: a
@@ -1270,7 +1270,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_NpcFishOut$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_NpcFishOut$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* NpcFishOut */125,
                                   _0: a
@@ -1279,7 +1279,7 @@ function simpleParse(buffer, fromServer) {
           }
       case /* NpcTamper */126 :
           if (fromServer) {
-            return Belt_Option.map(Packet_NpcTamper$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_NpcTamper$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* NpcTamper */126,
                                   _0: a
@@ -1290,7 +1290,7 @@ function simpleParse(buffer, fromServer) {
           }
       case /* LegacySoundPlay */127 :
           if (fromServer) {
-            return Belt_Option.map(Packet_LegacySoundPlay$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_LegacySoundPlay$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* LegacySoundPlay */127,
                                   _0: a
@@ -1303,7 +1303,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_FoodPlatterTryPlacing$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_FoodPlatterTryPlacing$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* FoodPlatterTryPlacing */128,
                                   _0: a
@@ -1311,7 +1311,7 @@ function simpleParse(buffer, fromServer) {
                         }));
           }
       case /* PlayerLuckFactorsUpdate */129 :
-          return Belt_Option.map(Packet_PlayerLuckFactorsUpdate$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_PlayerLuckFactorsUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* PlayerLuckFactorsUpdate */129,
                                 _0: a
@@ -1319,7 +1319,7 @@ function simpleParse(buffer, fromServer) {
                       }));
       case /* PlayerDead */130 :
           if (fromServer) {
-            return Belt_Option.map(Packet_PlayerDead$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_PlayerDead$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* PlayerDead */130,
                                   _0: a
@@ -1329,7 +1329,7 @@ function simpleParse(buffer, fromServer) {
             return ;
           }
       case /* CavernMonsterTypeSync */131 :
-          return Belt_Option.map(Packet_CavernMonsterTypeSync$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packet_CavernMonsterTypeSync$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
                                 TAG: /* CavernMonsterTypeSync */131,
                                 _0: a
@@ -1339,7 +1339,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_NpcBuffRemovalRequest$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_NpcBuffRemovalRequest$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* NpcBuffRemovalRequest */132,
                                   _0: a
@@ -1350,7 +1350,7 @@ function simpleParse(buffer, fromServer) {
           if (fromServer) {
             return ;
           } else {
-            return Belt_Option.map(Packet_ClientSyncedInventory$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_ClientSyncedInventory$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* ClientSyncedInventory */133,
                                   _0: a
@@ -1359,7 +1359,7 @@ function simpleParse(buffer, fromServer) {
           }
       case /* CountsAsHostForGameplaySet */134 :
           if (fromServer) {
-            return Belt_Option.map(Packet_CountsAsHostForGameplaySet$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packet_CountsAsHostForGameplaySet$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
                                   TAG: /* CountsAsHostForGameplaySet */134,
                                   _0: a
@@ -1381,7 +1381,7 @@ function simpleParseLazy(buffer, fromServer) {
   if (!(match > 2 || match < 0)) {
     return ;
   }
-  var packetType = PacketType$TerrariaPacket.fromInt(buffer[2]);
+  var packetType = PacketType$DarkgamingRescriptTerrariapacket.fromInt(buffer[2]);
   if (packetType === undefined) {
     return ;
   }
@@ -1396,7 +1396,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packetv1405_ConnectRequest$TerrariaPacket.parse(buffer);
+                          return Packetv1405_ConnectRequest$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -1408,7 +1408,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_Disconnect$TerrariaPacket.parse(buffer);
+                          return Packet_Disconnect$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -1422,7 +1422,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_PlayerSlotSet$TerrariaPacket.parse(buffer);
+                          return Packet_PlayerSlotSet$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -1435,7 +1435,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PlayerInfo$TerrariaPacket.parse(buffer);
+                        return Packet_PlayerInfo$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1445,7 +1445,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PlayerInventorySlot$TerrariaPacket.parse(buffer);
+                        return Packet_PlayerInventorySlot$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1458,7 +1458,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_WorldDataRequest$TerrariaPacket.parse(buffer);
+                          return Packet_WorldDataRequest$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -1470,7 +1470,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packetv1405_WorldInfo$TerrariaPacket.parse(buffer);
+                          return Packetv1405_WorldInfo$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -1486,7 +1486,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_InitialTileSectionsRequest$TerrariaPacket.parse(buffer);
+                          return Packet_InitialTileSectionsRequest$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -1498,7 +1498,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_Status$TerrariaPacket.parse(buffer);
+                          return Packet_Status$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -1512,7 +1512,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_TileSectionSend$TerrariaPacket.parse(buffer);
+                          return Packet_TileSectionSend$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -1526,7 +1526,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_TileSectionFrame$TerrariaPacket.parse(buffer);
+                          return Packet_TileSectionFrame$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -1539,7 +1539,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PlayerSpawn$TerrariaPacket.parse(buffer);
+                        return Packet_PlayerSpawn$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1549,7 +1549,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PlayerUpdate$TerrariaPacket.parse(buffer);
+                        return Packet_PlayerUpdate$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1560,7 +1560,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_PlayerActive$TerrariaPacket.parse(buffer);
+                          return Packet_PlayerActive$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -1573,7 +1573,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PlayerHealth$TerrariaPacket.parse(buffer);
+                        return Packet_PlayerHealth$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1583,7 +1583,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_TileModify$TerrariaPacket.parse(buffer);
+                        return Packet_TileModify$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1594,7 +1594,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_TimeSet$TerrariaPacket.parse(buffer);
+                          return Packet_TimeSet$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -1607,7 +1607,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_DoorUse$TerrariaPacket.parse(buffer);
+                        return Packet_DoorUse$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1617,7 +1617,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packetv1405_TileSquareSend$TerrariaPacket.parse(buffer);
+                        return Packetv1405_TileSquareSend$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1627,7 +1627,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_ItemDropUpdate$TerrariaPacket.parse(buffer);
+                        return Packet_ItemDropUpdate$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1637,7 +1637,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_ItemOwner$TerrariaPacket.parse(buffer);
+                        return Packet_ItemOwner$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1648,7 +1648,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_NpcUpdate$TerrariaPacket.parse(buffer);
+                          return Packet_NpcUpdate$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -1661,7 +1661,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_NpcItemStrike$TerrariaPacket.parse(buffer);
+                        return Packet_NpcItemStrike$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1671,7 +1671,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packetv1405_ProjectileSync$TerrariaPacket.parse(buffer);
+                        return Packetv1405_ProjectileSync$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1681,7 +1681,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_NpcStrike$TerrariaPacket.parse(buffer);
+                        return Packet_NpcStrike$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1691,7 +1691,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_ProjectileDestroy$TerrariaPacket.parse(buffer);
+                        return Packet_ProjectileDestroy$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1701,7 +1701,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PvpToggle$TerrariaPacket.parse(buffer);
+                        return Packet_PvpToggle$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1714,7 +1714,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_ChestOpen$TerrariaPacket.parse(buffer);
+                          return Packet_ChestOpen$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -1725,7 +1725,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_ChestItem$TerrariaPacket.parse(buffer);
+                        return Packet_ChestItem$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1735,7 +1735,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_ActiveContainerSync$TerrariaPacket.parse(buffer);
+                        return Packet_ActiveContainerSync$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1745,7 +1745,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_ChestPlace$TerrariaPacket.parse(buffer);
+                        return Packet_ChestPlace$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1755,7 +1755,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_HealEffect$TerrariaPacket.parse(buffer);
+                        return Packet_HealEffect$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1765,7 +1765,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_Zones$TerrariaPacket.parse(buffer);
+                        return Packet_Zones$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1776,7 +1776,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_PasswordRequired$TerrariaPacket.parse(buffer);
+                          return Packet_PasswordRequired$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -1792,7 +1792,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_PasswordSend$TerrariaPacket.parse(buffer);
+                          return Packet_PasswordSend$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -1804,7 +1804,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_ItemOwnerRemove$TerrariaPacket.parse(buffer);
+                          return Packet_ItemOwnerRemove$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -1817,7 +1817,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_NpcTalk$TerrariaPacket.parse(buffer);
+                        return Packet_NpcTalk$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1827,7 +1827,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PlayerAnimation$TerrariaPacket.parse(buffer);
+                        return Packet_PlayerAnimation$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1837,7 +1837,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PlayerMana$TerrariaPacket.parse(buffer);
+                        return Packet_PlayerMana$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1847,7 +1847,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_ManaEffect$TerrariaPacket.parse(buffer);
+                        return Packet_ManaEffect$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1857,7 +1857,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PlayerTeam$TerrariaPacket.parse(buffer);
+                        return Packet_PlayerTeam$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1870,7 +1870,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_SignRead$TerrariaPacket.parse(buffer);
+                          return Packet_SignRead$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -1881,7 +1881,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_SignNew$TerrariaPacket.parse(buffer);
+                        return Packet_SignNew$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1891,7 +1891,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_LiquidSet$TerrariaPacket.parse(buffer);
+                        return Packet_LiquidSet$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1902,7 +1902,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_PlayerSpawnSelf$TerrariaPacket.parse(buffer);
+                          return Packet_PlayerSpawnSelf$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -1915,7 +1915,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PlayerBuffsSet$TerrariaPacket.parse(buffer);
+                        return Packet_PlayerBuffsSet$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1925,7 +1925,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_NpcSpecialEffect$TerrariaPacket.parse(buffer);
+                        return Packet_NpcSpecialEffect$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1935,7 +1935,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_ChestOrTempleUnlock$TerrariaPacket.parse(buffer);
+                        return Packet_ChestOrTempleUnlock$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1945,7 +1945,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_NpcBuffAdd$TerrariaPacket.parse(buffer);
+                        return Packet_NpcBuffAdd$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1956,7 +1956,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_NpcBuffUpdate$TerrariaPacket.parse(buffer);
+                          return Packet_NpcBuffUpdate$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -1969,7 +1969,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PlayerBuffAdd$TerrariaPacket.parse(buffer);
+                        return Packet_PlayerBuffAdd$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1979,7 +1979,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_NpcNameUpdate$TerrariaPacket.parse(buffer);
+                        return Packet_NpcNameUpdate$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -1990,7 +1990,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_GoodEvilUpdate$TerrariaPacket.parse(buffer);
+                          return Packet_GoodEvilUpdate$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2003,7 +2003,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_HarpPlay$TerrariaPacket.parse(buffer);
+                        return Packet_HarpPlay$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2013,7 +2013,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_SwitchHit$TerrariaPacket.parse(buffer);
+                        return Packet_SwitchHit$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2023,7 +2023,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_NpcHomeUpdate$TerrariaPacket.parse(buffer);
+                        return Packet_NpcHomeUpdate$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2036,7 +2036,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_BossOrInvasionSpawn$TerrariaPacket.parse(buffer);
+                          return Packet_BossOrInvasionSpawn$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2047,7 +2047,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PlayerDodge$TerrariaPacket.parse(buffer);
+                        return Packet_PlayerDodge$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2057,7 +2057,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PaintTile$TerrariaPacket.parse(buffer);
+                        return Packet_PaintTile$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2067,7 +2067,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PaintWall$TerrariaPacket.parse(buffer);
+                        return Packet_PaintWall$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2077,7 +2077,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_Teleport$TerrariaPacket.parse(buffer);
+                        return Packet_Teleport$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2087,7 +2087,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PlayerHealOther$TerrariaPacket.parse(buffer);
+                        return Packet_PlayerHealOther$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2097,7 +2097,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_DimensionsUpdate$TerrariaPacket.parse(buffer);
+                        return Packet_DimensionsUpdate$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2110,7 +2110,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_ClientUuid$TerrariaPacket.parse(buffer);
+                          return Packet_ClientUuid$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2121,7 +2121,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_ChestName$TerrariaPacket.parse(buffer);
+                        return Packet_ChestName$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2134,7 +2134,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_CatchNpc$TerrariaPacket.parse(buffer);
+                          return Packet_CatchNpc$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2148,7 +2148,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_ReleaseNpc$TerrariaPacket.parse(buffer);
+                          return Packet_ReleaseNpc$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2160,7 +2160,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_TravellingMerchantInventory$TerrariaPacket.parse(buffer);
+                          return Packet_TravellingMerchantInventory$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2173,7 +2173,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_TeleportationPotion$TerrariaPacket.parse(buffer);
+                        return Packet_TeleportationPotion$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2184,7 +2184,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_AnglerQuest$TerrariaPacket.parse(buffer);
+                          return Packet_AnglerQuest$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2200,7 +2200,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_AnglerQuestComplete$TerrariaPacket.parse(buffer);
+                          return Packet_AnglerQuestComplete$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2211,7 +2211,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_AnglerQuestsCompletedAmount$TerrariaPacket.parse(buffer);
+                        return Packet_AnglerQuestsCompletedAmount$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2222,7 +2222,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_TemporaryAnimationCreate$TerrariaPacket.parse(buffer);
+                          return Packet_TemporaryAnimationCreate$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2236,7 +2236,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_InvasionProgressReport$TerrariaPacket.parse(buffer);
+                          return Packet_InvasionProgressReport$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2249,7 +2249,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_ObjectPlace$TerrariaPacket.parse(buffer);
+                        return Packet_ObjectPlace$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2260,7 +2260,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_PlayerChestIndexSync$TerrariaPacket.parse(buffer);
+                          return Packet_PlayerChestIndexSync$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2274,7 +2274,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_CombatNumberCreate$TerrariaPacket.parse(buffer);
+                          return Packet_CombatNumberCreate$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2287,7 +2287,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_NetModuleLoad$TerrariaPacket.parse(buffer, fromServer);
+                        return Packet_NetModuleLoad$DarkgamingRescriptTerrariapacket.parse(buffer, fromServer);
                       })
                   }
                 };
@@ -2298,7 +2298,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_NpcKillCount$TerrariaPacket.parse(buffer);
+                          return Packet_NpcKillCount$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2311,7 +2311,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PlayerStealth$TerrariaPacket.parse(buffer);
+                        return Packet_PlayerStealth$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2324,7 +2324,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_ItemForceIntoNearestChest$TerrariaPacket.parse(buffer);
+                          return Packet_ItemForceIntoNearestChest$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2336,7 +2336,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_TileEntityUpdate$TerrariaPacket.parse(buffer);
+                          return Packet_TileEntityUpdate$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2352,7 +2352,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_TileEntityPlace$TerrariaPacket.parse(buffer);
+                          return Packet_TileEntityPlace$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2364,7 +2364,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_ItemDropModify$TerrariaPacket.parse(buffer);
+                          return Packet_ItemDropModify$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2380,7 +2380,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_ItemFramePlace$TerrariaPacket.parse(buffer);
+                          return Packet_ItemFramePlace$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2391,7 +2391,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_ItemDropInstancedUpdate$TerrariaPacket.parse(buffer);
+                        return Packet_ItemDropInstancedUpdate$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2402,7 +2402,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_EmoteBubble$TerrariaPacket.parse(buffer);
+                          return Packet_EmoteBubble$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2415,7 +2415,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_ExtraValueSync$TerrariaPacket.parse(buffer);
+                        return Packet_ExtraValueSync$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2425,7 +2425,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_SocialHandshake$TerrariaPacket.parse(buffer);
+                        return Packet_SocialHandshake$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2435,7 +2435,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_Unused$TerrariaPacket.parse(buffer);
+                        return Packet_Unused$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2448,7 +2448,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_PortalKill$TerrariaPacket.parse(buffer);
+                          return Packet_PortalKill$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2459,7 +2459,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PlayerTeleportPortal$TerrariaPacket.parse(buffer);
+                        return Packet_PlayerTeleportPortal$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2470,7 +2470,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_NpcKilledNotification$TerrariaPacket.parse(buffer);
+                          return Packet_NpcKilledNotification$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2484,7 +2484,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_EventNotification$TerrariaPacket.parse(buffer);
+                          return Packet_EventNotification$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2497,7 +2497,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_MinionTargetUpdate$TerrariaPacket.parse(buffer);
+                        return Packet_MinionTargetUpdate$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2507,7 +2507,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_NpcTeleportPortal$TerrariaPacket.parse(buffer);
+                        return Packet_NpcTeleportPortal$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2518,7 +2518,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_ShieldStrengthsUpdate$TerrariaPacket.parse(buffer);
+                          return Packet_ShieldStrengthsUpdate$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2531,7 +2531,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_NebulaLevelUp$TerrariaPacket.parse(buffer);
+                        return Packet_NebulaLevelUp$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2542,7 +2542,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_MoonLordCountdown$TerrariaPacket.parse(buffer);
+                          return Packet_MoonLordCountdown$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2556,7 +2556,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_NpcShopItem$TerrariaPacket.parse(buffer);
+                          return Packet_NpcShopItem$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2572,7 +2572,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_GemLockToggle$TerrariaPacket.parse(buffer);
+                          return Packet_GemLockToggle$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2584,7 +2584,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_SmokePoof$TerrariaPacket.parse(buffer);
+                          return Packet_SmokePoof$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2598,7 +2598,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_ChatMessageSmart$TerrariaPacket.parse(buffer);
+                          return Packet_ChatMessageSmart$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2612,7 +2612,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_WiredCannonShot$TerrariaPacket.parse(buffer);
+                          return Packet_WiredCannonShot$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2628,7 +2628,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_MassWireOperation$TerrariaPacket.parse(buffer);
+                          return Packet_MassWireOperation$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2640,7 +2640,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_MassWireOperationPay$TerrariaPacket.parse(buffer);
+                          return Packet_MassWireOperationPay$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2656,7 +2656,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_PartyToggle$TerrariaPacket.parse(buffer);
+                          return Packet_PartyToggle$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2667,7 +2667,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_TreeGrowFx$TerrariaPacket.parse(buffer);
+                        return Packet_TreeGrowFx$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2680,7 +2680,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_CrystalInvasionStart$TerrariaPacket.parse(buffer);
+                          return Packet_CrystalInvasionStart$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2692,7 +2692,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_CrystalInvasionWipeAll$TerrariaPacket.parse(buffer);
+                          return Packet_CrystalInvasionWipeAll$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2705,7 +2705,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_MinionAttackTargetUpdate$TerrariaPacket.parse(buffer);
+                        return Packet_MinionAttackTargetUpdate$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2716,7 +2716,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_CrystalInvasionSendWaitTime$TerrariaPacket.parse(buffer);
+                          return Packet_CrystalInvasionSendWaitTime$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2729,7 +2729,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PlayerDamage$TerrariaPacket.parse(buffer);
+                        return Packet_PlayerDamage$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2739,7 +2739,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PlayerDeath$TerrariaPacket.parse(buffer);
+                        return Packet_PlayerDeath$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2750,7 +2750,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_CombatTextCreate$TerrariaPacket.parse(buffer);
+                          return Packet_CombatTextCreate$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2766,7 +2766,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_Emoji$TerrariaPacket.parse(buffer);
+                          return Packet_Emoji$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2777,7 +2777,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_TileEntityDisplayDollItemSync$TerrariaPacket.parse(buffer);
+                        return Packet_TileEntityDisplayDollItemSync$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2787,7 +2787,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_TileEntityInteractionRequest$TerrariaPacket.parse(buffer);
+                        return Packet_TileEntityInteractionRequest$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2800,7 +2800,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_WeaponsRackTryPlacing$TerrariaPacket.parse(buffer);
+                          return Packet_WeaponsRackTryPlacing$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2811,7 +2811,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_TileEntityHatRackItemSync$TerrariaPacket.parse(buffer);
+                        return Packet_TileEntityHatRackItemSync$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2821,7 +2821,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_TilePickingSync$TerrariaPacket.parse(buffer);
+                        return Packet_TilePickingSync$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2832,7 +2832,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_RevengeMarkerSync$TerrariaPacket.parse(buffer);
+                          return Packet_RevengeMarkerSync$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2846,7 +2846,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_RevengeMarkerRemove$TerrariaPacket.parse(buffer);
+                          return Packet_RevengeMarkerRemove$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2859,7 +2859,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_GolfBallLandInCup$TerrariaPacket.parse(buffer);
+                        return Packet_GolfBallLandInCup$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2870,7 +2870,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_ClientFinishConnectingToServer$TerrariaPacket.parse(buffer);
+                          return Packet_ClientFinishConnectingToServer$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2886,7 +2886,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_NpcFishOut$TerrariaPacket.parse(buffer);
+                          return Packet_NpcFishOut$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2898,7 +2898,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_NpcTamper$TerrariaPacket.parse(buffer);
+                          return Packet_NpcTamper$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2912,7 +2912,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_LegacySoundPlay$TerrariaPacket.parse(buffer);
+                          return Packet_LegacySoundPlay$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2928,7 +2928,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_FoodPlatterTryPlacing$TerrariaPacket.parse(buffer);
+                          return Packet_FoodPlatterTryPlacing$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2939,7 +2939,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PlayerLuckFactorsUpdate$TerrariaPacket.parse(buffer);
+                        return Packet_PlayerLuckFactorsUpdate$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2950,7 +2950,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_PlayerDead$TerrariaPacket.parse(buffer);
+                          return Packet_PlayerDead$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2963,7 +2963,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_CavernMonsterTypeSync$TerrariaPacket.parse(buffer);
+                        return Packet_CavernMonsterTypeSync$DarkgamingRescriptTerrariapacket.parse(buffer);
                       })
                   }
                 };
@@ -2976,7 +2976,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_NpcBuffRemovalRequest$TerrariaPacket.parse(buffer);
+                          return Packet_NpcBuffRemovalRequest$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -2990,7 +2990,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_ClientSyncedInventory$TerrariaPacket.parse(buffer);
+                          return Packet_ClientSyncedInventory$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -3002,7 +3002,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_CountsAsHostForGameplaySet$TerrariaPacket.parse(buffer);
+                          return Packet_CountsAsHostForGameplaySet$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
@@ -3029,7 +3029,7 @@ function parse(buffer, fromServer) {
 
 function parseAsLatest(buffer, fromServer) {
   return Belt_Option.map(simpleParse(buffer, fromServer), (function (packet) {
-                var packet$1 = Packetv1405$TerrariaPacket.toLatest(packet, fromServer);
+                var packet$1 = Packetv1405$DarkgamingRescriptTerrariapacket.toLatest(packet, fromServer);
                 if (packet$1.TAG === /* Same */0) {
                   return {
                           TAG: /* SerializeNotNecessary */1,
@@ -3047,11 +3047,11 @@ function parseAsLatest(buffer, fromServer) {
 
 function parseAsLatestLazy(buffer, fromServer) {
   return Belt_Option.map(simpleParseLazy(buffer, fromServer), (function (packet) {
-                return Packetv1405$TerrariaPacket.Lazy.toLatest(packet, fromServer);
+                return Packetv1405$DarkgamingRescriptTerrariapacket.Lazy.toLatest(packet, fromServer);
               }));
 }
 
 exports.parse = parse;
 exports.parseAsLatest = parseAsLatest;
 exports.parseAsLatestLazy = parseAsLatestLazy;
-/* Packetv1405-TerrariaPacket Not a pure module */
+/* Packetv1405-DarkgamingRescriptTerrariapacket Not a pure module */

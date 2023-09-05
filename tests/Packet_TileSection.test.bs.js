@@ -4,16 +4,16 @@
 var Fs = require("fs");
 var Zora = require("@dusty-phillips/rescript-zora/src/Zora.bs.js");
 var Zora$1 = require("zora");
-var Packet_TileSectionSend$TerrariaPacket = require("../src/packet/Packet_TileSectionSend.bs.js");
+var Packet_TileSectionSend$DarkgamingRescriptTerrariapacket = require("../src/packet/Packet_TileSectionSend.bs.js");
 
 Zora$1.test("Should be the same going after encode/decode", (function (t) {
         var data = Fs.readFileSync("tests/send_section");
-        var p = Packet_TileSectionSend$TerrariaPacket.parse(data);
+        var p = Packet_TileSectionSend$DarkgamingRescriptTerrariapacket.parse(data);
         Zora.optionSome(t, p, (function (t, section) {
-                var data = Packet_TileSectionSend$TerrariaPacket.toBuffer(section);
-                var p = Packet_TileSectionSend$TerrariaPacket.parse(data);
+                var data = Packet_TileSectionSend$DarkgamingRescriptTerrariapacket.toBuffer(section);
+                var p = Packet_TileSectionSend$DarkgamingRescriptTerrariapacket.parse(data);
                 Zora.optionSome(t, p, (function (t, section) {
-                        var buf = Packet_TileSectionSend$TerrariaPacket.toBuffer(section);
+                        var buf = Packet_TileSectionSend$DarkgamingRescriptTerrariapacket.toBuffer(section);
                         console.log(data.slice(0, 20));
                         console.log(buf.slice(0, 20));
                         t.ok(buf.toString() === data.toString(), "Expected decode->encode to reproduce the same buffer");

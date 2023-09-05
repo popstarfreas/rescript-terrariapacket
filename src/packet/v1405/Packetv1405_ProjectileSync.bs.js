@@ -2,11 +2,11 @@
 'use strict';
 
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
-var BitFlags$TerrariaPacket = require("../../BitFlags.bs.js");
-var PacketType$TerrariaPacket = require("../../PacketType.bs.js");
 var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.bs.js");
 var Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
+var BitFlags$DarkgamingRescriptTerrariapacket = require("../../BitFlags.bs.js");
+var PacketType$DarkgamingRescriptTerrariapacket = require("../../PacketType.bs.js");
 
 function readSingle(prim) {
   return prim.readSingle();
@@ -29,17 +29,17 @@ function parse(payload) {
   var vy = reader.readSingle();
   var owner = reader.readByte();
   var projectileType = reader.readInt16();
-  var flags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
-  var ai_0 = BitFlags$TerrariaPacket.flag1(flags) ? reader.readSingle() : undefined;
-  var ai_1 = BitFlags$TerrariaPacket.flag2(flags) ? reader.readSingle() : undefined;
+  var flags = BitFlags$DarkgamingRescriptTerrariapacket.fromByte(reader.readByte());
+  var ai_0 = BitFlags$DarkgamingRescriptTerrariapacket.flag1(flags) ? reader.readSingle() : undefined;
+  var ai_1 = BitFlags$DarkgamingRescriptTerrariapacket.flag2(flags) ? reader.readSingle() : undefined;
   var ai = [
     ai_0,
     ai_1
   ];
-  var damage = BitFlags$TerrariaPacket.flag5(flags) ? reader.readInt16() : undefined;
-  var knockback = BitFlags$TerrariaPacket.flag6(flags) ? reader.readSingle() : undefined;
-  var originalDamage = BitFlags$TerrariaPacket.flag7(flags) ? reader.readInt16() : undefined;
-  var projectileUuid = BitFlags$TerrariaPacket.flag8(flags) ? reader.readInt16() : undefined;
+  var damage = BitFlags$DarkgamingRescriptTerrariapacket.flag5(flags) ? reader.readInt16() : undefined;
+  var knockback = BitFlags$DarkgamingRescriptTerrariapacket.flag6(flags) ? reader.readSingle() : undefined;
+  var originalDamage = BitFlags$DarkgamingRescriptTerrariapacket.flag7(flags) ? reader.readInt16() : undefined;
+  var projectileUuid = BitFlags$DarkgamingRescriptTerrariapacket.flag8(flags) ? reader.readInt16() : undefined;
   return {
           projectileId: projectileId,
           x: x,
@@ -83,23 +83,23 @@ function packOptionalData(writer, self) {
   var match = self.ai;
   var ai1 = match[1];
   var ai0 = match[0];
-  var bitFlags = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(ai0), Belt_Option.isSome(ai1), false, false, Belt_Option.isSome(self.damage), Belt_Option.isSome(self.knockback), Belt_Option.isSome(self.originalDamage), Belt_Option.isSome(self.projectileUuid));
-  if (BitFlags$TerrariaPacket.flag1(bitFlags)) {
+  var bitFlags = BitFlags$DarkgamingRescriptTerrariapacket.fromFlags(Belt_Option.isSome(ai0), Belt_Option.isSome(ai1), false, false, Belt_Option.isSome(self.damage), Belt_Option.isSome(self.knockback), Belt_Option.isSome(self.originalDamage), Belt_Option.isSome(self.projectileUuid));
+  if (BitFlags$DarkgamingRescriptTerrariapacket.flag1(bitFlags)) {
     writer.packSingle(ai0);
   }
-  if (BitFlags$TerrariaPacket.flag2(bitFlags)) {
+  if (BitFlags$DarkgamingRescriptTerrariapacket.flag2(bitFlags)) {
     writer.packSingle(ai1);
   }
-  if (BitFlags$TerrariaPacket.flag5(bitFlags)) {
+  if (BitFlags$DarkgamingRescriptTerrariapacket.flag5(bitFlags)) {
     writer.packInt16(self.damage);
   }
-  if (BitFlags$TerrariaPacket.flag6(bitFlags)) {
+  if (BitFlags$DarkgamingRescriptTerrariapacket.flag6(bitFlags)) {
     writer.packSingle(self.knockback);
   }
-  if (BitFlags$TerrariaPacket.flag7(bitFlags)) {
+  if (BitFlags$DarkgamingRescriptTerrariapacket.flag7(bitFlags)) {
     writer.packInt16(self.originalDamage);
   }
-  if (BitFlags$TerrariaPacket.flag8(bitFlags)) {
+  if (BitFlags$DarkgamingRescriptTerrariapacket.flag8(bitFlags)) {
     writer.packInt16(self.projectileUuid);
   }
   return writer;
@@ -107,7 +107,7 @@ function packOptionalData(writer, self) {
 
 function toBuffer(self) {
   var id = self.projectileId;
-  return packOptionalData(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt(/* ProjectileSync */23)).packInt16(id === 954 ? 504 : (
+  return packOptionalData(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* ProjectileSync */23)).packInt16(id === 954 ? 504 : (
                                 id === 955 ? 12 : id
                               )).packSingle(self.x).packSingle(self.y).packSingle(self.vx).packSingle(self.vy).packByte(self.owner).packInt16(self.projectileType), self).data;
 }

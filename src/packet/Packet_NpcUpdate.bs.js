@@ -2,11 +2,11 @@
 'use strict';
 
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
-var BitFlags$TerrariaPacket = require("../BitFlags.bs.js");
-var PacketType$TerrariaPacket = require("../PacketType.bs.js");
 var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.bs.js");
 var Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
+var BitFlags$DarkgamingRescriptTerrariapacket = require("../BitFlags.bs.js");
+var PacketType$DarkgamingRescriptTerrariapacket = require("../PacketType.bs.js");
 
 function readInt32(prim) {
   return prim.readInt32();
@@ -29,25 +29,25 @@ function readByte(prim) {
 }
 
 function readNpcFlags1(reader) {
-  var flags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+  var flags = BitFlags$DarkgamingRescriptTerrariapacket.fromByte(reader.readByte());
   return {
-          directionX: BitFlags$TerrariaPacket.flag1(flags),
-          directionY: BitFlags$TerrariaPacket.flag2(flags),
-          ai0: BitFlags$TerrariaPacket.flag3(flags),
-          ai1: BitFlags$TerrariaPacket.flag4(flags),
-          ai2: BitFlags$TerrariaPacket.flag5(flags),
-          ai3: BitFlags$TerrariaPacket.flag6(flags),
-          spriteDirection: BitFlags$TerrariaPacket.flag7(flags),
-          lifeMax: BitFlags$TerrariaPacket.flag8(flags)
+          directionX: BitFlags$DarkgamingRescriptTerrariapacket.flag1(flags),
+          directionY: BitFlags$DarkgamingRescriptTerrariapacket.flag2(flags),
+          ai0: BitFlags$DarkgamingRescriptTerrariapacket.flag3(flags),
+          ai1: BitFlags$DarkgamingRescriptTerrariapacket.flag4(flags),
+          ai2: BitFlags$DarkgamingRescriptTerrariapacket.flag5(flags),
+          ai3: BitFlags$DarkgamingRescriptTerrariapacket.flag6(flags),
+          spriteDirection: BitFlags$DarkgamingRescriptTerrariapacket.flag7(flags),
+          lifeMax: BitFlags$DarkgamingRescriptTerrariapacket.flag8(flags)
         };
 }
 
 function readNpcFlags2(reader) {
-  var flags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+  var flags = BitFlags$DarkgamingRescriptTerrariapacket.fromByte(reader.readByte());
   return {
-          statsScaled: BitFlags$TerrariaPacket.flag1(flags),
-          spawnedFromStatue: BitFlags$TerrariaPacket.flag2(flags),
-          strengthMultiplier: BitFlags$TerrariaPacket.flag3(flags)
+          statsScaled: BitFlags$DarkgamingRescriptTerrariapacket.flag1(flags),
+          spawnedFromStatue: BitFlags$DarkgamingRescriptTerrariapacket.flag2(flags),
+          strengthMultiplier: BitFlags$DarkgamingRescriptTerrariapacket.flag3(flags)
         };
 }
 
@@ -173,11 +173,11 @@ function data(prim) {
 
 function npcFlags1(self) {
   var match = self.ai;
-  return BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(self.directionX, self.directionY, Belt_Option.isSome(match[0]), Belt_Option.isSome(match[1]), Belt_Option.isSome(match[2]), Belt_Option.isSome(match[3]), self.spriteDirection, self.life === /* Max */0));
+  return BitFlags$DarkgamingRescriptTerrariapacket.toByte(BitFlags$DarkgamingRescriptTerrariapacket.fromFlags(self.directionX, self.directionY, Belt_Option.isSome(match[0]), Belt_Option.isSome(match[1]), Belt_Option.isSome(match[2]), Belt_Option.isSome(match[3]), self.spriteDirection, self.life === /* Max */0));
 }
 
 function npcFlags2(self) {
-  return BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(self.playerCountScale), self.spawnedFromStatue, Belt_Option.isSome(self.strengthMultiplier), false, false, false, false, false));
+  return BitFlags$DarkgamingRescriptTerrariapacket.toByte(BitFlags$DarkgamingRescriptTerrariapacket.fromFlags(Belt_Option.isSome(self.playerCountScale), self.spawnedFromStatue, Belt_Option.isSome(self.strengthMultiplier), false, false, false, false, false));
 }
 
 function packAi(writer, param) {
@@ -240,7 +240,7 @@ function packReleaseOwner(writer, releaseOwner) {
 }
 
 function toBuffer(self) {
-  return packReleaseOwner(packLife(packStrengthMultiplier(packPlayerCountScale(packAi(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt(/* NpcUpdate */21)).packInt16(self.npcSlotId).packSingle(self.x).packSingle(self.y).packSingle(self.vx).packSingle(self.vy).packUInt16(self.target).packByte(npcFlags1(self)).packByte(npcFlags2(self)), self.ai).packInt16(self.npcTypeId), self.playerCountScale), self.strengthMultiplier), self.life), self.releaseOwner).data;
+  return packReleaseOwner(packLife(packStrengthMultiplier(packPlayerCountScale(packAi(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* NpcUpdate */21)).packInt16(self.npcSlotId).packSingle(self.x).packSingle(self.y).packSingle(self.vx).packSingle(self.vy).packUInt16(self.target).packByte(npcFlags1(self)).packByte(npcFlags2(self)), self.ai).packInt16(self.npcTypeId), self.playerCountScale), self.strengthMultiplier), self.life), self.releaseOwner).data;
 }
 
 var Encode = {

@@ -7,16 +7,16 @@ var Belt_Array = require("rescript/lib/js/belt_Array.js");
 var Caml_array = require("rescript/lib/js/caml_array.js");
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
 var Belt_Result = require("rescript/lib/js/belt_Result.js");
-var BitFlags$TerrariaPacket = require("../BitFlags.bs.js");
-var ResultExt$TerrariaPacket = require("../ResultExt.bs.js");
-var TileSolid$TerrariaPacket = require("../TileSolid.bs.js");
-var PacketType$TerrariaPacket = require("../PacketType.bs.js");
 var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.bs.js");
-var TileFrameImportant$TerrariaPacket = require("../TileFrameImportant.bs.js");
 var Bufferreader = require("@popstarfreas/packetfactory/bufferreader").default;
 var Bufferwriter = require("@popstarfreas/packetfactory/bufferwriter").default;
 var Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
+var BitFlags$DarkgamingRescriptTerrariapacket = require("../BitFlags.bs.js");
+var ResultExt$DarkgamingRescriptTerrariapacket = require("../ResultExt.bs.js");
+var TileSolid$DarkgamingRescriptTerrariapacket = require("../TileSolid.bs.js");
+var PacketType$DarkgamingRescriptTerrariapacket = require("../PacketType.bs.js");
+var TileFrameImportant$DarkgamingRescriptTerrariapacket = require("../TileFrameImportant.bs.js");
 
 function defaultTileCache(param) {
   return {
@@ -229,19 +229,19 @@ function parseLogicSensorKind(reader) {
 }
 
 function parseDisplayDollKind(reader) {
-  var itemsFlags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
-  var dyeFlags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+  var itemsFlags = BitFlags$DarkgamingRescriptTerrariapacket.fromByte(reader.readByte());
+  var dyeFlags = BitFlags$DarkgamingRescriptTerrariapacket.fromByte(reader.readByte());
   var items = [];
   var dyes = [];
   for(var i = 0; i <= 7; ++i){
-    if (BitFlags$TerrariaPacket.flagN(itemsFlags, i)) {
+    if (BitFlags$DarkgamingRescriptTerrariapacket.flagN(itemsFlags, i)) {
       items.push(parseDisplayItem(reader));
     } else {
       items.push(undefined);
     }
   }
   for(var i$1 = 0; i$1 <= 7; ++i$1){
-    if (BitFlags$TerrariaPacket.flagN(dyeFlags, i$1)) {
+    if (BitFlags$DarkgamingRescriptTerrariapacket.flagN(dyeFlags, i$1)) {
       dyes.push(parseDisplayItem(reader));
     } else {
       dyes.push(undefined);
@@ -254,18 +254,18 @@ function parseDisplayDollKind(reader) {
 }
 
 function parseHatRackKind(reader) {
-  var flags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+  var flags = BitFlags$DarkgamingRescriptTerrariapacket.fromByte(reader.readByte());
   var items = [];
   var dyes = [];
   for(var i = 0; i <= 1; ++i){
-    if (BitFlags$TerrariaPacket.flagN(flags, i)) {
+    if (BitFlags$DarkgamingRescriptTerrariapacket.flagN(flags, i)) {
       items.push(parseDisplayItem(reader));
     } else {
       items.push(undefined);
     }
   }
   for(var i$1 = 0; i$1 <= 1; ++i$1){
-    if (BitFlags$TerrariaPacket.flagN(flags, i$1 + 2 | 0)) {
+    if (BitFlags$DarkgamingRescriptTerrariapacket.flagN(flags, i$1 + 2 | 0)) {
       dyes.push(parseDisplayItem(reader));
     } else {
       dyes.push(undefined);
@@ -408,9 +408,9 @@ function hasItem(arr, n) {
 }
 
 function packDisplayDoll(writer, displayDollKind) {
-  var itemFlags = BitFlags$TerrariaPacket.fromFlags(hasItem(displayDollKind.items, 0), hasItem(displayDollKind.items, 1), hasItem(displayDollKind.items, 2), hasItem(displayDollKind.items, 3), hasItem(displayDollKind.items, 4), hasItem(displayDollKind.items, 5), hasItem(displayDollKind.items, 6), hasItem(displayDollKind.items, 7));
-  var dyeFlags = BitFlags$TerrariaPacket.fromFlags(hasItem(displayDollKind.dyes, 0), hasItem(displayDollKind.dyes, 1), hasItem(displayDollKind.dyes, 2), hasItem(displayDollKind.dyes, 3), hasItem(displayDollKind.dyes, 4), hasItem(displayDollKind.dyes, 5), hasItem(displayDollKind.dyes, 6), hasItem(displayDollKind.dyes, 7));
-  writer.packByte(BitFlags$TerrariaPacket.toByte(itemFlags)).packByte(BitFlags$TerrariaPacket.toByte(dyeFlags));
+  var itemFlags = BitFlags$DarkgamingRescriptTerrariapacket.fromFlags(hasItem(displayDollKind.items, 0), hasItem(displayDollKind.items, 1), hasItem(displayDollKind.items, 2), hasItem(displayDollKind.items, 3), hasItem(displayDollKind.items, 4), hasItem(displayDollKind.items, 5), hasItem(displayDollKind.items, 6), hasItem(displayDollKind.items, 7));
+  var dyeFlags = BitFlags$DarkgamingRescriptTerrariapacket.fromFlags(hasItem(displayDollKind.dyes, 0), hasItem(displayDollKind.dyes, 1), hasItem(displayDollKind.dyes, 2), hasItem(displayDollKind.dyes, 3), hasItem(displayDollKind.dyes, 4), hasItem(displayDollKind.dyes, 5), hasItem(displayDollKind.dyes, 6), hasItem(displayDollKind.dyes, 7));
+  writer.packByte(BitFlags$DarkgamingRescriptTerrariapacket.toByte(itemFlags)).packByte(BitFlags$DarkgamingRescriptTerrariapacket.toByte(dyeFlags));
   for(var i = 0; i <= 7; ++i){
     var item = Belt_Option.flatMap(Belt_Array.get(displayDollKind.items, i), (function (a) {
             return a;
@@ -433,8 +433,8 @@ function packDisplayDoll(writer, displayDollKind) {
 }
 
 function packHatRack(writer, hatRackKind) {
-  var flags = BitFlags$TerrariaPacket.fromFlags(hasItem(hatRackKind.items, 0), hasItem(hatRackKind.items, 1), hasItem(hatRackKind.dyes, 2), hasItem(hatRackKind.dyes, 3), false, false, false, false);
-  writer.packByte(BitFlags$TerrariaPacket.toByte(flags));
+  var flags = BitFlags$DarkgamingRescriptTerrariapacket.fromFlags(hasItem(hatRackKind.items, 0), hasItem(hatRackKind.items, 1), hasItem(hatRackKind.dyes, 2), hasItem(hatRackKind.dyes, 3), false, false, false, false);
+  writer.packByte(BitFlags$DarkgamingRescriptTerrariapacket.toByte(flags));
   for(var i = 0; i <= 1; ++i){
     var item = Belt_Option.flatMap(Belt_Array.get(hatRackKind.items, i), (function (a) {
             return a;
@@ -591,30 +591,30 @@ function parse$3(payload) {
         row.push(cacheToTile(tileCache));
       } else {
         clearTileCache(tileCache);
-        var header5 = BitFlags$TerrariaPacket.fromByte(reader$1.readByte());
+        var header5 = BitFlags$DarkgamingRescriptTerrariapacket.fromByte(reader$1.readByte());
         var match;
-        if (BitFlags$TerrariaPacket.flag1(header5)) {
-          var header4 = BitFlags$TerrariaPacket.fromByte(reader$1.readByte());
-          var header3 = BitFlags$TerrariaPacket.flag1(header4) ? BitFlags$TerrariaPacket.fromByte(reader$1.readByte()) : BitFlags$TerrariaPacket.fromByte(0);
+        if (BitFlags$DarkgamingRescriptTerrariapacket.flag1(header5)) {
+          var header4 = BitFlags$DarkgamingRescriptTerrariapacket.fromByte(reader$1.readByte());
+          var header3 = BitFlags$DarkgamingRescriptTerrariapacket.flag1(header4) ? BitFlags$DarkgamingRescriptTerrariapacket.fromByte(reader$1.readByte()) : BitFlags$DarkgamingRescriptTerrariapacket.fromByte(0);
           match = [
             header4,
             header3
           ];
         } else {
           match = [
-            BitFlags$TerrariaPacket.fromByte(0),
-            BitFlags$TerrariaPacket.fromByte(0)
+            BitFlags$DarkgamingRescriptTerrariapacket.fromByte(0),
+            BitFlags$DarkgamingRescriptTerrariapacket.fromByte(0)
           ];
         }
         var header3$1 = match[1];
         var header4$1 = match[0];
         var oldActive = tileCache.activeTile;
-        if (BitFlags$TerrariaPacket.flag2(header5)) {
+        if (BitFlags$DarkgamingRescriptTerrariapacket.flag2(header5)) {
           var oldType = Belt_Option.mapWithDefault(tileCache.activeTile, 0, (function (active) {
                   return active.tileType;
                 }));
           var tileType;
-          if (BitFlags$TerrariaPacket.flag6(header5)) {
+          if (BitFlags$DarkgamingRescriptTerrariapacket.flag6(header5)) {
             var $$byte = reader$1.readByte();
             var secondByte = reader$1.readByte();
             tileType = (secondByte << 8) | $$byte;
@@ -622,7 +622,7 @@ function parse$3(payload) {
             tileType = reader$1.readByte();
           }
           var frame;
-          if (TileFrameImportant$TerrariaPacket.isImportant(tileType)) {
+          if (TileFrameImportant$DarkgamingRescriptTerrariapacket.isImportant(tileType)) {
             var x = reader$1.readInt16();
             var y = reader$1.readInt16();
             frame = {
@@ -632,7 +632,7 @@ function parse$3(payload) {
           } else {
             frame = Belt_Option.isSome(oldActive) && tileType === oldType ? oldActive.frame : undefined;
           }
-          if (BitFlags$TerrariaPacket.flag4(header3$1)) {
+          if (BitFlags$DarkgamingRescriptTerrariapacket.flag4(header3$1)) {
             tileCache.color = reader$1.readByte();
           }
           tileCache.activeTile = {
@@ -640,14 +640,14 @@ function parse$3(payload) {
             frame: frame
           };
         }
-        if (BitFlags$TerrariaPacket.flag3(header5)) {
+        if (BitFlags$DarkgamingRescriptTerrariapacket.flag3(header5)) {
           tileCache.wall = reader$1.readByte();
-          if (BitFlags$TerrariaPacket.flag5(header3$1)) {
+          if (BitFlags$DarkgamingRescriptTerrariapacket.flag5(header3$1)) {
             tileCache.wallColor = reader$1.readByte();
           }
           
         }
-        var liquidBits = ((BitFlags$TerrariaPacket.toByte(header5) & 24) >>> 3);
+        var liquidBits = ((BitFlags$DarkgamingRescriptTerrariapacket.toByte(header5) & 24) >>> 3);
         if (liquidBits !== 0) {
           tileCache.liquid = reader$1.readByte();
           if (liquidBits > 1) {
@@ -659,18 +659,18 @@ function parse$3(payload) {
           }
           
         }
-        if (BitFlags$TerrariaPacket.toByte(header4$1) > 1) {
-          if (BitFlags$TerrariaPacket.flag2(header4$1)) {
+        if (BitFlags$DarkgamingRescriptTerrariapacket.toByte(header4$1) > 1) {
+          if (BitFlags$DarkgamingRescriptTerrariapacket.flag2(header4$1)) {
             tileCache.wire = true;
           }
-          if (BitFlags$TerrariaPacket.flag3(header4$1)) {
+          if (BitFlags$DarkgamingRescriptTerrariapacket.flag3(header4$1)) {
             tileCache.wire2 = true;
           }
-          if (BitFlags$TerrariaPacket.flag4(header4$1)) {
+          if (BitFlags$DarkgamingRescriptTerrariapacket.flag4(header4$1)) {
             tileCache.wire3 = true;
           }
-          var slopeBits = ((BitFlags$TerrariaPacket.toByte(header4$1) & 112) >>> 4);
-          if (slopeBits !== 0 && TileSolid$TerrariaPacket.isSolid(Belt_Option.mapWithDefault(tileCache.activeTile, 0, (function (tile) {
+          var slopeBits = ((BitFlags$DarkgamingRescriptTerrariapacket.toByte(header4$1) & 112) >>> 4);
+          if (slopeBits !== 0 && TileSolid$DarkgamingRescriptTerrariapacket.isSolid(Belt_Option.mapWithDefault(tileCache.activeTile, 0, (function (tile) {
                         return tile.tileType;
                       })))) {
             if (slopeBits === 1) {
@@ -681,23 +681,23 @@ function parse$3(payload) {
           }
           
         }
-        if (BitFlags$TerrariaPacket.toByte(header3$1) > 0) {
-          if (BitFlags$TerrariaPacket.flag2(header3$1)) {
+        if (BitFlags$DarkgamingRescriptTerrariapacket.toByte(header3$1) > 0) {
+          if (BitFlags$DarkgamingRescriptTerrariapacket.flag2(header3$1)) {
             tileCache.actuator = true;
           }
-          if (BitFlags$TerrariaPacket.flag3(header3$1)) {
+          if (BitFlags$DarkgamingRescriptTerrariapacket.flag3(header3$1)) {
             tileCache.inActive = true;
           }
-          if (BitFlags$TerrariaPacket.flag6(header3$1)) {
+          if (BitFlags$DarkgamingRescriptTerrariapacket.flag6(header3$1)) {
             tileCache.wire4 = true;
           }
-          if (BitFlags$TerrariaPacket.flag7(header3$1)) {
+          if (BitFlags$DarkgamingRescriptTerrariapacket.flag7(header3$1)) {
             var $$byte$1 = reader$1.readByte();
             tileCache.wall = ($$byte$1 << 8) | tileCache.wall;
           }
           
         }
-        var repeatCountBytes = ((BitFlags$TerrariaPacket.toByte(header5) & 192) >>> 6);
+        var repeatCountBytes = ((BitFlags$DarkgamingRescriptTerrariapacket.toByte(header5) & 192) >>> 6);
         rleCount = repeatCountBytes !== 0 ? (
             repeatCountBytes !== 1 ? reader$1.readInt16() : reader$1.readByte()
           ) : 0;
@@ -715,7 +715,7 @@ function parse$3(payload) {
         return parse$1(reader$1);
       });
   var entityCount = reader$1.readInt16();
-  var entities = ResultExt$TerrariaPacket.allOkOrError(Belt_Array.make(entityCount, 0).map(function (param) {
+  var entities = ResultExt$DarkgamingRescriptTerrariapacket.allOkOrError(Belt_Array.make(entityCount, 0).map(function (param) {
             return parse$2(reader$1);
           }));
   if (entities.TAG === /* Ok */0) {
@@ -888,24 +888,24 @@ function packInt16$3(prim0, prim1) {
 
 function packTile(writer, tile, repeatCount) {
   var wall = tile.wall;
-  var header3 = BitFlags$TerrariaPacket.fromFlags(false, tile.actuator, tile.inActive, Belt_Option.isSome(tile.color), Belt_Option.isSome(tile.wall) && Belt_Option.isSome(tile.wallColor), tile.wire4, wall !== undefined ? wall > 255 : false, false);
+  var header3 = BitFlags$DarkgamingRescriptTerrariapacket.fromFlags(false, tile.actuator, tile.inActive, Belt_Option.isSome(tile.color), Belt_Option.isSome(tile.wall) && Belt_Option.isSome(tile.wallColor), tile.wire4, wall !== undefined ? wall > 255 : false, false);
   var match = getSlopeBitFlags(tile);
-  var header4 = BitFlags$TerrariaPacket.fromFlags(BitFlags$TerrariaPacket.toByte(header3) > 0, tile.wire, tile.wire2, tile.wire3, match[2], match[1], match[0], false);
+  var header4 = BitFlags$DarkgamingRescriptTerrariapacket.fromFlags(BitFlags$DarkgamingRescriptTerrariapacket.toByte(header3) > 0, tile.wire, tile.wire2, tile.wire3, match[2], match[1], match[0], false);
   var match$1 = getLiquidBitFlags(tile);
   var match$2 = getRepeatCountBitFlags(repeatCount);
   var activeTile = tile.activeTile;
-  var tileFlags = BitFlags$TerrariaPacket.fromFlags(BitFlags$TerrariaPacket.toByte(header4) > 0, Belt_Option.isSome(tile.activeTile), Belt_Option.isSome(tile.wall), match$1[1], match$1[0], activeTile !== undefined ? activeTile.tileType > 255 : false, match$2[1], match$2[0]);
-  writer.packByte(BitFlags$TerrariaPacket.toByte(tileFlags));
-  if (BitFlags$TerrariaPacket.flag1(tileFlags)) {
-    writer.packByte(BitFlags$TerrariaPacket.toByte(header4));
-    if (BitFlags$TerrariaPacket.flag1(header4)) {
-      writer.packByte(BitFlags$TerrariaPacket.toByte(header3));
+  var tileFlags = BitFlags$DarkgamingRescriptTerrariapacket.fromFlags(BitFlags$DarkgamingRescriptTerrariapacket.toByte(header4) > 0, Belt_Option.isSome(tile.activeTile), Belt_Option.isSome(tile.wall), match$1[1], match$1[0], activeTile !== undefined ? activeTile.tileType > 255 : false, match$2[1], match$2[0]);
+  writer.packByte(BitFlags$DarkgamingRescriptTerrariapacket.toByte(tileFlags));
+  if (BitFlags$DarkgamingRescriptTerrariapacket.flag1(tileFlags)) {
+    writer.packByte(BitFlags$DarkgamingRescriptTerrariapacket.toByte(header4));
+    if (BitFlags$DarkgamingRescriptTerrariapacket.flag1(header4)) {
+      writer.packByte(BitFlags$DarkgamingRescriptTerrariapacket.toByte(header3));
     }
     
   }
   var activeTile$1 = tile.activeTile;
   if (activeTile$1 !== undefined) {
-    if (BitFlags$TerrariaPacket.flag6(tileFlags)) {
+    if (BitFlags$DarkgamingRescriptTerrariapacket.flag6(tileFlags)) {
       writer.packByte(activeTile$1.tileType & 255);
       writer.packByte(((activeTile$1.tileType & 65280) >>> 8));
     } else {
@@ -983,7 +983,7 @@ function data(prim) {
 }
 
 function toBuffer(self) {
-  var packetWriter = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt(/* TileSectionSend */9));
+  var packetWriter = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* TileSectionSend */9));
   var writer = new Bufferwriter(Buffer.allocUnsafe(64000));
   writer.packInt32(self.tileX).packInt32(self.tileY).packInt16(self.width).packInt16(self.height);
   var lastTile = {
