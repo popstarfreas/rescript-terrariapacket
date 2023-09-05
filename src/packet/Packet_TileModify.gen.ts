@@ -47,6 +47,16 @@ export type t = {
   readonly value2: number
 };
 
+export const Action_fromInt: (_1:number) => (undefined | Action_t) = function (Arg1: any) {
+  const result = Packet_TileModifyBS.Action.fromInt(Arg1);
+  return (result == null ? result : $$toJS526392060[result])
+};
+
+export const Action_toInt: (_1:Action_t) => number = function (Arg1: any) {
+  const result = Packet_TileModifyBS.Action.toInt($$toRE526392060[Arg1]);
+  return result
+};
+
 export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = function (Arg1: any) {
   const result = Packet_TileModifyBS.parse(Arg1);
   return (result == null ? result : {action:$$toJS526392060[result.action], tileX:result.tileX, tileY:result.tileY, value1:result.value1, value2:result.value2})
