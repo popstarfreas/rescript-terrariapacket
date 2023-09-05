@@ -7,14 +7,6 @@ var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 var PacketType$DarkgamingRescriptTerrariapacket = require("../PacketType.bs.js");
 var PlayerDeathReason$DarkgamingRescriptTerrariapacket = require("../PlayerDeathReason.bs.js");
 
-function readInt16(prim) {
-  return prim.readInt16();
-}
-
-function readByte(prim) {
-  return prim.readByte();
-}
-
 function parse(payload) {
   var reader = new Packetreader(payload);
   var target = reader.readByte();
@@ -35,41 +27,10 @@ function parse(payload) {
         };
 }
 
-var Decode = {
-  readInt16: readInt16,
-  readByte: readByte,
-  parse: parse
-};
-
-function packInt16(prim0, prim1) {
-  return prim0.packInt16(prim1);
-}
-
-function packByte(prim0, prim1) {
-  return prim0.packByte(prim1);
-}
-
-function data(prim) {
-  return prim.data;
-}
-
 function toBuffer(self) {
   return PlayerDeathReason$DarkgamingRescriptTerrariapacket.packDeathReason(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* PlayerDamage */112)).packByte(self.target), self.deathReason).packInt16(self.damage).packByte(self.hitDirection).packByte(self.critical ? 1 : 0).packByte(self.pvp ? 1 : 0).data;
 }
 
-var Encode = {
-  packInt16: packInt16,
-  packByte: packByte,
-  setType: ManagedPacketWriter$PacketFactory.setType,
-  data: data,
-  toBuffer: toBuffer
-};
-
-var $$Option;
-
-exports.$$Option = $$Option;
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* @popstarfreas/packetfactory/packetreader Not a pure module */
