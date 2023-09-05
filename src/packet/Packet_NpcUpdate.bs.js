@@ -8,26 +8,6 @@ var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 var BitFlags$DarkgamingRescriptTerrariapacket = require("../BitFlags.bs.js");
 var PacketType$DarkgamingRescriptTerrariapacket = require("../PacketType.bs.js");
 
-function readInt32(prim) {
-  return prim.readInt32();
-}
-
-function readInt16(prim) {
-  return prim.readInt16();
-}
-
-function readSingle(prim) {
-  return prim.readSingle();
-}
-
-function readUInt16(prim) {
-  return prim.readUInt16();
-}
-
-function readByte(prim) {
-  return prim.readByte();
-}
-
 function readNpcFlags1(reader) {
   var flags = BitFlags$DarkgamingRescriptTerrariapacket.fromByte(reader.readByte());
   return {
@@ -136,41 +116,6 @@ function parse(payload) {
   
 }
 
-var Decode = {
-  readInt32: readInt32,
-  readInt16: readInt16,
-  readSingle: readSingle,
-  readUInt16: readUInt16,
-  readByte: readByte,
-  readNpcFlags1: readNpcFlags1,
-  readNpcFlags2: readNpcFlags2,
-  parse: parse
-};
-
-function packInt32(prim0, prim1) {
-  return prim0.packInt32(prim1);
-}
-
-function packInt16(prim0, prim1) {
-  return prim0.packInt16(prim1);
-}
-
-function packSingle(prim0, prim1) {
-  return prim0.packSingle(prim1);
-}
-
-function packUInt16(prim0, prim1) {
-  return prim0.packUInt16(prim1);
-}
-
-function packByte(prim0, prim1) {
-  return prim0.packByte(prim1);
-}
-
-function data(prim) {
-  return prim.data;
-}
-
 function npcFlags1(self) {
   var match = self.ai;
   return BitFlags$DarkgamingRescriptTerrariapacket.toByte(BitFlags$DarkgamingRescriptTerrariapacket.fromFlags(self.directionX, self.directionY, Belt_Option.isSome(match[0]), Belt_Option.isSome(match[1]), Belt_Option.isSome(match[2]), Belt_Option.isSome(match[3]), self.spriteDirection, self.life === /* Max */0));
@@ -243,26 +188,6 @@ function toBuffer(self) {
   return packReleaseOwner(packLife(packStrengthMultiplier(packPlayerCountScale(packAi(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* NpcUpdate */21)).packInt16(self.npcSlotId).packSingle(self.x).packSingle(self.y).packSingle(self.vx).packSingle(self.vy).packUInt16(self.target).packByte(npcFlags1(self)).packByte(npcFlags2(self)), self.ai).packInt16(self.npcTypeId), self.playerCountScale), self.strengthMultiplier), self.life), self.releaseOwner).data;
 }
 
-var Encode = {
-  packInt32: packInt32,
-  packInt16: packInt16,
-  packSingle: packSingle,
-  packUInt16: packUInt16,
-  packByte: packByte,
-  setType: ManagedPacketWriter$PacketFactory.setType,
-  data: data,
-  npcFlags1: npcFlags1,
-  npcFlags2: npcFlags2,
-  packAi: packAi,
-  packPlayerCountScale: packPlayerCountScale,
-  packStrengthMultiplier: packStrengthMultiplier,
-  packLife: packLife,
-  packReleaseOwner: packReleaseOwner,
-  toBuffer: toBuffer
-};
-
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* @popstarfreas/packetfactory/packetreader Not a pure module */
