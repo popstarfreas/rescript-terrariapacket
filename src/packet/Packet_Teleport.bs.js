@@ -2,11 +2,11 @@
 'use strict';
 
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
+var BitFlags$TerrariaPacket = require("../BitFlags.bs.js");
+var PacketType$TerrariaPacket = require("../PacketType.bs.js");
 var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.bs.js");
 var Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
-var BitFlags$DarkgamingRescriptTerrariapacket = require("../BitFlags.bs.js");
-var PacketType$DarkgamingRescriptTerrariapacket = require("../PacketType.bs.js");
 
 function readByte(prim) {
   return prim.readByte();
@@ -26,10 +26,10 @@ function readInt32(prim) {
 
 function parse(payload) {
   var reader = new Packetreader(payload);
-  var flags = BitFlags$DarkgamingRescriptTerrariapacket.fromByte(reader.readByte());
-  var getPositionFromTarget = BitFlags$DarkgamingRescriptTerrariapacket.flag3(flags);
-  var match = BitFlags$DarkgamingRescriptTerrariapacket.flag1(flags);
-  var match$1 = BitFlags$DarkgamingRescriptTerrariapacket.flag2(flags);
+  var flags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+  var getPositionFromTarget = BitFlags$TerrariaPacket.flag3(flags);
+  var match = BitFlags$TerrariaPacket.flag1(flags);
+  var match$1 = BitFlags$TerrariaPacket.flag2(flags);
   var teleportType = match ? (
       match$1 ? undefined : "Npc"
     ) : (
@@ -39,7 +39,7 @@ function parse(payload) {
   var x = reader.readSingle();
   var y = reader.readSingle();
   var style = reader.readByte();
-  var extraInfo = BitFlags$DarkgamingRescriptTerrariapacket.flag4(flags) ? reader.readInt32() : undefined;
+  var extraInfo = BitFlags$TerrariaPacket.flag4(flags) ? reader.readInt32() : undefined;
   if (teleportType !== undefined) {
     return {
             teleportType: teleportType,
@@ -83,11 +83,11 @@ function data(prim) {
 }
 
 function getFlags(self) {
-  return BitFlags$DarkgamingRescriptTerrariapacket.toByte(BitFlags$DarkgamingRescriptTerrariapacket.fromFlags(self.teleportType === "Npc", self.teleportType === "PlayerToPlayer", self.getPositionFromTarget, Belt_Option.isSome(self.extraInfo), false, false, false, false));
+  return BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(self.teleportType === "Npc", self.teleportType === "PlayerToPlayer", self.getPositionFromTarget, Belt_Option.isSome(self.extraInfo), false, false, false, false));
 }
 
 function toBuffer(self) {
-  var writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("Teleport")).packByte(getFlags(self)).packInt16(self.targetId).packSingle(self.x).packSingle(self.y).packByte(self.style);
+  var writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("Teleport")).packByte(getFlags(self)).packInt16(self.targetId).packSingle(self.x).packSingle(self.y).packByte(self.style);
   var extraInfo = self.extraInfo;
   if (extraInfo !== undefined) {
     writer.packInt32(extraInfo);

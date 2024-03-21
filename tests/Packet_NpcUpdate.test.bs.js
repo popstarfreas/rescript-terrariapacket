@@ -3,7 +3,7 @@
 
 var Zora = require("@dusty-phillips/rescript-zora/src/Zora.bs.js");
 var Zora$1 = require("zora");
-var Packet_NpcUpdate$DarkgamingRescriptTerrariapacket = require("../src/packet/Packet_NpcUpdate.bs.js");
+var Packet_NpcUpdate$TerrariaPacket = require("../src/packet/Packet_NpcUpdate.bs.js");
 
 var npcUpdate = {
   npcSlotId: 1,
@@ -33,8 +33,8 @@ var npcUpdate = {
 };
 
 Zora$1.test("Should be the same going after encode/decode", (function (t) {
-        var rawNpcUpdate = Packet_NpcUpdate$DarkgamingRescriptTerrariapacket.toBuffer(npcUpdate);
-        var newNpcUpdate = Packet_NpcUpdate$DarkgamingRescriptTerrariapacket.parse(rawNpcUpdate);
+        var rawNpcUpdate = Packet_NpcUpdate$TerrariaPacket.toBuffer(npcUpdate);
+        var newNpcUpdate = Packet_NpcUpdate$TerrariaPacket.parse(rawNpcUpdate);
         Zora.optionSome(t, newNpcUpdate, (function (t, newNpcUpdate) {
                 t.equal(npcUpdate, newNpcUpdate, "hi");
               }));

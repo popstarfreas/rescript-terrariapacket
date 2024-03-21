@@ -2,9 +2,9 @@
 'use strict';
 
 var Caml_option = require("rescript/lib/js/caml_option.js");
+var PacketType$TerrariaPacket = require("../PacketType.bs.js");
 var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.bs.js");
 var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
-var PacketType$DarkgamingRescriptTerrariapacket = require("../PacketType.bs.js");
 
 function parse(_payload) {
   return Caml_option.some(undefined);
@@ -19,7 +19,7 @@ function data(prim) {
 }
 
 function toBuffer(_self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("WorldDataRequest")).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("WorldDataRequest")).data;
 }
 
 var Encode = {

@@ -1,6 +1,6 @@
 {
   "name": "@darkgaming/rescript-terrariapacket",
-  "namespace": true,
+  "namespace": "TerrariaPacket",
   "version": "0.1.0",
   "sources": [
     {

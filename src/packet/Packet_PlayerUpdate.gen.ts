@@ -7,11 +7,11 @@ const Packet_PlayerUpdateJS = require('./Packet_PlayerUpdate.bs.js');
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 
-import type {t as Point_t} from '../../src/Point.gen';
+import type {Point_t as TerrariaPacket_Point_t} from './TerrariaPacket.gen';
 
 export type direction = "Left" | "Right";
 
-export type potionOfReturn = { readonly originalUsePosition: Point_t<number>; readonly homePosition: Point_t<number> };
+export type potionOfReturn = { readonly originalUsePosition: TerrariaPacket_Point_t<number>; readonly homePosition: TerrariaPacket_Point_t<number> };
 
 export type control = {
   readonly isHoldingUp: boolean; 
@@ -36,8 +36,8 @@ export type t = {
   readonly shouldGuard: boolean; 
   readonly ghost: boolean; 
   readonly selectedItem: number; 
-  readonly position: Point_t<number>; 
-  readonly velocity: (undefined | Point_t<number>); 
+  readonly position: TerrariaPacket_Point_t<number>; 
+  readonly velocity: (undefined | TerrariaPacket_Point_t<number>); 
   readonly potionOfReturn: (undefined | potionOfReturn); 
   readonly tryKeepingHoveringUp: boolean; 
   readonly isVoidVaultEnabled: boolean; 

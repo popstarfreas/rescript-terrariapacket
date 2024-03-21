@@ -2,11 +2,11 @@
 'use strict';
 
 var Core__Option = require("@rescript/core/src/Core__Option.bs.js");
+var PacketType$TerrariaPacket = require("../PacketType.bs.js");
 var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.bs.js");
+var Packet_ItemDropUpdate$TerrariaPacket = require("./Packet_ItemDropUpdate.bs.js");
 var Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
-var PacketType$DarkgamingRescriptTerrariapacket = require("../PacketType.bs.js");
-var Packet_ItemDropUpdate$DarkgamingRescriptTerrariapacket = require("./Packet_ItemDropUpdate.bs.js");
 
 function readByte(prim) {
   return prim.readByte();
@@ -21,7 +21,7 @@ function readBytes(prim0, prim1) {
 }
 
 function parse(payload) {
-  return Core__Option.map(Packet_ItemDropUpdate$DarkgamingRescriptTerrariapacket.parse(payload), (function (itemDropUpdate) {
+  return Core__Option.map(Packet_ItemDropUpdate$TerrariaPacket.parse(payload), (function (itemDropUpdate) {
                 var reader = new Packetreader(payload);
                 reader.readBytes(24);
                 var timeLeftInWhichTheItemCannotBeTakenByEnemies = reader.readByte();
@@ -68,7 +68,7 @@ function data(prim) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("ItemDropProtectedUpdate")).packInt16(self.itemDropId).packSingle(self.x).packSingle(self.y).packSingle(self.vx).packSingle(self.vy).packInt16(self.stack).packByte(self.prefix).packByte(self.noDelay).packInt16(self.itemId).packByte(self.timeLeftInWhichTheItemCannotBeTakenByEnemies).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ItemDropProtectedUpdate")).packInt16(self.itemDropId).packSingle(self.x).packSingle(self.y).packSingle(self.vx).packSingle(self.vy).packInt16(self.stack).packByte(self.prefix).packByte(self.noDelay).packInt16(self.itemId).packByte(self.timeLeftInWhichTheItemCannotBeTakenByEnemies).data;
 }
 
 var Encode = {
@@ -86,4 +86,4 @@ exports.Decode = Decode;
 exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* Packet_ItemDropUpdate-TerrariaPacket Not a pure module */

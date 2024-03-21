@@ -2,12 +2,12 @@
 'use strict';
 
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
+var BitFlags$TerrariaPacket = require("../BitFlags.bs.js");
+var PacketType$TerrariaPacket = require("../PacketType.bs.js");
 var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.bs.js");
+var TileFrameImportant$TerrariaPacket = require("../TileFrameImportant.bs.js");
 var Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
-var BitFlags$DarkgamingRescriptTerrariapacket = require("../BitFlags.bs.js");
-var PacketType$DarkgamingRescriptTerrariapacket = require("../PacketType.bs.js");
-var TileFrameImportant$DarkgamingRescriptTerrariapacket = require("../TileFrameImportant.bs.js");
 
 function parse(payload) {
   var reader = new Packetreader(payload);
@@ -20,32 +20,32 @@ function parse(payload) {
   for(var _x = 0; _x < width; ++_x){
     var column = [];
     for(var _y = 0; _y < height; ++_y){
-      var flags1 = BitFlags$DarkgamingRescriptTerrariapacket.fromByte(reader.readByte());
-      var flags2 = BitFlags$DarkgamingRescriptTerrariapacket.fromByte(reader.readByte());
-      var active = BitFlags$DarkgamingRescriptTerrariapacket.flag1(flags1);
-      var hasWall = BitFlags$DarkgamingRescriptTerrariapacket.flag3(flags1);
-      var hasLiquid = BitFlags$DarkgamingRescriptTerrariapacket.flag4(flags1);
-      var wire = BitFlags$DarkgamingRescriptTerrariapacket.flag5(flags1);
-      var halfBrick = BitFlags$DarkgamingRescriptTerrariapacket.flag6(flags1);
-      var actuator = BitFlags$DarkgamingRescriptTerrariapacket.flag7(flags1);
-      var inActive = BitFlags$DarkgamingRescriptTerrariapacket.flag8(flags1);
-      var wire2 = BitFlags$DarkgamingRescriptTerrariapacket.flag1(flags2);
-      var wire3 = BitFlags$DarkgamingRescriptTerrariapacket.flag2(flags2);
-      var color = BitFlags$DarkgamingRescriptTerrariapacket.flag3(flags2) ? reader.readByte() : undefined;
-      var wallColor = BitFlags$DarkgamingRescriptTerrariapacket.flag4(flags2) ? reader.readByte() : undefined;
+      var flags1 = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+      var flags2 = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+      var active = BitFlags$TerrariaPacket.flag1(flags1);
+      var hasWall = BitFlags$TerrariaPacket.flag3(flags1);
+      var hasLiquid = BitFlags$TerrariaPacket.flag4(flags1);
+      var wire = BitFlags$TerrariaPacket.flag5(flags1);
+      var halfBrick = BitFlags$TerrariaPacket.flag6(flags1);
+      var actuator = BitFlags$TerrariaPacket.flag7(flags1);
+      var inActive = BitFlags$TerrariaPacket.flag8(flags1);
+      var wire2 = BitFlags$TerrariaPacket.flag1(flags2);
+      var wire3 = BitFlags$TerrariaPacket.flag2(flags2);
+      var color = BitFlags$TerrariaPacket.flag3(flags2) ? reader.readByte() : undefined;
+      var wallColor = BitFlags$TerrariaPacket.flag4(flags2) ? reader.readByte() : undefined;
       var activeTile;
       if (active) {
         var tileType = reader.readUInt16();
-        var frame = TileFrameImportant$DarkgamingRescriptTerrariapacket.isImportant(tileType) ? ({
+        var frame = TileFrameImportant$TerrariaPacket.isImportant(tileType) ? ({
               x: reader.readInt16(),
               y: reader.readInt16()
             }) : undefined;
         var slope = ((0 + (
-              BitFlags$DarkgamingRescriptTerrariapacket.flag5(flags2) ? 1 : 0
+              BitFlags$TerrariaPacket.flag5(flags2) ? 1 : 0
             ) | 0) + (
-            BitFlags$DarkgamingRescriptTerrariapacket.flag6(flags2) ? 2 : 0
+            BitFlags$TerrariaPacket.flag6(flags2) ? 2 : 0
           ) | 0) + (
-          BitFlags$DarkgamingRescriptTerrariapacket.flag7(flags2) ? 4 : 0
+          BitFlags$TerrariaPacket.flag7(flags2) ? 4 : 0
         ) | 0;
         activeTile = {
           tileType: tileType,
@@ -60,7 +60,7 @@ function parse(payload) {
             liquidValue: reader.readByte(),
             liquidType: reader.readByte()
           }) : undefined;
-      var wire4 = BitFlags$DarkgamingRescriptTerrariapacket.flag8(flags2);
+      var wire4 = BitFlags$TerrariaPacket.flag8(flags2);
       column.push({
             wire: wire,
             halfBrick: halfBrick,
@@ -89,15 +89,15 @@ function parse(payload) {
 }
 
 function packTile(writer, tile) {
-  var flags1 = BitFlags$DarkgamingRescriptTerrariapacket.fromFlags(Belt_Option.isSome(tile.activeTile), false, Belt_Option.isSome(tile.wall), Belt_Option.isSome(tile.liquid), tile.wire, tile.halfBrick, tile.actuator, tile.inActive);
-  var flags2 = BitFlags$DarkgamingRescriptTerrariapacket.fromFlags(tile.wire2, tile.wire3, Belt_Option.isSome(tile.color), Belt_Option.isSome(tile.wallColor), Belt_Option.mapWithDefault(tile.activeTile, false, (function (tile) {
+  var flags1 = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(tile.activeTile), false, Belt_Option.isSome(tile.wall), Belt_Option.isSome(tile.liquid), tile.wire, tile.halfBrick, tile.actuator, tile.inActive);
+  var flags2 = BitFlags$TerrariaPacket.fromFlags(tile.wire2, tile.wire3, Belt_Option.isSome(tile.color), Belt_Option.isSome(tile.wallColor), Belt_Option.mapWithDefault(tile.activeTile, false, (function (tile) {
               return (tile.slope & 1) === 1;
             })), Belt_Option.mapWithDefault(tile.activeTile, false, (function (tile) {
               return (tile.slope & 2) === 2;
             })), Belt_Option.mapWithDefault(tile.activeTile, false, (function (tile) {
               return (tile.slope & 4) === 4;
             })), tile.wire4);
-  writer.packByte(BitFlags$DarkgamingRescriptTerrariapacket.toByte(flags1)).packByte(BitFlags$DarkgamingRescriptTerrariapacket.toByte(flags2)).packByte(0);
+  writer.packByte(BitFlags$TerrariaPacket.toByte(flags1)).packByte(BitFlags$TerrariaPacket.toByte(flags2)).packByte(0);
   var color = tile.color;
   if (color !== undefined) {
     writer.packByte(color);
@@ -109,7 +109,7 @@ function packTile(writer, tile) {
   var activeTile = tile.activeTile;
   if (activeTile !== undefined) {
     writer.packUInt16(activeTile.tileType);
-    if (TileFrameImportant$DarkgamingRescriptTerrariapacket.isImportant(activeTile.tileType)) {
+    if (TileFrameImportant$TerrariaPacket.isImportant(activeTile.tileType)) {
       writer.packInt16(Belt_Option.mapWithDefault(activeTile.frame, 0, (function (frame) {
                     return frame.x;
                   }))).packInt16(Belt_Option.mapWithDefault(activeTile.frame, 0, (function (frame) {
@@ -139,9 +139,9 @@ function packTiles(writer, tiles) {
 }
 
 function toBuffer(self) {
-  return packTiles(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("TileSquareSend")).packInt16(self.tileX).packInt16(self.tileY).packByte(self.width).packByte(self.height).packByte(self.changeType), self.tiles).data;
+  return packTiles(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("TileSquareSend")).packInt16(self.tileX).packInt16(self.tileY).packByte(self.width).packByte(self.height).packByte(self.changeType), self.tiles).data;
 }
 
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* TileFrameImportant-TerrariaPacket Not a pure module */

@@ -2,10 +2,10 @@
 'use strict';
 
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
+var PacketType$TerrariaPacket = require("../PacketType.bs.js");
 var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.bs.js");
 var Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
-var PacketType$DarkgamingRescriptTerrariapacket = require("../PacketType.bs.js");
 
 function fromInt(num) {
   switch (num) {
@@ -76,7 +76,7 @@ function data(prim) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("CreditsOrSlimeTransform")).packByte(toInt(self.eventType)).packInt32(self.value).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("CreditsOrSlimeTransform")).packByte(toInt(self.eventType)).packInt32(self.value).data;
 }
 
 var Encode = {

@@ -5,10 +5,10 @@ var Zora = require("@dusty-phillips/rescript-zora/src/Zora.bs.js");
 var Zora$1 = require("zora");
 var Belt_Array = require("rescript/lib/js/belt_Array.js");
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
-var Array16$DarkgamingRescriptTerrariapacket = require("../src/Array16.bs.js");
-var Packet_WorldInfo$DarkgamingRescriptTerrariapacket = require("../src/packet/Packet_WorldInfo.bs.js");
+var Array16$TerrariaPacket = require("../src/Array16.bs.js");
+var Packet_WorldInfo$TerrariaPacket = require("../src/packet/Packet_WorldInfo.bs.js");
 
-var worldInfo_worldUniqueId = Belt_Option.getExn(Array16$DarkgamingRescriptTerrariapacket.fromArray(Belt_Array.make(16, 0)));
+var worldInfo_worldUniqueId = Belt_Option.getExn(Array16$TerrariaPacket.fromArray(Belt_Array.make(16, 0)));
 
 var worldInfo_worldGeneratorVersion = BigInt(0);
 
@@ -168,8 +168,8 @@ var worldInfo = {
 };
 
 Zora$1.test("Should be the same going after encode/decode", (function (t) {
-        var rawWorldInfo = Packet_WorldInfo$DarkgamingRescriptTerrariapacket.toBuffer(worldInfo);
-        var newWorldInfo = Packet_WorldInfo$DarkgamingRescriptTerrariapacket.parse(rawWorldInfo);
+        var rawWorldInfo = Packet_WorldInfo$TerrariaPacket.toBuffer(worldInfo);
+        var newWorldInfo = Packet_WorldInfo$TerrariaPacket.parse(rawWorldInfo);
         Zora.optionSome(t, newWorldInfo, (function (t, newWorldInfo) {
                 t.equal(worldInfo, newWorldInfo, "hi");
               }));

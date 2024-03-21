@@ -2,7 +2,7 @@
 'use strict';
 
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
-var BitFlags$DarkgamingRescriptTerrariapacket = require("./BitFlags.bs.js");
+var BitFlags$TerrariaPacket = require("./BitFlags.bs.js");
 
 function otherFromByte($$byte) {
   switch ($$byte) {
@@ -78,15 +78,15 @@ function otherToByte(other) {
 }
 
 function readDeathReason(reader) {
-  var reasonType = BitFlags$DarkgamingRescriptTerrariapacket.fromByte(reader.readByte());
-  var killerPlayerId = BitFlags$DarkgamingRescriptTerrariapacket.flag1(reasonType) ? reader.readByte() : undefined;
-  var killerNpcId = BitFlags$DarkgamingRescriptTerrariapacket.flag2(reasonType) ? reader.readInt16() : undefined;
-  var killerProjectileId = BitFlags$DarkgamingRescriptTerrariapacket.flag3(reasonType) ? reader.readInt16() : undefined;
-  var typeOfDeathOther = BitFlags$DarkgamingRescriptTerrariapacket.flag4(reasonType) ? otherFromByte(reader.readByte()) : undefined;
-  var projectileType = BitFlags$DarkgamingRescriptTerrariapacket.flag5(reasonType) ? reader.readInt16() : undefined;
-  var itemType = BitFlags$DarkgamingRescriptTerrariapacket.flag6(reasonType) ? reader.readInt16() : undefined;
-  var itemPrefix = BitFlags$DarkgamingRescriptTerrariapacket.flag7(reasonType) ? reader.readByte() : undefined;
-  var deathReason = BitFlags$DarkgamingRescriptTerrariapacket.flag8(reasonType) ? reader.readString() : undefined;
+  var reasonType = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+  var killerPlayerId = BitFlags$TerrariaPacket.flag1(reasonType) ? reader.readByte() : undefined;
+  var killerNpcId = BitFlags$TerrariaPacket.flag2(reasonType) ? reader.readInt16() : undefined;
+  var killerProjectileId = BitFlags$TerrariaPacket.flag3(reasonType) ? reader.readInt16() : undefined;
+  var typeOfDeathOther = BitFlags$TerrariaPacket.flag4(reasonType) ? otherFromByte(reader.readByte()) : undefined;
+  var projectileType = BitFlags$TerrariaPacket.flag5(reasonType) ? reader.readInt16() : undefined;
+  var itemType = BitFlags$TerrariaPacket.flag6(reasonType) ? reader.readInt16() : undefined;
+  var itemPrefix = BitFlags$TerrariaPacket.flag7(reasonType) ? reader.readByte() : undefined;
+  var deathReason = BitFlags$TerrariaPacket.flag8(reasonType) ? reader.readString() : undefined;
   return {
           killerPlayerId: killerPlayerId,
           killerNpcId: killerNpcId,
@@ -100,8 +100,8 @@ function readDeathReason(reader) {
 }
 
 function packFlags(writer, self) {
-  var flags = BitFlags$DarkgamingRescriptTerrariapacket.fromFlags(Belt_Option.isSome(self.killerPlayerId), Belt_Option.isSome(self.killerNpcId), Belt_Option.isSome(self.killerProjectileId), Belt_Option.isSome(self.typeOfDeathOther), Belt_Option.isSome(self.projectileType), Belt_Option.isSome(self.itemType), Belt_Option.isSome(self.itemPrefix), Belt_Option.isSome(self.deathReason));
-  return writer.packByte(BitFlags$DarkgamingRescriptTerrariapacket.toByte(flags));
+  var flags = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(self.killerPlayerId), Belt_Option.isSome(self.killerNpcId), Belt_Option.isSome(self.killerProjectileId), Belt_Option.isSome(self.typeOfDeathOther), Belt_Option.isSome(self.projectileType), Belt_Option.isSome(self.itemType), Belt_Option.isSome(self.itemPrefix), Belt_Option.isSome(self.deathReason));
+  return writer.packByte(BitFlags$TerrariaPacket.toByte(flags));
 }
 
 function packKillerPlayerId(writer, self) {
