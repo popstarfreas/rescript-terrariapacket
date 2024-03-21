@@ -7,19 +7,29 @@ var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 var PacketType$DarkgamingRescriptTerrariapacket = require("../PacketType.bs.js");
 
 function toInt(self) {
-  return self;
+  switch (self) {
+    case "RealIpAddress" :
+        return 0;
+    case "GamemodesJoinMode" :
+        return 1;
+    case "SwitchServer" :
+        return 2;
+    case "SwitchServerManual" :
+        return 3;
+    
+  }
 }
 
 function fromInt(n) {
   switch (n) {
     case 0 :
-        return /* RealIpAddress */0;
+        return "RealIpAddress";
     case 1 :
-        return /* GamemodesJoinMode */1;
+        return "GamemodesJoinMode";
     case 2 :
-        return /* SwitchServer */2;
+        return "SwitchServer";
     case 3 :
-        return /* SwitchServerManual */3;
+        return "SwitchServerManual";
     default:
       return ;
   }
@@ -38,25 +48,25 @@ function parse(payload) {
     return ;
   }
   switch (match) {
-    case /* RealIpAddress */0 :
+    case "RealIpAddress" :
         var ip = reader.readString();
         return {
-                TAG: /* RealIpAddress */0,
+                TAG: "RealIpAddress",
                 _0: ip
               };
-    case /* GamemodesJoinMode */1 :
-        return /* GamemodesJoinMode */0;
-    case /* SwitchServer */2 :
+    case "GamemodesJoinMode" :
+        return "GamemodesJoinMode";
+    case "SwitchServer" :
         var dimensionName = reader.readString();
         return {
-                TAG: /* SwitchServer */1,
+                TAG: "SwitchServer",
                 _0: dimensionName
               };
-    case /* SwitchServerManual */3 :
+    case "SwitchServerManual" :
         var ip$1 = reader.readString();
         var port = reader.readUInt16();
         return {
-                TAG: /* SwitchServerManual */2,
+                TAG: "SwitchServerManual",
                 _0: ip$1,
                 _1: port
               };
@@ -64,21 +74,25 @@ function parse(payload) {
   }
 }
 
+function gamemodesJoinModeToBuffer() {
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("DimensionsUpdate")).packInt16(1).data;
+}
+
 function toBuffer(self) {
-  if (typeof self === "number") {
-    return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* DimensionsUpdate */62)).packInt16(/* GamemodesJoinMode */1).data;
+  if (typeof self !== "object") {
+    return gamemodesJoinModeToBuffer();
   }
-  switch (self.TAG | 0) {
-    case /* RealIpAddress */0 :
+  switch (self.TAG) {
+    case "RealIpAddress" :
         var ip = self._0;
-        return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* DimensionsUpdate */62)).packInt16(/* RealIpAddress */0).packString(ip).data;
-    case /* SwitchServer */1 :
+        return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("DimensionsUpdate")).packInt16(0).packString(ip).data;
+    case "SwitchServer" :
         var dimensionName = self._0;
-        return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* DimensionsUpdate */62)).packInt16(/* SwitchServer */2).packString(dimensionName).data;
-    case /* SwitchServerManual */2 :
+        return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("DimensionsUpdate")).packInt16(2).packString(dimensionName).data;
+    case "SwitchServerManual" :
         var ip$1 = self._0;
         var port = self._1;
-        return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* DimensionsUpdate */62)).packInt16(/* SwitchServerManual */3).packString(ip$1).packUInt16(port).data;
+        return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("DimensionsUpdate")).packInt16(3).packString(ip$1).packUInt16(port).data;
     
   }
 }

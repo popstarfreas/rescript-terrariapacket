@@ -271,8 +271,6 @@ module Entity = {
 
   let parseFoodPlatterKind = parseDisplayItem
 
-  let parseTeleportationPylonKind = (reader): teleportationPylon => ()
-
   let parse = (reader): result<t, string> => {
     let entityType = reader->readByte
     let x = reader->readInt16
@@ -285,7 +283,7 @@ module Entity = {
     | 4 => Ok(WeaponsRack(reader->parseWeaponsRackKind))
     | 5 => Ok(HatRack(reader->parseHatRackKind))
     | 6 => Ok(FoodPlatter(reader->parseFoodPlatterKind))
-    | 7 => Ok(TeleportationPylon(reader->parseTeleportationPylonKind))
+    | 7 => Ok(TeleportationPylon())
     | _ => Error(__LOC__ ++ "Unknown entity kind. ")
     }
 
@@ -429,7 +427,6 @@ module Entity = {
 }
 
 type t = {
-  compressed: bool,
   height: int,
   width: int,
   tileX: int,
@@ -468,181 +465,175 @@ module Decode = {
   let {readString, readInt16, readUInt16, readInt32, readByte} = module(PacketFactory.BufferReader)
   let parse = (payload: NodeJs.Buffer.t) => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let compressed = reader->PacketReader.readByte == 1
-    if compressed {
-      let deflated = reader->readBuffer(reader->PacketFactory.PacketReader.getBytesLeft)
-      let reader = PacketFactory.BufferReader.make(NodeJs.Zlib.inflateRawSync(deflated))
-      let tileX = reader->readInt32
-      let tileY = reader->readInt32
-      let width = reader->readInt16
-      let height = reader->readInt16
-      let tiles: array<array<tile>> = []
-      let tileCache = defaultTileCache()
-      let rleCount = ref(0)
-      if height < 0 || width < 0 {
-        None
-      } else {
-        for _y in 0 to height - 1 {
-          let row: array<tile> = []
-          for _x in 0 to width - 1 {
-            if rleCount.contents != 0 {
-              decr(rleCount)
-              row->Js.Array2.push(tileCache->cacheToTile)->ignore
-            } else {
-              clearTileCache(tileCache)
-              let header5 = reader->readByte->BitFlags.fromByte
-              let (header4, header3) = if header5->BitFlags.flag1 {
-                let header4 = reader->readByte->BitFlags.fromByte
-                let header3 = if header4->BitFlags.flag1 {
-                  reader->readByte->BitFlags.fromByte
-                } else {
-                  BitFlags.fromByte(0)
-                }
-                (header4, header3)
-              } else {
-                (BitFlags.fromByte(0), BitFlags.fromByte(0))
-              }
-
-              let oldActive = tileCache.activeTile
-              if header5->BitFlags.flag2 {
-                let oldType =
-                  tileCache.activeTile->Option.mapWithDefault(0, active => active.tileType)
-                let tileType = if header5->BitFlags.flag6 {
-                  let byte = reader->readByte
-                  let secondByte = reader->readByte
-                  secondByte->lsl(8)->lor(byte)
-                } else {
-                  reader->readByte
-                }
-
-                let frame = if TileFrameImportant.isImportant(tileType) {
-                  let x = reader->readInt16
-                  let y = reader->readInt16
-                  Some({x, y})
-                } else if oldActive->Option.isSome && tileType === oldType {
-                  (oldActive->Option.getUnsafe).frame
-                } else {
-                  None
-                }
-
-                if header3->BitFlags.flag4 {
-                  tileCache.color = Some(reader->readByte)
-                }
-
-                tileCache.activeTile = Some({
-                  tileType,
-                  frame,
-                })
-              }
-
-              if header5->BitFlags.flag3 {
-                tileCache.wall = Some(reader->readByte)
-
-                if header3->BitFlags.flag5 {
-                  tileCache.wallColor = Some(reader->readByte)
-                }
-              }
-
-              let liquidBits = header5->BitFlags.toByte->land(24)->lsr(3)
-              if liquidBits != 0 {
-                tileCache.liquid = Some(reader->readByte)
-                if liquidBits > 1 {
-                  if liquidBits == 2 {
-                    tileCache.lava = true
-                  } else {
-                    tileCache.honey = true
-                  }
-                }
-              }
-
-              if header4->BitFlags.toByte > 1 {
-                if header4->BitFlags.flag2 {
-                  tileCache.wire = true
-                }
-                if header4->BitFlags.flag3 {
-                  tileCache.wire2 = true
-                }
-                if header4->BitFlags.flag4 {
-                  tileCache.wire3 = true
-                }
-
-                let slopeBits = header4->BitFlags.toByte->land(112)->lsr(4)
-                if (
-                  slopeBits != 0 &&
-                    TileSolid.isSolid(
-                      tileCache.activeTile->Option.mapWithDefault(0, tile => tile.tileType),
-                    )
-                ) {
-                  if slopeBits == 1 {
-                    tileCache.halfBrick = true
-                  } else {
-                    tileCache.slope = Some(slopeBits - 1)
-                  }
-                }
-              }
-
-              if header3->BitFlags.toByte > 0 {
-                if header3->BitFlags.flag2 {
-                  tileCache.actuator = true
-                }
-                if header3->BitFlags.flag3 {
-                  tileCache.inActive = true
-                }
-                if header3->BitFlags.flag6 {
-                  tileCache.wire4 = true
-                }
-                if header3->BitFlags.flag7 {
-                  let byte = reader->readByte
-                  tileCache.wall = Some(byte->lsl(8)->lor(tileCache.wall->Option.getUnsafe))
-                }
-              }
-
-              let repeatCountBytes = header5->BitFlags.toByte->land(192)->lsr(6)
-              switch repeatCountBytes {
-              | 0 => rleCount.contents = 0
-              | 1 => rleCount.contents = reader->readByte
-              | _ => rleCount.contents = reader->readInt16
-              }
-              row->Js.Array2.push(tileCache->cacheToTile)->ignore
-            }
-          }
-          tiles->Js.Array2.push(row)->ignore
-        }
-
-        let chestCount = reader->readInt16
-        let chests = Belt.Array.make(chestCount, 0)->Js.Array2.map(_ => {
-          reader->Chest.parse
-        })
-        let signCount = reader->readInt16
-        let signs = Belt.Array.make(signCount, 0)->Js.Array2.map(_ => {
-          reader->Sign.parse
-        })
-        let entityCount = reader->readInt16
-        let entities =
-          Belt.Array.make(entityCount, 0)
-          ->Js.Array2.map(_ => {
-            reader->Entity.parse
-          })
-          ->ResultExt.allOkOrError
-
-        switch entities {
-        | Ok(entities) =>
-          Some({
-            compressed: true,
-            height,
-            width,
-            tileX,
-            tileY,
-            tiles,
-            chests,
-            signs,
-            entities,
-          })
-        | Error(_) => None
-        }
-      }
-    } else {
+    let deflated = reader->readBuffer(reader->PacketFactory.PacketReader.getBytesLeft)
+    let reader = PacketFactory.BufferReader.make(NodeJs.Zlib.inflateRawSync(deflated))
+    let tileX = reader->readInt32
+    let tileY = reader->readInt32
+    let width = reader->readInt16
+    let height = reader->readInt16
+    let tiles: array<array<tile>> = []
+    let tileCache = defaultTileCache()
+    let rleCount = ref(0)
+    if height < 0 || width < 0 {
       None
+    } else {
+      for _y in 0 to height - 1 {
+        let row: array<tile> = []
+        for _x in 0 to width - 1 {
+          if rleCount.contents != 0 {
+            decr(rleCount)
+            row->Js.Array2.push(tileCache->cacheToTile)->ignore
+          } else {
+            clearTileCache(tileCache)
+            let header5 = reader->readByte->BitFlags.fromByte
+            let (header4, header3) = if header5->BitFlags.flag1 {
+              let header4 = reader->readByte->BitFlags.fromByte
+              let header3 = if header4->BitFlags.flag1 {
+                reader->readByte->BitFlags.fromByte
+              } else {
+                BitFlags.fromByte(0)
+              }
+              (header4, header3)
+            } else {
+              (BitFlags.fromByte(0), BitFlags.fromByte(0))
+            }
+
+            let oldActive = tileCache.activeTile
+            if header5->BitFlags.flag2 {
+              let oldType =
+                tileCache.activeTile->Option.mapWithDefault(0, active => active.tileType)
+              let tileType = if header5->BitFlags.flag6 {
+                let byte = reader->readByte
+                let secondByte = reader->readByte
+                secondByte->lsl(8)->lor(byte)
+              } else {
+                reader->readByte
+              }
+
+              let frame = if TileFrameImportant.isImportant(tileType) {
+                let x = reader->readInt16
+                let y = reader->readInt16
+                Some({x, y})
+              } else if oldActive->Option.isSome && tileType === oldType {
+                (oldActive->Option.getUnsafe).frame
+              } else {
+                None
+              }
+
+              if header3->BitFlags.flag4 {
+                tileCache.color = Some(reader->readByte)
+              }
+
+              tileCache.activeTile = Some({
+                tileType,
+                frame,
+              })
+            }
+
+            if header5->BitFlags.flag3 {
+              tileCache.wall = Some(reader->readByte)
+
+              if header3->BitFlags.flag5 {
+                tileCache.wallColor = Some(reader->readByte)
+              }
+            }
+
+            let liquidBits = header5->BitFlags.toByte->land(24)->lsr(3)
+            if liquidBits != 0 {
+              tileCache.liquid = Some(reader->readByte)
+              if liquidBits > 1 {
+                if liquidBits == 2 {
+                  tileCache.lava = true
+                } else {
+                  tileCache.honey = true
+                }
+              }
+            }
+
+            if header4->BitFlags.toByte > 1 {
+              if header4->BitFlags.flag2 {
+                tileCache.wire = true
+              }
+              if header4->BitFlags.flag3 {
+                tileCache.wire2 = true
+              }
+              if header4->BitFlags.flag4 {
+                tileCache.wire3 = true
+              }
+
+              let slopeBits = header4->BitFlags.toByte->land(112)->lsr(4)
+              if (
+                slopeBits != 0 &&
+                  TileSolid.isSolid(
+                    tileCache.activeTile->Option.mapWithDefault(0, tile => tile.tileType),
+                  )
+              ) {
+                if slopeBits == 1 {
+                  tileCache.halfBrick = true
+                } else {
+                  tileCache.slope = Some(slopeBits - 1)
+                }
+              }
+            }
+
+            if header3->BitFlags.toByte > 0 {
+              if header3->BitFlags.flag2 {
+                tileCache.actuator = true
+              }
+              if header3->BitFlags.flag3 {
+                tileCache.inActive = true
+              }
+              if header3->BitFlags.flag6 {
+                tileCache.wire4 = true
+              }
+              if header3->BitFlags.flag7 {
+                let byte = reader->readByte
+                tileCache.wall = Some(byte->lsl(8)->lor(tileCache.wall->Option.getUnsafe))
+              }
+            }
+
+            let repeatCountBytes = header5->BitFlags.toByte->land(192)->lsr(6)
+            switch repeatCountBytes {
+            | 0 => rleCount.contents = 0
+            | 1 => rleCount.contents = reader->readByte
+            | _ => rleCount.contents = reader->readInt16
+            }
+            row->Js.Array2.push(tileCache->cacheToTile)->ignore
+          }
+        }
+        tiles->Js.Array2.push(row)->ignore
+      }
+
+      let chestCount = reader->readInt16
+      let chests = Belt.Array.make(chestCount, 0)->Js.Array2.map(_ => {
+        reader->Chest.parse
+      })
+      let signCount = reader->readInt16
+      let signs = Belt.Array.make(signCount, 0)->Js.Array2.map(_ => {
+        reader->Sign.parse
+      })
+      let entityCount = reader->readInt16
+      let entities =
+        Belt.Array.make(entityCount, 0)
+        ->Js.Array2.map(_ => {
+          reader->Entity.parse
+        })
+        ->ResultExt.allOkOrError
+
+      switch entities {
+      | Ok(entities) =>
+        Some({
+          height,
+          width,
+          tileX,
+          tileY,
+          tiles,
+          chests,
+          signs,
+          entities,
+        })
+      | Error(_) => None
+      }
     }
   }
 }
@@ -860,7 +851,7 @@ module Encode = {
     let lastTile = ref(None)
     for y in 0 to self.height - 1 {
       for x in 0 to self.width - 1 {
-        let tile = self.tiles[y][x]
+        let tile = (self.tiles[y]->Option.getUnsafe)[x]->Option.getUnsafe
         writer->decidePackTile(lastTile, tile)
       }
     }

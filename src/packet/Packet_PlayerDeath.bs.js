@@ -24,7 +24,7 @@ function parse(payload) {
 }
 
 function toBuffer(self) {
-  return PlayerDeathReason$DarkgamingRescriptTerrariapacket.packDeathReason(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* PlayerDeath */113)).packByte(self.playerId), self.deathReason).packInt16(self.damage).packByte(self.hitDirection).packByte(self.pvp ? 1 : 0).data;
+  return PlayerDeathReason$DarkgamingRescriptTerrariapacket.packDeathReason(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("PlayerDeath")).packByte(self.playerId), self.deathReason).packInt16(self.damage).packByte(self.hitDirection).packByte(self.pvp ? 1 : 0).data;
 }
 
 exports.parse = parse;

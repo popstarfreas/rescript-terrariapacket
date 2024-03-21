@@ -43,7 +43,7 @@ function data(prim) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* ProjectileDestroy */25)).packInt16(self.projectileId).packByte(self.owner).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("ProjectileDestroy")).packInt16(self.projectileId).packByte(self.owner).data;
 }
 
 var Encode = {

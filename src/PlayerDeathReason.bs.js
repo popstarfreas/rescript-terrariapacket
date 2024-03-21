@@ -7,37 +7,73 @@ var BitFlags$DarkgamingRescriptTerrariapacket = require("./BitFlags.bs.js");
 function otherFromByte($$byte) {
   switch ($$byte) {
     case 0 :
-        return /* FallDamage */0;
+        return "FallDamage";
     case 1 :
-        return /* Drowning */1;
+        return "Drowning";
     case 2 :
-        return /* Lava */2;
+        return "Lava";
     case 3 :
-        return /* FallDamage2 */3;
+        return "FallDamage2";
     case 4 :
-        return /* DemonAltar */4;
+        return "DemonAltar";
     case 5 :
-        return /* CompanionCube */5;
+        return "CompanionCube";
     case 6 :
-        return /* Suffocation */6;
+        return "Suffocation";
     case 7 :
-        return /* Burning */7;
+        return "Burning";
     case 8 :
-        return /* Poison */8;
+        return "Poison";
     case 9 :
-        return /* Electrified */9;
+        return "Electrified";
     case 10 :
-        return /* WallOfFleshEscape */10;
+        return "WallOfFleshEscape";
     case 11 :
-        return /* WallOfFleshLicked */11;
+        return "WallOfFleshLicked";
     case 12 :
-        return /* ChaosState */12;
+        return "ChaosState";
     case 13 :
-        return /* ChaosState2Male */13;
+        return "ChaosState2Male";
     case 14 :
-        return /* ChaosState3Female */14;
+        return "ChaosState3Female";
     default:
       return ;
+  }
+}
+
+function otherToByte(other) {
+  switch (other) {
+    case "FallDamage" :
+        return 0;
+    case "Drowning" :
+        return 1;
+    case "Lava" :
+        return 2;
+    case "FallDamage2" :
+        return 3;
+    case "DemonAltar" :
+        return 4;
+    case "CompanionCube" :
+        return 5;
+    case "Suffocation" :
+        return 6;
+    case "Burning" :
+        return 7;
+    case "Poison" :
+        return 8;
+    case "Electrified" :
+        return 9;
+    case "WallOfFleshEscape" :
+        return 10;
+    case "WallOfFleshLicked" :
+        return 11;
+    case "ChaosState" :
+        return 12;
+    case "ChaosState2Male" :
+        return 13;
+    case "ChaosState3Female" :
+        return 14;
+    
   }
 }
 
@@ -98,7 +134,7 @@ function packKillerProjectileId(writer, self) {
 function packTypeOfDeathOther(writer, self) {
   var typeOfDeathOther = self.typeOfDeathOther;
   if (typeOfDeathOther !== undefined) {
-    return writer.packByte(typeOfDeathOther);
+    return writer.packByte(otherToByte(typeOfDeathOther));
   } else {
     return writer;
   }

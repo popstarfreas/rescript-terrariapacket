@@ -1,15 +1,14 @@
 /* TypeScript file generated from Packet_ConnectRequest.resi by genType. */
-/* eslint-disable import/first */
 
+/* eslint-disable */
+/* tslint:disable */
 
-// @ts-ignore: Implicit any on import
-const Packet_ConnectRequestBS = require('./Packet_ConnectRequest.bs');
+const Packet_ConnectRequestJS = require('./Packet_ConnectRequest.bs.js');
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 
-// tslint:disable-next-line:interface-over-type-literal
 export type t = { readonly version: string };
 
-export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = Packet_ConnectRequestBS.parse;
+export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = Packet_ConnectRequestJS.parse as any;
 
-export const toBuffer: (_1:t) => NodeJs_Buffer_t = Packet_ConnectRequestBS.toBuffer;
+export const toBuffer: (_1:t) => NodeJs_Buffer_t = Packet_ConnectRequestJS.toBuffer as any;

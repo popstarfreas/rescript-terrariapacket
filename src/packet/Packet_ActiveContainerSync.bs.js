@@ -58,7 +58,7 @@ function data(prim) {
 }
 
 function toBuffer(self) {
-  var writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* ActiveContainerSync */29)).packInt16(self.chestId).packInt16(self.x).packInt16(self.y).packByte(self.nameLength);
+  var writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("ActiveContainerSync")).packInt16(self.chestId).packInt16(self.x).packInt16(self.y).packByte(self.nameLength);
   if (self.nameLength > 0 && self.nameLength <= 20) {
     writer.packString(self.name);
   }

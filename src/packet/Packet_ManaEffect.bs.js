@@ -43,7 +43,7 @@ function data(prim) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* ManaEffect */39)).packByte(self.playerId).packInt16(self.manaAmount).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("ManaEffect")).packByte(self.playerId).packInt16(self.manaAmount).data;
 }
 
 var Encode = {

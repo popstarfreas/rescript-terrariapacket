@@ -41,7 +41,7 @@ type t = {
 }
 
 module Decode = {
-  let {readString, readInt16, readUInt16, readByte} = module(PacketFactory.PacketReader)
+  let {readInt16, readUInt16, readByte} = module(PacketFactory.PacketReader)
   let parse = (payload: NodeJs.Buffer.t) => {
     let reader = PacketFactory.PacketReader.make(payload)
     let tileX = reader->readInt16
@@ -207,9 +207,9 @@ module Encode = {
     writer: PacketFactory.ManagedPacketWriter.t,
     tiles: array<array<tile>>,
   ): PacketFactory.ManagedPacketWriter.t => {
-    for x in 0 to tiles->Js.Array2.length - 1 {
-      for y in 0 to tiles[x]->Js.Array2.length - 1 {
-        writer->packTile(tiles[x][y])->ignore
+    for x in 0 to tiles->Array.length - 1 {
+      for y in 0 to tiles[x]->Option.getUnsafe->Array.length - 1 {
+        writer->packTile((tiles[x]->Option.getUnsafe)[y]->Option.getUnsafe)->ignore
       }
     }
     writer

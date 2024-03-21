@@ -134,6 +134,15 @@ type t =
   | NpcBuffRemovalRequest
   | ClientSyncedInventory
   | CountsAsHostForGameplaySet
+  | CreditsOrSlimeTransform
+  | LucyAxeMessage
+  | PiggyBankVoidLensUpdate
+  | DungeonDefendersEventAttemptSkipWait
+  | HaveDryadDoStardewAnimation
+  | ItemDropShimmeredUpdate
+  | ShimmerEffectOrCoinLuck
+  | LoadoutSwitch
+  | ItemDropProtectedUpdate
 
 let fromInt = n =>
   switch n {
@@ -272,6 +281,15 @@ let fromInt = n =>
   | 137 => Some(NpcBuffRemovalRequest)
   | 138 => Some(ClientSyncedInventory)
   | 139 => Some(CountsAsHostForGameplaySet)
+  | 140 => Some(CreditsOrSlimeTransform)
+  | 141 => Some(LucyAxeMessage)
+  | 142 => Some(PiggyBankVoidLensUpdate)
+  | 143 => Some(DungeonDefendersEventAttemptSkipWait)
+  | 144 => Some(HaveDryadDoStardewAnimation)
+  | 145 => Some(ItemDropShimmeredUpdate)
+  | 146 => Some(ShimmerEffectOrCoinLuck)
+  | 147 => Some(LoadoutSwitch)
+  | 148 => Some(ItemDropProtectedUpdate)
   | _ => None
   }
 
@@ -412,4 +430,13 @@ let toInt = self =>
   | NpcBuffRemovalRequest => 137
   | ClientSyncedInventory => 138
   | CountsAsHostForGameplaySet => 139
+  | CreditsOrSlimeTransform => 140
+  | LucyAxeMessage => 141
+  | PiggyBankVoidLensUpdate => 142
+  | DungeonDefendersEventAttemptSkipWait => 143
+  | HaveDryadDoStardewAnimation => 144
+  | ItemDropShimmeredUpdate => 145
+  | ShimmerEffectOrCoinLuck => 146
+  | LoadoutSwitch => 147
+  | ItemDropProtectedUpdate => 148
   }

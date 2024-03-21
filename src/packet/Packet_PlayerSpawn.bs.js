@@ -16,13 +16,13 @@ function parse(payload) {
   var context;
   switch (rawContext) {
     case 0 :
-        context = /* ReviveFromDeath */0;
+        context = "ReviveFromDeath";
         break;
     case 1 :
-        context = /* SpawningIntoWorld */1;
+        context = "SpawningIntoWorld";
         break;
     case 2 :
-        context = /* RecallFromItem */2;
+        context = "RecallFromItem";
         break;
     default:
       context = undefined;
@@ -40,7 +40,21 @@ function parse(payload) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* PlayerSpawn */11)).packByte(self.playerId).packInt16(self.x).packInt16(self.y).packInt32(self.timeRemaining).packByte(self.context).data;
+  var match = self.context;
+  var tmp;
+  switch (match) {
+    case "ReviveFromDeath" :
+        tmp = 0;
+        break;
+    case "SpawningIntoWorld" :
+        tmp = 1;
+        break;
+    case "RecallFromItem" :
+        tmp = 2;
+        break;
+    
+  }
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("PlayerSpawn")).packByte(self.playerId).packInt16(self.x).packInt16(self.y).packInt32(self.timeRemaining).packByte(tmp).data;
 }
 
 exports.parse = parse;

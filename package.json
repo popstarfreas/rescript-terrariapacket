@@ -3,12 +3,14 @@
   "version": "1.2.0",
   "scripts": {
     "build:watch": "rescript build -w",
-    "build": "rescript build -with-deps && tsc -p ."
+    "build": "rescript build -with-deps && tsc -p .",
+    "test": "pta  'tests/*.test.bs.js'"
   },
   "dependencies": {
-    "@popstarfreas/packetfactory": "^5.0.0",
-    "@popstarfreas/rescript-nodejs": "github:popstarfreas/rescript-nodejs#master",
-    "rescript": "^10.1.0",
+    "@popstarfreas/packetfactory": "^6.0.1",
+    "@popstarfreas/rescript-nodejs": "git+https://github.com/popstarfreas/rescript-nodejs.git#f3bd284",
+    "@rescript/core": "^1.1.0",
+    "rescript": "^11.0.0",
     "typescript": "^5.2.2"
   },
   "devDependencies": {

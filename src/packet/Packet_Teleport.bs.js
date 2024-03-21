@@ -31,9 +31,9 @@ function parse(payload) {
   var match = BitFlags$DarkgamingRescriptTerrariapacket.flag1(flags);
   var match$1 = BitFlags$DarkgamingRescriptTerrariapacket.flag2(flags);
   var teleportType = match ? (
-      match$1 ? undefined : /* Npc */1
+      match$1 ? undefined : "Npc"
     ) : (
-      match$1 ? /* PlayerToPlayer */2 : /* Player */0
+      match$1 ? "PlayerToPlayer" : "Player"
     );
   var targetId = reader.readInt16();
   var x = reader.readSingle();
@@ -83,11 +83,11 @@ function data(prim) {
 }
 
 function getFlags(self) {
-  return BitFlags$DarkgamingRescriptTerrariapacket.toByte(BitFlags$DarkgamingRescriptTerrariapacket.fromFlags(self.teleportType === /* Npc */1, self.teleportType === /* PlayerToPlayer */2, self.getPositionFromTarget, Belt_Option.isSome(self.extraInfo), false, false, false, false));
+  return BitFlags$DarkgamingRescriptTerrariapacket.toByte(BitFlags$DarkgamingRescriptTerrariapacket.fromFlags(self.teleportType === "Npc", self.teleportType === "PlayerToPlayer", self.getPositionFromTarget, Belt_Option.isSome(self.extraInfo), false, false, false, false));
 }
 
 function toBuffer(self) {
-  var writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* Teleport */60)).packByte(getFlags(self)).packInt16(self.targetId).packSingle(self.x).packSingle(self.y).packByte(self.style);
+  var writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("Teleport")).packByte(getFlags(self)).packInt16(self.targetId).packSingle(self.x).packSingle(self.y).packByte(self.style);
   var extraInfo = self.extraInfo;
   if (extraInfo !== undefined) {
     writer.packInt32(extraInfo);

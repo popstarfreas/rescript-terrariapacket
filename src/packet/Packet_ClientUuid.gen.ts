@@ -1,15 +1,14 @@
 /* TypeScript file generated from Packet_ClientUuid.resi by genType. */
-/* eslint-disable import/first */
 
+/* eslint-disable */
+/* tslint:disable */
 
-// @ts-ignore: Implicit any on import
-const Packet_ClientUuidBS = require('./Packet_ClientUuid.bs');
+const Packet_ClientUuidJS = require('./Packet_ClientUuid.bs.js');
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 
-// tslint:disable-next-line:interface-over-type-literal
 export type t = { readonly uuid: string };
 
-export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = Packet_ClientUuidBS.parse;
+export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = Packet_ClientUuidJS.parse as any;
 
-export const toBuffer: (_1:t) => NodeJs_Buffer_t = Packet_ClientUuidBS.toBuffer;
+export const toBuffer: (_1:t) => NodeJs_Buffer_t = Packet_ClientUuidJS.toBuffer as any;

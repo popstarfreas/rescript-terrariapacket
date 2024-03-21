@@ -60,7 +60,7 @@ function data(prim) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* TileEntityDisplayDollItemSync */116)).packByte(self.playerId).packInt32(self.tileEntityId).packByte(self.itemIndex).packUInt16(self.itemId).packUInt16(self.stack).packByte(self.prefix).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("TileEntityDisplayDollItemSync")).packByte(self.playerId).packInt32(self.tileEntityId).packByte(self.itemIndex).packUInt16(self.itemId).packUInt16(self.stack).packByte(self.prefix).data;
 }
 
 var Encode = {

@@ -35,7 +35,7 @@ function data(prim) {
 }
 
 function toBuffer(self) {
-  var writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* TravellingMerchantInventory */67));
+  var writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("TravellingMerchantInventory"));
   self.items.forEach(function (item) {
         writer.packInt16(item);
       });

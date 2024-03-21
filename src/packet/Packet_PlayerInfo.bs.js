@@ -9,11 +9,11 @@ var PacketType$DarkgamingRescriptTerrariapacket = require("../PacketType.bs.js")
 
 function getDifficulty(difficultyFlags) {
   if (BitFlags$DarkgamingRescriptTerrariapacket.flag2(difficultyFlags)) {
-    return /* Hardcore */2;
+    return "Hardcore";
   } else if (BitFlags$DarkgamingRescriptTerrariapacket.flag1(difficultyFlags)) {
-    return /* Mediumcore */1;
+    return "Mediumcore";
   } else {
-    return /* Softcore */0;
+    return "Softcore";
   }
 }
 
@@ -38,7 +38,7 @@ function parse(payload) {
   var torchFlags = BitFlags$DarkgamingRescriptTerrariapacket.fromByte(reader.readByte());
   var difficulty = getDifficulty(difficultyFlags);
   var extraAccessory = BitFlags$DarkgamingRescriptTerrariapacket.flag3(difficultyFlags);
-  var mode = BitFlags$DarkgamingRescriptTerrariapacket.flag4(difficultyFlags) ? /* Journey */1 : /* Classic */0;
+  var mode = BitFlags$DarkgamingRescriptTerrariapacket.flag4(difficultyFlags) ? "Journey" : "Classic";
   var usingBiomeTorches = BitFlags$DarkgamingRescriptTerrariapacket.flag1(torchFlags);
   var happyFunTorchTime = BitFlags$DarkgamingRescriptTerrariapacket.flag2(torchFlags);
   var unlockedBiomeTorches = BitFlags$DarkgamingRescriptTerrariapacket.flag3(torchFlags);
@@ -69,12 +69,25 @@ function parse(payload) {
 
 function packDifficultyFlags(writer, difficulty, extraAccessory, mode) {
   var $$byte = 0;
-  $$byte = $$byte | difficulty;
+  var tmp;
+  switch (difficulty) {
+    case "Softcore" :
+        tmp = 0;
+        break;
+    case "Mediumcore" :
+        tmp = 1;
+        break;
+    case "Hardcore" :
+        tmp = 2;
+        break;
+    
+  }
+  $$byte = $$byte | tmp;
   $$byte = $$byte | (
     extraAccessory ? 4 : 0
   );
   $$byte = $$byte | (
-    mode === /* Journey */1 ? 8 : 0
+    mode === "Journey" ? 8 : 0
   );
   return writer.packByte($$byte);
 }
@@ -94,7 +107,7 @@ function packTorchFlags(writer, usingBiomeTorches, happyFunTorchTime, unlockedBi
 }
 
 function toBuffer(self) {
-  return packTorchFlags(packDifficultyFlags(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* PlayerInfo */3)).packByte(self.playerId).packByte(self.skinVariant).packByte(self.hair).packString(self.name).packByte(self.hairDye).packByte(self.hideVisuals).packByte(self.hideVisuals2).packByte(self.hideMisc).packColor(self.hairColor).packColor(self.skinColor).packColor(self.eyeColor).packColor(self.shirtColor).packColor(self.underShirtColor).packColor(self.pantsColor).packColor(self.shoeColor), self.difficulty, self.extraAccessory, self.mode), self.usingBiomeTorches, self.happyFunTorchTime, self.unlockedBiomeTorches).data;
+  return packTorchFlags(packDifficultyFlags(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("PlayerInfo")).packByte(self.playerId).packByte(self.skinVariant).packByte(self.hair).packString(self.name).packByte(self.hairDye).packByte(self.hideVisuals).packByte(self.hideVisuals2).packByte(self.hideMisc).packColor(self.hairColor).packColor(self.skinColor).packColor(self.eyeColor).packColor(self.shirtColor).packColor(self.underShirtColor).packColor(self.pantsColor).packColor(self.shoeColor), self.difficulty, self.extraAccessory, self.mode), self.usingBiomeTorches, self.happyFunTorchTime, self.unlockedBiomeTorches).data;
 }
 
 exports.parse = parse;

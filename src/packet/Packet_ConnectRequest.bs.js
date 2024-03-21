@@ -15,7 +15,7 @@ function parse(payload) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* ConnectRequest */0)).packString(self.version).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("ConnectRequest")).packString(self.version).data;
 }
 
 exports.parse = parse;

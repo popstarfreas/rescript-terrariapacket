@@ -12,7 +12,7 @@ function parse(payload) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* PlayerSlotSet */2)).packByte(self).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("PlayerSlotSet")).packByte(self).data;
 }
 
 exports.parse = parse;

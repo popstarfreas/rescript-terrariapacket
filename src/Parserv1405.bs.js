@@ -83,7 +83,6 @@ var Packet_PlayerSpawnSelf$DarkgamingRescriptTerrariapacket = require("./packet/
 var Packet_SocialHandshake$DarkgamingRescriptTerrariapacket = require("./packet/Packet_SocialHandshake.bs.js");
 var Packet_TileEntityPlace$DarkgamingRescriptTerrariapacket = require("./packet/Packet_TileEntityPlace.bs.js");
 var Packet_TilePickingSync$DarkgamingRescriptTerrariapacket = require("./packet/Packet_TilePickingSync.bs.js");
-var Packet_TileSectionSend$DarkgamingRescriptTerrariapacket = require("./packet/Packet_TileSectionSend.bs.js");
 var Packet_WiredCannonShot$DarkgamingRescriptTerrariapacket = require("./packet/Packet_WiredCannonShot.bs.js");
 var Packet_ChatMessageSmart$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ChatMessageSmart.bs.js");
 var Packet_CombatTextCreate$DarkgamingRescriptTerrariapacket = require("./packet/Packet_CombatTextCreate.bs.js");
@@ -116,6 +115,7 @@ var Packet_CrystalInvasionStart$DarkgamingRescriptTerrariapacket = require("./pa
 var Packet_MassWireOperationPay$DarkgamingRescriptTerrariapacket = require("./packet/Packet_MassWireOperationPay.bs.js");
 var Packet_PlayerChestIndexSync$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerChestIndexSync.bs.js");
 var Packet_PlayerTeleportPortal$DarkgamingRescriptTerrariapacket = require("./packet/Packet_PlayerTeleportPortal.bs.js");
+var Packetv1405_TileSectionSend$DarkgamingRescriptTerrariapacket = require("./packet/v1405/Packetv1405_TileSectionSend.bs.js");
 var Packet_CavernMonsterTypeSync$DarkgamingRescriptTerrariapacket = require("./packet/Packet_CavernMonsterTypeSync.bs.js");
 var Packet_ClientSyncedInventory$DarkgamingRescriptTerrariapacket = require("./packet/Packet_ClientSyncedInventory.bs.js");
 var Packet_FoodPlatterTryPlacing$DarkgamingRescriptTerrariapacket = require("./packet/Packet_FoodPlatterTryPlacing.bs.js");
@@ -151,1224 +151,1225 @@ function simpleParse(buffer, fromServer) {
   }
   try {
     switch (packetType) {
-      case /* ConnectRequest */0 :
+      case "ConnectRequest" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packetv1405_ConnectRequest$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* ConnectRequest */0,
+                                  TAG: "ConnectRequest",
                                   _0: a
                                 };
                         }));
           }
-      case /* Disconnect */1 :
+      case "Disconnect" :
           if (fromServer) {
             return Belt_Option.map(Packet_Disconnect$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* Disconnect */1,
+                                  TAG: "Disconnect",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* PlayerSlotSet */2 :
+      case "PlayerSlotSet" :
           if (fromServer) {
             return Belt_Option.map(Packet_PlayerSlotSet$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* PlayerSlotSet */2,
+                                  TAG: "PlayerSlotSet",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* PlayerInfo */3 :
+      case "PlayerInfo" :
           return Belt_Option.map(Packet_PlayerInfo$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* PlayerInfo */3,
+                                TAG: "PlayerInfo",
                                 _0: a
                               };
                       }));
-      case /* PlayerInventorySlot */4 :
+      case "PlayerInventorySlot" :
           return Belt_Option.map(Packet_PlayerInventorySlot$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* PlayerInventorySlot */4,
+                                TAG: "PlayerInventorySlot",
                                 _0: a
                               };
                       }));
-      case /* WorldDataRequest */5 :
+      case "WorldDataRequest" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_WorldDataRequest$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* WorldDataRequest */5,
+                                  TAG: "WorldDataRequest",
                                   _0: a
                                 };
                         }));
           }
-      case /* WorldInfo */6 :
+      case "WorldInfo" :
           if (fromServer) {
             return Belt_Option.map(Packetv1405_WorldInfo$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* WorldInfo */6,
+                                  TAG: "WorldInfo",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* InitialTileSectionsRequest */7 :
+      case "InitialTileSectionsRequest" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_InitialTileSectionsRequest$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* InitialTileSectionsRequest */7,
+                                  TAG: "InitialTileSectionsRequest",
                                   _0: a
                                 };
                         }));
           }
-      case /* Status */8 :
+      case "Status" :
           if (fromServer) {
             return Belt_Option.map(Packet_Status$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* Status */8,
+                                  TAG: "Status",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* TileSectionSend */9 :
+      case "TileSectionSend" :
           if (fromServer) {
-            return Belt_Option.map(Packet_TileSectionSend$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packetv1405_TileSectionSend$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* TileSectionSend */9,
+                                  TAG: "TileSectionSend",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* TileSectionFrame */10 :
+      case "TileSectionFrame" :
           if (fromServer) {
             return Belt_Option.map(Packet_TileSectionFrame$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* TileSectionFrame */10,
+                                  TAG: "TileSectionFrame",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* PlayerSpawn */11 :
+      case "PlayerSpawn" :
           return Belt_Option.map(Packet_PlayerSpawn$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* PlayerSpawn */11,
+                                TAG: "PlayerSpawn",
                                 _0: a
                               };
                       }));
-      case /* PlayerUpdate */12 :
+      case "PlayerUpdate" :
           return Belt_Option.map(Packet_PlayerUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* PlayerUpdate */12,
+                                TAG: "PlayerUpdate",
                                 _0: a
                               };
                       }));
-      case /* PlayerActive */13 :
+      case "PlayerActive" :
           if (fromServer) {
             return Belt_Option.map(Packet_PlayerActive$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* PlayerActive */13,
+                                  TAG: "PlayerActive",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* PlayerHealth */14 :
+      case "PlayerHealth" :
           return Belt_Option.map(Packet_PlayerHealth$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* PlayerHealth */14,
+                                TAG: "PlayerHealth",
                                 _0: a
                               };
                       }));
-      case /* TileModify */15 :
+      case "TileModify" :
           return Belt_Option.map(Packet_TileModify$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* TileModify */15,
+                                TAG: "TileModify",
                                 _0: a
                               };
                       }));
-      case /* TimeSet */16 :
+      case "TimeSet" :
           if (fromServer) {
             return Belt_Option.map(Packet_TimeSet$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* TimeSet */16,
+                                  TAG: "TimeSet",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* DoorUse */17 :
+      case "DoorUse" :
           return Belt_Option.map(Packet_DoorUse$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* DoorUse */17,
+                                TAG: "DoorUse",
                                 _0: a
                               };
                       }));
-      case /* TileSquareSend */18 :
+      case "TileSquareSend" :
           return Belt_Option.map(Packetv1405_TileSquareSend$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* TileSquareSend */18,
+                                TAG: "TileSquareSend",
                                 _0: a
                               };
                       }));
-      case /* ItemDropUpdate */19 :
+      case "ItemDropUpdate" :
           return Belt_Option.map(Packet_ItemDropUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* ItemDropUpdate */19,
+                                TAG: "ItemDropUpdate",
                                 _0: a
                               };
                       }));
-      case /* ItemOwner */20 :
+      case "ItemOwner" :
           return Belt_Option.map(Packet_ItemOwner$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* ItemOwner */20,
+                                TAG: "ItemOwner",
                                 _0: a
                               };
                       }));
-      case /* NpcUpdate */21 :
+      case "NpcUpdate" :
           if (fromServer) {
             return Belt_Option.map(Packet_NpcUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* NpcUpdate */21,
+                                  TAG: "NpcUpdate",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* NpcItemStrike */22 :
+      case "NpcItemStrike" :
           return Belt_Option.map(Packet_NpcItemStrike$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* NpcItemStrike */22,
+                                TAG: "NpcItemStrike",
                                 _0: a
                               };
                       }));
-      case /* ProjectileSync */23 :
+      case "ProjectileSync" :
           return Belt_Option.map(Packetv1405_ProjectileSync$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* ProjectileSync */23,
+                                TAG: "ProjectileSync",
                                 _0: a
                               };
                       }));
-      case /* NpcStrike */24 :
+      case "NpcStrike" :
           return Belt_Option.map(Packet_NpcStrike$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* NpcStrike */24,
+                                TAG: "NpcStrike",
                                 _0: a
                               };
                       }));
-      case /* ProjectileDestroy */25 :
+      case "ProjectileDestroy" :
           return Belt_Option.map(Packet_ProjectileDestroy$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* ProjectileDestroy */25,
+                                TAG: "ProjectileDestroy",
                                 _0: a
                               };
                       }));
-      case /* PvpToggle */26 :
+      case "PvpToggle" :
           return Belt_Option.map(Packet_PvpToggle$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* PvpToggle */26,
+                                TAG: "PvpToggle",
                                 _0: a
                               };
                       }));
-      case /* ChestOpen */27 :
+      case "ChestOpen" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_ChestOpen$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* ChestOpen */27,
+                                  TAG: "ChestOpen",
                                   _0: a
                                 };
                         }));
           }
-      case /* ChestItem */28 :
+      case "ChestItem" :
           return Belt_Option.map(Packet_ChestItem$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* ChestItem */28,
+                                TAG: "ChestItem",
                                 _0: a
                               };
                       }));
-      case /* ActiveContainerSync */29 :
+      case "ActiveContainerSync" :
           return Belt_Option.map(Packet_ActiveContainerSync$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* ActiveContainerSync */29,
+                                TAG: "ActiveContainerSync",
                                 _0: a
                               };
                       }));
-      case /* ChestPlace */30 :
+      case "ChestPlace" :
           return Belt_Option.map(Packet_ChestPlace$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* ChestPlace */30,
+                                TAG: "ChestPlace",
                                 _0: a
                               };
                       }));
-      case /* HealEffect */31 :
+      case "HealEffect" :
           return Belt_Option.map(Packet_HealEffect$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* HealEffect */31,
+                                TAG: "HealEffect",
                                 _0: a
                               };
                       }));
-      case /* Zones */32 :
+      case "Zones" :
           return Belt_Option.map(Packet_Zones$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* Zones */32,
+                                TAG: "Zones",
                                 _0: a
                               };
                       }));
-      case /* PasswordRequired */33 :
+      case "PasswordRequired" :
           if (fromServer) {
             return Belt_Option.map(Packet_PasswordRequired$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* PasswordRequired */33,
+                                  TAG: "PasswordRequired",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* PasswordSend */34 :
+      case "PasswordSend" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_PasswordSend$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* PasswordSend */34,
+                                  TAG: "PasswordSend",
                                   _0: a
                                 };
                         }));
           }
-      case /* ItemOwnerRemove */35 :
+      case "ItemOwnerRemove" :
           if (fromServer) {
             return Belt_Option.map(Packet_ItemOwnerRemove$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* ItemOwnerRemove */35,
+                                  TAG: "ItemOwnerRemove",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* NpcTalk */36 :
+      case "NpcTalk" :
           return Belt_Option.map(Packet_NpcTalk$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* NpcTalk */36,
+                                TAG: "NpcTalk",
                                 _0: a
                               };
                       }));
-      case /* PlayerAnimation */37 :
+      case "PlayerAnimation" :
           return Belt_Option.map(Packet_PlayerAnimation$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* PlayerAnimation */37,
+                                TAG: "PlayerAnimation",
                                 _0: a
                               };
                       }));
-      case /* PlayerMana */38 :
+      case "PlayerMana" :
           return Belt_Option.map(Packet_PlayerMana$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* PlayerMana */38,
+                                TAG: "PlayerMana",
                                 _0: a
                               };
                       }));
-      case /* ManaEffect */39 :
+      case "ManaEffect" :
           return Belt_Option.map(Packet_ManaEffect$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* ManaEffect */39,
+                                TAG: "ManaEffect",
                                 _0: a
                               };
                       }));
-      case /* PlayerTeam */40 :
+      case "PlayerTeam" :
           return Belt_Option.map(Packet_PlayerTeam$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* PlayerTeam */40,
+                                TAG: "PlayerTeam",
                                 _0: a
                               };
                       }));
-      case /* SignRead */41 :
+      case "SignRead" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_SignRead$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* SignRead */41,
+                                  TAG: "SignRead",
                                   _0: a
                                 };
                         }));
           }
-      case /* SignNew */42 :
+      case "SignNew" :
           return Belt_Option.map(Packet_SignNew$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* SignNew */42,
+                                TAG: "SignNew",
                                 _0: a
                               };
                       }));
-      case /* LiquidSet */43 :
+      case "LiquidSet" :
           return Belt_Option.map(Packet_LiquidSet$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* LiquidSet */43,
+                                TAG: "LiquidSet",
                                 _0: a
                               };
                       }));
-      case /* PlayerSpawnSelf */44 :
+      case "PlayerSpawnSelf" :
           if (fromServer) {
             return Belt_Option.map(Packet_PlayerSpawnSelf$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* PlayerSpawnSelf */44,
+                                  TAG: "PlayerSpawnSelf",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* PlayerBuffsSet */45 :
+      case "PlayerBuffsSet" :
           return Belt_Option.map(Packet_PlayerBuffsSet$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* PlayerBuffsSet */45,
+                                TAG: "PlayerBuffsSet",
                                 _0: a
                               };
                       }));
-      case /* NpcSpecialEffect */46 :
+      case "NpcSpecialEffect" :
           return Belt_Option.map(Packet_NpcSpecialEffect$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* NpcSpecialEffect */46,
+                                TAG: "NpcSpecialEffect",
                                 _0: a
                               };
                       }));
-      case /* ChestOrTempleUnlock */47 :
+      case "ChestOrTempleUnlock" :
           return Belt_Option.map(Packet_ChestOrTempleUnlock$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* ChestOrTempleUnlock */47,
+                                TAG: "ChestOrTempleUnlock",
                                 _0: a
                               };
                       }));
-      case /* NpcBuffAdd */48 :
+      case "NpcBuffAdd" :
           return Belt_Option.map(Packet_NpcBuffAdd$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* NpcBuffAdd */48,
+                                TAG: "NpcBuffAdd",
                                 _0: a
                               };
                       }));
-      case /* NpcBuffUpdate */49 :
+      case "NpcBuffUpdate" :
           if (fromServer) {
             return Belt_Option.map(Packet_NpcBuffUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* NpcBuffUpdate */49,
+                                  TAG: "NpcBuffUpdate",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* PlayerBuffAdd */50 :
+      case "PlayerBuffAdd" :
           return Belt_Option.map(Packet_PlayerBuffAdd$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* PlayerBuffAdd */50,
+                                TAG: "PlayerBuffAdd",
                                 _0: a
                               };
                       }));
-      case /* NpcNameUpdate */51 :
+      case "NpcNameUpdate" :
           return Belt_Option.map(Packet_NpcNameUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* NpcNameUpdate */51,
+                                TAG: "NpcNameUpdate",
                                 _0: a
                               };
                       }));
-      case /* GoodEvilUpdate */52 :
+      case "GoodEvilUpdate" :
           if (fromServer) {
             return Belt_Option.map(Packet_GoodEvilUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* GoodEvilUpdate */52,
+                                  TAG: "GoodEvilUpdate",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* HarpPlay */53 :
+      case "HarpPlay" :
           return Belt_Option.map(Packet_HarpPlay$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* HarpPlay */53,
+                                TAG: "HarpPlay",
                                 _0: a
                               };
                       }));
-      case /* SwitchHit */54 :
+      case "SwitchHit" :
           return Belt_Option.map(Packet_SwitchHit$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* SwitchHit */54,
+                                TAG: "SwitchHit",
                                 _0: a
                               };
                       }));
-      case /* NpcHomeUpdate */55 :
+      case "NpcHomeUpdate" :
           return Belt_Option.map(Packet_NpcHomeUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* NpcHomeUpdate */55,
+                                TAG: "NpcHomeUpdate",
                                 _0: a
                               };
                       }));
-      case /* BossOrInvasionSpawn */56 :
+      case "BossOrInvasionSpawn" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_BossOrInvasionSpawn$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* BossOrInvasionSpawn */56,
+                                  TAG: "BossOrInvasionSpawn",
                                   _0: a
                                 };
                         }));
           }
-      case /* PlayerDodge */57 :
+      case "PlayerDodge" :
           return Belt_Option.map(Packet_PlayerDodge$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* PlayerDodge */57,
+                                TAG: "PlayerDodge",
                                 _0: a
                               };
                       }));
-      case /* TilePaint */58 :
+      case "TilePaint" :
           return Belt_Option.map(Packet_TilePaint$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* TilePaint */58,
+                                TAG: "TilePaint",
                                 _0: a
                               };
                       }));
-      case /* WallPaint */59 :
+      case "WallPaint" :
           return Belt_Option.map(Packet_WallPaint$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* WallPaint */59,
+                                TAG: "WallPaint",
                                 _0: a
                               };
                       }));
-      case /* Teleport */60 :
+      case "Teleport" :
           return Belt_Option.map(Packet_Teleport$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* Teleport */60,
+                                TAG: "Teleport",
                                 _0: a
                               };
                       }));
-      case /* PlayerHealOther */61 :
+      case "PlayerHealOther" :
           return Belt_Option.map(Packet_PlayerHealOther$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* PlayerHealOther */61,
+                                TAG: "PlayerHealOther",
                                 _0: a
                               };
                       }));
-      case /* DimensionsUpdate */62 :
+      case "DimensionsUpdate" :
           return Belt_Option.map(Packet_DimensionsUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* DimensionsUpdate */62,
+                                TAG: "DimensionsUpdate",
                                 _0: a
                               };
                       }));
-      case /* ClientUuid */63 :
+      case "ClientUuid" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_ClientUuid$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* ClientUuid */63,
+                                  TAG: "ClientUuid",
                                   _0: a
                                 };
                         }));
           }
-      case /* ChestName */64 :
+      case "ChestName" :
           return Belt_Option.map(Packet_ChestName$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* ChestName */64,
+                                TAG: "ChestName",
                                 _0: a
                               };
                       }));
-      case /* CatchNpc */65 :
+      case "CatchNpc" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_CatchNpc$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* CatchNpc */65,
+                                  TAG: "CatchNpc",
                                   _0: a
                                 };
                         }));
           }
-      case /* ReleaseNpc */66 :
+      case "ReleaseNpc" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_ReleaseNpc$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* ReleaseNpc */66,
+                                  TAG: "ReleaseNpc",
                                   _0: a
                                 };
                         }));
           }
-      case /* TravellingMerchantInventory */67 :
+      case "TravellingMerchantInventory" :
           if (fromServer) {
             return Belt_Option.map(Packet_TravellingMerchantInventory$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* TravellingMerchantInventory */67,
+                                  TAG: "TravellingMerchantInventory",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* TeleportationPotion */68 :
+      case "TeleportationPotion" :
           return Belt_Option.map(Packet_TeleportationPotion$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* TeleportationPotion */68,
+                                TAG: "TeleportationPotion",
                                 _0: a
                               };
                       }));
-      case /* AnglerQuest */69 :
+      case "AnglerQuest" :
           if (fromServer) {
             return Belt_Option.map(Packet_AnglerQuest$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* AnglerQuest */69,
+                                  TAG: "AnglerQuest",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* AnglerQuestComplete */70 :
+      case "AnglerQuestComplete" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_AnglerQuestComplete$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* AnglerQuestComplete */70,
+                                  TAG: "AnglerQuestComplete",
                                   _0: a
                                 };
                         }));
           }
-      case /* AnglerQuestsCompletedAmount */71 :
+      case "AnglerQuestsCompletedAmount" :
           return Belt_Option.map(Packet_AnglerQuestsCompletedAmount$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* AnglerQuestsCompletedAmount */71,
+                                TAG: "AnglerQuestsCompletedAmount",
                                 _0: a
                               };
                       }));
-      case /* TemporaryAnimationCreate */72 :
+      case "TemporaryAnimationCreate" :
           if (fromServer) {
             return Belt_Option.map(Packet_TemporaryAnimationCreate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* TemporaryAnimationCreate */72,
+                                  TAG: "TemporaryAnimationCreate",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* InvasionProgressReport */73 :
+      case "InvasionProgressReport" :
           if (fromServer) {
             return Belt_Option.map(Packet_InvasionProgressReport$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* InvasionProgressReport */73,
+                                  TAG: "InvasionProgressReport",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* ObjectPlace */74 :
+      case "ObjectPlace" :
           return Belt_Option.map(Packet_ObjectPlace$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* ObjectPlace */74,
+                                TAG: "ObjectPlace",
                                 _0: a
                               };
                       }));
-      case /* PlayerChestIndexSync */75 :
+      case "PlayerChestIndexSync" :
           if (fromServer) {
             return Belt_Option.map(Packet_PlayerChestIndexSync$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* PlayerChestIndexSync */75,
+                                  TAG: "PlayerChestIndexSync",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* CombatNumberCreate */76 :
+      case "CombatNumberCreate" :
           if (fromServer) {
             return Belt_Option.map(Packet_CombatNumberCreate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* CombatNumberCreate */76,
+                                  TAG: "CombatNumberCreate",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* NetModuleLoad */77 :
+      case "NetModuleLoad" :
           return Belt_Option.map(Packet_NetModuleLoad$DarkgamingRescriptTerrariapacket.parse(buffer, fromServer), (function (a) {
                         return {
-                                TAG: /* NetModuleLoad */77,
+                                TAG: "NetModuleLoad",
                                 _0: a
                               };
                       }));
-      case /* NpcKillCount */78 :
+      case "NpcKillCount" :
           if (fromServer) {
             return Belt_Option.map(Packet_NpcKillCount$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* NpcKillCount */78,
+                                  TAG: "NpcKillCount",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* PlayerStealth */79 :
+      case "PlayerStealth" :
           return Belt_Option.map(Packet_PlayerStealth$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* PlayerStealth */79,
+                                TAG: "PlayerStealth",
                                 _0: a
                               };
                       }));
-      case /* ItemForceIntoNearestChest */80 :
+      case "ItemForceIntoNearestChest" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_ItemForceIntoNearestChest$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* ItemForceIntoNearestChest */80,
+                                  TAG: "ItemForceIntoNearestChest",
                                   _0: a
                                 };
                         }));
           }
-      case /* TileEntityUpdate */81 :
+      case "TileEntityUpdate" :
           if (fromServer) {
             return Belt_Option.map(Packet_TileEntityUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* TileEntityUpdate */81,
+                                  TAG: "TileEntityUpdate",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* TileEntityPlace */82 :
+      case "TileEntityPlace" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_TileEntityPlace$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* TileEntityPlace */82,
+                                  TAG: "TileEntityPlace",
                                   _0: a
                                 };
                         }));
           }
-      case /* ItemDropModify */83 :
+      case "ItemDropModify" :
           if (fromServer) {
             return Belt_Option.map(Packet_ItemDropModify$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* ItemDropModify */83,
+                                  TAG: "ItemDropModify",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* ItemFramePlace */84 :
+      case "ItemFramePlace" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_ItemFramePlace$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* ItemFramePlace */84,
+                                  TAG: "ItemFramePlace",
                                   _0: a
                                 };
                         }));
           }
-      case /* ItemDropInstancedUpdate */85 :
+      case "ItemDropInstancedUpdate" :
           return Belt_Option.map(Packet_ItemDropInstancedUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* ItemDropInstancedUpdate */85,
+                                TAG: "ItemDropInstancedUpdate",
                                 _0: a
                               };
                       }));
-      case /* EmoteBubble */86 :
+      case "EmoteBubble" :
           if (fromServer) {
             return Belt_Option.map(Packet_EmoteBubble$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* EmoteBubble */86,
+                                  TAG: "EmoteBubble",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* ExtraValueSync */87 :
+      case "ExtraValueSync" :
           return Belt_Option.map(Packet_ExtraValueSync$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* ExtraValueSync */87,
+                                TAG: "ExtraValueSync",
                                 _0: a
                               };
                       }));
-      case /* SocialHandshake */88 :
+      case "SocialHandshake" :
           return Belt_Option.map(Packet_SocialHandshake$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* SocialHandshake */88,
+                                TAG: "SocialHandshake",
                                 _0: a
                               };
                       }));
-      case /* Unused */89 :
+      case "Unused" :
           return Belt_Option.map(Packet_Unused$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* Unused */89,
+                                TAG: "Unused",
                                 _0: a
                               };
                       }));
-      case /* PortalKill */90 :
+      case "PortalKill" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_PortalKill$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* PortalKill */90,
+                                  TAG: "PortalKill",
                                   _0: a
                                 };
                         }));
           }
-      case /* PlayerTeleportPortal */91 :
+      case "PlayerTeleportPortal" :
           return Belt_Option.map(Packet_PlayerTeleportPortal$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* PlayerTeleportPortal */91,
+                                TAG: "PlayerTeleportPortal",
                                 _0: a
                               };
                       }));
-      case /* NpcKilledNotification */92 :
+      case "NpcKilledNotification" :
           if (fromServer) {
             return Belt_Option.map(Packet_NpcKilledNotification$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* NpcKilledNotification */92,
+                                  TAG: "NpcKilledNotification",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* EventNotification */93 :
+      case "EventNotification" :
           if (fromServer) {
             return Belt_Option.map(Packet_EventNotification$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* EventNotification */93,
+                                  TAG: "EventNotification",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* MinionTargetUpdate */94 :
+      case "MinionTargetUpdate" :
           return Belt_Option.map(Packet_MinionTargetUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* MinionTargetUpdate */94,
+                                TAG: "MinionTargetUpdate",
                                 _0: a
                               };
                       }));
-      case /* NpcTeleportPortal */95 :
+      case "NpcTeleportPortal" :
           return Belt_Option.map(Packet_NpcTeleportPortal$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* NpcTeleportPortal */95,
+                                TAG: "NpcTeleportPortal",
                                 _0: a
                               };
                       }));
-      case /* ShieldStrengthsUpdate */96 :
+      case "ShieldStrengthsUpdate" :
           if (fromServer) {
             return Belt_Option.map(Packet_ShieldStrengthsUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* ShieldStrengthsUpdate */96,
+                                  TAG: "ShieldStrengthsUpdate",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* NebulaLevelUp */97 :
+      case "NebulaLevelUp" :
           return Belt_Option.map(Packet_NebulaLevelUp$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* NebulaLevelUp */97,
+                                TAG: "NebulaLevelUp",
                                 _0: a
                               };
                       }));
-      case /* MoonLordCountdown */98 :
+      case "MoonLordCountdown" :
           if (fromServer) {
             return Belt_Option.map(Packet_MoonLordCountdown$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* MoonLordCountdown */98,
+                                  TAG: "MoonLordCountdown",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* NpcShopItem */99 :
+      case "NpcShopItem" :
           if (fromServer) {
             return Belt_Option.map(Packet_NpcShopItem$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* NpcShopItem */99,
+                                  TAG: "NpcShopItem",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* GemLockToggle */100 :
+      case "GemLockToggle" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_GemLockToggle$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* GemLockToggle */100,
+                                  TAG: "GemLockToggle",
                                   _0: a
                                 };
                         }));
           }
-      case /* SmokePoof */101 :
+      case "SmokePoof" :
           if (fromServer) {
             return Belt_Option.map(Packet_SmokePoof$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* SmokePoof */101,
+                                  TAG: "SmokePoof",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* ChatMessageSmart */102 :
+      case "ChatMessageSmart" :
           if (fromServer) {
             return Belt_Option.map(Packet_ChatMessageSmart$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* ChatMessageSmart */102,
+                                  TAG: "ChatMessageSmart",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* WiredCannonShot */103 :
+      case "WiredCannonShot" :
           if (fromServer) {
             return Belt_Option.map(Packet_WiredCannonShot$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* WiredCannonShot */103,
+                                  TAG: "WiredCannonShot",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* MassWireOperation */104 :
+      case "MassWireOperation" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_MassWireOperation$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* MassWireOperation */104,
+                                  TAG: "MassWireOperation",
                                   _0: a
                                 };
                         }));
           }
-      case /* MassWireOperationPay */105 :
+      case "MassWireOperationPay" :
           if (fromServer) {
             return Belt_Option.map(Packet_MassWireOperationPay$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* MassWireOperationPay */105,
+                                  TAG: "MassWireOperationPay",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* PartyToggle */106 :
+      case "PartyToggle" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_PartyToggle$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* PartyToggle */106,
+                                  TAG: "PartyToggle",
                                   _0: a
                                 };
                         }));
           }
-      case /* TreeGrowFx */107 :
+      case "TreeGrowFx" :
           return Belt_Option.map(Packet_TreeGrowFx$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* TreeGrowFx */107,
+                                TAG: "TreeGrowFx",
                                 _0: a
                               };
                       }));
-      case /* CrystalInvasionStart */108 :
+      case "CrystalInvasionStart" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_CrystalInvasionStart$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* CrystalInvasionStart */108,
+                                  TAG: "CrystalInvasionStart",
                                   _0: a
                                 };
                         }));
           }
-      case /* CrystalInvasionWipeAll */109 :
+      case "CrystalInvasionWipeAll" :
           if (fromServer) {
             return Belt_Option.map(Packet_CrystalInvasionWipeAll$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* CrystalInvasionWipeAll */109,
+                                  TAG: "CrystalInvasionWipeAll",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* MinionAttackTargetUpdate */110 :
+      case "MinionAttackTargetUpdate" :
           return Belt_Option.map(Packet_MinionAttackTargetUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* MinionAttackTargetUpdate */110,
+                                TAG: "MinionAttackTargetUpdate",
                                 _0: a
                               };
                       }));
-      case /* CrystalInvasionSendWaitTime */111 :
+      case "CrystalInvasionSendWaitTime" :
           if (fromServer) {
             return Belt_Option.map(Packet_CrystalInvasionSendWaitTime$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* CrystalInvasionSendWaitTime */111,
+                                  TAG: "CrystalInvasionSendWaitTime",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* PlayerDamage */112 :
+      case "PlayerDamage" :
           return Belt_Option.map(Packet_PlayerDamage$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* PlayerDamage */112,
+                                TAG: "PlayerDamage",
                                 _0: a
                               };
                       }));
-      case /* PlayerDeath */113 :
+      case "PlayerDeath" :
           return Belt_Option.map(Packet_PlayerDeath$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* PlayerDeath */113,
+                                TAG: "PlayerDeath",
                                 _0: a
                               };
                       }));
-      case /* CombatTextCreate */114 :
+      case "CombatTextCreate" :
           if (fromServer) {
             return Belt_Option.map(Packet_CombatTextCreate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* CombatTextCreate */114,
+                                  TAG: "CombatTextCreate",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* Emoji */115 :
+      case "Emoji" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_Emoji$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* Emoji */115,
+                                  TAG: "Emoji",
                                   _0: a
                                 };
                         }));
           }
-      case /* TileEntityDisplayDollItemSync */116 :
+      case "TileEntityDisplayDollItemSync" :
           return Belt_Option.map(Packet_TileEntityDisplayDollItemSync$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* TileEntityDisplayDollItemSync */116,
+                                TAG: "TileEntityDisplayDollItemSync",
                                 _0: a
                               };
                       }));
-      case /* TileEntityInteractionRequest */117 :
+      case "TileEntityInteractionRequest" :
           return Belt_Option.map(Packet_TileEntityInteractionRequest$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* TileEntityInteractionRequest */117,
+                                TAG: "TileEntityInteractionRequest",
                                 _0: a
                               };
                       }));
-      case /* WeaponsRackTryPlacing */118 :
+      case "WeaponsRackTryPlacing" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_WeaponsRackTryPlacing$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* WeaponsRackTryPlacing */118,
+                                  TAG: "WeaponsRackTryPlacing",
                                   _0: a
                                 };
                         }));
           }
-      case /* TileEntityHatRackItemSync */119 :
+      case "TileEntityHatRackItemSync" :
           return Belt_Option.map(Packet_TileEntityHatRackItemSync$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* TileEntityHatRackItemSync */119,
+                                TAG: "TileEntityHatRackItemSync",
                                 _0: a
                               };
                       }));
-      case /* TilePickingSync */120 :
+      case "TilePickingSync" :
           return Belt_Option.map(Packet_TilePickingSync$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* TilePickingSync */120,
+                                TAG: "TilePickingSync",
                                 _0: a
                               };
                       }));
-      case /* RevengeMarkerSync */121 :
+      case "RevengeMarkerSync" :
           if (fromServer) {
             return Belt_Option.map(Packet_RevengeMarkerSync$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* RevengeMarkerSync */121,
+                                  TAG: "RevengeMarkerSync",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* RevengeMarkerRemove */122 :
+      case "RevengeMarkerRemove" :
           if (fromServer) {
             return Belt_Option.map(Packet_RevengeMarkerRemove$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* RevengeMarkerRemove */122,
+                                  TAG: "RevengeMarkerRemove",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* GolfBallLandInCup */123 :
+      case "GolfBallLandInCup" :
           return Belt_Option.map(Packet_GolfBallLandInCup$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* GolfBallLandInCup */123,
+                                TAG: "GolfBallLandInCup",
                                 _0: a
                               };
                       }));
-      case /* ClientFinishConnectingToServer */124 :
+      case "ClientFinishConnectingToServer" :
           if (fromServer) {
             return Belt_Option.map(Packet_ClientFinishConnectingToServer$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* ClientFinishConnectingToServer */124,
+                                  TAG: "ClientFinishConnectingToServer",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* NpcFishOut */125 :
+      case "NpcFishOut" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_NpcFishOut$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* NpcFishOut */125,
+                                  TAG: "NpcFishOut",
                                   _0: a
                                 };
                         }));
           }
-      case /* NpcTamper */126 :
+      case "NpcTamper" :
           if (fromServer) {
             return Belt_Option.map(Packet_NpcTamper$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* NpcTamper */126,
+                                  TAG: "NpcTamper",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* LegacySoundPlay */127 :
+      case "LegacySoundPlay" :
           if (fromServer) {
             return Belt_Option.map(Packet_LegacySoundPlay$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* LegacySoundPlay */127,
+                                  TAG: "LegacySoundPlay",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* FoodPlatterTryPlacing */128 :
+      case "FoodPlatterTryPlacing" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_FoodPlatterTryPlacing$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* FoodPlatterTryPlacing */128,
+                                  TAG: "FoodPlatterTryPlacing",
                                   _0: a
                                 };
                         }));
           }
-      case /* PlayerLuckFactorsUpdate */129 :
+      case "PlayerLuckFactorsUpdate" :
           return Belt_Option.map(Packet_PlayerLuckFactorsUpdate$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* PlayerLuckFactorsUpdate */129,
+                                TAG: "PlayerLuckFactorsUpdate",
                                 _0: a
                               };
                       }));
-      case /* PlayerDead */130 :
+      case "PlayerDead" :
           if (fromServer) {
             return Belt_Option.map(Packet_PlayerDead$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* PlayerDead */130,
+                                  TAG: "PlayerDead",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      case /* CavernMonsterTypeSync */131 :
+      case "CavernMonsterTypeSync" :
           return Belt_Option.map(Packet_CavernMonsterTypeSync$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                         return {
-                                TAG: /* CavernMonsterTypeSync */131,
+                                TAG: "CavernMonsterTypeSync",
                                 _0: a
                               };
                       }));
-      case /* NpcBuffRemovalRequest */132 :
+      case "NpcBuffRemovalRequest" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_NpcBuffRemovalRequest$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* NpcBuffRemovalRequest */132,
+                                  TAG: "NpcBuffRemovalRequest",
                                   _0: a
                                 };
                         }));
           }
-      case /* ClientSyncedInventory */133 :
+      case "ClientSyncedInventory" :
           if (fromServer) {
             return ;
           } else {
             return Belt_Option.map(Packet_ClientSyncedInventory$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* ClientSyncedInventory */133,
+                                  TAG: "ClientSyncedInventory",
                                   _0: a
                                 };
                         }));
           }
-      case /* CountsAsHostForGameplaySet */134 :
+      case "CountsAsHostForGameplaySet" :
           if (fromServer) {
             return Belt_Option.map(Packet_CountsAsHostForGameplaySet$DarkgamingRescriptTerrariapacket.parse(buffer), (function (a) {
                           return {
-                                  TAG: /* CountsAsHostForGameplaySet */134,
+                                  TAG: "CountsAsHostForGameplaySet",
                                   _0: a
                                 };
                         }));
           } else {
             return ;
           }
-      
+      default:
+        return ;
     }
   }
   catch (_e){
@@ -1387,12 +1388,12 @@ function simpleParseLazy(buffer, fromServer) {
   }
   try {
     switch (packetType) {
-      case /* ConnectRequest */0 :
+      case "ConnectRequest" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* ConnectRequest */0,
+                    TAG: "ConnectRequest",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -1401,10 +1402,10 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* Disconnect */1 :
+      case "Disconnect" :
           if (fromServer) {
             return {
-                    TAG: /* Disconnect */1,
+                    TAG: "Disconnect",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -1415,10 +1416,10 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* PlayerSlotSet */2 :
+      case "PlayerSlotSet" :
           if (fromServer) {
             return {
-                    TAG: /* PlayerSlotSet */2,
+                    TAG: "PlayerSlotSet",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -1429,9 +1430,9 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* PlayerInfo */3 :
+      case "PlayerInfo" :
           return {
-                  TAG: /* PlayerInfo */3,
+                  TAG: "PlayerInfo",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1439,9 +1440,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* PlayerInventorySlot */4 :
+      case "PlayerInventorySlot" :
           return {
-                  TAG: /* PlayerInventorySlot */4,
+                  TAG: "PlayerInventorySlot",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1449,12 +1450,12 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* WorldDataRequest */5 :
+      case "WorldDataRequest" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* WorldDataRequest */5,
+                    TAG: "WorldDataRequest",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -1463,10 +1464,10 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* WorldInfo */6 :
+      case "WorldInfo" :
           if (fromServer) {
             return {
-                    TAG: /* WorldInfo */6,
+                    TAG: "WorldInfo",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -1477,12 +1478,12 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* InitialTileSectionsRequest */7 :
+      case "InitialTileSectionsRequest" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* InitialTileSectionsRequest */7,
+                    TAG: "InitialTileSectionsRequest",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -1491,10 +1492,10 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* Status */8 :
+      case "Status" :
           if (fromServer) {
             return {
-                    TAG: /* Status */8,
+                    TAG: "Status",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -1505,24 +1506,24 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* TileSectionSend */9 :
+      case "TileSectionSend" :
           if (fromServer) {
             return {
-                    TAG: /* TileSectionSend */9,
+                    TAG: "TileSectionSend",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_TileSectionSend$DarkgamingRescriptTerrariapacket.parse(buffer);
+                          return Packetv1405_TileSectionSend$DarkgamingRescriptTerrariapacket.parse(buffer);
                         })
                     }
                   };
           } else {
             return ;
           }
-      case /* TileSectionFrame */10 :
+      case "TileSectionFrame" :
           if (fromServer) {
             return {
-                    TAG: /* TileSectionFrame */10,
+                    TAG: "TileSectionFrame",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -1533,9 +1534,9 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* PlayerSpawn */11 :
+      case "PlayerSpawn" :
           return {
-                  TAG: /* PlayerSpawn */11,
+                  TAG: "PlayerSpawn",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1543,9 +1544,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* PlayerUpdate */12 :
+      case "PlayerUpdate" :
           return {
-                  TAG: /* PlayerUpdate */12,
+                  TAG: "PlayerUpdate",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1553,10 +1554,10 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* PlayerActive */13 :
+      case "PlayerActive" :
           if (fromServer) {
             return {
-                    TAG: /* PlayerActive */13,
+                    TAG: "PlayerActive",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -1567,9 +1568,9 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* PlayerHealth */14 :
+      case "PlayerHealth" :
           return {
-                  TAG: /* PlayerHealth */14,
+                  TAG: "PlayerHealth",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1577,9 +1578,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* TileModify */15 :
+      case "TileModify" :
           return {
-                  TAG: /* TileModify */15,
+                  TAG: "TileModify",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1587,10 +1588,10 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* TimeSet */16 :
+      case "TimeSet" :
           if (fromServer) {
             return {
-                    TAG: /* TimeSet */16,
+                    TAG: "TimeSet",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -1601,9 +1602,9 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* DoorUse */17 :
+      case "DoorUse" :
           return {
-                  TAG: /* DoorUse */17,
+                  TAG: "DoorUse",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1611,9 +1612,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* TileSquareSend */18 :
+      case "TileSquareSend" :
           return {
-                  TAG: /* TileSquareSend */18,
+                  TAG: "TileSquareSend",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1621,9 +1622,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* ItemDropUpdate */19 :
+      case "ItemDropUpdate" :
           return {
-                  TAG: /* ItemDropUpdate */19,
+                  TAG: "ItemDropUpdate",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1631,9 +1632,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* ItemOwner */20 :
+      case "ItemOwner" :
           return {
-                  TAG: /* ItemOwner */20,
+                  TAG: "ItemOwner",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1641,10 +1642,10 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* NpcUpdate */21 :
+      case "NpcUpdate" :
           if (fromServer) {
             return {
-                    TAG: /* NpcUpdate */21,
+                    TAG: "NpcUpdate",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -1655,9 +1656,9 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* NpcItemStrike */22 :
+      case "NpcItemStrike" :
           return {
-                  TAG: /* NpcItemStrike */22,
+                  TAG: "NpcItemStrike",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1665,9 +1666,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* ProjectileSync */23 :
+      case "ProjectileSync" :
           return {
-                  TAG: /* ProjectileSync */23,
+                  TAG: "ProjectileSync",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1675,9 +1676,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* NpcStrike */24 :
+      case "NpcStrike" :
           return {
-                  TAG: /* NpcStrike */24,
+                  TAG: "NpcStrike",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1685,9 +1686,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* ProjectileDestroy */25 :
+      case "ProjectileDestroy" :
           return {
-                  TAG: /* ProjectileDestroy */25,
+                  TAG: "ProjectileDestroy",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1695,9 +1696,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* PvpToggle */26 :
+      case "PvpToggle" :
           return {
-                  TAG: /* PvpToggle */26,
+                  TAG: "PvpToggle",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1705,12 +1706,12 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* ChestOpen */27 :
+      case "ChestOpen" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* ChestOpen */27,
+                    TAG: "ChestOpen",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -1719,9 +1720,9 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* ChestItem */28 :
+      case "ChestItem" :
           return {
-                  TAG: /* ChestItem */28,
+                  TAG: "ChestItem",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1729,9 +1730,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* ActiveContainerSync */29 :
+      case "ActiveContainerSync" :
           return {
-                  TAG: /* ActiveContainerSync */29,
+                  TAG: "ActiveContainerSync",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1739,9 +1740,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* ChestPlace */30 :
+      case "ChestPlace" :
           return {
-                  TAG: /* ChestPlace */30,
+                  TAG: "ChestPlace",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1749,9 +1750,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* HealEffect */31 :
+      case "HealEffect" :
           return {
-                  TAG: /* HealEffect */31,
+                  TAG: "HealEffect",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1759,9 +1760,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* Zones */32 :
+      case "Zones" :
           return {
-                  TAG: /* Zones */32,
+                  TAG: "Zones",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1769,10 +1770,10 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* PasswordRequired */33 :
+      case "PasswordRequired" :
           if (fromServer) {
             return {
-                    TAG: /* PasswordRequired */33,
+                    TAG: "PasswordRequired",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -1783,12 +1784,12 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* PasswordSend */34 :
+      case "PasswordSend" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* PasswordSend */34,
+                    TAG: "PasswordSend",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -1797,10 +1798,10 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* ItemOwnerRemove */35 :
+      case "ItemOwnerRemove" :
           if (fromServer) {
             return {
-                    TAG: /* ItemOwnerRemove */35,
+                    TAG: "ItemOwnerRemove",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -1811,9 +1812,9 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* NpcTalk */36 :
+      case "NpcTalk" :
           return {
-                  TAG: /* NpcTalk */36,
+                  TAG: "NpcTalk",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1821,9 +1822,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* PlayerAnimation */37 :
+      case "PlayerAnimation" :
           return {
-                  TAG: /* PlayerAnimation */37,
+                  TAG: "PlayerAnimation",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1831,9 +1832,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* PlayerMana */38 :
+      case "PlayerMana" :
           return {
-                  TAG: /* PlayerMana */38,
+                  TAG: "PlayerMana",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1841,9 +1842,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* ManaEffect */39 :
+      case "ManaEffect" :
           return {
-                  TAG: /* ManaEffect */39,
+                  TAG: "ManaEffect",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1851,9 +1852,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* PlayerTeam */40 :
+      case "PlayerTeam" :
           return {
-                  TAG: /* PlayerTeam */40,
+                  TAG: "PlayerTeam",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1861,12 +1862,12 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* SignRead */41 :
+      case "SignRead" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* SignRead */41,
+                    TAG: "SignRead",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -1875,9 +1876,9 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* SignNew */42 :
+      case "SignNew" :
           return {
-                  TAG: /* SignNew */42,
+                  TAG: "SignNew",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1885,9 +1886,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* LiquidSet */43 :
+      case "LiquidSet" :
           return {
-                  TAG: /* LiquidSet */43,
+                  TAG: "LiquidSet",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1895,10 +1896,10 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* PlayerSpawnSelf */44 :
+      case "PlayerSpawnSelf" :
           if (fromServer) {
             return {
-                    TAG: /* PlayerSpawnSelf */44,
+                    TAG: "PlayerSpawnSelf",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -1909,9 +1910,9 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* PlayerBuffsSet */45 :
+      case "PlayerBuffsSet" :
           return {
-                  TAG: /* PlayerBuffsSet */45,
+                  TAG: "PlayerBuffsSet",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1919,9 +1920,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* NpcSpecialEffect */46 :
+      case "NpcSpecialEffect" :
           return {
-                  TAG: /* NpcSpecialEffect */46,
+                  TAG: "NpcSpecialEffect",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1929,9 +1930,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* ChestOrTempleUnlock */47 :
+      case "ChestOrTempleUnlock" :
           return {
-                  TAG: /* ChestOrTempleUnlock */47,
+                  TAG: "ChestOrTempleUnlock",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1939,9 +1940,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* NpcBuffAdd */48 :
+      case "NpcBuffAdd" :
           return {
-                  TAG: /* NpcBuffAdd */48,
+                  TAG: "NpcBuffAdd",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1949,10 +1950,10 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* NpcBuffUpdate */49 :
+      case "NpcBuffUpdate" :
           if (fromServer) {
             return {
-                    TAG: /* NpcBuffUpdate */49,
+                    TAG: "NpcBuffUpdate",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -1963,9 +1964,9 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* PlayerBuffAdd */50 :
+      case "PlayerBuffAdd" :
           return {
-                  TAG: /* PlayerBuffAdd */50,
+                  TAG: "PlayerBuffAdd",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1973,9 +1974,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* NpcNameUpdate */51 :
+      case "NpcNameUpdate" :
           return {
-                  TAG: /* NpcNameUpdate */51,
+                  TAG: "NpcNameUpdate",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -1983,10 +1984,10 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* GoodEvilUpdate */52 :
+      case "GoodEvilUpdate" :
           if (fromServer) {
             return {
-                    TAG: /* GoodEvilUpdate */52,
+                    TAG: "GoodEvilUpdate",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -1997,9 +1998,9 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* HarpPlay */53 :
+      case "HarpPlay" :
           return {
-                  TAG: /* HarpPlay */53,
+                  TAG: "HarpPlay",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2007,9 +2008,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* SwitchHit */54 :
+      case "SwitchHit" :
           return {
-                  TAG: /* SwitchHit */54,
+                  TAG: "SwitchHit",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2017,9 +2018,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* NpcHomeUpdate */55 :
+      case "NpcHomeUpdate" :
           return {
-                  TAG: /* NpcHomeUpdate */55,
+                  TAG: "NpcHomeUpdate",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2027,12 +2028,12 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* BossOrInvasionSpawn */56 :
+      case "BossOrInvasionSpawn" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* BossOrInvasionSpawn */56,
+                    TAG: "BossOrInvasionSpawn",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2041,9 +2042,9 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* PlayerDodge */57 :
+      case "PlayerDodge" :
           return {
-                  TAG: /* PlayerDodge */57,
+                  TAG: "PlayerDodge",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2051,9 +2052,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* TilePaint */58 :
+      case "TilePaint" :
           return {
-                  TAG: /* TilePaint */58,
+                  TAG: "TilePaint",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2061,9 +2062,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* WallPaint */59 :
+      case "WallPaint" :
           return {
-                  TAG: /* WallPaint */59,
+                  TAG: "WallPaint",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2071,9 +2072,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* Teleport */60 :
+      case "Teleport" :
           return {
-                  TAG: /* Teleport */60,
+                  TAG: "Teleport",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2081,9 +2082,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* PlayerHealOther */61 :
+      case "PlayerHealOther" :
           return {
-                  TAG: /* PlayerHealOther */61,
+                  TAG: "PlayerHealOther",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2091,9 +2092,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* DimensionsUpdate */62 :
+      case "DimensionsUpdate" :
           return {
-                  TAG: /* DimensionsUpdate */62,
+                  TAG: "DimensionsUpdate",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2101,12 +2102,12 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* ClientUuid */63 :
+      case "ClientUuid" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* ClientUuid */63,
+                    TAG: "ClientUuid",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2115,9 +2116,9 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* ChestName */64 :
+      case "ChestName" :
           return {
-                  TAG: /* ChestName */64,
+                  TAG: "ChestName",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2125,12 +2126,12 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* CatchNpc */65 :
+      case "CatchNpc" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* CatchNpc */65,
+                    TAG: "CatchNpc",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2139,12 +2140,12 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* ReleaseNpc */66 :
+      case "ReleaseNpc" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* ReleaseNpc */66,
+                    TAG: "ReleaseNpc",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2153,10 +2154,10 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* TravellingMerchantInventory */67 :
+      case "TravellingMerchantInventory" :
           if (fromServer) {
             return {
-                    TAG: /* TravellingMerchantInventory */67,
+                    TAG: "TravellingMerchantInventory",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2167,9 +2168,9 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* TeleportationPotion */68 :
+      case "TeleportationPotion" :
           return {
-                  TAG: /* TeleportationPotion */68,
+                  TAG: "TeleportationPotion",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2177,10 +2178,10 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* AnglerQuest */69 :
+      case "AnglerQuest" :
           if (fromServer) {
             return {
-                    TAG: /* AnglerQuest */69,
+                    TAG: "AnglerQuest",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2191,12 +2192,12 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* AnglerQuestComplete */70 :
+      case "AnglerQuestComplete" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* AnglerQuestComplete */70,
+                    TAG: "AnglerQuestComplete",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2205,9 +2206,9 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* AnglerQuestsCompletedAmount */71 :
+      case "AnglerQuestsCompletedAmount" :
           return {
-                  TAG: /* AnglerQuestsCompletedAmount */71,
+                  TAG: "AnglerQuestsCompletedAmount",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2215,10 +2216,10 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* TemporaryAnimationCreate */72 :
+      case "TemporaryAnimationCreate" :
           if (fromServer) {
             return {
-                    TAG: /* TemporaryAnimationCreate */72,
+                    TAG: "TemporaryAnimationCreate",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2229,10 +2230,10 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* InvasionProgressReport */73 :
+      case "InvasionProgressReport" :
           if (fromServer) {
             return {
-                    TAG: /* InvasionProgressReport */73,
+                    TAG: "InvasionProgressReport",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2243,9 +2244,9 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* ObjectPlace */74 :
+      case "ObjectPlace" :
           return {
-                  TAG: /* ObjectPlace */74,
+                  TAG: "ObjectPlace",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2253,10 +2254,10 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* PlayerChestIndexSync */75 :
+      case "PlayerChestIndexSync" :
           if (fromServer) {
             return {
-                    TAG: /* PlayerChestIndexSync */75,
+                    TAG: "PlayerChestIndexSync",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2267,10 +2268,10 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* CombatNumberCreate */76 :
+      case "CombatNumberCreate" :
           if (fromServer) {
             return {
-                    TAG: /* CombatNumberCreate */76,
+                    TAG: "CombatNumberCreate",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2281,9 +2282,9 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* NetModuleLoad */77 :
+      case "NetModuleLoad" :
           return {
-                  TAG: /* NetModuleLoad */77,
+                  TAG: "NetModuleLoad",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2291,10 +2292,10 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* NpcKillCount */78 :
+      case "NpcKillCount" :
           if (fromServer) {
             return {
-                    TAG: /* NpcKillCount */78,
+                    TAG: "NpcKillCount",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2305,9 +2306,9 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* PlayerStealth */79 :
+      case "PlayerStealth" :
           return {
-                  TAG: /* PlayerStealth */79,
+                  TAG: "PlayerStealth",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2315,12 +2316,12 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* ItemForceIntoNearestChest */80 :
+      case "ItemForceIntoNearestChest" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* ItemForceIntoNearestChest */80,
+                    TAG: "ItemForceIntoNearestChest",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2329,10 +2330,10 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* TileEntityUpdate */81 :
+      case "TileEntityUpdate" :
           if (fromServer) {
             return {
-                    TAG: /* TileEntityUpdate */81,
+                    TAG: "TileEntityUpdate",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2343,12 +2344,12 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* TileEntityPlace */82 :
+      case "TileEntityPlace" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* TileEntityPlace */82,
+                    TAG: "TileEntityPlace",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2357,10 +2358,10 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* ItemDropModify */83 :
+      case "ItemDropModify" :
           if (fromServer) {
             return {
-                    TAG: /* ItemDropModify */83,
+                    TAG: "ItemDropModify",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2371,12 +2372,12 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* ItemFramePlace */84 :
+      case "ItemFramePlace" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* ItemFramePlace */84,
+                    TAG: "ItemFramePlace",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2385,9 +2386,9 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* ItemDropInstancedUpdate */85 :
+      case "ItemDropInstancedUpdate" :
           return {
-                  TAG: /* ItemDropInstancedUpdate */85,
+                  TAG: "ItemDropInstancedUpdate",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2395,10 +2396,10 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* EmoteBubble */86 :
+      case "EmoteBubble" :
           if (fromServer) {
             return {
-                    TAG: /* EmoteBubble */86,
+                    TAG: "EmoteBubble",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2409,9 +2410,9 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* ExtraValueSync */87 :
+      case "ExtraValueSync" :
           return {
-                  TAG: /* ExtraValueSync */87,
+                  TAG: "ExtraValueSync",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2419,9 +2420,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* SocialHandshake */88 :
+      case "SocialHandshake" :
           return {
-                  TAG: /* SocialHandshake */88,
+                  TAG: "SocialHandshake",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2429,9 +2430,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* Unused */89 :
+      case "Unused" :
           return {
-                  TAG: /* Unused */89,
+                  TAG: "Unused",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2439,12 +2440,12 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* PortalKill */90 :
+      case "PortalKill" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* PortalKill */90,
+                    TAG: "PortalKill",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2453,9 +2454,9 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* PlayerTeleportPortal */91 :
+      case "PlayerTeleportPortal" :
           return {
-                  TAG: /* PlayerTeleportPortal */91,
+                  TAG: "PlayerTeleportPortal",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2463,10 +2464,10 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* NpcKilledNotification */92 :
+      case "NpcKilledNotification" :
           if (fromServer) {
             return {
-                    TAG: /* NpcKilledNotification */92,
+                    TAG: "NpcKilledNotification",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2477,10 +2478,10 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* EventNotification */93 :
+      case "EventNotification" :
           if (fromServer) {
             return {
-                    TAG: /* EventNotification */93,
+                    TAG: "EventNotification",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2491,9 +2492,9 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* MinionTargetUpdate */94 :
+      case "MinionTargetUpdate" :
           return {
-                  TAG: /* MinionTargetUpdate */94,
+                  TAG: "MinionTargetUpdate",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2501,9 +2502,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* NpcTeleportPortal */95 :
+      case "NpcTeleportPortal" :
           return {
-                  TAG: /* NpcTeleportPortal */95,
+                  TAG: "NpcTeleportPortal",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2511,10 +2512,10 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* ShieldStrengthsUpdate */96 :
+      case "ShieldStrengthsUpdate" :
           if (fromServer) {
             return {
-                    TAG: /* ShieldStrengthsUpdate */96,
+                    TAG: "ShieldStrengthsUpdate",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2525,9 +2526,9 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* NebulaLevelUp */97 :
+      case "NebulaLevelUp" :
           return {
-                  TAG: /* NebulaLevelUp */97,
+                  TAG: "NebulaLevelUp",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2535,10 +2536,10 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* MoonLordCountdown */98 :
+      case "MoonLordCountdown" :
           if (fromServer) {
             return {
-                    TAG: /* MoonLordCountdown */98,
+                    TAG: "MoonLordCountdown",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2549,10 +2550,10 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* NpcShopItem */99 :
+      case "NpcShopItem" :
           if (fromServer) {
             return {
-                    TAG: /* NpcShopItem */99,
+                    TAG: "NpcShopItem",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2563,12 +2564,12 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* GemLockToggle */100 :
+      case "GemLockToggle" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* GemLockToggle */100,
+                    TAG: "GemLockToggle",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2577,10 +2578,10 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* SmokePoof */101 :
+      case "SmokePoof" :
           if (fromServer) {
             return {
-                    TAG: /* SmokePoof */101,
+                    TAG: "SmokePoof",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2591,10 +2592,10 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* ChatMessageSmart */102 :
+      case "ChatMessageSmart" :
           if (fromServer) {
             return {
-                    TAG: /* ChatMessageSmart */102,
+                    TAG: "ChatMessageSmart",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2605,10 +2606,10 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* WiredCannonShot */103 :
+      case "WiredCannonShot" :
           if (fromServer) {
             return {
-                    TAG: /* WiredCannonShot */103,
+                    TAG: "WiredCannonShot",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2619,12 +2620,12 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* MassWireOperation */104 :
+      case "MassWireOperation" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* MassWireOperation */104,
+                    TAG: "MassWireOperation",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2633,10 +2634,10 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* MassWireOperationPay */105 :
+      case "MassWireOperationPay" :
           if (fromServer) {
             return {
-                    TAG: /* MassWireOperationPay */105,
+                    TAG: "MassWireOperationPay",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2647,12 +2648,12 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* PartyToggle */106 :
+      case "PartyToggle" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* PartyToggle */106,
+                    TAG: "PartyToggle",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2661,9 +2662,9 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* TreeGrowFx */107 :
+      case "TreeGrowFx" :
           return {
-                  TAG: /* TreeGrowFx */107,
+                  TAG: "TreeGrowFx",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2671,12 +2672,12 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* CrystalInvasionStart */108 :
+      case "CrystalInvasionStart" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* CrystalInvasionStart */108,
+                    TAG: "CrystalInvasionStart",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2685,10 +2686,10 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* CrystalInvasionWipeAll */109 :
+      case "CrystalInvasionWipeAll" :
           if (fromServer) {
             return {
-                    TAG: /* CrystalInvasionWipeAll */109,
+                    TAG: "CrystalInvasionWipeAll",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2699,9 +2700,9 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* MinionAttackTargetUpdate */110 :
+      case "MinionAttackTargetUpdate" :
           return {
-                  TAG: /* MinionAttackTargetUpdate */110,
+                  TAG: "MinionAttackTargetUpdate",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2709,10 +2710,10 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* CrystalInvasionSendWaitTime */111 :
+      case "CrystalInvasionSendWaitTime" :
           if (fromServer) {
             return {
-                    TAG: /* CrystalInvasionSendWaitTime */111,
+                    TAG: "CrystalInvasionSendWaitTime",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2723,9 +2724,9 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* PlayerDamage */112 :
+      case "PlayerDamage" :
           return {
-                  TAG: /* PlayerDamage */112,
+                  TAG: "PlayerDamage",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2733,9 +2734,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* PlayerDeath */113 :
+      case "PlayerDeath" :
           return {
-                  TAG: /* PlayerDeath */113,
+                  TAG: "PlayerDeath",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2743,10 +2744,10 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* CombatTextCreate */114 :
+      case "CombatTextCreate" :
           if (fromServer) {
             return {
-                    TAG: /* CombatTextCreate */114,
+                    TAG: "CombatTextCreate",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2757,12 +2758,12 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* Emoji */115 :
+      case "Emoji" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* Emoji */115,
+                    TAG: "Emoji",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2771,9 +2772,9 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* TileEntityDisplayDollItemSync */116 :
+      case "TileEntityDisplayDollItemSync" :
           return {
-                  TAG: /* TileEntityDisplayDollItemSync */116,
+                  TAG: "TileEntityDisplayDollItemSync",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2781,9 +2782,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* TileEntityInteractionRequest */117 :
+      case "TileEntityInteractionRequest" :
           return {
-                  TAG: /* TileEntityInteractionRequest */117,
+                  TAG: "TileEntityInteractionRequest",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2791,12 +2792,12 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* WeaponsRackTryPlacing */118 :
+      case "WeaponsRackTryPlacing" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* WeaponsRackTryPlacing */118,
+                    TAG: "WeaponsRackTryPlacing",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2805,9 +2806,9 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* TileEntityHatRackItemSync */119 :
+      case "TileEntityHatRackItemSync" :
           return {
-                  TAG: /* TileEntityHatRackItemSync */119,
+                  TAG: "TileEntityHatRackItemSync",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2815,9 +2816,9 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* TilePickingSync */120 :
+      case "TilePickingSync" :
           return {
-                  TAG: /* TilePickingSync */120,
+                  TAG: "TilePickingSync",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2825,10 +2826,10 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* RevengeMarkerSync */121 :
+      case "RevengeMarkerSync" :
           if (fromServer) {
             return {
-                    TAG: /* RevengeMarkerSync */121,
+                    TAG: "RevengeMarkerSync",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2839,10 +2840,10 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* RevengeMarkerRemove */122 :
+      case "RevengeMarkerRemove" :
           if (fromServer) {
             return {
-                    TAG: /* RevengeMarkerRemove */122,
+                    TAG: "RevengeMarkerRemove",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2853,9 +2854,9 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* GolfBallLandInCup */123 :
+      case "GolfBallLandInCup" :
           return {
-                  TAG: /* GolfBallLandInCup */123,
+                  TAG: "GolfBallLandInCup",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2863,10 +2864,10 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* ClientFinishConnectingToServer */124 :
+      case "ClientFinishConnectingToServer" :
           if (fromServer) {
             return {
-                    TAG: /* ClientFinishConnectingToServer */124,
+                    TAG: "ClientFinishConnectingToServer",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2877,12 +2878,12 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* NpcFishOut */125 :
+      case "NpcFishOut" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* NpcFishOut */125,
+                    TAG: "NpcFishOut",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2891,10 +2892,10 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* NpcTamper */126 :
+      case "NpcTamper" :
           if (fromServer) {
             return {
-                    TAG: /* NpcTamper */126,
+                    TAG: "NpcTamper",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2905,10 +2906,10 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* LegacySoundPlay */127 :
+      case "LegacySoundPlay" :
           if (fromServer) {
             return {
-                    TAG: /* LegacySoundPlay */127,
+                    TAG: "LegacySoundPlay",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2919,12 +2920,12 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* FoodPlatterTryPlacing */128 :
+      case "FoodPlatterTryPlacing" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* FoodPlatterTryPlacing */128,
+                    TAG: "FoodPlatterTryPlacing",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2933,9 +2934,9 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* PlayerLuckFactorsUpdate */129 :
+      case "PlayerLuckFactorsUpdate" :
           return {
-                  TAG: /* PlayerLuckFactorsUpdate */129,
+                  TAG: "PlayerLuckFactorsUpdate",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2943,10 +2944,10 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* PlayerDead */130 :
+      case "PlayerDead" :
           if (fromServer) {
             return {
-                    TAG: /* PlayerDead */130,
+                    TAG: "PlayerDead",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2957,9 +2958,9 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      case /* CavernMonsterTypeSync */131 :
+      case "CavernMonsterTypeSync" :
           return {
-                  TAG: /* CavernMonsterTypeSync */131,
+                  TAG: "CavernMonsterTypeSync",
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
@@ -2967,12 +2968,12 @@ function simpleParseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case /* NpcBuffRemovalRequest */132 :
+      case "NpcBuffRemovalRequest" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* NpcBuffRemovalRequest */132,
+                    TAG: "NpcBuffRemovalRequest",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2981,12 +2982,12 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* ClientSyncedInventory */133 :
+      case "ClientSyncedInventory" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: /* ClientSyncedInventory */133,
+                    TAG: "ClientSyncedInventory",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -2995,10 +2996,10 @@ function simpleParseLazy(buffer, fromServer) {
                     }
                   };
           }
-      case /* CountsAsHostForGameplaySet */134 :
+      case "CountsAsHostForGameplaySet" :
           if (fromServer) {
             return {
-                    TAG: /* CountsAsHostForGameplaySet */134,
+                    TAG: "CountsAsHostForGameplaySet",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
@@ -3009,7 +3010,8 @@ function simpleParseLazy(buffer, fromServer) {
           } else {
             return ;
           }
-      
+      default:
+        return ;
     }
   }
   catch (_e){
@@ -3020,7 +3022,7 @@ function simpleParseLazy(buffer, fromServer) {
 function parse(buffer, fromServer) {
   return Belt_Option.map(simpleParse(buffer, fromServer), (function (packet) {
                 return {
-                        TAG: /* SerializeNotNecessary */1,
+                        TAG: "SerializeNotNecessary",
                         _0: packet,
                         _1: buffer
                       };
@@ -3030,15 +3032,15 @@ function parse(buffer, fromServer) {
 function parseAsLatest(buffer, fromServer) {
   return Belt_Option.map(simpleParse(buffer, fromServer), (function (packet) {
                 var packet$1 = Packetv1405$DarkgamingRescriptTerrariapacket.toLatest(packet, fromServer);
-                if (packet$1.TAG === /* Same */0) {
+                if (packet$1.TAG === "Same") {
                   return {
-                          TAG: /* SerializeNotNecessary */1,
+                          TAG: "SerializeNotNecessary",
                           _0: packet$1._0,
                           _1: buffer
                         };
                 } else {
                   return {
-                          TAG: /* ShouldSerialize */0,
+                          TAG: "ShouldSerialize",
                           _0: packet$1._0
                         };
                 }

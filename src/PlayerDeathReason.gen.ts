@@ -1,8 +1,8 @@
 /* TypeScript file generated from PlayerDeathReason.resi by genType. */
-/* eslint-disable import/first */
 
+/* eslint-disable */
+/* tslint:disable */
 
-// tslint:disable-next-line:interface-over-type-literal
 export type other = 
     "FallDamage"
   | "Drowning"
@@ -20,7 +20,6 @@ export type other =
   | "ChaosState2Male"
   | "ChaosState3Female";
 
-// tslint:disable-next-line:interface-over-type-literal
 export type t = {
   readonly killerPlayerId: (undefined | number); 
   readonly killerNpcId: (undefined | number); 

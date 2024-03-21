@@ -1,9 +1,9 @@
 /* TypeScript file generated from Packet_WorldInfo.resi by genType. */
-/* eslint-disable import/first */
 
+/* eslint-disable */
+/* tslint:disable */
 
-// @ts-ignore: Implicit any on import
-const Packet_WorldInfoBS = require('./Packet_WorldInfo.bs');
+const Packet_WorldInfoJS = require('./Packet_WorldInfo.bs.js');
 
 import type {BigInt_t as NodeJs_BigInt_t} from '../../src/shims/NodeJs.shim';
 
@@ -11,7 +11,6 @@ import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 
 import type {t as Array16_t} from '../../src/Array16.gen';
 
-// tslint:disable-next-line:interface-over-type-literal
 export type eventInfo = {
   readonly shadowOrbSmashed: boolean; 
   readonly killedBoss1: boolean; 
@@ -69,10 +68,27 @@ export type eventInfo = {
   readonly killedEmpressOfLight: boolean; 
   readonly killedQueenSlime: boolean; 
   readonly getGoodWorld: boolean; 
-  readonly tenthAnniversaryWorld: boolean
+  readonly tenthAnniversaryWorld: boolean; 
+  readonly dontStarveWorld: boolean; 
+  readonly downedDeerClops: boolean; 
+  readonly notTheBeesWorld: boolean; 
+  readonly remixWorld: boolean; 
+  readonly unlockedSlimeBlueSpawn: boolean; 
+  readonly combatBookVolumeTwoWasUsed: boolean; 
+  readonly peddlersSatchelWasUsed: boolean; 
+  readonly unlockedSlimeGreenSpawn: boolean; 
+  readonly unlockedSlimeOldSpawn: boolean; 
+  readonly unlockedSlimePurpleSpawn: boolean; 
+  readonly unlockedSlimeRainbowSpawn: boolean; 
+  readonly unlockedSlimeRedSpawn: boolean; 
+  readonly unlockedSlimeYellowSpawn: boolean; 
+  readonly unlockedSlimeCopperSpawn: boolean; 
+  readonly fastForwardTimeToDusk: boolean; 
+  readonly noTrapsWorld: boolean; 
+  readonly zenithWorld: boolean; 
+  readonly unlockedTruffleSpawn: boolean
 };
 
-// tslint:disable-next-line:interface-over-type-literal
 export type t = {
   readonly time: number; 
   readonly dayAndMoonInfo: number; 
@@ -148,6 +164,6 @@ export type t = {
   readonly sandstormSeverity: number
 };
 
-export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = Packet_WorldInfoBS.parse;
+export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = Packet_WorldInfoJS.parse as any;
 
-export const toBuffer: (_1:t) => NodeJs_Buffer_t = Packet_WorldInfoBS.toBuffer;
+export const toBuffer: (_1:t) => NodeJs_Buffer_t = Packet_WorldInfoJS.toBuffer as any;

@@ -1,5 +1,3 @@
-module Option = Belt.Option
-
 type t = {
   target: int,
   deathReason: PlayerDeathReason.t,

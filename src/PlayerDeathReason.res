@@ -1,15 +1,5 @@
 module Option = Belt.Option
 
-type reason =
-  | Pvp
-  | Npc
-  | Projectile
-  | Other
-  | Projectile2
-  | Pvp2
-  | Pvp3
-  | CustomModification
-
 type other =
   | FallDamage
   | Drowning
@@ -138,7 +128,7 @@ module Decode = {
 }
 
 module Encode = {
-  let {packInt16, packByte, packString, setType, data} = module(PacketFactory.ManagedPacketWriter)
+  let {packInt16, packByte, packString} = module(PacketFactory.ManagedPacketWriter)
   let packFlags = (
     writer: PacketFactory.ManagedPacketWriter.t,
     self: t,

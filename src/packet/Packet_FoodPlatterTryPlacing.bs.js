@@ -49,7 +49,7 @@ function data(prim) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* FoodPlatterTryPlacing */128)).packInt16(self.x).packInt16(self.y).packInt16(self.itemId).packInt16(self.prefix).packInt16(self.stack).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("FoodPlatterTryPlacing")).packInt16(self.x).packInt16(self.y).packInt16(self.itemId).packInt16(self.prefix).packInt16(self.stack).data;
 }
 
 var Encode = {

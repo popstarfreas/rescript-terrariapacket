@@ -17,7 +17,7 @@ function parse(payload) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* ItemOwner */20)).packInt16(self.itemDropId).packByte(self.owner).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("ItemOwner")).packInt16(self.itemDropId).packByte(self.owner).data;
 }
 
 exports.parse = parse;

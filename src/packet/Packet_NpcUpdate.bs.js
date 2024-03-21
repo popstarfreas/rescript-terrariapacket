@@ -56,19 +56,19 @@ function parse(payload) {
   var strengthMultiplier = npcFlags2.strengthMultiplier ? reader.readSingle() : undefined;
   var life;
   if (npcFlags1.lifeMax) {
-    life = /* Max */0;
+    life = "Max";
   } else {
     var lifeBytes = reader.readByte();
     switch (lifeBytes) {
       case 1 :
           life = {
-            TAG: /* Byte */0,
+            TAG: "Byte",
             _0: reader.readByte()
           };
           break;
       case 2 :
           life = {
-            TAG: /* Int16 */1,
+            TAG: "Int16",
             _0: reader.readInt16()
           };
           break;
@@ -78,7 +78,7 @@ function parse(payload) {
           break;
       case 4 :
           life = {
-            TAG: /* Int32 */2,
+            TAG: "Int32",
             _0: reader.readInt32()
           };
           break;
@@ -118,7 +118,7 @@ function parse(payload) {
 
 function npcFlags1(self) {
   var match = self.ai;
-  return BitFlags$DarkgamingRescriptTerrariapacket.toByte(BitFlags$DarkgamingRescriptTerrariapacket.fromFlags(self.directionX, self.directionY, Belt_Option.isSome(match[0]), Belt_Option.isSome(match[1]), Belt_Option.isSome(match[2]), Belt_Option.isSome(match[3]), self.spriteDirection, self.life === /* Max */0));
+  return BitFlags$DarkgamingRescriptTerrariapacket.toByte(BitFlags$DarkgamingRescriptTerrariapacket.fromFlags(self.directionX, self.directionY, Belt_Option.isSome(match[0]), Belt_Option.isSome(match[1]), Belt_Option.isSome(match[2]), Belt_Option.isSome(match[3]), self.spriteDirection, self.life === "Max"));
 }
 
 function npcFlags2(self) {
@@ -162,15 +162,15 @@ function packStrengthMultiplier(writer, strengthMultiplier) {
 }
 
 function packLife(writer, life) {
-  if (typeof life === "number") {
+  if (typeof life !== "object") {
     return writer;
   }
-  switch (life.TAG | 0) {
-    case /* Byte */0 :
+  switch (life.TAG) {
+    case "Byte" :
         return writer.packByte(1).packByte(life._0);
-    case /* Int16 */1 :
+    case "Int16" :
         return writer.packByte(2).packInt16(life._0);
-    case /* Int32 */2 :
+    case "Int32" :
         return writer.packByte(4).packInt32(life._0);
     
   }
@@ -185,7 +185,7 @@ function packReleaseOwner(writer, releaseOwner) {
 }
 
 function toBuffer(self) {
-  return packReleaseOwner(packLife(packStrengthMultiplier(packPlayerCountScale(packAi(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* NpcUpdate */21)).packInt16(self.npcSlotId).packSingle(self.x).packSingle(self.y).packSingle(self.vx).packSingle(self.vy).packUInt16(self.target).packByte(npcFlags1(self)).packByte(npcFlags2(self)), self.ai).packInt16(self.npcTypeId), self.playerCountScale), self.strengthMultiplier), self.life), self.releaseOwner).data;
+  return packReleaseOwner(packLife(packStrengthMultiplier(packPlayerCountScale(packAi(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("NpcUpdate")).packInt16(self.npcSlotId).packSingle(self.x).packSingle(self.y).packSingle(self.vx).packSingle(self.vy).packUInt16(self.target).packByte(npcFlags1(self)).packByte(npcFlags2(self)), self.ai).packInt16(self.npcTypeId), self.playerCountScale), self.strengthMultiplier), self.life), self.releaseOwner).data;
 }
 
 exports.parse = parse;

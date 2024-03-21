@@ -27,7 +27,7 @@ function packBuffs(writer, buffs) {
 }
 
 function toBuffer(self) {
-  return packBuffs(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* PlayerBuffsSet */45)).packByte(self.playerId), self.buffs).data;
+  return packBuffs(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("PlayerBuffsSet")).packByte(self.playerId), self.buffs).data;
 }
 
 exports.parse = parse;

@@ -1,13 +1,12 @@
 /* TypeScript file generated from Packet_ItemDropUpdate.resi by genType. */
-/* eslint-disable import/first */
 
+/* eslint-disable */
+/* tslint:disable */
 
-// @ts-ignore: Implicit any on import
-const Packet_ItemDropUpdateBS = require('./Packet_ItemDropUpdate.bs');
+const Packet_ItemDropUpdateJS = require('./Packet_ItemDropUpdate.bs.js');
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 
-// tslint:disable-next-line:interface-over-type-literal
 export type t = {
   readonly itemDropId: number; 
   readonly x: number; 
@@ -20,6 +19,6 @@ export type t = {
   readonly itemId: number
 };
 
-export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = Packet_ItemDropUpdateBS.parse;
+export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = Packet_ItemDropUpdateJS.parse as any;
 
-export const toBuffer: (_1:t) => NodeJs_Buffer_t = Packet_ItemDropUpdateBS.toBuffer;
+export const toBuffer: (_1:t) => NodeJs_Buffer_t = Packet_ItemDropUpdateJS.toBuffer as any;

@@ -7,23 +7,37 @@ var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 var PacketType$DarkgamingRescriptTerrariapacket = require("../PacketType.bs.js");
 
 function toInt(action) {
-  return action;
+  switch (action) {
+    case "PlaceChest" :
+        return 0;
+    case "KillChest" :
+        return 1;
+    case "PlaceDresser" :
+        return 2;
+    case "KillDresser" :
+        return 3;
+    case "PlaceContainer" :
+        return 4;
+    case "KillContainer" :
+        return 5;
+    
+  }
 }
 
 function fromInt(action) {
   switch (action) {
     case 0 :
-        return /* PlaceChest */0;
+        return "PlaceChest";
     case 1 :
-        return /* KillChest */1;
+        return "KillChest";
     case 2 :
-        return /* PlaceDresser */2;
+        return "PlaceDresser";
     case 3 :
-        return /* KillDresser */3;
+        return "KillDresser";
     case 4 :
-        return /* PlaceContainer */4;
+        return "PlaceContainer";
     case 5 :
-        return /* KillContainer */5;
+        return "KillContainer";
     default:
       return ;
   }
@@ -31,17 +45,17 @@ function fromInt(action) {
 
 function toString(action) {
   switch (action) {
-    case /* PlaceChest */0 :
+    case "PlaceChest" :
         return "PlaceChest";
-    case /* KillChest */1 :
+    case "KillChest" :
         return "KillChest";
-    case /* PlaceDresser */2 :
+    case "PlaceDresser" :
         return "PlaceDresser";
-    case /* KillDresser */3 :
+    case "KillDresser" :
         return "KillDresser";
-    case /* PlaceContainer */4 :
+    case "PlaceContainer" :
         return "PlaceContainer";
-    case /* KillContainer */5 :
+    case "KillContainer" :
         return "KillContainer";
     
   }
@@ -73,11 +87,33 @@ function parse(payload) {
 }
 
 function packAction(writer, action) {
-  return writer.packByte(action);
+  var $$byte;
+  switch (action) {
+    case "PlaceChest" :
+        $$byte = 0;
+        break;
+    case "KillChest" :
+        $$byte = 1;
+        break;
+    case "PlaceDresser" :
+        $$byte = 2;
+        break;
+    case "KillDresser" :
+        $$byte = 3;
+        break;
+    case "PlaceContainer" :
+        $$byte = 4;
+        break;
+    case "KillContainer" :
+        $$byte = 5;
+        break;
+    
+  }
+  return writer.packByte($$byte);
 }
 
 function toBuffer(self) {
-  return packAction(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* ChestPlace */30)), self.action).packInt16(self.x).packInt16(self.y).packInt16(self.style).packByte(self.id).data;
+  return packAction(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("ChestPlace")), self.action).packInt16(self.x).packInt16(self.y).packInt16(self.style).packByte(self.id).data;
 }
 
 exports.Action = Action;

@@ -442,6 +442,17 @@ let parsePayload = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServ
     Packetv1405.CountsAsHostForGameplaySet.parse(
       payload,
     )->Belt.Option.map(a => Packetv1405.CountsAsHostForGameplaySet(a))
+
+  // Newer packets
+  | (CreditsOrSlimeTransform, true | false) => None
+  | (LucyAxeMessage, true | false) => None
+  | (PiggyBankVoidLensUpdate, true | false) => None
+  | (DungeonDefendersEventAttemptSkipWait, true | false) => None
+  | (HaveDryadDoStardewAnimation, true | false) => None
+  | (ItemDropShimmeredUpdate, true | false) => None
+  | (ShimmerEffectOrCoinLuck, true | false) => None
+  | (LoadoutSwitch, true | false) => None
+  | (ItemDropProtectedUpdate, true | false) => None
   }
 
 let parsePayloadLazy = (
@@ -864,6 +875,17 @@ let parsePayloadLazy = (
         lazy Packetv1405.CountsAsHostForGameplaySet.parse(payload),
       ),
     )
+
+  // Newer packets
+  | (CreditsOrSlimeTransform, true | false) => None
+  | (LucyAxeMessage, true | false) => None
+  | (PiggyBankVoidLensUpdate, true | false) => None
+  | (DungeonDefendersEventAttemptSkipWait, true | false) => None
+  | (HaveDryadDoStardewAnimation, true | false) => None
+  | (ItemDropShimmeredUpdate, true | false) => None
+  | (ShimmerEffectOrCoinLuck, true | false) => None
+  | (LoadoutSwitch, true | false) => None
+  | (ItemDropProtectedUpdate, true | false) => None
   }
 
 let simpleParse = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): option<Packetv1405.t> => {

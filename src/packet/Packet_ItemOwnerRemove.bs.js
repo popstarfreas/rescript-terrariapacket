@@ -32,7 +32,7 @@ function data(prim) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* ItemOwnerRemove */35)).packInt16(self.itemDropId).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("ItemOwnerRemove")).packInt16(self.itemDropId).data;
 }
 
 var Encode = {

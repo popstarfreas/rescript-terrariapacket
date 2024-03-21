@@ -31,21 +31,24 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@popstarfreas/packetfactory@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@popstarfreas/packetfactory/-/packetfactory-5.0.0.tgz#1bb5898498ba781f09e405275e1ef8b499c80aad"
-  integrity sha512-yBAO6L0EUuzyf2LKvezeAwG5tUsjzR3xp/1NUJ2vT5GqtXllkurfY+a1YHm46BbCcF0usE8g6Nms/oZ+IkhQbQ==
+"@popstarfreas/packetfactory@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@popstarfreas/packetfactory/-/packetfactory-6.0.1.tgz#0c854e85682c48c77f9db5068bc19be85e53b00e"
+  integrity sha512-bensx7u02r84M2ev5d+7zSGhvOJyp3axKbTpke7UKYLMncz3XiaJmIYrPQXovwKd3Fyzq3pPPEiG97ZJ8VSRow==
   dependencies:
-    "@popstarfreas/rescript-nodejs" "github:popstarfreas/rescript-nodejs#master"
+    "@popstarfreas/rescript-nodejs" "git+https://github.com/popstarfreas/rescript-nodejs.git#f3bd284"
     utf8 "^2.1.2"
   optionalDependencies:
-    rescript "^10.1.0"
+    rescript "^11.0.0"
 
-"@popstarfreas/rescript-nodejs@github:popstarfreas/rescript-nodejs#master":
-  version "16.0.0"
-  resolved "https://codeload.github.com/popstarfreas/rescript-nodejs/tar.gz/f8b788681e86a7d82c975654d19c1dec7e02a221"
-  dependencies:
-    rescript "10"
+"@popstarfreas/rescript-nodejs@git+https://github.com/popstarfreas/rescript-nodejs.git#f3bd284":
+  version "16.1.0"
+  resolved "git+https://github.com/popstarfreas/rescript-nodejs.git#f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7"
+
+"@rescript/core@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@rescript/core/-/core-1.1.0.tgz#e228a2635665b6b6a3288f7fd58552d5c361e253"
+  integrity sha512-pz/CL8+9hBUTeMpUouvZohNsa5rqIwurlXoa1CZWN0ZKuWjMVjaoQ3V+0NB72J/QBbs6/8W82VABKBaDn3fGCA==
 
 "@types/node@^20.5.9":
   version "20.5.9"
@@ -183,10 +186,10 @@ queue-microtask@^1.2.2:
   resolved "https://registry.yarnpkg.com/queue-microtask/-/queue-microtask-1.2.3.tgz#4929228bbc724dfac43e0efb058caf7b6cfb6243"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
 
-rescript@10, rescript@^10.1.0:
-  version "10.1.4"
-  resolved "https://registry.yarnpkg.com/rescript/-/rescript-10.1.4.tgz#0f37710d371f32a704f17b4e804f66ce3c79a305"
-  integrity sha512-FFKlS9AG/XrLepWsyw7B+A9DtQBPWEPDPDKghV831Y2KGbie+eeFBOS0xtRHp0xbt7S0N2Dm6hhX+kTZQ/3Ybg==
+rescript@^11.0.0:
+  version "11.0.1"
+  resolved "https://registry.yarnpkg.com/rescript/-/rescript-11.0.1.tgz#c74af134dc8a16d152169b2456d0720324835f54"
+  integrity sha512-7T4PRp/d0+CBNnY6PYKffFqo9tGZlvnZpboF/n+8SKS+JZ6VvXJO7W538VPZXf3EYx1COGAWWvkF9e/HgSAqHg==
 
 reusify@^1.0.4:
   version "1.0.4"

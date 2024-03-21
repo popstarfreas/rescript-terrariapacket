@@ -8,19 +8,20 @@ var PacketType$DarkgamingRescriptTerrariapacket = require("../PacketType.bs.js")
 
 function fromInt(playerId) {
   if (playerId !== -1) {
-    return /* PlayerId */{
+    return {
+            TAG: "PlayerId",
             _0: playerId
           };
   } else {
-    return /* All */0;
+    return "All";
   }
 }
 
 function toInt(self) {
-  if (self) {
-    return self._0;
-  } else {
+  if (typeof self !== "object") {
     return -1;
+  } else {
+    return self._0;
   }
 }
 
@@ -95,7 +96,7 @@ function packImmunityTime(writer, immunityTime) {
 }
 
 function toBuffer(self) {
-  return packImmunityTime(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* NpcTamper */126)).packUInt16(self.npcId), self.immunityTime).packInt16(toInt(self.immunityFromPlayerId)).data;
+  return packImmunityTime(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("NpcTamper")).packUInt16(self.npcId), self.immunityTime).packInt16(toInt(self.immunityFromPlayerId)).data;
 }
 
 var Encode = {

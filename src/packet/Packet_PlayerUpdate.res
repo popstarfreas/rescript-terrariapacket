@@ -49,7 +49,7 @@ type t = {
 }
 
 module Decode = {
-  let {readByte, readSingle, readString} = module(PacketFactory.PacketReader)
+  let {readByte, readSingle} = module(PacketFactory.PacketReader)
   let parse = (payload: NodeJs.Buffer.t) => {
     let reader = PacketFactory.PacketReader.make(payload)
     let playerId = reader->readByte

@@ -1,26 +1,22 @@
 /* TypeScript file generated from Packet_TileSquareSend.resi by genType. */
-/* eslint-disable import/first */
 
+/* eslint-disable */
+/* tslint:disable */
 
-// @ts-ignore: Implicit any on import
-const Packet_TileSquareSendBS = require('./Packet_TileSquareSend.bs');
+const Packet_TileSquareSendJS = require('./Packet_TileSquareSend.bs.js');
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 
-// tslint:disable-next-line:interface-over-type-literal
 export type frame = { readonly x: number; readonly y: number };
 
-// tslint:disable-next-line:interface-over-type-literal
 export type activeTile = {
   readonly tileType: number; 
   readonly slope: number; 
   readonly frame: (undefined | frame)
 };
 
-// tslint:disable-next-line:interface-over-type-literal
 export type liquid = { readonly liquidValue: number; readonly liquidType: number };
 
-// tslint:disable-next-line:interface-over-type-literal
 export type tile = {
   readonly wire: boolean; 
   readonly halfBrick: boolean; 
@@ -36,7 +32,6 @@ export type tile = {
   readonly liquid: (undefined | liquid)
 };
 
-// tslint:disable-next-line:interface-over-type-literal
 export type t = {
   readonly width: number; 
   readonly height: number; 
@@ -46,6 +41,6 @@ export type t = {
   readonly tiles: Array<tile[]>
 };
 
-export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = Packet_TileSquareSendBS.parse;
+export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = Packet_TileSquareSendJS.parse as any;
 
-export const toBuffer: (_1:t) => NodeJs_Buffer_t = Packet_TileSquareSendBS.toBuffer;
+export const toBuffer: (_1:t) => NodeJs_Buffer_t = Packet_TileSquareSendJS.toBuffer as any;

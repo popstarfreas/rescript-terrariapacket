@@ -26,7 +26,7 @@ var Decode = {
 };
 
 function packIntoBufferUnsafe(self, buffer) {
-  return PacketWriter$PacketFactory.setType(new Dumbpacketwriter(buffer), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* ConnectRequest */0)).packString(self.version).packedLength;
+  return PacketWriter$PacketFactory.setType(new Dumbpacketwriter(buffer), PacketType$DarkgamingRescriptTerrariapacket.toInt("ConnectRequest")).packString(self.version).packedLength;
 }
 
 function packString(prim0, prim1) {
@@ -38,7 +38,7 @@ function data(prim) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* ConnectRequest */0)).packString(self.version).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("ConnectRequest")).packString(self.version).data;
 }
 
 var Encode = {

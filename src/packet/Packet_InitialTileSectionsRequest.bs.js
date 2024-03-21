@@ -26,7 +26,7 @@ var Decode = {
 };
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* InitialTileSectionsRequest */7)).packInt32(self.x).packInt32(self.y).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("InitialTileSectionsRequest")).packInt32(self.x).packInt32(self.y).data;
 }
 
 var Encode = {

@@ -5,280 +5,298 @@
 function fromInt(n) {
   switch (n) {
     case 1 :
-        return /* ConnectRequest */0;
+        return "ConnectRequest";
     case 2 :
-        return /* Disconnect */1;
+        return "Disconnect";
     case 3 :
-        return /* PlayerSlotSet */2;
+        return "PlayerSlotSet";
     case 4 :
-        return /* PlayerInfo */3;
+        return "PlayerInfo";
     case 5 :
-        return /* PlayerInventorySlot */4;
+        return "PlayerInventorySlot";
     case 6 :
-        return /* WorldDataRequest */5;
+        return "WorldDataRequest";
     case 7 :
-        return /* WorldInfo */6;
+        return "WorldInfo";
     case 8 :
-        return /* InitialTileSectionsRequest */7;
+        return "InitialTileSectionsRequest";
     case 9 :
-        return /* Status */8;
+        return "Status";
     case 10 :
-        return /* TileSectionSend */9;
+        return "TileSectionSend";
     case 11 :
-        return /* TileSectionFrame */10;
+        return "TileSectionFrame";
     case 12 :
-        return /* PlayerSpawn */11;
+        return "PlayerSpawn";
     case 13 :
-        return /* PlayerUpdate */12;
+        return "PlayerUpdate";
     case 14 :
-        return /* PlayerActive */13;
+        return "PlayerActive";
     case 16 :
-        return /* PlayerHealth */14;
+        return "PlayerHealth";
     case 17 :
-        return /* TileModify */15;
+        return "TileModify";
     case 18 :
-        return /* TimeSet */16;
+        return "TimeSet";
     case 19 :
-        return /* DoorUse */17;
+        return "DoorUse";
     case 20 :
-        return /* TileSquareSend */18;
+        return "TileSquareSend";
     case 21 :
-        return /* ItemDropUpdate */19;
+        return "ItemDropUpdate";
     case 22 :
-        return /* ItemOwner */20;
+        return "ItemOwner";
     case 23 :
-        return /* NpcUpdate */21;
+        return "NpcUpdate";
     case 24 :
-        return /* NpcItemStrike */22;
+        return "NpcItemStrike";
     case 27 :
-        return /* ProjectileSync */23;
+        return "ProjectileSync";
     case 28 :
-        return /* NpcStrike */24;
+        return "NpcStrike";
     case 29 :
-        return /* ProjectileDestroy */25;
+        return "ProjectileDestroy";
     case 30 :
-        return /* PvpToggle */26;
+        return "PvpToggle";
     case 31 :
-        return /* ChestOpen */27;
+        return "ChestOpen";
     case 32 :
-        return /* ChestItem */28;
+        return "ChestItem";
     case 33 :
-        return /* ActiveContainerSync */29;
+        return "ActiveContainerSync";
     case 34 :
-        return /* ChestPlace */30;
+        return "ChestPlace";
     case 35 :
-        return /* HealEffect */31;
+        return "HealEffect";
     case 36 :
-        return /* Zones */32;
+        return "Zones";
     case 37 :
-        return /* PasswordRequired */33;
+        return "PasswordRequired";
     case 38 :
-        return /* PasswordSend */34;
+        return "PasswordSend";
     case 39 :
-        return /* ItemOwnerRemove */35;
+        return "ItemOwnerRemove";
     case 40 :
-        return /* NpcTalk */36;
+        return "NpcTalk";
     case 41 :
-        return /* PlayerAnimation */37;
+        return "PlayerAnimation";
     case 42 :
-        return /* PlayerMana */38;
+        return "PlayerMana";
     case 43 :
-        return /* ManaEffect */39;
+        return "ManaEffect";
     case 15 :
     case 25 :
     case 26 :
     case 44 :
         return ;
     case 45 :
-        return /* PlayerTeam */40;
+        return "PlayerTeam";
     case 46 :
-        return /* SignRead */41;
+        return "SignRead";
     case 47 :
-        return /* SignNew */42;
+        return "SignNew";
     case 48 :
-        return /* LiquidSet */43;
+        return "LiquidSet";
     case 49 :
-        return /* PlayerSpawnSelf */44;
+        return "PlayerSpawnSelf";
     case 50 :
-        return /* PlayerBuffsSet */45;
+        return "PlayerBuffsSet";
     case 51 :
-        return /* NpcSpecialEffect */46;
+        return "NpcSpecialEffect";
     case 52 :
-        return /* ChestOrTempleUnlock */47;
+        return "ChestOrTempleUnlock";
     case 53 :
-        return /* NpcBuffAdd */48;
+        return "NpcBuffAdd";
     case 54 :
-        return /* NpcBuffUpdate */49;
+        return "NpcBuffUpdate";
     case 55 :
-        return /* PlayerBuffAdd */50;
+        return "PlayerBuffAdd";
     case 56 :
-        return /* NpcNameUpdate */51;
+        return "NpcNameUpdate";
     case 57 :
-        return /* GoodEvilUpdate */52;
+        return "GoodEvilUpdate";
     case 58 :
-        return /* HarpPlay */53;
+        return "HarpPlay";
     case 59 :
-        return /* SwitchHit */54;
+        return "SwitchHit";
     case 60 :
-        return /* NpcHomeUpdate */55;
+        return "NpcHomeUpdate";
     case 61 :
-        return /* BossOrInvasionSpawn */56;
+        return "BossOrInvasionSpawn";
     case 62 :
-        return /* PlayerDodge */57;
+        return "PlayerDodge";
     case 63 :
-        return /* TilePaint */58;
+        return "TilePaint";
     case 64 :
-        return /* WallPaint */59;
+        return "WallPaint";
     case 65 :
-        return /* Teleport */60;
+        return "Teleport";
     case 66 :
-        return /* PlayerHealOther */61;
+        return "PlayerHealOther";
     case 67 :
-        return /* DimensionsUpdate */62;
+        return "DimensionsUpdate";
     case 68 :
-        return /* ClientUuid */63;
+        return "ClientUuid";
     case 69 :
-        return /* ChestName */64;
+        return "ChestName";
     case 70 :
-        return /* CatchNpc */65;
+        return "CatchNpc";
     case 71 :
-        return /* ReleaseNpc */66;
+        return "ReleaseNpc";
     case 72 :
-        return /* TravellingMerchantInventory */67;
+        return "TravellingMerchantInventory";
     case 73 :
-        return /* TeleportationPotion */68;
+        return "TeleportationPotion";
     case 74 :
-        return /* AnglerQuest */69;
+        return "AnglerQuest";
     case 75 :
-        return /* AnglerQuestComplete */70;
+        return "AnglerQuestComplete";
     case 76 :
-        return /* AnglerQuestsCompletedAmount */71;
+        return "AnglerQuestsCompletedAmount";
     case 77 :
-        return /* TemporaryAnimationCreate */72;
+        return "TemporaryAnimationCreate";
     case 78 :
-        return /* InvasionProgressReport */73;
+        return "InvasionProgressReport";
     case 79 :
-        return /* ObjectPlace */74;
+        return "ObjectPlace";
     case 80 :
-        return /* PlayerChestIndexSync */75;
+        return "PlayerChestIndexSync";
     case 81 :
-        return /* CombatNumberCreate */76;
+        return "CombatNumberCreate";
     case 82 :
-        return /* NetModuleLoad */77;
+        return "NetModuleLoad";
     case 83 :
-        return /* NpcKillCount */78;
+        return "NpcKillCount";
     case 84 :
-        return /* PlayerStealth */79;
+        return "PlayerStealth";
     case 85 :
-        return /* ItemForceIntoNearestChest */80;
+        return "ItemForceIntoNearestChest";
     case 86 :
-        return /* TileEntityUpdate */81;
+        return "TileEntityUpdate";
     case 87 :
-        return /* TileEntityPlace */82;
+        return "TileEntityPlace";
     case 88 :
-        return /* ItemDropModify */83;
+        return "ItemDropModify";
     case 89 :
-        return /* ItemFramePlace */84;
+        return "ItemFramePlace";
     case 90 :
-        return /* ItemDropInstancedUpdate */85;
+        return "ItemDropInstancedUpdate";
     case 91 :
-        return /* EmoteBubble */86;
+        return "EmoteBubble";
     case 92 :
-        return /* ExtraValueSync */87;
+        return "ExtraValueSync";
     case 93 :
-        return /* SocialHandshake */88;
+        return "SocialHandshake";
     case 94 :
-        return /* Unused */89;
+        return "Unused";
     case 95 :
-        return /* PortalKill */90;
+        return "PortalKill";
     case 96 :
-        return /* PlayerTeleportPortal */91;
+        return "PlayerTeleportPortal";
     case 97 :
-        return /* NpcKilledNotification */92;
+        return "NpcKilledNotification";
     case 98 :
-        return /* EventNotification */93;
+        return "EventNotification";
     case 99 :
-        return /* MinionTargetUpdate */94;
+        return "MinionTargetUpdate";
     case 100 :
-        return /* NpcTeleportPortal */95;
+        return "NpcTeleportPortal";
     case 101 :
-        return /* ShieldStrengthsUpdate */96;
+        return "ShieldStrengthsUpdate";
     case 102 :
-        return /* NebulaLevelUp */97;
+        return "NebulaLevelUp";
     case 103 :
-        return /* MoonLordCountdown */98;
+        return "MoonLordCountdown";
     case 104 :
-        return /* NpcShopItem */99;
+        return "NpcShopItem";
     case 105 :
-        return /* GemLockToggle */100;
+        return "GemLockToggle";
     case 106 :
-        return /* SmokePoof */101;
+        return "SmokePoof";
     case 107 :
-        return /* ChatMessageSmart */102;
+        return "ChatMessageSmart";
     case 108 :
-        return /* WiredCannonShot */103;
+        return "WiredCannonShot";
     case 109 :
-        return /* MassWireOperation */104;
+        return "MassWireOperation";
     case 110 :
-        return /* MassWireOperationPay */105;
+        return "MassWireOperationPay";
     case 111 :
-        return /* PartyToggle */106;
+        return "PartyToggle";
     case 112 :
-        return /* TreeGrowFx */107;
+        return "TreeGrowFx";
     case 113 :
-        return /* CrystalInvasionStart */108;
+        return "CrystalInvasionStart";
     case 114 :
-        return /* CrystalInvasionWipeAll */109;
+        return "CrystalInvasionWipeAll";
     case 115 :
-        return /* MinionAttackTargetUpdate */110;
+        return "MinionAttackTargetUpdate";
     case 116 :
-        return /* CrystalInvasionSendWaitTime */111;
+        return "CrystalInvasionSendWaitTime";
     case 117 :
-        return /* PlayerDamage */112;
+        return "PlayerDamage";
     case 118 :
-        return /* PlayerDeath */113;
+        return "PlayerDeath";
     case 119 :
-        return /* CombatTextCreate */114;
+        return "CombatTextCreate";
     case 120 :
-        return /* Emoji */115;
+        return "Emoji";
     case 121 :
-        return /* TileEntityDisplayDollItemSync */116;
+        return "TileEntityDisplayDollItemSync";
     case 122 :
-        return /* TileEntityInteractionRequest */117;
+        return "TileEntityInteractionRequest";
     case 123 :
-        return /* WeaponsRackTryPlacing */118;
+        return "WeaponsRackTryPlacing";
     case 124 :
-        return /* TileEntityHatRackItemSync */119;
+        return "TileEntityHatRackItemSync";
     case 125 :
-        return /* TilePickingSync */120;
+        return "TilePickingSync";
     case 126 :
-        return /* RevengeMarkerSync */121;
+        return "RevengeMarkerSync";
     case 127 :
-        return /* RevengeMarkerRemove */122;
+        return "RevengeMarkerRemove";
     case 128 :
-        return /* GolfBallLandInCup */123;
+        return "GolfBallLandInCup";
     case 129 :
-        return /* ClientFinishConnectingToServer */124;
+        return "ClientFinishConnectingToServer";
     case 130 :
-        return /* NpcFishOut */125;
+        return "NpcFishOut";
     case 131 :
-        return /* NpcTamper */126;
+        return "NpcTamper";
     case 132 :
-        return /* LegacySoundPlay */127;
+        return "LegacySoundPlay";
     case 133 :
-        return /* FoodPlatterTryPlacing */128;
+        return "FoodPlatterTryPlacing";
     case 134 :
-        return /* PlayerLuckFactorsUpdate */129;
+        return "PlayerLuckFactorsUpdate";
     case 135 :
-        return /* PlayerDead */130;
+        return "PlayerDead";
     case 136 :
-        return /* CavernMonsterTypeSync */131;
+        return "CavernMonsterTypeSync";
     case 137 :
-        return /* NpcBuffRemovalRequest */132;
+        return "NpcBuffRemovalRequest";
     case 138 :
-        return /* ClientSyncedInventory */133;
+        return "ClientSyncedInventory";
     case 139 :
-        return /* CountsAsHostForGameplaySet */134;
+        return "CountsAsHostForGameplaySet";
+    case 140 :
+        return "CreditsOrSlimeTransform";
+    case 141 :
+        return "LucyAxeMessage";
+    case 142 :
+        return "PiggyBankVoidLensUpdate";
+    case 143 :
+        return "DungeonDefendersEventAttemptSkipWait";
+    case 144 :
+        return "HaveDryadDoStardewAnimation";
+    case 145 :
+        return "ItemDropShimmeredUpdate";
+    case 146 :
+        return "ShimmerEffectOrCoinLuck";
+    case 147 :
+        return "LoadoutSwitch";
+    case 148 :
+        return "ItemDropProtectedUpdate";
     default:
       return ;
   }
@@ -286,276 +304,294 @@ function fromInt(n) {
 
 function toInt(self) {
   switch (self) {
-    case /* ConnectRequest */0 :
+    case "ConnectRequest" :
         return 1;
-    case /* Disconnect */1 :
+    case "Disconnect" :
         return 2;
-    case /* PlayerSlotSet */2 :
+    case "PlayerSlotSet" :
         return 3;
-    case /* PlayerInfo */3 :
+    case "PlayerInfo" :
         return 4;
-    case /* PlayerInventorySlot */4 :
+    case "PlayerInventorySlot" :
         return 5;
-    case /* WorldDataRequest */5 :
+    case "WorldDataRequest" :
         return 6;
-    case /* WorldInfo */6 :
+    case "WorldInfo" :
         return 7;
-    case /* InitialTileSectionsRequest */7 :
+    case "InitialTileSectionsRequest" :
         return 8;
-    case /* Status */8 :
+    case "Status" :
         return 9;
-    case /* TileSectionSend */9 :
+    case "TileSectionSend" :
         return 10;
-    case /* TileSectionFrame */10 :
+    case "TileSectionFrame" :
         return 11;
-    case /* PlayerSpawn */11 :
+    case "PlayerSpawn" :
         return 12;
-    case /* PlayerUpdate */12 :
+    case "PlayerUpdate" :
         return 13;
-    case /* PlayerActive */13 :
+    case "PlayerActive" :
         return 14;
-    case /* PlayerHealth */14 :
+    case "PlayerHealth" :
         return 16;
-    case /* TileModify */15 :
+    case "TileModify" :
         return 17;
-    case /* TimeSet */16 :
+    case "TimeSet" :
         return 18;
-    case /* DoorUse */17 :
+    case "DoorUse" :
         return 19;
-    case /* TileSquareSend */18 :
+    case "TileSquareSend" :
         return 20;
-    case /* ItemDropUpdate */19 :
+    case "ItemDropUpdate" :
         return 21;
-    case /* ItemOwner */20 :
+    case "ItemOwner" :
         return 22;
-    case /* NpcUpdate */21 :
+    case "NpcUpdate" :
         return 23;
-    case /* NpcItemStrike */22 :
+    case "NpcItemStrike" :
         return 24;
-    case /* ProjectileSync */23 :
+    case "ProjectileSync" :
         return 27;
-    case /* NpcStrike */24 :
+    case "NpcStrike" :
         return 28;
-    case /* ProjectileDestroy */25 :
+    case "ProjectileDestroy" :
         return 29;
-    case /* PvpToggle */26 :
+    case "PvpToggle" :
         return 30;
-    case /* ChestOpen */27 :
+    case "ChestOpen" :
         return 31;
-    case /* ChestItem */28 :
+    case "ChestItem" :
         return 32;
-    case /* ActiveContainerSync */29 :
+    case "ActiveContainerSync" :
         return 33;
-    case /* ChestPlace */30 :
+    case "ChestPlace" :
         return 34;
-    case /* HealEffect */31 :
+    case "HealEffect" :
         return 35;
-    case /* Zones */32 :
+    case "Zones" :
         return 36;
-    case /* PasswordRequired */33 :
+    case "PasswordRequired" :
         return 37;
-    case /* PasswordSend */34 :
+    case "PasswordSend" :
         return 38;
-    case /* ItemOwnerRemove */35 :
+    case "ItemOwnerRemove" :
         return 39;
-    case /* NpcTalk */36 :
+    case "NpcTalk" :
         return 40;
-    case /* PlayerAnimation */37 :
+    case "PlayerAnimation" :
         return 41;
-    case /* PlayerMana */38 :
+    case "PlayerMana" :
         return 42;
-    case /* ManaEffect */39 :
+    case "ManaEffect" :
         return 43;
-    case /* PlayerTeam */40 :
+    case "PlayerTeam" :
         return 45;
-    case /* SignRead */41 :
+    case "SignRead" :
         return 46;
-    case /* SignNew */42 :
+    case "SignNew" :
         return 47;
-    case /* LiquidSet */43 :
+    case "LiquidSet" :
         return 48;
-    case /* PlayerSpawnSelf */44 :
+    case "PlayerSpawnSelf" :
         return 49;
-    case /* PlayerBuffsSet */45 :
+    case "PlayerBuffsSet" :
         return 50;
-    case /* NpcSpecialEffect */46 :
+    case "NpcSpecialEffect" :
         return 51;
-    case /* ChestOrTempleUnlock */47 :
+    case "ChestOrTempleUnlock" :
         return 52;
-    case /* NpcBuffAdd */48 :
+    case "NpcBuffAdd" :
         return 53;
-    case /* NpcBuffUpdate */49 :
+    case "NpcBuffUpdate" :
         return 54;
-    case /* PlayerBuffAdd */50 :
+    case "PlayerBuffAdd" :
         return 55;
-    case /* NpcNameUpdate */51 :
+    case "NpcNameUpdate" :
         return 56;
-    case /* GoodEvilUpdate */52 :
+    case "GoodEvilUpdate" :
         return 57;
-    case /* HarpPlay */53 :
+    case "HarpPlay" :
         return 58;
-    case /* SwitchHit */54 :
+    case "SwitchHit" :
         return 59;
-    case /* NpcHomeUpdate */55 :
+    case "NpcHomeUpdate" :
         return 60;
-    case /* BossOrInvasionSpawn */56 :
+    case "BossOrInvasionSpawn" :
         return 61;
-    case /* PlayerDodge */57 :
+    case "PlayerDodge" :
         return 62;
-    case /* TilePaint */58 :
+    case "TilePaint" :
         return 63;
-    case /* WallPaint */59 :
+    case "WallPaint" :
         return 64;
-    case /* Teleport */60 :
+    case "Teleport" :
         return 65;
-    case /* PlayerHealOther */61 :
+    case "PlayerHealOther" :
         return 66;
-    case /* DimensionsUpdate */62 :
+    case "DimensionsUpdate" :
         return 67;
-    case /* ClientUuid */63 :
+    case "ClientUuid" :
         return 68;
-    case /* ChestName */64 :
+    case "ChestName" :
         return 69;
-    case /* CatchNpc */65 :
+    case "CatchNpc" :
         return 70;
-    case /* ReleaseNpc */66 :
+    case "ReleaseNpc" :
         return 71;
-    case /* TravellingMerchantInventory */67 :
+    case "TravellingMerchantInventory" :
         return 72;
-    case /* TeleportationPotion */68 :
+    case "TeleportationPotion" :
         return 73;
-    case /* AnglerQuest */69 :
+    case "AnglerQuest" :
         return 74;
-    case /* AnglerQuestComplete */70 :
+    case "AnglerQuestComplete" :
         return 75;
-    case /* AnglerQuestsCompletedAmount */71 :
+    case "AnglerQuestsCompletedAmount" :
         return 76;
-    case /* TemporaryAnimationCreate */72 :
+    case "TemporaryAnimationCreate" :
         return 77;
-    case /* InvasionProgressReport */73 :
+    case "InvasionProgressReport" :
         return 78;
-    case /* ObjectPlace */74 :
+    case "ObjectPlace" :
         return 79;
-    case /* PlayerChestIndexSync */75 :
+    case "PlayerChestIndexSync" :
         return 80;
-    case /* CombatNumberCreate */76 :
+    case "CombatNumberCreate" :
         return 81;
-    case /* NetModuleLoad */77 :
+    case "NetModuleLoad" :
         return 82;
-    case /* NpcKillCount */78 :
+    case "NpcKillCount" :
         return 83;
-    case /* PlayerStealth */79 :
+    case "PlayerStealth" :
         return 84;
-    case /* ItemForceIntoNearestChest */80 :
+    case "ItemForceIntoNearestChest" :
         return 85;
-    case /* TileEntityUpdate */81 :
+    case "TileEntityUpdate" :
         return 86;
-    case /* TileEntityPlace */82 :
+    case "TileEntityPlace" :
         return 87;
-    case /* ItemDropModify */83 :
+    case "ItemDropModify" :
         return 88;
-    case /* ItemFramePlace */84 :
+    case "ItemFramePlace" :
         return 89;
-    case /* ItemDropInstancedUpdate */85 :
+    case "ItemDropInstancedUpdate" :
         return 90;
-    case /* EmoteBubble */86 :
+    case "EmoteBubble" :
         return 91;
-    case /* ExtraValueSync */87 :
+    case "ExtraValueSync" :
         return 92;
-    case /* SocialHandshake */88 :
+    case "SocialHandshake" :
         return 93;
-    case /* Unused */89 :
+    case "Unused" :
         return 94;
-    case /* PortalKill */90 :
+    case "PortalKill" :
         return 95;
-    case /* PlayerTeleportPortal */91 :
+    case "PlayerTeleportPortal" :
         return 96;
-    case /* NpcKilledNotification */92 :
+    case "NpcKilledNotification" :
         return 97;
-    case /* EventNotification */93 :
+    case "EventNotification" :
         return 98;
-    case /* MinionTargetUpdate */94 :
+    case "MinionTargetUpdate" :
         return 99;
-    case /* NpcTeleportPortal */95 :
+    case "NpcTeleportPortal" :
         return 100;
-    case /* ShieldStrengthsUpdate */96 :
+    case "ShieldStrengthsUpdate" :
         return 101;
-    case /* NebulaLevelUp */97 :
+    case "NebulaLevelUp" :
         return 102;
-    case /* MoonLordCountdown */98 :
+    case "MoonLordCountdown" :
         return 103;
-    case /* NpcShopItem */99 :
+    case "NpcShopItem" :
         return 104;
-    case /* GemLockToggle */100 :
+    case "GemLockToggle" :
         return 105;
-    case /* SmokePoof */101 :
+    case "SmokePoof" :
         return 106;
-    case /* ChatMessageSmart */102 :
+    case "ChatMessageSmart" :
         return 107;
-    case /* WiredCannonShot */103 :
+    case "WiredCannonShot" :
         return 108;
-    case /* MassWireOperation */104 :
+    case "MassWireOperation" :
         return 109;
-    case /* MassWireOperationPay */105 :
+    case "MassWireOperationPay" :
         return 110;
-    case /* PartyToggle */106 :
+    case "PartyToggle" :
         return 111;
-    case /* TreeGrowFx */107 :
+    case "TreeGrowFx" :
         return 112;
-    case /* CrystalInvasionStart */108 :
+    case "CrystalInvasionStart" :
         return 113;
-    case /* CrystalInvasionWipeAll */109 :
+    case "CrystalInvasionWipeAll" :
         return 114;
-    case /* MinionAttackTargetUpdate */110 :
+    case "MinionAttackTargetUpdate" :
         return 115;
-    case /* CrystalInvasionSendWaitTime */111 :
+    case "CrystalInvasionSendWaitTime" :
         return 116;
-    case /* PlayerDamage */112 :
+    case "PlayerDamage" :
         return 117;
-    case /* PlayerDeath */113 :
+    case "PlayerDeath" :
         return 118;
-    case /* CombatTextCreate */114 :
+    case "CombatTextCreate" :
         return 119;
-    case /* Emoji */115 :
+    case "Emoji" :
         return 120;
-    case /* TileEntityDisplayDollItemSync */116 :
+    case "TileEntityDisplayDollItemSync" :
         return 121;
-    case /* TileEntityInteractionRequest */117 :
+    case "TileEntityInteractionRequest" :
         return 122;
-    case /* WeaponsRackTryPlacing */118 :
+    case "WeaponsRackTryPlacing" :
         return 123;
-    case /* TileEntityHatRackItemSync */119 :
+    case "TileEntityHatRackItemSync" :
         return 124;
-    case /* TilePickingSync */120 :
+    case "TilePickingSync" :
         return 125;
-    case /* RevengeMarkerSync */121 :
+    case "RevengeMarkerSync" :
         return 126;
-    case /* RevengeMarkerRemove */122 :
+    case "RevengeMarkerRemove" :
         return 127;
-    case /* GolfBallLandInCup */123 :
+    case "GolfBallLandInCup" :
         return 128;
-    case /* ClientFinishConnectingToServer */124 :
+    case "ClientFinishConnectingToServer" :
         return 129;
-    case /* NpcFishOut */125 :
+    case "NpcFishOut" :
         return 130;
-    case /* NpcTamper */126 :
+    case "NpcTamper" :
         return 131;
-    case /* LegacySoundPlay */127 :
+    case "LegacySoundPlay" :
         return 132;
-    case /* FoodPlatterTryPlacing */128 :
+    case "FoodPlatterTryPlacing" :
         return 133;
-    case /* PlayerLuckFactorsUpdate */129 :
+    case "PlayerLuckFactorsUpdate" :
         return 134;
-    case /* PlayerDead */130 :
+    case "PlayerDead" :
         return 135;
-    case /* CavernMonsterTypeSync */131 :
+    case "CavernMonsterTypeSync" :
         return 136;
-    case /* NpcBuffRemovalRequest */132 :
+    case "NpcBuffRemovalRequest" :
         return 137;
-    case /* ClientSyncedInventory */133 :
+    case "ClientSyncedInventory" :
         return 138;
-    case /* CountsAsHostForGameplaySet */134 :
+    case "CountsAsHostForGameplaySet" :
         return 139;
+    case "CreditsOrSlimeTransform" :
+        return 140;
+    case "LucyAxeMessage" :
+        return 141;
+    case "PiggyBankVoidLensUpdate" :
+        return 142;
+    case "DungeonDefendersEventAttemptSkipWait" :
+        return 143;
+    case "HaveDryadDoStardewAnimation" :
+        return 144;
+    case "ItemDropShimmeredUpdate" :
+        return 145;
+    case "ShimmerEffectOrCoinLuck" :
+        return 146;
+    case "LoadoutSwitch" :
+        return 147;
+    case "ItemDropProtectedUpdate" :
+        return 148;
     
   }
 }

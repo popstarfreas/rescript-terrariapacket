@@ -9,60 +9,110 @@ var PacketType$DarkgamingRescriptTerrariapacket = require("../PacketType.bs.js")
 function fromInt(action) {
   switch (action) {
     case 0 :
-        return /* KillTile */0;
+        return "KillTile";
     case 1 :
-        return /* PlaceTile */1;
+        return "PlaceTile";
     case 2 :
-        return /* KillWall */2;
+        return "KillWall";
     case 3 :
-        return /* PlaceWall */3;
+        return "PlaceWall";
     case 4 :
-        return /* KillTileNoItem */4;
+        return "KillTileNoItem";
     case 5 :
-        return /* PlaceWire */5;
+        return "PlaceWire";
     case 6 :
-        return /* KillWire */6;
+        return "KillWire";
     case 7 :
-        return /* PoundTile */7;
+        return "PoundTile";
     case 8 :
-        return /* PlaceActuator */8;
+        return "PlaceActuator";
     case 9 :
-        return /* KillActuator */9;
+        return "KillActuator";
     case 10 :
-        return /* PlaceWire2 */10;
+        return "PlaceWire2";
     case 11 :
-        return /* KillWire2 */11;
+        return "KillWire2";
     case 12 :
-        return /* PlaceWire3 */12;
+        return "PlaceWire3";
     case 13 :
-        return /* KillWire3 */13;
+        return "KillWire3";
     case 14 :
-        return /* SlopeTile */14;
+        return "SlopeTile";
     case 15 :
-        return /* FrameTrack */15;
+        return "FrameTrack";
     case 16 :
-        return /* PlaceWire4 */16;
+        return "PlaceWire4";
     case 17 :
-        return /* KillWire4 */17;
+        return "KillWire4";
     case 18 :
-        return /* PokeLogicGate */18;
+        return "PokeLogicGate";
     case 19 :
-        return /* Actuate */19;
+        return "Actuate";
     case 20 :
-        return /* KillTile2 */20;
+        return "KillTile2";
     case 21 :
-        return /* ReplaceTile */21;
+        return "ReplaceTile";
     case 22 :
-        return /* ReplaceWall */22;
+        return "ReplaceWall";
     case 23 :
-        return /* SlopePoundTile */23;
+        return "SlopePoundTile";
     default:
       return ;
   }
 }
 
 function toInt(action) {
-  return action;
+  switch (action) {
+    case "KillTile" :
+        return 0;
+    case "PlaceTile" :
+        return 1;
+    case "KillWall" :
+        return 2;
+    case "PlaceWall" :
+        return 3;
+    case "KillTileNoItem" :
+        return 4;
+    case "PlaceWire" :
+        return 5;
+    case "KillWire" :
+        return 6;
+    case "PoundTile" :
+        return 7;
+    case "PlaceActuator" :
+        return 8;
+    case "KillActuator" :
+        return 9;
+    case "PlaceWire2" :
+        return 10;
+    case "KillWire2" :
+        return 11;
+    case "PlaceWire3" :
+        return 12;
+    case "KillWire3" :
+        return 13;
+    case "SlopeTile" :
+        return 14;
+    case "FrameTrack" :
+        return 15;
+    case "PlaceWire4" :
+        return 16;
+    case "KillWire4" :
+        return 17;
+    case "PokeLogicGate" :
+        return 18;
+    case "Actuate" :
+        return 19;
+    case "KillTile2" :
+        return 20;
+    case "ReplaceTile" :
+        return 21;
+    case "ReplaceWall" :
+        return 22;
+    case "SlopePoundTile" :
+        return 23;
+    
+  }
 }
 
 var Action = {
@@ -90,7 +140,7 @@ function parse(payload) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* TileModify */15)).packByte(self.action).packInt16(self.tileX).packInt16(self.tileY).packInt16(self.value1).packByte(self.value2).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("TileModify")).packByte(toInt(self.action)).packInt16(self.tileX).packInt16(self.tileY).packInt16(self.value1).packByte(self.value2).data;
 }
 
 exports.Action = Action;

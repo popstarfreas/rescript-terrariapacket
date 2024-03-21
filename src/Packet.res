@@ -133,6 +133,15 @@ module CavernMonsterTypeSync = Packet_CavernMonsterTypeSync
 module NpcBuffRemovalRequest = Packet_NpcBuffRemovalRequest
 module ClientSyncedInventory = Packet_ClientSyncedInventory
 module CountsAsHostForGameplaySet = Packet_CountsAsHostForGameplaySet
+module CreditsOrSlimeTransform = Packet_CreditsOrSlimeTransform
+module LucyAxeMessage = Packet_LucyAxeMessage
+module PiggyBankVoidLensUpdate = Packet_PiggyBankVoidLensUpdate
+module DungeonDefendersEventAttemptSkipWait = Packet_DungeonDefendersEventAttemptSkipWait
+module HaveDryadDoStardewAnimation = Packet_HaveDryadDoStardewAnimation
+module ItemDropShimmeredUpdate = Packet_ItemDropShimmeredUpdate
+module ShimmerEffectOrCoinLuck = Packet_ShimmerEffectOrCoinLuck
+module LoadoutSwitch = Packet_LoadoutSwitch
+module ItemDropProtectedUpdate = Packet_ItemDropProtectedUpdate
 
 type t =
   | ConnectRequest(ConnectRequest.t)
@@ -270,6 +279,15 @@ type t =
   | NpcBuffRemovalRequest(NpcBuffRemovalRequest.t)
   | ClientSyncedInventory(ClientSyncedInventory.t)
   | CountsAsHostForGameplaySet(CountsAsHostForGameplaySet.t)
+  | CreditsOrSlimeTransform(CreditsOrSlimeTransform.t)
+  | LucyAxeMessage(LucyAxeMessage.t)
+  | PiggyBankVoidLensUpdate(PiggyBankVoidLensUpdate.t)
+  | DungeonDefendersEventAttemptSkipWait(DungeonDefendersEventAttemptSkipWait.t)
+  | HaveDryadDoStardewAnimation(HaveDryadDoStardewAnimation.t)
+  | ItemDropShimmeredUpdate(ItemDropShimmeredUpdate.t)
+  | ShimmerEffectOrCoinLuck(ShimmerEffectOrCoinLuck.t)
+  | LoadoutSwitch(LoadoutSwitch.t)
+  | ItemDropProtectedUpdate(ItemDropProtectedUpdate.t)
 
 module Lazy = {
   type t =
@@ -408,6 +426,15 @@ module Lazy = {
     | NpcBuffRemovalRequest(Lazy.t<option<NpcBuffRemovalRequest.t>>)
     | ClientSyncedInventory(Lazy.t<option<ClientSyncedInventory.t>>)
     | CountsAsHostForGameplaySet(Lazy.t<option<CountsAsHostForGameplaySet.t>>)
+    | CreditsOrSlimeTransform(Lazy.t<option<CreditsOrSlimeTransform.t>>)
+    | LucyAxeMessage(Lazy.t<option<LucyAxeMessage.t>>)
+    | PiggyBankVoidLensUpdate(Lazy.t<option<PiggyBankVoidLensUpdate.t>>)
+    | DungeonDefendersEventAttemptSkipWait(Lazy.t<option<DungeonDefendersEventAttemptSkipWait.t>>)
+    | HaveDryadDoStardewAnimation(Lazy.t<option<HaveDryadDoStardewAnimation.t>>)
+    | ItemDropShimmeredUpdate(Lazy.t<option<ItemDropShimmeredUpdate.t>>)
+    | ShimmerEffectOrCoinLuck(Lazy.t<option<ShimmerEffectOrCoinLuck.t>>)
+    | LoadoutSwitch(Lazy.t<option<LoadoutSwitch.t>>)
+    | ItemDropProtectedUpdate(Lazy.t<option<ItemDropProtectedUpdate.t>>)
 
   let toPacketName = (packet: t): string => {
     switch packet {
@@ -550,6 +577,17 @@ module Lazy = {
     | NpcBuffRemovalRequest(_npcBuffRemovalRequest) => "NpcBuffRemovalRequest"
     | ClientSyncedInventory(_clientSyncedInventory) => "ClientSyncedInventory"
     | CountsAsHostForGameplaySet(_countsAsHostForGameplaySet) => "CountsAsHostForGameplaySet"
+    | CreditsOrSlimeTransform(_creditsOrSlimeTransform) => "CreditsOrSlimeTransform"
+    | LucyAxeMessage(_lucyAxeMessage) => "LucyAxeMessage"
+    | PiggyBankVoidLensUpdate(_piggyBankVoidLensUpdate) => "PiggyBankVoidLensUpdate"
+    | DungeonDefendersEventAttemptSkipWait(
+        _dungeonDefendersEventAttemptSkipWait,
+      ) => "DungeonDefendersEventAttemptSkipWait"
+    | HaveDryadDoStardewAnimation(_haveDryadDoStardewAnimation) => "HaveDryadDoStardewAnimation"
+    | ItemDropShimmeredUpdate(_itemDropShimmeredUpdate) => "ItemDropShimmeredUpdate"
+    | ShimmerEffectOrCoinLuck(_shimmerEffectOrCoinLuck) => "ShimmerEffectOrCoinLuck"
+    | LoadoutSwitch(_loadoutSwitch) => "LoadoutSwitch"
+    | ItemDropProtectedUpdate(_itemDropProtectedUpdate) => "ItemDropProtectedUpdate"
     }
   }
 }
@@ -694,6 +732,22 @@ let toBuffer = (packet: t, _fromServer: bool): option<NodeJs.Buffer.t> => {
   | NpcBuffRemovalRequest(_npcBuffRemovalRequest) => None
   | ClientSyncedInventory(_clientSyncedInventory) => None
   | CountsAsHostForGameplaySet(_countsAsHostForGameplaySet) => None
+  | CreditsOrSlimeTransform(creditsOrSlimeTransform) =>
+    Some(CreditsOrSlimeTransform.toBuffer(creditsOrSlimeTransform))
+  | LucyAxeMessage(lucyAxeMessage) => Some(LucyAxeMessage.toBuffer(lucyAxeMessage))
+  | PiggyBankVoidLensUpdate(piggyBankVoidLensUpdate) =>
+    Some(PiggyBankVoidLensUpdate.toBuffer(piggyBankVoidLensUpdate))
+  | DungeonDefendersEventAttemptSkipWait(dungeonDefendersEventAttemptSkipWait) =>
+    Some(DungeonDefendersEventAttemptSkipWait.toBuffer(dungeonDefendersEventAttemptSkipWait))
+  | HaveDryadDoStardewAnimation(haveDryadDoStardewAnimation) =>
+    Some(HaveDryadDoStardewAnimation.toBuffer(haveDryadDoStardewAnimation))
+  | ItemDropShimmeredUpdate(itemDropShimmeredUpdate) =>
+    Some(ItemDropShimmeredUpdate.toBuffer(itemDropShimmeredUpdate))
+  | ShimmerEffectOrCoinLuck(shimmerEffectOrCoinLuck) =>
+    Some(ShimmerEffectOrCoinLuck.toBuffer(shimmerEffectOrCoinLuck))
+  | LoadoutSwitch(loadoutSwitch) => Some(LoadoutSwitch.toBuffer(loadoutSwitch))
+  | ItemDropProtectedUpdate(itemDropProtectedUpdate) =>
+    Some(ItemDropProtectedUpdate.toBuffer(itemDropProtectedUpdate))
   }
 }
 
@@ -867,5 +921,16 @@ let toPacketName = (packet: t): string => {
   | NpcBuffRemovalRequest(_npcBuffRemovalRequest) => "NpcBuffRemovalRequest"
   | ClientSyncedInventory(_clientSyncedInventory) => "ClientSyncedInventory"
   | CountsAsHostForGameplaySet(_countsAsHostForGameplaySet) => "CountsAsHostForGameplaySet"
+  | CreditsOrSlimeTransform(_creditsOrSlimeTransform) => "CreditsOrSlimeTransform"
+  | LucyAxeMessage(_lucyAxeMessage) => "LucyAxeMessage"
+  | PiggyBankVoidLensUpdate(_piggyBankVoidLensUpdate) => "PiggyBankVoidLensUpdate"
+  | DungeonDefendersEventAttemptSkipWait(
+      _dungeonDefendersEventAttemptSkipWait,
+    ) => "DungeonDefendersEventAttemptSkipWait"
+  | HaveDryadDoStardewAnimation(_haveDryadDoStardewAnimation) => "HaveDryadDoStardewAnimation"
+  | ItemDropShimmeredUpdate(_itemDropShimmeredUpdate) => "ItemDropShimmeredUpdate"
+  | ShimmerEffectOrCoinLuck(_shimmerEffectOrCoinLuck) => "ShimmerEffectOrCoinLuck"
+  | LoadoutSwitch(_loadoutSwitch) => "LoadoutSwitch"
+  | ItemDropProtectedUpdate(_itemDropProtectedUpdate) => "ItemDropProtectedUpdate"
   }
 }

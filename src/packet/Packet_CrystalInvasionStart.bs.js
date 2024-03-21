@@ -43,7 +43,7 @@ function data(prim) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* CrystalInvasionStart */108)).packInt16(self.x).packInt16(self.y).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("CrystalInvasionStart")).packInt16(self.x).packInt16(self.y).data;
 }
 
 var Encode = {

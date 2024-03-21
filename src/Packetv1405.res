@@ -7,7 +7,7 @@ module WorldDataRequest = Packet_WorldDataRequest
 module WorldInfo = Packetv1405_WorldInfo
 module InitialTileSectionsRequest = Packet_InitialTileSectionsRequest
 module Status = Packet_Status
-module TileSectionSend = Packet_TileSectionSend
+module TileSectionSend = Packetv1405_TileSectionSend
 module TileSectionFrame = Packet_TileSectionFrame
 module PlayerSpawn = Packet_PlayerSpawn
 module PlayerUpdate = Packet_PlayerUpdate
@@ -289,7 +289,8 @@ let toLatest = (packet: t, _fromServer: bool): same<Packet.t> => {
   | InitialTileSectionsRequest(initialTileSectionsRequest) =>
     Same(Packet.InitialTileSectionsRequest(initialTileSectionsRequest))
   | Status(status) => Same(Packet.Status(status))
-  | TileSectionSend(tileSectionSend) => Same(Packet.TileSectionSend(tileSectionSend))
+  | TileSectionSend(tileSectionSend) =>
+    Same(Packet.TileSectionSend(TileSectionSend.toLatest(tileSectionSend)))
   | TileSectionFrame(tileSectionFrame) => Same(Packet.TileSectionFrame(tileSectionFrame))
   | PlayerSpawn(playerSpawn) => Same(Packet.PlayerSpawn(playerSpawn))
   | PlayerUpdate(playerUpdate) => Same(Packet.PlayerUpdate(playerUpdate))
@@ -461,11 +462,12 @@ let fromLatest = (packet: Packet.t, _fromServer: bool): option<same<t>> => {
     Some(Same(PlayerInventorySlot(playerInventorySlot)))
   | Packet.WorldDataRequest(worldDataRequest) => Some(Same(WorldDataRequest(worldDataRequest)))
   | Packet.WorldInfo(worldInfo) =>
-    WorldInfo.fromLatest(worldInfo)->Belt.Option.map(p => NotSame(WorldInfo(p)))
+    WorldInfo.fromLatest(worldInfo)->Option.map(p => NotSame(WorldInfo(p)))
   | Packet.InitialTileSectionsRequest(initialTileSectionsRequest) =>
     Some(Same(InitialTileSectionsRequest(initialTileSectionsRequest)))
   | Packet.Status(status) => Some(Same(Status(status)))
-  | Packet.TileSectionSend(tileSectionSend) => Some(Same(TileSectionSend(tileSectionSend)))
+  | Packet.TileSectionSend(tileSectionSend) =>
+    TileSectionSend.fromLatest(tileSectionSend)->Option.map(p => Same(TileSectionSend(p)))
   | Packet.TileSectionFrame(tileSectionFrame) => Some(Same(TileSectionFrame(tileSectionFrame)))
   | Packet.PlayerSpawn(playerSpawn) => Some(Same(PlayerSpawn(playerSpawn)))
   | Packet.PlayerUpdate(playerUpdate) => Some(Same(PlayerUpdate(playerUpdate)))
@@ -475,7 +477,7 @@ let fromLatest = (packet: Packet.t, _fromServer: bool): option<same<t>> => {
   | Packet.TimeSet(timeSet) => Some(Same(TimeSet(timeSet)))
   | Packet.DoorUse(doorUse) => Some(Same(DoorUse(doorUse)))
   | Packet.TileSquareSend(tileSquareSend) =>
-    TileSquareSend.fromLatest(tileSquareSend)->Belt.Option.map(p => NotSame(TileSquareSend(p)))
+    TileSquareSend.fromLatest(tileSquareSend)->Option.map(p => NotSame(TileSquareSend(p)))
   | Packet.ItemDropUpdate(itemDropUpdate) => Some(Same(ItemDropUpdate(itemDropUpdate)))
   | Packet.ItemOwner(itemOwner) => Some(Same(ItemOwner(itemOwner)))
   | Packet.NpcUpdate(npcUpdate) => Some(Same(NpcUpdate(npcUpdate)))
@@ -626,6 +628,15 @@ let fromLatest = (packet: Packet.t, _fromServer: bool): option<same<t>> => {
     Some(Same(ClientSyncedInventory(clientSyncedInventory)))
   | Packet.CountsAsHostForGameplaySet(countsAsHostForGameplaySet) =>
     Some(Same(CountsAsHostForGameplaySet(countsAsHostForGameplaySet)))
+  | Packet.CreditsOrSlimeTransform(_) => None
+  | Packet.LucyAxeMessage(_) => None
+  | Packet.PiggyBankVoidLensUpdate(_) => None
+  | Packet.DungeonDefendersEventAttemptSkipWait(_) => None
+  | Packet.HaveDryadDoStardewAnimation(_) => None
+  | Packet.ItemDropShimmeredUpdate(_) => None
+  | Packet.ShimmerEffectOrCoinLuck(_) => None
+  | Packet.LoadoutSwitch(_) => None
+  | Packet.ItemDropProtectedUpdate(_) => None
   }
 }
 
@@ -778,12 +789,19 @@ module Lazy = {
     | WorldDataRequest(worldDataRequest) => Packet.Lazy.WorldDataRequest(worldDataRequest)
     | WorldInfo(worldInfo) =>
       Packet.Lazy.WorldInfo(
-        lazy (worldInfo->Lazy.force->Belt.Option.map(worldInfo => WorldInfo.toLatest(worldInfo))),
+        lazy (worldInfo->Lazy.force->Option.map(worldInfo => WorldInfo.toLatest(worldInfo))),
       )
     | InitialTileSectionsRequest(initialTileSectionsRequest) =>
       Packet.Lazy.InitialTileSectionsRequest(initialTileSectionsRequest)
     | Status(status) => Packet.Lazy.Status(status)
-    | TileSectionSend(tileSectionSend) => Packet.Lazy.TileSectionSend(tileSectionSend)
+    | TileSectionSend(tileSectionSend) =>
+      Packet.Lazy.TileSectionSend(
+        lazy (
+          tileSectionSend
+          ->Lazy.force
+          ->Option.map(tileSectionSend => tileSectionSend->TileSectionSend.toLatest)
+        ),
+      )
     | TileSectionFrame(tileSectionFrame) => Packet.Lazy.TileSectionFrame(tileSectionFrame)
     | PlayerSpawn(playerSpawn) => Packet.Lazy.PlayerSpawn(playerSpawn)
     | PlayerUpdate(playerUpdate) => Packet.Lazy.PlayerUpdate(playerUpdate)
@@ -797,7 +815,7 @@ module Lazy = {
         lazy (
           tileSquareSend
           ->Lazy.force
-          ->Belt.Option.map(tileSquareSend => tileSquareSend->TileSquareSend.toLatest)
+          ->Option.map(tileSquareSend => tileSquareSend->TileSquareSend.toLatest)
         ),
       )
     | ItemDropUpdate(itemDropUpdate) => Packet.Lazy.ItemDropUpdate(itemDropUpdate)

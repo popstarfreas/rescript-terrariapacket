@@ -43,7 +43,7 @@ function data(prim) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* HealEffect */31)).packByte(self.playerId).packInt16(self.healAmount).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("HealEffect")).packByte(self.playerId).packInt16(self.healAmount).data;
 }
 
 var Encode = {

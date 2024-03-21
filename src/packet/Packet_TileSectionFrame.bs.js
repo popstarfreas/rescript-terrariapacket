@@ -38,7 +38,7 @@ function data(prim) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* TileSectionFrame */10)).packInt16(self.startX).packInt16(self.startY).packInt16(self.endX).packInt16(self.endY).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("TileSectionFrame")).packInt16(self.startX).packInt16(self.startY).packInt16(self.endX).packInt16(self.endY).data;
 }
 
 var Encode = {

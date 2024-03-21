@@ -19,7 +19,7 @@ function parse(payload) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* PlayerMana */38)).packByte(self.playerId).packInt16(self.mana).packInt16(self.maxMana).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("PlayerMana")).packByte(self.playerId).packInt16(self.mana).packInt16(self.maxMana).data;
 }
 
 exports.parse = parse;

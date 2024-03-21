@@ -38,7 +38,7 @@ function flagsToByte(flags) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* Status */8)).packInt32(self.max).packNetworkText(self.text).packByte(flagsToByte(self.flags)).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("Status")).packInt32(self.max).packNetworkText(self.text).packByte(flagsToByte(self.flags)).data;
 }
 
 exports.parse = parse;

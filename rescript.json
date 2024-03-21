@@ -20,7 +20,11 @@
   },
   "bs-dependencies": [
     "@popstarfreas/packetfactory",
-    "@popstarfreas/rescript-nodejs"
+    "@popstarfreas/rescript-nodejs",
+    "@rescript/core"
+  ],
+  "bsc-flags": [
+    "-open RescriptCore"
   ],
   "bs-dev-dependencies": [
     "@dusty-phillips/rescript-zora"
@@ -38,6 +42,7 @@
     }
   },
   "warnings": {
-    "number": ""
+    "number": "",
+    "error": "+a"
   }
 }

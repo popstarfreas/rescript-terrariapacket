@@ -71,7 +71,7 @@ function packOptionalData(writer, self) {
 }
 
 function toBuffer(self) {
-  return packOptionalData(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* ProjectileSync */23)).packInt16(self.projectileId).packSingle(self.x).packSingle(self.y).packSingle(self.vx).packSingle(self.vy).packByte(self.owner).packInt16(self.projectileType), self).data;
+  return packOptionalData(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("ProjectileSync")).packInt16(self.projectileId).packSingle(self.x).packSingle(self.y).packSingle(self.vx).packSingle(self.vy).packByte(self.owner).packInt16(self.projectileType), self).data;
 }
 
 exports.parse = parse;

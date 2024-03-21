@@ -11,12 +11,12 @@ function allOkOrError(results) {
     var good = _good;
     if (!entriesLeft) {
       return {
-              TAG: /* Ok */0,
+              TAG: "Ok",
               _0: Belt_List.toArray(good)
             };
     }
     var entry = entriesLeft.hd;
-    if (entry.TAG !== /* Ok */0) {
+    if (entry.TAG !== "Ok") {
       return entry;
     }
     _entriesLeft = entriesLeft.tl;

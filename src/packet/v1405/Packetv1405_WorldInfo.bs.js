@@ -378,7 +378,7 @@ function packEventInfo(writer, eventInfo) {
 }
 
 function toBuffer(self) {
-  return packEventInfo(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* WorldInfo */6)).packInt32(self.time).packByte(self.dayAndMoonInfo).packByte(self.moonPhase).packInt16(self.maxTilesX).packInt16(self.maxTilesY).packInt16(self.spawnX).packInt16(self.spawnY).packInt16(self.worldSurface).packInt16(self.rockLayer).packInt32(self.worldId).packString(self.worldName).packByte(self.gameMode).packBytes(Array16$DarkgamingRescriptTerrariapacket.asArray(self.worldUniqueId)).packUInt64(self.worldGeneratorVersion).packByte(self.moonType).packByte(self.treeBackground).packByte(self.treeBackground2).packByte(self.treeBackground3).packByte(self.treeBackground4).packByte(self.corruptionBackground).packByte(self.jungleBackground).packByte(self.snowBackground).packByte(self.hallowBackground).packByte(self.crimsonBackground).packByte(self.desertBackground).packByte(self.oceanBackground).packByte(self.mushroomBackground).packByte(self.underworldBackground).packByte(self.iceBackStyle).packByte(self.jungleBackStyle).packByte(self.hellBackStyle).packSingle(self.windSpeedSet).packByte(self.cloudNumber).packInt32(self.tree1).packInt32(self.tree2).packInt32(self.tree3).packByte(self.treeStyle1).packByte(self.treeStyle2).packByte(self.treeStyle3).packByte(self.treeStyle4).packInt32(self.caveBack1).packInt32(self.caveBack2).packInt32(self.caveBack3).packByte(self.caveBackStyle1).packByte(self.caveBackStyle2).packByte(self.caveBackStyle3).packByte(self.caveBackStyle4).packByte(self.forest1TreeTopStyle).packByte(self.forest2TreeTopStyle).packByte(self.forest3TreeTopStyle).packByte(self.forest4TreeTopStyle).packByte(self.corruptionTreeTopStyle).packByte(self.jungleTreeTopStyle).packByte(self.snowTreeTopStyle).packByte(self.hallowTreeTopStyle).packByte(self.crimsonTreeTopStyle).packByte(self.desertTreeTopStyle).packByte(self.oceanTreeTopStyle).packByte(self.glowingMushroomTreeTopStyle).packByte(self.underworldTreeTopStyle).packSingle(self.rain), self.eventInfo).packInt16(self.copperOreTier).packInt16(self.ironOreTier).packInt16(self.silverOreTier).packInt16(self.goldOreTier).packInt16(self.cobaltOreTier).packInt16(self.mythrilOreTier).packInt16(self.adamantiteOreTier).packSByte(self.invasionType).packUInt64(self.lobbyId).packSingle(self.sandstormSeverity).data;
+  return packEventInfo(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("WorldInfo")).packInt32(self.time).packByte(self.dayAndMoonInfo).packByte(self.moonPhase).packInt16(self.maxTilesX).packInt16(self.maxTilesY).packInt16(self.spawnX).packInt16(self.spawnY).packInt16(self.worldSurface).packInt16(self.rockLayer).packInt32(self.worldId).packString(self.worldName).packByte(self.gameMode).packBytes(Array16$DarkgamingRescriptTerrariapacket.asArray(self.worldUniqueId)).packUInt64(self.worldGeneratorVersion).packByte(self.moonType).packByte(self.treeBackground).packByte(self.treeBackground2).packByte(self.treeBackground3).packByte(self.treeBackground4).packByte(self.corruptionBackground).packByte(self.jungleBackground).packByte(self.snowBackground).packByte(self.hallowBackground).packByte(self.crimsonBackground).packByte(self.desertBackground).packByte(self.oceanBackground).packByte(self.mushroomBackground).packByte(self.underworldBackground).packByte(self.iceBackStyle).packByte(self.jungleBackStyle).packByte(self.hellBackStyle).packSingle(self.windSpeedSet).packByte(self.cloudNumber).packInt32(self.tree1).packInt32(self.tree2).packInt32(self.tree3).packByte(self.treeStyle1).packByte(self.treeStyle2).packByte(self.treeStyle3).packByte(self.treeStyle4).packInt32(self.caveBack1).packInt32(self.caveBack2).packInt32(self.caveBack3).packByte(self.caveBackStyle1).packByte(self.caveBackStyle2).packByte(self.caveBackStyle3).packByte(self.caveBackStyle4).packByte(self.forest1TreeTopStyle).packByte(self.forest2TreeTopStyle).packByte(self.forest3TreeTopStyle).packByte(self.forest4TreeTopStyle).packByte(self.corruptionTreeTopStyle).packByte(self.jungleTreeTopStyle).packByte(self.snowTreeTopStyle).packByte(self.hallowTreeTopStyle).packByte(self.crimsonTreeTopStyle).packByte(self.desertTreeTopStyle).packByte(self.oceanTreeTopStyle).packByte(self.glowingMushroomTreeTopStyle).packByte(self.underworldTreeTopStyle).packSingle(self.rain), self.eventInfo).packInt16(self.copperOreTier).packInt16(self.ironOreTier).packInt16(self.silverOreTier).packInt16(self.goldOreTier).packInt16(self.cobaltOreTier).packInt16(self.mythrilOreTier).packInt16(self.adamantiteOreTier).packSByte(self.invasionType).packUInt64(self.lobbyId).packSingle(self.sandstormSeverity).data;
 }
 
 var Encode = {
@@ -454,7 +454,25 @@ function eventInfoToLatest(self) {
           killedEmpressOfLight: self.killedEmpressOfLight,
           killedQueenSlime: self.killedQueenSlime,
           getGoodWorld: self.getGoodWorld,
-          tenthAnniversaryWorld: false
+          tenthAnniversaryWorld: false,
+          dontStarveWorld: false,
+          downedDeerClops: false,
+          notTheBeesWorld: false,
+          remixWorld: false,
+          unlockedSlimeBlueSpawn: false,
+          combatBookVolumeTwoWasUsed: false,
+          peddlersSatchelWasUsed: false,
+          unlockedSlimeGreenSpawn: false,
+          unlockedSlimeOldSpawn: false,
+          unlockedSlimePurpleSpawn: false,
+          unlockedSlimeRainbowSpawn: false,
+          unlockedSlimeRedSpawn: false,
+          unlockedSlimeYellowSpawn: false,
+          unlockedSlimeCopperSpawn: false,
+          fastForwardTimeToDusk: false,
+          noTrapsWorld: false,
+          zenithWorld: false,
+          unlockedTruffleSpawn: false
         };
 }
 

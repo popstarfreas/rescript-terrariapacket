@@ -56,7 +56,7 @@ function data(prim) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* ExtraValueSync */87)).packInt16(self.npcSlotId).packInt32(self.extraValue).packSingle(self.x).packSingle(self.y).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("ExtraValueSync")).packInt16(self.npcSlotId).packInt32(self.extraValue).packSingle(self.x).packSingle(self.y).data;
 }
 
 var Encode = {

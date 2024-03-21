@@ -15,7 +15,7 @@ function parse(payload) {
   var alternate = reader.readByte();
   var random = reader.readSByte();
   var match = reader.readByte();
-  var direction = match !== 0 ? /* Right */1 : /* Left */0;
+  var direction = match !== 0 ? "Right" : "Left";
   return {
           x: x,
           y: y,
@@ -29,7 +29,9 @@ function parse(payload) {
 
 function toBuffer(self) {
   var match = self.direction;
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* ObjectPlace */74)).packInt16(self.x).packInt16(self.y).packInt16(self.objectType).packInt16(self.style).packByte(self.alternate).packSByte(self.random).packByte(match ? 1 : 0).data;
+  var tmp;
+  tmp = match === "Left" ? 0 : 1;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("ObjectPlace")).packInt16(self.x).packInt16(self.y).packInt16(self.objectType).packInt16(self.style).packByte(self.alternate).packSByte(self.random).packByte(tmp).data;
 }
 
 exports.parse = parse;

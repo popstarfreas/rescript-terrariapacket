@@ -69,7 +69,25 @@ var worldInfo_eventInfo = {
   killedEmpressOfLight: false,
   killedQueenSlime: false,
   getGoodWorld: false,
-  tenthAnniversaryWorld: false
+  tenthAnniversaryWorld: false,
+  dontStarveWorld: false,
+  downedDeerClops: false,
+  notTheBeesWorld: false,
+  remixWorld: false,
+  unlockedSlimeBlueSpawn: false,
+  combatBookVolumeTwoWasUsed: false,
+  peddlersSatchelWasUsed: false,
+  unlockedSlimeGreenSpawn: false,
+  unlockedSlimeOldSpawn: false,
+  unlockedSlimePurpleSpawn: false,
+  unlockedSlimeRainbowSpawn: false,
+  unlockedSlimeRedSpawn: false,
+  unlockedSlimeYellowSpawn: false,
+  unlockedSlimeCopperSpawn: false,
+  fastForwardTimeToDusk: false,
+  noTrapsWorld: false,
+  zenithWorld: false,
+  unlockedTruffleSpawn: false
 };
 
 var worldInfo_lobbyId = BigInt(0);

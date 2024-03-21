@@ -17,7 +17,7 @@ function readInt16(prim) {
 function parse(payload) {
   var reader = new Packetreader(payload);
   var match = reader.readByte();
-  var unlockType = match !== 1 ? /* TempleDoor */1 : /* Chest */0;
+  var unlockType = match !== 1 ? "TempleDoor" : "Chest";
   var x = reader.readInt16();
   var y = reader.readInt16();
   return {
@@ -46,7 +46,7 @@ function data(prim) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* ChestOrTempleUnlock */47)).packByte(self.unlockType === /* Chest */0 ? 1 : 2).packInt16(self.x).packInt16(self.y).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("ChestOrTempleUnlock")).packByte(self.unlockType === "Chest" ? 1 : 2).packInt16(self.x).packInt16(self.y).data;
 }
 
 var Encode = {

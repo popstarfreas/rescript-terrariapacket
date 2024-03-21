@@ -17,51 +17,53 @@ function parse(payload) {
   var spawnType;
   switch (npcType) {
     case -14 :
-        spawnType = /* BoughtBunny */12;
+        spawnType = "BoughtBunny";
         break;
     case -13 :
-        spawnType = /* BoughtDog */11;
+        spawnType = "BoughtDog";
         break;
     case -12 :
-        spawnType = /* BoughtCat */10;
+        spawnType = "BoughtCat";
         break;
     case -11 :
-        spawnType = /* CombatBookUsed */9;
+        spawnType = "CombatBookUsed";
         break;
     case -10 :
-        spawnType = /* BloodMoon */8;
+        spawnType = "BloodMoon";
         break;
     case -9 :
-        spawnType = /* Npc */{
+        spawnType = {
+          TAG: "Npc",
           _0: npcType
         };
         break;
     case -8 :
-        spawnType = /* ImpendingDoom */7;
+        spawnType = "ImpendingDoom";
         break;
     case -7 :
-        spawnType = /* MartianMoon */6;
+        spawnType = "MartianMoon";
         break;
     case -6 :
-        spawnType = /* Eclipse */5;
+        spawnType = "Eclipse";
         break;
     case -5 :
-        spawnType = /* SnowMoon */4;
+        spawnType = "SnowMoon";
         break;
     case -4 :
-        spawnType = /* PumpkinMoon */3;
+        spawnType = "PumpkinMoon";
         break;
     case -3 :
-        spawnType = /* PirateInvasion */2;
+        spawnType = "PirateInvasion";
         break;
     case -2 :
-        spawnType = /* FrostInvasion */1;
+        spawnType = "FrostInvasion";
         break;
     case -1 :
-        spawnType = /* GoblinInvasion */0;
+        spawnType = "GoblinInvasion";
         break;
     default:
-      spawnType = /* Npc */{
+      spawnType = {
+        TAG: "Npc",
         _0: npcType
       };
   }
@@ -85,42 +87,42 @@ function data(prim) {
 }
 
 function packSpawnType(writer, spawnType) {
-  if (typeof spawnType !== "number") {
+  if (typeof spawnType === "object") {
     return writer.packInt16(spawnType._0);
   }
   switch (spawnType) {
-    case /* GoblinInvasion */0 :
+    case "GoblinInvasion" :
         return writer.packInt16(-1);
-    case /* FrostInvasion */1 :
+    case "FrostInvasion" :
         return writer.packInt16(-2);
-    case /* PirateInvasion */2 :
+    case "PirateInvasion" :
         return writer.packInt16(-3);
-    case /* PumpkinMoon */3 :
+    case "PumpkinMoon" :
         return writer.packInt16(-4);
-    case /* SnowMoon */4 :
+    case "SnowMoon" :
         return writer.packInt16(-5);
-    case /* Eclipse */5 :
+    case "Eclipse" :
         return writer.packInt16(-6);
-    case /* MartianMoon */6 :
+    case "MartianMoon" :
         return writer.packInt16(-7);
-    case /* ImpendingDoom */7 :
+    case "ImpendingDoom" :
         return writer.packInt16(-8);
-    case /* BloodMoon */8 :
+    case "BloodMoon" :
         return writer.packInt16(-10);
-    case /* CombatBookUsed */9 :
+    case "CombatBookUsed" :
         return writer.packInt16(-11);
-    case /* BoughtCat */10 :
+    case "BoughtCat" :
         return writer.packInt16(-12);
-    case /* BoughtDog */11 :
+    case "BoughtDog" :
         return writer.packInt16(-13);
-    case /* BoughtBunny */12 :
+    case "BoughtBunny" :
         return writer.packInt16(-14);
     
   }
 }
 
 function toBuffer(self) {
-  return packSpawnType(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* BossOrInvasionSpawn */56)).packInt16(self.playerId), self.spawnType).data;
+  return packSpawnType(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("BossOrInvasionSpawn")).packInt16(self.playerId), self.spawnType).data;
 }
 
 var Encode = {

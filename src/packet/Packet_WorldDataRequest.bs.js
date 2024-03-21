@@ -19,7 +19,7 @@ function data(prim) {
 }
 
 function toBuffer(_self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* WorldDataRequest */5)).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("WorldDataRequest")).data;
 }
 
 var Encode = {

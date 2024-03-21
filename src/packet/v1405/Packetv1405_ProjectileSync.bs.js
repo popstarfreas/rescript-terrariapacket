@@ -107,7 +107,7 @@ function packOptionalData(writer, self) {
 
 function toBuffer(self) {
   var id = self.projectileId;
-  return packOptionalData(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* ProjectileSync */23)).packInt16(id === 954 ? 504 : (
+  return packOptionalData(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("ProjectileSync")).packInt16(id === 954 ? 504 : (
                                 id === 955 ? 12 : id
                               )).packSingle(self.x).packSingle(self.y).packSingle(self.vx).packSingle(self.vy).packByte(self.owner).packInt16(self.projectileType), self).data;
 }

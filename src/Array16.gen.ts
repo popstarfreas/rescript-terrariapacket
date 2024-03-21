@@ -1,14 +1,12 @@
 /* TypeScript file generated from Array16.resi by genType. */
-/* eslint-disable import/first */
 
+/* eslint-disable */
+/* tslint:disable */
 
-// @ts-ignore: Implicit any on import
-const Array16BS = require('./Array16.bs');
+const Array16JS = require('./Array16.bs.js');
 
-// tslint:disable-next-line:max-classes-per-file 
-// tslint:disable-next-line:class-name
 export abstract class t<a> { protected opaque!: a }; /* simulate opaque types */
 
-export const fromArray: <a>(_1:a[]) => (undefined | t<a>) = Array16BS.fromArray;
+export const fromArray: <a>(_1:a[]) => (undefined | t<a>) = Array16JS.fromArray as any;
 
-export const asArray: <a>(_1:t<a>) => a[] = Array16BS.asArray;
+export const asArray: <a>(_1:t<a>) => a[] = Array16JS.asArray as any;

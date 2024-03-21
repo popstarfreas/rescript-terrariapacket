@@ -28,12 +28,12 @@ function parse(payload) {
     isHoldingJump: control_isHoldingJump,
     isHoldingItemUse: control_isHoldingItemUse
   };
-  var direction = BitFlags$DarkgamingRescriptTerrariapacket.flag7(controlFlags) ? /* Right */1 : /* Left */0;
+  var direction = BitFlags$DarkgamingRescriptTerrariapacket.flag7(controlFlags) ? "Right" : "Left";
   var pulleyDirection = BitFlags$DarkgamingRescriptTerrariapacket.flag1(miscFlags1) ? (
-      BitFlags$DarkgamingRescriptTerrariapacket.flag2(miscFlags1) ? /* Two */1 : /* One */0
+      BitFlags$DarkgamingRescriptTerrariapacket.flag2(miscFlags1) ? "Two" : "One"
     ) : undefined;
   var vortexStealthActive = BitFlags$DarkgamingRescriptTerrariapacket.flag4(miscFlags1);
-  var gravityDirection = BitFlags$DarkgamingRescriptTerrariapacket.flag5(miscFlags1) ? /* Normal */0 : /* Inverted */1;
+  var gravityDirection = BitFlags$DarkgamingRescriptTerrariapacket.flag5(miscFlags1) ? "Normal" : "Inverted";
   var shouldGuard = BitFlags$DarkgamingRescriptTerrariapacket.flag6(miscFlags1);
   var ghost = BitFlags$DarkgamingRescriptTerrariapacket.flag7(miscFlags1);
   var selectedItem = reader.readByte();
@@ -90,11 +90,17 @@ function parse(payload) {
 }
 
 function packControlFlags(writer, control, direction) {
-  return writer.packByte(BitFlags$DarkgamingRescriptTerrariapacket.toByte(BitFlags$DarkgamingRescriptTerrariapacket.fromFlags(control.isHoldingUp, control.isHoldingDown, control.isHoldingLeft, control.isHoldingRight, control.isHoldingJump, control.isHoldingItemUse, direction ? true : false, false)));
+  var tmp;
+  tmp = direction === "Left" ? false : true;
+  return writer.packByte(BitFlags$DarkgamingRescriptTerrariapacket.toByte(BitFlags$DarkgamingRescriptTerrariapacket.fromFlags(control.isHoldingUp, control.isHoldingDown, control.isHoldingLeft, control.isHoldingRight, control.isHoldingJump, control.isHoldingItemUse, tmp, false)));
 }
 
 function packMiscFlags1(writer, pulleyDirection, velocity, vortexStealthActive, gravityDirection, shouldGuard, ghost) {
-  return writer.packByte(BitFlags$DarkgamingRescriptTerrariapacket.toByte(BitFlags$DarkgamingRescriptTerrariapacket.fromFlags(pulleyDirection !== undefined, pulleyDirection !== undefined && pulleyDirection ? true : false, velocity !== undefined, vortexStealthActive, gravityDirection ? false : true, shouldGuard, ghost, false)));
+  var tmp;
+  tmp = pulleyDirection !== undefined && pulleyDirection !== "One" ? true : false;
+  var tmp$1;
+  tmp$1 = gravityDirection === "Normal" ? true : false;
+  return writer.packByte(BitFlags$DarkgamingRescriptTerrariapacket.toByte(BitFlags$DarkgamingRescriptTerrariapacket.fromFlags(pulleyDirection !== undefined, tmp, velocity !== undefined, vortexStealthActive, tmp$1, shouldGuard, ghost, false)));
 }
 
 function packMiscFlags2(writer, tryKeepingHoveringUp, isVoidVaultEnabled, isSitting, hasFinishedAnyDd2Event, isPettingAnimal, isTheAnimalBeingPetSmall, potionOfReturn, tryKeepingHoveringDown) {
@@ -114,7 +120,7 @@ function packPotionOfReturn(writer, potionOfReturn) {
 }
 
 function toBuffer(self) {
-  return packPotionOfReturn(packMiscFlags3(packMiscFlags2(packMiscFlags1(packControlFlags(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* PlayerUpdate */12)), self.control, self.direction), self.pulleyDirection, self.velocity, self.vortexStealthActive, self.gravityDirection, self.shouldGuard, self.ghost), self.tryKeepingHoveringUp, self.isVoidVaultEnabled, self.isSitting, self.hasFinishedAnyDd2Event, self.isPettingAnimal, self.isTheAnimalBeingPetSmall, self.potionOfReturn, self.tryKeepingHoveringDown), self.isSleeping).packByte(self.selectedItem).packSingle(self.position.x).packSingle(self.position.y), self.potionOfReturn).data;
+  return packPotionOfReturn(packMiscFlags3(packMiscFlags2(packMiscFlags1(packControlFlags(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("PlayerUpdate")), self.control, self.direction), self.pulleyDirection, self.velocity, self.vortexStealthActive, self.gravityDirection, self.shouldGuard, self.ghost), self.tryKeepingHoveringUp, self.isVoidVaultEnabled, self.isSitting, self.hasFinishedAnyDd2Event, self.isPettingAnimal, self.isTheAnimalBeingPetSmall, self.potionOfReturn, self.tryKeepingHoveringDown), self.isSleeping).packByte(self.selectedItem).packSingle(self.position.x).packSingle(self.position.y), self.potionOfReturn).data;
 }
 
 exports.parse = parse;

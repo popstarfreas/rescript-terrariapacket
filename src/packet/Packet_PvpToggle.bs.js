@@ -17,7 +17,7 @@ function parse(payload) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* ItemOwner */20)).packByte(self.playerId).packByte(self.pvpEnabled ? 1 : 0).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("ItemOwner")).packByte(self.playerId).packByte(self.pvpEnabled ? 1 : 0).data;
 }
 
 exports.parse = parse;

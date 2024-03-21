@@ -7,7 +7,15 @@ var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 var PacketType$DarkgamingRescriptTerrariapacket = require("../PacketType.bs.js");
 
 function teleportTypeToInt(teleportType) {
-  return teleportType;
+  switch (teleportType) {
+    case "TeleportationPotion" :
+        return 0;
+    case "MagicConch" :
+        return 1;
+    case "DemonConch" :
+        return 2;
+    
+  }
 }
 
 function readByte(prim) {
@@ -22,8 +30,8 @@ function parse(payload) {
   var reader = new Packetreader(payload);
   var match = reader.readByte();
   var teleportType = match !== 0 ? (
-      match !== 1 ? /* DemonConch */2 : /* MagicConch */1
-    ) : /* TeleportationPotion */0;
+      match !== 1 ? "DemonConch" : "MagicConch"
+    ) : "TeleportationPotion";
   return {
           teleportType: teleportType
         };
@@ -48,7 +56,7 @@ function data(prim) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt(/* TeleportationPotion */68)).packByte(self.teleportType).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$DarkgamingRescriptTerrariapacket.toInt("TeleportationPotion")).packByte(teleportTypeToInt(self.teleportType)).data;
 }
 
 var Encode = {

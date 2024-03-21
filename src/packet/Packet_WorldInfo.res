@@ -58,6 +58,24 @@ type eventInfo = {
   killedQueenSlime: bool,
   getGoodWorld: bool,
   tenthAnniversaryWorld: bool,
+  dontStarveWorld: bool,
+  downedDeerClops: bool,
+  notTheBeesWorld: bool,
+  remixWorld: bool,
+  unlockedSlimeBlueSpawn: bool,
+  combatBookVolumeTwoWasUsed: bool,
+  peddlersSatchelWasUsed: bool,
+  unlockedSlimeGreenSpawn: bool,
+  unlockedSlimeOldSpawn: bool,
+  unlockedSlimePurpleSpawn: bool,
+  unlockedSlimeRainbowSpawn: bool,
+  unlockedSlimeRedSpawn: bool,
+  unlockedSlimeYellowSpawn: bool,
+  unlockedSlimeCopperSpawn: bool,
+  fastForwardTimeToDusk: bool,
+  noTrapsWorld: bool,
+  zenithWorld: bool,
+  unlockedTruffleSpawn: bool,
 }
 
 type worldUniqueId = Array16.t<int>
@@ -216,6 +234,25 @@ module Decode = {
     let killedQueenSlime = eventInfo7->BitFlags.flag7
     let getGoodWorld = eventInfo7->BitFlags.flag8
     let tenthAnniversaryWorld = eventInfo8->BitFlags.flag1
+    let dontStarveWorld = eventInfo8->BitFlags.flag2
+    let downedDeerClops = eventInfo8->BitFlags.flag3
+    let notTheBeesWorld = eventInfo8->BitFlags.flag4
+    let remixWorld = eventInfo8->BitFlags.flag5
+    let unlockedSlimeBlueSpawn = eventInfo8->BitFlags.flag6
+    let combatBookVolumeTwoWasUsed = eventInfo8->BitFlags.flag7
+    let peddlersSatchelWasUsed = eventInfo8->BitFlags.flag8
+    let unlockedSlimeGreenSpawn = eventInfo9->BitFlags.flag1
+    let unlockedSlimeOldSpawn = eventInfo9->BitFlags.flag2
+    let unlockedSlimePurpleSpawn = eventInfo9->BitFlags.flag3
+    let unlockedSlimeRainbowSpawn = eventInfo9->BitFlags.flag4
+    let unlockedSlimeRedSpawn = eventInfo9->BitFlags.flag5
+    let unlockedSlimeYellowSpawn = eventInfo9->BitFlags.flag6
+    let unlockedSlimeCopperSpawn = eventInfo9->BitFlags.flag7
+    let fastForwardTimeToDusk = eventInfo9->BitFlags.flag8
+    let noTrapsWorld = eventInfo10->BitFlags.flag1
+    let zenithWorld = eventInfo10->BitFlags.flag2
+    let unlockedTruffleSpawn = eventInfo10->BitFlags.flag3
+
     {
       shadowOrbSmashed,
       killedBoss1,
@@ -274,6 +311,24 @@ module Decode = {
       killedQueenSlime,
       getGoodWorld,
       tenthAnniversaryWorld,
+      dontStarveWorld,
+      downedDeerClops,
+      notTheBeesWorld,
+      remixWorld,
+      unlockedSlimeBlueSpawn,
+      combatBookVolumeTwoWasUsed,
+      peddlersSatchelWasUsed,
+      unlockedSlimeGreenSpawn,
+      unlockedSlimeOldSpawn,
+      unlockedSlimePurpleSpawn,
+      unlockedSlimeRainbowSpawn,
+      unlockedSlimeRedSpawn,
+      unlockedSlimeYellowSpawn,
+      unlockedSlimeCopperSpawn,
+      fastForwardTimeToDusk,
+      noTrapsWorld,
+      zenithWorld,
+      unlockedTruffleSpawn,
     }
   }
 
@@ -351,8 +406,7 @@ module Decode = {
     let invasionType = reader->readSByte
     let lobbyId = reader->readUInt64
     let sandstormSeverity = reader->readSingle
-      worldUniqueId->Option.map(worldUniqueId =>
-    {
+    worldUniqueId->Option.map(worldUniqueId => {
       time,
       dayAndMoonInfo,
       moonPhase,
@@ -515,28 +569,28 @@ module Encode = {
     )
     let eventInfo8 = BitFlags.fromFlags(
       ~flag1=eventInfo.tenthAnniversaryWorld,
-      ~flag2=false,
-      ~flag3=false,
-      ~flag4=false,
-      ~flag5=false,
-      ~flag6=false,
-      ~flag7=false,
-      ~flag8=false,
+      ~flag2=eventInfo.dontStarveWorld,
+      ~flag3=eventInfo.downedDeerClops,
+      ~flag4=eventInfo.notTheBeesWorld,
+      ~flag5=eventInfo.remixWorld,
+      ~flag6=eventInfo.unlockedSlimeBlueSpawn,
+      ~flag7=eventInfo.combatBookVolumeTwoWasUsed,
+      ~flag8=eventInfo.peddlersSatchelWasUsed,
     )
     let eventInfo9 = BitFlags.fromFlags(
-      ~flag1=false,
-      ~flag2=false,
-      ~flag3=false,
-      ~flag4=false,
-      ~flag5=false,
-      ~flag6=false,
-      ~flag7=false,
-      ~flag8=false,
+      ~flag1=eventInfo.unlockedSlimeGreenSpawn,
+      ~flag2=eventInfo.unlockedSlimeOldSpawn,
+      ~flag3=eventInfo.unlockedSlimePurpleSpawn,
+      ~flag4=eventInfo.unlockedSlimeRainbowSpawn,
+      ~flag5=eventInfo.unlockedSlimeRedSpawn,
+      ~flag6=eventInfo.unlockedSlimeYellowSpawn,
+      ~flag7=eventInfo.unlockedSlimeCopperSpawn,
+      ~flag8=eventInfo.fastForwardTimeToDusk,
     )
     let eventInfo10 = BitFlags.fromFlags(
-      ~flag1=false,
-      ~flag2=false,
-      ~flag3=false,
+      ~flag1=eventInfo.noTrapsWorld,
+      ~flag2=eventInfo.zenithWorld,
+      ~flag3=eventInfo.unlockedTruffleSpawn,
       ~flag4=false,
       ~flag5=false,
       ~flag6=false,
