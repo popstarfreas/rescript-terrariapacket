@@ -159,7 +159,7 @@ import type {t as Packet_NpcTamper_t} from '../src/packet/Packet_NpcTamper.gen';
 
 import type {t as Packet_NpcTeleportPortal_t} from '../src/packet/Packet_NpcTeleportPortal.gen';
 
-import type {t as Packet_NpcUpdate_t} from '../tests/Packet_NpcUpdate.gen';
+import type {t as Packet_NpcUpdate_t} from '../src/packet/Packet_NpcUpdate.gen';
 
 import type {t as Packet_ObjectPlace_t} from '../src/packet/Packet_ObjectPlace.gen';
 
@@ -289,7 +289,7 @@ import type {t as Packet_WiredCannonShot_t} from '../src/packet/Packet_WiredCann
 
 import type {t as Packet_WorldDataRequest_t} from '../src/packet/Packet_WorldDataRequest.gen';
 
-import type {t as Packet_WorldInfo_t} from '../tests/Packet_WorldInfo.gen';
+import type {t as Packet_WorldInfo_t} from '../src/packet/Packet_WorldInfo.gen';
 
 import type {t as Packet_Zones_t} from '../src/packet/Packet_Zones.gen';
 
