@@ -1,5 +1,5 @@
 {
-  "name": "@darkgaming/rescript-terrariapacket",
+  "name": "terraria-packet",
   "version": "1.2.0",
   "scripts": {
     "build:watch": "rescript build -w",
