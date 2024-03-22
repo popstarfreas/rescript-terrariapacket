@@ -640,7 +640,7 @@ let fromLatest = (packet: Packet.t, _fromServer: bool): option<same<t>> => {
   }
 }
 
-module Lazy = {
+module LazyPacket = {
   type t =
     | ConnectRequest(Lazy.t<option<ConnectRequest.t>>)
     | Disconnect(Lazy.t<option<Disconnect.t>>)
@@ -778,194 +778,196 @@ module Lazy = {
     | ClientSyncedInventory(Lazy.t<option<ClientSyncedInventory.t>>)
     | CountsAsHostForGameplaySet(Lazy.t<option<CountsAsHostForGameplaySet.t>>)
 
-  let toLatest = (packet: t, _fromServer: bool): Packet.Lazy.t => {
+  let toLatest = (packet: t, _fromServer: bool): Packet.LazyPacket.t => {
     switch packet {
-    | ConnectRequest(connectRequest) => Packet.Lazy.ConnectRequest(connectRequest)
-    | Disconnect(disconnect) => Packet.Lazy.Disconnect(disconnect)
-    | PlayerSlotSet(playerSlotSet) => Packet.Lazy.PlayerSlotSet(playerSlotSet)
-    | PlayerInfo(playerInfo) => Packet.Lazy.PlayerInfo(playerInfo)
+    | ConnectRequest(connectRequest) => Packet.LazyPacket.ConnectRequest(connectRequest)
+    | Disconnect(disconnect) => Packet.LazyPacket.Disconnect(disconnect)
+    | PlayerSlotSet(playerSlotSet) => Packet.LazyPacket.PlayerSlotSet(playerSlotSet)
+    | PlayerInfo(playerInfo) => Packet.LazyPacket.PlayerInfo(playerInfo)
     | PlayerInventorySlot(playerInventorySlot) =>
-      Packet.Lazy.PlayerInventorySlot(playerInventorySlot)
-    | WorldDataRequest(worldDataRequest) => Packet.Lazy.WorldDataRequest(worldDataRequest)
+      Packet.LazyPacket.PlayerInventorySlot(playerInventorySlot)
+    | WorldDataRequest(worldDataRequest) => Packet.LazyPacket.WorldDataRequest(worldDataRequest)
     | WorldInfo(worldInfo) =>
-      Packet.Lazy.WorldInfo(
+      Packet.LazyPacket.WorldInfo(
         lazy (worldInfo->Lazy.force->Option.map(worldInfo => WorldInfo.toLatest(worldInfo))),
       )
     | InitialTileSectionsRequest(initialTileSectionsRequest) =>
-      Packet.Lazy.InitialTileSectionsRequest(initialTileSectionsRequest)
-    | Status(status) => Packet.Lazy.Status(status)
+      Packet.LazyPacket.InitialTileSectionsRequest(initialTileSectionsRequest)
+    | Status(status) => Packet.LazyPacket.Status(status)
     | TileSectionSend(tileSectionSend) =>
-      Packet.Lazy.TileSectionSend(
+      Packet.LazyPacket.TileSectionSend(
         lazy (
           tileSectionSend
           ->Lazy.force
           ->Option.map(tileSectionSend => tileSectionSend->TileSectionSend.toLatest)
         ),
       )
-    | TileSectionFrame(tileSectionFrame) => Packet.Lazy.TileSectionFrame(tileSectionFrame)
-    | PlayerSpawn(playerSpawn) => Packet.Lazy.PlayerSpawn(playerSpawn)
-    | PlayerUpdate(playerUpdate) => Packet.Lazy.PlayerUpdate(playerUpdate)
-    | PlayerActive(playerActive) => Packet.Lazy.PlayerActive(playerActive)
-    | PlayerHealth(playerHealth) => Packet.Lazy.PlayerHealth(playerHealth)
-    | TileModify(tileModify) => Packet.Lazy.TileModify(tileModify)
-    | TimeSet(timeSet) => Packet.Lazy.TimeSet(timeSet)
-    | DoorUse(doorUse) => Packet.Lazy.DoorUse(doorUse)
+    | TileSectionFrame(tileSectionFrame) => Packet.LazyPacket.TileSectionFrame(tileSectionFrame)
+    | PlayerSpawn(playerSpawn) => Packet.LazyPacket.PlayerSpawn(playerSpawn)
+    | PlayerUpdate(playerUpdate) => Packet.LazyPacket.PlayerUpdate(playerUpdate)
+    | PlayerActive(playerActive) => Packet.LazyPacket.PlayerActive(playerActive)
+    | PlayerHealth(playerHealth) => Packet.LazyPacket.PlayerHealth(playerHealth)
+    | TileModify(tileModify) => Packet.LazyPacket.TileModify(tileModify)
+    | TimeSet(timeSet) => Packet.LazyPacket.TimeSet(timeSet)
+    | DoorUse(doorUse) => Packet.LazyPacket.DoorUse(doorUse)
     | TileSquareSend(tileSquareSend) =>
-      Packet.Lazy.TileSquareSend(
+      Packet.LazyPacket.TileSquareSend(
         lazy (
           tileSquareSend
           ->Lazy.force
           ->Option.map(tileSquareSend => tileSquareSend->TileSquareSend.toLatest)
         ),
       )
-    | ItemDropUpdate(itemDropUpdate) => Packet.Lazy.ItemDropUpdate(itemDropUpdate)
-    | ItemOwner(itemOwner) => Packet.Lazy.ItemOwner(itemOwner)
-    | NpcUpdate(npcUpdate) => Packet.Lazy.NpcUpdate(npcUpdate)
-    | NpcItemStrike(npcItemStrike) => Packet.Lazy.NpcItemStrike(npcItemStrike)
-    | ProjectileSync(projectileSync) => Packet.Lazy.ProjectileSync(projectileSync)
-    | NpcStrike(npcStrike) => Packet.Lazy.NpcStrike(npcStrike)
-    | ProjectileDestroy(projectileDestroy) => Packet.Lazy.ProjectileDestroy(projectileDestroy)
-    | PvpToggle(pvpToggle) => Packet.Lazy.PvpToggle(pvpToggle)
-    | ChestOpen(chestOpen) => Packet.Lazy.ChestOpen(chestOpen)
-    | ChestItem(chestItem) => Packet.Lazy.ChestItem(chestItem)
+    | ItemDropUpdate(itemDropUpdate) => Packet.LazyPacket.ItemDropUpdate(itemDropUpdate)
+    | ItemOwner(itemOwner) => Packet.LazyPacket.ItemOwner(itemOwner)
+    | NpcUpdate(npcUpdate) => Packet.LazyPacket.NpcUpdate(npcUpdate)
+    | NpcItemStrike(npcItemStrike) => Packet.LazyPacket.NpcItemStrike(npcItemStrike)
+    | ProjectileSync(projectileSync) => Packet.LazyPacket.ProjectileSync(projectileSync)
+    | NpcStrike(npcStrike) => Packet.LazyPacket.NpcStrike(npcStrike)
+    | ProjectileDestroy(projectileDestroy) => Packet.LazyPacket.ProjectileDestroy(projectileDestroy)
+    | PvpToggle(pvpToggle) => Packet.LazyPacket.PvpToggle(pvpToggle)
+    | ChestOpen(chestOpen) => Packet.LazyPacket.ChestOpen(chestOpen)
+    | ChestItem(chestItem) => Packet.LazyPacket.ChestItem(chestItem)
     | ActiveContainerSync(activeContainerSync) =>
-      Packet.Lazy.ActiveContainerSync(activeContainerSync)
-    | ChestPlace(chestPlace) => Packet.Lazy.ChestPlace(chestPlace)
-    | HealEffect(healEffect) => Packet.Lazy.HealEffect(healEffect)
-    | Zones(zones) => Packet.Lazy.Zones(zones)
-    | PasswordRequired(passwordRequired) => Packet.Lazy.PasswordRequired(passwordRequired)
-    | PasswordSend(passwordSend) => Packet.Lazy.PasswordSend(passwordSend)
-    | ItemOwnerRemove(itemOwnerRemove) => Packet.Lazy.ItemOwnerRemove(itemOwnerRemove)
-    | NpcTalk(npcTalk) => Packet.Lazy.NpcTalk(npcTalk)
-    | PlayerAnimation(playerAnimation) => Packet.Lazy.PlayerAnimation(playerAnimation)
-    | PlayerMana(playerMana) => Packet.Lazy.PlayerMana(playerMana)
-    | ManaEffect(manaEffect) => Packet.Lazy.ManaEffect(manaEffect)
-    | PlayerTeam(playerTeam) => Packet.Lazy.PlayerTeam(playerTeam)
-    | SignRead(signRead) => Packet.Lazy.SignRead(signRead)
-    | SignNew(signNew) => Packet.Lazy.SignNew(signNew)
-    | LiquidSet(liquidSet) => Packet.Lazy.LiquidSet(liquidSet)
-    | PlayerSpawnSelf(playerSpawnSelf) => Packet.Lazy.PlayerSpawnSelf(playerSpawnSelf)
-    | PlayerBuffsSet(playerBuffsSet) => Packet.Lazy.PlayerBuffsSet(playerBuffsSet)
-    | NpcSpecialEffect(npcSpecialEffect) => Packet.Lazy.NpcSpecialEffect(npcSpecialEffect)
+      Packet.LazyPacket.ActiveContainerSync(activeContainerSync)
+    | ChestPlace(chestPlace) => Packet.LazyPacket.ChestPlace(chestPlace)
+    | HealEffect(healEffect) => Packet.LazyPacket.HealEffect(healEffect)
+    | Zones(zones) => Packet.LazyPacket.Zones(zones)
+    | PasswordRequired(passwordRequired) => Packet.LazyPacket.PasswordRequired(passwordRequired)
+    | PasswordSend(passwordSend) => Packet.LazyPacket.PasswordSend(passwordSend)
+    | ItemOwnerRemove(itemOwnerRemove) => Packet.LazyPacket.ItemOwnerRemove(itemOwnerRemove)
+    | NpcTalk(npcTalk) => Packet.LazyPacket.NpcTalk(npcTalk)
+    | PlayerAnimation(playerAnimation) => Packet.LazyPacket.PlayerAnimation(playerAnimation)
+    | PlayerMana(playerMana) => Packet.LazyPacket.PlayerMana(playerMana)
+    | ManaEffect(manaEffect) => Packet.LazyPacket.ManaEffect(manaEffect)
+    | PlayerTeam(playerTeam) => Packet.LazyPacket.PlayerTeam(playerTeam)
+    | SignRead(signRead) => Packet.LazyPacket.SignRead(signRead)
+    | SignNew(signNew) => Packet.LazyPacket.SignNew(signNew)
+    | LiquidSet(liquidSet) => Packet.LazyPacket.LiquidSet(liquidSet)
+    | PlayerSpawnSelf(playerSpawnSelf) => Packet.LazyPacket.PlayerSpawnSelf(playerSpawnSelf)
+    | PlayerBuffsSet(playerBuffsSet) => Packet.LazyPacket.PlayerBuffsSet(playerBuffsSet)
+    | NpcSpecialEffect(npcSpecialEffect) => Packet.LazyPacket.NpcSpecialEffect(npcSpecialEffect)
     | ChestOrTempleUnlock(chestOrTempleUnlock) =>
-      Packet.Lazy.ChestOrTempleUnlock(chestOrTempleUnlock)
-    | NpcBuffAdd(npcBuffAdd) => Packet.Lazy.NpcBuffAdd(npcBuffAdd)
-    | NpcBuffUpdate(npcBuffUpdate) => Packet.Lazy.NpcBuffUpdate(npcBuffUpdate)
-    | PlayerBuffAdd(playerBuffAdd) => Packet.Lazy.PlayerBuffAdd(playerBuffAdd)
-    | NpcNameUpdate(npcNameUpdate) => Packet.Lazy.NpcNameUpdate(npcNameUpdate)
-    | GoodEvilUpdate(goodEvilUpdate) => Packet.Lazy.GoodEvilUpdate(goodEvilUpdate)
-    | HarpPlay(harpPlay) => Packet.Lazy.HarpPlay(harpPlay)
-    | SwitchHit(switchHit) => Packet.Lazy.SwitchHit(switchHit)
-    | NpcHomeUpdate(npcHomeUpdate) => Packet.Lazy.NpcHomeUpdate(npcHomeUpdate)
+      Packet.LazyPacket.ChestOrTempleUnlock(chestOrTempleUnlock)
+    | NpcBuffAdd(npcBuffAdd) => Packet.LazyPacket.NpcBuffAdd(npcBuffAdd)
+    | NpcBuffUpdate(npcBuffUpdate) => Packet.LazyPacket.NpcBuffUpdate(npcBuffUpdate)
+    | PlayerBuffAdd(playerBuffAdd) => Packet.LazyPacket.PlayerBuffAdd(playerBuffAdd)
+    | NpcNameUpdate(npcNameUpdate) => Packet.LazyPacket.NpcNameUpdate(npcNameUpdate)
+    | GoodEvilUpdate(goodEvilUpdate) => Packet.LazyPacket.GoodEvilUpdate(goodEvilUpdate)
+    | HarpPlay(harpPlay) => Packet.LazyPacket.HarpPlay(harpPlay)
+    | SwitchHit(switchHit) => Packet.LazyPacket.SwitchHit(switchHit)
+    | NpcHomeUpdate(npcHomeUpdate) => Packet.LazyPacket.NpcHomeUpdate(npcHomeUpdate)
     | BossOrInvasionSpawn(bossOrInvasionSpawn) =>
-      Packet.Lazy.BossOrInvasionSpawn(bossOrInvasionSpawn)
-    | PlayerDodge(playerDodge) => Packet.Lazy.PlayerDodge(playerDodge)
-    | TilePaint(tilePaint) => Packet.Lazy.TilePaint(tilePaint)
-    | WallPaint(wallPaint) => Packet.Lazy.WallPaint(wallPaint)
-    | Teleport(teleport) => Packet.Lazy.Teleport(teleport)
-    | PlayerHealOther(playerHealOther) => Packet.Lazy.PlayerHealOther(playerHealOther)
-    | DimensionsUpdate(dimensionsUpdate) => Packet.Lazy.DimensionsUpdate(dimensionsUpdate)
-    | ClientUuid(clientUuid) => Packet.Lazy.ClientUuid(clientUuid)
-    | ChestName(chestName) => Packet.Lazy.ChestName(chestName)
-    | CatchNpc(catchNpc) => Packet.Lazy.CatchNpc(catchNpc)
-    | ReleaseNpc(releaseNpc) => Packet.Lazy.ReleaseNpc(releaseNpc)
+      Packet.LazyPacket.BossOrInvasionSpawn(bossOrInvasionSpawn)
+    | PlayerDodge(playerDodge) => Packet.LazyPacket.PlayerDodge(playerDodge)
+    | TilePaint(tilePaint) => Packet.LazyPacket.TilePaint(tilePaint)
+    | WallPaint(wallPaint) => Packet.LazyPacket.WallPaint(wallPaint)
+    | Teleport(teleport) => Packet.LazyPacket.Teleport(teleport)
+    | PlayerHealOther(playerHealOther) => Packet.LazyPacket.PlayerHealOther(playerHealOther)
+    | DimensionsUpdate(dimensionsUpdate) => Packet.LazyPacket.DimensionsUpdate(dimensionsUpdate)
+    | ClientUuid(clientUuid) => Packet.LazyPacket.ClientUuid(clientUuid)
+    | ChestName(chestName) => Packet.LazyPacket.ChestName(chestName)
+    | CatchNpc(catchNpc) => Packet.LazyPacket.CatchNpc(catchNpc)
+    | ReleaseNpc(releaseNpc) => Packet.LazyPacket.ReleaseNpc(releaseNpc)
     | TravellingMerchantInventory(travellingMerchantInventory) =>
-      Packet.Lazy.TravellingMerchantInventory(travellingMerchantInventory)
+      Packet.LazyPacket.TravellingMerchantInventory(travellingMerchantInventory)
     | TeleportationPotion(teleportationPotion) =>
-      Packet.Lazy.TeleportationPotion(teleportationPotion)
-    | AnglerQuest(anglerQuest) => Packet.Lazy.AnglerQuest(anglerQuest)
+      Packet.LazyPacket.TeleportationPotion(teleportationPotion)
+    | AnglerQuest(anglerQuest) => Packet.LazyPacket.AnglerQuest(anglerQuest)
     | AnglerQuestComplete(anglerQuestComplete) =>
-      Packet.Lazy.AnglerQuestComplete(anglerQuestComplete)
+      Packet.LazyPacket.AnglerQuestComplete(anglerQuestComplete)
     | AnglerQuestsCompletedAmount(anglerQuestsCompletedAmount) =>
-      Packet.Lazy.AnglerQuestsCompletedAmount(anglerQuestsCompletedAmount)
+      Packet.LazyPacket.AnglerQuestsCompletedAmount(anglerQuestsCompletedAmount)
     | TemporaryAnimationCreate(temporaryAnimationCreate) =>
-      Packet.Lazy.TemporaryAnimationCreate(temporaryAnimationCreate)
+      Packet.LazyPacket.TemporaryAnimationCreate(temporaryAnimationCreate)
     | InvasionProgressReport(invasionProgressReport) =>
-      Packet.Lazy.InvasionProgressReport(invasionProgressReport)
-    | ObjectPlace(objectPlace) => Packet.Lazy.ObjectPlace(objectPlace)
+      Packet.LazyPacket.InvasionProgressReport(invasionProgressReport)
+    | ObjectPlace(objectPlace) => Packet.LazyPacket.ObjectPlace(objectPlace)
     | PlayerChestIndexSync(playerChestIndexSync) =>
-      Packet.Lazy.PlayerChestIndexSync(playerChestIndexSync)
-    | CombatNumberCreate(combatNumberCreate) => Packet.Lazy.CombatNumberCreate(combatNumberCreate)
-    | NetModuleLoad(netModuleLoad) => Packet.Lazy.NetModuleLoad(netModuleLoad)
-    | NpcKillCount(npcKillCount) => Packet.Lazy.NpcKillCount(npcKillCount)
-    | PlayerStealth(playerStealth) => Packet.Lazy.PlayerStealth(playerStealth)
+      Packet.LazyPacket.PlayerChestIndexSync(playerChestIndexSync)
+    | CombatNumberCreate(combatNumberCreate) =>
+      Packet.LazyPacket.CombatNumberCreate(combatNumberCreate)
+    | NetModuleLoad(netModuleLoad) => Packet.LazyPacket.NetModuleLoad(netModuleLoad)
+    | NpcKillCount(npcKillCount) => Packet.LazyPacket.NpcKillCount(npcKillCount)
+    | PlayerStealth(playerStealth) => Packet.LazyPacket.PlayerStealth(playerStealth)
     | ItemForceIntoNearestChest(itemForceIntoNearestChest) =>
-      Packet.Lazy.ItemForceIntoNearestChest(itemForceIntoNearestChest)
-    | TileEntityUpdate(tileEntityUpdate) => Packet.Lazy.TileEntityUpdate(tileEntityUpdate)
-    | TileEntityPlace(tileEntityPlace) => Packet.Lazy.TileEntityPlace(tileEntityPlace)
-    | ItemDropModify(itemDropModify) => Packet.Lazy.ItemDropModify(itemDropModify)
-    | ItemFramePlace(itemFramePlace) => Packet.Lazy.ItemFramePlace(itemFramePlace)
+      Packet.LazyPacket.ItemForceIntoNearestChest(itemForceIntoNearestChest)
+    | TileEntityUpdate(tileEntityUpdate) => Packet.LazyPacket.TileEntityUpdate(tileEntityUpdate)
+    | TileEntityPlace(tileEntityPlace) => Packet.LazyPacket.TileEntityPlace(tileEntityPlace)
+    | ItemDropModify(itemDropModify) => Packet.LazyPacket.ItemDropModify(itemDropModify)
+    | ItemFramePlace(itemFramePlace) => Packet.LazyPacket.ItemFramePlace(itemFramePlace)
     | ItemDropInstancedUpdate(itemDropInstancedUpdate) =>
-      Packet.Lazy.ItemDropInstancedUpdate(itemDropInstancedUpdate)
-    | EmoteBubble(emoteBubble) => Packet.Lazy.EmoteBubble(emoteBubble)
-    | ExtraValueSync(extraValueSync) => Packet.Lazy.ExtraValueSync(extraValueSync)
-    | SocialHandshake(socialHandshake) => Packet.Lazy.SocialHandshake(socialHandshake)
-    | Unused(unused) => Packet.Lazy.Unused(unused)
-    | PortalKill(portalKill) => Packet.Lazy.PortalKill(portalKill)
+      Packet.LazyPacket.ItemDropInstancedUpdate(itemDropInstancedUpdate)
+    | EmoteBubble(emoteBubble) => Packet.LazyPacket.EmoteBubble(emoteBubble)
+    | ExtraValueSync(extraValueSync) => Packet.LazyPacket.ExtraValueSync(extraValueSync)
+    | SocialHandshake(socialHandshake) => Packet.LazyPacket.SocialHandshake(socialHandshake)
+    | Unused(unused) => Packet.LazyPacket.Unused(unused)
+    | PortalKill(portalKill) => Packet.LazyPacket.PortalKill(portalKill)
     | PlayerTeleportPortal(playerTeleportPortal) =>
-      Packet.Lazy.PlayerTeleportPortal(playerTeleportPortal)
+      Packet.LazyPacket.PlayerTeleportPortal(playerTeleportPortal)
     | NpcKilledNotification(npcKilledNotification) =>
-      Packet.Lazy.NpcKilledNotification(npcKilledNotification)
-    | EventNotification(eventNotification) => Packet.Lazy.EventNotification(eventNotification)
-    | MinionTargetUpdate(minionTargetUpdate) => Packet.Lazy.MinionTargetUpdate(minionTargetUpdate)
-    | NpcTeleportPortal(npcTeleportPortal) => Packet.Lazy.NpcTeleportPortal(npcTeleportPortal)
+      Packet.LazyPacket.NpcKilledNotification(npcKilledNotification)
+    | EventNotification(eventNotification) => Packet.LazyPacket.EventNotification(eventNotification)
+    | MinionTargetUpdate(minionTargetUpdate) =>
+      Packet.LazyPacket.MinionTargetUpdate(minionTargetUpdate)
+    | NpcTeleportPortal(npcTeleportPortal) => Packet.LazyPacket.NpcTeleportPortal(npcTeleportPortal)
     | ShieldStrengthsUpdate(shieldStrengthsUpdate) =>
-      Packet.Lazy.ShieldStrengthsUpdate(shieldStrengthsUpdate)
-    | NebulaLevelUp(nebulaLevelUp) => Packet.Lazy.NebulaLevelUp(nebulaLevelUp)
-    | MoonLordCountdown(moonLordCountdown) => Packet.Lazy.MoonLordCountdown(moonLordCountdown)
-    | NpcShopItem(npcShopItem) => Packet.Lazy.NpcShopItem(npcShopItem)
-    | GemLockToggle(gemLockToggle) => Packet.Lazy.GemLockToggle(gemLockToggle)
-    | SmokePoof(smokePoof) => Packet.Lazy.SmokePoof(smokePoof)
-    | ChatMessageSmart(chatMessageSmart) => Packet.Lazy.ChatMessageSmart(chatMessageSmart)
-    | WiredCannonShot(wiredCannonShot) => Packet.Lazy.WiredCannonShot(wiredCannonShot)
-    | MassWireOperation(massWireOperation) => Packet.Lazy.MassWireOperation(massWireOperation)
+      Packet.LazyPacket.ShieldStrengthsUpdate(shieldStrengthsUpdate)
+    | NebulaLevelUp(nebulaLevelUp) => Packet.LazyPacket.NebulaLevelUp(nebulaLevelUp)
+    | MoonLordCountdown(moonLordCountdown) => Packet.LazyPacket.MoonLordCountdown(moonLordCountdown)
+    | NpcShopItem(npcShopItem) => Packet.LazyPacket.NpcShopItem(npcShopItem)
+    | GemLockToggle(gemLockToggle) => Packet.LazyPacket.GemLockToggle(gemLockToggle)
+    | SmokePoof(smokePoof) => Packet.LazyPacket.SmokePoof(smokePoof)
+    | ChatMessageSmart(chatMessageSmart) => Packet.LazyPacket.ChatMessageSmart(chatMessageSmart)
+    | WiredCannonShot(wiredCannonShot) => Packet.LazyPacket.WiredCannonShot(wiredCannonShot)
+    | MassWireOperation(massWireOperation) => Packet.LazyPacket.MassWireOperation(massWireOperation)
     | MassWireOperationPay(massWireOperationPay) =>
-      Packet.Lazy.MassWireOperationPay(massWireOperationPay)
-    | PartyToggle(partyToggle) => Packet.Lazy.PartyToggle(partyToggle)
-    | TreeGrowFx(treeGrowFx) => Packet.Lazy.TreeGrowFx(treeGrowFx)
+      Packet.LazyPacket.MassWireOperationPay(massWireOperationPay)
+    | PartyToggle(partyToggle) => Packet.LazyPacket.PartyToggle(partyToggle)
+    | TreeGrowFx(treeGrowFx) => Packet.LazyPacket.TreeGrowFx(treeGrowFx)
     | CrystalInvasionStart(crystalInvasionStart) =>
-      Packet.Lazy.CrystalInvasionStart(crystalInvasionStart)
+      Packet.LazyPacket.CrystalInvasionStart(crystalInvasionStart)
     | CrystalInvasionWipeAll(crystalInvasionWipeAll) =>
-      Packet.Lazy.CrystalInvasionWipeAll(crystalInvasionWipeAll)
+      Packet.LazyPacket.CrystalInvasionWipeAll(crystalInvasionWipeAll)
     | MinionAttackTargetUpdate(minionAttackTargetUpdate) =>
-      Packet.Lazy.MinionAttackTargetUpdate(minionAttackTargetUpdate)
+      Packet.LazyPacket.MinionAttackTargetUpdate(minionAttackTargetUpdate)
     | CrystalInvasionSendWaitTime(crystalInvasionSendWaitTime) =>
-      Packet.Lazy.CrystalInvasionSendWaitTime(crystalInvasionSendWaitTime)
-    | PlayerDamage(playerDamage) => Packet.Lazy.PlayerDamage(playerDamage)
-    | PlayerDeath(playerDeath) => Packet.Lazy.PlayerDeath(playerDeath)
-    | CombatTextCreate(combatTextCreate) => Packet.Lazy.CombatTextCreate(combatTextCreate)
-    | Emoji(emoji) => Packet.Lazy.Emoji(emoji)
+      Packet.LazyPacket.CrystalInvasionSendWaitTime(crystalInvasionSendWaitTime)
+    | PlayerDamage(playerDamage) => Packet.LazyPacket.PlayerDamage(playerDamage)
+    | PlayerDeath(playerDeath) => Packet.LazyPacket.PlayerDeath(playerDeath)
+    | CombatTextCreate(combatTextCreate) => Packet.LazyPacket.CombatTextCreate(combatTextCreate)
+    | Emoji(emoji) => Packet.LazyPacket.Emoji(emoji)
     | TileEntityDisplayDollItemSync(tileEntityDisplayDollItemSync) =>
-      Packet.Lazy.TileEntityDisplayDollItemSync(tileEntityDisplayDollItemSync)
+      Packet.LazyPacket.TileEntityDisplayDollItemSync(tileEntityDisplayDollItemSync)
     | TileEntityInteractionRequest(tileEntityInteractionRequest) =>
-      Packet.Lazy.TileEntityInteractionRequest(tileEntityInteractionRequest)
+      Packet.LazyPacket.TileEntityInteractionRequest(tileEntityInteractionRequest)
     | WeaponsRackTryPlacing(weaponsRackTryPlacing) =>
-      Packet.Lazy.WeaponsRackTryPlacing(weaponsRackTryPlacing)
+      Packet.LazyPacket.WeaponsRackTryPlacing(weaponsRackTryPlacing)
     | TileEntityHatRackItemSync(tileEntityHatRackItemSync) =>
-      Packet.Lazy.TileEntityHatRackItemSync(tileEntityHatRackItemSync)
-    | TilePickingSync(tilePickingSync) => Packet.Lazy.TilePickingSync(tilePickingSync)
-    | RevengeMarkerSync(revengeMarkerSync) => Packet.Lazy.RevengeMarkerSync(revengeMarkerSync)
+      Packet.LazyPacket.TileEntityHatRackItemSync(tileEntityHatRackItemSync)
+    | TilePickingSync(tilePickingSync) => Packet.LazyPacket.TilePickingSync(tilePickingSync)
+    | RevengeMarkerSync(revengeMarkerSync) => Packet.LazyPacket.RevengeMarkerSync(revengeMarkerSync)
     | RevengeMarkerRemove(revengeMarkerRemove) =>
-      Packet.Lazy.RevengeMarkerRemove(revengeMarkerRemove)
-    | GolfBallLandInCup(golfBallLandInCup) => Packet.Lazy.GolfBallLandInCup(golfBallLandInCup)
+      Packet.LazyPacket.RevengeMarkerRemove(revengeMarkerRemove)
+    | GolfBallLandInCup(golfBallLandInCup) => Packet.LazyPacket.GolfBallLandInCup(golfBallLandInCup)
     | ClientFinishConnectingToServer(clientFinishConnectingToServer) =>
-      Packet.Lazy.ClientFinishConnectingToServer(clientFinishConnectingToServer)
-    | NpcFishOut(npcFishOut) => Packet.Lazy.NpcFishOut(npcFishOut)
-    | NpcTamper(npcTamper) => Packet.Lazy.NpcTamper(npcTamper)
-    | LegacySoundPlay(legacySoundPlay) => Packet.Lazy.LegacySoundPlay(legacySoundPlay)
+      Packet.LazyPacket.ClientFinishConnectingToServer(clientFinishConnectingToServer)
+    | NpcFishOut(npcFishOut) => Packet.LazyPacket.NpcFishOut(npcFishOut)
+    | NpcTamper(npcTamper) => Packet.LazyPacket.NpcTamper(npcTamper)
+    | LegacySoundPlay(legacySoundPlay) => Packet.LazyPacket.LegacySoundPlay(legacySoundPlay)
     | FoodPlatterTryPlacing(foodPlatterTryPlacing) =>
-      Packet.Lazy.FoodPlatterTryPlacing(foodPlatterTryPlacing)
+      Packet.LazyPacket.FoodPlatterTryPlacing(foodPlatterTryPlacing)
     | PlayerLuckFactorsUpdate(playerLuckFactorsUpdate) =>
-      Packet.Lazy.PlayerLuckFactorsUpdate(playerLuckFactorsUpdate)
-    | PlayerDead(playerDead) => Packet.Lazy.PlayerDead(playerDead)
+      Packet.LazyPacket.PlayerLuckFactorsUpdate(playerLuckFactorsUpdate)
+    | PlayerDead(playerDead) => Packet.LazyPacket.PlayerDead(playerDead)
     | CavernMonsterTypeSync(cavernMonsterTypeSync) =>
-      Packet.Lazy.CavernMonsterTypeSync(cavernMonsterTypeSync)
+      Packet.LazyPacket.CavernMonsterTypeSync(cavernMonsterTypeSync)
     | NpcBuffRemovalRequest(npcBuffRemovalRequest) =>
-      Packet.Lazy.NpcBuffRemovalRequest(npcBuffRemovalRequest)
+      Packet.LazyPacket.NpcBuffRemovalRequest(npcBuffRemovalRequest)
     | ClientSyncedInventory(clientSyncedInventory) =>
-      Packet.Lazy.ClientSyncedInventory(clientSyncedInventory)
+      Packet.LazyPacket.ClientSyncedInventory(clientSyncedInventory)
     | CountsAsHostForGameplaySet(countsAsHostForGameplaySet) =>
-      Packet.Lazy.CountsAsHostForGameplaySet(countsAsHostForGameplaySet)
+      Packet.LazyPacket.CountsAsHostForGameplaySet(countsAsHostForGameplaySet)
     }
   }
 }

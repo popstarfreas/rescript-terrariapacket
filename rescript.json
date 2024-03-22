@@ -30,11 +30,13 @@
     "@dusty-phillips/rescript-zora"
   ],
   "gentypeconfig": {
+    "importPath": "relative",
     "generatedFileExtension": ".gen.ts",
     "module": "commonjs",
     "shims": {
       "NodeJs": "NodeJs",
-      "PacketFactory": "PacketFactory"
+      "PacketFactory": "PacketFactory",
+      "Lazy": "Lazy"
     },
     "debug": {
       "all": false,

@@ -1,4 +1,5 @@
 module TrackedProjectileReference = {
+  @genType
   type t = {
     expectedIdentity: int,
     expectedType: int,
@@ -27,6 +28,7 @@ module TrackedProjectileReference = {
   }
 }
 
+@genType
 type t = {
   playerId: int,
   piggyBankProj: option<TrackedProjectileReference.t>,

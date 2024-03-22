@@ -1,3 +1,4 @@
+@genType
 type t = {
   playerId: int,
   healAmount: int,

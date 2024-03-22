@@ -1,6 +1,7 @@
 module Option = Belt.Option
 
 module Immunity = {
+  @genType
   type t =
     | PlayerId(int)
     | All
@@ -18,6 +19,7 @@ module Immunity = {
     }
 }
 
+@genType
 type t = {
   npcId: int,
   immunityTime: option<int>,

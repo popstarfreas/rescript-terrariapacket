@@ -1,3 +1,4 @@
+@genType
 type t = {items: array<int>}
 
 module Decode = {

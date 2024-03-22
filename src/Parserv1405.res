@@ -459,419 +459,499 @@ let parsePayloadLazy = (
   packetType: PacketType.t,
   payload: NodeJs.Buffer.t,
   fromServer: bool,
-): option<Packetv1405.Lazy.t> =>
+): option<Packetv1405.LazyPacket.t> =>
   switch (packetType, fromServer) {
   | (ConnectRequest, true) => None
   | (ConnectRequest, false) =>
-    Some(Packetv1405.Lazy.ConnectRequest(lazy Packetv1405.ConnectRequest.parse(payload)))
+    Some(Packetv1405.LazyPacket.ConnectRequest(lazy Packetv1405.ConnectRequest.parse(payload)))
   | (Disconnect, false) => None
   | (Disconnect, true) =>
-    Some(Packetv1405.Lazy.Disconnect(lazy Packetv1405.Disconnect.parse(payload)))
+    Some(Packetv1405.LazyPacket.Disconnect(lazy Packetv1405.Disconnect.parse(payload)))
   | (PlayerSlotSet, false) => None
   | (PlayerSlotSet, true) =>
-    Some(Packetv1405.Lazy.PlayerSlotSet(lazy Packetv1405.PlayerSlotSet.parse(payload)))
+    Some(Packetv1405.LazyPacket.PlayerSlotSet(lazy Packetv1405.PlayerSlotSet.parse(payload)))
   | (PlayerInfo, true | false) =>
-    Some(Packetv1405.Lazy.PlayerInfo(lazy Packetv1405.PlayerInfo.parse(payload)))
+    Some(Packetv1405.LazyPacket.PlayerInfo(lazy Packetv1405.PlayerInfo.parse(payload)))
   | (PlayerInventorySlot, true | false) =>
-    Some(Packetv1405.Lazy.PlayerInventorySlot(lazy Packetv1405.PlayerInventorySlot.parse(payload)))
+    Some(
+      Packetv1405.LazyPacket.PlayerInventorySlot(
+        lazy Packetv1405.PlayerInventorySlot.parse(payload),
+      ),
+    )
   | (WorldDataRequest, true) => None
   | (WorldDataRequest, false) =>
-    Some(Packetv1405.Lazy.WorldDataRequest(lazy Packetv1405.WorldDataRequest.parse(payload)))
+    Some(Packetv1405.LazyPacket.WorldDataRequest(lazy Packetv1405.WorldDataRequest.parse(payload)))
   | (WorldInfo, false) => None
-  | (WorldInfo, true) => Some(Packetv1405.Lazy.WorldInfo(lazy Packetv1405.WorldInfo.parse(payload)))
+  | (WorldInfo, true) =>
+    Some(Packetv1405.LazyPacket.WorldInfo(lazy Packetv1405.WorldInfo.parse(payload)))
   | (InitialTileSectionsRequest, true) => None
   | (InitialTileSectionsRequest, false) =>
     Some(
-      Packetv1405.Lazy.InitialTileSectionsRequest(
+      Packetv1405.LazyPacket.InitialTileSectionsRequest(
         lazy Packetv1405.InitialTileSectionsRequest.parse(payload),
       ),
     )
   | (Status, false) => None
-  | (Status, true) => Some(Packetv1405.Lazy.Status(lazy Packetv1405.Status.parse(payload)))
+  | (Status, true) => Some(Packetv1405.LazyPacket.Status(lazy Packetv1405.Status.parse(payload)))
   | (TileSectionSend, false) => None
   | (TileSectionSend, true) =>
-    Some(Packetv1405.Lazy.TileSectionSend(lazy Packetv1405.TileSectionSend.parse(payload)))
+    Some(Packetv1405.LazyPacket.TileSectionSend(lazy Packetv1405.TileSectionSend.parse(payload)))
   | (TileSectionFrame, false) => None
   | (TileSectionFrame, true) =>
-    Some(Packetv1405.Lazy.TileSectionFrame(lazy Packetv1405.TileSectionFrame.parse(payload)))
+    Some(Packetv1405.LazyPacket.TileSectionFrame(lazy Packetv1405.TileSectionFrame.parse(payload)))
   | (PlayerSpawn, true | false) =>
-    Some(Packetv1405.Lazy.PlayerSpawn(lazy Packetv1405.PlayerSpawn.parse(payload)))
+    Some(Packetv1405.LazyPacket.PlayerSpawn(lazy Packetv1405.PlayerSpawn.parse(payload)))
   | (PlayerUpdate, true | false) =>
-    Some(Packetv1405.Lazy.PlayerUpdate(lazy Packetv1405.PlayerUpdate.parse(payload)))
+    Some(Packetv1405.LazyPacket.PlayerUpdate(lazy Packetv1405.PlayerUpdate.parse(payload)))
   | (PlayerActive, false) => None
   | (PlayerActive, true) =>
-    Some(Packetv1405.Lazy.PlayerActive(lazy Packetv1405.PlayerActive.parse(payload)))
+    Some(Packetv1405.LazyPacket.PlayerActive(lazy Packetv1405.PlayerActive.parse(payload)))
   | (PlayerHealth, true | false) =>
-    Some(Packetv1405.Lazy.PlayerHealth(lazy Packetv1405.PlayerHealth.parse(payload)))
+    Some(Packetv1405.LazyPacket.PlayerHealth(lazy Packetv1405.PlayerHealth.parse(payload)))
   | (TileModify, true | false) =>
-    Some(Packetv1405.Lazy.TileModify(lazy Packetv1405.TileModify.parse(payload)))
+    Some(Packetv1405.LazyPacket.TileModify(lazy Packetv1405.TileModify.parse(payload)))
   | (TimeSet, false) => None
-  | (TimeSet, true) => Some(Packetv1405.Lazy.TimeSet(lazy Packetv1405.TimeSet.parse(payload)))
+  | (TimeSet, true) => Some(Packetv1405.LazyPacket.TimeSet(lazy Packetv1405.TimeSet.parse(payload)))
   | (DoorUse, true | false) =>
-    Some(Packetv1405.Lazy.DoorUse(lazy Packetv1405.DoorUse.parse(payload)))
+    Some(Packetv1405.LazyPacket.DoorUse(lazy Packetv1405.DoorUse.parse(payload)))
   | (TileSquareSend, true | false) =>
-    Some(Packetv1405.Lazy.TileSquareSend(lazy Packetv1405.TileSquareSend.parse(payload)))
+    Some(Packetv1405.LazyPacket.TileSquareSend(lazy Packetv1405.TileSquareSend.parse(payload)))
   | (ItemDropUpdate, true | false) =>
-    Some(Packetv1405.Lazy.ItemDropUpdate(lazy Packetv1405.ItemDropUpdate.parse(payload)))
+    Some(Packetv1405.LazyPacket.ItemDropUpdate(lazy Packetv1405.ItemDropUpdate.parse(payload)))
   | (ItemOwner, true | false) =>
-    Some(Packetv1405.Lazy.ItemOwner(lazy Packetv1405.ItemOwner.parse(payload)))
+    Some(Packetv1405.LazyPacket.ItemOwner(lazy Packetv1405.ItemOwner.parse(payload)))
   | (NpcUpdate, false) => None
-  | (NpcUpdate, true) => Some(Packetv1405.Lazy.NpcUpdate(lazy Packetv1405.NpcUpdate.parse(payload)))
+  | (NpcUpdate, true) =>
+    Some(Packetv1405.LazyPacket.NpcUpdate(lazy Packetv1405.NpcUpdate.parse(payload)))
   | (NpcItemStrike, true | false) =>
-    Some(Packetv1405.Lazy.NpcItemStrike(lazy Packetv1405.NpcItemStrike.parse(payload)))
+    Some(Packetv1405.LazyPacket.NpcItemStrike(lazy Packetv1405.NpcItemStrike.parse(payload)))
   | (ProjectileSync, true | false) =>
-    Some(Packetv1405.Lazy.ProjectileSync(lazy Packetv1405.ProjectileSync.parse(payload)))
+    Some(Packetv1405.LazyPacket.ProjectileSync(lazy Packetv1405.ProjectileSync.parse(payload)))
   | (NpcStrike, true | false) =>
-    Some(Packetv1405.Lazy.NpcStrike(lazy Packetv1405.NpcStrike.parse(payload)))
+    Some(Packetv1405.LazyPacket.NpcStrike(lazy Packetv1405.NpcStrike.parse(payload)))
   | (ProjectileDestroy, true | false) =>
-    Some(Packetv1405.Lazy.ProjectileDestroy(lazy Packetv1405.ProjectileDestroy.parse(payload)))
+    Some(
+      Packetv1405.LazyPacket.ProjectileDestroy(lazy Packetv1405.ProjectileDestroy.parse(payload)),
+    )
   | (PvpToggle, true | false) =>
-    Some(Packetv1405.Lazy.PvpToggle(lazy Packetv1405.PvpToggle.parse(payload)))
+    Some(Packetv1405.LazyPacket.PvpToggle(lazy Packetv1405.PvpToggle.parse(payload)))
   | (ChestOpen, true) => None
   | (ChestOpen, false) =>
-    Some(Packetv1405.Lazy.ChestOpen(lazy Packetv1405.ChestOpen.parse(payload)))
+    Some(Packetv1405.LazyPacket.ChestOpen(lazy Packetv1405.ChestOpen.parse(payload)))
   | (ChestItem, true | false) =>
-    Some(Packetv1405.Lazy.ChestItem(lazy Packetv1405.ChestItem.parse(payload)))
+    Some(Packetv1405.LazyPacket.ChestItem(lazy Packetv1405.ChestItem.parse(payload)))
   | (ActiveContainerSync, true | false) =>
-    Some(Packetv1405.Lazy.ActiveContainerSync(lazy Packetv1405.ActiveContainerSync.parse(payload)))
+    Some(
+      Packetv1405.LazyPacket.ActiveContainerSync(
+        lazy Packetv1405.ActiveContainerSync.parse(payload),
+      ),
+    )
   | (ChestPlace, true | false) =>
-    Some(Packetv1405.Lazy.ChestPlace(lazy Packetv1405.ChestPlace.parse(payload)))
+    Some(Packetv1405.LazyPacket.ChestPlace(lazy Packetv1405.ChestPlace.parse(payload)))
   | (HealEffect, true | false) =>
-    Some(Packetv1405.Lazy.HealEffect(lazy Packetv1405.HealEffect.parse(payload)))
-  | (Zones, true | false) => Some(Packetv1405.Lazy.Zones(lazy Packetv1405.Zones.parse(payload)))
+    Some(Packetv1405.LazyPacket.HealEffect(lazy Packetv1405.HealEffect.parse(payload)))
+  | (Zones, true | false) =>
+    Some(Packetv1405.LazyPacket.Zones(lazy Packetv1405.Zones.parse(payload)))
   | (PasswordRequired, false) => None
   | (PasswordRequired, true) =>
-    Some(Packetv1405.Lazy.PasswordRequired(lazy Packetv1405.PasswordRequired.parse(payload)))
+    Some(Packetv1405.LazyPacket.PasswordRequired(lazy Packetv1405.PasswordRequired.parse(payload)))
   | (PasswordSend, true) => None
   | (PasswordSend, false) =>
-    Some(Packetv1405.Lazy.PasswordSend(lazy Packetv1405.PasswordSend.parse(payload)))
+    Some(Packetv1405.LazyPacket.PasswordSend(lazy Packetv1405.PasswordSend.parse(payload)))
   | (ItemOwnerRemove, false) => None
   | (ItemOwnerRemove, true) =>
-    Some(Packetv1405.Lazy.ItemOwnerRemove(lazy Packetv1405.ItemOwnerRemove.parse(payload)))
+    Some(Packetv1405.LazyPacket.ItemOwnerRemove(lazy Packetv1405.ItemOwnerRemove.parse(payload)))
   | (NpcTalk, true | false) =>
-    Some(Packetv1405.Lazy.NpcTalk(lazy Packetv1405.NpcTalk.parse(payload)))
+    Some(Packetv1405.LazyPacket.NpcTalk(lazy Packetv1405.NpcTalk.parse(payload)))
   | (PlayerAnimation, true | false) =>
-    Some(Packetv1405.Lazy.PlayerAnimation(lazy Packetv1405.PlayerAnimation.parse(payload)))
+    Some(Packetv1405.LazyPacket.PlayerAnimation(lazy Packetv1405.PlayerAnimation.parse(payload)))
   | (PlayerMana, true | false) =>
-    Some(Packetv1405.Lazy.PlayerMana(lazy Packetv1405.PlayerMana.parse(payload)))
+    Some(Packetv1405.LazyPacket.PlayerMana(lazy Packetv1405.PlayerMana.parse(payload)))
   | (ManaEffect, true | false) =>
-    Some(Packetv1405.Lazy.ManaEffect(lazy Packetv1405.ManaEffect.parse(payload)))
+    Some(Packetv1405.LazyPacket.ManaEffect(lazy Packetv1405.ManaEffect.parse(payload)))
   | (PlayerTeam, true | false) =>
-    Some(Packetv1405.Lazy.PlayerTeam(lazy Packetv1405.PlayerTeam.parse(payload)))
+    Some(Packetv1405.LazyPacket.PlayerTeam(lazy Packetv1405.PlayerTeam.parse(payload)))
   | (SignRead, true) => None
-  | (SignRead, false) => Some(Packetv1405.Lazy.SignRead(lazy Packetv1405.SignRead.parse(payload)))
+  | (SignRead, false) =>
+    Some(Packetv1405.LazyPacket.SignRead(lazy Packetv1405.SignRead.parse(payload)))
   | (SignNew, true | false) =>
-    Some(Packetv1405.Lazy.SignNew(lazy Packetv1405.SignNew.parse(payload)))
+    Some(Packetv1405.LazyPacket.SignNew(lazy Packetv1405.SignNew.parse(payload)))
   | (LiquidSet, true | false) =>
-    Some(Packetv1405.Lazy.LiquidSet(lazy Packetv1405.LiquidSet.parse(payload)))
+    Some(Packetv1405.LazyPacket.LiquidSet(lazy Packetv1405.LiquidSet.parse(payload)))
   | (PlayerSpawnSelf, false) => None
   | (PlayerSpawnSelf, true) =>
-    Some(Packetv1405.Lazy.PlayerSpawnSelf(lazy Packetv1405.PlayerSpawnSelf.parse(payload)))
+    Some(Packetv1405.LazyPacket.PlayerSpawnSelf(lazy Packetv1405.PlayerSpawnSelf.parse(payload)))
   | (PlayerBuffsSet, true | false) =>
-    Some(Packetv1405.Lazy.PlayerBuffsSet(lazy Packetv1405.PlayerBuffsSet.parse(payload)))
+    Some(Packetv1405.LazyPacket.PlayerBuffsSet(lazy Packetv1405.PlayerBuffsSet.parse(payload)))
   | (NpcSpecialEffect, true | false) =>
-    Some(Packetv1405.Lazy.NpcSpecialEffect(lazy Packetv1405.NpcSpecialEffect.parse(payload)))
+    Some(Packetv1405.LazyPacket.NpcSpecialEffect(lazy Packetv1405.NpcSpecialEffect.parse(payload)))
   | (ChestOrTempleUnlock, true | false) =>
-    Some(Packetv1405.Lazy.ChestOrTempleUnlock(lazy Packetv1405.ChestOrTempleUnlock.parse(payload)))
+    Some(
+      Packetv1405.LazyPacket.ChestOrTempleUnlock(
+        lazy Packetv1405.ChestOrTempleUnlock.parse(payload),
+      ),
+    )
   | (NpcBuffAdd, true | false) =>
-    Some(Packetv1405.Lazy.NpcBuffAdd(lazy Packetv1405.NpcBuffAdd.parse(payload)))
+    Some(Packetv1405.LazyPacket.NpcBuffAdd(lazy Packetv1405.NpcBuffAdd.parse(payload)))
   | (NpcBuffUpdate, false) => None
   | (NpcBuffUpdate, true) =>
-    Some(Packetv1405.Lazy.NpcBuffUpdate(lazy Packetv1405.NpcBuffUpdate.parse(payload)))
+    Some(Packetv1405.LazyPacket.NpcBuffUpdate(lazy Packetv1405.NpcBuffUpdate.parse(payload)))
   | (PlayerBuffAdd, true | false) =>
-    Some(Packetv1405.Lazy.PlayerBuffAdd(lazy Packetv1405.PlayerBuffAdd.parse(payload)))
+    Some(Packetv1405.LazyPacket.PlayerBuffAdd(lazy Packetv1405.PlayerBuffAdd.parse(payload)))
   | (NpcNameUpdate, true | false) =>
-    Some(Packetv1405.Lazy.NpcNameUpdate(lazy Packetv1405.NpcNameUpdate.parse(payload)))
+    Some(Packetv1405.LazyPacket.NpcNameUpdate(lazy Packetv1405.NpcNameUpdate.parse(payload)))
   | (GoodEvilUpdate, false) => None
   | (GoodEvilUpdate, true) =>
-    Some(Packetv1405.Lazy.GoodEvilUpdate(lazy Packetv1405.GoodEvilUpdate.parse(payload)))
+    Some(Packetv1405.LazyPacket.GoodEvilUpdate(lazy Packetv1405.GoodEvilUpdate.parse(payload)))
   | (HarpPlay, true | false) =>
-    Some(Packetv1405.Lazy.HarpPlay(lazy Packetv1405.HarpPlay.parse(payload)))
+    Some(Packetv1405.LazyPacket.HarpPlay(lazy Packetv1405.HarpPlay.parse(payload)))
   | (SwitchHit, true | false) =>
-    Some(Packetv1405.Lazy.SwitchHit(lazy Packetv1405.SwitchHit.parse(payload)))
+    Some(Packetv1405.LazyPacket.SwitchHit(lazy Packetv1405.SwitchHit.parse(payload)))
   | (NpcHomeUpdate, true | false) =>
-    Some(Packetv1405.Lazy.NpcHomeUpdate(lazy Packetv1405.NpcHomeUpdate.parse(payload)))
+    Some(Packetv1405.LazyPacket.NpcHomeUpdate(lazy Packetv1405.NpcHomeUpdate.parse(payload)))
   | (BossOrInvasionSpawn, true) => None
   | (BossOrInvasionSpawn, false) =>
-    Some(Packetv1405.Lazy.BossOrInvasionSpawn(lazy Packetv1405.BossOrInvasionSpawn.parse(payload)))
+    Some(
+      Packetv1405.LazyPacket.BossOrInvasionSpawn(
+        lazy Packetv1405.BossOrInvasionSpawn.parse(payload),
+      ),
+    )
   | (PlayerDodge, true | false) =>
-    Some(Packetv1405.Lazy.PlayerDodge(lazy Packetv1405.PlayerDodge.parse(payload)))
+    Some(Packetv1405.LazyPacket.PlayerDodge(lazy Packetv1405.PlayerDodge.parse(payload)))
   | (TilePaint, true | false) =>
-    Some(Packetv1405.Lazy.TilePaint(lazy Packetv1405.TilePaint.parse(payload)))
+    Some(Packetv1405.LazyPacket.TilePaint(lazy Packetv1405.TilePaint.parse(payload)))
   | (WallPaint, true | false) =>
-    Some(Packetv1405.Lazy.WallPaint(lazy Packetv1405.WallPaint.parse(payload)))
+    Some(Packetv1405.LazyPacket.WallPaint(lazy Packetv1405.WallPaint.parse(payload)))
   | (Teleport, true | false) =>
-    Some(Packetv1405.Lazy.Teleport(lazy Packetv1405.Teleport.parse(payload)))
+    Some(Packetv1405.LazyPacket.Teleport(lazy Packetv1405.Teleport.parse(payload)))
   | (PlayerHealOther, true | false) =>
-    Some(Packetv1405.Lazy.PlayerHealOther(lazy Packetv1405.PlayerHealOther.parse(payload)))
+    Some(Packetv1405.LazyPacket.PlayerHealOther(lazy Packetv1405.PlayerHealOther.parse(payload)))
   | (DimensionsUpdate, true | false) =>
-    Some(Packetv1405.Lazy.DimensionsUpdate(lazy Packetv1405.DimensionsUpdate.parse(payload)))
+    Some(Packetv1405.LazyPacket.DimensionsUpdate(lazy Packetv1405.DimensionsUpdate.parse(payload)))
   | (ClientUuid, true) => None
   | (ClientUuid, false) =>
-    Some(Packetv1405.Lazy.ClientUuid(lazy Packetv1405.ClientUuid.parse(payload)))
+    Some(Packetv1405.LazyPacket.ClientUuid(lazy Packetv1405.ClientUuid.parse(payload)))
   | (ChestName, true | false) =>
-    Some(Packetv1405.Lazy.ChestName(lazy Packetv1405.ChestName.parse(payload)))
+    Some(Packetv1405.LazyPacket.ChestName(lazy Packetv1405.ChestName.parse(payload)))
   | (CatchNpc, true) => None
-  | (CatchNpc, false) => Some(Packetv1405.Lazy.CatchNpc(lazy Packetv1405.CatchNpc.parse(payload)))
+  | (CatchNpc, false) =>
+    Some(Packetv1405.LazyPacket.CatchNpc(lazy Packetv1405.CatchNpc.parse(payload)))
   | (ReleaseNpc, true) => None
   | (ReleaseNpc, false) =>
-    Some(Packetv1405.Lazy.ReleaseNpc(lazy Packetv1405.ReleaseNpc.parse(payload)))
+    Some(Packetv1405.LazyPacket.ReleaseNpc(lazy Packetv1405.ReleaseNpc.parse(payload)))
   | (TravellingMerchantInventory, false) => None
   | (TravellingMerchantInventory, true) =>
     Some(
-      Packetv1405.Lazy.TravellingMerchantInventory(
+      Packetv1405.LazyPacket.TravellingMerchantInventory(
         lazy Packetv1405.TravellingMerchantInventory.parse(payload),
       ),
     )
   | (TeleportationPotion, true | false) =>
-    Some(Packetv1405.Lazy.TeleportationPotion(lazy Packetv1405.TeleportationPotion.parse(payload)))
+    Some(
+      Packetv1405.LazyPacket.TeleportationPotion(
+        lazy Packetv1405.TeleportationPotion.parse(payload),
+      ),
+    )
   | (AnglerQuest, false) => None
   | (AnglerQuest, true) =>
-    Some(Packetv1405.Lazy.AnglerQuest(lazy Packetv1405.AnglerQuest.parse(payload)))
+    Some(Packetv1405.LazyPacket.AnglerQuest(lazy Packetv1405.AnglerQuest.parse(payload)))
   | (AnglerQuestComplete, true) => None
   | (AnglerQuestComplete, false) =>
-    Some(Packetv1405.Lazy.AnglerQuestComplete(lazy Packetv1405.AnglerQuestComplete.parse(payload)))
+    Some(
+      Packetv1405.LazyPacket.AnglerQuestComplete(
+        lazy Packetv1405.AnglerQuestComplete.parse(payload),
+      ),
+    )
   | (AnglerQuestsCompletedAmount, true)
   | (AnglerQuestsCompletedAmount, false) =>
     Some(
-      Packetv1405.Lazy.AnglerQuestsCompletedAmount(
+      Packetv1405.LazyPacket.AnglerQuestsCompletedAmount(
         lazy Packetv1405.AnglerQuestsCompletedAmount.parse(payload),
       ),
     )
   | (TemporaryAnimationCreate, false) => None
   | (TemporaryAnimationCreate, true) =>
     Some(
-      Packetv1405.Lazy.TemporaryAnimationCreate(
+      Packetv1405.LazyPacket.TemporaryAnimationCreate(
         lazy Packetv1405.TemporaryAnimationCreate.parse(payload),
       ),
     )
   | (InvasionProgressReport, false) => None
   | (InvasionProgressReport, true) =>
     Some(
-      Packetv1405.Lazy.InvasionProgressReport(
+      Packetv1405.LazyPacket.InvasionProgressReport(
         lazy Packetv1405.InvasionProgressReport.parse(payload),
       ),
     )
   | (ObjectPlace, true | false) =>
-    Some(Packetv1405.Lazy.ObjectPlace(lazy Packetv1405.ObjectPlace.parse(payload)))
+    Some(Packetv1405.LazyPacket.ObjectPlace(lazy Packetv1405.ObjectPlace.parse(payload)))
   | (PlayerChestIndexSync, false) => None
   | (PlayerChestIndexSync, true) =>
     Some(
-      Packetv1405.Lazy.PlayerChestIndexSync(lazy Packetv1405.PlayerChestIndexSync.parse(payload)),
+      Packetv1405.LazyPacket.PlayerChestIndexSync(
+        lazy Packetv1405.PlayerChestIndexSync.parse(payload),
+      ),
     )
   | (CombatNumberCreate, false) => None
   | (CombatNumberCreate, true) =>
-    Some(Packetv1405.Lazy.CombatNumberCreate(lazy Packetv1405.CombatNumberCreate.parse(payload)))
+    Some(
+      Packetv1405.LazyPacket.CombatNumberCreate(lazy Packetv1405.CombatNumberCreate.parse(payload)),
+    )
   | (NetModuleLoad, true | false) =>
-    Some(Packetv1405.Lazy.NetModuleLoad(lazy Packetv1405.NetModuleLoad.parse(payload, ~fromServer)))
+    Some(
+      Packetv1405.LazyPacket.NetModuleLoad(
+        lazy Packetv1405.NetModuleLoad.parse(payload, ~fromServer),
+      ),
+    )
   | (NpcKillCount, false) => None
   | (NpcKillCount, true) =>
-    Some(Packetv1405.Lazy.NpcKillCount(lazy Packetv1405.NpcKillCount.parse(payload)))
+    Some(Packetv1405.LazyPacket.NpcKillCount(lazy Packetv1405.NpcKillCount.parse(payload)))
   | (PlayerStealth, true | false) =>
-    Some(Packetv1405.Lazy.PlayerStealth(lazy Packetv1405.PlayerStealth.parse(payload)))
+    Some(Packetv1405.LazyPacket.PlayerStealth(lazy Packetv1405.PlayerStealth.parse(payload)))
   | (ItemForceIntoNearestChest, true) => None
   | (ItemForceIntoNearestChest, false) =>
     Some(
-      Packetv1405.Lazy.ItemForceIntoNearestChest(
+      Packetv1405.LazyPacket.ItemForceIntoNearestChest(
         lazy Packetv1405.ItemForceIntoNearestChest.parse(payload),
       ),
     )
   | (TileEntityUpdate, false) => None
   | (TileEntityUpdate, true) =>
-    Some(Packetv1405.Lazy.TileEntityUpdate(lazy Packetv1405.TileEntityUpdate.parse(payload)))
+    Some(Packetv1405.LazyPacket.TileEntityUpdate(lazy Packetv1405.TileEntityUpdate.parse(payload)))
   | (TileEntityPlace, true) => None
   | (TileEntityPlace, false) =>
-    Some(Packetv1405.Lazy.TileEntityPlace(lazy Packetv1405.TileEntityPlace.parse(payload)))
+    Some(Packetv1405.LazyPacket.TileEntityPlace(lazy Packetv1405.TileEntityPlace.parse(payload)))
   | (ItemDropModify, false) => None
   | (ItemDropModify, true) =>
-    Some(Packetv1405.Lazy.ItemDropModify(lazy Packetv1405.ItemDropModify.parse(payload)))
+    Some(Packetv1405.LazyPacket.ItemDropModify(lazy Packetv1405.ItemDropModify.parse(payload)))
   | (ItemFramePlace, true) => None
   | (ItemFramePlace, false) =>
-    Some(Packetv1405.Lazy.ItemFramePlace(lazy Packetv1405.ItemFramePlace.parse(payload)))
+    Some(Packetv1405.LazyPacket.ItemFramePlace(lazy Packetv1405.ItemFramePlace.parse(payload)))
   | (ItemDropInstancedUpdate, true | false) =>
     Some(
-      Packetv1405.Lazy.ItemDropInstancedUpdate(
+      Packetv1405.LazyPacket.ItemDropInstancedUpdate(
         lazy Packetv1405.ItemDropInstancedUpdate.parse(payload),
       ),
     )
   | (EmoteBubble, false) => None
   | (EmoteBubble, true) =>
-    Some(Packetv1405.Lazy.EmoteBubble(lazy Packetv1405.EmoteBubble.parse(payload)))
+    Some(Packetv1405.LazyPacket.EmoteBubble(lazy Packetv1405.EmoteBubble.parse(payload)))
   | (ExtraValueSync, true | false) =>
-    Some(Packetv1405.Lazy.ExtraValueSync(lazy Packetv1405.ExtraValueSync.parse(payload)))
+    Some(Packetv1405.LazyPacket.ExtraValueSync(lazy Packetv1405.ExtraValueSync.parse(payload)))
   | (SocialHandshake, true | false) =>
-    Some(Packetv1405.Lazy.SocialHandshake(lazy Packetv1405.SocialHandshake.parse(payload)))
-  | (Unused, true | false) => Some(Packetv1405.Lazy.Unused(lazy Packetv1405.Unused.parse(payload)))
+    Some(Packetv1405.LazyPacket.SocialHandshake(lazy Packetv1405.SocialHandshake.parse(payload)))
+  | (Unused, true | false) =>
+    Some(Packetv1405.LazyPacket.Unused(lazy Packetv1405.Unused.parse(payload)))
   | (PortalKill, true) => None
   | (PortalKill, false) =>
-    Some(Packetv1405.Lazy.PortalKill(lazy Packetv1405.PortalKill.parse(payload)))
+    Some(Packetv1405.LazyPacket.PortalKill(lazy Packetv1405.PortalKill.parse(payload)))
   | (PlayerTeleportPortal, true | false) =>
     Some(
-      Packetv1405.Lazy.PlayerTeleportPortal(lazy Packetv1405.PlayerTeleportPortal.parse(payload)),
+      Packetv1405.LazyPacket.PlayerTeleportPortal(
+        lazy Packetv1405.PlayerTeleportPortal.parse(payload),
+      ),
     )
   | (NpcKilledNotification, false) => None
   | (NpcKilledNotification, true) =>
     Some(
-      Packetv1405.Lazy.NpcKilledNotification(lazy Packetv1405.NpcKilledNotification.parse(payload)),
+      Packetv1405.LazyPacket.NpcKilledNotification(
+        lazy Packetv1405.NpcKilledNotification.parse(payload),
+      ),
     )
   | (EventNotification, false) => None
   | (EventNotification, true) =>
-    Some(Packetv1405.Lazy.EventNotification(lazy Packetv1405.EventNotification.parse(payload)))
+    Some(
+      Packetv1405.LazyPacket.EventNotification(lazy Packetv1405.EventNotification.parse(payload)),
+    )
   | (MinionTargetUpdate, true | false) =>
-    Some(Packetv1405.Lazy.MinionTargetUpdate(lazy Packetv1405.MinionTargetUpdate.parse(payload)))
+    Some(
+      Packetv1405.LazyPacket.MinionTargetUpdate(lazy Packetv1405.MinionTargetUpdate.parse(payload)),
+    )
   | (NpcTeleportPortal, true | false) =>
-    Some(Packetv1405.Lazy.NpcTeleportPortal(lazy Packetv1405.NpcTeleportPortal.parse(payload)))
+    Some(
+      Packetv1405.LazyPacket.NpcTeleportPortal(lazy Packetv1405.NpcTeleportPortal.parse(payload)),
+    )
   | (ShieldStrengthsUpdate, false) => None
   | (ShieldStrengthsUpdate, true) =>
     Some(
-      Packetv1405.Lazy.ShieldStrengthsUpdate(lazy Packetv1405.ShieldStrengthsUpdate.parse(payload)),
+      Packetv1405.LazyPacket.ShieldStrengthsUpdate(
+        lazy Packetv1405.ShieldStrengthsUpdate.parse(payload),
+      ),
     )
   | (NebulaLevelUp, true | false) =>
-    Some(Packetv1405.Lazy.NebulaLevelUp(lazy Packetv1405.NebulaLevelUp.parse(payload)))
+    Some(Packetv1405.LazyPacket.NebulaLevelUp(lazy Packetv1405.NebulaLevelUp.parse(payload)))
   | (MoonLordCountdown, false) => None
   | (MoonLordCountdown, true) =>
-    Some(Packetv1405.Lazy.MoonLordCountdown(lazy Packetv1405.MoonLordCountdown.parse(payload)))
+    Some(
+      Packetv1405.LazyPacket.MoonLordCountdown(lazy Packetv1405.MoonLordCountdown.parse(payload)),
+    )
   | (NpcShopItem, false) => None
   | (NpcShopItem, true) =>
-    Some(Packetv1405.Lazy.NpcShopItem(lazy Packetv1405.NpcShopItem.parse(payload)))
+    Some(Packetv1405.LazyPacket.NpcShopItem(lazy Packetv1405.NpcShopItem.parse(payload)))
   | (GemLockToggle, true) => None
   | (GemLockToggle, false) =>
-    Some(Packetv1405.Lazy.GemLockToggle(lazy Packetv1405.GemLockToggle.parse(payload)))
+    Some(Packetv1405.LazyPacket.GemLockToggle(lazy Packetv1405.GemLockToggle.parse(payload)))
   | (SmokePoof, false) => None
-  | (SmokePoof, true) => Some(Packetv1405.Lazy.SmokePoof(lazy Packetv1405.SmokePoof.parse(payload)))
+  | (SmokePoof, true) =>
+    Some(Packetv1405.LazyPacket.SmokePoof(lazy Packetv1405.SmokePoof.parse(payload)))
   | (ChatMessageSmart, false) => None
   | (ChatMessageSmart, true) =>
-    Some(Packetv1405.Lazy.ChatMessageSmart(lazy Packetv1405.ChatMessageSmart.parse(payload)))
+    Some(Packetv1405.LazyPacket.ChatMessageSmart(lazy Packetv1405.ChatMessageSmart.parse(payload)))
   | (WiredCannonShot, false) => None
   | (WiredCannonShot, true) =>
-    Some(Packetv1405.Lazy.WiredCannonShot(lazy Packetv1405.WiredCannonShot.parse(payload)))
+    Some(Packetv1405.LazyPacket.WiredCannonShot(lazy Packetv1405.WiredCannonShot.parse(payload)))
   | (MassWireOperation, true) => None
   | (MassWireOperation, false) =>
-    Some(Packetv1405.Lazy.MassWireOperation(lazy Packetv1405.MassWireOperation.parse(payload)))
+    Some(
+      Packetv1405.LazyPacket.MassWireOperation(lazy Packetv1405.MassWireOperation.parse(payload)),
+    )
   | (MassWireOperationPay, false) => None
   | (MassWireOperationPay, true) =>
     Some(
-      Packetv1405.Lazy.MassWireOperationPay(lazy Packetv1405.MassWireOperationPay.parse(payload)),
+      Packetv1405.LazyPacket.MassWireOperationPay(
+        lazy Packetv1405.MassWireOperationPay.parse(payload),
+      ),
     )
   | (PartyToggle, true) => None
   | (PartyToggle, false) =>
-    Some(Packetv1405.Lazy.PartyToggle(lazy Packetv1405.PartyToggle.parse(payload)))
+    Some(Packetv1405.LazyPacket.PartyToggle(lazy Packetv1405.PartyToggle.parse(payload)))
   | (TreeGrowFx, true | false) =>
-    Some(Packetv1405.Lazy.TreeGrowFx(lazy Packetv1405.TreeGrowFx.parse(payload)))
+    Some(Packetv1405.LazyPacket.TreeGrowFx(lazy Packetv1405.TreeGrowFx.parse(payload)))
   | (CrystalInvasionStart, true) => None
   | (CrystalInvasionStart, false) =>
     Some(
-      Packetv1405.Lazy.CrystalInvasionStart(lazy Packetv1405.CrystalInvasionStart.parse(payload)),
+      Packetv1405.LazyPacket.CrystalInvasionStart(
+        lazy Packetv1405.CrystalInvasionStart.parse(payload),
+      ),
     )
   | (CrystalInvasionWipeAll, false) => None
   | (CrystalInvasionWipeAll, true) =>
     Some(
-      Packetv1405.Lazy.CrystalInvasionWipeAll(
+      Packetv1405.LazyPacket.CrystalInvasionWipeAll(
         lazy Packetv1405.CrystalInvasionWipeAll.parse(payload),
       ),
     )
   | (MinionAttackTargetUpdate, true | false) =>
     Some(
-      Packetv1405.Lazy.MinionAttackTargetUpdate(
+      Packetv1405.LazyPacket.MinionAttackTargetUpdate(
         lazy Packetv1405.MinionAttackTargetUpdate.parse(payload),
       ),
     )
   | (CrystalInvasionSendWaitTime, false) => None
   | (CrystalInvasionSendWaitTime, true) =>
     Some(
-      Packetv1405.Lazy.CrystalInvasionSendWaitTime(
+      Packetv1405.LazyPacket.CrystalInvasionSendWaitTime(
         lazy Packetv1405.CrystalInvasionSendWaitTime.parse(payload),
       ),
     )
   | (PlayerDamage, true | false) =>
-    Some(Packetv1405.Lazy.PlayerDamage(lazy Packetv1405.PlayerDamage.parse(payload)))
+    Some(Packetv1405.LazyPacket.PlayerDamage(lazy Packetv1405.PlayerDamage.parse(payload)))
   | (PlayerDeath, true | false) =>
-    Some(Packetv1405.Lazy.PlayerDeath(lazy Packetv1405.PlayerDeath.parse(payload)))
+    Some(Packetv1405.LazyPacket.PlayerDeath(lazy Packetv1405.PlayerDeath.parse(payload)))
   | (CombatTextCreate, false) => None
   | (CombatTextCreate, true) =>
-    Some(Packetv1405.Lazy.CombatTextCreate(lazy Packetv1405.CombatTextCreate.parse(payload)))
+    Some(Packetv1405.LazyPacket.CombatTextCreate(lazy Packetv1405.CombatTextCreate.parse(payload)))
   | (Emoji, true) => None
-  | (Emoji, false) => Some(Packetv1405.Lazy.Emoji(lazy Packetv1405.Emoji.parse(payload)))
+  | (Emoji, false) => Some(Packetv1405.LazyPacket.Emoji(lazy Packetv1405.Emoji.parse(payload)))
   | (TileEntityDisplayDollItemSync, true | false) =>
     Some(
-      Packetv1405.Lazy.TileEntityDisplayDollItemSync(
+      Packetv1405.LazyPacket.TileEntityDisplayDollItemSync(
         lazy Packetv1405.TileEntityDisplayDollItemSync.parse(payload),
       ),
     )
   | (TileEntityInteractionRequest, true | false) =>
     Some(
-      Packetv1405.Lazy.TileEntityInteractionRequest(
+      Packetv1405.LazyPacket.TileEntityInteractionRequest(
         lazy Packetv1405.TileEntityInteractionRequest.parse(payload),
       ),
     )
   | (WeaponsRackTryPlacing, true) => None
   | (WeaponsRackTryPlacing, false) =>
     Some(
-      Packetv1405.Lazy.WeaponsRackTryPlacing(lazy Packetv1405.WeaponsRackTryPlacing.parse(payload)),
+      Packetv1405.LazyPacket.WeaponsRackTryPlacing(
+        lazy Packetv1405.WeaponsRackTryPlacing.parse(payload),
+      ),
     )
   | (TileEntityHatRackItemSync, true | false) =>
     Some(
-      Packetv1405.Lazy.TileEntityHatRackItemSync(
+      Packetv1405.LazyPacket.TileEntityHatRackItemSync(
         lazy Packetv1405.TileEntityHatRackItemSync.parse(payload),
       ),
     )
   | (TilePickingSync, true | false) =>
-    Some(Packetv1405.Lazy.TilePickingSync(lazy Packetv1405.TilePickingSync.parse(payload)))
+    Some(Packetv1405.LazyPacket.TilePickingSync(lazy Packetv1405.TilePickingSync.parse(payload)))
   | (RevengeMarkerSync, false) => None
   | (RevengeMarkerSync, true) =>
-    Some(Packetv1405.Lazy.RevengeMarkerSync(lazy Packetv1405.RevengeMarkerSync.parse(payload)))
+    Some(
+      Packetv1405.LazyPacket.RevengeMarkerSync(lazy Packetv1405.RevengeMarkerSync.parse(payload)),
+    )
   | (RevengeMarkerRemove, false) => None
   | (RevengeMarkerRemove, true) =>
-    Some(Packetv1405.Lazy.RevengeMarkerRemove(lazy Packetv1405.RevengeMarkerRemove.parse(payload)))
+    Some(
+      Packetv1405.LazyPacket.RevengeMarkerRemove(
+        lazy Packetv1405.RevengeMarkerRemove.parse(payload),
+      ),
+    )
   | (GolfBallLandInCup, true | false) =>
-    Some(Packetv1405.Lazy.GolfBallLandInCup(lazy Packetv1405.GolfBallLandInCup.parse(payload)))
+    Some(
+      Packetv1405.LazyPacket.GolfBallLandInCup(lazy Packetv1405.GolfBallLandInCup.parse(payload)),
+    )
   | (ClientFinishConnectingToServer, false) => None
   | (ClientFinishConnectingToServer, true) =>
     Some(
-      Packetv1405.Lazy.ClientFinishConnectingToServer(
+      Packetv1405.LazyPacket.ClientFinishConnectingToServer(
         lazy Packetv1405.ClientFinishConnectingToServer.parse(payload),
       ),
     )
   | (NpcFishOut, true) => None
   | (NpcFishOut, false) =>
-    Some(Packetv1405.Lazy.NpcFishOut(lazy Packetv1405.NpcFishOut.parse(payload)))
+    Some(Packetv1405.LazyPacket.NpcFishOut(lazy Packetv1405.NpcFishOut.parse(payload)))
   | (NpcTamper, false) => None
-  | (NpcTamper, true) => Some(Packetv1405.Lazy.NpcTamper(lazy Packetv1405.NpcTamper.parse(payload)))
+  | (NpcTamper, true) =>
+    Some(Packetv1405.LazyPacket.NpcTamper(lazy Packetv1405.NpcTamper.parse(payload)))
   | (LegacySoundPlay, false) => None
   | (LegacySoundPlay, true) =>
-    Some(Packetv1405.Lazy.LegacySoundPlay(lazy Packetv1405.LegacySoundPlay.parse(payload)))
+    Some(Packetv1405.LazyPacket.LegacySoundPlay(lazy Packetv1405.LegacySoundPlay.parse(payload)))
   | (FoodPlatterTryPlacing, true) => None
   | (FoodPlatterTryPlacing, false) =>
     Some(
-      Packetv1405.Lazy.FoodPlatterTryPlacing(lazy Packetv1405.FoodPlatterTryPlacing.parse(payload)),
+      Packetv1405.LazyPacket.FoodPlatterTryPlacing(
+        lazy Packetv1405.FoodPlatterTryPlacing.parse(payload),
+      ),
     )
   | (PlayerLuckFactorsUpdate, true | false) =>
     Some(
-      Packetv1405.Lazy.PlayerLuckFactorsUpdate(
+      Packetv1405.LazyPacket.PlayerLuckFactorsUpdate(
         lazy Packetv1405.PlayerLuckFactorsUpdate.parse(payload),
       ),
     )
   | (PlayerDead, false) => None
   | (PlayerDead, true) =>
-    Some(Packetv1405.Lazy.PlayerDead(lazy Packetv1405.PlayerDead.parse(payload)))
+    Some(Packetv1405.LazyPacket.PlayerDead(lazy Packetv1405.PlayerDead.parse(payload)))
   | (CavernMonsterTypeSync, true | false) =>
     Some(
-      Packetv1405.Lazy.CavernMonsterTypeSync(lazy Packetv1405.CavernMonsterTypeSync.parse(payload)),
+      Packetv1405.LazyPacket.CavernMonsterTypeSync(
+        lazy Packetv1405.CavernMonsterTypeSync.parse(payload),
+      ),
     )
   | (NpcBuffRemovalRequest, true) => None
   | (NpcBuffRemovalRequest, false) =>
     Some(
-      Packetv1405.Lazy.NpcBuffRemovalRequest(lazy Packetv1405.NpcBuffRemovalRequest.parse(payload)),
+      Packetv1405.LazyPacket.NpcBuffRemovalRequest(
+        lazy Packetv1405.NpcBuffRemovalRequest.parse(payload),
+      ),
     )
   | (ClientSyncedInventory, true) => None
   | (ClientSyncedInventory, false) =>
     Some(
-      Packetv1405.Lazy.ClientSyncedInventory(lazy Packetv1405.ClientSyncedInventory.parse(payload)),
+      Packetv1405.LazyPacket.ClientSyncedInventory(
+        lazy Packetv1405.ClientSyncedInventory.parse(payload),
+      ),
     )
   | (CountsAsHostForGameplaySet, false) => None
   | (CountsAsHostForGameplaySet, true) =>
     Some(
-      Packetv1405.Lazy.CountsAsHostForGameplaySet(
+      Packetv1405.LazyPacket.CountsAsHostForGameplaySet(
         lazy Packetv1405.CountsAsHostForGameplaySet.parse(payload),
       ),
     )
@@ -906,7 +986,9 @@ let simpleParse = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): option<Packetv1
   }
 }
 
-let simpleParseLazy = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): option<Packetv1405.Lazy.t> => {
+let simpleParseLazy = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): option<
+  Packetv1405.LazyPacket.t,
+> => {
   switch buffer->NodeJs.Buffer.length {
   | 0 | 1 | 2 => None
   | _ =>
@@ -940,11 +1022,11 @@ let parseAsLatest: IParser.parse<Packet.t> = (~buffer: NodeJs.Buffer.t, ~fromSer
   )
 }
 
-let parseAsLatestLazy: IParser.parseLazy<Packet.Lazy.t> = (
+let parseAsLatestLazy: IParser.parseLazy<Packet.LazyPacket.t> = (
   ~buffer: NodeJs.Buffer.t,
   ~fromServer: bool,
 ) => {
   simpleParseLazy(~buffer, ~fromServer)->Belt.Option.map(packet =>
-    Packetv1405.Lazy.toLatest(packet, fromServer)
+    Packetv1405.LazyPacket.toLatest(packet, fromServer)
   )
 }

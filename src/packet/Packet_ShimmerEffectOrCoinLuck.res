@@ -1,8 +1,10 @@
+@genType
 type coinLuck = {
   position: Point.t<float>,
   amount: int,
 }
 
+@genType
 type t =
   | ShimmerEffect(float, float)
   | CoinLuck(coinLuck)

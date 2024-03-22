@@ -175,8 +175,5 @@ Zora$1.test("Should be the same going after encode/decode", (function (t) {
               }));
       }));
 
-var WorldInfo;
-
-exports.WorldInfo = WorldInfo;
 exports.worldInfo = worldInfo;
 /* worldInfo Not a pure module */

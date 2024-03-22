@@ -1,3 +1,4 @@
+@genType
 type t = {
   chestId: int,
   x: int,

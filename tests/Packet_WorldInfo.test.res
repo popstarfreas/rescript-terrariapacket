@@ -1,8 +1,6 @@
-module WorldInfo = Packet.WorldInfo
-
 open Zora
 
-let worldInfo: WorldInfo.t = {
+let worldInfo: Packet_WorldInfo.t = {
   let time = 27000
   let dayAndMoonInfo = 1
   let moonPhase = 0
@@ -26,7 +24,7 @@ let worldInfo: WorldInfo.t = {
   let mythrilOreTier = 108
   let adamantiteOreTier = 111
 
-  let worldInfo: WorldInfo.t = {
+  let worldInfo: Packet_WorldInfo.t = {
     time,
     dayAndMoonInfo,
     moonPhase,
@@ -180,8 +178,8 @@ let worldInfo: WorldInfo.t = {
 }
 
 zoraBlock("Should be the same going after encode/decode", t => {
-  let rawWorldInfo = WorldInfo.toBuffer(worldInfo)
-  let newWorldInfo = WorldInfo.parse(rawWorldInfo)
+  let rawWorldInfo = Packet_WorldInfo.toBuffer(worldInfo)
+  let newWorldInfo = Packet_WorldInfo.parse(rawWorldInfo)
   t->optionSome(newWorldInfo, (t, newWorldInfo) => {
     t->equal(worldInfo, newWorldInfo, "hi")
   })

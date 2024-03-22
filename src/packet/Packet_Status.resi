@@ -1,9 +1,11 @@
+@genType
 type flags = {
   hideStatusTextPercent: bool,
   statusTextHasShadows: bool,
   runCheckBytes: bool,
 }
 
+@genType
 type t = {
   max: int,
   text: PacketFactory.NetworkText.t,

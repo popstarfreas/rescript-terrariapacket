@@ -289,7 +289,7 @@ type t =
   | LoadoutSwitch(LoadoutSwitch.t)
   | ItemDropProtectedUpdate(ItemDropProtectedUpdate.t)
 
-module Lazy = {
+module LazyPacket = {
   type t =
     | ConnectRequest(Lazy.t<option<ConnectRequest.t>>)
     | Disconnect(Lazy.t<option<Disconnect.t>>)

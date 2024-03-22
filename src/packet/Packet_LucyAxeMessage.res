@@ -1,3 +1,4 @@
+@genType
 type t = {
   source: int,
   variant: int,

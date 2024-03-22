@@ -359,7 +359,7 @@ function parse$2(reader) {
     default:
       entityKind = {
         TAG: "Error",
-        _0: "File \"Packet_TileSectionSend.res\", line 287, characters 17-24" + "Unknown entity kind. "
+        _0: "File \"Packet_TileSectionSend.res\", line 305, characters 17-24" + "Unknown entity kind. "
       };
   }
   return Belt_Result.map(entityKind, (function (entityKind) {

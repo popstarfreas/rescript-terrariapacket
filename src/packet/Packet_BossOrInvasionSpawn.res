@@ -1,3 +1,4 @@
+@genType
 type spawnType =
   | GoblinInvasion
   | FrostInvasion
@@ -14,6 +15,7 @@ type spawnType =
   | BoughtBunny
   | Npc(int)
 
+@genType
 type t = {
   playerId: int,
   spawnType: spawnType,

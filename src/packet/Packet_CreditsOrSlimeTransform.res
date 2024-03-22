@@ -1,6 +1,7 @@
 module Option = Belt.Option
 
 module EventType = {
+  @genType
   type t =
     | CreditsTimeRemainingSet
     | CopperSlimeTransform
@@ -8,22 +9,23 @@ module EventType = {
 
   let fromInt = num => {
     switch num {
-      | 0 => Some(CreditsTimeRemainingSet)
-      | 1 => Some(CopperSlimeTransform)
-      | 2 => Some(ElderSlimeTransform)
-      | _ => None
+    | 0 => Some(CreditsTimeRemainingSet)
+    | 1 => Some(CopperSlimeTransform)
+    | 2 => Some(ElderSlimeTransform)
+    | _ => None
     }
   }
 
   let toInt = eventType => {
     switch eventType {
-      | CreditsTimeRemainingSet => 0
-      | CopperSlimeTransform => 1
-      | ElderSlimeTransform => 2
+    | CreditsTimeRemainingSet => 0
+    | CopperSlimeTransform => 1
+    | ElderSlimeTransform => 2
     }
   }
 }
 
+@genType
 type t = {
   eventType: EventType.t,
   value: int,
@@ -36,8 +38,7 @@ module Decode = {
     let eventType = reader->readByte
     let value = reader->readInt32
 
-    EventType.fromInt(eventType)->Option.map(eventType =>
-    {
+    EventType.fromInt(eventType)->Option.map(eventType => {
       eventType,
       value,
     })

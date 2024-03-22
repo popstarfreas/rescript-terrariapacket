@@ -1,3 +1,4 @@
+@genType
 type teleportType =
   | TeleportationPotion
   | MagicConch
@@ -10,6 +11,7 @@ let teleportTypeToInt = teleportType =>
   | DemonConch => 2
   }
 
+@genType
 type t = {teleportType: teleportType}
 
 module Decode = {

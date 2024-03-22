@@ -1,8 +1,10 @@
+@genType
 type teleportType =
   | Player
   | Npc
   | PlayerToPlayer
 
+@genType
 type t = {
   teleportType: teleportType,
   getPositionFromTarget: bool,

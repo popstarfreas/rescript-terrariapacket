@@ -3854,7 +3854,7 @@ function toLatest$1(packet, _fromServer) {
   }
 }
 
-var Lazy = {
+var LazyPacket = {
   toLatest: toLatest$1
 };
 
@@ -4477,5 +4477,5 @@ exports.toLatest = toLatest;
 exports.fromLatest = fromLatest;
 exports.serialize = serialize;
 exports.serializeFromLatest = serializeFromLatest;
-exports.Lazy = Lazy;
+exports.LazyPacket = LazyPacket;
 /* Packet_Status-TerrariaPacket Not a pure module */

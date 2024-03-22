@@ -3049,7 +3049,7 @@ function parseAsLatest(buffer, fromServer) {
 
 function parseAsLatestLazy(buffer, fromServer) {
   return Belt_Option.map(simpleParseLazy(buffer, fromServer), (function (packet) {
-                return Packetv1405$TerrariaPacket.Lazy.toLatest(packet, fromServer);
+                return Packetv1405$TerrariaPacket.LazyPacket.toLatest(packet, fromServer);
               }));
 }
 

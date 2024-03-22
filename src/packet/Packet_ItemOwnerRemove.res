@@ -1,3 +1,4 @@
+@genType
 type t = {itemDropId: int}
 
 module Decode = {

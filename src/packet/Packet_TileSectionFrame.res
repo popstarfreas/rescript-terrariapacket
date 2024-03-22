@@ -1,3 +1,4 @@
+@genType
 type t = {
   startX: int,
   startY: int,

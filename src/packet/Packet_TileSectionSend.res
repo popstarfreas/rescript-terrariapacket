@@ -1,21 +1,25 @@
 module Int = Belt.Int
 module Option = Belt.Option
 
+@genType
 type frame = {
   x: int,
   y: int,
 }
 
+@genType
 type activeTile = {
   tileType: int,
   frame: option<frame>,
 }
 
+@genType
 type liquid = {
   liquidValue: int,
   liquidType: int,
 }
 
+@genType
 type tile = {
   activeTile: option<activeTile>,
   color: option<int>,
@@ -34,6 +38,7 @@ type tile = {
   inActive: bool,
 }
 
+@genType
 type tileCache = {
   mutable activeTile: option<activeTile>,
   mutable color: option<int>,
@@ -90,6 +95,7 @@ let cacheToTile = (cache: tileCache): tile => {
 
 module Chest = {
   let {readString, readInt16, readUInt16, readInt32, readByte} = module(PacketFactory.BufferReader)
+  @genType
   type t = {
     id: int,
     x: int,
@@ -115,6 +121,7 @@ module Chest = {
 
 module Sign = {
   let {readString, readInt16, readUInt16, readInt32, readByte} = module(PacketFactory.BufferReader)
+  @genType
   type t = {
     id: int,
     x: int,
@@ -141,32 +148,42 @@ module Sign = {
 
 module Entity = {
   let {readString, readInt16, readUInt16, readInt32, readByte} = module(PacketFactory.BufferReader)
+  @genType
   type displayItem = {
     netId: int,
     prefix: int,
     stack: int,
   }
 
+  @genType
   type displayDoll = {
     items: array<option<displayItem>>,
     dyes: array<option<displayItem>>,
   }
 
+  @genType
   type foodPlatter = displayItem
+  @genType
   type hatRack = {
     items: array<option<displayItem>>,
     dyes: array<option<displayItem>>,
   }
 
+  @genType
   type itemFrame = displayItem
+  @genType
   type logicSensor = {
     checkType: int,
     on: bool,
   }
+  @genType
   type teleportationPylon = unit
+  @genType
   type trainingDummy = {npcSlotId: int}
+  @genType
   type weaponsRack = displayItem
 
+  @genType
   type kind =
     | DisplayDoll(displayDoll)
     | FoodPlatter(foodPlatter)
@@ -177,6 +194,7 @@ module Entity = {
     | TrainingDummy(trainingDummy)
     | WeaponsRack(weaponsRack)
 
+  @genType
   type t = {
     entityType: int,
     x: int,
@@ -426,6 +444,7 @@ module Entity = {
   }
 }
 
+@genType
 type t = {
   height: int,
   width: int,

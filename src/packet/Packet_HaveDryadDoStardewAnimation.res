@@ -1,3 +1,4 @@
+@gentype
 type t = unit
 
 module Decode = {

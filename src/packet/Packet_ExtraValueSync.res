@@ -1,3 +1,4 @@
+@genType
 type t = {
   npcSlotId: int,
   extraValue: int,

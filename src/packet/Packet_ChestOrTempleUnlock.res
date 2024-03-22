@@ -1,7 +1,9 @@
+@genType
 type unlockType =
   | Chest
   | TempleDoor
 
+@genType
 type t = {
   unlockType: unlockType,
   x: int,

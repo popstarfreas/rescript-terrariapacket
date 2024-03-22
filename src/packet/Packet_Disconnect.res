@@ -1,3 +1,4 @@
+@genType
 type t = {reason: PacketFactory.NetworkText.t}
 
 module Decode = {

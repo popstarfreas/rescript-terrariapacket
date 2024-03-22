@@ -277,7 +277,7 @@ let toLatest: (t, bool) => same<Packet.t>
 let fromLatest: (Packet.t, bool) => option<same<t>>
 let serialize: ISerializer.serialize<t>
 let serializeFromLatest: ISerializer.serialize<Packet.t>
-module Lazy: {
+module LazyPacket: {
   type t =
     | ConnectRequest(Lazy.t<option<ConnectRequest.t>>)
     | Disconnect(Lazy.t<option<Disconnect.t>>)
@@ -414,5 +414,5 @@ module Lazy: {
     | NpcBuffRemovalRequest(Lazy.t<option<NpcBuffRemovalRequest.t>>)
     | ClientSyncedInventory(Lazy.t<option<ClientSyncedInventory.t>>)
     | CountsAsHostForGameplaySet(Lazy.t<option<CountsAsHostForGameplaySet.t>>)
-  let toLatest: (t, bool) => Packet.Lazy.t
+  let toLatest: (t, bool) => Packet.LazyPacket.t
 }

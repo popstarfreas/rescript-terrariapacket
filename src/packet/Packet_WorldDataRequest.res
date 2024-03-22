@@ -1,3 +1,4 @@
+@genType
 type t = unit
 module Decode = {
   let parse = (_payload: NodeJs.Buffer.t) => {

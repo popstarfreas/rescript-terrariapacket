@@ -339,7 +339,7 @@ function toPacketName(packet) {
   }
 }
 
-var Lazy = {
+var LazyPacket = {
   toPacketName: toPacketName
 };
 
@@ -1214,7 +1214,7 @@ exports.ItemDropShimmeredUpdate = ItemDropShimmeredUpdate;
 exports.ShimmerEffectOrCoinLuck = ShimmerEffectOrCoinLuck;
 exports.LoadoutSwitch = LoadoutSwitch;
 exports.ItemDropProtectedUpdate = ItemDropProtectedUpdate;
-exports.Lazy = Lazy;
+exports.LazyPacket = LazyPacket;
 exports.toBuffer = toBuffer;
 exports.serialize = serialize;
 exports.toPacketName = toPacketName$1;
