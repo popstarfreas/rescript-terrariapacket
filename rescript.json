@@ -16,7 +16,7 @@
   "package-specs": {
     "module": "commonjs",
     "in-source": true,
-    "suffix": ".bs.js"
+    "suffix": ".mjs"
   },
   "bs-dependencies": [
     "@popstarfreas/packetfactory",
