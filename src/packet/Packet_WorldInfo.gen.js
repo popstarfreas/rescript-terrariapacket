@@ -1,9 +1,9 @@
 "use strict";
 /* TypeScript file generated from Packet_WorldInfo.resi by genType. */
-/* eslint-disable import/first */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.toBuffer = exports.parse = void 0;
-// @ts-ignore: Implicit any on import
-const Packet_WorldInfoBS = require('./Packet_WorldInfo.bs');
-exports.parse = Packet_WorldInfoBS.parse;
-exports.toBuffer = Packet_WorldInfoBS.toBuffer;
+/* eslint-disable */
+/* tslint:disable */
+const Packet_WorldInfoJS = require('./Packet_WorldInfo.bs.js');
+exports.parse = Packet_WorldInfoJS.parse;
+exports.toBuffer = Packet_WorldInfoJS.toBuffer;

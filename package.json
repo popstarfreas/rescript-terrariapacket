@@ -3,7 +3,8 @@
   "version": "1.2.0",
   "scripts": {
     "build:watch": "rescript build -w",
-    "build": "rescript build -with-deps && tsc -p .",
+    "build": "rescript",
+    "build:tsc": "tsc -p .",
     "test": "pta  'tests/*.test.bs.js'"
   },
   "dependencies": {

@@ -7,11 +7,11 @@ const Packet_PlayerDamageJS = require('./Packet_PlayerDamage.bs.js');
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 
-import type {PlayerDeathReason_t as TerrariaPacket_PlayerDeathReason_t} from './TerrariaPacket.gen';
+import type {t as PlayerDeathReason_t} from '../../src/PlayerDeathReason.gen';
 
 export type t = {
   readonly target: number; 
-  readonly deathReason: TerrariaPacket_PlayerDeathReason_t; 
+  readonly deathReason: PlayerDeathReason_t; 
   readonly damage: number; 
   readonly hitDirection: number; 
   readonly critical: boolean; 
