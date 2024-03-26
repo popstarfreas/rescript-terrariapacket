@@ -9,7 +9,7 @@ module Decode = {
     let reader = PacketFactory.PacketReader.make(payload)
     let playerId = reader->readByte
     let buffs = []
-    for _i in 1 to 5 {
+    for _i in 1 to 22 {
       let _: int = buffs->Js.Array2.push(reader->readUInt16)
     }
     Some({
@@ -43,8 +43,11 @@ let parse = Decode.parse
 let toBuffer = Encode.toBuffer
 
 let toLatest = (self: t): Packet.PlayerBuffsSet.t => {
+  if self.buffs->Array.length != 22 {
+    failwith(`Expected 22 buffs, got ${Array.length(self.buffs)->Int.toString}`)
+  }
   let buffs = Array.copy(self.buffs)
-  buffs->Array.pushMany(Array.fromInitializer(~length=22, _ => 0))
+  buffs->Array.pushMany(Array.make(~length=22, 0))
   {
     playerId: self.playerId,
     buffs,
