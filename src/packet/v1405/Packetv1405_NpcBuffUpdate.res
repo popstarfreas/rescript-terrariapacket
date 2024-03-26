@@ -43,8 +43,11 @@ let parse = Decode.parse
 let toBuffer = Encode.toBuffer
 
 let toLatest = (self: t): Packet.NpcBuffUpdate.t => {
+  if self.buffs->Array.length != 5 {
+    failwith(`Expected 5 buffs, got ${Array.length(self.buffs)->Int.toString}`)
+  }
   let buffs = Array.copy(self.buffs)
-  buffs->Array.pushMany(Array.fromInitializer(~length=20, _ => 0))
+  buffs->Array.pushMany(Array.make(~length=15, 0))
   {
     npcId: self.npcId,
     buffs,
