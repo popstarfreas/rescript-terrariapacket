@@ -13,7 +13,7 @@ module Decode = {
   let {readInt16, readInt32, readByte, readSingle} = module(PacketFactory.PacketReader)
   let parse = (payload: NodeJs.Buffer.t) => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let player = reader->readInt16
+    let player = reader->readByte
     let ladyBugLuckTimeLeft = reader->readInt32
     let torchLuck = reader->readSingle
     let luckPotion = reader->readByte
