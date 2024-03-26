@@ -10,6 +10,8 @@ type t = {
   x: int,
   y: int,
   timeRemaining: int,
+  numberOfDeathsPve: int,
+  numberOfDeathsPvp: int,
   context: context,
 }
 

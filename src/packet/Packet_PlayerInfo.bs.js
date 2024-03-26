@@ -42,6 +42,16 @@ function parse(payload) {
   var usingBiomeTorches = BitFlags$TerrariaPacket.flag1(torchFlags);
   var happyFunTorchTime = BitFlags$TerrariaPacket.flag2(torchFlags);
   var unlockedBiomeTorches = BitFlags$TerrariaPacket.flag3(torchFlags);
+  var unlockedSuperCart = BitFlags$TerrariaPacket.flag4(torchFlags);
+  var enabledSuperCart = BitFlags$TerrariaPacket.flag5(torchFlags);
+  var usedFlags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+  var usedAegisCrystal = BitFlags$TerrariaPacket.flag1(usedFlags);
+  var usedAegisFruit = BitFlags$TerrariaPacket.flag2(usedFlags);
+  var usedArcaneCrystal = BitFlags$TerrariaPacket.flag3(usedFlags);
+  var usedGalaxyPearl = BitFlags$TerrariaPacket.flag4(usedFlags);
+  var usedGummyWorm = BitFlags$TerrariaPacket.flag5(usedFlags);
+  var usedAmbrosia = BitFlags$TerrariaPacket.flag6(usedFlags);
+  var ateArtisanBread = BitFlags$TerrariaPacket.flag7(usedFlags);
   return {
           playerId: playerId,
           skinVariant: skinVariant,
@@ -63,7 +73,16 @@ function parse(payload) {
           extraAccessory: extraAccessory,
           usingBiomeTorches: usingBiomeTorches,
           unlockedBiomeTorches: unlockedBiomeTorches,
-          happyFunTorchTime: happyFunTorchTime
+          happyFunTorchTime: happyFunTorchTime,
+          unlockedSuperCart: unlockedSuperCart,
+          enabledSuperCart: enabledSuperCart,
+          usedAegisCrystal: usedAegisCrystal,
+          usedAegisFruit: usedAegisFruit,
+          usedArcaneCrystal: usedArcaneCrystal,
+          usedGalaxyPearl: usedGalaxyPearl,
+          usedGummyWorm: usedGummyWorm,
+          usedAmbrosia: usedAmbrosia,
+          ateArtisanBread: ateArtisanBread
         };
 }
 
@@ -92,7 +111,7 @@ function packDifficultyFlags(writer, difficulty, extraAccessory, mode) {
   return writer.packByte($$byte);
 }
 
-function packTorchFlags(writer, usingBiomeTorches, happyFunTorchTime, unlockedBiomeTorches) {
+function packTorchFlags(writer, usingBiomeTorches, happyFunTorchTime, unlockedBiomeTorches, unlockedSuperCart, enabledSuperCart) {
   var $$byte = 0;
   $$byte = $$byte | (
     usingBiomeTorches ? 1 : 0
@@ -103,11 +122,43 @@ function packTorchFlags(writer, usingBiomeTorches, happyFunTorchTime, unlockedBi
   $$byte = $$byte | (
     unlockedBiomeTorches ? 4 : 0
   );
+  $$byte = $$byte | (
+    unlockedSuperCart ? 8 : 0
+  );
+  $$byte = $$byte | (
+    enabledSuperCart ? 16 : 0
+  );
+  return writer.packByte($$byte);
+}
+
+function packUsedFlags(writer, usedAegisCrystal, usedAegisFruit, usedArcaneCrystal, usedGalaxyPearl, usedGummyWorm, usedAmbrosia, ateArtisanBread) {
+  var $$byte = 0;
+  $$byte = $$byte | (
+    usedAegisCrystal ? 1 : 0
+  );
+  $$byte = $$byte | (
+    usedAegisFruit ? 2 : 0
+  );
+  $$byte = $$byte | (
+    usedArcaneCrystal ? 4 : 0
+  );
+  $$byte = $$byte | (
+    usedGalaxyPearl ? 8 : 0
+  );
+  $$byte = $$byte | (
+    usedGummyWorm ? 16 : 0
+  );
+  $$byte = $$byte | (
+    usedAmbrosia ? 32 : 0
+  );
+  $$byte = $$byte | (
+    ateArtisanBread ? 64 : 0
+  );
   return writer.packByte($$byte);
 }
 
 function toBuffer(self) {
-  return packTorchFlags(packDifficultyFlags(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerInfo")).packByte(self.playerId).packByte(self.skinVariant).packByte(self.hair).packString(self.name).packByte(self.hairDye).packByte(self.hideVisuals).packByte(self.hideVisuals2).packByte(self.hideMisc).packColor(self.hairColor).packColor(self.skinColor).packColor(self.eyeColor).packColor(self.shirtColor).packColor(self.underShirtColor).packColor(self.pantsColor).packColor(self.shoeColor), self.difficulty, self.extraAccessory, self.mode), self.usingBiomeTorches, self.happyFunTorchTime, self.unlockedBiomeTorches).data;
+  return packUsedFlags(packTorchFlags(packDifficultyFlags(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerInfo")).packByte(self.playerId).packByte(self.skinVariant).packByte(self.hair).packString(self.name).packByte(self.hairDye).packByte(self.hideVisuals).packByte(self.hideVisuals2).packByte(self.hideMisc).packColor(self.hairColor).packColor(self.skinColor).packColor(self.eyeColor).packColor(self.shirtColor).packColor(self.underShirtColor).packColor(self.pantsColor).packColor(self.shoeColor), self.difficulty, self.extraAccessory, self.mode), self.usingBiomeTorches, self.happyFunTorchTime, self.unlockedBiomeTorches, self.unlockedSuperCart, self.enabledSuperCart), self.usedAegisCrystal, self.usedAegisFruit, self.usedArcaneCrystal, self.usedGalaxyPearl, self.usedGummyWorm, self.usedAmbrosia, self.ateArtisanBread).data;
 }
 
 exports.parse = parse;

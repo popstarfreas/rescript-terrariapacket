@@ -3,4 +3,4 @@
 /* eslint-disable */
 /* tslint:disable */
 
-export type t = void;
+export type t = { readonly npcId: number; readonly buffs: number[] };

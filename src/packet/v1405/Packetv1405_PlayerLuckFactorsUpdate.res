@@ -1,12 +1,9 @@
-@genType
 type t = {
   playerId: int,
   ladyBugLuckTimeLeft: int,
   torchLuck: float,
   luckPotion: int,
   hasGardenGnomeNearby: bool,
-  equipmentBasedLuckBonus: float,
-  coinLuck: float,
 }
 
 module Decode = {
@@ -18,8 +15,6 @@ module Decode = {
     let torchLuck = reader->readSingle
     let luckPotion = reader->readByte
     let hasGardenGnomeNearby = reader->readByte == 1
-    let equipmentBasedLuckBonus = reader->readSingle
-    let coinLuck = reader->readSingle
 
     Some({
       playerId: player,
@@ -27,8 +22,6 @@ module Decode = {
       torchLuck,
       luckPotion,
       hasGardenGnomeNearby,
-      equipmentBasedLuckBonus,
-      coinLuck,
     })
   }
 }
@@ -47,11 +40,31 @@ module Encode = {
     ->packSingle(self.torchLuck)
     ->packByte(self.luckPotion)
     ->packByte(self.hasGardenGnomeNearby ? 1 : 0)
-    ->packSingle(self.equipmentBasedLuckBonus)
-    ->packSingle(self.coinLuck)
     ->data
   }
 }
 
 let parse = Decode.parse
 let toBuffer = Encode.toBuffer
+
+let toLatest = (self: t): Packet.PlayerLuckFactorsUpdate.t => {
+  {
+    playerId: self.playerId,
+    ladyBugLuckTimeLeft: self.ladyBugLuckTimeLeft,
+    torchLuck: self.torchLuck,
+    luckPotion: self.luckPotion,
+    hasGardenGnomeNearby: self.hasGardenGnomeNearby,
+    equipmentBasedLuckBonus: 0.0,
+    coinLuck: 0.0,
+  }
+}
+
+let fromLatest = (latest: Packet.PlayerLuckFactorsUpdate.t): option<t> => {
+  Some({
+    playerId: latest.playerId,
+    ladyBugLuckTimeLeft: latest.ladyBugLuckTimeLeft,
+    torchLuck: latest.torchLuck,
+    luckPotion: latest.luckPotion,
+    hasGardenGnomeNearby: latest.hasGardenGnomeNearby,
+  })
+}

@@ -1,4 +1,3 @@
-@genType
 type t = {
   npcId: int,
   buffs: array<int>,
@@ -10,7 +9,7 @@ module Decode = {
     let reader = PacketFactory.PacketReader.make(payload)
     let npcId = reader->readInt16
     let buffs = []
-    for _i in 1 to 20 {
+    for _i in 1 to 5 {
       let _: int = buffs->Js.Array2.push(reader->readUInt16)
     }
     Some({
@@ -29,8 +28,8 @@ module Encode = {
   }
 
   let toBuffer = (self: t): NodeJs.Buffer.t => {
-    if self.buffs->Array.length != 20 {
-      failwith(`Expected 20 buffs, got ${Array.length(self.buffs)->Int.toString}`)
+    if self.buffs->Array.length != 5 {
+      failwith(`Expected 5 buffs, got ${Array.length(self.buffs)->Int.toString}`)
     }
     PacketFactory.ManagedPacketWriter.make()
     ->setType(PacketType.NpcBuffUpdate->PacketType.toInt)
@@ -42,3 +41,19 @@ module Encode = {
 
 let parse = Decode.parse
 let toBuffer = Encode.toBuffer
+
+let toLatest = (self: t): Packet.NpcBuffUpdate.t => {
+  let buffs = Array.copy(self.buffs)
+  buffs->Array.pushMany(Array.fromInitializer(~length=20, _ => 0))
+  {
+    npcId: self.npcId,
+    buffs,
+  }
+}
+
+let fromLatest = (latest: Packet.NpcBuffUpdate.t): option<t> => {
+  Some({
+    npcId: latest.npcId,
+    buffs: Array.slice(latest.buffs, ~start=0, ~end=5),
+  })
+}

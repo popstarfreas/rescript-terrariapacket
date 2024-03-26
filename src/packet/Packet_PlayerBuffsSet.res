@@ -9,7 +9,7 @@ module Decode = {
     let reader = PacketFactory.PacketReader.make(payload)
     let playerId = reader->readByte
     let buffs = []
-    for _i in 1 to 22 {
+    for _i in 1 to 44 {
       let _: int = buffs->Js.Array2.push(reader->readUInt16)
     }
     Some({
@@ -28,6 +28,9 @@ module Encode = {
   }
 
   let toBuffer = (self: t): NodeJs.Buffer.t => {
+    if self.buffs->Array.length != 44 {
+      failwith(`Expected 44 buffs, got ${Array.length(self.buffs)->Int.toString}`)
+    }
     PacketFactory.ManagedPacketWriter.make()
     ->setType(PacketType.PlayerBuffsSet->PacketType.toInt)
     ->packByte(self.playerId)

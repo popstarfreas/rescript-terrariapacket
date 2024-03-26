@@ -34,7 +34,16 @@ export type t = {
   readonly extraAccessory: boolean; 
   readonly usingBiomeTorches: boolean; 
   readonly unlockedBiomeTorches: boolean; 
-  readonly happyFunTorchTime: boolean
+  readonly happyFunTorchTime: boolean; 
+  readonly unlockedSuperCart: boolean; 
+  readonly enabledSuperCart: boolean; 
+  readonly usedAegisCrystal: boolean; 
+  readonly usedAegisFruit: boolean; 
+  readonly usedArcaneCrystal: boolean; 
+  readonly usedGalaxyPearl: boolean; 
+  readonly usedGummyWorm: boolean; 
+  readonly usedAmbrosia: boolean; 
+  readonly ateArtisanBread: boolean
 };
 
 export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = Packet_PlayerInfoJS.parse as any;

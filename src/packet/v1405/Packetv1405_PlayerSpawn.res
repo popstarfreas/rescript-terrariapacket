@@ -1,15 +1,10 @@
-type context =
-  | ReviveFromDeath
-  | SpawningIntoWorld
-  | RecallFromItem
+type context = Packet_PlayerSpawn.context
 
 type t = {
   playerId: int,
   x: int,
   y: int,
   timeRemaining: int,
-  numberOfDeathsPve: int,
-  numberOfDeathsPvp: int,
   context: context,
 }
 
@@ -22,11 +17,9 @@ module Decode = {
     let x = reader->readInt16
     let y = reader->readInt16
     let timeRemaining = reader->readInt32
-    let numberOfDeathsPve = reader->readInt16
-    let numberOfDeathsPvp = reader->readInt16
     let rawContext = reader->readByte
     let context = switch rawContext {
-    | 0 => Some(ReviveFromDeath)
+    | 0 => Some(Packet_PlayerSpawn.ReviveFromDeath)
     | 1 => Some(SpawningIntoWorld)
     | 2 => Some(RecallFromItem)
     | _ => None
@@ -39,8 +32,6 @@ module Decode = {
         x,
         y,
         timeRemaining,
-        numberOfDeathsPve,
-        numberOfDeathsPvp,
         context,
       })
     | None => None
@@ -57,8 +48,6 @@ module Encode = {
     ->packInt16(self.x)
     ->packInt16(self.y)
     ->packInt32(self.timeRemaining)
-    ->packInt16(self.numberOfDeathsPve)
-    ->packInt16(self.numberOfDeathsPvp)
     ->packByte(
       switch self.context {
       | ReviveFromDeath => 0
@@ -72,3 +61,25 @@ module Encode = {
 
 let parse = Decode.parse
 let toBuffer = Encode.toBuffer
+
+let toLatest = (self: t): Packet.PlayerSpawn.t => {
+  {
+    playerId: self.playerId,
+    x: self.x,
+    y: self.y,
+    timeRemaining: self.timeRemaining,
+    context: self.context,
+    numberOfDeathsPve: 0,
+    numberOfDeathsPvp: 0,
+  }
+}
+
+let fromLatest = (latest: Packet.PlayerSpawn.t): option<t> => {
+  Some({
+    playerId: latest.playerId,
+    x: latest.x,
+    y: latest.y,
+    timeRemaining: latest.timeRemaining,
+    context: latest.context,
+  })
+}

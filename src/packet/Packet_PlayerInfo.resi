@@ -32,6 +32,15 @@ type t = {
   usingBiomeTorches: bool,
   unlockedBiomeTorches: bool,
   happyFunTorchTime: bool,
+  unlockedSuperCart: bool,
+  enabledSuperCart: bool,
+  usedAegisCrystal: bool,
+  usedAegisFruit: bool,
+  usedArcaneCrystal: bool,
+  usedGalaxyPearl: bool,
+  usedGummyWorm: bool,
+  usedAmbrosia: bool,
+  ateArtisanBread: bool,
 }
 
 @genType

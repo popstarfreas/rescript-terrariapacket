@@ -1,7 +1,7 @@
 module ConnectRequest = Packetv1405_ConnectRequest
 module Disconnect = Packet_Disconnect
 module PlayerSlotSet = Packet_PlayerSlotSet
-module PlayerInfo = Packet_PlayerInfo
+module PlayerInfo = Packetv1405_PlayerInfo
 module PlayerInventorySlot = Packet_PlayerInventorySlot
 module WorldDataRequest = Packet_WorldDataRequest
 module WorldInfo = Packetv1405_WorldInfo
@@ -9,7 +9,7 @@ module InitialTileSectionsRequest = Packet_InitialTileSectionsRequest
 module Status = Packet_Status
 module TileSectionSend = Packetv1405_TileSectionSend
 module TileSectionFrame = Packet_TileSectionFrame
-module PlayerSpawn = Packet_PlayerSpawn
+module PlayerSpawn = Packetv1405_PlayerSpawn
 module PlayerUpdate = Packet_PlayerUpdate
 module PlayerActive = Packet_PlayerActive
 module PlayerHealth = Packet_PlayerHealth
@@ -43,11 +43,11 @@ module SignRead = Packet_SignRead
 module SignNew = Packet_SignNew
 module LiquidSet = Packet_LiquidSet
 module PlayerSpawnSelf = Packet_PlayerSpawnSelf
-module PlayerBuffsSet = Packet_PlayerBuffsSet
+module PlayerBuffsSet = Packetv1405_PlayerBuffsSet
 module NpcSpecialEffect = Packet_NpcSpecialEffect
 module ChestOrTempleUnlock = Packet_ChestOrTempleUnlock
 module NpcBuffAdd = Packet_NpcBuffAdd
-module NpcBuffUpdate = Packet_NpcBuffUpdate
+module NpcBuffUpdate = Packetv1405_NpcBuffUpdate
 module PlayerBuffAdd = Packet_PlayerBuffAdd
 module NpcNameUpdate = Packet_NpcNameUpdate
 module GoodEvilUpdate = Packet_GoodEvilUpdate
@@ -96,7 +96,7 @@ module MinionTargetUpdate = Packet_MinionTargetUpdate
 module NpcTeleportPortal = Packet_NpcTeleportPortal
 module ShieldStrengthsUpdate = Packet_ShieldStrengthsUpdate
 module NebulaLevelUp = Packet_NebulaLevelUp
-module MoonLordCountdown = Packet_MoonLordCountdown
+module MoonLordCountdown = Packetv1405_MoonLordCountdown
 module NpcShopItem = Packet_NpcShopItem
 module GemLockToggle = Packet_GemLockToggle
 module SmokePoof = Packet_SmokePoof
@@ -127,7 +127,7 @@ module NpcFishOut = Packet_NpcFishOut
 module NpcTamper = Packet_NpcTamper
 module LegacySoundPlay = Packet_LegacySoundPlay
 module FoodPlatterTryPlacing = Packet_FoodPlatterTryPlacing
-module PlayerLuckFactorsUpdate = Packet_PlayerLuckFactorsUpdate
+module PlayerLuckFactorsUpdate = Packetv1405_PlayerLuckFactorsUpdate
 module PlayerDead = Packet_PlayerDead
 module CavernMonsterTypeSync = Packet_CavernMonsterTypeSync
 module NpcBuffRemovalRequest = Packet_NpcBuffRemovalRequest
@@ -281,7 +281,7 @@ let toLatest = (packet: t, _fromServer: bool): same<Packet.t> => {
   | ConnectRequest(connectRequest) => Same(Packet.ConnectRequest(connectRequest))
   | Disconnect(disconnect) => Same(Packet.Disconnect(disconnect))
   | PlayerSlotSet(playerSlotSet) => Same(Packet.PlayerSlotSet(playerSlotSet))
-  | PlayerInfo(playerInfo) => Same(Packet.PlayerInfo(playerInfo))
+  | PlayerInfo(playerInfo) => NotSame(Packet.PlayerInfo(PlayerInfo.toLatest(playerInfo)))
   | PlayerInventorySlot(playerInventorySlot) =>
     Same(Packet.PlayerInventorySlot(playerInventorySlot))
   | WorldDataRequest(worldDataRequest) => Same(Packet.WorldDataRequest(worldDataRequest))
@@ -292,7 +292,7 @@ let toLatest = (packet: t, _fromServer: bool): same<Packet.t> => {
   | TileSectionSend(tileSectionSend) =>
     Same(Packet.TileSectionSend(TileSectionSend.toLatest(tileSectionSend)))
   | TileSectionFrame(tileSectionFrame) => Same(Packet.TileSectionFrame(tileSectionFrame))
-  | PlayerSpawn(playerSpawn) => Same(Packet.PlayerSpawn(playerSpawn))
+  | PlayerSpawn(playerSpawn) => NotSame(Packet.PlayerSpawn(PlayerSpawn.toLatest(playerSpawn)))
   | PlayerUpdate(playerUpdate) => Same(Packet.PlayerUpdate(playerUpdate))
   | PlayerActive(playerActive) => Same(Packet.PlayerActive(playerActive))
   | PlayerHealth(playerHealth) => Same(Packet.PlayerHealth(playerHealth))
@@ -328,12 +328,14 @@ let toLatest = (packet: t, _fromServer: bool): same<Packet.t> => {
   | SignNew(signNew) => Same(Packet.SignNew(signNew))
   | LiquidSet(liquidSet) => Same(Packet.LiquidSet(liquidSet))
   | PlayerSpawnSelf(playerSpawnSelf) => Same(Packet.PlayerSpawnSelf(playerSpawnSelf))
-  | PlayerBuffsSet(playerBuffsSet) => Same(Packet.PlayerBuffsSet(playerBuffsSet))
+  | PlayerBuffsSet(playerBuffsSet) =>
+    NotSame(Packet.PlayerBuffsSet(PlayerBuffsSet.toLatest(playerBuffsSet)))
   | NpcSpecialEffect(npcSpecialEffect) => Same(Packet.NpcSpecialEffect(npcSpecialEffect))
   | ChestOrTempleUnlock(chestOrTempleUnlock) =>
     Same(Packet.ChestOrTempleUnlock(chestOrTempleUnlock))
   | NpcBuffAdd(npcBuffAdd) => Same(Packet.NpcBuffAdd(npcBuffAdd))
-  | NpcBuffUpdate(npcBuffUpdate) => Same(Packet.NpcBuffUpdate(npcBuffUpdate))
+  | NpcBuffUpdate(npcBuffUpdate) =>
+    NotSame(Packet.NpcBuffUpdate(NpcBuffUpdate.toLatest(npcBuffUpdate)))
   | PlayerBuffAdd(playerBuffAdd) => Same(Packet.PlayerBuffAdd(playerBuffAdd))
   | NpcNameUpdate(npcNameUpdate) => Same(Packet.NpcNameUpdate(npcNameUpdate))
   | GoodEvilUpdate(goodEvilUpdate) => Same(Packet.GoodEvilUpdate(goodEvilUpdate))
@@ -395,7 +397,8 @@ let toLatest = (packet: t, _fromServer: bool): same<Packet.t> => {
   | ShieldStrengthsUpdate(shieldStrengthsUpdate) =>
     Same(Packet.ShieldStrengthsUpdate(shieldStrengthsUpdate))
   | NebulaLevelUp(nebulaLevelUp) => Same(Packet.NebulaLevelUp(nebulaLevelUp))
-  | MoonLordCountdown(moonLordCountdown) => Same(Packet.MoonLordCountdown(moonLordCountdown))
+  | MoonLordCountdown(moonLordCountdown) =>
+    NotSame(Packet.MoonLordCountdown(MoonLordCountdown.toLatest(moonLordCountdown)))
   | NpcShopItem(npcShopItem) => Same(Packet.NpcShopItem(npcShopItem))
   | GemLockToggle(gemLockToggle) => Same(Packet.GemLockToggle(gemLockToggle))
   | SmokePoof(smokePoof) => Same(Packet.SmokePoof(smokePoof))
@@ -439,7 +442,9 @@ let toLatest = (packet: t, _fromServer: bool): same<Packet.t> => {
   | FoodPlatterTryPlacing(foodPlatterTryPlacing) =>
     Same(Packet.FoodPlatterTryPlacing(foodPlatterTryPlacing))
   | PlayerLuckFactorsUpdate(playerLuckFactorsUpdate) =>
-    Same(Packet.PlayerLuckFactorsUpdate(playerLuckFactorsUpdate))
+    NotSame(
+      Packet.PlayerLuckFactorsUpdate(PlayerLuckFactorsUpdate.toLatest(playerLuckFactorsUpdate)),
+    )
   | PlayerDead(playerDead) => Same(Packet.PlayerDead(playerDead))
   | CavernMonsterTypeSync(cavernMonsterTypeSync) =>
     Same(Packet.CavernMonsterTypeSync(cavernMonsterTypeSync))
@@ -457,7 +462,8 @@ let fromLatest = (packet: Packet.t, _fromServer: bool): option<same<t>> => {
   | Packet.ConnectRequest(connectRequest) => Some(Same(ConnectRequest(connectRequest)))
   | Packet.Disconnect(disconnect) => Some(Same(Disconnect(disconnect)))
   | Packet.PlayerSlotSet(playerSlotSet) => Some(Same(PlayerSlotSet(playerSlotSet)))
-  | Packet.PlayerInfo(playerInfo) => Some(Same(PlayerInfo(playerInfo)))
+  | Packet.PlayerInfo(playerInfo) =>
+    PlayerInfo.fromLatest(playerInfo)->Option.map(p => NotSame(PlayerInfo(p)))
   | Packet.PlayerInventorySlot(playerInventorySlot) =>
     Some(Same(PlayerInventorySlot(playerInventorySlot)))
   | Packet.WorldDataRequest(worldDataRequest) => Some(Same(WorldDataRequest(worldDataRequest)))
@@ -469,7 +475,8 @@ let fromLatest = (packet: Packet.t, _fromServer: bool): option<same<t>> => {
   | Packet.TileSectionSend(tileSectionSend) =>
     TileSectionSend.fromLatest(tileSectionSend)->Option.map(p => Same(TileSectionSend(p)))
   | Packet.TileSectionFrame(tileSectionFrame) => Some(Same(TileSectionFrame(tileSectionFrame)))
-  | Packet.PlayerSpawn(playerSpawn) => Some(Same(PlayerSpawn(playerSpawn)))
+  | Packet.PlayerSpawn(playerSpawn) =>
+    PlayerSpawn.fromLatest(playerSpawn)->Option.map(p => NotSame(PlayerSpawn(p)))
   | Packet.PlayerUpdate(playerUpdate) => Some(Same(PlayerUpdate(playerUpdate)))
   | Packet.PlayerActive(playerActive) => Some(Same(PlayerActive(playerActive)))
   | Packet.PlayerHealth(playerHealth) => Some(Same(PlayerHealth(playerHealth)))
@@ -505,12 +512,14 @@ let fromLatest = (packet: Packet.t, _fromServer: bool): option<same<t>> => {
   | Packet.SignNew(signNew) => Some(Same(SignNew(signNew)))
   | Packet.LiquidSet(liquidSet) => Some(Same(LiquidSet(liquidSet)))
   | Packet.PlayerSpawnSelf(playerSpawnSelf) => Some(Same(PlayerSpawnSelf(playerSpawnSelf)))
-  | Packet.PlayerBuffsSet(playerBuffsSet) => Some(Same(PlayerBuffsSet(playerBuffsSet)))
+  | Packet.PlayerBuffsSet(playerBuffsSet) =>
+    PlayerBuffsSet.fromLatest(playerBuffsSet)->Option.map(p => NotSame(PlayerBuffsSet(p)))
   | Packet.NpcSpecialEffect(npcSpecialEffect) => Some(Same(NpcSpecialEffect(npcSpecialEffect)))
   | Packet.ChestOrTempleUnlock(chestOrTempleUnlock) =>
     Some(Same(ChestOrTempleUnlock(chestOrTempleUnlock)))
   | Packet.NpcBuffAdd(npcBuffAdd) => Some(Same(NpcBuffAdd(npcBuffAdd)))
-  | Packet.NpcBuffUpdate(npcBuffUpdate) => Some(Same(NpcBuffUpdate(npcBuffUpdate)))
+  | Packet.NpcBuffUpdate(npcBuffUpdate) =>
+    NpcBuffUpdate.fromLatest(npcBuffUpdate)->Option.map(p => NotSame(NpcBuffUpdate(p)))
   | Packet.PlayerBuffAdd(playerBuffAdd) => Some(Same(PlayerBuffAdd(playerBuffAdd)))
   | Packet.NpcNameUpdate(npcNameUpdate) => Some(Same(NpcNameUpdate(npcNameUpdate)))
   | Packet.GoodEvilUpdate(goodEvilUpdate) => Some(Same(GoodEvilUpdate(goodEvilUpdate)))
@@ -574,7 +583,8 @@ let fromLatest = (packet: Packet.t, _fromServer: bool): option<same<t>> => {
   | Packet.ShieldStrengthsUpdate(shieldStrengthsUpdate) =>
     Some(Same(ShieldStrengthsUpdate(shieldStrengthsUpdate)))
   | Packet.NebulaLevelUp(nebulaLevelUp) => Some(Same(NebulaLevelUp(nebulaLevelUp)))
-  | Packet.MoonLordCountdown(moonLordCountdown) => Some(Same(MoonLordCountdown(moonLordCountdown)))
+  | Packet.MoonLordCountdown(moonLordCountdown) =>
+    MoonLordCountdown.fromLatest(moonLordCountdown)->Option.map(p => NotSame(MoonLordCountdown(p)))
   | Packet.NpcShopItem(npcShopItem) => Some(Same(NpcShopItem(npcShopItem)))
   | Packet.GemLockToggle(gemLockToggle) => Some(Same(GemLockToggle(gemLockToggle)))
   | Packet.SmokePoof(smokePoof) => Some(Same(SmokePoof(smokePoof)))
@@ -618,7 +628,9 @@ let fromLatest = (packet: Packet.t, _fromServer: bool): option<same<t>> => {
   | Packet.FoodPlatterTryPlacing(foodPlatterTryPlacing) =>
     Some(Same(FoodPlatterTryPlacing(foodPlatterTryPlacing)))
   | Packet.PlayerLuckFactorsUpdate(playerLuckFactorsUpdate) =>
-    Some(Same(PlayerLuckFactorsUpdate(playerLuckFactorsUpdate)))
+    PlayerLuckFactorsUpdate.fromLatest(playerLuckFactorsUpdate)->Option.map(p => NotSame(
+      PlayerLuckFactorsUpdate(p),
+    ))
   | Packet.PlayerDead(playerDead) => Some(Same(PlayerDead(playerDead)))
   | Packet.CavernMonsterTypeSync(cavernMonsterTypeSync) =>
     Some(Same(CavernMonsterTypeSync(cavernMonsterTypeSync)))
@@ -783,7 +795,8 @@ module LazyPacket = {
     | ConnectRequest(connectRequest) => Packet.LazyPacket.ConnectRequest(connectRequest)
     | Disconnect(disconnect) => Packet.LazyPacket.Disconnect(disconnect)
     | PlayerSlotSet(playerSlotSet) => Packet.LazyPacket.PlayerSlotSet(playerSlotSet)
-    | PlayerInfo(playerInfo) => Packet.LazyPacket.PlayerInfo(playerInfo)
+    | PlayerInfo(playerInfo) =>
+      Packet.LazyPacket.PlayerInfo(lazy (playerInfo->Lazy.force->Option.map(PlayerInfo.toLatest)))
     | PlayerInventorySlot(playerInventorySlot) =>
       Packet.LazyPacket.PlayerInventorySlot(playerInventorySlot)
     | WorldDataRequest(worldDataRequest) => Packet.LazyPacket.WorldDataRequest(worldDataRequest)
@@ -803,7 +816,10 @@ module LazyPacket = {
         ),
       )
     | TileSectionFrame(tileSectionFrame) => Packet.LazyPacket.TileSectionFrame(tileSectionFrame)
-    | PlayerSpawn(playerSpawn) => Packet.LazyPacket.PlayerSpawn(playerSpawn)
+    | PlayerSpawn(playerSpawn) =>
+      Packet.LazyPacket.PlayerSpawn(
+        lazy (playerSpawn->Lazy.force->Option.map(PlayerSpawn.toLatest)),
+      )
     | PlayerUpdate(playerUpdate) => Packet.LazyPacket.PlayerUpdate(playerUpdate)
     | PlayerActive(playerActive) => Packet.LazyPacket.PlayerActive(playerActive)
     | PlayerHealth(playerHealth) => Packet.LazyPacket.PlayerHealth(playerHealth)
@@ -845,12 +861,18 @@ module LazyPacket = {
     | SignNew(signNew) => Packet.LazyPacket.SignNew(signNew)
     | LiquidSet(liquidSet) => Packet.LazyPacket.LiquidSet(liquidSet)
     | PlayerSpawnSelf(playerSpawnSelf) => Packet.LazyPacket.PlayerSpawnSelf(playerSpawnSelf)
-    | PlayerBuffsSet(playerBuffsSet) => Packet.LazyPacket.PlayerBuffsSet(playerBuffsSet)
+    | PlayerBuffsSet(playerBuffsSet) =>
+      Packet.LazyPacket.PlayerBuffsSet(
+        lazy (playerBuffsSet->Lazy.force->Option.map(PlayerBuffsSet.toLatest)),
+      )
     | NpcSpecialEffect(npcSpecialEffect) => Packet.LazyPacket.NpcSpecialEffect(npcSpecialEffect)
     | ChestOrTempleUnlock(chestOrTempleUnlock) =>
       Packet.LazyPacket.ChestOrTempleUnlock(chestOrTempleUnlock)
     | NpcBuffAdd(npcBuffAdd) => Packet.LazyPacket.NpcBuffAdd(npcBuffAdd)
-    | NpcBuffUpdate(npcBuffUpdate) => Packet.LazyPacket.NpcBuffUpdate(npcBuffUpdate)
+    | NpcBuffUpdate(npcBuffUpdate) =>
+      Packet.LazyPacket.NpcBuffUpdate(
+        lazy (npcBuffUpdate->Lazy.force->Option.map(NpcBuffUpdate.toLatest)),
+      )
     | PlayerBuffAdd(playerBuffAdd) => Packet.LazyPacket.PlayerBuffAdd(playerBuffAdd)
     | NpcNameUpdate(npcNameUpdate) => Packet.LazyPacket.NpcNameUpdate(npcNameUpdate)
     | GoodEvilUpdate(goodEvilUpdate) => Packet.LazyPacket.GoodEvilUpdate(goodEvilUpdate)
@@ -914,7 +936,14 @@ module LazyPacket = {
     | ShieldStrengthsUpdate(shieldStrengthsUpdate) =>
       Packet.LazyPacket.ShieldStrengthsUpdate(shieldStrengthsUpdate)
     | NebulaLevelUp(nebulaLevelUp) => Packet.LazyPacket.NebulaLevelUp(nebulaLevelUp)
-    | MoonLordCountdown(moonLordCountdown) => Packet.LazyPacket.MoonLordCountdown(moonLordCountdown)
+    | MoonLordCountdown(moonLordCountdown) =>
+      Packet.LazyPacket.MoonLordCountdown(
+        lazy (
+          moonLordCountdown
+          ->Lazy.force
+          ->Option.map(moonLordCountdown => MoonLordCountdown.toLatest(moonLordCountdown))
+        ),
+      )
     | NpcShopItem(npcShopItem) => Packet.LazyPacket.NpcShopItem(npcShopItem)
     | GemLockToggle(gemLockToggle) => Packet.LazyPacket.GemLockToggle(gemLockToggle)
     | SmokePoof(smokePoof) => Packet.LazyPacket.SmokePoof(smokePoof)
@@ -958,7 +987,9 @@ module LazyPacket = {
     | FoodPlatterTryPlacing(foodPlatterTryPlacing) =>
       Packet.LazyPacket.FoodPlatterTryPlacing(foodPlatterTryPlacing)
     | PlayerLuckFactorsUpdate(playerLuckFactorsUpdate) =>
-      Packet.LazyPacket.PlayerLuckFactorsUpdate(playerLuckFactorsUpdate)
+      Packet.LazyPacket.PlayerLuckFactorsUpdate(
+        lazy (playerLuckFactorsUpdate->Lazy.force->Option.map(PlayerLuckFactorsUpdate.toLatest)),
+      )
     | PlayerDead(playerDead) => Packet.LazyPacket.PlayerDead(playerDead)
     | CavernMonsterTypeSync(cavernMonsterTypeSync) =>
       Packet.LazyPacket.CavernMonsterTypeSync(cavernMonsterTypeSync)

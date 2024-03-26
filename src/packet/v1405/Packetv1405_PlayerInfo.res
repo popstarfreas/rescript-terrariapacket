@@ -1,14 +1,7 @@
 module Color = PacketFactory.Color
 
-type difficulty =
-  | Softcore
-  | Mediumcore
-  | Hardcore
-
-type mode =
-  | Classic
-  | Journey
-
+type difficulty = Packet_PlayerInfo.difficulty
+type mode = Packet_PlayerInfo.mode
 type t = {
   playerId: int,
   skinVariant: int,
@@ -31,15 +24,6 @@ type t = {
   usingBiomeTorches: bool,
   unlockedBiomeTorches: bool,
   happyFunTorchTime: bool,
-  unlockedSuperCart: bool,
-  enabledSuperCart: bool,
-  usedAegisCrystal: bool,
-  usedAegisFruit: bool,
-  usedArcaneCrystal: bool,
-  usedGalaxyPearl: bool,
-  usedGummyWorm: bool,
-  usedAmbrosia: bool,
-  ateArtisanBread: bool,
 }
 
 module Decode = {
@@ -77,23 +61,13 @@ module Decode = {
     let difficulty = difficultyFlags->getDifficulty
     let extraAccessory = difficultyFlags->BitFlags.flag3
     let mode = if difficultyFlags->BitFlags.flag4 {
-      Journey
+      Packet_PlayerInfo.Journey
     } else {
       Classic
     }
     let usingBiomeTorches = torchFlags->BitFlags.flag1
     let happyFunTorchTime = torchFlags->BitFlags.flag2
     let unlockedBiomeTorches = torchFlags->BitFlags.flag3
-    let unlockedSuperCart = torchFlags->BitFlags.flag4
-    let enabledSuperCart = torchFlags->BitFlags.flag5
-    let usedFlags = BitFlags.fromByte(reader->readByte)
-    let usedAegisCrystal = usedFlags->BitFlags.flag1
-    let usedAegisFruit = usedFlags->BitFlags.flag2
-    let usedArcaneCrystal = usedFlags->BitFlags.flag3
-    let usedGalaxyPearl = usedFlags->BitFlags.flag4
-    let usedGummyWorm = usedFlags->BitFlags.flag5
-    let usedAmbrosia = usedFlags->BitFlags.flag6
-    let ateArtisanBread = usedFlags->BitFlags.flag7
 
     Some({
       playerId,
@@ -117,15 +91,6 @@ module Decode = {
       usingBiomeTorches,
       unlockedBiomeTorches,
       happyFunTorchTime,
-      unlockedSuperCart,
-      enabledSuperCart,
-      usedAegisCrystal,
-      usedAegisFruit,
-      usedArcaneCrystal,
-      usedGalaxyPearl,
-      usedGummyWorm,
-      usedAmbrosia,
-      ateArtisanBread,
     })
   }
 }
@@ -150,39 +115,14 @@ module Encode = {
 
   let packTorchFlags = (
     writer,
-    ~usingBiomeTorches: bool,
-    ~happyFunTorchTime: bool,
-    ~unlockedBiomeTorches: bool,
-    ~unlockedSuperCart: bool,
-    ~enabledSuperCart: bool,
+    usingBiomeTorches: bool,
+    happyFunTorchTime: bool,
+    unlockedBiomeTorches: bool,
   ) => {
     let byte = ref(0)
     byte := byte.contents->lor(usingBiomeTorches ? 1 : 0)
     byte := byte.contents->lor(happyFunTorchTime ? 2 : 0)
     byte := byte.contents->lor(unlockedBiomeTorches ? 4 : 0)
-    byte := byte.contents->lor(unlockedSuperCart ? 8 : 0)
-    byte := byte.contents->lor(enabledSuperCart ? 16 : 0)
-    writer->packByte(byte.contents)
-  }
-
-  let packUsedFlags = (
-    writer,
-    ~usedAegisCrystal: bool,
-    ~usedAegisFruit: bool,
-    ~usedArcaneCrystal: bool,
-    ~usedGalaxyPearl: bool,
-    ~usedGummyWorm: bool,
-    ~usedAmbrosia: bool,
-    ~ateArtisanBread: bool,
-  ) => {
-    let byte = ref(0)
-    byte := byte.contents->lor(usedAegisCrystal ? 1 : 0)
-    byte := byte.contents->lor(usedAegisFruit ? 2 : 0)
-    byte := byte.contents->lor(usedArcaneCrystal ? 4 : 0)
-    byte := byte.contents->lor(usedGalaxyPearl ? 8 : 0)
-    byte := byte.contents->lor(usedGummyWorm ? 16 : 0)
-    byte := byte.contents->lor(usedAmbrosia ? 32 : 0)
-    byte := byte.contents->lor(ateArtisanBread ? 64 : 0)
     writer->packByte(byte.contents)
   }
 
@@ -205,25 +145,71 @@ module Encode = {
     ->packColor(self.pantsColor)
     ->packColor(self.shoeColor)
     ->packDifficultyFlags(self.difficulty, self.extraAccessory, self.mode)
-    ->packTorchFlags(
-      ~usingBiomeTorches=self.usingBiomeTorches,
-      ~happyFunTorchTime=self.happyFunTorchTime,
-      ~unlockedBiomeTorches=self.unlockedBiomeTorches,
-      ~unlockedSuperCart=self.unlockedSuperCart,
-      ~enabledSuperCart=self.enabledSuperCart,
-    )
-    ->packUsedFlags(
-      ~usedAegisCrystal=self.usedAegisCrystal,
-      ~usedAegisFruit=self.usedAegisFruit,
-      ~usedArcaneCrystal=self.usedArcaneCrystal,
-      ~usedGalaxyPearl=self.usedGalaxyPearl,
-      ~usedGummyWorm=self.usedGummyWorm,
-      ~usedAmbrosia=self.usedAmbrosia,
-      ~ateArtisanBread=self.ateArtisanBread,
-    )
+    ->packTorchFlags(self.usingBiomeTorches, self.happyFunTorchTime, self.unlockedBiomeTorches)
     ->data
   }
 }
 
 let parse = Decode.parse
 let toBuffer = Encode.toBuffer
+
+let toLatest = (self: t): Packet.PlayerInfo.t => {
+  {
+    playerId: self.playerId,
+    skinVariant: self.skinVariant,
+    hair: self.hair,
+    name: self.name,
+    hairDye: self.hairDye,
+    hideVisuals: self.hideVisuals,
+    hideVisuals2: self.hideVisuals2,
+    hideMisc: self.hideMisc,
+    hairColor: self.hairColor,
+    skinColor: self.skinColor,
+    eyeColor: self.eyeColor,
+    shirtColor: self.shirtColor,
+    underShirtColor: self.underShirtColor,
+    pantsColor: self.pantsColor,
+    shoeColor: self.shoeColor,
+    difficulty: self.difficulty,
+    mode: self.mode,
+    extraAccessory: self.extraAccessory,
+    usingBiomeTorches: self.usingBiomeTorches,
+    unlockedBiomeTorches: self.unlockedBiomeTorches,
+    happyFunTorchTime: self.happyFunTorchTime,
+    unlockedSuperCart: false,
+    enabledSuperCart: false,
+    usedAegisCrystal: false,
+    usedAegisFruit: false,
+    usedArcaneCrystal: false,
+    usedGalaxyPearl: false,
+    usedGummyWorm: false,
+    usedAmbrosia: false,
+    ateArtisanBread: false,
+  }
+}
+
+let fromLatest = (latest: Packet.PlayerInfo.t): option<t> => {
+  Some({
+    playerId: latest.playerId,
+    skinVariant: latest.skinVariant,
+    hair: latest.hair,
+    name: latest.name,
+    hairDye: latest.hairDye,
+    hideVisuals: latest.hideVisuals,
+    hideVisuals2: latest.hideVisuals2,
+    hideMisc: latest.hideMisc,
+    hairColor: latest.hairColor,
+    skinColor: latest.skinColor,
+    eyeColor: latest.eyeColor,
+    shirtColor: latest.shirtColor,
+    underShirtColor: latest.underShirtColor,
+    pantsColor: latest.pantsColor,
+    shoeColor: latest.shoeColor,
+    difficulty: latest.difficulty,
+    mode: latest.mode,
+    extraAccessory: latest.extraAccessory,
+    usingBiomeTorches: latest.usingBiomeTorches,
+    unlockedBiomeTorches: latest.unlockedBiomeTorches,
+    happyFunTorchTime: latest.happyFunTorchTime,
+  })
+}

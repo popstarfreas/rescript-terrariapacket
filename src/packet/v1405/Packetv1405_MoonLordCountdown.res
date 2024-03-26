@@ -1,12 +1,10 @@
-@genType
-type t = {maxMoonLordCountdown: int, moonLordCountdown: int}
+type t = {moonLordCountdown: int}
 
 module Decode = {
   let {readInt32} = module(PacketFactory.PacketReader)
   let parse = (payload: NodeJs.Buffer.t) => {
     let reader = PacketFactory.PacketReader.make(payload)
     Some({
-      maxMoonLordCountdown: reader->readInt32,
       moonLordCountdown: reader->readInt32,
     })
   }
@@ -19,7 +17,6 @@ module Encode = {
   let toBuffer = (self: t): NodeJs.Buffer.t => {
     PacketFactory.ManagedPacketWriter.make()
     ->setType(PacketType.MoonLordCountdown->PacketType.toInt)
-    ->packInt32(self.maxMoonLordCountdown)
     ->packInt32(self.moonLordCountdown)
     ->data
   }
@@ -27,3 +24,16 @@ module Encode = {
 
 let parse = Decode.parse
 let toBuffer = Encode.toBuffer
+
+let toLatest = (self: t): Packet.MoonLordCountdown.t => {
+  {
+    moonLordCountdown: self.moonLordCountdown,
+    maxMoonLordCountdown: 0,
+  }
+}
+
+let fromLatest = (latest: Packet.MoonLordCountdown.t): option<t> => {
+  Some({
+    moonLordCountdown: latest.moonLordCountdown,
+  })
+}

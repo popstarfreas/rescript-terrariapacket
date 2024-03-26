@@ -37,7 +37,6 @@ var Packet_ManaEffect$TerrariaPacket = require("./packet/Packet_ManaEffect.bs.js
 var Packet_NpcBuffAdd$TerrariaPacket = require("./packet/Packet_NpcBuffAdd.bs.js");
 var Packet_NpcFishOut$TerrariaPacket = require("./packet/Packet_NpcFishOut.bs.js");
 var Packet_PlayerDead$TerrariaPacket = require("./packet/Packet_PlayerDead.bs.js");
-var Packet_PlayerInfo$TerrariaPacket = require("./packet/Packet_PlayerInfo.bs.js");
 var Packet_PlayerMana$TerrariaPacket = require("./packet/Packet_PlayerMana.bs.js");
 var Packet_PlayerTeam$TerrariaPacket = require("./packet/Packet_PlayerTeam.bs.js");
 var Packet_PortalKill$TerrariaPacket = require("./packet/Packet_PortalKill.bs.js");
@@ -51,7 +50,6 @@ var Packet_ObjectPlace$TerrariaPacket = require("./packet/Packet_ObjectPlace.bs.
 var Packet_PartyToggle$TerrariaPacket = require("./packet/Packet_PartyToggle.bs.js");
 var Packet_PlayerDeath$TerrariaPacket = require("./packet/Packet_PlayerDeath.bs.js");
 var Packet_PlayerDodge$TerrariaPacket = require("./packet/Packet_PlayerDodge.bs.js");
-var Packet_PlayerSpawn$TerrariaPacket = require("./packet/Packet_PlayerSpawn.bs.js");
 var Packet_NpcKillCount$TerrariaPacket = require("./packet/Packet_NpcKillCount.bs.js");
 var Packet_PasswordSend$TerrariaPacket = require("./packet/Packet_PasswordSend.bs.js");
 var Packet_PlayerActive$TerrariaPacket = require("./packet/Packet_PlayerActive.bs.js");
@@ -61,7 +59,6 @@ var Packet_PlayerUpdate$TerrariaPacket = require("./packet/Packet_PlayerUpdate.b
 var Packet_GemLockToggle$TerrariaPacket = require("./packet/Packet_GemLockToggle.bs.js");
 var Packet_NebulaLevelUp$TerrariaPacket = require("./packet/Packet_NebulaLevelUp.bs.js");
 var Packet_NetModuleLoad$TerrariaPacket = require("./packet/Packet_NetModuleLoad.bs.js");
-var Packet_NpcBuffUpdate$TerrariaPacket = require("./packet/Packet_NpcBuffUpdate.bs.js");
 var Packet_NpcHomeUpdate$TerrariaPacket = require("./packet/Packet_NpcHomeUpdate.bs.js");
 var Packet_NpcItemStrike$TerrariaPacket = require("./packet/Packet_NpcItemStrike.bs.js");
 var Packet_NpcNameUpdate$TerrariaPacket = require("./packet/Packet_NpcNameUpdate.bs.js");
@@ -73,7 +70,6 @@ var Packet_GoodEvilUpdate$TerrariaPacket = require("./packet/Packet_GoodEvilUpda
 var Packet_ItemDropModify$TerrariaPacket = require("./packet/Packet_ItemDropModify.bs.js");
 var Packet_ItemDropUpdate$TerrariaPacket = require("./packet/Packet_ItemDropUpdate.bs.js");
 var Packet_ItemFramePlace$TerrariaPacket = require("./packet/Packet_ItemFramePlace.bs.js");
-var Packet_PlayerBuffsSet$TerrariaPacket = require("./packet/Packet_PlayerBuffsSet.bs.js");
 var Packetv1405_WorldInfo$TerrariaPacket = require("./packet/v1405/Packetv1405_WorldInfo.bs.js");
 var Packet_ItemOwnerRemove$TerrariaPacket = require("./packet/Packet_ItemOwnerRemove.bs.js");
 var Packet_LegacySoundPlay$TerrariaPacket = require("./packet/Packet_LegacySoundPlay.bs.js");
@@ -84,6 +80,7 @@ var Packet_SocialHandshake$TerrariaPacket = require("./packet/Packet_SocialHands
 var Packet_TileEntityPlace$TerrariaPacket = require("./packet/Packet_TileEntityPlace.bs.js");
 var Packet_TilePickingSync$TerrariaPacket = require("./packet/Packet_TilePickingSync.bs.js");
 var Packet_WiredCannonShot$TerrariaPacket = require("./packet/Packet_WiredCannonShot.bs.js");
+var Packetv1405_PlayerInfo$TerrariaPacket = require("./packet/v1405/Packetv1405_PlayerInfo.bs.js");
 var Packet_ChatMessageSmart$TerrariaPacket = require("./packet/Packet_ChatMessageSmart.bs.js");
 var Packet_CombatTextCreate$TerrariaPacket = require("./packet/Packet_CombatTextCreate.bs.js");
 var Packet_DimensionsUpdate$TerrariaPacket = require("./packet/Packet_DimensionsUpdate.bs.js");
@@ -92,15 +89,16 @@ var Packet_PasswordRequired$TerrariaPacket = require("./packet/Packet_PasswordRe
 var Packet_TileEntityUpdate$TerrariaPacket = require("./packet/Packet_TileEntityUpdate.bs.js");
 var Packet_TileSectionFrame$TerrariaPacket = require("./packet/Packet_TileSectionFrame.bs.js");
 var Packet_WorldDataRequest$TerrariaPacket = require("./packet/Packet_WorldDataRequest.bs.js");
+var Packetv1405_PlayerSpawn$TerrariaPacket = require("./packet/v1405/Packetv1405_PlayerSpawn.bs.js");
 var Packet_EventNotification$TerrariaPacket = require("./packet/Packet_EventNotification.bs.js");
 var Packet_GolfBallLandInCup$TerrariaPacket = require("./packet/Packet_GolfBallLandInCup.bs.js");
 var Packet_MassWireOperation$TerrariaPacket = require("./packet/Packet_MassWireOperation.bs.js");
-var Packet_MoonLordCountdown$TerrariaPacket = require("./packet/Packet_MoonLordCountdown.bs.js");
 var Packet_NpcTeleportPortal$TerrariaPacket = require("./packet/Packet_NpcTeleportPortal.bs.js");
 var Packet_ProjectileDestroy$TerrariaPacket = require("./packet/Packet_ProjectileDestroy.bs.js");
 var Packet_RevengeMarkerSync$TerrariaPacket = require("./packet/Packet_RevengeMarkerSync.bs.js");
 var Packet_CombatNumberCreate$TerrariaPacket = require("./packet/Packet_CombatNumberCreate.bs.js");
 var Packet_MinionTargetUpdate$TerrariaPacket = require("./packet/Packet_MinionTargetUpdate.bs.js");
+var Packetv1405_NpcBuffUpdate$TerrariaPacket = require("./packet/v1405/Packetv1405_NpcBuffUpdate.bs.js");
 var Packet_ActiveContainerSync$TerrariaPacket = require("./packet/Packet_ActiveContainerSync.bs.js");
 var Packet_AnglerQuestComplete$TerrariaPacket = require("./packet/Packet_AnglerQuestComplete.bs.js");
 var Packet_BossOrInvasionSpawn$TerrariaPacket = require("./packet/Packet_BossOrInvasionSpawn.bs.js");
@@ -109,6 +107,7 @@ var Packet_PlayerInventorySlot$TerrariaPacket = require("./packet/Packet_PlayerI
 var Packet_RevengeMarkerRemove$TerrariaPacket = require("./packet/Packet_RevengeMarkerRemove.bs.js");
 var Packet_TeleportationPotion$TerrariaPacket = require("./packet/Packet_TeleportationPotion.bs.js");
 var Packetv1405_ConnectRequest$TerrariaPacket = require("./packet/v1405/Packetv1405_ConnectRequest.bs.js");
+var Packetv1405_PlayerBuffsSet$TerrariaPacket = require("./packet/v1405/Packetv1405_PlayerBuffsSet.bs.js");
 var Packetv1405_ProjectileSync$TerrariaPacket = require("./packet/v1405/Packetv1405_ProjectileSync.bs.js");
 var Packetv1405_TileSquareSend$TerrariaPacket = require("./packet/v1405/Packetv1405_TileSquareSend.bs.js");
 var Packet_CrystalInvasionStart$TerrariaPacket = require("./packet/Packet_CrystalInvasionStart.bs.js");
@@ -125,8 +124,8 @@ var Packet_ShieldStrengthsUpdate$TerrariaPacket = require("./packet/Packet_Shiel
 var Packet_WeaponsRackTryPlacing$TerrariaPacket = require("./packet/Packet_WeaponsRackTryPlacing.bs.js");
 var Packet_CrystalInvasionWipeAll$TerrariaPacket = require("./packet/Packet_CrystalInvasionWipeAll.bs.js");
 var Packet_InvasionProgressReport$TerrariaPacket = require("./packet/Packet_InvasionProgressReport.bs.js");
+var Packetv1405_MoonLordCountdown$TerrariaPacket = require("./packet/v1405/Packetv1405_MoonLordCountdown.bs.js");
 var Packet_ItemDropInstancedUpdate$TerrariaPacket = require("./packet/Packet_ItemDropInstancedUpdate.bs.js");
-var Packet_PlayerLuckFactorsUpdate$TerrariaPacket = require("./packet/Packet_PlayerLuckFactorsUpdate.bs.js");
 var Packet_MinionAttackTargetUpdate$TerrariaPacket = require("./packet/Packet_MinionAttackTargetUpdate.bs.js");
 var Packet_TemporaryAnimationCreate$TerrariaPacket = require("./packet/Packet_TemporaryAnimationCreate.bs.js");
 var Packet_ItemForceIntoNearestChest$TerrariaPacket = require("./packet/Packet_ItemForceIntoNearestChest.bs.js");
@@ -137,6 +136,7 @@ var Packet_AnglerQuestsCompletedAmount$TerrariaPacket = require("./packet/Packet
 var Packet_CrystalInvasionSendWaitTime$TerrariaPacket = require("./packet/Packet_CrystalInvasionSendWaitTime.bs.js");
 var Packet_TravellingMerchantInventory$TerrariaPacket = require("./packet/Packet_TravellingMerchantInventory.bs.js");
 var Packet_TileEntityInteractionRequest$TerrariaPacket = require("./packet/Packet_TileEntityInteractionRequest.bs.js");
+var Packetv1405_PlayerLuckFactorsUpdate$TerrariaPacket = require("./packet/v1405/Packetv1405_PlayerLuckFactorsUpdate.bs.js");
 var Packet_TileEntityDisplayDollItemSync$TerrariaPacket = require("./packet/Packet_TileEntityDisplayDollItemSync.bs.js");
 var Packet_ClientFinishConnectingToServer$TerrariaPacket = require("./packet/Packet_ClientFinishConnectingToServer.bs.js");
 
@@ -185,7 +185,7 @@ function simpleParse(buffer, fromServer) {
             return ;
           }
       case "PlayerInfo" :
-          return Belt_Option.map(Packet_PlayerInfo$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packetv1405_PlayerInfo$TerrariaPacket.parse(buffer), (function (a) {
                         return {
                                 TAG: "PlayerInfo",
                                 _0: a
@@ -265,7 +265,7 @@ function simpleParse(buffer, fromServer) {
             return ;
           }
       case "PlayerSpawn" :
-          return Belt_Option.map(Packet_PlayerSpawn$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packetv1405_PlayerSpawn$TerrariaPacket.parse(buffer), (function (a) {
                         return {
                                 TAG: "PlayerSpawn",
                                 _0: a
@@ -539,7 +539,7 @@ function simpleParse(buffer, fromServer) {
             return ;
           }
       case "PlayerBuffsSet" :
-          return Belt_Option.map(Packet_PlayerBuffsSet$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packetv1405_PlayerBuffsSet$TerrariaPacket.parse(buffer), (function (a) {
                         return {
                                 TAG: "PlayerBuffsSet",
                                 _0: a
@@ -568,7 +568,7 @@ function simpleParse(buffer, fromServer) {
                       }));
       case "NpcBuffUpdate" :
           if (fromServer) {
-            return Belt_Option.map(Packet_NpcBuffUpdate$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packetv1405_NpcBuffUpdate$TerrariaPacket.parse(buffer), (function (a) {
                           return {
                                   TAG: "NpcBuffUpdate",
                                   _0: a
@@ -1007,7 +1007,7 @@ function simpleParse(buffer, fromServer) {
                       }));
       case "MoonLordCountdown" :
           if (fromServer) {
-            return Belt_Option.map(Packet_MoonLordCountdown$TerrariaPacket.parse(buffer), (function (a) {
+            return Belt_Option.map(Packetv1405_MoonLordCountdown$TerrariaPacket.parse(buffer), (function (a) {
                           return {
                                   TAG: "MoonLordCountdown",
                                   _0: a
@@ -1311,7 +1311,7 @@ function simpleParse(buffer, fromServer) {
                         }));
           }
       case "PlayerLuckFactorsUpdate" :
-          return Belt_Option.map(Packet_PlayerLuckFactorsUpdate$TerrariaPacket.parse(buffer), (function (a) {
+          return Belt_Option.map(Packetv1405_PlayerLuckFactorsUpdate$TerrariaPacket.parse(buffer), (function (a) {
                         return {
                                 TAG: "PlayerLuckFactorsUpdate",
                                 _0: a
@@ -1436,7 +1436,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PlayerInfo$TerrariaPacket.parse(buffer);
+                        return Packetv1405_PlayerInfo$TerrariaPacket.parse(buffer);
                       })
                   }
                 };
@@ -1540,7 +1540,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PlayerSpawn$TerrariaPacket.parse(buffer);
+                        return Packetv1405_PlayerSpawn$TerrariaPacket.parse(buffer);
                       })
                   }
                 };
@@ -1916,7 +1916,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PlayerBuffsSet$TerrariaPacket.parse(buffer);
+                        return Packetv1405_PlayerBuffsSet$TerrariaPacket.parse(buffer);
                       })
                   }
                 };
@@ -1957,7 +1957,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_NpcBuffUpdate$TerrariaPacket.parse(buffer);
+                          return Packetv1405_NpcBuffUpdate$TerrariaPacket.parse(buffer);
                         })
                     }
                   };
@@ -2543,7 +2543,7 @@ function simpleParseLazy(buffer, fromServer) {
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_MoonLordCountdown$TerrariaPacket.parse(buffer);
+                          return Packetv1405_MoonLordCountdown$TerrariaPacket.parse(buffer);
                         })
                     }
                   };
@@ -2940,7 +2940,7 @@ function simpleParseLazy(buffer, fromServer) {
                   _0: {
                     LAZY_DONE: false,
                     VAL: (function () {
-                        return Packet_PlayerLuckFactorsUpdate$TerrariaPacket.parse(buffer);
+                        return Packetv1405_PlayerLuckFactorsUpdate$TerrariaPacket.parse(buffer);
                       })
                   }
                 };

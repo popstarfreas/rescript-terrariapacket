@@ -6,24 +6,28 @@ var CamlinternalLazy = require("rescript/lib/js/camlinternalLazy.js");
 var Packet_Status$TerrariaPacket = require("./packet/Packet_Status.bs.js");
 var Packet_NpcUpdate$TerrariaPacket = require("./packet/Packet_NpcUpdate.bs.js");
 var Packet_Disconnect$TerrariaPacket = require("./packet/Packet_Disconnect.bs.js");
-var Packet_PlayerInfo$TerrariaPacket = require("./packet/Packet_PlayerInfo.bs.js");
 var Packet_PlayerMana$TerrariaPacket = require("./packet/Packet_PlayerMana.bs.js");
-var Packet_PlayerSpawn$TerrariaPacket = require("./packet/Packet_PlayerSpawn.bs.js");
 var Packet_PlayerActive$TerrariaPacket = require("./packet/Packet_PlayerActive.bs.js");
 var Packet_PlayerHealth$TerrariaPacket = require("./packet/Packet_PlayerHealth.bs.js");
 var Packet_NetModuleLoad$TerrariaPacket = require("./packet/Packet_NetModuleLoad.bs.js");
 var Packet_PlayerSlotSet$TerrariaPacket = require("./packet/Packet_PlayerSlotSet.bs.js");
 var Packet_ItemDropUpdate$TerrariaPacket = require("./packet/Packet_ItemDropUpdate.bs.js");
 var Packetv1405_WorldInfo$TerrariaPacket = require("./packet/v1405/Packetv1405_WorldInfo.bs.js");
+var Packetv1405_PlayerInfo$TerrariaPacket = require("./packet/v1405/Packetv1405_PlayerInfo.bs.js");
 var Packet_DimensionsUpdate$TerrariaPacket = require("./packet/Packet_DimensionsUpdate.bs.js");
 var Packet_WorldDataRequest$TerrariaPacket = require("./packet/Packet_WorldDataRequest.bs.js");
+var Packetv1405_PlayerSpawn$TerrariaPacket = require("./packet/v1405/Packetv1405_PlayerSpawn.bs.js");
 var Packet_ProjectileDestroy$TerrariaPacket = require("./packet/Packet_ProjectileDestroy.bs.js");
+var Packetv1405_NpcBuffUpdate$TerrariaPacket = require("./packet/v1405/Packetv1405_NpcBuffUpdate.bs.js");
 var Packet_PlayerInventorySlot$TerrariaPacket = require("./packet/Packet_PlayerInventorySlot.bs.js");
 var Packetv1405_ConnectRequest$TerrariaPacket = require("./packet/v1405/Packetv1405_ConnectRequest.bs.js");
+var Packetv1405_PlayerBuffsSet$TerrariaPacket = require("./packet/v1405/Packetv1405_PlayerBuffsSet.bs.js");
 var Packetv1405_ProjectileSync$TerrariaPacket = require("./packet/v1405/Packetv1405_ProjectileSync.bs.js");
 var Packetv1405_TileSquareSend$TerrariaPacket = require("./packet/v1405/Packetv1405_TileSquareSend.bs.js");
 var Packetv1405_TileSectionSend$TerrariaPacket = require("./packet/v1405/Packetv1405_TileSectionSend.bs.js");
+var Packetv1405_MoonLordCountdown$TerrariaPacket = require("./packet/v1405/Packetv1405_MoonLordCountdown.bs.js");
 var Packet_InitialTileSectionsRequest$TerrariaPacket = require("./packet/Packet_InitialTileSectionsRequest.bs.js");
+var Packetv1405_PlayerLuckFactorsUpdate$TerrariaPacket = require("./packet/v1405/Packetv1405_PlayerLuckFactorsUpdate.bs.js");
 
 function connectRequest(param_0) {
   return {
@@ -998,10 +1002,10 @@ function toLatest(packet, _fromServer) {
               };
     case "PlayerInfo" :
         return {
-                TAG: "Same",
+                TAG: "NotSame",
                 _0: {
                   TAG: "PlayerInfo",
-                  _0: packet._0
+                  _0: Packetv1405_PlayerInfo$TerrariaPacket.toLatest(packet._0)
                 }
               };
     case "PlayerInventorySlot" :
@@ -1062,10 +1066,10 @@ function toLatest(packet, _fromServer) {
               };
     case "PlayerSpawn" :
         return {
-                TAG: "Same",
+                TAG: "NotSame",
                 _0: {
                   TAG: "PlayerSpawn",
-                  _0: packet._0
+                  _0: Packetv1405_PlayerSpawn$TerrariaPacket.toLatest(packet._0)
                 }
               };
     case "PlayerUpdate" :
@@ -1334,10 +1338,10 @@ function toLatest(packet, _fromServer) {
               };
     case "PlayerBuffsSet" :
         return {
-                TAG: "Same",
+                TAG: "NotSame",
                 _0: {
                   TAG: "PlayerBuffsSet",
-                  _0: packet._0
+                  _0: Packetv1405_PlayerBuffsSet$TerrariaPacket.toLatest(packet._0)
                 }
               };
     case "NpcSpecialEffect" :
@@ -1366,10 +1370,10 @@ function toLatest(packet, _fromServer) {
               };
     case "NpcBuffUpdate" :
         return {
-                TAG: "Same",
+                TAG: "NotSame",
                 _0: {
                   TAG: "NpcBuffUpdate",
-                  _0: packet._0
+                  _0: Packetv1405_NpcBuffUpdate$TerrariaPacket.toLatest(packet._0)
                 }
               };
     case "PlayerBuffAdd" :
@@ -1758,10 +1762,10 @@ function toLatest(packet, _fromServer) {
               };
     case "MoonLordCountdown" :
         return {
-                TAG: "Same",
+                TAG: "NotSame",
                 _0: {
                   TAG: "MoonLordCountdown",
-                  _0: packet._0
+                  _0: Packetv1405_MoonLordCountdown$TerrariaPacket.toLatest(packet._0)
                 }
               };
     case "NpcShopItem" :
@@ -2006,10 +2010,10 @@ function toLatest(packet, _fromServer) {
               };
     case "PlayerLuckFactorsUpdate" :
         return {
-                TAG: "Same",
+                TAG: "NotSame",
                 _0: {
                   TAG: "PlayerLuckFactorsUpdate",
-                  _0: packet._0
+                  _0: Packetv1405_PlayerLuckFactorsUpdate$TerrariaPacket.toLatest(packet._0)
                 }
               };
     case "PlayerDead" :
@@ -2083,13 +2087,15 @@ function fromLatest(packet, _fromServer) {
                 }
               };
     case "PlayerInfo" :
-        return {
-                TAG: "Same",
-                _0: {
-                  TAG: "PlayerInfo",
-                  _0: packet._0
-                }
-              };
+        return Core__Option.map(Packetv1405_PlayerInfo$TerrariaPacket.fromLatest(packet._0), (function (p) {
+                      return {
+                              TAG: "NotSame",
+                              _0: {
+                                TAG: "PlayerInfo",
+                                _0: p
+                              }
+                            };
+                    }));
     case "PlayerInventorySlot" :
         return {
                 TAG: "Same",
@@ -2151,13 +2157,15 @@ function fromLatest(packet, _fromServer) {
                 }
               };
     case "PlayerSpawn" :
-        return {
-                TAG: "Same",
-                _0: {
-                  TAG: "PlayerSpawn",
-                  _0: packet._0
-                }
-              };
+        return Core__Option.map(Packetv1405_PlayerSpawn$TerrariaPacket.fromLatest(packet._0), (function (p) {
+                      return {
+                              TAG: "NotSame",
+                              _0: {
+                                TAG: "PlayerSpawn",
+                                _0: p
+                              }
+                            };
+                    }));
     case "PlayerUpdate" :
         return {
                 TAG: "Same",
@@ -2425,13 +2433,15 @@ function fromLatest(packet, _fromServer) {
                 }
               };
     case "PlayerBuffsSet" :
-        return {
-                TAG: "Same",
-                _0: {
-                  TAG: "PlayerBuffsSet",
-                  _0: packet._0
-                }
-              };
+        return Core__Option.map(Packetv1405_PlayerBuffsSet$TerrariaPacket.fromLatest(packet._0), (function (p) {
+                      return {
+                              TAG: "NotSame",
+                              _0: {
+                                TAG: "PlayerBuffsSet",
+                                _0: p
+                              }
+                            };
+                    }));
     case "NpcSpecialEffect" :
         return {
                 TAG: "Same",
@@ -2457,13 +2467,15 @@ function fromLatest(packet, _fromServer) {
                 }
               };
     case "NpcBuffUpdate" :
-        return {
-                TAG: "Same",
-                _0: {
-                  TAG: "NpcBuffUpdate",
-                  _0: packet._0
-                }
-              };
+        return Core__Option.map(Packetv1405_NpcBuffUpdate$TerrariaPacket.fromLatest(packet._0), (function (p) {
+                      return {
+                              TAG: "NotSame",
+                              _0: {
+                                TAG: "NpcBuffUpdate",
+                                _0: p
+                              }
+                            };
+                    }));
     case "PlayerBuffAdd" :
         return {
                 TAG: "Same",
@@ -2849,13 +2861,15 @@ function fromLatest(packet, _fromServer) {
                 }
               };
     case "MoonLordCountdown" :
-        return {
-                TAG: "Same",
-                _0: {
-                  TAG: "MoonLordCountdown",
-                  _0: packet._0
-                }
-              };
+        return Core__Option.map(Packetv1405_MoonLordCountdown$TerrariaPacket.fromLatest(packet._0), (function (p) {
+                      return {
+                              TAG: "NotSame",
+                              _0: {
+                                TAG: "MoonLordCountdown",
+                                _0: p
+                              }
+                            };
+                    }));
     case "NpcShopItem" :
         return {
                 TAG: "Same",
@@ -3097,13 +3111,15 @@ function fromLatest(packet, _fromServer) {
                 }
               };
     case "PlayerLuckFactorsUpdate" :
-        return {
-                TAG: "Same",
-                _0: {
-                  TAG: "PlayerLuckFactorsUpdate",
-                  _0: packet._0
-                }
-              };
+        return Core__Option.map(Packetv1405_PlayerLuckFactorsUpdate$TerrariaPacket.fromLatest(packet._0), (function (p) {
+                      return {
+                              TAG: "NotSame",
+                              _0: {
+                                TAG: "PlayerLuckFactorsUpdate",
+                                _0: p
+                              }
+                            };
+                    }));
     case "PlayerDead" :
         return {
                 TAG: "Same",
@@ -3167,9 +3183,15 @@ function toLatest$1(packet, _fromServer) {
                 _0: packet._0
               };
     case "PlayerInfo" :
+        var playerInfo = packet._0;
         return {
                 TAG: "PlayerInfo",
-                _0: packet._0
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: (function () {
+                      return Core__Option.map(CamlinternalLazy.force(playerInfo), Packetv1405_PlayerInfo$TerrariaPacket.toLatest);
+                    })
+                }
               };
     case "PlayerInventorySlot" :
         return {
@@ -3223,9 +3245,15 @@ function toLatest$1(packet, _fromServer) {
                 _0: packet._0
               };
     case "PlayerSpawn" :
+        var playerSpawn = packet._0;
         return {
                 TAG: "PlayerSpawn",
-                _0: packet._0
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: (function () {
+                      return Core__Option.map(CamlinternalLazy.force(playerSpawn), Packetv1405_PlayerSpawn$TerrariaPacket.toLatest);
+                    })
+                }
               };
     case "PlayerUpdate" :
         return {
@@ -3401,9 +3429,15 @@ function toLatest$1(packet, _fromServer) {
                 _0: packet._0
               };
     case "PlayerBuffsSet" :
+        var playerBuffsSet = packet._0;
         return {
                 TAG: "PlayerBuffsSet",
-                _0: packet._0
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: (function () {
+                      return Core__Option.map(CamlinternalLazy.force(playerBuffsSet), Packetv1405_PlayerBuffsSet$TerrariaPacket.toLatest);
+                    })
+                }
               };
     case "NpcSpecialEffect" :
         return {
@@ -3421,9 +3455,15 @@ function toLatest$1(packet, _fromServer) {
                 _0: packet._0
               };
     case "NpcBuffUpdate" :
+        var npcBuffUpdate = packet._0;
         return {
                 TAG: "NpcBuffUpdate",
-                _0: packet._0
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: (function () {
+                      return Core__Option.map(CamlinternalLazy.force(npcBuffUpdate), Packetv1405_NpcBuffUpdate$TerrariaPacket.toLatest);
+                    })
+                }
               };
     case "PlayerBuffAdd" :
         return {
@@ -3666,9 +3706,17 @@ function toLatest$1(packet, _fromServer) {
                 _0: packet._0
               };
     case "MoonLordCountdown" :
+        var moonLordCountdown = packet._0;
         return {
                 TAG: "MoonLordCountdown",
-                _0: packet._0
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: (function () {
+                      return Core__Option.map(CamlinternalLazy.force(moonLordCountdown), (function (moonLordCountdown) {
+                                    return Packetv1405_MoonLordCountdown$TerrariaPacket.toLatest(moonLordCountdown);
+                                  }));
+                    })
+                }
               };
     case "NpcShopItem" :
         return {
@@ -3821,9 +3869,15 @@ function toLatest$1(packet, _fromServer) {
                 _0: packet._0
               };
     case "PlayerLuckFactorsUpdate" :
+        var playerLuckFactorsUpdate = packet._0;
         return {
                 TAG: "PlayerLuckFactorsUpdate",
-                _0: packet._0
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: (function () {
+                      return Core__Option.map(CamlinternalLazy.force(playerLuckFactorsUpdate), Packetv1405_PlayerLuckFactorsUpdate$TerrariaPacket.toLatest);
+                    })
+                }
               };
     case "PlayerDead" :
         return {
@@ -3867,7 +3921,7 @@ function toBuffer(packet, _fromServer) {
     case "PlayerSlotSet" :
         return Packet_PlayerSlotSet$TerrariaPacket.toBuffer(packet._0);
     case "PlayerInfo" :
-        return Packet_PlayerInfo$TerrariaPacket.toBuffer(packet._0);
+        return Packetv1405_PlayerInfo$TerrariaPacket.toBuffer(packet._0);
     case "PlayerInventorySlot" :
         return Packet_PlayerInventorySlot$TerrariaPacket.toBuffer(packet._0);
     case "WorldDataRequest" :
@@ -3879,7 +3933,7 @@ function toBuffer(packet, _fromServer) {
     case "Status" :
         return Packet_Status$TerrariaPacket.toBuffer(packet._0);
     case "PlayerSpawn" :
-        return Packet_PlayerSpawn$TerrariaPacket.toBuffer(packet._0);
+        return Packetv1405_PlayerSpawn$TerrariaPacket.toBuffer(packet._0);
     case "PlayerActive" :
         return Packet_PlayerActive$TerrariaPacket.toBuffer(packet._0);
     case "PlayerHealth" :
