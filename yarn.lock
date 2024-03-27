@@ -41,7 +41,7 @@
   optionalDependencies:
     rescript "^11.0.0"
 
-"@popstarfreas/rescript-nodejs@git+https://github.com/popstarfreas/rescript-nodejs.git#f3bd284":
+"@popstarfreas/rescript-nodejs@git+https://github.com/popstarfreas/rescript-nodejs.git#f3bd284", "@popstarfreas/rescript-nodejs@git+https://github.com/popstarfreas/rescript-nodejs.git#f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7":
   version "16.1.0"
   resolved "git+https://github.com/popstarfreas/rescript-nodejs.git#f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7"
 
