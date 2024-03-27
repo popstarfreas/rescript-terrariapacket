@@ -8,7 +8,7 @@
     "test": "pta  'tests/*.test.bs.js'"
   },
   "dependencies": {
-    "@popstarfreas/packetfactory": "^6.0.1",
+    "@popstarfreas/packetfactory": "^6.1.1",
     "@popstarfreas/rescript-nodejs": "git+https://github.com/popstarfreas/rescript-nodejs.git#f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7",
     "@rescript/core": "^1.1.0",
     "rescript": "^11.0.0",
