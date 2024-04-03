@@ -6,6 +6,7 @@
 export type teleportType = 
     "TeleportationPotion"
   | "MagicConch"
-  | "DemonConch";
+  | "DemonConch"
+  | "ShellphoneSpawn";
 
 export type t = { readonly teleportType: teleportType };

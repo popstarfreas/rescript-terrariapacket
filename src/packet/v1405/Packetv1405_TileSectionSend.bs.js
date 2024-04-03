@@ -33,7 +33,8 @@ function defaultTileCache() {
           halfBrick: false,
           slope: undefined,
           actuator: false,
-          inActive: false
+          inActive: false,
+          coatHeader: 0
         };
 }
 
@@ -53,7 +54,8 @@ function cacheToTile(cache) {
           halfBrick: cache.halfBrick,
           slope: cache.slope,
           actuator: cache.actuator,
-          inActive: cache.inActive
+          inActive: cache.inActive,
+          coatHeader: cache.coatHeader
         };
 }
 
@@ -359,7 +361,7 @@ function parse$2(reader) {
     default:
       entityKind = {
         TAG: "Error",
-        _0: "File \"Packetv1405_TileSectionSend.res\", line 284, characters 17-24" + "Unknown entity kind. "
+        _0: "File \"Packetv1405_TileSectionSend.res\", line 288, characters 17-24" + "Unknown entity kind. "
       };
   }
   return Belt_Result.map(entityKind, (function (entityKind) {
@@ -602,6 +604,7 @@ function parse$3(payload) {
         }
         var header3$1 = match[1];
         var header4$1 = match[0];
+        tileCache.coatHeader = 0;
         var oldActive = tileCache.activeTile;
         if (BitFlags$TerrariaPacket.flag2(header5)) {
           var oldType = Core__Option.mapOr(tileCache.activeTile, 0, (function (active) {

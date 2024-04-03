@@ -29,6 +29,7 @@ type tile = {
   activeTile: option<activeTile>,
   wall: option<int>,
   liquid: option<liquid>,
+  coatHeader: int,
 }
 
 type t = {
@@ -55,6 +56,7 @@ module Decode = {
       for _y in 0 to height - 1 {
         let flags1 = reader->readByte->BitFlags.fromByte
         let flags2 = reader->readByte->BitFlags.fromByte
+        let flags3 = reader->readByte
         let active = flags1->BitFlags.flag1
         let hasWall = flags1->BitFlags.flag3
         let hasLiquid = flags1->BitFlags.flag4
@@ -122,6 +124,7 @@ module Decode = {
           activeTile,
           wall,
           liquid,
+          coatHeader: flags3
         })
         ->ignore
       }
@@ -168,7 +171,7 @@ module Encode = {
     writer
     ->packByte(flags1->BitFlags.toByte)
     ->packByte(flags2->BitFlags.toByte)
-    ->packByte(0)
+    ->packByte(tile.coatHeader)
     ->ignore
     switch tile.color {
     | Some(color) => writer->packByte(color)->ignore

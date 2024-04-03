@@ -3,12 +3,14 @@ type teleportType =
   | TeleportationPotion
   | MagicConch
   | DemonConch
+  | ShellphoneSpawn
 
 let teleportTypeToInt = teleportType =>
   switch teleportType {
   | TeleportationPotion => 0
   | MagicConch => 1
   | DemonConch => 2
+  | ShellphoneSpawn => 3
   }
 
 @genType
@@ -19,13 +21,19 @@ module Decode = {
   let parse = (payload: NodeJs.Buffer.t) => {
     let reader = PacketFactory.PacketReader.make(payload)
     let teleportType = switch reader->readByte {
-    | 0 => TeleportationPotion
-    | 1 => MagicConch
-    | _ => DemonConch
+    | 0 => Some(TeleportationPotion)
+    | 1 => Some(MagicConch)
+    | 2 => Some(DemonConch)
+    | 3 => Some(ShellphoneSpawn)
+    | _ => None
     }
-    Some({
-      teleportType: teleportType,
-    })
+    switch teleportType {
+    | Some(teleportType) =>
+      Some({
+        teleportType: teleportType,
+      })
+    | None => None
+    }
   }
 }
 

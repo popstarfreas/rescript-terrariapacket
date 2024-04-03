@@ -2,6 +2,7 @@ type t = {
   x: int,
   y: int,
   color: int,
+  coat: int,
 }
 
 module Decode = {
@@ -11,10 +12,12 @@ module Decode = {
     let x = reader->readInt16
     let y = reader->readInt16
     let color = reader->readByte
+    let coat = reader->readByte
     Some({
       x,
       y,
       color,
+      coat,
     })
   }
 }
@@ -27,6 +30,7 @@ module Encode = {
     ->packInt16(self.x)
     ->packInt16(self.y)
     ->packByte(self.color)
+    ->packByte(self.coat)
     ->data
   }
 }

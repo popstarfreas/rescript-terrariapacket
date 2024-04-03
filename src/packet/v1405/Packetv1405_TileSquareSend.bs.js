@@ -89,7 +89,8 @@ function parse(payload) {
             wallColor: wallColor,
             activeTile: activeTile,
             wall: wall,
-            liquid: liquid
+            liquid: liquid,
+            coatHeader: 0
           });
     }
     tiles.push(column);

@@ -50,12 +50,17 @@ function parse(payload) {
   var reader = new Packetreader(payload);
   var npcId = reader.readUInt16();
   var setNpcImmunity = reader.readByte() === 1;
-  var immunityTime = setNpcImmunity ? reader.readInt32() : undefined;
-  var immunityFromPlayerId = fromInt(reader.readInt16());
+  var match = setNpcImmunity ? [
+      reader.readInt32(),
+      fromInt(reader.readInt16())
+    ] : [
+      undefined,
+      undefined
+    ];
   return {
           npcId: npcId,
-          immunityTime: immunityTime,
-          immunityFromPlayerId: immunityFromPlayerId
+          immunityTime: match[0],
+          immunityFromPlayerId: match[1]
         };
 }
 
@@ -87,16 +92,16 @@ function data(prim) {
   return prim.data;
 }
 
-function packImmunityTime(writer, immunityTime) {
-  if (immunityTime !== undefined) {
-    return writer.packByte(1).packInt32(immunityTime);
+function packImmunity(writer, immunityTime, immunityOrigin) {
+  if (immunityTime !== undefined && immunityOrigin !== undefined) {
+    return writer.packByte(1).packInt32(immunityTime).packInt16(toInt(immunityOrigin));
   } else {
     return writer.packByte(0);
   }
 }
 
 function toBuffer(self) {
-  return packImmunityTime(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NpcTamper")).packUInt16(self.npcId), self.immunityTime).packInt16(toInt(self.immunityFromPlayerId)).data;
+  return packImmunity(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NpcTamper")).packUInt16(self.npcId), self.immunityTime, self.immunityFromPlayerId).data;
 }
 
 var Encode = {
@@ -106,7 +111,7 @@ var Encode = {
   packInt16: packInt16,
   setType: ManagedPacketWriter$PacketFactory.setType,
   data: data,
-  packImmunityTime: packImmunityTime,
+  packImmunity: packImmunity,
   toBuffer: toBuffer
 };
 

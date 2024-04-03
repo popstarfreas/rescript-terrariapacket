@@ -3,6 +3,7 @@ type t = {
   x: int,
   y: int,
   color: int,
+  coat: int,
 }
 
 @genType

@@ -540,6 +540,8 @@ function toLatest(self) {
           underworldTreeTopStyle: self.underworldTreeTopStyle,
           rain: self.rain,
           eventInfo: eventInfoToLatest(self.eventInfo),
+          sundialCooldown: 0,
+          moondialCooldown: 0,
           copperOreTier: self.copperOreTier,
           ironOreTier: self.ironOreTier,
           silverOreTier: self.silverOreTier,

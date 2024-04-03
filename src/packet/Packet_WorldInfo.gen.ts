@@ -152,6 +152,8 @@ export type t = {
   readonly underworldTreeTopStyle: number; 
   readonly rain: number; 
   readonly eventInfo: eventInfo; 
+  readonly sundialCooldown: number; 
+  readonly moondialCooldown: number; 
   readonly copperOreTier: number; 
   readonly ironOreTier: number; 
   readonly silverOreTier: number; 

@@ -6,6 +6,31 @@ var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src
 var Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
+function unlockTypeToInt(self) {
+  switch (self) {
+    case "Chest" :
+        return 1;
+    case "TempleDoor" :
+        return 2;
+    case "ChestLock" :
+        return 3;
+    
+  }
+}
+
+function unlockTypeFromInt(self) {
+  switch (self) {
+    case 1 :
+        return "Chest";
+    case 2 :
+        return "TempleDoor";
+    case 3 :
+        return "ChestLock";
+    default:
+      return ;
+  }
+}
+
 function readByte(prim) {
   return prim.readByte();
 }
@@ -16,15 +41,17 @@ function readInt16(prim) {
 
 function parse(payload) {
   var reader = new Packetreader(payload);
-  var match = reader.readByte();
-  var unlockType = match !== 1 ? "TempleDoor" : "Chest";
+  var unlockType = unlockTypeFromInt(reader.readByte());
   var x = reader.readInt16();
   var y = reader.readInt16();
-  return {
-          unlockType: unlockType,
-          x: x,
-          y: y
-        };
+  if (unlockType !== undefined) {
+    return {
+            unlockType: unlockType,
+            x: x,
+            y: y
+          };
+  }
+  
 }
 
 var Decode = {
@@ -46,7 +73,7 @@ function data(prim) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ChestOrTempleUnlock")).packByte(self.unlockType === "Chest" ? 1 : 2).packInt16(self.x).packInt16(self.y).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ChestOrTempleUnlock")).packByte(unlockTypeToInt(self.unlockType)).packInt16(self.x).packInt16(self.y).data;
 }
 
 var Encode = {
@@ -58,6 +85,8 @@ var Encode = {
   toBuffer: toBuffer
 };
 
+exports.unlockTypeToInt = unlockTypeToInt;
+exports.unlockTypeFromInt = unlockTypeFromInt;
 exports.Decode = Decode;
 exports.Encode = Encode;
 exports.parse = parse;

@@ -24,7 +24,8 @@ export type tile = {
   readonly halfBrick: boolean; 
   readonly slope: (undefined | number); 
   readonly actuator: boolean; 
-  readonly inActive: boolean
+  readonly inActive: boolean; 
+  readonly coatHeader: number
 };
 
 export type tileCache = {
@@ -42,7 +43,8 @@ export type tileCache = {
   halfBrick: boolean; 
   slope: (undefined | number); 
   actuator: boolean; 
-  inActive: boolean
+  inActive: boolean; 
+  coatHeader: number
 };
 
 export type Chest_t = {

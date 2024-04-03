@@ -3,7 +3,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-export type unlockType = "Chest" | "TempleDoor";
+export type unlockType = "Chest" | "TempleDoor" | "ChestLock";
 
 export type t = {
   readonly unlockType: unlockType; 

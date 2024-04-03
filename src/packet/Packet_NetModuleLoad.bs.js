@@ -3,7 +3,6 @@
 
 var PacketType$TerrariaPacket = require("../PacketType.bs.js");
 var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.bs.js");
-var Networktext = require("@popstarfreas/packetfactory/networktext").default;
 var Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
@@ -143,13 +142,12 @@ function parse(payload, fromServer) {
     case "Text" :
         if (fromServer) {
           var playerId = reader.readByte();
-          var mode = reader.readByte();
-          var message = reader.readString();
+          var message = reader.readNetworkText();
           var color = reader.readColor();
           return {
                   TAG: "ServerText",
                   _0: playerId,
-                  _1: new Networktext(mode, message),
+                  _1: message,
                   _2: color
                 };
         }
@@ -330,4 +328,4 @@ function parse(payload, fromServer) {
 exports.NetModuleType = NetModuleType;
 exports.toBuffer = toBuffer;
 exports.parse = parse;
-/* @popstarfreas/packetfactory/networktext Not a pure module */
+/* @popstarfreas/packetfactory/packetreader Not a pure module */

@@ -111,6 +111,14 @@ function packMiscFlags3(writer, isSleeping) {
   return writer.packByte(BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(isSleeping, false, false, false, false, false, false, false)));
 }
 
+function packVelocity(writer, velocity) {
+  if (velocity !== undefined) {
+    return writer.packSingle(velocity.x).packSingle(velocity.y);
+  } else {
+    return writer;
+  }
+}
+
 function packPotionOfReturn(writer, potionOfReturn) {
   if (potionOfReturn !== undefined) {
     return writer.packSingle(potionOfReturn.originalUsePosition.x).packSingle(potionOfReturn.originalUsePosition.y).packSingle(potionOfReturn.homePosition.x).packSingle(potionOfReturn.homePosition.y);
@@ -120,7 +128,7 @@ function packPotionOfReturn(writer, potionOfReturn) {
 }
 
 function toBuffer(self) {
-  return packPotionOfReturn(packMiscFlags3(packMiscFlags2(packMiscFlags1(packControlFlags(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerUpdate")), self.control, self.direction), self.pulleyDirection, self.velocity, self.vortexStealthActive, self.gravityDirection, self.shouldGuard, self.ghost), self.tryKeepingHoveringUp, self.isVoidVaultEnabled, self.isSitting, self.hasFinishedAnyDd2Event, self.isPettingAnimal, self.isTheAnimalBeingPetSmall, self.potionOfReturn, self.tryKeepingHoveringDown), self.isSleeping).packByte(self.selectedItem).packSingle(self.position.x).packSingle(self.position.y), self.potionOfReturn).data;
+  return packPotionOfReturn(packVelocity(packMiscFlags3(packMiscFlags2(packMiscFlags1(packControlFlags(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerUpdate")).packByte(self.playerId), self.control, self.direction), self.pulleyDirection, self.velocity, self.vortexStealthActive, self.gravityDirection, self.shouldGuard, self.ghost), self.tryKeepingHoveringUp, self.isVoidVaultEnabled, self.isSitting, self.hasFinishedAnyDd2Event, self.isPettingAnimal, self.isTheAnimalBeingPetSmall, self.potionOfReturn, self.tryKeepingHoveringDown), self.isSleeping).packByte(self.selectedItem).packSingle(self.position.x).packSingle(self.position.y), self.velocity), self.potionOfReturn).data;
 }
 
 exports.parse = parse;

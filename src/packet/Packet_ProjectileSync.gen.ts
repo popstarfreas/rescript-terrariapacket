@@ -15,7 +15,8 @@ export type t = {
   readonly vy: number; 
   readonly owner: number; 
   readonly projectileType: number; 
-  readonly ai: [(undefined | number), (undefined | number)]; 
+  readonly ai: [(undefined | number), (undefined | number), (undefined | number)]; 
+  readonly bannerIdToRespondTo: (undefined | number); 
   readonly damage: (undefined | number); 
   readonly knockback: (undefined | number); 
   readonly originalDamage: (undefined | number); 

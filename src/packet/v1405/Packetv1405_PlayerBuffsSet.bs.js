@@ -21,7 +21,7 @@ function parse(payload) {
   var reader = new Packetreader(payload);
   var playerId = reader.readByte();
   var buffs = [];
-  for(var _i = 1; _i <= 5; ++_i){
+  for(var _i = 1; _i <= 22; ++_i){
     buffs.push(reader.readUInt16());
   }
   return {
@@ -72,10 +72,11 @@ var Encode = {
 };
 
 function toLatest(self) {
+  if (self.buffs.length !== 22) {
+    PervasivesU.failwith("Expected 22 buffs, got " + self.buffs.length.toString());
+  }
   var buffs = self.buffs.slice();
-  Caml_splice_call.spliceObjApply(buffs, "push", [Core__Array.fromInitializer(22, (function (param) {
-                return 0;
-              }))]);
+  Caml_splice_call.spliceObjApply(buffs, "push", [Core__Array.make(22, 0)]);
   return {
           playerId: self.playerId,
           buffs: buffs

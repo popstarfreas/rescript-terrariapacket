@@ -8,5 +8,5 @@ export type Immunity_t = "All" | { TAG: "PlayerId"; _0: number };
 export type t = {
   readonly npcId: number; 
   readonly immunityTime: (undefined | number); 
-  readonly immunityFromPlayerId: Immunity_t
+  readonly immunityFromPlayerId: (undefined | Immunity_t)
 };

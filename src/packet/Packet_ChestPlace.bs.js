@@ -113,7 +113,7 @@ function packAction(writer, action) {
 }
 
 function toBuffer(self) {
-  return packAction(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ChestPlace")), self.action).packInt16(self.x).packInt16(self.y).packInt16(self.style).packByte(self.id).data;
+  return packAction(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ChestPlace")), self.action).packInt16(self.x).packInt16(self.y).packInt16(self.style).packInt16(self.id).data;
 }
 
 exports.Action = Action;

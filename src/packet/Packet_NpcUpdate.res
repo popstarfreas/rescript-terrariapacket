@@ -25,7 +25,7 @@ type t = {
 }
 
 module Decode = {
-  let {readInt32, readInt16, readSingle, readUInt16, readByte} = module(PacketFactory.PacketReader)
+  let {readInt32, readInt16, readSingle, readUInt16, readByte, readSByte} = module(PacketFactory.PacketReader)
 
   type npcFlags1 = {
     directionX: bool,
@@ -100,7 +100,7 @@ module Decode = {
       let lifeBytes = reader->readByte
       switch lifeBytes {
       | 0 => None
-      | 1 => Some(Byte(reader->readByte))
+      | 1 => Some(Byte(reader->readSByte))
       | 2 => Some(Int16(reader->readInt16))
       | 4 => Some(Int32(reader->readInt32))
       | _ => None
@@ -139,7 +139,7 @@ module Decode = {
 }
 
 module Encode = {
-  let {packInt32, packInt16, packSingle, packUInt16, packByte, setType, data} = module(
+  let {packInt32, packInt16, packSingle, packUInt16, packByte, packSByte, setType, data} = module(
     PacketFactory.ManagedPacketWriter
   )
 
@@ -208,7 +208,7 @@ module Encode = {
   let packLife = (writer, life) => {
     switch life {
     | Max => writer
-    | Byte(life) => writer->packByte(1)->packByte(life)
+    | Byte(life) => writer->packByte(1)->packSByte(life)
     | Int16(life) => writer->packByte(2)->packInt16(life)
     | Int32(life) => writer->packByte(4)->packInt32(life)
     }

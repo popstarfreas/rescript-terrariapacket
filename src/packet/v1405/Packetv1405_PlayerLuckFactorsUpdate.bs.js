@@ -24,7 +24,7 @@ function readSingle(prim) {
 
 function parse(payload) {
   var reader = new Packetreader(payload);
-  var player = reader.readInt16();
+  var player = reader.readByte();
   var ladyBugLuckTimeLeft = reader.readInt32();
   var torchLuck = reader.readSingle();
   var luckPotion = reader.readByte();

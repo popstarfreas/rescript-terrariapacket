@@ -35,7 +35,7 @@ module Encode = {
     ->packInt16(self.x)
     ->packInt16(self.y)
     ->packInt16(self.itemId)
-    ->packInt16(self.prefix)
+    ->packByte(self.prefix)
     ->packInt16(self.stack)
     ->data
   }

@@ -25,12 +25,15 @@ function parse(payload) {
   var reader = new Packetreader(payload);
   var npcId = reader.readInt16();
   var buffs = [];
+  var buffTimes = [];
   for(var _i = 1; _i <= 5; ++_i){
     buffs.push(reader.readUInt16());
+    buffTimes.push(reader.readInt16());
   }
   return {
           npcId: npcId,
-          buffs: buffs
+          buffs: buffs,
+          buffTimes: buffTimes
         };
 }
 
@@ -43,6 +46,10 @@ var Decode = {
 
 function packByte(prim0, prim1) {
   return prim0.packByte(prim1);
+}
+
+function packInt16(prim0, prim1) {
+  return prim0.packInt16(prim1);
 }
 
 function packUInt16(prim0, prim1) {
@@ -60,37 +67,51 @@ function packBuffs(writer, buffs) {
   return writer;
 }
 
+function packBuffTimes(writer, buffTimes) {
+  buffTimes.forEach(function (buff) {
+        writer.packInt16(buff);
+      });
+  return writer;
+}
+
 function toBuffer(self) {
   if (self.buffs.length !== 5) {
     PervasivesU.failwith("Expected 5 buffs, got " + self.buffs.length.toString());
   }
-  return packBuffs(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NpcBuffUpdate")).packByte(self.npcId), self.buffs).data;
+  return packBuffTimes(packBuffs(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NpcBuffUpdate")).packByte(self.npcId), self.buffs), self.buffTimes).data;
 }
 
 var Encode = {
   packByte: packByte,
+  packInt16: packInt16,
   packUInt16: packUInt16,
   setType: ManagedPacketWriter$PacketFactory.setType,
   data: data,
   packBuffs: packBuffs,
+  packBuffTimes: packBuffTimes,
   toBuffer: toBuffer
 };
 
 function toLatest(self) {
+  if (self.buffs.length !== 5) {
+    PervasivesU.failwith("Expected 5 buffs, got " + self.buffs.length.toString());
+  }
   var buffs = self.buffs.slice();
-  Caml_splice_call.spliceObjApply(buffs, "push", [Core__Array.fromInitializer(20, (function (param) {
-                return 0;
-              }))]);
+  Caml_splice_call.spliceObjApply(buffs, "push", [Core__Array.make(15, 0)]);
+  var buffTimes = self.buffTimes.slice();
+  Caml_splice_call.spliceObjApply(buffTimes, "push", [Core__Array.make(15, 0)]);
   return {
           npcId: self.npcId,
-          buffs: buffs
+          buffs: buffs,
+          buffTimes: buffTimes
         };
 }
 
 function fromLatest(latest) {
   return {
           npcId: latest.npcId,
-          buffs: latest.buffs.slice(0, 5)
+          buffs: latest.buffs.slice(0, 5),
+          buffTimes: latest.buffTimes.slice(0, 5)
         };
 }
 
