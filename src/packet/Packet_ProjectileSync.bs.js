@@ -9,22 +9,6 @@ var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src
 var Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
-function readSingle(prim) {
-  return prim.readSingle();
-}
-
-function readInt16(prim) {
-  return prim.readInt16();
-}
-
-function readUInt16(prim) {
-  return prim.readUInt16();
-}
-
-function readByte(prim) {
-  return prim.readByte();
-}
-
 function parse(payload) {
   var reader = new Packetreader(payload);
   var projectileId = reader.readInt16();
@@ -63,34 +47,6 @@ function parse(payload) {
           originalDamage: originalDamage,
           projectileUuid: projectileUuid
         };
-}
-
-var Decode = {
-  readSingle: readSingle,
-  readInt16: readInt16,
-  readUInt16: readUInt16,
-  readByte: readByte,
-  parse: parse
-};
-
-function packSingle(prim0, prim1) {
-  return prim0.packSingle(prim1);
-}
-
-function packInt16(prim0, prim1) {
-  return prim0.packInt16(prim1);
-}
-
-function packUInt16(prim0, prim1) {
-  return prim0.packUInt16(prim1);
-}
-
-function packByte(prim0, prim1) {
-  return prim0.packByte(prim1);
-}
-
-function data(prim) {
-  return prim.data;
 }
 
 function packOptionalData(writer, self) {
@@ -136,19 +92,6 @@ function toBuffer(self) {
   return packOptionalData(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ProjectileSync")).packInt16(self.projectileId).packSingle(self.x).packSingle(self.y).packSingle(self.vx).packSingle(self.vy).packByte(self.owner).packInt16(self.projectileType), self).data;
 }
 
-var Encode = {
-  packSingle: packSingle,
-  packInt16: packInt16,
-  packUInt16: packUInt16,
-  packByte: packByte,
-  setType: ManagedPacketWriter$PacketFactory.setType,
-  data: data,
-  packOptionalData: packOptionalData,
-  toBuffer: toBuffer
-};
-
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* @popstarfreas/packetfactory/packetreader Not a pure module */

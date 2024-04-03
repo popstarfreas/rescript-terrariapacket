@@ -1,5 +1,4 @@
 @genType
-module Option = Belt.Option
 type eventInfo = {
   shadowOrbSmashed: bool,
   killedBoss1: bool,
@@ -154,45 +153,6 @@ type t = {
   invasionType: int,
   lobbyId: NodeJs.BigInt.t,
   sandstormSeverity: float,
-}
-
-module Decode: {
-  let readByte: PacketFactory.PacketReader.t => int
-  let readInt16: PacketFactory.PacketReader.t => int
-  let readInt32: PacketFactory.PacketReader.t => int
-  let readUInt64: PacketFactory.PacketReader.t => NodeJs.BigInt.t
-  let readString: PacketFactory.PacketReader.t => string
-  let readBytes: (PacketFactory.PacketReader.t, int) => array<int>
-  let readSingle: PacketFactory.PacketReader.t => float
-  let readSByte: PacketFactory.PacketReader.t => int
-  let readEventInfo: PacketFactory.PacketReader.t => eventInfo
-  let parse: NodeJs.Buffer.t => option<t>
-}
-module Encode: {
-  let packSingle: (PacketFactory.ManagedPacketWriter.t, float) => PacketFactory.ManagedPacketWriter.t
-  let packInt32: (PacketFactory.ManagedPacketWriter.t, int) => PacketFactory.ManagedPacketWriter.t
-  let packByte: (PacketFactory.ManagedPacketWriter.t, int) => PacketFactory.ManagedPacketWriter.t
-  let packInt16: (PacketFactory.ManagedPacketWriter.t, int) => PacketFactory.ManagedPacketWriter.t
-  let packUInt64: (
-  PacketFactory.ManagedPacketWriter.t,
-  NodeJs.BigInt.t,
-) => PacketFactory.ManagedPacketWriter.t
-  let packString: (PacketFactory.ManagedPacketWriter.t, string) => PacketFactory.ManagedPacketWriter.t
-  let packSByte: (PacketFactory.ManagedPacketWriter.t, int) => PacketFactory.ManagedPacketWriter.t
-  let packBytes: (
-  PacketFactory.ManagedPacketWriter.t,
-  array<int>,
-) => PacketFactory.ManagedPacketWriter.t
-  let setType: (
-  PacketFactory.ManagedPacketWriter.untypedT,
-  int,
-) => PacketFactory.ManagedPacketWriter.t
-  let data: PacketFactory.ManagedPacketWriter.t => NodeJs.Buffer.t
-  let packEventInfo: (
-  PacketFactory.ManagedPacketWriter.t,
-  eventInfo,
-) => PacketFactory.ManagedPacketWriter.t
-  let toBuffer: t => NodeJs.Buffer.t
 }
 
 @genType

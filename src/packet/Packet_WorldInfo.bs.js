@@ -9,38 +9,6 @@ var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src
 var Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
-function readByte(prim) {
-  return prim.readByte();
-}
-
-function readInt16(prim) {
-  return prim.readInt16();
-}
-
-function readInt32(prim) {
-  return prim.readInt32();
-}
-
-function readUInt64(prim) {
-  return prim.readUInt64();
-}
-
-function readString(prim) {
-  return prim.readString();
-}
-
-function readBytes(prim0, prim1) {
-  return prim0.readBytes(prim1);
-}
-
-function readSingle(prim) {
-  return prim.readSingle();
-}
-
-function readSByte(prim) {
-  return prim.readSByte();
-}
-
 function readEventInfo(reader) {
   var eventInfo1 = BitFlags$TerrariaPacket.fromByte(reader.readByte());
   var eventInfo2 = BitFlags$TerrariaPacket.fromByte(reader.readByte());
@@ -362,55 +330,6 @@ function parse(payload) {
               }));
 }
 
-var Decode = {
-  readByte: readByte,
-  readInt16: readInt16,
-  readInt32: readInt32,
-  readUInt64: readUInt64,
-  readString: readString,
-  readBytes: readBytes,
-  readSingle: readSingle,
-  readSByte: readSByte,
-  readEventInfo: readEventInfo,
-  parse: parse
-};
-
-function packSingle(prim0, prim1) {
-  return prim0.packSingle(prim1);
-}
-
-function packInt32(prim0, prim1) {
-  return prim0.packInt32(prim1);
-}
-
-function packByte(prim0, prim1) {
-  return prim0.packByte(prim1);
-}
-
-function packInt16(prim0, prim1) {
-  return prim0.packInt16(prim1);
-}
-
-function packUInt64(prim0, prim1) {
-  return prim0.packUInt64(prim1);
-}
-
-function packString(prim0, prim1) {
-  return prim0.packString(prim1);
-}
-
-function packSByte(prim0, prim1) {
-  return prim0.packSByte(prim1);
-}
-
-function packBytes(prim0, prim1) {
-  return prim0.packBytes(prim1);
-}
-
-function data(prim) {
-  return prim.data;
-}
-
 function packEventInfo(writer, eventInfo) {
   var eventInfo1 = BitFlags$TerrariaPacket.fromFlags(eventInfo.shadowOrbSmashed, eventInfo.killedBoss1, eventInfo.killedBoss2, eventInfo.killedBoss3, eventInfo.hardMode, eventInfo.killedClown, eventInfo.serverSidedCharacters, eventInfo.killedPlantBoss);
   var eventInfo2 = BitFlags$TerrariaPacket.fromFlags(eventInfo.killedMechBoss, eventInfo.killedMechBoss2, eventInfo.killedMechBoss3, eventInfo.killedAnyMechBoss, eventInfo.cloudBg, eventInfo.crimson, eventInfo.pumpkinMoon, eventInfo.snowMoon);
@@ -429,26 +348,6 @@ function toBuffer(self) {
   return packEventInfo(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("WorldInfo")).packInt32(self.time).packByte(self.dayAndMoonInfo).packByte(self.moonPhase).packInt16(self.maxTilesX).packInt16(self.maxTilesY).packInt16(self.spawnX).packInt16(self.spawnY).packInt16(self.worldSurface).packInt16(self.rockLayer).packInt32(self.worldId).packString(self.worldName).packByte(self.gameMode).packBytes(Array16$TerrariaPacket.asArray(self.worldUniqueId)).packUInt64(self.worldGeneratorVersion).packByte(self.moonType).packByte(self.treeBackground).packByte(self.treeBackground2).packByte(self.treeBackground3).packByte(self.treeBackground4).packByte(self.corruptionBackground).packByte(self.jungleBackground).packByte(self.snowBackground).packByte(self.hallowBackground).packByte(self.crimsonBackground).packByte(self.desertBackground).packByte(self.oceanBackground).packByte(self.mushroomBackground).packByte(self.underworldBackground).packByte(self.iceBackStyle).packByte(self.jungleBackStyle).packByte(self.hellBackStyle).packSingle(self.windSpeedSet).packByte(self.cloudNumber).packInt32(self.tree1).packInt32(self.tree2).packInt32(self.tree3).packByte(self.treeStyle1).packByte(self.treeStyle2).packByte(self.treeStyle3).packByte(self.treeStyle4).packInt32(self.caveBack1).packInt32(self.caveBack2).packInt32(self.caveBack3).packByte(self.caveBackStyle1).packByte(self.caveBackStyle2).packByte(self.caveBackStyle3).packByte(self.caveBackStyle4).packByte(self.forest1TreeTopStyle).packByte(self.forest2TreeTopStyle).packByte(self.forest3TreeTopStyle).packByte(self.forest4TreeTopStyle).packByte(self.corruptionTreeTopStyle).packByte(self.jungleTreeTopStyle).packByte(self.snowTreeTopStyle).packByte(self.hallowTreeTopStyle).packByte(self.crimsonTreeTopStyle).packByte(self.desertTreeTopStyle).packByte(self.oceanTreeTopStyle).packByte(self.glowingMushroomTreeTopStyle).packByte(self.underworldTreeTopStyle).packSingle(self.rain), self.eventInfo).packByte(self.sundialCooldown).packByte(self.moondialCooldown).packInt16(self.copperOreTier).packInt16(self.ironOreTier).packInt16(self.silverOreTier).packInt16(self.goldOreTier).packInt16(self.cobaltOreTier).packInt16(self.mythrilOreTier).packInt16(self.adamantiteOreTier).packSByte(self.invasionType).packUInt64(self.lobbyId).packSingle(self.sandstormSeverity).data;
 }
 
-var Encode = {
-  packSingle: packSingle,
-  packInt32: packInt32,
-  packByte: packByte,
-  packInt16: packInt16,
-  packUInt64: packUInt64,
-  packString: packString,
-  packSByte: packSByte,
-  packBytes: packBytes,
-  setType: ManagedPacketWriter$PacketFactory.setType,
-  data: data,
-  packEventInfo: packEventInfo,
-  toBuffer: toBuffer
-};
-
-var $$Option;
-
-exports.$$Option = $$Option;
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* @popstarfreas/packetfactory/packetreader Not a pure module */
