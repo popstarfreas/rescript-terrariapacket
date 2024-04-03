@@ -124,7 +124,7 @@ module Decode = {
           activeTile,
           wall,
           liquid,
-          coatHeader: flags3
+          coatHeader: flags3,
         })
         ->ignore
       }

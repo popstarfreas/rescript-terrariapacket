@@ -246,7 +246,7 @@ module Encode = {
   }
 
   let packVelocity = (writer: writer, velocity: option<Point.t<float>>) => {
-    switch (velocity) {
+    switch velocity {
     | Some(velocity) =>
       writer
       ->packSingle(velocity.x)

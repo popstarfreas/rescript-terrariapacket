@@ -45,15 +45,15 @@ module Encode: {
   let packInt16: (PacketFactory.ManagedPacketWriter.t, int) => PacketFactory.ManagedPacketWriter.t
   let packByte: (PacketFactory.ManagedPacketWriter.t, int) => PacketFactory.ManagedPacketWriter.t
   let setType: (
-  PacketFactory.ManagedPacketWriter.untypedT,
-  int,
-) => PacketFactory.ManagedPacketWriter.t
+    PacketFactory.ManagedPacketWriter.untypedT,
+    int,
+  ) => PacketFactory.ManagedPacketWriter.t
   let data: PacketFactory.ManagedPacketWriter.t => NodeJs.Buffer.t
   let packTile: (PacketFactory.ManagedPacketWriter.t, tile) => PacketFactory.ManagedPacketWriter.t
   let packTiles: (
-  PacketFactory.ManagedPacketWriter.t,
-  array<array<tile>>,
-) => PacketFactory.ManagedPacketWriter.t
+    PacketFactory.ManagedPacketWriter.t,
+    array<array<tile>>,
+  ) => PacketFactory.ManagedPacketWriter.t
   let toBuffer: t => NodeJs.Buffer.t
 }
 

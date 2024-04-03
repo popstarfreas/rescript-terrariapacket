@@ -100,7 +100,7 @@ module Decode = {
           activeTile,
           wall,
           liquid,
-          coatHeader: 0
+          coatHeader: 0,
         })
         ->ignore
       }

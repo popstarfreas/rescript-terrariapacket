@@ -25,7 +25,9 @@ type t = {
 }
 
 module Decode = {
-  let {readInt32, readInt16, readSingle, readUInt16, readByte, readSByte} = module(PacketFactory.PacketReader)
+  let {readInt32, readInt16, readSingle, readUInt16, readByte, readSByte} = module(
+    PacketFactory.PacketReader
+  )
 
   type npcFlags1 = {
     directionX: bool,

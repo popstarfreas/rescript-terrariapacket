@@ -56,7 +56,8 @@ module Encode = {
     immunityOrigin: option<Immunity.t>,
   ): writer => {
     switch (immunityTime, immunityOrigin) {
-    | (Some(time), Some(origin)) => writer->packByte(1)->packInt32(time)->packInt16(origin->Immunity.toInt)
+    | (Some(time), Some(origin)) =>
+      writer->packByte(1)->packInt32(time)->packInt16(origin->Immunity.toInt)
     | (_, _) => writer->packByte(0)
     }
   }

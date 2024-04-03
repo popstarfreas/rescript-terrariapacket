@@ -15,7 +15,7 @@ module Decode = {
     let ai = (
       flags->BitFlags.flag1 ? Some(reader->readSingle) : None,
       flags->BitFlags.flag2 ? Some(reader->readSingle) : None,
-      None
+      None,
     )
     let damage = if flags->BitFlags.flag5 {
       Some(reader->readInt16)
