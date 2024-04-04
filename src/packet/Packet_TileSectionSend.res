@@ -882,12 +882,10 @@ module Encode = {
       ->BufferWriter.packInt16(self.height)
 
     let lastTile = ref(None)
-    for y in 0 to self.height {
-      for x in 0 to self.width {
-        if (y, x) != (self.height - 1, self.width - 1) {
-          let tile = (self.tiles[y]->Option.getUnsafe)[x]->Option.getUnsafe
-          writer->decidePackTile(lastTile, tile)
-        }
+    for y in 0 to self.height - 1 {
+      for x in 0 to self.width - 1 {
+        let tile = (self.tiles[y]->Option.getUnsafe)[x]->Option.getUnsafe
+        writer->decidePackTile(lastTile, tile)
       }
     }
 
