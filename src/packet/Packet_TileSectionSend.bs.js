@@ -989,19 +989,10 @@ function toBuffer(self) {
   var lastTile = {
     contents: undefined
   };
-  for(var y = 0 ,y_finish = self.height; y <= y_finish; ++y){
-    for(var x = 0 ,x_finish = self.width; x <= x_finish; ++x){
-      if (Caml_obj.notequal([
-              y,
-              x
-            ], [
-              self.height - 1 | 0,
-              self.width - 1 | 0
-            ])) {
-        var tile = self.tiles[y][x];
-        decidePackTile(writer, lastTile, tile);
-      }
-      
+  for(var y = 0 ,y_finish = self.height; y < y_finish; ++y){
+    for(var x = 0 ,x_finish = self.width; x < x_finish; ++x){
+      var tile = self.tiles[y][x];
+      decidePackTile(writer, lastTile, tile);
     }
   }
   var lastTile$1 = lastTile.contents;
