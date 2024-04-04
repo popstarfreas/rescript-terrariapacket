@@ -29,7 +29,8 @@ export type tile = {
   readonly wallColor: (undefined | number); 
   readonly activeTile: (undefined | activeTile); 
   readonly wall: (undefined | number); 
-  readonly liquid: (undefined | liquid)
+  readonly liquid: (undefined | liquid); 
+  readonly coatHeader: number
 };
 
 export type t = {

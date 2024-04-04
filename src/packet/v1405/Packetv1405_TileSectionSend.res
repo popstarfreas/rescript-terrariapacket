@@ -29,6 +29,7 @@ type tile = {
   slope: option<int>,
   actuator: bool,
   inActive: bool,
+  coatHeader: int,
 }
 
 type tileCache = {
@@ -47,6 +48,7 @@ type tileCache = {
   mutable slope: option<int>,
   mutable actuator: bool,
   mutable inActive: bool,
+  mutable coatHeader: int,
 }
 
 let defaultTileCache = () => {
@@ -65,6 +67,7 @@ let defaultTileCache = () => {
   slope: None,
   actuator: false,
   inActive: false,
+  coatHeader: 0,
 }
 
 let cacheToTile = (cache: tileCache): tile => {
@@ -83,6 +86,7 @@ let cacheToTile = (cache: tileCache): tile => {
   slope: cache.slope,
   actuator: cache.actuator,
   inActive: cache.inActive,
+  coatHeader: cache.coatHeader,
 }
 
 module Chest = {
@@ -497,6 +501,7 @@ module Decode = {
               } else {
                 (BitFlags.fromByte(0), BitFlags.fromByte(0))
               }
+              tileCache.coatHeader = 0
 
               let oldActive = tileCache.activeTile
               if header5->BitFlags.flag2 {

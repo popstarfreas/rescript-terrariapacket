@@ -141,6 +141,8 @@ type t = {
   underworldTreeTopStyle: int,
   rain: float,
   eventInfo: eventInfo,
+  sundialCooldown: int,
+  moondialCooldown: int,
   copperOreTier: int,
   ironOreTier: int,
   silverOreTier: int,

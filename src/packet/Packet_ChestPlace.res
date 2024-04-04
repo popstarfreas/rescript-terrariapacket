@@ -92,7 +92,7 @@ module Encode = {
     ->packInt16(self.x)
     ->packInt16(self.y)
     ->packInt16(self.style)
-    ->packByte(self.id)
+    ->packInt16(self.id)
     ->data
   }
 }

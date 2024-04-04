@@ -2,6 +2,7 @@
 'use strict';
 
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
+var Caml_option = require("rescript/lib/js/caml_option.js");
 var BitFlags$TerrariaPacket = require("../BitFlags.bs.js");
 var PacketType$TerrariaPacket = require("../PacketType.bs.js");
 var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.bs.js");
@@ -18,16 +19,15 @@ function parse(payload) {
   var owner = reader.readByte();
   var projectileType = reader.readInt16();
   var flags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
-  var ai_0 = BitFlags$TerrariaPacket.flag1(flags) ? reader.readSingle() : undefined;
-  var ai_1 = BitFlags$TerrariaPacket.flag2(flags) ? reader.readSingle() : undefined;
-  var ai = [
-    ai_0,
-    ai_1
-  ];
+  var flags2 = BitFlags$TerrariaPacket.flag3(flags) ? Caml_option.some(BitFlags$TerrariaPacket.fromByte(reader.readByte())) : undefined;
+  var ai0 = BitFlags$TerrariaPacket.flag1(flags) ? reader.readSingle() : undefined;
+  var ai1 = BitFlags$TerrariaPacket.flag2(flags) ? reader.readSingle() : undefined;
+  var bannerIdToRespondTo = BitFlags$TerrariaPacket.flag4(flags) ? reader.readUInt16() : undefined;
   var damage = BitFlags$TerrariaPacket.flag5(flags) ? reader.readInt16() : undefined;
   var knockback = BitFlags$TerrariaPacket.flag6(flags) ? reader.readSingle() : undefined;
   var originalDamage = BitFlags$TerrariaPacket.flag7(flags) ? reader.readInt16() : undefined;
   var projectileUuid = BitFlags$TerrariaPacket.flag8(flags) ? reader.readInt16() : undefined;
+  var ai2 = flags2 !== undefined && BitFlags$TerrariaPacket.flag1(Caml_option.valFromOption(flags2)) ? reader.readSingle() : undefined;
   return {
           projectileId: projectileId,
           x: x,
@@ -36,7 +36,12 @@ function parse(payload) {
           vy: vy,
           owner: owner,
           projectileType: projectileType,
-          ai: ai,
+          ai: [
+            ai0,
+            ai1,
+            ai2
+          ],
+          bannerIdToRespondTo: bannerIdToRespondTo,
           damage: damage,
           knockback: knockback,
           originalDamage: originalDamage,
@@ -46,14 +51,24 @@ function parse(payload) {
 
 function packOptionalData(writer, self) {
   var match = self.ai;
+  var ai2 = match[2];
   var ai1 = match[1];
   var ai0 = match[0];
-  var bitFlags = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(ai0), Belt_Option.isSome(ai1), false, false, Belt_Option.isSome(self.damage), Belt_Option.isSome(self.knockback), Belt_Option.isSome(self.originalDamage), Belt_Option.isSome(self.projectileUuid));
+  var bitFlags2 = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(ai2), false, false, false, false, false, false, false);
+  var bannerIdToRespondTo = self.bannerIdToRespondTo;
+  var bitFlags = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(ai0), Belt_Option.isSome(ai1), BitFlags$TerrariaPacket.toByte(bitFlags2) !== 0, bannerIdToRespondTo !== undefined ? bannerIdToRespondTo !== 0 : false, Belt_Option.isSome(self.damage), Belt_Option.isSome(self.knockback), Belt_Option.isSome(self.originalDamage), Belt_Option.isSome(self.projectileUuid));
+  writer.packByte(BitFlags$TerrariaPacket.toByte(bitFlags));
+  if (BitFlags$TerrariaPacket.flag3(bitFlags)) {
+    writer.packByte(BitFlags$TerrariaPacket.toByte(bitFlags2));
+  }
   if (BitFlags$TerrariaPacket.flag1(bitFlags)) {
     writer.packSingle(ai0);
   }
   if (BitFlags$TerrariaPacket.flag2(bitFlags)) {
     writer.packSingle(ai1);
+  }
+  if (BitFlags$TerrariaPacket.flag4(bitFlags)) {
+    writer.packUInt16(self.bannerIdToRespondTo);
   }
   if (BitFlags$TerrariaPacket.flag5(bitFlags)) {
     writer.packInt16(self.damage);
@@ -66,6 +81,9 @@ function packOptionalData(writer, self) {
   }
   if (BitFlags$TerrariaPacket.flag8(bitFlags)) {
     writer.packInt16(self.projectileUuid);
+  }
+  if (BitFlags$TerrariaPacket.flag1(bitFlags2)) {
+    writer.packSingle(ai2);
   }
   return writer;
 }

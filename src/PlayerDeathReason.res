@@ -74,7 +74,7 @@ module Decode = {
   let readDeathReason = (reader: PacketFactory.PacketReader.t): t => {
     let reasonType = BitFlags.fromByte(reader->readByte)
     let killerPlayerId = if reasonType->BitFlags.flag1 {
-      Some(reader->readByte)
+      Some(reader->readInt16)
     } else {
       None
     }
@@ -151,7 +151,7 @@ module Encode = {
     self: t,
   ): PacketFactory.ManagedPacketWriter.t => {
     switch self.killerPlayerId {
-    | Some(killerPlayerId) => writer->packByte(killerPlayerId)
+    | Some(killerPlayerId) => writer->packInt16(killerPlayerId)
     | None => writer
     }
   }

@@ -36,6 +36,7 @@ type tile = {
   slope: option<int>,
   actuator: bool,
   inActive: bool,
+  coatHeader: int,
 }
 
 @genType
@@ -55,6 +56,7 @@ type tileCache = {
   mutable slope: option<int>,
   mutable actuator: bool,
   mutable inActive: bool,
+  mutable coatHeader: int,
 }
 
 let defaultTileCache = () => {
@@ -73,6 +75,7 @@ let defaultTileCache = () => {
   slope: None,
   actuator: false,
   inActive: false,
+  coatHeader: 0,
 }
 
 let cacheToTile = (cache: tileCache): tile => {
@@ -91,6 +94,7 @@ let cacheToTile = (cache: tileCache): tile => {
   slope: cache.slope,
   actuator: cache.actuator,
   inActive: cache.inActive,
+  coatHeader: cache.coatHeader,
 }
 
 module Chest = {
@@ -505,17 +509,23 @@ module Decode = {
           } else {
             clearTileCache(tileCache)
             let header5 = reader->readByte->BitFlags.fromByte
-            let (header4, header3) = if header5->BitFlags.flag1 {
+            let (header4, header3, header2) = if header5->BitFlags.flag1 {
               let header4 = reader->readByte->BitFlags.fromByte
               let header3 = if header4->BitFlags.flag1 {
                 reader->readByte->BitFlags.fromByte
               } else {
                 BitFlags.fromByte(0)
               }
-              (header4, header3)
+              let header2 = if header3->BitFlags.flag1 {
+                reader->readByte
+              } else {
+                0
+              }
+              (header4, header3, header2)
             } else {
-              (BitFlags.fromByte(0), BitFlags.fromByte(0))
+              (BitFlags.fromByte(0), BitFlags.fromByte(0), 0)
             }
+            tileCache.coatHeader = header2
 
             let oldActive = tileCache.activeTile
             if header5->BitFlags.flag2 {
@@ -725,8 +735,9 @@ module Encode = {
   type bufferWriter = PacketFactory.BufferWriter.t
 
   let packTile = (writer: bufferWriter, tile: tile, repeatCount: int): bufferWriter => {
+    let header2 = tile.coatHeader
     let header3 = BitFlags.fromFlags(
-      ~flag1=false /* nothing? */,
+      ~flag1=header2 > 0,
       ~flag2=tile.actuator,
       ~flag3=tile.inActive,
       ~flag4=tile.color->Option.isSome,
@@ -769,6 +780,9 @@ module Encode = {
       let _: bufferWriter = writer->packByte(header4->BitFlags.toByte)
       if header4->BitFlags.flag1 {
         let _: bufferWriter = writer->packByte(header3->BitFlags.toByte)
+        if header3->BitFlags.flag1 {
+          let _: bufferWriter = writer->packByte(header2)
+        }
       }
     }
 

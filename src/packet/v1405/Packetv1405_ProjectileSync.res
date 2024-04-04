@@ -15,6 +15,7 @@ module Decode = {
     let ai = (
       flags->BitFlags.flag1 ? Some(reader->readSingle) : None,
       flags->BitFlags.flag2 ? Some(reader->readSingle) : None,
+      None,
     )
     let damage = if flags->BitFlags.flag5 {
       Some(reader->readInt16)
@@ -45,6 +46,7 @@ module Decode = {
       owner,
       projectileType,
       ai,
+      bannerIdToRespondTo: None,
       damage,
       knockback,
       originalDamage,
@@ -56,7 +58,7 @@ module Decode = {
 module Encode = {
   let {packSingle, packInt16, packByte, setType, data} = module(PacketFactory.ManagedPacketWriter)
   let packOptionalData = (writer, self: t) => {
-    let (ai0, ai1) = self.ai
+    let (ai0, ai1, _) = self.ai
     let bitFlags = BitFlags.fromFlags(
       ~flag1=ai0->Belt.Option.isSome,
       ~flag2=ai1->Belt.Option.isSome,
@@ -67,6 +69,8 @@ module Encode = {
       ~flag7=self.originalDamage->Belt.Option.isSome,
       ~flag8=self.projectileUuid->Belt.Option.isSome,
     )
+
+    writer->packByte(bitFlags->BitFlags.toByte)->ignore
 
     if bitFlags->BitFlags.flag1 {
       writer->packSingle(ai0->Belt.Option.getUnsafe)->ignore

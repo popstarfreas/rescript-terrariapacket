@@ -274,10 +274,9 @@ module Decode = {
   let parseText = (reader: PacketFactory.PacketReader.t, fromServer: bool) => {
     if fromServer {
       let playerId = reader->readByte
-      let mode = reader->readByte
-      let message = reader->readString
+      let message = reader->PacketFactory.PacketReader.readNetworkText
       let color = reader->readColor
-      ServerText(playerId, PacketFactory.NetworkText.make(mode, message), color)->Some
+      ServerText(playerId, message, color)->Some
     } else {
       let commandId = reader->readString
       let message = reader->readString

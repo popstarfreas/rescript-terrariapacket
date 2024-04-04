@@ -23,7 +23,7 @@ module Immunity = {
 type t = {
   npcId: int,
   immunityTime: option<int>,
-  immunityFromPlayerId: Immunity.t,
+  immunityFromPlayerId: option<Immunity.t>,
 }
 
 module Decode = {
@@ -32,12 +32,11 @@ module Decode = {
     let reader = PacketFactory.PacketReader.make(payload)
     let npcId = reader->readUInt16
     let setNpcImmunity = reader->readByte == 1
-    let immunityTime = if setNpcImmunity {
-      Some(reader->readInt32)
+    let (immunityTime, immunityFromPlayerId) = if setNpcImmunity {
+      (Some(reader->readInt32), Some(Immunity.fromInt(reader->readInt16)))
     } else {
-      None
+      (None, None)
     }
-    let immunityFromPlayerId = Immunity.fromInt(reader->readInt16)
     Some({
       npcId,
       immunityTime,
@@ -51,18 +50,22 @@ module Encode = {
   let {packUInt16, packByte, packInt32, packInt16, setType, data} = module(
     PacketFactory.ManagedPacketWriter
   )
-  let packImmunityTime = (writer: writer, immunityTime: option<int>): writer => {
-    switch immunityTime {
-    | Some(time) => writer->packByte(1)->packInt32(time)
-    | None => writer->packByte(0)
+  let packImmunity = (
+    writer: writer,
+    immunityTime: option<int>,
+    immunityOrigin: option<Immunity.t>,
+  ): writer => {
+    switch (immunityTime, immunityOrigin) {
+    | (Some(time), Some(origin)) =>
+      writer->packByte(1)->packInt32(time)->packInt16(origin->Immunity.toInt)
+    | (_, _) => writer->packByte(0)
     }
   }
   let toBuffer = (self: t): NodeJs.Buffer.t => {
     PacketFactory.ManagedPacketWriter.make()
     ->setType(PacketType.NpcTamper->PacketType.toInt)
     ->packUInt16(self.npcId)
-    ->packImmunityTime(self.immunityTime)
-    ->packInt16(self.immunityFromPlayerId->Immunity.toInt)
+    ->packImmunity(self.immunityTime, self.immunityFromPlayerId)
     ->data
   }
 }

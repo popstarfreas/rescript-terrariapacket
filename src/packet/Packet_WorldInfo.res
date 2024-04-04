@@ -143,6 +143,8 @@ type t = {
   underworldTreeTopStyle: int,
   rain: float,
   eventInfo: eventInfo,
+  sundialCooldown: int,
+  moondialCooldown: int,
   copperOreTier: int,
   ironOreTier: int,
   silverOreTier: int,
@@ -396,6 +398,8 @@ module Decode = {
     let underworldTreeTopStyle = reader->readByte
     let rain = reader->readSingle
     let eventInfo = reader->readEventInfo
+    let sundialCooldown = reader->readByte
+    let moondialCooldown = reader->readByte
     let copperOreTier = reader->readInt16
     let ironOreTier = reader->readInt16
     let silverOreTier = reader->readInt16
@@ -469,6 +473,8 @@ module Decode = {
       underworldTreeTopStyle,
       rain,
       eventInfo,
+      sundialCooldown,
+      moondialCooldown,
       copperOreTier,
       ironOreTier,
       silverOreTier,
@@ -675,6 +681,8 @@ module Encode = {
     ->packByte(self.underworldTreeTopStyle)
     ->packSingle(self.rain)
     ->packEventInfo(self.eventInfo)
+    ->packByte(self.sundialCooldown)
+    ->packByte(self.moondialCooldown)
     ->packInt16(self.copperOreTier)
     ->packInt16(self.ironOreTier)
     ->packInt16(self.silverOreTier)

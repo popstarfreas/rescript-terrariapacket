@@ -14,6 +14,8 @@ function teleportTypeToInt(teleportType) {
         return 1;
     case "DemonConch" :
         return 2;
+    case "ShellphoneSpawn" :
+        return 3;
     
   }
 }
@@ -29,12 +31,29 @@ function readInt16(prim) {
 function parse(payload) {
   var reader = new Packetreader(payload);
   var match = reader.readByte();
-  var teleportType = match !== 0 ? (
-      match !== 1 ? "DemonConch" : "MagicConch"
-    ) : "TeleportationPotion";
-  return {
-          teleportType: teleportType
-        };
+  var teleportType;
+  switch (match) {
+    case 0 :
+        teleportType = "TeleportationPotion";
+        break;
+    case 1 :
+        teleportType = "MagicConch";
+        break;
+    case 2 :
+        teleportType = "DemonConch";
+        break;
+    case 3 :
+        teleportType = "ShellphoneSpawn";
+        break;
+    default:
+      teleportType = undefined;
+  }
+  if (teleportType !== undefined) {
+    return {
+            teleportType: teleportType
+          };
+  }
+  
 }
 
 var Decode = {

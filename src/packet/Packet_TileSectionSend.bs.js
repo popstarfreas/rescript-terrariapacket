@@ -33,7 +33,8 @@ function defaultTileCache() {
           halfBrick: false,
           slope: undefined,
           actuator: false,
-          inActive: false
+          inActive: false,
+          coatHeader: 0
         };
 }
 
@@ -53,7 +54,8 @@ function cacheToTile(cache) {
           halfBrick: cache.halfBrick,
           slope: cache.slope,
           actuator: cache.actuator,
-          inActive: cache.inActive
+          inActive: cache.inActive,
+          coatHeader: cache.coatHeader
         };
 }
 
@@ -359,7 +361,7 @@ function parse$2(reader) {
     default:
       entityKind = {
         TAG: "Error",
-        _0: "File \"Packet_TileSectionSend.res\", line 305, characters 17-24" + "Unknown entity kind. "
+        _0: "File \"Packet_TileSectionSend.res\", line 309, characters 17-24" + "Unknown entity kind. "
       };
   }
   return Belt_Result.map(entityKind, (function (entityKind) {
@@ -586,18 +588,22 @@ function parse$3(payload) {
         if (BitFlags$TerrariaPacket.flag1(header5)) {
           var header4 = BitFlags$TerrariaPacket.fromByte(reader$1.readByte());
           var header3 = BitFlags$TerrariaPacket.flag1(header4) ? BitFlags$TerrariaPacket.fromByte(reader$1.readByte()) : BitFlags$TerrariaPacket.fromByte(0);
+          var header2 = BitFlags$TerrariaPacket.flag1(header3) ? reader$1.readByte() : 0;
           match = [
             header4,
-            header3
+            header3,
+            header2
           ];
         } else {
           match = [
             BitFlags$TerrariaPacket.fromByte(0),
-            BitFlags$TerrariaPacket.fromByte(0)
+            BitFlags$TerrariaPacket.fromByte(0),
+            0
           ];
         }
         var header3$1 = match[1];
         var header4$1 = match[0];
+        tileCache.coatHeader = match[2];
         var oldActive = tileCache.activeTile;
         if (BitFlags$TerrariaPacket.flag2(header5)) {
           var oldType = Belt_Option.mapWithDefault(tileCache.activeTile, 0, (function (active) {
@@ -876,8 +882,9 @@ function packInt16$3(prim0, prim1) {
 }
 
 function packTile(writer, tile, repeatCount) {
+  var header2 = tile.coatHeader;
   var wall = tile.wall;
-  var header3 = BitFlags$TerrariaPacket.fromFlags(false, tile.actuator, tile.inActive, Belt_Option.isSome(tile.color), Belt_Option.isSome(tile.wall) && Belt_Option.isSome(tile.wallColor), tile.wire4, wall !== undefined ? wall > 255 : false, false);
+  var header3 = BitFlags$TerrariaPacket.fromFlags(header2 > 0, tile.actuator, tile.inActive, Belt_Option.isSome(tile.color), Belt_Option.isSome(tile.wall) && Belt_Option.isSome(tile.wallColor), tile.wire4, wall !== undefined ? wall > 255 : false, false);
   var match = getSlopeBitFlags(tile);
   var header4 = BitFlags$TerrariaPacket.fromFlags(BitFlags$TerrariaPacket.toByte(header3) > 0, tile.wire, tile.wire2, tile.wire3, match[2], match[1], match[0], false);
   var match$1 = getLiquidBitFlags(tile);
@@ -889,6 +896,10 @@ function packTile(writer, tile, repeatCount) {
     writer.packByte(BitFlags$TerrariaPacket.toByte(header4));
     if (BitFlags$TerrariaPacket.flag1(header4)) {
       writer.packByte(BitFlags$TerrariaPacket.toByte(header3));
+      if (BitFlags$TerrariaPacket.flag1(header3)) {
+        writer.packByte(header2);
+      }
+      
     }
     
   }

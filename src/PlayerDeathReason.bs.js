@@ -79,7 +79,7 @@ function otherToByte(other) {
 
 function readDeathReason(reader) {
   var reasonType = BitFlags$TerrariaPacket.fromByte(reader.readByte());
-  var killerPlayerId = BitFlags$TerrariaPacket.flag1(reasonType) ? reader.readByte() : undefined;
+  var killerPlayerId = BitFlags$TerrariaPacket.flag1(reasonType) ? reader.readInt16() : undefined;
   var killerNpcId = BitFlags$TerrariaPacket.flag2(reasonType) ? reader.readInt16() : undefined;
   var killerProjectileId = BitFlags$TerrariaPacket.flag3(reasonType) ? reader.readInt16() : undefined;
   var typeOfDeathOther = BitFlags$TerrariaPacket.flag4(reasonType) ? otherFromByte(reader.readByte()) : undefined;
@@ -107,7 +107,7 @@ function packFlags(writer, self) {
 function packKillerPlayerId(writer, self) {
   var killerPlayerId = self.killerPlayerId;
   if (killerPlayerId !== undefined) {
-    return writer.packByte(killerPlayerId);
+    return writer.packInt16(killerPlayerId);
   } else {
     return writer;
   }

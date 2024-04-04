@@ -245,6 +245,16 @@ module Encode = {
     )
   }
 
+  let packVelocity = (writer: writer, velocity: option<Point.t<float>>) => {
+    switch velocity {
+    | Some(velocity) =>
+      writer
+      ->packSingle(velocity.x)
+      ->packSingle(velocity.y)
+    | None => writer
+    }
+  }
+
   let packPotionOfReturn = (writer: writer, potionOfReturn: option<potionOfReturn>) => {
     switch potionOfReturn {
     | Some(potionOfReturn) =>
@@ -260,6 +270,7 @@ module Encode = {
   let toBuffer = (self: t): NodeJs.Buffer.t => {
     PacketFactory.ManagedPacketWriter.make()
     ->setType(PacketType.PlayerUpdate->PacketType.toInt)
+    ->packByte(self.playerId)
     ->packControlFlags(self.control, self.direction)
     ->packMiscFlags1(
       self.pulleyDirection,
@@ -283,6 +294,7 @@ module Encode = {
     ->packByte(self.selectedItem)
     ->packSingle(self.position.x)
     ->packSingle(self.position.y)
+    ->packVelocity(self.velocity)
     ->packPotionOfReturn(self.potionOfReturn)
     ->data
   }

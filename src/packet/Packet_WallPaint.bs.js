@@ -11,15 +11,17 @@ function parse(payload) {
   var x = reader.readInt16();
   var y = reader.readInt16();
   var color = reader.readByte();
+  var coat = reader.readByte();
   return {
           x: x,
           y: y,
-          color: color
+          color: color,
+          coat: coat
         };
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("WallPaint")).packInt16(self.x).packInt16(self.y).packByte(self.color).data;
+  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("WallPaint")).packInt16(self.x).packInt16(self.y).packByte(self.color).packByte(self.coat).data;
 }
 
 exports.parse = parse;

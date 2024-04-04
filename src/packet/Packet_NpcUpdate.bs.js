@@ -63,7 +63,7 @@ function parse(payload) {
       case 1 :
           life = {
             TAG: "Byte",
-            _0: reader.readByte()
+            _0: reader.readSByte()
           };
           break;
       case 2 :
@@ -167,7 +167,7 @@ function packLife(writer, life) {
   }
   switch (life.TAG) {
     case "Byte" :
-        return writer.packByte(1).packByte(life._0);
+        return writer.packByte(1).packSByte(life._0);
     case "Int16" :
         return writer.packByte(2).packInt16(life._0);
     case "Int32" :
