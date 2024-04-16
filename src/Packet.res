@@ -63,8 +63,8 @@ module PlayerHealOther = Packet_PlayerHealOther
 module DimensionsUpdate = Packet_DimensionsUpdate
 module ClientUuid = Packet_ClientUuid
 module ChestName = Packet_ChestName
-module CatchNpc = Packet_CatchNpc
-module ReleaseNpc = Packet_ReleaseNpc
+module NpcCatch = Packet_NpcCatch
+module NpcRelease = Packet_NpcRelease
 module TravellingMerchantInventory = Packet_TravellingMerchantInventory
 module TeleportationPotion = Packet_TeleportationPotion
 module AnglerQuest = Packet_AnglerQuest
@@ -209,8 +209,8 @@ type t =
   | DimensionsUpdate(DimensionsUpdate.t)
   | ClientUuid(ClientUuid.t)
   | ChestName(ChestName.t)
-  | CatchNpc(CatchNpc.t)
-  | ReleaseNpc(ReleaseNpc.t)
+  | NpcCatch(NpcCatch.t)
+  | NpcRelease(NpcRelease.t)
   | TravellingMerchantInventory(TravellingMerchantInventory.t)
   | TeleportationPotion(TeleportationPotion.t)
   | AnglerQuest(AnglerQuest.t)
@@ -356,8 +356,8 @@ module LazyPacket = {
     | DimensionsUpdate(Lazy.t<option<DimensionsUpdate.t>>)
     | ClientUuid(Lazy.t<option<ClientUuid.t>>)
     | ChestName(Lazy.t<option<ChestName.t>>)
-    | CatchNpc(Lazy.t<option<CatchNpc.t>>)
-    | ReleaseNpc(Lazy.t<option<ReleaseNpc.t>>)
+    | NpcCatch(Lazy.t<option<NpcCatch.t>>)
+    | NpcRelease(Lazy.t<option<NpcRelease.t>>)
     | TravellingMerchantInventory(Lazy.t<option<TravellingMerchantInventory.t>>)
     | TeleportationPotion(Lazy.t<option<TeleportationPotion.t>>)
     | AnglerQuest(Lazy.t<option<AnglerQuest.t>>)
@@ -503,8 +503,8 @@ module LazyPacket = {
     | DimensionsUpdate(_dimensionsUpdate) => "DimensionsUpdate"
     | ClientUuid(_clientUuid) => "ClientUuid"
     | ChestName(_chestName) => "ChestName"
-    | CatchNpc(_catchNpc) => "CatchNpc"
-    | ReleaseNpc(_releaseNpc) => "ReleaseNpc"
+    | NpcCatch(_catchNpc) => "NpcCatch"
+    | NpcRelease(_releaseNpc) => "NpcRelease"
     | TravellingMerchantInventory(_travellingMerchantInventory) => "TravellingMerchantInventory"
     | TeleportationPotion(_teleportationPotion) => "TeleportationPotion"
     | AnglerQuest(_anglerQuest) => "AnglerQuest"
@@ -662,8 +662,8 @@ let toBuffer = (packet: t, _fromServer: bool): option<NodeJs.Buffer.t> => {
   | DimensionsUpdate(dimensionsUpdate) => Some(DimensionsUpdate.toBuffer(dimensionsUpdate))
   | ClientUuid(_clientUuid) => None
   | ChestName(_chestName) => None
-  | CatchNpc(_catchNpc) => None
-  | ReleaseNpc(_releaseNpc) => None
+  | NpcCatch(_catchNpc) => None
+  | NpcRelease(_releaseNpc) => None
   | TravellingMerchantInventory(_travellingMerchantInventory) => None
   | TeleportationPotion(_teleportationPotion) => None
   | AnglerQuest(_anglerQuest) => None
@@ -833,8 +833,8 @@ let toPacketName = (packet: t): string => {
   | DimensionsUpdate(_dimensionsUpdate) => "DimensionsUpdate"
   | ClientUuid(_clientUuid) => "ClientUuid"
   | ChestName(_chestName) => "ChestName"
-  | CatchNpc(_catchNpc) => "CatchNpc"
-  | ReleaseNpc(_releaseNpc) => "ReleaseNpc"
+  | NpcCatch(_catchNpc) => "NpcCatch"
+  | NpcRelease(_releaseNpc) => "NpcRelease"
   | TravellingMerchantInventory(_travellingMerchantInventory) => "TravellingMerchantInventory"
   | TeleportationPotion(_teleportationPotion) => "TeleportationPotion"
   | AnglerQuest(_anglerQuest) => "AnglerQuest"

@@ -63,8 +63,8 @@ module PlayerHealOther = Packet_PlayerHealOther
 module DimensionsUpdate = Packet_DimensionsUpdate
 module ClientUuid = Packet_ClientUuid
 module ChestName = Packet_ChestName
-module CatchNpc = Packet_CatchNpc
-module ReleaseNpc = Packet_ReleaseNpc
+module NpcCatch = Packet_NpcCatch
+module NpcRelease = Packet_NpcRelease
 module TravellingMerchantInventory = Packet_TravellingMerchantInventory
 module TeleportationPotion = Packet_TeleportationPotion
 module AnglerQuest = Packet_AnglerQuest
@@ -201,8 +201,8 @@ type t =
   | DimensionsUpdate(DimensionsUpdate.t)
   | ClientUuid(ClientUuid.t)
   | ChestName(ChestName.t)
-  | CatchNpc(CatchNpc.t)
-  | ReleaseNpc(ReleaseNpc.t)
+  | NpcCatch(NpcCatch.t)
+  | NpcRelease(NpcRelease.t)
   | TravellingMerchantInventory(TravellingMerchantInventory.t)
   | TeleportationPotion(TeleportationPotion.t)
   | AnglerQuest(AnglerQuest.t)
@@ -345,8 +345,8 @@ module LazyPacket: {
     | DimensionsUpdate(Lazy.t<option<DimensionsUpdate.t>>)
     | ClientUuid(Lazy.t<option<ClientUuid.t>>)
     | ChestName(Lazy.t<option<ChestName.t>>)
-    | CatchNpc(Lazy.t<option<CatchNpc.t>>)
-    | ReleaseNpc(Lazy.t<option<ReleaseNpc.t>>)
+    | NpcCatch(Lazy.t<option<NpcCatch.t>>)
+    | NpcRelease(Lazy.t<option<NpcRelease.t>>)
     | TravellingMerchantInventory(Lazy.t<option<TravellingMerchantInventory.t>>)
     | TeleportationPotion(Lazy.t<option<TeleportationPotion.t>>)
     | AnglerQuest(Lazy.t<option<AnglerQuest.t>>)

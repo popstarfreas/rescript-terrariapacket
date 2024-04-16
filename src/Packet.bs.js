@@ -177,10 +177,10 @@ function toPacketName(packet) {
         return "ClientUuid";
     case "ChestName" :
         return "ChestName";
-    case "CatchNpc" :
-        return "CatchNpc";
-    case "ReleaseNpc" :
-        return "ReleaseNpc";
+    case "NpcCatch" :
+        return "NpcCatch";
+    case "NpcRelease" :
+        return "NpcRelease";
     case "TravellingMerchantInventory" :
         return "TravellingMerchantInventory";
     case "TeleportationPotion" :
@@ -579,10 +579,10 @@ function toPacketName$1(packet) {
         return "ClientUuid";
     case "ChestName" :
         return "ChestName";
-    case "CatchNpc" :
-        return "CatchNpc";
-    case "ReleaseNpc" :
-        return "ReleaseNpc";
+    case "NpcCatch" :
+        return "NpcCatch";
+    case "NpcRelease" :
+        return "NpcRelease";
     case "TravellingMerchantInventory" :
         return "TravellingMerchantInventory";
     case "TeleportationPotion" :
@@ -912,9 +912,9 @@ var ClientUuid;
 
 var ChestName;
 
-var CatchNpc;
+var NpcCatch;
 
-var ReleaseNpc;
+var NpcRelease;
 
 var TravellingMerchantInventory;
 
@@ -1135,8 +1135,8 @@ exports.PlayerHealOther = PlayerHealOther;
 exports.DimensionsUpdate = DimensionsUpdate;
 exports.ClientUuid = ClientUuid;
 exports.ChestName = ChestName;
-exports.CatchNpc = CatchNpc;
-exports.ReleaseNpc = ReleaseNpc;
+exports.NpcCatch = NpcCatch;
+exports.NpcRelease = NpcRelease;
 exports.TravellingMerchantInventory = TravellingMerchantInventory;
 exports.TeleportationPotion = TeleportationPotion;
 exports.AnglerQuest = AnglerQuest;

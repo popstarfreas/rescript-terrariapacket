@@ -15,8 +15,6 @@ import type {t as Packet_AnglerQuestsCompletedAmount_t} from '../src/packet/Pack
 
 import type {t as Packet_BossOrInvasionSpawn_t} from '../src/packet/Packet_BossOrInvasionSpawn.gen';
 
-import type {t as Packet_CatchNpc_t} from '../src/packet/Packet_CatchNpc.gen';
-
 import type {t as Packet_CavernMonsterTypeSync_t} from '../src/packet/Packet_CavernMonsterTypeSync.gen';
 
 import type {t as Packet_ChatMessageSmart_t} from '../src/packet/Packet_ChatMessageSmart.gen';
@@ -135,6 +133,8 @@ import type {t as Packet_NpcBuffRemovalRequest_t} from '../src/packet/Packet_Npc
 
 import type {t as Packet_NpcBuffUpdate_t} from '../src/packet/Packet_NpcBuffUpdate.gen';
 
+import type {t as Packet_NpcCatch_t} from '../src/packet/Packet_NpcCatch.gen';
+
 import type {t as Packet_NpcFishOut_t} from '../src/packet/Packet_NpcFishOut.gen';
 
 import type {t as Packet_NpcHomeUpdate_t} from '../src/packet/Packet_NpcHomeUpdate.gen';
@@ -146,6 +146,8 @@ import type {t as Packet_NpcKillCount_t} from '../src/packet/Packet_NpcKillCount
 import type {t as Packet_NpcKilledNotification_t} from '../src/packet/Packet_NpcKilledNotification.gen';
 
 import type {t as Packet_NpcNameUpdate_t} from '../src/packet/Packet_NpcNameUpdate.gen';
+
+import type {t as Packet_NpcRelease_t} from '../src/packet/Packet_NpcRelease.gen';
 
 import type {t as Packet_NpcShopItem_t} from '../src/packet/Packet_NpcShopItem.gen';
 
@@ -222,8 +224,6 @@ import type {t as Packet_ProjectileDestroy_t} from '../src/packet/Packet_Project
 import type {t as Packet_ProjectileSync_t} from '../src/packet/Packet_ProjectileSync.gen';
 
 import type {t as Packet_PvpToggle_t} from '../src/packet/Packet_PvpToggle.gen';
-
-import type {t as Packet_ReleaseNpc_t} from '../src/packet/Packet_ReleaseNpc.gen';
 
 import type {t as Packet_RevengeMarkerRemove_t} from '../src/packet/Packet_RevengeMarkerRemove.gen';
 
@@ -359,8 +359,8 @@ export type t =
   | { TAG: "DimensionsUpdate"; _0: Packet_DimensionsUpdate_t }
   | { TAG: "ClientUuid"; _0: Packet_ClientUuid_t }
   | { TAG: "ChestName"; _0: Packet_ChestName_t }
-  | { TAG: "CatchNpc"; _0: Packet_CatchNpc_t }
-  | { TAG: "ReleaseNpc"; _0: Packet_ReleaseNpc_t }
+  | { TAG: "NpcCatch"; _0: Packet_NpcCatch_t }
+  | { TAG: "NpcRelease"; _0: Packet_NpcRelease_t }
   | { TAG: "TravellingMerchantInventory"; _0: Packet_TravellingMerchantInventory_t }
   | { TAG: "TeleportationPotion"; _0: Packet_TeleportationPotion_t }
   | { TAG: "AnglerQuest"; _0: Packet_AnglerQuest_t }
@@ -505,8 +505,8 @@ export type LazyPacket_t =
   | { TAG: "DimensionsUpdate"; _0: Lazy_t<(undefined | Packet_DimensionsUpdate_t)> }
   | { TAG: "ClientUuid"; _0: Lazy_t<(undefined | Packet_ClientUuid_t)> }
   | { TAG: "ChestName"; _0: Lazy_t<(undefined | Packet_ChestName_t)> }
-  | { TAG: "CatchNpc"; _0: Lazy_t<(undefined | Packet_CatchNpc_t)> }
-  | { TAG: "ReleaseNpc"; _0: Lazy_t<(undefined | Packet_ReleaseNpc_t)> }
+  | { TAG: "NpcCatch"; _0: Lazy_t<(undefined | Packet_NpcCatch_t)> }
+  | { TAG: "NpcRelease"; _0: Lazy_t<(undefined | Packet_NpcRelease_t)> }
   | { TAG: "TravellingMerchantInventory"; _0: Lazy_t<(undefined | Packet_TravellingMerchantInventory_t)> }
   | { TAG: "TeleportationPotion"; _0: Lazy_t<(undefined | Packet_TeleportationPotion_t)> }
   | { TAG: "AnglerQuest"; _0: Lazy_t<(undefined | Packet_AnglerQuest_t)> }

@@ -140,9 +140,9 @@ function fromInt(n) {
     case 69 :
         return "ChestName";
     case 70 :
-        return "CatchNpc";
+        return "NpcCatch";
     case 71 :
-        return "ReleaseNpc";
+        return "NpcRelease";
     case 72 :
         return "TravellingMerchantInventory";
     case 73 :
@@ -434,9 +434,9 @@ function toInt(self) {
         return 68;
     case "ChestName" :
         return 69;
-    case "CatchNpc" :
+    case "NpcCatch" :
         return 70;
-    case "ReleaseNpc" :
+    case "NpcRelease" :
         return 71;
     case "TravellingMerchantInventory" :
         return 72;

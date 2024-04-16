@@ -63,8 +63,8 @@ module PlayerHealOther = Packet_PlayerHealOther
 module DimensionsUpdate = Packet_DimensionsUpdate
 module ClientUuid = Packet_ClientUuid
 module ChestName = Packet_ChestName
-module CatchNpc = Packet_CatchNpc
-module ReleaseNpc = Packet_ReleaseNpc
+module NpcCatch = Packet_NpcCatch
+module NpcRelease = Packet_NpcRelease
 module TravellingMerchantInventory = Packet_TravellingMerchantInventory
 module TeleportationPotion = Packet_TeleportationPotion
 module AnglerQuest = Packet_AnglerQuest
@@ -201,8 +201,8 @@ type t =
   | DimensionsUpdate(DimensionsUpdate.t)
   | ClientUuid(ClientUuid.t)
   | ChestName(ChestName.t)
-  | CatchNpc(CatchNpc.t)
-  | ReleaseNpc(ReleaseNpc.t)
+  | NpcCatch(NpcCatch.t)
+  | NpcRelease(NpcRelease.t)
   | TravellingMerchantInventory(TravellingMerchantInventory.t)
   | TeleportationPotion(TeleportationPotion.t)
   | AnglerQuest(AnglerQuest.t)
@@ -352,8 +352,8 @@ let toLatest = (packet: t, _fromServer: bool): same<Packet.t> => {
   | DimensionsUpdate(dimensionsUpdate) => Same(Packet.DimensionsUpdate(dimensionsUpdate))
   | ClientUuid(clientUuid) => Same(Packet.ClientUuid(clientUuid))
   | ChestName(chestName) => Same(Packet.ChestName(chestName))
-  | CatchNpc(catchNpc) => Same(Packet.CatchNpc(catchNpc))
-  | ReleaseNpc(releaseNpc) => Same(Packet.ReleaseNpc(releaseNpc))
+  | NpcCatch(catchNpc) => Same(Packet.NpcCatch(catchNpc))
+  | NpcRelease(releaseNpc) => Same(Packet.NpcRelease(releaseNpc))
   | TravellingMerchantInventory(travellingMerchantInventory) =>
     Same(Packet.TravellingMerchantInventory(travellingMerchantInventory))
   | TeleportationPotion(teleportationPotion) =>
@@ -536,8 +536,8 @@ let fromLatest = (packet: Packet.t, _fromServer: bool): option<same<t>> => {
   | Packet.DimensionsUpdate(dimensionsUpdate) => Some(Same(DimensionsUpdate(dimensionsUpdate)))
   | Packet.ClientUuid(clientUuid) => Some(Same(ClientUuid(clientUuid)))
   | Packet.ChestName(chestName) => Some(Same(ChestName(chestName)))
-  | Packet.CatchNpc(catchNpc) => Some(Same(CatchNpc(catchNpc)))
-  | Packet.ReleaseNpc(releaseNpc) => Some(Same(ReleaseNpc(releaseNpc)))
+  | Packet.NpcCatch(catchNpc) => Some(Same(NpcCatch(catchNpc)))
+  | Packet.NpcRelease(releaseNpc) => Some(Same(NpcRelease(releaseNpc)))
   | Packet.TravellingMerchantInventory(travellingMerchantInventory) =>
     Some(Same(TravellingMerchantInventory(travellingMerchantInventory)))
   | Packet.TeleportationPotion(teleportationPotion) =>
@@ -719,8 +719,8 @@ module LazyPacket = {
     | DimensionsUpdate(Lazy.t<option<DimensionsUpdate.t>>)
     | ClientUuid(Lazy.t<option<ClientUuid.t>>)
     | ChestName(Lazy.t<option<ChestName.t>>)
-    | CatchNpc(Lazy.t<option<CatchNpc.t>>)
-    | ReleaseNpc(Lazy.t<option<ReleaseNpc.t>>)
+    | NpcCatch(Lazy.t<option<NpcCatch.t>>)
+    | NpcRelease(Lazy.t<option<NpcRelease.t>>)
     | TravellingMerchantInventory(Lazy.t<option<TravellingMerchantInventory.t>>)
     | TeleportationPotion(Lazy.t<option<TeleportationPotion.t>>)
     | AnglerQuest(Lazy.t<option<AnglerQuest.t>>)
@@ -889,8 +889,8 @@ module LazyPacket = {
     | DimensionsUpdate(dimensionsUpdate) => Packet.LazyPacket.DimensionsUpdate(dimensionsUpdate)
     | ClientUuid(clientUuid) => Packet.LazyPacket.ClientUuid(clientUuid)
     | ChestName(chestName) => Packet.LazyPacket.ChestName(chestName)
-    | CatchNpc(catchNpc) => Packet.LazyPacket.CatchNpc(catchNpc)
-    | ReleaseNpc(releaseNpc) => Packet.LazyPacket.ReleaseNpc(releaseNpc)
+    | NpcCatch(catchNpc) => Packet.LazyPacket.NpcCatch(catchNpc)
+    | NpcRelease(releaseNpc) => Packet.LazyPacket.NpcRelease(releaseNpc)
     | TravellingMerchantInventory(travellingMerchantInventory) =>
       Packet.LazyPacket.TravellingMerchantInventory(travellingMerchantInventory)
     | TeleportationPotion(teleportationPotion) =>
@@ -1072,8 +1072,8 @@ let toBuffer = (packet: t, _fromServer: bool): option<NodeJs.Buffer.t> => {
   | DimensionsUpdate(dimensionsUpdate) => Some(DimensionsUpdate.toBuffer(dimensionsUpdate))
   | ClientUuid(_clientUuid) => None
   | ChestName(_chestName) => None
-  | CatchNpc(_catchNpc) => None
-  | ReleaseNpc(_releaseNpc) => None
+  | NpcCatch(_catchNpc) => None
+  | NpcRelease(_releaseNpc) => None
   | TravellingMerchantInventory(_travellingMerchantInventory) => None
   | TeleportationPotion(_teleportationPotion) => None
   | AnglerQuest(_anglerQuest) => None

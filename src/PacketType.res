@@ -64,8 +64,8 @@ type t =
   | DimensionsUpdate
   | ClientUuid
   | ChestName
-  | CatchNpc
-  | ReleaseNpc
+  | NpcCatch
+  | NpcRelease
   | TravellingMerchantInventory
   | TeleportationPotion
   | AnglerQuest
@@ -211,8 +211,8 @@ let fromInt = n =>
   | 67 => Some(DimensionsUpdate)
   | 68 => Some(ClientUuid)
   | 69 => Some(ChestName)
-  | 70 => Some(CatchNpc)
-  | 71 => Some(ReleaseNpc)
+  | 70 => Some(NpcCatch)
+  | 71 => Some(NpcRelease)
   | 72 => Some(TravellingMerchantInventory)
   | 73 => Some(TeleportationPotion)
   | 74 => Some(AnglerQuest)
@@ -360,8 +360,8 @@ let toInt = self =>
   | DimensionsUpdate => 67
   | ClientUuid => 68
   | ChestName => 69
-  | CatchNpc => 70
-  | ReleaseNpc => 71
+  | NpcCatch => 70
+  | NpcRelease => 71
   | TravellingMerchantInventory => 72
   | TeleportationPotion => 73
   | AnglerQuest => 74

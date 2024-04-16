@@ -142,10 +142,10 @@ let parsePayload = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServ
   | (ClientUuid, false) => Packet.ClientUuid.parse(payload)->Option.map(a => Packet.ClientUuid(a))
   | (ChestName, true | false) =>
     Packet.ChestName.parse(payload)->Option.map(a => Packet.ChestName(a))
-  | (CatchNpc, true) => None
-  | (CatchNpc, false) => Packet.CatchNpc.parse(payload)->Option.map(a => Packet.CatchNpc(a))
-  | (ReleaseNpc, true) => None
-  | (ReleaseNpc, false) => Packet.ReleaseNpc.parse(payload)->Option.map(a => Packet.ReleaseNpc(a))
+  | (NpcCatch, true) => None
+  | (NpcCatch, false) => Packet.NpcCatch.parse(payload)->Option.map(a => Packet.NpcCatch(a))
+  | (NpcRelease, true) => None
+  | (NpcRelease, false) => Packet.NpcRelease.parse(payload)->Option.map(a => Packet.NpcRelease(a))
   | (TravellingMerchantInventory, false) => None
   | (TravellingMerchantInventory, true) =>
     Packet.TravellingMerchantInventory.parse(
@@ -526,10 +526,10 @@ let parsePayloadLazy = (
   | (ClientUuid, false) => Some(Packet.LazyPacket.ClientUuid(lazy Packet.ClientUuid.parse(payload)))
   | (ChestName, true | false) =>
     Some(Packet.LazyPacket.ChestName(lazy Packet.ChestName.parse(payload)))
-  | (CatchNpc, true) => None
-  | (CatchNpc, false) => Some(Packet.LazyPacket.CatchNpc(lazy Packet.CatchNpc.parse(payload)))
-  | (ReleaseNpc, true) => None
-  | (ReleaseNpc, false) => Some(Packet.LazyPacket.ReleaseNpc(lazy Packet.ReleaseNpc.parse(payload)))
+  | (NpcCatch, true) => None
+  | (NpcCatch, false) => Some(Packet.LazyPacket.NpcCatch(lazy Packet.NpcCatch.parse(payload)))
+  | (NpcRelease, true) => None
+  | (NpcRelease, false) => Some(Packet.LazyPacket.NpcRelease(lazy Packet.NpcRelease.parse(payload)))
   | (TravellingMerchantInventory, false) => None
   | (TravellingMerchantInventory, true) =>
     Some(

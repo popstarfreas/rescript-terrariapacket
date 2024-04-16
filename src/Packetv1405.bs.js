@@ -484,16 +484,16 @@ function chestName(param_0) {
         };
 }
 
-function catchNpc(param_0) {
+function npcCatch(param_0) {
   return {
-          TAG: "CatchNpc",
+          TAG: "NpcCatch",
           _0: param_0
         };
 }
 
-function releaseNpc(param_0) {
+function npcRelease(param_0) {
   return {
-          TAG: "ReleaseNpc",
+          TAG: "NpcRelease",
           _0: param_0
         };
 }
@@ -1496,19 +1496,19 @@ function toLatest(packet, _fromServer) {
                   _0: packet._0
                 }
               };
-    case "CatchNpc" :
+    case "NpcCatch" :
         return {
                 TAG: "Same",
                 _0: {
-                  TAG: "CatchNpc",
+                  TAG: "NpcCatch",
                   _0: packet._0
                 }
               };
-    case "ReleaseNpc" :
+    case "NpcRelease" :
         return {
                 TAG: "Same",
                 _0: {
-                  TAG: "ReleaseNpc",
+                  TAG: "NpcRelease",
                   _0: packet._0
                 }
               };
@@ -2596,19 +2596,19 @@ function fromLatest(packet, _fromServer) {
                   _0: packet._0
                 }
               };
-    case "CatchNpc" :
+    case "NpcCatch" :
         return {
                 TAG: "Same",
                 _0: {
-                  TAG: "CatchNpc",
+                  TAG: "NpcCatch",
                   _0: packet._0
                 }
               };
-    case "ReleaseNpc" :
+    case "NpcRelease" :
         return {
                 TAG: "Same",
                 _0: {
-                  TAG: "ReleaseNpc",
+                  TAG: "NpcRelease",
                   _0: packet._0
                 }
               };
@@ -3540,14 +3540,14 @@ function toLatest$1(packet, _fromServer) {
                 TAG: "ChestName",
                 _0: packet._0
               };
-    case "CatchNpc" :
+    case "NpcCatch" :
         return {
-                TAG: "CatchNpc",
+                TAG: "NpcCatch",
                 _0: packet._0
               };
-    case "ReleaseNpc" :
+    case "NpcRelease" :
         return {
-                TAG: "ReleaseNpc",
+                TAG: "NpcRelease",
                 _0: packet._0
               };
     case "TravellingMerchantInventory" :
@@ -4117,9 +4117,9 @@ var ClientUuid;
 
 var ChestName;
 
-var CatchNpc;
+var NpcCatch;
 
-var ReleaseNpc;
+var NpcRelease;
 
 var TravellingMerchantInventory;
 
@@ -4322,8 +4322,8 @@ exports.PlayerHealOther = PlayerHealOther;
 exports.DimensionsUpdate = DimensionsUpdate;
 exports.ClientUuid = ClientUuid;
 exports.ChestName = ChestName;
-exports.CatchNpc = CatchNpc;
-exports.ReleaseNpc = ReleaseNpc;
+exports.NpcCatch = NpcCatch;
+exports.NpcRelease = NpcRelease;
 exports.TravellingMerchantInventory = TravellingMerchantInventory;
 exports.TeleportationPotion = TeleportationPotion;
 exports.AnglerQuest = AnglerQuest;
@@ -4457,8 +4457,8 @@ exports.playerHealOther = playerHealOther;
 exports.dimensionsUpdate = dimensionsUpdate;
 exports.clientUuid = clientUuid;
 exports.chestName = chestName;
-exports.catchNpc = catchNpc;
-exports.releaseNpc = releaseNpc;
+exports.npcCatch = npcCatch;
+exports.npcRelease = npcRelease;
 exports.travellingMerchantInventory = travellingMerchantInventory;
 exports.teleportationPotion = teleportationPotion;
 exports.anglerQuest = anglerQuest;

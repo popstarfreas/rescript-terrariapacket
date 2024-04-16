@@ -11,8 +11,8 @@ var Packet_DoorUse$TerrariaPacket = require("./packet/Packet_DoorUse.bs.js");
 var Packet_NpcTalk$TerrariaPacket = require("./packet/Packet_NpcTalk.bs.js");
 var Packet_SignNew$TerrariaPacket = require("./packet/Packet_SignNew.bs.js");
 var Packet_TimeSet$TerrariaPacket = require("./packet/Packet_TimeSet.bs.js");
-var Packet_CatchNpc$TerrariaPacket = require("./packet/Packet_CatchNpc.bs.js");
 var Packet_HarpPlay$TerrariaPacket = require("./packet/Packet_HarpPlay.bs.js");
+var Packet_NpcCatch$TerrariaPacket = require("./packet/Packet_NpcCatch.bs.js");
 var Packet_SignRead$TerrariaPacket = require("./packet/Packet_SignRead.bs.js");
 var Packet_Teleport$TerrariaPacket = require("./packet/Packet_Teleport.bs.js");
 var Packet_ChestItem$TerrariaPacket = require("./packet/Packet_ChestItem.bs.js");
@@ -36,12 +36,12 @@ var Packet_HealEffect$TerrariaPacket = require("./packet/Packet_HealEffect.bs.js
 var Packet_ManaEffect$TerrariaPacket = require("./packet/Packet_ManaEffect.bs.js");
 var Packet_NpcBuffAdd$TerrariaPacket = require("./packet/Packet_NpcBuffAdd.bs.js");
 var Packet_NpcFishOut$TerrariaPacket = require("./packet/Packet_NpcFishOut.bs.js");
+var Packet_NpcRelease$TerrariaPacket = require("./packet/Packet_NpcRelease.bs.js");
 var Packet_PlayerDead$TerrariaPacket = require("./packet/Packet_PlayerDead.bs.js");
 var Packet_PlayerInfo$TerrariaPacket = require("./packet/Packet_PlayerInfo.bs.js");
 var Packet_PlayerMana$TerrariaPacket = require("./packet/Packet_PlayerMana.bs.js");
 var Packet_PlayerTeam$TerrariaPacket = require("./packet/Packet_PlayerTeam.bs.js");
 var Packet_PortalKill$TerrariaPacket = require("./packet/Packet_PortalKill.bs.js");
-var Packet_ReleaseNpc$TerrariaPacket = require("./packet/Packet_ReleaseNpc.bs.js");
 var Packet_TileModify$TerrariaPacket = require("./packet/Packet_TileModify.bs.js");
 var Packet_TreeGrowFx$TerrariaPacket = require("./packet/Packet_TreeGrowFx.bs.js");
 var Packet_AnglerQuest$TerrariaPacket = require("./packet/Packet_AnglerQuest.bs.js");
@@ -693,24 +693,24 @@ function parsePayload(packetType, payload, fromServer) {
                               _0: a
                             };
                     }));
-    case "CatchNpc" :
+    case "NpcCatch" :
         if (fromServer) {
           return ;
         } else {
-          return Core__Option.map(Packet_CatchNpc$TerrariaPacket.parse(payload), (function (a) {
+          return Core__Option.map(Packet_NpcCatch$TerrariaPacket.parse(payload), (function (a) {
                         return {
-                                TAG: "CatchNpc",
+                                TAG: "NpcCatch",
                                 _0: a
                               };
                       }));
         }
-    case "ReleaseNpc" :
+    case "NpcRelease" :
         if (fromServer) {
           return ;
         } else {
-          return Core__Option.map(Packet_ReleaseNpc$TerrariaPacket.parse(payload), (function (a) {
+          return Core__Option.map(Packet_NpcRelease$TerrariaPacket.parse(payload), (function (a) {
                         return {
-                                TAG: "ReleaseNpc",
+                                TAG: "NpcRelease",
                                 _0: a
                               };
                       }));
@@ -2202,30 +2202,30 @@ function parseLazy(buffer, fromServer) {
                       })
                   }
                 };
-      case "CatchNpc" :
+      case "NpcCatch" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: "CatchNpc",
+                    TAG: "NpcCatch",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_CatchNpc$TerrariaPacket.parse(buffer);
+                          return Packet_NpcCatch$TerrariaPacket.parse(buffer);
                         })
                     }
                   };
           }
-      case "ReleaseNpc" :
+      case "NpcRelease" :
           if (fromServer) {
             return ;
           } else {
             return {
-                    TAG: "ReleaseNpc",
+                    TAG: "NpcRelease",
                     _0: {
                       LAZY_DONE: false,
                       VAL: (function () {
-                          return Packet_ReleaseNpc$TerrariaPacket.parse(buffer);
+                          return Packet_NpcRelease$TerrariaPacket.parse(buffer);
                         })
                     }
                   };
