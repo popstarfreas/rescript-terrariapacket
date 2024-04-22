@@ -17,6 +17,11 @@ export type spawnType =
   | "BoughtCat"
   | "BoughtDog"
   | "BoughtBunny"
+  | "BoughtSlime"
+  | "MechQueen"
+  | "CombatBookVolumeTwo"
+  | "PeddlersSatchel"
+  | { TAG: "Invasion"; _0: number }
   | { TAG: "Npc"; _0: number };
 
 export type t = { readonly playerId: number; readonly spawnType: spawnType };

@@ -13,9 +13,22 @@ function readInt16(prim) {
 function parse(payload) {
   var reader = new Packetreader(payload);
   var playerId = reader.readInt16();
-  var npcType = reader.readInt16();
+  var invasionType = reader.readInt16();
   var spawnType;
-  switch (npcType) {
+  var exit = 0;
+  switch (invasionType) {
+    case -18 :
+        spawnType = "PeddlersSatchel";
+        break;
+    case -17 :
+        spawnType = "CombatBookVolumeTwo";
+        break;
+    case -16 :
+        spawnType = "MechQueen";
+        break;
+    case -15 :
+        spawnType = "BoughtSlime";
+        break;
     case -14 :
         spawnType = "BoughtBunny";
         break;
@@ -32,10 +45,7 @@ function parse(payload) {
         spawnType = "BloodMoon";
         break;
     case -9 :
-        spawnType = {
-          TAG: "Npc",
-          _0: npcType
-        };
+        exit = 1;
         break;
     case -8 :
         spawnType = "ImpendingDoom";
@@ -62,10 +72,16 @@ function parse(payload) {
         spawnType = "GoblinInvasion";
         break;
     default:
-      spawnType = {
-        TAG: "Npc",
-        _0: npcType
-      };
+      exit = 1;
+  }
+  if (exit === 1) {
+    spawnType = invasionType < 0 ? ({
+          TAG: "Invasion",
+          _0: -invasionType | 0
+        }) : ({
+          TAG: "Npc",
+          _0: invasionType
+        });
   }
   return {
           playerId: playerId,
@@ -88,7 +104,11 @@ function data(prim) {
 
 function packSpawnType(writer, spawnType) {
   if (typeof spawnType === "object") {
-    return writer.packInt16(spawnType._0);
+    if (spawnType.TAG === "Invasion") {
+      return writer.packInt16(-spawnType._0 | 0);
+    } else {
+      return writer.packInt16(spawnType._0);
+    }
   }
   switch (spawnType) {
     case "GoblinInvasion" :
@@ -117,6 +137,14 @@ function packSpawnType(writer, spawnType) {
         return writer.packInt16(-13);
     case "BoughtBunny" :
         return writer.packInt16(-14);
+    case "BoughtSlime" :
+        return writer.packInt16(-15);
+    case "MechQueen" :
+        return writer.packInt16(-16);
+    case "CombatBookVolumeTwo" :
+        return writer.packInt16(-17);
+    case "PeddlersSatchel" :
+        return writer.packInt16(-18);
     
   }
 }
