@@ -13,6 +13,11 @@ type spawnType =
   | BoughtCat
   | BoughtDog
   | BoughtBunny
+  | BoughtSlime
+  | MechQueen
+  | CombatBookVolumeTwo
+  | PeddlersSatchel
+  | Invasion(int)
   | Npc(int)
 
 @genType
@@ -40,6 +45,11 @@ module Decode = {
     | -12 => BoughtCat
     | -13 => BoughtDog
     | -14 => BoughtBunny
+    | -15 => BoughtSlime
+    | -16 => MechQueen
+    | -17 => CombatBookVolumeTwo
+    | -18 => PeddlersSatchel
+    | invasionType if invasionType < 0 => Invasion(-invasionType)
     | npcType => Npc(npcType)
     }
 
@@ -68,7 +78,12 @@ module Encode = {
     | BoughtCat => writer->packInt16(-12)
     | BoughtDog => writer->packInt16(-13)
     | BoughtBunny => writer->packInt16(-14)
+    | BoughtSlime => writer->packInt16(-15)
+    | MechQueen => writer->packInt16(-16)
+    | CombatBookVolumeTwo => writer->packInt16(-17)
+    | PeddlersSatchel => writer->packInt16(-18)
     | Npc(npcType) => writer->packInt16(npcType)
+    | Invasion(invasionType) => writer->packInt16(-invasionType)
     }
 
   let toBuffer = (self: t): NodeJs.Buffer.t => {
