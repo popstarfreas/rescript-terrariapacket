@@ -2,8 +2,8 @@
 'use strict';
 
 var Core__Array = require("@rescript/core/src/Core__Array.bs.js");
-var PervasivesU = require("rescript/lib/js/pervasivesU.js");
-var Caml_splice_call = require("rescript/lib/js/caml_splice_call.js");
+var PervasivesU = require("@rescript/std/lib/js/pervasivesU.js");
+var Caml_splice_call = require("@rescript/std/lib/js/caml_splice_call.js");
 var PacketType$TerrariaPacket = require("../../PacketType.bs.js");
 var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.bs.js");
 var Packetreader = require("@popstarfreas/packetfactory/packetreader").default;

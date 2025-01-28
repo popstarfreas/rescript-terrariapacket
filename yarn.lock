@@ -31,17 +31,17 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@popstarfreas/packetfactory@^6.0.1":
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/@popstarfreas/packetfactory/-/packetfactory-6.0.1.tgz#0c854e85682c48c77f9db5068bc19be85e53b00e"
-  integrity sha512-bensx7u02r84M2ev5d+7zSGhvOJyp3axKbTpke7UKYLMncz3XiaJmIYrPQXovwKd3Fyzq3pPPEiG97ZJ8VSRow==
+"@popstarfreas/packetfactory@^6.1.1":
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/@popstarfreas/packetfactory/-/packetfactory-6.2.0.tgz#3f35356c1edd2512e14d6b0724f87918128cc715"
+  integrity sha512-4iWspFbivSMMxETe8gpHjYBJSjtZhk01BoGyZcy5GtbDjrNuVTIhw86EQpZNTT3mh5uN07Up59IY8ZN8/aMOyw==
   dependencies:
-    "@popstarfreas/rescript-nodejs" "git+https://github.com/popstarfreas/rescript-nodejs.git#f3bd284"
+    "@popstarfreas/rescript-nodejs" "git+https://github.com/popstarfreas/rescript-nodejs.git#f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7"
     utf8 "^2.1.2"
   optionalDependencies:
     rescript "^11.0.0"
 
-"@popstarfreas/rescript-nodejs@git+https://github.com/popstarfreas/rescript-nodejs.git#f3bd284", "@popstarfreas/rescript-nodejs@git+https://github.com/popstarfreas/rescript-nodejs.git#f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7":
+"@popstarfreas/rescript-nodejs@git+https://github.com/popstarfreas/rescript-nodejs.git#f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7":
   version "16.1.0"
   resolved "git+https://github.com/popstarfreas/rescript-nodejs.git#f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7"
 
@@ -49,6 +49,11 @@
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@rescript/core/-/core-1.1.0.tgz#e228a2635665b6b6a3288f7fd58552d5c361e253"
   integrity sha512-pz/CL8+9hBUTeMpUouvZohNsa5rqIwurlXoa1CZWN0ZKuWjMVjaoQ3V+0NB72J/QBbs6/8W82VABKBaDn3fGCA==
+
+"@rescript/std@^11.1.4":
+  version "11.1.4"
+  resolved "https://registry.yarnpkg.com/@rescript/std/-/std-11.1.4.tgz#6dee25fe96c5ab20afaa00fdf96afbec13137936"
+  integrity sha512-coR+xPh0fS4Mx0bDFUG8I9KhYv7FEXISKa775jvqVeus1zlVJjYf19/qj7mTzgrRmyCnxKBRvrfAM/BXYNUFCQ==
 
 "@types/node@^20.5.9":
   version "20.5.9"

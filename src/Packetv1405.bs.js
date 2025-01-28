@@ -2,7 +2,7 @@
 'use strict';
 
 var Core__Option = require("@rescript/core/src/Core__Option.bs.js");
-var CamlinternalLazy = require("rescript/lib/js/camlinternalLazy.js");
+var CamlinternalLazy = require("@rescript/std/lib/js/camlinternalLazy.js");
 var Packet_Status$TerrariaPacket = require("./packet/Packet_Status.bs.js");
 var Packet_NpcUpdate$TerrariaPacket = require("./packet/Packet_NpcUpdate.bs.js");
 var Packet_Disconnect$TerrariaPacket = require("./packet/Packet_Disconnect.bs.js");
