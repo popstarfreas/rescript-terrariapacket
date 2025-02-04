@@ -1,9 +1,12 @@
 "use strict";
 /* TypeScript file generated from Packet_WallPaint.resi by genType. */
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.toBuffer = exports.parse = void 0;
 /* eslint-disable */
 /* tslint:disable */
-const Packet_WallPaintJS = require('./Packet_WallPaint.bs.js');
-exports.parse = Packet_WallPaintJS.parse;
-exports.toBuffer = Packet_WallPaintJS.toBuffer;
+const Packet_WallPaint_mjs_1 = __importDefault(require("./Packet_WallPaint.mjs"));
+exports.parse = Packet_WallPaint_mjs_1.default.parse;
+exports.toBuffer = Packet_WallPaint_mjs_1.default.toBuffer;

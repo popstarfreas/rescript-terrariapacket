@@ -3,25 +3,25 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_PlayerSpawnJS = require('./Packet_PlayerSpawn.bs.js');
+import Packet_PlayerSpawnJS from './Packet_PlayerSpawn.mjs'
 
-import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
+import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim';
 
-export type context = 
-    "ReviveFromDeath"
+export type context =
+  "ReviveFromDeath"
   | "SpawningIntoWorld"
   | "RecallFromItem";
 
 export type t = {
-  readonly playerId: number; 
-  readonly x: number; 
-  readonly y: number; 
-  readonly timeRemaining: number; 
-  readonly numberOfDeathsPve: number; 
-  readonly numberOfDeathsPvp: number; 
+  readonly playerId: number;
+  readonly x: number;
+  readonly y: number;
+  readonly timeRemaining: number;
+  readonly numberOfDeathsPve: number;
+  readonly numberOfDeathsPvp: number;
   readonly context: context
 };
 
-export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = Packet_PlayerSpawnJS.parse as any;
+export const parse: (_1: NodeJs_Buffer_t) => (undefined | t) = Packet_PlayerSpawnJS.parse as any;
 
-export const toBuffer: (_1:t) => NodeJs_Buffer_t = Packet_PlayerSpawnJS.toBuffer as any;
+export const toBuffer: (_1: t) => NodeJs_Buffer_t = Packet_PlayerSpawnJS.toBuffer as any;

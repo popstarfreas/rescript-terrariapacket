@@ -3,12 +3,12 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_ClientUuidJS = require('./Packet_ClientUuid.bs.js');
+import Packet_ClientUuidJS from './Packet_ClientUuid.mjs'
 
-import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
+import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim';
 
 export type t = { readonly uuid: string };
 
-export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = Packet_ClientUuidJS.parse as any;
+export const parse: (_1: NodeJs_Buffer_t) => (undefined | t) = Packet_ClientUuidJS.parse as any;
 
-export const toBuffer: (_1:t) => NodeJs_Buffer_t = Packet_ClientUuidJS.toBuffer as any;
+export const toBuffer: (_1: t) => NodeJs_Buffer_t = Packet_ClientUuidJS.toBuffer as any;
