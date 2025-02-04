@@ -3,6 +3,6 @@
 /* eslint-disable */
 /* tslint:disable */
 
-import type {t as Packet_ItemDropUpdate_t} from './Packet_ItemDropUpdate.gen';
+import type { t as Packet_ItemDropUpdate_t } from './Packet_ItemDropUpdate.gen.ts';
 
 export type t = Packet_ItemDropUpdate_t;

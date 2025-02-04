@@ -3,9 +3,9 @@
 /* eslint-disable */
 /* tslint:disable */
 
-import Packet_TileModifyJS from './Packet_TileModify.mjs'
+import * as Packet_TileModifyJS from './Packet_TileModify.mjs'
 
-import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim';
+import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim.mts';
 
 export type Action_t =
   "KillTile"

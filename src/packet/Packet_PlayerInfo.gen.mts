@@ -3,11 +3,11 @@
 /* eslint-disable */
 /* tslint:disable */
 
-import Packet_PlayerInfoJS from './Packet_PlayerInfo.mjs'
+import * as Packet_PlayerInfoJS from './Packet_PlayerInfo.mjs'
 
-import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim';
+import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim.mts';
 
-import type { Color_t as PacketFactory_Color_t } from '../../src/shims/PacketFactory.shim';
+import type { Color_t as PacketFactory_Color_t } from '../../src/shims/PacketFactory.shim.mts';
 
 export type difficulty = "Softcore" | "Mediumcore" | "Hardcore";
 

@@ -3,9 +3,9 @@
 /* eslint-disable */
 /* tslint:disable */
 
-import Packet_TileSquareSendJS from './Packet_TileSquareSend.mjs'
+import * as Packet_TileSquareSendJS from './Packet_TileSquareSend.mjs'
 
-import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim';
+import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim.mts';
 
 export type frame = { readonly x: number; readonly y: number };
 

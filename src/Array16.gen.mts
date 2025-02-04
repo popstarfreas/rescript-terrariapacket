@@ -3,7 +3,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-import Array16JS from './Array16.mjs';
+import * as Array16JS from './Array16.mjs';
 
 export abstract class t<a> { protected opaque!: a }; /* simulate opaque types */
 

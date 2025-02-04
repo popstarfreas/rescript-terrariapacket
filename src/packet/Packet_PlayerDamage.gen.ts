@@ -3,11 +3,11 @@
 /* eslint-disable */
 /* tslint:disable */
 
-import Packet_PlayerDamageJS from './Packet_PlayerDamage.mjs'
+import * as Packet_PlayerDamageJS from './Packet_PlayerDamage.mjs'
 
-import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim';
+import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim.mts';
 
-import type { t as PlayerDeathReason_t } from '../../src/PlayerDeathReason.gen';
+import type { t as PlayerDeathReason_t } from '../../src/PlayerDeathReason.gen.ts';
 
 export type t = {
   readonly target: number;

@@ -3,11 +3,11 @@
 /* eslint-disable */
 /* tslint:disable */
 
-import Packet_PlayerUpdateJS from './Packet_PlayerUpdate.mjs'
+import * as Packet_PlayerUpdateJS from './Packet_PlayerUpdate.mjs'
 
-import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim';
+import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim.mts';
 
-import type { t as Point_t } from '../../src/Point.gen';
+import type { t as Point_t } from '../../src/Point.gen.ts';
 
 export type direction = "Left" | "Right";
 

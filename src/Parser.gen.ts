@@ -3,15 +3,15 @@
 /* eslint-disable */
 /* tslint:disable */
 
-import ParserJS from './Parser.mjs';
+import * as ParserJS from './Parser.mjs';
 
-import type { LazyPacket_t as Packet_LazyPacket_t } from './Packet.gen';
+import type { LazyPacket_t as Packet_LazyPacket_t } from './Packet.gen.mts';
 
-import type { parseLazy as IParser_parseLazy } from './IParser.gen';
+import type { parseLazy as IParser_parseLazy } from './IParser.gen.ts';
 
-import type { parse as IParser_parse } from './IParser.gen';
+import type { parse as IParser_parse } from './IParser.gen.ts';
 
-import type { t as Packet_t } from './Packet.gen';
+import type { t as Packet_t } from './Packet.gen.mts';
 
 export const parse: IParser_parse<Packet_t> = ParserJS.parse as any;
 

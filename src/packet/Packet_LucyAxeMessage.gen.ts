@@ -3,11 +3,11 @@
 /* eslint-disable */
 /* tslint:disable */
 
-import type {t as Point_t} from '../../src/Point.gen';
+import type { t as Point_t } from '../../src/Point.gen.ts';
 
 export type t = {
-  readonly source: number; 
-  readonly variant: number; 
-  readonly velocity: Point_t<number>; 
+  readonly source: number;
+  readonly variant: number;
+  readonly velocity: Point_t<number>;
   readonly position: Point_t<number>
 };

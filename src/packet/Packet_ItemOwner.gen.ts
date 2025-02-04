@@ -3,9 +3,9 @@
 /* eslint-disable */
 /* tslint:disable */
 
-import Packet_ItemOwnerJS from './Packet_ItemOwner.mjs'
+import * as Packet_ItemOwnerJS from './Packet_ItemOwner.mjs'
 
-import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim';
+import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim.mts';
 
 export type t = { readonly itemDropId: number; readonly owner: number };
 

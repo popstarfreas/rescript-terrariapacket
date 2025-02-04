@@ -3,13 +3,13 @@
 /* eslint-disable */
 /* tslint:disable */
 
-import Packet_NetModuleLoadJS from './Packet_NetModuleLoad.mjs'
+import * as Packet_NetModuleLoadJS from './Packet_NetModuleLoad.mjs'
 
-import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim';
+import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim.mts';
 
-import type { Color_t as PacketFactory_Color_t } from '../../src/shims/PacketFactory.shim';
+import type { Color_t as PacketFactory_Color_t } from '../../src/shims/PacketFactory.shim.mts';
 
-import type { NetworkText_t as PacketFactory_NetworkText_t } from '../../src/shims/PacketFactory.shim';
+import type { NetworkText_t as PacketFactory_NetworkText_t } from '../../src/shims/PacketFactory.shim.mts';
 
 export type commandId = string;
 

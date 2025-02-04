@@ -3,9 +3,9 @@
 /* eslint-disable */
 /* tslint:disable */
 
-import Packet_PlayerActiveJS from './Packet_PlayerActive.mjs'
+import * as Packet_PlayerActiveJS from './Packet_PlayerActive.mjs'
 
-import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim';
+import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim.mts';
 
 export type t = { readonly playerId: number; readonly active: boolean };
 

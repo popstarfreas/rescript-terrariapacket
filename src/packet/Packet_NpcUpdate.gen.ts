@@ -3,9 +3,9 @@
 /* eslint-disable */
 /* tslint:disable */
 
-import Packet_NpcUpdateJS from './Packet_NpcUpdate.mjs'
+import * as Packet_NpcUpdateJS from './Packet_NpcUpdate.mjs'
 
-import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim';
+import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim.mts';
 
 export type ai = [(undefined | number), (undefined | number), (undefined | number), (undefined | number)];
 

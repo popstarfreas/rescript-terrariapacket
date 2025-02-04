@@ -1,6 +1,7 @@
 {
   "name": "terraria-packet",
   "version": "1.2.0",
+  "type": "module",
   "scripts": {
     "build:watch": "rescript build -w",
     "build": "rescript",

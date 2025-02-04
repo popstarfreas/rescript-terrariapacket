@@ -3,13 +3,13 @@
 /* eslint-disable */
 /* tslint:disable */
 
-import Packet_WorldInfoJS from './Packet_WorldInfo.mjs'
+import * as Packet_WorldInfoJS from './Packet_WorldInfo.mjs'
 
-import type { BigInt_t as NodeJs_BigInt_t } from '../../src/shims/NodeJs.shim';
+import type { BigInt_t as NodeJs_BigInt_t } from '../../src/shims/NodeJs.shim.mts';
 
-import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim';
+import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim.mts';
 
-import type { t as Array16_t } from '../../src/Array16.gen';
+import type { t as Array16_t } from '../../src/Array16.gen.mts';
 
 export type eventInfo = {
   readonly shadowOrbSmashed: boolean;

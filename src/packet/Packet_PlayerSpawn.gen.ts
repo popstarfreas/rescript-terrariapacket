@@ -3,9 +3,9 @@
 /* eslint-disable */
 /* tslint:disable */
 
-import Packet_PlayerSpawnJS from './Packet_PlayerSpawn.mjs'
+import * as Packet_PlayerSpawnJS from './Packet_PlayerSpawn.mjs'
 
-import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim';
+import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim.mts';
 
 export type context =
   "ReviveFromDeath"

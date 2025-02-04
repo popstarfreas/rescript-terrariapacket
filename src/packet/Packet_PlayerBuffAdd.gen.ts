@@ -3,9 +3,9 @@
 /* eslint-disable */
 /* tslint:disable */
 
-import Packet_PlayerBuffAddJS from './Packet_PlayerBuffAdd.mjs'
+import * as Packet_PlayerBuffAddJS from './Packet_PlayerBuffAdd.mjs'
 
-import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim';
+import type { Buffer_t as NodeJs_Buffer_t } from '../../src/shims/NodeJs.shim.mts';
 
 export type t = {
   readonly playerId: number;
