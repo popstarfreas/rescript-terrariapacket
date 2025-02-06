@@ -44,9 +44,6 @@ function parse(payload) {
     case -10 :
         spawnType = "BloodMoon";
         break;
-    case -9 :
-        exit = 1;
-        break;
     case -8 :
         spawnType = "ImpendingDoom";
         break;

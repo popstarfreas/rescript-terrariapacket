@@ -84,11 +84,6 @@ function fromInt(n) {
         return "PlayerMana";
     case 43 :
         return "ManaEffect";
-    case 15 :
-    case 25 :
-    case 26 :
-    case 44 :
-        return ;
     case 45 :
         return "PlayerTeam";
     case 46 :

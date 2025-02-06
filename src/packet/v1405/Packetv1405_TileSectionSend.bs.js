@@ -828,12 +828,6 @@ function getSlopeBitFlags(tile) {
                 true,
                 false
               ];
-    case 6 :
-        return [
-                true,
-                true,
-                true
-              ];
     default:
       return [
               true,
@@ -865,11 +859,6 @@ function getRepeatCountBitFlags(repeatCount) {
         return [
                 false,
                 true
-              ];
-    case 2 :
-        return [
-                true,
-                false
               ];
     default:
       return [

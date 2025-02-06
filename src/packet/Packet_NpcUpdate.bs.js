@@ -72,10 +72,6 @@ function parse(payload) {
             _0: reader.readInt16()
           };
           break;
-      case 0 :
-      case 3 :
-          life = undefined;
-          break;
       case 4 :
           life = {
             TAG: "Int32",
