@@ -6,6 +6,30 @@ var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src
 var Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
+function pylonActionToInt(pylonAction) {
+  switch (pylonAction) {
+    case "Added" :
+        return 0;
+    case "Removed" :
+        return 1;
+    case "RequestTeleport" :
+        return 2;
+    
+  }
+}
+
+function powerLevelToInt(powerLevel) {
+  switch (powerLevel) {
+    case "LockedForEveryone" :
+        return 0;
+    case "CanBeChangedByHostAlone" :
+        return 1;
+    case "CanBeChangedByEveryone" :
+        return 2;
+    
+  }
+}
+
 function fromInt(n) {
   switch (n) {
     case 0 :
@@ -105,8 +129,25 @@ function toBuffer(self) {
         var tmp$1;
         tmp$1 = typeof count !== "object" ? writer$1 : writer$1.packUInt16(count._0);
         return tmp$1.data;
-    default:
-      return Buffer.allocUnsafe(0);
+    case "CreativeUnlocks" :
+        var creativeUnlock = self._0;
+        return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NetModuleLoad")).packUInt16(5).packInt16(creativeUnlock.itemId).packUInt16(creativeUnlock.researchedCount).data;
+    case "CreativePower" :
+        var creativePower = self._0;
+        return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NetModuleLoad")).packUInt16(6).packUInt16(creativePower.powerType).data;
+    case "CreativeUnlocksPlayerReport" :
+        var unlockReport = self._0;
+        return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NetModuleLoad")).packUInt16(7).packUInt16(unlockReport.itemId).packUInt16(unlockReport.researchedCount).data;
+    case "TeleportPylon" :
+        var teleportPylon = self._0;
+        return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NetModuleLoad")).packUInt16(8).packByte(pylonActionToInt(teleportPylon.pylonAction)).packInt16(teleportPylon.x).packInt16(teleportPylon.y).packByte(teleportPylon.pylonType).data;
+    case "Particles" :
+        var particle = self._0;
+        return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NetModuleLoad")).packUInt16(9).packByte(particle.particleType).packSingle(particle.x).packSingle(particle.y).packSingle(particle.vx).packSingle(particle.vy).packInt32(particle.shaderIndex).packByte(particle.invokedByPlayer).data;
+    case "CreativePowerPermissions" :
+        var creativePowerPermission = self._0;
+        return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NetModuleLoad")).packUInt16(10).packByte(creativePowerPermission.powerType).packByte(powerLevelToInt(creativePowerPermission.powerLevel)).data;
+    
   }
 }
 

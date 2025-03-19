@@ -92,6 +92,20 @@ type t =
   | Particles(particle)
   | CreativePowerPermissions(creativePowerPermission)
 
+let pylonActionToInt = pylonAction =>
+  switch pylonAction {
+  | Added => 0
+  | Removed => 1
+  | RequestTeleport => 2
+  }
+
+let powerLevelToInt = powerLevel =>
+  switch powerLevel {
+  | LockedForEveryone => 0
+  | CanBeChangedByHostAlone => 1
+  | CanBeChangedByEveryone => 2
+  }
+
 module NetModuleType = {
   type t =
     | Liquid
@@ -227,6 +241,68 @@ module Encode = {
     }->data
   }
 
+  let creativeUnlocksToBuffer = (creativeUnlock: creativeUnlock): Buffer.t => {
+    PacketFactory.ManagedPacketWriter.make()
+    ->setType(PacketType.NetModuleLoad->PacketType.toInt)
+    ->packUInt16(NetModuleType.CreativeUnlocks->NetModuleType.toInt)
+    ->packInt16(creativeUnlock.itemId)
+    ->packUInt16(creativeUnlock.researchedCount)
+    ->data
+  }
+
+  let creativePowerToBuffer = (creativePower: creativePower): Buffer.t => {
+    PacketFactory.ManagedPacketWriter.make()
+    ->setType(PacketType.NetModuleLoad->PacketType.toInt)
+    ->packUInt16(NetModuleType.CreativePower->NetModuleType.toInt)
+    ->packUInt16(creativePower.powerType)
+    ->data
+  }
+
+  let creativeUnlocksPlayerReportToBuffer = (unlockReport: unlockReport): Buffer.t => {
+    PacketFactory.ManagedPacketWriter.make()
+    ->setType(PacketType.NetModuleLoad->PacketType.toInt)
+    ->packUInt16(NetModuleType.CreativeUnlocksPlayerReport->NetModuleType.toInt)
+    ->packUInt16(unlockReport.itemId)
+    ->packUInt16(unlockReport.researchedCount)
+    ->data
+  }
+
+  let teleportPylonToBuffer = (teleportPylon: teleportPylon): Buffer.t => {
+    PacketFactory.ManagedPacketWriter.make()
+    ->setType(PacketType.NetModuleLoad->PacketType.toInt)
+    ->packUInt16(NetModuleType.TeleportPylon->NetModuleType.toInt)
+    ->packByte(teleportPylon.pylonAction->pylonActionToInt)
+    ->packInt16(teleportPylon.x)
+    ->packInt16(teleportPylon.y)
+    ->packByte(teleportPylon.pylonType)
+    ->data
+  }
+
+  let particlesToBuffer = (particle: particle): Buffer.t => {
+    PacketFactory.ManagedPacketWriter.make()
+    ->setType(PacketType.NetModuleLoad->PacketType.toInt)
+    ->packUInt16(NetModuleType.Particles->NetModuleType.toInt)
+    ->packByte(particle.particleType)
+    ->packSingle(particle.x)
+    ->packSingle(particle.y)
+    ->packSingle(particle.vx)
+    ->packSingle(particle.vy)
+    ->packInt32(particle.shaderIndex)
+    ->packByte(particle.invokedByPlayer)
+    ->data
+  }
+
+  let creativePowerPermissionsToBuffer = (
+    creativePowerPermission: creativePowerPermission,
+  ): Buffer.t => {
+    PacketFactory.ManagedPacketWriter.make()
+    ->setType(PacketType.NetModuleLoad->PacketType.toInt)
+    ->packUInt16(NetModuleType.CreativePowerPermissions->NetModuleType.toInt)
+    ->packByte(creativePowerPermission.powerType)
+    ->packByte(creativePowerPermission.powerLevel->powerLevelToInt)
+    ->data
+  }
+
   let toBuffer = (self: t): Buffer.t => {
     switch self {
     | Liquid(liquid) => liquidToBuffer(liquid)
@@ -235,12 +311,13 @@ module Encode = {
     | Ping(ping) => pingToBuffer(ping)
     | Ambience(ambience) => ambienceToBuffer(ambience)
     | Bestiary(bestiary) => bestiaryToBuffer(bestiary)
-    | CreativeUnlocks(_creativeUnlock) => Buffer.allocUnsafe(0) // creativeUnlocksToBuffer(creativeUnlock)
-    | CreativePower(_creativePower) => Buffer.allocUnsafe(0) // creativePowerToBuffer(creativePower)
-    | CreativeUnlocksPlayerReport(_unlockReport) => Buffer.allocUnsafe(0) // creativeUnlocksPlayerReportToBuffer(unlockReport)
-    | TeleportPylon(_teleportPylon) => Buffer.allocUnsafe(0) // teleportPylonToBuffer(teleportPylon)
-    | Particles(_particle) => Buffer.allocUnsafe(0) // particlesToBuffer(particle)
-    | CreativePowerPermissions(_creativePowerPermission) => Buffer.allocUnsafe(0) // creativePowerPermissionsToBuffer(creativePowerPermission)
+    | CreativeUnlocks(creativeUnlock) => creativeUnlocksToBuffer(creativeUnlock)
+    | CreativePower(creativePower) => creativePowerToBuffer(creativePower)
+    | CreativeUnlocksPlayerReport(unlockReport) => creativeUnlocksPlayerReportToBuffer(unlockReport)
+    | TeleportPylon(teleportPylon) => teleportPylonToBuffer(teleportPylon)
+    | Particles(particle) => particlesToBuffer(particle)
+    | CreativePowerPermissions(creativePowerPermission) =>
+      creativePowerPermissionsToBuffer(creativePowerPermission)
     }
   }
 }
