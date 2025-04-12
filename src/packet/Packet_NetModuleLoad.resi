@@ -46,9 +46,6 @@ type creativeUnlock = {
 }
 
 @genType
-type creativePower = {powerType: int}
-
-@genType
 type unlockReport = {
   itemId: int,
   researchedCount: int,
@@ -100,7 +97,7 @@ type t =
   | Ambience(ambience)
   | Bestiary(bestiary)
   | CreativeUnlocks(creativeUnlock)
-  | CreativePower(creativePower)
+  | CreativePower(CreativePowers.t)
   | CreativeUnlocksPlayerReport(unlockReport)
   | TeleportPylon(teleportPylon)
   | Particles(particle)
