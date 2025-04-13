@@ -251,6 +251,7 @@ module Encode = {
   let creativePowerToBuffer = (creativePower: CreativePowers.t): Buffer.t => {
     PacketFactory.ManagedPacketWriter.make()
     ->setType(PacketType.NetModuleLoad->PacketType.toInt)
+    ->packUInt16(NetModuleType.CreativePower->NetModuleType.toInt)
     ->CreativePowers.pack(creativePower)
     ->data
   }

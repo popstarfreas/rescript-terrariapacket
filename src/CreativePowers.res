@@ -61,7 +61,7 @@ module PerPlayerTogglePower = {
       // byte->lor(toggle ? (1.0 ** (Int.mod(i, 8) :> float))->Int.fromFloat : 0)
       let bytes: array<int> = %raw(`((values) => {
         let buffer = new Uint8Array(32);
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i <= 30; i++) {
           let chunkIndex = i * 8;
           buffer[i] = (
               (values[chunkIndex + 0] ? 1 << 0 : 0)

@@ -136,7 +136,7 @@ function toBuffer(self) {
         return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NetModuleLoad")).packUInt16(5).packInt16(creativeUnlock.itemId).packUInt16(creativeUnlock.researchedCount).data;
     case "CreativePower" :
         var creativePower = self._0;
-        return CreativePowers$TerrariaPacket.pack(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), creativePower).data;
+        return CreativePowers$TerrariaPacket.pack(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NetModuleLoad")).packUInt16(6), creativePower).data;
     case "CreativeUnlocksPlayerReport" :
         var unlockReport = self._0;
         return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NetModuleLoad")).packUInt16(7).packUInt16(unlockReport.itemId).packUInt16(unlockReport.researchedCount).data;

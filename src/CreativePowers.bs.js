@@ -20,7 +20,7 @@ function pack$1(writer, self) {
     var values = self._0;
     var bytes = (((values) => {
         let buffer = new Uint8Array(32);
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i <= 30; i++) {
           let chunkIndex = i * 8;
           buffer[i] = (
               (values[chunkIndex + 0] ? 1 << 0 : 0)
