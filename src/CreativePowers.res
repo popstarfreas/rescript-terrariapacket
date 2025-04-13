@@ -85,6 +85,7 @@ module PerPlayerTogglePower = {
         );
         return Array.from(buffer);
       })`)(values)
+      writer->packByte(0)
       bytes->Array.forEach(byte => {
         writer->packByte(byte)->ignore
       })
@@ -97,6 +98,7 @@ module PerPlayerTogglePower = {
       value: bool,
     ): PacketFactory.ManagedPacketWriter.t => {
       writer
+      ->packByte(1)
       ->packByte(playerId)
       ->packByte(value ? 1 : 0)
     }
