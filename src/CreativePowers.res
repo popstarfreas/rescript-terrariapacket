@@ -140,7 +140,7 @@ module PerPlayerTogglePower = {
     }
 
     let parsePlayer = (reader: PacketFactory.PacketReader.t) => {
-      Player(reader->readByte, reader->readByte == 1 ? true : false)->Some
+      Player(reader->readByte, reader->readByte === 1 ? true : false)->Some
     }
 
     let parse = (reader: PacketFactory.PacketReader.t) => {
@@ -386,7 +386,7 @@ module Decode = {
   let {readByte, readUInt16, readSingle} = module(PacketFactory.PacketReader)
 
   let parseFreezeTime = (reader: PacketFactory.PacketReader.t) => {
-    FreezeTime(reader->readByte == 1 ? true : false)->Some
+    FreezeTime(reader->readByte === 1 ? true : false)->Some
   }
 
   let parseStartDayImmediately = () => {
@@ -424,11 +424,11 @@ module Decode = {
   }
 
   let parseFreezeRainPower = (reader: PacketFactory.PacketReader.t) => {
-    FreezeRainPower(reader->readByte == 1 ? true : false)->Some
+    FreezeRainPower(reader->readByte === 1 ? true : false)->Some
   }
 
   let parseFreezeWindDirectionAndStrength = (reader: PacketFactory.PacketReader.t) => {
-    FreezeWindDirectionAndStrength(reader->readByte == 1 ? true : false)->Some
+    FreezeWindDirectionAndStrength(reader->readByte === 1 ? true : false)->Some
   }
 
   let parseFarPlacementRangePower = (reader: PacketFactory.PacketReader.t) => {
@@ -442,7 +442,7 @@ module Decode = {
   }
 
   let parseStopBiomeSpreadPower = (reader: PacketFactory.PacketReader.t) => {
-    StopBiomeSpreadPower(reader->readByte == 1 ? true : false)->Some
+    StopBiomeSpreadPower(reader->readByte === 1 ? true : false)->Some
   }
 
   let parseSpawnRateSliderPerPlayerPower = (reader: PacketFactory.PacketReader.t) => {
