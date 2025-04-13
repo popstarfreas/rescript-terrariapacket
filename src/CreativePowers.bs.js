@@ -3,7 +3,6 @@
 
 var Core__Array = require("@rescript/core/src/Core__Array.bs.js");
 var Core__Option = require("@rescript/core/src/Core__Option.bs.js");
-var BitFlags$TerrariaPacket = require("./BitFlags.bs.js");
 
 function pack(writer, self) {
   return writer.packByte(self.playerId).packSingle(self.value);
@@ -19,18 +18,32 @@ function parse(reader) {
 function pack$1(writer, self) {
   if (self.TAG === "Everyone") {
     var values = self._0;
-    var bytes = Core__Array.make(32, 0);
-    values.forEach(function (t, i) {
-          var index = i / 8 | 0;
-          var $$byte = bytes[index];
-          if ($$byte !== undefined) {
-            bytes[index] = $$byte | (
-              t ? Math.pow(1.0, i % 8) | 0 : 0
-            );
-            return ;
-          }
-          
-        });
+    var bytes = (((values) => {
+        let buffer = new Uint8Array(32);
+        for (let i = 0; i < 30; i++) {
+          let chunkIndex = i * 8;
+          buffer[i] = (
+              (values[chunkIndex + 0] ? 1 << 0 : 0)
+            | (values[chunkIndex + 1] ? 1 << 1 : 0)
+            | (values[chunkIndex + 2] ? 1 << 2 : 0)
+            | (values[chunkIndex + 3] ? 1 << 3 : 0)
+            | (values[chunkIndex + 4] ? 1 << 4 : 0)
+            | (values[chunkIndex + 5] ? 1 << 5 : 0)
+            | (values[chunkIndex + 6] ? 1 << 6 : 0)
+            | (values[chunkIndex + 7] ? 1 << 7 : 0)
+          );
+        }
+        buffer[31] = (
+            (values[248] ? 1 << 0 : 0)
+          | (values[249] ? 1 << 1 : 0)
+          | (values[250] ? 1 << 2 : 0)
+          | (values[251] ? 1 << 3 : 0)
+          | (values[252] ? 1 << 4 : 0)
+          | (values[253] ? 1 << 5 : 0)
+          | (values[254] ? 1 << 6 : 0)
+        );
+        return Array.from(buffer);
+      }))(values);
     bytes.forEach(function ($$byte) {
           writer.packByte($$byte);
         });
@@ -55,17 +68,26 @@ function parse$1(reader) {
             };
     }
   } else {
-    var toggles = Core__Array.make(255, false);
-    for(var i = 0; i <= 30; ++i){
-      var flags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
-      for(var j = 0; j <= 7; ++j){
-        var index = (i << 3) + j | 0;
-        if (index < toggles.length) {
-          toggles[index] = BitFlags$TerrariaPacket.flagN(flags, Math.pow(1.0, j) | 0);
+    var bytes = Core__Array.fromInitializer(32, (function (param) {
+            return reader.readByte();
+          }));
+    var toggles = ((() => {
+        let buffer = Array(256).fill(false);
+        for (let i = 0; i < bytes.length; i++) {
+          let byte = bytes[i];
+          buffer[i * 8 + 0] = (byte & (1 << 0)) !== 0;
+          buffer[i * 8 + 1] = (byte & (1 << 1)) !== 0;
+          buffer[i * 8 + 2] = (byte & (1 << 2)) !== 0;
+          buffer[i * 8 + 3] = (byte & (1 << 3)) !== 0;
+          buffer[i * 8 + 4] = (byte & (1 << 4)) !== 0;
+          buffer[i * 8 + 5] = (byte & (1 << 5)) !== 0;
+          buffer[i * 8 + 6] = (byte & (1 << 6)) !== 0;
+          buffer[i * 8 + 7] = (byte & (1 << 7)) !== 0;
         }
-        
-      }
-    }
+        // logic is easier if the array had one extra bool
+        buffer.length = 255;
+        return buffer;
+      }))(bytes);
     return {
             TAG: "Everyone",
             _0: toggles
