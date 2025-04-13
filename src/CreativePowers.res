@@ -85,7 +85,7 @@ module PerPlayerTogglePower = {
         );
         return Array.from(buffer);
       })`)(values)
-      writer->packByte(0)
+      writer->packByte(0)->ignore
       bytes->Array.forEach(byte => {
         writer->packByte(byte)->ignore
       })

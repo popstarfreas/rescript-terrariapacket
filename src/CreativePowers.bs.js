@@ -44,6 +44,7 @@ function pack$1(writer, self) {
         );
         return Array.from(buffer);
       }))(values);
+    writer.packByte(0);
     bytes.forEach(function ($$byte) {
           writer.packByte($$byte);
         });
@@ -51,7 +52,7 @@ function pack$1(writer, self) {
   } else {
     var playerId = self._0;
     var value = self._1;
-    return writer.packByte(playerId).packByte(value ? 1 : 0);
+    return writer.packByte(1).packByte(playerId).packByte(value ? 1 : 0);
   }
 }
 
