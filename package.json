@@ -15,7 +15,7 @@
     "typescript": "^5.2.2"
   },
   "devDependencies": {
-    "@dusty-phillips/rescript-zora": "^4.0.0",
+    "@dusty-phillips/rescript-zora": "^5.0.1",
     "@types/node": "^20.5.9",
     "pta": "^1.2.0"
   }

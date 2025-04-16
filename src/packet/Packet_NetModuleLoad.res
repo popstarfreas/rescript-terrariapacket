@@ -39,8 +39,6 @@ type creativeUnlock = {
   researchedCount: int,
 }
 
-type creativePower = {powerType: int}
-
 type unlockReport = {
   itemId: int,
   researchedCount: int,
@@ -86,7 +84,7 @@ type t =
   | Ambience(ambience)
   | Bestiary(bestiary)
   | CreativeUnlocks(creativeUnlock)
-  | CreativePower(creativePower)
+  | CreativePower(CreativePowers.t)
   | CreativeUnlocksPlayerReport(unlockReport)
   | TeleportPylon(teleportPylon)
   | Particles(particle)
@@ -172,7 +170,7 @@ module Encode = {
       ->setType(PacketType.NetModuleLoad->PacketType.toInt)
       ->packUInt16(NetModuleType.Liquid->NetModuleType.toInt)
       ->packUInt16(liquid.changes->Belt.Array.length)
-    liquid.changes->Js.Array2.forEach(change => {
+    liquid.changes->Array.forEach(change => {
       writer
       ->packInt16(change.y)
       ->packInt16(change.x)
@@ -250,11 +248,11 @@ module Encode = {
     ->data
   }
 
-  let creativePowerToBuffer = (creativePower: creativePower): Buffer.t => {
+  let creativePowerToBuffer = (creativePower: CreativePowers.t): Buffer.t => {
     PacketFactory.ManagedPacketWriter.make()
     ->setType(PacketType.NetModuleLoad->PacketType.toInt)
     ->packUInt16(NetModuleType.CreativePower->NetModuleType.toInt)
-    ->packUInt16(creativePower.powerType)
+    ->CreativePowers.pack(creativePower)
     ->data
   }
 
@@ -336,7 +334,7 @@ module Decode = {
       let amount = reader->readByte
       let liquidType = reader->readByte
       changes
-      ->Js.Array2.push({
+      ->Array.push({
         y,
         x,
         amount,
@@ -400,8 +398,9 @@ module Decode = {
 
   // TODO: Add missing power deserialize
   let parseCreativePower = (reader: PacketFactory.PacketReader.t) => {
-    let powerType = reader->readUInt16
-    Some(CreativePower({powerType: powerType}))
+    reader
+    ->CreativePowers.parse
+    ->Option.map(p => CreativePower(p))
   }
 
   let parseCreativeUnlocksPlayerReport = (reader: PacketFactory.PacketReader.t) => {

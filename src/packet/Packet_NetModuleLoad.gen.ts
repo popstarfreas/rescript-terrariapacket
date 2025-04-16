@@ -11,6 +11,8 @@ import type {Color_t as PacketFactory_Color_t} from '../../src/shims/PacketFacto
 
 import type {NetworkText_t as PacketFactory_NetworkText_t} from '../../src/shims/PacketFactory.shim';
 
+import type {t as CreativePowers_t} from '../../src/CreativePowers.gen';
+
 export type commandId = string;
 
 export type message = string;
@@ -44,8 +46,6 @@ export type bestiaryUnlockType =
 export type bestiary = { readonly unlockType: bestiaryUnlockType; readonly npcId: number };
 
 export type creativeUnlock = { readonly itemId: number; readonly researchedCount: number };
-
-export type creativePower = { readonly powerType: number };
 
 export type unlockReport = { readonly itemId: number; readonly researchedCount: number };
 
@@ -83,7 +83,7 @@ export type t =
   | { TAG: "Ambience"; _0: ambience }
   | { TAG: "Bestiary"; _0: bestiary }
   | { TAG: "CreativeUnlocks"; _0: creativeUnlock }
-  | { TAG: "CreativePower"; _0: creativePower }
+  | { TAG: "CreativePower"; _0: CreativePowers_t }
   | { TAG: "CreativeUnlocksPlayerReport"; _0: unlockReport }
   | { TAG: "TeleportPylon"; _0: teleportPylon }
   | { TAG: "Particles"; _0: particle }

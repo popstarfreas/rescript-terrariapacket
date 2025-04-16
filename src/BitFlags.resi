@@ -10,6 +10,7 @@ let fromFlags: (
   ~flag7: bool,
   ~flag8: bool,
 ) => t
+let fromArray: array<bool> => t
 let flag1: t => bool
 let flag2: t => bool
 let flag3: t => bool
@@ -19,4 +20,5 @@ let flag6: t => bool
 let flag7: t => bool
 let flag8: t => bool
 let flagN: (t, int) => bool
+let forEach: (t, bool => unit) => unit
 let toByte: t => int
