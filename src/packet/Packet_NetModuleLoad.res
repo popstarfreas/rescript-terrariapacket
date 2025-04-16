@@ -170,7 +170,7 @@ module Encode = {
       ->setType(PacketType.NetModuleLoad->PacketType.toInt)
       ->packUInt16(NetModuleType.Liquid->NetModuleType.toInt)
       ->packUInt16(liquid.changes->Belt.Array.length)
-    liquid.changes->Js.Array2.forEach(change => {
+    liquid.changes->Array.forEach(change => {
       writer
       ->packInt16(change.y)
       ->packInt16(change.x)
@@ -334,7 +334,7 @@ module Decode = {
       let amount = reader->readByte
       let liquidType = reader->readByte
       changes
-      ->Js.Array2.push({
+      ->Array.push({
         y,
         x,
         amount,
@@ -399,8 +399,8 @@ module Decode = {
   // TODO: Add missing power deserialize
   let parseCreativePower = (reader: PacketFactory.PacketReader.t) => {
     reader
-      ->CreativePowers.parse
-      ->Option.map(p => CreativePower(p))
+    ->CreativePowers.parse
+    ->Option.map(p => CreativePower(p))
   }
 
   let parseCreativeUnlocksPlayerReport = (reader: PacketFactory.PacketReader.t) => {

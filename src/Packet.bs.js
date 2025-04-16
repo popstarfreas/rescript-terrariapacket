@@ -4,6 +4,7 @@
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
 var PervasivesU = require("rescript/lib/js/pervasivesU.js");
 var Packet_Status$TerrariaPacket = require("./packet/Packet_Status.bs.js");
+var CreativePowers$TerrariaPacket = require("./CreativePowers.bs.js");
 var Packet_ChestItem$TerrariaPacket = require("./packet/Packet_ChestItem.bs.js");
 var Packet_ItemOwner$TerrariaPacket = require("./packet/Packet_ItemOwner.bs.js");
 var Packet_NpcTamper$TerrariaPacket = require("./packet/Packet_NpcTamper.bs.js");
@@ -629,7 +630,7 @@ function toPacketName$1(packet) {
               tmp = "CreativeUnlocks";
               break;
           case "CreativePower" :
-              tmp = "CreativePower";
+              tmp = "CreativePower { " + CreativePowers$TerrariaPacket.toString(netModuleLoad._0) + " }";
               break;
           case "CreativeUnlocksPlayerReport" :
               tmp = "CreativeUnlocksPlayerReport";

@@ -13,6 +13,11 @@ module PerPlayerSliderPower = {
     value: float,
   }
 
+  let toString = (self: t) =>
+    `PerPlayerSliderPower { playerId: ${Int.toString(self.playerId)}, value: ${Float.toString(
+        self.value,
+      )} }`
+
   module Encode = {
     let {packByte, packSingle} = module(PacketFactory.ManagedPacketWriter)
 
@@ -45,6 +50,15 @@ module PerPlayerTogglePower = {
   type t =
     | Everyone(array<bool>)
     | Player(int, bool)
+
+  let toString = (self: t) => {
+    switch self {
+    | Everyone(values) =>
+      `Everyone { values: ${Array.map(values, value => value ? "1" : "0")->Array.join(", ")} }`
+    | Player(playerId, value) =>
+      `Player { playerId: ${Int.toString(playerId)}, value: ${value ? "true" : "false"} }`
+    }
+  }
 
   module Encode = {
     let {packByte, packBytes} = module(PacketFactory.ManagedPacketWriter)
@@ -141,6 +155,29 @@ type t =
   | StopBiomeSpreadPower(bool)
   | SpawnRateSliderPerPlayerPower(PerPlayerSliderPower.t)
 
+let toString = (self: t) =>
+  switch self {
+  | FreezeTime(value) => `FreezeTime { value: ${value ? "true" : "false"} }`
+  | StartDayImmediately => `StartDayImmediately`
+  | StartNoonImmediately => `StartNoonImmediately`
+  | StartNightImmediately => `StartNightImmediately`
+  | StartMidnightImmediately => `StartMidnightImmediately`
+  | GodmodePower(message) => `GodmodePower { message: ${message->PerPlayerTogglePower.toString} }`
+  | ModifyWindDirectionAndStrength(value) =>
+    `ModifyWindDirectionAndStrength { value: ${Float.toString(value)} }`
+  | ModifyRainPower(value) => `ModifyRainPower { value: ${Float.toString(value)} }`
+  | ModifyTimeRate(value) => `ModifyTimeRate { value: ${Float.toString(value)} }`
+  | FreezeRainPower(value) => `FreezeRainPower { value: ${value ? "true" : "false"} }`
+  | FreezeWindDirectionAndStrength(value) =>
+    `FreezeWindDirectionAndStrength { value: ${value ? "true" : "false"} }`
+  | FarPlacementRangePower(message) =>
+    `FarPlacementRangePower { message: ${message->PerPlayerTogglePower.toString} }`
+  | DifficultySliderPower(value) => `DifficultySliderPower { value: ${Float.toString(value)} }`
+  | StopBiomeSpreadPower(value) => `StopBiomeSpreadPower { value: ${value ? "true" : "false"} }`
+  | SpawnRateSliderPerPlayerPower(sliderPower) =>
+    `SpawnRateSliderPerPlayerPower { sliderPower: ${sliderPower->PerPlayerSliderPower.toString} }`
+  }
+
 module CreativePowerType = {
   type t =
     | FreezeTime
@@ -158,6 +195,25 @@ module CreativePowerType = {
     | DifficultySliderPower
     | StopBiomeSpreadPower
     | SpawnRateSliderPerPlayerPower
+
+  let toString = (self: t) =>
+    switch self {
+    | FreezeTime => "FreezeTime"
+    | StartDayImmediately => "StartDayImmediately"
+    | StartNoonImmediately => "StartNoonImmediately"
+    | StartNightImmediately => "StartNightImmediately"
+    | StartMidnightImmediately => "StartMidnightImmediately"
+    | GodmodePower => "GodmodePower"
+    | ModifyWindDirectionAndStrength => "ModifyWindDirectionAndStrength"
+    | ModifyRainPower => "ModifyRainPower"
+    | ModifyTimeRate => "ModifyTimeRate"
+    | FreezeRainPower => "FreezeRainPower"
+    | FreezeWindDirectionAndStrength => "FreezeWindDirectionAndStrength"
+    | FarPlacementRangePower => "FarPlacementRangePower"
+    | DifficultySliderPower => "DifficultySliderPower"
+    | StopBiomeSpreadPower => "StopBiomeSpreadPower"
+    | SpawnRateSliderPerPlayerPower => "SpawnRateSliderPerPlayerPower"
+    }
 
   let fromInt = n =>
     switch n {

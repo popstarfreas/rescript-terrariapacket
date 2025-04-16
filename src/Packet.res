@@ -856,7 +856,7 @@ let toPacketName = (packet: t): string => {
     | Ambience(_ambience) => "Ambience"
     | Bestiary(_bestiary) => "Bestiary"
     | CreativeUnlocks(_creativeUnlock) => "CreativeUnlocks"
-    | CreativePower(_creativePower) => "CreativePower"
+    | CreativePower(creativePower) => `CreativePower { ${creativePower->CreativePowers.toString} }`
     | CreativeUnlocksPlayerReport(_unlockReport) => "CreativeUnlocksPlayerReport"
     | TeleportPylon(_teleportPylon) => "TeleportPylon"
     | Particles(_particle) => "Particles"

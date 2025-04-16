@@ -2,18 +2,18 @@ module PerPlayerSliderPower: {
   @gentype
   type t = {playerId: int, value: float}
 
-  let pack: (. PacketFactory.ManagedPacketWriter.t, t) => PacketFactory.ManagedPacketWriter.t
+  let pack: (PacketFactory.ManagedPacketWriter.t, t) => PacketFactory.ManagedPacketWriter.t
 
-  let parse: (. PacketFactory.PacketReader.t) => option<t>
+  let parse: PacketFactory.PacketReader.t => option<t>
 }
 
 module PerPlayerTogglePower: {
   @gentype
   type t = Everyone(array<bool>) | Player(int, bool)
 
-  let pack: (. PacketFactory.ManagedPacketWriter.t, t) => PacketFactory.ManagedPacketWriter.t
+  let pack: (PacketFactory.ManagedPacketWriter.t, t) => PacketFactory.ManagedPacketWriter.t
 
-  let parse: (. PacketFactory.PacketReader.t) => option<t>
+  let parse: PacketFactory.PacketReader.t => option<t>
 }
 
 @gentype
@@ -34,32 +34,38 @@ type t =
   | StopBiomeSpreadPower(bool)
   | SpawnRateSliderPerPlayerPower(PerPlayerSliderPower.t)
 
+@gentype
+let toString: t => string
+
 module CreativePowerType: {
   @gentype
   type t =
-  | FreezeTime
-  | StartDayImmediately
-  | StartNoonImmediately
-  | StartNightImmediately
-  | StartMidnightImmediately
-  | GodmodePower
-  | ModifyWindDirectionAndStrength
-  | ModifyRainPower
-  | ModifyTimeRate
-  | FreezeRainPower
-  | FreezeWindDirectionAndStrength
-  | FarPlacementRangePower
-  | DifficultySliderPower
-  | StopBiomeSpreadPower
-  | SpawnRateSliderPerPlayerPower
+    | FreezeTime
+    | StartDayImmediately
+    | StartNoonImmediately
+    | StartNightImmediately
+    | StartMidnightImmediately
+    | GodmodePower
+    | ModifyWindDirectionAndStrength
+    | ModifyRainPower
+    | ModifyTimeRate
+    | FreezeRainPower
+    | FreezeWindDirectionAndStrength
+    | FarPlacementRangePower
+    | DifficultySliderPower
+    | StopBiomeSpreadPower
+    | SpawnRateSliderPerPlayerPower
 
   @gentype
-  let fromInt: (. int) => option<t>
+  let toString: t => string
 
   @gentype
-  let toInt: (. t) => int
+  let fromInt: int => option<t>
+
+  @gentype
+  let toInt: t => int
 }
 
-let pack: (. PacketFactory.ManagedPacketWriter.t, t) => PacketFactory.ManagedPacketWriter.t
+let pack: (PacketFactory.ManagedPacketWriter.t, t) => PacketFactory.ManagedPacketWriter.t
 
-let parse: (. PacketFactory.PacketReader.t) => option<t>
+let parse: PacketFactory.PacketReader.t => option<t>

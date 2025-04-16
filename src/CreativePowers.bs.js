@@ -5,6 +5,10 @@ var Core__Option = require("@rescript/core/src/Core__Option.bs.js");
 var ArrayExt$TerrariaPacket = require("./ArrayExt.bs.js");
 var BitFlags$TerrariaPacket = require("./BitFlags.bs.js");
 
+function toString(self) {
+  return "PerPlayerSliderPower { playerId: " + self.playerId.toString() + ", value: " + self.value.toString() + " }";
+}
+
 function pack(writer, self) {
   return writer.packByte(self.playerId).packSingle(self.value);
 }
@@ -14,6 +18,22 @@ function parse(reader) {
           playerId: reader.readByte(),
           value: reader.readSingle()
         };
+}
+
+function toString$1(self) {
+  if (self.TAG === "Everyone") {
+    return "Everyone { values: " + self._0.map(function (value) {
+                  if (value) {
+                    return "1";
+                  } else {
+                    return "0";
+                  }
+                }).join(", ") + " }";
+  } else {
+    return "Player { playerId: " + self._0.toString() + ", value: " + (
+            self._1 ? "true" : "false"
+          ) + " }";
+  }
 }
 
 function pack$1(writer, self) {
@@ -53,6 +73,92 @@ function parse$1(reader) {
             TAG: "Everyone",
             _0: toggles
           };
+  }
+}
+
+function toString$2(self) {
+  if (typeof self !== "object") {
+    switch (self) {
+      case "StartDayImmediately" :
+          return "StartDayImmediately";
+      case "StartNoonImmediately" :
+          return "StartNoonImmediately";
+      case "StartNightImmediately" :
+          return "StartNightImmediately";
+      case "StartMidnightImmediately" :
+          return "StartMidnightImmediately";
+      
+    }
+  } else {
+    switch (self.TAG) {
+      case "FreezeTime" :
+          return "FreezeTime { value: " + (
+                  self._0 ? "true" : "false"
+                ) + " }";
+      case "GodmodePower" :
+          return "GodmodePower { message: " + toString$1(self._0) + " }";
+      case "ModifyWindDirectionAndStrength" :
+          return "ModifyWindDirectionAndStrength { value: " + self._0.toString() + " }";
+      case "ModifyRainPower" :
+          return "ModifyRainPower { value: " + self._0.toString() + " }";
+      case "ModifyTimeRate" :
+          return "ModifyTimeRate { value: " + self._0.toString() + " }";
+      case "FreezeRainPower" :
+          return "FreezeRainPower { value: " + (
+                  self._0 ? "true" : "false"
+                ) + " }";
+      case "FreezeWindDirectionAndStrength" :
+          return "FreezeWindDirectionAndStrength { value: " + (
+                  self._0 ? "true" : "false"
+                ) + " }";
+      case "FarPlacementRangePower" :
+          return "FarPlacementRangePower { message: " + toString$1(self._0) + " }";
+      case "DifficultySliderPower" :
+          return "DifficultySliderPower { value: " + self._0.toString() + " }";
+      case "StopBiomeSpreadPower" :
+          return "StopBiomeSpreadPower { value: " + (
+                  self._0 ? "true" : "false"
+                ) + " }";
+      case "SpawnRateSliderPerPlayerPower" :
+          return "SpawnRateSliderPerPlayerPower { sliderPower: " + toString(self._0) + " }";
+      
+    }
+  }
+}
+
+function toString$3(self) {
+  switch (self) {
+    case "FreezeTime" :
+        return "FreezeTime";
+    case "StartDayImmediately" :
+        return "StartDayImmediately";
+    case "StartNoonImmediately" :
+        return "StartNoonImmediately";
+    case "StartNightImmediately" :
+        return "StartNightImmediately";
+    case "StartMidnightImmediately" :
+        return "StartMidnightImmediately";
+    case "GodmodePower" :
+        return "GodmodePower";
+    case "ModifyWindDirectionAndStrength" :
+        return "ModifyWindDirectionAndStrength";
+    case "ModifyRainPower" :
+        return "ModifyRainPower";
+    case "ModifyTimeRate" :
+        return "ModifyTimeRate";
+    case "FreezeRainPower" :
+        return "FreezeRainPower";
+    case "FreezeWindDirectionAndStrength" :
+        return "FreezeWindDirectionAndStrength";
+    case "FarPlacementRangePower" :
+        return "FarPlacementRangePower";
+    case "DifficultySliderPower" :
+        return "DifficultySliderPower";
+    case "StopBiomeSpreadPower" :
+        return "StopBiomeSpreadPower";
+    case "SpawnRateSliderPerPlayerPower" :
+        return "SpawnRateSliderPerPlayerPower";
+    
   }
 }
 
@@ -130,6 +236,7 @@ function toInt(self) {
 }
 
 var CreativePowerType = {
+  toString: toString$3,
   fromInt: fromInt,
   toInt: toInt
 };
@@ -276,6 +383,7 @@ var PerPlayerTogglePower = {
 
 exports.PerPlayerSliderPower = PerPlayerSliderPower;
 exports.PerPlayerTogglePower = PerPlayerTogglePower;
+exports.toString = toString$2;
 exports.CreativePowerType = CreativePowerType;
 exports.pack = pack$2;
 exports.parse = parse$2;

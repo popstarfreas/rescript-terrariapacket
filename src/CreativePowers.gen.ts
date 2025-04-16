@@ -45,8 +45,16 @@ export type CreativePowerType_t =
   | "StopBiomeSpreadPower"
   | "SpawnRateSliderPerPlayerPower";
 
+export const toString: (_1:t) => string = CreativePowersJS.toString as any;
+
+export const CreativePowerType_toString: (_1:CreativePowerType_t) => string = CreativePowersJS.CreativePowerType.toString as any;
+
 export const CreativePowerType_fromInt: (_1:number) => (undefined | CreativePowerType_t) = CreativePowersJS.CreativePowerType.fromInt as any;
 
 export const CreativePowerType_toInt: (_1:CreativePowerType_t) => number = CreativePowersJS.CreativePowerType.toInt as any;
 
-export const CreativePowerType: { toInt: (_1:CreativePowerType_t) => number; fromInt: (_1:number) => (undefined | CreativePowerType_t) } = CreativePowersJS.CreativePowerType as any;
+export const CreativePowerType: {
+  toInt: (_1:CreativePowerType_t) => number; 
+  toString: (_1:CreativePowerType_t) => string; 
+  fromInt: (_1:number) => (undefined | CreativePowerType_t)
+} = CreativePowersJS.CreativePowerType as any;
