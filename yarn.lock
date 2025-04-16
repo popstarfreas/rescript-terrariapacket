@@ -18,7 +18,7 @@
     "@nodelib/fs.stat" "2.0.5"
     run-parallel "^1.1.9"
 
-"@nodelib/fs.stat@^2.0.2", "@nodelib/fs.stat@2.0.5":
+"@nodelib/fs.stat@2.0.5", "@nodelib/fs.stat@^2.0.2":
   version "2.0.5"
   resolved "https://registry.npmjs.org/@nodelib/fs.stat/-/fs.stat-2.0.5.tgz"
   integrity sha512-RkhPPp2zrqDAQA/2jNhnztcPAlv64XdhIp7a7454A5ovI7Bukxgt7MX7udwAu3zg1DcpPU0rz3VV1SeaqvY4+A==
@@ -46,10 +46,9 @@
   resolved "git+ssh://git@github.com/popstarfreas/rescript-nodejs.git#f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7"
   integrity sha512-Rp6zGZxTOpZs+sSub9VbTFrH579acVSsiJQdIvEDzn/kdcXkP/AzLNX3FL6o55ma3u49dPjpduldkltTjPSi+w==
 
-"@rescript/core@git+https://github.com/popstarfreas/rescript-core.git#18abd0c34e35061f86b085408b14084833ecab63":
+"@rescript/core@git+https://github.com/popstarfreas/rescript-core.git#fdc54fb3e215c922cdc5c76dd1b8bd41dc6a6a59":
   version "1.6.1"
-  resolved "git+ssh://git@github.com/popstarfreas/rescript-core.git#18abd0c34e35061f86b085408b14084833ecab63"
-  integrity sha512-Eur7vf9Kp7yAoMWQ9OepBQd4lESaXgME5+nPRg0OONPV3jmC8U2Tk0O4kqlxfXbkQxy8kOdD4IwJVHtggp6OuQ==
+  resolved "git+https://github.com/popstarfreas/rescript-core.git#fdc54fb3e215c922cdc5c76dd1b8bd41dc6a6a59"
 
 "@sindresorhus/merge-streams@^2.1.0":
   version "2.3.0"
@@ -188,7 +187,7 @@ queue-microtask@^1.2.2:
   resolved "https://registry.npmjs.org/queue-microtask/-/queue-microtask-1.2.3.tgz"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
 
-rescript@^11.0.0, rescript@>=11.1.0:
+rescript@^11.0.0:
   version "11.1.4"
   resolved "https://registry.npmjs.org/rescript/-/rescript-11.1.4.tgz"
   integrity sha512-0bGU0bocihjSC6MsE3TMjHjY0EUpchyrREquLS8VsZ3ohSMD+VHUEwimEfB3kpBI1vYkw3UFZ3WD8R28guz/Vw==
@@ -250,8 +249,3 @@ zora@^5.2.0:
   version "5.2.0"
   resolved "https://registry.npmjs.org/zora/-/zora-5.2.0.tgz"
   integrity sha512-FSZOvfJVfMWhk/poictNsDBCXq/Z+2Zu2peWs6d8OhWWb9nY++czw95D47hdw06L/kfjasLevwrbUtnXyWLAJw==
-
-zora@^6:
-  version "6.0.0"
-  resolved "https://registry.npmjs.org/zora/-/zora-6.0.0.tgz"
-  integrity sha512-uDOZ5VwwURiU9B+5BY5z/ByM9WWC1A5SJpEBg0HL9Qy2zsKnzfizsa+ABWZFJ8onGN1MU2evzAGAuAxybjoYEQ==

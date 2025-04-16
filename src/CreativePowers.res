@@ -47,49 +47,23 @@ module PerPlayerTogglePower = {
     | Player(int, bool)
 
   module Encode = {
-    let {packByte} = module(PacketFactory.ManagedPacketWriter)
+    let {packByte, packBytes} = module(PacketFactory.ManagedPacketWriter)
 
     let everyoneToWriter = (
       writer: PacketFactory.ManagedPacketWriter.t,
       values: array<bool>,
     ): PacketFactory.ManagedPacketWriter.t => {
-      // using JS isn't ideal but the ReScript equivalent would look worse because
-      // bit-shifting operators aren't supported and exponentiation(an approximate)
-      // isn't supported on integers. Furthermore, array chunking isn't part of the
-      // Core library, which further reduces the options available. For reference,
-      // the line provided below sets a single bit in a byte in ReScript
-      // byte->lor(toggle ? (1.0 ** (Int.mod(i, 8) :> float))->Int.fromFloat : 0)
-      let bytes: array<int> = %raw(`((values) => {
-        let buffer = new Uint8Array(32);
-        for (let i = 0; i <= 30; i++) {
-          let chunkIndex = i * 8;
-          buffer[i] = (
-              (values[chunkIndex + 0] ? 1 << 0 : 0)
-            | (values[chunkIndex + 1] ? 1 << 1 : 0)
-            | (values[chunkIndex + 2] ? 1 << 2 : 0)
-            | (values[chunkIndex + 3] ? 1 << 3 : 0)
-            | (values[chunkIndex + 4] ? 1 << 4 : 0)
-            | (values[chunkIndex + 5] ? 1 << 5 : 0)
-            | (values[chunkIndex + 6] ? 1 << 6 : 0)
-            | (values[chunkIndex + 7] ? 1 << 7 : 0)
-          );
-        }
-        buffer[31] = (
-            (values[248] ? 1 << 0 : 0)
-          | (values[249] ? 1 << 1 : 0)
-          | (values[250] ? 1 << 2 : 0)
-          | (values[251] ? 1 << 3 : 0)
-          | (values[252] ? 1 << 4 : 0)
-          | (values[253] ? 1 << 5 : 0)
-          | (values[254] ? 1 << 6 : 0)
-        );
-        return Array.from(buffer);
-      })`)(values)
-      writer->packByte(0)->ignore
-      bytes->Array.forEach(byte => {
-        writer->packByte(byte)->ignore
-      })
+      // Each group of 8 flags is encoded into 1 byte
+      // (except the last group will be 7 flags)
+      let bytes =
+        values
+        ->ArrayExt.intoChunks(~chunkSize=8)
+        ->Array.map(BitFlags.fromArray)
+        ->Array.map(BitFlags.toByte)
+
       writer
+      ->packByte(0)
+      ->packBytes(bytes)
     }
 
     let playerToWriter = (
@@ -116,27 +90,21 @@ module PerPlayerTogglePower = {
 
   module Decode = {
     let {readByte} = module(PacketFactory.PacketReader)
+    let {forEach} = module(BitFlags)
 
     let parseEveryone = (reader: PacketFactory.PacketReader.t) => {
-      let bytes = Array.fromInitializer(~length=32, _ => reader->readByte)
-      let toggles: array<bool> = %raw(`(() => {
-        let buffer = Array(256).fill(false);
-        for (let i = 0; i < bytes.length; i++) {
-          let byte = bytes[i];
-          buffer[i * 8 + 0] = (byte & (1 << 0)) !== 0;
-          buffer[i * 8 + 1] = (byte & (1 << 1)) !== 0;
-          buffer[i * 8 + 2] = (byte & (1 << 2)) !== 0;
-          buffer[i * 8 + 3] = (byte & (1 << 3)) !== 0;
-          buffer[i * 8 + 4] = (byte & (1 << 4)) !== 0;
-          buffer[i * 8 + 5] = (byte & (1 << 5)) !== 0;
-          buffer[i * 8 + 6] = (byte & (1 << 6)) !== 0;
-          buffer[i * 8 + 7] = (byte & (1 << 7)) !== 0;
-        }
-        // logic is easier if the array had one extra bool
-        buffer.length = 255;
-        return buffer;
-      })`)(bytes)
-      Everyone(toggles)->Some
+      let toggles = []
+      // Each player slot is represented by 1 bit. So 255 total player slots
+      // means 32 bytes to represent them
+      for _ in 1 to 32 {
+        let byte = reader->readByte
+        BitFlags.fromByte(byte)->forEach(flag => {
+          toggles->Array.push(flag)
+        })
+      }
+      // The last flag is not for any player so we remove it
+      toggles->Array.pop->ignore
+      Some(Everyone(toggles))
     }
 
     let parsePlayer = (reader: PacketFactory.PacketReader.t) => {
