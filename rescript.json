@@ -29,20 +29,6 @@
   "bs-dev-dependencies": [
     "@dusty-phillips/rescript-zora"
   ],
-  "gentypeconfig": {
-    "importPath": "relative",
-    "generatedFileExtension": ".gen.ts",
-    "module": "commonjs",
-    "shims": {
-      "NodeJs": "NodeJs",
-      "PacketFactory": "PacketFactory",
-      "Lazy": "Lazy"
-    },
-    "debug": {
-      "all": false,
-      "basic": false
-    }
-  },
   "warnings": {
     "number": "",
     "error": "+a"
