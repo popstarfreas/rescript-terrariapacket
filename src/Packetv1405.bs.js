@@ -3961,9 +3961,17 @@ function toBuffer(packet, _fromServer) {
 
 function serialize(parsed, fromServer) {
   if (parsed.TAG === "ShouldSerialize") {
-    return toBuffer(parsed._0, fromServer);
+    return Core__Option.map(toBuffer(parsed._0, fromServer), (function (result) {
+                  return {
+                          TAG: "Ok",
+                          _0: result
+                        };
+                }));
   } else {
-    return parsed._1;
+    return {
+            TAG: "Ok",
+            _0: parsed._1
+          };
   }
 }
 
@@ -3971,7 +3979,12 @@ function serializeFromLatest(parsed, fromServer) {
   if (parsed.TAG === "ShouldSerialize") {
     var match = fromLatest(parsed._0, fromServer);
     if (match !== undefined) {
-      return toBuffer(match._0, fromServer);
+      return Core__Option.map(toBuffer(match._0, fromServer), (function (result) {
+                    return {
+                            TAG: "Ok",
+                            _0: result
+                          };
+                  }));
     } else {
       return ;
     }
@@ -3979,9 +3992,17 @@ function serializeFromLatest(parsed, fromServer) {
   var match$1 = fromLatest(parsed._0, fromServer);
   if (match$1 !== undefined) {
     if (match$1.TAG === "Same") {
-      return parsed._1;
+      return {
+              TAG: "Ok",
+              _0: parsed._1
+            };
     } else {
-      return toBuffer(match$1._0, fromServer);
+      return Core__Option.map(toBuffer(match$1._0, fromServer), (function (result) {
+                    return {
+                            TAG: "Ok",
+                            _0: result
+                          };
+                  }));
     }
   }
   

@@ -167,18 +167,18 @@ module Decode = {
     readBytes,
     readSingle,
     readSByte,
-  } = module(PacketFactory.PacketReader)
+  } = module(ErrorAwarePacketReader)
   let readEventInfo = reader => {
-    let eventInfo1 = BitFlags.fromByte(reader->readByte)
-    let eventInfo2 = BitFlags.fromByte(reader->readByte)
-    let eventInfo3 = BitFlags.fromByte(reader->readByte)
-    let eventInfo4 = BitFlags.fromByte(reader->readByte)
-    let eventInfo5 = BitFlags.fromByte(reader->readByte)
-    let eventInfo6 = BitFlags.fromByte(reader->readByte)
-    let eventInfo7 = BitFlags.fromByte(reader->readByte)
-    let eventInfo8 = BitFlags.fromByte(reader->readByte)
-    let eventInfo9 = BitFlags.fromByte(reader->readByte)
-    let eventInfo10 = BitFlags.fromByte(reader->readByte)
+    let eventInfo1 = BitFlags.fromByte(reader->readByte("eventInfo1"))
+    let eventInfo2 = BitFlags.fromByte(reader->readByte("eventInfo2"))
+    let eventInfo3 = BitFlags.fromByte(reader->readByte("eventInfo3"))
+    let eventInfo4 = BitFlags.fromByte(reader->readByte("eventInfo4"))
+    let eventInfo5 = BitFlags.fromByte(reader->readByte("eventInfo5"))
+    let eventInfo6 = BitFlags.fromByte(reader->readByte("eventInfo6"))
+    let eventInfo7 = BitFlags.fromByte(reader->readByte("eventInfo7"))
+    let eventInfo8 = BitFlags.fromByte(reader->readByte("eventInfo8"))
+    let eventInfo9 = BitFlags.fromByte(reader->readByte("eventInfo9"))
+    let eventInfo10 = BitFlags.fromByte(reader->readByte("eventInfo10"))
     let shadowOrbSmashed = eventInfo1->BitFlags.flag1
     let killedBoss1 = eventInfo1->BitFlags.flag2
     let killedBoss2 = eventInfo1->BitFlags.flag3
@@ -336,80 +336,80 @@ module Decode = {
 
   let parse = (payload: NodeJs.Buffer.t) => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let time = reader->readInt32
-    let dayAndMoonInfo = reader->readByte
-    let moonPhase = reader->readByte
-    let maxTilesX = reader->readInt16
-    let maxTilesY = reader->readInt16
-    let spawnX = reader->readInt16
-    let spawnY = reader->readInt16
-    let worldSurface = reader->readInt16
-    let rockLayer = reader->readInt16
-    let worldId = reader->readInt32
-    let worldName = reader->readString
-    let gameMode = reader->readByte
-    let worldUniqueId = Array16.fromArray(reader->readBytes(16))
-    let worldGeneratorVersion = reader->readUInt64
-    let moonType = reader->readByte
-    let treeBackground = reader->readByte
-    let treeBackground2 = reader->readByte
-    let treeBackground3 = reader->readByte
-    let treeBackground4 = reader->readByte
-    let corruptionBackground = reader->readByte
-    let jungleBackground = reader->readByte
-    let snowBackground = reader->readByte
-    let hallowBackground = reader->readByte
-    let crimsonBackground = reader->readByte
-    let desertBackground = reader->readByte
-    let oceanBackground = reader->readByte
-    let mushroomBackground = reader->readByte
-    let underworldBackground = reader->readByte
-    let iceBackStyle = reader->readByte
-    let jungleBackStyle = reader->readByte
-    let hellBackStyle = reader->readByte
-    let windSpeedSet = reader->readSingle
-    let cloudNumber = reader->readByte
-    let tree1 = reader->readInt32
-    let tree2 = reader->readInt32
-    let tree3 = reader->readInt32
-    let treeStyle1 = reader->readByte
-    let treeStyle2 = reader->readByte
-    let treeStyle3 = reader->readByte
-    let treeStyle4 = reader->readByte
-    let caveBack1 = reader->readInt32
-    let caveBack2 = reader->readInt32
-    let caveBack3 = reader->readInt32
-    let caveBackStyle1 = reader->readByte
-    let caveBackStyle2 = reader->readByte
-    let caveBackStyle3 = reader->readByte
-    let caveBackStyle4 = reader->readByte
-    let forest1TreeTopStyle = reader->readByte
-    let forest2TreeTopStyle = reader->readByte
-    let forest3TreeTopStyle = reader->readByte
-    let forest4TreeTopStyle = reader->readByte
-    let corruptionTreeTopStyle = reader->readByte
-    let jungleTreeTopStyle = reader->readByte
-    let snowTreeTopStyle = reader->readByte
-    let hallowTreeTopStyle = reader->readByte
-    let crimsonTreeTopStyle = reader->readByte
-    let desertTreeTopStyle = reader->readByte
-    let oceanTreeTopStyle = reader->readByte
-    let glowingMushroomTreeTopStyle = reader->readByte
-    let underworldTreeTopStyle = reader->readByte
-    let rain = reader->readSingle
+    let time = reader->readInt32("time")
+    let dayAndMoonInfo = reader->readByte("dayAndMoonInfo")
+    let moonPhase = reader->readByte("moonPhase")
+    let maxTilesX = reader->readInt16("maxTilesX")
+    let maxTilesY = reader->readInt16("maxTilesY")
+    let spawnX = reader->readInt16("spawnX")
+    let spawnY = reader->readInt16("spawnY")
+    let worldSurface = reader->readInt16("worldSurface")
+    let rockLayer = reader->readInt16("rockLayer")
+    let worldId = reader->readInt32("worldId")
+    let worldName = reader->readString("worldName")
+    let gameMode = reader->readByte("gameMode")
+    let worldUniqueId = Array16.fromArray(reader->readBytes(16, "worldUniqueId"))
+    let worldGeneratorVersion = reader->readUInt64("worldGeneratorVersion")
+    let moonType = reader->readByte("moonType")
+    let treeBackground = reader->readByte("treeBackground")
+    let treeBackground2 = reader->readByte("treeBackground2")
+    let treeBackground3 = reader->readByte("treeBackground3")
+    let treeBackground4 = reader->readByte("treeBackground4")
+    let corruptionBackground = reader->readByte("corruptionBackground")
+    let jungleBackground = reader->readByte("jungleBackground")
+    let snowBackground = reader->readByte("snowBackground")
+    let hallowBackground = reader->readByte("hallowBackground")
+    let crimsonBackground = reader->readByte("crimsonBackground")
+    let desertBackground = reader->readByte("desertBackground")
+    let oceanBackground = reader->readByte("oceanBackground")
+    let mushroomBackground = reader->readByte("mushroomBackground")
+    let underworldBackground = reader->readByte("underworldBackground")
+    let iceBackStyle = reader->readByte("iceBackStyle")
+    let jungleBackStyle = reader->readByte("jungleBackStyle")
+    let hellBackStyle = reader->readByte("hellBackStyle")
+    let windSpeedSet = reader->readSingle("windSpeedSet")
+    let cloudNumber = reader->readByte("cloudNumber")
+    let tree1 = reader->readInt32("tree1")
+    let tree2 = reader->readInt32("tree2")
+    let tree3 = reader->readInt32("tree3")
+    let treeStyle1 = reader->readByte("treeStyle1")
+    let treeStyle2 = reader->readByte("treeStyle2")
+    let treeStyle3 = reader->readByte("treeStyle3")
+    let treeStyle4 = reader->readByte("treeStyle4")
+    let caveBack1 = reader->readInt32("caveBack1")
+    let caveBack2 = reader->readInt32("caveBack2")
+    let caveBack3 = reader->readInt32("caveBack3")
+    let caveBackStyle1 = reader->readByte("caveBackStyle1")
+    let caveBackStyle2 = reader->readByte("caveBackStyle2")
+    let caveBackStyle3 = reader->readByte("caveBackStyle3")
+    let caveBackStyle4 = reader->readByte("caveBackStyle4")
+    let forest1TreeTopStyle = reader->readByte("forest1TreeTopStyle")
+    let forest2TreeTopStyle = reader->readByte("forest2TreeTopStyle")
+    let forest3TreeTopStyle = reader->readByte("forest3TreeTopStyle")
+    let forest4TreeTopStyle = reader->readByte("forest4TreeTopStyle")
+    let corruptionTreeTopStyle = reader->readByte("corruptionTreeTopStyle")
+    let jungleTreeTopStyle = reader->readByte("jungleTreeTopStyle")
+    let snowTreeTopStyle = reader->readByte("snowTreeTopStyle")
+    let hallowTreeTopStyle = reader->readByte("hallowTreeTopStyle")
+    let crimsonTreeTopStyle = reader->readByte("crimsonTreeTopStyle")
+    let desertTreeTopStyle = reader->readByte("desertTreeTopStyle")
+    let oceanTreeTopStyle = reader->readByte("oceanTreeTopStyle")
+    let glowingMushroomTreeTopStyle = reader->readByte("glowingMushroomTreeTopStyle")
+    let underworldTreeTopStyle = reader->readByte("underworldTreeTopStyle")
+    let rain = reader->readSingle("rain")
     let eventInfo = reader->readEventInfo
-    let sundialCooldown = reader->readByte
-    let moondialCooldown = reader->readByte
-    let copperOreTier = reader->readInt16
-    let ironOreTier = reader->readInt16
-    let silverOreTier = reader->readInt16
-    let goldOreTier = reader->readInt16
-    let cobaltOreTier = reader->readInt16
-    let mythrilOreTier = reader->readInt16
-    let adamantiteOreTier = reader->readInt16
-    let invasionType = reader->readSByte
-    let lobbyId = reader->readUInt64
-    let sandstormSeverity = reader->readSingle
+    let sundialCooldown = reader->readByte("sundialCooldown")
+    let moondialCooldown = reader->readByte("moondialCooldown")
+    let copperOreTier = reader->readInt16("copperOreTier")
+    let ironOreTier = reader->readInt16("ironOreTier")
+    let silverOreTier = reader->readInt16("silverOreTier")
+    let goldOreTier = reader->readInt16("goldOreTier")
+    let cobaltOreTier = reader->readInt16("cobaltOreTier")
+    let mythrilOreTier = reader->readInt16("mythrilOreTier")
+    let adamantiteOreTier = reader->readInt16("adamantiteOreTier")
+    let invasionType = reader->readSByte("invasionType")
+    let lobbyId = reader->readUInt64("lobbyId")
+    let sandstormSeverity = reader->readSingle("sandstormSeverity")
     worldUniqueId->Option.map(worldUniqueId => {
       time,
       dayAndMoonInfo,
@@ -490,18 +490,7 @@ module Decode = {
 }
 
 module Encode = {
-  let {
-    packSingle,
-    packInt32,
-    packByte,
-    packInt16,
-    packUInt64,
-    packString,
-    packSByte,
-    packBytes,
-    setType,
-    data,
-  } = module(ErrorAwarePacketWriter)
+  let {packInt16, packByte} = module(ErrorAwarePacketWriter)
   let packEventInfo = (writer, eventInfo: eventInfo) => {
     let eventInfo1 = BitFlags.fromFlags(
       ~flag1=eventInfo.shadowOrbSmashed,
@@ -604,95 +593,98 @@ module Encode = {
       ~flag8=false,
     )
     writer
-    ->packByte(eventInfo1->BitFlags.toByte)
-    ->packByte(eventInfo2->BitFlags.toByte)
-    ->packByte(eventInfo3->BitFlags.toByte)
-    ->packByte(eventInfo4->BitFlags.toByte)
-    ->packByte(eventInfo5->BitFlags.toByte)
-    ->packByte(eventInfo6->BitFlags.toByte)
-    ->packByte(eventInfo7->BitFlags.toByte)
-    ->packByte(eventInfo8->BitFlags.toByte)
-    ->packByte(eventInfo9->BitFlags.toByte)
-    ->packByte(eventInfo10->BitFlags.toByte)
+    ->packByte(eventInfo1->BitFlags.toByte, "eventInfo1")
+    ->packByte(eventInfo2->BitFlags.toByte, "eventInfo2")
+    ->packByte(eventInfo3->BitFlags.toByte, "eventInfo3")
+    ->packByte(eventInfo4->BitFlags.toByte, "eventInfo4")
+    ->packByte(eventInfo5->BitFlags.toByte, "eventInfo5")
+    ->packByte(eventInfo6->BitFlags.toByte, "eventInfo6")
+    ->packByte(eventInfo7->BitFlags.toByte, "eventInfo7")
+    ->packByte(eventInfo8->BitFlags.toByte, "eventInfo8")
+    ->packByte(eventInfo9->BitFlags.toByte, "eventInfo9")
+    ->packByte(eventInfo10->BitFlags.toByte, "eventInfo10")
   }
 
   let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
-    PacketFactory.ManagedPacketWriter.make()
+    ErrorAwarePacketWriter.make()
     ->ErrorAwarePacketWriter.setType(PacketType.WorldInfo->PacketType.toInt)
-    ->ErrorAwarePacketWriter.packInt32(self.time)
-    ->packByte(self.dayAndMoonInfo)
-    ->ErrorAwarePacketWriter.packByte(self.moonPhase)
-    ->ErrorAwarePacketWriter.packInt16(self.maxTilesX)
-    ->packInt16(self.maxTilesY)
-    ->ErrorAwarePacketWriter.packInt16(self.spawnX)
-    ->ErrorAwarePacketWriter.packInt16(self.spawnY)
-    ->ErrorAwarePacketWriter.packInt16(self.worldSurface)
-    ->ErrorAwarePacketWriter.packInt16(self.rockLayer)
-    ->ErrorAwarePacketWriter.packInt32(self.worldId)
-    ->ErrorAwarePacketWriter.packString(self.worldName)
-    ->ErrorAwarePacketWriter.packByte(self.gameMode)
-    ->ErrorAwarePacketWriter.packBytes(self.worldUniqueId->Array16.asArray)
-    ->ErrorAwarePacketWriter.packUInt64(self.worldGeneratorVersion)
-    ->ErrorAwarePacketWriter.packByte(self.moonType)
-    ->ErrorAwarePacketWriter.packByte(self.treeBackground)
-    ->ErrorAwarePacketWriter.packByte(self.treeBackground2)
-    ->ErrorAwarePacketWriter.packByte(self.treeBackground3)
-    ->ErrorAwarePacketWriter.packByte(self.treeBackground4)
-    ->ErrorAwarePacketWriter.packByte(self.corruptionBackground)
-    ->ErrorAwarePacketWriter.packByte(self.jungleBackground)
-    ->ErrorAwarePacketWriter.packByte(self.snowBackground)
-    ->ErrorAwarePacketWriter.packByte(self.hallowBackground)
-    ->ErrorAwarePacketWriter.packByte(self.crimsonBackground)
-    ->ErrorAwarePacketWriter.packByte(self.desertBackground)
-    ->ErrorAwarePacketWriter.packByte(self.oceanBackground)
-    ->ErrorAwarePacketWriter.packByte(self.mushroomBackground)
-    ->ErrorAwarePacketWriter.packByte(self.underworldBackground)
-    ->ErrorAwarePacketWriter.packByte(self.iceBackStyle)
-    ->ErrorAwarePacketWriter.packByte(self.jungleBackStyle)
-    ->ErrorAwarePacketWriter.packByte(self.hellBackStyle)
-    ->ErrorAwarePacketWriter.packSingle(self.windSpeedSet)
-    ->ErrorAwarePacketWriter.packByte(self.cloudNumber)
-    ->ErrorAwarePacketWriter.packInt32(self.tree1)
-    ->ErrorAwarePacketWriter.packInt32(self.tree2)
-    ->ErrorAwarePacketWriter.packInt32(self.tree3)
-    ->ErrorAwarePacketWriter.packByte(self.treeStyle1)
-    ->ErrorAwarePacketWriter.packByte(self.treeStyle2)
-    ->ErrorAwarePacketWriter.packByte(self.treeStyle3)
-    ->ErrorAwarePacketWriter.packByte(self.treeStyle4)
-    ->ErrorAwarePacketWriter.packInt32(self.caveBack1)
-    ->ErrorAwarePacketWriter.packInt32(self.caveBack2)
-    ->ErrorAwarePacketWriter.packInt32(self.caveBack3)
-    ->ErrorAwarePacketWriter.packByte(self.caveBackStyle1)
-    ->ErrorAwarePacketWriter.packByte(self.caveBackStyle2)
-    ->ErrorAwarePacketWriter.packByte(self.caveBackStyle3)
-    ->ErrorAwarePacketWriter.packByte(self.caveBackStyle4)
-    ->ErrorAwarePacketWriter.packByte(self.forest1TreeTopStyle)
-    ->ErrorAwarePacketWriter.packByte(self.forest2TreeTopStyle)
-    ->ErrorAwarePacketWriter.packByte(self.forest3TreeTopStyle)
-    ->ErrorAwarePacketWriter.packByte(self.forest4TreeTopStyle)
-    ->ErrorAwarePacketWriter.packByte(self.corruptionTreeTopStyle)
-    ->ErrorAwarePacketWriter.packByte(self.jungleTreeTopStyle)
-    ->ErrorAwarePacketWriter.packByte(self.snowTreeTopStyle)
-    ->ErrorAwarePacketWriter.packByte(self.hallowTreeTopStyle)
-    ->ErrorAwarePacketWriter.packByte(self.crimsonTreeTopStyle)
-    ->ErrorAwarePacketWriter.packByte(self.desertTreeTopStyle)
-    ->ErrorAwarePacketWriter.packByte(self.oceanTreeTopStyle)
-    ->ErrorAwarePacketWriter.packByte(self.glowingMushroomTreeTopStyle)
-    ->ErrorAwarePacketWriter.packByte(self.underworldTreeTopStyle)
-    ->ErrorAwarePacketWriter.packSingle(self.rain)
+    ->ErrorAwarePacketWriter.packInt32(self.time, "time")
+    ->packByte(self.dayAndMoonInfo, "dayAndMoonInfo")
+    ->ErrorAwarePacketWriter.packByte(self.moonPhase, "moonPhase")
+    ->ErrorAwarePacketWriter.packInt16(self.maxTilesX, "maxTilesX")
+    ->packInt16(self.maxTilesY, "maxTilesY")
+    ->ErrorAwarePacketWriter.packInt16(self.spawnX, "spawnX")
+    ->ErrorAwarePacketWriter.packInt16(self.spawnY, "spawnY")
+    ->ErrorAwarePacketWriter.packInt16(self.worldSurface, "worldSurface")
+    ->ErrorAwarePacketWriter.packInt16(self.rockLayer, "rockLayer")
+    ->ErrorAwarePacketWriter.packInt32(self.worldId, "worldId")
+    ->ErrorAwarePacketWriter.packString(self.worldName, "worldName")
+    ->ErrorAwarePacketWriter.packByte(self.gameMode, "gameMode")
+    ->ErrorAwarePacketWriter.packBytes(self.worldUniqueId->Array16.asArray, "worldUniqueId")
+    ->ErrorAwarePacketWriter.packUInt64(self.worldGeneratorVersion, "worldGeneratorVersion")
+    ->ErrorAwarePacketWriter.packByte(self.moonType, "moonType")
+    ->ErrorAwarePacketWriter.packByte(self.treeBackground, "treeBackground")
+    ->ErrorAwarePacketWriter.packByte(self.treeBackground2, "treeBackground2")
+    ->ErrorAwarePacketWriter.packByte(self.treeBackground3, "treeBackground3")
+    ->ErrorAwarePacketWriter.packByte(self.treeBackground4, "treeBackground4")
+    ->ErrorAwarePacketWriter.packByte(self.corruptionBackground, "corruptionBackground")
+    ->ErrorAwarePacketWriter.packByte(self.jungleBackground, "jungleBackground")
+    ->ErrorAwarePacketWriter.packByte(self.snowBackground, "snowBackground")
+    ->ErrorAwarePacketWriter.packByte(self.hallowBackground, "hallowBackground")
+    ->ErrorAwarePacketWriter.packByte(self.crimsonBackground, "crimsonBackground")
+    ->ErrorAwarePacketWriter.packByte(self.desertBackground, "desertBackground")
+    ->ErrorAwarePacketWriter.packByte(self.oceanBackground, "oceanBackground")
+    ->ErrorAwarePacketWriter.packByte(self.mushroomBackground, "mushroomBackground")
+    ->ErrorAwarePacketWriter.packByte(self.underworldBackground, "underworldBackground")
+    ->ErrorAwarePacketWriter.packByte(self.iceBackStyle, "iceBackStyle")
+    ->ErrorAwarePacketWriter.packByte(self.jungleBackStyle, "jungleBackStyle")
+    ->ErrorAwarePacketWriter.packByte(self.hellBackStyle, "hellBackStyle")
+    ->ErrorAwarePacketWriter.packSingle(self.windSpeedSet, "windSpeedSet")
+    ->ErrorAwarePacketWriter.packByte(self.cloudNumber, "cloudNumber")
+    ->ErrorAwarePacketWriter.packInt32(self.tree1, "tree1")
+    ->ErrorAwarePacketWriter.packInt32(self.tree2, "tree2")
+    ->ErrorAwarePacketWriter.packInt32(self.tree3, "tree3")
+    ->ErrorAwarePacketWriter.packByte(self.treeStyle1, "treeStyle1")
+    ->ErrorAwarePacketWriter.packByte(self.treeStyle2, "treeStyle2")
+    ->ErrorAwarePacketWriter.packByte(self.treeStyle3, "treeStyle3")
+    ->ErrorAwarePacketWriter.packByte(self.treeStyle4, "treeStyle4")
+    ->ErrorAwarePacketWriter.packInt32(self.caveBack1, "caveBack1")
+    ->ErrorAwarePacketWriter.packInt32(self.caveBack2, "caveBack2")
+    ->ErrorAwarePacketWriter.packInt32(self.caveBack3, "caveBack3")
+    ->ErrorAwarePacketWriter.packByte(self.caveBackStyle1, "caveBackStyle1")
+    ->ErrorAwarePacketWriter.packByte(self.caveBackStyle2, "caveBackStyle2")
+    ->ErrorAwarePacketWriter.packByte(self.caveBackStyle3, "caveBackStyle3")
+    ->ErrorAwarePacketWriter.packByte(self.caveBackStyle4, "caveBackStyle4")
+    ->ErrorAwarePacketWriter.packByte(self.forest1TreeTopStyle, "forest1TreeTopStyle")
+    ->ErrorAwarePacketWriter.packByte(self.forest2TreeTopStyle, "forest2TreeTopStyle")
+    ->ErrorAwarePacketWriter.packByte(self.forest3TreeTopStyle, "forest3TreeTopStyle")
+    ->ErrorAwarePacketWriter.packByte(self.forest4TreeTopStyle, "forest4TreeTopStyle")
+    ->ErrorAwarePacketWriter.packByte(self.corruptionTreeTopStyle, "corruptionTreeTopStyle")
+    ->ErrorAwarePacketWriter.packByte(self.jungleTreeTopStyle, "jungleTreeTopStyle")
+    ->ErrorAwarePacketWriter.packByte(self.snowTreeTopStyle, "snowTreeTopStyle")
+    ->ErrorAwarePacketWriter.packByte(self.hallowTreeTopStyle, "hallowTreeTopStyle")
+    ->ErrorAwarePacketWriter.packByte(self.crimsonTreeTopStyle, "crimsonTreeTopStyle")
+    ->ErrorAwarePacketWriter.packByte(self.desertTreeTopStyle, "desertTreeTopStyle")
+    ->ErrorAwarePacketWriter.packByte(self.oceanTreeTopStyle, "oceanTreeTopStyle")
+    ->ErrorAwarePacketWriter.packByte(
+      self.glowingMushroomTreeTopStyle,
+      "glowingMushroomTreeTopStyle",
+    )
+    ->ErrorAwarePacketWriter.packByte(self.underworldTreeTopStyle, "underworldTreeTopStyle")
+    ->ErrorAwarePacketWriter.packSingle(self.rain, "rain")
     ->packEventInfo(self.eventInfo)
-    ->ErrorAwarePacketWriter.packByte(self.sundialCooldown)
-    ->ErrorAwarePacketWriter.packByte(self.moondialCooldown)
-    ->ErrorAwarePacketWriter.packInt16(self.copperOreTier)
-    ->ErrorAwarePacketWriter.packInt16(self.ironOreTier)
-    ->ErrorAwarePacketWriter.packInt16(self.silverOreTier)
-    ->ErrorAwarePacketWriter.packInt16(self.goldOreTier)
-    ->ErrorAwarePacketWriter.packInt16(self.cobaltOreTier)
-    ->ErrorAwarePacketWriter.packInt16(self.mythrilOreTier)
-    ->ErrorAwarePacketWriter.packInt16(self.adamantiteOreTier)
-    ->ErrorAwarePacketWriter.packSByte(self.invasionType)
-    ->ErrorAwarePacketWriter.packUInt64(self.lobbyId)
-    ->ErrorAwarePacketWriter.packSingle(self.sandstormSeverity)
+    ->ErrorAwarePacketWriter.packByte(self.sundialCooldown, "sundialCooldown")
+    ->ErrorAwarePacketWriter.packByte(self.moondialCooldown, "moondialCooldown")
+    ->ErrorAwarePacketWriter.packInt16(self.copperOreTier, "copperOreTier")
+    ->ErrorAwarePacketWriter.packInt16(self.ironOreTier, "ironOreTier")
+    ->ErrorAwarePacketWriter.packInt16(self.silverOreTier, "silverOreTier")
+    ->ErrorAwarePacketWriter.packInt16(self.goldOreTier, "goldOreTier")
+    ->ErrorAwarePacketWriter.packInt16(self.cobaltOreTier, "cobaltOreTier")
+    ->ErrorAwarePacketWriter.packInt16(self.mythrilOreTier, "mythrilOreTier")
+    ->ErrorAwarePacketWriter.packInt16(self.adamantiteOreTier, "adamantiteOreTier")
+    ->ErrorAwarePacketWriter.packSByte(self.invasionType, "invasionType")
+    ->ErrorAwarePacketWriter.packUInt64(self.lobbyId, "lobbyId")
+    ->ErrorAwarePacketWriter.packSingle(self.sandstormSeverity, "sandstormSeverity")
     ->ErrorAwarePacketWriter.data
   }
 }

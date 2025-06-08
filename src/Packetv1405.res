@@ -1147,8 +1147,9 @@ let toBuffer = (packet: t, _fromServer: bool): option<NodeJs.Buffer.t> => {
 
 let serialize: ISerializer.serialize<t> = (~parsed: IParser.parsed<t>, ~fromServer: bool) =>
   switch parsed {
-  | IParser.ShouldSerialize(packet) => toBuffer(packet, fromServer)
-  | IParser.SerializeNotNecessary(_, buffer) => Some(buffer)
+  | IParser.ShouldSerialize(packet) =>
+    toBuffer(packet, fromServer)->Option.map(result => Ok(result))
+  | IParser.SerializeNotNecessary(_, buffer) => Some(Ok(buffer))
   }
 
 let serializeFromLatest: ISerializer.serialize<Packet.t> = (
@@ -1160,13 +1161,13 @@ let serializeFromLatest: ISerializer.serialize<Packet.t> = (
     switch fromLatest(packet, fromServer) {
     | Some(Same(packet))
     | Some(NotSame(packet)) =>
-      toBuffer(packet, fromServer)
+      toBuffer(packet, fromServer)->Option.map(result => Ok(result))
     | None => None
     }
   | IParser.SerializeNotNecessary(packet, buffer) =>
     switch fromLatest(packet, fromServer) {
-    | Some(Same(_packet)) => Some(buffer)
-    | Some(NotSame(packet)) => toBuffer(packet, fromServer)
+    | Some(Same(_packet)) => Some(Ok(buffer))
+    | Some(NotSame(packet)) => toBuffer(packet, fromServer)->Option.map(result => Ok(result))
     | None => None
     }
   }

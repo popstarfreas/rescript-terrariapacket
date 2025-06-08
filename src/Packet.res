@@ -592,51 +592,53 @@ module LazyPacket = {
   }
 }
 
-let toBuffer = (packet: t, _fromServer: bool): option<NodeJs.Buffer.t> => {
+let toBuffer = (packet: t, _fromServer: bool): option<
+  result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError>,
+> => {
   switch packet {
-  | ConnectRequest(connectRequest) => Some(ConnectRequest.toBuffer(connectRequest))
-  | Disconnect(disconnect) => Some(Disconnect.toBuffer(disconnect))
-  | PlayerSlotSet(playerSlotSet) => Some(PlayerSlotSet.toBuffer(playerSlotSet))
-  | PlayerInfo(playerInfo) => Some(PlayerInfo.toBuffer(playerInfo))
+  | ConnectRequest(connectRequest) => Some(Ok(ConnectRequest.toBuffer(connectRequest)))
+  | Disconnect(disconnect) => Some(Ok(Disconnect.toBuffer(disconnect)))
+  | PlayerSlotSet(playerSlotSet) => Some(Ok(PlayerSlotSet.toBuffer(playerSlotSet)))
+  | PlayerInfo(playerInfo) => Some(Ok(PlayerInfo.toBuffer(playerInfo)))
   | PlayerInventorySlot(playerInventorySlot) =>
-    Some(PlayerInventorySlot.toBuffer(playerInventorySlot))
-  | WorldDataRequest(worldDataRequest) => Some(WorldDataRequest.toBuffer(worldDataRequest))
+    Some(Ok(PlayerInventorySlot.toBuffer(playerInventorySlot)))
+  | WorldDataRequest(worldDataRequest) => Some(Ok(WorldDataRequest.toBuffer(worldDataRequest)))
   | WorldInfo(worldInfo) => Some(WorldInfo.toBuffer(worldInfo))
   | InitialTileSectionsRequest(initialTileSectionsRequest) =>
-    Some(InitialTileSectionsRequest.toBuffer(initialTileSectionsRequest))
-  | Status(status) => Some(Status.toBuffer(status))
-  | TileSectionSend(tileSectionSend) => Some(TileSectionSend.toBuffer(tileSectionSend))
-  | TileSectionFrame(tileSectionFrame) => Some(TileSectionFrame.toBuffer(tileSectionFrame))
-  | PlayerSpawn(playerSpawn) => Some(PlayerSpawn.toBuffer(playerSpawn))
-  | PlayerUpdate(playerUpdate) => Some(PlayerUpdate.toBuffer(playerUpdate))
-  | PlayerActive(playerActive) => Some(PlayerActive.toBuffer(playerActive))
-  | PlayerHealth(playerHealth) => Some(PlayerHealth.toBuffer(playerHealth))
-  | TileModify(tileModify) => Some(TileModify.toBuffer(tileModify))
+    Some(Ok(InitialTileSectionsRequest.toBuffer(initialTileSectionsRequest)))
+  | Status(status) => Some(Ok(Status.toBuffer(status)))
+  | TileSectionSend(tileSectionSend) => Some(Ok(TileSectionSend.toBuffer(tileSectionSend)))
+  | TileSectionFrame(tileSectionFrame) => Some(Ok(TileSectionFrame.toBuffer(tileSectionFrame)))
+  | PlayerSpawn(playerSpawn) => Some(Ok(PlayerSpawn.toBuffer(playerSpawn)))
+  | PlayerUpdate(playerUpdate) => Some(Ok(PlayerUpdate.toBuffer(playerUpdate)))
+  | PlayerActive(playerActive) => Some(Ok(PlayerActive.toBuffer(playerActive)))
+  | PlayerHealth(playerHealth) => Some(Ok(PlayerHealth.toBuffer(playerHealth)))
+  | TileModify(tileModify) => Some(Ok(TileModify.toBuffer(tileModify)))
   | TimeSet(_timeSet) => None
   | DoorUse(_doorUse) => None
-  | TileSquareSend(tileSquareSend) => Some(TileSquareSend.toBuffer(tileSquareSend))
-  | ItemDropUpdate(itemDropUpdate) => Some(ItemDropUpdate.toBuffer(itemDropUpdate))
-  | ItemOwner(itemOwner) => Some(ItemOwner.toBuffer(itemOwner))
-  | NpcUpdate(npcUpdate) => Some(NpcUpdate.toBuffer(npcUpdate))
+  | TileSquareSend(tileSquareSend) => Some(Ok(TileSquareSend.toBuffer(tileSquareSend)))
+  | ItemDropUpdate(itemDropUpdate) => Some(Ok(ItemDropUpdate.toBuffer(itemDropUpdate)))
+  | ItemOwner(itemOwner) => Some(Ok(ItemOwner.toBuffer(itemOwner)))
+  | NpcUpdate(npcUpdate) => Some(Ok(NpcUpdate.toBuffer(npcUpdate)))
   | NpcItemStrike(_npcItemStrike) => None
-  | ProjectileSync(projectileSync) => Some(ProjectileSync.toBuffer(projectileSync))
+  | ProjectileSync(projectileSync) => Some(Ok(ProjectileSync.toBuffer(projectileSync)))
   | NpcStrike(_npcStrike) => None
-  | ProjectileDestroy(projectileDestroy) => Some(ProjectileDestroy.toBuffer(projectileDestroy))
+  | ProjectileDestroy(projectileDestroy) => Some(Ok(ProjectileDestroy.toBuffer(projectileDestroy)))
   | PvpToggle(_pvpToggle) => None
   | ChestOpen(_chestOpen) => None
-  | ChestItem(chestItem) => Some(ChestItem.toBuffer(chestItem))
+  | ChestItem(chestItem) => Some(Ok(ChestItem.toBuffer(chestItem)))
   | ActiveContainerSync(activeContainerSync) =>
-    Some(ActiveContainerSync.toBuffer(activeContainerSync))
-  | ChestPlace(chestPlace) => Some(ChestPlace.toBuffer(chestPlace))
-  | HealEffect(healEffect) => Some(HealEffect.toBuffer(healEffect))
+    Some(Ok(ActiveContainerSync.toBuffer(activeContainerSync)))
+  | ChestPlace(chestPlace) => Some(Ok(ChestPlace.toBuffer(chestPlace)))
+  | HealEffect(healEffect) => Some(Ok(HealEffect.toBuffer(healEffect)))
   | Zones(_zones) => None
   | PasswordRequired(_passwordRequired) => None
   | PasswordSend(_passwordSend) => None
-  | ItemOwnerRemove(itemOwnerRemove) => Some(ItemOwnerRemove.toBuffer(itemOwnerRemove))
+  | ItemOwnerRemove(itemOwnerRemove) => Some(Ok(ItemOwnerRemove.toBuffer(itemOwnerRemove)))
   | NpcTalk(_npcTalk) => None
   | PlayerAnimation(_playerAnimation) => None
-  | PlayerMana(playerMana) => Some(PlayerMana.toBuffer(playerMana))
-  | ManaEffect(manaEffect) => Some(ManaEffect.toBuffer(manaEffect))
+  | PlayerMana(playerMana) => Some(Ok(PlayerMana.toBuffer(playerMana)))
+  | ManaEffect(manaEffect) => Some(Ok(ManaEffect.toBuffer(manaEffect)))
   | PlayerTeam(_playerTeam) => None
   | SignRead(_signRead) => None
   | SignNew(_signNew) => None
@@ -659,7 +661,7 @@ let toBuffer = (packet: t, _fromServer: bool): option<NodeJs.Buffer.t> => {
   | WallPaint(_wallPaint) => None
   | Teleport(_teleport) => None
   | PlayerHealOther(_playerHealOther) => None
-  | DimensionsUpdate(dimensionsUpdate) => Some(DimensionsUpdate.toBuffer(dimensionsUpdate))
+  | DimensionsUpdate(dimensionsUpdate) => Some(Ok(DimensionsUpdate.toBuffer(dimensionsUpdate)))
   | ClientUuid(_clientUuid) => None
   | ChestName(_chestName) => None
   | NpcCatch(_catchNpc) => None
@@ -674,7 +676,7 @@ let toBuffer = (packet: t, _fromServer: bool): option<NodeJs.Buffer.t> => {
   | ObjectPlace(_objectPlace) => None
   | PlayerChestIndexSync(_playerChestIndexSync) => None
   | CombatNumberCreate(_combatNumberCreate) => None
-  | NetModuleLoad(netModuleLoad) => Some(NetModuleLoad.toBuffer(netModuleLoad))
+  | NetModuleLoad(netModuleLoad) => Some(Ok(NetModuleLoad.toBuffer(netModuleLoad)))
   | NpcKillCount(_npcKillCount) => None
   | PlayerStealth(_playerStealth) => None
   | ItemForceIntoNearestChest(_itemForceIntoNearestChest) => None
@@ -723,7 +725,7 @@ let toBuffer = (packet: t, _fromServer: bool): option<NodeJs.Buffer.t> => {
   | GolfBallLandInCup(_golfBallLandInCup) => None
   | ClientFinishConnectingToServer(_clientFinishConnectingToServer) => None
   | NpcFishOut(_npcFishOut) => None
-  | NpcTamper(npcTamper) => Some(NpcTamper.toBuffer(npcTamper))
+  | NpcTamper(npcTamper) => Some(Ok(NpcTamper.toBuffer(npcTamper)))
   | LegacySoundPlay(_legacySoundPlay) => None
   | FoodPlatterTryPlacing(_foodPlatterTryPlacing) => None
   | PlayerLuckFactorsUpdate(_playerLuckFactorsUpdate) => None
@@ -733,28 +735,28 @@ let toBuffer = (packet: t, _fromServer: bool): option<NodeJs.Buffer.t> => {
   | ClientSyncedInventory(_clientSyncedInventory) => None
   | CountsAsHostForGameplaySet(_countsAsHostForGameplaySet) => None
   | CreditsOrSlimeTransform(creditsOrSlimeTransform) =>
-    Some(CreditsOrSlimeTransform.toBuffer(creditsOrSlimeTransform))
-  | LucyAxeMessage(lucyAxeMessage) => Some(LucyAxeMessage.toBuffer(lucyAxeMessage))
+    Some(Ok(CreditsOrSlimeTransform.toBuffer(creditsOrSlimeTransform)))
+  | LucyAxeMessage(lucyAxeMessage) => Some(Ok(LucyAxeMessage.toBuffer(lucyAxeMessage)))
   | PiggyBankVoidLensUpdate(piggyBankVoidLensUpdate) =>
-    Some(PiggyBankVoidLensUpdate.toBuffer(piggyBankVoidLensUpdate))
+    Some(Ok(PiggyBankVoidLensUpdate.toBuffer(piggyBankVoidLensUpdate)))
   | DungeonDefendersEventAttemptSkipWait(dungeonDefendersEventAttemptSkipWait) =>
-    Some(DungeonDefendersEventAttemptSkipWait.toBuffer(dungeonDefendersEventAttemptSkipWait))
+    Some(Ok(DungeonDefendersEventAttemptSkipWait.toBuffer(dungeonDefendersEventAttemptSkipWait)))
   | HaveDryadDoStardewAnimation(haveDryadDoStardewAnimation) =>
-    Some(HaveDryadDoStardewAnimation.toBuffer(haveDryadDoStardewAnimation))
+    Some(Ok(HaveDryadDoStardewAnimation.toBuffer(haveDryadDoStardewAnimation)))
   | ItemDropShimmeredUpdate(itemDropShimmeredUpdate) =>
-    Some(ItemDropShimmeredUpdate.toBuffer(itemDropShimmeredUpdate))
+    Some(Ok(ItemDropShimmeredUpdate.toBuffer(itemDropShimmeredUpdate)))
   | ShimmerEffectOrCoinLuck(shimmerEffectOrCoinLuck) =>
-    Some(ShimmerEffectOrCoinLuck.toBuffer(shimmerEffectOrCoinLuck))
-  | LoadoutSwitch(loadoutSwitch) => Some(LoadoutSwitch.toBuffer(loadoutSwitch))
+    Some(Ok(ShimmerEffectOrCoinLuck.toBuffer(shimmerEffectOrCoinLuck)))
+  | LoadoutSwitch(loadoutSwitch) => Some(Ok(LoadoutSwitch.toBuffer(loadoutSwitch)))
   | ItemDropProtectedUpdate(itemDropProtectedUpdate) =>
-    Some(ItemDropProtectedUpdate.toBuffer(itemDropProtectedUpdate))
+    Some(Ok(ItemDropProtectedUpdate.toBuffer(itemDropProtectedUpdate)))
   }
 }
 
 let serialize: ISerializer.serialize<t> = (~parsed: IParser.parsed<t>, ~fromServer: bool) =>
   switch parsed {
   | IParser.ShouldSerialize(packet) => toBuffer(packet, fromServer)
-  | IParser.SerializeNotNecessary(_, buffer) => Some(buffer)
+  | IParser.SerializeNotNecessary(_, buffer) => Some(Ok(buffer))
   }
 
 let toPacketName = (packet: t): string => {

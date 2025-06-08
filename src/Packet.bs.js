@@ -347,87 +347,207 @@ var LazyPacket = {
 function toBuffer(packet, _fromServer) {
   switch (packet.TAG) {
     case "ConnectRequest" :
-        return Packet_ConnectRequest$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_ConnectRequest$TerrariaPacket.toBuffer(packet._0)
+              };
     case "Disconnect" :
-        return Packet_Disconnect$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_Disconnect$TerrariaPacket.toBuffer(packet._0)
+              };
     case "PlayerSlotSet" :
-        return Packet_PlayerSlotSet$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_PlayerSlotSet$TerrariaPacket.toBuffer(packet._0)
+              };
     case "PlayerInfo" :
-        return Packet_PlayerInfo$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_PlayerInfo$TerrariaPacket.toBuffer(packet._0)
+              };
     case "PlayerInventorySlot" :
-        return Packet_PlayerInventorySlot$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_PlayerInventorySlot$TerrariaPacket.toBuffer(packet._0)
+              };
     case "WorldDataRequest" :
-        return Packet_WorldDataRequest$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_WorldDataRequest$TerrariaPacket.toBuffer(packet._0)
+              };
     case "WorldInfo" :
         return Packet_WorldInfo$TerrariaPacket.toBuffer(packet._0);
     case "InitialTileSectionsRequest" :
-        return Packet_InitialTileSectionsRequest$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_InitialTileSectionsRequest$TerrariaPacket.toBuffer(packet._0)
+              };
     case "Status" :
-        return Packet_Status$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_Status$TerrariaPacket.toBuffer(packet._0)
+              };
     case "TileSectionSend" :
-        return Packet_TileSectionSend$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_TileSectionSend$TerrariaPacket.toBuffer(packet._0)
+              };
     case "TileSectionFrame" :
-        return Packet_TileSectionFrame$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_TileSectionFrame$TerrariaPacket.toBuffer(packet._0)
+              };
     case "PlayerSpawn" :
-        return Packet_PlayerSpawn$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_PlayerSpawn$TerrariaPacket.toBuffer(packet._0)
+              };
     case "PlayerUpdate" :
-        return Packet_PlayerUpdate$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_PlayerUpdate$TerrariaPacket.toBuffer(packet._0)
+              };
     case "PlayerActive" :
-        return Packet_PlayerActive$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_PlayerActive$TerrariaPacket.toBuffer(packet._0)
+              };
     case "PlayerHealth" :
-        return Packet_PlayerHealth$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_PlayerHealth$TerrariaPacket.toBuffer(packet._0)
+              };
     case "TileModify" :
-        return Packet_TileModify$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_TileModify$TerrariaPacket.toBuffer(packet._0)
+              };
     case "TileSquareSend" :
-        return Packet_TileSquareSend$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_TileSquareSend$TerrariaPacket.toBuffer(packet._0)
+              };
     case "ItemDropUpdate" :
-        return Packet_ItemDropUpdate$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_ItemDropUpdate$TerrariaPacket.toBuffer(packet._0)
+              };
     case "ItemOwner" :
-        return Packet_ItemOwner$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_ItemOwner$TerrariaPacket.toBuffer(packet._0)
+              };
     case "NpcUpdate" :
-        return Packet_NpcUpdate$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_NpcUpdate$TerrariaPacket.toBuffer(packet._0)
+              };
     case "ProjectileSync" :
-        return Packet_ProjectileSync$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_ProjectileSync$TerrariaPacket.toBuffer(packet._0)
+              };
     case "ProjectileDestroy" :
-        return Packet_ProjectileDestroy$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_ProjectileDestroy$TerrariaPacket.toBuffer(packet._0)
+              };
     case "ChestItem" :
-        return Packet_ChestItem$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_ChestItem$TerrariaPacket.toBuffer(packet._0)
+              };
     case "ActiveContainerSync" :
-        return Packet_ActiveContainerSync$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_ActiveContainerSync$TerrariaPacket.toBuffer(packet._0)
+              };
     case "ChestPlace" :
-        return Packet_ChestPlace$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_ChestPlace$TerrariaPacket.toBuffer(packet._0)
+              };
     case "HealEffect" :
-        return Packet_HealEffect$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_HealEffect$TerrariaPacket.toBuffer(packet._0)
+              };
     case "ItemOwnerRemove" :
-        return Packet_ItemOwnerRemove$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_ItemOwnerRemove$TerrariaPacket.toBuffer(packet._0)
+              };
     case "PlayerMana" :
-        return Packet_PlayerMana$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_PlayerMana$TerrariaPacket.toBuffer(packet._0)
+              };
     case "ManaEffect" :
-        return Packet_ManaEffect$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_ManaEffect$TerrariaPacket.toBuffer(packet._0)
+              };
     case "DimensionsUpdate" :
-        return Packet_DimensionsUpdate$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_DimensionsUpdate$TerrariaPacket.toBuffer(packet._0)
+              };
     case "NetModuleLoad" :
-        return Packet_NetModuleLoad$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_NetModuleLoad$TerrariaPacket.toBuffer(packet._0)
+              };
     case "NpcTamper" :
-        return Packet_NpcTamper$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_NpcTamper$TerrariaPacket.toBuffer(packet._0)
+              };
     case "CreditsOrSlimeTransform" :
-        return Packet_CreditsOrSlimeTransform$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_CreditsOrSlimeTransform$TerrariaPacket.toBuffer(packet._0)
+              };
     case "LucyAxeMessage" :
-        return Packet_LucyAxeMessage$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_LucyAxeMessage$TerrariaPacket.toBuffer(packet._0)
+              };
     case "PiggyBankVoidLensUpdate" :
-        return Packet_PiggyBankVoidLensUpdate$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_PiggyBankVoidLensUpdate$TerrariaPacket.toBuffer(packet._0)
+              };
     case "DungeonDefendersEventAttemptSkipWait" :
-        return Packet_DungeonDefendersEventAttemptSkipWait$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_DungeonDefendersEventAttemptSkipWait$TerrariaPacket.toBuffer(packet._0)
+              };
     case "HaveDryadDoStardewAnimation" :
-        return Packet_HaveDryadDoStardewAnimation$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_HaveDryadDoStardewAnimation$TerrariaPacket.toBuffer(packet._0)
+              };
     case "ItemDropShimmeredUpdate" :
-        return Packet_ItemDropShimmeredUpdate$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_ItemDropShimmeredUpdate$TerrariaPacket.toBuffer(packet._0)
+              };
     case "ShimmerEffectOrCoinLuck" :
-        return Packet_ShimmerEffectOrCoinLuck$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_ShimmerEffectOrCoinLuck$TerrariaPacket.toBuffer(packet._0)
+              };
     case "LoadoutSwitch" :
-        return Packet_LoadoutSwitch$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_LoadoutSwitch$TerrariaPacket.toBuffer(packet._0)
+              };
     case "ItemDropProtectedUpdate" :
-        return Packet_ItemDropProtectedUpdate$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_ItemDropProtectedUpdate$TerrariaPacket.toBuffer(packet._0)
+              };
     default:
       return ;
   }
@@ -437,7 +557,10 @@ function serialize(parsed, fromServer) {
   if (parsed.TAG === "ShouldSerialize") {
     return toBuffer(parsed._0, fromServer);
   } else {
-    return parsed._1;
+    return {
+            TAG: "Ok",
+            _0: parsed._1
+          };
   }
 }
 
