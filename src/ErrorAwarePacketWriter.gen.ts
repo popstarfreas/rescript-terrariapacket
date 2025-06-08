@@ -9,7 +9,7 @@ import type {BigInt_t as NodeJs_BigInt_t} from '../src/shims/NodeJs.shim';
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../src/shims/NodeJs.shim';
 
-import type {t as Exn_t} from './Exn.gen';
+import type {t as Exn_t} from '../src/shims/Exn.shim';
 
 export abstract class untypedT { protected opaque!: any }; /* simulate opaque types */
 
