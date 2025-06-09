@@ -32,7 +32,7 @@ export type CreativePower =
 
 export function toString(data: CreativePower): string;
 
-export type CreativePowerType_t =
+export type CreativePowerType =
   | "FreezeTime"
   | "StartDayImmediately"
   | "StartNoonImmediately"
@@ -49,9 +49,9 @@ export type CreativePowerType_t =
   | "StopBiomeSpreadPower"
   | "SpawnRateSliderPerPlayerPower";
 
-export function CreativePowerType_toString(data: CreativePowerType_t): string;
-export function CreativePowerType_fromInt(value: number): CreativePowerType_t | undefined;
-export function CreativePowerType_toInt(data: CreativePowerType_t): number;
+export function CreativePowerType_toString(data: CreativePowerType): string;
+export function CreativePowerType_fromInt(value: number): CreativePowerType | undefined;
+export function CreativePowerType_toInt(data: CreativePowerType): number;
 
 export function pack(writer: ErrorAwarePacketWriter, data: CreativePower): ErrorAwarePacketWriter;
 export function parse(reader: PacketReader): CreativePower | undefined;
