@@ -1,9 +1,3 @@
-import { ErrorAwarePacketWriter } from "./ErrorAwarePacketWriter";
-
-// Placeholder for PacketReader type. Replace with actual import if available.
-// import { PacketReader } from "./PacketReader"; // Example import
-type PacketReader = any;
-
 export type PerPlayerSliderPower = {
   readonly playerId: number;
   readonly value: number;
@@ -15,10 +9,10 @@ export type PerPlayerTogglePower =
 
 export type CreativePower =
   | { readonly TAG: "FreezeTime"; readonly _0: boolean }
-  | { readonly TAG: "StartDayImmediately" }
-  | { readonly TAG: "StartNoonImmediately" }
-  | { readonly TAG: "StartNightImmediately" }
-  | { readonly TAG: "StartMidnightImmediately" }
+  | "StartDayImmediately"
+  | "StartNoonImmediately"
+  | "StartNightImmediately"
+  | "StartMidnightImmediately"
   | { readonly TAG: "GodmodePower"; readonly _0: PerPlayerTogglePower }
   | { readonly TAG: "ModifyWindDirectionAndStrength"; readonly _0: number }
   | { readonly TAG: "ModifyRainPower"; readonly _0: number }
@@ -49,9 +43,8 @@ export type CreativePowerType =
   | "StopBiomeSpreadPower"
   | "SpawnRateSliderPerPlayerPower";
 
-export function CreativePowerType_toString(data: CreativePowerType): string;
-export function CreativePowerType_fromInt(value: number): CreativePowerType | undefined;
-export function CreativePowerType_toInt(data: CreativePowerType): number;
-
-export function pack(writer: ErrorAwarePacketWriter, data: CreativePower): ErrorAwarePacketWriter;
-export function parse(reader: PacketReader): CreativePower | undefined;
+export declare const CreativePowerType: {
+  toString: (data: CreativePowerType) => string;
+  fromInt: (value: number) => CreativePowerType | undefined;
+  toInt: (data: CreativePowerType) => number;
+};

@@ -28,7 +28,7 @@ export type eventInfo = {
   readonly killedAncientCultist: boolean;
   readonly killedMoonLord: boolean;
   readonly killedPumpking: boolean;
-  readonly killedMounringWood: boolean; // Assuming MounringWood is a typo for MourningWood
+  readonly killedMourningWood: boolean;
   readonly killedIceQueen: boolean;
   readonly killedSantank: boolean;
   readonly killedEverscream: boolean;
