@@ -19,15 +19,12 @@ module PerPlayerSliderPower = {
       )} }`
 
   module Encode = {
-    let {packByte, packSingle} = module(PacketFactory.ManagedPacketWriter)
+    let {packByte, packSingle} = module(ErrorAwarePacketWriter)
 
-    let pack = (
-      writer: PacketFactory.ManagedPacketWriter.t,
-      self: t,
-    ): PacketFactory.ManagedPacketWriter.t => {
+    let pack = (writer: ErrorAwarePacketWriter.t, self: t): ErrorAwarePacketWriter.t => {
       writer
-      ->packByte(self.playerId)
-      ->packSingle(self.value)
+      ->packByte(self.playerId, "playerId")
+      ->packSingle(self.value, "value")
     }
   }
 
@@ -61,12 +58,12 @@ module PerPlayerTogglePower = {
   }
 
   module Encode = {
-    let {packByte, packBytes} = module(PacketFactory.ManagedPacketWriter)
+    let {packByte, packBytes} = module(ErrorAwarePacketWriter)
 
     let everyoneToWriter = (
-      writer: PacketFactory.ManagedPacketWriter.t,
+      writer: ErrorAwarePacketWriter.t,
       values: array<bool>,
-    ): PacketFactory.ManagedPacketWriter.t => {
+    ): ErrorAwarePacketWriter.t => {
       // Each group of 8 flags is encoded into 1 byte
       // (except the last group will be 7 flags)
       let bytes =
@@ -76,25 +73,22 @@ module PerPlayerTogglePower = {
         ->Array.map(BitFlags.toByte)
 
       writer
-      ->packByte(0)
-      ->packBytes(bytes)
+      ->packByte(0, "everyoneType")
+      ->packBytes(bytes, "everyoneValues")
     }
 
     let playerToWriter = (
-      writer: PacketFactory.ManagedPacketWriter.t,
+      writer: ErrorAwarePacketWriter.t,
       playerId: int,
       value: bool,
-    ): PacketFactory.ManagedPacketWriter.t => {
+    ): ErrorAwarePacketWriter.t => {
       writer
-      ->packByte(1)
-      ->packByte(playerId)
-      ->packByte(value ? 1 : 0)
+      ->packByte(1, "playerType")
+      ->packByte(playerId, "playerId")
+      ->packByte(value ? 1 : 0, "playerValue")
     }
 
-    let pack = (
-      writer: PacketFactory.ManagedPacketWriter.t,
-      self: t,
-    ): PacketFactory.ManagedPacketWriter.t => {
+    let pack = (writer: ErrorAwarePacketWriter.t, self: t): ErrorAwarePacketWriter.t => {
       switch self {
       | Everyone(values) => everyoneToWriter(writer, values)
       | Player(playerId, value) => playerToWriter(writer, playerId, value)
@@ -256,135 +250,162 @@ module CreativePowerType = {
 }
 
 module Encode = {
-  let {packByte, packUInt16, packSingle} = module(PacketFactory.ManagedPacketWriter)
+  let {packByte, packUInt16, packSingle} = module(ErrorAwarePacketWriter)
 
   let freezeTimeToWriter = (
-    writer: PacketFactory.ManagedPacketWriter.t,
+    writer: ErrorAwarePacketWriter.t,
     value: bool,
-  ): PacketFactory.ManagedPacketWriter.t => {
+  ): ErrorAwarePacketWriter.t => {
     writer
-    ->packUInt16(CreativePowerType.FreezeTime->CreativePowerType.toInt)
-    ->packByte(value ? 1 : 0)
+    ->packUInt16(CreativePowerType.FreezeTime->CreativePowerType.toInt, "freezeTimeType")
+    ->packByte(value ? 1 : 0, "freezeTimeValue")
   }
 
   let startDayImmediatelyToWriter = (
-    writer: PacketFactory.ManagedPacketWriter.t,
-  ): PacketFactory.ManagedPacketWriter.t => {
-    writer->packUInt16(CreativePowerType.StartDayImmediately->CreativePowerType.toInt)
+    writer: ErrorAwarePacketWriter.t,
+  ): ErrorAwarePacketWriter.t => {
+    writer->packUInt16(
+      CreativePowerType.StartDayImmediately->CreativePowerType.toInt,
+      "startDayImmediatelyType",
+    )
   }
 
   let startNoonImmediatelyToWriter = (
-    writer: PacketFactory.ManagedPacketWriter.t,
-  ): PacketFactory.ManagedPacketWriter.t => {
-    writer->packUInt16(CreativePowerType.StartNoonImmediately->CreativePowerType.toInt)
+    writer: ErrorAwarePacketWriter.t,
+  ): ErrorAwarePacketWriter.t => {
+    writer->packUInt16(
+      CreativePowerType.StartNoonImmediately->CreativePowerType.toInt,
+      "startNoonImmediatelyType",
+    )
   }
 
   let startNightImmediatelyToWriter = (
-    writer: PacketFactory.ManagedPacketWriter.t,
-  ): PacketFactory.ManagedPacketWriter.t => {
-    writer->packUInt16(CreativePowerType.StartNightImmediately->CreativePowerType.toInt)
+    writer: ErrorAwarePacketWriter.t,
+  ): ErrorAwarePacketWriter.t => {
+    writer->packUInt16(
+      CreativePowerType.StartNightImmediately->CreativePowerType.toInt,
+      "startNightImmediatelyType",
+    )
   }
 
   let startMidnightImmediatelyToWriter = (
-    writer: PacketFactory.ManagedPacketWriter.t,
-  ): PacketFactory.ManagedPacketWriter.t => {
-    writer->packUInt16(CreativePowerType.StartMidnightImmediately->CreativePowerType.toInt)
+    writer: ErrorAwarePacketWriter.t,
+  ): ErrorAwarePacketWriter.t => {
+    writer->packUInt16(
+      CreativePowerType.StartMidnightImmediately->CreativePowerType.toInt,
+      "startMidnightImmediatelyType",
+    )
   }
 
   let godmodePowerToWriter = (
-    writer: PacketFactory.ManagedPacketWriter.t,
+    writer: ErrorAwarePacketWriter.t,
     message: PerPlayerTogglePower.t,
-  ): PacketFactory.ManagedPacketWriter.t => {
+  ): ErrorAwarePacketWriter.t => {
     writer
-    ->packUInt16(CreativePowerType.GodmodePower->CreativePowerType.toInt)
+    ->packUInt16(CreativePowerType.GodmodePower->CreativePowerType.toInt, "godmodePowerType")
     ->PerPlayerTogglePower.pack(message)
   }
 
   let modifyWindDirectionAndStrengthToWriter = (
-    writer: PacketFactory.ManagedPacketWriter.t,
+    writer: ErrorAwarePacketWriter.t,
     value: float,
-  ): PacketFactory.ManagedPacketWriter.t => {
+  ): ErrorAwarePacketWriter.t => {
     writer
-    ->packUInt16(CreativePowerType.ModifyWindDirectionAndStrength->CreativePowerType.toInt)
-    ->packSingle(value)
+    ->packUInt16(
+      CreativePowerType.ModifyWindDirectionAndStrength->CreativePowerType.toInt,
+      "modifyWindDirectionAndStrengthType",
+    )
+    ->packSingle(value, "modifyWindDirectionAndStrengthValue")
   }
 
   let modifyRainPowerToWriter = (
-    writer: PacketFactory.ManagedPacketWriter.t,
+    writer: ErrorAwarePacketWriter.t,
     value: float,
-  ): PacketFactory.ManagedPacketWriter.t => {
+  ): ErrorAwarePacketWriter.t => {
     writer
-    ->packUInt16(CreativePowerType.ModifyRainPower->CreativePowerType.toInt)
-    ->packSingle(value)
+    ->packUInt16(CreativePowerType.ModifyRainPower->CreativePowerType.toInt, "modifyRainPowerType")
+    ->packSingle(value, "modifyRainPowerValue")
   }
 
   let modifyTimeRateToWriter = (
-    writer: PacketFactory.ManagedPacketWriter.t,
+    writer: ErrorAwarePacketWriter.t,
     value: float,
-  ): PacketFactory.ManagedPacketWriter.t => {
+  ): ErrorAwarePacketWriter.t => {
     writer
-    ->packUInt16(CreativePowerType.ModifyTimeRate->CreativePowerType.toInt)
-    ->packSingle(value)
+    ->packUInt16(CreativePowerType.ModifyTimeRate->CreativePowerType.toInt, "modifyTimeRateType")
+    ->packSingle(value, "modifyTimeRateValue")
   }
 
   let freezeRainPowerToWriter = (
-    writer: PacketFactory.ManagedPacketWriter.t,
+    writer: ErrorAwarePacketWriter.t,
     on: bool,
-  ): PacketFactory.ManagedPacketWriter.t => {
+  ): ErrorAwarePacketWriter.t => {
     writer
-    ->packUInt16(CreativePowerType.FreezeRainPower->CreativePowerType.toInt)
-    ->packByte(on ? 1 : 0)
+    ->packUInt16(CreativePowerType.FreezeRainPower->CreativePowerType.toInt, "freezeRainPowerType")
+    ->packByte(on ? 1 : 0, "freezeRainPowerValue")
   }
 
   let freezeWindDirectionAndStrengthToWriter = (
-    writer: PacketFactory.ManagedPacketWriter.t,
+    writer: ErrorAwarePacketWriter.t,
     on: bool,
-  ): PacketFactory.ManagedPacketWriter.t => {
+  ): ErrorAwarePacketWriter.t => {
     writer
-    ->packUInt16(CreativePowerType.FreezeWindDirectionAndStrength->CreativePowerType.toInt)
-    ->packByte(on ? 1 : 0)
+    ->packUInt16(
+      CreativePowerType.FreezeWindDirectionAndStrength->CreativePowerType.toInt,
+      "freezeWindDirectionAndStrengthType",
+    )
+    ->packByte(on ? 1 : 0, "freezeWindDirectionAndStrengthValue")
   }
 
   let farPlacementRangePowerToWriter = (
-    writer: PacketFactory.ManagedPacketWriter.t,
+    writer: ErrorAwarePacketWriter.t,
     message: PerPlayerTogglePower.t,
-  ): PacketFactory.ManagedPacketWriter.t => {
+  ): ErrorAwarePacketWriter.t => {
     writer
-    ->packUInt16(CreativePowerType.FarPlacementRangePower->CreativePowerType.toInt)
+    ->packUInt16(
+      CreativePowerType.FarPlacementRangePower->CreativePowerType.toInt,
+      "farPlacementRangePowerType",
+    )
     ->PerPlayerTogglePower.pack(message)
   }
 
   let difficultySliderPowerToWriter = (
-    writer: PacketFactory.ManagedPacketWriter.t,
+    writer: ErrorAwarePacketWriter.t,
     value: float,
-  ): PacketFactory.ManagedPacketWriter.t => {
+  ): ErrorAwarePacketWriter.t => {
     writer
-    ->packUInt16(CreativePowerType.DifficultySliderPower->CreativePowerType.toInt)
-    ->packSingle(value)
+    ->packUInt16(
+      CreativePowerType.DifficultySliderPower->CreativePowerType.toInt,
+      "difficultySliderPowerType",
+    )
+    ->packSingle(value, "difficultySliderPowerValue")
   }
 
   let stopBiomeSpreadPowerToWriter = (
-    writer: PacketFactory.ManagedPacketWriter.t,
+    writer: ErrorAwarePacketWriter.t,
     on: bool,
-  ): PacketFactory.ManagedPacketWriter.t => {
+  ): ErrorAwarePacketWriter.t => {
     writer
-    ->packUInt16(CreativePowerType.StopBiomeSpreadPower->CreativePowerType.toInt)
-    ->packByte(on ? 1 : 0)
+    ->packUInt16(
+      CreativePowerType.StopBiomeSpreadPower->CreativePowerType.toInt,
+      "stopBiomeSpreadPowerType",
+    )
+    ->packByte(on ? 1 : 0, "stopBiomeSpreadPowerValue")
   }
 
   let spawnRateSliderPerPlayerPowerToWriter = (
-    writer: PacketFactory.ManagedPacketWriter.t,
+    writer: ErrorAwarePacketWriter.t,
     message: PerPlayerSliderPower.t,
-  ): PacketFactory.ManagedPacketWriter.t => {
+  ): ErrorAwarePacketWriter.t => {
     writer
-    ->packUInt16(CreativePowerType.SpawnRateSliderPerPlayerPower->CreativePowerType.toInt)
+    ->packUInt16(
+      CreativePowerType.SpawnRateSliderPerPlayerPower->CreativePowerType.toInt,
+      "spawnRateSliderPerPlayerPowerType",
+    )
     ->PerPlayerSliderPower.pack(message)
   }
 
-  let pack = (
-    writer: PacketFactory.ManagedPacketWriter.t,
-    self: t,
-  ): PacketFactory.ManagedPacketWriter.t => {
+  let pack = (writer: ErrorAwarePacketWriter.t, self: t): ErrorAwarePacketWriter.t => {
     switch self {
     | FreezeTime(value) => freezeTimeToWriter(writer, value)
     | StartDayImmediately => startDayImmediatelyToWriter(writer)

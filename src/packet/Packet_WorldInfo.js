@@ -46,7 +46,7 @@ function readEventInfo(reader) {
   var killedAncientCultist = BitFlags$TerrariaPacket.flag8(eventInfo3);
   var killedMoonLord = BitFlags$TerrariaPacket.flag1(eventInfo4);
   var killedPumpking = BitFlags$TerrariaPacket.flag2(eventInfo4);
-  var killedMounringWood = BitFlags$TerrariaPacket.flag3(eventInfo4);
+  var killedMourningWood = BitFlags$TerrariaPacket.flag3(eventInfo4);
   var killedIceQueen = BitFlags$TerrariaPacket.flag4(eventInfo4);
   var killedSantank = BitFlags$TerrariaPacket.flag5(eventInfo4);
   var killedEverscream = BitFlags$TerrariaPacket.flag6(eventInfo4);
@@ -122,7 +122,7 @@ function readEventInfo(reader) {
           killedAncientCultist: killedAncientCultist,
           killedMoonLord: killedMoonLord,
           killedPumpking: killedPumpking,
-          killedMounringWood: killedMounringWood,
+          killedMourningWood: killedMourningWood,
           killedIceQueen: killedIceQueen,
           killedSantank: killedSantank,
           killedEverscream: killedEverscream,
@@ -334,7 +334,7 @@ function packEventInfo(writer, eventInfo) {
   var eventInfo1 = BitFlags$TerrariaPacket.fromFlags(eventInfo.shadowOrbSmashed, eventInfo.killedBoss1, eventInfo.killedBoss2, eventInfo.killedBoss3, eventInfo.hardMode, eventInfo.killedClown, eventInfo.serverSidedCharacters, eventInfo.killedPlantBoss);
   var eventInfo2 = BitFlags$TerrariaPacket.fromFlags(eventInfo.killedMechBoss, eventInfo.killedMechBoss2, eventInfo.killedMechBoss3, eventInfo.killedAnyMechBoss, eventInfo.cloudBg, eventInfo.crimson, eventInfo.pumpkinMoon, eventInfo.snowMoon);
   var eventInfo3 = BitFlags$TerrariaPacket.fromFlags(eventInfo.expertMode, eventInfo.fastForwardTime, eventInfo.slimeRain, eventInfo.killedKingSlime, eventInfo.killedQueenBee, eventInfo.killedFishron, eventInfo.killedMartians, eventInfo.killedAncientCultist);
-  var eventInfo4 = BitFlags$TerrariaPacket.fromFlags(eventInfo.killedMoonLord, eventInfo.killedPumpking, eventInfo.killedMounringWood, eventInfo.killedIceQueen, eventInfo.killedSantank, eventInfo.killedEverscream, eventInfo.killedGolem, eventInfo.birthdayParty);
+  var eventInfo4 = BitFlags$TerrariaPacket.fromFlags(eventInfo.killedMoonLord, eventInfo.killedPumpking, eventInfo.killedMourningWood, eventInfo.killedIceQueen, eventInfo.killedSantank, eventInfo.killedEverscream, eventInfo.killedGolem, eventInfo.birthdayParty);
   var eventInfo5 = BitFlags$TerrariaPacket.fromFlags(eventInfo.killedPirates, eventInfo.killedFrostLegion, eventInfo.killedGoblins, eventInfo.sandstorm, eventInfo.dungeonDefendersEvent, eventInfo.killedDungeonDefendersTier1, eventInfo.killedDungeonDefendersTier2, eventInfo.killedDungeonDefendersTier3);
   var eventInfo6 = BitFlags$TerrariaPacket.fromFlags(eventInfo.combatBookUsed, eventInfo.manualLanterns, eventInfo.killedSolarTower, eventInfo.killedVortexTower, eventInfo.killedNebulaTower, eventInfo.killedStardustTower, eventInfo.forceHalloween, eventInfo.forceChristmas);
   var eventInfo7 = BitFlags$TerrariaPacket.fromFlags(eventInfo.boughtCat, eventInfo.boughtDog, eventInfo.boughtBunny, eventInfo.freeCake, eventInfo.drunkWorld, eventInfo.killedEmpressOfLight, eventInfo.killedQueenSlime, eventInfo.getGoodWorld);

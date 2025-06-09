@@ -42,21 +42,21 @@ type t = {
 }
 
 module Decode = {
-  let {readInt16, readUInt16, readByte} = module(PacketFactory.PacketReader)
+  let {readInt16, readUInt16, readByte} = module(ErrorAwarePacketReader)
   let parse = (payload: NodeJs.Buffer.t) => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let tileX = reader->readInt16
-    let tileY = reader->readInt16
-    let width = reader->readByte
-    let height = reader->readByte
-    let changeType = reader->readByte
+    let tileX = reader->readInt16("tileX")
+    let tileY = reader->readInt16("tileY")
+    let width = reader->readByte("width")
+    let height = reader->readByte("height")
+    let changeType = reader->readByte("changeType")
     let tiles: array<array<tile>> = []
     for _x in 0 to width - 1 {
       let column: array<tile> = []
       for _y in 0 to height - 1 {
-        let flags1 = reader->readByte->BitFlags.fromByte
-        let flags2 = reader->readByte->BitFlags.fromByte
-        let flags3 = reader->readByte
+        let flags1 = reader->readByte("flags1")->BitFlags.fromByte
+        let flags2 = reader->readByte("flags2")->BitFlags.fromByte
+        let flags3 = reader->readByte("flags3") // coatHeader
         let active = flags1->BitFlags.flag1
         let hasWall = flags1->BitFlags.flag3
         let hasLiquid = flags1->BitFlags.flag4
@@ -67,21 +67,21 @@ module Decode = {
         let wire2 = flags2->BitFlags.flag1
         let wire3 = flags2->BitFlags.flag2
         let color = switch flags2->BitFlags.flag3 {
-        | true => Some(reader->readByte)
+        | true => Some(reader->readByte("color"))
         | false => None
         }
         let wallColor = switch flags2->BitFlags.flag4 {
-        | true => Some(reader->readByte)
+        | true => Some(reader->readByte("wallColor"))
         | false => None
         }
         let activeTile = switch active {
         | true => {
-            let tileType = reader->readUInt16
+            let tileType = reader->readUInt16("tileType")
             let frame = switch TileFrameImportant.isImportant(tileType) {
             | true =>
               Some({
-                x: reader->PacketFactory.PacketReader.readInt16,
-                y: reader->PacketFactory.PacketReader.readInt16,
+                x: reader->readInt16("frameX"), // Changed from PacketFactory.PacketReader.readInt16
+                y: reader->readInt16("frameY"), // Changed from PacketFactory.PacketReader.readInt16
               })
             | false => None
             }
@@ -98,14 +98,14 @@ module Decode = {
         | false => None
         }
         let wall = switch hasWall {
-        | true => Some(reader->readUInt16)
+        | true => Some(reader->readUInt16("wall"))
         | false => None
         }
         let liquid = switch hasLiquid {
         | true =>
           Some({
-            liquidValue: reader->readByte,
-            liquidType: reader->readByte,
+            liquidValue: reader->readByte("liquidValue"),
+            liquidType: reader->readByte("liquidType"),
           })
         | false => None
         }
@@ -143,11 +143,11 @@ module Decode = {
 }
 
 module Encode = {
-  let {packUInt16, packInt16, packByte, setType, data} = module(PacketFactory.ManagedPacketWriter)
+  let {packUInt16, packInt16, packByte, setType, data} = module(ErrorAwarePacketWriter)
   let packTile = (
-    writer: PacketFactory.ManagedPacketWriter.t,
+    writer: ErrorAwarePacketWriter.t, // Assuming ManagedPacketWriter.t is compatible or ErrorAwarePacketWriter.t
     tile: tile,
-  ): PacketFactory.ManagedPacketWriter.t => {
+  ): ErrorAwarePacketWriter.t => {
     let flags1 = BitFlags.fromFlags(
       ~flag1=tile.activeTile->Option.isSome,
       ~flag2=false,
@@ -169,26 +169,26 @@ module Encode = {
       ~flag8=tile.wire4,
     )
     writer
-    ->packByte(flags1->BitFlags.toByte)
-    ->packByte(flags2->BitFlags.toByte)
-    ->packByte(tile.coatHeader)
+    ->packByte(flags1->BitFlags.toByte, "flags1")
+    ->packByte(flags2->BitFlags.toByte, "flags2")
+    ->packByte(tile.coatHeader, "coatHeader")
     ->ignore
     switch tile.color {
-    | Some(color) => writer->packByte(color)->ignore
+    | Some(c) => writer->packByte(c, "color")->ignore
     | None => ()
     }
     switch tile.wallColor {
-    | Some(color) => writer->packByte(color)->ignore
+    | Some(wc) => writer->packByte(wc, "wallColor")->ignore
     | None => ()
     }
     switch tile.activeTile {
-    | Some(activeTile) => {
-        writer->packUInt16(activeTile.tileType)->ignore
-        switch TileFrameImportant.isImportant(activeTile.tileType) {
+    | Some(at) => {
+        writer->packUInt16(at.tileType, "tileType")->ignore
+        switch TileFrameImportant.isImportant(at.tileType) {
         | true =>
           writer
-          ->packInt16(activeTile.frame->Option.mapWithDefault(0, frame => frame.x))
-          ->packInt16(activeTile.frame->Option.mapWithDefault(0, frame => frame.y))
+          ->packInt16(at.frame->Option.mapWithDefault(0, frame => frame.x), "frameX")
+          ->packInt16(at.frame->Option.mapWithDefault(0, frame => frame.y), "frameY")
           ->ignore
         | false => ()
         }
@@ -196,20 +196,20 @@ module Encode = {
     | None => ()
     }
     switch tile.wall {
-    | Some(wall) => writer->packUInt16(wall)->ignore
+    | Some(w) => writer->packUInt16(w, "wall")->ignore
     | None => ()
     }
     switch tile.liquid {
-    | Some(liquid) => writer->packByte(liquid.liquidValue)->packByte(liquid.liquidType)->ignore
+    | Some(l) => writer->packByte(l.liquidValue, "liquidValue")->packByte(l.liquidType, "liquidType")->ignore
     | None => ()
     }
     writer
   }
 
   let packTiles = (
-    writer: PacketFactory.ManagedPacketWriter.t,
+    writer: ErrorAwarePacketWriter.t, // Assuming ManagedPacketWriter.t is compatible or ErrorAwarePacketWriter.t
     tiles: array<array<tile>>,
-  ): PacketFactory.ManagedPacketWriter.t => {
+  ): ErrorAwarePacketWriter.t => {
     for x in 0 to tiles->Array.length - 1 {
       for y in 0 to tiles[x]->Option.getUnsafe->Array.length - 1 {
         writer->packTile((tiles[x]->Option.getUnsafe)[y]->Option.getUnsafe)->ignore
@@ -218,14 +218,14 @@ module Encode = {
     writer
   }
 
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.TileSquareSend->PacketType.toInt)
-    ->packInt16(self.tileX)
-    ->packInt16(self.tileY)
-    ->packByte(self.width)
-    ->packByte(self.height)
-    ->packByte(self.changeType)
+    ->packInt16(self.tileX, "tileX")
+    ->packInt16(self.tileY, "tileY")
+    ->packByte(self.width, "width")
+    ->packByte(self.height, "height")
+    ->packByte(self.changeType, "changeType")
     ->packTiles(self.tiles)
     ->data
   }

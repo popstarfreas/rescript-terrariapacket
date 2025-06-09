@@ -5,29 +5,29 @@ var Belt_Option = require("rescript/lib/js/belt_Option.js");
 var Caml_option = require("rescript/lib/js/caml_option.js");
 var BitFlags$TerrariaPacket = require("../BitFlags.js");
 var PacketType$TerrariaPacket = require("../PacketType.js");
-var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+var ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+var ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 var Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
 function parse(payload) {
   var reader = new Packetreader(payload);
-  var projectileId = reader.readInt16();
-  var x = reader.readSingle();
-  var y = reader.readSingle();
-  var vx = reader.readSingle();
-  var vy = reader.readSingle();
-  var owner = reader.readByte();
-  var projectileType = reader.readInt16();
-  var flags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
-  var flags2 = BitFlags$TerrariaPacket.flag3(flags) ? Caml_option.some(BitFlags$TerrariaPacket.fromByte(reader.readByte())) : undefined;
-  var ai0 = BitFlags$TerrariaPacket.flag1(flags) ? reader.readSingle() : undefined;
-  var ai1 = BitFlags$TerrariaPacket.flag2(flags) ? reader.readSingle() : undefined;
-  var bannerIdToRespondTo = BitFlags$TerrariaPacket.flag4(flags) ? reader.readUInt16() : undefined;
-  var damage = BitFlags$TerrariaPacket.flag5(flags) ? reader.readInt16() : undefined;
-  var knockback = BitFlags$TerrariaPacket.flag6(flags) ? reader.readSingle() : undefined;
-  var originalDamage = BitFlags$TerrariaPacket.flag7(flags) ? reader.readInt16() : undefined;
-  var projectileUuid = BitFlags$TerrariaPacket.flag8(flags) ? reader.readInt16() : undefined;
-  var ai2 = flags2 !== undefined && BitFlags$TerrariaPacket.flag1(Caml_option.valFromOption(flags2)) ? reader.readSingle() : undefined;
+  var projectileId = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "projectileId");
+  var x = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+  var y = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+  var vx = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
+  var vy = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
+  var owner = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "owner");
+  var projectileType = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "projectileType");
+  var flags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags"));
+  var flags2 = BitFlags$TerrariaPacket.flag3(flags) ? Caml_option.some(BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags2"))) : undefined;
+  var ai0 = BitFlags$TerrariaPacket.flag1(flags) ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai0") : undefined;
+  var ai1 = BitFlags$TerrariaPacket.flag2(flags) ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai1") : undefined;
+  var bannerIdToRespondTo = BitFlags$TerrariaPacket.flag4(flags) ? ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "bannerIdToRespondTo") : undefined;
+  var damage = BitFlags$TerrariaPacket.flag5(flags) ? ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "damage") : undefined;
+  var knockback = BitFlags$TerrariaPacket.flag6(flags) ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "knockback") : undefined;
+  var originalDamage = BitFlags$TerrariaPacket.flag7(flags) ? ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "originalDamage") : undefined;
+  var projectileUuid = BitFlags$TerrariaPacket.flag8(flags) ? ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "projectileUuid") : undefined;
+  var ai2 = flags2 !== undefined && BitFlags$TerrariaPacket.flag1(Caml_option.valFromOption(flags2)) ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai2") : undefined;
   return {
           projectileId: projectileId,
           x: x,
@@ -57,41 +57,41 @@ function packOptionalData(writer, self) {
   var bitFlags2 = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(ai2), false, false, false, false, false, false, false);
   var bannerIdToRespondTo = self.bannerIdToRespondTo;
   var bitFlags = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(ai0), Belt_Option.isSome(ai1), BitFlags$TerrariaPacket.toByte(bitFlags2) !== 0, bannerIdToRespondTo !== undefined ? bannerIdToRespondTo !== 0 : false, Belt_Option.isSome(self.damage), Belt_Option.isSome(self.knockback), Belt_Option.isSome(self.originalDamage), Belt_Option.isSome(self.projectileUuid));
-  writer.packByte(BitFlags$TerrariaPacket.toByte(bitFlags));
+  ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(bitFlags), "flags");
   if (BitFlags$TerrariaPacket.flag3(bitFlags)) {
-    writer.packByte(BitFlags$TerrariaPacket.toByte(bitFlags2));
+    ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(bitFlags2), "flags2");
   }
   if (BitFlags$TerrariaPacket.flag1(bitFlags)) {
-    writer.packSingle(ai0);
+    ErrorAwarePacketWriter$TerrariaPacket.packSingle(writer, ai0, "ai0");
   }
   if (BitFlags$TerrariaPacket.flag2(bitFlags)) {
-    writer.packSingle(ai1);
+    ErrorAwarePacketWriter$TerrariaPacket.packSingle(writer, ai1, "ai1");
   }
   if (BitFlags$TerrariaPacket.flag4(bitFlags)) {
-    writer.packUInt16(self.bannerIdToRespondTo);
+    ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, self.bannerIdToRespondTo, "bannerIdToRespondTo");
   }
   if (BitFlags$TerrariaPacket.flag5(bitFlags)) {
-    writer.packInt16(self.damage);
+    ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, self.damage, "damage");
   }
   if (BitFlags$TerrariaPacket.flag6(bitFlags)) {
-    writer.packSingle(self.knockback);
+    ErrorAwarePacketWriter$TerrariaPacket.packSingle(writer, self.knockback, "knockback");
   }
   if (BitFlags$TerrariaPacket.flag7(bitFlags)) {
-    writer.packInt16(self.originalDamage);
+    ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, self.originalDamage, "originalDamage");
   }
   if (BitFlags$TerrariaPacket.flag8(bitFlags)) {
-    writer.packInt16(self.projectileUuid);
+    ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, self.projectileUuid, "projectileUuid");
   }
   if (BitFlags$TerrariaPacket.flag1(bitFlags2)) {
-    writer.packSingle(ai2);
+    ErrorAwarePacketWriter$TerrariaPacket.packSingle(writer, ai2, "ai2");
   }
   return writer;
 }
 
 function toBuffer(self) {
-  return packOptionalData(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ProjectileSync")).packInt16(self.projectileId).packSingle(self.x).packSingle(self.y).packSingle(self.vx).packSingle(self.vy).packByte(self.owner).packInt16(self.projectileType), self).data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(packOptionalData(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ProjectileSync")), self.projectileId, "projectileId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.owner, "owner"), self.projectileType, "projectileType"), self));
 }
 
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

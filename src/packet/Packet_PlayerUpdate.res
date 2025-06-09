@@ -49,14 +49,14 @@ type t = {
 }
 
 module Decode = {
-  let {readByte, readSingle} = module(PacketFactory.PacketReader)
+  let {readByte, readSingle} = module(ErrorAwarePacketReader)
   let parse = (payload: NodeJs.Buffer.t) => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let playerId = reader->readByte
-    let controlFlags = BitFlags.fromByte(reader->readByte)
-    let miscFlags1 = BitFlags.fromByte(reader->readByte)
-    let miscFlags2 = BitFlags.fromByte(reader->readByte)
-    let miscFlags3 = BitFlags.fromByte(reader->readByte)
+    let playerId = reader->readByte("playerId")
+    let controlFlags = BitFlags.fromByte(reader->readByte("controlFlags"))
+    let miscFlags1 = BitFlags.fromByte(reader->readByte("miscFlags1"))
+    let miscFlags2 = BitFlags.fromByte(reader->readByte("miscFlags2"))
+    let miscFlags3 = BitFlags.fromByte(reader->readByte("miscFlags3"))
     let control = {
       isHoldingUp: controlFlags->BitFlags.flag1,
       isHoldingDown: controlFlags->BitFlags.flag2,
@@ -84,16 +84,16 @@ module Decode = {
     }
     let shouldGuard = miscFlags1->BitFlags.flag6
     let ghost = miscFlags1->BitFlags.flag7
-    let selectedItem = reader->readByte
+    let selectedItem = reader->readByte("selectedItem")
     let position: Point.t<float> = {
-      x: reader->readSingle,
-      y: reader->readSingle,
+      x: reader->readSingle("positionX"),
+      y: reader->readSingle("positionY"),
     }
     let velocity: option<Point.t<float>> = switch miscFlags1->BitFlags.flag3 {
     | true =>
       Some({
-        x: reader->readSingle,
-        y: reader->readSingle,
+        x: reader->readSingle("velocityX"),
+        y: reader->readSingle("velocityY"),
       })
     | false => None
     }
@@ -101,12 +101,12 @@ module Decode = {
     | true =>
       Some({
         originalUsePosition: {
-          x: reader->readSingle,
-          y: reader->readSingle,
+          x: reader->readSingle("potionOfReturnOrigX"),
+          y: reader->readSingle("potionOfReturnOrigY"),
         },
         homePosition: {
-          x: reader->readSingle,
-          y: reader->readSingle,
+          x: reader->readSingle("potionOfReturnHomeX"),
+          y: reader->readSingle("potionOfReturnHomeY"),
         },
       })
     | false => None
@@ -146,8 +146,8 @@ module Decode = {
 }
 
 module Encode = {
-  let {packByte, packSingle, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  type writer = PacketFactory.ManagedPacketWriter.t
+  let {packByte, packSingle, setType, data} = module(ErrorAwarePacketWriter)
+  type writer = ErrorAwarePacketWriter.t // Assuming ManagedPacketWriter.t is compatible or ErrorAwarePacketWriter.t
   let packControlFlags = (writer: writer, control: control, direction: direction) => {
     writer->packByte(
       BitFlags.fromFlags(
@@ -163,6 +163,7 @@ module Encode = {
         },
         ~flag8=false,
       )->BitFlags.toByte,
+      "controlFlags",
     )
   }
 
@@ -199,6 +200,7 @@ module Encode = {
         ~flag7=ghost,
         ~flag8=false,
       )->BitFlags.toByte,
+      "miscFlags1",
     )
   }
 
@@ -227,6 +229,7 @@ module Encode = {
         },
         ~flag8=tryKeepingHoveringDown,
       )->BitFlags.toByte,
+      "miscFlags2",
     )
   }
 
@@ -242,35 +245,36 @@ module Encode = {
         ~flag7=false,
         ~flag8=false,
       )->BitFlags.toByte,
+      "miscFlags3",
     )
   }
 
   let packVelocity = (writer: writer, velocity: option<Point.t<float>>) => {
     switch velocity {
-    | Some(velocity) =>
+    | Some(v) =>
       writer
-      ->packSingle(velocity.x)
-      ->packSingle(velocity.y)
+      ->packSingle(v.x, "velocityX")
+      ->packSingle(v.y, "velocityY")
     | None => writer
     }
   }
 
   let packPotionOfReturn = (writer: writer, potionOfReturn: option<potionOfReturn>) => {
     switch potionOfReturn {
-    | Some(potionOfReturn) =>
+    | Some(p) =>
       writer
-      ->packSingle(potionOfReturn.originalUsePosition.x)
-      ->packSingle(potionOfReturn.originalUsePosition.y)
-      ->packSingle(potionOfReturn.homePosition.x)
-      ->packSingle(potionOfReturn.homePosition.y)
+      ->packSingle(p.originalUsePosition.x, "potionOfReturnOrigX")
+      ->packSingle(p.originalUsePosition.y, "potionOfReturnOrigY")
+      ->packSingle(p.homePosition.x, "potionOfReturnHomeX")
+      ->packSingle(p.homePosition.y, "potionOfReturnHomeY")
     | None => writer
     }
   }
 
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.PlayerUpdate->PacketType.toInt)
-    ->packByte(self.playerId)
+    ->packByte(self.playerId, "playerId")
     ->packControlFlags(self.control, self.direction)
     ->packMiscFlags1(
       self.pulleyDirection,
@@ -291,9 +295,9 @@ module Encode = {
       self.tryKeepingHoveringDown,
     )
     ->packMiscFlags3(self.isSleeping)
-    ->packByte(self.selectedItem)
-    ->packSingle(self.position.x)
-    ->packSingle(self.position.y)
+    ->packByte(self.selectedItem, "selectedItem")
+    ->packSingle(self.position.x, "positionX")
+    ->packSingle(self.position.y, "positionY")
     ->packVelocity(self.velocity)
     ->packPotionOfReturn(self.potionOfReturn)
     ->data

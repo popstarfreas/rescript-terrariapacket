@@ -5,31 +5,11 @@ var Js_exn = require("rescript/lib/js/js_exn.js");
 var Caml_exceptions = require("rescript/lib/js/caml_exceptions.js");
 var Caml_js_exceptions = require("rescript/lib/js/caml_js_exceptions.js");
 
-var ReadError = /* @__PURE__ */Caml_exceptions.create("ErrorAwarePacketReader-TerrariaPacket.ReadError");
+var ReadError = /* @__PURE__ */Caml_exceptions.create("ErrorAwareBufferReader-TerrariaPacket.ReadError");
 
 function readByte(reader, context) {
   try {
     return reader.readByte();
-  }
-  catch (raw_obj){
-    var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-    if (obj.RE_EXN_ID === Js_exn.$$Error) {
-      throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context: context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-    }
-    throw obj;
-  }
-}
-
-function readUInt16(reader, context) {
-  try {
-    return reader.readUInt16();
   }
   catch (raw_obj){
     var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
@@ -227,33 +207,12 @@ function readBuffer(reader, bytes, context) {
   }
 }
 
-function readNetworkText(reader, context) {
-  try {
-    return reader.readNetworkText();
-  }
-  catch (raw_obj){
-    var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-    if (obj.RE_EXN_ID === Js_exn.$$Error) {
-      throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context: context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-    }
-    throw obj;
-  }
-}
-
 function getBytesLeft(reader) {
   return reader.bytesLeft;
 }
 
 exports.ReadError = ReadError;
 exports.readByte = readByte;
-exports.readUInt16 = readUInt16;
 exports.readInt16 = readInt16;
 exports.readInt32 = readInt32;
 exports.readUInt64 = readUInt64;
@@ -263,6 +222,5 @@ exports.readSingle = readSingle;
 exports.readSByte = readSByte;
 exports.readColor = readColor;
 exports.readBuffer = readBuffer;
-exports.readNetworkText = readNetworkText;
 exports.getBytesLeft = getBytesLeft;
 /* No side effect */

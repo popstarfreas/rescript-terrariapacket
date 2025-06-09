@@ -2,6 +2,7 @@
 'use strict';
 
 var Zora = require("zora");
+var Core__Result = require("@rescript/core/src/Core__Result.js");
 var Packet_NetModuleLoad$TerrariaPacket = require("../src/packet/Packet_NetModuleLoad.js");
 
 Zora.test("should correctly parse and serialise FarPlacementRangePower", (function (t) {
@@ -26,8 +27,14 @@ Zora.test("should correctly parse and serialise FarPlacementRangePower", (functi
           } else {
             t.fail("Failed to parse packet");
           }
-          var hexOutput = Packet_NetModuleLoad$TerrariaPacket.toBuffer(p).toString("hex");
-          t.equal(hex, hexOutput);
+          var buffer$1 = Packet_NetModuleLoad$TerrariaPacket.toBuffer(p);
+          var hexOutput = Core__Result.map(buffer$1, (function (v) {
+                  return v.toString("hex");
+                }));
+          t.equal({
+                TAG: "Ok",
+                _0: hex
+              }, hexOutput);
           return ;
         }
         t.fail("Failed to parse packet");
@@ -57,8 +64,14 @@ Zora.test("should correctly parse and serialise GodmodePower", (function (t) {
           } else {
             t.fail("Failed to parse packet");
           }
-          var hexOutput = Packet_NetModuleLoad$TerrariaPacket.toBuffer(p).toString("hex");
-          t.equal(hex, hexOutput);
+          var buffer$1 = Packet_NetModuleLoad$TerrariaPacket.toBuffer(p);
+          var hexOutput = Core__Result.map(buffer$1, (function (v) {
+                  return v.toString("hex");
+                }));
+          t.equal({
+                TAG: "Ok",
+                _0: hex
+              }, hexOutput);
           return ;
         }
         t.fail("Failed to parse packet");

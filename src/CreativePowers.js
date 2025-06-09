@@ -4,13 +4,14 @@
 var Core__Option = require("@rescript/core/src/Core__Option.js");
 var ArrayExt$TerrariaPacket = require("./ArrayExt.js");
 var BitFlags$TerrariaPacket = require("./BitFlags.js");
+var ErrorAwarePacketWriter$TerrariaPacket = require("./ErrorAwarePacketWriter.js");
 
 function toString(self) {
   return "PerPlayerSliderPower { playerId: " + self.playerId.toString() + ", value: " + self.value.toString() + " }";
 }
 
 function pack(writer, self) {
-  return writer.packByte(self.playerId).packSingle(self.value);
+  return ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, self.playerId, "playerId"), self.value, "value");
 }
 
 function parse(reader) {
@@ -40,11 +41,11 @@ function pack$1(writer, self) {
   if (self.TAG === "Everyone") {
     var values = self._0;
     var bytes = ArrayExt$TerrariaPacket.intoChunks(values, 8).map(BitFlags$TerrariaPacket.fromArray).map(BitFlags$TerrariaPacket.toByte);
-    return writer.packByte(0).packBytes(bytes);
+    return ErrorAwarePacketWriter$TerrariaPacket.packBytes(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, 0, "everyoneType"), bytes, "everyoneValues");
   } else {
     var playerId = self._0;
     var value = self._1;
-    return writer.packByte(1).packByte(playerId).packByte(value ? 1 : 0);
+    return ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, 1, "playerType"), playerId, "playerId"), value ? 1 : 0, "playerValue");
   }
 }
 
@@ -245,50 +246,50 @@ function pack$2(writer, self) {
   if (typeof self !== "object") {
     switch (self) {
       case "StartDayImmediately" :
-          return writer.packUInt16(1);
+          return ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 1, "startDayImmediatelyType");
       case "StartNoonImmediately" :
-          return writer.packUInt16(2);
+          return ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 2, "startNoonImmediatelyType");
       case "StartNightImmediately" :
-          return writer.packUInt16(3);
+          return ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 3, "startNightImmediatelyType");
       case "StartMidnightImmediately" :
-          return writer.packUInt16(4);
+          return ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 4, "startMidnightImmediatelyType");
       
     }
   } else {
     switch (self.TAG) {
       case "FreezeTime" :
           var value = self._0;
-          return writer.packUInt16(0).packByte(value ? 1 : 0);
+          return ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 0, "freezeTimeType"), value ? 1 : 0, "freezeTimeValue");
       case "GodmodePower" :
           var message = self._0;
-          return pack$1(writer.packUInt16(5), message);
+          return pack$1(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 5, "godmodePowerType"), message);
       case "ModifyWindDirectionAndStrength" :
           var value$1 = self._0;
-          return writer.packUInt16(6).packSingle(value$1);
+          return ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 6, "modifyWindDirectionAndStrengthType"), value$1, "modifyWindDirectionAndStrengthValue");
       case "ModifyRainPower" :
           var value$2 = self._0;
-          return writer.packUInt16(7).packSingle(value$2);
+          return ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 7, "modifyRainPowerType"), value$2, "modifyRainPowerValue");
       case "ModifyTimeRate" :
           var value$3 = self._0;
-          return writer.packUInt16(8).packSingle(value$3);
+          return ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 8, "modifyTimeRateType"), value$3, "modifyTimeRateValue");
       case "FreezeRainPower" :
           var on = self._0;
-          return writer.packUInt16(9).packByte(on ? 1 : 0);
+          return ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 9, "freezeRainPowerType"), on ? 1 : 0, "freezeRainPowerValue");
       case "FreezeWindDirectionAndStrength" :
           var on$1 = self._0;
-          return writer.packUInt16(10).packByte(on$1 ? 1 : 0);
+          return ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 10, "freezeWindDirectionAndStrengthType"), on$1 ? 1 : 0, "freezeWindDirectionAndStrengthValue");
       case "FarPlacementRangePower" :
           var message$1 = self._0;
-          return pack$1(writer.packUInt16(11), message$1);
+          return pack$1(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 11, "farPlacementRangePowerType"), message$1);
       case "DifficultySliderPower" :
           var value$4 = self._0;
-          return writer.packUInt16(12).packSingle(value$4);
+          return ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 12, "difficultySliderPowerType"), value$4, "difficultySliderPowerValue");
       case "StopBiomeSpreadPower" :
           var on$2 = self._0;
-          return writer.packUInt16(13).packByte(on$2 ? 1 : 0);
+          return ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 13, "stopBiomeSpreadPowerType"), on$2 ? 1 : 0, "stopBiomeSpreadPowerValue");
       case "SpawnRateSliderPerPlayerPower" :
           var message$2 = self._0;
-          return pack(writer.packUInt16(14), message$2);
+          return pack(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 14, "spawnRateSliderPerPlayerPowerType"), message$2);
       
     }
   }
@@ -387,4 +388,4 @@ exports.toString = toString$2;
 exports.CreativePowerType = CreativePowerType;
 exports.pack = pack$2;
 exports.parse = parse$2;
-/* No side effect */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

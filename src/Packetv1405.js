@@ -3943,7 +3943,12 @@ function toBuffer(packet, _fromServer) {
     case "ItemDropUpdate" :
         return Packet_ItemDropUpdate$TerrariaPacket.toBuffer(packet._0);
     case "NpcUpdate" :
-        return Packet_NpcUpdate$TerrariaPacket.toBuffer(packet._0);
+        var buffer = Packet_NpcUpdate$TerrariaPacket.toBuffer(packet._0);
+        if (buffer.TAG === "Ok") {
+          return buffer._0;
+        } else {
+          return ;
+        }
     case "ProjectileSync" :
         return Packetv1405_ProjectileSync$TerrariaPacket.toBuffer(packet._0);
     case "ProjectileDestroy" :
@@ -3953,7 +3958,12 @@ function toBuffer(packet, _fromServer) {
     case "DimensionsUpdate" :
         return Packet_DimensionsUpdate$TerrariaPacket.toBuffer(packet._0);
     case "NetModuleLoad" :
-        return Packet_NetModuleLoad$TerrariaPacket.toBuffer(packet._0);
+        var buffer$1 = Packet_NetModuleLoad$TerrariaPacket.toBuffer(packet._0);
+        if (buffer$1.TAG === "Ok") {
+          return buffer$1._0;
+        } else {
+          return ;
+        }
     default:
       return ;
   }

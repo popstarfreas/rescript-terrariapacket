@@ -30,4 +30,4 @@ type t = {
 @genType
 let parse: NodeJs.Buffer.t => option<t>
 @genType
-let toBuffer: t => NodeJs.Buffer.t
+let toBuffer: t => result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError>

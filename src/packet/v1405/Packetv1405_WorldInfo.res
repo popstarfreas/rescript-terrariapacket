@@ -25,7 +25,7 @@ type eventInfo = {
   killedAncientCultist: bool,
   killedMoonLord: bool,
   killedPumpking: bool,
-  killedMounringWood: bool,
+  killedMourningWood: bool,
   killedIceQueen: bool,
   killedSantank: bool,
   killedEverscream: bool,
@@ -177,7 +177,7 @@ module Decode = {
     let killedAncientCultist = eventInfo3->BitFlags.flag8
     let killedMoonLord = eventInfo4->BitFlags.flag1
     let killedPumpking = eventInfo4->BitFlags.flag2
-    let killedMounringWood = eventInfo4->BitFlags.flag3
+    let killedMourningWood = eventInfo4->BitFlags.flag3
     let killedIceQueen = eventInfo4->BitFlags.flag4
     let killedSantank = eventInfo4->BitFlags.flag5
     let killedEverscream = eventInfo4->BitFlags.flag6
@@ -234,7 +234,7 @@ module Decode = {
       killedAncientCultist,
       killedMoonLord,
       killedPumpking,
-      killedMounringWood,
+      killedMourningWood,
       killedIceQueen,
       killedSantank,
       killedEverscream,
@@ -465,7 +465,7 @@ module Encode = {
     let eventInfo4 = BitFlags.fromFlags(
       ~flag1=eventInfo.killedMoonLord,
       ~flag2=eventInfo.killedPumpking,
-      ~flag3=eventInfo.killedMounringWood,
+      ~flag3=eventInfo.killedMourningWood,
       ~flag4=eventInfo.killedIceQueen,
       ~flag5=eventInfo.killedSantank,
       ~flag6=eventInfo.killedEverscream,
@@ -620,7 +620,7 @@ let eventInfoToLatest = (self: eventInfo): Packet.WorldInfo.eventInfo => {
   killedAncientCultist: self.killedAncientCultist,
   killedMoonLord: self.killedMoonLord,
   killedPumpking: self.killedPumpking,
-  killedMounringWood: self.killedMounringWood,
+  killedMourningWood: self.killedMourningWood,
   killedIceQueen: self.killedIceQueen,
   killedSantank: self.killedSantank,
   killedEverscream: self.killedEverscream,
@@ -775,7 +775,7 @@ let eventInfoFromLatest = (self: Packet.WorldInfo.eventInfo): eventInfo => {
   killedAncientCultist: self.killedAncientCultist,
   killedMoonLord: self.killedMoonLord,
   killedPumpking: self.killedPumpking,
-  killedMounringWood: self.killedMounringWood,
+  killedMourningWood: self.killedMourningWood,
   killedIceQueen: self.killedIceQueen,
   killedSantank: self.killedSantank,
   killedEverscream: self.killedEverscream,

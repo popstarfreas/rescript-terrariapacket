@@ -10,12 +10,13 @@ var BitFlags$TerrariaPacket = require("../BitFlags.js");
 var ResultExt$TerrariaPacket = require("../ResultExt.js");
 var TileSolid$TerrariaPacket = require("../TileSolid.js");
 var PacketType$TerrariaPacket = require("../PacketType.js");
-var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
 var TileFrameImportant$TerrariaPacket = require("../TileFrameImportant.js");
+var ErrorAwareBufferReader$TerrariaPacket = require("../ErrorAwareBufferReader.js");
+var ErrorAwareBufferWriter$TerrariaPacket = require("../ErrorAwareBufferWriter.js");
+var ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+var ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 var Bufferreader = require("@popstarfreas/packetfactory/bufferreader").default;
-var Bufferwriter = require("@popstarfreas/packetfactory/bufferwriter").default;
 var Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
 function defaultTileCache() {
   return {
@@ -59,93 +60,37 @@ function cacheToTile(cache) {
         };
 }
 
-function readString(prim) {
-  return prim.readString();
-}
-
-function readInt16(prim) {
-  return prim.readInt16();
-}
-
-function readUInt16(prim) {
-  return prim.readUInt16();
-}
-
-function readInt32(prim) {
-  return prim.readInt32();
-}
-
-function readByte(prim) {
-  return prim.readByte();
-}
-
 function parse(reader) {
-  var id = reader.readInt16();
-  var x = reader.readInt16();
-  var y = reader.readInt16();
-  var name = reader.readString();
+  var id = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "id");
+  var x = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
+  var y = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
+  var name = ErrorAwareBufferReader$TerrariaPacket.readString(reader, "name");
   return {
           id: id,
           x: x,
           y: y,
           name: name
         };
-}
-
-function packByte(prim0, prim1) {
-  return prim0.packByte(prim1);
-}
-
-function packInt16(prim0, prim1) {
-  return prim0.packInt16(prim1);
-}
-
-function packString(prim0, prim1) {
-  return prim0.packString(prim1);
 }
 
 function pack(writer, chest) {
-  return writer.packInt16(chest.id).packInt16(chest.x).packInt16(chest.y).packString(chest.name);
+  return ErrorAwareBufferWriter$TerrariaPacket.packString(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer, chest.id, "id"), chest.x, "x"), chest.y, "y"), chest.name, "name");
 }
 
 var Chest = {
-  readString: readString,
-  readInt16: readInt16,
-  readUInt16: readUInt16,
-  readInt32: readInt32,
-  readByte: readByte,
+  readString: ErrorAwareBufferReader$TerrariaPacket.readString,
+  readInt16: ErrorAwareBufferReader$TerrariaPacket.readInt16,
   parse: parse,
-  packByte: packByte,
-  packInt16: packInt16,
-  packString: packString,
+  packInt16: ErrorAwareBufferWriter$TerrariaPacket.packInt16,
+  packString: ErrorAwareBufferWriter$TerrariaPacket.packString,
   pack: pack
 };
 
-function readString$1(prim) {
-  return prim.readString();
-}
-
-function readInt16$1(prim) {
-  return prim.readInt16();
-}
-
-function readUInt16$1(prim) {
-  return prim.readUInt16();
-}
-
-function readInt32$1(prim) {
-  return prim.readInt32();
-}
-
-function readByte$1(prim) {
-  return prim.readByte();
-}
-
 function parse$1(reader) {
-  var id = reader.readInt16();
-  var x = reader.readInt16();
-  var y = reader.readInt16();
-  var name = reader.readString();
+  var id = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "id");
+  var x = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
+  var y = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
+  var name = ErrorAwareBufferReader$TerrariaPacket.readString(reader, "name");
   return {
           id: id,
           x: x,
@@ -154,65 +99,29 @@ function parse$1(reader) {
         };
 }
 
-function packByte$1(prim0, prim1) {
-  return prim0.packByte(prim1);
-}
-
-function packInt16$1(prim0, prim1) {
-  return prim0.packInt16(prim1);
-}
-
-function packString$1(prim0, prim1) {
-  return prim0.packString(prim1);
-}
-
 function pack$1(writer, sign) {
-  return writer.packInt16(sign.id).packInt16(sign.x).packInt16(sign.y).packString(sign.name);
+  return ErrorAwareBufferWriter$TerrariaPacket.packString(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer, sign.id, "id"), sign.x, "x"), sign.y, "y"), sign.name, "name");
 }
 
 var Sign = {
-  readString: readString$1,
-  readInt16: readInt16$1,
-  readUInt16: readUInt16$1,
-  readInt32: readInt32$1,
-  readByte: readByte$1,
+  readString: ErrorAwareBufferReader$TerrariaPacket.readString,
+  readInt16: ErrorAwareBufferReader$TerrariaPacket.readInt16,
   parse: parse$1,
-  packByte: packByte$1,
-  packInt16: packInt16$1,
-  packString: packString$1,
+  packInt16: ErrorAwareBufferWriter$TerrariaPacket.packInt16,
+  packString: ErrorAwareBufferWriter$TerrariaPacket.packString,
   pack: pack$1
 };
 
-function readString$2(prim) {
-  return prim.readString();
-}
-
-function readInt16$2(prim) {
-  return prim.readInt16();
-}
-
-function readUInt16$2(prim) {
-  return prim.readUInt16();
-}
-
-function readInt32$2(prim) {
-  return prim.readInt32();
-}
-
-function readByte$2(prim) {
-  return prim.readByte();
-}
-
 function parseTrainingDummyKind(reader) {
   return {
-          npcSlotId: reader.readInt16()
+          npcSlotId: ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "npcSlotId")
         };
 }
 
 function parseDisplayItem(reader) {
-  var netId = reader.readInt16();
-  var prefix = reader.readByte();
-  var stack = reader.readInt16();
+  var netId = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "netId");
+  var prefix = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "prefix");
+  var stack = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "stack");
   return {
           netId: netId,
           prefix: prefix,
@@ -221,8 +130,8 @@ function parseDisplayItem(reader) {
 }
 
 function parseLogicSensorKind(reader) {
-  var checkType = reader.readByte();
-  var on = reader.readByte() === 1;
+  var checkType = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "checkType");
+  var on = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "on") === 1;
   return {
           checkType: checkType,
           on: on
@@ -230,8 +139,8 @@ function parseLogicSensorKind(reader) {
 }
 
 function parseDisplayDollKind(reader) {
-  var itemsFlags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
-  var dyeFlags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+  var itemsFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "itemsFlags"));
+  var dyeFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "dyeFlags"));
   var items = [];
   var dyes = [];
   for(var i = 0; i <= 7; ++i){
@@ -255,7 +164,7 @@ function parseDisplayDollKind(reader) {
 }
 
 function parseHatRackKind(reader) {
-  var flags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+  var flags = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "flags"));
   var items = [];
   var dyes = [];
   for(var i = 0; i <= 1; ++i){
@@ -279,9 +188,9 @@ function parseHatRackKind(reader) {
 }
 
 function parse$2(reader) {
-  var entityType = reader.readByte();
-  var x = reader.readInt16();
-  var y = reader.readInt16();
+  var entityType = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "entityType");
+  var x = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
+  var y = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
   var entityKind;
   switch (entityType) {
     case 0 :
@@ -289,9 +198,7 @@ function parse$2(reader) {
           TAG: "Ok",
           _0: {
             TAG: "TrainingDummy",
-            _0: {
-              npcSlotId: reader.readInt16()
-            }
+            _0: parseTrainingDummyKind(reader)
           }
         };
         break;
@@ -361,7 +268,7 @@ function parse$2(reader) {
     default:
       entityKind = {
         TAG: "Error",
-        _0: "File \"Packet_TileSectionSend.res\", line 309, characters 17-24" + "Unknown entity kind. "
+        _0: "File \"Packet_TileSectionSend.res\", line 317, characters 17-24" + "Unknown entity kind. "
       };
   }
   return Belt_Result.map(entityKind, (function (entityKind) {
@@ -374,28 +281,16 @@ function parse$2(reader) {
               }));
 }
 
-function packByte$2(prim0, prim1) {
-  return prim0.packByte(prim1);
-}
-
-function packInt16$2(prim0, prim1) {
-  return prim0.packInt16(prim1);
-}
-
-function packString$2(prim0, prim1) {
-  return prim0.packString(prim1);
-}
-
 function packTrainingDummy(writer, trainingDummy) {
-  return writer.packInt16(trainingDummy.npcSlotId);
+  return ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer, trainingDummy.npcSlotId, "npcSlotId");
 }
 
 function packDisplayItem(writer, displayItem) {
-  return writer.packInt16(displayItem.netId).packByte(displayItem.prefix).packInt16(displayItem.stack);
+  return ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packByte(ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer, displayItem.netId, "netId"), displayItem.prefix, "prefix"), displayItem.stack, "stack");
 }
 
 function packLogicSensor(writer, logicSensorKind) {
-  return writer.packByte(logicSensorKind.checkType).packByte(logicSensorKind.on ? 1 : 0);
+  return ErrorAwareBufferWriter$TerrariaPacket.packByte(ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, logicSensorKind.checkType, "checkType"), logicSensorKind.on ? 1 : 0, "on");
 }
 
 function hasItem(arr, n) {
@@ -407,7 +302,7 @@ function hasItem(arr, n) {
 function packDisplayDoll(writer, displayDollKind) {
   var itemFlags = BitFlags$TerrariaPacket.fromFlags(hasItem(displayDollKind.items, 0), hasItem(displayDollKind.items, 1), hasItem(displayDollKind.items, 2), hasItem(displayDollKind.items, 3), hasItem(displayDollKind.items, 4), hasItem(displayDollKind.items, 5), hasItem(displayDollKind.items, 6), hasItem(displayDollKind.items, 7));
   var dyeFlags = BitFlags$TerrariaPacket.fromFlags(hasItem(displayDollKind.dyes, 0), hasItem(displayDollKind.dyes, 1), hasItem(displayDollKind.dyes, 2), hasItem(displayDollKind.dyes, 3), hasItem(displayDollKind.dyes, 4), hasItem(displayDollKind.dyes, 5), hasItem(displayDollKind.dyes, 6), hasItem(displayDollKind.dyes, 7));
-  writer.packByte(BitFlags$TerrariaPacket.toByte(itemFlags)).packByte(BitFlags$TerrariaPacket.toByte(dyeFlags));
+  ErrorAwareBufferWriter$TerrariaPacket.packByte(ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(itemFlags), "itemFlags"), BitFlags$TerrariaPacket.toByte(dyeFlags), "dyeFlags");
   for(var i = 0; i <= 7; ++i){
     var item = Belt_Option.flatMap(Belt_Array.get(displayDollKind.items, i), (function (a) {
             return a;
@@ -431,7 +326,7 @@ function packDisplayDoll(writer, displayDollKind) {
 
 function packHatRack(writer, hatRackKind) {
   var flags = BitFlags$TerrariaPacket.fromFlags(hasItem(hatRackKind.items, 0), hasItem(hatRackKind.items, 1), hasItem(hatRackKind.dyes, 2), hasItem(hatRackKind.dyes, 3), false, false, false, false);
-  writer.packByte(BitFlags$TerrariaPacket.toByte(flags));
+  ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(flags), "flags");
   for(var i = 0; i <= 1; ++i){
     var item = Belt_Option.flatMap(Belt_Array.get(hatRackKind.items, i), (function (a) {
             return a;
@@ -468,7 +363,7 @@ function packEntityKind(writer, entityKind) {
     case "TeleportationPylon" :
         return writer;
     case "TrainingDummy" :
-        return writer.packInt16(entityKind._0.npcSlotId);
+        return packTrainingDummy(writer, entityKind._0);
     case "FoodPlatter" :
     case "ItemFrame" :
     case "WeaponsRack" :
@@ -478,15 +373,12 @@ function packEntityKind(writer, entityKind) {
 }
 
 function pack$2(writer, entity) {
-  return packEntityKind(writer.packByte(entity.entityType).packInt16(entity.x).packInt16(entity.y), entity.entityKind);
+  return packEntityKind(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, entity.entityType, "entityType"), entity.x, "x"), entity.y, "y"), entity.entityKind);
 }
 
 var Entity = {
-  readString: readString$2,
-  readInt16: readInt16$2,
-  readUInt16: readUInt16$2,
-  readInt32: readInt32$2,
-  readByte: readByte$2,
+  readInt16: ErrorAwareBufferReader$TerrariaPacket.readInt16,
+  readByte: ErrorAwareBufferReader$TerrariaPacket.readByte,
   parseTrainingDummyKind: parseTrainingDummyKind,
   parseDisplayItem: parseDisplayItem,
   parseItemFrameKind: parseDisplayItem,
@@ -496,9 +388,8 @@ var Entity = {
   parseHatRackKind: parseHatRackKind,
   parseFoodPlatterKind: parseDisplayItem,
   parse: parse$2,
-  packByte: packByte$2,
-  packInt16: packInt16$2,
-  packString: packString$2,
+  packByte: ErrorAwareBufferWriter$TerrariaPacket.packByte,
+  packInt16: ErrorAwareBufferWriter$TerrariaPacket.packInt16,
   packTrainingDummy: packTrainingDummy,
   packDisplayItem: packDisplayItem,
   packItemFrame: packDisplayItem,
@@ -533,42 +424,14 @@ function clearTileCache(tile) {
   tile.inActive = false;
 }
 
-function readBuffer(prim0, prim1) {
-  return prim0.readBuffer(prim1);
-}
-
-function getBytesLeft(prim) {
-  return prim.bytesLeft;
-}
-
-function readString$3(prim) {
-  return prim.readString();
-}
-
-function readInt16$3(prim) {
-  return prim.readInt16();
-}
-
-function readUInt16$3(prim) {
-  return prim.readUInt16();
-}
-
-function readInt32$3(prim) {
-  return prim.readInt32();
-}
-
-function readByte$3(prim) {
-  return prim.readByte();
-}
-
 function parse$3(payload) {
-  var reader = new Packetreader(payload);
-  var deflated = reader.readBuffer(reader.bytesLeft);
-  var reader$1 = new Bufferreader(Nodezlib.inflateRawSync(deflated));
-  var tileX = reader$1.readInt32();
-  var tileY = reader$1.readInt32();
-  var width = reader$1.readInt16();
-  var height = reader$1.readInt16();
+  var packetReader = new Packetreader(payload);
+  var deflated = ErrorAwarePacketReader$TerrariaPacket.readBuffer(packetReader, ErrorAwarePacketReader$TerrariaPacket.getBytesLeft(packetReader), "deflatedPayload");
+  var reader = new Bufferreader(Nodezlib.inflateRawSync(deflated));
+  var tileX = ErrorAwareBufferReader$TerrariaPacket.readInt32(reader, "tileX");
+  var tileY = ErrorAwareBufferReader$TerrariaPacket.readInt32(reader, "tileY");
+  var width = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "width");
+  var height = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "height");
   var tiles = [];
   var tileCache = defaultTileCache();
   var rleCount = 0;
@@ -583,12 +446,12 @@ function parse$3(payload) {
         row.push(cacheToTile(tileCache));
       } else {
         clearTileCache(tileCache);
-        var header5 = BitFlags$TerrariaPacket.fromByte(reader$1.readByte());
+        var header5 = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header5"));
         var match;
         if (BitFlags$TerrariaPacket.flag1(header5)) {
-          var header4 = BitFlags$TerrariaPacket.fromByte(reader$1.readByte());
-          var header3 = BitFlags$TerrariaPacket.flag1(header4) ? BitFlags$TerrariaPacket.fromByte(reader$1.readByte()) : BitFlags$TerrariaPacket.fromByte(0);
-          var header2 = BitFlags$TerrariaPacket.flag1(header3) ? reader$1.readByte() : 0;
+          var header4 = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header4_conditional"));
+          var header3 = BitFlags$TerrariaPacket.flag1(header4) ? BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header3_conditional")) : BitFlags$TerrariaPacket.fromByte(0);
+          var header2 = BitFlags$TerrariaPacket.flag1(header3) ? ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header2_conditional") : 0;
           match = [
             header4,
             header3,
@@ -611,16 +474,16 @@ function parse$3(payload) {
                 }));
           var tileType;
           if (BitFlags$TerrariaPacket.flag6(header5)) {
-            var $$byte = reader$1.readByte();
-            var secondByte = reader$1.readByte();
+            var $$byte = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "tileType_byte1");
+            var secondByte = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "tileType_byte2");
             tileType = (secondByte << 8) | $$byte;
           } else {
-            tileType = reader$1.readByte();
+            tileType = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "tileType");
           }
           var frame;
           if (TileFrameImportant$TerrariaPacket.isImportant(tileType)) {
-            var x = reader$1.readInt16();
-            var y = reader$1.readInt16();
+            var x = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "frameX");
+            var y = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "frameY");
             frame = {
               x: x,
               y: y
@@ -629,7 +492,7 @@ function parse$3(payload) {
             frame = Belt_Option.isSome(oldActive) && tileType === oldType ? oldActive.frame : undefined;
           }
           if (BitFlags$TerrariaPacket.flag4(header3$1)) {
-            tileCache.color = reader$1.readByte();
+            tileCache.color = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "color");
           }
           tileCache.activeTile = {
             tileType: tileType,
@@ -637,15 +500,15 @@ function parse$3(payload) {
           };
         }
         if (BitFlags$TerrariaPacket.flag3(header5)) {
-          tileCache.wall = reader$1.readByte();
+          tileCache.wall = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "wall");
           if (BitFlags$TerrariaPacket.flag5(header3$1)) {
-            tileCache.wallColor = reader$1.readByte();
+            tileCache.wallColor = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "wallColor");
           }
           
         }
         var liquidBits = ((BitFlags$TerrariaPacket.toByte(header5) & 24) >>> 3);
         if (liquidBits !== 0) {
-          tileCache.liquid = reader$1.readByte();
+          tileCache.liquid = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "liquidValue");
           if (liquidBits > 1) {
             if (liquidBits === 2) {
               tileCache.lava = true;
@@ -688,31 +551,31 @@ function parse$3(payload) {
             tileCache.wire4 = true;
           }
           if (BitFlags$TerrariaPacket.flag7(header3$1)) {
-            var $$byte$1 = reader$1.readByte();
+            var $$byte$1 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "wall_highByte");
             tileCache.wall = ($$byte$1 << 8) | tileCache.wall;
           }
           
         }
         var repeatCountBytes = ((BitFlags$TerrariaPacket.toByte(header5) & 192) >>> 6);
         rleCount = repeatCountBytes !== 0 ? (
-            repeatCountBytes !== 1 ? reader$1.readInt16() : reader$1.readByte()
+            repeatCountBytes !== 1 ? ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "rle_int16") : ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "rle_byte")
           ) : 0;
         row.push(cacheToTile(tileCache));
       }
     }
     tiles.push(row);
   }
-  var chestCount = reader$1.readInt16();
+  var chestCount = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "chestCount");
   var chests = Belt_Array.make(chestCount, 0).map(function (param) {
-        return parse(reader$1);
+        return parse(reader);
       });
-  var signCount = reader$1.readInt16();
+  var signCount = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "signCount");
   var signs = Belt_Array.make(signCount, 0).map(function (param) {
-        return parse$1(reader$1);
+        return parse$1(reader);
       });
-  var entityCount = reader$1.readInt16();
+  var entityCount = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "entityCount");
   var entities = ResultExt$TerrariaPacket.allOkOrError(Belt_Array.make(entityCount, 0).map(function (param) {
-            return parse$2(reader$1);
+            return parse$2(reader);
           }));
   if (entities.TAG === "Ok") {
     return {
@@ -732,13 +595,11 @@ function parse$3(payload) {
 var Decode = {
   clearTileCache: clearTileCache,
   PacketReader: undefined,
-  readBuffer: readBuffer,
-  getBytesLeft: getBytesLeft,
-  readString: readString$3,
-  readInt16: readInt16$3,
-  readUInt16: readUInt16$3,
-  readInt32: readInt32$3,
-  readByte: readByte$3,
+  readBuffer: ErrorAwarePacketReader$TerrariaPacket.readBuffer,
+  getBytesLeft: ErrorAwarePacketReader$TerrariaPacket.getBytesLeft,
+  readInt16: ErrorAwareBufferReader$TerrariaPacket.readInt16,
+  readInt32: ErrorAwareBufferReader$TerrariaPacket.readInt32,
+  readByte: ErrorAwareBufferReader$TerrariaPacket.readByte,
   parse: parse$3
 };
 
@@ -866,10 +727,6 @@ function getRepeatCountBitFlags(repeatCount) {
   }
 }
 
-function packInt16$3(prim0, prim1) {
-  return prim0.packInt16(prim1);
-}
-
 function packTile(writer, tile, repeatCount) {
   var header2 = tile.coatHeader;
   var wall = tile.wall;
@@ -880,13 +737,13 @@ function packTile(writer, tile, repeatCount) {
   var match$2 = getRepeatCountBitFlags(repeatCount);
   var activeTile = tile.activeTile;
   var tileFlags = BitFlags$TerrariaPacket.fromFlags(BitFlags$TerrariaPacket.toByte(header4) > 0, Belt_Option.isSome(tile.activeTile), Belt_Option.isSome(tile.wall), match$1[1], match$1[0], activeTile !== undefined ? activeTile.tileType > 255 : false, match$2[1], match$2[0]);
-  writer.packByte(BitFlags$TerrariaPacket.toByte(tileFlags));
+  ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(tileFlags), "tileFlags");
   if (BitFlags$TerrariaPacket.flag1(tileFlags)) {
-    writer.packByte(BitFlags$TerrariaPacket.toByte(header4));
+    ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(header4), "header4");
     if (BitFlags$TerrariaPacket.flag1(header4)) {
-      writer.packByte(BitFlags$TerrariaPacket.toByte(header3));
+      ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(header3), "header3");
       if (BitFlags$TerrariaPacket.flag1(header3)) {
-        writer.packByte(header2);
+        ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, header2, "header2");
       }
       
     }
@@ -895,45 +752,45 @@ function packTile(writer, tile, repeatCount) {
   var activeTile$1 = tile.activeTile;
   if (activeTile$1 !== undefined) {
     if (BitFlags$TerrariaPacket.flag6(tileFlags)) {
-      writer.packByte(activeTile$1.tileType & 255);
-      writer.packByte(((activeTile$1.tileType & 65280) >>> 8));
+      ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, activeTile$1.tileType & 255, "tileType_lowByte");
+      ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, ((activeTile$1.tileType & 65280) >>> 8), "tileType_highByte");
     } else {
-      writer.packByte(activeTile$1.tileType);
+      ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, activeTile$1.tileType, "tileType");
     }
     var match$3 = activeTile$1.frame;
     if (match$3 !== undefined) {
-      writer.packInt16(match$3.x);
-      writer.packInt16(match$3.y);
+      ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer, match$3.x, "frameX");
+      ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer, match$3.y, "frameY");
     }
     var color = tile.color;
     if (color !== undefined) {
-      writer.packByte(color);
+      ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, color, "color");
     }
     
   }
   var wall$1 = tile.wall;
   if (wall$1 !== undefined) {
-    writer.packByte(wall$1 & 255);
+    ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, wall$1 & 255, "wall_lowByte");
     var wallColor = tile.wallColor;
     if (wallColor !== undefined) {
-      writer.packByte(wallColor);
+      ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, wallColor, "wallColor");
     }
     
   }
   var liquid = tile.liquid;
   if (liquid !== undefined) {
-    writer.packByte(liquid);
+    ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, liquid, "liquidValue");
   }
   var wall$2 = tile.wall;
   if (wall$2 !== undefined && wall$2 > 255) {
-    writer.packByte((wall$2 >>> 8));
+    ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, (wall$2 >>> 8), "wall_highByte");
   }
   var match$4 = getRepeatCountByteLength(repeatCount);
   if (match$4 !== 0) {
     if (match$4 !== 1) {
-      writer.packInt16(repeatCount);
+      ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer, repeatCount, "rle_int16");
     } else {
-      writer.packByte(repeatCount);
+      ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, repeatCount, "rle_byte");
     }
   }
   return writer;
@@ -959,63 +816,63 @@ function decidePackTile(writer, lastTile, tile) {
   }
 }
 
-function packByte$3(prim0, prim1) {
-  return prim0.packByte(prim1);
-}
-
-function packBuffer(prim0, prim1) {
-  return prim0.packBuffer(prim1);
-}
-
-function data(prim) {
-  return prim.data;
-}
-
 function toBuffer(self) {
-  var packetWriter = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("TileSectionSend"));
-  var writer = new Bufferwriter(Buffer.allocUnsafe(64000));
-  writer.packInt32(self.tileX).packInt32(self.tileY).packInt16(self.width).packInt16(self.height);
+  var outerPacketWriter = ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TileSectionSend"));
+  var innerWriter = ErrorAwareBufferWriter$TerrariaPacket.make(Buffer.allocUnsafe(64000));
+  ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt32(ErrorAwareBufferWriter$TerrariaPacket.packInt32(innerWriter, self.tileX, "tileX"), self.tileY, "tileY"), self.width, "width"), self.height, "height");
   var lastTile = {
     contents: undefined
   };
   for(var y = 0 ,y_finish = self.height; y < y_finish; ++y){
     for(var x = 0 ,x_finish = self.width; x < x_finish; ++x){
       var tile = self.tiles[y][x];
-      decidePackTile(writer, lastTile, tile);
+      decidePackTile(innerWriter, lastTile, tile);
     }
   }
-  var lastTile$1 = lastTile.contents;
-  if (lastTile$1 !== undefined) {
-    packTile(writer, lastTile$1.tile, lastTile$1.count);
+  var lastTileValue = lastTile.contents;
+  if (lastTileValue !== undefined) {
+    packTile(innerWriter, lastTileValue.tile, lastTileValue.count);
   }
-  writer.packInt16(self.chests.length);
+  ErrorAwareBufferWriter$TerrariaPacket.packInt16(innerWriter, self.chests.length, "chestCount");
   self.chests.forEach(function (chest) {
-        pack(writer, chest);
+        pack(innerWriter, chest);
       });
-  writer.packInt16(self.signs.length);
+  ErrorAwareBufferWriter$TerrariaPacket.packInt16(innerWriter, self.signs.length, "signCount");
   self.signs.forEach(function (sign) {
-        pack$1(writer, sign);
+        pack$1(innerWriter, sign);
       });
-  writer.packInt16(self.entities.length);
+  ErrorAwareBufferWriter$TerrariaPacket.packInt16(innerWriter, self.entities.length, "entityCount");
   self.entities.forEach(function (entity) {
-        pack$2(writer, entity);
+        pack$2(innerWriter, entity);
       });
-  return packetWriter.packBuffer(Nodezlib.deflateRawSync(writer.slicedData)).data;
+  var innerBuffer = ErrorAwareBufferWriter$TerrariaPacket.data(innerWriter);
+  if (innerBuffer.TAG === "Ok") {
+    var deflatedPayload = Nodezlib.deflateRawSync(innerBuffer._0);
+    return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packBuffer(outerPacketWriter, deflatedPayload, "deflatedPayload"));
+  }
+  var e = innerBuffer._0;
+  return {
+          TAG: "Error",
+          _0: {
+            context: "innerWriter; " + e.context,
+            error: e.error
+          }
+        };
 }
 
 var Encode = {
+  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+  packBuffer: ErrorAwarePacketWriter$TerrariaPacket.packBuffer,
+  packByte: ErrorAwareBufferWriter$TerrariaPacket.packByte,
+  packInt16: ErrorAwareBufferWriter$TerrariaPacket.packInt16,
+  packInt32: ErrorAwareBufferWriter$TerrariaPacket.packInt32,
+  data: ErrorAwareBufferWriter$TerrariaPacket.data,
   getLiquidBitFlags: getLiquidBitFlags,
   getSlopeBitFlags: getSlopeBitFlags,
   getRepeatCountByteLength: getRepeatCountByteLength,
   getRepeatCountBitFlags: getRepeatCountBitFlags,
-  packInt16: packInt16$3,
   packTile: packTile,
   decidePackTile: decidePackTile,
-  packByte: packByte$3,
-  packBuffer: packBuffer,
-  setType: ManagedPacketWriter$PacketFactory.setType,
-  data: data,
-  BufferWriter: undefined,
   toBuffer: toBuffer
 };
 

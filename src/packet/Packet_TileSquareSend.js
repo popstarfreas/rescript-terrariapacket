@@ -4,37 +4,25 @@
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
 var BitFlags$TerrariaPacket = require("../BitFlags.js");
 var PacketType$TerrariaPacket = require("../PacketType.js");
-var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
 var TileFrameImportant$TerrariaPacket = require("../TileFrameImportant.js");
+var ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+var ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 var Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
-
-function readInt16(prim) {
-  return prim.readInt16();
-}
-
-function readUInt16(prim) {
-  return prim.readUInt16();
-}
-
-function readByte(prim) {
-  return prim.readByte();
-}
 
 function parse(payload) {
   var reader = new Packetreader(payload);
-  var tileX = reader.readInt16();
-  var tileY = reader.readInt16();
-  var width = reader.readByte();
-  var height = reader.readByte();
-  var changeType = reader.readByte();
+  var tileX = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "tileX");
+  var tileY = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "tileY");
+  var width = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "width");
+  var height = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "height");
+  var changeType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "changeType");
   var tiles = [];
   for(var _x = 0; _x < width; ++_x){
     var column = [];
     for(var _y = 0; _y < height; ++_y){
-      var flags1 = BitFlags$TerrariaPacket.fromByte(reader.readByte());
-      var flags2 = BitFlags$TerrariaPacket.fromByte(reader.readByte());
-      var flags3 = reader.readByte();
+      var flags1 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags1"));
+      var flags2 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags2"));
+      var flags3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags3");
       var active = BitFlags$TerrariaPacket.flag1(flags1);
       var hasWall = BitFlags$TerrariaPacket.flag3(flags1);
       var hasLiquid = BitFlags$TerrariaPacket.flag4(flags1);
@@ -44,14 +32,14 @@ function parse(payload) {
       var inActive = BitFlags$TerrariaPacket.flag8(flags1);
       var wire2 = BitFlags$TerrariaPacket.flag1(flags2);
       var wire3 = BitFlags$TerrariaPacket.flag2(flags2);
-      var color = BitFlags$TerrariaPacket.flag3(flags2) ? reader.readByte() : undefined;
-      var wallColor = BitFlags$TerrariaPacket.flag4(flags2) ? reader.readByte() : undefined;
+      var color = BitFlags$TerrariaPacket.flag3(flags2) ? ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "color") : undefined;
+      var wallColor = BitFlags$TerrariaPacket.flag4(flags2) ? ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "wallColor") : undefined;
       var activeTile;
       if (active) {
-        var tileType = reader.readUInt16();
+        var tileType = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "tileType");
         var frame = TileFrameImportant$TerrariaPacket.isImportant(tileType) ? ({
-              x: reader.readInt16(),
-              y: reader.readInt16()
+              x: ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "frameX"),
+              y: ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "frameY")
             }) : undefined;
         var slope = ((0 + (
               BitFlags$TerrariaPacket.flag5(flags2) ? 1 : 0
@@ -68,10 +56,10 @@ function parse(payload) {
       } else {
         activeTile = undefined;
       }
-      var wall = hasWall ? reader.readUInt16() : undefined;
+      var wall = hasWall ? ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "wall") : undefined;
       var liquid = hasLiquid ? ({
-            liquidValue: reader.readByte(),
-            liquidType: reader.readByte()
+            liquidValue: ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "liquidValue"),
+            liquidType: ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "liquidType")
           }) : undefined;
       var wire4 = BitFlags$TerrariaPacket.flag8(flags2);
       column.push({
@@ -102,29 +90,6 @@ function parse(payload) {
         };
 }
 
-var Decode = {
-  readInt16: readInt16,
-  readUInt16: readUInt16,
-  readByte: readByte,
-  parse: parse
-};
-
-function packUInt16(prim0, prim1) {
-  return prim0.packUInt16(prim1);
-}
-
-function packInt16(prim0, prim1) {
-  return prim0.packInt16(prim1);
-}
-
-function packByte(prim0, prim1) {
-  return prim0.packByte(prim1);
-}
-
-function data(prim) {
-  return prim.data;
-}
-
 function packTile(writer, tile) {
   var flags1 = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(tile.activeTile), false, Belt_Option.isSome(tile.wall), Belt_Option.isSome(tile.liquid), tile.wire, tile.halfBrick, tile.actuator, tile.inActive);
   var flags2 = BitFlags$TerrariaPacket.fromFlags(tile.wire2, tile.wire3, Belt_Option.isSome(tile.color), Belt_Option.isSome(tile.wallColor), Belt_Option.mapWithDefault(tile.activeTile, false, (function (tile) {
@@ -134,34 +99,34 @@ function packTile(writer, tile) {
             })), Belt_Option.mapWithDefault(tile.activeTile, false, (function (tile) {
               return (tile.slope & 4) === 4;
             })), tile.wire4);
-  writer.packByte(BitFlags$TerrariaPacket.toByte(flags1)).packByte(BitFlags$TerrariaPacket.toByte(flags2)).packByte(tile.coatHeader);
-  var color = tile.color;
-  if (color !== undefined) {
-    writer.packByte(color);
+  ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(flags1), "flags1"), BitFlags$TerrariaPacket.toByte(flags2), "flags2"), tile.coatHeader, "coatHeader");
+  var c = tile.color;
+  if (c !== undefined) {
+    ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, c, "color");
   }
-  var color$1 = tile.wallColor;
-  if (color$1 !== undefined) {
-    writer.packByte(color$1);
+  var wc = tile.wallColor;
+  if (wc !== undefined) {
+    ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, wc, "wallColor");
   }
-  var activeTile = tile.activeTile;
-  if (activeTile !== undefined) {
-    writer.packUInt16(activeTile.tileType);
-    if (TileFrameImportant$TerrariaPacket.isImportant(activeTile.tileType)) {
-      writer.packInt16(Belt_Option.mapWithDefault(activeTile.frame, 0, (function (frame) {
-                    return frame.x;
-                  }))).packInt16(Belt_Option.mapWithDefault(activeTile.frame, 0, (function (frame) {
+  var at = tile.activeTile;
+  if (at !== undefined) {
+    ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, at.tileType, "tileType");
+    if (TileFrameImportant$TerrariaPacket.isImportant(at.tileType)) {
+      ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, Belt_Option.mapWithDefault(at.frame, 0, (function (frame) {
+                      return frame.x;
+                    })), "frameX"), Belt_Option.mapWithDefault(at.frame, 0, (function (frame) {
                   return frame.y;
-                })));
+                })), "frameY");
     }
     
   }
-  var wall = tile.wall;
-  if (wall !== undefined) {
-    writer.packUInt16(wall);
+  var w = tile.wall;
+  if (w !== undefined) {
+    ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, w, "wall");
   }
-  var liquid = tile.liquid;
-  if (liquid !== undefined) {
-    writer.packByte(liquid.liquidValue).packByte(liquid.liquidType);
+  var l = tile.liquid;
+  if (l !== undefined) {
+    ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, l.liquidValue, "liquidValue"), l.liquidType, "liquidType");
   }
   return writer;
 }
@@ -176,17 +141,14 @@ function packTiles(writer, tiles) {
 }
 
 function toBuffer(self) {
-  return packTiles(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("TileSquareSend")).packInt16(self.tileX).packInt16(self.tileY).packByte(self.width).packByte(self.height).packByte(self.changeType), self.tiles).data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(packTiles(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TileSquareSend")), self.tileX, "tileX"), self.tileY, "tileY"), self.width, "width"), self.height, "height"), self.changeType, "changeType"), self.tiles));
 }
 
+var Decode = {
+  parse: parse
+};
+
 var Encode = {
-  packUInt16: packUInt16,
-  packInt16: packInt16,
-  packByte: packByte,
-  setType: ManagedPacketWriter$PacketFactory.setType,
-  data: data,
-  packTile: packTile,
-  packTiles: packTiles,
   toBuffer: toBuffer
 };
 

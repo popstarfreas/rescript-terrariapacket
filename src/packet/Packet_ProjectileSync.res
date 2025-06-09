@@ -15,43 +15,43 @@ type t = {
 }
 
 module Decode = {
-  let {readSingle, readInt16, readUInt16, readByte} = module(PacketFactory.PacketReader)
+  let {readSingle, readInt16, readUInt16, readByte} = module(ErrorAwarePacketReader)
   let parse = (payload: NodeJs.Buffer.t) => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let projectileId = reader->readInt16
-    let x = reader->readSingle
-    let y = reader->readSingle
-    let vx = reader->readSingle
-    let vy = reader->readSingle
-    let owner = reader->readByte
-    let projectileType = reader->readInt16
-    let flags = BitFlags.fromByte(reader->readByte)
-    let flags2 = flags->BitFlags.flag3 ? Some(BitFlags.fromByte(reader->readByte)) : None
-    let ai0 = flags->BitFlags.flag1 ? Some(reader->readSingle) : None
-    let ai1 = flags->BitFlags.flag2 ? Some(reader->readSingle) : None
-    let bannerIdToRespondTo = flags->BitFlags.flag4 ? Some(reader->readUInt16) : None
+    let projectileId = reader->readInt16("projectileId")
+    let x = reader->readSingle("x")
+    let y = reader->readSingle("y")
+    let vx = reader->readSingle("vx")
+    let vy = reader->readSingle("vy")
+    let owner = reader->readByte("owner")
+    let projectileType = reader->readInt16("projectileType")
+    let flags = BitFlags.fromByte(reader->readByte("flags"))
+    let flags2 = flags->BitFlags.flag3 ? Some(BitFlags.fromByte(reader->readByte("flags2"))) : None
+    let ai0 = flags->BitFlags.flag1 ? Some(reader->readSingle("ai0")) : None
+    let ai1 = flags->BitFlags.flag2 ? Some(reader->readSingle("ai1")) : None
+    let bannerIdToRespondTo = flags->BitFlags.flag4 ? Some(reader->readUInt16("bannerIdToRespondTo")) : None
     let damage = if flags->BitFlags.flag5 {
-      Some(reader->readInt16)
+      Some(reader->readInt16("damage"))
     } else {
       None
     }
     let knockback = if flags->BitFlags.flag6 {
-      Some(reader->readSingle)
+      Some(reader->readSingle("knockback"))
     } else {
       None
     }
     let originalDamage = if flags->BitFlags.flag7 {
-      Some(reader->readInt16)
+      Some(reader->readInt16("originalDamage"))
     } else {
       None
     }
     let projectileUuid = if flags->BitFlags.flag8 {
-      Some(reader->readInt16)
+      Some(reader->readInt16("projectileUuid"))
     } else {
       None
     }
     let ai2 = switch flags2 {
-    | Some(flags2) => flags2->BitFlags.flag1 ? Some(reader->readSingle) : None
+    | Some(flags2Value) => flags2Value->BitFlags.flag1 ? Some(reader->readSingle("ai2")) : None
     | None => None
     }
     Some({
@@ -74,7 +74,7 @@ module Decode = {
 
 module Encode = {
   let {packSingle, packInt16, packUInt16, packByte, setType, data} = module(
-    PacketFactory.ManagedPacketWriter
+    ErrorAwarePacketWriter
   )
   let packOptionalData = (writer, self) => {
     let (ai0, ai1, ai2) = self.ai
@@ -102,57 +102,57 @@ module Encode = {
       ~flag8=self.projectileUuid->Belt.Option.isSome,
     )
 
-    writer->packByte(bitFlags->BitFlags.toByte)->ignore
+    writer->packByte(bitFlags->BitFlags.toByte, "flags")->ignore
 
     if bitFlags->BitFlags.flag3 {
-      writer->packByte(bitFlags2->BitFlags.toByte)->ignore
+      writer->packByte(bitFlags2->BitFlags.toByte, "flags2")->ignore
     }
 
     if bitFlags->BitFlags.flag1 {
-      writer->packSingle(ai0->Belt.Option.getUnsafe)->ignore
+      writer->packSingle(ai0->Belt.Option.getUnsafe, "ai0")->ignore
     }
 
     if bitFlags->BitFlags.flag2 {
-      writer->packSingle(ai1->Belt.Option.getUnsafe)->ignore
+      writer->packSingle(ai1->Belt.Option.getUnsafe, "ai1")->ignore
     }
 
     if bitFlags->BitFlags.flag4 {
-      writer->packUInt16(self.bannerIdToRespondTo->Belt.Option.getUnsafe)->ignore
+      writer->packUInt16(self.bannerIdToRespondTo->Belt.Option.getUnsafe, "bannerIdToRespondTo")->ignore
     }
 
     if bitFlags->BitFlags.flag5 {
-      writer->packInt16(self.damage->Belt.Option.getUnsafe)->ignore
+      writer->packInt16(self.damage->Belt.Option.getUnsafe, "damage")->ignore
     }
 
     if bitFlags->BitFlags.flag6 {
-      writer->packSingle(self.knockback->Belt.Option.getUnsafe)->ignore
+      writer->packSingle(self.knockback->Belt.Option.getUnsafe, "knockback")->ignore
     }
 
     if bitFlags->BitFlags.flag7 {
-      writer->packInt16(self.originalDamage->Belt.Option.getUnsafe)->ignore
+      writer->packInt16(self.originalDamage->Belt.Option.getUnsafe, "originalDamage")->ignore
     }
 
     if bitFlags->BitFlags.flag8 {
-      writer->packInt16(self.projectileUuid->Belt.Option.getUnsafe)->ignore
+      writer->packInt16(self.projectileUuid->Belt.Option.getUnsafe, "projectileUuid")->ignore
     }
 
-    if bitFlags2->BitFlags.flag1 {
-      writer->packSingle(ai2->Belt.Option.getUnsafe)->ignore
+    if bitFlags2->BitFlags.flag1 { // This check should use bitFlags2Value if it was stored
+      writer->packSingle(ai2->Belt.Option.getUnsafe, "ai2")->ignore
     }
 
     writer
   }
 
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.ProjectileSync->PacketType.toInt)
-    ->packInt16(self.projectileId)
-    ->packSingle(self.x)
-    ->packSingle(self.y)
-    ->packSingle(self.vx)
-    ->packSingle(self.vy)
-    ->packByte(self.owner)
-    ->packInt16(self.projectileType)
+    ->packInt16(self.projectileId, "projectileId")
+    ->packSingle(self.x, "x")
+    ->packSingle(self.y, "y")
+    ->packSingle(self.vx, "vx")
+    ->packSingle(self.vy, "vy")
+    ->packByte(self.owner, "owner")
+    ->packInt16(self.projectileType, "projectileType")
     ->packOptionalData(self)
     ->data
   }

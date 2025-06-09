@@ -1,5 +1,5 @@
 /***
- * This module is a wrapper around the PacketFactory.ManagedPacketWriter
+ * This module is a wrapper around the PacketFactory.BufferWriter
  * It will catch any errors while writing and hold on to them until data is called,
  * which will return a result
  */
@@ -7,7 +7,6 @@ let {
   packSingle,
   packInt32,
   packByte,
-  packUInt16,
   packInt16,
   packUInt64,
   packString,
@@ -15,15 +14,12 @@ let {
   packBytes,
   packColor,
   packBuffer,
-  packNetworkText,
-  setType,
   data,
-} = module(PacketFactory.ManagedPacketWriter)
+} = module(PacketFactory.BufferWriter)
 
 type packError = {context: string, error: Exn.t}
-type untypedT = PacketFactory.ManagedPacketWriter.untypedT
 type t =
-  | Writing(PacketFactory.ManagedPacketWriter.t)
+  | Writing(PacketFactory.BufferWriter.t)
   | Error(packError)
 
 let packSingle = (self: t, value: float, context: string): t => {
@@ -57,19 +53,6 @@ let packByte = (self: t, value: int, context: string): t => {
   | Writing(writer) =>
     try {
       let writer = writer->packByte(value)
-      Writing(writer)
-    } catch {
-    | Exn.Error(obj) => Error({context, error: obj})
-    }
-  | Error(_error) => self
-  }
-}
-
-let packUInt16 = (self: t, value: int, context: string): t => {
-  switch self {
-  | Writing(writer) =>
-    try {
-      let writer = writer->packUInt16(value)
       Writing(writer)
     } catch {
     | Exn.Error(obj) => Error({context, error: obj})
@@ -169,23 +152,6 @@ let packBuffer = (self: t, value: NodeJs.Buffer.t, context: string): t => {
   }
 }
 
-let packNetworkText = (self: t, value: PacketFactory.NetworkText.t, context: string): t => {
-  switch self {
-  | Writing(writer) =>
-    try {
-      let writer = writer->packNetworkText(value)
-      Writing(writer)
-    } catch {
-    | Exn.Error(obj) => Error({context, error: obj})
-    }
-  | Error(_error) => self
-  }
-}
-
-let setType = (self: untypedT, value: int): t => {
-  Writing(self->setType(value))
-}
-
 let data = (self: t): result<NodeJs.Buffer.t, packError> => {
   switch self {
   | Writing(writer) => Ok(writer->data)
@@ -193,4 +159,4 @@ let data = (self: t): result<NodeJs.Buffer.t, packError> => {
   }
 }
 
-let make = () => PacketFactory.ManagedPacketWriter.make()
+let make = buffer => Writing(PacketFactory.BufferWriter.make(buffer))

@@ -1,6 +1,5 @@
 let {
   readByte,
-  readUInt16,
   readInt16,
   readInt32,
   readUInt64,
@@ -10,25 +9,16 @@ let {
   readSByte,
   readColor,
   readBuffer,
-  readNetworkText,
   getBytesLeft,
-} = module(PacketFactory.PacketReader)
+} = module(PacketFactory.BufferReader)
 
 type readError = {context: string, error: Exn.t}
 exception ReadError(readError)
 
-type t = PacketFactory.PacketReader.t
+type t = PacketFactory.BufferReader.t
 let readByte = (reader: t, context: string): int => {
   try {
     readByte(reader)
-  } catch {
-  | Exn.Error(obj) => raise(ReadError({context, error: obj}))
-  }
-}
-
-let readUInt16 = (reader: t, context: string): int => {
-  try {
-    readUInt16(reader)
   } catch {
   | Exn.Error(obj) => raise(ReadError({context, error: obj}))
   }
@@ -101,14 +91,6 @@ let readColor = (reader: t, context: string): PacketFactory.Color.t => {
 let readBuffer = (reader: t, bytes: int, context: string): NodeJs.Buffer.t => {
   try {
     readBuffer(reader, bytes)
-  } catch {
-  | Exn.Error(obj) => raise(ReadError({context, error: obj}))
-  }
-}
-
-let readNetworkText = (reader: t, context: string): PacketFactory.NetworkText.t => {
-  try {
-    readNetworkText(reader)
   } catch {
   | Exn.Error(obj) => raise(ReadError({context, error: obj}))
   }

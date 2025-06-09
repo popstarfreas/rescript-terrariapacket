@@ -35,29 +35,13 @@ type t = {
 }
 
 module Decode: {
-  let readInt16: PacketFactory.PacketReader.t => int
-  let readUInt16: PacketFactory.PacketReader.t => int
-  let readByte: PacketFactory.PacketReader.t => int
   let parse: NodeJs.Buffer.t => option<t>
 }
 module Encode: {
-  let packUInt16: (PacketFactory.ManagedPacketWriter.t, int) => PacketFactory.ManagedPacketWriter.t
-  let packInt16: (PacketFactory.ManagedPacketWriter.t, int) => PacketFactory.ManagedPacketWriter.t
-  let packByte: (PacketFactory.ManagedPacketWriter.t, int) => PacketFactory.ManagedPacketWriter.t
-  let setType: (
-    PacketFactory.ManagedPacketWriter.untypedT,
-    int,
-  ) => PacketFactory.ManagedPacketWriter.t
-  let data: PacketFactory.ManagedPacketWriter.t => NodeJs.Buffer.t
-  let packTile: (PacketFactory.ManagedPacketWriter.t, tile) => PacketFactory.ManagedPacketWriter.t
-  let packTiles: (
-    PacketFactory.ManagedPacketWriter.t,
-    array<array<tile>>,
-  ) => PacketFactory.ManagedPacketWriter.t
-  let toBuffer: t => NodeJs.Buffer.t
+  let toBuffer: t => result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError>
 }
 
 @genType
 let parse: NodeJs.Buffer.t => option<t>
 @genType
-let toBuffer: t => NodeJs.Buffer.t
+let toBuffer: t => result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError>

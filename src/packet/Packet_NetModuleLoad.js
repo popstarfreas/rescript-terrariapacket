@@ -4,9 +4,9 @@
 var Core__Option = require("@rescript/core/src/Core__Option.js");
 var PacketType$TerrariaPacket = require("../PacketType.js");
 var CreativePowers$TerrariaPacket = require("../CreativePowers.js");
-var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+var ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+var ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 var Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
 function pylonActionToInt(pylonAction) {
   switch (pylonAction) {
@@ -98,77 +98,77 @@ function toBuffer(self) {
   switch (self.TAG) {
     case "Liquid" :
         var liquid = self._0;
-        var writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NetModuleLoad")).packUInt16(0).packUInt16(liquid.changes.length);
+        var writer = ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 0, "moduleType"), liquid.changes.length, "changesCount");
         liquid.changes.forEach(function (change) {
-              writer.packInt16(change.y).packInt16(change.x).packByte(change.amount).packByte(change.liquidType);
+              ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, change.y, "y"), change.x, "x"), change.amount, "amount"), change.liquidType, "liquidType");
             });
-        return writer.data;
+        return ErrorAwarePacketWriter$TerrariaPacket.data(writer);
     case "ClientText" :
         var commandId = self._0;
         var message = self._1;
-        return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NetModuleLoad")).packUInt16(1).packString(commandId).packString(message).data;
+        return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 1, "moduleType"), commandId, "commandId"), message, "message"));
     case "ServerText" :
         var playerId = self._0;
         var networkText = self._1;
         var color = self._2;
-        return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NetModuleLoad")).packUInt16(1).packByte(playerId).packNetworkText(networkText).packColor(color).data;
+        return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packNetworkText(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 1, "moduleType"), playerId, "playerId"), networkText, "networkText"), color, "color"));
     case "Ping" :
         var ping = self._0;
-        return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NetModuleLoad")).packUInt16(2).packSingle(ping.x).packSingle(ping.y).data;
+        return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 2, "moduleType"), ping.x, "x"), ping.y, "y"));
     case "Ambience" :
         var ambience = self._0;
-        return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NetModuleLoad")).packUInt16(3).packByte(ambience.playerId).packInt32(ambience.seed).packByte(ambience.skyEntityType).data;
+        return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 3, "moduleType"), ambience.playerId, "playerId"), ambience.seed, "seed"), ambience.skyEntityType, "skyEntityType"));
     case "Bestiary" :
         var bestiary = self._0;
-        var writer$1 = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NetModuleLoad")).packUInt16(4);
+        var writer$1 = ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 4, "moduleType");
         var _count = bestiary.unlockType;
         var tmp;
         tmp = typeof _count !== "object" ? (
-            _count === "Sight" ? writer$1.packByte(1) : writer$1.packByte(2)
-          ) : writer$1.packByte(0);
-        tmp.packInt16(bestiary.npcId);
+            _count === "Sight" ? ErrorAwarePacketWriter$TerrariaPacket.packByte(writer$1, 1, "unlockTypeByte") : ErrorAwarePacketWriter$TerrariaPacket.packByte(writer$1, 2, "unlockTypeByte")
+          ) : ErrorAwarePacketWriter$TerrariaPacket.packByte(writer$1, 0, "unlockTypeByte");
+        ErrorAwarePacketWriter$TerrariaPacket.packInt16(tmp, bestiary.npcId, "npcId");
         var count = bestiary.unlockType;
         var tmp$1;
-        tmp$1 = typeof count !== "object" ? writer$1 : writer$1.packUInt16(count._0);
-        return tmp$1.data;
+        tmp$1 = typeof count !== "object" ? writer$1 : ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer$1, count._0, "killCount");
+        return ErrorAwarePacketWriter$TerrariaPacket.data(tmp$1);
     case "CreativeUnlocks" :
         var creativeUnlock = self._0;
-        return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NetModuleLoad")).packUInt16(5).packInt16(creativeUnlock.itemId).packUInt16(creativeUnlock.researchedCount).data;
+        return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 5, "moduleType"), creativeUnlock.itemId, "itemId"), creativeUnlock.researchedCount, "researchedCount"));
     case "CreativePower" :
         var creativePower = self._0;
-        return CreativePowers$TerrariaPacket.pack(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NetModuleLoad")).packUInt16(6), creativePower).data;
+        return ErrorAwarePacketWriter$TerrariaPacket.data(CreativePowers$TerrariaPacket.pack(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 6, "moduleType"), creativePower));
     case "CreativeUnlocksPlayerReport" :
         var unlockReport = self._0;
-        return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NetModuleLoad")).packUInt16(7).packUInt16(unlockReport.itemId).packUInt16(unlockReport.researchedCount).data;
+        return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 7, "moduleType"), unlockReport.itemId, "itemId"), unlockReport.researchedCount, "researchedCount"));
     case "TeleportPylon" :
         var teleportPylon = self._0;
-        return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NetModuleLoad")).packUInt16(8).packByte(pylonActionToInt(teleportPylon.pylonAction)).packInt16(teleportPylon.x).packInt16(teleportPylon.y).packByte(teleportPylon.pylonType).data;
+        return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 8, "moduleType"), pylonActionToInt(teleportPylon.pylonAction), "pylonAction"), teleportPylon.x, "x"), teleportPylon.y, "y"), teleportPylon.pylonType, "pylonType"));
     case "Particles" :
         var particle = self._0;
-        return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NetModuleLoad")).packUInt16(9).packByte(particle.particleType).packSingle(particle.x).packSingle(particle.y).packSingle(particle.vx).packSingle(particle.vy).packInt32(particle.shaderIndex).packByte(particle.invokedByPlayer).data;
+        return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 9, "moduleType"), particle.particleType, "particleType"), particle.x, "x"), particle.y, "y"), particle.vx, "vx"), particle.vy, "vy"), particle.shaderIndex, "shaderIndex"), particle.invokedByPlayer, "invokedByPlayer"));
     case "CreativePowerPermissions" :
         var creativePowerPermission = self._0;
-        return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NetModuleLoad")).packUInt16(10).packByte(creativePowerPermission.powerType).packByte(powerLevelToInt(creativePowerPermission.powerLevel)).data;
+        return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 10, "moduleType"), creativePowerPermission.powerType, "powerType"), powerLevelToInt(creativePowerPermission.powerLevel), "powerLevel"));
     
   }
 }
 
 function parse(payload, fromServer) {
   var reader = new Packetreader(payload);
-  var moduleType = reader.readUInt16();
+  var moduleType = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "moduleType");
   var match = fromInt(moduleType);
   if (match === undefined) {
     return ;
   }
   switch (match) {
     case "Liquid" :
-        var changesCount = reader.readUInt16();
+        var changesCount = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "changesCount");
         var changes = [];
         for(var _for = 0; _for < changesCount; ++_for){
-          var y = reader.readInt16();
-          var x = reader.readInt16();
-          var amount = reader.readByte();
-          var liquidType = reader.readByte();
+          var y = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+          var x = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+          var amount = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "amount");
+          var liquidType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "liquidType");
           changes.push({
                 x: x,
                 y: y,
@@ -184,9 +184,9 @@ function parse(payload, fromServer) {
               };
     case "Text" :
         if (fromServer) {
-          var playerId = reader.readByte();
-          var message = reader.readNetworkText();
-          var color = reader.readColor();
+          var playerId = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+          var message = ErrorAwarePacketReader$TerrariaPacket.readNetworkText(reader, "message");
+          var color = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "color");
           return {
                   TAG: "ServerText",
                   _0: playerId,
@@ -194,16 +194,16 @@ function parse(payload, fromServer) {
                   _2: color
                 };
         }
-        var commandId = reader.readString();
-        var message$1 = reader.readString();
+        var commandId = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "commandId");
+        var message$1 = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "message");
         return {
                 TAG: "ClientText",
                 _0: commandId,
                 _1: message$1
               };
     case "Ping" :
-        var x$1 = reader.readSingle();
-        var y$1 = reader.readSingle();
+        var x$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+        var y$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
         return {
                 TAG: "Ping",
                 _0: {
@@ -212,9 +212,9 @@ function parse(payload, fromServer) {
                 }
               };
     case "Ambience" :
-        var playerId$1 = reader.readByte();
-        var seed = reader.readInt32();
-        var skyEntityType = reader.readByte();
+        var playerId$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+        var seed = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "seed");
+        var skyEntityType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "skyEntityType");
         return {
                 TAG: "Ambience",
                 _0: {
@@ -224,14 +224,14 @@ function parse(payload, fromServer) {
                 }
               };
     case "Bestiary" :
-        var rawBestiaryUnlockType = reader.readByte();
-        var npcId = reader.readInt16();
+        var rawBestiaryUnlockType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "rawBestiaryUnlockType");
+        var npcId = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcId");
         var bestiaryUnlockType;
         switch (rawBestiaryUnlockType) {
           case 0 :
               bestiaryUnlockType = {
                 TAG: "Kill",
-                _0: reader.readUInt16()
+                _0: ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "killCount")
               };
               break;
           case 1 :
@@ -255,8 +255,8 @@ function parse(payload, fromServer) {
           return ;
         }
     case "CreativeUnlocks" :
-        var itemId = reader.readInt16();
-        var researchedCount = reader.readUInt16();
+        var itemId = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemId");
+        var researchedCount = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "researchedCount");
         return {
                 TAG: "CreativeUnlocks",
                 _0: {
@@ -272,9 +272,9 @@ function parse(payload, fromServer) {
                             };
                     }));
     case "CreativeUnlocksPlayerReport" :
-        reader.readByte();
-        var itemId$1 = reader.readUInt16();
-        var researchedCount$1 = reader.readUInt16();
+        ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "unknownByte");
+        var itemId$1 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "itemId");
+        var researchedCount$1 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "researchedCount");
         return {
                 TAG: "CreativeUnlocksPlayerReport",
                 _0: {
@@ -283,10 +283,10 @@ function parse(payload, fromServer) {
                 }
               };
     case "TeleportPylon" :
-        var rawPylonAction = reader.readByte();
-        var x$2 = reader.readInt16();
-        var y$2 = reader.readInt16();
-        var pylonType = reader.readByte();
+        var rawPylonAction = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "rawPylonAction");
+        var x$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+        var y$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+        var pylonType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "pylonType");
         var pylonAction;
         switch (rawPylonAction) {
           case 0 :
@@ -315,13 +315,13 @@ function parse(payload, fromServer) {
           return ;
         }
     case "Particles" :
-        var particleType = reader.readByte();
-        var x$3 = reader.readSingle();
-        var y$3 = reader.readSingle();
-        var vx = reader.readSingle();
-        var vy = reader.readSingle();
-        var shaderIndex = reader.readInt32();
-        var invokedByPlayer = reader.readByte();
+        var particleType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "particleType");
+        var x$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+        var y$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+        var vx = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
+        var vy = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
+        var shaderIndex = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "shaderIndex");
+        var invokedByPlayer = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "invokedByPlayer");
         return {
                 TAG: "Particles",
                 _0: {
@@ -335,9 +335,9 @@ function parse(payload, fromServer) {
                 }
               };
     case "CreativePowerPermissions" :
-        reader.readByte();
-        var powerType = reader.readUInt16();
-        var rawPowerLevel = reader.readByte();
+        ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "unknownByte");
+        var powerType = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "powerType");
+        var rawPowerLevel = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "rawPowerLevel");
         var powerLevel;
         switch (rawPowerLevel) {
           case 0 :
@@ -370,4 +370,4 @@ function parse(payload, fromServer) {
 exports.NetModuleType = NetModuleType;
 exports.toBuffer = toBuffer;
 exports.parse = parse;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* CreativePowers-TerrariaPacket Not a pure module */

@@ -3,8 +3,7 @@
 
 var Js_exn = require("rescript/lib/js/js_exn.js");
 var Caml_js_exceptions = require("rescript/lib/js/caml_js_exceptions.js");
-var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
-var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
+var Bufferwriter = require("@popstarfreas/packetfactory/bufferwriter").default;
 
 function packSingle(self, value, context) {
   if (self.TAG !== "Writing") {
@@ -64,32 +63,6 @@ function packByte(self, value, context) {
   }
   try {
     var writer = self._0.packByte(value);
-    return {
-            TAG: "Writing",
-            _0: writer
-          };
-  }
-  catch (raw_obj){
-    var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-    if (obj.RE_EXN_ID === Js_exn.$$Error) {
-      return {
-              TAG: "Error",
-              _0: {
-                context: context,
-                error: obj._1
-              }
-            };
-    }
-    throw obj;
-  }
-}
-
-function packUInt16(self, value, context) {
-  if (self.TAG !== "Writing") {
-    return self;
-  }
-  try {
-    var writer = self._0.packUInt16(value);
     return {
             TAG: "Writing",
             _0: writer
@@ -292,39 +265,6 @@ function packBuffer(self, value, context) {
   }
 }
 
-function packNetworkText(self, value, context) {
-  if (self.TAG !== "Writing") {
-    return self;
-  }
-  try {
-    var writer = self._0.packNetworkText(value);
-    return {
-            TAG: "Writing",
-            _0: writer
-          };
-  }
-  catch (raw_obj){
-    var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-    if (obj.RE_EXN_ID === Js_exn.$$Error) {
-      return {
-              TAG: "Error",
-              _0: {
-                context: context,
-                error: obj._1
-              }
-            };
-    }
-    throw obj;
-  }
-}
-
-function setType(self, value) {
-  return {
-          TAG: "Writing",
-          _0: ManagedPacketWriter$PacketFactory.setType(self, value)
-        };
-}
-
 function data(self) {
   if (self.TAG === "Writing") {
     return {
@@ -339,14 +279,16 @@ function data(self) {
   }
 }
 
-function make() {
-  return new Packetwriter();
+function make(buffer) {
+  return {
+          TAG: "Writing",
+          _0: new Bufferwriter(buffer)
+        };
 }
 
 exports.packSingle = packSingle;
 exports.packInt32 = packInt32;
 exports.packByte = packByte;
-exports.packUInt16 = packUInt16;
 exports.packInt16 = packInt16;
 exports.packUInt64 = packUInt64;
 exports.packString = packString;
@@ -354,8 +296,6 @@ exports.packSByte = packSByte;
 exports.packBytes = packBytes;
 exports.packColor = packColor;
 exports.packBuffer = packBuffer;
-exports.packNetworkText = packNetworkText;
-exports.setType = setType;
 exports.data = data;
 exports.make = make;
-/* @popstarfreas/packetfactory/packetwriter Not a pure module */
+/* @popstarfreas/packetfactory/bufferwriter Not a pure module */

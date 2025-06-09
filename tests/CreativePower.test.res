@@ -9,11 +9,10 @@ zoraBlock("should correctly parse and serialise FarPlacementRangePower", t => {
     | CreativePower(FarPlacementRangePower(Everyone(values))) => t->ok(values->Array.every(v => v))
     | _ => t->fail(~msg="Failed to parse packet")
     }
+    let buffer = Packet.NetModuleLoad.toBuffer(netModuleLoad)
     let hexOutput =
-      Packet.NetModuleLoad.toBuffer(netModuleLoad)->NodeJs.Buffer.toStringWithEncoding(
-        NodeJs.StringEncoding.hex,
-      )
-    t->equal(hex, hexOutput)
+      buffer->Result.map(v => v->NodeJs.Buffer.toStringWithEncoding(NodeJs.StringEncoding.hex))
+    t->equal(Ok(hex), hexOutput)
   | None => t->fail(~msg="Failed to parse packet")
   }
 })
@@ -30,11 +29,10 @@ zoraBlock("should correctly parse and serialise GodmodePower", t => {
       t->equal(values[0], Some(true))
     | _ => t->fail(~msg="Failed to parse packet")
     }
+    let buffer = Packet.NetModuleLoad.toBuffer(netModuleLoad)
     let hexOutput =
-      Packet.NetModuleLoad.toBuffer(netModuleLoad)->NodeJs.Buffer.toStringWithEncoding(
-        NodeJs.StringEncoding.hex,
-      )
-    t->equal(hex, hexOutput)
+      buffer->Result.map(v => v->NodeJs.Buffer.toStringWithEncoding(NodeJs.StringEncoding.hex))
+    t->equal(Ok(hex), hexOutput)
   | None => t->fail(~msg="Failed to parse packet")
   }
 })

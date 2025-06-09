@@ -98,7 +98,7 @@ let cacheToTile = (cache: tileCache): tile => {
 }
 
 module Chest = {
-  let {readString, readInt16, readUInt16, readInt32, readByte} = module(PacketFactory.BufferReader)
+  let {readString, readInt16} = module(ErrorAwareBufferReader)
   @genType
   type t = {
     id: int,
@@ -108,23 +108,27 @@ module Chest = {
   }
 
   let parse = (reader): t => {
-    let id = reader->readInt16
-    let x = reader->readInt16
-    let y = reader->readInt16
-    let name = reader->readString
+    let id = reader->readInt16("id")
+    let x = reader->readInt16("x")
+    let y = reader->readInt16("y")
+    let name = reader->readString("name")
     {id, x, y, name}
   }
 
-  let {packByte, packInt16, packString} = module(PacketFactory.BufferWriter)
-  type bufferWriter = PacketFactory.BufferWriter.t
+  let {packInt16, packString} = module(ErrorAwareBufferWriter)
+  type bufferWriter = ErrorAwareBufferWriter.t
 
-  let pack = (writer, chest): bufferWriter => {
-    writer->packInt16(chest.id)->packInt16(chest.x)->packInt16(chest.y)->packString(chest.name)
+  let pack = (writer: bufferWriter, chest): bufferWriter => {
+    writer
+    ->packInt16(chest.id, "id")
+    ->packInt16(chest.x, "x")
+    ->packInt16(chest.y, "y")
+    ->packString(chest.name, "name")
   }
 }
 
 module Sign = {
-  let {readString, readInt16, readUInt16, readInt32, readByte} = module(PacketFactory.BufferReader)
+  let {readString, readInt16} = module(ErrorAwareBufferReader)
   @genType
   type t = {
     id: int,
@@ -134,24 +138,28 @@ module Sign = {
   }
 
   let parse = (reader): t => {
-    let id = reader->readInt16
-    let x = reader->readInt16
-    let y = reader->readInt16
-    let name = reader->readString
+    let id = reader->readInt16("id")
+    let x = reader->readInt16("x")
+    let y = reader->readInt16("y")
+    let name = reader->readString("name")
 
     {id, x, y, name}
   }
 
-  let {packByte, packInt16, packString} = module(PacketFactory.BufferWriter)
-  type bufferWriter = PacketFactory.BufferWriter.t
+  let {packInt16, packString} = module(ErrorAwareBufferWriter)
+  type bufferWriter = ErrorAwareBufferWriter.t
 
   let pack = (writer, sign): bufferWriter => {
-    writer->packInt16(sign.id)->packInt16(sign.x)->packInt16(sign.y)->packString(sign.name)
+    writer
+    ->packInt16(sign.id, "id")
+    ->packInt16(sign.x, "x")
+    ->packInt16(sign.y, "y")
+    ->packString(sign.name, "name")
   }
 }
 
 module Entity = {
-  let {readString, readInt16, readUInt16, readInt32, readByte} = module(PacketFactory.BufferReader)
+  let {readInt16, readByte} = module(ErrorAwareBufferReader)
   @genType
   type displayItem = {
     netId: int,
@@ -207,13 +215,13 @@ module Entity = {
   }
 
   let parseTrainingDummyKind = (reader): trainingDummy => {
-    npcSlotId: reader->readInt16,
+    npcSlotId: reader->readInt16("npcSlotId"),
   }
 
   let parseDisplayItem = (reader): displayItem => {
-    let netId = reader->readInt16
-    let prefix = reader->readByte
-    let stack = reader->readInt16
+    let netId = reader->readInt16("netId")
+    let prefix = reader->readByte("prefix")
+    let stack = reader->readInt16("stack")
 
     {
       netId,
@@ -225,8 +233,8 @@ module Entity = {
   let parseItemFrameKind = parseDisplayItem
 
   let parseLogicSensorKind = (reader): logicSensor => {
-    let checkType = reader->readByte
-    let on = reader->readByte == 1
+    let checkType = reader->readByte("checkType")
+    let on = reader->readByte("on") == 1
 
     {
       checkType,
@@ -235,24 +243,24 @@ module Entity = {
   }
 
   let parseDisplayDollKind = (reader): displayDoll => {
-    let itemsFlags = BitFlags.fromByte(reader->readByte)
-    let dyeFlags = BitFlags.fromByte(reader->readByte)
+    let itemsFlags = BitFlags.fromByte(reader->readByte("itemsFlags"))
+    let dyeFlags = BitFlags.fromByte(reader->readByte("dyeFlags"))
     let items = []
     let dyes = []
 
     for i in 0 to 7 {
       if itemsFlags->BitFlags.flagN(i) {
-        let _: int = items->Js.Array2.push(Some(parseDisplayItem(reader)))
+        items->Array.push(Some(parseDisplayItem(reader)))
       } else {
-        let _: int = items->Js.Array2.push(None)
+        items->Array.push(None)
       }
     }
 
     for i in 0 to 7 {
       if dyeFlags->BitFlags.flagN(i) {
-        let _: int = dyes->Js.Array2.push(Some(parseDisplayItem(reader)))
+        dyes->Array.push(Some(parseDisplayItem(reader)))
       } else {
-        let _: int = dyes->Js.Array2.push(None)
+        dyes->Array.push(None)
       }
     }
 
@@ -265,23 +273,23 @@ module Entity = {
   let parseWeaponsRackKind = parseDisplayItem
 
   let parseHatRackKind = (reader): hatRack => {
-    let flags = BitFlags.fromByte(reader->readByte)
+    let flags = BitFlags.fromByte(reader->readByte("flags"))
     let items = []
     let dyes = []
 
     for i in 0 to 1 {
       if flags->BitFlags.flagN(i) {
-        let _: int = items->Js.Array2.push(Some(parseDisplayItem(reader)))
+        items->Array.push(Some(parseDisplayItem(reader)))
       } else {
-        let _: int = items->Js.Array2.push(None)
+        items->Array.push(None)
       }
     }
 
     for i in 0 to 1 {
       if flags->BitFlags.flagN(i + 2) {
-        let _: int = dyes->Js.Array2.push(Some(parseDisplayItem(reader)))
+        dyes->Array.push(Some(parseDisplayItem(reader)))
       } else {
-        let _: int = dyes->Js.Array2.push(None)
+        dyes->Array.push(None)
       }
     }
 
@@ -294,9 +302,9 @@ module Entity = {
   let parseFoodPlatterKind = parseDisplayItem
 
   let parse = (reader): result<t, string> => {
-    let entityType = reader->readByte
-    let x = reader->readInt16
-    let y = reader->readInt16
+    let entityType = reader->readByte("entityType")
+    let x = reader->readInt16("x")
+    let y = reader->readInt16("y")
     let entityKind = switch entityType {
     | 0 => Ok(TrainingDummy(reader->parseTrainingDummyKind))
     | 1 => Ok(ItemFrame(reader->parseItemFrameKind))
@@ -319,28 +327,32 @@ module Entity = {
     })
   }
 
-  let {packByte, packInt16, packString} = module(PacketFactory.BufferWriter)
-  type bufferWriter = PacketFactory.BufferWriter.t
+  let {packByte, packInt16} = module(ErrorAwareBufferWriter)
+  type bufferWriter = ErrorAwareBufferWriter.t
 
-  let packTrainingDummy = (writer, trainingDummy): bufferWriter => {
-    writer->packInt16(trainingDummy.npcSlotId)
+  let packTrainingDummy = (writer: bufferWriter, trainingDummy): bufferWriter => {
+    writer->packInt16(trainingDummy.npcSlotId, "npcSlotId")
   }
 
   let packDisplayItem = (writer, displayItem): bufferWriter => {
-    writer->packInt16(displayItem.netId)->packByte(displayItem.prefix)->packInt16(displayItem.stack)
+    writer
+    ->packInt16(displayItem.netId, "netId")
+    ->packByte(displayItem.prefix, "prefix")
+    ->packInt16(displayItem.stack, "stack")
   }
 
   let packItemFrame = packDisplayItem
 
   let packLogicSensor = (writer, logicSensorKind): bufferWriter => {
     writer
-    ->packByte(logicSensorKind.checkType)
+    ->packByte(logicSensorKind.checkType, "checkType")
     ->packByte(
       if logicSensorKind.on {
         1
       } else {
         0
       },
+      "on",
     )
   }
 
@@ -370,7 +382,10 @@ module Entity = {
       ~flag8=displayDollKind.dyes->hasItem(7),
     )
 
-    writer->packByte(itemFlags->BitFlags.toByte)->packByte(dyeFlags->BitFlags.toByte)->ignore
+    writer
+    ->packByte(itemFlags->BitFlags.toByte, "itemFlags")
+    ->packByte(dyeFlags->BitFlags.toByte, "dyeFlags")
+    ->ignore
 
     for i in 0 to 7 {
       switch displayDollKind.items->Belt.Array.get(i)->Option.flatMap(a => a) {
@@ -403,7 +418,7 @@ module Entity = {
       ~flag8=false,
     )
 
-    writer->packByte(flags->BitFlags.toByte)->ignore
+    writer->packByte(flags->BitFlags.toByte, "flags")->ignore
 
     for i in 0 to 1 {
       switch hatRackKind.items->Belt.Array.get(i)->Option.flatMap(a => a) {
@@ -439,11 +454,11 @@ module Entity = {
     }
   }
 
-  let pack = (writer, entity): bufferWriter => {
+  let pack = (writer: bufferWriter, entity: t): bufferWriter => {
     writer
-    ->packByte(entity.entityType)
-    ->packInt16(entity.x)
-    ->packInt16(entity.y)
+    ->packByte(entity.entityType, "entityType")
+    ->packInt16(entity.x, "x")
+    ->packInt16(entity.y, "y")
     ->packEntityKind(entity.entityKind)
   }
 }
@@ -483,17 +498,17 @@ module Decode = {
     tile.inActive = false
   }
 
-  module PacketReader = PacketFactory.PacketReader
-  let {readBuffer, getBytesLeft} = module(PacketFactory.PacketReader)
-  let {readString, readInt16, readUInt16, readInt32, readByte} = module(PacketFactory.BufferReader)
+  module PacketReader = ErrorAwarePacketReader
+  let {readBuffer, getBytesLeft} = module(ErrorAwarePacketReader)
+  let {readInt16, readInt32, readByte} = module(ErrorAwareBufferReader)
   let parse = (payload: NodeJs.Buffer.t) => {
-    let reader = PacketFactory.PacketReader.make(payload)
-    let deflated = reader->readBuffer(reader->PacketFactory.PacketReader.getBytesLeft)
-    let reader = PacketFactory.BufferReader.make(NodeJs.Zlib.inflateRawSync(deflated))
-    let tileX = reader->readInt32
-    let tileY = reader->readInt32
-    let width = reader->readInt16
-    let height = reader->readInt16
+    let packetReader = PacketFactory.PacketReader.make(payload) // Remains PacketFactory.PacketReader as per refined plan
+    let deflated = packetReader->readBuffer(packetReader->getBytesLeft, "deflatedPayload")
+    let reader = PacketFactory.BufferReader.make(NodeJs.Zlib.inflateRawSync(deflated)) // This reader is for the uncompressed data.
+    let tileX = reader->readInt32("tileX")
+    let tileY = reader->readInt32("tileY")
+    let width = reader->readInt16("width")
+    let height = reader->readInt16("height")
     let tiles: array<array<tile>> = []
     let tileCache = defaultTileCache()
     let rleCount = ref(0)
@@ -505,19 +520,19 @@ module Decode = {
         for _x in 0 to width - 1 {
           if rleCount.contents != 0 {
             decr(rleCount)
-            row->Js.Array2.push(tileCache->cacheToTile)->ignore
+            row->Array.push(tileCache->cacheToTile)
           } else {
             clearTileCache(tileCache)
-            let header5 = reader->readByte->BitFlags.fromByte
+            let header5 = reader->readByte("header5")->BitFlags.fromByte
             let (header4, header3, header2) = if header5->BitFlags.flag1 {
-              let header4 = reader->readByte->BitFlags.fromByte
+              let header4 = reader->readByte("header4_conditional")->BitFlags.fromByte
               let header3 = if header4->BitFlags.flag1 {
-                reader->readByte->BitFlags.fromByte
+                reader->readByte("header3_conditional")->BitFlags.fromByte
               } else {
                 BitFlags.fromByte(0)
               }
               let header2 = if header3->BitFlags.flag1 {
-                reader->readByte
+                reader->readByte("header2_conditional")
               } else {
                 0
               }
@@ -532,16 +547,16 @@ module Decode = {
               let oldType =
                 tileCache.activeTile->Option.mapWithDefault(0, active => active.tileType)
               let tileType = if header5->BitFlags.flag6 {
-                let byte = reader->readByte
-                let secondByte = reader->readByte
+                let byte = reader->readByte("tileType_byte1")
+                let secondByte = reader->readByte("tileType_byte2")
                 secondByte->lsl(8)->lor(byte)
               } else {
-                reader->readByte
+                reader->readByte("tileType")
               }
 
               let frame = if TileFrameImportant.isImportant(tileType) {
-                let x = reader->readInt16
-                let y = reader->readInt16
+                let x = reader->readInt16("frameX")
+                let y = reader->readInt16("frameY")
                 Some({x, y})
               } else if oldActive->Option.isSome && tileType === oldType {
                 (oldActive->Option.getUnsafe).frame
@@ -550,7 +565,7 @@ module Decode = {
               }
 
               if header3->BitFlags.flag4 {
-                tileCache.color = Some(reader->readByte)
+                tileCache.color = Some(reader->readByte("color"))
               }
 
               tileCache.activeTile = Some({
@@ -560,16 +575,16 @@ module Decode = {
             }
 
             if header5->BitFlags.flag3 {
-              tileCache.wall = Some(reader->readByte)
+              tileCache.wall = Some(reader->readByte("wall"))
 
               if header3->BitFlags.flag5 {
-                tileCache.wallColor = Some(reader->readByte)
+                tileCache.wallColor = Some(reader->readByte("wallColor"))
               }
             }
 
             let liquidBits = header5->BitFlags.toByte->land(24)->lsr(3)
             if liquidBits != 0 {
-              tileCache.liquid = Some(reader->readByte)
+              tileCache.liquid = Some(reader->readByte("liquidValue"))
               if liquidBits > 1 {
                 if liquidBits == 2 {
                   tileCache.lava = true
@@ -616,7 +631,7 @@ module Decode = {
                 tileCache.wire4 = true
               }
               if header3->BitFlags.flag7 {
-                let byte = reader->readByte
+                let byte = reader->readByte("wall_highByte")
                 tileCache.wall = Some(byte->lsl(8)->lor(tileCache.wall->Option.getUnsafe))
               }
             }
@@ -624,27 +639,27 @@ module Decode = {
             let repeatCountBytes = header5->BitFlags.toByte->land(192)->lsr(6)
             switch repeatCountBytes {
             | 0 => rleCount.contents = 0
-            | 1 => rleCount.contents = reader->readByte
-            | _ => rleCount.contents = reader->readInt16
+            | 1 => rleCount.contents = reader->readByte("rle_byte")
+            | _ => rleCount.contents = reader->readInt16("rle_int16")
             }
-            row->Js.Array2.push(tileCache->cacheToTile)->ignore
+            row->Array.push(tileCache->cacheToTile)
           }
         }
-        tiles->Js.Array2.push(row)->ignore
+        tiles->Array.push(row)
       }
 
-      let chestCount = reader->readInt16
-      let chests = Belt.Array.make(chestCount, 0)->Js.Array2.map(_ => {
+      let chestCount = reader->readInt16("chestCount")
+      let chests = Belt.Array.make(chestCount, 0)->Array.map(_ => {
         reader->Chest.parse
       })
-      let signCount = reader->readInt16
-      let signs = Belt.Array.make(signCount, 0)->Js.Array2.map(_ => {
+      let signCount = reader->readInt16("signCount")
+      let signs = Belt.Array.make(signCount, 0)->Array.map(_ => {
         reader->Sign.parse
       })
-      let entityCount = reader->readInt16
+      let entityCount = reader->readInt16("entityCount")
       let entities =
         Belt.Array.make(entityCount, 0)
-        ->Js.Array2.map(_ => {
+        ->Array.map(_ => {
           reader->Entity.parse
         })
         ->ResultExt.allOkOrError
@@ -668,6 +683,9 @@ module Decode = {
 }
 
 module Encode = {
+  let {setType, packBuffer} = module(ErrorAwarePacketWriter)
+  let {packByte, packInt16, packInt32, data} = module(ErrorAwareBufferWriter)
+
   type lastTile = {
     tile: tile,
     mutable count: int,
@@ -731,8 +749,7 @@ module Encode = {
     }
   }
 
-  let {packByte, packInt16} = module(PacketFactory.BufferWriter)
-  type bufferWriter = PacketFactory.BufferWriter.t
+  type bufferWriter = ErrorAwareBufferWriter.t
 
   let packTile = (writer: bufferWriter, tile: tile, repeatCount: int): bufferWriter => {
     let header2 = tile.coatHeader
@@ -775,13 +792,13 @@ module Encode = {
       ~flag7=repeatCountBitFlag1,
       ~flag8=repeatCountBitFlag2,
     )
-    let _: bufferWriter = writer->packByte(tileFlags->BitFlags.toByte)
+    writer->packByte(tileFlags->BitFlags.toByte, "tileFlags")->ignore
     if tileFlags->BitFlags.flag1 {
-      let _: bufferWriter = writer->packByte(header4->BitFlags.toByte)
+      writer->packByte(header4->BitFlags.toByte, "header4")->ignore
       if header4->BitFlags.flag1 {
-        let _: bufferWriter = writer->packByte(header3->BitFlags.toByte)
+        writer->packByte(header3->BitFlags.toByte, "header3")->ignore
         if header3->BitFlags.flag1 {
-          let _: bufferWriter = writer->packByte(header2)
+          writer->packByte(header2, "header2")->ignore
         }
       }
     }
@@ -789,23 +806,22 @@ module Encode = {
     switch tile.activeTile {
     | Some(activeTile) => {
         if tileFlags->BitFlags.flag6 {
-          let _: bufferWriter = writer->packByte(activeTile.tileType->land(255))
-          let _: bufferWriter = writer->packByte(activeTile.tileType->land(65280)->lsr(8))
+          writer->packByte(activeTile.tileType->land(255), "tileType_lowByte")->ignore
+          writer->packByte(activeTile.tileType->land(65280)->lsr(8), "tileType_highByte")->ignore
         } else {
-          let _: bufferWriter = writer->packByte(activeTile.tileType)
+          writer->packByte(activeTile.tileType, "tileType")->ignore
         }
 
         switch activeTile.frame {
         | Some({x, y}) => {
-            let _: bufferWriter = writer->packInt16(x)
-            let _: bufferWriter = writer->packInt16(y)
+            writer->packInt16(x, "frameX")->ignore
+            writer->packInt16(y, "frameY")->ignore
           }
         | None => ()
         }
 
         switch tile.color {
-        | Some(color) =>
-          let _: bufferWriter = writer->packByte(color)
+        | Some(color) => writer->packByte(color, "color")->ignore
         | None => ()
         }
       }
@@ -814,10 +830,9 @@ module Encode = {
 
     switch tile.wall {
     | Some(wall) => {
-        let _: bufferWriter = writer->packByte(wall->land(255))
+        writer->packByte(wall->land(255), "wall_lowByte")->ignore
         switch tile.wallColor {
-        | Some(wallColor) =>
-          let _: bufferWriter = writer->packByte(wallColor)
+        | Some(wallColor) => writer->packByte(wallColor, "wallColor")->ignore
         | None => ()
         }
       }
@@ -825,23 +840,19 @@ module Encode = {
     }
 
     switch tile.liquid {
-    | Some(liquid) =>
-      let _: bufferWriter = writer->packByte(liquid)
+    | Some(liquid) => writer->packByte(liquid, "liquidValue")->ignore
     | None => ()
     }
 
     switch tile.wall {
-    | Some(wall) if wall > 255 =>
-      let _: bufferWriter = writer->packByte(wall->lsr(8))
+    | Some(wall) if wall > 255 => writer->packByte(wall->lsr(8), "wall_highByte")->ignore
     | Some(_) | None => ()
     }
 
     switch getRepeatCountByteLength(repeatCount) {
     | 0 => ()
-    | 1 =>
-      let _: bufferWriter = writer->packByte(repeatCount)
-    | _ =>
-      let _: bufferWriter = writer->packInt16(repeatCount)
+    | 1 => writer->packByte(repeatCount, "rle_byte")->ignore
+    | _ => writer->packInt16(repeatCount, "rle_int16")->ignore
     }
 
     writer
@@ -857,59 +868,61 @@ module Encode = {
       if tile->isTheSameAs(last.tile) {
         last.count = last.count + 1
       } else {
-        let _: bufferWriter = writer->packTile(last.tile, last.count)
+        writer->packTile(last.tile, last.count)->ignore
         lastTile := Some({tile, count: 0})
       }
     | None => lastTile := Some({tile, count: 0})
     }
   }
 
-  let {packByte, packBuffer, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  module BufferWriter = PacketFactory.BufferWriter
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    let outerPacketWriter =
+      ErrorAwarePacketWriter.make()->setType(PacketType.TileSectionSend->PacketType.toInt)
 
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    let packetWriter =
-      PacketFactory.ManagedPacketWriter.make()->setType(
-        PacketType.TileSectionSend->PacketType.toInt,
-      )
-
-    let writer = BufferWriter.make(NodeJs.Buffer.allocUnsafe(64_000))
-    let _: bufferWriter =
-      writer
-      ->BufferWriter.packInt32(self.tileX)
-      ->BufferWriter.packInt32(self.tileY)
-      ->BufferWriter.packInt16(self.width)
-      ->BufferWriter.packInt16(self.height)
+    let innerWriter = ErrorAwareBufferWriter.make(NodeJs.Buffer.allocUnsafe(64_000))
+    innerWriter
+    ->packInt32(self.tileX, "tileX")
+    ->packInt32(self.tileY, "tileY")
+    ->packInt16(self.width, "width")
+    ->packInt16(self.height, "height")
+    ->ignore
 
     let lastTile = ref(None)
     for y in 0 to self.height - 1 {
       for x in 0 to self.width - 1 {
         let tile = (self.tiles[y]->Option.getUnsafe)[x]->Option.getUnsafe
-        writer->decidePackTile(lastTile, tile)
+        innerWriter->decidePackTile(lastTile, tile)
       }
     }
 
     switch lastTile.contents {
-    | Some(lastTile) => {
-        let _: bufferWriter = writer->packTile(lastTile.tile, lastTile.count)
-      }
+    | Some(lastTileValue) => innerWriter->packTile(lastTileValue.tile, lastTileValue.count)->ignore
     | None => ()
     }
 
-    let _: bufferWriter = writer->packInt16(self.chests->Js.Array2.length)
-    self.chests->Js.Array2.forEach(chest => {
-      writer->Chest.pack(chest)->ignore
+    innerWriter->packInt16(self.chests->Array.length, "chestCount")->ignore
+    self.chests->Array.forEach(chest => {
+      innerWriter->Chest.pack(chest)->ignore
     })
-    let _: bufferWriter = writer->packInt16(self.signs->Js.Array2.length)
-    self.signs->Js.Array2.forEach(sign => {
-      writer->Sign.pack(sign)->ignore
+    innerWriter->packInt16(self.signs->Array.length, "signCount")->ignore
+    self.signs->Array.forEach(sign => {
+      innerWriter->Sign.pack(sign)->ignore
     })
-    let _: bufferWriter = writer->packInt16(self.entities->Js.Array2.length)
-    self.entities->Js.Array2.forEach(entity => {
-      writer->Entity.pack(entity)->ignore
+    innerWriter->packInt16(self.entities->Array.length, "entityCount")->ignore
+    self.entities->Array.forEach(entity => {
+      innerWriter->Entity.pack(entity)->ignore
     })
 
-    packetWriter->packBuffer(NodeJs.Zlib.deflateRawSync(writer->BufferWriter.slicedData))->data
+    switch innerWriter->data {
+    | Ok(innerBuffer) =>
+      let deflatedPayload = NodeJs.Zlib.deflateRawSync(innerBuffer)
+      outerPacketWriter->packBuffer(deflatedPayload, "deflatedPayload")->ErrorAwarePacketWriter.data
+    | Error(e) =>
+      Error({
+        error: e.error,
+        context: "innerWriter; " ++ e.context,
+      })
+    }
   }
 }
 

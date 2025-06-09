@@ -3,9 +3,9 @@
 
 var BitFlags$TerrariaPacket = require("../BitFlags.js");
 var PacketType$TerrariaPacket = require("../PacketType.js");
-var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+var ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+var ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 var Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
 function getDifficulty(difficultyFlags) {
   if (BitFlags$TerrariaPacket.flag2(difficultyFlags)) {
@@ -19,23 +19,23 @@ function getDifficulty(difficultyFlags) {
 
 function parse(payload) {
   var reader = new Packetreader(payload);
-  var playerId = reader.readByte();
-  var skinVariant = reader.readByte();
-  var hair = reader.readByte();
-  var name = reader.readString();
-  var hairDye = reader.readByte();
-  var hideVisuals = reader.readByte();
-  var hideVisuals2 = reader.readByte();
-  var hideMisc = reader.readByte();
-  var hairColor = reader.readColor();
-  var skinColor = reader.readColor();
-  var eyeColor = reader.readColor();
-  var shirtColor = reader.readColor();
-  var underShirtColor = reader.readColor();
-  var pantsColor = reader.readColor();
-  var shoeColor = reader.readColor();
-  var difficultyFlags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
-  var torchFlags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+  var playerId = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+  var skinVariant = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "skinVariant");
+  var hair = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hair");
+  var name = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "name");
+  var hairDye = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hairDye");
+  var hideVisuals = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideVisuals");
+  var hideVisuals2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideVisuals2");
+  var hideMisc = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideMisc");
+  var hairColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "hairColor");
+  var skinColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "skinColor");
+  var eyeColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "eyeColor");
+  var shirtColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "shirtColor");
+  var underShirtColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "underShirtColor");
+  var pantsColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "pantsColor");
+  var shoeColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "shoeColor");
+  var difficultyFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "difficultyFlags"));
+  var torchFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "torchFlags"));
   var difficulty = getDifficulty(difficultyFlags);
   var extraAccessory = BitFlags$TerrariaPacket.flag3(difficultyFlags);
   var mode = BitFlags$TerrariaPacket.flag4(difficultyFlags) ? "Journey" : "Classic";
@@ -44,7 +44,7 @@ function parse(payload) {
   var unlockedBiomeTorches = BitFlags$TerrariaPacket.flag3(torchFlags);
   var unlockedSuperCart = BitFlags$TerrariaPacket.flag4(torchFlags);
   var enabledSuperCart = BitFlags$TerrariaPacket.flag5(torchFlags);
-  var usedFlags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+  var usedFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "usedFlags"));
   var usedAegisCrystal = BitFlags$TerrariaPacket.flag1(usedFlags);
   var usedAegisFruit = BitFlags$TerrariaPacket.flag2(usedFlags);
   var usedArcaneCrystal = BitFlags$TerrariaPacket.flag3(usedFlags);
@@ -108,7 +108,7 @@ function packDifficultyFlags(writer, difficulty, extraAccessory, mode) {
   $$byte = $$byte | (
     mode === "Journey" ? 8 : 0
   );
-  return writer.packByte($$byte);
+  return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, $$byte, "difficultyFlags");
 }
 
 function packTorchFlags(writer, usingBiomeTorches, happyFunTorchTime, unlockedBiomeTorches, unlockedSuperCart, enabledSuperCart) {
@@ -128,7 +128,7 @@ function packTorchFlags(writer, usingBiomeTorches, happyFunTorchTime, unlockedBi
   $$byte = $$byte | (
     enabledSuperCart ? 16 : 0
   );
-  return writer.packByte($$byte);
+  return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, $$byte, "torchFlags");
 }
 
 function packUsedFlags(writer, usedAegisCrystal, usedAegisFruit, usedArcaneCrystal, usedGalaxyPearl, usedGummyWorm, usedAmbrosia, ateArtisanBread) {
@@ -154,13 +154,13 @@ function packUsedFlags(writer, usedAegisCrystal, usedAegisFruit, usedArcaneCryst
   $$byte = $$byte | (
     ateArtisanBread ? 64 : 0
   );
-  return writer.packByte($$byte);
+  return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, $$byte, "usedFlags");
 }
 
 function toBuffer(self) {
-  return packUsedFlags(packTorchFlags(packDifficultyFlags(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerInfo")).packByte(self.playerId).packByte(self.skinVariant).packByte(self.hair).packString(self.name).packByte(self.hairDye).packByte(self.hideVisuals).packByte(self.hideVisuals2).packByte(self.hideMisc).packColor(self.hairColor).packColor(self.skinColor).packColor(self.eyeColor).packColor(self.shirtColor).packColor(self.underShirtColor).packColor(self.pantsColor).packColor(self.shoeColor), self.difficulty, self.extraAccessory, self.mode), self.usingBiomeTorches, self.happyFunTorchTime, self.unlockedBiomeTorches, self.unlockedSuperCart, self.enabledSuperCart), self.usedAegisCrystal, self.usedAegisFruit, self.usedArcaneCrystal, self.usedGalaxyPearl, self.usedGummyWorm, self.usedAmbrosia, self.ateArtisanBread).data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(packUsedFlags(packTorchFlags(packDifficultyFlags(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerInfo")), self.playerId, "playerId"), self.skinVariant, "skinVariant"), self.hair, "hair"), self.name, "name"), self.hairDye, "hairDye"), self.hideVisuals, "hideVisuals"), self.hideVisuals2, "hideVisuals2"), self.hideMisc, "hideMisc"), self.hairColor, "hairColor"), self.skinColor, "skinColor"), self.eyeColor, "eyeColor"), self.shirtColor, "shirtColor"), self.underShirtColor, "underShirtColor"), self.pantsColor, "pantsColor"), self.shoeColor, "shoeColor"), self.difficulty, self.extraAccessory, self.mode), self.usingBiomeTorches, self.happyFunTorchTime, self.unlockedBiomeTorches, self.unlockedSuperCart, self.enabledSuperCart), self.usedAegisCrystal, self.usedAegisFruit, self.usedArcaneCrystal, self.usedGalaxyPearl, self.usedGummyWorm, self.usedAmbrosia, self.ateArtisanBread));
 }
 
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

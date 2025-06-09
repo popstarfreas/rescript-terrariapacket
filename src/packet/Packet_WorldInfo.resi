@@ -26,7 +26,7 @@ type eventInfo = {
   killedAncientCultist: bool,
   killedMoonLord: bool,
   killedPumpking: bool,
-  killedMounringWood: bool,
+  killedMourningWood: bool,
   killedIceQueen: bool,
   killedSantank: bool,
   killedEverscream: bool,

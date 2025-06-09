@@ -3,17 +3,17 @@
 
 var BitFlags$TerrariaPacket = require("../BitFlags.js");
 var PacketType$TerrariaPacket = require("../PacketType.js");
-var ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+var ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+var ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 var Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-var Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
 function parse(payload) {
   var reader = new Packetreader(payload);
-  var playerId = reader.readByte();
-  var controlFlags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
-  var miscFlags1 = BitFlags$TerrariaPacket.fromByte(reader.readByte());
-  var miscFlags2 = BitFlags$TerrariaPacket.fromByte(reader.readByte());
-  var miscFlags3 = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+  var playerId = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+  var controlFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "controlFlags"));
+  var miscFlags1 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags1"));
+  var miscFlags2 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags2"));
+  var miscFlags3 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags3"));
   var control_isHoldingUp = BitFlags$TerrariaPacket.flag1(controlFlags);
   var control_isHoldingDown = BitFlags$TerrariaPacket.flag2(controlFlags);
   var control_isHoldingLeft = BitFlags$TerrariaPacket.flag3(controlFlags);
@@ -36,25 +36,25 @@ function parse(payload) {
   var gravityDirection = BitFlags$TerrariaPacket.flag5(miscFlags1) ? "Normal" : "Inverted";
   var shouldGuard = BitFlags$TerrariaPacket.flag6(miscFlags1);
   var ghost = BitFlags$TerrariaPacket.flag7(miscFlags1);
-  var selectedItem = reader.readByte();
-  var position_x = reader.readSingle();
-  var position_y = reader.readSingle();
+  var selectedItem = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "selectedItem");
+  var position_x = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionX");
+  var position_y = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionY");
   var position = {
     x: position_x,
     y: position_y
   };
   var velocity = BitFlags$TerrariaPacket.flag3(miscFlags1) ? ({
-        x: reader.readSingle(),
-        y: reader.readSingle()
+        x: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityX"),
+        y: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityY")
       }) : undefined;
   var potionOfReturn = BitFlags$TerrariaPacket.flag7(miscFlags2) ? ({
         originalUsePosition: {
-          x: reader.readSingle(),
-          y: reader.readSingle()
+          x: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnOrigX"),
+          y: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnOrigY")
         },
         homePosition: {
-          x: reader.readSingle(),
-          y: reader.readSingle()
+          x: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnHomeX"),
+          y: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnHomeY")
         }
       }) : undefined;
   var tryKeepingHoveringUp = BitFlags$TerrariaPacket.flag1(miscFlags2);
@@ -92,7 +92,7 @@ function parse(payload) {
 function packControlFlags(writer, control, direction) {
   var tmp;
   tmp = direction === "Left" ? false : true;
-  return writer.packByte(BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(control.isHoldingUp, control.isHoldingDown, control.isHoldingLeft, control.isHoldingRight, control.isHoldingJump, control.isHoldingItemUse, tmp, false)));
+  return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(control.isHoldingUp, control.isHoldingDown, control.isHoldingLeft, control.isHoldingRight, control.isHoldingJump, control.isHoldingItemUse, tmp, false)), "controlFlags");
 }
 
 function packMiscFlags1(writer, pulleyDirection, velocity, vortexStealthActive, gravityDirection, shouldGuard, ghost) {
@@ -100,20 +100,20 @@ function packMiscFlags1(writer, pulleyDirection, velocity, vortexStealthActive, 
   tmp = pulleyDirection !== undefined && pulleyDirection !== "One" ? true : false;
   var tmp$1;
   tmp$1 = gravityDirection === "Normal" ? true : false;
-  return writer.packByte(BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(pulleyDirection !== undefined, tmp, velocity !== undefined, vortexStealthActive, tmp$1, shouldGuard, ghost, false)));
+  return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(pulleyDirection !== undefined, tmp, velocity !== undefined, vortexStealthActive, tmp$1, shouldGuard, ghost, false)), "miscFlags1");
 }
 
 function packMiscFlags2(writer, tryKeepingHoveringUp, isVoidVaultEnabled, isSitting, hasFinishedAnyDd2Event, isPettingAnimal, isTheAnimalBeingPetSmall, potionOfReturn, tryKeepingHoveringDown) {
-  return writer.packByte(BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(tryKeepingHoveringUp, isVoidVaultEnabled, isSitting, hasFinishedAnyDd2Event, isPettingAnimal, isTheAnimalBeingPetSmall, potionOfReturn !== undefined, tryKeepingHoveringDown)));
+  return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(tryKeepingHoveringUp, isVoidVaultEnabled, isSitting, hasFinishedAnyDd2Event, isPettingAnimal, isTheAnimalBeingPetSmall, potionOfReturn !== undefined, tryKeepingHoveringDown)), "miscFlags2");
 }
 
 function packMiscFlags3(writer, isSleeping) {
-  return writer.packByte(BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(isSleeping, false, false, false, false, false, false, false)));
+  return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(isSleeping, false, false, false, false, false, false, false)), "miscFlags3");
 }
 
 function packVelocity(writer, velocity) {
   if (velocity !== undefined) {
-    return writer.packSingle(velocity.x).packSingle(velocity.y);
+    return ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(writer, velocity.x, "velocityX"), velocity.y, "velocityY");
   } else {
     return writer;
   }
@@ -121,16 +121,16 @@ function packVelocity(writer, velocity) {
 
 function packPotionOfReturn(writer, potionOfReturn) {
   if (potionOfReturn !== undefined) {
-    return writer.packSingle(potionOfReturn.originalUsePosition.x).packSingle(potionOfReturn.originalUsePosition.y).packSingle(potionOfReturn.homePosition.x).packSingle(potionOfReturn.homePosition.y);
+    return ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(writer, potionOfReturn.originalUsePosition.x, "potionOfReturnOrigX"), potionOfReturn.originalUsePosition.y, "potionOfReturnOrigY"), potionOfReturn.homePosition.x, "potionOfReturnHomeX"), potionOfReturn.homePosition.y, "potionOfReturnHomeY");
   } else {
     return writer;
   }
 }
 
 function toBuffer(self) {
-  return packPotionOfReturn(packVelocity(packMiscFlags3(packMiscFlags2(packMiscFlags1(packControlFlags(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerUpdate")).packByte(self.playerId), self.control, self.direction), self.pulleyDirection, self.velocity, self.vortexStealthActive, self.gravityDirection, self.shouldGuard, self.ghost), self.tryKeepingHoveringUp, self.isVoidVaultEnabled, self.isSitting, self.hasFinishedAnyDd2Event, self.isPettingAnimal, self.isTheAnimalBeingPetSmall, self.potionOfReturn, self.tryKeepingHoveringDown), self.isSleeping).packByte(self.selectedItem).packSingle(self.position.x).packSingle(self.position.y), self.velocity), self.potionOfReturn).data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(packPotionOfReturn(packVelocity(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(packMiscFlags3(packMiscFlags2(packMiscFlags1(packControlFlags(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerUpdate")), self.playerId, "playerId"), self.control, self.direction), self.pulleyDirection, self.velocity, self.vortexStealthActive, self.gravityDirection, self.shouldGuard, self.ghost), self.tryKeepingHoveringUp, self.isVoidVaultEnabled, self.isSitting, self.hasFinishedAnyDd2Event, self.isPettingAnimal, self.isTheAnimalBeingPetSmall, self.potionOfReturn, self.tryKeepingHoveringDown), self.isSleeping), self.selectedItem, "selectedItem"), self.position.x, "positionX"), self.position.y, "positionY"), self.velocity), self.potionOfReturn));
 }
 
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

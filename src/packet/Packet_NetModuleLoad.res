@@ -154,154 +154,182 @@ module Encode = {
   let {
     packInt32,
     packInt16,
-    packNetworkText,
-    packColor,
+    packNetworkText, // Assuming this is from ErrorAwarePacketWriter or a compatible module
+    packColor, // Assuming this is from ErrorAwarePacketWriter or a compatible module
     packString,
     packUInt16,
     packByte,
     packSingle,
     setType,
     data,
-  } = module(PacketFactory.ManagedPacketWriter)
+  } = module(ErrorAwarePacketWriter)
 
-  let liquidToBuffer = (liquid: liquid): Buffer.t => {
+  let liquidToBuffer = (liquid: liquid): result<Buffer.t, ErrorAwarePacketWriter.packError> => {
     let writer =
-      PacketFactory.ManagedPacketWriter.make()
+      ErrorAwarePacketWriter.make()
       ->setType(PacketType.NetModuleLoad->PacketType.toInt)
-      ->packUInt16(NetModuleType.Liquid->NetModuleType.toInt)
-      ->packUInt16(liquid.changes->Belt.Array.length)
+      ->packUInt16(NetModuleType.Liquid->NetModuleType.toInt, "moduleType")
+      ->packUInt16(liquid.changes->Belt.Array.length, "changesCount")
     liquid.changes->Array.forEach(change => {
       writer
-      ->packInt16(change.y)
-      ->packInt16(change.x)
-      ->packByte(change.amount)
-      ->packByte(change.liquidType)
+      ->packInt16(change.y, "y")
+      ->packInt16(change.x, "x")
+      ->packByte(change.amount, "amount")
+      ->packByte(change.liquidType, "liquidType")
       ->ignore
     })
 
     writer->data
   }
 
-  let clientTextToBuffer = (commandId, message): Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let clientTextToBuffer = (commandId, message): result<
+    Buffer.t,
+    ErrorAwarePacketWriter.packError,
+  > => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.NetModuleLoad->PacketType.toInt)
-    ->packUInt16(NetModuleType.Text->NetModuleType.toInt)
-    ->packString(commandId)
-    ->packString(message)
+    ->packUInt16(NetModuleType.Text->NetModuleType.toInt, "moduleType")
+    ->packString(commandId, "commandId")
+    ->packString(message, "message")
     ->data
   }
 
-  let serverTextToBuffer = (playerId, networkText, color): Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let serverTextToBuffer = (playerId, networkText, color): result<
+    Buffer.t,
+    ErrorAwarePacketWriter.packError,
+  > => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.NetModuleLoad->PacketType.toInt)
-    ->packUInt16(NetModuleType.Text->NetModuleType.toInt)
-    ->packByte(playerId)
-    ->packNetworkText(networkText)
-    ->packColor(color)
+    ->packUInt16(NetModuleType.Text->NetModuleType.toInt, "moduleType")
+    ->packByte(playerId, "playerId")
+    ->packNetworkText(networkText, "networkText")
+    ->packColor(color, "color")
     ->data
   }
 
-  let pingToBuffer = (ping: position): Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let pingToBuffer = (ping: position): result<Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.NetModuleLoad->PacketType.toInt)
-    ->packUInt16(NetModuleType.Ping->NetModuleType.toInt)
-    ->packSingle(ping.x)
-    ->packSingle(ping.y)
+    ->packUInt16(NetModuleType.Ping->NetModuleType.toInt, "moduleType")
+    ->packSingle(ping.x, "x")
+    ->packSingle(ping.y, "y")
     ->data
   }
 
-  let ambienceToBuffer = (ambience: ambience): Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let ambienceToBuffer = (ambience: ambience): result<
+    Buffer.t,
+    ErrorAwarePacketWriter.packError,
+  > => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.NetModuleLoad->PacketType.toInt)
-    ->packUInt16(NetModuleType.Ambience->NetModuleType.toInt)
-    ->packByte(ambience.playerId)
-    ->packInt32(ambience.seed)
-    ->packByte(ambience.skyEntityType)
+    ->packUInt16(NetModuleType.Ambience->NetModuleType.toInt, "moduleType")
+    ->packByte(ambience.playerId, "playerId")
+    ->packInt32(ambience.seed, "seed")
+    ->packByte(ambience.skyEntityType, "skyEntityType")
     ->data
   }
 
-  let bestiaryToBuffer = (bestiary: bestiary): Buffer.t => {
+  let bestiaryToBuffer = (bestiary: bestiary): result<
+    Buffer.t,
+    ErrorAwarePacketWriter.packError,
+  > => {
     let writer =
-      PacketFactory.ManagedPacketWriter.make()
+      ErrorAwarePacketWriter.make()
       ->setType(PacketType.NetModuleLoad->PacketType.toInt)
-      ->packUInt16(NetModuleType.Bestiary->NetModuleType.toInt)
+      ->packUInt16(NetModuleType.Bestiary->NetModuleType.toInt, "moduleType")
     switch bestiary.unlockType {
-    | Kill(_count) => writer->packByte(0)
-    | Sight => writer->packByte(1)
-    | Chat => writer->packByte(2)
+    | Kill(_count) => writer->packByte(0, "unlockTypeByte")
+    | Sight => writer->packByte(1, "unlockTypeByte")
+    | Chat => writer->packByte(2, "unlockTypeByte")
     }
-    ->packInt16(bestiary.npcId)
+    ->packInt16(bestiary.npcId, "npcId")
     ->ignore
     switch bestiary.unlockType {
-    | Kill(count) => writer->packUInt16(count)
+    | Kill(count) => writer->packUInt16(count, "killCount")
     | Sight
     | Chat => writer
     }->data
   }
 
-  let creativeUnlocksToBuffer = (creativeUnlock: creativeUnlock): Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let creativeUnlocksToBuffer = (creativeUnlock: creativeUnlock): result<
+    Buffer.t,
+    ErrorAwarePacketWriter.packError,
+  > => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.NetModuleLoad->PacketType.toInt)
-    ->packUInt16(NetModuleType.CreativeUnlocks->NetModuleType.toInt)
-    ->packInt16(creativeUnlock.itemId)
-    ->packUInt16(creativeUnlock.researchedCount)
+    ->packUInt16(NetModuleType.CreativeUnlocks->NetModuleType.toInt, "moduleType")
+    ->packInt16(creativeUnlock.itemId, "itemId")
+    ->packUInt16(creativeUnlock.researchedCount, "researchedCount")
     ->data
   }
 
-  let creativePowerToBuffer = (creativePower: CreativePowers.t): Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let creativePowerToBuffer = (creativePower: CreativePowers.t): result<
+    Buffer.t,
+    ErrorAwarePacketWriter.packError,
+  > => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.NetModuleLoad->PacketType.toInt)
-    ->packUInt16(NetModuleType.CreativePower->NetModuleType.toInt)
-    ->CreativePowers.pack(creativePower)
+    ->packUInt16(NetModuleType.CreativePower->NetModuleType.toInt, "moduleType")
+    ->CreativePowers.pack(creativePower) // This needs to be adapted if CreativePowers.pack uses ErrorAwarePacketWriter
     ->data
   }
 
-  let creativeUnlocksPlayerReportToBuffer = (unlockReport: unlockReport): Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let creativeUnlocksPlayerReportToBuffer = (unlockReport: unlockReport): result<
+    Buffer.t,
+    ErrorAwarePacketWriter.packError,
+  > => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.NetModuleLoad->PacketType.toInt)
-    ->packUInt16(NetModuleType.CreativeUnlocksPlayerReport->NetModuleType.toInt)
-    ->packUInt16(unlockReport.itemId)
-    ->packUInt16(unlockReport.researchedCount)
+    ->packUInt16(NetModuleType.CreativeUnlocksPlayerReport->NetModuleType.toInt, "moduleType")
+    ->packUInt16(unlockReport.itemId, "itemId")
+    ->packUInt16(unlockReport.researchedCount, "researchedCount")
     ->data
   }
 
-  let teleportPylonToBuffer = (teleportPylon: teleportPylon): Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let teleportPylonToBuffer = (teleportPylon: teleportPylon): result<
+    Buffer.t,
+    ErrorAwarePacketWriter.packError,
+  > => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.NetModuleLoad->PacketType.toInt)
-    ->packUInt16(NetModuleType.TeleportPylon->NetModuleType.toInt)
-    ->packByte(teleportPylon.pylonAction->pylonActionToInt)
-    ->packInt16(teleportPylon.x)
-    ->packInt16(teleportPylon.y)
-    ->packByte(teleportPylon.pylonType)
+    ->packUInt16(NetModuleType.TeleportPylon->NetModuleType.toInt, "moduleType")
+    ->packByte(teleportPylon.pylonAction->pylonActionToInt, "pylonAction")
+    ->packInt16(teleportPylon.x, "x")
+    ->packInt16(teleportPylon.y, "y")
+    ->packByte(teleportPylon.pylonType, "pylonType")
     ->data
   }
 
-  let particlesToBuffer = (particle: particle): Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let particlesToBuffer = (particle: particle): result<
+    Buffer.t,
+    ErrorAwarePacketWriter.packError,
+  > => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.NetModuleLoad->PacketType.toInt)
-    ->packUInt16(NetModuleType.Particles->NetModuleType.toInt)
-    ->packByte(particle.particleType)
-    ->packSingle(particle.x)
-    ->packSingle(particle.y)
-    ->packSingle(particle.vx)
-    ->packSingle(particle.vy)
-    ->packInt32(particle.shaderIndex)
-    ->packByte(particle.invokedByPlayer)
+    ->packUInt16(NetModuleType.Particles->NetModuleType.toInt, "moduleType")
+    ->packByte(particle.particleType, "particleType")
+    ->packSingle(particle.x, "x")
+    ->packSingle(particle.y, "y")
+    ->packSingle(particle.vx, "vx")
+    ->packSingle(particle.vy, "vy")
+    ->packInt32(particle.shaderIndex, "shaderIndex")
+    ->packByte(particle.invokedByPlayer, "invokedByPlayer")
     ->data
   }
 
-  let creativePowerPermissionsToBuffer = (
-    creativePowerPermission: creativePowerPermission,
-  ): Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let creativePowerPermissionsToBuffer = (creativePowerPermission: creativePowerPermission): result<
+    Buffer.t,
+    ErrorAwarePacketWriter.packError,
+  > => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.NetModuleLoad->PacketType.toInt)
-    ->packUInt16(NetModuleType.CreativePowerPermissions->NetModuleType.toInt)
-    ->packByte(creativePowerPermission.powerType)
-    ->packByte(creativePowerPermission.powerLevel->powerLevelToInt)
+    ->packUInt16(NetModuleType.CreativePowerPermissions->NetModuleType.toInt, "moduleType")
+    ->packByte(creativePowerPermission.powerType, "powerType")
+    ->packByte(creativePowerPermission.powerLevel->powerLevelToInt, "powerLevel")
     ->data
   }
 
-  let toBuffer = (self: t): Buffer.t => {
+  let toBuffer = (self: t): result<Buffer.t, ErrorAwarePacketWriter.packError> => {
     switch self {
     | Liquid(liquid) => liquidToBuffer(liquid)
     | ClientText(commandId, message) => clientTextToBuffer(commandId, message)
@@ -321,18 +349,25 @@ module Encode = {
 }
 
 module Decode = {
-  let {readInt32, readSingle, readUInt16, readInt16, readString, readByte, readColor} = module(
-    PacketFactory.PacketReader
-  )
+  let {
+    readInt32,
+    readSingle,
+    readUInt16,
+    readInt16,
+    readString,
+    readByte,
+    readColor,
+    readNetworkText,
+  } = module(ErrorAwarePacketReader)
 
   let parseLiquid = (reader: PacketFactory.PacketReader.t) => {
-    let changesCount = reader->readUInt16
+    let changesCount = reader->readUInt16("changesCount")
     let changes = []
     for _ in 0 to changesCount - 1 {
-      let y = reader->readInt16
-      let x = reader->readInt16
-      let amount = reader->readByte
-      let liquidType = reader->readByte
+      let y = reader->readInt16("y")
+      let x = reader->readInt16("x")
+      let amount = reader->readByte("amount")
+      let liquidType = reader->readByte("liquidType")
       changes
       ->Array.push({
         y,
@@ -348,37 +383,37 @@ module Decode = {
 
   let parseText = (reader: PacketFactory.PacketReader.t, fromServer: bool) => {
     if fromServer {
-      let playerId = reader->readByte
-      let message = reader->PacketFactory.PacketReader.readNetworkText
-      let color = reader->readColor
+      let playerId = reader->readByte("playerId")
+      let message = reader->readNetworkText("message")
+      let color = reader->readColor("color")
       ServerText(playerId, message, color)->Some
     } else {
-      let commandId = reader->readString
-      let message = reader->readString
+      let commandId = reader->readString("commandId")
+      let message = reader->readString("message")
       ClientText(commandId, message)->Some
     }
   }
 
   let parsePing = (reader: PacketFactory.PacketReader.t) => {
-    let x = reader->readSingle
-    let y = reader->readSingle
+    let x = reader->readSingle("x")
+    let y = reader->readSingle("y")
 
     Some(Ping({x, y}))
   }
 
   let parseAmbience = (reader: PacketFactory.PacketReader.t) => {
-    let playerId = reader->readByte
-    let seed = reader->readInt32
-    let skyEntityType = reader->readByte
+    let playerId = reader->readByte("playerId")
+    let seed = reader->readInt32("seed")
+    let skyEntityType = reader->readByte("skyEntityType")
 
     Some(Ambience({playerId, seed, skyEntityType}))
   }
 
   let parseBestiary = (reader: PacketFactory.PacketReader.t) => {
-    let rawBestiaryUnlockType = reader->readByte
-    let npcId = reader->readInt16
+    let rawBestiaryUnlockType = reader->readByte("rawBestiaryUnlockType")
+    let npcId = reader->readInt16("npcId")
     let bestiaryUnlockType = switch rawBestiaryUnlockType {
-    | 0 => Some(Kill(reader->readUInt16))
+    | 0 => Some(Kill(reader->readUInt16("killCount")))
     | 1 => Some(Sight)
     | 2 => Some(Chat)
     | _ => None
@@ -391,30 +426,30 @@ module Decode = {
   }
 
   let parseCreativeUnlock = (reader: PacketFactory.PacketReader.t) => {
-    let itemId = reader->readInt16
-    let researchedCount = reader->readUInt16
+    let itemId = reader->readInt16("itemId")
+    let researchedCount = reader->readUInt16("researchedCount")
     Some(CreativeUnlocks({itemId, researchedCount}))
   }
 
   // TODO: Add missing power deserialize
   let parseCreativePower = (reader: PacketFactory.PacketReader.t) => {
     reader
-    ->CreativePowers.parse
+    ->CreativePowers.parse // Assuming CreativePowers.parse is compatible or will be updated separately
     ->Option.map(p => CreativePower(p))
   }
 
   let parseCreativeUnlocksPlayerReport = (reader: PacketFactory.PacketReader.t) => {
-    let _ = reader->readByte
-    let itemId = reader->readUInt16
-    let researchedCount = reader->readUInt16
+    let _ = reader->readByte("unknownByte") // previously implicit _
+    let itemId = reader->readUInt16("itemId")
+    let researchedCount = reader->readUInt16("researchedCount")
     Some(CreativeUnlocksPlayerReport({itemId, researchedCount}))
   }
 
   let parseTeleportPylon = (reader: PacketFactory.PacketReader.t) => {
-    let rawPylonAction = reader->readByte
-    let x = reader->readInt16
-    let y = reader->readInt16
-    let pylonType = reader->readByte
+    let rawPylonAction = reader->readByte("rawPylonAction")
+    let x = reader->readInt16("x")
+    let y = reader->readInt16("y")
+    let pylonType = reader->readByte("pylonType")
 
     let pylonAction = switch rawPylonAction {
     | 0 => Some(Added)
@@ -430,13 +465,13 @@ module Decode = {
   }
 
   let parseParticle = (reader: PacketFactory.PacketReader.t) => {
-    let particleType = reader->readByte
-    let x = reader->readSingle
-    let y = reader->readSingle
-    let vx = reader->readSingle
-    let vy = reader->readSingle
-    let shaderIndex = reader->readInt32
-    let invokedByPlayer = reader->readByte
+    let particleType = reader->readByte("particleType")
+    let x = reader->readSingle("x")
+    let y = reader->readSingle("y")
+    let vx = reader->readSingle("vx")
+    let vy = reader->readSingle("vy")
+    let shaderIndex = reader->readInt32("shaderIndex")
+    let invokedByPlayer = reader->readByte("invokedByPlayer")
 
     Some(
       Particles({
@@ -452,9 +487,9 @@ module Decode = {
   }
 
   let parseCreativePowerPermission = (reader: PacketFactory.PacketReader.t) => {
-    let _ = reader->readByte
-    let powerType = reader->readUInt16
-    let rawPowerLevel = reader->readByte
+    let _ = reader->readByte("unknownByte") // previously implicit _
+    let powerType = reader->readUInt16("powerType")
+    let rawPowerLevel = reader->readByte("rawPowerLevel")
 
     let powerLevel = switch rawPowerLevel {
     | 0 => Some(LockedForEveryone)
@@ -471,7 +506,7 @@ module Decode = {
 
   let parse = (payload: NodeJs.Buffer.t, ~fromServer: bool) => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let moduleType = reader->readUInt16
+    let moduleType = reader->readUInt16("moduleType")
     switch NetModuleType.fromInt(moduleType) {
     | Some(NetModuleType.Liquid) => reader->parseLiquid
     | Some(NetModuleType.Text) => reader->parseText(fromServer)

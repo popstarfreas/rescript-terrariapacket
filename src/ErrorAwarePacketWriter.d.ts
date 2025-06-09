@@ -1,7 +1,8 @@
+import Color from "@popstarfreas/packetfactory/color";
 /**
  * An opaque type representing an uninitialized packet writer.
  */
-export declare class untypedT {}
+export declare class untypedT { }
 
 /**
  * Represents an error that occurred during packet packing.
@@ -14,7 +15,7 @@ export type PackError = {
 /**
  * An opaque type representing an initialized packet writer.
  */
-export declare class ErrorAwarePacketWriter {}
+export declare class ErrorAwarePacketWriter { }
 
 /**
  * Packs a single-precision floating point number.
@@ -87,6 +88,15 @@ export function packSByte(writer: ErrorAwarePacketWriter, value: number, context
  * @returns The packet writer instance.
  */
 export function packBytes(writer: ErrorAwarePacketWriter, value: number[], context: string): ErrorAwarePacketWriter;
+
+/**
+ * Packs a color.
+ * @param writer The packet writer instance.
+ * @param value The color value to pack.
+ * @param context A string describing the context of this operation, for error reporting.
+ * @returns The packet writer instance.
+ */
+export function packColor(writer: ErrorAwarePacketWriter, value: Color, context: string): ErrorAwarePacketWriter;
 
 /**
  * Sets the packet type on an untyped writer, returning an initialized writer.

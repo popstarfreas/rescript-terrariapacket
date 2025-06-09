@@ -1,7 +1,7 @@
 module PerPlayerSliderPower: {
   type t = {playerId: int, value: float}
 
-  let pack: (PacketFactory.ManagedPacketWriter.t, t) => PacketFactory.ManagedPacketWriter.t
+  let pack: (ErrorAwarePacketWriter.t, t) => ErrorAwarePacketWriter.t
 
   let parse: PacketFactory.PacketReader.t => option<t>
 }
@@ -9,7 +9,7 @@ module PerPlayerSliderPower: {
 module PerPlayerTogglePower: {
   type t = Everyone(array<bool>) | Player(int, bool)
 
-  let pack: (PacketFactory.ManagedPacketWriter.t, t) => PacketFactory.ManagedPacketWriter.t
+  let pack: (ErrorAwarePacketWriter.t, t) => ErrorAwarePacketWriter.t
 
   let parse: PacketFactory.PacketReader.t => option<t>
 }
@@ -56,6 +56,6 @@ module CreativePowerType: {
   let toInt: t => int
 }
 
-let pack: (PacketFactory.ManagedPacketWriter.t, t) => PacketFactory.ManagedPacketWriter.t
+let pack: (ErrorAwarePacketWriter.t, t) => ErrorAwarePacketWriter.t
 
 let parse: PacketFactory.PacketReader.t => option<t>

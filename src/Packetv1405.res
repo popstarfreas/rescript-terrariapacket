@@ -1028,7 +1028,11 @@ let toBuffer = (packet: t, _fromServer: bool): option<NodeJs.Buffer.t> => {
   | TileSquareSend(tileSquareSend) => Some(TileSquareSend.toBuffer(tileSquareSend))
   | ItemDropUpdate(itemDropUpdate) => Some(ItemDropUpdate.toBuffer(itemDropUpdate))
   | ItemOwner(_itemOwner) => None
-  | NpcUpdate(npcUpdate) => Some(NpcUpdate.toBuffer(npcUpdate))
+  | NpcUpdate(npcUpdate) =>
+    switch NpcUpdate.toBuffer(npcUpdate) {
+    | Ok(buffer) => Some(buffer)
+    | Error(_error) => None
+    }
   | NpcItemStrike(_npcItemStrike) => None
   | ProjectileSync(projectileSync) => Some(ProjectileSync.toBuffer(projectileSync))
   | NpcStrike(_npcStrike) => None
@@ -1084,7 +1088,11 @@ let toBuffer = (packet: t, _fromServer: bool): option<NodeJs.Buffer.t> => {
   | ObjectPlace(_objectPlace) => None
   | PlayerChestIndexSync(_playerChestIndexSync) => None
   | CombatNumberCreate(_combatNumberCreate) => None
-  | NetModuleLoad(netModuleLoad) => Some(NetModuleLoad.toBuffer(netModuleLoad))
+  | NetModuleLoad(netModuleLoad) =>
+    switch NetModuleLoad.toBuffer(netModuleLoad) {
+    | Ok(buffer) => Some(buffer)
+    | Error(_error) => None
+    }
   | NpcKillCount(_npcKillCount) => None
   | PlayerStealth(_playerStealth) => None
   | ItemForceIntoNearestChest(_itemForceIntoNearestChest) => None

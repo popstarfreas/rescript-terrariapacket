@@ -5,7 +5,7 @@
     "build:watch": "rescript build -w",
     "build": "rescript",
     "build:tsc": "tsc -p .",
-    "test": "pta  'tests/*.test.bs.js'"
+    "test": "pta  'tests/*.test.js'"
   },
   "dependencies": {
     "@popstarfreas/packetfactory": "^6.1.1",
