@@ -10,7 +10,7 @@
   "dependencies": {
     "@popstarfreas/packetfactory": "^6.1.1",
     "@popstarfreas/rescript-nodejs": "git+https://github.com/popstarfreas/rescript-nodejs.git#f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7",
-    "@rescript/core": "git+https://github.com/popstarfreas/rescript-core.git#fdc54fb3e215c922cdc5c76dd1b8bd41dc6a6a59",
+    "@rescript/core": "git+https://github.com/popstarfreas/rescript-core.git#2e59aacfa659e4f8d898f368dd405ff4f9953eb4",
     "rescript": "^11.0.0",
     "typescript": "^5.2.2"
   },
