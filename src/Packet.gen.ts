@@ -3,298 +3,298 @@
 /* eslint-disable */
 /* tslint:disable */
 
-import type {t as Lazy_t} from '../src/shims/Lazy.shim';
+import type { t as Lazy_t } from '../src/shims/Lazy.shim';
 
-import type {t as Packet_ActiveContainerSync_t} from '../src/packet/Packet_ActiveContainerSync.gen';
+import type { t as Packet_ActiveContainerSync_t } from '../src/packet/Packet_ActiveContainerSync.gen';
 
-import type {t as Packet_AnglerQuestComplete_t} from '../src/packet/Packet_AnglerQuestComplete.gen';
+import type { t as Packet_AnglerQuestComplete_t } from '../src/packet/Packet_AnglerQuestComplete.gen';
 
-import type {t as Packet_AnglerQuest_t} from '../src/packet/Packet_AnglerQuest.gen';
+import type { t as Packet_AnglerQuest_t } from '../src/packet/Packet_AnglerQuest.gen';
 
-import type {t as Packet_AnglerQuestsCompletedAmount_t} from '../src/packet/Packet_AnglerQuestsCompletedAmount.gen';
+import type { t as Packet_AnglerQuestsCompletedAmount_t } from '../src/packet/Packet_AnglerQuestsCompletedAmount.gen';
 
-import type {t as Packet_BossOrInvasionSpawn_t} from '../src/packet/Packet_BossOrInvasionSpawn.gen';
+import type { t as Packet_BossOrInvasionSpawn_t } from '../src/packet/Packet_BossOrInvasionSpawn.gen';
 
-import type {t as Packet_CavernMonsterTypeSync_t} from '../src/packet/Packet_CavernMonsterTypeSync.gen';
+import type { t as Packet_CavernMonsterTypeSync_t } from '../src/packet/Packet_CavernMonsterTypeSync.gen';
 
-import type {t as Packet_ChatMessageSmart_t} from '../src/packet/Packet_ChatMessageSmart.gen';
+import type { t as Packet_ChatMessageSmart_t } from '../src/packet/Packet_ChatMessageSmart.gen';
 
-import type {t as Packet_ChestItem_t} from '../src/packet/Packet_ChestItem.gen';
+import type { t as Packet_ChestItem_t } from '../src/packet/Packet_ChestItem.gen';
 
-import type {t as Packet_ChestName_t} from '../src/packet/Packet_ChestName.gen';
+import type { t as Packet_ChestName_t } from '../src/packet/Packet_ChestName.gen';
 
-import type {t as Packet_ChestOpen_t} from '../src/packet/Packet_ChestOpen.gen';
+import type { t as Packet_ChestOpen_t } from '../src/packet/Packet_ChestOpen.gen';
 
-import type {t as Packet_ChestOrTempleUnlock_t} from '../src/packet/Packet_ChestOrTempleUnlock.gen';
+import type { t as Packet_ChestOrTempleUnlock_t } from '../src/packet/Packet_ChestOrTempleUnlock.gen';
 
-import type {t as Packet_ChestPlace_t} from '../src/packet/Packet_ChestPlace.gen';
+import type { t as Packet_ChestPlace_t } from '../src/packet/Packet_ChestPlace.gen';
 
-import type {t as Packet_ClientFinishConnectingToServer_t} from '../src/packet/Packet_ClientFinishConnectingToServer.gen';
+import type { t as Packet_ClientFinishConnectingToServer_t } from '../src/packet/Packet_ClientFinishConnectingToServer.gen';
 
-import type {t as Packet_ClientSyncedInventory_t} from '../src/packet/Packet_ClientSyncedInventory.gen';
+import type { t as Packet_ClientSyncedInventory_t } from '../src/packet/Packet_ClientSyncedInventory.gen';
 
-import type {t as Packet_ClientUuid_t} from '../src/packet/Packet_ClientUuid.gen';
+import type { t as Packet_ClientUuid_t } from '../src/packet/Packet_ClientUuid.gen';
 
-import type {t as Packet_CombatNumberCreate_t} from '../src/packet/Packet_CombatNumberCreate.gen';
+import type { t as Packet_CombatNumberCreate_t } from '../src/packet/Packet_CombatNumberCreate.gen';
 
-import type {t as Packet_CombatTextCreate_t} from '../src/packet/Packet_CombatTextCreate.gen';
+import type { t as Packet_CombatTextCreate_t } from '../src/packet/Packet_CombatTextCreate.gen';
 
-import type {t as Packet_ConnectRequest_t} from '../src/packet/Packet_ConnectRequest.gen';
+import type { t as Packet_ConnectRequest_t } from '../src/packet/Packet_ConnectRequest.gen';
 
-import type {t as Packet_CountsAsHostForGameplaySet_t} from '../src/packet/Packet_CountsAsHostForGameplaySet.gen';
+import type { t as Packet_CountsAsHostForGameplaySet_t } from '../src/packet/Packet_CountsAsHostForGameplaySet.gen';
 
-import type {t as Packet_CreditsOrSlimeTransform_t} from '../src/packet/Packet_CreditsOrSlimeTransform.gen';
+import type { t as Packet_CreditsOrSlimeTransform_t } from '../src/packet/Packet_CreditsOrSlimeTransform.gen';
 
-import type {t as Packet_CrystalInvasionSendWaitTime_t} from '../src/packet/Packet_CrystalInvasionSendWaitTime.gen';
+import type { t as Packet_CrystalInvasionSendWaitTime_t } from '../src/packet/Packet_CrystalInvasionSendWaitTime.gen';
 
-import type {t as Packet_CrystalInvasionStart_t} from '../src/packet/Packet_CrystalInvasionStart.gen';
+import type { t as Packet_CrystalInvasionStart_t } from '../src/packet/Packet_CrystalInvasionStart.gen';
 
-import type {t as Packet_CrystalInvasionWipeAll_t} from '../src/packet/Packet_CrystalInvasionWipeAll.gen';
+import type { t as Packet_CrystalInvasionWipeAll_t } from '../src/packet/Packet_CrystalInvasionWipeAll.gen';
 
-import type {t as Packet_DimensionsUpdate_t} from '../src/packet/Packet_DimensionsUpdate.gen';
+import type { t as Packet_DimensionsUpdate_t } from '../src/packet/Packet_DimensionsUpdate.gen';
 
-import type {t as Packet_Disconnect_t} from '../src/packet/Packet_Disconnect.gen';
+import type { t as Packet_Disconnect_t } from '../src/packet/Packet_Disconnect.gen';
 
-import type {t as Packet_DoorUse_t} from '../src/packet/Packet_DoorUse.gen';
+import type { t as Packet_DoorUse_t } from '../src/packet/Packet_DoorUse.gen';
 
-import type {t as Packet_DungeonDefendersEventAttemptSkipWait_t} from '../src/packet/Packet_DungeonDefendersEventAttemptSkipWait.gen';
+import type { t as Packet_DungeonDefendersEventAttemptSkipWait_t } from '../src/packet/Packet_DungeonDefendersEventAttemptSkipWait.gen';
 
-import type {t as Packet_Emoji_t} from '../src/packet/Packet_Emoji.gen';
+import type { t as Packet_Emoji_t } from '../src/packet/Packet_Emoji.gen';
 
-import type {t as Packet_EmoteBubble_t} from '../src/packet/Packet_EmoteBubble.gen';
+import type { t as Packet_EmoteBubble_t } from '../src/packet/Packet_EmoteBubble.gen';
 
-import type {t as Packet_EventNotification_t} from '../src/packet/Packet_EventNotification.gen';
+import type { t as Packet_EventNotification_t } from '../src/packet/Packet_EventNotification.gen';
 
-import type {t as Packet_ExtraValueSync_t} from '../src/packet/Packet_ExtraValueSync.gen';
+import type { t as Packet_ExtraValueSync_t } from '../src/packet/Packet_ExtraValueSync.gen';
 
-import type {t as Packet_FoodPlatterTryPlacing_t} from '../src/packet/Packet_FoodPlatterTryPlacing.gen';
+import type { t as Packet_FoodPlatterTryPlacing_t } from '../src/packet/Packet_FoodPlatterTryPlacing.gen';
 
-import type {t as Packet_GemLockToggle_t} from '../src/packet/Packet_GemLockToggle.gen';
+import type { t as Packet_GemLockToggle_t } from '../src/packet/Packet_GemLockToggle.gen';
 
-import type {t as Packet_GolfBallLandInCup_t} from '../src/packet/Packet_GolfBallLandInCup.gen';
+import type { t as Packet_GolfBallLandInCup_t } from '../src/packet/Packet_GolfBallLandInCup.gen';
 
-import type {t as Packet_GoodEvilUpdate_t} from '../src/packet/Packet_GoodEvilUpdate.gen';
+import type { t as Packet_GoodEvilUpdate_t } from '../src/packet/Packet_GoodEvilUpdate.gen';
 
-import type {t as Packet_HarpPlay_t} from '../src/packet/Packet_HarpPlay.gen';
+import type { t as Packet_HarpPlay_t } from '../src/packet/Packet_HarpPlay.gen';
 
-import type {t as Packet_HaveDryadDoStardewAnimation_t} from '../src/packet/Packet_HaveDryadDoStardewAnimation.gen';
+import type { t as Packet_HaveDryadDoStardewAnimation_t } from '../src/packet/Packet_HaveDryadDoStardewAnimation.gen';
 
-import type {t as Packet_HealEffect_t} from '../src/packet/Packet_HealEffect.gen';
+import type { t as Packet_HealEffect_t } from '../src/packet/Packet_HealEffect.gen';
 
-import type {t as Packet_InitialTileSectionsRequest_t} from '../src/packet/Packet_InitialTileSectionsRequest.gen';
+import type { t as Packet_InitialTileSectionsRequest_t } from '../src/packet/Packet_InitialTileSectionsRequest.gen';
 
-import type {t as Packet_InvasionProgressReport_t} from '../src/packet/Packet_InvasionProgressReport.gen';
+import type { t as Packet_InvasionProgressReport_t } from '../src/packet/Packet_InvasionProgressReport.gen';
 
-import type {t as Packet_ItemDropInstancedUpdate_t} from '../src/packet/Packet_ItemDropInstancedUpdate.gen';
+import type { t as Packet_ItemDropInstancedUpdate_t } from '../src/packet/Packet_ItemDropInstancedUpdate.gen';
 
-import type {t as Packet_ItemDropModify_t} from '../src/packet/Packet_ItemDropModify.gen';
+import type { t as Packet_ItemDropModify_t } from '../src/packet/Packet_ItemDropModify.gen';
 
-import type {t as Packet_ItemDropProtectedUpdate_t} from '../src/packet/Packet_ItemDropProtectedUpdate.gen';
+import type { t as Packet_ItemDropProtectedUpdate_t } from '../src/packet/Packet_ItemDropProtectedUpdate.gen';
 
-import type {t as Packet_ItemDropShimmeredUpdate_t} from '../src/packet/Packet_ItemDropShimmeredUpdate.gen';
+import type { t as Packet_ItemDropShimmeredUpdate_t } from '../src/packet/Packet_ItemDropShimmeredUpdate.gen';
 
-import type {t as Packet_ItemDropUpdate_t} from '../src/packet/Packet_ItemDropUpdate.gen';
+import type { t as Packet_ItemDropUpdate_t } from '../src/packet/Packet_ItemDropUpdate.gen';
 
-import type {t as Packet_ItemForceIntoNearestChest_t} from '../src/packet/Packet_ItemForceIntoNearestChest.gen';
+import type { t as Packet_ItemForceIntoNearestChest_t } from '../src/packet/Packet_ItemForceIntoNearestChest.gen';
 
-import type {t as Packet_ItemFramePlace_t} from '../src/packet/Packet_ItemFramePlace.gen';
+import type { t as Packet_ItemFramePlace_t } from '../src/packet/Packet_ItemFramePlace.gen';
 
-import type {t as Packet_ItemOwnerRemove_t} from '../src/packet/Packet_ItemOwnerRemove.gen';
+import type { t as Packet_ItemOwnerRemove_t } from '../src/packet/Packet_ItemOwnerRemove.gen';
 
-import type {t as Packet_ItemOwner_t} from '../src/packet/Packet_ItemOwner.gen';
+import type { t as Packet_ItemOwner_t } from '../src/packet/Packet_ItemOwner.gen';
 
-import type {t as Packet_LegacySoundPlay_t} from '../src/packet/Packet_LegacySoundPlay.gen';
+import type { t as Packet_LegacySoundPlay_t } from '../src/packet/Packet_LegacySoundPlay.gen';
 
-import type {t as Packet_LiquidSet_t} from '../src/packet/Packet_LiquidSet.gen';
+import type { t as Packet_LiquidSet_t } from '../src/packet/Packet_LiquidSet.gen';
 
-import type {t as Packet_LoadoutSwitch_t} from '../src/packet/Packet_LoadoutSwitch.gen';
+import type { t as Packet_LoadoutSwitch_t } from '../src/packet/Packet_LoadoutSwitch.gen';
 
-import type {t as Packet_LucyAxeMessage_t} from '../src/packet/Packet_LucyAxeMessage.gen';
+import type { t as Packet_LucyAxeMessage_t } from '../src/packet/Packet_LucyAxeMessage.gen';
 
-import type {t as Packet_ManaEffect_t} from '../src/packet/Packet_ManaEffect.gen';
+import type { t as Packet_ManaEffect_t } from '../src/packet/Packet_ManaEffect.gen';
 
-import type {t as Packet_MassWireOperationPay_t} from '../src/packet/Packet_MassWireOperationPay.gen';
+import type { t as Packet_MassWireOperationPay_t } from '../src/packet/Packet_MassWireOperationPay.gen';
 
-import type {t as Packet_MassWireOperation_t} from '../src/packet/Packet_MassWireOperation.gen';
+import type { t as Packet_MassWireOperation_t } from '../src/packet/Packet_MassWireOperation.gen';
 
-import type {t as Packet_MinionAttackTargetUpdate_t} from '../src/packet/Packet_MinionAttackTargetUpdate.gen';
+import type { t as Packet_MinionAttackTargetUpdate_t } from '../src/packet/Packet_MinionAttackTargetUpdate.gen';
 
-import type {t as Packet_MinionTargetUpdate_t} from '../src/packet/Packet_MinionTargetUpdate.gen';
+import type { t as Packet_MinionTargetUpdate_t } from '../src/packet/Packet_MinionTargetUpdate.gen';
 
-import type {t as Packet_MoonLordCountdown_t} from '../src/packet/Packet_MoonLordCountdown.gen';
+import type { t as Packet_MoonLordCountdown_t } from '../src/packet/Packet_MoonLordCountdown.gen';
 
-import type {t as Packet_NebulaLevelUp_t} from '../src/packet/Packet_NebulaLevelUp.gen';
+import type { t as Packet_NebulaLevelUp_t } from '../src/packet/Packet_NebulaLevelUp.gen';
 
-import type {t as Packet_NetModuleLoad_t} from '../src/packet/Packet_NetModuleLoad.gen';
+import type { NetModuleLoad } from './packet/Packet_NetModuleLoad';
 
-import type {t as Packet_NpcBuffAdd_t} from '../src/packet/Packet_NpcBuffAdd.gen';
+import type { t as Packet_NpcBuffAdd_t } from '../src/packet/Packet_NpcBuffAdd.gen';
 
-import type {t as Packet_NpcBuffRemovalRequest_t} from '../src/packet/Packet_NpcBuffRemovalRequest.gen';
+import type { t as Packet_NpcBuffRemovalRequest_t } from '../src/packet/Packet_NpcBuffRemovalRequest.gen';
 
-import type {t as Packet_NpcBuffUpdate_t} from '../src/packet/Packet_NpcBuffUpdate.gen';
+import type { t as Packet_NpcBuffUpdate_t } from '../src/packet/Packet_NpcBuffUpdate.gen';
 
-import type {t as Packet_NpcCatch_t} from '../src/packet/Packet_NpcCatch.gen';
+import type { t as Packet_NpcCatch_t } from '../src/packet/Packet_NpcCatch.gen';
 
-import type {t as Packet_NpcFishOut_t} from '../src/packet/Packet_NpcFishOut.gen';
+import type { t as Packet_NpcFishOut_t } from '../src/packet/Packet_NpcFishOut.gen';
 
-import type {t as Packet_NpcHomeUpdate_t} from '../src/packet/Packet_NpcHomeUpdate.gen';
+import type { t as Packet_NpcHomeUpdate_t } from '../src/packet/Packet_NpcHomeUpdate.gen';
 
-import type {t as Packet_NpcItemStrike_t} from '../src/packet/Packet_NpcItemStrike.gen';
+import type { t as Packet_NpcItemStrike_t } from '../src/packet/Packet_NpcItemStrike.gen';
 
-import type {t as Packet_NpcKillCount_t} from '../src/packet/Packet_NpcKillCount.gen';
+import type { t as Packet_NpcKillCount_t } from '../src/packet/Packet_NpcKillCount.gen';
 
-import type {t as Packet_NpcKilledNotification_t} from '../src/packet/Packet_NpcKilledNotification.gen';
+import type { t as Packet_NpcKilledNotification_t } from '../src/packet/Packet_NpcKilledNotification.gen';
 
-import type {t as Packet_NpcNameUpdate_t} from '../src/packet/Packet_NpcNameUpdate.gen';
+import type { t as Packet_NpcNameUpdate_t } from '../src/packet/Packet_NpcNameUpdate.gen';
 
-import type {t as Packet_NpcRelease_t} from '../src/packet/Packet_NpcRelease.gen';
+import type { t as Packet_NpcRelease_t } from '../src/packet/Packet_NpcRelease.gen';
 
-import type {t as Packet_NpcShopItem_t} from '../src/packet/Packet_NpcShopItem.gen';
+import type { t as Packet_NpcShopItem_t } from '../src/packet/Packet_NpcShopItem.gen';
 
-import type {t as Packet_NpcSpecialEffect_t} from '../src/packet/Packet_NpcSpecialEffect.gen';
+import type { t as Packet_NpcSpecialEffect_t } from '../src/packet/Packet_NpcSpecialEffect.gen';
 
-import type {t as Packet_NpcStrike_t} from '../src/packet/Packet_NpcStrike.gen';
+import type { t as Packet_NpcStrike_t } from '../src/packet/Packet_NpcStrike.gen';
 
-import type {t as Packet_NpcTalk_t} from '../src/packet/Packet_NpcTalk.gen';
+import type { t as Packet_NpcTalk_t } from '../src/packet/Packet_NpcTalk.gen';
 
-import type {t as Packet_NpcTamper_t} from '../src/packet/Packet_NpcTamper.gen';
+import type { t as Packet_NpcTamper_t } from '../src/packet/Packet_NpcTamper.gen';
 
-import type {t as Packet_NpcTeleportPortal_t} from '../src/packet/Packet_NpcTeleportPortal.gen';
+import type { t as Packet_NpcTeleportPortal_t } from '../src/packet/Packet_NpcTeleportPortal.gen';
 
-import type {t as Packet_NpcUpdate_t} from '../src/packet/Packet_NpcUpdate.gen';
+import type { t as Packet_NpcUpdate_t } from '../src/packet/Packet_NpcUpdate.gen';
 
-import type {t as Packet_ObjectPlace_t} from '../src/packet/Packet_ObjectPlace.gen';
+import type { t as Packet_ObjectPlace_t } from '../src/packet/Packet_ObjectPlace.gen';
 
-import type {t as Packet_PartyToggle_t} from '../src/packet/Packet_PartyToggle.gen';
+import type { t as Packet_PartyToggle_t } from '../src/packet/Packet_PartyToggle.gen';
 
-import type {t as Packet_PasswordRequired_t} from '../src/packet/Packet_PasswordRequired.gen';
+import type { t as Packet_PasswordRequired_t } from '../src/packet/Packet_PasswordRequired.gen';
 
-import type {t as Packet_PasswordSend_t} from '../src/packet/Packet_PasswordSend.gen';
+import type { t as Packet_PasswordSend_t } from '../src/packet/Packet_PasswordSend.gen';
 
-import type {t as Packet_PiggyBankVoidLensUpdate_t} from '../src/packet/Packet_PiggyBankVoidLensUpdate.gen';
+import type { t as Packet_PiggyBankVoidLensUpdate_t } from '../src/packet/Packet_PiggyBankVoidLensUpdate.gen';
 
-import type {t as Packet_PlayerActive_t} from '../src/packet/Packet_PlayerActive.gen';
+import type { t as Packet_PlayerActive_t } from '../src/packet/Packet_PlayerActive.gen';
 
-import type {t as Packet_PlayerAnimation_t} from '../src/packet/Packet_PlayerAnimation.gen';
+import type { t as Packet_PlayerAnimation_t } from '../src/packet/Packet_PlayerAnimation.gen';
 
-import type {t as Packet_PlayerBuffAdd_t} from '../src/packet/Packet_PlayerBuffAdd.gen';
+import type { t as Packet_PlayerBuffAdd_t } from '../src/packet/Packet_PlayerBuffAdd.gen';
 
-import type {t as Packet_PlayerBuffsSet_t} from '../src/packet/Packet_PlayerBuffsSet.gen';
+import type { t as Packet_PlayerBuffsSet_t } from '../src/packet/Packet_PlayerBuffsSet.gen';
 
-import type {t as Packet_PlayerChestIndexSync_t} from '../src/packet/Packet_PlayerChestIndexSync.gen';
+import type { t as Packet_PlayerChestIndexSync_t } from '../src/packet/Packet_PlayerChestIndexSync.gen';
 
-import type {t as Packet_PlayerDamage_t} from '../src/packet/Packet_PlayerDamage.gen';
+import type { t as Packet_PlayerDamage_t } from '../src/packet/Packet_PlayerDamage.gen';
 
-import type {t as Packet_PlayerDead_t} from '../src/packet/Packet_PlayerDead.gen';
+import type { t as Packet_PlayerDead_t } from '../src/packet/Packet_PlayerDead.gen';
 
-import type {t as Packet_PlayerDeath_t} from '../src/packet/Packet_PlayerDeath.gen';
+import type { t as Packet_PlayerDeath_t } from '../src/packet/Packet_PlayerDeath.gen';
 
-import type {t as Packet_PlayerDodge_t} from '../src/packet/Packet_PlayerDodge.gen';
+import type { t as Packet_PlayerDodge_t } from '../src/packet/Packet_PlayerDodge.gen';
 
-import type {t as Packet_PlayerHealOther_t} from '../src/packet/Packet_PlayerHealOther.gen';
+import type { t as Packet_PlayerHealOther_t } from '../src/packet/Packet_PlayerHealOther.gen';
 
-import type {t as Packet_PlayerHealth_t} from '../src/packet/Packet_PlayerHealth.gen';
+import type { t as Packet_PlayerHealth_t } from '../src/packet/Packet_PlayerHealth.gen';
 
-import type {t as Packet_PlayerInfo_t} from '../src/packet/Packet_PlayerInfo.gen';
+import type { t as Packet_PlayerInfo_t } from '../src/packet/Packet_PlayerInfo.gen';
 
-import type {t as Packet_PlayerInventorySlot_t} from '../src/packet/Packet_PlayerInventorySlot.gen';
+import type { t as Packet_PlayerInventorySlot_t } from '../src/packet/Packet_PlayerInventorySlot.gen';
 
-import type {t as Packet_PlayerLuckFactorsUpdate_t} from '../src/packet/Packet_PlayerLuckFactorsUpdate.gen';
+import type { t as Packet_PlayerLuckFactorsUpdate_t } from '../src/packet/Packet_PlayerLuckFactorsUpdate.gen';
 
-import type {t as Packet_PlayerMana_t} from '../src/packet/Packet_PlayerMana.gen';
+import type { t as Packet_PlayerMana_t } from '../src/packet/Packet_PlayerMana.gen';
 
-import type {t as Packet_PlayerSlotSet_t} from '../src/packet/Packet_PlayerSlotSet.gen';
+import type { t as Packet_PlayerSlotSet_t } from '../src/packet/Packet_PlayerSlotSet.gen';
 
-import type {t as Packet_PlayerSpawnSelf_t} from '../src/packet/Packet_PlayerSpawnSelf.gen';
+import type { t as Packet_PlayerSpawnSelf_t } from '../src/packet/Packet_PlayerSpawnSelf.gen';
 
-import type {t as Packet_PlayerSpawn_t} from '../src/packet/Packet_PlayerSpawn.gen';
+import type { t as Packet_PlayerSpawn_t } from '../src/packet/Packet_PlayerSpawn.gen';
 
-import type {t as Packet_PlayerStealth_t} from '../src/packet/Packet_PlayerStealth.gen';
+import type { t as Packet_PlayerStealth_t } from '../src/packet/Packet_PlayerStealth.gen';
 
-import type {t as Packet_PlayerTeam_t} from '../src/packet/Packet_PlayerTeam.gen';
+import type { t as Packet_PlayerTeam_t } from '../src/packet/Packet_PlayerTeam.gen';
 
-import type {t as Packet_PlayerTeleportPortal_t} from '../src/packet/Packet_PlayerTeleportPortal.gen';
+import type { t as Packet_PlayerTeleportPortal_t } from '../src/packet/Packet_PlayerTeleportPortal.gen';
 
-import type {t as Packet_PlayerUpdate_t} from '../src/packet/Packet_PlayerUpdate.gen';
+import type { t as Packet_PlayerUpdate_t } from '../src/packet/Packet_PlayerUpdate.gen';
 
-import type {t as Packet_PortalKill_t} from '../src/packet/Packet_PortalKill.gen';
+import type { t as Packet_PortalKill_t } from '../src/packet/Packet_PortalKill.gen';
 
-import type {t as Packet_ProjectileDestroy_t} from '../src/packet/Packet_ProjectileDestroy.gen';
+import type { t as Packet_ProjectileDestroy_t } from '../src/packet/Packet_ProjectileDestroy.gen';
 
-import type {t as Packet_ProjectileSync_t} from '../src/packet/Packet_ProjectileSync.gen';
+import type { t as Packet_ProjectileSync_t } from '../src/packet/Packet_ProjectileSync.gen';
 
-import type {t as Packet_PvpToggle_t} from '../src/packet/Packet_PvpToggle.gen';
+import type { t as Packet_PvpToggle_t } from '../src/packet/Packet_PvpToggle.gen';
 
-import type {t as Packet_RevengeMarkerRemove_t} from '../src/packet/Packet_RevengeMarkerRemove.gen';
+import type { t as Packet_RevengeMarkerRemove_t } from '../src/packet/Packet_RevengeMarkerRemove.gen';
 
-import type {t as Packet_RevengeMarkerSync_t} from '../src/packet/Packet_RevengeMarkerSync.gen';
+import type { t as Packet_RevengeMarkerSync_t } from '../src/packet/Packet_RevengeMarkerSync.gen';
 
-import type {t as Packet_ShieldStrengthsUpdate_t} from '../src/packet/Packet_ShieldStrengthsUpdate.gen';
+import type { t as Packet_ShieldStrengthsUpdate_t } from '../src/packet/Packet_ShieldStrengthsUpdate.gen';
 
-import type {t as Packet_ShimmerEffectOrCoinLuck_t} from '../src/packet/Packet_ShimmerEffectOrCoinLuck.gen';
+import type { t as Packet_ShimmerEffectOrCoinLuck_t } from '../src/packet/Packet_ShimmerEffectOrCoinLuck.gen';
 
-import type {t as Packet_SignNew_t} from '../src/packet/Packet_SignNew.gen';
+import type { t as Packet_SignNew_t } from '../src/packet/Packet_SignNew.gen';
 
-import type {t as Packet_SignRead_t} from '../src/packet/Packet_SignRead.gen';
+import type { t as Packet_SignRead_t } from '../src/packet/Packet_SignRead.gen';
 
-import type {t as Packet_SmokePoof_t} from '../src/packet/Packet_SmokePoof.gen';
+import type { t as Packet_SmokePoof_t } from '../src/packet/Packet_SmokePoof.gen';
 
-import type {t as Packet_SocialHandshake_t} from '../src/packet/Packet_SocialHandshake.gen';
+import type { t as Packet_SocialHandshake_t } from '../src/packet/Packet_SocialHandshake.gen';
 
-import type {t as Packet_Status_t} from '../src/packet/Packet_Status.gen';
+import type { t as Packet_Status_t } from '../src/packet/Packet_Status.gen';
 
-import type {t as Packet_SwitchHit_t} from '../src/packet/Packet_SwitchHit.gen';
+import type { t as Packet_SwitchHit_t } from '../src/packet/Packet_SwitchHit.gen';
 
-import type {t as Packet_Teleport_t} from '../src/packet/Packet_Teleport.gen';
+import type { t as Packet_Teleport_t } from '../src/packet/Packet_Teleport.gen';
 
-import type {t as Packet_TeleportationPotion_t} from '../src/packet/Packet_TeleportationPotion.gen';
+import type { t as Packet_TeleportationPotion_t } from '../src/packet/Packet_TeleportationPotion.gen';
 
-import type {t as Packet_TemporaryAnimationCreate_t} from '../src/packet/Packet_TemporaryAnimationCreate.gen';
+import type { t as Packet_TemporaryAnimationCreate_t } from '../src/packet/Packet_TemporaryAnimationCreate.gen';
 
-import type {t as Packet_TileEntityDisplayDollItemSync_t} from '../src/packet/Packet_TileEntityDisplayDollItemSync.gen';
+import type { t as Packet_TileEntityDisplayDollItemSync_t } from '../src/packet/Packet_TileEntityDisplayDollItemSync.gen';
 
-import type {t as Packet_TileEntityHatRackItemSync_t} from '../src/packet/Packet_TileEntityHatRackItemSync.gen';
+import type { t as Packet_TileEntityHatRackItemSync_t } from '../src/packet/Packet_TileEntityHatRackItemSync.gen';
 
-import type {t as Packet_TileEntityInteractionRequest_t} from '../src/packet/Packet_TileEntityInteractionRequest.gen';
+import type { t as Packet_TileEntityInteractionRequest_t } from '../src/packet/Packet_TileEntityInteractionRequest.gen';
 
-import type {t as Packet_TileEntityPlace_t} from '../src/packet/Packet_TileEntityPlace.gen';
+import type { t as Packet_TileEntityPlace_t } from '../src/packet/Packet_TileEntityPlace.gen';
 
-import type {t as Packet_TileEntityUpdate_t} from '../src/packet/Packet_TileEntityUpdate.gen';
+import type { t as Packet_TileEntityUpdate_t } from '../src/packet/Packet_TileEntityUpdate.gen';
 
-import type {t as Packet_TileModify_t} from '../src/packet/Packet_TileModify.gen';
+import type { t as Packet_TileModify_t } from '../src/packet/Packet_TileModify.gen';
 
-import type {t as Packet_TilePaint_t} from '../src/packet/Packet_TilePaint.gen';
+import type { t as Packet_TilePaint_t } from '../src/packet/Packet_TilePaint.gen';
 
-import type {t as Packet_TilePickingSync_t} from '../src/packet/Packet_TilePickingSync.gen';
+import type { t as Packet_TilePickingSync_t } from '../src/packet/Packet_TilePickingSync.gen';
 
-import type {t as Packet_TileSectionFrame_t} from '../src/packet/Packet_TileSectionFrame.gen';
+import type { t as Packet_TileSectionFrame_t } from '../src/packet/Packet_TileSectionFrame.gen';
 
-import type {t as Packet_TileSectionSend_t} from '../src/packet/Packet_TileSectionSend.gen';
+import type { t as Packet_TileSectionSend_t } from '../src/packet/Packet_TileSectionSend.gen';
 
-import type {t as Packet_TileSquareSend_t} from '../src/packet/Packet_TileSquareSend.gen';
+import type { t as Packet_TileSquareSend_t } from '../src/packet/Packet_TileSquareSend.gen';
 
-import type {t as Packet_TimeSet_t} from '../src/packet/Packet_TimeSet.gen';
+import type { t as Packet_TimeSet_t } from '../src/packet/Packet_TimeSet.gen';
 
-import type {t as Packet_TravellingMerchantInventory_t} from '../src/packet/Packet_TravellingMerchantInventory.gen';
+import type { t as Packet_TravellingMerchantInventory_t } from '../src/packet/Packet_TravellingMerchantInventory.gen';
 
-import type {t as Packet_TreeGrowFx_t} from '../src/packet/Packet_TreeGrowFx.gen';
+import type { t as Packet_TreeGrowFx_t } from '../src/packet/Packet_TreeGrowFx.gen';
 
-import type {t as Packet_Unused_t} from '../src/packet/Packet_Unused.gen';
+import type { t as Packet_Unused_t } from '../src/packet/Packet_Unused.gen';
 
-import type {t as Packet_WallPaint_t} from '../src/packet/Packet_WallPaint.gen';
+import type { t as Packet_WallPaint_t } from '../src/packet/Packet_WallPaint.gen';
 
-import type {t as Packet_WeaponsRackTryPlacing_t} from '../src/packet/Packet_WeaponsRackTryPlacing.gen';
+import type { t as Packet_WeaponsRackTryPlacing_t } from '../src/packet/Packet_WeaponsRackTryPlacing.gen';
 
-import type {t as Packet_WiredCannonShot_t} from '../src/packet/Packet_WiredCannonShot.gen';
+import type { t as Packet_WiredCannonShot_t } from '../src/packet/Packet_WiredCannonShot.gen';
 
-import type {t as Packet_WorldDataRequest_t} from '../src/packet/Packet_WorldDataRequest.gen';
+import type { t as Packet_WorldDataRequest_t } from '../src/packet/Packet_WorldDataRequest.gen';
 
-import type {WorldInfo as Packet_WorldInfo_t} from '../src/packet/Packet_WorldInfo';
+import type { WorldInfo as Packet_WorldInfo_t } from '../src/packet/Packet_WorldInfo';
 
-import type {t as Packet_Zones_t} from '../src/packet/Packet_Zones.gen';
+import type { t as Packet_Zones_t } from '../src/packet/Packet_Zones.gen';
 
-export type t = 
-    { TAG: "ConnectRequest"; _0: Packet_ConnectRequest_t }
+export type t =
+  { TAG: "ConnectRequest"; _0: Packet_ConnectRequest_t }
   | { TAG: "Disconnect"; _0: Packet_Disconnect_t }
   | { TAG: "PlayerSlotSet"; _0: Packet_PlayerSlotSet_t }
   | { TAG: "PlayerInfo"; _0: Packet_PlayerInfo_t }
@@ -371,7 +371,7 @@ export type t =
   | { TAG: "ObjectPlace"; _0: Packet_ObjectPlace_t }
   | { TAG: "PlayerChestIndexSync"; _0: Packet_PlayerChestIndexSync_t }
   | { TAG: "CombatNumberCreate"; _0: Packet_CombatNumberCreate_t }
-  | { TAG: "NetModuleLoad"; _0: Packet_NetModuleLoad_t }
+  | { TAG: "NetModuleLoad"; _0: NetModuleLoad }
   | { TAG: "NpcKillCount"; _0: Packet_NpcKillCount_t }
   | { TAG: "PlayerStealth"; _0: Packet_PlayerStealth_t }
   | { TAG: "ItemForceIntoNearestChest"; _0: Packet_ItemForceIntoNearestChest_t }
@@ -439,8 +439,8 @@ export type t =
   | { TAG: "LoadoutSwitch"; _0: Packet_LoadoutSwitch_t }
   | { TAG: "ItemDropProtectedUpdate"; _0: Packet_ItemDropProtectedUpdate_t };
 
-export type LazyPacket_t = 
-    { TAG: "ConnectRequest"; _0: Lazy_t<(undefined | Packet_ConnectRequest_t)> }
+export type LazyPacket_t =
+  { TAG: "ConnectRequest"; _0: Lazy_t<(undefined | Packet_ConnectRequest_t)> }
   | { TAG: "Disconnect"; _0: Lazy_t<(undefined | Packet_Disconnect_t)> }
   | { TAG: "PlayerSlotSet"; _0: Lazy_t<(undefined | Packet_PlayerSlotSet_t)> }
   | { TAG: "PlayerInfo"; _0: Lazy_t<(undefined | Packet_PlayerInfo_t)> }
@@ -517,7 +517,7 @@ export type LazyPacket_t =
   | { TAG: "ObjectPlace"; _0: Lazy_t<(undefined | Packet_ObjectPlace_t)> }
   | { TAG: "PlayerChestIndexSync"; _0: Lazy_t<(undefined | Packet_PlayerChestIndexSync_t)> }
   | { TAG: "CombatNumberCreate"; _0: Lazy_t<(undefined | Packet_CombatNumberCreate_t)> }
-  | { TAG: "NetModuleLoad"; _0: Lazy_t<(undefined | Packet_NetModuleLoad_t)> }
+  | { TAG: "NetModuleLoad"; _0: Lazy_t<(undefined | NetModuleLoad)> }
   | { TAG: "NpcKillCount"; _0: Lazy_t<(undefined | Packet_NpcKillCount_t)> }
   | { TAG: "PlayerStealth"; _0: Lazy_t<(undefined | Packet_PlayerStealth_t)> }
   | { TAG: "ItemForceIntoNearestChest"; _0: Lazy_t<(undefined | Packet_ItemForceIntoNearestChest_t)> }
