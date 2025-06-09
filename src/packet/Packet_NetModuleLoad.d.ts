@@ -95,7 +95,7 @@ export type NetModuleType_t =
   | "Particles"
   | "CreativePowerPermissions";
 
-export function parse(buffer: Buffer): NetModuleLoad | undefined;
+export function parse(buffer: Buffer, fromServer: boolean): NetModuleLoad | undefined;
 
 export type toBufferOk = { TAG: "Ok"; _0: Buffer };
 export type toBufferError = { TAG: "Error"; _0: PackError };
