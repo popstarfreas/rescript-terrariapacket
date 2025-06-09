@@ -4,6 +4,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.toBuffer = exports.parse = void 0;
 /* eslint-disable */
 /* tslint:disable */
-const Packet_NpcUpdateJS = require('./Packet_NpcUpdate.bs.js');
+const Packet_NpcUpdateJS = require('./Packet_NpcUpdate.js');
 exports.parse = Packet_NpcUpdateJS.parse;
 exports.toBuffer = Packet_NpcUpdateJS.toBuffer;

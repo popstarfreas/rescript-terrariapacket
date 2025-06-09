@@ -3,7 +3,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_TilePaintJS = require('./Packet_TilePaint.bs.js');
+const Packet_TilePaintJS = require('./Packet_TilePaint.js');
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 

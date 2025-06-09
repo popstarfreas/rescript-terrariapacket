@@ -4,6 +4,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.toBuffer = exports.parse = void 0;
 /* eslint-disable */
 /* tslint:disable */
-const Packet_ConnectRequestJS = require('./Packet_ConnectRequest.bs.js');
+const Packet_ConnectRequestJS = require('./Packet_ConnectRequest.js');
 exports.parse = Packet_ConnectRequestJS.parse;
 exports.toBuffer = Packet_ConnectRequestJS.toBuffer;

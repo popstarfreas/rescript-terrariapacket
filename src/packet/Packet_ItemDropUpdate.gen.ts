@@ -3,7 +3,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_ItemDropUpdateJS = require('./Packet_ItemDropUpdate.bs.js');
+const Packet_ItemDropUpdateJS = require('./Packet_ItemDropUpdate.js');
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 

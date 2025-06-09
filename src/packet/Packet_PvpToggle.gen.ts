@@ -3,7 +3,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_PvpToggleJS = require('./Packet_PvpToggle.bs.js');
+const Packet_PvpToggleJS = require('./Packet_PvpToggle.js');
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 

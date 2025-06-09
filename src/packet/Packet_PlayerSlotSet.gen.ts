@@ -3,7 +3,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_PlayerSlotSetJS = require('./Packet_PlayerSlotSet.bs.js');
+const Packet_PlayerSlotSetJS = require('./Packet_PlayerSlotSet.js');
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 

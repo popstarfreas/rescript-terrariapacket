@@ -3,7 +3,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_ConnectRequestJS = require('./Packet_ConnectRequest.bs.js');
+const Packet_ConnectRequestJS = require('./Packet_ConnectRequest.js');
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 

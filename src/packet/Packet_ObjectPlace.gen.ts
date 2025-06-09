@@ -3,7 +3,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_ObjectPlaceJS = require('./Packet_ObjectPlace.bs.js');
+const Packet_ObjectPlaceJS = require('./Packet_ObjectPlace.js');
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 

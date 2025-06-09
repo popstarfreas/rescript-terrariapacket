@@ -3,7 +3,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_PlayerInfoJS = require('./Packet_PlayerInfo.bs.js');
+const Packet_PlayerInfoJS = require('./Packet_PlayerInfo.js');
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 

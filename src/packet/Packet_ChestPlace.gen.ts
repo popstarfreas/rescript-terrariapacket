@@ -3,7 +3,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_ChestPlaceJS = require('./Packet_ChestPlace.bs.js');
+const Packet_ChestPlaceJS = require('./Packet_ChestPlace.js');
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 

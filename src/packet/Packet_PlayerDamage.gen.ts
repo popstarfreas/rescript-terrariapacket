@@ -3,7 +3,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_PlayerDamageJS = require('./Packet_PlayerDamage.bs.js');
+const Packet_PlayerDamageJS = require('./Packet_PlayerDamage.js');
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 

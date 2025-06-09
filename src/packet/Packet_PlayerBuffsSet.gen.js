@@ -4,6 +4,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.toBuffer = exports.parse = void 0;
 /* eslint-disable */
 /* tslint:disable */
-const Packet_PlayerBuffsSetJS = require('./Packet_PlayerBuffsSet.bs.js');
+const Packet_PlayerBuffsSetJS = require('./Packet_PlayerBuffsSet.js');
 exports.parse = Packet_PlayerBuffsSetJS.parse;
 exports.toBuffer = Packet_PlayerBuffsSetJS.toBuffer;

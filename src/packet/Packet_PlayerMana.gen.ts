@@ -3,7 +3,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_PlayerManaJS = require('./Packet_PlayerMana.bs.js');
+const Packet_PlayerManaJS = require('./Packet_PlayerMana.js');
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 

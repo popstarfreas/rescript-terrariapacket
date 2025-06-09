@@ -3,7 +3,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_WallPaintJS = require('./Packet_WallPaint.bs.js');
+const Packet_WallPaintJS = require('./Packet_WallPaint.js');
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 

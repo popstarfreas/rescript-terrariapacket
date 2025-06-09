@@ -3,7 +3,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_PlayerSpawnJS = require('./Packet_PlayerSpawn.bs.js');
+const Packet_PlayerSpawnJS = require('./Packet_PlayerSpawn.js');
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 

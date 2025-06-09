@@ -4,6 +4,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.toBuffer = exports.parse = void 0;
 /* eslint-disable */
 /* tslint:disable */
-const Packet_ClientUuidJS = require('./Packet_ClientUuid.bs.js');
+const Packet_ClientUuidJS = require('./Packet_ClientUuid.js');
 exports.parse = Packet_ClientUuidJS.parse;
 exports.toBuffer = Packet_ClientUuidJS.toBuffer;

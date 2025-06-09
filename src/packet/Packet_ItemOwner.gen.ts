@@ -3,7 +3,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_ItemOwnerJS = require('./Packet_ItemOwner.bs.js');
+const Packet_ItemOwnerJS = require('./Packet_ItemOwner.js');
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 

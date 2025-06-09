@@ -3,7 +3,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_TileModifyJS = require('./Packet_TileModify.bs.js');
+const Packet_TileModifyJS = require('./Packet_TileModify.js');
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 

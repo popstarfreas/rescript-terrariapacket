@@ -3,7 +3,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_TileSquareSendJS = require('./Packet_TileSquareSend.bs.js');
+const Packet_TileSquareSendJS = require('./Packet_TileSquareSend.js');
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 

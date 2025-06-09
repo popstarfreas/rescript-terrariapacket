@@ -3,7 +3,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_ProjectileSyncJS = require('./Packet_ProjectileSync.bs.js');
+const Packet_ProjectileSyncJS = require('./Packet_ProjectileSync.js');
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 

@@ -3,7 +3,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_ClientUuidJS = require('./Packet_ClientUuid.bs.js');
+const Packet_ClientUuidJS = require('./Packet_ClientUuid.js');
 
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 
