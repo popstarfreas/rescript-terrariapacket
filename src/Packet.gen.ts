@@ -289,7 +289,7 @@ import type {t as Packet_WiredCannonShot_t} from '../src/packet/Packet_WiredCann
 
 import type {t as Packet_WorldDataRequest_t} from '../src/packet/Packet_WorldDataRequest.gen';
 
-import type {t as Packet_WorldInfo_t} from '../src/packet/Packet_WorldInfo.gen';
+import type {WorldInfo as Packet_WorldInfo_t} from '../src/packet/Packet_WorldInfo';
 
 import type {t as Packet_Zones_t} from '../src/packet/Packet_Zones.gen';
 
