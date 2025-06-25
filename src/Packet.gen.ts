@@ -53,7 +53,7 @@ import type { t as Packet_CrystalInvasionWipeAll_t } from '../src/packet/Packet_
 
 import type { t as Packet_DimensionsUpdate_t } from '../src/packet/Packet_DimensionsUpdate.gen';
 
-import type { t as Packet_Disconnect_t } from '../src/packet/Packet_Disconnect.gen';
+import type { t as Packet_Disconnect_t } from '../src/packet/Packet_Disconnect';
 
 import type { t as Packet_DoorUse_t } from '../src/packet/Packet_DoorUse.gen';
 
@@ -173,7 +173,7 @@ import type { t as Packet_PasswordSend_t } from '../src/packet/Packet_PasswordSe
 
 import type { t as Packet_PiggyBankVoidLensUpdate_t } from '../src/packet/Packet_PiggyBankVoidLensUpdate.gen';
 
-import type { t as Packet_PlayerActive_t } from '../src/packet/Packet_PlayerActive.gen';
+import type { t as Packet_PlayerActive_t } from '../src/packet/Packet_PlayerActive';
 
 import type { t as Packet_PlayerAnimation_t } from '../src/packet/Packet_PlayerAnimation.gen';
 
@@ -197,7 +197,7 @@ import type { t as Packet_PlayerHealth_t } from '../src/packet/Packet_PlayerHeal
 
 import type { t as Packet_PlayerInfo_t } from '../src/packet/Packet_PlayerInfo.gen';
 
-import type { t as Packet_PlayerInventorySlot_t } from '../src/packet/Packet_PlayerInventorySlot.gen';
+import type { t as Packet_PlayerInventorySlot_t } from '../src/packet/Packet_PlayerInventorySlot';
 
 import type { t as Packet_PlayerLuckFactorsUpdate_t } from '../src/packet/Packet_PlayerLuckFactorsUpdate.gen';
 
