@@ -203,7 +203,7 @@ import type { t as Packet_PlayerLuckFactorsUpdate_t } from '../src/packet/Packet
 
 import type { t as Packet_PlayerMana_t } from '../src/packet/Packet_PlayerMana.gen';
 
-import type { t as Packet_PlayerSlotSet_t } from '../src/packet/Packet_PlayerSlotSet.gen';
+import type { t as Packet_PlayerSlotSet_t } from '../src/packet/Packet_PlayerSlotSet';
 
 import type { t as Packet_PlayerSpawnSelf_t } from '../src/packet/Packet_PlayerSpawnSelf.gen';
 
