@@ -3,10 +3,8 @@
 /* eslint-disable */
 /* tslint:disable */
 
-import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
-
-export type Action_t = 
-    "KillTile"
+export type Action_t =
+  "KillTile"
   | "PlaceTile"
   | "KillWall"
   | "PlaceWall"
@@ -32,19 +30,19 @@ export type Action_t =
   | "SlopePoundTile";
 
 export type t = {
-  readonly action: Action_t; 
-  readonly tileX: number; 
-  readonly tileY: number; 
-  readonly value1: number; 
+  readonly action: Action_t;
+  readonly tileX: number;
+  readonly tileY: number;
+  readonly value1: number;
   readonly value2: number
 };
 
-export declare const Action_fromInt: (_1:number) => (undefined | Action_t);
+export declare const Action_fromInt: (_1: number) => (undefined | Action_t);
 
-export declare const Action_toInt: (_1:Action_t) => number;
+export declare const Action_toInt: (_1: Action_t) => number;
 
-export declare const parse: (_1:NodeJs_Buffer_t) => (undefined | t);
+export declare const parse: (_1: Buffer) => (undefined | t);
 
-export declare const toBuffer: (_1:t) => NodeJs_Buffer_t;
+export declare const toBuffer: (_1: t) => Buffer;
 
-export declare const Action: { toInt: (_1:Action_t) => number; fromInt: (_1:number) => (undefined | Action_t) };
+export declare const Action: { toInt: (_1: Action_t) => number; fromInt: (_1: number) => (undefined | Action_t) };

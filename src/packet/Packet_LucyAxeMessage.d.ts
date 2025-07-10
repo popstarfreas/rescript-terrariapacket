@@ -3,7 +3,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-import type {t as Point_t} from '../../src/Point.gen';
+import type {t as Point_t} from '../../src/Point';
 
 export type t = {
   readonly source: number; 

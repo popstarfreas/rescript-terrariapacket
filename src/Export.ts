@@ -77,6 +77,3 @@ export * as CreativePowers from "./CreativePowers";
 export * as ErrorAwarePacketWriter from "./ErrorAwarePacketWriter";
 export * as PlayerDeathReason from "./PlayerDeathReason";
 export * as Point from "./Point";
-export * as ExnShim from "./shims/Exn.shim";
-export * as LazyShim from "./shims/Lazy.shim";
-export * as PacketFactoryShim from "./shims/PacketFactory.shim";

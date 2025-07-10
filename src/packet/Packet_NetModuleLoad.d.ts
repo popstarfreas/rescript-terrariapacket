@@ -1,10 +1,8 @@
 import { PackError } from "../ErrorAwarePacketWriter";
 
-import type { Color_t as PacketFactory_Color_t } from '../shims/PacketFactory.shim';
-
-import type { NetworkText_t as PacketFactory_NetworkText_t } from '../shims/PacketFactory.shim';
-
 import type { CreativePower } from '../CreativePowers';
+import NetworkText from "@popstarfreas/packetfactory/networktext";
+import Color from "@popstarfreas/packetfactory/color";
 
 export type commandId = string;
 
@@ -71,7 +69,7 @@ export type creativePowerPermission = { readonly powerType: number; readonly pow
 export type NetModuleLoad =
   { TAG: "Liquid"; _0: liquid }
   | { TAG: "ClientText"; _0: commandId; _1: message }
-  | { TAG: "ServerText"; _0: playerId; _1: PacketFactory_NetworkText_t; _2: PacketFactory_Color_t }
+  | { TAG: "ServerText"; _0: playerId; _1: NetworkText; _2: Color }
   | { TAG: "Ping"; _0: position }
   | { TAG: "Ambience"; _0: ambience }
   | { TAG: "Bestiary"; _0: bestiary }
