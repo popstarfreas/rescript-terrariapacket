@@ -18467,6 +18467,26 @@ var require_Array16 = __commonJS({
   }
 });
 
+// src/packet/Packet_PlayerSlotSet.js
+var require_Packet_PlayerSlotSet = __commonJS({
+  "src/packet/Packet_PlayerSlotSet.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      return reader.readByte();
+    }
+    function toBuffer(self) {
+      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerSlotSet")).packByte(self).data;
+    }
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
 // src/Point.js
 var require_Point = __commonJS({
   "src/Point.js"(exports2) {
@@ -18537,6 +18557,7 @@ __export(Export_exports, {
   PlayerDeathReason: () => PlayerDeathReason,
   PlayerDodgePacket: () => PlayerDodgePacket,
   PlayerManaPacket: () => PlayerManaPacket,
+  PlayerSlotSetPacket: () => PlayerSlotSetPacket,
   PlayerTeamPacket: () => PlayerTeamPacket,
   Point: () => Point,
   PvpTogglePacket: () => PvpTogglePacket,
@@ -18650,6 +18671,7 @@ var BitFlags = __toESM(require_BitFlags());
 var CreativePowers = __toESM(require_CreativePowers());
 var ErrorAwarePacketWriter = __toESM(require_ErrorAwarePacketWriter());
 var PlayerDeathReason = __toESM(require_PlayerDeathReason());
+var PlayerSlotSetPacket = __toESM(require_Packet_PlayerSlotSet());
 var Point = __toESM(require_Point());
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
@@ -18699,6 +18721,7 @@ var Point = __toESM(require_Point());
   PlayerDeathReason,
   PlayerDodgePacket,
   PlayerManaPacket,
+  PlayerSlotSetPacket,
   PlayerTeamPacket,
   Point,
   PvpTogglePacket,

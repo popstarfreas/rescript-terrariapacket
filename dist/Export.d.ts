@@ -1,3 +1,6 @@
+/// <reference types="node" />
+
+import { Buffer as Buffer_2 } from 'buffer';
 import Color from '@popstarfreas/packetfactory/color';
 import NetworkText from '@popstarfreas/packetfactory/networktext';
 
@@ -405,7 +408,7 @@ declare type flags = {
     readonly runCheckBytes: boolean
 };
 
-declare type Float_t = t_76<number>;
+declare type Float_t = t_77<number>;
 
 declare function forEach(t: t_74, callback: (flag: boolean) => void): void;
 
@@ -438,7 +441,7 @@ export declare namespace HaveDryadDoStardewAnimationPacket {
     }
 }
 
-declare type Int_t = t_76<number>;
+declare type Int_t = t_77<number>;
 
 declare function intoChunks<A>(a: A[], chunkSize: number): A[][];
 
@@ -760,6 +763,8 @@ declare const parse_13: (_1: Buffer) => (undefined | t_64);
 
 declare const parse_14: (_1: Buffer) => (undefined | t_69);
 
+declare function parse_15(payload: Buffer_2): t_76;
+
 declare const parse_2: (_1: Buffer) => (undefined | t_9);
 
 declare function parse_3(payload: Buffer): t_18 | undefined;
@@ -858,6 +863,14 @@ export declare namespace PlayerManaPacket {
     }
 }
 
+export declare namespace PlayerSlotSetPacket {
+    export {
+        parse_15 as parse,
+        toBuffer_15 as toBuffer,
+        t_76 as t
+    }
+}
+
 export declare namespace PlayerTeamPacket {
     export {
         t_41 as t
@@ -866,7 +879,7 @@ export declare namespace PlayerTeamPacket {
 
 export declare namespace Point {
     export {
-        t_76 as t,
+        t_77 as t,
         Int_t,
         Float_t
     }
@@ -1280,7 +1293,9 @@ declare type t_75 = {
     readonly deathReason: (undefined | string)
 };
 
-declare type t_76<a> = { readonly x: a; readonly y: a };
+declare type t_76 = number;
+
+declare type t_77<a> = { readonly x: a; readonly y: a };
 
 declare type t_8 = void;
 
@@ -1490,6 +1505,8 @@ declare const toBuffer_12: (_1: t_60) => Buffer;
 declare const toBuffer_13: (_1: t_64) => Buffer;
 
 declare const toBuffer_14: (_1: t_69) => Buffer;
+
+declare function toBuffer_15(self: t_76): Buffer_2;
 
 declare const toBuffer_2: (_1: t_9) => Buffer;
 
