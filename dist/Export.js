@@ -18487,6 +18487,556 @@ var require_Packet_PlayerSlotSet = __commonJS({
   }
 });
 
+// src/packet/Packet_PlayerUpdate.js
+var require_Packet_PlayerUpdate = __commonJS({
+  "src/packet/Packet_PlayerUpdate.js"(exports2) {
+    "use strict";
+    var BitFlags$TerrariaPacket = require_BitFlags();
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var playerId = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      var controlFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "controlFlags"));
+      var miscFlags1 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags1"));
+      var miscFlags2 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags2"));
+      var miscFlags3 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags3"));
+      var control_isHoldingUp = BitFlags$TerrariaPacket.flag1(controlFlags);
+      var control_isHoldingDown = BitFlags$TerrariaPacket.flag2(controlFlags);
+      var control_isHoldingLeft = BitFlags$TerrariaPacket.flag3(controlFlags);
+      var control_isHoldingRight = BitFlags$TerrariaPacket.flag4(controlFlags);
+      var control_isHoldingJump = BitFlags$TerrariaPacket.flag5(controlFlags);
+      var control_isHoldingItemUse = BitFlags$TerrariaPacket.flag6(controlFlags);
+      var control = {
+        isHoldingUp: control_isHoldingUp,
+        isHoldingDown: control_isHoldingDown,
+        isHoldingLeft: control_isHoldingLeft,
+        isHoldingRight: control_isHoldingRight,
+        isHoldingJump: control_isHoldingJump,
+        isHoldingItemUse: control_isHoldingItemUse
+      };
+      var direction = BitFlags$TerrariaPacket.flag7(controlFlags) ? "Right" : "Left";
+      var pulleyDirection = BitFlags$TerrariaPacket.flag1(miscFlags1) ? BitFlags$TerrariaPacket.flag2(miscFlags1) ? "Two" : "One" : void 0;
+      var vortexStealthActive = BitFlags$TerrariaPacket.flag4(miscFlags1);
+      var gravityDirection = BitFlags$TerrariaPacket.flag5(miscFlags1) ? "Normal" : "Inverted";
+      var shouldGuard = BitFlags$TerrariaPacket.flag6(miscFlags1);
+      var ghost = BitFlags$TerrariaPacket.flag7(miscFlags1);
+      var selectedItem = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "selectedItem");
+      var position_x = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionX");
+      var position_y = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionY");
+      var position = {
+        x: position_x,
+        y: position_y
+      };
+      var velocity = BitFlags$TerrariaPacket.flag3(miscFlags1) ? {
+        x: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityX"),
+        y: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityY")
+      } : void 0;
+      var potionOfReturn = BitFlags$TerrariaPacket.flag7(miscFlags2) ? {
+        originalUsePosition: {
+          x: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnOrigX"),
+          y: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnOrigY")
+        },
+        homePosition: {
+          x: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnHomeX"),
+          y: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnHomeY")
+        }
+      } : void 0;
+      var tryKeepingHoveringUp = BitFlags$TerrariaPacket.flag1(miscFlags2);
+      var isVoidVaultEnabled = BitFlags$TerrariaPacket.flag2(miscFlags2);
+      var isSitting = BitFlags$TerrariaPacket.flag3(miscFlags2);
+      var hasFinishedAnyDd2Event = BitFlags$TerrariaPacket.flag4(miscFlags2);
+      var isPettingAnimal = BitFlags$TerrariaPacket.flag5(miscFlags2);
+      var isTheAnimalBeingPetSmall = BitFlags$TerrariaPacket.flag6(miscFlags2);
+      var tryKeepingHoveringDown = BitFlags$TerrariaPacket.flag8(miscFlags2);
+      var isSleeping = BitFlags$TerrariaPacket.flag1(miscFlags3);
+      return {
+        playerId,
+        control,
+        direction,
+        pulleyDirection,
+        vortexStealthActive,
+        gravityDirection,
+        shouldGuard,
+        ghost,
+        selectedItem,
+        position,
+        velocity,
+        potionOfReturn,
+        tryKeepingHoveringUp,
+        isVoidVaultEnabled,
+        isSitting,
+        hasFinishedAnyDd2Event,
+        isPettingAnimal,
+        isTheAnimalBeingPetSmall,
+        tryKeepingHoveringDown,
+        isSleeping
+      };
+    }
+    function packControlFlags(writer, control, direction) {
+      var tmp;
+      tmp = direction === "Left" ? false : true;
+      return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(control.isHoldingUp, control.isHoldingDown, control.isHoldingLeft, control.isHoldingRight, control.isHoldingJump, control.isHoldingItemUse, tmp, false)), "controlFlags");
+    }
+    function packMiscFlags1(writer, pulleyDirection, velocity, vortexStealthActive, gravityDirection, shouldGuard, ghost) {
+      var tmp;
+      tmp = pulleyDirection !== void 0 && pulleyDirection !== "One" ? true : false;
+      var tmp$1;
+      tmp$1 = gravityDirection === "Normal" ? true : false;
+      return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(pulleyDirection !== void 0, tmp, velocity !== void 0, vortexStealthActive, tmp$1, shouldGuard, ghost, false)), "miscFlags1");
+    }
+    function packMiscFlags2(writer, tryKeepingHoveringUp, isVoidVaultEnabled, isSitting, hasFinishedAnyDd2Event, isPettingAnimal, isTheAnimalBeingPetSmall, potionOfReturn, tryKeepingHoveringDown) {
+      return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(tryKeepingHoveringUp, isVoidVaultEnabled, isSitting, hasFinishedAnyDd2Event, isPettingAnimal, isTheAnimalBeingPetSmall, potionOfReturn !== void 0, tryKeepingHoveringDown)), "miscFlags2");
+    }
+    function packMiscFlags3(writer, isSleeping) {
+      return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(isSleeping, false, false, false, false, false, false, false)), "miscFlags3");
+    }
+    function packVelocity(writer, velocity) {
+      if (velocity !== void 0) {
+        return ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(writer, velocity.x, "velocityX"), velocity.y, "velocityY");
+      } else {
+        return writer;
+      }
+    }
+    function packPotionOfReturn(writer, potionOfReturn) {
+      if (potionOfReturn !== void 0) {
+        return ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(writer, potionOfReturn.originalUsePosition.x, "potionOfReturnOrigX"), potionOfReturn.originalUsePosition.y, "potionOfReturnOrigY"), potionOfReturn.homePosition.x, "potionOfReturnHomeX"), potionOfReturn.homePosition.y, "potionOfReturnHomeY");
+      } else {
+        return writer;
+      }
+    }
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(packPotionOfReturn(packVelocity(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(packMiscFlags3(packMiscFlags2(packMiscFlags1(packControlFlags(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerUpdate")), self.playerId, "playerId"), self.control, self.direction), self.pulleyDirection, self.velocity, self.vortexStealthActive, self.gravityDirection, self.shouldGuard, self.ghost), self.tryKeepingHoveringUp, self.isVoidVaultEnabled, self.isSitting, self.hasFinishedAnyDd2Event, self.isPettingAnimal, self.isTheAnimalBeingPetSmall, self.potionOfReturn, self.tryKeepingHoveringDown), self.isSleeping), self.selectedItem, "selectedItem"), self.position.x, "positionX"), self.position.y, "positionY"), self.velocity), self.potionOfReturn));
+    }
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_PlayerInfo.js
+var require_Packet_PlayerInfo = __commonJS({
+  "src/packet/Packet_PlayerInfo.js"(exports2) {
+    "use strict";
+    var BitFlags$TerrariaPacket = require_BitFlags();
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function getDifficulty(difficultyFlags) {
+      if (BitFlags$TerrariaPacket.flag2(difficultyFlags)) {
+        return "Hardcore";
+      } else if (BitFlags$TerrariaPacket.flag1(difficultyFlags)) {
+        return "Mediumcore";
+      } else {
+        return "Softcore";
+      }
+    }
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var playerId = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      var skinVariant = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "skinVariant");
+      var hair = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hair");
+      var name = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "name");
+      var hairDye = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hairDye");
+      var hideVisuals = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideVisuals");
+      var hideVisuals2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideVisuals2");
+      var hideMisc = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideMisc");
+      var hairColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "hairColor");
+      var skinColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "skinColor");
+      var eyeColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "eyeColor");
+      var shirtColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "shirtColor");
+      var underShirtColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "underShirtColor");
+      var pantsColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "pantsColor");
+      var shoeColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "shoeColor");
+      var difficultyFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "difficultyFlags"));
+      var torchFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "torchFlags"));
+      var difficulty = getDifficulty(difficultyFlags);
+      var extraAccessory = BitFlags$TerrariaPacket.flag3(difficultyFlags);
+      var mode = BitFlags$TerrariaPacket.flag4(difficultyFlags) ? "Journey" : "Classic";
+      var usingBiomeTorches = BitFlags$TerrariaPacket.flag1(torchFlags);
+      var happyFunTorchTime = BitFlags$TerrariaPacket.flag2(torchFlags);
+      var unlockedBiomeTorches = BitFlags$TerrariaPacket.flag3(torchFlags);
+      var unlockedSuperCart = BitFlags$TerrariaPacket.flag4(torchFlags);
+      var enabledSuperCart = BitFlags$TerrariaPacket.flag5(torchFlags);
+      var usedFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "usedFlags"));
+      var usedAegisCrystal = BitFlags$TerrariaPacket.flag1(usedFlags);
+      var usedAegisFruit = BitFlags$TerrariaPacket.flag2(usedFlags);
+      var usedArcaneCrystal = BitFlags$TerrariaPacket.flag3(usedFlags);
+      var usedGalaxyPearl = BitFlags$TerrariaPacket.flag4(usedFlags);
+      var usedGummyWorm = BitFlags$TerrariaPacket.flag5(usedFlags);
+      var usedAmbrosia = BitFlags$TerrariaPacket.flag6(usedFlags);
+      var ateArtisanBread = BitFlags$TerrariaPacket.flag7(usedFlags);
+      return {
+        playerId,
+        skinVariant,
+        hair,
+        name,
+        hairDye,
+        hideVisuals,
+        hideVisuals2,
+        hideMisc,
+        hairColor,
+        skinColor,
+        eyeColor,
+        shirtColor,
+        underShirtColor,
+        pantsColor,
+        shoeColor,
+        difficulty,
+        mode,
+        extraAccessory,
+        usingBiomeTorches,
+        unlockedBiomeTorches,
+        happyFunTorchTime,
+        unlockedSuperCart,
+        enabledSuperCart,
+        usedAegisCrystal,
+        usedAegisFruit,
+        usedArcaneCrystal,
+        usedGalaxyPearl,
+        usedGummyWorm,
+        usedAmbrosia,
+        ateArtisanBread
+      };
+    }
+    function packDifficultyFlags(writer, difficulty, extraAccessory, mode) {
+      var $$byte = 0;
+      var tmp;
+      switch (difficulty) {
+        case "Softcore":
+          tmp = 0;
+          break;
+        case "Mediumcore":
+          tmp = 1;
+          break;
+        case "Hardcore":
+          tmp = 2;
+          break;
+      }
+      $$byte = $$byte | tmp;
+      $$byte = $$byte | (extraAccessory ? 4 : 0);
+      $$byte = $$byte | (mode === "Journey" ? 8 : 0);
+      return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, $$byte, "difficultyFlags");
+    }
+    function packTorchFlags(writer, usingBiomeTorches, happyFunTorchTime, unlockedBiomeTorches, unlockedSuperCart, enabledSuperCart) {
+      var $$byte = 0;
+      $$byte = $$byte | (usingBiomeTorches ? 1 : 0);
+      $$byte = $$byte | (happyFunTorchTime ? 2 : 0);
+      $$byte = $$byte | (unlockedBiomeTorches ? 4 : 0);
+      $$byte = $$byte | (unlockedSuperCart ? 8 : 0);
+      $$byte = $$byte | (enabledSuperCart ? 16 : 0);
+      return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, $$byte, "torchFlags");
+    }
+    function packUsedFlags(writer, usedAegisCrystal, usedAegisFruit, usedArcaneCrystal, usedGalaxyPearl, usedGummyWorm, usedAmbrosia, ateArtisanBread) {
+      var $$byte = 0;
+      $$byte = $$byte | (usedAegisCrystal ? 1 : 0);
+      $$byte = $$byte | (usedAegisFruit ? 2 : 0);
+      $$byte = $$byte | (usedArcaneCrystal ? 4 : 0);
+      $$byte = $$byte | (usedGalaxyPearl ? 8 : 0);
+      $$byte = $$byte | (usedGummyWorm ? 16 : 0);
+      $$byte = $$byte | (usedAmbrosia ? 32 : 0);
+      $$byte = $$byte | (ateArtisanBread ? 64 : 0);
+      return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, $$byte, "usedFlags");
+    }
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(packUsedFlags(packTorchFlags(packDifficultyFlags(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerInfo")), self.playerId, "playerId"), self.skinVariant, "skinVariant"), self.hair, "hair"), self.name, "name"), self.hairDye, "hairDye"), self.hideVisuals, "hideVisuals"), self.hideVisuals2, "hideVisuals2"), self.hideMisc, "hideMisc"), self.hairColor, "hairColor"), self.skinColor, "skinColor"), self.eyeColor, "eyeColor"), self.shirtColor, "shirtColor"), self.underShirtColor, "underShirtColor"), self.pantsColor, "pantsColor"), self.shoeColor, "shoeColor"), self.difficulty, self.extraAccessory, self.mode), self.usingBiomeTorches, self.happyFunTorchTime, self.unlockedBiomeTorches, self.unlockedSuperCart, self.enabledSuperCart), self.usedAegisCrystal, self.usedAegisFruit, self.usedArcaneCrystal, self.usedGalaxyPearl, self.usedGummyWorm, self.usedAmbrosia, self.ateArtisanBread));
+    }
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_PlayerSpawn.js
+var require_Packet_PlayerSpawn = __commonJS({
+  "src/packet/Packet_PlayerSpawn.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var playerId = reader.readByte();
+      var x = reader.readInt16();
+      var y = reader.readInt16();
+      var timeRemaining = reader.readInt32();
+      var numberOfDeathsPve = reader.readInt16();
+      var numberOfDeathsPvp = reader.readInt16();
+      var rawContext = reader.readByte();
+      var context;
+      switch (rawContext) {
+        case 0:
+          context = "ReviveFromDeath";
+          break;
+        case 1:
+          context = "SpawningIntoWorld";
+          break;
+        case 2:
+          context = "RecallFromItem";
+          break;
+        default:
+          context = void 0;
+      }
+      if (context !== void 0) {
+        return {
+          playerId,
+          x,
+          y,
+          timeRemaining,
+          numberOfDeathsPve,
+          numberOfDeathsPvp,
+          context
+        };
+      }
+    }
+    function toBuffer(self) {
+      var match = self.context;
+      var tmp;
+      switch (match) {
+        case "ReviveFromDeath":
+          tmp = 0;
+          break;
+        case "SpawningIntoWorld":
+          tmp = 1;
+          break;
+        case "RecallFromItem":
+          tmp = 2;
+          break;
+      }
+      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerSpawn")).packByte(self.playerId).packInt16(self.x).packInt16(self.y).packInt32(self.timeRemaining).packInt16(self.numberOfDeathsPve).packInt16(self.numberOfDeathsPvp).packByte(tmp).data;
+    }
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_PlayerInventorySlot.js
+var require_Packet_PlayerInventorySlot = __commonJS({
+  "src/packet/Packet_PlayerInventorySlot.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var playerId = reader.readByte();
+      var slot = reader.readInt16();
+      var stack = reader.readInt16();
+      var prefix = reader.readByte();
+      var itemId = reader.readInt16();
+      return {
+        playerId,
+        slot,
+        stack,
+        prefix,
+        itemId
+      };
+    }
+    function toBuffer(self) {
+      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerInventorySlot")).packByte(self.playerId).packInt16(self.slot).packInt16(self.stack).packByte(self.prefix).packInt16(self.itemId).data;
+    }
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_PlayerHealth.js
+var require_Packet_PlayerHealth = __commonJS({
+  "src/packet/Packet_PlayerHealth.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var playerId = reader.readByte();
+      var health = reader.readInt16();
+      var maxHealth = reader.readInt16();
+      return {
+        playerId,
+        health,
+        maxHealth
+      };
+    }
+    function toBuffer(self) {
+      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerHealth")).packByte(self.playerId).packInt16(self.health).packInt16(self.maxHealth).data;
+    }
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_ClientUuid.js
+var require_Packet_ClientUuid = __commonJS({
+  "src/packet/Packet_ClientUuid.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var uuid = reader.readString();
+      return {
+        uuid
+      };
+    }
+    function toBuffer(self) {
+      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ClientUuid")).packString(self.uuid).data;
+    }
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_ProjectileSync.js
+var require_Packet_ProjectileSync = __commonJS({
+  "src/packet/Packet_ProjectileSync.js"(exports2) {
+    "use strict";
+    var Belt_Option = require_belt_Option();
+    var Caml_option = require_caml_option();
+    var BitFlags$TerrariaPacket = require_BitFlags();
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var projectileId = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "projectileId");
+      var x = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+      var y = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+      var vx = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
+      var vy = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
+      var owner = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "owner");
+      var projectileType = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "projectileType");
+      var flags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags"));
+      var flags2 = BitFlags$TerrariaPacket.flag3(flags) ? Caml_option.some(BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags2"))) : void 0;
+      var ai0 = BitFlags$TerrariaPacket.flag1(flags) ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai0") : void 0;
+      var ai1 = BitFlags$TerrariaPacket.flag2(flags) ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai1") : void 0;
+      var bannerIdToRespondTo = BitFlags$TerrariaPacket.flag4(flags) ? ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "bannerIdToRespondTo") : void 0;
+      var damage = BitFlags$TerrariaPacket.flag5(flags) ? ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "damage") : void 0;
+      var knockback = BitFlags$TerrariaPacket.flag6(flags) ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "knockback") : void 0;
+      var originalDamage = BitFlags$TerrariaPacket.flag7(flags) ? ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "originalDamage") : void 0;
+      var projectileUuid = BitFlags$TerrariaPacket.flag8(flags) ? ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "projectileUuid") : void 0;
+      var ai2 = flags2 !== void 0 && BitFlags$TerrariaPacket.flag1(Caml_option.valFromOption(flags2)) ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai2") : void 0;
+      return {
+        projectileId,
+        x,
+        y,
+        vx,
+        vy,
+        owner,
+        projectileType,
+        ai: [
+          ai0,
+          ai1,
+          ai2
+        ],
+        bannerIdToRespondTo,
+        damage,
+        knockback,
+        originalDamage,
+        projectileUuid
+      };
+    }
+    function packOptionalData(writer, self) {
+      var match = self.ai;
+      var ai2 = match[2];
+      var ai1 = match[1];
+      var ai0 = match[0];
+      var bitFlags2 = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(ai2), false, false, false, false, false, false, false);
+      var bannerIdToRespondTo = self.bannerIdToRespondTo;
+      var bitFlags = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(ai0), Belt_Option.isSome(ai1), BitFlags$TerrariaPacket.toByte(bitFlags2) !== 0, bannerIdToRespondTo !== void 0 ? bannerIdToRespondTo !== 0 : false, Belt_Option.isSome(self.damage), Belt_Option.isSome(self.knockback), Belt_Option.isSome(self.originalDamage), Belt_Option.isSome(self.projectileUuid));
+      ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(bitFlags), "flags");
+      if (BitFlags$TerrariaPacket.flag3(bitFlags)) {
+        ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(bitFlags2), "flags2");
+      }
+      if (BitFlags$TerrariaPacket.flag1(bitFlags)) {
+        ErrorAwarePacketWriter$TerrariaPacket.packSingle(writer, ai0, "ai0");
+      }
+      if (BitFlags$TerrariaPacket.flag2(bitFlags)) {
+        ErrorAwarePacketWriter$TerrariaPacket.packSingle(writer, ai1, "ai1");
+      }
+      if (BitFlags$TerrariaPacket.flag4(bitFlags)) {
+        ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, self.bannerIdToRespondTo, "bannerIdToRespondTo");
+      }
+      if (BitFlags$TerrariaPacket.flag5(bitFlags)) {
+        ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, self.damage, "damage");
+      }
+      if (BitFlags$TerrariaPacket.flag6(bitFlags)) {
+        ErrorAwarePacketWriter$TerrariaPacket.packSingle(writer, self.knockback, "knockback");
+      }
+      if (BitFlags$TerrariaPacket.flag7(bitFlags)) {
+        ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, self.originalDamage, "originalDamage");
+      }
+      if (BitFlags$TerrariaPacket.flag8(bitFlags)) {
+        ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, self.projectileUuid, "projectileUuid");
+      }
+      if (BitFlags$TerrariaPacket.flag1(bitFlags2)) {
+        ErrorAwarePacketWriter$TerrariaPacket.packSingle(writer, ai2, "ai2");
+      }
+      return writer;
+    }
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(packOptionalData(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ProjectileSync")), self.projectileId, "projectileId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.owner, "owner"), self.projectileType, "projectileType"), self));
+    }
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_PlayerDamage.js
+var require_Packet_PlayerDamage = __commonJS({
+  "src/packet/Packet_PlayerDamage.js"(exports2) {
+    "use strict";
+    var BitFlags$TerrariaPacket = require_BitFlags();
+    var PacketType$TerrariaPacket = require_PacketType();
+    var PlayerDeathReason$TerrariaPacket = require_PlayerDeathReason();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function readDamageFlags(reader) {
+      var flags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+      return {
+        critical: BitFlags$TerrariaPacket.flag1(flags),
+        pvp: BitFlags$TerrariaPacket.flag2(flags)
+      };
+    }
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var target = reader.readByte();
+      var deathReason = PlayerDeathReason$TerrariaPacket.readDeathReason(reader);
+      var damage = reader.readInt16();
+      var hitDirection = reader.readByte();
+      var damageFlags = readDamageFlags(reader);
+      var critical = damageFlags.critical;
+      var pvp = damageFlags.pvp;
+      var cooldownCounter = reader.readSByte();
+      return {
+        target,
+        deathReason,
+        damage,
+        hitDirection,
+        critical,
+        pvp,
+        cooldownCounter
+      };
+    }
+    function toBuffer(self) {
+      var damageFlags = function(self2) {
+        return BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(self2.critical, self2.pvp, false, false, false, false, false, false));
+      };
+      return PlayerDeathReason$TerrariaPacket.packDeathReason(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerDamage")).packByte(self.target), self.deathReason).packInt16(self.damage).packByte(self.hitDirection).packByte(damageFlags(self)).packSByte(self.cooldownCounter).data;
+    }
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
 // src/Point.js
 var require_Point = __commonJS({
   "src/Point.js"(exports2) {
@@ -18522,6 +19072,7 @@ __export(Export_exports, {
   ChestOrTempleUnlockPacket: () => ChestOrTempleUnlockPacket,
   ChestPlacePacket: () => ChestPlacePacket,
   ClientFinishConnectingToServerPacket: () => ClientFinishConnectingToServerPacket,
+  ClientUuidPacket: () => ClientUuidPacket,
   ConnectRequestPacket: () => ConnectRequestPacket,
   CountsAsHostForGameplaySetPacket: () => CountsAsHostForGameplaySetPacket,
   CreativePowers: () => CreativePowers,
@@ -18552,14 +19103,21 @@ __export(Export_exports, {
   PlayerAnimationPacket: () => PlayerAnimationPacket,
   PlayerBuffAddPacket: () => PlayerBuffAddPacket,
   PlayerChestIndexSyncPacket: () => PlayerChestIndexSyncPacket,
+  PlayerDamagePacket: () => PlayerDamagePacket,
   PlayerDeadPacket: () => PlayerDeadPacket,
   PlayerDeathPacket: () => PlayerDeathPacket,
   PlayerDeathReason: () => PlayerDeathReason,
   PlayerDodgePacket: () => PlayerDodgePacket,
+  PlayerHealthPacket: () => PlayerHealthPacket,
+  PlayerInfoPacket: () => PlayerInfoPacket,
+  PlayerInventorySlotPacket: () => PlayerInventorySlotPacket,
   PlayerManaPacket: () => PlayerManaPacket,
   PlayerSlotSetPacket: () => PlayerSlotSetPacket,
+  PlayerSpawnPacket: () => PlayerSpawnPacket,
   PlayerTeamPacket: () => PlayerTeamPacket,
+  PlayerUpdatePacket: () => PlayerUpdatePacket,
   Point: () => Point,
+  ProjectileSyncPacket: () => ProjectileSyncPacket,
   PvpTogglePacket: () => PvpTogglePacket,
   ShimmerEffectOrCoinLuckPacket: () => ShimmerEffectOrCoinLuckPacket,
   SignNewPacket: () => SignNewPacket,
@@ -18672,6 +19230,14 @@ var CreativePowers = __toESM(require_CreativePowers());
 var ErrorAwarePacketWriter = __toESM(require_ErrorAwarePacketWriter());
 var PlayerDeathReason = __toESM(require_PlayerDeathReason());
 var PlayerSlotSetPacket = __toESM(require_Packet_PlayerSlotSet());
+var PlayerUpdatePacket = __toESM(require_Packet_PlayerUpdate());
+var PlayerInfoPacket = __toESM(require_Packet_PlayerInfo());
+var PlayerSpawnPacket = __toESM(require_Packet_PlayerSpawn());
+var PlayerInventorySlotPacket = __toESM(require_Packet_PlayerInventorySlot());
+var PlayerHealthPacket = __toESM(require_Packet_PlayerHealth());
+var ClientUuidPacket = __toESM(require_Packet_ClientUuid());
+var ProjectileSyncPacket = __toESM(require_Packet_ProjectileSync());
+var PlayerDamagePacket = __toESM(require_Packet_PlayerDamage());
 var Point = __toESM(require_Point());
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
@@ -18686,6 +19252,7 @@ var Point = __toESM(require_Point());
   ChestOrTempleUnlockPacket,
   ChestPlacePacket,
   ClientFinishConnectingToServerPacket,
+  ClientUuidPacket,
   ConnectRequestPacket,
   CountsAsHostForGameplaySetPacket,
   CreativePowers,
@@ -18716,14 +19283,21 @@ var Point = __toESM(require_Point());
   PlayerAnimationPacket,
   PlayerBuffAddPacket,
   PlayerChestIndexSyncPacket,
+  PlayerDamagePacket,
   PlayerDeadPacket,
   PlayerDeathPacket,
   PlayerDeathReason,
   PlayerDodgePacket,
+  PlayerHealthPacket,
+  PlayerInfoPacket,
+  PlayerInventorySlotPacket,
   PlayerManaPacket,
   PlayerSlotSetPacket,
+  PlayerSpawnPacket,
   PlayerTeamPacket,
+  PlayerUpdatePacket,
   Point,
+  ProjectileSyncPacket,
   PvpTogglePacket,
   ShimmerEffectOrCoinLuckPacket,
   SignNewPacket,

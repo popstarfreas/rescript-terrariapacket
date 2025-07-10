@@ -185,6 +185,14 @@ export declare namespace ClientFinishConnectingToServerPacket {
     }
 }
 
+export declare namespace ClientUuidPacket {
+    export {
+        t_82 as t,
+        parse_21 as parse,
+        toBuffer_21 as toBuffer
+    }
+}
+
 declare type coinLuck = { readonly position: t_43<number>; readonly amount: number };
 
 declare type commandId = string;
@@ -196,6 +204,20 @@ export declare namespace ConnectRequestPacket {
         toBuffer_2 as toBuffer
     }
 }
+
+declare type context =
+"ReviveFromDeath"
+| "SpawningIntoWorld"
+| "RecallFromItem";
+
+declare type control = {
+    readonly isHoldingUp: boolean;
+    readonly isHoldingDown: boolean;
+    readonly isHoldingLeft: boolean;
+    readonly isHoldingRight: boolean;
+    readonly isHoldingJump: boolean;
+    readonly isHoldingItemUse: boolean
+};
 
 export declare namespace CountsAsHostForGameplaySetPacket {
     export {
@@ -292,6 +314,8 @@ declare type DataOk = { TAG: "Ok"; _0: Buffer };
  */
 declare type DataResult = DataOk | DataError;
 
+declare type difficulty = "Softcore" | "Mediumcore" | "Hardcore";
+
 declare type dimensionName = string;
 
 export declare namespace DimensionsUpdatePacket {
@@ -305,6 +329,8 @@ export declare namespace DimensionsUpdatePacket {
 }
 
 declare type direction = "Left" | "Right";
+
+declare type direction_2 = "Left" | "Right";
 
 declare type Entity_displayDoll = { readonly items: Array<(undefined | Entity_displayItem)>; readonly dyes: Array<(undefined | Entity_displayItem)> };
 
@@ -408,7 +434,7 @@ declare type flags = {
     readonly runCheckBytes: boolean
 };
 
-declare type Float_t = t_77<number>;
+declare type Float_t = t_85<number>;
 
 declare function forEach(t: t_74, callback: (flag: boolean) => void): void;
 
@@ -435,13 +461,15 @@ flag8: boolean
 
 declare function getOr<A>(a: A[], index: number, or: A): A;
 
+declare type gravityDirection = "Normal" | "Inverted";
+
 export declare namespace HaveDryadDoStardewAnimationPacket {
     export {
         t_15 as t
     }
 }
 
-declare type Int_t = t_77<number>;
+declare type Int_t = t_85<number>;
 
 declare function intoChunks<A>(a: A[], chunkSize: number): A[][];
 
@@ -503,6 +531,8 @@ export declare namespace LoadoutSwitchPacket {
 declare function make(): untypedT;
 
 declare type message = string;
+
+declare type mode = "Classic" | "Journey";
 
 declare type NetModuleLoad =
     { TAG: "Liquid"; _0: liquid }
@@ -765,7 +795,23 @@ declare const parse_14: (_1: Buffer) => (undefined | t_69);
 
 declare function parse_15(payload: Buffer_2): t_76;
 
+declare const parse_16: (_1: Buffer) => (undefined | t_77);
+
+declare const parse_17: (_1: Buffer) => (undefined | t_78);
+
+declare const parse_18: (_1: Buffer) => (undefined | t_79);
+
+declare function parse_19(payload: Buffer_2): t_80;
+
 declare const parse_2: (_1: Buffer) => (undefined | t_9);
+
+declare const parse_20: (_1: Buffer) => (undefined | t_81);
+
+declare const parse_21: (_1: Buffer) => (undefined | t_82);
+
+declare const parse_22: (_1: Buffer) => (undefined | t_83);
+
+declare const parse_23: (_1: Buffer) => (undefined | t_84);
 
 declare function parse_3(payload: Buffer): t_18 | undefined;
 
@@ -826,6 +872,14 @@ export declare namespace PlayerChestIndexSyncPacket {
     }
 }
 
+export declare namespace PlayerDamagePacket {
+    export {
+        t_84 as t,
+        parse_23 as parse,
+        toBuffer_23 as toBuffer
+    }
+}
+
 export declare namespace PlayerDeadPacket {
     export {
         t_36 as t
@@ -853,7 +907,33 @@ export declare namespace PlayerDodgePacket {
     }
 }
 
+export declare namespace PlayerHealthPacket {
+    export {
+        t_81 as t,
+        parse_20 as parse,
+        toBuffer_20 as toBuffer
+    }
+}
+
 declare type playerId = number;
+
+export declare namespace PlayerInfoPacket {
+    export {
+        difficulty,
+        mode,
+        t_78 as t,
+        parse_17 as parse,
+        toBuffer_17 as toBuffer
+    }
+}
+
+export declare namespace PlayerInventorySlotPacket {
+    export {
+        parse_19 as parse,
+        toBuffer_19 as toBuffer,
+        t_80 as t
+    }
+}
 
 export declare namespace PlayerManaPacket {
     export {
@@ -871,15 +951,37 @@ export declare namespace PlayerSlotSetPacket {
     }
 }
 
+export declare namespace PlayerSpawnPacket {
+    export {
+        context,
+        t_79 as t,
+        parse_18 as parse,
+        toBuffer_18 as toBuffer
+    }
+}
+
 export declare namespace PlayerTeamPacket {
     export {
         t_41 as t
     }
 }
 
+export declare namespace PlayerUpdatePacket {
+    export {
+        direction_2 as direction,
+        potionOfReturn,
+        control,
+        pulleyDirection,
+        gravityDirection,
+        t_77 as t,
+        parse_16 as parse,
+        toBuffer_16 as toBuffer
+    }
+}
+
 export declare namespace Point {
     export {
-        t_77 as t,
+        t_85 as t,
         Int_t,
         Float_t
     }
@@ -889,10 +991,22 @@ declare type port = number;
 
 declare type position = { readonly x: number; readonly y: number };
 
+declare type potionOfReturn = { readonly originalUsePosition: t_43<number>; readonly homePosition: t_43<number> };
+
 declare type powerLevel =
 "LockedForEveryone"
 | "CanBeChangedByHostAlone"
 | "CanBeChangedByEveryone";
+
+export declare namespace ProjectileSyncPacket {
+    export {
+        t_83 as t,
+        parse_22 as parse,
+        toBuffer_22 as toBuffer
+    }
+}
+
+declare type pulleyDirection = "One" | "Two";
 
 export declare namespace PvpTogglePacket {
     export {
@@ -1295,9 +1409,117 @@ declare type t_75 = {
 
 declare type t_76 = number;
 
-declare type t_77<a> = { readonly x: a; readonly y: a };
+declare type t_77 = {
+    readonly playerId: number;
+    readonly control: control;
+    readonly direction: direction_2;
+    readonly pulleyDirection: (undefined | pulleyDirection);
+    readonly vortexStealthActive: boolean;
+    readonly gravityDirection: gravityDirection;
+    readonly shouldGuard: boolean;
+    readonly ghost: boolean;
+    readonly selectedItem: number;
+    readonly position: t_43<number>;
+    readonly velocity: (undefined | t_43<number>);
+    readonly potionOfReturn: (undefined | potionOfReturn);
+    readonly tryKeepingHoveringUp: boolean;
+    readonly isVoidVaultEnabled: boolean;
+    readonly isSitting: boolean;
+    readonly hasFinishedAnyDd2Event: boolean;
+    readonly isPettingAnimal: boolean;
+    readonly isTheAnimalBeingPetSmall: boolean;
+    readonly tryKeepingHoveringDown: boolean;
+    readonly isSleeping: boolean
+};
+
+declare type t_78 = {
+    readonly playerId: number;
+    readonly skinVariant: number;
+    readonly hair: number;
+    readonly name: string;
+    readonly hairDye: number;
+    readonly hideVisuals: number;
+    readonly hideVisuals2: number;
+    readonly hideMisc: number;
+    readonly hairColor: Color;
+    readonly skinColor: Color;
+    readonly eyeColor: Color;
+    readonly shirtColor: Color;
+    readonly underShirtColor: Color;
+    readonly pantsColor: Color;
+    readonly shoeColor: Color;
+    readonly difficulty: difficulty;
+    readonly mode: mode;
+    readonly extraAccessory: boolean;
+    readonly usingBiomeTorches: boolean;
+    readonly unlockedBiomeTorches: boolean;
+    readonly happyFunTorchTime: boolean;
+    readonly unlockedSuperCart: boolean;
+    readonly enabledSuperCart: boolean;
+    readonly usedAegisCrystal: boolean;
+    readonly usedAegisFruit: boolean;
+    readonly usedArcaneCrystal: boolean;
+    readonly usedGalaxyPearl: boolean;
+    readonly usedGummyWorm: boolean;
+    readonly usedAmbrosia: boolean;
+    readonly ateArtisanBread: boolean
+};
+
+declare type t_79 = {
+    readonly playerId: number;
+    readonly x: number;
+    readonly y: number;
+    readonly timeRemaining: number;
+    readonly numberOfDeathsPve: number;
+    readonly numberOfDeathsPvp: number;
+    readonly context: context
+};
 
 declare type t_8 = void;
+
+declare type t_80 = {
+    readonly playerId: number;
+    readonly slot: number;
+    readonly stack: number;
+    readonly prefix: number;
+    readonly itemId: number;
+};
+
+declare type t_81 = {
+    readonly playerId: number;
+    readonly health: number;
+    readonly maxHealth: number
+};
+
+declare type t_82 = { readonly uuid: string };
+
+declare type t_83 = {
+    readonly projectileId: number;
+    readonly x: number;
+    readonly y: number;
+    readonly vx: number;
+    readonly vy: number;
+    readonly owner: number;
+    readonly projectileType: number;
+    readonly ai: [(undefined | number), (undefined | number), (undefined | number)];
+    readonly bannerIdToRespondTo: (undefined | number);
+    readonly damage: (undefined | number);
+    readonly knockback: (undefined | number);
+    readonly originalDamage: (undefined | number);
+    readonly projectileUuid: (undefined | number)
+};
+
+declare type t_84 = {
+    readonly target: number;
+    readonly deathReason: t_38;
+    readonly damage: number;
+    readonly hitDirection: number;
+    readonly critical: boolean;
+    readonly pvp: boolean;
+    readonly cooldownCounter: number
+};
+
+declare type t_85<a> = { readonly x: a; readonly y: a };
 
 declare type t_9 = { readonly version: string };
 
@@ -1508,7 +1730,23 @@ declare const toBuffer_14: (_1: t_69) => Buffer;
 
 declare function toBuffer_15(self: t_76): Buffer_2;
 
+declare const toBuffer_16: (_1: t_77) => Buffer;
+
+declare const toBuffer_17: (_1: t_78) => Buffer;
+
+declare const toBuffer_18: (_1: t_79) => Buffer;
+
+declare function toBuffer_19(self: t_80): Buffer_2;
+
 declare const toBuffer_2: (_1: t_9) => Buffer;
+
+declare const toBuffer_20: (_1: t_81) => Buffer;
+
+declare const toBuffer_21: (_1: t_82) => Buffer;
+
+declare const toBuffer_22: (_1: t_83) => Buffer;
+
+declare const toBuffer_23: (_1: t_84) => Buffer;
 
 declare function toBuffer_3(self: t_18): Buffer;
 
