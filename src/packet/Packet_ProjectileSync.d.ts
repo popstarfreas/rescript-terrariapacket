@@ -3,8 +3,6 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_ProjectileSyncJS = require('./Packet_ProjectileSync.js');
-
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 
 export type t = {
@@ -23,6 +21,6 @@ export type t = {
   readonly projectileUuid: (undefined | number)
 };
 
-export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = Packet_ProjectileSyncJS.parse as any;
+export declare const parse: (_1:NodeJs_Buffer_t) => (undefined | t);
 
-export const toBuffer: (_1:t) => NodeJs_Buffer_t = Packet_ProjectileSyncJS.toBuffer as any;
+export declare const toBuffer: (_1:t) => NodeJs_Buffer_t;

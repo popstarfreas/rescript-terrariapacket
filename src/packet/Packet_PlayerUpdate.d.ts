@@ -3,8 +3,6 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_PlayerUpdateJS = require('./Packet_PlayerUpdate.js');
-
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 
 import type {t as Point_t} from '../../src/Point';
@@ -49,6 +47,6 @@ export type t = {
   readonly isSleeping: boolean
 };
 
-export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = Packet_PlayerUpdateJS.parse as any;
+export declare const parse: (_1:NodeJs_Buffer_t) => (undefined | t);
 
-export const toBuffer: (_1:t) => NodeJs_Buffer_t = Packet_PlayerUpdateJS.toBuffer as any;
+export declare const toBuffer: (_1:t) => NodeJs_Buffer_t;

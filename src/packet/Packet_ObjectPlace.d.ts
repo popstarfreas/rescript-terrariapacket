@@ -3,8 +3,6 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_ObjectPlaceJS = require('./Packet_ObjectPlace.js');
-
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 
 export type direction = "Left" | "Right";
@@ -19,6 +17,6 @@ export type t = {
   readonly direction: direction
 };
 
-export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = Packet_ObjectPlaceJS.parse as any;
+export declare const parse: (_1:NodeJs_Buffer_t) => (undefined | t);
 
-export const toBuffer: (_1:t) => NodeJs_Buffer_t = Packet_ObjectPlaceJS.toBuffer as any;
+export declare const toBuffer: (_1:t) => NodeJs_Buffer_t;

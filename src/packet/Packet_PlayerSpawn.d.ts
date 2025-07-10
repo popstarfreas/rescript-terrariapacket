@@ -3,8 +3,6 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_PlayerSpawnJS = require('./Packet_PlayerSpawn.js');
-
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 
 export type context = 
@@ -22,6 +20,6 @@ export type t = {
   readonly context: context
 };
 
-export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = Packet_PlayerSpawnJS.parse as any;
+export declare const parse: (_1:NodeJs_Buffer_t) => (undefined | t);
 
-export const toBuffer: (_1:t) => NodeJs_Buffer_t = Packet_PlayerSpawnJS.toBuffer as any;
+export declare const toBuffer: (_1:t) => NodeJs_Buffer_t;

@@ -3,8 +3,6 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_PlayerHealthJS = require('./Packet_PlayerHealth.js');
-
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 
 export type t = {
@@ -13,6 +11,6 @@ export type t = {
   readonly maxHealth: number
 };
 
-export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = Packet_PlayerHealthJS.parse as any;
+export declare const parse: (_1:NodeJs_Buffer_t) => (undefined | t);
 
-export const toBuffer: (_1:t) => NodeJs_Buffer_t = Packet_PlayerHealthJS.toBuffer as any;
+export declare const toBuffer: (_1:t) => NodeJs_Buffer_t;

@@ -3,8 +3,6 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_PlayerInfoJS = require('./Packet_PlayerInfo.js');
-
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 
 import type {Color_t as PacketFactory_Color_t} from '../../src/shims/PacketFactory.shim';
@@ -46,6 +44,6 @@ export type t = {
   readonly ateArtisanBread: boolean
 };
 
-export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = Packet_PlayerInfoJS.parse as any;
+export declare const parse: (_1:NodeJs_Buffer_t) => (undefined | t);
 
-export const toBuffer: (_1:t) => NodeJs_Buffer_t = Packet_PlayerInfoJS.toBuffer as any;
+export declare const toBuffer: (_1:t) => NodeJs_Buffer_t;

@@ -3,8 +3,6 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_TileModifyJS = require('./Packet_TileModify.js');
-
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 
 export type Action_t = 
@@ -41,12 +39,12 @@ export type t = {
   readonly value2: number
 };
 
-export const Action_fromInt: (_1:number) => (undefined | Action_t) = Packet_TileModifyJS.Action.fromInt as any;
+export declare const Action_fromInt: (_1:number) => (undefined | Action_t);
 
-export const Action_toInt: (_1:Action_t) => number = Packet_TileModifyJS.Action.toInt as any;
+export declare const Action_toInt: (_1:Action_t) => number;
 
-export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = Packet_TileModifyJS.parse as any;
+export declare const parse: (_1:NodeJs_Buffer_t) => (undefined | t);
 
-export const toBuffer: (_1:t) => NodeJs_Buffer_t = Packet_TileModifyJS.toBuffer as any;
+export declare const toBuffer: (_1:t) => NodeJs_Buffer_t;
 
-export const Action: { toInt: (_1:Action_t) => number; fromInt: (_1:number) => (undefined | Action_t) } = Packet_TileModifyJS.Action as any;
+export declare const Action: { toInt: (_1:Action_t) => number; fromInt: (_1:number) => (undefined | Action_t) };

@@ -3,8 +3,6 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_TileSquareSendJS = require('./Packet_TileSquareSend.js');
-
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 
 export type frame = { readonly x: number; readonly y: number };
@@ -42,6 +40,6 @@ export type t = {
   readonly tiles: Array<tile[]>
 };
 
-export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = Packet_TileSquareSendJS.parse as any;
+export declare const parse: (_1:NodeJs_Buffer_t) => (undefined | t);
 
-export const toBuffer: (_1:t) => NodeJs_Buffer_t = Packet_TileSquareSendJS.toBuffer as any;
+export declare const toBuffer: (_1:t) => NodeJs_Buffer_t;

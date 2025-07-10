@@ -3,8 +3,6 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_NpcUpdateJS = require('./Packet_NpcUpdate.js');
-
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 
 export type ai = [(undefined | number), (undefined | number), (undefined | number), (undefined | number)];
@@ -34,6 +32,6 @@ export type t = {
   readonly spawnedFromStatue: boolean
 };
 
-export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = Packet_NpcUpdateJS.parse as any;
+export declare const parse: (_1:NodeJs_Buffer_t) => (undefined | t);
 
-export const toBuffer: (_1:t) => NodeJs_Buffer_t = Packet_NpcUpdateJS.toBuffer as any;
+export declare const toBuffer: (_1:t) => NodeJs_Buffer_t;

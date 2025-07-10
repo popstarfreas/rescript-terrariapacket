@@ -3,8 +3,6 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const Packet_ChestPlaceJS = require('./Packet_ChestPlace.js');
-
 import type {Buffer_t as NodeJs_Buffer_t} from '../../src/shims/NodeJs.shim';
 
 export type Action_t = 
@@ -23,18 +21,18 @@ export type t = {
   readonly id: number
 };
 
-export const Action_toInt: (_1:Action_t) => number = Packet_ChestPlaceJS.Action.toInt as any;
+export declare const Action_toInt: (_1:Action_t) => number;
 
-export const Action_fromInt: (_1:number) => (undefined | Action_t) = Packet_ChestPlaceJS.Action.fromInt as any;
+export declare const Action_fromInt: (_1:number) => (undefined | Action_t);
 
-export const Action_toString: (_1:Action_t) => string = Packet_ChestPlaceJS.Action.toString as any;
+export declare const Action_toString: (_1:Action_t) => string;
 
-export const parse: (_1:NodeJs_Buffer_t) => (undefined | t) = Packet_ChestPlaceJS.parse as any;
+export declare const parse: (_1:NodeJs_Buffer_t) => (undefined | t);
 
-export const toBuffer: (_1:t) => NodeJs_Buffer_t = Packet_ChestPlaceJS.toBuffer as any;
+export declare const toBuffer: (_1:t) => NodeJs_Buffer_t;
 
-export const Action: {
+export declare const Action: {
   toInt: (_1:Action_t) => number; 
   toString: (_1:Action_t) => string; 
   fromInt: (_1:number) => (undefined | Action_t)
-} = Packet_ChestPlaceJS.Action as any;
+};
