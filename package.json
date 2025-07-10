@@ -1,22 +1,30 @@
 {
   "name": "terraria-packet",
   "version": "1.2.0",
+  "main": "lib/Export.js",
+  "types": "lib/Export.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/Export.js",
+      "types": "./lib/Export.d.ts"
+    }
+  },
   "scripts": {
     "build:watch": "rescript build -w",
+    "build:bundle": "esbuild src/Export.ts --bundle --outfile=lib/Export.js --format=esm --platform=node && tsc -p .",
     "build": "rescript",
     "build:tsc": "tsc -p .",
     "test": "pta  'tests/*.test.js'"
   },
-  "dependencies": {
-  },
   "devDependencies": {
+    "@dusty-phillips/rescript-zora": "^5.0.1",
     "@popstarfreas/packetfactory": "^6.1.1",
     "@popstarfreas/rescript-nodejs": "git+https://github.com/popstarfreas/rescript-nodejs.git#f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7",
     "@rescript/core": "git+https://github.com/popstarfreas/rescript-core.git#36c55da8f25a9b84499529a73a2aeeccd671768d",
-    "rescript": "^11.0.0",
-    "@dusty-phillips/rescript-zora": "^5.0.1",
     "@types/node": "^20.5.9",
-    "typescript": "^5.2.2",
-    "pta": "^1.2.0"
+    "esbuild": "^0.25.6",
+    "pta": "^1.2.0",
+    "rescript": "^11.0.0",
+    "typescript": "^5.2.2"
   }
 }
