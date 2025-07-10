@@ -11,7 +11,7 @@
   },
   "scripts": {
     "build:watch": "rescript build -w",
-    "build:bundle": "esbuild src/Export.ts --bundle --outfile=dist/Export.js --format=esm --platform=node && tsc -p . && npx api-extractor run --local",
+    "build:bundle": "esbuild src/Export.ts --bundle --outfile=dist/Export.js --format=esm --platform=node && tsc -p . && npx --package @microsoft/api-extractor api-extractor run --local",
     "build": "rescript",
     "build:tsc": "tsc -p .",
     "test": "pta  'tests/*.test.js'"
