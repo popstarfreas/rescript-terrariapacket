@@ -1,4 +1,3 @@
-import type { Buffer } from "buffer";
 import type NetworkText from "@popstarfreas/packetfactory/networktext";
 
 export type t = {

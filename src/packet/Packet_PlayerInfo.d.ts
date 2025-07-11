@@ -1,5 +1,6 @@
 /* TypeScript file generated from Packet_PlayerInfo.resi by genType. */
 
+import type { PackError } from "../ErrorAwarePacketWriter";
 import Color from "@popstarfreas/packetfactory/color";
 
 /* eslint-disable */
@@ -44,4 +45,7 @@ export type t = {
 
 export declare const parse: (_1: Buffer) => (undefined | t);
 
-export declare const toBuffer: (_1: t) => Buffer;
+export type toBufferOk = { TAG: "Ok"; _0: Buffer };
+export type toBufferError = { TAG: "Error"; _0: PackError };
+export type toBuffer = toBufferOk | toBufferError;
+export declare const toBuffer: (_1: t) => toBuffer;

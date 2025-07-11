@@ -3,6 +3,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
+import type { PackError } from "../ErrorAwarePacketWriter";
 import type { t as Point_t } from '../../src/Point';
 
 export type direction = "Left" | "Right";
@@ -47,4 +48,7 @@ export type t = {
 
 export declare const parse: (_1: Buffer) => (undefined | t);
 
-export declare const toBuffer: (_1: t) => Buffer;
+export type toBufferOk = { TAG: "Ok"; _0: Buffer };
+export type toBufferError = { TAG: "Error"; _0: PackError };
+export type toBuffer = toBufferOk | toBufferError;
+export declare const toBuffer: (_1: t) => toBuffer;

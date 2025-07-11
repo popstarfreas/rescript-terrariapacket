@@ -1,5 +1,3 @@
-import type { Buffer } from "buffer";
-
 export type t = {
   readonly playerId: number;
   readonly active: boolean;

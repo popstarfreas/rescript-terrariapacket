@@ -1,6 +1,5 @@
 /// <reference types="node" />
 
-import { Buffer as Buffer_2 } from 'buffer';
 import Color from '@popstarfreas/packetfactory/color';
 import NetworkText from '@popstarfreas/packetfactory/networktext';
 
@@ -871,7 +870,7 @@ declare const parse_13: (_1: Buffer) => (undefined | t_64);
 
 declare const parse_14: (_1: Buffer) => (undefined | t_69);
 
-declare function parse_15(payload: Buffer_2): t_76;
+declare function parse_15(payload: Buffer): t_76;
 
 declare const parse_16: (_1: Buffer) => (undefined | t_77);
 
@@ -879,7 +878,7 @@ declare const parse_17: (_1: Buffer) => (undefined | t_78);
 
 declare const parse_18: (_1: Buffer) => (undefined | t_79);
 
-declare function parse_19(payload: Buffer_2): t_80;
+declare function parse_19(payload: Buffer): t_80;
 
 declare const parse_2: (_1: Buffer) => (undefined | t_9);
 
@@ -893,7 +892,7 @@ declare const parse_23: (_1: Buffer) => (undefined | t_84);
 
 declare function parse_24(buffer: Buffer): WorldInfo | undefined;
 
-declare function parse_25(payload: Buffer_2): t_85;
+declare function parse_25(payload: Buffer): t_85;
 
 declare function parse_3(payload: Buffer): t_18 | undefined;
 
@@ -1013,6 +1012,8 @@ export declare namespace PlayerInfoPacket {
         mode,
         t_78 as t,
         parse_17 as parse,
+        toBufferOk_4 as toBufferOk,
+        toBufferError_4 as toBufferError,
         toBuffer_17 as toBuffer
     }
 }
@@ -1065,6 +1066,8 @@ export declare namespace PlayerUpdatePacket {
         gravityDirection,
         t_77 as t,
         parse_16 as parse,
+        toBufferOk_3 as toBufferOk,
+        toBufferError_3 as toBufferError,
         toBuffer_16 as toBuffer
     }
 }
@@ -1092,6 +1095,8 @@ export declare namespace ProjectileSyncPacket {
     export {
         t_83 as t,
         parse_22 as parse,
+        toBufferOk_5 as toBufferOk,
+        toBufferError_5 as toBufferError,
         toBuffer_22 as toBuffer
     }
 }
@@ -1801,6 +1806,8 @@ export declare namespace TileSquareSendPacket {
         tile_2 as tile,
         t_64 as t,
         parse_13 as parse,
+        toBufferOk_2 as toBufferOk,
+        toBufferError_2 as toBufferError,
         toBuffer_13 as toBuffer
     }
 }
@@ -1819,19 +1826,25 @@ declare const toBuffer_11: (_1: t_59) => Buffer;
 
 declare const toBuffer_12: (_1: t_60) => Buffer;
 
-declare const toBuffer_13: (_1: t_64) => Buffer;
+declare type toBuffer_13 = toBufferOk_2 | toBufferError_2;
+
+declare const toBuffer_13: (_1: t_64) => toBuffer_13;
 
 declare const toBuffer_14: (_1: t_69) => Buffer;
 
-declare function toBuffer_15(self: t_76): Buffer_2;
+declare function toBuffer_15(self: t_76): Buffer;
 
-declare const toBuffer_16: (_1: t_77) => Buffer;
+declare type toBuffer_16 = toBufferOk_3 | toBufferError_3;
 
-declare const toBuffer_17: (_1: t_78) => Buffer;
+declare const toBuffer_16: (_1: t_77) => toBuffer_16;
+
+declare type toBuffer_17 = toBufferOk_4 | toBufferError_4;
+
+declare const toBuffer_17: (_1: t_78) => toBuffer_17;
 
 declare const toBuffer_18: (_1: t_79) => Buffer;
 
-declare function toBuffer_19(self: t_80): Buffer_2;
+declare function toBuffer_19(self: t_80): Buffer;
 
 declare const toBuffer_2: (_1: t_9) => Buffer;
 
@@ -1839,15 +1852,17 @@ declare const toBuffer_20: (_1: t_81) => Buffer;
 
 declare const toBuffer_21: (_1: t_82) => Buffer;
 
-declare const toBuffer_22: (_1: t_83) => Buffer;
+declare type toBuffer_22 = toBufferOk_5 | toBufferError_5;
+
+declare const toBuffer_22: (_1: t_83) => toBuffer_22;
 
 declare const toBuffer_23: (_1: t_84) => Buffer;
 
 declare function toBuffer_24(data: WorldInfo): toBuffer_24;
 
-declare type toBuffer_24 = toBufferOk_2 | toBufferError_2;
+declare type toBuffer_24 = toBufferOk_6 | toBufferError_6;
 
-declare function toBuffer_25(self: t_85): Buffer_2;
+declare function toBuffer_25(self: t_85): Buffer;
 
 declare function toBuffer_3(self: t_18): Buffer;
 
@@ -1869,9 +1884,25 @@ declare type toBufferError = { TAG: "Error"; _0: PackError };
 
 declare type toBufferError_2 = { TAG: "Error"; _0: PackError };
 
+declare type toBufferError_3 = { TAG: "Error"; _0: PackError };
+
+declare type toBufferError_4 = { TAG: "Error"; _0: PackError };
+
+declare type toBufferError_5 = { TAG: "Error"; _0: PackError };
+
+declare type toBufferError_6 = { TAG: "Error"; _0: PackError };
+
 declare type toBufferOk = { TAG: "Ok"; _0: Buffer };
 
 declare type toBufferOk_2 = { TAG: "Ok"; _0: Buffer };
+
+declare type toBufferOk_3 = { TAG: "Ok"; _0: Buffer };
+
+declare type toBufferOk_4 = { TAG: "Ok"; _0: Buffer };
+
+declare type toBufferOk_5 = { TAG: "Ok"; _0: Buffer };
+
+declare type toBufferOk_6 = { TAG: "Ok"; _0: Buffer };
 
 declare function toByte(t: t_74): number;
 
@@ -2019,8 +2050,8 @@ export declare namespace WorldInfoPacket {
         toBuffer_24 as toBuffer,
         eventInfo,
         WorldInfo,
-        toBufferOk_2 as toBufferOk,
-        toBufferError_2 as toBufferError
+        toBufferOk_6 as toBufferOk,
+        toBufferError_6 as toBufferError
     }
 }
 

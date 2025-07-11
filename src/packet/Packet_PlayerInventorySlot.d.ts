@@ -1,6 +1,4 @@
 /// <reference types="node" />
-import { Buffer } from "buffer";
-
 export type t = {
   readonly playerId: number;
   readonly slot: number;
