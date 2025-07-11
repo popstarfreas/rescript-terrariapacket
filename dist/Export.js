@@ -19388,6 +19388,31 @@ var require_Packet_WorldInfo = __commonJS({
   }
 });
 
+// src/packet/Packet_PlayerActive.js
+var require_Packet_PlayerActive = __commonJS({
+  "src/packet/Packet_PlayerActive.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var playerId = reader.readByte();
+      var active = reader.readByte() !== 0;
+      return {
+        playerId,
+        active
+      };
+    }
+    function toBuffer(self) {
+      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerActive")).packByte(self.playerId).packByte(self.active ? 1 : 0).data;
+    }
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
 // src/Point.js
 var require_Point = __commonJS({
   "src/Point.js"(exports2) {
@@ -19451,6 +19476,7 @@ __export(Export_exports, {
   NpcTeleportPortalPacket: () => NpcTeleportPortalPacket,
   ObjectPlacePacket: () => ObjectPlacePacket,
   PartyTogglePacket: () => PartyTogglePacket,
+  PlayerActivePacket: () => PlayerActivePacket,
   PlayerAnimationPacket: () => PlayerAnimationPacket,
   PlayerBuffAddPacket: () => PlayerBuffAddPacket,
   PlayerChestIndexSyncPacket: () => PlayerChestIndexSyncPacket,
@@ -19591,6 +19617,7 @@ var ClientUuidPacket = __toESM(require_Packet_ClientUuid());
 var ProjectileSyncPacket = __toESM(require_Packet_ProjectileSync());
 var PlayerDamagePacket = __toESM(require_Packet_PlayerDamage());
 var WorldInfoPacket = __toESM(require_Packet_WorldInfo());
+var PlayerActivePacket = __toESM(require_Packet_PlayerActive());
 var Point = __toESM(require_Point());
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
@@ -19633,6 +19660,7 @@ var Point = __toESM(require_Point());
   NpcTeleportPortalPacket,
   ObjectPlacePacket,
   PartyTogglePacket,
+  PlayerActivePacket,
   PlayerAnimationPacket,
   PlayerBuffAddPacket,
   PlayerChestIndexSyncPacket,

@@ -512,7 +512,7 @@ declare type flags = {
     readonly runCheckBytes: boolean
 };
 
-declare type Float_t = t_85<number>;
+declare type Float_t = t_86<number>;
 
 declare function forEach(t: t_74, callback: (flag: boolean) => void): void;
 
@@ -547,7 +547,7 @@ export declare namespace HaveDryadDoStardewAnimationPacket {
     }
 }
 
-declare type Int_t = t_85<number>;
+declare type Int_t = t_86<number>;
 
 declare function intoChunks<A>(a: A[], chunkSize: number): A[][];
 
@@ -893,6 +893,8 @@ declare const parse_23: (_1: Buffer) => (undefined | t_84);
 
 declare function parse_24(buffer: Buffer): WorldInfo | undefined;
 
+declare function parse_25(payload: Buffer_2): t_85;
+
 declare function parse_3(payload: Buffer): t_18 | undefined;
 
 declare const parse_4: (_1: Buffer) => (undefined | t_19);
@@ -931,6 +933,14 @@ declare type PerPlayerSliderPower = {
 declare type PerPlayerTogglePower =
 | { readonly TAG: "Everyone"; readonly _0: boolean[] }
 | { readonly TAG: "Player"; readonly _0: number; readonly _1: boolean };
+
+export declare namespace PlayerActivePacket {
+    export {
+        parse_25 as parse,
+        toBuffer_25 as toBuffer,
+        t_85 as t
+    }
+}
 
 export declare namespace PlayerAnimationPacket {
     export {
@@ -1061,7 +1071,7 @@ export declare namespace PlayerUpdatePacket {
 
 export declare namespace Point {
     export {
-        t_85 as t,
+        t_86 as t,
         Int_t,
         Float_t
     }
@@ -1599,7 +1609,12 @@ declare type t_84 = {
     readonly cooldownCounter: number
 };
 
-declare type t_85<a> = { readonly x: a; readonly y: a };
+declare type t_85 = {
+    readonly playerId: number;
+    readonly active: boolean;
+};
+
+declare type t_86<a> = { readonly x: a; readonly y: a };
 
 declare type t_9 = { readonly version: string };
 
@@ -1831,6 +1846,8 @@ declare const toBuffer_23: (_1: t_84) => Buffer;
 declare function toBuffer_24(data: WorldInfo): toBuffer_24;
 
 declare type toBuffer_24 = toBufferOk_2 | toBufferError_2;
+
+declare function toBuffer_25(self: t_85): Buffer_2;
 
 declare function toBuffer_3(self: t_18): Buffer;
 
