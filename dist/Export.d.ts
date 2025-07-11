@@ -1113,6 +1113,20 @@ export declare namespace PvpTogglePacket {
 
 declare type pylonAction = "Added" | "Removed" | "RequestTeleport";
 
+export declare namespace Result {
+    export {
+        Result_2 as Result
+    }
+}
+
+declare type Result_2<T, E> = {
+    TAG: "Ok",
+    _0: T,
+} | {
+    TAG: "Error",
+    _0: E,
+}
+
 /**
  * Sets the packet type on an untyped writer, returning an initialized writer.
  * @param untypedWriter The uninitialized packet writer.

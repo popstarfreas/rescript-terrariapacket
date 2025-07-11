@@ -88,3 +88,4 @@ export * as PlayerDamagePacket from "./packet/Packet_PlayerDamage";
 export * as WorldInfoPacket from "./packet/Packet_WorldInfo";
 export * as PlayerActivePacket from "./packet/Packet_PlayerActive";
 export * as Point from "./Point";
+export type * as Result from "./shims/Result";
