@@ -85,4 +85,5 @@ export * as PlayerHealthPacket from "./packet/Packet_PlayerHealth";
 export * as ClientUuidPacket from "./packet/Packet_ClientUuid";
 export * as ProjectileSyncPacket from "./packet/Packet_ProjectileSync";
 export * as PlayerDamagePacket from "./packet/Packet_PlayerDamage";
+export * as WorldInfoPacket from "./packet/Packet_WorldInfo";
 export * as Point from "./Point";
