@@ -89,5 +89,6 @@ export * as WorldInfoPacket from "./packet/Packet_WorldInfo";
 export * as PlayerActivePacket from "./packet/Packet_PlayerActive";
 export * as NpcUpdatePacket from "./packet/Packet_NpcUpdate";
 export * as DisconnectPacket from "./packet/Packet_Disconnect";
+export * as Parser from "./Parser";
 export * as Point from "./Point";
 export type * as Result from "./shims/Result";

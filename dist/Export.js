@@ -19634,6 +19634,4763 @@ var require_Packet_Disconnect = __commonJS({
   }
 });
 
+// src/packet/Packet_Emoji.js
+var require_Packet_Emoji = __commonJS({
+  "src/packet/Packet_Emoji.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_DoorUse.js
+var require_Packet_DoorUse = __commonJS({
+  "src/packet/Packet_DoorUse.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_HarpPlay.js
+var require_Packet_HarpPlay = __commonJS({
+  "src/packet/Packet_HarpPlay.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_ChestName.js
+var require_Packet_ChestName = __commonJS({
+  "src/packet/Packet_ChestName.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_ChestOpen.js
+var require_Packet_ChestOpen = __commonJS({
+  "src/packet/Packet_ChestOpen.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_LiquidSet.js
+var require_Packet_LiquidSet = __commonJS({
+  "src/packet/Packet_LiquidSet.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_NpcStrike.js
+var require_Packet_NpcStrike = __commonJS({
+  "src/packet/Packet_NpcStrike.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_NpcTamper.js
+var require_Packet_NpcTamper = __commonJS({
+  "src/packet/Packet_NpcTamper.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function fromInt(playerId) {
+      if (playerId !== -1) {
+        return {
+          TAG: "PlayerId",
+          _0: playerId
+        };
+      } else {
+        return "All";
+      }
+    }
+    function toInt(self) {
+      if (typeof self !== "object") {
+        return -1;
+      } else {
+        return self._0;
+      }
+    }
+    var Immunity = {
+      fromInt,
+      toInt
+    };
+    function readUInt16(prim) {
+      return prim.readUInt16();
+    }
+    function readByte(prim) {
+      return prim.readByte();
+    }
+    function readInt32(prim) {
+      return prim.readInt32();
+    }
+    function readInt16(prim) {
+      return prim.readInt16();
+    }
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var npcId = reader.readUInt16();
+      var setNpcImmunity = reader.readByte() === 1;
+      var match = setNpcImmunity ? [
+        reader.readInt32(),
+        fromInt(reader.readInt16())
+      ] : [
+        void 0,
+        void 0
+      ];
+      return {
+        npcId,
+        immunityTime: match[0],
+        immunityFromPlayerId: match[1]
+      };
+    }
+    var Decode = {
+      readUInt16,
+      readByte,
+      readInt32,
+      readInt16,
+      parse
+    };
+    function packUInt16(prim0, prim1) {
+      return prim0.packUInt16(prim1);
+    }
+    function packByte(prim0, prim1) {
+      return prim0.packByte(prim1);
+    }
+    function packInt32(prim0, prim1) {
+      return prim0.packInt32(prim1);
+    }
+    function packInt16(prim0, prim1) {
+      return prim0.packInt16(prim1);
+    }
+    function data(prim) {
+      return prim.data;
+    }
+    function packImmunity(writer, immunityTime, immunityOrigin) {
+      if (immunityTime !== void 0 && immunityOrigin !== void 0) {
+        return writer.packByte(1).packInt32(immunityTime).packInt16(toInt(immunityOrigin));
+      } else {
+        return writer.packByte(0);
+      }
+    }
+    function toBuffer(self) {
+      return packImmunity(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NpcTamper")).packUInt16(self.npcId), self.immunityTime, self.immunityFromPlayerId).data;
+    }
+    var Encode = {
+      packUInt16,
+      packByte,
+      packInt32,
+      packInt16,
+      setType: ManagedPacketWriter$PacketFactory.setType,
+      data,
+      packImmunity,
+      toBuffer
+    };
+    var $$Option;
+    exports2.$$Option = $$Option;
+    exports2.Immunity = Immunity;
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_HealEffect.js
+var require_Packet_HealEffect = __commonJS({
+  "src/packet/Packet_HealEffect.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function readInt16(prim) {
+      return prim.readInt16();
+    }
+    function readByte(prim) {
+      return prim.readByte();
+    }
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var playerId = reader.readByte();
+      var healAmount = reader.readInt16();
+      return {
+        playerId,
+        healAmount
+      };
+    }
+    var Decode = {
+      readInt16,
+      readByte,
+      parse
+    };
+    function packByte(prim0, prim1) {
+      return prim0.packByte(prim1);
+    }
+    function packInt16(prim0, prim1) {
+      return prim0.packInt16(prim1);
+    }
+    function data(prim) {
+      return prim.data;
+    }
+    function toBuffer(self) {
+      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("HealEffect")).packByte(self.playerId).packInt16(self.healAmount).data;
+    }
+    var Encode = {
+      packByte,
+      packInt16,
+      setType: ManagedPacketWriter$PacketFactory.setType,
+      data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_ManaEffect.js
+var require_Packet_ManaEffect = __commonJS({
+  "src/packet/Packet_ManaEffect.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function readInt16(prim) {
+      return prim.readInt16();
+    }
+    function readByte(prim) {
+      return prim.readByte();
+    }
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var playerId = reader.readByte();
+      var manaAmount = reader.readInt16();
+      return {
+        playerId,
+        manaAmount
+      };
+    }
+    var Decode = {
+      readInt16,
+      readByte,
+      parse
+    };
+    function packByte(prim0, prim1) {
+      return prim0.packByte(prim1);
+    }
+    function packInt16(prim0, prim1) {
+      return prim0.packInt16(prim1);
+    }
+    function data(prim) {
+      return prim.data;
+    }
+    function toBuffer(self) {
+      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ManaEffect")).packByte(self.playerId).packInt16(self.manaAmount).data;
+    }
+    var Encode = {
+      packByte,
+      packInt16,
+      setType: ManagedPacketWriter$PacketFactory.setType,
+      data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_NpcBuffAdd.js
+var require_Packet_NpcBuffAdd = __commonJS({
+  "src/packet/Packet_NpcBuffAdd.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_NpcRelease.js
+var require_Packet_NpcRelease = __commonJS({
+  "src/packet/Packet_NpcRelease.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function readByte(prim) {
+      return prim.readByte();
+    }
+    function readInt16(prim) {
+      return prim.readInt16();
+    }
+    function readInt32(prim) {
+      return prim.readInt32();
+    }
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var x = reader.readInt32();
+      var y = reader.readInt32();
+      var npcType = reader.readInt16();
+      var style = reader.readByte();
+      return {
+        x,
+        y,
+        npcType,
+        style
+      };
+    }
+    var Decode = {
+      readByte,
+      readInt16,
+      readInt32,
+      parse
+    };
+    function packByte(prim0, prim1) {
+      return prim0.packByte(prim1);
+    }
+    function packInt16(prim0, prim1) {
+      return prim0.packInt16(prim1);
+    }
+    function packInt32(prim0, prim1) {
+      return prim0.packInt32(prim1);
+    }
+    function data(prim) {
+      return prim.data;
+    }
+    function toBuffer(self) {
+      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NpcRelease")).packInt32(self.x).packInt32(self.y).packInt16(self.npcType).packByte(self.style).data;
+    }
+    var Encode = {
+      packByte,
+      packInt16,
+      packInt32,
+      setType: ManagedPacketWriter$PacketFactory.setType,
+      data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_PortalKill.js
+var require_Packet_PortalKill = __commonJS({
+  "src/packet/Packet_PortalKill.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_EmoteBubble.js
+var require_Packet_EmoteBubble = __commonJS({
+  "src/packet/Packet_EmoteBubble.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_PasswordSend.js
+var require_Packet_PasswordSend = __commonJS({
+  "src/packet/Packet_PasswordSend.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_GemLockToggle.js
+var require_Packet_GemLockToggle = __commonJS({
+  "src/packet/Packet_GemLockToggle.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_NebulaLevelUp.js
+var require_Packet_NebulaLevelUp = __commonJS({
+  "src/packet/Packet_NebulaLevelUp.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_NpcItemStrike.js
+var require_Packet_NpcItemStrike = __commonJS({
+  "src/packet/Packet_NpcItemStrike.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_PlayerStealth.js
+var require_Packet_PlayerStealth = __commonJS({
+  "src/packet/Packet_PlayerStealth.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_GoodEvilUpdate.js
+var require_Packet_GoodEvilUpdate = __commonJS({
+  "src/packet/Packet_GoodEvilUpdate.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_ItemDropModify.js
+var require_Packet_ItemDropModify = __commonJS({
+  "src/packet/Packet_ItemDropModify.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_ItemFramePlace.js
+var require_Packet_ItemFramePlace = __commonJS({
+  "src/packet/Packet_ItemFramePlace.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function readByte(prim) {
+      return prim.readByte();
+    }
+    function readInt16(prim) {
+      return prim.readInt16();
+    }
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var x = reader.readInt16();
+      var y = reader.readInt16();
+      var itemId = reader.readInt16();
+      var prefix = reader.readByte();
+      var stack = reader.readInt16();
+      return {
+        x,
+        y,
+        itemId,
+        prefix,
+        stack
+      };
+    }
+    var Decode = {
+      readByte,
+      readInt16,
+      parse
+    };
+    function packByte(prim0, prim1) {
+      return prim0.packByte(prim1);
+    }
+    function packInt16(prim0, prim1) {
+      return prim0.packInt16(prim1);
+    }
+    function data(prim) {
+      return prim.data;
+    }
+    function toBuffer(self) {
+      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ItemFramePlace")).packInt16(self.x).packInt16(self.y).packInt16(self.itemId).packByte(self.prefix).packInt16(self.stack).data;
+    }
+    var Encode = {
+      Writer: void 0,
+      packByte,
+      packInt16,
+      setType: ManagedPacketWriter$PacketFactory.setType,
+      data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_LucyAxeMessage.js
+var require_Packet_LucyAxeMessage = __commonJS({
+  "src/packet/Packet_LucyAxeMessage.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function readByte(prim) {
+      return prim.readByte();
+    }
+    function readSingle(prim) {
+      return prim.readSingle();
+    }
+    function readInt32(prim) {
+      return prim.readInt32();
+    }
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var source = reader.readByte();
+      var variant = reader.readByte();
+      var velocity_x = reader.readSingle();
+      var velocity_y = reader.readSingle();
+      var velocity = {
+        x: velocity_x,
+        y: velocity_y
+      };
+      var position_x = reader.readInt32();
+      var position_y = reader.readInt32();
+      var position = {
+        x: position_x,
+        y: position_y
+      };
+      return {
+        source,
+        variant,
+        velocity,
+        position
+      };
+    }
+    var Decode = {
+      readByte,
+      readSingle,
+      readInt32,
+      parse
+    };
+    function packByte(prim0, prim1) {
+      return prim0.packByte(prim1);
+    }
+    function packInt32(prim0, prim1) {
+      return prim0.packInt32(prim1);
+    }
+    function packSingle(prim0, prim1) {
+      return prim0.packSingle(prim1);
+    }
+    function data(prim) {
+      return prim.data;
+    }
+    function toBuffer(self) {
+      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("LucyAxeMessage")).packByte(self.source).packByte(self.variant).packSingle(self.velocity.x).packSingle(self.velocity.y).packInt32(self.position.x).packInt32(self.position.y).data;
+    }
+    var Encode = {
+      Writer: void 0,
+      packByte,
+      packInt32,
+      packSingle,
+      setType: ManagedPacketWriter$PacketFactory.setType,
+      data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_PlayerBuffsSet.js
+var require_Packet_PlayerBuffsSet = __commonJS({
+  "src/packet/Packet_PlayerBuffsSet.js"(exports2) {
+    "use strict";
+    var PervasivesU = require_pervasivesU();
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var playerId = reader.readByte();
+      var buffs = [];
+      for (var _i = 1; _i <= 44; ++_i) {
+        buffs.push(reader.readUInt16());
+      }
+      return {
+        playerId,
+        buffs
+      };
+    }
+    function packBuffs(writer, buffs) {
+      buffs.forEach(function(buff) {
+        writer.packUInt16(buff);
+      });
+      return writer;
+    }
+    function toBuffer(self) {
+      if (self.buffs.length !== 44) {
+        PervasivesU.failwith("Expected 44 buffs, got " + self.buffs.length.toString());
+      }
+      return packBuffs(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerBuffsSet")).packByte(self.playerId), self.buffs).data;
+    }
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_ItemOwnerRemove.js
+var require_Packet_ItemOwnerRemove = __commonJS({
+  "src/packet/Packet_ItemOwnerRemove.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function readInt16(prim) {
+      return prim.readInt16();
+    }
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var itemDropId = reader.readInt16();
+      return {
+        itemDropId
+      };
+    }
+    var Decode = {
+      readInt16,
+      parse
+    };
+    function packInt16(prim0, prim1) {
+      return prim0.packInt16(prim1);
+    }
+    function data(prim) {
+      return prim.data;
+    }
+    function toBuffer(self) {
+      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ItemOwnerRemove")).packInt16(self.itemDropId).data;
+    }
+    var Encode = {
+      packInt16,
+      setType: ManagedPacketWriter$PacketFactory.setType,
+      data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_LegacySoundPlay.js
+var require_Packet_LegacySoundPlay = __commonJS({
+  "src/packet/Packet_LegacySoundPlay.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_PlayerHealOther.js
+var require_Packet_PlayerHealOther = __commonJS({
+  "src/packet/Packet_PlayerHealOther.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_PlayerSpawnSelf.js
+var require_Packet_PlayerSpawnSelf = __commonJS({
+  "src/packet/Packet_PlayerSpawnSelf.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_CombatTextCreate.js
+var require_Packet_CombatTextCreate = __commonJS({
+  "src/packet/Packet_CombatTextCreate.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_NpcSpecialEffect.js
+var require_Packet_NpcSpecialEffect = __commonJS({
+  "src/packet/Packet_NpcSpecialEffect.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_PasswordRequired.js
+var require_Packet_PasswordRequired = __commonJS({
+  "src/packet/Packet_PasswordRequired.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_EventNotification.js
+var require_Packet_EventNotification = __commonJS({
+  "src/packet/Packet_EventNotification.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_GolfBallLandInCup.js
+var require_Packet_GolfBallLandInCup = __commonJS({
+  "src/packet/Packet_GolfBallLandInCup.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_MassWireOperation.js
+var require_Packet_MassWireOperation = __commonJS({
+  "src/packet/Packet_MassWireOperation.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_MoonLordCountdown.js
+var require_Packet_MoonLordCountdown = __commonJS({
+  "src/packet/Packet_MoonLordCountdown.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function readInt32(prim) {
+      return prim.readInt32();
+    }
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      return {
+        maxMoonLordCountdown: reader.readInt32(),
+        moonLordCountdown: reader.readInt32()
+      };
+    }
+    var Decode = {
+      readInt32,
+      parse
+    };
+    function packInt32(prim0, prim1) {
+      return prim0.packInt32(prim1);
+    }
+    function data(prim) {
+      return prim.data;
+    }
+    function toBuffer(self) {
+      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("MoonLordCountdown")).packInt32(self.maxMoonLordCountdown).packInt32(self.moonLordCountdown).data;
+    }
+    var Encode = {
+      packInt32,
+      setType: ManagedPacketWriter$PacketFactory.setType,
+      data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_ProjectileDestroy.js
+var require_Packet_ProjectileDestroy = __commonJS({
+  "src/packet/Packet_ProjectileDestroy.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function readByte(prim) {
+      return prim.readByte();
+    }
+    function readInt16(prim) {
+      return prim.readInt16();
+    }
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var projectileId = reader.readInt16();
+      var owner = reader.readByte();
+      return {
+        projectileId,
+        owner
+      };
+    }
+    var Decode = {
+      readByte,
+      readInt16,
+      parse
+    };
+    function packByte(prim0, prim1) {
+      return prim0.packByte(prim1);
+    }
+    function packInt16(prim0, prim1) {
+      return prim0.packInt16(prim1);
+    }
+    function data(prim) {
+      return prim.data;
+    }
+    function toBuffer(self) {
+      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ProjectileDestroy")).packInt16(self.projectileId).packByte(self.owner).data;
+    }
+    var Encode = {
+      packByte,
+      packInt16,
+      setType: ManagedPacketWriter$PacketFactory.setType,
+      data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_RevengeMarkerSync.js
+var require_Packet_RevengeMarkerSync = __commonJS({
+  "src/packet/Packet_RevengeMarkerSync.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_CombatNumberCreate.js
+var require_Packet_CombatNumberCreate = __commonJS({
+  "src/packet/Packet_CombatNumberCreate.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_MinionTargetUpdate.js
+var require_Packet_MinionTargetUpdate = __commonJS({
+  "src/packet/Packet_MinionTargetUpdate.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_ActiveContainerSync.js
+var require_Packet_ActiveContainerSync = __commonJS({
+  "src/packet/Packet_ActiveContainerSync.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function readByte(prim) {
+      return prim.readByte();
+    }
+    function readInt16(prim) {
+      return prim.readInt16();
+    }
+    function readString(prim) {
+      return prim.readString();
+    }
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var chestId = reader.readInt16();
+      var x = reader.readInt16();
+      var y = reader.readInt16();
+      var nameLength = reader.readByte();
+      var name = nameLength > 0 && nameLength <= 20 ? reader.readString() : "";
+      return {
+        chestId,
+        x,
+        y,
+        nameLength,
+        name
+      };
+    }
+    var Decode = {
+      readByte,
+      readInt16,
+      readString,
+      parse
+    };
+    function packByte(prim0, prim1) {
+      return prim0.packByte(prim1);
+    }
+    function packInt16(prim0, prim1) {
+      return prim0.packInt16(prim1);
+    }
+    function packString(prim0, prim1) {
+      return prim0.packString(prim1);
+    }
+    function data(prim) {
+      return prim.data;
+    }
+    function toBuffer(self) {
+      var writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ActiveContainerSync")).packInt16(self.chestId).packInt16(self.x).packInt16(self.y).packByte(self.nameLength);
+      if (self.nameLength > 0 && self.nameLength <= 20) {
+        writer.packString(self.name);
+      }
+      return writer.data;
+    }
+    var Encode = {
+      packByte,
+      packInt16,
+      packString,
+      setType: ManagedPacketWriter$PacketFactory.setType,
+      data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_RevengeMarkerRemove.js
+var require_Packet_RevengeMarkerRemove = __commonJS({
+  "src/packet/Packet_RevengeMarkerRemove.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_MassWireOperationPay.js
+var require_Packet_MassWireOperationPay = __commonJS({
+  "src/packet/Packet_MassWireOperationPay.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_PlayerTeleportPortal.js
+var require_Packet_PlayerTeleportPortal = __commonJS({
+  "src/packet/Packet_PlayerTeleportPortal.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_CavernMonsterTypeSync.js
+var require_Packet_CavernMonsterTypeSync = __commonJS({
+  "src/packet/Packet_CavernMonsterTypeSync.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_ClientSyncedInventory.js
+var require_Packet_ClientSyncedInventory = __commonJS({
+  "src/packet/Packet_ClientSyncedInventory.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_FoodPlatterTryPlacing.js
+var require_Packet_FoodPlatterTryPlacing = __commonJS({
+  "src/packet/Packet_FoodPlatterTryPlacing.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function readByte(prim) {
+      return prim.readByte();
+    }
+    function readInt16(prim) {
+      return prim.readInt16();
+    }
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var x = reader.readInt16();
+      var y = reader.readInt16();
+      var itemId = reader.readInt16();
+      var prefix = reader.readByte();
+      var stack = reader.readInt16();
+      return {
+        x,
+        y,
+        itemId,
+        prefix,
+        stack
+      };
+    }
+    var Decode = {
+      readByte,
+      readInt16,
+      parse
+    };
+    function packByte(prim0, prim1) {
+      return prim0.packByte(prim1);
+    }
+    function packInt16(prim0, prim1) {
+      return prim0.packInt16(prim1);
+    }
+    function data(prim) {
+      return prim.data;
+    }
+    function toBuffer(self) {
+      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("FoodPlatterTryPlacing")).packInt16(self.x).packInt16(self.y).packInt16(self.itemId).packByte(self.prefix).packInt16(self.stack).data;
+    }
+    var Encode = {
+      Writer: void 0,
+      packByte,
+      packInt16,
+      setType: ManagedPacketWriter$PacketFactory.setType,
+      data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_NpcKilledNotification.js
+var require_Packet_NpcKilledNotification = __commonJS({
+  "src/packet/Packet_NpcKilledNotification.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_ShieldStrengthsUpdate.js
+var require_Packet_ShieldStrengthsUpdate = __commonJS({
+  "src/packet/Packet_ShieldStrengthsUpdate.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_CrystalInvasionWipeAll.js
+var require_Packet_CrystalInvasionWipeAll = __commonJS({
+  "src/packet/Packet_CrystalInvasionWipeAll.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_ItemDropInstancedUpdate.js
+var require_Packet_ItemDropInstancedUpdate = __commonJS({
+  "src/packet/Packet_ItemDropInstancedUpdate.js"(exports2) {
+    "use strict";
+    var Packet_ItemDropUpdate$TerrariaPacket = require_Packet_ItemDropUpdate();
+    var parse = Packet_ItemDropUpdate$TerrariaPacket.parse;
+    var toBuffer = Packet_ItemDropUpdate$TerrariaPacket.toBuffer;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_ItemDropProtectedUpdate.js
+var require_Packet_ItemDropProtectedUpdate = __commonJS({
+  "src/packet/Packet_ItemDropProtectedUpdate.js"(exports2) {
+    "use strict";
+    var Core__Option = require_Core_Option();
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packet_ItemDropUpdate$TerrariaPacket = require_Packet_ItemDropUpdate();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function readByte(prim) {
+      return prim.readByte();
+    }
+    function readSingle(prim) {
+      return prim.readSingle();
+    }
+    function readBytes(prim0, prim1) {
+      return prim0.readBytes(prim1);
+    }
+    function parse(payload) {
+      return Core__Option.map(Packet_ItemDropUpdate$TerrariaPacket.parse(payload), function(itemDropUpdate) {
+        var reader = new Packetreader(payload);
+        reader.readBytes(24);
+        var timeLeftInWhichTheItemCannotBeTakenByEnemies = reader.readByte();
+        return {
+          itemDropId: itemDropUpdate.itemDropId,
+          x: itemDropUpdate.x,
+          y: itemDropUpdate.y,
+          vx: itemDropUpdate.vx,
+          vy: itemDropUpdate.vy,
+          stack: itemDropUpdate.stack,
+          prefix: itemDropUpdate.prefix,
+          noDelay: itemDropUpdate.noDelay,
+          itemId: itemDropUpdate.itemId,
+          timeLeftInWhichTheItemCannotBeTakenByEnemies
+        };
+      });
+    }
+    var Decode = {
+      readByte,
+      readSingle,
+      readBytes,
+      parse
+    };
+    function packByte(prim0, prim1) {
+      return prim0.packByte(prim1);
+    }
+    function packInt16(prim0, prim1) {
+      return prim0.packInt16(prim1);
+    }
+    function packInt32(prim0, prim1) {
+      return prim0.packInt32(prim1);
+    }
+    function packSingle(prim0, prim1) {
+      return prim0.packSingle(prim1);
+    }
+    function data(prim) {
+      return prim.data;
+    }
+    function toBuffer(self) {
+      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ItemDropProtectedUpdate")).packInt16(self.itemDropId).packSingle(self.x).packSingle(self.y).packSingle(self.vx).packSingle(self.vy).packInt16(self.stack).packByte(self.prefix).packByte(self.noDelay).packInt16(self.itemId).packByte(self.timeLeftInWhichTheItemCannotBeTakenByEnemies).data;
+    }
+    var Encode = {
+      Writer: void 0,
+      packByte,
+      packInt16,
+      packInt32,
+      packSingle,
+      setType: ManagedPacketWriter$PacketFactory.setType,
+      data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_PiggyBankVoidLensUpdate.js
+var require_Packet_PiggyBankVoidLensUpdate = __commonJS({
+  "src/packet/Packet_PiggyBankVoidLensUpdate.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function readInt16(prim) {
+      return prim.readInt16();
+    }
+    function tryReading(reader) {
+      var n = reader.readInt16();
+      if (n !== -1) {
+        return;
+      }
+      var expectedIdentity = reader.readInt16();
+      var expectedType = reader.readInt16();
+      return {
+        expectedIdentity,
+        expectedType
+      };
+    }
+    function packInt16(prim0, prim1) {
+      return prim0.packInt16(prim1);
+    }
+    function pack(writer, self) {
+      if (self !== void 0) {
+        return writer.packInt16(self.expectedIdentity).packInt16(self.expectedType);
+      } else {
+        return writer.packInt16(-1);
+      }
+    }
+    var TrackedProjectileReference = {
+      readInt16,
+      tryReading,
+      packInt16,
+      pack
+    };
+    function readByte(prim) {
+      return prim.readByte();
+    }
+    function readSingle(prim) {
+      return prim.readSingle();
+    }
+    function readInt32(prim) {
+      return prim.readInt32();
+    }
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var playerId = reader.readByte();
+      var piggyBankProj = tryReading(reader);
+      var voidLensChest = tryReading(reader);
+      return {
+        playerId,
+        piggyBankProj,
+        voidLensChest
+      };
+    }
+    var Decode = {
+      readByte,
+      readSingle,
+      readInt32,
+      parse
+    };
+    function packByte(prim0, prim1) {
+      return prim0.packByte(prim1);
+    }
+    function packInt32(prim0, prim1) {
+      return prim0.packInt32(prim1);
+    }
+    function packSingle(prim0, prim1) {
+      return prim0.packSingle(prim1);
+    }
+    function data(prim) {
+      return prim.data;
+    }
+    function toBuffer(self) {
+      return pack(pack(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PiggyBankVoidLensUpdate")).packByte(self.playerId), self.piggyBankProj), self.voidLensChest).data;
+    }
+    var Encode = {
+      Writer: void 0,
+      packByte,
+      packInt32,
+      packSingle,
+      setType: ManagedPacketWriter$PacketFactory.setType,
+      data,
+      toBuffer
+    };
+    exports2.TrackedProjectileReference = TrackedProjectileReference;
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_PlayerLuckFactorsUpdate.js
+var require_Packet_PlayerLuckFactorsUpdate = __commonJS({
+  "src/packet/Packet_PlayerLuckFactorsUpdate.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function readInt16(prim) {
+      return prim.readInt16();
+    }
+    function readInt32(prim) {
+      return prim.readInt32();
+    }
+    function readByte(prim) {
+      return prim.readByte();
+    }
+    function readSingle(prim) {
+      return prim.readSingle();
+    }
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var player = reader.readByte();
+      var ladyBugLuckTimeLeft = reader.readInt32();
+      var torchLuck = reader.readSingle();
+      var luckPotion = reader.readByte();
+      var hasGardenGnomeNearby = reader.readByte() === 1;
+      var equipmentBasedLuckBonus = reader.readSingle();
+      var coinLuck = reader.readSingle();
+      return {
+        playerId: player,
+        ladyBugLuckTimeLeft,
+        torchLuck,
+        luckPotion,
+        hasGardenGnomeNearby,
+        equipmentBasedLuckBonus,
+        coinLuck
+      };
+    }
+    var Decode = {
+      readInt16,
+      readInt32,
+      readByte,
+      readSingle,
+      parse
+    };
+    function packByte(prim0, prim1) {
+      return prim0.packByte(prim1);
+    }
+    function packInt16(prim0, prim1) {
+      return prim0.packInt16(prim1);
+    }
+    function packInt32(prim0, prim1) {
+      return prim0.packInt32(prim1);
+    }
+    function packSingle(prim0, prim1) {
+      return prim0.packSingle(prim1);
+    }
+    function data(prim) {
+      return prim.data;
+    }
+    function toBuffer(self) {
+      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerLuckFactorsUpdate")).packByte(self.playerId).packInt32(self.ladyBugLuckTimeLeft).packSingle(self.torchLuck).packByte(self.luckPotion).packByte(self.hasGardenGnomeNearby ? 1 : 0).packSingle(self.equipmentBasedLuckBonus).packSingle(self.coinLuck).data;
+    }
+    var Encode = {
+      packByte,
+      packInt16,
+      packInt32,
+      packSingle,
+      setType: ManagedPacketWriter$PacketFactory.setType,
+      data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_MinionAttackTargetUpdate.js
+var require_Packet_MinionAttackTargetUpdate = __commonJS({
+  "src/packet/Packet_MinionAttackTargetUpdate.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_ItemForceIntoNearestChest.js
+var require_Packet_ItemForceIntoNearestChest = __commonJS({
+  "src/packet/Packet_ItemForceIntoNearestChest.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_InitialTileSectionsRequest.js
+var require_Packet_InitialTileSectionsRequest = __commonJS({
+  "src/packet/Packet_InitialTileSectionsRequest.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function readInt32(prim) {
+      return prim.readInt32();
+    }
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var x = reader.readInt32();
+      var y = reader.readInt32();
+      return {
+        x,
+        y
+      };
+    }
+    var Decode = {
+      readInt32,
+      parse
+    };
+    function toBuffer(self) {
+      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("InitialTileSectionsRequest")).packInt32(self.x).packInt32(self.y).data;
+    }
+    var Encode = {
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_AnglerQuestsCompletedAmount.js
+var require_Packet_AnglerQuestsCompletedAmount = __commonJS({
+  "src/packet/Packet_AnglerQuestsCompletedAmount.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_CrystalInvasionSendWaitTime.js
+var require_Packet_CrystalInvasionSendWaitTime = __commonJS({
+  "src/packet/Packet_CrystalInvasionSendWaitTime.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    exports2.parse = parse;
+  }
+});
+
+// src/packet/Packet_DungeonDefendersEventAttemptSkipWait.js
+var require_Packet_DungeonDefendersEventAttemptSkipWait = __commonJS({
+  "src/packet/Packet_DungeonDefendersEventAttemptSkipWait.js"(exports2) {
+    "use strict";
+    var Caml_option = require_caml_option();
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetwriter = require_packetwriter().default;
+    function parse(_payload) {
+      return Caml_option.some(void 0);
+    }
+    var Decode = {
+      parse
+    };
+    function packByte(prim0, prim1) {
+      return prim0.packByte(prim1);
+    }
+    function packInt32(prim0, prim1) {
+      return prim0.packInt32(prim1);
+    }
+    function packSingle(prim0, prim1) {
+      return prim0.packSingle(prim1);
+    }
+    function data(prim) {
+      return prim.data;
+    }
+    function toBuffer(_self) {
+      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("DungeonDefendersEventAttemptSkipWait")).data;
+    }
+    var Encode = {
+      Writer: void 0,
+      packByte,
+      packInt32,
+      packSingle,
+      setType: ManagedPacketWriter$PacketFactory.setType,
+      data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/Parser.js
+var require_Parser = __commonJS({
+  "src/Parser.js"(exports2) {
+    "use strict";
+    var Core__Option = require_Core_Option();
+    var PacketType$TerrariaPacket = require_PacketType();
+    var Packet_Emoji$TerrariaPacket = require_Packet_Emoji();
+    var Packet_Zones$TerrariaPacket = require_Packet_Zones();
+    var Packet_Status$TerrariaPacket = require_Packet_Status();
+    var Packet_Unused$TerrariaPacket = require_Packet_Unused();
+    var Packet_DoorUse$TerrariaPacket = require_Packet_DoorUse();
+    var Packet_NpcTalk$TerrariaPacket = require_Packet_NpcTalk();
+    var Packet_SignNew$TerrariaPacket = require_Packet_SignNew();
+    var Packet_TimeSet$TerrariaPacket = require_Packet_TimeSet();
+    var Packet_HarpPlay$TerrariaPacket = require_Packet_HarpPlay();
+    var Packet_NpcCatch$TerrariaPacket = require_Packet_NpcCatch();
+    var Packet_SignRead$TerrariaPacket = require_Packet_SignRead();
+    var Packet_Teleport$TerrariaPacket = require_Packet_Teleport();
+    var Packet_ChestItem$TerrariaPacket = require_Packet_ChestItem();
+    var Packet_ChestName$TerrariaPacket = require_Packet_ChestName();
+    var Packet_ChestOpen$TerrariaPacket = require_Packet_ChestOpen();
+    var Packet_ItemOwner$TerrariaPacket = require_Packet_ItemOwner();
+    var Packet_LiquidSet$TerrariaPacket = require_Packet_LiquidSet();
+    var Packet_NpcStrike$TerrariaPacket = require_Packet_NpcStrike();
+    var Packet_NpcTamper$TerrariaPacket = require_Packet_NpcTamper();
+    var Packet_NpcUpdate$TerrariaPacket = require_Packet_NpcUpdate();
+    var Packet_PvpToggle$TerrariaPacket = require_Packet_PvpToggle();
+    var Packet_SmokePoof$TerrariaPacket = require_Packet_SmokePoof();
+    var Packet_SwitchHit$TerrariaPacket = require_Packet_SwitchHit();
+    var Packet_TilePaint$TerrariaPacket = require_Packet_TilePaint();
+    var Packet_WallPaint$TerrariaPacket = require_Packet_WallPaint();
+    var Packet_WorldInfo$TerrariaPacket = require_Packet_WorldInfo();
+    var Packet_ChestPlace$TerrariaPacket = require_Packet_ChestPlace();
+    var Packet_ClientUuid$TerrariaPacket = require_Packet_ClientUuid();
+    var Packet_Disconnect$TerrariaPacket = require_Packet_Disconnect();
+    var Packet_HealEffect$TerrariaPacket = require_Packet_HealEffect();
+    var Packet_ManaEffect$TerrariaPacket = require_Packet_ManaEffect();
+    var Packet_NpcBuffAdd$TerrariaPacket = require_Packet_NpcBuffAdd();
+    var Packet_NpcFishOut$TerrariaPacket = require_Packet_NpcFishOut();
+    var Packet_NpcRelease$TerrariaPacket = require_Packet_NpcRelease();
+    var Packet_PlayerDead$TerrariaPacket = require_Packet_PlayerDead();
+    var Packet_PlayerInfo$TerrariaPacket = require_Packet_PlayerInfo();
+    var Packet_PlayerMana$TerrariaPacket = require_Packet_PlayerMana();
+    var Packet_PlayerTeam$TerrariaPacket = require_Packet_PlayerTeam();
+    var Packet_PortalKill$TerrariaPacket = require_Packet_PortalKill();
+    var Packet_TileModify$TerrariaPacket = require_Packet_TileModify();
+    var Packet_TreeGrowFx$TerrariaPacket = require_Packet_TreeGrowFx();
+    var Packet_AnglerQuest$TerrariaPacket = require_Packet_AnglerQuest();
+    var Packet_EmoteBubble$TerrariaPacket = require_Packet_EmoteBubble();
+    var Packet_NpcShopItem$TerrariaPacket = require_Packet_NpcShopItem();
+    var Packet_ObjectPlace$TerrariaPacket = require_Packet_ObjectPlace();
+    var Packet_PartyToggle$TerrariaPacket = require_Packet_PartyToggle();
+    var Packet_PlayerDeath$TerrariaPacket = require_Packet_PlayerDeath();
+    var Packet_PlayerDodge$TerrariaPacket = require_Packet_PlayerDodge();
+    var Packet_PlayerSpawn$TerrariaPacket = require_Packet_PlayerSpawn();
+    var Packet_NpcKillCount$TerrariaPacket = require_Packet_NpcKillCount();
+    var Packet_PasswordSend$TerrariaPacket = require_Packet_PasswordSend();
+    var Packet_PlayerActive$TerrariaPacket = require_Packet_PlayerActive();
+    var Packet_PlayerDamage$TerrariaPacket = require_Packet_PlayerDamage();
+    var Packet_PlayerHealth$TerrariaPacket = require_Packet_PlayerHealth();
+    var Packet_PlayerUpdate$TerrariaPacket = require_Packet_PlayerUpdate();
+    var Packet_GemLockToggle$TerrariaPacket = require_Packet_GemLockToggle();
+    var Packet_LoadoutSwitch$TerrariaPacket = require_Packet_LoadoutSwitch();
+    var Packet_NebulaLevelUp$TerrariaPacket = require_Packet_NebulaLevelUp();
+    var Packet_NetModuleLoad$TerrariaPacket = require_Packet_NetModuleLoad();
+    var Packet_NpcBuffUpdate$TerrariaPacket = require_Packet_NpcBuffUpdate();
+    var Packet_NpcHomeUpdate$TerrariaPacket = require_Packet_NpcHomeUpdate();
+    var Packet_NpcItemStrike$TerrariaPacket = require_Packet_NpcItemStrike();
+    var Packet_NpcNameUpdate$TerrariaPacket = require_Packet_NpcNameUpdate();
+    var Packet_PlayerBuffAdd$TerrariaPacket = require_Packet_PlayerBuffAdd();
+    var Packet_PlayerSlotSet$TerrariaPacket = require_Packet_PlayerSlotSet();
+    var Packet_PlayerStealth$TerrariaPacket = require_Packet_PlayerStealth();
+    var Packet_ConnectRequest$TerrariaPacket = require_Packet_ConnectRequest();
+    var Packet_ExtraValueSync$TerrariaPacket = require_Packet_ExtraValueSync();
+    var Packet_GoodEvilUpdate$TerrariaPacket = require_Packet_GoodEvilUpdate();
+    var Packet_ItemDropModify$TerrariaPacket = require_Packet_ItemDropModify();
+    var Packet_ItemDropUpdate$TerrariaPacket = require_Packet_ItemDropUpdate();
+    var Packet_ItemFramePlace$TerrariaPacket = require_Packet_ItemFramePlace();
+    var Packet_LucyAxeMessage$TerrariaPacket = require_Packet_LucyAxeMessage();
+    var Packet_PlayerBuffsSet$TerrariaPacket = require_Packet_PlayerBuffsSet();
+    var Packet_ProjectileSync$TerrariaPacket = require_Packet_ProjectileSync();
+    var Packet_TileSquareSend$TerrariaPacket = require_Packet_TileSquareSend();
+    var Packet_ItemOwnerRemove$TerrariaPacket = require_Packet_ItemOwnerRemove();
+    var Packet_LegacySoundPlay$TerrariaPacket = require_Packet_LegacySoundPlay();
+    var Packet_PlayerAnimation$TerrariaPacket = require_Packet_PlayerAnimation();
+    var Packet_PlayerHealOther$TerrariaPacket = require_Packet_PlayerHealOther();
+    var Packet_PlayerSpawnSelf$TerrariaPacket = require_Packet_PlayerSpawnSelf();
+    var Packet_SocialHandshake$TerrariaPacket = require_Packet_SocialHandshake();
+    var Packet_TileEntityPlace$TerrariaPacket = require_Packet_TileEntityPlace();
+    var Packet_TilePickingSync$TerrariaPacket = require_Packet_TilePickingSync();
+    var Packet_TileSectionSend$TerrariaPacket = require_Packet_TileSectionSend();
+    var Packet_WiredCannonShot$TerrariaPacket = require_Packet_WiredCannonShot();
+    var Packet_ChatMessageSmart$TerrariaPacket = require_Packet_ChatMessageSmart();
+    var Packet_CombatTextCreate$TerrariaPacket = require_Packet_CombatTextCreate();
+    var Packet_DimensionsUpdate$TerrariaPacket = require_Packet_DimensionsUpdate();
+    var Packet_NpcSpecialEffect$TerrariaPacket = require_Packet_NpcSpecialEffect();
+    var Packet_PasswordRequired$TerrariaPacket = require_Packet_PasswordRequired();
+    var Packet_TileEntityUpdate$TerrariaPacket = require_Packet_TileEntityUpdate();
+    var Packet_TileSectionFrame$TerrariaPacket = require_Packet_TileSectionFrame();
+    var Packet_WorldDataRequest$TerrariaPacket = require_Packet_WorldDataRequest();
+    var Packet_EventNotification$TerrariaPacket = require_Packet_EventNotification();
+    var Packet_GolfBallLandInCup$TerrariaPacket = require_Packet_GolfBallLandInCup();
+    var Packet_MassWireOperation$TerrariaPacket = require_Packet_MassWireOperation();
+    var Packet_MoonLordCountdown$TerrariaPacket = require_Packet_MoonLordCountdown();
+    var Packet_NpcTeleportPortal$TerrariaPacket = require_Packet_NpcTeleportPortal();
+    var Packet_ProjectileDestroy$TerrariaPacket = require_Packet_ProjectileDestroy();
+    var Packet_RevengeMarkerSync$TerrariaPacket = require_Packet_RevengeMarkerSync();
+    var Packet_CombatNumberCreate$TerrariaPacket = require_Packet_CombatNumberCreate();
+    var Packet_MinionTargetUpdate$TerrariaPacket = require_Packet_MinionTargetUpdate();
+    var Packet_ActiveContainerSync$TerrariaPacket = require_Packet_ActiveContainerSync();
+    var Packet_AnglerQuestComplete$TerrariaPacket = require_Packet_AnglerQuestComplete();
+    var Packet_BossOrInvasionSpawn$TerrariaPacket = require_Packet_BossOrInvasionSpawn();
+    var Packet_ChestOrTempleUnlock$TerrariaPacket = require_Packet_ChestOrTempleUnlock();
+    var Packet_PlayerInventorySlot$TerrariaPacket = require_Packet_PlayerInventorySlot();
+    var Packet_RevengeMarkerRemove$TerrariaPacket = require_Packet_RevengeMarkerRemove();
+    var Packet_TeleportationPotion$TerrariaPacket = require_Packet_TeleportationPotion();
+    var Packet_CrystalInvasionStart$TerrariaPacket = require_Packet_CrystalInvasionStart();
+    var Packet_MassWireOperationPay$TerrariaPacket = require_Packet_MassWireOperationPay();
+    var Packet_PlayerChestIndexSync$TerrariaPacket = require_Packet_PlayerChestIndexSync();
+    var Packet_PlayerTeleportPortal$TerrariaPacket = require_Packet_PlayerTeleportPortal();
+    var Packet_CavernMonsterTypeSync$TerrariaPacket = require_Packet_CavernMonsterTypeSync();
+    var Packet_ClientSyncedInventory$TerrariaPacket = require_Packet_ClientSyncedInventory();
+    var Packet_FoodPlatterTryPlacing$TerrariaPacket = require_Packet_FoodPlatterTryPlacing();
+    var Packet_NpcBuffRemovalRequest$TerrariaPacket = require_Packet_NpcBuffRemovalRequest();
+    var Packet_NpcKilledNotification$TerrariaPacket = require_Packet_NpcKilledNotification();
+    var Packet_ShieldStrengthsUpdate$TerrariaPacket = require_Packet_ShieldStrengthsUpdate();
+    var Packet_WeaponsRackTryPlacing$TerrariaPacket = require_Packet_WeaponsRackTryPlacing();
+    var Packet_CrystalInvasionWipeAll$TerrariaPacket = require_Packet_CrystalInvasionWipeAll();
+    var Packet_InvasionProgressReport$TerrariaPacket = require_Packet_InvasionProgressReport();
+    var Packet_CreditsOrSlimeTransform$TerrariaPacket = require_Packet_CreditsOrSlimeTransform();
+    var Packet_ItemDropInstancedUpdate$TerrariaPacket = require_Packet_ItemDropInstancedUpdate();
+    var Packet_ItemDropProtectedUpdate$TerrariaPacket = require_Packet_ItemDropProtectedUpdate();
+    var Packet_ItemDropShimmeredUpdate$TerrariaPacket = require_Packet_ItemDropShimmeredUpdate();
+    var Packet_PiggyBankVoidLensUpdate$TerrariaPacket = require_Packet_PiggyBankVoidLensUpdate();
+    var Packet_PlayerLuckFactorsUpdate$TerrariaPacket = require_Packet_PlayerLuckFactorsUpdate();
+    var Packet_ShimmerEffectOrCoinLuck$TerrariaPacket = require_Packet_ShimmerEffectOrCoinLuck();
+    var Packet_MinionAttackTargetUpdate$TerrariaPacket = require_Packet_MinionAttackTargetUpdate();
+    var Packet_TemporaryAnimationCreate$TerrariaPacket = require_Packet_TemporaryAnimationCreate();
+    var Packet_ItemForceIntoNearestChest$TerrariaPacket = require_Packet_ItemForceIntoNearestChest();
+    var Packet_TileEntityHatRackItemSync$TerrariaPacket = require_Packet_TileEntityHatRackItemSync();
+    var Packet_CountsAsHostForGameplaySet$TerrariaPacket = require_Packet_CountsAsHostForGameplaySet();
+    var Packet_InitialTileSectionsRequest$TerrariaPacket = require_Packet_InitialTileSectionsRequest();
+    var Packet_AnglerQuestsCompletedAmount$TerrariaPacket = require_Packet_AnglerQuestsCompletedAmount();
+    var Packet_CrystalInvasionSendWaitTime$TerrariaPacket = require_Packet_CrystalInvasionSendWaitTime();
+    var Packet_HaveDryadDoStardewAnimation$TerrariaPacket = require_Packet_HaveDryadDoStardewAnimation();
+    var Packet_TravellingMerchantInventory$TerrariaPacket = require_Packet_TravellingMerchantInventory();
+    var Packet_TileEntityInteractionRequest$TerrariaPacket = require_Packet_TileEntityInteractionRequest();
+    var Packet_TileEntityDisplayDollItemSync$TerrariaPacket = require_Packet_TileEntityDisplayDollItemSync();
+    var Packet_ClientFinishConnectingToServer$TerrariaPacket = require_Packet_ClientFinishConnectingToServer();
+    var Packet_DungeonDefendersEventAttemptSkipWait$TerrariaPacket = require_Packet_DungeonDefendersEventAttemptSkipWait();
+    function parsePayload(packetType, payload, fromServer) {
+      switch (packetType) {
+        case "ConnectRequest":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_ConnectRequest$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "ConnectRequest",
+                _0: a
+              };
+            });
+          }
+        case "Disconnect":
+          if (fromServer) {
+            return Core__Option.map(Packet_Disconnect$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "Disconnect",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "PlayerSlotSet":
+          if (fromServer) {
+            return Core__Option.map(Packet_PlayerSlotSet$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "PlayerSlotSet",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "PlayerInfo":
+          return Core__Option.map(Packet_PlayerInfo$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "PlayerInfo",
+              _0: a
+            };
+          });
+        case "PlayerInventorySlot":
+          return Core__Option.map(Packet_PlayerInventorySlot$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "PlayerInventorySlot",
+              _0: a
+            };
+          });
+        case "WorldDataRequest":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_WorldDataRequest$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "WorldDataRequest",
+                _0: a
+              };
+            });
+          }
+        case "WorldInfo":
+          if (fromServer) {
+            return Core__Option.map(Packet_WorldInfo$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "WorldInfo",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "InitialTileSectionsRequest":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_InitialTileSectionsRequest$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "InitialTileSectionsRequest",
+                _0: a
+              };
+            });
+          }
+        case "Status":
+          if (fromServer) {
+            return Core__Option.map(Packet_Status$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "Status",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "TileSectionSend":
+          if (fromServer) {
+            return Core__Option.map(Packet_TileSectionSend$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "TileSectionSend",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "TileSectionFrame":
+          if (fromServer) {
+            return Core__Option.map(Packet_TileSectionFrame$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "TileSectionFrame",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "PlayerSpawn":
+          return Core__Option.map(Packet_PlayerSpawn$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "PlayerSpawn",
+              _0: a
+            };
+          });
+        case "PlayerUpdate":
+          return Core__Option.map(Packet_PlayerUpdate$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "PlayerUpdate",
+              _0: a
+            };
+          });
+        case "PlayerActive":
+          if (fromServer) {
+            return Core__Option.map(Packet_PlayerActive$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "PlayerActive",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "PlayerHealth":
+          return Core__Option.map(Packet_PlayerHealth$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "PlayerHealth",
+              _0: a
+            };
+          });
+        case "TileModify":
+          return Core__Option.map(Packet_TileModify$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "TileModify",
+              _0: a
+            };
+          });
+        case "TimeSet":
+          if (fromServer) {
+            return Core__Option.map(Packet_TimeSet$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "TimeSet",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "DoorUse":
+          return Core__Option.map(Packet_DoorUse$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "DoorUse",
+              _0: a
+            };
+          });
+        case "TileSquareSend":
+          return Core__Option.map(Packet_TileSquareSend$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "TileSquareSend",
+              _0: a
+            };
+          });
+        case "ItemDropUpdate":
+          return Core__Option.map(Packet_ItemDropUpdate$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "ItemDropUpdate",
+              _0: a
+            };
+          });
+        case "ItemOwner":
+          return Core__Option.map(Packet_ItemOwner$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "ItemOwner",
+              _0: a
+            };
+          });
+        case "NpcUpdate":
+          if (fromServer) {
+            return Core__Option.map(Packet_NpcUpdate$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "NpcUpdate",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "NpcItemStrike":
+          return Core__Option.map(Packet_NpcItemStrike$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "NpcItemStrike",
+              _0: a
+            };
+          });
+        case "ProjectileSync":
+          return Core__Option.map(Packet_ProjectileSync$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "ProjectileSync",
+              _0: a
+            };
+          });
+        case "NpcStrike":
+          return Core__Option.map(Packet_NpcStrike$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "NpcStrike",
+              _0: a
+            };
+          });
+        case "ProjectileDestroy":
+          return Core__Option.map(Packet_ProjectileDestroy$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "ProjectileDestroy",
+              _0: a
+            };
+          });
+        case "PvpToggle":
+          return Core__Option.map(Packet_PvpToggle$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "PvpToggle",
+              _0: a
+            };
+          });
+        case "ChestOpen":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_ChestOpen$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "ChestOpen",
+                _0: a
+              };
+            });
+          }
+        case "ChestItem":
+          return Core__Option.map(Packet_ChestItem$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "ChestItem",
+              _0: a
+            };
+          });
+        case "ActiveContainerSync":
+          return Core__Option.map(Packet_ActiveContainerSync$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "ActiveContainerSync",
+              _0: a
+            };
+          });
+        case "ChestPlace":
+          return Core__Option.map(Packet_ChestPlace$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "ChestPlace",
+              _0: a
+            };
+          });
+        case "HealEffect":
+          return Core__Option.map(Packet_HealEffect$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "HealEffect",
+              _0: a
+            };
+          });
+        case "Zones":
+          return Core__Option.map(Packet_Zones$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "Zones",
+              _0: a
+            };
+          });
+        case "PasswordRequired":
+          if (fromServer) {
+            return Core__Option.map(Packet_PasswordRequired$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "PasswordRequired",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "PasswordSend":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_PasswordSend$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "PasswordSend",
+                _0: a
+              };
+            });
+          }
+        case "ItemOwnerRemove":
+          if (fromServer) {
+            return Core__Option.map(Packet_ItemOwnerRemove$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "ItemOwnerRemove",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "NpcTalk":
+          return Core__Option.map(Packet_NpcTalk$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "NpcTalk",
+              _0: a
+            };
+          });
+        case "PlayerAnimation":
+          return Core__Option.map(Packet_PlayerAnimation$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "PlayerAnimation",
+              _0: a
+            };
+          });
+        case "PlayerMana":
+          return Core__Option.map(Packet_PlayerMana$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "PlayerMana",
+              _0: a
+            };
+          });
+        case "ManaEffect":
+          return Core__Option.map(Packet_ManaEffect$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "ManaEffect",
+              _0: a
+            };
+          });
+        case "PlayerTeam":
+          return Core__Option.map(Packet_PlayerTeam$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "PlayerTeam",
+              _0: a
+            };
+          });
+        case "SignRead":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_SignRead$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "SignRead",
+                _0: a
+              };
+            });
+          }
+        case "SignNew":
+          return Core__Option.map(Packet_SignNew$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "SignNew",
+              _0: a
+            };
+          });
+        case "LiquidSet":
+          return Core__Option.map(Packet_LiquidSet$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "LiquidSet",
+              _0: a
+            };
+          });
+        case "PlayerSpawnSelf":
+          if (fromServer) {
+            return Core__Option.map(Packet_PlayerSpawnSelf$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "PlayerSpawnSelf",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "PlayerBuffsSet":
+          return Core__Option.map(Packet_PlayerBuffsSet$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "PlayerBuffsSet",
+              _0: a
+            };
+          });
+        case "NpcSpecialEffect":
+          return Core__Option.map(Packet_NpcSpecialEffect$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "NpcSpecialEffect",
+              _0: a
+            };
+          });
+        case "ChestOrTempleUnlock":
+          return Core__Option.map(Packet_ChestOrTempleUnlock$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "ChestOrTempleUnlock",
+              _0: a
+            };
+          });
+        case "NpcBuffAdd":
+          return Core__Option.map(Packet_NpcBuffAdd$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "NpcBuffAdd",
+              _0: a
+            };
+          });
+        case "NpcBuffUpdate":
+          if (fromServer) {
+            return Core__Option.map(Packet_NpcBuffUpdate$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "NpcBuffUpdate",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "PlayerBuffAdd":
+          return Core__Option.map(Packet_PlayerBuffAdd$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "PlayerBuffAdd",
+              _0: a
+            };
+          });
+        case "NpcNameUpdate":
+          return Core__Option.map(Packet_NpcNameUpdate$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "NpcNameUpdate",
+              _0: a
+            };
+          });
+        case "GoodEvilUpdate":
+          if (fromServer) {
+            return Core__Option.map(Packet_GoodEvilUpdate$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "GoodEvilUpdate",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "HarpPlay":
+          return Core__Option.map(Packet_HarpPlay$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "HarpPlay",
+              _0: a
+            };
+          });
+        case "SwitchHit":
+          return Core__Option.map(Packet_SwitchHit$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "SwitchHit",
+              _0: a
+            };
+          });
+        case "NpcHomeUpdate":
+          return Core__Option.map(Packet_NpcHomeUpdate$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "NpcHomeUpdate",
+              _0: a
+            };
+          });
+        case "BossOrInvasionSpawn":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_BossOrInvasionSpawn$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "BossOrInvasionSpawn",
+                _0: a
+              };
+            });
+          }
+        case "PlayerDodge":
+          return Core__Option.map(Packet_PlayerDodge$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "PlayerDodge",
+              _0: a
+            };
+          });
+        case "TilePaint":
+          return Core__Option.map(Packet_TilePaint$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "TilePaint",
+              _0: a
+            };
+          });
+        case "WallPaint":
+          return Core__Option.map(Packet_WallPaint$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "WallPaint",
+              _0: a
+            };
+          });
+        case "Teleport":
+          return Core__Option.map(Packet_Teleport$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "Teleport",
+              _0: a
+            };
+          });
+        case "PlayerHealOther":
+          return Core__Option.map(Packet_PlayerHealOther$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "PlayerHealOther",
+              _0: a
+            };
+          });
+        case "DimensionsUpdate":
+          return Core__Option.map(Packet_DimensionsUpdate$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "DimensionsUpdate",
+              _0: a
+            };
+          });
+        case "ClientUuid":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_ClientUuid$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "ClientUuid",
+                _0: a
+              };
+            });
+          }
+        case "ChestName":
+          return Core__Option.map(Packet_ChestName$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "ChestName",
+              _0: a
+            };
+          });
+        case "NpcCatch":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_NpcCatch$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "NpcCatch",
+                _0: a
+              };
+            });
+          }
+        case "NpcRelease":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_NpcRelease$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "NpcRelease",
+                _0: a
+              };
+            });
+          }
+        case "TravellingMerchantInventory":
+          if (fromServer) {
+            return Core__Option.map(Packet_TravellingMerchantInventory$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "TravellingMerchantInventory",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "TeleportationPotion":
+          return Core__Option.map(Packet_TeleportationPotion$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "TeleportationPotion",
+              _0: a
+            };
+          });
+        case "AnglerQuest":
+          if (fromServer) {
+            return Core__Option.map(Packet_AnglerQuest$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "AnglerQuest",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "AnglerQuestComplete":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_AnglerQuestComplete$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "AnglerQuestComplete",
+                _0: a
+              };
+            });
+          }
+        case "AnglerQuestsCompletedAmount":
+          return Core__Option.map(Packet_AnglerQuestsCompletedAmount$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "AnglerQuestsCompletedAmount",
+              _0: a
+            };
+          });
+        case "TemporaryAnimationCreate":
+          if (fromServer) {
+            return Core__Option.map(Packet_TemporaryAnimationCreate$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "TemporaryAnimationCreate",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "InvasionProgressReport":
+          if (fromServer) {
+            return Core__Option.map(Packet_InvasionProgressReport$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "InvasionProgressReport",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "ObjectPlace":
+          return Core__Option.map(Packet_ObjectPlace$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "ObjectPlace",
+              _0: a
+            };
+          });
+        case "PlayerChestIndexSync":
+          if (fromServer) {
+            return Core__Option.map(Packet_PlayerChestIndexSync$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "PlayerChestIndexSync",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "CombatNumberCreate":
+          if (fromServer) {
+            return Core__Option.map(Packet_CombatNumberCreate$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "CombatNumberCreate",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "NetModuleLoad":
+          return Core__Option.map(Packet_NetModuleLoad$TerrariaPacket.parse(payload, fromServer), function(a) {
+            return {
+              TAG: "NetModuleLoad",
+              _0: a
+            };
+          });
+        case "NpcKillCount":
+          if (fromServer) {
+            return Core__Option.map(Packet_NpcKillCount$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "NpcKillCount",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "PlayerStealth":
+          return Core__Option.map(Packet_PlayerStealth$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "PlayerStealth",
+              _0: a
+            };
+          });
+        case "ItemForceIntoNearestChest":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_ItemForceIntoNearestChest$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "ItemForceIntoNearestChest",
+                _0: a
+              };
+            });
+          }
+        case "TileEntityUpdate":
+          if (fromServer) {
+            return Core__Option.map(Packet_TileEntityUpdate$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "TileEntityUpdate",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "TileEntityPlace":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_TileEntityPlace$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "TileEntityPlace",
+                _0: a
+              };
+            });
+          }
+        case "ItemDropModify":
+          if (fromServer) {
+            return Core__Option.map(Packet_ItemDropModify$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "ItemDropModify",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "ItemFramePlace":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_ItemFramePlace$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "ItemFramePlace",
+                _0: a
+              };
+            });
+          }
+        case "ItemDropInstancedUpdate":
+          return Core__Option.map(Packet_ItemDropInstancedUpdate$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "ItemDropInstancedUpdate",
+              _0: a
+            };
+          });
+        case "EmoteBubble":
+          if (fromServer) {
+            return Core__Option.map(Packet_EmoteBubble$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "EmoteBubble",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "ExtraValueSync":
+          return Core__Option.map(Packet_ExtraValueSync$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "ExtraValueSync",
+              _0: a
+            };
+          });
+        case "SocialHandshake":
+          return Core__Option.map(Packet_SocialHandshake$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "SocialHandshake",
+              _0: a
+            };
+          });
+        case "Unused":
+          return Core__Option.map(Packet_Unused$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "Unused",
+              _0: a
+            };
+          });
+        case "PortalKill":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_PortalKill$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "PortalKill",
+                _0: a
+              };
+            });
+          }
+        case "PlayerTeleportPortal":
+          return Core__Option.map(Packet_PlayerTeleportPortal$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "PlayerTeleportPortal",
+              _0: a
+            };
+          });
+        case "NpcKilledNotification":
+          if (fromServer) {
+            return Core__Option.map(Packet_NpcKilledNotification$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "NpcKilledNotification",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "EventNotification":
+          if (fromServer) {
+            return Core__Option.map(Packet_EventNotification$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "EventNotification",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "MinionTargetUpdate":
+          return Core__Option.map(Packet_MinionTargetUpdate$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "MinionTargetUpdate",
+              _0: a
+            };
+          });
+        case "NpcTeleportPortal":
+          return Core__Option.map(Packet_NpcTeleportPortal$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "NpcTeleportPortal",
+              _0: a
+            };
+          });
+        case "ShieldStrengthsUpdate":
+          if (fromServer) {
+            return Core__Option.map(Packet_ShieldStrengthsUpdate$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "ShieldStrengthsUpdate",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "NebulaLevelUp":
+          return Core__Option.map(Packet_NebulaLevelUp$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "NebulaLevelUp",
+              _0: a
+            };
+          });
+        case "MoonLordCountdown":
+          if (fromServer) {
+            return Core__Option.map(Packet_MoonLordCountdown$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "MoonLordCountdown",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "NpcShopItem":
+          if (fromServer) {
+            return Core__Option.map(Packet_NpcShopItem$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "NpcShopItem",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "GemLockToggle":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_GemLockToggle$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "GemLockToggle",
+                _0: a
+              };
+            });
+          }
+        case "SmokePoof":
+          if (fromServer) {
+            return Core__Option.map(Packet_SmokePoof$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "SmokePoof",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "ChatMessageSmart":
+          if (fromServer) {
+            return Core__Option.map(Packet_ChatMessageSmart$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "ChatMessageSmart",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "WiredCannonShot":
+          if (fromServer) {
+            return Core__Option.map(Packet_WiredCannonShot$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "WiredCannonShot",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "MassWireOperation":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_MassWireOperation$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "MassWireOperation",
+                _0: a
+              };
+            });
+          }
+        case "MassWireOperationPay":
+          if (fromServer) {
+            return Core__Option.map(Packet_MassWireOperationPay$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "MassWireOperationPay",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "PartyToggle":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_PartyToggle$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "PartyToggle",
+                _0: a
+              };
+            });
+          }
+        case "TreeGrowFx":
+          return Core__Option.map(Packet_TreeGrowFx$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "TreeGrowFx",
+              _0: a
+            };
+          });
+        case "CrystalInvasionStart":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_CrystalInvasionStart$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "CrystalInvasionStart",
+                _0: a
+              };
+            });
+          }
+        case "CrystalInvasionWipeAll":
+          if (fromServer) {
+            return Core__Option.map(Packet_CrystalInvasionWipeAll$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "CrystalInvasionWipeAll",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "MinionAttackTargetUpdate":
+          return Core__Option.map(Packet_MinionAttackTargetUpdate$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "MinionAttackTargetUpdate",
+              _0: a
+            };
+          });
+        case "CrystalInvasionSendWaitTime":
+          if (fromServer) {
+            return Core__Option.map(Packet_CrystalInvasionSendWaitTime$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "CrystalInvasionSendWaitTime",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "PlayerDamage":
+          return Core__Option.map(Packet_PlayerDamage$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "PlayerDamage",
+              _0: a
+            };
+          });
+        case "PlayerDeath":
+          return Core__Option.map(Packet_PlayerDeath$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "PlayerDeath",
+              _0: a
+            };
+          });
+        case "CombatTextCreate":
+          if (fromServer) {
+            return Core__Option.map(Packet_CombatTextCreate$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "CombatTextCreate",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "Emoji":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_Emoji$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "Emoji",
+                _0: a
+              };
+            });
+          }
+        case "TileEntityDisplayDollItemSync":
+          return Core__Option.map(Packet_TileEntityDisplayDollItemSync$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "TileEntityDisplayDollItemSync",
+              _0: a
+            };
+          });
+        case "TileEntityInteractionRequest":
+          return Core__Option.map(Packet_TileEntityInteractionRequest$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "TileEntityInteractionRequest",
+              _0: a
+            };
+          });
+        case "WeaponsRackTryPlacing":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_WeaponsRackTryPlacing$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "WeaponsRackTryPlacing",
+                _0: a
+              };
+            });
+          }
+        case "TileEntityHatRackItemSync":
+          return Core__Option.map(Packet_TileEntityHatRackItemSync$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "TileEntityHatRackItemSync",
+              _0: a
+            };
+          });
+        case "TilePickingSync":
+          return Core__Option.map(Packet_TilePickingSync$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "TilePickingSync",
+              _0: a
+            };
+          });
+        case "RevengeMarkerSync":
+          if (fromServer) {
+            return Core__Option.map(Packet_RevengeMarkerSync$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "RevengeMarkerSync",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "RevengeMarkerRemove":
+          if (fromServer) {
+            return Core__Option.map(Packet_RevengeMarkerRemove$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "RevengeMarkerRemove",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "GolfBallLandInCup":
+          return Core__Option.map(Packet_GolfBallLandInCup$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "GolfBallLandInCup",
+              _0: a
+            };
+          });
+        case "ClientFinishConnectingToServer":
+          if (fromServer) {
+            return Core__Option.map(Packet_ClientFinishConnectingToServer$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "ClientFinishConnectingToServer",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "NpcFishOut":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_NpcFishOut$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "NpcFishOut",
+                _0: a
+              };
+            });
+          }
+        case "NpcTamper":
+          if (fromServer) {
+            return Core__Option.map(Packet_NpcTamper$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "NpcTamper",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "LegacySoundPlay":
+          if (fromServer) {
+            return Core__Option.map(Packet_LegacySoundPlay$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "LegacySoundPlay",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "FoodPlatterTryPlacing":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_FoodPlatterTryPlacing$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "FoodPlatterTryPlacing",
+                _0: a
+              };
+            });
+          }
+        case "PlayerLuckFactorsUpdate":
+          return Core__Option.map(Packet_PlayerLuckFactorsUpdate$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "PlayerLuckFactorsUpdate",
+              _0: a
+            };
+          });
+        case "PlayerDead":
+          if (fromServer) {
+            return Core__Option.map(Packet_PlayerDead$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "PlayerDead",
+                _0: a
+              };
+            });
+          } else {
+            return;
+          }
+        case "CavernMonsterTypeSync":
+          return Core__Option.map(Packet_CavernMonsterTypeSync$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "CavernMonsterTypeSync",
+              _0: a
+            };
+          });
+        case "NpcBuffRemovalRequest":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_NpcBuffRemovalRequest$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "NpcBuffRemovalRequest",
+                _0: a
+              };
+            });
+          }
+        case "ClientSyncedInventory":
+          if (fromServer) {
+            return;
+          } else {
+            return Core__Option.map(Packet_ClientSyncedInventory$TerrariaPacket.parse(payload), function(a) {
+              return {
+                TAG: "ClientSyncedInventory",
+                _0: a
+              };
+            });
+          }
+        case "CountsAsHostForGameplaySet":
+          return Core__Option.map(Packet_CountsAsHostForGameplaySet$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "CountsAsHostForGameplaySet",
+              _0: a
+            };
+          });
+        case "CreditsOrSlimeTransform":
+          return Core__Option.map(Packet_CreditsOrSlimeTransform$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "CreditsOrSlimeTransform",
+              _0: a
+            };
+          });
+        case "LucyAxeMessage":
+          return Core__Option.map(Packet_LucyAxeMessage$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "LucyAxeMessage",
+              _0: a
+            };
+          });
+        case "PiggyBankVoidLensUpdate":
+          return Core__Option.map(Packet_PiggyBankVoidLensUpdate$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "PiggyBankVoidLensUpdate",
+              _0: a
+            };
+          });
+        case "DungeonDefendersEventAttemptSkipWait":
+          return Core__Option.map(Packet_DungeonDefendersEventAttemptSkipWait$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "DungeonDefendersEventAttemptSkipWait",
+              _0: a
+            };
+          });
+        case "HaveDryadDoStardewAnimation":
+          return Core__Option.map(Packet_HaveDryadDoStardewAnimation$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "HaveDryadDoStardewAnimation",
+              _0: a
+            };
+          });
+        case "ItemDropShimmeredUpdate":
+          return Core__Option.map(Packet_ItemDropShimmeredUpdate$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "ItemDropShimmeredUpdate",
+              _0: a
+            };
+          });
+        case "ShimmerEffectOrCoinLuck":
+          return Core__Option.map(Packet_ShimmerEffectOrCoinLuck$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "ShimmerEffectOrCoinLuck",
+              _0: a
+            };
+          });
+        case "LoadoutSwitch":
+          return Core__Option.map(Packet_LoadoutSwitch$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "LoadoutSwitch",
+              _0: a
+            };
+          });
+        case "ItemDropProtectedUpdate":
+          return Core__Option.map(Packet_ItemDropProtectedUpdate$TerrariaPacket.parse(payload), function(a) {
+            return {
+              TAG: "ItemDropProtectedUpdate",
+              _0: a
+            };
+          });
+      }
+    }
+    function parse(buffer, fromServer) {
+      var match = buffer.length;
+      if (!(match > 2 || match < 0)) {
+        return;
+      }
+      var packetType = PacketType$TerrariaPacket.fromInt(buffer[2]);
+      if (packetType === void 0) {
+        return;
+      }
+      try {
+        return Core__Option.map(parsePayload(packetType, buffer, fromServer), function(packet) {
+          return {
+            TAG: "SerializeNotNecessary",
+            _0: packet,
+            _1: buffer
+          };
+        });
+      } catch (_e) {
+        return;
+      }
+    }
+    function parseLazy(buffer, fromServer) {
+      var match = buffer.length;
+      if (!(match > 2 || match < 0)) {
+        return;
+      }
+      var packetType = PacketType$TerrariaPacket.fromInt(buffer[2]);
+      if (packetType === void 0) {
+        return;
+      }
+      try {
+        switch (packetType) {
+          case "ConnectRequest":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "ConnectRequest",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_ConnectRequest$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "Disconnect":
+            if (fromServer) {
+              return {
+                TAG: "Disconnect",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_Disconnect$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "PlayerSlotSet":
+            if (fromServer) {
+              return {
+                TAG: "PlayerSlotSet",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_PlayerSlotSet$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "PlayerInfo":
+            return {
+              TAG: "PlayerInfo",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_PlayerInfo$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "PlayerInventorySlot":
+            return {
+              TAG: "PlayerInventorySlot",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_PlayerInventorySlot$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "WorldDataRequest":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "WorldDataRequest",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_WorldDataRequest$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "WorldInfo":
+            if (fromServer) {
+              return {
+                TAG: "WorldInfo",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_WorldInfo$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "InitialTileSectionsRequest":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "InitialTileSectionsRequest",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_InitialTileSectionsRequest$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "Status":
+            if (fromServer) {
+              return {
+                TAG: "Status",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_Status$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "TileSectionSend":
+            if (fromServer) {
+              return {
+                TAG: "TileSectionSend",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_TileSectionSend$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "TileSectionFrame":
+            if (fromServer) {
+              return {
+                TAG: "TileSectionFrame",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_TileSectionFrame$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "PlayerSpawn":
+            return {
+              TAG: "PlayerSpawn",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_PlayerSpawn$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "PlayerUpdate":
+            return {
+              TAG: "PlayerUpdate",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_PlayerUpdate$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "PlayerActive":
+            if (fromServer) {
+              return {
+                TAG: "PlayerActive",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_PlayerActive$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "PlayerHealth":
+            return {
+              TAG: "PlayerHealth",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_PlayerHealth$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "TileModify":
+            return {
+              TAG: "TileModify",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_TileModify$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "TimeSet":
+            if (fromServer) {
+              return {
+                TAG: "TimeSet",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_TimeSet$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "DoorUse":
+            return {
+              TAG: "DoorUse",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_DoorUse$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "TileSquareSend":
+            return {
+              TAG: "TileSquareSend",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_TileSquareSend$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "ItemDropUpdate":
+            return {
+              TAG: "ItemDropUpdate",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_ItemDropUpdate$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "ItemOwner":
+            return {
+              TAG: "ItemOwner",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_ItemOwner$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "NpcUpdate":
+            if (fromServer) {
+              return {
+                TAG: "NpcUpdate",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_NpcUpdate$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "NpcItemStrike":
+            return {
+              TAG: "NpcItemStrike",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_NpcItemStrike$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "ProjectileSync":
+            return {
+              TAG: "ProjectileSync",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_ProjectileSync$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "NpcStrike":
+            return {
+              TAG: "NpcStrike",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_NpcStrike$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "ProjectileDestroy":
+            return {
+              TAG: "ProjectileDestroy",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_ProjectileDestroy$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "PvpToggle":
+            return {
+              TAG: "PvpToggle",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_PvpToggle$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "ChestOpen":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "ChestOpen",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_ChestOpen$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "ChestItem":
+            return {
+              TAG: "ChestItem",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_ChestItem$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "ActiveContainerSync":
+            return {
+              TAG: "ActiveContainerSync",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_ActiveContainerSync$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "ChestPlace":
+            return {
+              TAG: "ChestPlace",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_ChestPlace$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "HealEffect":
+            return {
+              TAG: "HealEffect",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_HealEffect$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "Zones":
+            return {
+              TAG: "Zones",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_Zones$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "PasswordRequired":
+            if (fromServer) {
+              return {
+                TAG: "PasswordRequired",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_PasswordRequired$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "PasswordSend":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "PasswordSend",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_PasswordSend$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "ItemOwnerRemove":
+            if (fromServer) {
+              return {
+                TAG: "ItemOwnerRemove",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_ItemOwnerRemove$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "NpcTalk":
+            return {
+              TAG: "NpcTalk",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_NpcTalk$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "PlayerAnimation":
+            return {
+              TAG: "PlayerAnimation",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_PlayerAnimation$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "PlayerMana":
+            return {
+              TAG: "PlayerMana",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_PlayerMana$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "ManaEffect":
+            return {
+              TAG: "ManaEffect",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_ManaEffect$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "PlayerTeam":
+            return {
+              TAG: "PlayerTeam",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_PlayerTeam$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "SignRead":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "SignRead",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_SignRead$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "SignNew":
+            return {
+              TAG: "SignNew",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_SignNew$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "LiquidSet":
+            return {
+              TAG: "LiquidSet",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_LiquidSet$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "PlayerSpawnSelf":
+            if (fromServer) {
+              return {
+                TAG: "PlayerSpawnSelf",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_PlayerSpawnSelf$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "PlayerBuffsSet":
+            return {
+              TAG: "PlayerBuffsSet",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_PlayerBuffsSet$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "NpcSpecialEffect":
+            return {
+              TAG: "NpcSpecialEffect",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_NpcSpecialEffect$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "ChestOrTempleUnlock":
+            return {
+              TAG: "ChestOrTempleUnlock",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_ChestOrTempleUnlock$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "NpcBuffAdd":
+            return {
+              TAG: "NpcBuffAdd",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_NpcBuffAdd$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "NpcBuffUpdate":
+            if (fromServer) {
+              return {
+                TAG: "NpcBuffUpdate",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_NpcBuffUpdate$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "PlayerBuffAdd":
+            return {
+              TAG: "PlayerBuffAdd",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_PlayerBuffAdd$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "NpcNameUpdate":
+            return {
+              TAG: "NpcNameUpdate",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_NpcNameUpdate$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "GoodEvilUpdate":
+            if (fromServer) {
+              return {
+                TAG: "GoodEvilUpdate",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_GoodEvilUpdate$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "HarpPlay":
+            return {
+              TAG: "HarpPlay",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_HarpPlay$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "SwitchHit":
+            return {
+              TAG: "SwitchHit",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_SwitchHit$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "NpcHomeUpdate":
+            return {
+              TAG: "NpcHomeUpdate",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_NpcHomeUpdate$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "BossOrInvasionSpawn":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "BossOrInvasionSpawn",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_BossOrInvasionSpawn$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "PlayerDodge":
+            return {
+              TAG: "PlayerDodge",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_PlayerDodge$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "TilePaint":
+            return {
+              TAG: "TilePaint",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_TilePaint$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "WallPaint":
+            return {
+              TAG: "WallPaint",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_WallPaint$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "Teleport":
+            return {
+              TAG: "Teleport",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_Teleport$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "PlayerHealOther":
+            return {
+              TAG: "PlayerHealOther",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_PlayerHealOther$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "DimensionsUpdate":
+            return {
+              TAG: "DimensionsUpdate",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_DimensionsUpdate$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "ClientUuid":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "ClientUuid",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_ClientUuid$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "ChestName":
+            return {
+              TAG: "ChestName",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_ChestName$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "NpcCatch":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "NpcCatch",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_NpcCatch$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "NpcRelease":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "NpcRelease",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_NpcRelease$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "TravellingMerchantInventory":
+            if (fromServer) {
+              return {
+                TAG: "TravellingMerchantInventory",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_TravellingMerchantInventory$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "TeleportationPotion":
+            return {
+              TAG: "TeleportationPotion",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_TeleportationPotion$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "AnglerQuest":
+            if (fromServer) {
+              return {
+                TAG: "AnglerQuest",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_AnglerQuest$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "AnglerQuestComplete":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "AnglerQuestComplete",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_AnglerQuestComplete$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "AnglerQuestsCompletedAmount":
+            return {
+              TAG: "AnglerQuestsCompletedAmount",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_AnglerQuestsCompletedAmount$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "TemporaryAnimationCreate":
+            if (fromServer) {
+              return {
+                TAG: "TemporaryAnimationCreate",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_TemporaryAnimationCreate$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "InvasionProgressReport":
+            if (fromServer) {
+              return {
+                TAG: "InvasionProgressReport",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_InvasionProgressReport$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "ObjectPlace":
+            return {
+              TAG: "ObjectPlace",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_ObjectPlace$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "PlayerChestIndexSync":
+            if (fromServer) {
+              return {
+                TAG: "PlayerChestIndexSync",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_PlayerChestIndexSync$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "CombatNumberCreate":
+            if (fromServer) {
+              return {
+                TAG: "CombatNumberCreate",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_CombatNumberCreate$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "NetModuleLoad":
+            return {
+              TAG: "NetModuleLoad",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_NetModuleLoad$TerrariaPacket.parse(buffer, fromServer);
+                }
+              }
+            };
+          case "NpcKillCount":
+            if (fromServer) {
+              return {
+                TAG: "NpcKillCount",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_NpcKillCount$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "PlayerStealth":
+            return {
+              TAG: "PlayerStealth",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_PlayerStealth$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "ItemForceIntoNearestChest":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "ItemForceIntoNearestChest",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_ItemForceIntoNearestChest$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "TileEntityUpdate":
+            if (fromServer) {
+              return {
+                TAG: "TileEntityUpdate",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_TileEntityUpdate$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "TileEntityPlace":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "TileEntityPlace",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_TileEntityPlace$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "ItemDropModify":
+            if (fromServer) {
+              return {
+                TAG: "ItemDropModify",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_ItemDropModify$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "ItemFramePlace":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "ItemFramePlace",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_ItemFramePlace$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "ItemDropInstancedUpdate":
+            return {
+              TAG: "ItemDropInstancedUpdate",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_ItemDropInstancedUpdate$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "EmoteBubble":
+            if (fromServer) {
+              return {
+                TAG: "EmoteBubble",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_EmoteBubble$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "ExtraValueSync":
+            return {
+              TAG: "ExtraValueSync",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_ExtraValueSync$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "SocialHandshake":
+            return {
+              TAG: "SocialHandshake",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_SocialHandshake$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "Unused":
+            return {
+              TAG: "Unused",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_Unused$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "PortalKill":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "PortalKill",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_PortalKill$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "PlayerTeleportPortal":
+            return {
+              TAG: "PlayerTeleportPortal",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_PlayerTeleportPortal$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "NpcKilledNotification":
+            if (fromServer) {
+              return {
+                TAG: "NpcKilledNotification",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_NpcKilledNotification$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "EventNotification":
+            if (fromServer) {
+              return {
+                TAG: "EventNotification",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_EventNotification$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "MinionTargetUpdate":
+            return {
+              TAG: "MinionTargetUpdate",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_MinionTargetUpdate$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "NpcTeleportPortal":
+            return {
+              TAG: "NpcTeleportPortal",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_NpcTeleportPortal$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "ShieldStrengthsUpdate":
+            if (fromServer) {
+              return {
+                TAG: "ShieldStrengthsUpdate",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_ShieldStrengthsUpdate$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "NebulaLevelUp":
+            return {
+              TAG: "NebulaLevelUp",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_NebulaLevelUp$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "MoonLordCountdown":
+            if (fromServer) {
+              return {
+                TAG: "MoonLordCountdown",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_MoonLordCountdown$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "NpcShopItem":
+            if (fromServer) {
+              return {
+                TAG: "NpcShopItem",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_NpcShopItem$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "GemLockToggle":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "GemLockToggle",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_GemLockToggle$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "SmokePoof":
+            if (fromServer) {
+              return {
+                TAG: "SmokePoof",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_SmokePoof$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "ChatMessageSmart":
+            if (fromServer) {
+              return {
+                TAG: "ChatMessageSmart",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_ChatMessageSmart$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "WiredCannonShot":
+            if (fromServer) {
+              return {
+                TAG: "WiredCannonShot",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_WiredCannonShot$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "MassWireOperation":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "MassWireOperation",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_MassWireOperation$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "MassWireOperationPay":
+            if (fromServer) {
+              return {
+                TAG: "MassWireOperationPay",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_MassWireOperationPay$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "PartyToggle":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "PartyToggle",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_PartyToggle$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "TreeGrowFx":
+            return {
+              TAG: "TreeGrowFx",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_TreeGrowFx$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "CrystalInvasionStart":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "CrystalInvasionStart",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_CrystalInvasionStart$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "CrystalInvasionWipeAll":
+            if (fromServer) {
+              return {
+                TAG: "CrystalInvasionWipeAll",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_CrystalInvasionWipeAll$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "MinionAttackTargetUpdate":
+            return {
+              TAG: "MinionAttackTargetUpdate",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_MinionAttackTargetUpdate$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "CrystalInvasionSendWaitTime":
+            if (fromServer) {
+              return {
+                TAG: "CrystalInvasionSendWaitTime",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_CrystalInvasionSendWaitTime$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "PlayerDamage":
+            return {
+              TAG: "PlayerDamage",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_PlayerDamage$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "PlayerDeath":
+            return {
+              TAG: "PlayerDeath",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_PlayerDeath$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "CombatTextCreate":
+            if (fromServer) {
+              return {
+                TAG: "CombatTextCreate",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_CombatTextCreate$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "Emoji":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "Emoji",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_Emoji$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "TileEntityDisplayDollItemSync":
+            return {
+              TAG: "TileEntityDisplayDollItemSync",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_TileEntityDisplayDollItemSync$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "TileEntityInteractionRequest":
+            return {
+              TAG: "TileEntityInteractionRequest",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_TileEntityInteractionRequest$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "WeaponsRackTryPlacing":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "WeaponsRackTryPlacing",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_WeaponsRackTryPlacing$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "TileEntityHatRackItemSync":
+            return {
+              TAG: "TileEntityHatRackItemSync",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_TileEntityHatRackItemSync$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "TilePickingSync":
+            return {
+              TAG: "TilePickingSync",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_TilePickingSync$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "RevengeMarkerSync":
+            if (fromServer) {
+              return {
+                TAG: "RevengeMarkerSync",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_RevengeMarkerSync$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "RevengeMarkerRemove":
+            if (fromServer) {
+              return {
+                TAG: "RevengeMarkerRemove",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_RevengeMarkerRemove$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "GolfBallLandInCup":
+            return {
+              TAG: "GolfBallLandInCup",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_GolfBallLandInCup$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "ClientFinishConnectingToServer":
+            if (fromServer) {
+              return {
+                TAG: "ClientFinishConnectingToServer",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_ClientFinishConnectingToServer$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "NpcFishOut":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "NpcFishOut",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_NpcFishOut$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "NpcTamper":
+            if (fromServer) {
+              return {
+                TAG: "NpcTamper",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_NpcTamper$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "LegacySoundPlay":
+            if (fromServer) {
+              return {
+                TAG: "LegacySoundPlay",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_LegacySoundPlay$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "FoodPlatterTryPlacing":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "FoodPlatterTryPlacing",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_FoodPlatterTryPlacing$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "PlayerLuckFactorsUpdate":
+            return {
+              TAG: "PlayerLuckFactorsUpdate",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_PlayerLuckFactorsUpdate$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "PlayerDead":
+            if (fromServer) {
+              return {
+                TAG: "PlayerDead",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_PlayerDead$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            } else {
+              return;
+            }
+          case "CavernMonsterTypeSync":
+            return {
+              TAG: "CavernMonsterTypeSync",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_CavernMonsterTypeSync$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "NpcBuffRemovalRequest":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "NpcBuffRemovalRequest",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_NpcBuffRemovalRequest$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "ClientSyncedInventory":
+            if (fromServer) {
+              return;
+            } else {
+              return {
+                TAG: "ClientSyncedInventory",
+                _0: {
+                  LAZY_DONE: false,
+                  VAL: function() {
+                    return Packet_ClientSyncedInventory$TerrariaPacket.parse(buffer);
+                  }
+                }
+              };
+            }
+          case "CountsAsHostForGameplaySet":
+            return {
+              TAG: "CountsAsHostForGameplaySet",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_CountsAsHostForGameplaySet$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "CreditsOrSlimeTransform":
+            return {
+              TAG: "CreditsOrSlimeTransform",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_CreditsOrSlimeTransform$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "LucyAxeMessage":
+            return {
+              TAG: "LucyAxeMessage",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_LucyAxeMessage$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "PiggyBankVoidLensUpdate":
+            return {
+              TAG: "PiggyBankVoidLensUpdate",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_PiggyBankVoidLensUpdate$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "DungeonDefendersEventAttemptSkipWait":
+            return {
+              TAG: "DungeonDefendersEventAttemptSkipWait",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_DungeonDefendersEventAttemptSkipWait$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "HaveDryadDoStardewAnimation":
+            return {
+              TAG: "HaveDryadDoStardewAnimation",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_HaveDryadDoStardewAnimation$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "ItemDropShimmeredUpdate":
+            return {
+              TAG: "ItemDropShimmeredUpdate",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_ItemDropShimmeredUpdate$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "ShimmerEffectOrCoinLuck":
+            return {
+              TAG: "ShimmerEffectOrCoinLuck",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_ShimmerEffectOrCoinLuck$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "LoadoutSwitch":
+            return {
+              TAG: "LoadoutSwitch",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_LoadoutSwitch$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+          case "ItemDropProtectedUpdate":
+            return {
+              TAG: "ItemDropProtectedUpdate",
+              _0: {
+                LAZY_DONE: false,
+                VAL: function() {
+                  return Packet_ItemDropProtectedUpdate$TerrariaPacket.parse(buffer);
+                }
+              }
+            };
+        }
+      } catch (_e) {
+        return;
+      }
+    }
+    exports2.parse = parse;
+    exports2.parseLazy = parseLazy;
+  }
+});
+
 // src/Point.js
 var require_Point = __commonJS({
   "src/Point.js"(exports2) {
@@ -19698,6 +24455,7 @@ __export(Export_exports, {
   NpcTeleportPortalPacket: () => NpcTeleportPortalPacket,
   NpcUpdatePacket: () => NpcUpdatePacket,
   ObjectPlacePacket: () => ObjectPlacePacket,
+  Parser: () => Parser,
   PartyTogglePacket: () => PartyTogglePacket,
   PlayerActivePacket: () => PlayerActivePacket,
   PlayerAnimationPacket: () => PlayerAnimationPacket,
@@ -19843,6 +24601,7 @@ var WorldInfoPacket = __toESM(require_Packet_WorldInfo());
 var PlayerActivePacket = __toESM(require_Packet_PlayerActive());
 var NpcUpdatePacket = __toESM(require_Packet_NpcUpdate());
 var DisconnectPacket = __toESM(require_Packet_Disconnect());
+var Parser = __toESM(require_Parser());
 var Point = __toESM(require_Point());
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
@@ -19886,6 +24645,7 @@ var Point = __toESM(require_Point());
   NpcTeleportPortalPacket,
   NpcUpdatePacket,
   ObjectPlacePacket,
+  Parser,
   PartyTogglePacket,
   PlayerActivePacket,
   PlayerAnimationPacket,
