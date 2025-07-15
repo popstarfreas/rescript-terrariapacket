@@ -19413,6 +19413,183 @@ var require_Packet_PlayerActive = __commonJS({
   }
 });
 
+// src/packet/Packet_NpcUpdate.js
+var require_Packet_NpcUpdate = __commonJS({
+  "src/packet/Packet_NpcUpdate.js"(exports2) {
+    "use strict";
+    var Belt_Option = require_belt_Option();
+    var BitFlags$TerrariaPacket = require_BitFlags();
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function readNpcFlags1(reader, fieldName) {
+      var flags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, fieldName));
+      return {
+        directionX: BitFlags$TerrariaPacket.flag1(flags),
+        directionY: BitFlags$TerrariaPacket.flag2(flags),
+        ai0: BitFlags$TerrariaPacket.flag3(flags),
+        ai1: BitFlags$TerrariaPacket.flag4(flags),
+        ai2: BitFlags$TerrariaPacket.flag5(flags),
+        ai3: BitFlags$TerrariaPacket.flag6(flags),
+        spriteDirection: BitFlags$TerrariaPacket.flag7(flags),
+        lifeMax: BitFlags$TerrariaPacket.flag8(flags)
+      };
+    }
+    function readNpcFlags2(reader, fieldName) {
+      var flags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, fieldName));
+      return {
+        statsScaled: BitFlags$TerrariaPacket.flag1(flags),
+        spawnedFromStatue: BitFlags$TerrariaPacket.flag2(flags),
+        strengthMultiplier: BitFlags$TerrariaPacket.flag3(flags)
+      };
+    }
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var npcSlotId = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcSlotId");
+      var x = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+      var y = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+      var vx = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
+      var vy = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
+      var target = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "target");
+      var npcFlags12 = readNpcFlags1(reader, "npcFlags1");
+      var npcFlags22 = readNpcFlags2(reader, "npcFlags2");
+      var ai_0 = npcFlags12.ai0 ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai0") : void 0;
+      var ai_1 = npcFlags12.ai1 ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai1") : void 0;
+      var ai_2 = npcFlags12.ai2 ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai2") : void 0;
+      var ai_3 = npcFlags12.ai3 ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai3") : void 0;
+      var ai = [
+        ai_0,
+        ai_1,
+        ai_2,
+        ai_3
+      ];
+      var npcTypeId = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcTypeId");
+      var playerCountScale = npcFlags22.statsScaled ? ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerCountScale") : void 0;
+      var strengthMultiplier = npcFlags22.strengthMultiplier ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "strengthMultiplier") : void 0;
+      var life;
+      if (npcFlags12.lifeMax) {
+        life = "Max";
+      } else {
+        var lifeBytes = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "lifeBytes");
+        switch (lifeBytes) {
+          case 1:
+            life = {
+              TAG: "Byte",
+              _0: ErrorAwarePacketReader$TerrariaPacket.readSByte(reader, "life_sbyte")
+            };
+            break;
+          case 2:
+            life = {
+              TAG: "Int16",
+              _0: ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "life_int16")
+            };
+            break;
+          case 4:
+            life = {
+              TAG: "Int32",
+              _0: ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "life_int32")
+            };
+            break;
+          default:
+            life = void 0;
+        }
+      }
+      var releaseOwner;
+      try {
+        releaseOwner = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "releaseOwner");
+      } catch (exn) {
+        releaseOwner = void 0;
+      }
+      if (life !== void 0) {
+        return {
+          npcSlotId,
+          npcTypeId,
+          x,
+          y,
+          vx,
+          vy,
+          target,
+          directionX: npcFlags12.directionX,
+          directionY: npcFlags12.directionY,
+          ai,
+          spriteDirection: npcFlags12.spriteDirection,
+          life,
+          releaseOwner,
+          playerCountScale,
+          strengthMultiplier,
+          spawnedFromStatue: npcFlags22.spawnedFromStatue
+        };
+      }
+    }
+    function npcFlags1(self) {
+      var match = self.ai;
+      return BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(self.directionX, self.directionY, Belt_Option.isSome(match[0]), Belt_Option.isSome(match[1]), Belt_Option.isSome(match[2]), Belt_Option.isSome(match[3]), self.spriteDirection, self.life === "Max"));
+    }
+    function npcFlags2(self) {
+      return BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(self.playerCountScale), self.spawnedFromStatue, Belt_Option.isSome(self.strengthMultiplier), false, false, false, false, false));
+    }
+    function packAi(writer, param) {
+      var ai3 = param[3];
+      var ai2 = param[2];
+      var ai1 = param[1];
+      var ai0 = param[0];
+      if (ai0 !== void 0) {
+        ErrorAwarePacketWriter$TerrariaPacket.packSingle(writer, ai0, "ai0");
+      }
+      if (ai1 !== void 0) {
+        ErrorAwarePacketWriter$TerrariaPacket.packSingle(writer, ai1, "ai1");
+      }
+      if (ai2 !== void 0) {
+        ErrorAwarePacketWriter$TerrariaPacket.packSingle(writer, ai2, "ai2");
+      }
+      if (ai3 !== void 0) {
+        ErrorAwarePacketWriter$TerrariaPacket.packSingle(writer, ai3, "ai3");
+      }
+      return writer;
+    }
+    function packPlayerCountScale(writer, playerCountScale) {
+      if (playerCountScale !== void 0) {
+        return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, playerCountScale, "playerCountScale");
+      } else {
+        return writer;
+      }
+    }
+    function packStrengthMultiplier(writer, strengthMultiplier) {
+      if (strengthMultiplier !== void 0) {
+        return ErrorAwarePacketWriter$TerrariaPacket.packSingle(writer, strengthMultiplier, "strengthMultiplier");
+      } else {
+        return writer;
+      }
+    }
+    function packLife(writer, life) {
+      if (typeof life !== "object") {
+        return writer;
+      }
+      switch (life.TAG) {
+        case "Byte":
+          return ErrorAwarePacketWriter$TerrariaPacket.packSByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, 1, "lifeBytes"), life._0, "life_sbyte");
+        case "Int16":
+          return ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, 2, "lifeBytes"), life._0, "life_int16");
+        case "Int32":
+          return ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, 4, "lifeBytes"), life._0, "life_int32");
+      }
+    }
+    function packReleaseOwner(writer, releaseOwner) {
+      if (releaseOwner !== void 0) {
+        return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, releaseOwner, "releaseOwner");
+      } else {
+        return writer;
+      }
+    }
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(packReleaseOwner(packLife(packStrengthMultiplier(packPlayerCountScale(ErrorAwarePacketWriter$TerrariaPacket.packInt16(packAi(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcUpdate")), self.npcSlotId, "npcSlotId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.target, "target"), npcFlags1(self), "npcFlags1"), npcFlags2(self), "npcFlags2"), self.ai), self.npcTypeId, "npcTypeId"), self.playerCountScale), self.strengthMultiplier), self.life), self.releaseOwner));
+    }
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
 // src/Point.js
 var require_Point = __commonJS({
   "src/Point.js"(exports2) {
@@ -19474,6 +19651,7 @@ __export(Export_exports, {
   NpcShopItemPacket: () => NpcShopItemPacket,
   NpcTalkPacket: () => NpcTalkPacket,
   NpcTeleportPortalPacket: () => NpcTeleportPortalPacket,
+  NpcUpdatePacket: () => NpcUpdatePacket,
   ObjectPlacePacket: () => ObjectPlacePacket,
   PartyTogglePacket: () => PartyTogglePacket,
   PlayerActivePacket: () => PlayerActivePacket,
@@ -19618,6 +19796,7 @@ var ProjectileSyncPacket = __toESM(require_Packet_ProjectileSync());
 var PlayerDamagePacket = __toESM(require_Packet_PlayerDamage());
 var WorldInfoPacket = __toESM(require_Packet_WorldInfo());
 var PlayerActivePacket = __toESM(require_Packet_PlayerActive());
+var NpcUpdatePacket = __toESM(require_Packet_NpcUpdate());
 var Point = __toESM(require_Point());
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
@@ -19658,6 +19837,7 @@ var Point = __toESM(require_Point());
   NpcShopItemPacket,
   NpcTalkPacket,
   NpcTeleportPortalPacket,
+  NpcUpdatePacket,
   ObjectPlacePacket,
   PartyTogglePacket,
   PlayerActivePacket,

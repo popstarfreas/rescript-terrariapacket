@@ -63,6 +63,8 @@ declare type activeTile_2 = {
     readonly frame: (undefined | frame_2)
 };
 
+declare type ai = [(undefined | number), (undefined | number), (undefined | number), (undefined | number)];
+
 declare type ambience = {
     readonly playerId: number;
     readonly seed: number;
@@ -511,7 +513,7 @@ declare type flags = {
     readonly runCheckBytes: boolean
 };
 
-declare type Float_t = t_86<number>;
+declare type Float_t = t_87<number>;
 
 declare function forEach(t: t_74, callback: (flag: boolean) => void): void;
 
@@ -546,7 +548,7 @@ export declare namespace HaveDryadDoStardewAnimationPacket {
     }
 }
 
-declare type Int_t = t_86<number>;
+declare type Int_t = t_87<number>;
 
 declare function intoChunks<A>(a: A[], chunkSize: number): A[][];
 
@@ -581,6 +583,12 @@ export declare namespace ItemOwnerPacket {
 }
 
 declare type killCount = number;
+
+declare type life =
+"Max"
+| { TAG: "Byte"; _0: number }
+| { TAG: "Int16"; _0: number }
+| { TAG: "Int32"; _0: number };
 
 declare type liquid = { readonly changes: liquidChange[] };
 
@@ -723,6 +731,18 @@ export declare namespace NpcTalkPacket {
 export declare namespace NpcTeleportPortalPacket {
     export {
         t_30 as t
+    }
+}
+
+export declare namespace NpcUpdatePacket {
+    export {
+        ai,
+        life,
+        t_86 as t,
+        parse_26 as parse,
+        toBufferOk_7 as toBufferOk,
+        toBufferError_7 as toBufferError,
+        toBuffer_26 as toBuffer
     }
 }
 
@@ -893,6 +913,8 @@ declare const parse_23: (_1: Buffer) => (undefined | t_84);
 declare function parse_24(buffer: Buffer): WorldInfo | undefined;
 
 declare function parse_25(payload: Buffer): t_85;
+
+declare const parse_26: (_1: Buffer) => (undefined | t_86);
 
 declare function parse_3(payload: Buffer): t_18 | undefined;
 
@@ -1074,7 +1096,7 @@ export declare namespace PlayerUpdatePacket {
 
 export declare namespace Point {
     export {
-        t_86 as t,
+        t_87 as t,
         Int_t,
         Float_t
     }
@@ -1633,7 +1655,26 @@ declare type t_85 = {
     readonly active: boolean;
 };
 
-declare type t_86<a> = { readonly x: a; readonly y: a };
+declare type t_86 = {
+    readonly npcSlotId: number;
+    readonly npcTypeId: number;
+    readonly x: number;
+    readonly y: number;
+    readonly vx: number;
+    readonly vy: number;
+    readonly target: number;
+    readonly directionX: boolean;
+    readonly directionY: boolean;
+    readonly ai: ai;
+    readonly spriteDirection: boolean;
+    readonly life: life;
+    readonly releaseOwner: (undefined | number);
+    readonly playerCountScale: (undefined | number);
+    readonly strengthMultiplier: (undefined | number);
+    readonly spawnedFromStatue: boolean
+};
+
+declare type t_87<a> = { readonly x: a; readonly y: a };
 
 declare type t_9 = { readonly version: string };
 
@@ -1878,6 +1919,10 @@ declare type toBuffer_24 = toBufferOk_6 | toBufferError_6;
 
 declare function toBuffer_25(self: t_85): Buffer;
 
+declare type toBuffer_26 = toBufferOk_7 | toBufferError_7;
+
+declare const toBuffer_26: (_1: t_86) => toBuffer_26;
+
 declare function toBuffer_3(self: t_18): Buffer;
 
 declare const toBuffer_4: (_1: t_19) => Buffer;
@@ -1906,6 +1951,8 @@ declare type toBufferError_5 = { TAG: "Error"; _0: PackError };
 
 declare type toBufferError_6 = { TAG: "Error"; _0: PackError };
 
+declare type toBufferError_7 = { TAG: "Error"; _0: PackError };
+
 declare type toBufferOk = { TAG: "Ok"; _0: Buffer };
 
 declare type toBufferOk_2 = { TAG: "Ok"; _0: Buffer };
@@ -1917,6 +1964,8 @@ declare type toBufferOk_4 = { TAG: "Ok"; _0: Buffer };
 declare type toBufferOk_5 = { TAG: "Ok"; _0: Buffer };
 
 declare type toBufferOk_6 = { TAG: "Ok"; _0: Buffer };
+
+declare type toBufferOk_7 = { TAG: "Ok"; _0: Buffer };
 
 declare function toByte(t: t_74): number;
 
