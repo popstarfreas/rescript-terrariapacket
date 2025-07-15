@@ -19590,6 +19590,50 @@ var require_Packet_NpcUpdate = __commonJS({
   }
 });
 
+// src/packet/Packet_Disconnect.js
+var require_Packet_Disconnect = __commonJS({
+  "src/packet/Packet_Disconnect.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function readNetworkText(prim) {
+      return prim.readNetworkText();
+    }
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var reason = reader.readNetworkText();
+      return {
+        reason
+      };
+    }
+    var Decode = {
+      readNetworkText,
+      parse
+    };
+    function packNetworkText(prim0, prim1) {
+      return prim0.packNetworkText(prim1);
+    }
+    function data(prim) {
+      return prim.data;
+    }
+    function toBuffer(self) {
+      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("Disconnect")).packNetworkText(self.reason).data;
+    }
+    var Encode = {
+      packNetworkText,
+      setType: ManagedPacketWriter$PacketFactory.setType,
+      data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
 // src/Point.js
 var require_Point = __commonJS({
   "src/Point.js"(exports2) {
@@ -19632,6 +19676,7 @@ __export(Export_exports, {
   CreditsOrSlimeTransformPacket: () => CreditsOrSlimeTransformPacket,
   CrystalInvasionStartPacket: () => CrystalInvasionStartPacket,
   DimensionsUpdatePacket: () => DimensionsUpdatePacket,
+  DisconnectPacket: () => DisconnectPacket,
   ErrorAwarePacketWriter: () => ErrorAwarePacketWriter,
   ExtraValueSyncPacket: () => ExtraValueSyncPacket,
   HaveDryadDoStardewAnimationPacket: () => HaveDryadDoStardewAnimationPacket,
@@ -19797,6 +19842,7 @@ var PlayerDamagePacket = __toESM(require_Packet_PlayerDamage());
 var WorldInfoPacket = __toESM(require_Packet_WorldInfo());
 var PlayerActivePacket = __toESM(require_Packet_PlayerActive());
 var NpcUpdatePacket = __toESM(require_Packet_NpcUpdate());
+var DisconnectPacket = __toESM(require_Packet_Disconnect());
 var Point = __toESM(require_Point());
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
@@ -19818,6 +19864,7 @@ var Point = __toESM(require_Point());
   CreditsOrSlimeTransformPacket,
   CrystalInvasionStartPacket,
   DimensionsUpdatePacket,
+  DisconnectPacket,
   ErrorAwarePacketWriter,
   ExtraValueSyncPacket,
   HaveDryadDoStardewAnimationPacket,

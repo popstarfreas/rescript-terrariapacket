@@ -333,6 +333,14 @@ declare type direction = "Left" | "Right";
 
 declare type direction_2 = "Left" | "Right";
 
+export declare namespace DisconnectPacket {
+    export {
+        parse_27 as parse,
+        toBuffer_27 as toBuffer,
+        t_87 as t
+    }
+}
+
 declare type Entity_displayDoll = { readonly items: Array<(undefined | Entity_displayItem)>; readonly dyes: Array<(undefined | Entity_displayItem)> };
 
 declare type Entity_displayItem = {
@@ -513,7 +521,7 @@ declare type flags = {
     readonly runCheckBytes: boolean
 };
 
-declare type Float_t = t_87<number>;
+declare type Float_t = t_88<number>;
 
 declare function forEach(t: t_74, callback: (flag: boolean) => void): void;
 
@@ -548,7 +556,7 @@ export declare namespace HaveDryadDoStardewAnimationPacket {
     }
 }
 
-declare type Int_t = t_87<number>;
+declare type Int_t = t_88<number>;
 
 declare function intoChunks<A>(a: A[], chunkSize: number): A[][];
 
@@ -916,6 +924,8 @@ declare function parse_25(payload: Buffer): t_85;
 
 declare const parse_26: (_1: Buffer) => (undefined | t_86);
 
+declare function parse_27(payload: Buffer): t_87 | undefined;
+
 declare function parse_3(payload: Buffer): t_18 | undefined;
 
 declare const parse_4: (_1: Buffer) => (undefined | t_19);
@@ -1096,7 +1106,7 @@ export declare namespace PlayerUpdatePacket {
 
 export declare namespace Point {
     export {
-        t_87 as t,
+        t_88 as t,
         Int_t,
         Float_t
     }
@@ -1674,7 +1684,11 @@ declare type t_86 = {
     readonly spawnedFromStatue: boolean
 };
 
-declare type t_87<a> = { readonly x: a; readonly y: a };
+declare type t_87 = {
+    readonly reason: NetworkText;
+};
+
+declare type t_88<a> = { readonly x: a; readonly y: a };
 
 declare type t_9 = { readonly version: string };
 
@@ -1922,6 +1936,8 @@ declare function toBuffer_25(self: t_85): Buffer;
 declare type toBuffer_26 = toBufferOk_7 | toBufferError_7;
 
 declare const toBuffer_26: (_1: t_86) => toBuffer_26;
+
+declare function toBuffer_27(self: t_87): Buffer;
 
 declare function toBuffer_3(self: t_18): Buffer;
 
