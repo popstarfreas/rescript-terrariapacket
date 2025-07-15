@@ -33,6 +33,7 @@ export * as ObjectPlacePacket from "./packet/Packet_ObjectPlace";
 export * as PartyTogglePacket from "./packet/Packet_PartyToggle";
 export * as PlayerAnimationPacket from "./packet/Packet_PlayerAnimation";
 export * as PlayerBuffAddPacket from "./packet/Packet_PlayerBuffAdd";
+export * as PlayerBuffsSetPacket from "./packet/Packet_PlayerBuffsSet";
 export * as PlayerChestIndexSyncPacket from "./packet/Packet_PlayerChestIndexSync";
 export * as PlayerDeadPacket from "./packet/Packet_PlayerDead";
 export * as PlayerDeathPacket from "./packet/Packet_PlayerDeath";

@@ -7259,6 +7259,44 @@ var require_Packet_PlayerBuffAdd = __commonJS({
   }
 });
 
+// src/packet/Packet_PlayerBuffsSet.js
+var require_Packet_PlayerBuffsSet = __commonJS({
+  "src/packet/Packet_PlayerBuffsSet.js"(exports2) {
+    "use strict";
+    var PervasivesU = require_pervasivesU();
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function parse(payload) {
+      var reader = new Packetreader(payload);
+      var playerId = reader.readByte();
+      var buffs = [];
+      for (var _i = 1; _i <= 44; ++_i) {
+        buffs.push(reader.readUInt16());
+      }
+      return {
+        playerId,
+        buffs
+      };
+    }
+    function packBuffs(writer, buffs) {
+      buffs.forEach(function(buff) {
+        writer.packUInt16(buff);
+      });
+      return writer;
+    }
+    function toBuffer(self) {
+      if (self.buffs.length !== 44) {
+        PervasivesU.failwith("Expected 44 buffs, got " + self.buffs.length.toString());
+      }
+      return packBuffs(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerBuffsSet")).packByte(self.playerId), self.buffs).data;
+    }
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
 // src/packet/Packet_PlayerChestIndexSync.js
 var require_Packet_PlayerChestIndexSync = __commonJS({
   "src/packet/Packet_PlayerChestIndexSync.js"(exports2) {
@@ -20260,44 +20298,6 @@ var require_Packet_LucyAxeMessage = __commonJS({
   }
 });
 
-// src/packet/Packet_PlayerBuffsSet.js
-var require_Packet_PlayerBuffsSet = __commonJS({
-  "src/packet/Packet_PlayerBuffsSet.js"(exports2) {
-    "use strict";
-    var PervasivesU = require_pervasivesU();
-    var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
-    var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function parse(payload) {
-      var reader = new Packetreader(payload);
-      var playerId = reader.readByte();
-      var buffs = [];
-      for (var _i = 1; _i <= 44; ++_i) {
-        buffs.push(reader.readUInt16());
-      }
-      return {
-        playerId,
-        buffs
-      };
-    }
-    function packBuffs(writer, buffs) {
-      buffs.forEach(function(buff) {
-        writer.packUInt16(buff);
-      });
-      return writer;
-    }
-    function toBuffer(self) {
-      if (self.buffs.length !== 44) {
-        PervasivesU.failwith("Expected 44 buffs, got " + self.buffs.length.toString());
-      }
-      return packBuffs(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerBuffsSet")).packByte(self.playerId), self.buffs).data;
-    }
-    exports2.parse = parse;
-    exports2.toBuffer = toBuffer;
-  }
-});
-
 // src/packet/Packet_ItemOwnerRemove.js
 var require_Packet_ItemOwnerRemove = __commonJS({
   "src/packet/Packet_ItemOwnerRemove.js"(exports2) {
@@ -24460,6 +24460,7 @@ __export(Export_exports, {
   PlayerActivePacket: () => PlayerActivePacket,
   PlayerAnimationPacket: () => PlayerAnimationPacket,
   PlayerBuffAddPacket: () => PlayerBuffAddPacket,
+  PlayerBuffsSetPacket: () => PlayerBuffsSetPacket,
   PlayerChestIndexSyncPacket: () => PlayerChestIndexSyncPacket,
   PlayerDamagePacket: () => PlayerDamagePacket,
   PlayerDeadPacket: () => PlayerDeadPacket,
@@ -24545,6 +24546,7 @@ var ObjectPlacePacket = __toESM(require_Packet_ObjectPlace());
 var PartyTogglePacket = __toESM(require_Packet_PartyToggle());
 var PlayerAnimationPacket = __toESM(require_Packet_PlayerAnimation());
 var PlayerBuffAddPacket = __toESM(require_Packet_PlayerBuffAdd());
+var PlayerBuffsSetPacket = __toESM(require_Packet_PlayerBuffsSet());
 var PlayerChestIndexSyncPacket = __toESM(require_Packet_PlayerChestIndexSync());
 var PlayerDeadPacket = __toESM(require_Packet_PlayerDead());
 var PlayerDeathPacket = __toESM(require_Packet_PlayerDeath());
@@ -24650,6 +24652,7 @@ var Point = __toESM(require_Point());
   PlayerActivePacket,
   PlayerAnimationPacket,
   PlayerBuffAddPacket,
+  PlayerBuffsSetPacket,
   PlayerChestIndexSyncPacket,
   PlayerDamagePacket,
   PlayerDeadPacket,
