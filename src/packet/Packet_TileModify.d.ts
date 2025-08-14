@@ -37,10 +37,6 @@ export type t = {
   readonly value2: number
 };
 
-export declare const Action_fromInt: (_1: number) => (undefined | Action_t);
-
-export declare const Action_toInt: (_1: Action_t) => number;
-
 export declare const parse: (_1: Buffer) => (undefined | t);
 
 export declare const toBuffer: (_1: t) => Buffer;

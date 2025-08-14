@@ -13,8 +13,6 @@ declare const Action_2: { toInt: (_1: Action_t_2) => number; fromInt: (_1: numbe
 
 declare const Action_fromInt: (_1: number) => (undefined | Action_t);
 
-declare const Action_fromInt_2: (_1: number) => (undefined | Action_t_2);
-
 declare type Action_t =
 "PlaceChest"
 | "KillChest"
@@ -84,8 +82,6 @@ declare type Action_t_4 =
 | "KillContainer";
 
 declare const Action_toInt: (_1: Action_t) => number;
-
-declare const Action_toInt_2: (_1: Action_t_2) => number;
 
 declare const Action_toString: (_1: Action_t) => string;
 
@@ -3048,8 +3044,6 @@ export declare namespace TileModifyPacket {
     export {
         Action_t_2 as Action_t,
         t_60 as t,
-        Action_fromInt_2 as Action_fromInt,
-        Action_toInt_2 as Action_toInt,
         parse_12 as parse,
         toBuffer_12 as toBuffer,
         Action_2 as Action
