@@ -8,7 +8,8 @@
       "import": "./dist/Export.js",
       "require": "./dist/Export.js",
       "types": "./dist/Export.d.ts"
-    }
+    },
+    "./*": "./*"
   },
   "scripts": {
     "build:watch": "rescript build -w",
