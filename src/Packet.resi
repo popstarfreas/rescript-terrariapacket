@@ -440,6 +440,6 @@ module LazyPacket: {
     | ItemDropProtectedUpdate(Lazy.t<option<Packet_ItemDropProtectedUpdate.t>>)
   let toPacketName: t => string
 }
-let toBuffer: (t, bool) => option<result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError>>
+let toBuffer: (t, bool) => ISerializer.toBufferResult
 let serialize: ISerializer.serialize<t>
 let toPacketName: t => string

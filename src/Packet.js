@@ -3,6 +3,7 @@
 
 var Belt_Option = require("rescript/lib/js/belt_Option.js");
 var PervasivesU = require("rescript/lib/js/pervasivesU.js");
+var ISerializer$TerrariaPacket = require("./ISerializer.js");
 var Packet_Status$TerrariaPacket = require("./packet/Packet_Status.js");
 var CreativePowers$TerrariaPacket = require("./CreativePowers.js");
 var Packet_ChestItem$TerrariaPacket = require("./packet/Packet_ChestItem.js");
@@ -362,7 +363,7 @@ function toBuffer(packet, _fromServer) {
                 _0: Packet_PlayerSlotSet$TerrariaPacket.toBuffer(packet._0)
               };
     case "PlayerInfo" :
-        return Packet_PlayerInfo$TerrariaPacket.toBuffer(packet._0);
+        return ISerializer$TerrariaPacket.toBufferResult(Packet_PlayerInfo$TerrariaPacket.toBuffer(packet._0));
     case "PlayerInventorySlot" :
         return {
                 TAG: "Ok",
@@ -374,7 +375,7 @@ function toBuffer(packet, _fromServer) {
                 _0: Packet_WorldDataRequest$TerrariaPacket.toBuffer(packet._0)
               };
     case "WorldInfo" :
-        return Packet_WorldInfo$TerrariaPacket.toBuffer(packet._0);
+        return ISerializer$TerrariaPacket.toBufferResult(Packet_WorldInfo$TerrariaPacket.toBuffer(packet._0));
     case "InitialTileSectionsRequest" :
         return {
                 TAG: "Ok",
@@ -386,7 +387,7 @@ function toBuffer(packet, _fromServer) {
                 _0: Packet_Status$TerrariaPacket.toBuffer(packet._0)
               };
     case "TileSectionSend" :
-        return Packet_TileSectionSend$TerrariaPacket.toBuffer(packet._0);
+        return ISerializer$TerrariaPacket.toBufferResult(Packet_TileSectionSend$TerrariaPacket.toBuffer(packet._0));
     case "TileSectionFrame" :
         return {
                 TAG: "Ok",
@@ -398,7 +399,7 @@ function toBuffer(packet, _fromServer) {
                 _0: Packet_PlayerSpawn$TerrariaPacket.toBuffer(packet._0)
               };
     case "PlayerUpdate" :
-        return Packet_PlayerUpdate$TerrariaPacket.toBuffer(packet._0);
+        return ISerializer$TerrariaPacket.toBufferResult(Packet_PlayerUpdate$TerrariaPacket.toBuffer(packet._0));
     case "PlayerActive" :
         return {
                 TAG: "Ok",
@@ -415,7 +416,7 @@ function toBuffer(packet, _fromServer) {
                 _0: Packet_TileModify$TerrariaPacket.toBuffer(packet._0)
               };
     case "TileSquareSend" :
-        return Packet_TileSquareSend$TerrariaPacket.toBuffer(packet._0);
+        return ISerializer$TerrariaPacket.toBufferResult(Packet_TileSquareSend$TerrariaPacket.toBuffer(packet._0));
     case "ItemDropUpdate" :
         return {
                 TAG: "Ok",
@@ -427,9 +428,9 @@ function toBuffer(packet, _fromServer) {
                 _0: Packet_ItemOwner$TerrariaPacket.toBuffer(packet._0)
               };
     case "NpcUpdate" :
-        return Packet_NpcUpdate$TerrariaPacket.toBuffer(packet._0);
+        return ISerializer$TerrariaPacket.toBufferResult(Packet_NpcUpdate$TerrariaPacket.toBuffer(packet._0));
     case "ProjectileSync" :
-        return Packet_ProjectileSync$TerrariaPacket.toBuffer(packet._0);
+        return ISerializer$TerrariaPacket.toBufferResult(Packet_ProjectileSync$TerrariaPacket.toBuffer(packet._0));
     case "ProjectileDestroy" :
         return {
                 TAG: "Ok",
@@ -476,7 +477,7 @@ function toBuffer(packet, _fromServer) {
                 _0: Packet_DimensionsUpdate$TerrariaPacket.toBuffer(packet._0)
               };
     case "NetModuleLoad" :
-        return Packet_NetModuleLoad$TerrariaPacket.toBuffer(packet._0);
+        return ISerializer$TerrariaPacket.toBufferResult(Packet_NetModuleLoad$TerrariaPacket.toBuffer(packet._0));
     case "NpcTamper" :
         return {
                 TAG: "Ok",
@@ -528,7 +529,7 @@ function toBuffer(packet, _fromServer) {
                 _0: Packet_ItemDropProtectedUpdate$TerrariaPacket.toBuffer(packet._0)
               };
     default:
-      return ;
+      return "NotImplemented";
   }
 }
 

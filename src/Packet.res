@@ -592,171 +592,173 @@ module LazyPacket = {
   }
 }
 
-let toBuffer = (packet: t, _fromServer: bool): option<
-  result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError>,
-> => {
+let toBuffer = (packet: t, _fromServer: bool): ISerializer.toBufferResult => {
   switch packet {
-  | ConnectRequest(connectRequest) => Some(Ok(ConnectRequest.toBuffer(connectRequest)))
-  | Disconnect(disconnect) => Some(Ok(Disconnect.toBuffer(disconnect)))
-  | PlayerSlotSet(playerSlotSet) => Some(Ok(PlayerSlotSet.toBuffer(playerSlotSet)))
-  | PlayerInfo(playerInfo) => Some(PlayerInfo.toBuffer(playerInfo))
+  | ConnectRequest(connectRequest) => Ok(ConnectRequest.toBuffer(connectRequest))
+  | Disconnect(disconnect) => Ok(Disconnect.toBuffer(disconnect))
+  | PlayerSlotSet(playerSlotSet) => Ok(PlayerSlotSet.toBuffer(playerSlotSet))
+  | PlayerInfo(playerInfo) => PlayerInfo.toBuffer(playerInfo)->ISerializer.toBufferResult
   | PlayerInventorySlot(playerInventorySlot) =>
-    Some(Ok(PlayerInventorySlot.toBuffer(playerInventorySlot)))
-  | WorldDataRequest(worldDataRequest) => Some(Ok(WorldDataRequest.toBuffer(worldDataRequest)))
-  | WorldInfo(worldInfo) => Some(WorldInfo.toBuffer(worldInfo))
+    Ok(PlayerInventorySlot.toBuffer(playerInventorySlot))
+  | WorldDataRequest(worldDataRequest) => Ok(WorldDataRequest.toBuffer(worldDataRequest))
+  | WorldInfo(worldInfo) => WorldInfo.toBuffer(worldInfo)->ISerializer.toBufferResult
   | InitialTileSectionsRequest(initialTileSectionsRequest) =>
-    Some(Ok(InitialTileSectionsRequest.toBuffer(initialTileSectionsRequest)))
-  | Status(status) => Some(Ok(Status.toBuffer(status)))
-  | TileSectionSend(tileSectionSend) => Some(TileSectionSend.toBuffer(tileSectionSend))
-  | TileSectionFrame(tileSectionFrame) => Some(Ok(TileSectionFrame.toBuffer(tileSectionFrame)))
-  | PlayerSpawn(playerSpawn) => Some(Ok(PlayerSpawn.toBuffer(playerSpawn)))
-  | PlayerUpdate(playerUpdate) => Some(PlayerUpdate.toBuffer(playerUpdate))
-  | PlayerActive(playerActive) => Some(Ok(PlayerActive.toBuffer(playerActive)))
-  | PlayerHealth(playerHealth) => Some(Ok(PlayerHealth.toBuffer(playerHealth)))
-  | TileModify(tileModify) => Some(Ok(TileModify.toBuffer(tileModify)))
-  | TimeSet(_timeSet) => None
-  | DoorUse(_doorUse) => None
-  | TileSquareSend(tileSquareSend) => Some(TileSquareSend.toBuffer(tileSquareSend))
-  | ItemDropUpdate(itemDropUpdate) => Some(Ok(ItemDropUpdate.toBuffer(itemDropUpdate)))
-  | ItemOwner(itemOwner) => Some(Ok(ItemOwner.toBuffer(itemOwner)))
-  | NpcUpdate(npcUpdate) => Some(NpcUpdate.toBuffer(npcUpdate))
-  | NpcItemStrike(_npcItemStrike) => None
-  | ProjectileSync(projectileSync) => Some(ProjectileSync.toBuffer(projectileSync))
-  | NpcStrike(_npcStrike) => None
-  | ProjectileDestroy(projectileDestroy) => Some(Ok(ProjectileDestroy.toBuffer(projectileDestroy)))
-  | PvpToggle(_pvpToggle) => None
-  | ChestOpen(_chestOpen) => None
-  | ChestItem(chestItem) => Some(Ok(ChestItem.toBuffer(chestItem)))
+    Ok(InitialTileSectionsRequest.toBuffer(initialTileSectionsRequest))
+  | Status(status) => Ok(Status.toBuffer(status))
+  | TileSectionSend(tileSectionSend) =>
+    TileSectionSend.toBuffer(tileSectionSend)->ISerializer.toBufferResult
+  | TileSectionFrame(tileSectionFrame) => Ok(TileSectionFrame.toBuffer(tileSectionFrame))
+  | PlayerSpawn(playerSpawn) => Ok(PlayerSpawn.toBuffer(playerSpawn))
+  | PlayerUpdate(playerUpdate) => PlayerUpdate.toBuffer(playerUpdate)->ISerializer.toBufferResult
+  | PlayerActive(playerActive) => Ok(PlayerActive.toBuffer(playerActive))
+  | PlayerHealth(playerHealth) => Ok(PlayerHealth.toBuffer(playerHealth))
+  | TileModify(tileModify) => Ok(TileModify.toBuffer(tileModify))
+  | TimeSet(_timeSet) => NotImplemented
+  | DoorUse(_doorUse) => NotImplemented
+  | TileSquareSend(tileSquareSend) =>
+    TileSquareSend.toBuffer(tileSquareSend)->ISerializer.toBufferResult
+  | ItemDropUpdate(itemDropUpdate) => Ok(ItemDropUpdate.toBuffer(itemDropUpdate))
+  | ItemOwner(itemOwner) => Ok(ItemOwner.toBuffer(itemOwner))
+  | NpcUpdate(npcUpdate) => NpcUpdate.toBuffer(npcUpdate)->ISerializer.toBufferResult
+  | NpcItemStrike(_npcItemStrike) => NotImplemented
+  | ProjectileSync(projectileSync) =>
+    ProjectileSync.toBuffer(projectileSync)->ISerializer.toBufferResult
+  | NpcStrike(_npcStrike) => NotImplemented
+  | ProjectileDestroy(projectileDestroy) => Ok(ProjectileDestroy.toBuffer(projectileDestroy))
+  | PvpToggle(_pvpToggle) => NotImplemented
+  | ChestOpen(_chestOpen) => NotImplemented
+  | ChestItem(chestItem) => Ok(ChestItem.toBuffer(chestItem))
   | ActiveContainerSync(activeContainerSync) =>
-    Some(Ok(ActiveContainerSync.toBuffer(activeContainerSync)))
-  | ChestPlace(chestPlace) => Some(Ok(ChestPlace.toBuffer(chestPlace)))
-  | HealEffect(healEffect) => Some(Ok(HealEffect.toBuffer(healEffect)))
-  | Zones(_zones) => None
-  | PasswordRequired(_passwordRequired) => None
-  | PasswordSend(_passwordSend) => None
-  | ItemOwnerRemove(itemOwnerRemove) => Some(Ok(ItemOwnerRemove.toBuffer(itemOwnerRemove)))
-  | NpcTalk(_npcTalk) => None
-  | PlayerAnimation(_playerAnimation) => None
-  | PlayerMana(playerMana) => Some(Ok(PlayerMana.toBuffer(playerMana)))
-  | ManaEffect(manaEffect) => Some(Ok(ManaEffect.toBuffer(manaEffect)))
-  | PlayerTeam(_playerTeam) => None
-  | SignRead(_signRead) => None
-  | SignNew(_signNew) => None
-  | LiquidSet(_liquidSet) => None
-  | PlayerSpawnSelf(_playerSpawnSelf) => None
-  | PlayerBuffsSet(_playerBuffsSet) => None
-  | NpcSpecialEffect(_npcSpecialEffect) => None
-  | ChestOrTempleUnlock(_chestOrTempleUnlock) => None
-  | NpcBuffAdd(_npcBuffAdd) => None
-  | NpcBuffUpdate(_npcBuffUpdate) => None
-  | PlayerBuffAdd(_playerBuffAdd) => None
-  | NpcNameUpdate(_npcNameUpdate) => None
-  | GoodEvilUpdate(_goodEvilUpdate) => None
-  | HarpPlay(_harpPlay) => None
-  | SwitchHit(_switchHit) => None
-  | NpcHomeUpdate(_npcHomeUpdate) => None
-  | BossOrInvasionSpawn(_bossOrInvasionSpawn) => None
-  | PlayerDodge(_playerDodge) => None
-  | TilePaint(_tilePaint) => None
-  | WallPaint(_wallPaint) => None
-  | Teleport(_teleport) => None
-  | PlayerHealOther(_playerHealOther) => None
-  | DimensionsUpdate(dimensionsUpdate) => Some(Ok(DimensionsUpdate.toBuffer(dimensionsUpdate)))
-  | ClientUuid(_clientUuid) => None
-  | ChestName(_chestName) => None
-  | NpcCatch(_catchNpc) => None
-  | NpcRelease(_releaseNpc) => None
-  | TravellingMerchantInventory(_travellingMerchantInventory) => None
-  | TeleportationPotion(_teleportationPotion) => None
-  | AnglerQuest(_anglerQuest) => None
-  | AnglerQuestComplete(_anglerQuestComplete) => None
-  | AnglerQuestsCompletedAmount(_anglerQuestsCompletedAmount) => None
-  | TemporaryAnimationCreate(_temporaryAnimationCreate) => None
-  | InvasionProgressReport(_invasionProgressReport) => None
-  | ObjectPlace(_objectPlace) => None
-  | PlayerChestIndexSync(_playerChestIndexSync) => None
-  | CombatNumberCreate(_combatNumberCreate) => None
-  | NetModuleLoad(netModuleLoad) => Some(NetModuleLoad.toBuffer(netModuleLoad))
-  | NpcKillCount(_npcKillCount) => None
-  | PlayerStealth(_playerStealth) => None
-  | ItemForceIntoNearestChest(_itemForceIntoNearestChest) => None
-  | TileEntityUpdate(_tileEntityUpdate) => None
-  | TileEntityPlace(_tileEntityPlace) => None
-  | ItemDropModify(_itemDropModify) => None
-  | ItemFramePlace(_itemFramePlace) => None
-  | ItemDropInstancedUpdate(_itemDropInstancedUpdate) => None
-  | EmoteBubble(_emoteBubble) => None
-  | ExtraValueSync(_extraValueSync) => None
-  | SocialHandshake(_socialHandshake) => None
-  | Unused(_unused) => None
-  | PortalKill(_portalKill) => None
-  | PlayerTeleportPortal(_playerTeleportPortal) => None
-  | NpcKilledNotification(_npcKilledNotification) => None
-  | EventNotification(_eventNotification) => None
-  | MinionTargetUpdate(_minionTargetUpdate) => None
-  | NpcTeleportPortal(_npcTeleportPortal) => None
-  | ShieldStrengthsUpdate(_shieldStrengthsUpdate) => None
-  | NebulaLevelUp(_nebulaLevelUp) => None
-  | MoonLordCountdown(_moonLordCountdown) => None
-  | NpcShopItem(_npcShopItem) => None
-  | GemLockToggle(_gemLockToggle) => None
-  | SmokePoof(_smokePoof) => None
-  | ChatMessageSmart(_chatMessageSmart) => None
-  | WiredCannonShot(_wiredCannonShot) => None
-  | MassWireOperation(_massWireOperation) => None
-  | MassWireOperationPay(_massWireOperationPay) => None
-  | PartyToggle(_partyToggle) => None
-  | TreeGrowFx(_treeGrowFx) => None
-  | CrystalInvasionStart(_crystalInvasionStart) => None
-  | CrystalInvasionWipeAll(_crystalInvasionWipeAll) => None
-  | MinionAttackTargetUpdate(_minionAttackTargetUpdate) => None
-  | CrystalInvasionSendWaitTime(_crystalInvasionSendWaitTime) => None
-  | PlayerDamage(_playerDamage) => None
-  | PlayerDeath(_playerDeath) => None
-  | CombatTextCreate(_combatTextCreate) => None
-  | Emoji(_emoji) => None
-  | TileEntityDisplayDollItemSync(_tileEntityDisplayDollItemSync) => None
-  | TileEntityInteractionRequest(_tileEntityInteractionRequest) => None
-  | WeaponsRackTryPlacing(_weaponsRackTryPlacing) => None
-  | TileEntityHatRackItemSync(_tileEntityHatRackItemSync) => None
-  | TilePickingSync(_tilePickingSync) => None
-  | RevengeMarkerSync(_revengeMarkerSync) => None
-  | RevengeMarkerRemove(_revengeMarkerRemove) => None
-  | GolfBallLandInCup(_golfBallLandInCup) => None
-  | ClientFinishConnectingToServer(_clientFinishConnectingToServer) => None
-  | NpcFishOut(_npcFishOut) => None
-  | NpcTamper(npcTamper) => Some(Ok(NpcTamper.toBuffer(npcTamper)))
-  | LegacySoundPlay(_legacySoundPlay) => None
-  | FoodPlatterTryPlacing(_foodPlatterTryPlacing) => None
-  | PlayerLuckFactorsUpdate(_playerLuckFactorsUpdate) => None
-  | PlayerDead(_playerDead) => None
-  | CavernMonsterTypeSync(_cavernMonsterTypeSync) => None
-  | NpcBuffRemovalRequest(_npcBuffRemovalRequest) => None
-  | ClientSyncedInventory(_clientSyncedInventory) => None
-  | CountsAsHostForGameplaySet(_countsAsHostForGameplaySet) => None
+    Ok(ActiveContainerSync.toBuffer(activeContainerSync))
+  | ChestPlace(chestPlace) => Ok(ChestPlace.toBuffer(chestPlace))
+  | HealEffect(healEffect) => Ok(HealEffect.toBuffer(healEffect))
+  | Zones(_zones) => NotImplemented
+  | PasswordRequired(_passwordRequired) => NotImplemented
+  | PasswordSend(_passwordSend) => NotImplemented
+  | ItemOwnerRemove(itemOwnerRemove) => Ok(ItemOwnerRemove.toBuffer(itemOwnerRemove))
+  | NpcTalk(_npcTalk) => NotImplemented
+  | PlayerAnimation(_playerAnimation) => NotImplemented
+  | PlayerMana(playerMana) => Ok(PlayerMana.toBuffer(playerMana))
+  | ManaEffect(manaEffect) => Ok(ManaEffect.toBuffer(manaEffect))
+  | PlayerTeam(_playerTeam) => NotImplemented
+  | SignRead(_signRead) => NotImplemented
+  | SignNew(_signNew) => NotImplemented
+  | LiquidSet(_liquidSet) => NotImplemented
+  | PlayerSpawnSelf(_playerSpawnSelf) => NotImplemented
+  | PlayerBuffsSet(_playerBuffsSet) => NotImplemented
+  | NpcSpecialEffect(_npcSpecialEffect) => NotImplemented
+  | ChestOrTempleUnlock(_chestOrTempleUnlock) => NotImplemented
+  | NpcBuffAdd(_npcBuffAdd) => NotImplemented
+  | NpcBuffUpdate(_npcBuffUpdate) => NotImplemented
+  | PlayerBuffAdd(_playerBuffAdd) => NotImplemented
+  | NpcNameUpdate(_npcNameUpdate) => NotImplemented
+  | GoodEvilUpdate(_goodEvilUpdate) => NotImplemented
+  | HarpPlay(_harpPlay) => NotImplemented
+  | SwitchHit(_switchHit) => NotImplemented
+  | NpcHomeUpdate(_npcHomeUpdate) => NotImplemented
+  | BossOrInvasionSpawn(_bossOrInvasionSpawn) => NotImplemented
+  | PlayerDodge(_playerDodge) => NotImplemented
+  | TilePaint(_tilePaint) => NotImplemented
+  | WallPaint(_wallPaint) => NotImplemented
+  | Teleport(_teleport) => NotImplemented
+  | PlayerHealOther(_playerHealOther) => NotImplemented
+  | DimensionsUpdate(dimensionsUpdate) => Ok(DimensionsUpdate.toBuffer(dimensionsUpdate))
+  | ClientUuid(_clientUuid) => NotImplemented
+  | ChestName(_chestName) => NotImplemented
+  | NpcCatch(_catchNpc) => NotImplemented
+  | NpcRelease(_releaseNpc) => NotImplemented
+  | TravellingMerchantInventory(_travellingMerchantInventory) => NotImplemented
+  | TeleportationPotion(_teleportationPotion) => NotImplemented
+  | AnglerQuest(_anglerQuest) => NotImplemented
+  | AnglerQuestComplete(_anglerQuestComplete) => NotImplemented
+  | AnglerQuestsCompletedAmount(_anglerQuestsCompletedAmount) => NotImplemented
+  | TemporaryAnimationCreate(_temporaryAnimationCreate) => NotImplemented
+  | InvasionProgressReport(_invasionProgressReport) => NotImplemented
+  | ObjectPlace(_objectPlace) => NotImplemented
+  | PlayerChestIndexSync(_playerChestIndexSync) => NotImplemented
+  | CombatNumberCreate(_combatNumberCreate) => NotImplemented
+  | NetModuleLoad(netModuleLoad) =>
+    NetModuleLoad.toBuffer(netModuleLoad)->ISerializer.toBufferResult
+  | NpcKillCount(_npcKillCount) => NotImplemented
+  | PlayerStealth(_playerStealth) => NotImplemented
+  | ItemForceIntoNearestChest(_itemForceIntoNearestChest) => NotImplemented
+  | TileEntityUpdate(_tileEntityUpdate) => NotImplemented
+  | TileEntityPlace(_tileEntityPlace) => NotImplemented
+  | ItemDropModify(_itemDropModify) => NotImplemented
+  | ItemFramePlace(_itemFramePlace) => NotImplemented
+  | ItemDropInstancedUpdate(_itemDropInstancedUpdate) => NotImplemented
+  | EmoteBubble(_emoteBubble) => NotImplemented
+  | ExtraValueSync(_extraValueSync) => NotImplemented
+  | SocialHandshake(_socialHandshake) => NotImplemented
+  | Unused(_unused) => NotImplemented
+  | PortalKill(_portalKill) => NotImplemented
+  | PlayerTeleportPortal(_playerTeleportPortal) => NotImplemented
+  | NpcKilledNotification(_npcKilledNotification) => NotImplemented
+  | EventNotification(_eventNotification) => NotImplemented
+  | MinionTargetUpdate(_minionTargetUpdate) => NotImplemented
+  | NpcTeleportPortal(_npcTeleportPortal) => NotImplemented
+  | ShieldStrengthsUpdate(_shieldStrengthsUpdate) => NotImplemented
+  | NebulaLevelUp(_nebulaLevelUp) => NotImplemented
+  | MoonLordCountdown(_moonLordCountdown) => NotImplemented
+  | NpcShopItem(_npcShopItem) => NotImplemented
+  | GemLockToggle(_gemLockToggle) => NotImplemented
+  | SmokePoof(_smokePoof) => NotImplemented
+  | ChatMessageSmart(_chatMessageSmart) => NotImplemented
+  | WiredCannonShot(_wiredCannonShot) => NotImplemented
+  | MassWireOperation(_massWireOperation) => NotImplemented
+  | MassWireOperationPay(_massWireOperationPay) => NotImplemented
+  | PartyToggle(_partyToggle) => NotImplemented
+  | TreeGrowFx(_treeGrowFx) => NotImplemented
+  | CrystalInvasionStart(_crystalInvasionStart) => NotImplemented
+  | CrystalInvasionWipeAll(_crystalInvasionWipeAll) => NotImplemented
+  | MinionAttackTargetUpdate(_minionAttackTargetUpdate) => NotImplemented
+  | CrystalInvasionSendWaitTime(_crystalInvasionSendWaitTime) => NotImplemented
+  | PlayerDamage(_playerDamage) => NotImplemented
+  | PlayerDeath(_playerDeath) => NotImplemented
+  | CombatTextCreate(_combatTextCreate) => NotImplemented
+  | Emoji(_emoji) => NotImplemented
+  | TileEntityDisplayDollItemSync(_tileEntityDisplayDollItemSync) => NotImplemented
+  | TileEntityInteractionRequest(_tileEntityInteractionRequest) => NotImplemented
+  | WeaponsRackTryPlacing(_weaponsRackTryPlacing) => NotImplemented
+  | TileEntityHatRackItemSync(_tileEntityHatRackItemSync) => NotImplemented
+  | TilePickingSync(_tilePickingSync) => NotImplemented
+  | RevengeMarkerSync(_revengeMarkerSync) => NotImplemented
+  | RevengeMarkerRemove(_revengeMarkerRemove) => NotImplemented
+  | GolfBallLandInCup(_golfBallLandInCup) => NotImplemented
+  | ClientFinishConnectingToServer(_clientFinishConnectingToServer) => NotImplemented
+  | NpcFishOut(_npcFishOut) => NotImplemented
+  | NpcTamper(npcTamper) => Ok(NpcTamper.toBuffer(npcTamper))
+  | LegacySoundPlay(_legacySoundPlay) => NotImplemented
+  | FoodPlatterTryPlacing(_foodPlatterTryPlacing) => NotImplemented
+  | PlayerLuckFactorsUpdate(_playerLuckFactorsUpdate) => NotImplemented
+  | PlayerDead(_playerDead) => NotImplemented
+  | CavernMonsterTypeSync(_cavernMonsterTypeSync) => NotImplemented
+  | NpcBuffRemovalRequest(_npcBuffRemovalRequest) => NotImplemented
+  | ClientSyncedInventory(_clientSyncedInventory) => NotImplemented
+  | CountsAsHostForGameplaySet(_countsAsHostForGameplaySet) => NotImplemented
   | CreditsOrSlimeTransform(creditsOrSlimeTransform) =>
-    Some(Ok(CreditsOrSlimeTransform.toBuffer(creditsOrSlimeTransform)))
-  | LucyAxeMessage(lucyAxeMessage) => Some(Ok(LucyAxeMessage.toBuffer(lucyAxeMessage)))
+    Ok(CreditsOrSlimeTransform.toBuffer(creditsOrSlimeTransform))
+  | LucyAxeMessage(lucyAxeMessage) => Ok(LucyAxeMessage.toBuffer(lucyAxeMessage))
   | PiggyBankVoidLensUpdate(piggyBankVoidLensUpdate) =>
-    Some(Ok(PiggyBankVoidLensUpdate.toBuffer(piggyBankVoidLensUpdate)))
+    Ok(PiggyBankVoidLensUpdate.toBuffer(piggyBankVoidLensUpdate))
   | DungeonDefendersEventAttemptSkipWait(dungeonDefendersEventAttemptSkipWait) =>
-    Some(Ok(DungeonDefendersEventAttemptSkipWait.toBuffer(dungeonDefendersEventAttemptSkipWait)))
+    Ok(DungeonDefendersEventAttemptSkipWait.toBuffer(dungeonDefendersEventAttemptSkipWait))
   | HaveDryadDoStardewAnimation(haveDryadDoStardewAnimation) =>
-    Some(Ok(HaveDryadDoStardewAnimation.toBuffer(haveDryadDoStardewAnimation)))
+    Ok(HaveDryadDoStardewAnimation.toBuffer(haveDryadDoStardewAnimation))
   | ItemDropShimmeredUpdate(itemDropShimmeredUpdate) =>
-    Some(Ok(ItemDropShimmeredUpdate.toBuffer(itemDropShimmeredUpdate)))
+    Ok(ItemDropShimmeredUpdate.toBuffer(itemDropShimmeredUpdate))
   | ShimmerEffectOrCoinLuck(shimmerEffectOrCoinLuck) =>
-    Some(Ok(ShimmerEffectOrCoinLuck.toBuffer(shimmerEffectOrCoinLuck)))
-  | LoadoutSwitch(loadoutSwitch) => Some(Ok(LoadoutSwitch.toBuffer(loadoutSwitch)))
+    Ok(ShimmerEffectOrCoinLuck.toBuffer(shimmerEffectOrCoinLuck))
+  | LoadoutSwitch(loadoutSwitch) => Ok(LoadoutSwitch.toBuffer(loadoutSwitch))
   | ItemDropProtectedUpdate(itemDropProtectedUpdate) =>
-    Some(Ok(ItemDropProtectedUpdate.toBuffer(itemDropProtectedUpdate)))
+    Ok(ItemDropProtectedUpdate.toBuffer(itemDropProtectedUpdate))
   }
 }
 
 let serialize: ISerializer.serialize<t> = (~parsed: IParser.parsed<t>, ~fromServer: bool) =>
   switch parsed {
   | IParser.ShouldSerialize(packet) => toBuffer(packet, fromServer)
-  | IParser.SerializeNotNecessary(_, buffer) => Some(Ok(buffer))
+  | IParser.SerializeNotNecessary(_, buffer) => Ok(buffer)
   }
 
 let toPacketName = (packet: t): string => {

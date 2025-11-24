@@ -3915,68 +3915,129 @@ var LazyPacket = {
 function toBuffer(packet, _fromServer) {
   switch (packet.TAG) {
     case "ConnectRequest" :
-        return Packetv1405_ConnectRequest$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packetv1405_ConnectRequest$TerrariaPacket.toBuffer(packet._0)
+              };
     case "Disconnect" :
-        return Packet_Disconnect$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_Disconnect$TerrariaPacket.toBuffer(packet._0)
+              };
     case "PlayerSlotSet" :
-        return Packet_PlayerSlotSet$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_PlayerSlotSet$TerrariaPacket.toBuffer(packet._0)
+              };
     case "PlayerInfo" :
-        return Packetv1405_PlayerInfo$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packetv1405_PlayerInfo$TerrariaPacket.toBuffer(packet._0)
+              };
     case "PlayerInventorySlot" :
-        return Packet_PlayerInventorySlot$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_PlayerInventorySlot$TerrariaPacket.toBuffer(packet._0)
+              };
     case "WorldDataRequest" :
-        return Packet_WorldDataRequest$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_WorldDataRequest$TerrariaPacket.toBuffer(packet._0)
+              };
     case "WorldInfo" :
-        return Packetv1405_WorldInfo$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packetv1405_WorldInfo$TerrariaPacket.toBuffer(packet._0)
+              };
     case "InitialTileSectionsRequest" :
-        return Packet_InitialTileSectionsRequest$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_InitialTileSectionsRequest$TerrariaPacket.toBuffer(packet._0)
+              };
     case "Status" :
-        return Packet_Status$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_Status$TerrariaPacket.toBuffer(packet._0)
+              };
     case "PlayerSpawn" :
-        return Packetv1405_PlayerSpawn$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packetv1405_PlayerSpawn$TerrariaPacket.toBuffer(packet._0)
+              };
     case "PlayerActive" :
-        return Packet_PlayerActive$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_PlayerActive$TerrariaPacket.toBuffer(packet._0)
+              };
     case "PlayerHealth" :
-        return Packet_PlayerHealth$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_PlayerHealth$TerrariaPacket.toBuffer(packet._0)
+              };
     case "TileSquareSend" :
-        return Packetv1405_TileSquareSend$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packetv1405_TileSquareSend$TerrariaPacket.toBuffer(packet._0)
+              };
     case "ItemDropUpdate" :
-        return Packet_ItemDropUpdate$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_ItemDropUpdate$TerrariaPacket.toBuffer(packet._0)
+              };
     case "NpcUpdate" :
         var buffer = Packet_NpcUpdate$TerrariaPacket.toBuffer(packet._0);
         if (buffer.TAG === "Ok") {
-          return buffer._0;
+          return {
+                  TAG: "Ok",
+                  _0: buffer._0
+                };
         } else {
-          return ;
+          return {
+                  TAG: "Error",
+                  _0: buffer._0
+                };
         }
     case "ProjectileSync" :
-        return Packetv1405_ProjectileSync$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packetv1405_ProjectileSync$TerrariaPacket.toBuffer(packet._0)
+              };
     case "ProjectileDestroy" :
-        return Packet_ProjectileDestroy$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_ProjectileDestroy$TerrariaPacket.toBuffer(packet._0)
+              };
     case "PlayerMana" :
-        return Packet_PlayerMana$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_PlayerMana$TerrariaPacket.toBuffer(packet._0)
+              };
     case "DimensionsUpdate" :
-        return Packet_DimensionsUpdate$TerrariaPacket.toBuffer(packet._0);
+        return {
+                TAG: "Ok",
+                _0: Packet_DimensionsUpdate$TerrariaPacket.toBuffer(packet._0)
+              };
     case "NetModuleLoad" :
         var buffer$1 = Packet_NetModuleLoad$TerrariaPacket.toBuffer(packet._0);
         if (buffer$1.TAG === "Ok") {
-          return buffer$1._0;
+          return {
+                  TAG: "Ok",
+                  _0: buffer$1._0
+                };
         } else {
-          return ;
+          return {
+                  TAG: "Error",
+                  _0: buffer$1._0
+                };
         }
     default:
-      return ;
+      return "NotImplemented";
   }
 }
 
 function serialize(parsed, fromServer) {
   if (parsed.TAG === "ShouldSerialize") {
-    return Core__Option.map(toBuffer(parsed._0, fromServer), (function (result) {
-                  return {
-                          TAG: "Ok",
-                          _0: result
-                        };
-                }));
+    return toBuffer(parsed._0, fromServer);
   } else {
     return {
             TAG: "Ok",
@@ -3989,14 +4050,9 @@ function serializeFromLatest(parsed, fromServer) {
   if (parsed.TAG === "ShouldSerialize") {
     var match = fromLatest(parsed._0, fromServer);
     if (match !== undefined) {
-      return Core__Option.map(toBuffer(match._0, fromServer), (function (result) {
-                    return {
-                            TAG: "Ok",
-                            _0: result
-                          };
-                  }));
+      return toBuffer(match._0, fromServer);
     } else {
-      return ;
+      return "NotImplemented";
     }
   }
   var match$1 = fromLatest(parsed._0, fromServer);
@@ -4007,15 +4063,11 @@ function serializeFromLatest(parsed, fromServer) {
               _0: parsed._1
             };
     } else {
-      return Core__Option.map(toBuffer(match$1._0, fromServer), (function (result) {
-                    return {
-                            TAG: "Ok",
-                            _0: result
-                          };
-                  }));
+      return toBuffer(match$1._0, fromServer);
     }
+  } else {
+    return "NotImplemented";
   }
-  
 }
 
 var ConnectRequest;
