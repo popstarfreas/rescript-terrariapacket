@@ -34,6 +34,7 @@ var Packet_ProjectileSync$TerrariaPacket = require("./packet/Packet_ProjectileSy
 var Packet_TileSquareSend$TerrariaPacket = require("./packet/Packet_TileSquareSend.js");
 var Packet_ItemOwnerRemove$TerrariaPacket = require("./packet/Packet_ItemOwnerRemove.js");
 var Packet_TileSectionSend$TerrariaPacket = require("./packet/Packet_TileSectionSend.js");
+var Packet_ChatMessageSmart$TerrariaPacket = require("./packet/Packet_ChatMessageSmart.js");
 var Packet_DimensionsUpdate$TerrariaPacket = require("./packet/Packet_DimensionsUpdate.js");
 var Packet_TileSectionFrame$TerrariaPacket = require("./packet/Packet_TileSectionFrame.js");
 var Packet_WorldDataRequest$TerrariaPacket = require("./packet/Packet_WorldDataRequest.js");
@@ -490,6 +491,8 @@ function toBuffer(packet, _fromServer) {
               };
     case "NetModuleLoad" :
         return ISerializer$TerrariaPacket.toBufferResult(Packet_NetModuleLoad$TerrariaPacket.toBuffer(packet._0));
+    case "ChatMessageSmart" :
+        return ISerializer$TerrariaPacket.toBufferResult(Packet_ChatMessageSmart$TerrariaPacket.toBuffer(packet._0));
     case "NpcTamper" :
         return {
                 TAG: "Ok",

@@ -703,7 +703,8 @@ let toBuffer = (packet: t, _fromServer: bool): ISerializer.toBufferResult => {
   | NpcShopItem(_npcShopItem) => NotImplemented
   | GemLockToggle(_gemLockToggle) => NotImplemented
   | SmokePoof(_smokePoof) => NotImplemented
-  | ChatMessageSmart(_chatMessageSmart) => NotImplemented
+  | ChatMessageSmart(chatMessageSmart) =>
+    ChatMessageSmart.toBuffer(chatMessageSmart)->ISerializer.toBufferResult
   | WiredCannonShot(_wiredCannonShot) => NotImplemented
   | MassWireOperation(_massWireOperation) => NotImplemented
   | MassWireOperationPay(_massWireOperationPay) => NotImplemented
