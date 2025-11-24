@@ -12,6 +12,7 @@ var Packet_NpcTamper$TerrariaPacket = require("./packet/Packet_NpcTamper.js");
 var Packet_NpcUpdate$TerrariaPacket = require("./packet/Packet_NpcUpdate.js");
 var Packet_WorldInfo$TerrariaPacket = require("./packet/Packet_WorldInfo.js");
 var Packet_ChestPlace$TerrariaPacket = require("./packet/Packet_ChestPlace.js");
+var Packet_ClientUuid$TerrariaPacket = require("./packet/Packet_ClientUuid.js");
 var Packet_Disconnect$TerrariaPacket = require("./packet/Packet_Disconnect.js");
 var Packet_HealEffect$TerrariaPacket = require("./packet/Packet_HealEffect.js");
 var Packet_ManaEffect$TerrariaPacket = require("./packet/Packet_ManaEffect.js");
@@ -28,6 +29,7 @@ var Packet_PlayerSlotSet$TerrariaPacket = require("./packet/Packet_PlayerSlotSet
 var Packet_ConnectRequest$TerrariaPacket = require("./packet/Packet_ConnectRequest.js");
 var Packet_ItemDropUpdate$TerrariaPacket = require("./packet/Packet_ItemDropUpdate.js");
 var Packet_LucyAxeMessage$TerrariaPacket = require("./packet/Packet_LucyAxeMessage.js");
+var Packet_PlayerBuffsSet$TerrariaPacket = require("./packet/Packet_PlayerBuffsSet.js");
 var Packet_ProjectileSync$TerrariaPacket = require("./packet/Packet_ProjectileSync.js");
 var Packet_TileSquareSend$TerrariaPacket = require("./packet/Packet_TileSquareSend.js");
 var Packet_ItemOwnerRemove$TerrariaPacket = require("./packet/Packet_ItemOwnerRemove.js");
@@ -471,10 +473,20 @@ function toBuffer(packet, _fromServer) {
                 TAG: "Ok",
                 _0: Packet_ManaEffect$TerrariaPacket.toBuffer(packet._0)
               };
+    case "PlayerBuffsSet" :
+        return {
+                TAG: "Ok",
+                _0: Packet_PlayerBuffsSet$TerrariaPacket.toBuffer(packet._0)
+              };
     case "DimensionsUpdate" :
         return {
                 TAG: "Ok",
                 _0: Packet_DimensionsUpdate$TerrariaPacket.toBuffer(packet._0)
+              };
+    case "ClientUuid" :
+        return {
+                TAG: "Ok",
+                _0: Packet_ClientUuid$TerrariaPacket.toBuffer(packet._0)
               };
     case "NetModuleLoad" :
         return ISerializer$TerrariaPacket.toBufferResult(Packet_NetModuleLoad$TerrariaPacket.toBuffer(packet._0));

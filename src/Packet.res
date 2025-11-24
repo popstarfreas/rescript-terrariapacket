@@ -645,7 +645,7 @@ let toBuffer = (packet: t, _fromServer: bool): ISerializer.toBufferResult => {
   | SignNew(_signNew) => NotImplemented
   | LiquidSet(_liquidSet) => NotImplemented
   | PlayerSpawnSelf(_playerSpawnSelf) => NotImplemented
-  | PlayerBuffsSet(_playerBuffsSet) => NotImplemented
+  | PlayerBuffsSet(playerBuffsSet) => Ok(PlayerBuffsSet.toBuffer(playerBuffsSet))
   | NpcSpecialEffect(_npcSpecialEffect) => NotImplemented
   | ChestOrTempleUnlock(_chestOrTempleUnlock) => NotImplemented
   | NpcBuffAdd(_npcBuffAdd) => NotImplemented
@@ -663,7 +663,7 @@ let toBuffer = (packet: t, _fromServer: bool): ISerializer.toBufferResult => {
   | Teleport(_teleport) => NotImplemented
   | PlayerHealOther(_playerHealOther) => NotImplemented
   | DimensionsUpdate(dimensionsUpdate) => Ok(DimensionsUpdate.toBuffer(dimensionsUpdate))
-  | ClientUuid(_clientUuid) => NotImplemented
+  | ClientUuid(clientUuid) => Ok(ClientUuid.toBuffer(clientUuid))
   | ChestName(_chestName) => NotImplemented
   | NpcCatch(_catchNpc) => NotImplemented
   | NpcRelease(_releaseNpc) => NotImplemented
