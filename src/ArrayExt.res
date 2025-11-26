@@ -6,7 +6,7 @@ let intoChunks = (self: array<'a>, ~chunkSize: int): array<array<'a>> => {
   for i in 0 to max {
     self
     ->Array.slice(~start=i * chunkSize, ~end=(i + 1) * chunkSize)
-    ->(Array.push(chunked, _))
+    ->Array.push(chunked, _)
   }
   chunked
 }

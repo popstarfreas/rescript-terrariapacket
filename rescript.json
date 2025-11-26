@@ -18,15 +18,11 @@
     "in-source": true,
     "suffix": ".js"
   },
-  "bs-dependencies": [
+  "dependencies": [
     "@popstarfreas/packetfactory",
-    "@popstarfreas/rescript-nodejs",
-    "@rescript/core"
+    "@popstarfreas/rescript-nodejs"
   ],
-  "bsc-flags": [
-    "-open RescriptCore"
-  ],
-  "bs-dev-dependencies": [
+  "dev-dependencies": [
     "@dusty-phillips/rescript-zora"
   ],
   "warnings": {

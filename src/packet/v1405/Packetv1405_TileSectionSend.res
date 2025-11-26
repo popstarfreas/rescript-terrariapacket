@@ -221,17 +221,17 @@ module Entity = {
 
     for i in 0 to 7 {
       if itemsFlags->BitFlags.flagN(i) {
-        let _: int = items->Js.Array2.push(Some(parseDisplayItem(reader)))
+        items->Array.push(Some(parseDisplayItem(reader)))
       } else {
-        let _: int = items->Js.Array2.push(None)
+        items->Array.push(None)
       }
     }
 
     for i in 0 to 7 {
       if dyeFlags->BitFlags.flagN(i) {
-        let _: int = dyes->Js.Array2.push(Some(parseDisplayItem(reader)))
+        dyes->Array.push(Some(parseDisplayItem(reader)))
       } else {
-        let _: int = dyes->Js.Array2.push(None)
+        dyes->Array.push(None)
       }
     }
 
@@ -250,17 +250,17 @@ module Entity = {
 
     for i in 0 to 1 {
       if flags->BitFlags.flagN(i) {
-        let _: int = items->Js.Array2.push(Some(parseDisplayItem(reader)))
+        items->Array.push(Some(parseDisplayItem(reader)))
       } else {
-        let _: int = items->Js.Array2.push(None)
+        items->Array.push(None)
       }
     }
 
     for i in 0 to 1 {
       if flags->BitFlags.flagN(i + 2) {
-        let _: int = dyes->Js.Array2.push(Some(parseDisplayItem(reader)))
+        dyes->Array.push(Some(parseDisplayItem(reader)))
       } else {
-        let _: int = dyes->Js.Array2.push(None)
+        dyes->Array.push(None)
       }
     }
 
@@ -485,8 +485,8 @@ module Decode = {
           let row: array<tile> = []
           for _x in 0 to width - 1 {
             if rleCount.contents != 0 {
-              decr(rleCount)
-              row->Js.Array2.push(tileCache->cacheToTile)->ignore
+              rleCount.contents = rleCount.contents - 1
+              row->Array.push(tileCache->cacheToTile)
             } else {
               clearTileCache(tileCache)
               let header5 = reader->readByte->BitFlags.fromByte
@@ -509,7 +509,7 @@ module Decode = {
                 let tileType = if header5->BitFlags.flag6 {
                   let byte = reader->readByte
                   let secondByte = reader->readByte
-                  secondByte->lsl(8)->lor(byte)
+                  (secondByte << 8) ||| (byte)
                 } else {
                   reader->readByte
                 }
@@ -542,7 +542,7 @@ module Decode = {
                 }
               }
 
-              let liquidBits = header5->BitFlags.toByte->land(24)->lsr(3)
+              let liquidBits = (header5->BitFlags.toByte &&& 24) >> (3)
               if liquidBits != 0 {
                 tileCache.liquid = Some(reader->readByte)
                 if liquidBits > 1 {
@@ -565,7 +565,7 @@ module Decode = {
                   tileCache.wire3 = true
                 }
 
-                let slopeBits = header4->BitFlags.toByte->land(112)->lsr(4)
+                let slopeBits = (header4->BitFlags.toByte &&& 112) >> (4)
                 if (
                   slopeBits != 0 &&
                     TileSolid.isSolid(tileCache.activeTile->Option.mapOr(0, tile => tile.tileType))
@@ -590,34 +590,34 @@ module Decode = {
                 }
                 if header3->BitFlags.flag7 {
                   let byte = reader->readByte
-                  tileCache.wall = Some(byte->lsl(8)->lor(tileCache.wall->Option.getUnsafe))
+                  tileCache.wall = Some((byte << (8)) ||| (tileCache.wall->Option.getUnsafe))
                 }
               }
 
-              let repeatCountBytes = header5->BitFlags.toByte->land(192)->lsr(6)
+              let repeatCountBytes = (header5->BitFlags.toByte &&& 192) >> (6)
               switch repeatCountBytes {
               | 0 => rleCount.contents = 0
               | 1 => rleCount.contents = reader->readByte
               | _ => rleCount.contents = reader->readInt16
               }
-              row->Js.Array2.push(tileCache->cacheToTile)->ignore
+              row->Array.push(tileCache->cacheToTile)
             }
           }
-          tiles->Js.Array2.push(row)->ignore
+          tiles->Array.push(row)
         }
 
         let chestCount = reader->readInt16
-        let chests = Belt.Array.make(chestCount, 0)->Js.Array2.map(_ => {
+        let chests = Belt.Array.make(chestCount, 0)->Array.map(_ => {
           reader->Chest.parse
         })
         let signCount = reader->readInt16
-        let signs = Belt.Array.make(signCount, 0)->Js.Array2.map(_ => {
+        let signs = Belt.Array.make(signCount, 0)->Array.map(_ => {
           reader->Sign.parse
         })
         let entityCount = reader->readInt16
         let entities =
           Belt.Array.make(entityCount, 0)
-          ->Js.Array2.map(_ => {
+          ->Array.map(_ => {
             reader->Entity.parse
           })
           ->ResultExt.allOkOrError
@@ -762,8 +762,8 @@ module Encode = {
     switch tile.activeTile {
     | Some(activeTile) => {
         if tileFlags->BitFlags.flag6 {
-          let _: bufferWriter = writer->packByte(activeTile.tileType->land(255))
-          let _: bufferWriter = writer->packByte(activeTile.tileType->land(65280)->lsr(8))
+          let _: bufferWriter = writer->packByte(activeTile.tileType &&& (255))
+          let _: bufferWriter = writer->packByte((activeTile.tileType &&& 65280) >> (8))
         } else {
           let _: bufferWriter = writer->packByte(activeTile.tileType)
         }
@@ -787,7 +787,7 @@ module Encode = {
 
     switch tile.wall {
     | Some(wall) => {
-        let _: bufferWriter = writer->packByte(wall->land(255))
+        let _: bufferWriter = writer->packByte(wall &&& (255))
         switch tile.wallColor {
         | Some(wallColor) =>
           let _: bufferWriter = writer->packByte(wallColor)
@@ -805,7 +805,7 @@ module Encode = {
 
     switch tile.wall {
     | Some(wall) if wall > 255 =>
-      let _: bufferWriter = writer->packByte(wall->lsr(8))
+      let _: bufferWriter = writer->packByte(wall >> (8))
     | Some(_) | None => ()
     }
 
@@ -869,16 +869,16 @@ module Encode = {
     | None => ()
     }
 
-    let _: bufferWriter = writer->packInt16(self.chests->Js.Array2.length)
-    self.chests->Js.Array2.forEach(chest => {
+    let _: bufferWriter = writer->packInt16(self.chests->Array.length)
+    self.chests->Array.forEach(chest => {
       writer->Chest.pack(chest)->ignore
     })
-    let _: bufferWriter = writer->packInt16(self.signs->Js.Array2.length)
-    self.signs->Js.Array2.forEach(sign => {
+    let _: bufferWriter = writer->packInt16(self.signs->Array.length)
+    self.signs->Array.forEach(sign => {
       writer->Sign.pack(sign)->ignore
     })
-    let _: bufferWriter = writer->packInt16(self.entities->Js.Array2.length)
-    self.entities->Js.Array2.forEach(entity => {
+    let _: bufferWriter = writer->packInt16(self.entities->Array.length)
+    self.entities->Array.forEach(entity => {
       writer->Entity.pack(entity)->ignore
     })
 

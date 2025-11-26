@@ -18,12 +18,12 @@ module Decode = {
   let parse = (payload: NodeJs.Buffer.t) => {
     let reader = PacketFactory.PacketReader.make(payload)
     let packedSizeAndType = reader->readUInt16
-    let changeType = if packedSizeAndType->land(32768) !== 0 {
+    let changeType = if (packedSizeAndType &&& 32768) !== 0 {
       reader->readByte
     } else {
       0
     }
-    let width = packedSizeAndType->land(32767)
+    let width = packedSizeAndType &&& (32767)
     let height = width
     let tileX = reader->readInt16
     let tileY = reader->readInt16
@@ -87,7 +87,7 @@ module Decode = {
         }
         let wire4 = flags2->BitFlags.flag8
         column
-        ->Js.Array2.push({
+        ->Array.push({
           wire,
           halfBrick,
           actuator,
@@ -102,9 +102,8 @@ module Decode = {
           liquid,
           coatHeader: 0,
         })
-        ->ignore
       }
-      tiles->Js.Array2.push(column)->ignore
+      tiles->Array.push(column)
     }
 
     Some({
@@ -138,9 +137,9 @@ module Encode = {
       ~flag2=tile.wire3,
       ~flag3=tile.color->Option.isSome,
       ~flag4=tile.wallColor->Option.isSome,
-      ~flag5=tile.activeTile->Option.mapWithDefault(false, tile => tile.slope->land(1) == 1),
-      ~flag6=tile.activeTile->Option.mapWithDefault(false, tile => tile.slope->land(2) == 2),
-      ~flag7=tile.activeTile->Option.mapWithDefault(false, tile => tile.slope->land(4) == 4),
+      ~flag5=tile.activeTile->Option.mapWithDefault(false, tile => (tile.slope &&& 1) == 1),
+      ~flag6=tile.activeTile->Option.mapWithDefault(false, tile => (tile.slope &&& 2) == 2),
+      ~flag7=tile.activeTile->Option.mapWithDefault(false, tile => (tile.slope &&& 4) == 4),
       ~flag8=tile.wire4,
     )
     writer->packByte(flags1->BitFlags.toByte)->packByte(flags2->BitFlags.toByte)->ignore
@@ -191,8 +190,8 @@ module Encode = {
 
   let toBuffer = (self: t): NodeJs.Buffer.t => {
     let packedSizeAndType = switch self.changeType {
-    | 0 => self.size->land(32767)
-    | _ => self.size->land(32767)->lor(32768)
+    | 0 => self.size &&& (32767)
+    | _ => (self.size &&& 32767) ||| (32768)
     }
     let writer =
       PacketFactory.ManagedPacketWriter.make()

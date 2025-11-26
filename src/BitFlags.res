@@ -15,14 +15,14 @@ let fromFlags = (
   ~flag8: bool,
 ) => {
   let byte = ref(0)
-  byte := byte.contents->lor(flag1 ? 1 : 0)
-  byte := byte.contents->lor(flag2 ? 2 : 0)
-  byte := byte.contents->lor(flag3 ? 4 : 0)
-  byte := byte.contents->lor(flag4 ? 8 : 0)
-  byte := byte.contents->lor(flag5 ? 16 : 0)
-  byte := byte.contents->lor(flag6 ? 32 : 0)
-  byte := byte.contents->lor(flag7 ? 64 : 0)
-  byte := byte.contents->lor(flag8 ? 128 : 0)
+  byte := byte.contents ||| (flag1 ? 1 : 0)
+  byte := byte.contents ||| (flag2 ? 2 : 0)
+  byte := byte.contents ||| (flag3 ? 4 : 0)
+  byte := byte.contents ||| (flag4 ? 8 : 0)
+  byte := byte.contents ||| (flag5 ? 16 : 0)
+  byte := byte.contents ||| (flag6 ? 32 : 0)
+  byte := byte.contents ||| (flag7 ? 64 : 0)
+  byte := byte.contents ||| (flag8 ? 128 : 0)
   byte.contents
 }
 
@@ -41,7 +41,7 @@ let fromArray = (flags: array<bool>): t => {
 
 @inline
 let flagN = (self: t, n: int): bool => {
-  self->land(n) === n
+  (self &&& n) === n
 }
 let flag1 = flagN(_, 1)
 let flag2 = flagN(_, 2)

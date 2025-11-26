@@ -796,29 +796,31 @@ module LazyPacket = {
     | Disconnect(disconnect) => Packet.LazyPacket.Disconnect(disconnect)
     | PlayerSlotSet(playerSlotSet) => Packet.LazyPacket.PlayerSlotSet(playerSlotSet)
     | PlayerInfo(playerInfo) =>
-      Packet.LazyPacket.PlayerInfo(lazy (playerInfo->Lazy.force->Option.map(PlayerInfo.toLatest)))
+      Packet.LazyPacket.PlayerInfo(
+        Lazy.make(() => playerInfo->Lazy.get->Option.map(PlayerInfo.toLatest)),
+      )
     | PlayerInventorySlot(playerInventorySlot) =>
       Packet.LazyPacket.PlayerInventorySlot(playerInventorySlot)
     | WorldDataRequest(worldDataRequest) => Packet.LazyPacket.WorldDataRequest(worldDataRequest)
     | WorldInfo(worldInfo) =>
       Packet.LazyPacket.WorldInfo(
-        lazy (worldInfo->Lazy.force->Option.map(worldInfo => WorldInfo.toLatest(worldInfo))),
+        Lazy.make(() => worldInfo->Lazy.get->Option.map(worldInfo => WorldInfo.toLatest(worldInfo))),
       )
     | InitialTileSectionsRequest(initialTileSectionsRequest) =>
       Packet.LazyPacket.InitialTileSectionsRequest(initialTileSectionsRequest)
     | Status(status) => Packet.LazyPacket.Status(status)
     | TileSectionSend(tileSectionSend) =>
       Packet.LazyPacket.TileSectionSend(
-        lazy (
+        Lazy.make(() =>
           tileSectionSend
-          ->Lazy.force
+          ->Lazy.get
           ->Option.map(tileSectionSend => tileSectionSend->TileSectionSend.toLatest)
         ),
       )
     | TileSectionFrame(tileSectionFrame) => Packet.LazyPacket.TileSectionFrame(tileSectionFrame)
     | PlayerSpawn(playerSpawn) =>
       Packet.LazyPacket.PlayerSpawn(
-        lazy (playerSpawn->Lazy.force->Option.map(PlayerSpawn.toLatest)),
+        Lazy.make(() => playerSpawn->Lazy.get->Option.map(PlayerSpawn.toLatest)),
       )
     | PlayerUpdate(playerUpdate) => Packet.LazyPacket.PlayerUpdate(playerUpdate)
     | PlayerActive(playerActive) => Packet.LazyPacket.PlayerActive(playerActive)
@@ -828,9 +830,9 @@ module LazyPacket = {
     | DoorUse(doorUse) => Packet.LazyPacket.DoorUse(doorUse)
     | TileSquareSend(tileSquareSend) =>
       Packet.LazyPacket.TileSquareSend(
-        lazy (
+        Lazy.make(() =>
           tileSquareSend
-          ->Lazy.force
+          ->Lazy.get
           ->Option.map(tileSquareSend => tileSquareSend->TileSquareSend.toLatest)
         ),
       )
@@ -863,7 +865,7 @@ module LazyPacket = {
     | PlayerSpawnSelf(playerSpawnSelf) => Packet.LazyPacket.PlayerSpawnSelf(playerSpawnSelf)
     | PlayerBuffsSet(playerBuffsSet) =>
       Packet.LazyPacket.PlayerBuffsSet(
-        lazy (playerBuffsSet->Lazy.force->Option.map(PlayerBuffsSet.toLatest)),
+        Lazy.make(() => playerBuffsSet->Lazy.get->Option.map(PlayerBuffsSet.toLatest)),
       )
     | NpcSpecialEffect(npcSpecialEffect) => Packet.LazyPacket.NpcSpecialEffect(npcSpecialEffect)
     | ChestOrTempleUnlock(chestOrTempleUnlock) =>
@@ -871,7 +873,7 @@ module LazyPacket = {
     | NpcBuffAdd(npcBuffAdd) => Packet.LazyPacket.NpcBuffAdd(npcBuffAdd)
     | NpcBuffUpdate(npcBuffUpdate) =>
       Packet.LazyPacket.NpcBuffUpdate(
-        lazy (npcBuffUpdate->Lazy.force->Option.map(NpcBuffUpdate.toLatest)),
+        Lazy.make(() => npcBuffUpdate->Lazy.get->Option.map(NpcBuffUpdate.toLatest)),
       )
     | PlayerBuffAdd(playerBuffAdd) => Packet.LazyPacket.PlayerBuffAdd(playerBuffAdd)
     | NpcNameUpdate(npcNameUpdate) => Packet.LazyPacket.NpcNameUpdate(npcNameUpdate)
@@ -938,9 +940,9 @@ module LazyPacket = {
     | NebulaLevelUp(nebulaLevelUp) => Packet.LazyPacket.NebulaLevelUp(nebulaLevelUp)
     | MoonLordCountdown(moonLordCountdown) =>
       Packet.LazyPacket.MoonLordCountdown(
-        lazy (
+        Lazy.make(() =>
           moonLordCountdown
-          ->Lazy.force
+          ->Lazy.get
           ->Option.map(moonLordCountdown => MoonLordCountdown.toLatest(moonLordCountdown))
         ),
       )
@@ -988,7 +990,9 @@ module LazyPacket = {
       Packet.LazyPacket.FoodPlatterTryPlacing(foodPlatterTryPlacing)
     | PlayerLuckFactorsUpdate(playerLuckFactorsUpdate) =>
       Packet.LazyPacket.PlayerLuckFactorsUpdate(
-        lazy (playerLuckFactorsUpdate->Lazy.force->Option.map(PlayerLuckFactorsUpdate.toLatest)),
+        Lazy.make(
+          () => playerLuckFactorsUpdate->Lazy.get->Option.map(PlayerLuckFactorsUpdate.toLatest),
+        ),
       )
     | PlayerDead(playerDead) => Packet.LazyPacket.PlayerDead(playerDead)
     | CavernMonsterTypeSync(cavernMonsterTypeSync) =>

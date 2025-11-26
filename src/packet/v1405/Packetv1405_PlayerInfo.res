@@ -100,16 +100,16 @@ module Encode = {
   let packDifficultyFlags = (writer, difficulty: difficulty, extraAccessory: bool, mode: mode) => {
     let byte = ref(0)
     byte :=
-      byte.contents->lor(
+      byte.contents ||| (
         switch difficulty {
         | Softcore => 0
         | Mediumcore => 1
         | Hardcore => 2
-        },
+        }
       )
 
-    byte := byte.contents->lor(extraAccessory ? 4 : 0)
-    byte := byte.contents->lor(mode == Journey ? 8 : 0)
+    byte := byte.contents ||| (extraAccessory ? 4 : 0)
+    byte := byte.contents ||| (mode == Journey ? 8 : 0)
     writer->packByte(byte.contents)
   }
 
@@ -120,9 +120,9 @@ module Encode = {
     unlockedBiomeTorches: bool,
   ) => {
     let byte = ref(0)
-    byte := byte.contents->lor(usingBiomeTorches ? 1 : 0)
-    byte := byte.contents->lor(happyFunTorchTime ? 2 : 0)
-    byte := byte.contents->lor(unlockedBiomeTorches ? 4 : 0)
+    byte := byte.contents ||| (usingBiomeTorches ? 1 : 0)
+    byte := byte.contents ||| (happyFunTorchTime ? 2 : 0)
+    byte := byte.contents ||| (unlockedBiomeTorches ? 4 : 0)
     writer->packByte(byte.contents)
   }
 

@@ -26,11 +26,11 @@ zoraBlock("should correctly parse and serialise NpcUpdate", t => {
     t->fail(~msg="Failed to serialise NpcUpdate")
   }
 
-  let result = result->Result.getExn->Packet_NpcUpdate.parse
+  let result = result->Result.getOrThrow->Packet_NpcUpdate.parse
   if result->Option.isNone {
     t->fail(~msg="Failed to serialise NpcUpdate")
   }
 
-  let data2 = result->Option.getExn
+  let data2 = result->Option.getOrThrow
   t->equal(data, data2)
 })

@@ -5,12 +5,15 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __esm = (fn, res) => function __init() {
+  return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
+};
 var __commonJS = (cb, mod) => function __require() {
   return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
 };
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
+var __export = (target, all7) => {
+  for (var name in all7)
+    __defProp(target, name, { get: all7[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
@@ -30,82 +33,83 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/caml_option.js
-var require_caml_option = __commonJS({
-  "node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/caml_option.js"(exports2) {
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_option.js
+var Primitive_option_exports = {};
+function isNested(x) {
+  return x.BS_PRIVATE_NESTED_SOME_NONE !== void 0;
+}
+function some(x) {
+  if (x === void 0) {
+    return {
+      BS_PRIVATE_NESTED_SOME_NONE: 0
+    };
+  } else if (x !== null && x.BS_PRIVATE_NESTED_SOME_NONE !== void 0) {
+    return {
+      BS_PRIVATE_NESTED_SOME_NONE: x.BS_PRIVATE_NESTED_SOME_NONE + 1 | 0
+    };
+  } else {
+    return x;
+  }
+}
+function fromNullable(x) {
+  if (x == null) {
+    return;
+  } else {
+    return some(x);
+  }
+}
+function fromUndefined(x) {
+  if (x === void 0) {
+    return;
+  } else {
+    return some(x);
+  }
+}
+function fromNull(x) {
+  if (x === null) {
+    return;
+  } else {
+    return some(x);
+  }
+}
+function valFromOption(x) {
+  if (x === null || x.BS_PRIVATE_NESTED_SOME_NONE === void 0) {
+    return x;
+  }
+  let depth = x.BS_PRIVATE_NESTED_SOME_NONE;
+  if (depth === 0) {
+    return;
+  } else {
+    return {
+      BS_PRIVATE_NESTED_SOME_NONE: depth - 1 | 0
+    };
+  }
+}
+function toUndefined(x) {
+  if (x === void 0) {
+    return;
+  } else {
+    return valFromOption(x);
+  }
+}
+function unwrapPolyVar(x) {
+  if (x !== void 0) {
+    return x.VAL;
+  } else {
+    return x;
+  }
+}
+var init_Primitive_option = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_option.js"() {
     "use strict";
-    function isNested(x) {
-      return x.BS_PRIVATE_NESTED_SOME_NONE !== void 0;
-    }
-    function some(x) {
-      if (x === void 0) {
-        return {
-          BS_PRIVATE_NESTED_SOME_NONE: 0
-        };
-      } else if (x !== null && x.BS_PRIVATE_NESTED_SOME_NONE !== void 0) {
-        return {
-          BS_PRIVATE_NESTED_SOME_NONE: x.BS_PRIVATE_NESTED_SOME_NONE + 1 | 0
-        };
-      } else {
-        return x;
-      }
-    }
-    function nullable_to_opt(x) {
-      if (x == null) {
-        return;
-      } else {
-        return some(x);
-      }
-    }
-    function undefined_to_opt(x) {
-      if (x === void 0) {
-        return;
-      } else {
-        return some(x);
-      }
-    }
-    function null_to_opt(x) {
-      if (x === null) {
-        return;
-      } else {
-        return some(x);
-      }
-    }
-    function valFromOption(x) {
-      if (!(x !== null && x.BS_PRIVATE_NESTED_SOME_NONE !== void 0)) {
-        return x;
-      }
-      var depth = x.BS_PRIVATE_NESTED_SOME_NONE;
-      if (depth === 0) {
-        return;
-      } else {
-        return {
-          BS_PRIVATE_NESTED_SOME_NONE: depth - 1 | 0
-        };
-      }
-    }
-    function option_get(x) {
-      if (x === void 0) {
-        return;
-      } else {
-        return valFromOption(x);
-      }
-    }
-    function option_unwrap(x) {
-      if (x !== void 0) {
-        return x.VAL;
-      } else {
-        return x;
-      }
-    }
-    exports2.nullable_to_opt = nullable_to_opt;
-    exports2.undefined_to_opt = undefined_to_opt;
-    exports2.null_to_opt = null_to_opt;
-    exports2.valFromOption = valFromOption;
-    exports2.some = some;
-    exports2.isNested = isNested;
-    exports2.option_get = option_get;
-    exports2.option_unwrap = option_unwrap;
+    exports.fromNullable = fromNullable;
+    exports.fromUndefined = fromUndefined;
+    exports.fromNull = fromNull;
+    exports.valFromOption = valFromOption;
+    exports.some = some;
+    exports.isNested = isNested;
+    exports.toUndefined = toUndefined;
+    exports.unwrapPolyVar = unwrapPolyVar;
   }
 });
 
@@ -113,9 +117,9 @@ var require_caml_option = __commonJS({
 var require_Packet_AnglerQuest = __commonJS({
   "src/packet/Packet_AnglerQuest.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -125,9 +129,9 @@ var require_Packet_AnglerQuest = __commonJS({
 var require_Packet_AnglerQuestComplete = __commonJS({
   "src/packet/Packet_AnglerQuestComplete.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -728,9 +732,9 @@ var require_PacketType = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@popstarfreas+packetfactory@6.2.0/node_modules/@popstarfreas/packetfactory/src/ManagedPacketWriter.js
+// node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/src/ManagedPacketWriter.js
 var require_ManagedPacketWriter = __commonJS({
-  "node_modules/.pnpm/@popstarfreas+packetfactory@6.2.0/node_modules/@popstarfreas/packetfactory/src/ManagedPacketWriter.js"(exports2) {
+  "node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/src/ManagedPacketWriter.js"(exports2) {
     "use strict";
     function setType(untypedT, packetType) {
       return untypedT.setType(packetType);
@@ -739,9 +743,9 @@ var require_ManagedPacketWriter = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@popstarfreas+packetfactory@6.2.0/node_modules/@popstarfreas/packetfactory/networktext.js
+// node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/networktext.js
 var require_networktext = __commonJS({
-  "node_modules/.pnpm/@popstarfreas+packetfactory@6.2.0/node_modules/@popstarfreas/packetfactory/networktext.js"(exports2) {
+  "node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/networktext.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var NetworkText = class {
@@ -777,12 +781,12 @@ var require_utf8 = __commonJS({
       function ucs2decode(string) {
         var output = [];
         var counter = 0;
-        var length = string.length;
+        var length2 = string.length;
         var value;
         var extra;
-        while (counter < length) {
+        while (counter < length2) {
           value = string.charCodeAt(counter++);
-          if (value >= 55296 && value <= 56319 && counter < length) {
+          if (value >= 55296 && value <= 56319 && counter < length2) {
             extra = string.charCodeAt(counter++);
             if ((extra & 64512) == 56320) {
               output.push(((value & 1023) << 10) + (extra & 1023) + 65536);
@@ -797,11 +801,11 @@ var require_utf8 = __commonJS({
         return output;
       }
       function ucs2encode(array) {
-        var length = array.length;
+        var length2 = array.length;
         var index = -1;
         var value;
         var output = "";
-        while (++index < length) {
+        while (++index < length2) {
           value = array[index];
           if (value > 65535) {
             value -= 65536;
@@ -843,11 +847,11 @@ var require_utf8 = __commonJS({
       }
       function utf8encode(string) {
         var codePoints = ucs2decode(string);
-        var length = codePoints.length;
+        var length2 = codePoints.length;
         var index = -1;
         var codePoint;
         var byteString = "";
-        while (++index < length) {
+        while (++index < length2) {
           codePoint = codePoints[index];
           byteString += encodeCodePoint(codePoint);
         }
@@ -952,9 +956,9 @@ var require_utf8 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@popstarfreas+packetfactory@6.2.0/node_modules/@popstarfreas/packetfactory/bufferwriter.js
+// node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/bufferwriter.js
 var require_bufferwriter = __commonJS({
-  "node_modules/.pnpm/@popstarfreas+packetfactory@6.2.0/node_modules/@popstarfreas/packetfactory/bufferwriter.js"(exports2) {
+  "node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/bufferwriter.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var utils_1 = require_utils();
@@ -1073,9 +1077,9 @@ var require_bufferwriter = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@popstarfreas+packetfactory@6.2.0/node_modules/@popstarfreas/packetfactory/utils.js
+// node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/utils.js
 var require_utils = __commonJS({
-  "node_modules/.pnpm/@popstarfreas+packetfactory@6.2.0/node_modules/@popstarfreas/packetfactory/utils.js"(exports2) {
+  "node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/utils.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.getPackedStringByteLen = exports2.requireNoCache = exports2._invalidateRequireCacheForFile = exports2.getPacketsFromBuffer = exports2.getPacketTypeFromBuffer = exports2.getProperIP = exports2.textToBuffer = exports2.bufferToText = void 0;
@@ -1117,19 +1121,19 @@ var require_utils = __commonJS({
       const reader = new bufferreader_1.default(buf);
       let packets = [];
       let end = false;
-      let length;
+      let length2;
       let data;
       let index = 0;
       let packetType;
       let bufferPacket = Buffer.allocUnsafe(0);
       if (buf.length > 1) {
         while (!end) {
-          length = reader.readUInt16();
-          if (length === 0) {
+          length2 = reader.readUInt16();
+          if (length2 === 0) {
             end = true;
           } else {
-            data = buf.slice(reader.head - 2, reader.head - 2 + length);
-            reader.head += length - 2;
+            data = buf.slice(reader.head - 2, reader.head - 2 + length2);
+            reader.head += length2 - 2;
             if (reader.head > buf.length) {
               bufferPacket = data;
               end = true;
@@ -1175,9 +1179,9 @@ var require_utils = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@popstarfreas+packetfactory@6.2.0/node_modules/@popstarfreas/packetfactory/bufferreader.js
+// node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/bufferreader.js
 var require_bufferreader = __commonJS({
-  "node_modules/.pnpm/@popstarfreas+packetfactory@6.2.0/node_modules/@popstarfreas/packetfactory/bufferreader.js"(exports2) {
+  "node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/bufferreader.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var networktext_1 = require_networktext();
@@ -1230,9 +1234,9 @@ var require_bufferreader = __commonJS({
        *
        * @param size The number of bytes to read
        */
-      readBuffer(size) {
-        const buffer = this._data.slice(this.head, this.head + size);
-        this.head += size;
+      readBuffer(size4) {
+        const buffer = this._data.slice(this.head, this.head + size4);
+        this.head += size4;
         return buffer;
       }
       /**
@@ -1373,9 +1377,9 @@ var require_bufferreader = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@popstarfreas+packetfactory@6.2.0/node_modules/@popstarfreas/packetfactory/packetreader.js
+// node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/packetreader.js
 var require_packetreader = __commonJS({
-  "node_modules/.pnpm/@popstarfreas+packetfactory@6.2.0/node_modules/@popstarfreas/packetfactory/packetreader.js"(exports2) {
+  "node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/packetreader.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var bufferreader_1 = require_bufferreader();
@@ -1398,9 +1402,9 @@ var require_packetreader = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@popstarfreas+packetfactory@6.2.0/node_modules/@popstarfreas/packetfactory/dumbpacketwriter.js
+// node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/dumbpacketwriter.js
 var require_dumbpacketwriter = __commonJS({
-  "node_modules/.pnpm/@popstarfreas+packetfactory@6.2.0/node_modules/@popstarfreas/packetfactory/dumbpacketwriter.js"(exports2) {
+  "node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/dumbpacketwriter.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var bufferwriter_1 = require_bufferwriter();
@@ -1482,9 +1486,9 @@ var require_dumbpacketwriter = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@popstarfreas+packetfactory@6.2.0/node_modules/@popstarfreas/packetfactory/packetwriter.js
+// node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/packetwriter.js
 var require_packetwriter = __commonJS({
-  "node_modules/.pnpm/@popstarfreas+packetfactory@6.2.0/node_modules/@popstarfreas/packetfactory/packetwriter.js"(exports2) {
+  "node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/packetwriter.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var dumbpacketwriter_1 = require_dumbpacketwriter();
@@ -1616,11 +1620,11 @@ var require_Packet_BossOrInvasionSpawn = __commonJS({
       return prim.readInt16();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var playerId = reader.readInt16();
-      var invasionType = reader.readInt16();
-      var spawnType;
-      var exit = 0;
+      let reader = new Packetreader(payload);
+      let playerId = reader.readInt16();
+      let invasionType = reader.readInt16();
+      let spawnType;
+      let exit = 0;
       switch (invasionType) {
         case -18:
           spawnType = "PeddlersSatchel";
@@ -1763,15 +1767,665 @@ var require_Packet_BossOrInvasionSpawn = __commonJS({
   }
 });
 
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_exceptions.js
+var Primitive_exceptions_exports = {};
+function isExtension(e) {
+  if (e == null) {
+    return false;
+  } else {
+    return typeof e.RE_EXN_ID === "string";
+  }
+}
+function internalToException(e) {
+  if (isExtension(e)) {
+    return e;
+  } else {
+    return {
+      RE_EXN_ID: "JsExn",
+      _1: e
+    };
+  }
+}
+function create(str) {
+  let v = idMap[str];
+  if (v !== void 0) {
+    let id = v + 1 | 0;
+    idMap[str] = id;
+    return str + ("/" + id);
+  }
+  idMap[str] = 1;
+  return str;
+}
+var idMap, $$Error;
+var init_Primitive_exceptions = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_exceptions.js"() {
+    "use strict";
+    idMap = {};
+    $$Error = "JsExn";
+    exports.$$Error = $$Error;
+    exports.create = create;
+    exports.internalToException = internalToException;
+  }
+});
+
+// src/ErrorAwarePacketReader.js
+var require_ErrorAwarePacketReader = __commonJS({
+  "src/ErrorAwarePacketReader.js"(exports2) {
+    "use strict";
+    var Primitive_exceptions3 = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
+    var ReadError = /* @__PURE__ */ Primitive_exceptions3.create("ErrorAwarePacketReader-TerrariaPacket.ReadError");
+    function readByte(reader, context) {
+      try {
+        return reader.readByte();
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          throw {
+            RE_EXN_ID: ReadError,
+            _1: {
+              context,
+              error: obj._1
+            },
+            Error: new Error()
+          };
+        }
+        throw obj;
+      }
+    }
+    function readUInt16(reader, context) {
+      try {
+        return reader.readUInt16();
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          throw {
+            RE_EXN_ID: ReadError,
+            _1: {
+              context,
+              error: obj._1
+            },
+            Error: new Error()
+          };
+        }
+        throw obj;
+      }
+    }
+    function readInt16(reader, context) {
+      try {
+        return reader.readInt16();
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          throw {
+            RE_EXN_ID: ReadError,
+            _1: {
+              context,
+              error: obj._1
+            },
+            Error: new Error()
+          };
+        }
+        throw obj;
+      }
+    }
+    function readInt32(reader, context) {
+      try {
+        return reader.readInt32();
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          throw {
+            RE_EXN_ID: ReadError,
+            _1: {
+              context,
+              error: obj._1
+            },
+            Error: new Error()
+          };
+        }
+        throw obj;
+      }
+    }
+    function readUInt64(reader, context) {
+      try {
+        return reader.readUInt64();
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          throw {
+            RE_EXN_ID: ReadError,
+            _1: {
+              context,
+              error: obj._1
+            },
+            Error: new Error()
+          };
+        }
+        throw obj;
+      }
+    }
+    function readString(reader, context) {
+      try {
+        return reader.readString();
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          throw {
+            RE_EXN_ID: ReadError,
+            _1: {
+              context,
+              error: obj._1
+            },
+            Error: new Error()
+          };
+        }
+        throw obj;
+      }
+    }
+    function readBytes(reader, count, context) {
+      try {
+        return reader.readBytes(count);
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          throw {
+            RE_EXN_ID: ReadError,
+            _1: {
+              context,
+              error: obj._1
+            },
+            Error: new Error()
+          };
+        }
+        throw obj;
+      }
+    }
+    function readSingle(reader, context) {
+      try {
+        return reader.readSingle();
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          throw {
+            RE_EXN_ID: ReadError,
+            _1: {
+              context,
+              error: obj._1
+            },
+            Error: new Error()
+          };
+        }
+        throw obj;
+      }
+    }
+    function readSByte(reader, context) {
+      try {
+        return reader.readSByte();
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          throw {
+            RE_EXN_ID: ReadError,
+            _1: {
+              context,
+              error: obj._1
+            },
+            Error: new Error()
+          };
+        }
+        throw obj;
+      }
+    }
+    function readColor(reader, context) {
+      try {
+        return reader.readColor();
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          throw {
+            RE_EXN_ID: ReadError,
+            _1: {
+              context,
+              error: obj._1
+            },
+            Error: new Error()
+          };
+        }
+        throw obj;
+      }
+    }
+    function readBuffer(reader, bytes, context) {
+      try {
+        return reader.readBuffer(bytes);
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          throw {
+            RE_EXN_ID: ReadError,
+            _1: {
+              context,
+              error: obj._1
+            },
+            Error: new Error()
+          };
+        }
+        throw obj;
+      }
+    }
+    function readNetworkText(reader, context) {
+      try {
+        return reader.readNetworkText();
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          throw {
+            RE_EXN_ID: ReadError,
+            _1: {
+              context,
+              error: obj._1
+            },
+            Error: new Error()
+          };
+        }
+        throw obj;
+      }
+    }
+    function getBytesLeft(reader) {
+      return reader.bytesLeft;
+    }
+    exports2.ReadError = ReadError;
+    exports2.readByte = readByte;
+    exports2.readUInt16 = readUInt16;
+    exports2.readInt16 = readInt16;
+    exports2.readInt32 = readInt32;
+    exports2.readUInt64 = readUInt64;
+    exports2.readString = readString;
+    exports2.readBytes = readBytes;
+    exports2.readSingle = readSingle;
+    exports2.readSByte = readSByte;
+    exports2.readColor = readColor;
+    exports2.readBuffer = readBuffer;
+    exports2.readNetworkText = readNetworkText;
+    exports2.getBytesLeft = getBytesLeft;
+  }
+});
+
+// src/ErrorAwarePacketWriter.js
+var require_ErrorAwarePacketWriter = __commonJS({
+  "src/ErrorAwarePacketWriter.js"(exports2) {
+    "use strict";
+    var Primitive_exceptions3 = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetwriter = require_packetwriter().default;
+    function packSingle(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packSingle(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function packInt32(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packInt32(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function packByte(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packByte(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function packUInt16(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packUInt16(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function packInt16(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packInt16(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function packUInt64(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packUInt64(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function packString(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packString(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function packSByte(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packSByte(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function packBytes(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packBytes(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function packColor(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packColor(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function packBuffer(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packBuffer(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function packNetworkText(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packNetworkText(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function setType(self, value) {
+      return {
+        TAG: "Writing",
+        _0: ManagedPacketWriter$PacketFactory.setType(self, value)
+      };
+    }
+    function data(self) {
+      if (self.TAG === "Writing") {
+        return {
+          TAG: "Ok",
+          _0: self._0.data
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: self._0
+        };
+      }
+    }
+    function make5() {
+      return new Packetwriter();
+    }
+    exports2.packSingle = packSingle;
+    exports2.packInt32 = packInt32;
+    exports2.packByte = packByte;
+    exports2.packUInt16 = packUInt16;
+    exports2.packInt16 = packInt16;
+    exports2.packUInt64 = packUInt64;
+    exports2.packString = packString;
+    exports2.packSByte = packSByte;
+    exports2.packBytes = packBytes;
+    exports2.packColor = packColor;
+    exports2.packBuffer = packBuffer;
+    exports2.packNetworkText = packNetworkText;
+    exports2.setType = setType;
+    exports2.data = data;
+    exports2.make = make5;
+  }
+});
+
 // src/packet/Packet_ChatMessageSmart.js
 var require_Packet_ChatMessageSmart = __commonJS({
   "src/packet/Packet_ChatMessageSmart.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
-    function parse(_payload) {
-      return Caml_option.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let color = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "color");
+      let message = ErrorAwarePacketReader$TerrariaPacket.readNetworkText(reader, "message");
+      let widthLimit = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "widthLimit");
+      return {
+        color,
+        message,
+        widthLimit
+      };
     }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
+      readColor: ErrorAwarePacketReader$TerrariaPacket.readColor,
+      readNetworkText: ErrorAwarePacketReader$TerrariaPacket.readNetworkText,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packNetworkText(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ChatMessageSmart")), self.color, "color"), self.message, "message"), self.widthLimit, "widthLimit"));
+    }
+    var Encode = {
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      packColor: ErrorAwarePacketWriter$TerrariaPacket.packColor,
+      packNetworkText: ErrorAwarePacketWriter$TerrariaPacket.packNetworkText,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -1790,12 +2444,12 @@ var require_Packet_ChestItem = __commonJS({
       return prim.readByte();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var chestId = reader.readInt16();
-      var slot = reader.readByte();
-      var stack = reader.readInt16();
-      var prefix = reader.readByte();
-      var itemNetId = reader.readInt16();
+      let reader = new Packetreader(payload);
+      let chestId = reader.readInt16();
+      let slot = reader.readByte();
+      let stack = reader.readInt16();
+      let prefix = reader.readByte();
+      let itemNetId = reader.readInt16();
       return {
         chestId,
         slot,
@@ -1872,10 +2526,10 @@ var require_Packet_ChestOrTempleUnlock = __commonJS({
       return prim.readInt16();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var unlockType = unlockTypeFromInt(reader.readByte());
-      var x = reader.readInt16();
-      var y = reader.readInt16();
+      let reader = new Packetreader(payload);
+      let unlockType = unlockTypeFromInt(reader.readByte());
+      let x = reader.readInt16();
+      let y = reader.readInt16();
       if (unlockType !== void 0) {
         return {
           unlockType,
@@ -1982,12 +2636,12 @@ var require_Packet_ChestPlace = __commonJS({
       toString
     };
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var action = fromInt(reader.readByte());
-      var x = reader.readInt16();
-      var y = reader.readInt16();
-      var style = reader.readInt16();
-      var id = reader.readInt16();
+      let reader = new Packetreader(payload);
+      let action = fromInt(reader.readByte());
+      let x = reader.readInt16();
+      let y = reader.readInt16();
+      let style = reader.readInt16();
+      let id = reader.readInt16();
       if (action !== void 0) {
         return {
           action,
@@ -1999,28 +2653,28 @@ var require_Packet_ChestPlace = __commonJS({
       }
     }
     function packAction(writer, action) {
-      var $$byte;
+      let byte;
       switch (action) {
         case "PlaceChest":
-          $$byte = 0;
+          byte = 0;
           break;
         case "KillChest":
-          $$byte = 1;
+          byte = 1;
           break;
         case "PlaceDresser":
-          $$byte = 2;
+          byte = 2;
           break;
         case "KillDresser":
-          $$byte = 3;
+          byte = 3;
           break;
         case "PlaceContainer":
-          $$byte = 4;
+          byte = 4;
           break;
         case "KillContainer":
-          $$byte = 5;
+          byte = 5;
           break;
       }
-      return writer.packByte($$byte);
+      return writer.packByte(byte);
     }
     function toBuffer(self) {
       return packAction(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ChestPlace")), self.action).packInt16(self.x).packInt16(self.y).packInt16(self.style).packInt16(self.id).data;
@@ -2035,9 +2689,9 @@ var require_Packet_ChestPlace = __commonJS({
 var require_Packet_ClientFinishConnectingToServer = __commonJS({
   "src/packet/Packet_ClientFinishConnectingToServer.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -2052,8 +2706,8 @@ var require_Packet_ConnectRequest = __commonJS({
     var Packetreader = require_packetreader().default;
     var Packetwriter = require_packetwriter().default;
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var version = reader.readString();
+      let reader = new Packetreader(payload);
+      let version = reader.readString();
       return {
         version
       };
@@ -2070,768 +2724,129 @@ var require_Packet_ConnectRequest = __commonJS({
 var require_Packet_CountsAsHostForGameplaySet = __commonJS({
   "src/packet/Packet_CountsAsHostForGameplaySet.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
 });
 
-// node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/caml_array.js
-var require_caml_array = __commonJS({
-  "node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/caml_array.js"(exports2) {
-    "use strict";
-    function sub(x, offset, len2) {
-      var result = new Array(len2);
-      var j = 0;
-      var i = offset;
-      while (j < len2) {
-        result[j] = x[i];
-        j = j + 1 | 0;
-        i = i + 1 | 0;
-      }
-      ;
-      return result;
-    }
-    function len(_acc, _l) {
-      while (true) {
-        var l = _l;
-        var acc = _acc;
-        if (!l) {
-          return acc;
-        }
-        _l = l.tl;
-        _acc = l.hd.length + acc | 0;
-        continue;
-      }
-      ;
-    }
-    function fill(arr, _i, _l) {
-      while (true) {
-        var l = _l;
-        var i = _i;
-        if (!l) {
-          return;
-        }
-        var x = l.hd;
-        var l$1 = x.length;
-        var k = i;
-        var j = 0;
-        while (j < l$1) {
-          arr[k] = x[j];
-          k = k + 1 | 0;
-          j = j + 1 | 0;
-        }
-        ;
-        _l = l.tl;
-        _i = k;
-        continue;
-      }
-      ;
-    }
-    function concat(l) {
-      var v = len(0, l);
-      var result = new Array(v);
-      fill(result, 0, l);
-      return result;
-    }
-    function set(xs, index, newval) {
-      if (index < 0 || index >= xs.length) {
-        throw {
-          RE_EXN_ID: "Invalid_argument",
-          _1: "index out of bounds",
-          Error: new Error()
-        };
-      }
-      xs[index] = newval;
-    }
-    function get(xs, index) {
-      if (index < 0 || index >= xs.length) {
-        throw {
-          RE_EXN_ID: "Invalid_argument",
-          _1: "index out of bounds",
-          Error: new Error()
-        };
-      }
-      return xs[index];
-    }
-    function make(len2, init) {
-      var b = new Array(len2);
-      for (var i = 0; i < len2; ++i) {
-        b[i] = init;
-      }
-      return b;
-    }
-    function make_float(len2) {
-      var b = new Array(len2);
-      for (var i = 0; i < len2; ++i) {
-        b[i] = 0;
-      }
-      return b;
-    }
-    function blit(a1, i1, a2, i2, len2) {
-      if (i2 <= i1) {
-        for (var j = 0; j < len2; ++j) {
-          a2[j + i2 | 0] = a1[j + i1 | 0];
-        }
-        return;
-      }
-      for (var j$1 = len2 - 1 | 0; j$1 >= 0; --j$1) {
-        a2[j$1 + i2 | 0] = a1[j$1 + i1 | 0];
-      }
-    }
-    function dup(prim) {
-      return prim.slice(0);
-    }
-    exports2.dup = dup;
-    exports2.sub = sub;
-    exports2.concat = concat;
-    exports2.make = make;
-    exports2.make_float = make_float;
-    exports2.blit = blit;
-    exports2.get = get;
-    exports2.set = set;
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_Option.js
+var Belt_Option_exports = {};
+function keep(opt, p) {
+  if (opt !== void 0 && p(Primitive_option.valFromOption(opt))) {
+    return opt;
   }
-});
-
-// node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/curry.js
-var require_curry = __commonJS({
-  "node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/curry.js"(exports2) {
-    "use strict";
-    var Caml_array = require_caml_array();
-    function app(_f, _args) {
-      while (true) {
-        var args = _args;
-        var f = _f;
-        var init_arity = f.length;
-        var arity = init_arity === 0 ? 1 : init_arity;
-        var len = args.length;
-        var d = arity - len | 0;
-        if (d === 0) {
-          return f.apply(null, args);
-        }
-        if (d >= 0) {
-          return /* @__PURE__ */ function(f2, args2) {
-            return function(x) {
-              return app(f2, args2.concat([x]));
-            };
-          }(f, args);
-        }
-        _args = Caml_array.sub(args, arity, -d | 0);
-        _f = f.apply(null, Caml_array.sub(args, 0, arity));
-        continue;
-      }
-      ;
-    }
-    function _1(o, a0) {
-      var arity = o.length;
-      if (arity === 1) {
-        return o(a0);
-      } else {
-        switch (arity) {
-          case 1:
-            return o(a0);
-          case 2:
-            return function(param) {
-              return o(a0, param);
-            };
-          case 3:
-            return function(param, param$1) {
-              return o(a0, param, param$1);
-            };
-          case 4:
-            return function(param, param$1, param$2) {
-              return o(a0, param, param$1, param$2);
-            };
-          case 5:
-            return function(param, param$1, param$2, param$3) {
-              return o(a0, param, param$1, param$2, param$3);
-            };
-          case 6:
-            return function(param, param$1, param$2, param$3, param$4) {
-              return o(a0, param, param$1, param$2, param$3, param$4);
-            };
-          case 7:
-            return function(param, param$1, param$2, param$3, param$4, param$5) {
-              return o(a0, param, param$1, param$2, param$3, param$4, param$5);
-            };
-          default:
-            return app(o, [a0]);
-        }
-      }
-    }
-    function __1(o) {
-      var arity = o.length;
-      if (arity === 1) {
-        return o;
-      } else {
-        return function(a0) {
-          return _1(o, a0);
-        };
-      }
-    }
-    function _2(o, a0, a1) {
-      var arity = o.length;
-      if (arity === 2) {
-        return o(a0, a1);
-      } else {
-        switch (arity) {
-          case 1:
-            return app(o(a0), [a1]);
-          case 2:
-            return o(a0, a1);
-          case 3:
-            return function(param) {
-              return o(a0, a1, param);
-            };
-          case 4:
-            return function(param, param$1) {
-              return o(a0, a1, param, param$1);
-            };
-          case 5:
-            return function(param, param$1, param$2) {
-              return o(a0, a1, param, param$1, param$2);
-            };
-          case 6:
-            return function(param, param$1, param$2, param$3) {
-              return o(a0, a1, param, param$1, param$2, param$3);
-            };
-          case 7:
-            return function(param, param$1, param$2, param$3, param$4) {
-              return o(a0, a1, param, param$1, param$2, param$3, param$4);
-            };
-          default:
-            return app(o, [
-              a0,
-              a1
-            ]);
-        }
-      }
-    }
-    function __2(o) {
-      var arity = o.length;
-      if (arity === 2) {
-        return o;
-      } else {
-        return function(a0, a1) {
-          return _2(o, a0, a1);
-        };
-      }
-    }
-    function _3(o, a0, a1, a2) {
-      var arity = o.length;
-      if (arity === 3) {
-        return o(a0, a1, a2);
-      } else {
-        switch (arity) {
-          case 1:
-            return app(o(a0), [
-              a1,
-              a2
-            ]);
-          case 2:
-            return app(o(a0, a1), [a2]);
-          case 3:
-            return o(a0, a1, a2);
-          case 4:
-            return function(param) {
-              return o(a0, a1, a2, param);
-            };
-          case 5:
-            return function(param, param$1) {
-              return o(a0, a1, a2, param, param$1);
-            };
-          case 6:
-            return function(param, param$1, param$2) {
-              return o(a0, a1, a2, param, param$1, param$2);
-            };
-          case 7:
-            return function(param, param$1, param$2, param$3) {
-              return o(a0, a1, a2, param, param$1, param$2, param$3);
-            };
-          default:
-            return app(o, [
-              a0,
-              a1,
-              a2
-            ]);
-        }
-      }
-    }
-    function __3(o) {
-      var arity = o.length;
-      if (arity === 3) {
-        return o;
-      } else {
-        return function(a0, a1, a2) {
-          return _3(o, a0, a1, a2);
-        };
-      }
-    }
-    function _4(o, a0, a1, a2, a3) {
-      var arity = o.length;
-      if (arity === 4) {
-        return o(a0, a1, a2, a3);
-      } else {
-        switch (arity) {
-          case 1:
-            return app(o(a0), [
-              a1,
-              a2,
-              a3
-            ]);
-          case 2:
-            return app(o(a0, a1), [
-              a2,
-              a3
-            ]);
-          case 3:
-            return app(o(a0, a1, a2), [a3]);
-          case 4:
-            return o(a0, a1, a2, a3);
-          case 5:
-            return function(param) {
-              return o(a0, a1, a2, a3, param);
-            };
-          case 6:
-            return function(param, param$1) {
-              return o(a0, a1, a2, a3, param, param$1);
-            };
-          case 7:
-            return function(param, param$1, param$2) {
-              return o(a0, a1, a2, a3, param, param$1, param$2);
-            };
-          default:
-            return app(o, [
-              a0,
-              a1,
-              a2,
-              a3
-            ]);
-        }
-      }
-    }
-    function __4(o) {
-      var arity = o.length;
-      if (arity === 4) {
-        return o;
-      } else {
-        return function(a0, a1, a2, a3) {
-          return _4(o, a0, a1, a2, a3);
-        };
-      }
-    }
-    function _5(o, a0, a1, a2, a3, a4) {
-      var arity = o.length;
-      if (arity === 5) {
-        return o(a0, a1, a2, a3, a4);
-      } else {
-        switch (arity) {
-          case 1:
-            return app(o(a0), [
-              a1,
-              a2,
-              a3,
-              a4
-            ]);
-          case 2:
-            return app(o(a0, a1), [
-              a2,
-              a3,
-              a4
-            ]);
-          case 3:
-            return app(o(a0, a1, a2), [
-              a3,
-              a4
-            ]);
-          case 4:
-            return app(o(a0, a1, a2, a3), [a4]);
-          case 5:
-            return o(a0, a1, a2, a3, a4);
-          case 6:
-            return function(param) {
-              return o(a0, a1, a2, a3, a4, param);
-            };
-          case 7:
-            return function(param, param$1) {
-              return o(a0, a1, a2, a3, a4, param, param$1);
-            };
-          default:
-            return app(o, [
-              a0,
-              a1,
-              a2,
-              a3,
-              a4
-            ]);
-        }
-      }
-    }
-    function __5(o) {
-      var arity = o.length;
-      if (arity === 5) {
-        return o;
-      } else {
-        return function(a0, a1, a2, a3, a4) {
-          return _5(o, a0, a1, a2, a3, a4);
-        };
-      }
-    }
-    function _6(o, a0, a1, a2, a3, a4, a5) {
-      var arity = o.length;
-      if (arity === 6) {
-        return o(a0, a1, a2, a3, a4, a5);
-      } else {
-        switch (arity) {
-          case 1:
-            return app(o(a0), [
-              a1,
-              a2,
-              a3,
-              a4,
-              a5
-            ]);
-          case 2:
-            return app(o(a0, a1), [
-              a2,
-              a3,
-              a4,
-              a5
-            ]);
-          case 3:
-            return app(o(a0, a1, a2), [
-              a3,
-              a4,
-              a5
-            ]);
-          case 4:
-            return app(o(a0, a1, a2, a3), [
-              a4,
-              a5
-            ]);
-          case 5:
-            return app(o(a0, a1, a2, a3, a4), [a5]);
-          case 6:
-            return o(a0, a1, a2, a3, a4, a5);
-          case 7:
-            return function(param) {
-              return o(a0, a1, a2, a3, a4, a5, param);
-            };
-          default:
-            return app(o, [
-              a0,
-              a1,
-              a2,
-              a3,
-              a4,
-              a5
-            ]);
-        }
-      }
-    }
-    function __6(o) {
-      var arity = o.length;
-      if (arity === 6) {
-        return o;
-      } else {
-        return function(a0, a1, a2, a3, a4, a5) {
-          return _6(o, a0, a1, a2, a3, a4, a5);
-        };
-      }
-    }
-    function _7(o, a0, a1, a2, a3, a4, a5, a6) {
-      var arity = o.length;
-      if (arity === 7) {
-        return o(a0, a1, a2, a3, a4, a5, a6);
-      } else {
-        switch (arity) {
-          case 1:
-            return app(o(a0), [
-              a1,
-              a2,
-              a3,
-              a4,
-              a5,
-              a6
-            ]);
-          case 2:
-            return app(o(a0, a1), [
-              a2,
-              a3,
-              a4,
-              a5,
-              a6
-            ]);
-          case 3:
-            return app(o(a0, a1, a2), [
-              a3,
-              a4,
-              a5,
-              a6
-            ]);
-          case 4:
-            return app(o(a0, a1, a2, a3), [
-              a4,
-              a5,
-              a6
-            ]);
-          case 5:
-            return app(o(a0, a1, a2, a3, a4), [
-              a5,
-              a6
-            ]);
-          case 6:
-            return app(o(a0, a1, a2, a3, a4, a5), [a6]);
-          case 7:
-            return o(a0, a1, a2, a3, a4, a5, a6);
-          default:
-            return app(o, [
-              a0,
-              a1,
-              a2,
-              a3,
-              a4,
-              a5,
-              a6
-            ]);
-        }
-      }
-    }
-    function __7(o) {
-      var arity = o.length;
-      if (arity === 7) {
-        return o;
-      } else {
-        return function(a0, a1, a2, a3, a4, a5, a6) {
-          return _7(o, a0, a1, a2, a3, a4, a5, a6);
-        };
-      }
-    }
-    function _8(o, a0, a1, a2, a3, a4, a5, a6, a7) {
-      var arity = o.length;
-      if (arity === 8) {
-        return o(a0, a1, a2, a3, a4, a5, a6, a7);
-      } else {
-        switch (arity) {
-          case 1:
-            return app(o(a0), [
-              a1,
-              a2,
-              a3,
-              a4,
-              a5,
-              a6,
-              a7
-            ]);
-          case 2:
-            return app(o(a0, a1), [
-              a2,
-              a3,
-              a4,
-              a5,
-              a6,
-              a7
-            ]);
-          case 3:
-            return app(o(a0, a1, a2), [
-              a3,
-              a4,
-              a5,
-              a6,
-              a7
-            ]);
-          case 4:
-            return app(o(a0, a1, a2, a3), [
-              a4,
-              a5,
-              a6,
-              a7
-            ]);
-          case 5:
-            return app(o(a0, a1, a2, a3, a4), [
-              a5,
-              a6,
-              a7
-            ]);
-          case 6:
-            return app(o(a0, a1, a2, a3, a4, a5), [
-              a6,
-              a7
-            ]);
-          case 7:
-            return app(o(a0, a1, a2, a3, a4, a5, a6), [a7]);
-          default:
-            return app(o, [
-              a0,
-              a1,
-              a2,
-              a3,
-              a4,
-              a5,
-              a6,
-              a7
-            ]);
-        }
-      }
-    }
-    function __8(o) {
-      var arity = o.length;
-      if (arity === 8) {
-        return o;
-      } else {
-        return function(a0, a1, a2, a3, a4, a5, a6, a7) {
-          return _8(o, a0, a1, a2, a3, a4, a5, a6, a7);
-        };
-      }
-    }
-    exports2.app = app;
-    exports2._1 = _1;
-    exports2.__1 = __1;
-    exports2._2 = _2;
-    exports2.__2 = __2;
-    exports2._3 = _3;
-    exports2.__3 = __3;
-    exports2._4 = _4;
-    exports2.__4 = __4;
-    exports2._5 = _5;
-    exports2.__5 = __5;
-    exports2._6 = _6;
-    exports2.__6 = __6;
-    exports2._7 = _7;
-    exports2.__7 = __7;
-    exports2._8 = _8;
-    exports2.__8 = __8;
+}
+function forEach(opt, f) {
+  if (opt !== void 0) {
+    return f(Primitive_option.valFromOption(opt));
   }
-});
-
-// node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/belt_Option.js
-var require_belt_Option = __commonJS({
-  "node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/belt_Option.js"(exports2) {
+}
+function getOrThrow(x) {
+  if (x !== void 0) {
+    return Primitive_option.valFromOption(x);
+  }
+  throw {
+    RE_EXN_ID: "Not_found",
+    Error: new Error()
+  };
+}
+function mapWithDefault(opt, $$default, f) {
+  if (opt !== void 0) {
+    return f(Primitive_option.valFromOption(opt));
+  } else {
+    return $$default;
+  }
+}
+function map(opt, f) {
+  if (opt !== void 0) {
+    return Primitive_option.some(f(Primitive_option.valFromOption(opt)));
+  }
+}
+function flatMap(opt, f) {
+  if (opt !== void 0) {
+    return f(Primitive_option.valFromOption(opt));
+  }
+}
+function getWithDefault(opt, $$default) {
+  if (opt !== void 0) {
+    return Primitive_option.valFromOption(opt);
+  } else {
+    return $$default;
+  }
+}
+function orElse(opt, other) {
+  if (opt !== void 0) {
+    return opt;
+  } else {
+    return other;
+  }
+}
+function isSome(x) {
+  return x !== void 0;
+}
+function isNone(x) {
+  return x === void 0;
+}
+function eq(a, b, f) {
+  if (a !== void 0) {
+    if (b !== void 0) {
+      return f(Primitive_option.valFromOption(a), Primitive_option.valFromOption(b));
+    } else {
+      return false;
+    }
+  } else {
+    return b === void 0;
+  }
+}
+function cmp(a, b, f) {
+  if (a !== void 0) {
+    if (b !== void 0) {
+      return f(Primitive_option.valFromOption(a), Primitive_option.valFromOption(b));
+    } else {
+      return 1;
+    }
+  } else if (b !== void 0) {
+    return -1;
+  } else {
+    return 0;
+  }
+}
+var Primitive_option, keepU, forEachU, getExn, mapWithDefaultU, mapU, flatMapU, eqU, cmpU;
+var init_Belt_Option = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_Option.js"() {
     "use strict";
-    var Curry = require_curry();
-    var Caml_option = require_caml_option();
-    function keepU(opt, p) {
-      if (opt !== void 0 && p(Caml_option.valFromOption(opt))) {
-        return opt;
-      }
-    }
-    function keep(opt, p) {
-      return keepU(opt, Curry.__1(p));
-    }
-    function forEachU(opt, f) {
-      if (opt !== void 0) {
-        return f(Caml_option.valFromOption(opt));
-      }
-    }
-    function forEach(opt, f) {
-      forEachU(opt, Curry.__1(f));
-    }
-    function getExn(x) {
-      if (x !== void 0) {
-        return Caml_option.valFromOption(x);
-      }
-      throw {
-        RE_EXN_ID: "Not_found",
-        Error: new Error()
-      };
-    }
-    function mapWithDefaultU(opt, $$default, f) {
-      if (opt !== void 0) {
-        return f(Caml_option.valFromOption(opt));
-      } else {
-        return $$default;
-      }
-    }
-    function mapWithDefault(opt, $$default, f) {
-      return mapWithDefaultU(opt, $$default, Curry.__1(f));
-    }
-    function mapU(opt, f) {
-      if (opt !== void 0) {
-        return Caml_option.some(f(Caml_option.valFromOption(opt)));
-      }
-    }
-    function map(opt, f) {
-      return mapU(opt, Curry.__1(f));
-    }
-    function flatMapU(opt, f) {
-      if (opt !== void 0) {
-        return f(Caml_option.valFromOption(opt));
-      }
-    }
-    function flatMap(opt, f) {
-      return flatMapU(opt, Curry.__1(f));
-    }
-    function getWithDefault(opt, $$default) {
-      if (opt !== void 0) {
-        return Caml_option.valFromOption(opt);
-      } else {
-        return $$default;
-      }
-    }
-    function orElse(opt, other) {
-      if (opt !== void 0) {
-        return opt;
-      } else {
-        return other;
-      }
-    }
-    function isSome(x) {
-      return x !== void 0;
-    }
-    function isNone(x) {
-      return x === void 0;
-    }
-    function eqU(a, b, f) {
-      if (a !== void 0) {
-        if (b !== void 0) {
-          return f(Caml_option.valFromOption(a), Caml_option.valFromOption(b));
-        } else {
-          return false;
-        }
-      } else {
-        return b === void 0;
-      }
-    }
-    function eq(a, b, f) {
-      return eqU(a, b, Curry.__2(f));
-    }
-    function cmpU(a, b, f) {
-      if (a !== void 0) {
-        if (b !== void 0) {
-          return f(Caml_option.valFromOption(a), Caml_option.valFromOption(b));
-        } else {
-          return 1;
-        }
-      } else if (b !== void 0) {
-        return -1;
-      } else {
-        return 0;
-      }
-    }
-    function cmp(a, b, f) {
-      return cmpU(a, b, Curry.__2(f));
-    }
-    exports2.keepU = keepU;
-    exports2.keep = keep;
-    exports2.forEachU = forEachU;
-    exports2.forEach = forEach;
-    exports2.getExn = getExn;
-    exports2.mapWithDefaultU = mapWithDefaultU;
-    exports2.mapWithDefault = mapWithDefault;
-    exports2.mapU = mapU;
-    exports2.map = map;
-    exports2.flatMapU = flatMapU;
-    exports2.flatMap = flatMap;
-    exports2.getWithDefault = getWithDefault;
-    exports2.orElse = orElse;
-    exports2.isSome = isSome;
-    exports2.isNone = isNone;
-    exports2.eqU = eqU;
-    exports2.eq = eq;
-    exports2.cmpU = cmpU;
-    exports2.cmp = cmp;
+    Primitive_option = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
+    keepU = keep;
+    forEachU = forEach;
+    getExn = getOrThrow;
+    mapWithDefaultU = mapWithDefault;
+    mapU = map;
+    flatMapU = flatMap;
+    eqU = eq;
+    cmpU = cmp;
+    exports.keepU = keepU;
+    exports.keep = keep;
+    exports.forEachU = forEachU;
+    exports.forEach = forEach;
+    exports.getExn = getExn;
+    exports.getOrThrow = getOrThrow;
+    exports.mapWithDefaultU = mapWithDefaultU;
+    exports.mapWithDefault = mapWithDefault;
+    exports.mapU = mapU;
+    exports.map = map;
+    exports.flatMapU = flatMapU;
+    exports.flatMap = flatMap;
+    exports.getWithDefault = getWithDefault;
+    exports.orElse = orElse;
+    exports.isSome = isSome;
+    exports.isNone = isNone;
+    exports.eqU = eqU;
+    exports.eq = eq;
+    exports.cmpU = cmpU;
+    exports.cmp = cmp;
   }
 });
 
@@ -2839,7 +2854,7 @@ var require_belt_Option = __commonJS({
 var require_Packet_CreditsOrSlimeTransform = __commonJS({
   "src/packet/Packet_CreditsOrSlimeTransform.js"(exports2) {
     "use strict";
-    var Belt_Option = require_belt_Option();
+    var Belt_Option = (init_Belt_Option(), __toCommonJS(Belt_Option_exports));
     var PacketType$TerrariaPacket = require_PacketType();
     var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
     var Packetreader = require_packetreader().default;
@@ -2877,15 +2892,13 @@ var require_Packet_CreditsOrSlimeTransform = __commonJS({
       return prim.readInt32();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var eventType = reader.readByte();
-      var value = reader.readInt32();
-      return Belt_Option.map(fromInt(eventType), function(eventType2) {
-        return {
-          eventType: eventType2,
-          value
-        };
-      });
+      let reader = new Packetreader(payload);
+      let eventType = reader.readByte();
+      let value = reader.readInt32();
+      return Belt_Option.map(fromInt(eventType), (eventType2) => ({
+        eventType: eventType2,
+        value
+      }));
     }
     var Decode = {
       readByte,
@@ -2912,8 +2925,8 @@ var require_Packet_CreditsOrSlimeTransform = __commonJS({
       data,
       toBuffer
     };
-    var $$Option;
-    exports2.$$Option = $$Option;
+    var Option;
+    exports2.Option = Option;
     exports2.EventType = EventType;
     exports2.Decode = Decode;
     exports2.Encode = Encode;
@@ -2937,9 +2950,9 @@ var require_Packet_CrystalInvasionStart = __commonJS({
       return prim.readInt16();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var x = reader.readInt16();
-      var y = reader.readInt16();
+      let reader = new Packetreader(payload);
+      let x = reader.readInt16();
+      let y = reader.readInt16();
       return {
         x,
         y
@@ -3016,15 +3029,15 @@ var require_Packet_DimensionsUpdate = __commonJS({
       fromInt
     };
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var updateType = reader.readInt16();
-      var match = fromInt(updateType);
+      let reader = new Packetreader(payload);
+      let updateType = reader.readInt16();
+      let match = fromInt(updateType);
       if (match === void 0) {
         return;
       }
       switch (match) {
         case "RealIpAddress":
-          var ip = reader.readString();
+          let ip = reader.readString();
           return {
             TAG: "RealIpAddress",
             _0: ip
@@ -3032,14 +3045,14 @@ var require_Packet_DimensionsUpdate = __commonJS({
         case "GamemodesJoinMode":
           return "GamemodesJoinMode";
         case "SwitchServer":
-          var dimensionName = reader.readString();
+          let dimensionName = reader.readString();
           return {
             TAG: "SwitchServer",
             _0: dimensionName
           };
         case "SwitchServerManual":
-          var ip$1 = reader.readString();
-          var port = reader.readUInt16();
+          let ip$1 = reader.readString();
+          let port = reader.readUInt16();
           return {
             TAG: "SwitchServerManual",
             _0: ip$1,
@@ -3056,14 +3069,14 @@ var require_Packet_DimensionsUpdate = __commonJS({
       }
       switch (self.TAG) {
         case "RealIpAddress":
-          var ip = self._0;
+          let ip = self._0;
           return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("DimensionsUpdate")).packInt16(0).packString(ip).data;
         case "SwitchServer":
-          var dimensionName = self._0;
+          let dimensionName = self._0;
           return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("DimensionsUpdate")).packInt16(2).packString(dimensionName).data;
         case "SwitchServerManual":
-          var ip$1 = self._0;
-          var port = self._1;
+          let ip$1 = self._0;
+          let port = self._1;
           return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("DimensionsUpdate")).packInt16(3).packString(ip$1).packUInt16(port).data;
       }
     }
@@ -3091,11 +3104,11 @@ var require_Packet_ExtraValueSync = __commonJS({
       return prim.readSingle();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var npcSlotId = reader.readInt16();
-      var extraValue = reader.readInt32();
-      var x = reader.readSingle();
-      var y = reader.readSingle();
+      let reader = new Packetreader(payload);
+      let npcSlotId = reader.readInt16();
+      let extraValue = reader.readInt32();
+      let x = reader.readSingle();
+      let y = reader.readSingle();
       return {
         npcSlotId,
         extraValue,
@@ -3143,12 +3156,12 @@ var require_Packet_ExtraValueSync = __commonJS({
 var require_Packet_HaveDryadDoStardewAnimation = __commonJS({
   "src/packet/Packet_HaveDryadDoStardewAnimation.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     var PacketType$TerrariaPacket = require_PacketType();
     var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
     var Packetwriter = require_packetwriter().default;
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     var Decode = {
       parse
@@ -3188,137 +3201,273 @@ var require_Packet_HaveDryadDoStardewAnimation = __commonJS({
 var require_Packet_InvasionProgressReport = __commonJS({
   "src/packet/Packet_InvasionProgressReport.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
 });
 
-// node_modules/.pnpm/@rescript+core@https+++codeload.github.com+popstarfreas+rescript-core+tar.gz+36c55da8f2_caf1374fc00c87f69a17ce978f74cf4d/node_modules/@rescript/core/src/Core__Error.js
-var require_Core_Error = __commonJS({
-  "node_modules/.pnpm/@rescript+core@https+++codeload.github.com+popstarfreas+rescript-core+tar.gz+36c55da8f2_caf1374fc00c87f69a17ce978f74cf4d/node_modules/@rescript/core/src/Core__Error.js"(exports2) {
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Stdlib_JsError.js
+var Stdlib_JsError_exports = {};
+function throwWithMessage(str) {
+  throw new Error(str);
+}
+function throwWithMessage$1(s) {
+  throw new EvalError(s);
+}
+function throwWithMessage$2(s) {
+  throw new RangeError(s);
+}
+function throwWithMessage$3(s) {
+  throw new ReferenceError(s);
+}
+function throwWithMessage$4(s) {
+  throw new SyntaxError(s);
+}
+function throwWithMessage$5(s) {
+  throw new TypeError(s);
+}
+function throwWithMessage$6(s) {
+  throw new URIError(s);
+}
+function panic(msg) {
+  throw new Error(`Panic! ` + msg);
+}
+var $$EvalError$1, $$RangeError$1, $$ReferenceError$1, $$SyntaxError$1, $$TypeError$1, $$URIError$1;
+var init_Stdlib_JsError = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Stdlib_JsError.js"() {
     "use strict";
-    var $$EvalError = {};
-    var $$RangeError = {};
-    var $$ReferenceError = {};
-    var $$SyntaxError = {};
-    var $$TypeError = {};
-    var $$URIError = {};
-    function panic(msg) {
-      throw new Error("Panic! " + msg);
-    }
-    exports2.$$EvalError = $$EvalError;
-    exports2.$$RangeError = $$RangeError;
-    exports2.$$ReferenceError = $$ReferenceError;
-    exports2.$$SyntaxError = $$SyntaxError;
-    exports2.$$TypeError = $$TypeError;
-    exports2.$$URIError = $$URIError;
-    exports2.panic = panic;
+    $$EvalError$1 = {
+      throwWithMessage: throwWithMessage$1
+    };
+    $$RangeError$1 = {
+      throwWithMessage: throwWithMessage$2
+    };
+    $$ReferenceError$1 = {
+      throwWithMessage: throwWithMessage$3
+    };
+    $$SyntaxError$1 = {
+      throwWithMessage: throwWithMessage$4
+    };
+    $$TypeError$1 = {
+      throwWithMessage: throwWithMessage$5
+    };
+    $$URIError$1 = {
+      throwWithMessage: throwWithMessage$6
+    };
+    exports.$$EvalError = $$EvalError$1;
+    exports.$$RangeError = $$RangeError$1;
+    exports.$$ReferenceError = $$ReferenceError$1;
+    exports.$$SyntaxError = $$SyntaxError$1;
+    exports.$$TypeError = $$TypeError$1;
+    exports.$$URIError = $$URIError$1;
+    exports.throwWithMessage = throwWithMessage;
+    exports.panic = panic;
   }
 });
 
-// node_modules/.pnpm/@rescript+core@https+++codeload.github.com+popstarfreas+rescript-core+tar.gz+36c55da8f2_caf1374fc00c87f69a17ce978f74cf4d/node_modules/@rescript/core/src/Core__Option.js
-var require_Core_Option = __commonJS({
-  "node_modules/.pnpm/@rescript+core@https+++codeload.github.com+popstarfreas+rescript-core+tar.gz+36c55da8f2_caf1374fc00c87f69a17ce978f74cf4d/node_modules/@rescript/core/src/Core__Option.js"(exports2) {
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Stdlib_Option.js
+var Stdlib_Option_exports = {};
+function filter(opt, p) {
+  if (opt !== void 0 && p(Primitive_option2.valFromOption(opt))) {
+    return opt;
+  }
+}
+function forEach2(opt, f) {
+  if (opt !== void 0) {
+    return f(Primitive_option2.valFromOption(opt));
+  }
+}
+function getOrThrow2(x, message) {
+  if (x !== void 0) {
+    return Primitive_option2.valFromOption(x);
+  } else {
+    return Stdlib_JsError.panic(message !== void 0 ? message : "Option.getOrThrow called for None value");
+  }
+}
+function mapOr(opt, $$default, f) {
+  if (opt !== void 0) {
+    return f(Primitive_option2.valFromOption(opt));
+  } else {
+    return $$default;
+  }
+}
+function map2(opt, f) {
+  if (opt !== void 0) {
+    return Primitive_option2.some(f(Primitive_option2.valFromOption(opt)));
+  }
+}
+function flatMap2(opt, f) {
+  if (opt !== void 0) {
+    return f(Primitive_option2.valFromOption(opt));
+  }
+}
+function getOr(opt, $$default) {
+  if (opt !== void 0) {
+    return Primitive_option2.valFromOption(opt);
+  } else {
+    return $$default;
+  }
+}
+function orElse2(opt, other) {
+  if (opt !== void 0) {
+    return opt;
+  } else {
+    return other;
+  }
+}
+function isSome2(x) {
+  return x !== void 0;
+}
+function isNone2(x) {
+  return x === void 0;
+}
+function equal(a, b, eq8) {
+  if (a !== void 0) {
+    if (b !== void 0) {
+      return eq8(Primitive_option2.valFromOption(a), Primitive_option2.valFromOption(b));
+    } else {
+      return false;
+    }
+  } else {
+    return b === void 0;
+  }
+}
+function compare(a, b, cmp8) {
+  if (a !== void 0) {
+    if (b !== void 0) {
+      return cmp8(Primitive_option2.valFromOption(a), Primitive_option2.valFromOption(b));
+    } else {
+      return 1;
+    }
+  } else if (b !== void 0) {
+    return -1;
+  } else {
+    return 0;
+  }
+}
+function all(options) {
+  let acc = [];
+  let hasNone = false;
+  let index = 0;
+  while (hasNone === false && index < options.length) {
+    let value = options[index];
+    if (value !== void 0) {
+      acc.push(Primitive_option2.valFromOption(value));
+      index = index + 1 | 0;
+    } else {
+      hasNone = true;
+    }
+  }
+  ;
+  if (hasNone) {
+    return;
+  } else {
+    return acc;
+  }
+}
+function all2(param) {
+  let b = param[1];
+  let a = param[0];
+  if (a !== void 0 && b !== void 0) {
+    return [
+      Primitive_option2.valFromOption(a),
+      Primitive_option2.valFromOption(b)
+    ];
+  }
+}
+function all3(param) {
+  let c = param[2];
+  let b = param[1];
+  let a = param[0];
+  if (a !== void 0 && b !== void 0 && c !== void 0) {
+    return [
+      Primitive_option2.valFromOption(a),
+      Primitive_option2.valFromOption(b),
+      Primitive_option2.valFromOption(c)
+    ];
+  }
+}
+function all4(param) {
+  let d = param[3];
+  let c = param[2];
+  let b = param[1];
+  let a = param[0];
+  if (a !== void 0 && b !== void 0 && c !== void 0 && d !== void 0) {
+    return [
+      Primitive_option2.valFromOption(a),
+      Primitive_option2.valFromOption(b),
+      Primitive_option2.valFromOption(c),
+      Primitive_option2.valFromOption(d)
+    ];
+  }
+}
+function all5(param) {
+  let e = param[4];
+  let d = param[3];
+  let c = param[2];
+  let b = param[1];
+  let a = param[0];
+  if (a !== void 0 && b !== void 0 && c !== void 0 && d !== void 0 && e !== void 0) {
+    return [
+      Primitive_option2.valFromOption(a),
+      Primitive_option2.valFromOption(b),
+      Primitive_option2.valFromOption(c),
+      Primitive_option2.valFromOption(d),
+      Primitive_option2.valFromOption(e)
+    ];
+  }
+}
+function all6(param) {
+  let f = param[5];
+  let e = param[4];
+  let d = param[3];
+  let c = param[2];
+  let b = param[1];
+  let a = param[0];
+  if (a !== void 0 && b !== void 0 && c !== void 0 && d !== void 0 && e !== void 0 && f !== void 0) {
+    return [
+      Primitive_option2.valFromOption(a),
+      Primitive_option2.valFromOption(b),
+      Primitive_option2.valFromOption(c),
+      Primitive_option2.valFromOption(d),
+      Primitive_option2.valFromOption(e),
+      Primitive_option2.valFromOption(f)
+    ];
+  }
+}
+var Stdlib_JsError, Primitive_option2, getExn2, mapWithDefault2, getWithDefault2;
+var init_Stdlib_Option = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Stdlib_Option.js"() {
     "use strict";
-    var Caml_option = require_caml_option();
-    var Core__Error = require_Core_Error();
-    function filter(opt, p) {
-      if (opt !== void 0 && p(Caml_option.valFromOption(opt))) {
-        return opt;
-      }
-    }
-    function forEach(opt, f) {
-      if (opt !== void 0) {
-        return f(Caml_option.valFromOption(opt));
-      }
-    }
-    function getExn(x, message) {
-      if (x !== void 0) {
-        return Caml_option.valFromOption(x);
-      } else {
-        return Core__Error.panic(message !== void 0 ? message : "Option.getExn called for None value");
-      }
-    }
-    function mapOr(opt, $$default, f) {
-      if (opt !== void 0) {
-        return f(Caml_option.valFromOption(opt));
-      } else {
-        return $$default;
-      }
-    }
-    function map(opt, f) {
-      if (opt !== void 0) {
-        return Caml_option.some(f(Caml_option.valFromOption(opt)));
-      }
-    }
-    function flatMap(opt, f) {
-      if (opt !== void 0) {
-        return f(Caml_option.valFromOption(opt));
-      }
-    }
-    function getOr(opt, $$default) {
-      if (opt !== void 0) {
-        return Caml_option.valFromOption(opt);
-      } else {
-        return $$default;
-      }
-    }
-    function orElse(opt, other) {
-      if (opt !== void 0) {
-        return opt;
-      } else {
-        return other;
-      }
-    }
-    function isSome(x) {
-      return x !== void 0;
-    }
-    function isNone(x) {
-      return x === void 0;
-    }
-    function equal(a, b, eq) {
-      if (a !== void 0) {
-        if (b !== void 0) {
-          return eq(Caml_option.valFromOption(a), Caml_option.valFromOption(b));
-        } else {
-          return false;
-        }
-      } else {
-        return b === void 0;
-      }
-    }
-    function compare(a, b, cmp) {
-      if (a !== void 0) {
-        if (b !== void 0) {
-          return cmp(Caml_option.valFromOption(a), Caml_option.valFromOption(b));
-        } else {
-          return 1;
-        }
-      } else if (b !== void 0) {
-        return -1;
-      } else {
-        return 0;
-      }
-    }
-    var mapWithDefault = mapOr;
-    var getWithDefault = getOr;
-    exports2.filter = filter;
-    exports2.forEach = forEach;
-    exports2.getExn = getExn;
-    exports2.mapOr = mapOr;
-    exports2.mapWithDefault = mapWithDefault;
-    exports2.map = map;
-    exports2.flatMap = flatMap;
-    exports2.getOr = getOr;
-    exports2.getWithDefault = getWithDefault;
-    exports2.orElse = orElse;
-    exports2.isSome = isSome;
-    exports2.isNone = isNone;
-    exports2.equal = equal;
-    exports2.compare = compare;
+    Stdlib_JsError = (init_Stdlib_JsError(), __toCommonJS(Stdlib_JsError_exports));
+    Primitive_option2 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
+    getExn2 = getOrThrow2;
+    mapWithDefault2 = mapOr;
+    getWithDefault2 = getOr;
+    exports.filter = filter;
+    exports.forEach = forEach2;
+    exports.getExn = getExn2;
+    exports.getOrThrow = getOrThrow2;
+    exports.mapOr = mapOr;
+    exports.mapWithDefault = mapWithDefault2;
+    exports.map = map2;
+    exports.flatMap = flatMap2;
+    exports.getOr = getOr;
+    exports.getWithDefault = getWithDefault2;
+    exports.orElse = orElse2;
+    exports.isSome = isSome2;
+    exports.isNone = isNone2;
+    exports.equal = equal;
+    exports.compare = compare;
+    exports.all = all;
+    exports.all2 = all2;
+    exports.all3 = all3;
+    exports.all4 = all4;
+    exports.all5 = all5;
+    exports.all6 = all6;
   }
 });
 
@@ -3331,16 +3480,16 @@ var require_Packet_ItemDropUpdate = __commonJS({
     var Packetreader = require_packetreader().default;
     var Packetwriter = require_packetwriter().default;
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var itemDropId = reader.readInt16();
-      var x = reader.readSingle();
-      var y = reader.readSingle();
-      var vx = reader.readSingle();
-      var vy = reader.readSingle();
-      var stack = reader.readInt16();
-      var prefix = reader.readByte();
-      var noDelay = reader.readByte();
-      var itemId = reader.readInt16();
+      let reader = new Packetreader(payload);
+      let itemDropId = reader.readInt16();
+      let x = reader.readSingle();
+      let y = reader.readSingle();
+      let vx = reader.readSingle();
+      let vy = reader.readSingle();
+      let stack = reader.readInt16();
+      let prefix = reader.readByte();
+      let noDelay = reader.readByte();
+      let itemId = reader.readInt16();
       return {
         itemDropId,
         x,
@@ -3365,7 +3514,7 @@ var require_Packet_ItemDropUpdate = __commonJS({
 var require_Packet_ItemDropShimmeredUpdate = __commonJS({
   "src/packet/Packet_ItemDropShimmeredUpdate.js"(exports2) {
     "use strict";
-    var Core__Option = require_Core_Option();
+    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
     var PacketType$TerrariaPacket = require_PacketType();
     var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
     var Packet_ItemDropUpdate$TerrariaPacket = require_Packet_ItemDropUpdate();
@@ -3381,11 +3530,11 @@ var require_Packet_ItemDropShimmeredUpdate = __commonJS({
       return prim0.readBytes(prim1);
     }
     function parse(payload) {
-      return Core__Option.map(Packet_ItemDropUpdate$TerrariaPacket.parse(payload), function(itemDropUpdate) {
-        var reader = new Packetreader(payload);
+      return Stdlib_Option.map(Packet_ItemDropUpdate$TerrariaPacket.parse(payload), (itemDropUpdate) => {
+        let reader = new Packetreader(payload);
         reader.readBytes(24);
-        var shimmered = reader.readByte() === 1;
-        var shimmeredTime = reader.readSingle();
+        let shimmered = reader.readByte() === 1;
+        let shimmeredTime = reader.readSingle();
         return {
           itemDropId: itemDropUpdate.itemDropId,
           x: itemDropUpdate.x,
@@ -3451,9 +3600,9 @@ var require_Packet_ItemOwner = __commonJS({
     var Packetreader = require_packetreader().default;
     var Packetwriter = require_packetwriter().default;
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var itemDropId = reader.readInt16();
-      var owner = reader.readByte();
+      let reader = new Packetreader(payload);
+      let itemDropId = reader.readInt16();
+      let owner = reader.readByte();
       return {
         itemDropId,
         owner
@@ -3479,9 +3628,9 @@ var require_Packet_LoadoutSwitch = __commonJS({
       return prim.readByte();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var playerId = reader.readByte();
-      var loadout = reader.readByte();
+      let reader = new Packetreader(payload);
+      let playerId = reader.readByte();
+      let loadout = reader.readByte();
       return {
         playerId,
         loadout
@@ -3526,23 +3675,22 @@ var require_Packet_LoadoutSwitch = __commonJS({
 var require_ArrayExt = __commonJS({
   "src/ArrayExt.js"(exports2) {
     "use strict";
-    var Core__Option = require_Core_Option();
+    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
     function intoChunks(self, chunkSize) {
-      var chunked = [];
-      var len = self.length;
-      var max = (Math.ceil(len / chunkSize) | 0) - 1 | 0;
-      for (var i = 0; i <= max; ++i) {
-        (function(__x) {
-          chunked.push(__x);
-        })(self.slice(Math.imul(i, chunkSize), Math.imul(i + 1 | 0, chunkSize)));
+      let chunked = [];
+      let len = self.length;
+      let max6 = (Math.ceil(len / chunkSize) | 0) - 1 | 0;
+      for (let i = 0; i <= max6; ++i) {
+        let __x = self.slice(i * chunkSize | 0, (i + 1 | 0) * chunkSize | 0);
+        chunked.push(__x);
       }
       return chunked;
     }
-    function getOr(self, index, or) {
-      return Core__Option.getOr(self[index], or);
+    function getOr2(self, index, or) {
+      return Stdlib_Option.getOr(self[index], or);
     }
     exports2.intoChunks = intoChunks;
-    exports2.getOr = getOr;
+    exports2.getOr = getOr2;
   }
 });
 
@@ -3551,22 +3699,22 @@ var require_BitFlags = __commonJS({
   "src/BitFlags.js"(exports2) {
     "use strict";
     var ArrayExt$TerrariaPacket = require_ArrayExt();
-    function fromByte($$byte) {
-      return $$byte;
+    function fromByte(byte) {
+      return byte;
     }
     function fromFlags(flag12, flag22, flag32, flag42, flag52, flag62, flag72, flag82) {
-      var $$byte = 0;
-      $$byte = $$byte | (flag12 ? 1 : 0);
-      $$byte = $$byte | (flag22 ? 2 : 0);
-      $$byte = $$byte | (flag32 ? 4 : 0);
-      $$byte = $$byte | (flag42 ? 8 : 0);
-      $$byte = $$byte | (flag52 ? 16 : 0);
-      $$byte = $$byte | (flag62 ? 32 : 0);
-      $$byte = $$byte | (flag72 ? 64 : 0);
-      $$byte = $$byte | (flag82 ? 128 : 0);
-      return $$byte;
+      let byte = 0;
+      byte = byte | (flag12 ? 1 : 0);
+      byte = byte | (flag22 ? 2 : 0);
+      byte = byte | (flag32 ? 4 : 0);
+      byte = byte | (flag42 ? 8 : 0);
+      byte = byte | (flag52 ? 16 : 0);
+      byte = byte | (flag62 ? 32 : 0);
+      byte = byte | (flag72 ? 64 : 0);
+      byte = byte | (flag82 ? 128 : 0);
+      return byte;
     }
-    function fromArray(flags) {
+    function fromArray5(flags) {
       return fromFlags(ArrayExt$TerrariaPacket.getOr(flags, 0, false), ArrayExt$TerrariaPacket.getOr(flags, 1, false), ArrayExt$TerrariaPacket.getOr(flags, 2, false), ArrayExt$TerrariaPacket.getOr(flags, 3, false), ArrayExt$TerrariaPacket.getOr(flags, 4, false), ArrayExt$TerrariaPacket.getOr(flags, 5, false), ArrayExt$TerrariaPacket.getOr(flags, 6, false), ArrayExt$TerrariaPacket.getOr(flags, 7, false));
     }
     function flagN(self, n) {
@@ -3596,7 +3744,7 @@ var require_BitFlags = __commonJS({
     function flag8(__x) {
       return (__x & 128) === 128;
     }
-    function forEach(self, fn) {
+    function forEach7(self, fn) {
       fn((self & 1) === 1);
       fn((self & 2) === 2);
       fn((self & 4) === 4);
@@ -3611,7 +3759,7 @@ var require_BitFlags = __commonJS({
     }
     exports2.fromByte = fromByte;
     exports2.fromFlags = fromFlags;
-    exports2.fromArray = fromArray;
+    exports2.fromArray = fromArray5;
     exports2.flag1 = flag1;
     exports2.flag2 = flag2;
     exports2.flag3 = flag3;
@@ -3621,443 +3769,8 @@ var require_BitFlags = __commonJS({
     exports2.flag7 = flag7;
     exports2.flag8 = flag8;
     exports2.flagN = flagN;
-    exports2.forEach = forEach;
+    exports2.forEach = forEach7;
     exports2.toByte = toByte;
-  }
-});
-
-// node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/js_exn.js
-var require_js_exn = __commonJS({
-  "node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/js_exn.js"(exports2) {
-    "use strict";
-    function raiseError(str) {
-      throw new Error(str);
-    }
-    function raiseEvalError(str) {
-      throw new EvalError(str);
-    }
-    function raiseRangeError(str) {
-      throw new RangeError(str);
-    }
-    function raiseReferenceError(str) {
-      throw new ReferenceError(str);
-    }
-    function raiseSyntaxError(str) {
-      throw new SyntaxError(str);
-    }
-    function raiseTypeError(str) {
-      throw new TypeError(str);
-    }
-    function raiseUriError(str) {
-      throw new URIError(str);
-    }
-    var $$Error$1 = "JsError";
-    exports2.$$Error = $$Error$1;
-    exports2.raiseError = raiseError;
-    exports2.raiseEvalError = raiseEvalError;
-    exports2.raiseRangeError = raiseRangeError;
-    exports2.raiseReferenceError = raiseReferenceError;
-    exports2.raiseSyntaxError = raiseSyntaxError;
-    exports2.raiseTypeError = raiseTypeError;
-    exports2.raiseUriError = raiseUriError;
-  }
-});
-
-// node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/caml_exceptions.js
-var require_caml_exceptions = __commonJS({
-  "node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/caml_exceptions.js"(exports2) {
-    "use strict";
-    var idMap = /* @__PURE__ */ new Map();
-    function create(str) {
-      var v = idMap.get(str);
-      var id;
-      if (v !== void 0) {
-        var id$1 = v + 1 | 0;
-        idMap.set(str, id$1);
-        id = id$1;
-      } else {
-        idMap.set(str, 1);
-        id = 1;
-      }
-      return str + ("/" + id);
-    }
-    function is_extension(e) {
-      if (e == null) {
-        return false;
-      } else {
-        return typeof e.RE_EXN_ID === "string";
-      }
-    }
-    function exn_slot_name(x) {
-      return x.RE_EXN_ID;
-    }
-    exports2.create = create;
-    exports2.is_extension = is_extension;
-    exports2.exn_slot_name = exn_slot_name;
-  }
-});
-
-// node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/caml_js_exceptions.js
-var require_caml_js_exceptions = __commonJS({
-  "node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/caml_js_exceptions.js"(exports2) {
-    "use strict";
-    var Caml_option = require_caml_option();
-    var Caml_exceptions = require_caml_exceptions();
-    var $$Error = "JsError";
-    function internalToOCamlException(e) {
-      if (Caml_exceptions.is_extension(e)) {
-        return e;
-      } else {
-        return {
-          RE_EXN_ID: "JsError",
-          _1: e
-        };
-      }
-    }
-    function as_js_exn(exn) {
-      if (exn.RE_EXN_ID === $$Error) {
-        return Caml_option.some(exn._1);
-      }
-    }
-    exports2.$$Error = $$Error;
-    exports2.internalToOCamlException = internalToOCamlException;
-    exports2.as_js_exn = as_js_exn;
-  }
-});
-
-// src/ErrorAwarePacketWriter.js
-var require_ErrorAwarePacketWriter = __commonJS({
-  "src/ErrorAwarePacketWriter.js"(exports2) {
-    "use strict";
-    var Js_exn = require_js_exn();
-    var Caml_js_exceptions = require_caml_js_exceptions();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
-    var Packetwriter = require_packetwriter().default;
-    function packSingle(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        var writer = self._0.packSingle(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function packInt32(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        var writer = self._0.packInt32(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function packByte(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        var writer = self._0.packByte(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function packUInt16(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        var writer = self._0.packUInt16(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function packInt16(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        var writer = self._0.packInt16(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function packUInt64(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        var writer = self._0.packUInt64(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function packString(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        var writer = self._0.packString(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function packSByte(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        var writer = self._0.packSByte(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function packBytes(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        var writer = self._0.packBytes(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function packColor(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        var writer = self._0.packColor(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function packBuffer(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        var writer = self._0.packBuffer(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function packNetworkText(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        var writer = self._0.packNetworkText(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function setType(self, value) {
-      return {
-        TAG: "Writing",
-        _0: ManagedPacketWriter$PacketFactory.setType(self, value)
-      };
-    }
-    function data(self) {
-      if (self.TAG === "Writing") {
-        return {
-          TAG: "Ok",
-          _0: self._0.data
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: self._0
-        };
-      }
-    }
-    function make() {
-      return new Packetwriter();
-    }
-    exports2.packSingle = packSingle;
-    exports2.packInt32 = packInt32;
-    exports2.packByte = packByte;
-    exports2.packUInt16 = packUInt16;
-    exports2.packInt16 = packInt16;
-    exports2.packUInt64 = packUInt64;
-    exports2.packString = packString;
-    exports2.packSByte = packSByte;
-    exports2.packBytes = packBytes;
-    exports2.packColor = packColor;
-    exports2.packBuffer = packBuffer;
-    exports2.packNetworkText = packNetworkText;
-    exports2.setType = setType;
-    exports2.data = data;
-    exports2.make = make;
   }
 });
 
@@ -4065,12 +3778,12 @@ var require_ErrorAwarePacketWriter = __commonJS({
 var require_CreativePowers = __commonJS({
   "src/CreativePowers.js"(exports2) {
     "use strict";
-    var Core__Option = require_Core_Option();
+    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
     var ArrayExt$TerrariaPacket = require_ArrayExt();
     var BitFlags$TerrariaPacket = require_BitFlags();
     var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     function toString(self) {
-      return "PerPlayerSliderPower { playerId: " + self.playerId.toString() + ", value: " + self.value.toString() + " }";
+      return `PerPlayerSliderPower { playerId: ` + self.playerId.toString() + `, value: ` + self.value.toString() + ` }`;
     }
     function pack(writer, self) {
       return ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, self.playerId, "playerId"), self.value, "value");
@@ -4083,30 +3796,30 @@ var require_CreativePowers = __commonJS({
     }
     function toString$1(self) {
       if (self.TAG === "Everyone") {
-        return "Everyone { values: " + self._0.map(function(value) {
+        return `Everyone { values: ` + self._0.map((value) => {
           if (value) {
             return "1";
           } else {
             return "0";
           }
-        }).join(", ") + " }";
+        }).join(", ") + ` }`;
       } else {
-        return "Player { playerId: " + self._0.toString() + ", value: " + (self._1 ? "true" : "false") + " }";
+        return `Player { playerId: ` + self._0.toString() + `, value: ` + (self._1 ? "true" : "false") + ` }`;
       }
     }
     function pack$1(writer, self) {
       if (self.TAG === "Everyone") {
-        var values = self._0;
-        var bytes = ArrayExt$TerrariaPacket.intoChunks(values, 8).map(BitFlags$TerrariaPacket.fromArray).map(BitFlags$TerrariaPacket.toByte);
+        let values = self._0;
+        let bytes = ArrayExt$TerrariaPacket.intoChunks(values, 8).map(BitFlags$TerrariaPacket.fromArray).map(BitFlags$TerrariaPacket.toByte);
         return ErrorAwarePacketWriter$TerrariaPacket.packBytes(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, 0, "everyoneType"), bytes, "everyoneValues");
       } else {
-        var playerId = self._0;
-        var value = self._1;
+        let playerId = self._0;
+        let value = self._1;
         return ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, 1, "playerType"), playerId, "playerId"), value ? 1 : 0, "playerValue");
       }
     }
     function parse$1(reader) {
-      var match = reader.readByte();
+      let match = reader.readByte();
       if (match !== 0) {
         if (match !== 1) {
           return;
@@ -4118,10 +3831,10 @@ var require_CreativePowers = __commonJS({
           };
         }
       } else {
-        var toggles = [];
-        for (var _for = 1; _for <= 32; ++_for) {
-          var $$byte = reader.readByte();
-          BitFlags$TerrariaPacket.forEach(BitFlags$TerrariaPacket.fromByte($$byte), function(flag) {
+        let toggles = [];
+        for (let _for = 1; _for <= 32; ++_for) {
+          let byte = reader.readByte();
+          BitFlags$TerrariaPacket.forEach(BitFlags$TerrariaPacket.fromByte(byte), (flag) => {
             toggles.push(flag);
           });
         }
@@ -4136,38 +3849,38 @@ var require_CreativePowers = __commonJS({
       if (typeof self !== "object") {
         switch (self) {
           case "StartDayImmediately":
-            return "StartDayImmediately";
+            return `StartDayImmediately`;
           case "StartNoonImmediately":
-            return "StartNoonImmediately";
+            return `StartNoonImmediately`;
           case "StartNightImmediately":
-            return "StartNightImmediately";
+            return `StartNightImmediately`;
           case "StartMidnightImmediately":
-            return "StartMidnightImmediately";
+            return `StartMidnightImmediately`;
         }
       } else {
         switch (self.TAG) {
           case "FreezeTime":
-            return "FreezeTime { value: " + (self._0 ? "true" : "false") + " }";
+            return `FreezeTime { value: ` + (self._0 ? "true" : "false") + ` }`;
           case "GodmodePower":
-            return "GodmodePower { message: " + toString$1(self._0) + " }";
+            return `GodmodePower { message: ` + toString$1(self._0) + ` }`;
           case "ModifyWindDirectionAndStrength":
-            return "ModifyWindDirectionAndStrength { value: " + self._0.toString() + " }";
+            return `ModifyWindDirectionAndStrength { value: ` + self._0.toString() + ` }`;
           case "ModifyRainPower":
-            return "ModifyRainPower { value: " + self._0.toString() + " }";
+            return `ModifyRainPower { value: ` + self._0.toString() + ` }`;
           case "ModifyTimeRate":
-            return "ModifyTimeRate { value: " + self._0.toString() + " }";
+            return `ModifyTimeRate { value: ` + self._0.toString() + ` }`;
           case "FreezeRainPower":
-            return "FreezeRainPower { value: " + (self._0 ? "true" : "false") + " }";
+            return `FreezeRainPower { value: ` + (self._0 ? "true" : "false") + ` }`;
           case "FreezeWindDirectionAndStrength":
-            return "FreezeWindDirectionAndStrength { value: " + (self._0 ? "true" : "false") + " }";
+            return `FreezeWindDirectionAndStrength { value: ` + (self._0 ? "true" : "false") + ` }`;
           case "FarPlacementRangePower":
-            return "FarPlacementRangePower { message: " + toString$1(self._0) + " }";
+            return `FarPlacementRangePower { message: ` + toString$1(self._0) + ` }`;
           case "DifficultySliderPower":
-            return "DifficultySliderPower { value: " + self._0.toString() + " }";
+            return `DifficultySliderPower { value: ` + self._0.toString() + ` }`;
           case "StopBiomeSpreadPower":
-            return "StopBiomeSpreadPower { value: " + (self._0 ? "true" : "false") + " }";
+            return `StopBiomeSpreadPower { value: ` + (self._0 ? "true" : "false") + ` }`;
           case "SpawnRateSliderPerPlayerPower":
-            return "SpawnRateSliderPerPlayerPower { sliderPower: " + toString(self._0) + " }";
+            return `SpawnRateSliderPerPlayerPower { sliderPower: ` + toString(self._0) + ` }`;
         }
       }
     }
@@ -4295,43 +4008,43 @@ var require_CreativePowers = __commonJS({
       } else {
         switch (self.TAG) {
           case "FreezeTime":
-            var value = self._0;
+            let value = self._0;
             return ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 0, "freezeTimeType"), value ? 1 : 0, "freezeTimeValue");
           case "GodmodePower":
-            var message = self._0;
+            let message = self._0;
             return pack$1(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 5, "godmodePowerType"), message);
           case "ModifyWindDirectionAndStrength":
-            var value$1 = self._0;
+            let value$1 = self._0;
             return ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 6, "modifyWindDirectionAndStrengthType"), value$1, "modifyWindDirectionAndStrengthValue");
           case "ModifyRainPower":
-            var value$2 = self._0;
+            let value$2 = self._0;
             return ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 7, "modifyRainPowerType"), value$2, "modifyRainPowerValue");
           case "ModifyTimeRate":
-            var value$3 = self._0;
+            let value$3 = self._0;
             return ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 8, "modifyTimeRateType"), value$3, "modifyTimeRateValue");
           case "FreezeRainPower":
-            var on = self._0;
+            let on = self._0;
             return ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 9, "freezeRainPowerType"), on ? 1 : 0, "freezeRainPowerValue");
           case "FreezeWindDirectionAndStrength":
-            var on$1 = self._0;
+            let on$1 = self._0;
             return ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 10, "freezeWindDirectionAndStrengthType"), on$1 ? 1 : 0, "freezeWindDirectionAndStrengthValue");
           case "FarPlacementRangePower":
-            var message$1 = self._0;
+            let message$1 = self._0;
             return pack$1(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 11, "farPlacementRangePowerType"), message$1);
           case "DifficultySliderPower":
-            var value$4 = self._0;
+            let value$4 = self._0;
             return ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 12, "difficultySliderPowerType"), value$4, "difficultySliderPowerValue");
           case "StopBiomeSpreadPower":
-            var on$2 = self._0;
+            let on$2 = self._0;
             return ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 13, "stopBiomeSpreadPowerType"), on$2 ? 1 : 0, "stopBiomeSpreadPowerValue");
           case "SpawnRateSliderPerPlayerPower":
-            var message$2 = self._0;
+            let message$2 = self._0;
             return pack(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, 14, "spawnRateSliderPerPlayerPowerType"), message$2);
         }
       }
     }
     function parse$2(reader) {
-      var match = reader.readUInt16();
+      let match = reader.readUInt16();
       switch (match) {
         case 0:
           return {
@@ -4347,12 +4060,10 @@ var require_CreativePowers = __commonJS({
         case 4:
           return "StartMidnightImmediately";
         case 5:
-          return Core__Option.map(parse$1(reader), function(m) {
-            return {
-              TAG: "GodmodePower",
-              _0: m
-            };
-          });
+          return Stdlib_Option.map(parse$1(reader), (m) => ({
+            TAG: "GodmodePower",
+            _0: m
+          }));
         case 6:
           return {
             TAG: "ModifyWindDirectionAndStrength",
@@ -4379,12 +4090,10 @@ var require_CreativePowers = __commonJS({
             _0: reader.readByte() === 1
           };
         case 11:
-          return Core__Option.map(parse$1(reader), function(m) {
-            return {
-              TAG: "FarPlacementRangePower",
-              _0: m
-            };
-          });
+          return Stdlib_Option.map(parse$1(reader), (m) => ({
+            TAG: "FarPlacementRangePower",
+            _0: m
+          }));
         case 12:
           return {
             TAG: "DifficultySliderPower",
@@ -4396,12 +4105,10 @@ var require_CreativePowers = __commonJS({
             _0: reader.readByte() === 1
           };
         case 14:
-          return Core__Option.map(parse(reader), function(m) {
-            return {
-              TAG: "SpawnRateSliderPerPlayerPower",
-              _0: m
-            };
-          });
+          return Stdlib_Option.map(parse(reader), (m) => ({
+            TAG: "SpawnRateSliderPerPlayerPower",
+            _0: m
+          }));
         default:
           return;
       }
@@ -4423,255 +4130,11 @@ var require_CreativePowers = __commonJS({
   }
 });
 
-// src/ErrorAwarePacketReader.js
-var require_ErrorAwarePacketReader = __commonJS({
-  "src/ErrorAwarePacketReader.js"(exports2) {
-    "use strict";
-    var Js_exn = require_js_exn();
-    var Caml_exceptions = require_caml_exceptions();
-    var Caml_js_exceptions = require_caml_js_exceptions();
-    var ReadError = /* @__PURE__ */ Caml_exceptions.create("ErrorAwarePacketReader-TerrariaPacket.ReadError");
-    function readByte(reader, context) {
-      try {
-        return reader.readByte();
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function readUInt16(reader, context) {
-      try {
-        return reader.readUInt16();
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function readInt16(reader, context) {
-      try {
-        return reader.readInt16();
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function readInt32(reader, context) {
-      try {
-        return reader.readInt32();
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function readUInt64(reader, context) {
-      try {
-        return reader.readUInt64();
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function readString(reader, context) {
-      try {
-        return reader.readString();
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function readBytes(reader, count, context) {
-      try {
-        return reader.readBytes(count);
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function readSingle(reader, context) {
-      try {
-        return reader.readSingle();
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function readSByte(reader, context) {
-      try {
-        return reader.readSByte();
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function readColor(reader, context) {
-      try {
-        return reader.readColor();
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function readBuffer(reader, bytes, context) {
-      try {
-        return reader.readBuffer(bytes);
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function readNetworkText(reader, context) {
-      try {
-        return reader.readNetworkText();
-      } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function getBytesLeft(reader) {
-      return reader.bytesLeft;
-    }
-    exports2.ReadError = ReadError;
-    exports2.readByte = readByte;
-    exports2.readUInt16 = readUInt16;
-    exports2.readInt16 = readInt16;
-    exports2.readInt32 = readInt32;
-    exports2.readUInt64 = readUInt64;
-    exports2.readString = readString;
-    exports2.readBytes = readBytes;
-    exports2.readSingle = readSingle;
-    exports2.readSByte = readSByte;
-    exports2.readColor = readColor;
-    exports2.readBuffer = readBuffer;
-    exports2.readNetworkText = readNetworkText;
-    exports2.getBytesLeft = getBytesLeft;
-  }
-});
-
 // src/packet/Packet_NetModuleLoad.js
 var require_Packet_NetModuleLoad = __commonJS({
   "src/packet/Packet_NetModuleLoad.js"(exports2) {
     "use strict";
-    var Core__Option = require_Core_Option();
+    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
     var PacketType$TerrariaPacket = require_PacketType();
     var CreativePowers$TerrariaPacket = require_CreativePowers();
     var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
@@ -4758,74 +4221,74 @@ var require_Packet_NetModuleLoad = __commonJS({
     function toBuffer(self) {
       switch (self.TAG) {
         case "Liquid":
-          var liquid = self._0;
-          var writer = ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 0, "moduleType"), liquid.changes.length, "changesCount");
-          liquid.changes.forEach(function(change) {
+          let liquid = self._0;
+          let writer = ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 0, "moduleType"), liquid.changes.length, "changesCount");
+          liquid.changes.forEach((change) => {
             ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, change.y, "y"), change.x, "x"), change.amount, "amount"), change.liquidType, "liquidType");
           });
           return ErrorAwarePacketWriter$TerrariaPacket.data(writer);
         case "ClientText":
-          var commandId = self._0;
-          var message = self._1;
+          let commandId = self._0;
+          let message = self._1;
           return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 1, "moduleType"), commandId, "commandId"), message, "message"));
         case "ServerText":
-          var playerId = self._0;
-          var networkText = self._1;
-          var color = self._2;
+          let playerId = self._0;
+          let networkText = self._1;
+          let color = self._2;
           return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packNetworkText(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 1, "moduleType"), playerId, "playerId"), networkText, "networkText"), color, "color"));
         case "Ping":
-          var ping = self._0;
+          let ping = self._0;
           return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 2, "moduleType"), ping.x, "x"), ping.y, "y"));
         case "Ambience":
-          var ambience = self._0;
+          let ambience = self._0;
           return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 3, "moduleType"), ambience.playerId, "playerId"), ambience.seed, "seed"), ambience.skyEntityType, "skyEntityType"));
         case "Bestiary":
-          var bestiary = self._0;
-          var writer$1 = ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 4, "moduleType");
-          var _count = bestiary.unlockType;
-          var tmp;
+          let bestiary = self._0;
+          let writer$1 = ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 4, "moduleType");
+          let _count = bestiary.unlockType;
+          let tmp;
           tmp = typeof _count !== "object" ? _count === "Sight" ? ErrorAwarePacketWriter$TerrariaPacket.packByte(writer$1, 1, "unlockTypeByte") : ErrorAwarePacketWriter$TerrariaPacket.packByte(writer$1, 2, "unlockTypeByte") : ErrorAwarePacketWriter$TerrariaPacket.packByte(writer$1, 0, "unlockTypeByte");
           ErrorAwarePacketWriter$TerrariaPacket.packInt16(tmp, bestiary.npcId, "npcId");
-          var count = bestiary.unlockType;
-          var tmp$1;
+          let count = bestiary.unlockType;
+          let tmp$1;
           tmp$1 = typeof count !== "object" ? writer$1 : ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer$1, count._0, "killCount");
           return ErrorAwarePacketWriter$TerrariaPacket.data(tmp$1);
         case "CreativeUnlocks":
-          var creativeUnlock = self._0;
+          let creativeUnlock = self._0;
           return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 5, "moduleType"), creativeUnlock.itemId, "itemId"), creativeUnlock.researchedCount, "researchedCount"));
         case "CreativePower":
-          var creativePower = self._0;
+          let creativePower = self._0;
           return ErrorAwarePacketWriter$TerrariaPacket.data(CreativePowers$TerrariaPacket.pack(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 6, "moduleType"), creativePower));
         case "CreativeUnlocksPlayerReport":
-          var unlockReport = self._0;
+          let unlockReport = self._0;
           return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 7, "moduleType"), unlockReport.itemId, "itemId"), unlockReport.researchedCount, "researchedCount"));
         case "TeleportPylon":
-          var teleportPylon = self._0;
+          let teleportPylon = self._0;
           return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 8, "moduleType"), pylonActionToInt(teleportPylon.pylonAction), "pylonAction"), teleportPylon.x, "x"), teleportPylon.y, "y"), teleportPylon.pylonType, "pylonType"));
         case "Particles":
-          var particle = self._0;
+          let particle = self._0;
           return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 9, "moduleType"), particle.particleType, "particleType"), particle.x, "x"), particle.y, "y"), particle.vx, "vx"), particle.vy, "vy"), particle.shaderIndex, "shaderIndex"), particle.invokedByPlayer, "invokedByPlayer"));
         case "CreativePowerPermissions":
-          var creativePowerPermission = self._0;
+          let creativePowerPermission = self._0;
           return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 10, "moduleType"), creativePowerPermission.powerType, "powerType"), powerLevelToInt(creativePowerPermission.powerLevel), "powerLevel"));
       }
     }
     function parse(payload, fromServer) {
-      var reader = new Packetreader(payload);
-      var moduleType = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "moduleType");
-      var match = fromInt(moduleType);
+      let reader = new Packetreader(payload);
+      let moduleType = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "moduleType");
+      let match = fromInt(moduleType);
       if (match === void 0) {
         return;
       }
       switch (match) {
         case "Liquid":
-          var changesCount = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "changesCount");
-          var changes = [];
-          for (var _for = 0; _for < changesCount; ++_for) {
-            var y = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
-            var x = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
-            var amount = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "amount");
-            var liquidType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "liquidType");
+          let changesCount = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "changesCount");
+          let changes = [];
+          for (let _for = 0; _for < changesCount; ++_for) {
+            let y = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+            let x = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+            let amount = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "amount");
+            let liquidType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "liquidType");
             changes.push({
               x,
               y,
@@ -4841,9 +4304,9 @@ var require_Packet_NetModuleLoad = __commonJS({
           };
         case "Text":
           if (fromServer) {
-            var playerId = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
-            var message = ErrorAwarePacketReader$TerrariaPacket.readNetworkText(reader, "message");
-            var color = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "color");
+            let playerId = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+            let message = ErrorAwarePacketReader$TerrariaPacket.readNetworkText(reader, "message");
+            let color = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "color");
             return {
               TAG: "ServerText",
               _0: playerId,
@@ -4851,16 +4314,16 @@ var require_Packet_NetModuleLoad = __commonJS({
               _2: color
             };
           }
-          var commandId = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "commandId");
-          var message$1 = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "message");
+          let commandId = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "commandId");
+          let message$1 = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "message");
           return {
             TAG: "ClientText",
             _0: commandId,
             _1: message$1
           };
         case "Ping":
-          var x$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
-          var y$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+          let x$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+          let y$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
           return {
             TAG: "Ping",
             _0: {
@@ -4869,9 +4332,9 @@ var require_Packet_NetModuleLoad = __commonJS({
             }
           };
         case "Ambience":
-          var playerId$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
-          var seed = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "seed");
-          var skyEntityType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "skyEntityType");
+          let playerId$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+          let seed = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "seed");
+          let skyEntityType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "skyEntityType");
           return {
             TAG: "Ambience",
             _0: {
@@ -4881,9 +4344,9 @@ var require_Packet_NetModuleLoad = __commonJS({
             }
           };
         case "Bestiary":
-          var rawBestiaryUnlockType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "rawBestiaryUnlockType");
-          var npcId = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcId");
-          var bestiaryUnlockType;
+          let rawBestiaryUnlockType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "rawBestiaryUnlockType");
+          let npcId = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcId");
+          let bestiaryUnlockType;
           switch (rawBestiaryUnlockType) {
             case 0:
               bestiaryUnlockType = {
@@ -4912,8 +4375,8 @@ var require_Packet_NetModuleLoad = __commonJS({
             return;
           }
         case "CreativeUnlocks":
-          var itemId = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemId");
-          var researchedCount = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "researchedCount");
+          let itemId = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemId");
+          let researchedCount = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "researchedCount");
           return {
             TAG: "CreativeUnlocks",
             _0: {
@@ -4922,16 +4385,14 @@ var require_Packet_NetModuleLoad = __commonJS({
             }
           };
         case "CreativePower":
-          return Core__Option.map(CreativePowers$TerrariaPacket.parse(reader), function(p) {
-            return {
-              TAG: "CreativePower",
-              _0: p
-            };
-          });
+          return Stdlib_Option.map(CreativePowers$TerrariaPacket.parse(reader), (p) => ({
+            TAG: "CreativePower",
+            _0: p
+          }));
         case "CreativeUnlocksPlayerReport":
           ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "unknownByte");
-          var itemId$1 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "itemId");
-          var researchedCount$1 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "researchedCount");
+          let itemId$1 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "itemId");
+          let researchedCount$1 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "researchedCount");
           return {
             TAG: "CreativeUnlocksPlayerReport",
             _0: {
@@ -4940,11 +4401,11 @@ var require_Packet_NetModuleLoad = __commonJS({
             }
           };
         case "TeleportPylon":
-          var rawPylonAction = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "rawPylonAction");
-          var x$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
-          var y$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
-          var pylonType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "pylonType");
-          var pylonAction;
+          let rawPylonAction = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "rawPylonAction");
+          let x$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+          let y$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+          let pylonType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "pylonType");
+          let pylonAction;
           switch (rawPylonAction) {
             case 0:
               pylonAction = "Added";
@@ -4972,13 +4433,13 @@ var require_Packet_NetModuleLoad = __commonJS({
             return;
           }
         case "Particles":
-          var particleType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "particleType");
-          var x$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
-          var y$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
-          var vx = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
-          var vy = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
-          var shaderIndex = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "shaderIndex");
-          var invokedByPlayer = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "invokedByPlayer");
+          let particleType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "particleType");
+          let x$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+          let y$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+          let vx = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
+          let vy = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
+          let shaderIndex = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "shaderIndex");
+          let invokedByPlayer = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "invokedByPlayer");
           return {
             TAG: "Particles",
             _0: {
@@ -4993,9 +4454,9 @@ var require_Packet_NetModuleLoad = __commonJS({
           };
         case "CreativePowerPermissions":
           ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "unknownByte");
-          var powerType = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "powerType");
-          var rawPowerLevel = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "rawPowerLevel");
-          var powerLevel;
+          let powerType = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "powerType");
+          let rawPowerLevel = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "rawPowerLevel");
+          let powerLevel;
           switch (rawPowerLevel) {
             case 0:
               powerLevel = "LockedForEveryone";
@@ -5032,1916 +4493,142 @@ var require_Packet_NetModuleLoad = __commonJS({
 var require_Packet_NpcBuffRemovalRequest = __commonJS({
   "src/packet/Packet_NpcBuffRemovalRequest.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
 });
 
-// node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/caml_sys.js
-var require_caml_sys = __commonJS({
-  "node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/caml_sys.js"(exports2) {
-    "use strict";
-    function sys_getenv(s) {
-      if (typeof process === "undefined" || process.env === void 0) {
-        throw {
-          RE_EXN_ID: "Not_found",
-          Error: new Error()
-        };
-      }
-      var x = process.env[s];
-      if (x !== void 0) {
-        return x;
-      }
-      throw {
-        RE_EXN_ID: "Not_found",
-        Error: new Error()
-      };
-    }
-    var os_type = function(_) {
-      if (typeof process !== "undefined" && process.platform === "win32") {
-        return "Win32";
-      } else {
-        return "Unix";
-      }
-    };
-    function sys_time(param) {
-      if (typeof process === "undefined" || process.uptime === void 0) {
-        return -1;
-      } else {
-        return process.uptime();
-      }
-    }
-    var sys_getcwd = function(param) {
-      if (typeof process === "undefined" || process.cwd === void 0) {
-        return "/";
-      }
-      return process.cwd();
-    };
-    function sys_get_argv(param) {
-      if (typeof process === "undefined") {
-        return [
-          "",
-          [""]
-        ];
-      }
-      var argv = process.argv;
-      if (argv == null) {
-        return [
-          "",
-          [""]
-        ];
-      } else {
-        return [
-          argv[0],
-          argv
-        ];
-      }
-    }
-    function sys_exit(exit_code) {
-      if (typeof process !== "undefined") {
-        return process.exit(exit_code);
-      }
-    }
-    function sys_is_directory(_s) {
-      throw {
-        RE_EXN_ID: "Failure",
-        _1: "sys_is_directory not implemented",
-        Error: new Error()
-      };
-    }
-    function sys_file_exists(_s) {
-      throw {
-        RE_EXN_ID: "Failure",
-        _1: "sys_file_exists not implemented",
-        Error: new Error()
-      };
-    }
-    exports2.sys_getenv = sys_getenv;
-    exports2.sys_time = sys_time;
-    exports2.os_type = os_type;
-    exports2.sys_getcwd = sys_getcwd;
-    exports2.sys_get_argv = sys_get_argv;
-    exports2.sys_exit = sys_exit;
-    exports2.sys_is_directory = sys_is_directory;
-    exports2.sys_file_exists = sys_file_exists;
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Pervasives.js
+var Pervasives_exports = {};
+function failwith(s) {
+  throw {
+    RE_EXN_ID: "Failure",
+    _1: s,
+    Error: new Error()
+  };
+}
+function invalid_arg(s) {
+  throw {
+    RE_EXN_ID: "Invalid_argument",
+    _1: s,
+    Error: new Error()
+  };
+}
+function abs(x) {
+  if (x >= 0) {
+    return x;
+  } else {
+    return -x | 0;
   }
-});
-
-// node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/caml.js
-var require_caml = __commonJS({
-  "node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/caml.js"(exports2) {
-    "use strict";
-    function int_compare(x, y) {
-      if (x < y) {
-        return -1;
-      } else if (x === y) {
-        return 0;
-      } else {
-        return 1;
-      }
+}
+function classify_float(x) {
+  if (isFinite(x)) {
+    if (Math.abs(x) >= 22250738585072014e-324) {
+      return "FP_normal";
+    } else if (x !== 0) {
+      return "FP_subnormal";
+    } else {
+      return "FP_zero";
     }
-    function bool_compare(x, y) {
-      if (x) {
-        if (y) {
-          return 0;
-        } else {
-          return 1;
-        }
-      } else if (y) {
-        return -1;
-      } else {
-        return 0;
-      }
-    }
-    function float_compare(x, y) {
-      if (x === y) {
-        return 0;
-      } else if (x < y) {
-        return -1;
-      } else if (x > y || x === x) {
-        return 1;
-      } else if (y === y) {
-        return -1;
-      } else {
-        return 0;
-      }
-    }
-    function bigint_compare(x, y) {
-      if (x < y) {
-        return -1;
-      } else if (x === y) {
-        return 0;
-      } else {
-        return 1;
-      }
-    }
-    function string_compare(s1, s2) {
-      if (s1 === s2) {
-        return 0;
-      } else if (s1 < s2) {
-        return -1;
-      } else {
-        return 1;
-      }
-    }
-    function bool_min(x, y) {
-      if (x) {
-        return y;
-      } else {
-        return x;
-      }
-    }
-    function int_min(x, y) {
-      if (x < y) {
-        return x;
-      } else {
-        return y;
-      }
-    }
-    function float_min(x, y) {
-      if (x < y) {
-        return x;
-      } else {
-        return y;
-      }
-    }
-    function string_min(x, y) {
-      if (x < y) {
-        return x;
-      } else {
-        return y;
-      }
-    }
-    function bool_max(x, y) {
-      if (x) {
-        return x;
-      } else {
-        return y;
-      }
-    }
-    function int_max(x, y) {
-      if (x > y) {
-        return x;
-      } else {
-        return y;
-      }
-    }
-    function float_max(x, y) {
-      if (x > y) {
-        return x;
-      } else {
-        return y;
-      }
-    }
-    function string_max(x, y) {
-      if (x > y) {
-        return x;
-      } else {
-        return y;
-      }
-    }
-    function i64_eq(x, y) {
-      if (x[1] === y[1]) {
-        return x[0] === y[0];
-      } else {
-        return false;
-      }
-    }
-    function i64_ge(param, param$1) {
-      var other_hi = param$1[0];
-      var hi = param[0];
-      if (hi > other_hi) {
-        return true;
-      } else if (hi < other_hi) {
-        return false;
-      } else {
-        return param[1] >= param$1[1];
-      }
-    }
-    function i64_neq(x, y) {
-      return !i64_eq(x, y);
-    }
-    function i64_lt(x, y) {
-      return !i64_ge(x, y);
-    }
-    function i64_gt(x, y) {
-      if (x[0] > y[0]) {
-        return true;
-      } else if (x[0] < y[0]) {
-        return false;
-      } else {
-        return x[1] > y[1];
-      }
-    }
-    function i64_le(x, y) {
-      return !i64_gt(x, y);
-    }
-    function i64_min(x, y) {
-      if (i64_ge(x, y)) {
-        return y;
-      } else {
-        return x;
-      }
-    }
-    function i64_max(x, y) {
-      if (i64_gt(x, y)) {
-        return x;
-      } else {
-        return y;
-      }
-    }
-    exports2.int_compare = int_compare;
-    exports2.bool_compare = bool_compare;
-    exports2.float_compare = float_compare;
-    exports2.bigint_compare = bigint_compare;
-    exports2.string_compare = string_compare;
-    exports2.bool_min = bool_min;
-    exports2.int_min = int_min;
-    exports2.float_min = float_min;
-    exports2.string_min = string_min;
-    exports2.bool_max = bool_max;
-    exports2.int_max = int_max;
-    exports2.float_max = float_max;
-    exports2.string_max = string_max;
-    exports2.i64_eq = i64_eq;
-    exports2.i64_neq = i64_neq;
-    exports2.i64_lt = i64_lt;
-    exports2.i64_gt = i64_gt;
-    exports2.i64_le = i64_le;
-    exports2.i64_ge = i64_ge;
-    exports2.i64_min = i64_min;
-    exports2.i64_max = i64_max;
+  } else if (isNaN(x)) {
+    return "FP_nan";
+  } else {
+    return "FP_infinite";
   }
-});
-
-// node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/caml_int64.js
-var require_caml_int64 = __commonJS({
-  "node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/caml_int64.js"(exports2) {
-    "use strict";
-    var Caml = require_caml();
-    function mk(lo, hi) {
-      return [
-        hi,
-        lo >>> 0
-      ];
-    }
-    var min_int = [
-      -2147483648,
-      0
-    ];
-    var max_int = [
-      2147483647,
-      4294967295
-    ];
-    var one = [
-      0,
-      1
-    ];
-    var zero = [
-      0,
-      0
-    ];
-    var neg_one = [
-      -1,
-      4294967295
-    ];
-    function neg_signed(x) {
-      return (x & -2147483648) !== 0;
-    }
-    function non_neg_signed(x) {
-      return (x & -2147483648) === 0;
-    }
-    function succ(param) {
-      var x_lo = param[1];
-      var x_hi = param[0];
-      var lo = x_lo + 1 | 0;
-      return [
-        x_hi + (lo === 0 ? 1 : 0) | 0,
-        lo >>> 0
-      ];
-    }
-    function neg(param) {
-      var other_lo = (param[1] ^ -1) + 1 | 0;
-      return [
-        (param[0] ^ -1) + (other_lo === 0 ? 1 : 0) | 0,
-        other_lo >>> 0
-      ];
-    }
-    function add_aux(param, y_lo, y_hi) {
-      var x_lo = param[1];
-      var lo = x_lo + y_lo | 0;
-      var overflow = neg_signed(x_lo) && (neg_signed(y_lo) || non_neg_signed(lo)) || neg_signed(y_lo) && non_neg_signed(lo) ? 1 : 0;
-      return [
-        param[0] + y_hi + overflow | 0,
-        lo >>> 0
-      ];
-    }
-    function add(self, param) {
-      return add_aux(self, param[1], param[0]);
-    }
-    function equal(x, y) {
-      if (x[1] === y[1]) {
-        return x[0] === y[0];
-      } else {
-        return false;
-      }
-    }
-    function equal_null(x, y) {
-      if (y !== null) {
-        return Caml.i64_eq(x, y);
-      } else {
-        return false;
-      }
-    }
-    function equal_undefined(x, y) {
-      if (y !== void 0) {
-        return Caml.i64_eq(x, y);
-      } else {
-        return false;
-      }
-    }
-    function equal_nullable(x, y) {
-      if (y == null) {
-        return false;
-      } else {
-        return Caml.i64_eq(x, y);
-      }
-    }
-    function sub_aux(x, lo, hi) {
-      var y_lo = (lo ^ -1) + 1 >>> 0;
-      var y_hi = (hi ^ -1) + (y_lo === 0 ? 1 : 0) | 0;
-      return add_aux(x, y_lo, y_hi);
-    }
-    function sub(self, param) {
-      return sub_aux(self, param[1], param[0]);
-    }
-    function lsl_(x, numBits) {
-      if (numBits === 0) {
-        return x;
-      }
-      var lo = x[1];
-      if (numBits >= 32) {
-        return [
-          lo << (numBits - 32 | 0),
-          0
-        ];
-      } else {
-        return [
-          lo >>> (32 - numBits | 0) | x[0] << numBits,
-          lo << numBits >>> 0
-        ];
-      }
-    }
-    function lsr_(x, numBits) {
-      if (numBits === 0) {
-        return x;
-      }
-      var hi = x[0];
-      var offset = numBits - 32 | 0;
-      if (offset === 0) {
-        return [
-          0,
-          hi >>> 0
-        ];
-      } else if (offset > 0) {
-        return [
-          0,
-          hi >>> offset
-        ];
-      } else {
-        return [
-          hi >>> numBits,
-          (hi << (-offset | 0) | x[1] >>> numBits) >>> 0
-        ];
-      }
-    }
-    function asr_(x, numBits) {
-      if (numBits === 0) {
-        return x;
-      }
-      var hi = x[0];
-      if (numBits < 32) {
-        return [
-          hi >> numBits,
-          (hi << (32 - numBits | 0) | x[1] >>> numBits) >>> 0
-        ];
-      } else {
-        return [
-          hi >= 0 ? 0 : -1,
-          hi >> (numBits - 32 | 0) >>> 0
-        ];
-      }
-    }
-    function is_zero(x) {
-      if (x[0] !== 0) {
-        return false;
-      } else {
-        return x[1] === 0;
-      }
-    }
-    function mul(_this, _other) {
-      while (true) {
-        var other = _other;
-        var $$this = _this;
-        var lo;
-        var this_hi = $$this[0];
-        var exit = 0;
-        var exit$1 = 0;
-        var exit$2 = 0;
-        if (this_hi !== 0) {
-          exit$2 = 4;
-        } else {
-          if ($$this[1] === 0) {
-            return zero;
-          }
-          exit$2 = 4;
-        }
-        if (exit$2 === 4) {
-          if (other[0] !== 0) {
-            exit$1 = 3;
-          } else {
-            if (other[1] === 0) {
-              return zero;
-            }
-            exit$1 = 3;
-          }
-        }
-        if (exit$1 === 3) {
-          if (this_hi !== -2147483648 || $$this[1] !== 0) {
-            exit = 2;
-          } else {
-            lo = other[1];
-          }
-        }
-        if (exit === 2) {
-          var other_hi = other[0];
-          var lo$1 = $$this[1];
-          var exit$3 = 0;
-          if (other_hi !== -2147483648 || other[1] !== 0) {
-            exit$3 = 3;
-          } else {
-            lo = lo$1;
-          }
-          if (exit$3 === 3) {
-            var other_lo = other[1];
-            if (this_hi < 0) {
-              if (other_hi >= 0) {
-                return neg(mul(neg($$this), other));
-              }
-              _other = neg(other);
-              _this = neg($$this);
-              continue;
-            }
-            if (other_hi < 0) {
-              return neg(mul($$this, neg(other)));
-            }
-            var a48 = this_hi >>> 16;
-            var a32 = this_hi & 65535;
-            var a16 = lo$1 >>> 16;
-            var a00 = lo$1 & 65535;
-            var b48 = other_hi >>> 16;
-            var b32 = other_hi & 65535;
-            var b16 = other_lo >>> 16;
-            var b00 = other_lo & 65535;
-            var c48 = 0;
-            var c32 = 0;
-            var c16 = 0;
-            var c00 = a00 * b00;
-            c16 = (c00 >>> 16) + a16 * b00;
-            c32 = c16 >>> 16;
-            c16 = (c16 & 65535) + a00 * b16;
-            c32 = c32 + (c16 >>> 16) + a32 * b00;
-            c48 = c32 >>> 16;
-            c32 = (c32 & 65535) + a16 * b16;
-            c48 = c48 + (c32 >>> 16);
-            c32 = (c32 & 65535) + a00 * b32;
-            c48 = c48 + (c32 >>> 16);
-            c32 = c32 & 65535;
-            c48 = c48 + (a48 * b00 + a32 * b16 + a16 * b32 + a00 * b48) & 65535;
-            return [
-              c32 | c48 << 16,
-              (c00 & 65535 | (c16 & 65535) << 16) >>> 0
-            ];
-          }
-        }
-        if ((lo & 1) === 0) {
-          return zero;
-        } else {
-          return min_int;
-        }
-      }
-      ;
-    }
-    function xor(param, param$1) {
-      return [
-        param[0] ^ param$1[0],
-        (param[1] ^ param$1[1]) >>> 0
-      ];
-    }
-    function or_(param, param$1) {
-      return [
-        param[0] | param$1[0],
-        (param[1] | param$1[1]) >>> 0
-      ];
-    }
-    function and_(param, param$1) {
-      return [
-        param[0] & param$1[0],
-        (param[1] & param$1[1]) >>> 0
-      ];
-    }
-    function to_float(param) {
-      return param[0] * 4294967296 + param[1];
-    }
-    function of_float(x) {
-      if (isNaN(x) || !isFinite(x)) {
-        return zero;
-      }
-      if (x <= -9223372036854776e3) {
-        return min_int;
-      }
-      if (x + 1 >= 9223372036854776e3) {
-        return max_int;
-      }
-      if (x < 0) {
-        return neg(of_float(-x));
-      }
-      var hi = x / 4294967296 | 0;
-      var lo = x % 4294967296 | 0;
-      return [
-        hi,
-        lo >>> 0
-      ];
-    }
-    function isSafeInteger(param) {
-      var hi = param[0];
-      var top11Bits = hi >> 21;
-      if (top11Bits === 0) {
-        return true;
-      } else if (top11Bits === -1) {
-        return !(param[1] === 0 && hi === -2097152);
-      } else {
-        return false;
-      }
-    }
-    function to_string(self) {
-      if (isSafeInteger(self)) {
-        return String(to_float(self));
-      }
-      if (self[0] < 0) {
-        if (Caml.i64_eq(self, min_int)) {
-          return "-9223372036854775808";
-        } else {
-          return "-" + to_string(neg(self));
-        }
-      }
-      var approx_div1 = of_float(Math.floor(to_float(self) / 10));
-      var lo = approx_div1[1];
-      var hi = approx_div1[0];
-      var match = sub_aux(sub_aux(self, lo << 3, lo >>> 29 | hi << 3), lo << 1, lo >>> 31 | hi << 1);
-      var rem_lo = match[1];
-      var rem_hi = match[0];
-      if (rem_lo === 0 && rem_hi === 0) {
-        return to_string(approx_div1) + "0";
-      }
-      if (rem_hi < 0) {
-        var rem_lo$1 = (rem_lo ^ -1) + 1 >>> 0;
-        var delta = Math.ceil(rem_lo$1 / 10);
-        var remainder = 10 * delta - rem_lo$1;
-        return to_string(sub_aux(approx_div1, delta | 0, 0)) + String(remainder | 0);
-      }
-      var delta$1 = Math.floor(rem_lo / 10);
-      var remainder$1 = rem_lo - 10 * delta$1;
-      return to_string(add_aux(approx_div1, delta$1 | 0, 0)) + String(remainder$1 | 0);
-    }
-    function div(_self, _other) {
-      while (true) {
-        var other = _other;
-        var self = _self;
-        var self_hi = self[0];
-        var exit = 0;
-        var exit$1 = 0;
-        if (other[0] !== 0 || other[1] !== 0) {
-          exit$1 = 2;
-        } else {
-          throw {
-            RE_EXN_ID: "Division_by_zero",
-            Error: new Error()
-          };
-        }
-        if (exit$1 === 2) {
-          if (self_hi !== -2147483648) {
-            if (self_hi !== 0) {
-              exit = 1;
-            } else {
-              if (self[1] === 0) {
-                return zero;
-              }
-              exit = 1;
-            }
-          } else if (self[1] !== 0) {
-            exit = 1;
-          } else {
-            if (Caml.i64_eq(other, one) || Caml.i64_eq(other, neg_one)) {
-              return self;
-            }
-            if (Caml.i64_eq(other, min_int)) {
-              return one;
-            }
-            var half_this = asr_(self, 1);
-            var approx = lsl_(div(half_this, other), 1);
-            var exit$2 = 0;
-            if (approx[0] !== 0) {
-              exit$2 = 3;
-            } else {
-              if (approx[1] === 0) {
-                if (other[0] < 0) {
-                  return one;
-                } else {
-                  return neg(one);
-                }
-              }
-              exit$2 = 3;
-            }
-            if (exit$2 === 3) {
-              var rem = sub(self, mul(other, approx));
-              return add(approx, div(rem, other));
-            }
-          }
-        }
-        if (exit === 1) {
-          var other_hi = other[0];
-          var exit$3 = 0;
-          if (other_hi !== -2147483648) {
-            exit$3 = 2;
-          } else {
-            if (other[1] === 0) {
-              return zero;
-            }
-            exit$3 = 2;
-          }
-          if (exit$3 === 2) {
-            if (self_hi < 0) {
-              if (other_hi >= 0) {
-                return neg(div(neg(self), other));
-              }
-              _other = neg(other);
-              _self = neg(self);
-              continue;
-            }
-            if (other_hi < 0) {
-              return neg(div(self, neg(other)));
-            }
-            var res = zero;
-            var rem$1 = self;
-            while (Caml.i64_ge(rem$1, other)) {
-              var b = Math.floor(to_float(rem$1) / to_float(other));
-              var approx$1 = 1 > b ? 1 : b;
-              var log2 = Math.ceil(Math.log(approx$1) / Math.LN2);
-              var delta = log2 <= 48 ? 1 : Math.pow(2, log2 - 48);
-              var approxRes = of_float(approx$1);
-              var approxRem = mul(approxRes, other);
-              while (approxRem[0] < 0 || Caml.i64_gt(approxRem, rem$1)) {
-                approx$1 = approx$1 - delta;
-                approxRes = of_float(approx$1);
-                approxRem = mul(approxRes, other);
-              }
-              ;
-              if (is_zero(approxRes)) {
-                approxRes = one;
-              }
-              res = add(res, approxRes);
-              rem$1 = sub(rem$1, approxRem);
-            }
-            ;
-            return res;
-          }
-        }
-      }
-      ;
-    }
-    function mod_(self, other) {
-      return sub(self, mul(div(self, other), other));
-    }
-    function div_mod(self, other) {
-      var quotient = div(self, other);
-      return [
-        quotient,
-        sub(self, mul(quotient, other))
-      ];
-    }
-    function compare(self, other) {
-      var y = other[0];
-      var x = self[0];
-      var v = x < y ? -1 : x === y ? 0 : 1;
-      if (v !== 0) {
-        return v;
-      }
-      var y$1 = other[1];
-      var x$1 = self[1];
-      if (x$1 < y$1) {
-        return -1;
-      } else if (x$1 === y$1) {
-        return 0;
-      } else {
-        return 1;
-      }
-    }
-    function of_int32(lo) {
-      return [
-        lo < 0 ? -1 : 0,
-        lo >>> 0
-      ];
-    }
-    function to_int32(x) {
-      return x[1] | 0;
-    }
-    function to_hex(x) {
-      var x_lo = x[1];
-      var x_hi = x[0];
-      var aux = function(v) {
-        return (v >>> 0).toString(16);
-      };
-      if (x_hi === 0 && x_lo === 0) {
-        return "0";
-      }
-      if (x_lo === 0) {
-        return aux(x_hi) + "00000000";
-      }
-      if (x_hi === 0) {
-        return aux(x_lo);
-      }
-      var lo = aux(x_lo);
-      var pad = 8 - lo.length | 0;
-      if (pad <= 0) {
-        return aux(x_hi) + lo;
-      } else {
-        return aux(x_hi) + ("0".repeat(pad) + lo);
-      }
-    }
-    function discard_sign(x) {
-      return [
-        2147483647 & x[0],
-        x[1]
-      ];
-    }
-    function float_of_bits(x) {
-      return function(lo, hi) {
-        return new Float64Array(new Int32Array([lo, hi]).buffer)[0];
-      }(x[1], x[0]);
-    }
-    function bits_of_float(x) {
-      var match = function(x2) {
-        return new Int32Array(new Float64Array([x2]).buffer);
-      }(x);
-      return [
-        match[1],
-        match[0] >>> 0
-      ];
-    }
-    exports2.mk = mk;
-    exports2.succ = succ;
-    exports2.min_int = min_int;
-    exports2.max_int = max_int;
-    exports2.one = one;
-    exports2.zero = zero;
-    exports2.neg_one = neg_one;
-    exports2.of_int32 = of_int32;
-    exports2.to_int32 = to_int32;
-    exports2.add = add;
-    exports2.neg = neg;
-    exports2.sub = sub;
-    exports2.lsl_ = lsl_;
-    exports2.lsr_ = lsr_;
-    exports2.asr_ = asr_;
-    exports2.is_zero = is_zero;
-    exports2.mul = mul;
-    exports2.xor = xor;
-    exports2.or_ = or_;
-    exports2.and_ = and_;
-    exports2.equal = equal;
-    exports2.equal_null = equal_null;
-    exports2.equal_undefined = equal_undefined;
-    exports2.equal_nullable = equal_nullable;
-    exports2.to_float = to_float;
-    exports2.of_float = of_float;
-    exports2.div = div;
-    exports2.mod_ = mod_;
-    exports2.compare = compare;
-    exports2.float_of_bits = float_of_bits;
-    exports2.bits_of_float = bits_of_float;
-    exports2.div_mod = div_mod;
-    exports2.to_hex = to_hex;
-    exports2.discard_sign = discard_sign;
-    exports2.to_string = to_string;
-  }
-});
-
-// node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/caml_format.js
-var require_caml_format = __commonJS({
-  "node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/caml_format.js"(exports2) {
-    "use strict";
-    var Caml = require_caml();
-    var Caml_int64 = require_caml_int64();
-    function parse_digit(c) {
-      if (c >= 65) {
-        if (c >= 97) {
-          if (c >= 123) {
-            return -1;
-          } else {
-            return c - 87 | 0;
-          }
-        } else if (c >= 91) {
-          return -1;
-        } else {
-          return c - 55 | 0;
-        }
-      } else if (c > 57 || c < 48) {
-        return -1;
-      } else {
-        return c - /* '0' */
-        48 | 0;
-      }
-    }
-    function int_of_string_base(param) {
-      switch (param) {
-        case "Oct":
-          return 8;
-        case "Hex":
-          return 16;
-        case "Dec":
-          return 10;
-        case "Bin":
-          return 2;
-      }
-    }
-    function parse_sign_and_base(s) {
-      var sign = 1;
-      var base = "Dec";
-      var i = 0;
-      var match = s.codePointAt(i);
-      switch (match) {
-        case 43:
-          i = i + 1 | 0;
-          break;
-        case 45:
-          sign = -1;
-          i = i + 1 | 0;
-          break;
-        default:
-      }
-      if (s.codePointAt(i) === /* '0' */
-      48) {
-        var match$1 = s.codePointAt(i + 1 | 0);
-        if (match$1 >= 89) {
-          if (match$1 >= 111) {
-            if (match$1 < 121) {
-              switch (match$1) {
-                case 111:
-                  base = "Oct";
-                  i = i + 2 | 0;
-                  break;
-                case 117:
-                  i = i + 2 | 0;
-                  break;
-                case 112:
-                case 113:
-                case 114:
-                case 115:
-                case 116:
-                case 118:
-                case 119:
-                  break;
-                case 120:
-                  base = "Hex";
-                  i = i + 2 | 0;
-                  break;
-              }
-            }
-          } else if (match$1 === 98) {
-            base = "Bin";
-            i = i + 2 | 0;
-          }
-        } else if (match$1 !== 66) {
-          if (match$1 >= 79) {
-            switch (match$1) {
-              case 79:
-                base = "Oct";
-                i = i + 2 | 0;
-                break;
-              case 85:
-                i = i + 2 | 0;
-                break;
-              case 80:
-              case 81:
-              case 82:
-              case 83:
-              case 84:
-              case 86:
-              case 87:
-                break;
-              case 88:
-                base = "Hex";
-                i = i + 2 | 0;
-                break;
-            }
-          }
-        } else {
-          base = "Bin";
-          i = i + 2 | 0;
-        }
-      }
-      return [
-        i,
-        sign,
-        base
-      ];
-    }
-    function int_of_string(s) {
-      var match = parse_sign_and_base(s);
-      var i = match[0];
-      var base = int_of_string_base(match[2]);
-      var threshold = 4294967295;
-      var len = s.length;
-      var c = i < len ? s.codePointAt(i) : (
-        /* '\000' */
-        0
-      );
-      var d = parse_digit(c);
-      if (d < 0 || d >= base) {
-        throw {
-          RE_EXN_ID: "Failure",
-          _1: "int_of_string",
-          Error: new Error()
-        };
-      }
-      var aux = function(_acc, _k) {
-        while (true) {
-          var k = _k;
-          var acc = _acc;
-          if (k === len) {
-            return acc;
-          }
-          var a = s.codePointAt(k);
-          if (a === /* '_' */
-          95) {
-            _k = k + 1 | 0;
-            continue;
-          }
-          var v = parse_digit(a);
-          if (v < 0 || v >= base) {
-            throw {
-              RE_EXN_ID: "Failure",
-              _1: "int_of_string",
-              Error: new Error()
-            };
-          }
-          var acc$1 = base * acc + v;
-          if (acc$1 > threshold) {
-            throw {
-              RE_EXN_ID: "Failure",
-              _1: "int_of_string",
-              Error: new Error()
-            };
-          }
-          _k = k + 1 | 0;
-          _acc = acc$1;
-          continue;
-        }
-        ;
-      };
-      var res = match[1] * aux(d, i + 1 | 0);
-      var or_res = res | 0;
-      if (base === 10 && res !== or_res) {
-        throw {
-          RE_EXN_ID: "Failure",
-          _1: "int_of_string",
-          Error: new Error()
-        };
-      }
-      return or_res;
-    }
-    function int64_of_string(s) {
-      var match = parse_sign_and_base(s);
-      var hbase = match[2];
-      var i = match[0];
-      var base = Caml_int64.of_int32(int_of_string_base(hbase));
-      var sign = Caml_int64.of_int32(match[1]);
-      var threshold;
-      switch (hbase) {
-        case "Oct":
-          threshold = [
-            536870911,
-            4294967295
-          ];
-          break;
-        case "Hex":
-          threshold = [
-            268435455,
-            4294967295
-          ];
-          break;
-        case "Dec":
-          threshold = [
-            429496729,
-            2576980377
-          ];
-          break;
-        case "Bin":
-          threshold = Caml_int64.max_int;
-          break;
-      }
-      var len = s.length;
-      var c = i < len ? s.codePointAt(i) : (
-        /* '\000' */
-        0
-      );
-      var d = Caml_int64.of_int32(parse_digit(c));
-      if (Caml.i64_lt(d, Caml_int64.zero) || Caml.i64_ge(d, base)) {
-        throw {
-          RE_EXN_ID: "Failure",
-          _1: "int64_of_string",
-          Error: new Error()
-        };
-      }
-      var aux = function(_acc, _k) {
-        while (true) {
-          var k = _k;
-          var acc = _acc;
-          if (k === len) {
-            return acc;
-          }
-          var a = s.codePointAt(k);
-          if (a === /* '_' */
-          95) {
-            _k = k + 1 | 0;
-            continue;
-          }
-          var v = Caml_int64.of_int32(parse_digit(a));
-          if (Caml.i64_lt(v, Caml_int64.zero) || Caml.i64_ge(v, base) || Caml.i64_gt(acc, threshold)) {
-            throw {
-              RE_EXN_ID: "Failure",
-              _1: "int64_of_string",
-              Error: new Error()
-            };
-          }
-          var acc$1 = Caml_int64.add(Caml_int64.mul(base, acc), v);
-          _k = k + 1 | 0;
-          _acc = acc$1;
-          continue;
-        }
-        ;
-      };
-      var res = Caml_int64.mul(sign, aux(d, i + 1 | 0));
-      var or_res = Caml_int64.or_(res, Caml_int64.zero);
-      if (Caml.i64_eq(base, [
-        0,
-        10
-      ]) && Caml.i64_neq(res, or_res)) {
-        throw {
-          RE_EXN_ID: "Failure",
-          _1: "int64_of_string",
-          Error: new Error()
-        };
-      }
-      return or_res;
-    }
-    function int_of_base(param) {
-      switch (param) {
-        case "Oct":
-          return 8;
-        case "Hex":
-          return 16;
-        case "Dec":
-          return 10;
-      }
-    }
-    function lowercase(c) {
-      if (c >= /* 'A' */
-      65 && c <= /* 'Z' */
-      90 || c >= /* '\192' */
-      192 && c <= /* '\214' */
-      214 || c >= /* '\216' */
-      216 && c <= /* '\222' */
-      222) {
-        return c + 32 | 0;
-      } else {
-        return c;
-      }
-    }
-    function parse_format(fmt) {
-      var len = fmt.length;
-      if (len > 31) {
-        throw {
-          RE_EXN_ID: "Invalid_argument",
-          _1: "format_int: format too long",
-          Error: new Error()
-        };
-      }
-      var f = {
-        justify: "+",
-        signstyle: "-",
-        filter: " ",
-        alternate: false,
-        base: "Dec",
-        signedconv: false,
-        width: 0,
-        uppercase: false,
-        sign: 1,
-        prec: -1,
-        conv: "f"
-      };
-      var _i = 0;
-      while (true) {
-        var i = _i;
-        if (i >= len) {
-          return f;
-        }
-        var c = fmt.codePointAt(i);
-        var exit = 0;
-        if (c >= 69) {
-          if (c >= 88) {
-            if (c >= 121) {
-              exit = 1;
-            } else {
-              switch (c) {
-                case 88:
-                  f.base = "Hex";
-                  f.uppercase = true;
-                  _i = i + 1 | 0;
-                  continue;
-                case 101:
-                case 102:
-                case 103:
-                  exit = 5;
-                  break;
-                case 100:
-                case 105:
-                  exit = 4;
-                  break;
-                case 111:
-                  f.base = "Oct";
-                  _i = i + 1 | 0;
-                  continue;
-                case 117:
-                  f.base = "Dec";
-                  _i = i + 1 | 0;
-                  continue;
-                case 89:
-                case 90:
-                case 91:
-                case 92:
-                case 93:
-                case 94:
-                case 95:
-                case 96:
-                case 97:
-                case 98:
-                case 99:
-                case 104:
-                case 106:
-                case 107:
-                case 108:
-                case 109:
-                case 110:
-                case 112:
-                case 113:
-                case 114:
-                case 115:
-                case 116:
-                case 118:
-                case 119:
-                  exit = 1;
-                  break;
-                case 120:
-                  f.base = "Hex";
-                  _i = i + 1 | 0;
-                  continue;
-              }
-            }
-          } else if (c >= 72) {
-            exit = 1;
-          } else {
-            f.signedconv = true;
-            f.uppercase = true;
-            f.conv = String.fromCharCode(lowercase(c));
-            _i = i + 1 | 0;
-            continue;
-          }
-        } else {
-          switch (c) {
-            case 35:
-              f.alternate = true;
-              _i = i + 1 | 0;
-              continue;
-            case 32:
-            case 43:
-              exit = 2;
-              break;
-            case 45:
-              f.justify = "-";
-              _i = i + 1 | 0;
-              continue;
-            case 46:
-              f.prec = 0;
-              var j = i + 1 | 0;
-              while ((/* @__PURE__ */ function(j2) {
-                return function() {
-                  var w = fmt.codePointAt(j2) - /* '0' */
-                  48 | 0;
-                  return w >= 0 && w <= 9;
-                };
-              }(j))()) {
-                f.prec = (Math.imul(f.prec, 10) + fmt.codePointAt(j) | 0) - /* '0' */
-                48 | 0;
-                j = j + 1 | 0;
-              }
-              ;
-              _i = j;
-              continue;
-            case 48:
-              f.filter = "0";
-              _i = i + 1 | 0;
-              continue;
-            case 49:
-            case 50:
-            case 51:
-            case 52:
-            case 53:
-            case 54:
-            case 55:
-            case 56:
-            case 57:
-              exit = 3;
-              break;
-            default:
-              exit = 1;
-          }
-        }
-        switch (exit) {
-          case 1:
-            _i = i + 1 | 0;
-            continue;
-          case 2:
-            f.signstyle = String.fromCharCode(c);
-            _i = i + 1 | 0;
-            continue;
-          case 3:
-            f.width = 0;
-            var j$1 = i;
-            while ((/* @__PURE__ */ function(j$12) {
-              return function() {
-                var w = fmt.codePointAt(j$12) - /* '0' */
-                48 | 0;
-                return w >= 0 && w <= 9;
-              };
-            }(j$1))()) {
-              f.width = (Math.imul(f.width, 10) + fmt.codePointAt(j$1) | 0) - /* '0' */
-              48 | 0;
-              j$1 = j$1 + 1 | 0;
-            }
-            ;
-            _i = j$1;
-            continue;
-          case 4:
-            f.signedconv = true;
-            f.base = "Dec";
-            _i = i + 1 | 0;
-            continue;
-          case 5:
-            f.signedconv = true;
-            f.conv = String.fromCharCode(c);
-            _i = i + 1 | 0;
-            continue;
-        }
-      }
-      ;
-    }
-    function finish_formatting(config, rawbuffer) {
-      var justify = config.justify;
-      var signstyle = config.signstyle;
-      var filter = config.filter;
-      var alternate = config.alternate;
-      var base = config.base;
-      var signedconv = config.signedconv;
-      var width = config.width;
-      var uppercase = config.uppercase;
-      var sign = config.sign;
-      var len = rawbuffer.length;
-      if (signedconv && (sign < 0 || signstyle !== "-")) {
-        len = len + 1 | 0;
-      }
-      if (alternate) {
-        if (base === "Oct") {
-          len = len + 1 | 0;
-        } else if (base === "Hex") {
-          len = len + 2 | 0;
-        }
-      }
-      var buffer = "";
-      if (justify === "+" && filter === " ") {
-        for (var _for = len; _for < width; ++_for) {
-          buffer = buffer + filter;
-        }
-      }
-      if (signedconv) {
-        if (sign < 0) {
-          buffer = buffer + "-";
-        } else if (signstyle !== "-") {
-          buffer = buffer + signstyle;
-        }
-      }
-      if (alternate && base === "Oct") {
-        buffer = buffer + "0";
-      }
-      if (alternate && base === "Hex") {
-        buffer = buffer + "0x";
-      }
-      if (justify === "+" && filter === "0") {
-        for (var _for$1 = len; _for$1 < width; ++_for$1) {
-          buffer = buffer + filter;
-        }
-      }
-      buffer = uppercase ? buffer + rawbuffer.toUpperCase() : buffer + rawbuffer;
-      if (justify === "-") {
-        for (var _for$2 = len; _for$2 < width; ++_for$2) {
-          buffer = buffer + " ";
-        }
-      }
-      return buffer;
-    }
-    function format_int(fmt, i) {
-      if (fmt === "%d") {
-        return String(i);
-      }
-      var f = parse_format(fmt);
-      var i$1 = i < 0 ? f.signedconv ? (f.sign = -1, -i >>> 0) : i >>> 0 : i;
-      var s = i$1.toString(int_of_base(f.base));
-      if (f.prec >= 0) {
-        f.filter = " ";
-        var n = f.prec - s.length | 0;
-        if (n > 0) {
-          s = "0".repeat(n) + s;
-        }
-      }
-      return finish_formatting(f, s);
-    }
-    function dec_of_pos_int64(x) {
-      if (!Caml.i64_lt(x, Caml_int64.zero)) {
-        return Caml_int64.to_string(x);
-      }
-      var wbase = [
-        0,
-        10
-      ];
-      var y = Caml_int64.discard_sign(x);
-      var match = Caml_int64.div_mod(y, wbase);
-      var match$1 = Caml_int64.div_mod(Caml_int64.add([
-        0,
-        8
-      ], match[1]), wbase);
-      var quotient = Caml_int64.add(Caml_int64.add([
-        214748364,
-        3435973836
-      ], match[0]), match$1[0]);
-      return Caml_int64.to_string(quotient) + "0123456789"[Caml_int64.to_int32(match$1[1])];
-    }
-    function oct_of_int64(x) {
-      var s = "";
-      var wbase = [
-        0,
-        8
-      ];
-      var cvtbl = "01234567";
-      if (Caml.i64_lt(x, Caml_int64.zero)) {
-        var y = Caml_int64.discard_sign(x);
-        var match = Caml_int64.div_mod(y, wbase);
-        var quotient = Caml_int64.add([
-          268435456,
-          0
-        ], match[0]);
-        var modulus = match[1];
-        s = cvtbl[Caml_int64.to_int32(modulus)] + s;
-        while (Caml.i64_neq(quotient, Caml_int64.zero)) {
-          var match$1 = Caml_int64.div_mod(quotient, wbase);
-          quotient = match$1[0];
-          modulus = match$1[1];
-          s = cvtbl[Caml_int64.to_int32(modulus)] + s;
-        }
-        ;
-      } else {
-        var match$2 = Caml_int64.div_mod(x, wbase);
-        var quotient$1 = match$2[0];
-        var modulus$1 = match$2[1];
-        s = cvtbl[Caml_int64.to_int32(modulus$1)] + s;
-        while (Caml.i64_neq(quotient$1, Caml_int64.zero)) {
-          var match$3 = Caml_int64.div_mod(quotient$1, wbase);
-          quotient$1 = match$3[0];
-          modulus$1 = match$3[1];
-          s = cvtbl[Caml_int64.to_int32(modulus$1)] + s;
-        }
-        ;
-      }
-      return s;
-    }
-    function int64_format(fmt, x) {
-      if (fmt === "%d") {
-        return Caml_int64.to_string(x);
-      }
-      var f = parse_format(fmt);
-      var x$1 = f.signedconv && Caml.i64_lt(x, Caml_int64.zero) ? (f.sign = -1, Caml_int64.neg(x)) : x;
-      var match = f.base;
-      var s;
-      switch (match) {
-        case "Oct":
-          s = oct_of_int64(x$1);
-          break;
-        case "Hex":
-          s = Caml_int64.to_hex(x$1);
-          break;
-        case "Dec":
-          s = dec_of_pos_int64(x$1);
-          break;
-      }
-      var fill_s;
-      if (f.prec >= 0) {
-        f.filter = " ";
-        var n = f.prec - s.length | 0;
-        fill_s = n > 0 ? "0".repeat(n) + s : s;
-      } else {
-        fill_s = s;
-      }
-      return finish_formatting(f, fill_s);
-    }
-    function format_float(fmt, x) {
-      var f = parse_format(fmt);
-      var prec = f.prec < 0 ? 6 : f.prec;
-      var x$1 = x < 0 ? (f.sign = -1, -x) : x;
-      var s = "";
-      if (isNaN(x$1)) {
-        s = "nan";
-        f.filter = " ";
-      } else if (isFinite(x$1)) {
-        var match = f.conv;
-        switch (match) {
-          case "e":
-            s = x$1.toExponential(prec);
-            var i = s.length;
-            if (s.codePointAt(i - 3 | 0) === /* 'e' */
-            101) {
-              s = s.slice(0, i - 1 | 0) + ("0" + s.slice(i - 1 | 0));
-            }
-            break;
-          case "f":
-            s = x$1.toFixed(prec);
-            break;
-          case "g":
-            var prec$1 = prec !== 0 ? prec : 1;
-            s = x$1.toExponential(prec$1 - 1 | 0);
-            var j = s.indexOf("e");
-            var exp = Number(s.slice(j + 1 | 0)) | 0;
-            if (exp < -4 || x$1 >= 1e21 || x$1.toFixed().length > prec$1) {
-              var i$1 = j - 1 | 0;
-              while (s.codePointAt(i$1) === /* '0' */
-              48) {
-                i$1 = i$1 - 1 | 0;
-              }
-              ;
-              if (s.codePointAt(i$1) === /* '.' */
-              46) {
-                i$1 = i$1 - 1 | 0;
-              }
-              s = s.slice(0, i$1 + 1 | 0) + s.slice(j);
-              var i$2 = s.length;
-              if (s.codePointAt(i$2 - 3 | 0) === /* 'e' */
-              101) {
-                s = s.slice(0, i$2 - 1 | 0) + ("0" + s.slice(i$2 - 1 | 0));
-              }
-            } else {
-              var p = prec$1;
-              if (exp < 0) {
-                p = p - (exp + 1 | 0) | 0;
-                s = x$1.toFixed(p);
-              } else {
-                while (function() {
-                  s = x$1.toFixed(p);
-                  return s.length > (prec$1 + 1 | 0);
-                }()) {
-                  p = p - 1 | 0;
-                }
-                ;
-              }
-              if (p !== 0) {
-                var k = s.length - 1 | 0;
-                while (s.codePointAt(k) === /* '0' */
-                48) {
-                  k = k - 1 | 0;
-                }
-                ;
-                if (s.codePointAt(k) === /* '.' */
-                46) {
-                  k = k - 1 | 0;
-                }
-                s = s.slice(0, k + 1 | 0);
-              }
-            }
-            break;
-          default:
-        }
-      } else {
-        s = "inf";
-        f.filter = " ";
-      }
-      return finish_formatting(f, s);
-    }
-    var hexstring_of_float = function(x, prec, style) {
-      if (!isFinite(x)) {
-        if (isNaN(x)) return "nan";
-        return x > 0 ? "infinity" : "-infinity";
-      }
-      var sign = x == 0 && 1 / x == -Infinity ? 1 : x >= 0 ? 0 : 1;
-      if (sign) x = -x;
-      var exp = 0;
-      if (x == 0) {
-      } else if (x < 1) {
-        while (x < 1 && exp > -1022) {
-          x *= 2;
-          exp--;
-        }
-      } else {
-        while (x >= 2) {
-          x /= 2;
-          exp++;
-        }
-      }
-      var exp_sign = exp < 0 ? "" : "+";
-      var sign_str = "";
-      if (sign) sign_str = "-";
-      else {
-        switch (style) {
-          case 43:
-            sign_str = "+";
-            break;
-          case 32:
-            sign_str = " ";
-            break;
-          default:
-            break;
-        }
-      }
-      if (prec >= 0 && prec < 13) {
-        var cst = Math.pow(2, prec * 4);
-        x = Math.round(x * cst) / cst;
-      }
-      var x_str = x.toString(16);
-      if (prec >= 0) {
-        var idx = x_str.indexOf(".");
-        if (idx < 0) {
-          x_str += "." + "0".repeat(prec);
-        } else {
-          var size = idx + 1 + prec;
-          if (x_str.length < size)
-            x_str += "0".repeat(size - x_str.length);
-          else
-            x_str = x_str.substr(0, size);
-        }
-      }
-      return sign_str + "0x" + x_str + "p" + exp_sign + exp.toString(10);
+}
+function char_of_int(n) {
+  if (n < 0 || n > 255) {
+    throw {
+      RE_EXN_ID: "Invalid_argument",
+      _1: "char_of_int",
+      Error: new Error()
     };
-    var float_of_string = function(s, exn) {
-      var res = +s;
-      if (s.length > 0 && res === res)
-        return res;
-      s = s.replace(/_/g, "");
-      res = +s;
-      if (s.length > 0 && res === res || /^[+-]?nan$/i.test(s)) {
-        return res;
-      }
-      ;
-      var m = /^ *([+-]?)0x([0-9a-f]+)\.?([0-9a-f]*)p([+-]?[0-9]+)/i.exec(s);
-      if (m) {
-        var m3 = m[3].replace(/0+$/, "");
-        var mantissa = parseInt(m[1] + m[2] + m3, 16);
-        var exponent = (m[4] | 0) - 4 * m3.length;
-        res = mantissa * Math.pow(2, exponent);
-        return res;
-      }
-      if (/^\+?inf(inity)?$/i.test(s))
-        return Infinity;
-      if (/^-inf(inity)?$/i.test(s))
-        return -Infinity;
-      throw exn;
-    };
-    function float_of_string$1(s) {
-      return float_of_string(s, {
-        RE_EXN_ID: "Failure",
-        _1: "float_of_string"
-      });
-    }
-    exports2.format_float = format_float;
-    exports2.hexstring_of_float = hexstring_of_float;
-    exports2.format_int = format_int;
-    exports2.float_of_string = float_of_string$1;
-    exports2.int64_format = int64_format;
-    exports2.int_of_string = int_of_string;
-    exports2.int64_of_string = int64_of_string;
   }
-});
-
-// node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/caml_string.js
-var require_caml_string = __commonJS({
-  "node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/caml_string.js"(exports2) {
-    "use strict";
-    function get(s, i) {
-      if (i >= s.length || i < 0) {
-        throw {
-          RE_EXN_ID: "Invalid_argument",
-          _1: "index out of bounds",
-          Error: new Error()
-        };
-      }
-      return s.codePointAt(i);
-    }
-    function make(n, ch) {
-      return String.fromCharCode(ch).repeat(n);
-    }
-    exports2.get = get;
-    exports2.make = make;
+  return n;
+}
+function string_of_bool(b) {
+  if (b) {
+    return "true";
+  } else {
+    return "false";
   }
-});
-
-// node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/pervasivesU.js
-var require_pervasivesU = __commonJS({
-  "node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/pervasivesU.js"(exports2) {
-    "use strict";
-    var Caml_sys = require_caml_sys();
-    var Caml_format = require_caml_format();
-    var Caml_string = require_caml_string();
-    var Caml_exceptions = require_caml_exceptions();
-    var Caml_js_exceptions = require_caml_js_exceptions();
-    var JsxModules = {
-      Jsx: void 0,
-      JsxEvent: void 0,
-      JsxDOM: void 0
-    };
-    function failwith(s) {
-      throw {
-        RE_EXN_ID: "Failure",
-        _1: s,
-        Error: new Error()
-      };
-    }
-    function invalid_arg(s) {
+}
+function bool_of_string(param) {
+  switch (param) {
+    case "false":
+      return false;
+    case "true":
+      return true;
+    default:
       throw {
         RE_EXN_ID: "Invalid_argument",
-        _1: s,
+        _1: "bool_of_string",
         Error: new Error()
       };
-    }
-    var Exit = /* @__PURE__ */ Caml_exceptions.create("PervasivesU.Exit");
-    function abs(x) {
-      if (x >= 0) {
-        return x;
-      } else {
-        return -x | 0;
-      }
-    }
-    function lnot(x) {
-      return x ^ -1;
-    }
-    var min_int = -2147483648;
-    function classify_float(x) {
-      if (isFinite(x)) {
-        if (Math.abs(x) >= 22250738585072014e-324) {
-          return "FP_normal";
-        } else if (x !== 0) {
-          return "FP_subnormal";
-        } else {
-          return "FP_zero";
-        }
-      } else if (isNaN(x)) {
-        return "FP_nan";
-      } else {
-        return "FP_infinite";
-      }
-    }
-    function char_of_int(n) {
-      if (n < 0 || n > 255) {
-        throw {
-          RE_EXN_ID: "Invalid_argument",
-          _1: "char_of_int",
-          Error: new Error()
-        };
-      }
-      return n;
-    }
-    function string_of_bool(b) {
-      if (b) {
-        return "true";
-      } else {
-        return "false";
-      }
-    }
-    function bool_of_string(param) {
-      switch (param) {
-        case "false":
-          return false;
-        case "true":
-          return true;
-        default:
-          throw {
-            RE_EXN_ID: "Invalid_argument",
-            _1: "bool_of_string",
-            Error: new Error()
-          };
-      }
-    }
-    function bool_of_string_opt(param) {
-      switch (param) {
-        case "false":
-          return false;
-        case "true":
-          return true;
-        default:
-          return;
-      }
-    }
-    function int_of_string_opt(s) {
-      try {
-        return Caml_format.int_of_string(s);
-      } catch (raw_exn) {
-        var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
-        if (exn.RE_EXN_ID === "Failure") {
-          return;
-        }
-        throw exn;
-      }
-    }
-    function valid_float_lexem(s) {
-      var l = s.length;
-      var _i = 0;
-      while (true) {
-        var i = _i;
-        if (i >= l) {
-          return s + ".";
-        }
-        var match = Caml_string.get(s, i);
-        if (match >= 48) {
-          if (match >= 58) {
-            return s;
-          }
-          _i = i + 1 | 0;
-          continue;
-        }
-        if (match !== 45) {
-          return s;
-        }
-        _i = i + 1 | 0;
-        continue;
-      }
-      ;
-    }
-    function string_of_float(f) {
-      return valid_float_lexem(Caml_format.format_float("%.12g", f));
-    }
-    function float_of_string_opt(s) {
-      try {
-        return Caml_format.float_of_string(s);
-      } catch (raw_exn) {
-        var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
-        if (exn.RE_EXN_ID === "Failure") {
-          return;
-        }
-        throw exn;
-      }
-    }
-    function $at(l1, l2) {
-      if (l1) {
-        return {
-          hd: l1.hd,
-          tl: $at(l1.tl, l2)
-        };
-      } else {
-        return l2;
-      }
-    }
-    function print_newline() {
-      console.log("");
-    }
-    function prerr_newline() {
-      console.error("");
-    }
-    function print_int(i) {
-      console.log(String(i));
-    }
-    function print_float(i) {
-      console.log(string_of_float(i));
-    }
-    function print_string(prim) {
-      console.log(prim);
-    }
-    var exit_function = {
-      contents: function(prim) {
-      }
+  }
+}
+function bool_of_string_opt(param) {
+  switch (param) {
+    case "false":
+      return false;
+    case "true":
+      return true;
+    default:
+      return;
+  }
+}
+function int_of_string_opt(s) {
+  let n = Number.parseInt(s);
+  if (n === NaN) {
+    return;
+  } else {
+    return n;
+  }
+}
+function $at(l1, l2) {
+  if (l1 !== 0) {
+    return {
+      hd: l1.hd,
+      tl: $at(l1.tl, l2)
     };
-    function at_exit(f) {
-      var g = exit_function.contents;
-      exit_function.contents = function() {
-        f();
-        g();
-      };
-    }
-    function exit(retcode) {
-      exit_function.contents();
-      return Caml_sys.sys_exit(retcode);
-    }
-    var Jsx;
-    var JsxEvent;
-    var JsxDOM;
-    var JsxPPXReactSupport;
-    var max_int = 2147483647;
-    var infinity = Infinity;
-    var neg_infinity = -Infinity;
-    var max_float = 17976931348623157e292;
-    var min_float = 22250738585072014e-324;
-    var epsilon_float = 2220446049250313e-31;
-    exports2.Jsx = Jsx;
-    exports2.JsxEvent = JsxEvent;
-    exports2.JsxDOM = JsxDOM;
-    exports2.JsxPPXReactSupport = JsxPPXReactSupport;
-    exports2.JsxModules = JsxModules;
-    exports2.invalid_arg = invalid_arg;
-    exports2.failwith = failwith;
-    exports2.Exit = Exit;
-    exports2.abs = abs;
-    exports2.max_int = max_int;
-    exports2.min_int = min_int;
-    exports2.lnot = lnot;
-    exports2.infinity = infinity;
-    exports2.neg_infinity = neg_infinity;
-    exports2.max_float = max_float;
-    exports2.min_float = min_float;
-    exports2.epsilon_float = epsilon_float;
-    exports2.classify_float = classify_float;
-    exports2.char_of_int = char_of_int;
-    exports2.string_of_bool = string_of_bool;
-    exports2.bool_of_string = bool_of_string;
-    exports2.bool_of_string_opt = bool_of_string_opt;
-    exports2.int_of_string_opt = int_of_string_opt;
-    exports2.string_of_float = string_of_float;
-    exports2.float_of_string_opt = float_of_string_opt;
-    exports2.$at = $at;
-    exports2.print_string = print_string;
-    exports2.print_int = print_int;
-    exports2.print_float = print_float;
-    exports2.print_newline = print_newline;
-    exports2.prerr_newline = prerr_newline;
-    exports2.exit = exit;
-    exports2.at_exit = at_exit;
-    exports2.valid_float_lexem = valid_float_lexem;
+  } else {
+    return l2;
+  }
+}
+var Primitive_exceptions, Exit, min_int, max_int, infinity, neg_infinity, max_float, min_float, epsilon_float;
+var init_Pervasives = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Pervasives.js"() {
+    "use strict";
+    Primitive_exceptions = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
+    Exit = /* @__PURE__ */ Primitive_exceptions.create("Pervasives.Exit");
+    min_int = -2147483648;
+    max_int = 2147483647;
+    infinity = Infinity;
+    neg_infinity = -Infinity;
+    max_float = 17976931348623157e292;
+    min_float = 22250738585072014e-324;
+    epsilon_float = 2220446049250313e-31;
+    exports.failwith = failwith;
+    exports.invalid_arg = invalid_arg;
+    exports.Exit = Exit;
+    exports.abs = abs;
+    exports.max_int = max_int;
+    exports.min_int = min_int;
+    exports.infinity = infinity;
+    exports.neg_infinity = neg_infinity;
+    exports.max_float = max_float;
+    exports.min_float = min_float;
+    exports.epsilon_float = epsilon_float;
+    exports.classify_float = classify_float;
+    exports.char_of_int = char_of_int;
+    exports.string_of_bool = string_of_bool;
+    exports.bool_of_string = bool_of_string;
+    exports.bool_of_string_opt = bool_of_string_opt;
+    exports.int_of_string_opt = int_of_string_opt;
+    exports.$at = $at;
   }
 });
 
@@ -6949,7 +4636,7 @@ var require_pervasivesU = __commonJS({
 var require_Packet_NpcBuffUpdate = __commonJS({
   "src/packet/Packet_NpcBuffUpdate.js"(exports2) {
     "use strict";
-    var PervasivesU = require_pervasivesU();
+    var Pervasives = (init_Pervasives(), __toCommonJS(Pervasives_exports));
     var PacketType$TerrariaPacket = require_PacketType();
     var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
     var Packetreader = require_packetreader().default;
@@ -6964,11 +4651,11 @@ var require_Packet_NpcBuffUpdate = __commonJS({
       return prim.readByte();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var npcId = reader.readInt16();
-      var buffs = [];
-      var buffTimes = [];
-      for (var _i = 1; _i <= 20; ++_i) {
+      let reader = new Packetreader(payload);
+      let npcId = reader.readInt16();
+      let buffs = [];
+      let buffTimes = [];
+      for (let _i = 1; _i <= 20; ++_i) {
         buffs.push(reader.readUInt16());
         buffTimes.push(reader.readInt16());
       }
@@ -6997,20 +4684,20 @@ var require_Packet_NpcBuffUpdate = __commonJS({
       return prim.data;
     }
     function packBuffs(writer, buffs) {
-      buffs.forEach(function(buff) {
+      buffs.forEach((buff) => {
         writer.packUInt16(buff);
       });
       return writer;
     }
     function packBuffTimes(writer, buffTimes) {
-      buffTimes.forEach(function(buff) {
+      buffTimes.forEach((buff) => {
         writer.packInt16(buff);
       });
       return writer;
     }
     function toBuffer(self) {
       if (self.buffs.length !== 20) {
-        PervasivesU.failwith("Expected 20 buffs, got " + self.buffs.length.toString());
+        Pervasives.failwith(`Expected 20 buffs, got ` + self.buffs.length.toString());
       }
       return packBuffTimes(packBuffs(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NpcBuffUpdate")).packByte(self.npcId), self.buffs), self.buffTimes).data;
     }
@@ -7046,9 +4733,9 @@ var require_Packet_NpcCatch = __commonJS({
       return prim.readInt16();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var npcId = reader.readInt16();
-      var playerId = reader.readByte();
+      let reader = new Packetreader(payload);
+      let npcId = reader.readInt16();
+      let playerId = reader.readByte();
       return {
         npcId,
         playerId
@@ -7089,9 +4776,9 @@ var require_Packet_NpcCatch = __commonJS({
 var require_Packet_NpcFishOut = __commonJS({
   "src/packet/Packet_NpcFishOut.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -7101,9 +4788,9 @@ var require_Packet_NpcFishOut = __commonJS({
 var require_Packet_NpcHomeUpdate = __commonJS({
   "src/packet/Packet_NpcHomeUpdate.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -7113,9 +4800,9 @@ var require_Packet_NpcHomeUpdate = __commonJS({
 var require_Packet_NpcKillCount = __commonJS({
   "src/packet/Packet_NpcKillCount.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -7125,9 +4812,9 @@ var require_Packet_NpcKillCount = __commonJS({
 var require_Packet_NpcNameUpdate = __commonJS({
   "src/packet/Packet_NpcNameUpdate.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -7137,9 +4824,9 @@ var require_Packet_NpcNameUpdate = __commonJS({
 var require_Packet_NpcShopItem = __commonJS({
   "src/packet/Packet_NpcShopItem.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -7149,9 +4836,9 @@ var require_Packet_NpcShopItem = __commonJS({
 var require_Packet_NpcTalk = __commonJS({
   "src/packet/Packet_NpcTalk.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -7161,9 +4848,9 @@ var require_Packet_NpcTalk = __commonJS({
 var require_Packet_NpcTeleportPortal = __commonJS({
   "src/packet/Packet_NpcTeleportPortal.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -7178,15 +4865,15 @@ var require_Packet_ObjectPlace = __commonJS({
     var Packetreader = require_packetreader().default;
     var Packetwriter = require_packetwriter().default;
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var x = reader.readInt16();
-      var y = reader.readInt16();
-      var objectType = reader.readInt16();
-      var style = reader.readInt16();
-      var alternate = reader.readByte();
-      var random = reader.readSByte();
-      var match = reader.readByte();
-      var direction = match !== 0 ? "Right" : "Left";
+      let reader = new Packetreader(payload);
+      let x = reader.readInt16();
+      let y = reader.readInt16();
+      let objectType = reader.readInt16();
+      let style = reader.readInt16();
+      let alternate = reader.readByte();
+      let random = reader.readSByte();
+      let match = reader.readByte();
+      let direction = match !== 0 ? "Right" : "Left";
       return {
         x,
         y,
@@ -7198,8 +4885,8 @@ var require_Packet_ObjectPlace = __commonJS({
       };
     }
     function toBuffer(self) {
-      var match = self.direction;
-      var tmp;
+      let match = self.direction;
+      let tmp;
       tmp = match === "Left" ? 0 : 1;
       return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ObjectPlace")).packInt16(self.x).packInt16(self.y).packInt16(self.objectType).packInt16(self.style).packByte(self.alternate).packSByte(self.random).packByte(tmp).data;
     }
@@ -7212,9 +4899,9 @@ var require_Packet_ObjectPlace = __commonJS({
 var require_Packet_PartyToggle = __commonJS({
   "src/packet/Packet_PartyToggle.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -7224,9 +4911,9 @@ var require_Packet_PartyToggle = __commonJS({
 var require_Packet_PlayerAnimation = __commonJS({
   "src/packet/Packet_PlayerAnimation.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -7241,10 +4928,10 @@ var require_Packet_PlayerBuffAdd = __commonJS({
     var Packetreader = require_packetreader().default;
     var Packetwriter = require_packetwriter().default;
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var playerId = reader.readByte();
-      var buff = reader.readUInt16();
-      var time = reader.readInt32();
+      let reader = new Packetreader(payload);
+      let playerId = reader.readByte();
+      let buff = reader.readUInt16();
+      let time = reader.readInt32();
       return {
         playerId,
         buff,
@@ -7263,16 +4950,16 @@ var require_Packet_PlayerBuffAdd = __commonJS({
 var require_Packet_PlayerBuffsSet = __commonJS({
   "src/packet/Packet_PlayerBuffsSet.js"(exports2) {
     "use strict";
-    var PervasivesU = require_pervasivesU();
+    var Pervasives = (init_Pervasives(), __toCommonJS(Pervasives_exports));
     var PacketType$TerrariaPacket = require_PacketType();
     var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
     var Packetreader = require_packetreader().default;
     var Packetwriter = require_packetwriter().default;
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var playerId = reader.readByte();
-      var buffs = [];
-      for (var _i = 1; _i <= 44; ++_i) {
+      let reader = new Packetreader(payload);
+      let playerId = reader.readByte();
+      let buffs = [];
+      for (let _i = 1; _i <= 44; ++_i) {
         buffs.push(reader.readUInt16());
       }
       return {
@@ -7281,14 +4968,14 @@ var require_Packet_PlayerBuffsSet = __commonJS({
       };
     }
     function packBuffs(writer, buffs) {
-      buffs.forEach(function(buff) {
+      buffs.forEach((buff) => {
         writer.packUInt16(buff);
       });
       return writer;
     }
     function toBuffer(self) {
       if (self.buffs.length !== 44) {
-        PervasivesU.failwith("Expected 44 buffs, got " + self.buffs.length.toString());
+        Pervasives.failwith(`Expected 44 buffs, got ` + self.buffs.length.toString());
       }
       return packBuffs(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerBuffsSet")).packByte(self.playerId), self.buffs).data;
     }
@@ -7301,9 +4988,9 @@ var require_Packet_PlayerBuffsSet = __commonJS({
 var require_Packet_PlayerChestIndexSync = __commonJS({
   "src/packet/Packet_PlayerChestIndexSync.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -7313,9 +5000,9 @@ var require_Packet_PlayerChestIndexSync = __commonJS({
 var require_Packet_PlayerDead = __commonJS({
   "src/packet/Packet_PlayerDead.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -7325,10 +5012,10 @@ var require_Packet_PlayerDead = __commonJS({
 var require_PlayerDeathReason = __commonJS({
   "src/PlayerDeathReason.js"(exports2) {
     "use strict";
-    var Belt_Option = require_belt_Option();
+    var Belt_Option = (init_Belt_Option(), __toCommonJS(Belt_Option_exports));
     var BitFlags$TerrariaPacket = require_BitFlags();
-    function otherFromByte($$byte) {
-      switch ($$byte) {
+    function otherFromByte(byte) {
+      switch (byte) {
         case 0:
           return "FallDamage";
         case 1:
@@ -7398,15 +5085,15 @@ var require_PlayerDeathReason = __commonJS({
       }
     }
     function readDeathReason(reader) {
-      var reasonType = BitFlags$TerrariaPacket.fromByte(reader.readByte());
-      var killerPlayerId = BitFlags$TerrariaPacket.flag1(reasonType) ? reader.readInt16() : void 0;
-      var killerNpcId = BitFlags$TerrariaPacket.flag2(reasonType) ? reader.readInt16() : void 0;
-      var killerProjectileId = BitFlags$TerrariaPacket.flag3(reasonType) ? reader.readInt16() : void 0;
-      var typeOfDeathOther = BitFlags$TerrariaPacket.flag4(reasonType) ? otherFromByte(reader.readByte()) : void 0;
-      var projectileType = BitFlags$TerrariaPacket.flag5(reasonType) ? reader.readInt16() : void 0;
-      var itemType = BitFlags$TerrariaPacket.flag6(reasonType) ? reader.readInt16() : void 0;
-      var itemPrefix = BitFlags$TerrariaPacket.flag7(reasonType) ? reader.readByte() : void 0;
-      var deathReason = BitFlags$TerrariaPacket.flag8(reasonType) ? reader.readString() : void 0;
+      let reasonType = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+      let killerPlayerId = BitFlags$TerrariaPacket.flag1(reasonType) ? reader.readInt16() : void 0;
+      let killerNpcId = BitFlags$TerrariaPacket.flag2(reasonType) ? reader.readInt16() : void 0;
+      let killerProjectileId = BitFlags$TerrariaPacket.flag3(reasonType) ? reader.readInt16() : void 0;
+      let typeOfDeathOther = BitFlags$TerrariaPacket.flag4(reasonType) ? otherFromByte(reader.readByte()) : void 0;
+      let projectileType = BitFlags$TerrariaPacket.flag5(reasonType) ? reader.readInt16() : void 0;
+      let itemType = BitFlags$TerrariaPacket.flag6(reasonType) ? reader.readInt16() : void 0;
+      let itemPrefix = BitFlags$TerrariaPacket.flag7(reasonType) ? reader.readByte() : void 0;
+      let deathReason = BitFlags$TerrariaPacket.flag8(reasonType) ? reader.readString() : void 0;
       return {
         killerPlayerId,
         killerNpcId,
@@ -7419,11 +5106,11 @@ var require_PlayerDeathReason = __commonJS({
       };
     }
     function packFlags(writer, self) {
-      var flags = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(self.killerPlayerId), Belt_Option.isSome(self.killerNpcId), Belt_Option.isSome(self.killerProjectileId), Belt_Option.isSome(self.typeOfDeathOther), Belt_Option.isSome(self.projectileType), Belt_Option.isSome(self.itemType), Belt_Option.isSome(self.itemPrefix), Belt_Option.isSome(self.deathReason));
+      let flags = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(self.killerPlayerId), Belt_Option.isSome(self.killerNpcId), Belt_Option.isSome(self.killerProjectileId), Belt_Option.isSome(self.typeOfDeathOther), Belt_Option.isSome(self.projectileType), Belt_Option.isSome(self.itemType), Belt_Option.isSome(self.itemPrefix), Belt_Option.isSome(self.deathReason));
       return writer.packByte(BitFlags$TerrariaPacket.toByte(flags));
     }
     function packKillerPlayerId(writer, self) {
-      var killerPlayerId = self.killerPlayerId;
+      let killerPlayerId = self.killerPlayerId;
       if (killerPlayerId !== void 0) {
         return writer.packInt16(killerPlayerId);
       } else {
@@ -7431,7 +5118,7 @@ var require_PlayerDeathReason = __commonJS({
       }
     }
     function packKillerNpcId(writer, self) {
-      var killerNpcId = self.killerNpcId;
+      let killerNpcId = self.killerNpcId;
       if (killerNpcId !== void 0) {
         return writer.packInt16(killerNpcId);
       } else {
@@ -7439,7 +5126,7 @@ var require_PlayerDeathReason = __commonJS({
       }
     }
     function packKillerProjectileId(writer, self) {
-      var killerProjectileId = self.killerProjectileId;
+      let killerProjectileId = self.killerProjectileId;
       if (killerProjectileId !== void 0) {
         return writer.packInt16(killerProjectileId);
       } else {
@@ -7447,7 +5134,7 @@ var require_PlayerDeathReason = __commonJS({
       }
     }
     function packTypeOfDeathOther(writer, self) {
-      var typeOfDeathOther = self.typeOfDeathOther;
+      let typeOfDeathOther = self.typeOfDeathOther;
       if (typeOfDeathOther !== void 0) {
         return writer.packByte(otherToByte(typeOfDeathOther));
       } else {
@@ -7455,7 +5142,7 @@ var require_PlayerDeathReason = __commonJS({
       }
     }
     function packProjectileType(writer, self) {
-      var projectileType = self.projectileType;
+      let projectileType = self.projectileType;
       if (projectileType !== void 0) {
         return writer.packInt16(projectileType);
       } else {
@@ -7463,7 +5150,7 @@ var require_PlayerDeathReason = __commonJS({
       }
     }
     function packItemType(writer, self) {
-      var itemType = self.itemType;
+      let itemType = self.itemType;
       if (itemType !== void 0) {
         return writer.packInt16(itemType);
       } else {
@@ -7471,7 +5158,7 @@ var require_PlayerDeathReason = __commonJS({
       }
     }
     function packItemPrefix(writer, self) {
-      var itemPrefix = self.itemPrefix;
+      let itemPrefix = self.itemPrefix;
       if (itemPrefix !== void 0) {
         return writer.packByte(itemPrefix);
       } else {
@@ -7479,8 +5166,8 @@ var require_PlayerDeathReason = __commonJS({
       }
     }
     function pack(writer, self) {
-      var writer$1 = packItemPrefix(packItemType(packProjectileType(packTypeOfDeathOther(packKillerProjectileId(packKillerNpcId(packKillerPlayerId(packFlags(writer, self), self), self), self), self), self), self), self);
-      var deathReason = self.deathReason;
+      let writer$1 = packItemPrefix(packItemType(packProjectileType(packTypeOfDeathOther(packKillerProjectileId(packKillerNpcId(packKillerPlayerId(packFlags(writer, self), self), self), self), self), self), self), self);
+      let deathReason = self.deathReason;
       if (deathReason !== void 0) {
         return writer$1.packString(deathReason);
       } else {
@@ -7503,12 +5190,12 @@ var require_Packet_PlayerDeath = __commonJS({
     var Packetreader = require_packetreader().default;
     var Packetwriter = require_packetwriter().default;
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var playerId = reader.readByte();
-      var deathReason = PlayerDeathReason$TerrariaPacket.readDeathReason(reader);
-      var damage = reader.readInt16();
-      var hitDirection = reader.readByte();
-      var pvp = reader.readByte() === 1;
+      let reader = new Packetreader(payload);
+      let playerId = reader.readByte();
+      let deathReason = PlayerDeathReason$TerrariaPacket.readDeathReason(reader);
+      let damage = reader.readInt16();
+      let hitDirection = reader.readByte();
+      let pvp = reader.readByte() === 1;
       return {
         playerId,
         deathReason,
@@ -7529,9 +5216,9 @@ var require_Packet_PlayerDeath = __commonJS({
 var require_Packet_PlayerDodge = __commonJS({
   "src/packet/Packet_PlayerDodge.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -7546,10 +5233,10 @@ var require_Packet_PlayerMana = __commonJS({
     var Packetreader = require_packetreader().default;
     var Packetwriter = require_packetwriter().default;
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var playerId = reader.readByte();
-      var mana = reader.readInt16();
-      var maxMana = reader.readInt16();
+      let reader = new Packetreader(payload);
+      let playerId = reader.readByte();
+      let mana = reader.readInt16();
+      let maxMana = reader.readInt16();
       return {
         playerId,
         mana,
@@ -7568,9 +5255,9 @@ var require_Packet_PlayerMana = __commonJS({
 var require_Packet_PlayerTeam = __commonJS({
   "src/packet/Packet_PlayerTeam.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -7585,9 +5272,9 @@ var require_Packet_PvpToggle = __commonJS({
     var Packetreader = require_packetreader().default;
     var Packetwriter = require_packetwriter().default;
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var playerId = reader.readByte();
-      var pvpEnabled = reader.readByte() === 1;
+      let reader = new Packetreader(payload);
+      let playerId = reader.readByte();
+      let pvpEnabled = reader.readByte() === 1;
       return {
         playerId,
         pvpEnabled
@@ -7619,8 +5306,8 @@ var require_Packet_ShimmerEffectOrCoinLuck = __commonJS({
       return prim.readSingle();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var match = reader.readByte();
+      let reader = new Packetreader(payload);
+      let match = reader.readByte();
       switch (match) {
         case 0:
           return {
@@ -7667,15 +5354,15 @@ var require_Packet_ShimmerEffectOrCoinLuck = __commonJS({
       return prim.data;
     }
     function toBuffer(self) {
-      var writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ShimmerEffectOrCoinLuck"));
-      var tmp;
+      let writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ShimmerEffectOrCoinLuck"));
+      let tmp;
       switch (self.TAG) {
         case "ShimmerEffect":
           tmp = writer.packByte(0).packSingle(self._0).packSingle(self._1);
           break;
         case "CoinLuck":
-          var match = self._0;
-          var position = match.position;
+          let match = self._0;
+          let position = match.position;
           tmp = writer.packByte(1).packSingle(position.x).packSingle(position.y).packInt32(match.amount);
           break;
         case "NewShimmerEffect":
@@ -7704,9 +5391,9 @@ var require_Packet_ShimmerEffectOrCoinLuck = __commonJS({
 var require_Packet_SignNew = __commonJS({
   "src/packet/Packet_SignNew.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -7716,9 +5403,9 @@ var require_Packet_SignNew = __commonJS({
 var require_Packet_SignRead = __commonJS({
   "src/packet/Packet_SignRead.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -7728,9 +5415,9 @@ var require_Packet_SignRead = __commonJS({
 var require_Packet_SmokePoof = __commonJS({
   "src/packet/Packet_SmokePoof.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -7740,9 +5427,9 @@ var require_Packet_SmokePoof = __commonJS({
 var require_Packet_SocialHandshake = __commonJS({
   "src/packet/Packet_SocialHandshake.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -7758,12 +5445,12 @@ var require_Packet_Status = __commonJS({
     var Packetreader = require_packetreader().default;
     var Packetwriter = require_packetwriter().default;
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var max = reader.readInt32();
-      var text = reader.readNetworkText();
-      var flags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+      let reader = new Packetreader(payload);
+      let max6 = reader.readInt32();
+      let text = reader.readNetworkText();
+      let flags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
       return {
-        max,
+        max: max6,
         text,
         flags: {
           hideStatusTextPercent: BitFlags$TerrariaPacket.flag1(flags),
@@ -7773,11 +5460,11 @@ var require_Packet_Status = __commonJS({
       };
     }
     function flagsToByte(flags) {
-      var $$byte = 0;
-      $$byte = $$byte | (flags.hideStatusTextPercent ? 1 : 0);
-      $$byte = $$byte | (flags.statusTextHasShadows ? 2 : 0);
-      $$byte = $$byte | (flags.runCheckBytes ? 4 : 0);
-      return $$byte;
+      let byte = 0;
+      byte = byte | (flags.hideStatusTextPercent ? 1 : 0);
+      byte = byte | (flags.statusTextHasShadows ? 2 : 0);
+      byte = byte | (flags.runCheckBytes ? 4 : 0);
+      return byte;
     }
     function toBuffer(self) {
       return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("Status")).packInt32(self.max).packNetworkText(self.text).packByte(flagsToByte(self.flags)).data;
@@ -7791,9 +5478,9 @@ var require_Packet_Status = __commonJS({
 var require_Packet_SwitchHit = __commonJS({
   "src/packet/Packet_SwitchHit.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -7803,7 +5490,7 @@ var require_Packet_SwitchHit = __commonJS({
 var require_Packet_Teleport = __commonJS({
   "src/packet/Packet_Teleport.js"(exports2) {
     "use strict";
-    var Belt_Option = require_belt_Option();
+    var Belt_Option = (init_Belt_Option(), __toCommonJS(Belt_Option_exports));
     var BitFlags$TerrariaPacket = require_BitFlags();
     var PacketType$TerrariaPacket = require_PacketType();
     var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
@@ -7822,17 +5509,17 @@ var require_Packet_Teleport = __commonJS({
       return prim.readInt32();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var flags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
-      var getPositionFromTarget = BitFlags$TerrariaPacket.flag3(flags);
-      var match = BitFlags$TerrariaPacket.flag1(flags);
-      var match$1 = BitFlags$TerrariaPacket.flag2(flags);
-      var teleportType = match ? match$1 ? void 0 : "Npc" : match$1 ? "PlayerToPlayer" : "Player";
-      var targetId = reader.readInt16();
-      var x = reader.readSingle();
-      var y = reader.readSingle();
-      var style = reader.readByte();
-      var extraInfo = BitFlags$TerrariaPacket.flag4(flags) ? reader.readInt32() : void 0;
+      let reader = new Packetreader(payload);
+      let flags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+      let getPositionFromTarget = BitFlags$TerrariaPacket.flag3(flags);
+      let match = BitFlags$TerrariaPacket.flag1(flags);
+      let match$1 = BitFlags$TerrariaPacket.flag2(flags);
+      let teleportType = match ? match$1 ? void 0 : "Npc" : match$1 ? "PlayerToPlayer" : "Player";
+      let targetId = reader.readInt16();
+      let x = reader.readSingle();
+      let y = reader.readSingle();
+      let style = reader.readByte();
+      let extraInfo = BitFlags$TerrariaPacket.flag4(flags) ? reader.readInt32() : void 0;
       if (teleportType !== void 0) {
         return {
           teleportType,
@@ -7871,8 +5558,8 @@ var require_Packet_Teleport = __commonJS({
       return BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(self.teleportType === "Npc", self.teleportType === "PlayerToPlayer", self.getPositionFromTarget, Belt_Option.isSome(self.extraInfo), false, false, false, false));
     }
     function toBuffer(self) {
-      var writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("Teleport")).packByte(getFlags(self)).packInt16(self.targetId).packSingle(self.x).packSingle(self.y).packByte(self.style);
-      var extraInfo = self.extraInfo;
+      let writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("Teleport")).packByte(getFlags(self)).packInt16(self.targetId).packSingle(self.x).packSingle(self.y).packByte(self.style);
+      let extraInfo = self.extraInfo;
       if (extraInfo !== void 0) {
         writer.packInt32(extraInfo);
       }
@@ -7922,9 +5609,9 @@ var require_Packet_TeleportationPotion = __commonJS({
       return prim.readInt16();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var match = reader.readByte();
-      var teleportType;
+      let reader = new Packetreader(payload);
+      let match = reader.readByte();
+      let teleportType;
       switch (match) {
         case 0:
           teleportType = "TeleportationPotion";
@@ -7984,9 +5671,9 @@ var require_Packet_TeleportationPotion = __commonJS({
 var require_Packet_TemporaryAnimationCreate = __commonJS({
   "src/packet/Packet_TemporaryAnimationCreate.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -8010,13 +5697,13 @@ var require_Packet_TileEntityDisplayDollItemSync = __commonJS({
       return prim.readUInt16();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var playerId = reader.readByte();
-      var tileEntityId = reader.readInt32();
-      var itemIndex = reader.readByte();
-      var itemId = reader.readUInt16();
-      var stack = reader.readUInt16();
-      var prefix = reader.readByte();
+      let reader = new Packetreader(payload);
+      let playerId = reader.readByte();
+      let tileEntityId = reader.readInt32();
+      let itemIndex = reader.readByte();
+      let itemId = reader.readUInt16();
+      let stack = reader.readUInt16();
+      let prefix = reader.readByte();
       return {
         playerId,
         tileEntityId,
@@ -8081,13 +5768,13 @@ var require_Packet_TileEntityHatRackItemSync = __commonJS({
       return prim.readUInt16();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var playerId = reader.readByte();
-      var tileEntityId = reader.readInt32();
-      var itemIndex = reader.readByte();
-      var itemId = reader.readUInt16();
-      var stack = reader.readUInt16();
-      var prefix = reader.readByte();
+      let reader = new Packetreader(payload);
+      let playerId = reader.readByte();
+      let tileEntityId = reader.readInt32();
+      let itemIndex = reader.readByte();
+      let itemId = reader.readUInt16();
+      let stack = reader.readUInt16();
+      let prefix = reader.readByte();
       return {
         playerId,
         tileEntityId,
@@ -8138,9 +5825,9 @@ var require_Packet_TileEntityHatRackItemSync = __commonJS({
 var require_Packet_TileEntityInteractionRequest = __commonJS({
   "src/packet/Packet_TileEntityInteractionRequest.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -8150,9 +5837,9 @@ var require_Packet_TileEntityInteractionRequest = __commonJS({
 var require_Packet_TileEntityPlace = __commonJS({
   "src/packet/Packet_TileEntityPlace.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -8162,9 +5849,9 @@ var require_Packet_TileEntityPlace = __commonJS({
 var require_Packet_TileEntityUpdate = __commonJS({
   "src/packet/Packet_TileEntityUpdate.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -8289,12 +5976,12 @@ var require_Packet_TileModify = __commonJS({
       toInt
     };
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var action = fromInt(reader.readByte());
-      var tileX = reader.readInt16();
-      var tileY = reader.readInt16();
-      var value1 = reader.readInt16();
-      var value2 = reader.readByte();
+      let reader = new Packetreader(payload);
+      let action = fromInt(reader.readByte());
+      let tileX = reader.readInt16();
+      let tileY = reader.readInt16();
+      let value1 = reader.readInt16();
+      let value2 = reader.readByte();
       if (action !== void 0) {
         return {
           action,
@@ -8323,11 +6010,11 @@ var require_Packet_TilePaint = __commonJS({
     var Packetreader = require_packetreader().default;
     var Packetwriter = require_packetwriter().default;
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var x = reader.readInt16();
-      var y = reader.readInt16();
-      var color = reader.readByte();
-      var coat = reader.readByte();
+      let reader = new Packetreader(payload);
+      let x = reader.readInt16();
+      let y = reader.readInt16();
+      let color = reader.readByte();
+      let coat = reader.readByte();
       return {
         x,
         y,
@@ -8347,9 +6034,9 @@ var require_Packet_TilePaint = __commonJS({
 var require_Packet_TilePickingSync = __commonJS({
   "src/packet/Packet_TilePickingSync.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -8367,11 +6054,11 @@ var require_Packet_TileSectionFrame = __commonJS({
       return prim.readInt16();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var startX = reader.readInt16();
-      var startY = reader.readInt16();
-      var endX = reader.readInt16();
-      var endY = reader.readInt16();
+      let reader = new Packetreader(payload);
+      let startX = reader.readInt16();
+      let startY = reader.readInt16();
+      let endX = reader.readInt16();
+      let endY = reader.readInt16();
       return {
         startX,
         startY,
@@ -8405,3347 +6092,3253 @@ var require_Packet_TileSectionFrame = __commonJS({
   }
 });
 
-// node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/caml_obj.js
-var require_caml_obj = __commonJS({
-  "node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/caml_obj.js"(exports2) {
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_int.js
+var Primitive_int_exports = {};
+function compare2(x, y) {
+  if (x < y) {
+    return -1;
+  } else if (x === y) {
+    return 0;
+  } else {
+    return 1;
+  }
+}
+function min(x, y) {
+  if (x < y) {
+    return x;
+  } else {
+    return y;
+  }
+}
+function max(x, y) {
+  if (x > y) {
+    return x;
+  } else {
+    return y;
+  }
+}
+function div(x, y) {
+  if (y === 0) {
+    throw {
+      RE_EXN_ID: "Division_by_zero",
+      Error: new Error()
+    };
+  }
+  return x / y | 0;
+}
+function mod_(x, y) {
+  if (y === 0) {
+    throw {
+      RE_EXN_ID: "Division_by_zero",
+      Error: new Error()
+    };
+  }
+  return x % y;
+}
+var init_Primitive_int = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_int.js"() {
     "use strict";
-    var Caml = require_caml();
-    var for_in = function(o, foo) {
-      for (var x in o) {
-        foo(x);
-      }
+    exports.compare = compare2;
+    exports.min = min;
+    exports.max = max;
+    exports.div = div;
+    exports.mod_ = mod_;
+  }
+});
+
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_Array.js
+var Belt_Array_exports = {};
+function get(arr, i) {
+  if (i >= 0 && i < arr.length) {
+    return Primitive_option3.some(arr[i]);
+  }
+}
+function getOrThrow3(arr, i) {
+  if (!(i >= 0 && i < arr.length)) {
+    throw {
+      RE_EXN_ID: "Assert_failure",
+      _1: [
+        "Belt_Array.res",
+        36,
+        2
+      ],
+      Error: new Error()
     };
-    var obj_dup = function(x) {
-      if (Array.isArray(x)) {
-        var len = x.length;
-        var v = new Array(len);
-        for (var i = 0; i < len; ++i) {
-          v[i] = x[i];
-        }
-        if (x.TAG !== void 0) {
-          v.TAG = x.TAG;
-        }
-        return v;
-      }
-      return Object.assign({}, x);
+  }
+  return arr[i];
+}
+function set(arr, i, v) {
+  if (i >= 0 && i < arr.length) {
+    arr[i] = v;
+    return true;
+  } else {
+    return false;
+  }
+}
+function setOrThrow(arr, i, v) {
+  if (!(i >= 0 && i < arr.length)) {
+    throw {
+      RE_EXN_ID: "Assert_failure",
+      _1: [
+        "Belt_Array.res",
+        51,
+        2
+      ],
+      Error: new Error()
     };
-    var update_dummy = function(x, y) {
-      var k;
-      if (Array.isArray(y)) {
-        for (k = 0; k < y.length; ++k) {
-          x[k] = y[k];
-        }
-        if (y.TAG !== void 0) {
-          x.TAG = y.TAG;
-        }
-      } else {
-        for (var k in y) {
-          x[k] = y[k];
-        }
-      }
-    };
-    function compare(a, b) {
-      if (a === b) {
+  }
+  arr[i] = v;
+}
+function swapUnsafe(xs, i, j) {
+  let tmp = xs[i];
+  xs[i] = xs[j];
+  xs[j] = tmp;
+}
+function shuffleInPlace(xs) {
+  let len = xs.length;
+  let random_int = (min6, max6) => Math.floor(Math.random() * (max6 - min6 | 0)) + min6 | 0;
+  for (let i = 0; i < len; ++i) {
+    swapUnsafe(xs, i, random_int(i, len));
+  }
+}
+function shuffle(xs) {
+  let result = xs.slice(0);
+  shuffleInPlace(result);
+  return result;
+}
+function reverseInPlace(xs) {
+  let len = xs.length;
+  let ofs = 0;
+  for (let i = 0, i_finish = len / 2 | 0; i < i_finish; ++i) {
+    swapUnsafe(xs, ofs + i | 0, ((ofs + len | 0) - i | 0) - 1 | 0);
+  }
+}
+function reverse(xs) {
+  let len = xs.length;
+  let result = new Array(len);
+  for (let i = 0; i < len; ++i) {
+    result[i] = xs[(len - 1 | 0) - i | 0];
+  }
+  return result;
+}
+function make(l, f) {
+  if (l <= 0) {
+    return [];
+  }
+  let res = new Array(l);
+  for (let i = 0; i < l; ++i) {
+    res[i] = f;
+  }
+  return res;
+}
+function makeBy(l, f) {
+  if (l <= 0) {
+    return [];
+  }
+  let res = new Array(l);
+  for (let i = 0; i < l; ++i) {
+    res[i] = f(i);
+  }
+  return res;
+}
+function makeByAndShuffle(l, f) {
+  let u = makeBy(l, f);
+  shuffleInPlace(u);
+  return u;
+}
+function range(start, finish) {
+  let cut = finish - start | 0;
+  if (cut < 0) {
+    return [];
+  }
+  let arr = new Array(cut + 1 | 0);
+  for (let i = 0; i <= cut; ++i) {
+    arr[i] = start + i | 0;
+  }
+  return arr;
+}
+function rangeBy(start, finish, step) {
+  let cut = finish - start | 0;
+  if (cut < 0 || step <= 0) {
+    return [];
+  }
+  let nb = (cut / step | 0) + 1 | 0;
+  let arr = new Array(nb);
+  let cur = start;
+  for (let i = 0; i < nb; ++i) {
+    arr[i] = cur;
+    cur = cur + step | 0;
+  }
+  return arr;
+}
+function zip(xs, ys) {
+  let lenx = xs.length;
+  let leny = ys.length;
+  let len = Primitive_int.min(lenx, leny);
+  let s = new Array(len);
+  for (let i = 0; i < len; ++i) {
+    s[i] = [
+      xs[i],
+      ys[i]
+    ];
+  }
+  return s;
+}
+function zipBy(xs, ys, f) {
+  let lenx = xs.length;
+  let leny = ys.length;
+  let len = Primitive_int.min(lenx, leny);
+  let s = new Array(len);
+  for (let i = 0; i < len; ++i) {
+    s[i] = f(xs[i], ys[i]);
+  }
+  return s;
+}
+function concat(a1, a2) {
+  let l1 = a1.length;
+  let l2 = a2.length;
+  let a1a2 = new Array(l1 + l2 | 0);
+  for (let i = 0; i < l1; ++i) {
+    a1a2[i] = a1[i];
+  }
+  for (let i$1 = 0; i$1 < l2; ++i$1) {
+    a1a2[l1 + i$1 | 0] = a2[i$1];
+  }
+  return a1a2;
+}
+function concatMany(arrs) {
+  let lenArrs = arrs.length;
+  let totalLen = 0;
+  for (let i = 0; i < lenArrs; ++i) {
+    totalLen = totalLen + arrs[i].length | 0;
+  }
+  let result = new Array(totalLen);
+  totalLen = 0;
+  for (let j = 0; j < lenArrs; ++j) {
+    let cur = arrs[j];
+    for (let k = 0, k_finish = cur.length; k < k_finish; ++k) {
+      result[totalLen] = cur[k];
+      totalLen = totalLen + 1 | 0;
+    }
+  }
+  return result;
+}
+function slice(a, offset, len) {
+  if (len <= 0) {
+    return [];
+  }
+  let lena = a.length;
+  let ofs = offset < 0 ? Primitive_int.max(lena + offset | 0, 0) : offset;
+  let hasLen = lena - ofs | 0;
+  let copyLength = Primitive_int.min(hasLen, len);
+  if (copyLength <= 0) {
+    return [];
+  }
+  let result = new Array(copyLength);
+  for (let i = 0; i < copyLength; ++i) {
+    result[i] = a[ofs + i | 0];
+  }
+  return result;
+}
+function sliceToEnd(a, offset) {
+  let lena = a.length;
+  let ofs = offset < 0 ? Primitive_int.max(lena + offset | 0, 0) : offset;
+  let len = lena > ofs ? lena - ofs | 0 : 0;
+  let result = new Array(len);
+  for (let i = 0; i < len; ++i) {
+    result[i] = a[ofs + i | 0];
+  }
+  return result;
+}
+function fill(a, offset, len, v) {
+  if (len <= 0) {
+    return;
+  }
+  let lena = a.length;
+  let ofs = offset < 0 ? Primitive_int.max(lena + offset | 0, 0) : offset;
+  let hasLen = lena - ofs | 0;
+  let fillLength = Primitive_int.min(hasLen, len);
+  if (fillLength <= 0) {
+    return;
+  }
+  for (let i = ofs, i_finish = ofs + fillLength | 0; i < i_finish; ++i) {
+    a[i] = v;
+  }
+}
+function blitUnsafe(a1, srcofs1, a2, srcofs2, blitLength) {
+  if (srcofs2 <= srcofs1) {
+    for (let j = 0; j < blitLength; ++j) {
+      a2[j + srcofs2 | 0] = a1[j + srcofs1 | 0];
+    }
+    return;
+  }
+  for (let j$1 = blitLength - 1 | 0; j$1 >= 0; --j$1) {
+    a2[j$1 + srcofs2 | 0] = a1[j$1 + srcofs1 | 0];
+  }
+}
+function blit(a1, ofs1, a2, ofs2, len) {
+  let lena1 = a1.length;
+  let lena2 = a2.length;
+  let srcofs1 = ofs1 < 0 ? Primitive_int.max(lena1 + ofs1 | 0, 0) : ofs1;
+  let srcofs2 = ofs2 < 0 ? Primitive_int.max(lena2 + ofs2 | 0, 0) : ofs2;
+  let blitLength = Primitive_int.min(len, Primitive_int.min(lena1 - srcofs1 | 0, lena2 - srcofs2 | 0));
+  if (srcofs2 <= srcofs1) {
+    for (let j = 0; j < blitLength; ++j) {
+      a2[j + srcofs2 | 0] = a1[j + srcofs1 | 0];
+    }
+    return;
+  }
+  for (let j$1 = blitLength - 1 | 0; j$1 >= 0; --j$1) {
+    a2[j$1 + srcofs2 | 0] = a1[j$1 + srcofs1 | 0];
+  }
+}
+function forEach3(a, f) {
+  for (let i = 0, i_finish = a.length; i < i_finish; ++i) {
+    f(a[i]);
+  }
+}
+function map3(a, f) {
+  let l = a.length;
+  let r = new Array(l);
+  for (let i = 0; i < l; ++i) {
+    r[i] = f(a[i]);
+  }
+  return r;
+}
+function flatMap3(a, f) {
+  return concatMany(map3(a, f));
+}
+function getBy(a, p) {
+  let l = a.length;
+  let i = 0;
+  let r;
+  while (r === void 0 && i < l) {
+    let v = a[i];
+    if (p(v)) {
+      r = Primitive_option3.some(v);
+    }
+    i = i + 1 | 0;
+  }
+  ;
+  return r;
+}
+function getIndexBy(a, p) {
+  let l = a.length;
+  let i = 0;
+  let r;
+  while (r === void 0 && i < l) {
+    let v = a[i];
+    if (p(v)) {
+      r = i;
+    }
+    i = i + 1 | 0;
+  }
+  ;
+  return r;
+}
+function keep2(a, f) {
+  let l = a.length;
+  let r = new Array(l);
+  let j = 0;
+  for (let i = 0; i < l; ++i) {
+    let v = a[i];
+    if (f(v)) {
+      r[j] = v;
+      j = j + 1 | 0;
+    }
+  }
+  r.length = j;
+  return r;
+}
+function keepWithIndex(a, f) {
+  let l = a.length;
+  let r = new Array(l);
+  let j = 0;
+  for (let i = 0; i < l; ++i) {
+    let v = a[i];
+    if (f(v, i)) {
+      r[j] = v;
+      j = j + 1 | 0;
+    }
+  }
+  r.length = j;
+  return r;
+}
+function keepMap(a, f) {
+  let l = a.length;
+  let r = new Array(l);
+  let j = 0;
+  for (let i = 0; i < l; ++i) {
+    let v = a[i];
+    let v$1 = f(v);
+    if (v$1 !== void 0) {
+      r[j] = Primitive_option3.valFromOption(v$1);
+      j = j + 1 | 0;
+    }
+  }
+  r.length = j;
+  return r;
+}
+function forEachWithIndex(a, f) {
+  for (let i = 0, i_finish = a.length; i < i_finish; ++i) {
+    f(i, a[i]);
+  }
+}
+function mapWithIndex(a, f) {
+  let l = a.length;
+  let r = new Array(l);
+  for (let i = 0; i < l; ++i) {
+    r[i] = f(i, a[i]);
+  }
+  return r;
+}
+function reduce(a, x, f) {
+  let r = x;
+  for (let i = 0, i_finish = a.length; i < i_finish; ++i) {
+    r = f(r, a[i]);
+  }
+  return r;
+}
+function reduceReverse(a, x, f) {
+  let r = x;
+  for (let i = a.length - 1 | 0; i >= 0; --i) {
+    r = f(r, a[i]);
+  }
+  return r;
+}
+function reduceReverse2(a, b, x, f) {
+  let r = x;
+  let len = Primitive_int.min(a.length, b.length);
+  for (let i = len - 1 | 0; i >= 0; --i) {
+    r = f(r, a[i], b[i]);
+  }
+  return r;
+}
+function reduceWithIndex(a, x, f) {
+  let r = x;
+  for (let i = 0, i_finish = a.length; i < i_finish; ++i) {
+    r = f(r, a[i], i);
+  }
+  return r;
+}
+function every(arr, b) {
+  let len = arr.length;
+  let _i = 0;
+  while (true) {
+    let i = _i;
+    if (i === len) {
+      return true;
+    }
+    if (!b(arr[i])) {
+      return false;
+    }
+    _i = i + 1 | 0;
+    continue;
+  }
+  ;
+}
+function some2(arr, b) {
+  let len = arr.length;
+  let _i = 0;
+  while (true) {
+    let i = _i;
+    if (i === len) {
+      return false;
+    }
+    if (b(arr[i])) {
+      return true;
+    }
+    _i = i + 1 | 0;
+    continue;
+  }
+  ;
+}
+function everyAux2(arr1, arr2, _i, b, len) {
+  while (true) {
+    let i = _i;
+    if (i === len) {
+      return true;
+    }
+    if (!b(arr1[i], arr2[i])) {
+      return false;
+    }
+    _i = i + 1 | 0;
+    continue;
+  }
+  ;
+}
+function every2(a, b, p) {
+  return everyAux2(a, b, 0, p, Primitive_int.min(a.length, b.length));
+}
+function some22(a, b, p) {
+  let _i = 0;
+  let len = Primitive_int.min(a.length, b.length);
+  while (true) {
+    let i = _i;
+    if (i === len) {
+      return false;
+    }
+    if (p(a[i], b[i])) {
+      return true;
+    }
+    _i = i + 1 | 0;
+    continue;
+  }
+  ;
+}
+function eq2(a, b, p) {
+  let lena = a.length;
+  let lenb = b.length;
+  if (lena === lenb) {
+    return everyAux2(a, b, 0, p, lena);
+  } else {
+    return false;
+  }
+}
+function cmp2(a, b, p) {
+  let lena = a.length;
+  let lenb = b.length;
+  if (lena > lenb) {
+    return 1;
+  } else if (lena < lenb) {
+    return -1;
+  } else {
+    let _i = 0;
+    while (true) {
+      let i = _i;
+      if (i === lena) {
         return 0;
       }
-      var a_type = typeof a;
-      var b_type = typeof b;
-      switch (a_type) {
-        case "bigint":
-          if (b_type === "bigint") {
-            return Caml.float_compare(a, b);
-          }
-          break;
-        case "boolean":
-          if (b_type === "boolean") {
-            return Caml.bool_compare(a, b);
-          }
-          break;
-        case "function":
-          if (b_type === "function") {
-            throw {
-              RE_EXN_ID: "Invalid_argument",
-              _1: "compare: functional value",
-              Error: new Error()
-            };
-          }
-          break;
-        case "number":
-          if (b_type === "number") {
-            return Caml.float_compare(a, b);
-          }
-          break;
-        case "string":
-          if (b_type === "string") {
-            return Caml.string_compare(a, b);
-          } else {
-            return 1;
-          }
-        case "undefined":
-          return -1;
-        default:
+      let c = p(a[i], b[i]);
+      if (c !== 0) {
+        return c;
       }
-      switch (b_type) {
-        case "string":
-          return -1;
-        case "undefined":
-          return 1;
-        default:
-          if (a_type === "boolean") {
-            return 1;
-          }
-          if (b_type === "boolean") {
-            return -1;
-          }
-          if (a_type === "function") {
-            return 1;
-          }
-          if (b_type === "function") {
-            return -1;
-          }
-          if (a_type === "number") {
-            if (b === null || b.BS_PRIVATE_NESTED_SOME_NONE !== void 0) {
-              return 1;
-            } else {
-              return -1;
-            }
-          }
-          if (b_type === "number") {
-            if (a === null || a.BS_PRIVATE_NESTED_SOME_NONE !== void 0) {
-              return -1;
-            } else {
-              return 1;
-            }
-          }
-          if (a === null) {
-            if (b.BS_PRIVATE_NESTED_SOME_NONE !== void 0) {
-              return 1;
-            } else {
-              return -1;
-            }
-          }
-          if (b === null) {
-            if (a.BS_PRIVATE_NESTED_SOME_NONE !== void 0) {
-              return -1;
-            } else {
-              return 1;
-            }
-          }
-          if (a.BS_PRIVATE_NESTED_SOME_NONE !== void 0) {
-            if (b.BS_PRIVATE_NESTED_SOME_NONE !== void 0) {
-              return aux_obj_compare(a, b);
-            } else {
-              return -1;
-            }
-          }
-          var tag_a = a.TAG;
-          var tag_b = b.TAG;
-          if (tag_a === 248) {
-            return Caml.int_compare(a[1], b[1]);
-          }
-          if (tag_a === 251) {
-            throw {
-              RE_EXN_ID: "Invalid_argument",
-              _1: "equal: abstract value",
-              Error: new Error()
-            };
-          }
-          if (tag_a !== tag_b) {
-            if (tag_a < tag_b) {
-              return -1;
-            } else {
-              return 1;
-            }
-          }
-          var len_a = a.length | 0;
-          var len_b = b.length | 0;
-          if (len_a === len_b) {
-            if (Array.isArray(a)) {
-              var _i = 0;
-              while (true) {
-                var i = _i;
-                if (i === len_a) {
-                  return 0;
-                }
-                var res = compare(a[i], b[i]);
-                if (res !== 0) {
-                  return res;
-                }
-                _i = i + 1 | 0;
-                continue;
-              }
-              ;
-            } else if (a instanceof Date && b instanceof Date) {
-              return a - b;
-            } else {
-              return aux_obj_compare(a, b);
-            }
-          } else if (len_a < len_b) {
-            var _i$1 = 0;
-            while (true) {
-              var i$1 = _i$1;
-              if (i$1 === len_a) {
-                return -1;
-              }
-              var res$1 = compare(a[i$1], b[i$1]);
-              if (res$1 !== 0) {
-                return res$1;
-              }
-              _i$1 = i$1 + 1 | 0;
-              continue;
-            }
-            ;
-          } else {
-            var _i$2 = 0;
-            while (true) {
-              var i$2 = _i$2;
-              if (i$2 === len_b) {
-                return 1;
-              }
-              var res$2 = compare(a[i$2], b[i$2]);
-              if (res$2 !== 0) {
-                return res$2;
-              }
-              _i$2 = i$2 + 1 | 0;
-              continue;
-            }
-            ;
-          }
-      }
+      _i = i + 1 | 0;
+      continue;
     }
-    function aux_obj_compare(a, b) {
-      var min_key_lhs = {
-        contents: void 0
-      };
-      var min_key_rhs = {
-        contents: void 0
-      };
-      var do_key = function(param, key) {
-        var min_key = param[2];
-        var b2 = param[1];
-        if (!(!Object.prototype.hasOwnProperty.call(b2, key) || compare(param[0][key], b2[key]) > 0)) {
-          return;
-        }
-        var mk = min_key.contents;
-        if (mk !== void 0 && key >= mk) {
-          return;
-        } else {
-          min_key.contents = key;
-          return;
-        }
-      };
-      var partial_arg = [
-        a,
-        b,
-        min_key_rhs
-      ];
-      var do_key_a = function(param) {
-        return do_key(partial_arg, param);
-      };
-      var partial_arg$1 = [
-        b,
-        a,
-        min_key_lhs
-      ];
-      var do_key_b = function(param) {
-        return do_key(partial_arg$1, param);
-      };
-      for_in(a, do_key_a);
-      for_in(b, do_key_b);
-      var match = min_key_lhs.contents;
-      var match$1 = min_key_rhs.contents;
-      if (match !== void 0) {
-        if (match$1 !== void 0) {
-          return Caml.string_compare(match, match$1);
-        } else {
-          return -1;
-        }
-      } else if (match$1 !== void 0) {
+    ;
+  }
+}
+function partition(a, f) {
+  let l = a.length;
+  let i = 0;
+  let j = 0;
+  let a1 = new Array(l);
+  let a2 = new Array(l);
+  for (let ii = 0; ii < l; ++ii) {
+    let v = a[ii];
+    if (f(v)) {
+      a1[i] = v;
+      i = i + 1 | 0;
+    } else {
+      a2[j] = v;
+      j = j + 1 | 0;
+    }
+  }
+  a1.length = i;
+  a2.length = j;
+  return [
+    a1,
+    a2
+  ];
+}
+function unzip(a) {
+  let l = a.length;
+  let a1 = new Array(l);
+  let a2 = new Array(l);
+  for (let i = 0; i < l; ++i) {
+    let match = a[i];
+    a1[i] = match[0];
+    a2[i] = match[1];
+  }
+  return [
+    a1,
+    a2
+  ];
+}
+function joinWith(a, sep, toString) {
+  let l = a.length;
+  if (l === 0) {
+    return "";
+  }
+  let lastIndex = l - 1 | 0;
+  let _i = 0;
+  let _res = "";
+  while (true) {
+    let res = _res;
+    let i = _i;
+    if (i === lastIndex) {
+      return res + toString(a[i]);
+    }
+    _res = res + (toString(a[i]) + sep);
+    _i = i + 1 | 0;
+    continue;
+  }
+  ;
+}
+function init(n, f) {
+  let v = new Array(n);
+  for (let i = 0; i < n; ++i) {
+    v[i] = f(i);
+  }
+  return v;
+}
+var Primitive_int, Primitive_option3, getExn3, setExn, makeByU, makeByAndShuffleU, zipByU, forEachU2, mapU2, flatMapU2, getByU, getIndexByU, keepU2, keepWithIndexU, keepMapU, forEachWithIndexU, mapWithIndexU, partitionU, reduceU, reduceReverseU, reduceReverse2U, reduceWithIndexU, joinWithU, someU, everyU, every2U, some2U, cmpU2, eqU2, initU;
+var init_Belt_Array = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_Array.js"() {
+    "use strict";
+    Primitive_int = (init_Primitive_int(), __toCommonJS(Primitive_int_exports));
+    Primitive_option3 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
+    getExn3 = getOrThrow3;
+    setExn = setOrThrow;
+    makeByU = makeBy;
+    makeByAndShuffleU = makeByAndShuffle;
+    zipByU = zipBy;
+    forEachU2 = forEach3;
+    mapU2 = map3;
+    flatMapU2 = flatMap3;
+    getByU = getBy;
+    getIndexByU = getIndexBy;
+    keepU2 = keep2;
+    keepWithIndexU = keepWithIndex;
+    keepMapU = keepMap;
+    forEachWithIndexU = forEachWithIndex;
+    mapWithIndexU = mapWithIndex;
+    partitionU = partition;
+    reduceU = reduce;
+    reduceReverseU = reduceReverse;
+    reduceReverse2U = reduceReverse2;
+    reduceWithIndexU = reduceWithIndex;
+    joinWithU = joinWith;
+    someU = some2;
+    everyU = every;
+    every2U = every2;
+    some2U = some22;
+    cmpU2 = cmp2;
+    eqU2 = eq2;
+    initU = init;
+    exports.get = get;
+    exports.getExn = getExn3;
+    exports.getOrThrow = getOrThrow3;
+    exports.set = set;
+    exports.setExn = setExn;
+    exports.setOrThrow = setOrThrow;
+    exports.shuffleInPlace = shuffleInPlace;
+    exports.shuffle = shuffle;
+    exports.reverseInPlace = reverseInPlace;
+    exports.reverse = reverse;
+    exports.make = make;
+    exports.range = range;
+    exports.rangeBy = rangeBy;
+    exports.makeByU = makeByU;
+    exports.makeBy = makeBy;
+    exports.makeByAndShuffleU = makeByAndShuffleU;
+    exports.makeByAndShuffle = makeByAndShuffle;
+    exports.zip = zip;
+    exports.zipByU = zipByU;
+    exports.zipBy = zipBy;
+    exports.unzip = unzip;
+    exports.concat = concat;
+    exports.concatMany = concatMany;
+    exports.slice = slice;
+    exports.sliceToEnd = sliceToEnd;
+    exports.fill = fill;
+    exports.blit = blit;
+    exports.blitUnsafe = blitUnsafe;
+    exports.forEachU = forEachU2;
+    exports.forEach = forEach3;
+    exports.mapU = mapU2;
+    exports.map = map3;
+    exports.flatMapU = flatMapU2;
+    exports.flatMap = flatMap3;
+    exports.getByU = getByU;
+    exports.getBy = getBy;
+    exports.getIndexByU = getIndexByU;
+    exports.getIndexBy = getIndexBy;
+    exports.keepU = keepU2;
+    exports.keep = keep2;
+    exports.keepWithIndexU = keepWithIndexU;
+    exports.keepWithIndex = keepWithIndex;
+    exports.keepMapU = keepMapU;
+    exports.keepMap = keepMap;
+    exports.forEachWithIndexU = forEachWithIndexU;
+    exports.forEachWithIndex = forEachWithIndex;
+    exports.mapWithIndexU = mapWithIndexU;
+    exports.mapWithIndex = mapWithIndex;
+    exports.partitionU = partitionU;
+    exports.partition = partition;
+    exports.reduceU = reduceU;
+    exports.reduce = reduce;
+    exports.reduceReverseU = reduceReverseU;
+    exports.reduceReverse = reduceReverse;
+    exports.reduceReverse2U = reduceReverse2U;
+    exports.reduceReverse2 = reduceReverse2;
+    exports.reduceWithIndexU = reduceWithIndexU;
+    exports.reduceWithIndex = reduceWithIndex;
+    exports.joinWithU = joinWithU;
+    exports.joinWith = joinWith;
+    exports.someU = someU;
+    exports.some = some2;
+    exports.everyU = everyU;
+    exports.every = every;
+    exports.every2U = every2U;
+    exports.every2 = every2;
+    exports.some2U = some2U;
+    exports.some2 = some22;
+    exports.cmpU = cmpU2;
+    exports.cmp = cmp2;
+    exports.eqU = eqU2;
+    exports.eq = eq2;
+    exports.initU = initU;
+    exports.init = init;
+  }
+});
+
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_Result.js
+var Belt_Result_exports = {};
+function getOrThrow4(x) {
+  if (x.TAG === "Ok") {
+    return x._0;
+  }
+  throw {
+    RE_EXN_ID: "Not_found",
+    Error: new Error()
+  };
+}
+function mapWithDefault3(opt, $$default, f) {
+  if (opt.TAG === "Ok") {
+    return f(opt._0);
+  } else {
+    return $$default;
+  }
+}
+function map4(opt, f) {
+  if (opt.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: f(opt._0)
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: opt._0
+    };
+  }
+}
+function flatMap4(opt, f) {
+  if (opt.TAG === "Ok") {
+    return f(opt._0);
+  } else {
+    return {
+      TAG: "Error",
+      _0: opt._0
+    };
+  }
+}
+function getWithDefault3(opt, $$default) {
+  if (opt.TAG === "Ok") {
+    return opt._0;
+  } else {
+    return $$default;
+  }
+}
+function isOk(x) {
+  return x.TAG === "Ok";
+}
+function isError(x) {
+  return x.TAG !== "Ok";
+}
+function eq3(a, b, f) {
+  if (a.TAG === "Ok") {
+    if (b.TAG === "Ok") {
+      return f(a._0, b._0);
+    } else {
+      return false;
+    }
+  } else {
+    return b.TAG !== "Ok";
+  }
+}
+function cmp3(a, b, f) {
+  if (a.TAG === "Ok") {
+    if (b.TAG === "Ok") {
+      return f(a._0, b._0);
+    } else {
+      return 1;
+    }
+  } else if (b.TAG === "Ok") {
+    return -1;
+  } else {
+    return 0;
+  }
+}
+var getExn4, mapWithDefaultU2, mapU3, flatMapU3, eqU3, cmpU3;
+var init_Belt_Result = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_Result.js"() {
+    "use strict";
+    getExn4 = getOrThrow4;
+    mapWithDefaultU2 = mapWithDefault3;
+    mapU3 = map4;
+    flatMapU3 = flatMap4;
+    eqU3 = eq3;
+    cmpU3 = cmp3;
+    exports.getExn = getExn4;
+    exports.getOrThrow = getOrThrow4;
+    exports.mapWithDefaultU = mapWithDefaultU2;
+    exports.mapWithDefault = mapWithDefault3;
+    exports.mapU = mapU3;
+    exports.map = map4;
+    exports.flatMapU = flatMapU3;
+    exports.flatMap = flatMap4;
+    exports.getWithDefault = getWithDefault3;
+    exports.isOk = isOk;
+    exports.isError = isError;
+    exports.eqU = eqU3;
+    exports.eq = eq3;
+    exports.cmpU = cmpU3;
+    exports.cmp = cmp3;
+  }
+});
+
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_bool.js
+var Primitive_bool_exports = {};
+function compare3(x, y) {
+  if (x) {
+    if (y) {
+      return 0;
+    } else {
+      return 1;
+    }
+  } else if (y) {
+    return -1;
+  } else {
+    return 0;
+  }
+}
+function min2(x, y) {
+  if (x) {
+    return y;
+  } else {
+    return x;
+  }
+}
+function max2(x, y) {
+  if (x) {
+    return x;
+  } else {
+    return y;
+  }
+}
+var init_Primitive_bool = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_bool.js"() {
+    "use strict";
+    exports.compare = compare3;
+    exports.min = min2;
+    exports.max = max2;
+  }
+});
+
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_float.js
+var Primitive_float_exports = {};
+function compare4(x, y) {
+  if (x === y) {
+    return 0;
+  } else if (x < y) {
+    return -1;
+  } else if (x > y || x === x) {
+    return 1;
+  } else if (y === y) {
+    return -1;
+  } else {
+    return 0;
+  }
+}
+function min3(x, y) {
+  if (x < y) {
+    return x;
+  } else {
+    return y;
+  }
+}
+function max3(x, y) {
+  if (x > y) {
+    return x;
+  } else {
+    return y;
+  }
+}
+var init_Primitive_float = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_float.js"() {
+    "use strict";
+    exports.compare = compare4;
+    exports.min = min3;
+    exports.max = max3;
+  }
+});
+
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_string.js
+var Primitive_string_exports = {};
+function compare5(s1, s2) {
+  if (s1 === s2) {
+    return 0;
+  } else if (s1 < s2) {
+    return -1;
+  } else {
+    return 1;
+  }
+}
+function min4(x, y) {
+  if (x < y) {
+    return x;
+  } else {
+    return y;
+  }
+}
+function max4(x, y) {
+  if (x > y) {
+    return x;
+  } else {
+    return y;
+  }
+}
+function getChar(s, i) {
+  if (i >= s.length || i < 0) {
+    throw {
+      RE_EXN_ID: "Invalid_argument",
+      _1: "index out of bounds",
+      Error: new Error()
+    };
+  }
+  return s.codePointAt(i);
+}
+function make2(n, ch) {
+  return String.fromCodePoint(ch).repeat(n);
+}
+var init_Primitive_string = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_string.js"() {
+    "use strict";
+    exports.compare = compare5;
+    exports.min = min4;
+    exports.max = max4;
+    exports.getChar = getChar;
+    exports.make = make2;
+  }
+});
+
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_object.js
+var Primitive_object_exports = {};
+function updateDummy(prim0, prim1) {
+  Object.assign(prim0, prim1);
+}
+function compare6(a, b) {
+  if (a === b) {
+    return 0;
+  }
+  let a_type = typeof a;
+  let b_type = typeof b;
+  switch (a_type) {
+    case "bigint":
+      if (b_type === "bigint") {
+        return Primitive_float.compare(a, b);
+      }
+      break;
+    case "boolean":
+      if (b_type === "boolean") {
+        return Primitive_bool.compare(a, b);
+      }
+      break;
+    case "function":
+      if (b_type === "function") {
+        throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "compare: functional value",
+          Error: new Error()
+        };
+      }
+      break;
+    case "number":
+      if (b_type === "number") {
+        return Primitive_float.compare(a, b);
+      }
+      break;
+    case "string":
+      if (b_type === "string") {
+        return Primitive_string.compare(a, b);
+      } else {
         return 1;
-      } else {
-        return 0;
       }
-    }
-    function equal(a, b) {
-      if (a === b) {
-        return true;
+    case "undefined":
+      return -1;
+  }
+  switch (b_type) {
+    case "string":
+      return -1;
+    case "undefined":
+      return 1;
+    default:
+      if (a_type === "boolean") {
+        return 1;
       }
-      var a_type = typeof a;
-      if (a_type === "string" || a_type === "number" || a_type === "bigint" || a_type === "boolean" || a_type === "undefined" || a === null) {
-        return false;
+      if (b_type === "boolean") {
+        return -1;
       }
-      var b_type = typeof b;
-      if (a_type === "function" || b_type === "function") {
-        throw {
-          RE_EXN_ID: "Invalid_argument",
-          _1: "equal: functional value",
-          Error: new Error()
-        };
+      if (a_type === "function") {
+        return 1;
       }
-      if (b_type === "number" || b_type === "bigint" || b_type === "undefined" || b === null) {
-        return false;
+      if (b_type === "function") {
+        return -1;
       }
-      var tag_a = a.TAG;
-      var tag_b = b.TAG;
-      if (tag_a === 248) {
-        return a[1] === b[1];
+      if (a_type === "number") {
+        if (b === null || b.BS_PRIVATE_NESTED_SOME_NONE !== void 0) {
+          return 1;
+        } else {
+          return -1;
+        }
       }
-      if (tag_a === 251) {
-        throw {
-          RE_EXN_ID: "Invalid_argument",
-          _1: "equal: abstract value",
-          Error: new Error()
-        };
+      if (b_type === "number") {
+        if (a === null || a.BS_PRIVATE_NESTED_SOME_NONE !== void 0) {
+          return -1;
+        } else {
+          return 1;
+        }
       }
+      if (a === null) {
+        if (b.BS_PRIVATE_NESTED_SOME_NONE !== void 0) {
+          return 1;
+        } else {
+          return -1;
+        }
+      }
+      if (b === null) {
+        if (a.BS_PRIVATE_NESTED_SOME_NONE !== void 0) {
+          return -1;
+        } else {
+          return 1;
+        }
+      }
+      if (a.BS_PRIVATE_NESTED_SOME_NONE !== void 0) {
+        if (b.BS_PRIVATE_NESTED_SOME_NONE !== void 0) {
+          return aux_obj_compare(a, b);
+        } else {
+          return -1;
+        }
+      }
+      let tag_a = a.TAG;
+      let tag_b = b.TAG;
       if (tag_a !== tag_b) {
-        return false;
+        if (tag_a < tag_b) {
+          return -1;
+        } else {
+          return 1;
+        }
       }
-      var len_a = a.length | 0;
-      var len_b = b.length | 0;
+      let len_a = a.length | 0;
+      let len_b = b.length | 0;
       if (len_a === len_b) {
         if (Array.isArray(a)) {
-          var _i = 0;
+          let _i = 0;
           while (true) {
-            var i = _i;
+            let i = _i;
             if (i === len_a) {
-              return true;
+              return 0;
             }
-            if (!equal(a[i], b[i])) {
-              return false;
+            let res = compare6(a[i], b[i]);
+            if (res !== 0) {
+              return res;
             }
             _i = i + 1 | 0;
             continue;
           }
           ;
         } else if (a instanceof Date && b instanceof Date) {
-          return !(a > b || a < b);
+          return a - b;
         } else {
-          var result = {
-            contents: true
-          };
-          var do_key_a = function(key) {
-            if (!Object.prototype.hasOwnProperty.call(b, key)) {
-              result.contents = false;
-              return;
-            }
-          };
-          var do_key_b = function(key) {
-            if (!Object.prototype.hasOwnProperty.call(a, key) || !equal(b[key], a[key])) {
-              result.contents = false;
-              return;
-            }
-          };
-          for_in(a, do_key_a);
-          if (result.contents) {
-            for_in(b, do_key_b);
-          }
-          return result.contents;
+          return aux_obj_compare(a, b);
         }
-      } else {
-        return false;
-      }
-    }
-    function equal_null(x, y) {
-      if (y !== null) {
-        return equal(x, y);
-      } else {
-        return x === y;
-      }
-    }
-    function equal_undefined(x, y) {
-      if (y !== void 0) {
-        return equal(x, y);
-      } else {
-        return x === y;
-      }
-    }
-    function equal_nullable(x, y) {
-      if (y == null) {
-        return x === y;
-      } else {
-        return equal(x, y);
-      }
-    }
-    function notequal(a, b) {
-      if ((typeof a === "number" || typeof a === "bigint") && (typeof b === "number" || typeof b === "bigint")) {
-        return a !== b;
-      } else {
-        return !equal(a, b);
-      }
-    }
-    function greaterequal(a, b) {
-      if ((typeof a === "number" || typeof a === "bigint") && (typeof b === "number" || typeof b === "bigint")) {
-        return a >= b;
-      } else {
-        return compare(a, b) >= 0;
-      }
-    }
-    function greaterthan(a, b) {
-      if ((typeof a === "number" || typeof a === "bigint") && (typeof b === "number" || typeof b === "bigint")) {
-        return a > b;
-      } else {
-        return compare(a, b) > 0;
-      }
-    }
-    function lessequal(a, b) {
-      if ((typeof a === "number" || typeof a === "bigint") && (typeof b === "number" || typeof b === "bigint")) {
-        return a <= b;
-      } else {
-        return compare(a, b) <= 0;
-      }
-    }
-    function lessthan(a, b) {
-      if ((typeof a === "number" || typeof a === "bigint") && (typeof b === "number" || typeof b === "bigint")) {
-        return a < b;
-      } else {
-        return compare(a, b) < 0;
-      }
-    }
-    function min(x, y) {
-      if (compare(x, y) <= 0) {
-        return x;
-      } else {
-        return y;
-      }
-    }
-    function max(x, y) {
-      if (compare(x, y) >= 0) {
-        return x;
-      } else {
-        return y;
-      }
-    }
-    exports2.obj_dup = obj_dup;
-    exports2.update_dummy = update_dummy;
-    exports2.compare = compare;
-    exports2.equal = equal;
-    exports2.equal_null = equal_null;
-    exports2.equal_undefined = equal_undefined;
-    exports2.equal_nullable = equal_nullable;
-    exports2.notequal = notequal;
-    exports2.greaterequal = greaterequal;
-    exports2.greaterthan = greaterthan;
-    exports2.lessthan = lessthan;
-    exports2.lessequal = lessequal;
-    exports2.min = min;
-    exports2.max = max;
-  }
-});
-
-// node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/js_int.js
-var require_js_int = __commonJS({
-  "node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/js_int.js"(exports2) {
-    "use strict";
-    function equal(x, y) {
-      return x === y;
-    }
-    var max = 2147483647;
-    var min = -2147483648;
-    exports2.equal = equal;
-    exports2.max = max;
-    exports2.min = min;
-  }
-});
-
-// node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/js_math.js
-var require_js_math = __commonJS({
-  "node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/js_math.js"(exports2) {
-    "use strict";
-    var Js_int = require_js_int();
-    function unsafe_ceil(prim) {
-      return Math.ceil(prim);
-    }
-    function ceil_int(f) {
-      if (f > Js_int.max) {
-        return Js_int.max;
-      } else if (f < Js_int.min) {
-        return Js_int.min;
-      } else {
-        return Math.ceil(f);
-      }
-    }
-    function unsafe_floor(prim) {
-      return Math.floor(prim);
-    }
-    function floor_int(f) {
-      if (f > Js_int.max) {
-        return Js_int.max;
-      } else if (f < Js_int.min) {
-        return Js_int.min;
-      } else {
-        return Math.floor(f);
-      }
-    }
-    function random_int(min, max) {
-      return floor_int(Math.random() * (max - min | 0)) + min | 0;
-    }
-    var ceil = ceil_int;
-    var floor = floor_int;
-    exports2.unsafe_ceil = unsafe_ceil;
-    exports2.ceil_int = ceil_int;
-    exports2.ceil = ceil;
-    exports2.unsafe_floor = unsafe_floor;
-    exports2.floor_int = floor_int;
-    exports2.floor = floor;
-    exports2.random_int = random_int;
-  }
-});
-
-// node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/belt_Array.js
-var require_belt_Array = __commonJS({
-  "node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/belt_Array.js"(exports2) {
-    "use strict";
-    var Caml = require_caml();
-    var Curry = require_curry();
-    var Js_math = require_js_math();
-    var Caml_option = require_caml_option();
-    function get(arr, i) {
-      if (i >= 0 && i < arr.length) {
-        return Caml_option.some(arr[i]);
-      }
-    }
-    function getExn(arr, i) {
-      if (!(i >= 0 && i < arr.length)) {
-        throw {
-          RE_EXN_ID: "Assert_failure",
-          _1: [
-            "belt_Array.res",
-            36,
-            2
-          ],
-          Error: new Error()
-        };
-      }
-      return arr[i];
-    }
-    function set(arr, i, v) {
-      if (i >= 0 && i < arr.length) {
-        arr[i] = v;
-        return true;
-      } else {
-        return false;
-      }
-    }
-    function setExn(arr, i, v) {
-      if (!(i >= 0 && i < arr.length)) {
-        throw {
-          RE_EXN_ID: "Assert_failure",
-          _1: [
-            "belt_Array.res",
-            49,
-            2
-          ],
-          Error: new Error()
-        };
-      }
-      arr[i] = v;
-    }
-    function swapUnsafe(xs, i, j) {
-      var tmp = xs[i];
-      xs[i] = xs[j];
-      xs[j] = tmp;
-    }
-    function shuffleInPlace(xs) {
-      var len = xs.length;
-      for (var i = 0; i < len; ++i) {
-        swapUnsafe(xs, i, Js_math.random_int(i, len));
-      }
-    }
-    function shuffle(xs) {
-      var result = xs.slice(0);
-      shuffleInPlace(result);
-      return result;
-    }
-    function reverseInPlace(xs) {
-      var len = xs.length;
-      var ofs = 0;
-      for (var i = 0, i_finish = len / 2 | 0; i < i_finish; ++i) {
-        swapUnsafe(xs, ofs + i | 0, ((ofs + len | 0) - i | 0) - 1 | 0);
-      }
-    }
-    function reverse(xs) {
-      var len = xs.length;
-      var result = new Array(len);
-      for (var i = 0; i < len; ++i) {
-        result[i] = xs[(len - 1 | 0) - i | 0];
-      }
-      return result;
-    }
-    function make(l, f) {
-      if (l <= 0) {
-        return [];
-      }
-      var res = new Array(l);
-      for (var i = 0; i < l; ++i) {
-        res[i] = f;
-      }
-      return res;
-    }
-    function makeByU(l, f) {
-      if (l <= 0) {
-        return [];
-      }
-      var res = new Array(l);
-      for (var i = 0; i < l; ++i) {
-        res[i] = f(i);
-      }
-      return res;
-    }
-    function makeBy(l, f) {
-      return makeByU(l, Curry.__1(f));
-    }
-    function makeByAndShuffleU(l, f) {
-      var u = makeByU(l, f);
-      shuffleInPlace(u);
-      return u;
-    }
-    function makeByAndShuffle(l, f) {
-      return makeByAndShuffleU(l, Curry.__1(f));
-    }
-    function range(start, finish) {
-      var cut = finish - start | 0;
-      if (cut < 0) {
-        return [];
-      }
-      var arr = new Array(cut + 1 | 0);
-      for (var i = 0; i <= cut; ++i) {
-        arr[i] = start + i | 0;
-      }
-      return arr;
-    }
-    function rangeBy(start, finish, step) {
-      var cut = finish - start | 0;
-      if (cut < 0 || step <= 0) {
-        return [];
-      }
-      var nb = (cut / step | 0) + 1 | 0;
-      var arr = new Array(nb);
-      var cur = start;
-      for (var i = 0; i < nb; ++i) {
-        arr[i] = cur;
-        cur = cur + step | 0;
-      }
-      return arr;
-    }
-    function zip(xs, ys) {
-      var lenx = xs.length;
-      var leny = ys.length;
-      var len = lenx < leny ? lenx : leny;
-      var s = new Array(len);
-      for (var i = 0; i < len; ++i) {
-        s[i] = [
-          xs[i],
-          ys[i]
-        ];
-      }
-      return s;
-    }
-    function zipByU(xs, ys, f) {
-      var lenx = xs.length;
-      var leny = ys.length;
-      var len = lenx < leny ? lenx : leny;
-      var s = new Array(len);
-      for (var i = 0; i < len; ++i) {
-        s[i] = f(xs[i], ys[i]);
-      }
-      return s;
-    }
-    function zipBy(xs, ys, f) {
-      return zipByU(xs, ys, Curry.__2(f));
-    }
-    function concat(a1, a2) {
-      var l1 = a1.length;
-      var l2 = a2.length;
-      var a1a2 = new Array(l1 + l2 | 0);
-      for (var i = 0; i < l1; ++i) {
-        a1a2[i] = a1[i];
-      }
-      for (var i$1 = 0; i$1 < l2; ++i$1) {
-        a1a2[l1 + i$1 | 0] = a2[i$1];
-      }
-      return a1a2;
-    }
-    function concatMany(arrs) {
-      var lenArrs = arrs.length;
-      var totalLen = 0;
-      for (var i = 0; i < lenArrs; ++i) {
-        totalLen = totalLen + arrs[i].length | 0;
-      }
-      var result = new Array(totalLen);
-      totalLen = 0;
-      for (var j = 0; j < lenArrs; ++j) {
-        var cur = arrs[j];
-        for (var k = 0, k_finish = cur.length; k < k_finish; ++k) {
-          result[totalLen] = cur[k];
-          totalLen = totalLen + 1 | 0;
-        }
-      }
-      return result;
-    }
-    function slice(a, offset, len) {
-      if (len <= 0) {
-        return [];
-      }
-      var lena = a.length;
-      var ofs = offset < 0 ? Caml.int_max(lena + offset | 0, 0) : offset;
-      var hasLen = lena - ofs | 0;
-      var copyLength = hasLen < len ? hasLen : len;
-      if (copyLength <= 0) {
-        return [];
-      }
-      var result = new Array(copyLength);
-      for (var i = 0; i < copyLength; ++i) {
-        result[i] = a[ofs + i | 0];
-      }
-      return result;
-    }
-    function sliceToEnd(a, offset) {
-      var lena = a.length;
-      var ofs = offset < 0 ? Caml.int_max(lena + offset | 0, 0) : offset;
-      var len = lena > ofs ? lena - ofs | 0 : 0;
-      var result = new Array(len);
-      for (var i = 0; i < len; ++i) {
-        result[i] = a[ofs + i | 0];
-      }
-      return result;
-    }
-    function fill(a, offset, len, v) {
-      if (len <= 0) {
-        return;
-      }
-      var lena = a.length;
-      var ofs = offset < 0 ? Caml.int_max(lena + offset | 0, 0) : offset;
-      var hasLen = lena - ofs | 0;
-      var fillLength = hasLen < len ? hasLen : len;
-      if (fillLength <= 0) {
-        return;
-      }
-      for (var i = ofs, i_finish = ofs + fillLength | 0; i < i_finish; ++i) {
-        a[i] = v;
-      }
-    }
-    function blitUnsafe(a1, srcofs1, a2, srcofs2, blitLength) {
-      if (srcofs2 <= srcofs1) {
-        for (var j = 0; j < blitLength; ++j) {
-          a2[j + srcofs2 | 0] = a1[j + srcofs1 | 0];
-        }
-        return;
-      }
-      for (var j$1 = blitLength - 1 | 0; j$1 >= 0; --j$1) {
-        a2[j$1 + srcofs2 | 0] = a1[j$1 + srcofs1 | 0];
-      }
-    }
-    function blit(a1, ofs1, a2, ofs2, len) {
-      var lena1 = a1.length;
-      var lena2 = a2.length;
-      var srcofs1 = ofs1 < 0 ? Caml.int_max(lena1 + ofs1 | 0, 0) : ofs1;
-      var srcofs2 = ofs2 < 0 ? Caml.int_max(lena2 + ofs2 | 0, 0) : ofs2;
-      var blitLength = Caml.int_min(len, Caml.int_min(lena1 - srcofs1 | 0, lena2 - srcofs2 | 0));
-      if (srcofs2 <= srcofs1) {
-        for (var j = 0; j < blitLength; ++j) {
-          a2[j + srcofs2 | 0] = a1[j + srcofs1 | 0];
-        }
-        return;
-      }
-      for (var j$1 = blitLength - 1 | 0; j$1 >= 0; --j$1) {
-        a2[j$1 + srcofs2 | 0] = a1[j$1 + srcofs1 | 0];
-      }
-    }
-    function forEachU(a, f) {
-      for (var i = 0, i_finish = a.length; i < i_finish; ++i) {
-        f(a[i]);
-      }
-    }
-    function forEach(a, f) {
-      forEachU(a, Curry.__1(f));
-    }
-    function mapU(a, f) {
-      var l = a.length;
-      var r = new Array(l);
-      for (var i = 0; i < l; ++i) {
-        r[i] = f(a[i]);
-      }
-      return r;
-    }
-    function map(a, f) {
-      return mapU(a, Curry.__1(f));
-    }
-    function flatMapU(a, f) {
-      return concatMany(mapU(a, f));
-    }
-    function flatMap(a, f) {
-      return concatMany(mapU(a, Curry.__1(f)));
-    }
-    function getByU(a, p) {
-      var l = a.length;
-      var i = 0;
-      var r;
-      while (r === void 0 && i < l) {
-        var v = a[i];
-        if (p(v)) {
-          r = Caml_option.some(v);
-        }
-        i = i + 1 | 0;
-      }
-      ;
-      return r;
-    }
-    function getBy(a, p) {
-      return getByU(a, Curry.__1(p));
-    }
-    function getIndexByU(a, p) {
-      var l = a.length;
-      var i = 0;
-      var r;
-      while (r === void 0 && i < l) {
-        var v = a[i];
-        if (p(v)) {
-          r = i;
-        }
-        i = i + 1 | 0;
-      }
-      ;
-      return r;
-    }
-    function getIndexBy(a, p) {
-      return getIndexByU(a, Curry.__1(p));
-    }
-    function keepU(a, f) {
-      var l = a.length;
-      var r = new Array(l);
-      var j = 0;
-      for (var i = 0; i < l; ++i) {
-        var v = a[i];
-        if (f(v)) {
-          r[j] = v;
-          j = j + 1 | 0;
-        }
-      }
-      r.length = j;
-      return r;
-    }
-    function keep(a, f) {
-      return keepU(a, Curry.__1(f));
-    }
-    function keepWithIndexU(a, f) {
-      var l = a.length;
-      var r = new Array(l);
-      var j = 0;
-      for (var i = 0; i < l; ++i) {
-        var v = a[i];
-        if (f(v, i)) {
-          r[j] = v;
-          j = j + 1 | 0;
-        }
-      }
-      r.length = j;
-      return r;
-    }
-    function keepWithIndex(a, f) {
-      return keepWithIndexU(a, Curry.__2(f));
-    }
-    function keepMapU(a, f) {
-      var l = a.length;
-      var r = new Array(l);
-      var j = 0;
-      for (var i = 0; i < l; ++i) {
-        var v = a[i];
-        var v$1 = f(v);
-        if (v$1 !== void 0) {
-          r[j] = Caml_option.valFromOption(v$1);
-          j = j + 1 | 0;
-        }
-      }
-      r.length = j;
-      return r;
-    }
-    function keepMap(a, f) {
-      return keepMapU(a, Curry.__1(f));
-    }
-    function forEachWithIndexU(a, f) {
-      for (var i = 0, i_finish = a.length; i < i_finish; ++i) {
-        f(i, a[i]);
-      }
-    }
-    function forEachWithIndex(a, f) {
-      forEachWithIndexU(a, Curry.__2(f));
-    }
-    function mapWithIndexU(a, f) {
-      var l = a.length;
-      var r = new Array(l);
-      for (var i = 0; i < l; ++i) {
-        r[i] = f(i, a[i]);
-      }
-      return r;
-    }
-    function mapWithIndex(a, f) {
-      return mapWithIndexU(a, Curry.__2(f));
-    }
-    function reduceU(a, x, f) {
-      var r = x;
-      for (var i = 0, i_finish = a.length; i < i_finish; ++i) {
-        r = f(r, a[i]);
-      }
-      return r;
-    }
-    function reduce(a, x, f) {
-      return reduceU(a, x, Curry.__2(f));
-    }
-    function reduceReverseU(a, x, f) {
-      var r = x;
-      for (var i = a.length - 1 | 0; i >= 0; --i) {
-        r = f(r, a[i]);
-      }
-      return r;
-    }
-    function reduceReverse(a, x, f) {
-      return reduceReverseU(a, x, Curry.__2(f));
-    }
-    function reduceReverse2U(a, b, x, f) {
-      var r = x;
-      var len = Caml.int_min(a.length, b.length);
-      for (var i = len - 1 | 0; i >= 0; --i) {
-        r = f(r, a[i], b[i]);
-      }
-      return r;
-    }
-    function reduceReverse2(a, b, x, f) {
-      return reduceReverse2U(a, b, x, Curry.__3(f));
-    }
-    function reduceWithIndexU(a, x, f) {
-      var r = x;
-      for (var i = 0, i_finish = a.length; i < i_finish; ++i) {
-        r = f(r, a[i], i);
-      }
-      return r;
-    }
-    function reduceWithIndex(a, x, f) {
-      return reduceWithIndexU(a, x, Curry.__3(f));
-    }
-    function everyU(arr, b) {
-      var len = arr.length;
-      var _i = 0;
-      while (true) {
-        var i = _i;
-        if (i === len) {
-          return true;
-        }
-        if (!b(arr[i])) {
-          return false;
-        }
-        _i = i + 1 | 0;
-        continue;
-      }
-      ;
-    }
-    function every(arr, f) {
-      return everyU(arr, Curry.__1(f));
-    }
-    function someU(arr, b) {
-      var len = arr.length;
-      var _i = 0;
-      while (true) {
-        var i = _i;
-        if (i === len) {
-          return false;
-        }
-        if (b(arr[i])) {
-          return true;
-        }
-        _i = i + 1 | 0;
-        continue;
-      }
-      ;
-    }
-    function some(arr, f) {
-      return someU(arr, Curry.__1(f));
-    }
-    function everyAux2(arr1, arr2, _i, b, len) {
-      while (true) {
-        var i = _i;
-        if (i === len) {
-          return true;
-        }
-        if (!b(arr1[i], arr2[i])) {
-          return false;
-        }
-        _i = i + 1 | 0;
-        continue;
-      }
-      ;
-    }
-    function every2U(a, b, p) {
-      return everyAux2(a, b, 0, p, Caml.int_min(a.length, b.length));
-    }
-    function every2(a, b, p) {
-      return every2U(a, b, Curry.__2(p));
-    }
-    function some2U(a, b, p) {
-      var _i = 0;
-      var len = Caml.int_min(a.length, b.length);
-      while (true) {
-        var i = _i;
-        if (i === len) {
-          return false;
-        }
-        if (p(a[i], b[i])) {
-          return true;
-        }
-        _i = i + 1 | 0;
-        continue;
-      }
-      ;
-    }
-    function some2(a, b, p) {
-      return some2U(a, b, Curry.__2(p));
-    }
-    function eqU(a, b, p) {
-      var lena = a.length;
-      var lenb = b.length;
-      if (lena === lenb) {
-        return everyAux2(a, b, 0, p, lena);
-      } else {
-        return false;
-      }
-    }
-    function eq(a, b, p) {
-      return eqU(a, b, Curry.__2(p));
-    }
-    function cmpU(a, b, p) {
-      var lena = a.length;
-      var lenb = b.length;
-      if (lena > lenb) {
-        return 1;
-      } else if (lena < lenb) {
-        return -1;
-      } else {
-        var _i = 0;
+      } else if (len_a < len_b) {
+        let _i$1 = 0;
         while (true) {
-          var i = _i;
-          if (i === lena) {
-            return 0;
+          let i$1 = _i$1;
+          if (i$1 === len_a) {
+            return -1;
           }
-          var c = p(a[i], b[i]);
-          if (c !== 0) {
-            return c;
+          let res$1 = compare6(a[i$1], b[i$1]);
+          if (res$1 !== 0) {
+            return res$1;
           }
-          _i = i + 1 | 0;
+          _i$1 = i$1 + 1 | 0;
+          continue;
+        }
+        ;
+      } else {
+        let _i$2 = 0;
+        while (true) {
+          let i$2 = _i$2;
+          if (i$2 === len_b) {
+            return 1;
+          }
+          let res$2 = compare6(a[i$2], b[i$2]);
+          if (res$2 !== 0) {
+            return res$2;
+          }
+          _i$2 = i$2 + 1 | 0;
           continue;
         }
         ;
       }
+  }
+}
+function aux_obj_compare(a, b) {
+  let min_key_lhs = {
+    contents: void 0
+  };
+  let min_key_rhs = {
+    contents: void 0
+  };
+  let do_key = (param, key) => {
+    let min_key = param[2];
+    let b2 = param[1];
+    if (!(!Object.prototype.hasOwnProperty.call(b2, key) || compare6(param[0][key], b2[key]) > 0)) {
+      return;
     }
-    function cmp(a, b, p) {
-      return cmpU(a, b, Curry.__2(p));
+    let mk = min_key.contents;
+    if (mk !== void 0 && key >= mk) {
+      return;
+    } else {
+      min_key.contents = key;
+      return;
     }
-    function partitionU(a, f) {
-      var l = a.length;
-      var i = 0;
-      var j = 0;
-      var a1 = new Array(l);
-      var a2 = new Array(l);
-      for (var ii = 0; ii < l; ++ii) {
-        var v = a[ii];
-        if (f(v)) {
-          a1[i] = v;
-          i = i + 1 | 0;
-        } else {
-          a2[j] = v;
-          j = j + 1 | 0;
-        }
-      }
-      a1.length = i;
-      a2.length = j;
-      return [
-        a1,
-        a2
-      ];
+  };
+  let do_key_a = (key) => do_key([
+    a,
+    b,
+    min_key_rhs
+  ], key);
+  let do_key_b = (key) => do_key([
+    b,
+    a,
+    min_key_lhs
+  ], key);
+  for_in(a, do_key_a);
+  for_in(b, do_key_b);
+  let match = min_key_lhs.contents;
+  let match$1 = min_key_rhs.contents;
+  if (match !== void 0) {
+    if (match$1 !== void 0) {
+      return Primitive_string.compare(match, match$1);
+    } else {
+      return -1;
     }
-    function partition(a, f) {
-      return partitionU(a, Curry.__1(f));
-    }
-    function unzip(a) {
-      var l = a.length;
-      var a1 = new Array(l);
-      var a2 = new Array(l);
-      for (var i = 0; i < l; ++i) {
-        var match = a[i];
-        a1[i] = match[0];
-        a2[i] = match[1];
-      }
-      return [
-        a1,
-        a2
-      ];
-    }
-    function joinWithU(a, sep, toString) {
-      var l = a.length;
-      if (l === 0) {
-        return "";
-      }
-      var lastIndex = l - 1 | 0;
-      var _i = 0;
-      var _res = "";
+  } else if (match$1 !== void 0) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+function equal2(a, b) {
+  if (a === b) {
+    return true;
+  }
+  let a_type = typeof a;
+  if (a_type === "string" || a_type === "number" || a_type === "bigint" || a_type === "boolean" || a_type === "undefined" || a === null) {
+    return false;
+  }
+  let b_type = typeof b;
+  if (a_type === "function" || b_type === "function") {
+    throw {
+      RE_EXN_ID: "Invalid_argument",
+      _1: "equal: functional value",
+      Error: new Error()
+    };
+  }
+  if (b_type === "number" || b_type === "bigint" || b_type === "undefined" || b === null) {
+    return false;
+  }
+  let tag_a = a.TAG;
+  let tag_b = b.TAG;
+  if (tag_a !== tag_b) {
+    return false;
+  }
+  let len_a = a.length | 0;
+  let len_b = b.length | 0;
+  if (len_a === len_b) {
+    if (Array.isArray(a)) {
+      let _i = 0;
       while (true) {
-        var res = _res;
-        var i = _i;
-        if (i === lastIndex) {
-          return res + toString(a[i]);
+        let i = _i;
+        if (i === len_a) {
+          return true;
         }
-        _res = res + (toString(a[i]) + sep);
+        if (!equal2(a[i], b[i])) {
+          return false;
+        }
         _i = i + 1 | 0;
         continue;
       }
       ;
-    }
-    function joinWith(a, sep, toString) {
-      return joinWithU(a, sep, Curry.__1(toString));
-    }
-    function initU(n, f) {
-      var v = new Array(n);
-      for (var i = 0; i < n; ++i) {
-        v[i] = f(i);
+    } else if (a instanceof Date && b instanceof Date) {
+      return !(a > b || a < b);
+    } else {
+      let result = {
+        contents: true
+      };
+      let do_key_a = (key) => {
+        if (!Object.prototype.hasOwnProperty.call(b, key)) {
+          result.contents = false;
+          return;
+        }
+      };
+      let do_key_b = (key) => {
+        if (!Object.prototype.hasOwnProperty.call(a, key) || !equal2(b[key], a[key])) {
+          result.contents = false;
+          return;
+        }
+      };
+      for_in(a, do_key_a);
+      if (result.contents) {
+        for_in(b, do_key_b);
       }
-      return v;
+      return result.contents;
     }
-    function init(n, f) {
-      return initU(n, Curry.__1(f));
-    }
-    exports2.get = get;
-    exports2.getExn = getExn;
-    exports2.set = set;
-    exports2.setExn = setExn;
-    exports2.shuffleInPlace = shuffleInPlace;
-    exports2.shuffle = shuffle;
-    exports2.reverseInPlace = reverseInPlace;
-    exports2.reverse = reverse;
-    exports2.make = make;
-    exports2.range = range;
-    exports2.rangeBy = rangeBy;
-    exports2.makeByU = makeByU;
-    exports2.makeBy = makeBy;
-    exports2.makeByAndShuffleU = makeByAndShuffleU;
-    exports2.makeByAndShuffle = makeByAndShuffle;
-    exports2.zip = zip;
-    exports2.zipByU = zipByU;
-    exports2.zipBy = zipBy;
-    exports2.unzip = unzip;
-    exports2.concat = concat;
-    exports2.concatMany = concatMany;
-    exports2.slice = slice;
-    exports2.sliceToEnd = sliceToEnd;
-    exports2.fill = fill;
-    exports2.blit = blit;
-    exports2.blitUnsafe = blitUnsafe;
-    exports2.forEachU = forEachU;
-    exports2.forEach = forEach;
-    exports2.mapU = mapU;
-    exports2.map = map;
-    exports2.flatMapU = flatMapU;
-    exports2.flatMap = flatMap;
-    exports2.getByU = getByU;
-    exports2.getBy = getBy;
-    exports2.getIndexByU = getIndexByU;
-    exports2.getIndexBy = getIndexBy;
-    exports2.keepU = keepU;
-    exports2.keep = keep;
-    exports2.keepWithIndexU = keepWithIndexU;
-    exports2.keepWithIndex = keepWithIndex;
-    exports2.keepMapU = keepMapU;
-    exports2.keepMap = keepMap;
-    exports2.forEachWithIndexU = forEachWithIndexU;
-    exports2.forEachWithIndex = forEachWithIndex;
-    exports2.mapWithIndexU = mapWithIndexU;
-    exports2.mapWithIndex = mapWithIndex;
-    exports2.partitionU = partitionU;
-    exports2.partition = partition;
-    exports2.reduceU = reduceU;
-    exports2.reduce = reduce;
-    exports2.reduceReverseU = reduceReverseU;
-    exports2.reduceReverse = reduceReverse;
-    exports2.reduceReverse2U = reduceReverse2U;
-    exports2.reduceReverse2 = reduceReverse2;
-    exports2.reduceWithIndexU = reduceWithIndexU;
-    exports2.reduceWithIndex = reduceWithIndex;
-    exports2.joinWithU = joinWithU;
-    exports2.joinWith = joinWith;
-    exports2.someU = someU;
-    exports2.some = some;
-    exports2.everyU = everyU;
-    exports2.every = every;
-    exports2.every2U = every2U;
-    exports2.every2 = every2;
-    exports2.some2U = some2U;
-    exports2.some2 = some2;
-    exports2.cmpU = cmpU;
-    exports2.cmp = cmp;
-    exports2.eqU = eqU;
-    exports2.eq = eq;
-    exports2.initU = initU;
-    exports2.init = init;
+  } else {
+    return false;
+  }
+}
+function notequal(a, b) {
+  if ((typeof a === "number" || typeof a === "bigint") && (typeof b === "number" || typeof b === "bigint")) {
+    return a !== b;
+  } else {
+    return !equal2(a, b);
+  }
+}
+function greaterequal(a, b) {
+  if ((typeof a === "number" || typeof a === "bigint") && (typeof b === "number" || typeof b === "bigint")) {
+    return a >= b;
+  } else {
+    return compare6(a, b) >= 0;
+  }
+}
+function greaterthan(a, b) {
+  if ((typeof a === "number" || typeof a === "bigint") && (typeof b === "number" || typeof b === "bigint")) {
+    return a > b;
+  } else {
+    return compare6(a, b) > 0;
+  }
+}
+function lessequal(a, b) {
+  if ((typeof a === "number" || typeof a === "bigint") && (typeof b === "number" || typeof b === "bigint")) {
+    return a <= b;
+  } else {
+    return compare6(a, b) <= 0;
+  }
+}
+function lessthan(a, b) {
+  if ((typeof a === "number" || typeof a === "bigint") && (typeof b === "number" || typeof b === "bigint")) {
+    return a < b;
+  } else {
+    return compare6(a, b) < 0;
+  }
+}
+function min5(x, y) {
+  if (compare6(x, y) <= 0) {
+    return x;
+  } else {
+    return y;
+  }
+}
+function max5(x, y) {
+  if (compare6(x, y) >= 0) {
+    return x;
+  } else {
+    return y;
+  }
+}
+var Primitive_bool, Primitive_float, Primitive_string, for_in;
+var init_Primitive_object = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_object.js"() {
+    "use strict";
+    Primitive_bool = (init_Primitive_bool(), __toCommonJS(Primitive_bool_exports));
+    Primitive_float = (init_Primitive_float(), __toCommonJS(Primitive_float_exports));
+    Primitive_string = (init_Primitive_string(), __toCommonJS(Primitive_string_exports));
+    for_in = function(o, foo) {
+      for (var x in o) {
+        foo(x);
+      }
+    };
+    exports.updateDummy = updateDummy;
+    exports.compare = compare6;
+    exports.equal = equal2;
+    exports.notequal = notequal;
+    exports.greaterequal = greaterequal;
+    exports.greaterthan = greaterthan;
+    exports.lessthan = lessthan;
+    exports.lessequal = lessequal;
+    exports.min = min5;
+    exports.max = max5;
   }
 });
 
-// node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/belt_Result.js
-var require_belt_Result = __commonJS({
-  "node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/belt_Result.js"(exports2) {
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_SortArray.js
+var Belt_SortArray_exports = {};
+function sortedLengthAuxMore(xs, _prec, _acc, len, lt) {
+  while (true) {
+    let acc = _acc;
+    let prec = _prec;
+    if (acc >= len) {
+      return acc;
+    }
+    let v = xs[acc];
+    if (!lt(v, prec)) {
+      return acc;
+    }
+    _acc = acc + 1 | 0;
+    _prec = v;
+    continue;
+  }
+  ;
+}
+function strictlySortedLength(xs, lt) {
+  let len = xs.length;
+  if (len === 0 || len === 1) {
+    return len;
+  }
+  let x0 = xs[0];
+  let x1 = xs[1];
+  if (lt(x0, x1)) {
+    let _prec = x1;
+    let _acc = 2;
+    while (true) {
+      let acc = _acc;
+      let prec = _prec;
+      if (acc >= len) {
+        return acc;
+      }
+      let v = xs[acc];
+      if (!lt(prec, v)) {
+        return acc;
+      }
+      _acc = acc + 1 | 0;
+      _prec = v;
+      continue;
+    }
+    ;
+  } else if (lt(x1, x0)) {
+    return -sortedLengthAuxMore(xs, x1, 2, len, lt) | 0;
+  } else {
+    return 1;
+  }
+}
+function isSorted(a, cmp8) {
+  let len = a.length;
+  if (len === 0) {
+    return true;
+  } else {
+    let _i = 0;
+    let last_bound = len - 1 | 0;
+    while (true) {
+      let i = _i;
+      if (i === last_bound) {
+        return true;
+      }
+      if (cmp8(a[i], a[i + 1 | 0]) > 0) {
+        return false;
+      }
+      _i = i + 1 | 0;
+      continue;
+    }
+    ;
+  }
+}
+function merge(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp8) {
+  let src1r = src1ofs + src1len | 0;
+  let src2r = src2ofs + src2len | 0;
+  let _i1 = src1ofs;
+  let _s1 = src[src1ofs];
+  let _i2 = src2ofs;
+  let _s2 = src2[src2ofs];
+  let _d = dstofs;
+  while (true) {
+    let d = _d;
+    let s2 = _s2;
+    let i2 = _i2;
+    let s1 = _s1;
+    let i1 = _i1;
+    if (cmp8(s1, s2) <= 0) {
+      dst[d] = s1;
+      let i1$1 = i1 + 1 | 0;
+      if (i1$1 >= src1r) {
+        return Belt_Array.blitUnsafe(src2, i2, dst, d + 1 | 0, src2r - i2 | 0);
+      }
+      _d = d + 1 | 0;
+      _s1 = src[i1$1];
+      _i1 = i1$1;
+      continue;
+    }
+    dst[d] = s2;
+    let i2$1 = i2 + 1 | 0;
+    if (i2$1 >= src2r) {
+      return Belt_Array.blitUnsafe(src, i1, dst, d + 1 | 0, src1r - i1 | 0);
+    }
+    _d = d + 1 | 0;
+    _s2 = src2[i2$1];
+    _i2 = i2$1;
+    continue;
+  }
+  ;
+}
+function union(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp8) {
+  let src1r = src1ofs + src1len | 0;
+  let src2r = src2ofs + src2len | 0;
+  let _i1 = src1ofs;
+  let _s1 = src[src1ofs];
+  let _i2 = src2ofs;
+  let _s2 = src2[src2ofs];
+  let _d = dstofs;
+  while (true) {
+    let d = _d;
+    let s2 = _s2;
+    let i2 = _i2;
+    let s1 = _s1;
+    let i1 = _i1;
+    let c = cmp8(s1, s2);
+    if (c < 0) {
+      dst[d] = s1;
+      let i1$1 = i1 + 1 | 0;
+      let d$1 = d + 1 | 0;
+      if (i1$1 < src1r) {
+        _d = d$1;
+        _s1 = src[i1$1];
+        _i1 = i1$1;
+        continue;
+      }
+      Belt_Array.blitUnsafe(src2, i2, dst, d$1, src2r - i2 | 0);
+      return (d$1 + src2r | 0) - i2 | 0;
+    }
+    if (c === 0) {
+      dst[d] = s1;
+      let i1$2 = i1 + 1 | 0;
+      let i2$1 = i2 + 1 | 0;
+      let d$2 = d + 1 | 0;
+      if (!(i1$2 < src1r && i2$1 < src2r)) {
+        if (i1$2 === src1r) {
+          Belt_Array.blitUnsafe(src2, i2$1, dst, d$2, src2r - i2$1 | 0);
+          return (d$2 + src2r | 0) - i2$1 | 0;
+        } else {
+          Belt_Array.blitUnsafe(src, i1$2, dst, d$2, src1r - i1$2 | 0);
+          return (d$2 + src1r | 0) - i1$2 | 0;
+        }
+      }
+      _d = d$2;
+      _s2 = src2[i2$1];
+      _i2 = i2$1;
+      _s1 = src[i1$2];
+      _i1 = i1$2;
+      continue;
+    }
+    dst[d] = s2;
+    let i2$2 = i2 + 1 | 0;
+    let d$3 = d + 1 | 0;
+    if (i2$2 < src2r) {
+      _d = d$3;
+      _s2 = src2[i2$2];
+      _i2 = i2$2;
+      continue;
+    }
+    Belt_Array.blitUnsafe(src, i1, dst, d$3, src1r - i1 | 0);
+    return (d$3 + src1r | 0) - i1 | 0;
+  }
+  ;
+}
+function intersect(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp8) {
+  let src1r = src1ofs + src1len | 0;
+  let src2r = src2ofs + src2len | 0;
+  let _i1 = src1ofs;
+  let _s1 = src[src1ofs];
+  let _i2 = src2ofs;
+  let _s2 = src2[src2ofs];
+  let _d = dstofs;
+  while (true) {
+    let d = _d;
+    let s2 = _s2;
+    let i2 = _i2;
+    let s1 = _s1;
+    let i1 = _i1;
+    let c = cmp8(s1, s2);
+    if (c < 0) {
+      let i1$1 = i1 + 1 | 0;
+      if (i1$1 >= src1r) {
+        return d;
+      }
+      _s1 = src[i1$1];
+      _i1 = i1$1;
+      continue;
+    }
+    if (c === 0) {
+      dst[d] = s1;
+      let i1$2 = i1 + 1 | 0;
+      let i2$1 = i2 + 1 | 0;
+      let d$1 = d + 1 | 0;
+      if (!(i1$2 < src1r && i2$1 < src2r)) {
+        return d$1;
+      }
+      _d = d$1;
+      _s2 = src2[i2$1];
+      _i2 = i2$1;
+      _s1 = src[i1$2];
+      _i1 = i1$2;
+      continue;
+    }
+    let i2$2 = i2 + 1 | 0;
+    if (i2$2 >= src2r) {
+      return d;
+    }
+    _s2 = src2[i2$2];
+    _i2 = i2$2;
+    continue;
+  }
+  ;
+}
+function diff(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp8) {
+  let src1r = src1ofs + src1len | 0;
+  let src2r = src2ofs + src2len | 0;
+  let _i1 = src1ofs;
+  let _s1 = src[src1ofs];
+  let _i2 = src2ofs;
+  let _s2 = src2[src2ofs];
+  let _d = dstofs;
+  while (true) {
+    let d = _d;
+    let s2 = _s2;
+    let i2 = _i2;
+    let s1 = _s1;
+    let i1 = _i1;
+    let c = cmp8(s1, s2);
+    if (c < 0) {
+      dst[d] = s1;
+      let d$1 = d + 1 | 0;
+      let i1$1 = i1 + 1 | 0;
+      if (i1$1 >= src1r) {
+        return d$1;
+      }
+      _d = d$1;
+      _s1 = src[i1$1];
+      _i1 = i1$1;
+      continue;
+    }
+    if (c === 0) {
+      let i1$2 = i1 + 1 | 0;
+      let i2$1 = i2 + 1 | 0;
+      if (!(i1$2 < src1r && i2$1 < src2r)) {
+        if (i1$2 === src1r) {
+          return d;
+        } else {
+          Belt_Array.blitUnsafe(src, i1$2, dst, d, src1r - i1$2 | 0);
+          return (d + src1r | 0) - i1$2 | 0;
+        }
+      }
+      _s2 = src2[i2$1];
+      _i2 = i2$1;
+      _s1 = src[i1$2];
+      _i1 = i1$2;
+      continue;
+    }
+    let i2$2 = i2 + 1 | 0;
+    if (i2$2 < src2r) {
+      _s2 = src2[i2$2];
+      _i2 = i2$2;
+      continue;
+    }
+    Belt_Array.blitUnsafe(src, i1, dst, d, src1r - i1 | 0);
+    return (d + src1r | 0) - i1 | 0;
+  }
+  ;
+}
+function insertionSort(src, srcofs, dst, dstofs, len, cmp8) {
+  for (let i = 0; i < len; ++i) {
+    let e = src[srcofs + i | 0];
+    let j = (dstofs + i | 0) - 1 | 0;
+    while (j >= dstofs && cmp8(dst[j], e) > 0) {
+      dst[j + 1 | 0] = dst[j];
+      j = j - 1 | 0;
+    }
+    ;
+    dst[j + 1 | 0] = e;
+  }
+}
+function sortTo(src, srcofs, dst, dstofs, len, cmp8) {
+  if (len <= 5) {
+    return insertionSort(src, srcofs, dst, dstofs, len, cmp8);
+  }
+  let l1 = len / 2 | 0;
+  let l2 = len - l1 | 0;
+  sortTo(src, srcofs + l1 | 0, dst, dstofs + l1 | 0, l2, cmp8);
+  sortTo(src, srcofs, src, srcofs + l2 | 0, l1, cmp8);
+  merge(src, srcofs + l2 | 0, l1, dst, dstofs + l1 | 0, l2, dst, dstofs, cmp8);
+}
+function stableSortInPlaceBy(a, cmp8) {
+  let l = a.length;
+  if (l <= 5) {
+    return insertionSort(a, 0, a, 0, l, cmp8);
+  }
+  let l1 = l / 2 | 0;
+  let l2 = l - l1 | 0;
+  let t = new Array(l2);
+  sortTo(a, l1, t, 0, l2, cmp8);
+  sortTo(a, 0, a, l2, l1, cmp8);
+  merge(a, l2, l1, t, 0, l2, a, 0, cmp8);
+}
+function stableSortBy(a, cmp8) {
+  let b = a.slice(0);
+  stableSortInPlaceBy(b, cmp8);
+  return b;
+}
+function binarySearchBy(sorted, key, cmp8) {
+  let len = sorted.length;
+  if (len === 0) {
+    return -1;
+  }
+  let lo = sorted[0];
+  let c = cmp8(key, lo);
+  if (c < 0) {
+    return -1;
+  }
+  let hi = sorted[len - 1 | 0];
+  let c2 = cmp8(key, hi);
+  if (c2 > 0) {
+    return -(len + 1 | 0) | 0;
+  } else {
+    let _lo = 0;
+    let _hi = len - 1 | 0;
+    while (true) {
+      let hi$1 = _hi;
+      let lo$1 = _lo;
+      let mid = (lo$1 + hi$1 | 0) / 2 | 0;
+      let midVal = sorted[mid];
+      let c$1 = cmp8(key, midVal);
+      if (c$1 === 0) {
+        return mid;
+      }
+      if (c$1 < 0) {
+        if (hi$1 === mid) {
+          if (cmp8(sorted[lo$1], key) === 0) {
+            return lo$1;
+          } else {
+            return -(hi$1 + 1 | 0) | 0;
+          }
+        }
+        _hi = mid;
+        continue;
+      }
+      if (lo$1 === mid) {
+        if (cmp8(sorted[hi$1], key) === 0) {
+          return hi$1;
+        } else {
+          return -(hi$1 + 1 | 0) | 0;
+        }
+      }
+      _lo = mid;
+      continue;
+    }
+    ;
+  }
+}
+var Belt_Array, Int, $$String, strictlySortedLengthU, isSortedU, stableSortInPlaceByU, stableSortByU, binarySearchByU, unionU, intersectU, diffU;
+var init_Belt_SortArray = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_SortArray.js"() {
     "use strict";
-    var Curry = require_curry();
-    function getExn(x) {
-      if (x.TAG === "Ok") {
-        return x._0;
+    Belt_Array = (init_Belt_Array(), __toCommonJS(Belt_Array_exports));
+    strictlySortedLengthU = strictlySortedLength;
+    isSortedU = isSorted;
+    stableSortInPlaceByU = stableSortInPlaceBy;
+    stableSortByU = stableSortBy;
+    binarySearchByU = binarySearchBy;
+    unionU = union;
+    intersectU = intersect;
+    diffU = diff;
+    exports.Int = Int;
+    exports.$$String = $$String;
+    exports.strictlySortedLengthU = strictlySortedLengthU;
+    exports.strictlySortedLength = strictlySortedLength;
+    exports.isSortedU = isSortedU;
+    exports.isSorted = isSorted;
+    exports.stableSortInPlaceByU = stableSortInPlaceByU;
+    exports.stableSortInPlaceBy = stableSortInPlaceBy;
+    exports.stableSortByU = stableSortByU;
+    exports.stableSortBy = stableSortBy;
+    exports.binarySearchByU = binarySearchByU;
+    exports.binarySearchBy = binarySearchBy;
+    exports.unionU = unionU;
+    exports.union = union;
+    exports.intersectU = intersectU;
+    exports.intersect = intersect;
+    exports.diffU = diffU;
+    exports.diff = diff;
+  }
+});
+
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_List.js
+var Belt_List_exports = {};
+function head(x) {
+  if (x !== 0) {
+    return Primitive_option4.some(x.hd);
+  }
+}
+function headOrThrow(x) {
+  if (x !== 0) {
+    return x.hd;
+  }
+  throw {
+    RE_EXN_ID: "Not_found",
+    Error: new Error()
+  };
+}
+function tail(x) {
+  if (x !== 0) {
+    return x.tl;
+  }
+}
+function tailOrThrow(x) {
+  if (x !== 0) {
+    return x.tl;
+  }
+  throw {
+    RE_EXN_ID: "Not_found",
+    Error: new Error()
+  };
+}
+function add(xs, x) {
+  return {
+    hd: x,
+    tl: xs
+  };
+}
+function get2(x, n) {
+  if (n < 0) {
+    return;
+  } else {
+    let _x = x;
+    let _n = n;
+    while (true) {
+      let n$1 = _n;
+      let x$1 = _x;
+      if (x$1 === 0) {
+        return;
       }
-      throw {
-        RE_EXN_ID: "Not_found",
-        Error: new Error()
+      if (n$1 === 0) {
+        return Primitive_option4.some(x$1.hd);
+      }
+      _n = n$1 - 1 | 0;
+      _x = x$1.tl;
+      continue;
+    }
+    ;
+  }
+}
+function getOrThrow5(x, n) {
+  if (n < 0) {
+    throw {
+      RE_EXN_ID: "Not_found",
+      Error: new Error()
+    };
+  }
+  let _x = x;
+  let _n = n;
+  while (true) {
+    let n$1 = _n;
+    let x$1 = _x;
+    if (x$1 !== 0) {
+      if (n$1 === 0) {
+        return x$1.hd;
+      }
+      _n = n$1 - 1 | 0;
+      _x = x$1.tl;
+      continue;
+    }
+    throw {
+      RE_EXN_ID: "Not_found",
+      Error: new Error()
+    };
+  }
+  ;
+}
+function partitionAux(p, _cell, _precX, _precY) {
+  while (true) {
+    let precY = _precY;
+    let precX = _precX;
+    let cell = _cell;
+    if (cell === 0) {
+      return;
+    }
+    let t = cell.tl;
+    let h = cell.hd;
+    let next = {
+      hd: h,
+      tl: (
+        /* [] */
+        0
+      )
+    };
+    if (p(h)) {
+      precX.tl = next;
+      _precX = next;
+      _cell = t;
+      continue;
+    }
+    precY.tl = next;
+    _precY = next;
+    _cell = t;
+    continue;
+  }
+  ;
+}
+function splitAux(_cell, _precX, _precY) {
+  while (true) {
+    let precY = _precY;
+    let precX = _precX;
+    let cell = _cell;
+    if (cell === 0) {
+      return;
+    }
+    let match = cell.hd;
+    let nextA = {
+      hd: match[0],
+      tl: (
+        /* [] */
+        0
+      )
+    };
+    let nextB = {
+      hd: match[1],
+      tl: (
+        /* [] */
+        0
+      )
+    };
+    precX.tl = nextA;
+    precY.tl = nextB;
+    _precY = nextB;
+    _precX = nextA;
+    _cell = cell.tl;
+    continue;
+  }
+  ;
+}
+function copyAuxCont(_cellX, _prec) {
+  while (true) {
+    let prec = _prec;
+    let cellX = _cellX;
+    if (cellX === 0) {
+      return prec;
+    }
+    let next = {
+      hd: cellX.hd,
+      tl: (
+        /* [] */
+        0
+      )
+    };
+    prec.tl = next;
+    _prec = next;
+    _cellX = cellX.tl;
+    continue;
+  }
+  ;
+}
+function copyAuxWitFilter(f, _cellX, _prec) {
+  while (true) {
+    let prec = _prec;
+    let cellX = _cellX;
+    if (cellX === 0) {
+      return;
+    }
+    let t = cellX.tl;
+    let h = cellX.hd;
+    if (f(h)) {
+      let next = {
+        hd: h,
+        tl: (
+          /* [] */
+          0
+        )
       };
+      prec.tl = next;
+      _prec = next;
+      _cellX = t;
+      continue;
     }
-    function mapWithDefaultU(opt, $$default, f) {
-      if (opt.TAG === "Ok") {
-        return f(opt._0);
-      } else {
-        return $$default;
+    _cellX = t;
+    continue;
+  }
+  ;
+}
+function copyAuxWithFilterIndex(f, _cellX, _prec, _i) {
+  while (true) {
+    let i = _i;
+    let prec = _prec;
+    let cellX = _cellX;
+    if (cellX === 0) {
+      return;
+    }
+    let t = cellX.tl;
+    let h = cellX.hd;
+    if (f(h, i)) {
+      let next = {
+        hd: h,
+        tl: (
+          /* [] */
+          0
+        )
+      };
+      prec.tl = next;
+      _i = i + 1 | 0;
+      _prec = next;
+      _cellX = t;
+      continue;
+    }
+    _i = i + 1 | 0;
+    _cellX = t;
+    continue;
+  }
+  ;
+}
+function copyAuxWitFilterMap(f, _cellX, _prec) {
+  while (true) {
+    let prec = _prec;
+    let cellX = _cellX;
+    if (cellX === 0) {
+      return;
+    }
+    let t = cellX.tl;
+    let h = f(cellX.hd);
+    if (h !== void 0) {
+      let next = {
+        hd: Primitive_option4.valFromOption(h),
+        tl: (
+          /* [] */
+          0
+        )
+      };
+      prec.tl = next;
+      _prec = next;
+      _cellX = t;
+      continue;
+    }
+    _cellX = t;
+    continue;
+  }
+  ;
+}
+function removeAssocAuxWithMap(_cellX, x, _prec, f) {
+  while (true) {
+    let prec = _prec;
+    let cellX = _cellX;
+    if (cellX === 0) {
+      return false;
+    }
+    let t = cellX.tl;
+    let h = cellX.hd;
+    if (f(h[0], x)) {
+      prec.tl = t;
+      return true;
+    }
+    let next = {
+      hd: h,
+      tl: (
+        /* [] */
+        0
+      )
+    };
+    prec.tl = next;
+    _prec = next;
+    _cellX = t;
+    continue;
+  }
+  ;
+}
+function setAssocAuxWithMap(_cellX, x, k, _prec, eq8) {
+  while (true) {
+    let prec = _prec;
+    let cellX = _cellX;
+    if (cellX === 0) {
+      return false;
+    }
+    let t = cellX.tl;
+    let h = cellX.hd;
+    if (eq8(h[0], x)) {
+      prec.tl = {
+        hd: [
+          x,
+          k
+        ],
+        tl: t
+      };
+      return true;
+    }
+    let next = {
+      hd: h,
+      tl: (
+        /* [] */
+        0
+      )
+    };
+    prec.tl = next;
+    _prec = next;
+    _cellX = t;
+    continue;
+  }
+  ;
+}
+function copyAuxWithMap(_cellX, _prec, f) {
+  while (true) {
+    let prec = _prec;
+    let cellX = _cellX;
+    if (cellX === 0) {
+      return;
+    }
+    let next = {
+      hd: f(cellX.hd),
+      tl: (
+        /* [] */
+        0
+      )
+    };
+    prec.tl = next;
+    _prec = next;
+    _cellX = cellX.tl;
+    continue;
+  }
+  ;
+}
+function zipAux(_cellX, _cellY, _prec) {
+  while (true) {
+    let prec = _prec;
+    let cellY = _cellY;
+    let cellX = _cellX;
+    if (cellX === 0) {
+      return;
+    }
+    if (cellY === 0) {
+      return;
+    }
+    let next = {
+      hd: [
+        cellX.hd,
+        cellY.hd
+      ],
+      tl: (
+        /* [] */
+        0
+      )
+    };
+    prec.tl = next;
+    _prec = next;
+    _cellY = cellY.tl;
+    _cellX = cellX.tl;
+    continue;
+  }
+  ;
+}
+function copyAuxWithMap2(f, _cellX, _cellY, _prec) {
+  while (true) {
+    let prec = _prec;
+    let cellY = _cellY;
+    let cellX = _cellX;
+    if (cellX === 0) {
+      return;
+    }
+    if (cellY === 0) {
+      return;
+    }
+    let next = {
+      hd: f(cellX.hd, cellY.hd),
+      tl: (
+        /* [] */
+        0
+      )
+    };
+    prec.tl = next;
+    _prec = next;
+    _cellY = cellY.tl;
+    _cellX = cellX.tl;
+    continue;
+  }
+  ;
+}
+function copyAuxWithMapI(f, _i, _cellX, _prec) {
+  while (true) {
+    let prec = _prec;
+    let cellX = _cellX;
+    let i = _i;
+    if (cellX === 0) {
+      return;
+    }
+    let next = {
+      hd: f(i, cellX.hd),
+      tl: (
+        /* [] */
+        0
+      )
+    };
+    prec.tl = next;
+    _prec = next;
+    _cellX = cellX.tl;
+    _i = i + 1 | 0;
+    continue;
+  }
+  ;
+}
+function takeAux(_n, _cell, _prec) {
+  while (true) {
+    let prec = _prec;
+    let cell = _cell;
+    let n = _n;
+    if (n === 0) {
+      return true;
+    }
+    if (cell === 0) {
+      return false;
+    }
+    let cell$1 = {
+      hd: cell.hd,
+      tl: (
+        /* [] */
+        0
+      )
+    };
+    prec.tl = cell$1;
+    _prec = cell$1;
+    _cell = cell.tl;
+    _n = n - 1 | 0;
+    continue;
+  }
+  ;
+}
+function splitAtAux(_n, _cell, _prec) {
+  while (true) {
+    let prec = _prec;
+    let cell = _cell;
+    let n = _n;
+    if (n === 0) {
+      return cell;
+    }
+    if (cell === 0) {
+      return;
+    }
+    let cell$1 = {
+      hd: cell.hd,
+      tl: (
+        /* [] */
+        0
+      )
+    };
+    prec.tl = cell$1;
+    _prec = cell$1;
+    _cell = cell.tl;
+    _n = n - 1 | 0;
+    continue;
+  }
+  ;
+}
+function take(lst, n) {
+  if (n < 0) {
+    return;
+  }
+  if (n === 0) {
+    return (
+      /* [] */
+      0
+    );
+  }
+  if (lst === 0) {
+    return;
+  }
+  let cell = {
+    hd: lst.hd,
+    tl: (
+      /* [] */
+      0
+    )
+  };
+  let has5 = takeAux(n - 1 | 0, lst.tl, cell);
+  if (has5) {
+    return cell;
+  }
+}
+function drop(lst, n) {
+  if (n < 0) {
+    return;
+  } else {
+    let _l = lst;
+    let _n = n;
+    while (true) {
+      let n$1 = _n;
+      let l = _l;
+      if (n$1 === 0) {
+        return l;
       }
-    }
-    function mapWithDefault(opt, $$default, f) {
-      return mapWithDefaultU(opt, $$default, Curry.__1(f));
-    }
-    function mapU(opt, f) {
-      if (opt.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: f(opt._0)
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: opt._0
-        };
+      if (l === 0) {
+        return;
       }
+      _n = n$1 - 1 | 0;
+      _l = l.tl;
+      continue;
     }
-    function map(opt, f) {
-      return mapU(opt, Curry.__1(f));
+    ;
+  }
+}
+function splitAt(lst, n) {
+  if (n < 0) {
+    return;
+  }
+  if (n === 0) {
+    return [
+      /* [] */
+      0,
+      lst
+    ];
+  }
+  if (lst === 0) {
+    return;
+  }
+  let cell = {
+    hd: lst.hd,
+    tl: (
+      /* [] */
+      0
+    )
+  };
+  let rest = splitAtAux(n - 1 | 0, lst.tl, cell);
+  if (rest !== void 0) {
+    return [
+      cell,
+      rest
+    ];
+  }
+}
+function concat2(xs, ys) {
+  if (xs === 0) {
+    return ys;
+  }
+  let cell = {
+    hd: xs.hd,
+    tl: (
+      /* [] */
+      0
+    )
+  };
+  copyAuxCont(xs.tl, cell).tl = ys;
+  return cell;
+}
+function map5(xs, f) {
+  if (xs === 0) {
+    return (
+      /* [] */
+      0
+    );
+  }
+  let cell = {
+    hd: f(xs.hd),
+    tl: (
+      /* [] */
+      0
+    )
+  };
+  copyAuxWithMap(xs.tl, cell, f);
+  return cell;
+}
+function zipBy2(l1, l2, f) {
+  if (l1 === 0) {
+    return (
+      /* [] */
+      0
+    );
+  }
+  if (l2 === 0) {
+    return (
+      /* [] */
+      0
+    );
+  }
+  let cell = {
+    hd: f(l1.hd, l2.hd),
+    tl: (
+      /* [] */
+      0
+    )
+  };
+  copyAuxWithMap2(f, l1.tl, l2.tl, cell);
+  return cell;
+}
+function mapWithIndex2(xs, f) {
+  if (xs === 0) {
+    return (
+      /* [] */
+      0
+    );
+  }
+  let cell = {
+    hd: f(0, xs.hd),
+    tl: (
+      /* [] */
+      0
+    )
+  };
+  copyAuxWithMapI(f, 1, xs.tl, cell);
+  return cell;
+}
+function makeBy2(n, f) {
+  if (n <= 0) {
+    return (
+      /* [] */
+      0
+    );
+  }
+  let headX = {
+    hd: f(0),
+    tl: (
+      /* [] */
+      0
+    )
+  };
+  let cur = headX;
+  let i = 1;
+  while (i < n) {
+    let v = {
+      hd: f(i),
+      tl: (
+        /* [] */
+        0
+      )
+    };
+    cur.tl = v;
+    cur = v;
+    i = i + 1 | 0;
+  }
+  ;
+  return headX;
+}
+function make3(n, v) {
+  if (n <= 0) {
+    return (
+      /* [] */
+      0
+    );
+  }
+  let headX = {
+    hd: v,
+    tl: (
+      /* [] */
+      0
+    )
+  };
+  let cur = headX;
+  let i = 1;
+  while (i < n) {
+    let v$1 = {
+      hd: v,
+      tl: (
+        /* [] */
+        0
+      )
+    };
+    cur.tl = v$1;
+    cur = v$1;
+    i = i + 1 | 0;
+  }
+  ;
+  return headX;
+}
+function length(xs) {
+  let _x = xs;
+  let _acc = 0;
+  while (true) {
+    let acc = _acc;
+    let x = _x;
+    if (x === 0) {
+      return acc;
     }
-    function flatMapU(opt, f) {
-      if (opt.TAG === "Ok") {
-        return f(opt._0);
-      } else {
-        return {
-          TAG: "Error",
-          _0: opt._0
-        };
-      }
+    _acc = acc + 1 | 0;
+    _x = x.tl;
+    continue;
+  }
+  ;
+}
+function fillAux(arr, _i, _x) {
+  while (true) {
+    let x = _x;
+    let i = _i;
+    if (x === 0) {
+      return;
     }
-    function flatMap(opt, f) {
-      return flatMapU(opt, Curry.__1(f));
+    arr[i] = x.hd;
+    _x = x.tl;
+    _i = i + 1 | 0;
+    continue;
+  }
+  ;
+}
+function fromArray(a) {
+  let _i = a.length - 1 | 0;
+  let _res = (
+    /* [] */
+    0
+  );
+  while (true) {
+    let res = _res;
+    let i = _i;
+    if (i < 0) {
+      return res;
     }
-    function getWithDefault(opt, $$default) {
-      if (opt.TAG === "Ok") {
-        return opt._0;
-      } else {
-        return $$default;
-      }
+    _res = {
+      hd: a[i],
+      tl: res
+    };
+    _i = i - 1 | 0;
+    continue;
+  }
+  ;
+}
+function toArray(x) {
+  let len = length(x);
+  let arr = new Array(len);
+  fillAux(arr, 0, x);
+  return arr;
+}
+function shuffle2(xs) {
+  let v = toArray(xs);
+  Belt_Array2.shuffleInPlace(v);
+  return fromArray(v);
+}
+function reverseConcat(_l1, _l2) {
+  while (true) {
+    let l2 = _l2;
+    let l1 = _l1;
+    if (l1 === 0) {
+      return l2;
     }
-    function isOk(x) {
-      if (x.TAG === "Ok") {
-        return true;
-      } else {
-        return false;
-      }
+    _l2 = {
+      hd: l1.hd,
+      tl: l2
+    };
+    _l1 = l1.tl;
+    continue;
+  }
+  ;
+}
+function reverse2(l) {
+  return reverseConcat(
+    l,
+    /* [] */
+    0
+  );
+}
+function flattenAux(_prec, _xs) {
+  while (true) {
+    let xs = _xs;
+    let prec = _prec;
+    if (xs !== 0) {
+      _xs = xs.tl;
+      _prec = copyAuxCont(xs.hd, prec);
+      continue;
     }
-    function isError(x) {
-      if (x.TAG === "Ok") {
-        return false;
-      } else {
-        return true;
-      }
+    prec.tl = /* [] */
+    0;
+    return;
+  }
+  ;
+}
+function flatten(_xs) {
+  while (true) {
+    let xs = _xs;
+    if (xs === 0) {
+      return (
+        /* [] */
+        0
+      );
     }
-    function eqU(a, b, f) {
-      if (a.TAG === "Ok") {
-        if (b.TAG === "Ok") {
-          return f(a._0, b._0);
-        } else {
-          return false;
-        }
-      } else if (b.TAG === "Ok") {
-        return false;
-      } else {
-        return true;
-      }
+    let match = xs.hd;
+    if (match !== 0) {
+      let cell = {
+        hd: match.hd,
+        tl: (
+          /* [] */
+          0
+        )
+      };
+      flattenAux(copyAuxCont(match.tl, cell), xs.tl);
+      return cell;
     }
-    function eq(a, b, f) {
-      return eqU(a, b, Curry.__2(f));
+    _xs = xs.tl;
+    continue;
+  }
+  ;
+}
+function concatMany2(xs) {
+  let len = xs.length;
+  if (len === 1) {
+    return xs[0];
+  }
+  if (len === 0) {
+    return (
+      /* [] */
+      0
+    );
+  }
+  let len$1 = xs.length;
+  let v = xs[len$1 - 1 | 0];
+  for (let i = len$1 - 2 | 0; i >= 0; --i) {
+    v = concat2(xs[i], v);
+  }
+  return v;
+}
+function mapReverse(l, f) {
+  let _accu = (
+    /* [] */
+    0
+  );
+  let _xs = l;
+  while (true) {
+    let xs = _xs;
+    let accu = _accu;
+    if (xs === 0) {
+      return accu;
     }
-    function cmpU(a, b, f) {
-      if (a.TAG === "Ok") {
-        if (b.TAG === "Ok") {
-          return f(a._0, b._0);
-        } else {
-          return 1;
-        }
-      } else if (b.TAG === "Ok") {
+    _xs = xs.tl;
+    _accu = {
+      hd: f(xs.hd),
+      tl: accu
+    };
+    continue;
+  }
+  ;
+}
+function forEach4(_xs, f) {
+  while (true) {
+    let xs = _xs;
+    if (xs === 0) {
+      return;
+    }
+    f(xs.hd);
+    _xs = xs.tl;
+    continue;
+  }
+  ;
+}
+function forEachWithIndex2(l, f) {
+  let _xs = l;
+  let _i = 0;
+  while (true) {
+    let i = _i;
+    let xs = _xs;
+    if (xs === 0) {
+      return;
+    }
+    f(i, xs.hd);
+    _i = i + 1 | 0;
+    _xs = xs.tl;
+    continue;
+  }
+  ;
+}
+function reduce2(_l, _accu, f) {
+  while (true) {
+    let accu = _accu;
+    let l = _l;
+    if (l === 0) {
+      return accu;
+    }
+    _accu = f(accu, l.hd);
+    _l = l.tl;
+    continue;
+  }
+  ;
+}
+function reduceReverseUnsafe(l, accu, f) {
+  if (l !== 0) {
+    return f(reduceReverseUnsafe(l.tl, accu, f), l.hd);
+  } else {
+    return accu;
+  }
+}
+function reduceReverse3(l, acc, f) {
+  let len = length(l);
+  if (len < 1e3) {
+    return reduceReverseUnsafe(l, acc, f);
+  } else {
+    return Belt_Array2.reduceReverse(toArray(l), acc, f);
+  }
+}
+function reduceWithIndex2(l, acc, f) {
+  let _l = l;
+  let _acc = acc;
+  let _i = 0;
+  while (true) {
+    let i = _i;
+    let acc$1 = _acc;
+    let l$1 = _l;
+    if (l$1 === 0) {
+      return acc$1;
+    }
+    _i = i + 1 | 0;
+    _acc = f(acc$1, l$1.hd, i);
+    _l = l$1.tl;
+    continue;
+  }
+  ;
+}
+function mapReverse2(l1, l2, f) {
+  let _l1 = l1;
+  let _l2 = l2;
+  let _accu = (
+    /* [] */
+    0
+  );
+  while (true) {
+    let accu = _accu;
+    let l2$1 = _l2;
+    let l1$1 = _l1;
+    if (l1$1 === 0) {
+      return accu;
+    }
+    if (l2$1 === 0) {
+      return accu;
+    }
+    _accu = {
+      hd: f(l1$1.hd, l2$1.hd),
+      tl: accu
+    };
+    _l2 = l2$1.tl;
+    _l1 = l1$1.tl;
+    continue;
+  }
+  ;
+}
+function forEach22(_l1, _l2, f) {
+  while (true) {
+    let l2 = _l2;
+    let l1 = _l1;
+    if (l1 === 0) {
+      return;
+    }
+    if (l2 === 0) {
+      return;
+    }
+    f(l1.hd, l2.hd);
+    _l2 = l2.tl;
+    _l1 = l1.tl;
+    continue;
+  }
+  ;
+}
+function reduce22(_l1, _l2, _accu, f) {
+  while (true) {
+    let accu = _accu;
+    let l2 = _l2;
+    let l1 = _l1;
+    if (l1 === 0) {
+      return accu;
+    }
+    if (l2 === 0) {
+      return accu;
+    }
+    _accu = f(accu, l1.hd, l2.hd);
+    _l2 = l2.tl;
+    _l1 = l1.tl;
+    continue;
+  }
+  ;
+}
+function reduceReverse2Unsafe(l1, l2, accu, f) {
+  if (l1 !== 0 && l2 !== 0) {
+    return f(reduceReverse2Unsafe(l1.tl, l2.tl, accu, f), l1.hd, l2.hd);
+  } else {
+    return accu;
+  }
+}
+function reduceReverse22(l1, l2, acc, f) {
+  let len = length(l1);
+  if (len < 1e3) {
+    return reduceReverse2Unsafe(l1, l2, acc, f);
+  } else {
+    return Belt_Array2.reduceReverse2(toArray(l1), toArray(l2), acc, f);
+  }
+}
+function every3(_xs, p) {
+  while (true) {
+    let xs = _xs;
+    if (xs === 0) {
+      return true;
+    }
+    if (!p(xs.hd)) {
+      return false;
+    }
+    _xs = xs.tl;
+    continue;
+  }
+  ;
+}
+function some3(_xs, p) {
+  while (true) {
+    let xs = _xs;
+    if (xs === 0) {
+      return false;
+    }
+    if (p(xs.hd)) {
+      return true;
+    }
+    _xs = xs.tl;
+    continue;
+  }
+  ;
+}
+function every22(_l1, _l2, p) {
+  while (true) {
+    let l2 = _l2;
+    let l1 = _l1;
+    if (l1 === 0) {
+      return true;
+    }
+    if (l2 === 0) {
+      return true;
+    }
+    if (!p(l1.hd, l2.hd)) {
+      return false;
+    }
+    _l2 = l2.tl;
+    _l1 = l1.tl;
+    continue;
+  }
+  ;
+}
+function cmpByLength(_l1, _l2) {
+  while (true) {
+    let l2 = _l2;
+    let l1 = _l1;
+    if (l1 === 0) {
+      if (l2 !== 0) {
         return -1;
       } else {
         return 0;
       }
     }
-    function cmp(a, b, f) {
-      return cmpU(a, b, Curry.__2(f));
+    if (l2 === 0) {
+      return 1;
     }
-    exports2.getExn = getExn;
-    exports2.mapWithDefaultU = mapWithDefaultU;
-    exports2.mapWithDefault = mapWithDefault;
-    exports2.mapU = mapU;
-    exports2.map = map;
-    exports2.flatMapU = flatMapU;
-    exports2.flatMap = flatMap;
-    exports2.getWithDefault = getWithDefault;
-    exports2.isOk = isOk;
-    exports2.isError = isError;
-    exports2.eqU = eqU;
-    exports2.eq = eq;
-    exports2.cmpU = cmpU;
-    exports2.cmp = cmp;
+    _l2 = l2.tl;
+    _l1 = l1.tl;
+    continue;
   }
-});
-
-// node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/belt_SortArray.js
-var require_belt_SortArray = __commonJS({
-  "node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/belt_SortArray.js"(exports2) {
-    "use strict";
-    var Curry = require_curry();
-    var Belt_Array = require_belt_Array();
-    function sortedLengthAuxMore(xs, _prec, _acc, len, lt) {
-      while (true) {
-        var acc = _acc;
-        var prec = _prec;
-        if (acc >= len) {
-          return acc;
-        }
-        var v = xs[acc];
-        if (!lt(v, prec)) {
-          return acc;
-        }
-        _acc = acc + 1 | 0;
-        _prec = v;
-        continue;
-      }
-      ;
-    }
-    function strictlySortedLengthU(xs, lt) {
-      var len = xs.length;
-      if (len === 0 || len === 1) {
-        return len;
-      }
-      var x0 = xs[0];
-      var x1 = xs[1];
-      if (lt(x0, x1)) {
-        var _prec = x1;
-        var _acc = 2;
-        while (true) {
-          var acc = _acc;
-          var prec = _prec;
-          if (acc >= len) {
-            return acc;
-          }
-          var v = xs[acc];
-          if (!lt(prec, v)) {
-            return acc;
-          }
-          _acc = acc + 1 | 0;
-          _prec = v;
-          continue;
-        }
-        ;
-      } else if (lt(x1, x0)) {
-        return -sortedLengthAuxMore(xs, x1, 2, len, lt) | 0;
-      } else {
-        return 1;
-      }
-    }
-    function strictlySortedLength(xs, lt) {
-      return strictlySortedLengthU(xs, Curry.__2(lt));
-    }
-    function isSortedU(a, cmp) {
-      var len = a.length;
-      if (len === 0) {
-        return true;
-      } else {
-        var _i = 0;
-        var last_bound = len - 1 | 0;
-        while (true) {
-          var i = _i;
-          if (i === last_bound) {
-            return true;
-          }
-          if (cmp(a[i], a[i + 1 | 0]) > 0) {
-            return false;
-          }
-          _i = i + 1 | 0;
-          continue;
-        }
-        ;
-      }
-    }
-    function isSorted(a, cmp) {
-      return isSortedU(a, Curry.__2(cmp));
-    }
-    function merge(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp) {
-      var src1r = src1ofs + src1len | 0;
-      var src2r = src2ofs + src2len | 0;
-      var _i1 = src1ofs;
-      var _s1 = src[src1ofs];
-      var _i2 = src2ofs;
-      var _s2 = src2[src2ofs];
-      var _d = dstofs;
-      while (true) {
-        var d = _d;
-        var s2 = _s2;
-        var i2 = _i2;
-        var s1 = _s1;
-        var i1 = _i1;
-        if (cmp(s1, s2) <= 0) {
-          dst[d] = s1;
-          var i1$1 = i1 + 1 | 0;
-          if (i1$1 >= src1r) {
-            return Belt_Array.blitUnsafe(src2, i2, dst, d + 1 | 0, src2r - i2 | 0);
-          }
-          _d = d + 1 | 0;
-          _s1 = src[i1$1];
-          _i1 = i1$1;
-          continue;
-        }
-        dst[d] = s2;
-        var i2$1 = i2 + 1 | 0;
-        if (i2$1 >= src2r) {
-          return Belt_Array.blitUnsafe(src, i1, dst, d + 1 | 0, src1r - i1 | 0);
-        }
-        _d = d + 1 | 0;
-        _s2 = src2[i2$1];
-        _i2 = i2$1;
-        continue;
-      }
-      ;
-    }
-    function unionU(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp) {
-      var src1r = src1ofs + src1len | 0;
-      var src2r = src2ofs + src2len | 0;
-      var _i1 = src1ofs;
-      var _s1 = src[src1ofs];
-      var _i2 = src2ofs;
-      var _s2 = src2[src2ofs];
-      var _d = dstofs;
-      while (true) {
-        var d = _d;
-        var s2 = _s2;
-        var i2 = _i2;
-        var s1 = _s1;
-        var i1 = _i1;
-        var c = cmp(s1, s2);
-        if (c < 0) {
-          dst[d] = s1;
-          var i1$1 = i1 + 1 | 0;
-          var d$1 = d + 1 | 0;
-          if (i1$1 < src1r) {
-            _d = d$1;
-            _s1 = src[i1$1];
-            _i1 = i1$1;
-            continue;
-          }
-          Belt_Array.blitUnsafe(src2, i2, dst, d$1, src2r - i2 | 0);
-          return (d$1 + src2r | 0) - i2 | 0;
-        }
-        if (c === 0) {
-          dst[d] = s1;
-          var i1$2 = i1 + 1 | 0;
-          var i2$1 = i2 + 1 | 0;
-          var d$2 = d + 1 | 0;
-          if (!(i1$2 < src1r && i2$1 < src2r)) {
-            if (i1$2 === src1r) {
-              Belt_Array.blitUnsafe(src2, i2$1, dst, d$2, src2r - i2$1 | 0);
-              return (d$2 + src2r | 0) - i2$1 | 0;
-            } else {
-              Belt_Array.blitUnsafe(src, i1$2, dst, d$2, src1r - i1$2 | 0);
-              return (d$2 + src1r | 0) - i1$2 | 0;
-            }
-          }
-          _d = d$2;
-          _s2 = src2[i2$1];
-          _i2 = i2$1;
-          _s1 = src[i1$2];
-          _i1 = i1$2;
-          continue;
-        }
-        dst[d] = s2;
-        var i2$2 = i2 + 1 | 0;
-        var d$3 = d + 1 | 0;
-        if (i2$2 < src2r) {
-          _d = d$3;
-          _s2 = src2[i2$2];
-          _i2 = i2$2;
-          continue;
-        }
-        Belt_Array.blitUnsafe(src, i1, dst, d$3, src1r - i1 | 0);
-        return (d$3 + src1r | 0) - i1 | 0;
-      }
-      ;
-    }
-    function union(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp) {
-      return unionU(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, Curry.__2(cmp));
-    }
-    function intersectU(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp) {
-      var src1r = src1ofs + src1len | 0;
-      var src2r = src2ofs + src2len | 0;
-      var _i1 = src1ofs;
-      var _s1 = src[src1ofs];
-      var _i2 = src2ofs;
-      var _s2 = src2[src2ofs];
-      var _d = dstofs;
-      while (true) {
-        var d = _d;
-        var s2 = _s2;
-        var i2 = _i2;
-        var s1 = _s1;
-        var i1 = _i1;
-        var c = cmp(s1, s2);
-        if (c < 0) {
-          var i1$1 = i1 + 1 | 0;
-          if (i1$1 >= src1r) {
-            return d;
-          }
-          _s1 = src[i1$1];
-          _i1 = i1$1;
-          continue;
-        }
-        if (c === 0) {
-          dst[d] = s1;
-          var i1$2 = i1 + 1 | 0;
-          var i2$1 = i2 + 1 | 0;
-          var d$1 = d + 1 | 0;
-          if (!(i1$2 < src1r && i2$1 < src2r)) {
-            return d$1;
-          }
-          _d = d$1;
-          _s2 = src2[i2$1];
-          _i2 = i2$1;
-          _s1 = src[i1$2];
-          _i1 = i1$2;
-          continue;
-        }
-        var i2$2 = i2 + 1 | 0;
-        if (i2$2 >= src2r) {
-          return d;
-        }
-        _s2 = src2[i2$2];
-        _i2 = i2$2;
-        continue;
-      }
-      ;
-    }
-    function intersect(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp) {
-      return intersectU(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, Curry.__2(cmp));
-    }
-    function diffU(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp) {
-      var src1r = src1ofs + src1len | 0;
-      var src2r = src2ofs + src2len | 0;
-      var _i1 = src1ofs;
-      var _s1 = src[src1ofs];
-      var _i2 = src2ofs;
-      var _s2 = src2[src2ofs];
-      var _d = dstofs;
-      while (true) {
-        var d = _d;
-        var s2 = _s2;
-        var i2 = _i2;
-        var s1 = _s1;
-        var i1 = _i1;
-        var c = cmp(s1, s2);
-        if (c < 0) {
-          dst[d] = s1;
-          var d$1 = d + 1 | 0;
-          var i1$1 = i1 + 1 | 0;
-          if (i1$1 >= src1r) {
-            return d$1;
-          }
-          _d = d$1;
-          _s1 = src[i1$1];
-          _i1 = i1$1;
-          continue;
-        }
-        if (c === 0) {
-          var i1$2 = i1 + 1 | 0;
-          var i2$1 = i2 + 1 | 0;
-          if (!(i1$2 < src1r && i2$1 < src2r)) {
-            if (i1$2 === src1r) {
-              return d;
-            } else {
-              Belt_Array.blitUnsafe(src, i1$2, dst, d, src1r - i1$2 | 0);
-              return (d + src1r | 0) - i1$2 | 0;
-            }
-          }
-          _s2 = src2[i2$1];
-          _i2 = i2$1;
-          _s1 = src[i1$2];
-          _i1 = i1$2;
-          continue;
-        }
-        var i2$2 = i2 + 1 | 0;
-        if (i2$2 < src2r) {
-          _s2 = src2[i2$2];
-          _i2 = i2$2;
-          continue;
-        }
-        Belt_Array.blitUnsafe(src, i1, dst, d, src1r - i1 | 0);
-        return (d + src1r | 0) - i1 | 0;
-      }
-      ;
-    }
-    function diff(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp) {
-      return diffU(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, Curry.__2(cmp));
-    }
-    function insertionSort(src, srcofs, dst, dstofs, len, cmp) {
-      for (var i = 0; i < len; ++i) {
-        var e = src[srcofs + i | 0];
-        var j = (dstofs + i | 0) - 1 | 0;
-        while (j >= dstofs && cmp(dst[j], e) > 0) {
-          dst[j + 1 | 0] = dst[j];
-          j = j - 1 | 0;
-        }
-        ;
-        dst[j + 1 | 0] = e;
-      }
-    }
-    function sortTo(src, srcofs, dst, dstofs, len, cmp) {
-      if (len <= 5) {
-        return insertionSort(src, srcofs, dst, dstofs, len, cmp);
-      }
-      var l1 = len / 2 | 0;
-      var l2 = len - l1 | 0;
-      sortTo(src, srcofs + l1 | 0, dst, dstofs + l1 | 0, l2, cmp);
-      sortTo(src, srcofs, src, srcofs + l2 | 0, l1, cmp);
-      merge(src, srcofs + l2 | 0, l1, dst, dstofs + l1 | 0, l2, dst, dstofs, cmp);
-    }
-    function stableSortInPlaceByU(a, cmp) {
-      var l = a.length;
-      if (l <= 5) {
-        return insertionSort(a, 0, a, 0, l, cmp);
-      }
-      var l1 = l / 2 | 0;
-      var l2 = l - l1 | 0;
-      var t = new Array(l2);
-      sortTo(a, l1, t, 0, l2, cmp);
-      sortTo(a, 0, a, l2, l1, cmp);
-      merge(a, l2, l1, t, 0, l2, a, 0, cmp);
-    }
-    function stableSortInPlaceBy(a, cmp) {
-      stableSortInPlaceByU(a, Curry.__2(cmp));
-    }
-    function stableSortByU(a, cmp) {
-      var b = a.slice(0);
-      stableSortInPlaceByU(b, cmp);
-      return b;
-    }
-    function stableSortBy(a, cmp) {
-      return stableSortByU(a, Curry.__2(cmp));
-    }
-    function binarySearchByU(sorted, key, cmp) {
-      var len = sorted.length;
-      if (len === 0) {
+  ;
+}
+function cmp4(_l1, _l2, p) {
+  while (true) {
+    let l2 = _l2;
+    let l1 = _l1;
+    if (l1 === 0) {
+      if (l2 !== 0) {
         return -1;
-      }
-      var lo = sorted[0];
-      var c = cmp(key, lo);
-      if (c < 0) {
-        return -1;
-      }
-      var hi = sorted[len - 1 | 0];
-      var c2 = cmp(key, hi);
-      if (c2 > 0) {
-        return -(len + 1 | 0) | 0;
       } else {
-        var _lo = 0;
-        var _hi = len - 1 | 0;
-        while (true) {
-          var hi$1 = _hi;
-          var lo$1 = _lo;
-          var mid = (lo$1 + hi$1 | 0) / 2 | 0;
-          var midVal = sorted[mid];
-          var c$1 = cmp(key, midVal);
-          if (c$1 === 0) {
-            return mid;
-          }
-          if (c$1 < 0) {
-            if (hi$1 === mid) {
-              if (cmp(sorted[lo$1], key) === 0) {
-                return lo$1;
-              } else {
-                return -(hi$1 + 1 | 0) | 0;
-              }
-            }
-            _hi = mid;
-            continue;
-          }
-          if (lo$1 === mid) {
-            if (cmp(sorted[hi$1], key) === 0) {
-              return hi$1;
-            } else {
-              return -(hi$1 + 1 | 0) | 0;
-            }
-          }
-          _lo = mid;
-          continue;
-        }
-        ;
+        return 0;
       }
     }
-    function binarySearchBy(sorted, key, cmp) {
-      return binarySearchByU(sorted, key, Curry.__2(cmp));
+    if (l2 === 0) {
+      return 1;
     }
-    var Int;
-    var $$String;
-    exports2.Int = Int;
-    exports2.$$String = $$String;
-    exports2.strictlySortedLengthU = strictlySortedLengthU;
-    exports2.strictlySortedLength = strictlySortedLength;
-    exports2.isSortedU = isSortedU;
-    exports2.isSorted = isSorted;
-    exports2.stableSortInPlaceByU = stableSortInPlaceByU;
-    exports2.stableSortInPlaceBy = stableSortInPlaceBy;
-    exports2.stableSortByU = stableSortByU;
-    exports2.stableSortBy = stableSortBy;
-    exports2.binarySearchByU = binarySearchByU;
-    exports2.binarySearchBy = binarySearchBy;
-    exports2.unionU = unionU;
-    exports2.union = union;
-    exports2.intersectU = intersectU;
-    exports2.intersect = intersect;
-    exports2.diffU = diffU;
-    exports2.diff = diff;
+    let c = p(l1.hd, l2.hd);
+    if (c !== 0) {
+      return c;
+    }
+    _l2 = l2.tl;
+    _l1 = l1.tl;
+    continue;
   }
-});
-
-// node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/belt_List.js
-var require_belt_List = __commonJS({
-  "node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/belt_List.js"(exports2) {
-    "use strict";
-    var Curry = require_curry();
-    var Belt_Array = require_belt_Array();
-    var Caml_option = require_caml_option();
-    var Belt_SortArray = require_belt_SortArray();
-    function head(x) {
-      if (x) {
-        return Caml_option.some(x.hd);
-      }
+  ;
+}
+function eq4(_l1, _l2, p) {
+  while (true) {
+    let l2 = _l2;
+    let l1 = _l1;
+    if (l1 === 0) {
+      return l2 === 0;
     }
-    function headExn(x) {
-      if (x) {
-        return x.hd;
-      }
-      throw {
-        RE_EXN_ID: "Not_found",
-        Error: new Error()
-      };
+    if (l2 === 0) {
+      return false;
     }
-    function tail(x) {
-      if (x) {
-        return x.tl;
-      }
+    if (!p(l1.hd, l2.hd)) {
+      return false;
     }
-    function tailExn(x) {
-      if (x) {
-        return x.tl;
-      }
-      throw {
-        RE_EXN_ID: "Not_found",
-        Error: new Error()
-      };
+    _l2 = l2.tl;
+    _l1 = l1.tl;
+    continue;
+  }
+  ;
+}
+function some23(_l1, _l2, p) {
+  while (true) {
+    let l2 = _l2;
+    let l1 = _l1;
+    if (l1 === 0) {
+      return false;
     }
-    function add(xs, x) {
-      return {
-        hd: x,
-        tl: xs
-      };
+    if (l2 === 0) {
+      return false;
     }
-    function get(x, n) {
-      if (n < 0) {
-        return;
-      } else {
-        var _x = x;
-        var _n = n;
-        while (true) {
-          var n$1 = _n;
-          var x$1 = _x;
-          if (!x$1) {
-            return;
-          }
-          if (n$1 === 0) {
-            return Caml_option.some(x$1.hd);
-          }
-          _n = n$1 - 1 | 0;
-          _x = x$1.tl;
-          continue;
-        }
-        ;
-      }
+    if (p(l1.hd, l2.hd)) {
+      return true;
     }
-    function getExn(x, n) {
-      if (n < 0) {
-        throw {
-          RE_EXN_ID: "Not_found",
-          Error: new Error()
-        };
-      }
-      var _x = x;
-      var _n = n;
-      while (true) {
-        var n$1 = _n;
-        var x$1 = _x;
-        if (x$1) {
-          if (n$1 === 0) {
-            return x$1.hd;
-          }
-          _n = n$1 - 1 | 0;
-          _x = x$1.tl;
-          continue;
-        }
-        throw {
-          RE_EXN_ID: "Not_found",
-          Error: new Error()
-        };
-      }
-      ;
+    _l2 = l2.tl;
+    _l1 = l1.tl;
+    continue;
+  }
+  ;
+}
+function has(_xs, x, eq8) {
+  while (true) {
+    let xs = _xs;
+    if (xs === 0) {
+      return false;
     }
-    function partitionAux(p, _cell, _precX, _precY) {
-      while (true) {
-        var precY = _precY;
-        var precX = _precX;
-        var cell = _cell;
-        if (!cell) {
-          return;
-        }
-        var t = cell.tl;
-        var h = cell.hd;
-        var next = {
-          hd: h,
-          tl: (
-            /* [] */
-            0
-          )
-        };
-        if (p(h)) {
-          precX.tl = next;
-          _precX = next;
-          _cell = t;
-          continue;
-        }
-        precY.tl = next;
-        _precY = next;
-        _cell = t;
-        continue;
-      }
-      ;
+    if (eq8(xs.hd, x)) {
+      return true;
     }
-    function splitAux(_cell, _precX, _precY) {
-      while (true) {
-        var precY = _precY;
-        var precX = _precX;
-        var cell = _cell;
-        if (!cell) {
-          return;
-        }
-        var match = cell.hd;
-        var nextA = {
-          hd: match[0],
-          tl: (
-            /* [] */
-            0
-          )
-        };
-        var nextB = {
-          hd: match[1],
-          tl: (
-            /* [] */
-            0
-          )
-        };
-        precX.tl = nextA;
-        precY.tl = nextB;
-        _precY = nextB;
-        _precX = nextA;
-        _cell = cell.tl;
-        continue;
-      }
-      ;
+    _xs = xs.tl;
+    continue;
+  }
+  ;
+}
+function getAssoc(_xs, x, eq8) {
+  while (true) {
+    let xs = _xs;
+    if (xs === 0) {
+      return;
     }
-    function copyAuxCont(_cellX, _prec) {
-      while (true) {
-        var prec = _prec;
-        var cellX = _cellX;
-        if (!cellX) {
-          return prec;
-        }
-        var next = {
-          hd: cellX.hd,
-          tl: (
-            /* [] */
-            0
-          )
-        };
-        prec.tl = next;
-        _prec = next;
-        _cellX = cellX.tl;
-        continue;
-      }
-      ;
+    let match = xs.hd;
+    if (eq8(match[0], x)) {
+      return Primitive_option4.some(match[1]);
     }
-    function copyAuxWitFilter(f, _cellX, _prec) {
-      while (true) {
-        var prec = _prec;
-        var cellX = _cellX;
-        if (!cellX) {
-          return;
-        }
-        var t = cellX.tl;
-        var h = cellX.hd;
-        if (f(h)) {
-          var next = {
-            hd: h,
-            tl: (
-              /* [] */
-              0
-            )
-          };
-          prec.tl = next;
-          _prec = next;
-          _cellX = t;
-          continue;
-        }
-        _cellX = t;
-        continue;
-      }
-      ;
+    _xs = xs.tl;
+    continue;
+  }
+  ;
+}
+function hasAssoc(_xs, x, eq8) {
+  while (true) {
+    let xs = _xs;
+    if (xs === 0) {
+      return false;
     }
-    function copyAuxWithFilterIndex(f, _cellX, _prec, _i) {
-      while (true) {
-        var i = _i;
-        var prec = _prec;
-        var cellX = _cellX;
-        if (!cellX) {
-          return;
-        }
-        var t = cellX.tl;
-        var h = cellX.hd;
-        if (f(h, i)) {
-          var next = {
-            hd: h,
-            tl: (
-              /* [] */
-              0
-            )
-          };
-          prec.tl = next;
-          _i = i + 1 | 0;
-          _prec = next;
-          _cellX = t;
-          continue;
-        }
-        _i = i + 1 | 0;
-        _cellX = t;
-        continue;
-      }
-      ;
+    if (eq8(xs.hd[0], x)) {
+      return true;
     }
-    function copyAuxWitFilterMap(f, _cellX, _prec) {
-      while (true) {
-        var prec = _prec;
-        var cellX = _cellX;
-        if (!cellX) {
-          return;
-        }
-        var t = cellX.tl;
-        var h = f(cellX.hd);
-        if (h !== void 0) {
-          var next = {
-            hd: Caml_option.valFromOption(h),
-            tl: (
-              /* [] */
-              0
-            )
-          };
-          prec.tl = next;
-          _prec = next;
-          _cellX = t;
-          continue;
-        }
-        _cellX = t;
-        continue;
-      }
-      ;
-    }
-    function removeAssocAuxWithMap(_cellX, x, _prec, f) {
-      while (true) {
-        var prec = _prec;
-        var cellX = _cellX;
-        if (!cellX) {
-          return false;
-        }
-        var t = cellX.tl;
-        var h = cellX.hd;
-        if (f(h[0], x)) {
-          prec.tl = t;
-          return true;
-        }
-        var next = {
-          hd: h,
-          tl: (
-            /* [] */
-            0
-          )
-        };
-        prec.tl = next;
-        _prec = next;
-        _cellX = t;
-        continue;
-      }
-      ;
-    }
-    function setAssocAuxWithMap(_cellX, x, k, _prec, eq2) {
-      while (true) {
-        var prec = _prec;
-        var cellX = _cellX;
-        if (!cellX) {
-          return false;
-        }
-        var t = cellX.tl;
-        var h = cellX.hd;
-        if (eq2(h[0], x)) {
-          prec.tl = {
-            hd: [
-              x,
-              k
-            ],
-            tl: t
-          };
-          return true;
-        }
-        var next = {
-          hd: h,
-          tl: (
-            /* [] */
-            0
-          )
-        };
-        prec.tl = next;
-        _prec = next;
-        _cellX = t;
-        continue;
-      }
-      ;
-    }
-    function copyAuxWithMap(_cellX, _prec, f) {
-      while (true) {
-        var prec = _prec;
-        var cellX = _cellX;
-        if (!cellX) {
-          return;
-        }
-        var next = {
-          hd: f(cellX.hd),
-          tl: (
-            /* [] */
-            0
-          )
-        };
-        prec.tl = next;
-        _prec = next;
-        _cellX = cellX.tl;
-        continue;
-      }
-      ;
-    }
-    function zipAux(_cellX, _cellY, _prec) {
-      while (true) {
-        var prec = _prec;
-        var cellY = _cellY;
-        var cellX = _cellX;
-        if (!cellX) {
-          return;
-        }
-        if (!cellY) {
-          return;
-        }
-        var next = {
-          hd: [
-            cellX.hd,
-            cellY.hd
-          ],
-          tl: (
-            /* [] */
-            0
-          )
-        };
-        prec.tl = next;
-        _prec = next;
-        _cellY = cellY.tl;
-        _cellX = cellX.tl;
-        continue;
-      }
-      ;
-    }
-    function copyAuxWithMap2(f, _cellX, _cellY, _prec) {
-      while (true) {
-        var prec = _prec;
-        var cellY = _cellY;
-        var cellX = _cellX;
-        if (!cellX) {
-          return;
-        }
-        if (!cellY) {
-          return;
-        }
-        var next = {
-          hd: f(cellX.hd, cellY.hd),
-          tl: (
-            /* [] */
-            0
-          )
-        };
-        prec.tl = next;
-        _prec = next;
-        _cellY = cellY.tl;
-        _cellX = cellX.tl;
-        continue;
-      }
-      ;
-    }
-    function copyAuxWithMapI(f, _i, _cellX, _prec) {
-      while (true) {
-        var prec = _prec;
-        var cellX = _cellX;
-        var i = _i;
-        if (!cellX) {
-          return;
-        }
-        var next = {
-          hd: f(i, cellX.hd),
-          tl: (
-            /* [] */
-            0
-          )
-        };
-        prec.tl = next;
-        _prec = next;
-        _cellX = cellX.tl;
-        _i = i + 1 | 0;
-        continue;
-      }
-      ;
-    }
-    function takeAux(_n, _cell, _prec) {
-      while (true) {
-        var prec = _prec;
-        var cell = _cell;
-        var n = _n;
-        if (n === 0) {
-          return true;
-        }
-        if (!cell) {
-          return false;
-        }
-        var cell$1 = {
-          hd: cell.hd,
-          tl: (
-            /* [] */
-            0
-          )
-        };
-        prec.tl = cell$1;
-        _prec = cell$1;
-        _cell = cell.tl;
-        _n = n - 1 | 0;
-        continue;
-      }
-      ;
-    }
-    function splitAtAux(_n, _cell, _prec) {
-      while (true) {
-        var prec = _prec;
-        var cell = _cell;
-        var n = _n;
-        if (n === 0) {
-          return cell;
-        }
-        if (!cell) {
-          return;
-        }
-        var cell$1 = {
-          hd: cell.hd,
-          tl: (
-            /* [] */
-            0
-          )
-        };
-        prec.tl = cell$1;
-        _prec = cell$1;
-        _cell = cell.tl;
-        _n = n - 1 | 0;
-        continue;
-      }
-      ;
-    }
-    function take(lst, n) {
-      if (n < 0) {
-        return;
-      }
-      if (n === 0) {
-        return (
-          /* [] */
-          0
-        );
-      }
-      if (!lst) {
-        return;
-      }
-      var cell = {
-        hd: lst.hd,
-        tl: (
-          /* [] */
-          0
-        )
-      };
-      var has2 = takeAux(n - 1 | 0, lst.tl, cell);
-      if (has2) {
-        return cell;
-      }
-    }
-    function drop(lst, n) {
-      if (n < 0) {
-        return;
-      } else {
-        var _l = lst;
-        var _n = n;
-        while (true) {
-          var n$1 = _n;
-          var l = _l;
-          if (n$1 === 0) {
-            return l;
-          }
-          if (!l) {
-            return;
-          }
-          _n = n$1 - 1 | 0;
-          _l = l.tl;
-          continue;
-        }
-        ;
-      }
-    }
-    function splitAt(lst, n) {
-      if (n < 0) {
-        return;
-      }
-      if (n === 0) {
-        return [
-          /* [] */
-          0,
-          lst
-        ];
-      }
-      if (!lst) {
-        return;
-      }
-      var cell = {
-        hd: lst.hd,
-        tl: (
-          /* [] */
-          0
-        )
-      };
-      var rest = splitAtAux(n - 1 | 0, lst.tl, cell);
-      if (rest !== void 0) {
-        return [
-          cell,
-          rest
-        ];
-      }
-    }
-    function concat(xs, ys) {
-      if (!xs) {
-        return ys;
-      }
-      var cell = {
-        hd: xs.hd,
-        tl: (
-          /* [] */
-          0
-        )
-      };
-      copyAuxCont(xs.tl, cell).tl = ys;
-      return cell;
-    }
-    function mapU(xs, f) {
-      if (!xs) {
-        return (
-          /* [] */
-          0
-        );
-      }
-      var cell = {
-        hd: f(xs.hd),
-        tl: (
-          /* [] */
-          0
-        )
-      };
-      copyAuxWithMap(xs.tl, cell, f);
-      return cell;
-    }
-    function map(xs, f) {
-      return mapU(xs, Curry.__1(f));
-    }
-    function zipByU(l1, l2, f) {
-      if (!l1) {
-        return (
-          /* [] */
-          0
-        );
-      }
-      if (!l2) {
-        return (
-          /* [] */
-          0
-        );
-      }
-      var cell = {
-        hd: f(l1.hd, l2.hd),
-        tl: (
-          /* [] */
-          0
-        )
-      };
-      copyAuxWithMap2(f, l1.tl, l2.tl, cell);
-      return cell;
-    }
-    function zipBy(l1, l2, f) {
-      return zipByU(l1, l2, Curry.__2(f));
-    }
-    function mapWithIndexU(xs, f) {
-      if (!xs) {
-        return (
-          /* [] */
-          0
-        );
-      }
-      var cell = {
-        hd: f(0, xs.hd),
-        tl: (
-          /* [] */
-          0
-        )
-      };
-      copyAuxWithMapI(f, 1, xs.tl, cell);
-      return cell;
-    }
-    function mapWithIndex(xs, f) {
-      return mapWithIndexU(xs, Curry.__2(f));
-    }
-    function makeByU(n, f) {
-      if (n <= 0) {
-        return (
-          /* [] */
-          0
-        );
-      }
-      var headX = {
-        hd: f(0),
-        tl: (
-          /* [] */
-          0
-        )
-      };
-      var cur = headX;
-      var i = 1;
-      while (i < n) {
-        var v = {
-          hd: f(i),
-          tl: (
-            /* [] */
-            0
-          )
-        };
-        cur.tl = v;
-        cur = v;
-        i = i + 1 | 0;
-      }
-      ;
-      return headX;
-    }
-    function makeBy(n, f) {
-      return makeByU(n, Curry.__1(f));
-    }
-    function make(n, v) {
-      if (n <= 0) {
-        return (
-          /* [] */
-          0
-        );
-      }
-      var headX = {
-        hd: v,
-        tl: (
-          /* [] */
-          0
-        )
-      };
-      var cur = headX;
-      var i = 1;
-      while (i < n) {
-        var v$1 = {
-          hd: v,
-          tl: (
-            /* [] */
-            0
-          )
-        };
-        cur.tl = v$1;
-        cur = v$1;
-        i = i + 1 | 0;
-      }
-      ;
-      return headX;
-    }
-    function length(xs) {
-      var _x = xs;
-      var _acc = 0;
-      while (true) {
-        var acc = _acc;
-        var x = _x;
-        if (!x) {
-          return acc;
-        }
-        _acc = acc + 1 | 0;
-        _x = x.tl;
-        continue;
-      }
-      ;
-    }
-    function fillAux(arr, _i, _x) {
-      while (true) {
-        var x = _x;
-        var i = _i;
-        if (!x) {
-          return;
-        }
-        arr[i] = x.hd;
-        _x = x.tl;
-        _i = i + 1 | 0;
-        continue;
-      }
-      ;
-    }
-    function fromArray(a) {
-      var _i = a.length - 1 | 0;
-      var _res = (
+    _xs = xs.tl;
+    continue;
+  }
+  ;
+}
+function removeAssoc(xs, x, eq8) {
+  if (xs === 0) {
+    return (
+      /* [] */
+      0
+    );
+  }
+  let l = xs.tl;
+  let pair = xs.hd;
+  if (eq8(pair[0], x)) {
+    return l;
+  }
+  let cell = {
+    hd: pair,
+    tl: (
+      /* [] */
+      0
+    )
+  };
+  let removed = removeAssocAuxWithMap(l, x, cell, eq8);
+  if (removed) {
+    return cell;
+  } else {
+    return xs;
+  }
+}
+function setAssoc(xs, x, k, eq8) {
+  if (xs === 0) {
+    return {
+      hd: [
+        x,
+        k
+      ],
+      tl: (
         /* [] */
         0
-      );
-      while (true) {
-        var res = _res;
-        var i = _i;
-        if (i < 0) {
-          return res;
-        }
-        _res = {
-          hd: a[i],
-          tl: res
-        };
-        _i = i - 1 | 0;
-        continue;
-      }
-      ;
+      )
+    };
+  }
+  let l = xs.tl;
+  let pair = xs.hd;
+  if (eq8(pair[0], x)) {
+    return {
+      hd: [
+        x,
+        k
+      ],
+      tl: l
+    };
+  }
+  let cell = {
+    hd: pair,
+    tl: (
+      /* [] */
+      0
+    )
+  };
+  let replaced = setAssocAuxWithMap(l, x, k, cell, eq8);
+  if (replaced) {
+    return cell;
+  } else {
+    return {
+      hd: [
+        x,
+        k
+      ],
+      tl: xs
+    };
+  }
+}
+function sort(xs, cmp8) {
+  let arr = toArray(xs);
+  Belt_SortArray.stableSortInPlaceBy(arr, cmp8);
+  return fromArray(arr);
+}
+function getBy2(_xs, p) {
+  while (true) {
+    let xs = _xs;
+    if (xs === 0) {
+      return;
     }
-    function toArray(x) {
-      var len = length(x);
-      var arr = new Array(len);
-      fillAux(arr, 0, x);
-      return arr;
+    let x = xs.hd;
+    if (p(x)) {
+      return Primitive_option4.some(x);
     }
-    function shuffle(xs) {
-      var v = toArray(xs);
-      Belt_Array.shuffleInPlace(v);
-      return fromArray(v);
-    }
-    function reverseConcat(_l1, _l2) {
-      while (true) {
-        var l2 = _l2;
-        var l1 = _l1;
-        if (!l1) {
-          return l2;
-        }
-        _l2 = {
-          hd: l1.hd,
-          tl: l2
-        };
-        _l1 = l1.tl;
-        continue;
-      }
-      ;
-    }
-    function reverse(l) {
-      return reverseConcat(
-        l,
+    _xs = xs.tl;
+    continue;
+  }
+  ;
+}
+function keep3(_xs, p) {
+  while (true) {
+    let xs = _xs;
+    if (xs === 0) {
+      return (
         /* [] */
         0
       );
     }
-    function flattenAux(_prec, _xs) {
-      while (true) {
-        var xs = _xs;
-        var prec = _prec;
-        if (xs) {
-          _xs = xs.tl;
-          _prec = copyAuxCont(xs.hd, prec);
-          continue;
-        }
-        prec.tl = /* [] */
-        0;
-        return;
-      }
-      ;
-    }
-    function flatten(_xs) {
-      while (true) {
-        var xs = _xs;
-        if (!xs) {
-          return (
-            /* [] */
-            0
-          );
-        }
-        var match = xs.hd;
-        if (match) {
-          var cell = {
-            hd: match.hd,
-            tl: (
-              /* [] */
-              0
-            )
-          };
-          flattenAux(copyAuxCont(match.tl, cell), xs.tl);
-          return cell;
-        }
-        _xs = xs.tl;
-        continue;
-      }
-      ;
-    }
-    function concatMany(xs) {
-      var len = xs.length;
-      if (len === 1) {
-        return xs[0];
-      }
-      if (len === 0) {
-        return (
-          /* [] */
-          0
-        );
-      }
-      var len$1 = xs.length;
-      var v = xs[len$1 - 1 | 0];
-      for (var i = len$1 - 2 | 0; i >= 0; --i) {
-        v = concat(xs[i], v);
-      }
-      return v;
-    }
-    function mapReverseU(l, f) {
-      var _accu = (
-        /* [] */
-        0
-      );
-      var _xs = l;
-      while (true) {
-        var xs = _xs;
-        var accu = _accu;
-        if (!xs) {
-          return accu;
-        }
-        _xs = xs.tl;
-        _accu = {
-          hd: f(xs.hd),
-          tl: accu
-        };
-        continue;
-      }
-      ;
-    }
-    function mapReverse(l, f) {
-      return mapReverseU(l, Curry.__1(f));
-    }
-    function forEachU(_xs, f) {
-      while (true) {
-        var xs = _xs;
-        if (!xs) {
-          return;
-        }
-        f(xs.hd);
-        _xs = xs.tl;
-        continue;
-      }
-      ;
-    }
-    function forEach(xs, f) {
-      forEachU(xs, Curry.__1(f));
-    }
-    function forEachWithIndexU(l, f) {
-      var _xs = l;
-      var _i = 0;
-      while (true) {
-        var i = _i;
-        var xs = _xs;
-        if (!xs) {
-          return;
-        }
-        f(i, xs.hd);
-        _i = i + 1 | 0;
-        _xs = xs.tl;
-        continue;
-      }
-      ;
-    }
-    function forEachWithIndex(l, f) {
-      forEachWithIndexU(l, Curry.__2(f));
-    }
-    function reduceU(_l, _accu, f) {
-      while (true) {
-        var accu = _accu;
-        var l = _l;
-        if (!l) {
-          return accu;
-        }
-        _accu = f(accu, l.hd);
-        _l = l.tl;
-        continue;
-      }
-      ;
-    }
-    function reduce(l, accu, f) {
-      return reduceU(l, accu, Curry.__2(f));
-    }
-    function reduceReverseUnsafeU(l, accu, f) {
-      if (l) {
-        return f(reduceReverseUnsafeU(l.tl, accu, f), l.hd);
-      } else {
-        return accu;
-      }
-    }
-    function reduceReverseU(l, acc, f) {
-      var len = length(l);
-      if (len < 1e3) {
-        return reduceReverseUnsafeU(l, acc, f);
-      } else {
-        return Belt_Array.reduceReverseU(toArray(l), acc, f);
-      }
-    }
-    function reduceReverse(l, accu, f) {
-      return reduceReverseU(l, accu, Curry.__2(f));
-    }
-    function reduceWithIndexU(l, acc, f) {
-      var _l = l;
-      var _acc = acc;
-      var _i = 0;
-      while (true) {
-        var i = _i;
-        var acc$1 = _acc;
-        var l$1 = _l;
-        if (!l$1) {
-          return acc$1;
-        }
-        _i = i + 1 | 0;
-        _acc = f(acc$1, l$1.hd, i);
-        _l = l$1.tl;
-        continue;
-      }
-      ;
-    }
-    function reduceWithIndex(l, acc, f) {
-      return reduceWithIndexU(l, acc, Curry.__3(f));
-    }
-    function mapReverse2U(l1, l2, f) {
-      var _l1 = l1;
-      var _l2 = l2;
-      var _accu = (
-        /* [] */
-        0
-      );
-      while (true) {
-        var accu = _accu;
-        var l2$1 = _l2;
-        var l1$1 = _l1;
-        if (!l1$1) {
-          return accu;
-        }
-        if (!l2$1) {
-          return accu;
-        }
-        _accu = {
-          hd: f(l1$1.hd, l2$1.hd),
-          tl: accu
-        };
-        _l2 = l2$1.tl;
-        _l1 = l1$1.tl;
-        continue;
-      }
-      ;
-    }
-    function mapReverse2(l1, l2, f) {
-      return mapReverse2U(l1, l2, Curry.__2(f));
-    }
-    function forEach2U(_l1, _l2, f) {
-      while (true) {
-        var l2 = _l2;
-        var l1 = _l1;
-        if (!l1) {
-          return;
-        }
-        if (!l2) {
-          return;
-        }
-        f(l1.hd, l2.hd);
-        _l2 = l2.tl;
-        _l1 = l1.tl;
-        continue;
-      }
-      ;
-    }
-    function forEach2(l1, l2, f) {
-      forEach2U(l1, l2, Curry.__2(f));
-    }
-    function reduce2U(_l1, _l2, _accu, f) {
-      while (true) {
-        var accu = _accu;
-        var l2 = _l2;
-        var l1 = _l1;
-        if (!l1) {
-          return accu;
-        }
-        if (!l2) {
-          return accu;
-        }
-        _accu = f(accu, l1.hd, l2.hd);
-        _l2 = l2.tl;
-        _l1 = l1.tl;
-        continue;
-      }
-      ;
-    }
-    function reduce2(l1, l2, acc, f) {
-      return reduce2U(l1, l2, acc, Curry.__3(f));
-    }
-    function reduceReverse2UnsafeU(l1, l2, accu, f) {
-      if (l1 && l2) {
-        return f(reduceReverse2UnsafeU(l1.tl, l2.tl, accu, f), l1.hd, l2.hd);
-      } else {
-        return accu;
-      }
-    }
-    function reduceReverse2U(l1, l2, acc, f) {
-      var len = length(l1);
-      if (len < 1e3) {
-        return reduceReverse2UnsafeU(l1, l2, acc, f);
-      } else {
-        return Belt_Array.reduceReverse2U(toArray(l1), toArray(l2), acc, f);
-      }
-    }
-    function reduceReverse2(l1, l2, acc, f) {
-      return reduceReverse2U(l1, l2, acc, Curry.__3(f));
-    }
-    function everyU(_xs, p) {
-      while (true) {
-        var xs = _xs;
-        if (!xs) {
-          return true;
-        }
-        if (!p(xs.hd)) {
-          return false;
-        }
-        _xs = xs.tl;
-        continue;
-      }
-      ;
-    }
-    function every(xs, p) {
-      return everyU(xs, Curry.__1(p));
-    }
-    function someU(_xs, p) {
-      while (true) {
-        var xs = _xs;
-        if (!xs) {
-          return false;
-        }
-        if (p(xs.hd)) {
-          return true;
-        }
-        _xs = xs.tl;
-        continue;
-      }
-      ;
-    }
-    function some(xs, p) {
-      return someU(xs, Curry.__1(p));
-    }
-    function every2U(_l1, _l2, p) {
-      while (true) {
-        var l2 = _l2;
-        var l1 = _l1;
-        if (!l1) {
-          return true;
-        }
-        if (!l2) {
-          return true;
-        }
-        if (!p(l1.hd, l2.hd)) {
-          return false;
-        }
-        _l2 = l2.tl;
-        _l1 = l1.tl;
-        continue;
-      }
-      ;
-    }
-    function every2(l1, l2, p) {
-      return every2U(l1, l2, Curry.__2(p));
-    }
-    function cmpByLength(_l1, _l2) {
-      while (true) {
-        var l2 = _l2;
-        var l1 = _l1;
-        if (!l1) {
-          if (l2) {
-            return -1;
-          } else {
-            return 0;
-          }
-        }
-        if (!l2) {
-          return 1;
-        }
-        _l2 = l2.tl;
-        _l1 = l1.tl;
-        continue;
-      }
-      ;
-    }
-    function cmpU(_l1, _l2, p) {
-      while (true) {
-        var l2 = _l2;
-        var l1 = _l1;
-        if (!l1) {
-          if (l2) {
-            return -1;
-          } else {
-            return 0;
-          }
-        }
-        if (!l2) {
-          return 1;
-        }
-        var c = p(l1.hd, l2.hd);
-        if (c !== 0) {
-          return c;
-        }
-        _l2 = l2.tl;
-        _l1 = l1.tl;
-        continue;
-      }
-      ;
-    }
-    function cmp(l1, l2, f) {
-      return cmpU(l1, l2, Curry.__2(f));
-    }
-    function eqU(_l1, _l2, p) {
-      while (true) {
-        var l2 = _l2;
-        var l1 = _l1;
-        if (!l1) {
-          if (l2) {
-            return false;
-          } else {
-            return true;
-          }
-        }
-        if (!l2) {
-          return false;
-        }
-        if (!p(l1.hd, l2.hd)) {
-          return false;
-        }
-        _l2 = l2.tl;
-        _l1 = l1.tl;
-        continue;
-      }
-      ;
-    }
-    function eq(l1, l2, f) {
-      return eqU(l1, l2, Curry.__2(f));
-    }
-    function some2U(_l1, _l2, p) {
-      while (true) {
-        var l2 = _l2;
-        var l1 = _l1;
-        if (!l1) {
-          return false;
-        }
-        if (!l2) {
-          return false;
-        }
-        if (p(l1.hd, l2.hd)) {
-          return true;
-        }
-        _l2 = l2.tl;
-        _l1 = l1.tl;
-        continue;
-      }
-      ;
-    }
-    function some2(l1, l2, p) {
-      return some2U(l1, l2, Curry.__2(p));
-    }
-    function hasU(_xs, x, eq2) {
-      while (true) {
-        var xs = _xs;
-        if (!xs) {
-          return false;
-        }
-        if (eq2(xs.hd, x)) {
-          return true;
-        }
-        _xs = xs.tl;
-        continue;
-      }
-      ;
-    }
-    function has(xs, x, eq2) {
-      return hasU(xs, x, Curry.__2(eq2));
-    }
-    function getAssocU(_xs, x, eq2) {
-      while (true) {
-        var xs = _xs;
-        if (!xs) {
-          return;
-        }
-        var match = xs.hd;
-        if (eq2(match[0], x)) {
-          return Caml_option.some(match[1]);
-        }
-        _xs = xs.tl;
-        continue;
-      }
-      ;
-    }
-    function getAssoc(xs, x, eq2) {
-      return getAssocU(xs, x, Curry.__2(eq2));
-    }
-    function hasAssocU(_xs, x, eq2) {
-      while (true) {
-        var xs = _xs;
-        if (!xs) {
-          return false;
-        }
-        if (eq2(xs.hd[0], x)) {
-          return true;
-        }
-        _xs = xs.tl;
-        continue;
-      }
-      ;
-    }
-    function hasAssoc(xs, x, eq2) {
-      return hasAssocU(xs, x, Curry.__2(eq2));
-    }
-    function removeAssocU(xs, x, eq2) {
-      if (!xs) {
-        return (
-          /* [] */
-          0
-        );
-      }
-      var l = xs.tl;
-      var pair = xs.hd;
-      if (eq2(pair[0], x)) {
-        return l;
-      }
-      var cell = {
-        hd: pair,
-        tl: (
-          /* [] */
-          0
-        )
-      };
-      var removed = removeAssocAuxWithMap(l, x, cell, eq2);
-      if (removed) {
-        return cell;
-      } else {
-        return xs;
-      }
-    }
-    function removeAssoc(xs, x, eq2) {
-      return removeAssocU(xs, x, Curry.__2(eq2));
-    }
-    function setAssocU(xs, x, k, eq2) {
-      if (!xs) {
-        return {
-          hd: [
-            x,
-            k
-          ],
-          tl: (
-            /* [] */
-            0
-          )
-        };
-      }
-      var l = xs.tl;
-      var pair = xs.hd;
-      if (eq2(pair[0], x)) {
-        return {
-          hd: [
-            x,
-            k
-          ],
-          tl: l
-        };
-      }
-      var cell = {
-        hd: pair,
-        tl: (
-          /* [] */
-          0
-        )
-      };
-      var replaced = setAssocAuxWithMap(l, x, k, cell, eq2);
-      if (replaced) {
-        return cell;
-      } else {
-        return {
-          hd: [
-            x,
-            k
-          ],
-          tl: xs
-        };
-      }
-    }
-    function setAssoc(xs, x, k, eq2) {
-      return setAssocU(xs, x, k, Curry.__2(eq2));
-    }
-    function sortU(xs, cmp2) {
-      var arr = toArray(xs);
-      Belt_SortArray.stableSortInPlaceByU(arr, cmp2);
-      return fromArray(arr);
-    }
-    function sort(xs, cmp2) {
-      return sortU(xs, Curry.__2(cmp2));
-    }
-    function getByU(_xs, p) {
-      while (true) {
-        var xs = _xs;
-        if (!xs) {
-          return;
-        }
-        var x = xs.hd;
-        if (p(x)) {
-          return Caml_option.some(x);
-        }
-        _xs = xs.tl;
-        continue;
-      }
-      ;
-    }
-    function getBy(xs, p) {
-      return getByU(xs, Curry.__1(p));
-    }
-    function keepU(_xs, p) {
-      while (true) {
-        var xs = _xs;
-        if (!xs) {
-          return (
-            /* [] */
-            0
-          );
-        }
-        var t = xs.tl;
-        var h = xs.hd;
-        if (p(h)) {
-          var cell = {
-            hd: h,
-            tl: (
-              /* [] */
-              0
-            )
-          };
-          copyAuxWitFilter(p, t, cell);
-          return cell;
-        }
-        _xs = t;
-        continue;
-      }
-      ;
-    }
-    function keep(xs, p) {
-      return keepU(xs, Curry.__1(p));
-    }
-    function keepWithIndexU(xs, p) {
-      var _xs = xs;
-      var _i = 0;
-      while (true) {
-        var i = _i;
-        var xs$1 = _xs;
-        if (!xs$1) {
-          return (
-            /* [] */
-            0
-          );
-        }
-        var t = xs$1.tl;
-        var h = xs$1.hd;
-        if (p(h, i)) {
-          var cell = {
-            hd: h,
-            tl: (
-              /* [] */
-              0
-            )
-          };
-          copyAuxWithFilterIndex(p, t, cell, i + 1 | 0);
-          return cell;
-        }
-        _i = i + 1 | 0;
-        _xs = t;
-        continue;
-      }
-      ;
-    }
-    function keepWithIndex(xs, p) {
-      return keepWithIndexU(xs, Curry.__2(p));
-    }
-    function keepMapU(_xs, p) {
-      while (true) {
-        var xs = _xs;
-        if (!xs) {
-          return (
-            /* [] */
-            0
-          );
-        }
-        var t = xs.tl;
-        var h = p(xs.hd);
-        if (h !== void 0) {
-          var cell = {
-            hd: Caml_option.valFromOption(h),
-            tl: (
-              /* [] */
-              0
-            )
-          };
-          copyAuxWitFilterMap(p, t, cell);
-          return cell;
-        }
-        _xs = t;
-        continue;
-      }
-      ;
-    }
-    function keepMap(xs, p) {
-      return keepMapU(xs, Curry.__1(p));
-    }
-    function partitionU(l, p) {
-      if (!l) {
-        return [
-          /* [] */
-          0,
-          /* [] */
-          0
-        ];
-      }
-      var h = l.hd;
-      var nextX = {
+    let t = xs.tl;
+    let h = xs.hd;
+    if (p(h)) {
+      let cell = {
         hd: h,
         tl: (
           /* [] */
           0
         )
       };
-      var nextY = {
+      copyAuxWitFilter(p, t, cell);
+      return cell;
+    }
+    _xs = t;
+    continue;
+  }
+  ;
+}
+function keepWithIndex2(xs, p) {
+  let _xs = xs;
+  let _i = 0;
+  while (true) {
+    let i = _i;
+    let xs$1 = _xs;
+    if (xs$1 === 0) {
+      return (
+        /* [] */
+        0
+      );
+    }
+    let t = xs$1.tl;
+    let h = xs$1.hd;
+    if (p(h, i)) {
+      let cell = {
         hd: h,
         tl: (
           /* [] */
           0
         )
       };
-      var b = p(h);
-      partitionAux(p, l.tl, nextX, nextY);
-      if (b) {
-        return [
-          nextX,
-          nextY.tl
-        ];
-      } else {
-        return [
-          nextX.tl,
-          nextY
-        ];
-      }
-    }
-    function partition(l, p) {
-      return partitionU(l, Curry.__1(p));
-    }
-    function unzip(xs) {
-      if (!xs) {
-        return [
-          /* [] */
-          0,
-          /* [] */
-          0
-        ];
-      }
-      var match = xs.hd;
-      var cellX = {
-        hd: match[0],
-        tl: (
-          /* [] */
-          0
-        )
-      };
-      var cellY = {
-        hd: match[1],
-        tl: (
-          /* [] */
-          0
-        )
-      };
-      splitAux(xs.tl, cellX, cellY);
-      return [
-        cellX,
-        cellY
-      ];
-    }
-    function zip(l1, l2) {
-      if (!l1) {
-        return (
-          /* [] */
-          0
-        );
-      }
-      if (!l2) {
-        return (
-          /* [] */
-          0
-        );
-      }
-      var cell = {
-        hd: [
-          l1.hd,
-          l2.hd
-        ],
-        tl: (
-          /* [] */
-          0
-        )
-      };
-      zipAux(l1.tl, l2.tl, cell);
+      copyAuxWithFilterIndex(p, t, cell, i + 1 | 0);
       return cell;
     }
-    var size = length;
-    var filter = keep;
-    var filterWithIndex = keepWithIndex;
-    exports2.length = length;
-    exports2.size = size;
-    exports2.head = head;
-    exports2.headExn = headExn;
-    exports2.tail = tail;
-    exports2.tailExn = tailExn;
-    exports2.add = add;
-    exports2.get = get;
-    exports2.getExn = getExn;
-    exports2.make = make;
-    exports2.makeByU = makeByU;
-    exports2.makeBy = makeBy;
-    exports2.shuffle = shuffle;
-    exports2.drop = drop;
-    exports2.take = take;
-    exports2.splitAt = splitAt;
-    exports2.concat = concat;
-    exports2.concatMany = concatMany;
-    exports2.reverseConcat = reverseConcat;
-    exports2.flatten = flatten;
-    exports2.mapU = mapU;
-    exports2.map = map;
-    exports2.zip = zip;
-    exports2.zipByU = zipByU;
-    exports2.zipBy = zipBy;
-    exports2.mapWithIndexU = mapWithIndexU;
-    exports2.mapWithIndex = mapWithIndex;
-    exports2.fromArray = fromArray;
-    exports2.toArray = toArray;
-    exports2.reverse = reverse;
-    exports2.mapReverseU = mapReverseU;
-    exports2.mapReverse = mapReverse;
-    exports2.forEachU = forEachU;
-    exports2.forEach = forEach;
-    exports2.forEachWithIndexU = forEachWithIndexU;
-    exports2.forEachWithIndex = forEachWithIndex;
-    exports2.reduceU = reduceU;
-    exports2.reduce = reduce;
-    exports2.reduceWithIndexU = reduceWithIndexU;
-    exports2.reduceWithIndex = reduceWithIndex;
-    exports2.reduceReverseU = reduceReverseU;
-    exports2.reduceReverse = reduceReverse;
-    exports2.mapReverse2U = mapReverse2U;
-    exports2.mapReverse2 = mapReverse2;
-    exports2.forEach2U = forEach2U;
-    exports2.forEach2 = forEach2;
-    exports2.reduce2U = reduce2U;
-    exports2.reduce2 = reduce2;
-    exports2.reduceReverse2U = reduceReverse2U;
-    exports2.reduceReverse2 = reduceReverse2;
-    exports2.everyU = everyU;
-    exports2.every = every;
-    exports2.someU = someU;
-    exports2.some = some;
-    exports2.every2U = every2U;
-    exports2.every2 = every2;
-    exports2.some2U = some2U;
-    exports2.some2 = some2;
-    exports2.cmpByLength = cmpByLength;
-    exports2.cmpU = cmpU;
-    exports2.cmp = cmp;
-    exports2.eqU = eqU;
-    exports2.eq = eq;
-    exports2.hasU = hasU;
-    exports2.has = has;
-    exports2.getByU = getByU;
-    exports2.getBy = getBy;
-    exports2.keepU = keepU;
-    exports2.keep = keep;
-    exports2.filter = filter;
-    exports2.keepWithIndexU = keepWithIndexU;
-    exports2.keepWithIndex = keepWithIndex;
-    exports2.filterWithIndex = filterWithIndex;
-    exports2.keepMapU = keepMapU;
-    exports2.keepMap = keepMap;
-    exports2.partitionU = partitionU;
-    exports2.partition = partition;
-    exports2.unzip = unzip;
-    exports2.getAssocU = getAssocU;
-    exports2.getAssoc = getAssoc;
-    exports2.hasAssocU = hasAssocU;
-    exports2.hasAssoc = hasAssoc;
-    exports2.removeAssocU = removeAssocU;
-    exports2.removeAssoc = removeAssoc;
-    exports2.setAssocU = setAssocU;
-    exports2.setAssoc = setAssoc;
-    exports2.sortU = sortU;
-    exports2.sort = sort;
+    _i = i + 1 | 0;
+    _xs = t;
+    continue;
+  }
+  ;
+}
+function keepMap2(_xs, p) {
+  while (true) {
+    let xs = _xs;
+    if (xs === 0) {
+      return (
+        /* [] */
+        0
+      );
+    }
+    let t = xs.tl;
+    let h = p(xs.hd);
+    if (h !== void 0) {
+      let cell = {
+        hd: Primitive_option4.valFromOption(h),
+        tl: (
+          /* [] */
+          0
+        )
+      };
+      copyAuxWitFilterMap(p, t, cell);
+      return cell;
+    }
+    _xs = t;
+    continue;
+  }
+  ;
+}
+function partition2(l, p) {
+  if (l === 0) {
+    return [
+      /* [] */
+      0,
+      /* [] */
+      0
+    ];
+  }
+  let h = l.hd;
+  let nextX = {
+    hd: h,
+    tl: (
+      /* [] */
+      0
+    )
+  };
+  let nextY = {
+    hd: h,
+    tl: (
+      /* [] */
+      0
+    )
+  };
+  let b = p(h);
+  partitionAux(p, l.tl, nextX, nextY);
+  if (b) {
+    return [
+      nextX,
+      nextY.tl
+    ];
+  } else {
+    return [
+      nextX.tl,
+      nextY
+    ];
+  }
+}
+function unzip2(xs) {
+  if (xs === 0) {
+    return [
+      /* [] */
+      0,
+      /* [] */
+      0
+    ];
+  }
+  let match = xs.hd;
+  let cellX = {
+    hd: match[0],
+    tl: (
+      /* [] */
+      0
+    )
+  };
+  let cellY = {
+    hd: match[1],
+    tl: (
+      /* [] */
+      0
+    )
+  };
+  splitAux(xs.tl, cellX, cellY);
+  return [
+    cellX,
+    cellY
+  ];
+}
+function zip2(l1, l2) {
+  if (l1 === 0) {
+    return (
+      /* [] */
+      0
+    );
+  }
+  if (l2 === 0) {
+    return (
+      /* [] */
+      0
+    );
+  }
+  let cell = {
+    hd: [
+      l1.hd,
+      l2.hd
+    ],
+    tl: (
+      /* [] */
+      0
+    )
+  };
+  zipAux(l1.tl, l2.tl, cell);
+  return cell;
+}
+var Belt_Array2, Belt_SortArray, Primitive_option4, size, headExn, tailExn, getExn5, makeByU2, mapU4, zipByU2, mapWithIndexU2, mapReverseU, forEachU3, forEachWithIndexU2, reduceU2, reduceWithIndexU2, reduceReverseU2, mapReverse2U, forEach2U, reduce2U, reduceReverse2U2, everyU2, someU2, every2U2, some2U2, cmpU4, eqU4, hasU, getByU2, keepU3, filter2, keepWithIndexU2, filterWithIndex, keepMapU2, partitionU2, getAssocU, hasAssocU, removeAssocU, setAssocU, sortU;
+var init_Belt_List = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_List.js"() {
+    "use strict";
+    Belt_Array2 = (init_Belt_Array(), __toCommonJS(Belt_Array_exports));
+    Belt_SortArray = (init_Belt_SortArray(), __toCommonJS(Belt_SortArray_exports));
+    Primitive_option4 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
+    size = length;
+    headExn = headOrThrow;
+    tailExn = tailOrThrow;
+    getExn5 = getOrThrow5;
+    makeByU2 = makeBy2;
+    mapU4 = map5;
+    zipByU2 = zipBy2;
+    mapWithIndexU2 = mapWithIndex2;
+    mapReverseU = mapReverse;
+    forEachU3 = forEach4;
+    forEachWithIndexU2 = forEachWithIndex2;
+    reduceU2 = reduce2;
+    reduceWithIndexU2 = reduceWithIndex2;
+    reduceReverseU2 = reduceReverse3;
+    mapReverse2U = mapReverse2;
+    forEach2U = forEach22;
+    reduce2U = reduce22;
+    reduceReverse2U2 = reduceReverse22;
+    everyU2 = every3;
+    someU2 = some3;
+    every2U2 = every22;
+    some2U2 = some23;
+    cmpU4 = cmp4;
+    eqU4 = eq4;
+    hasU = has;
+    getByU2 = getBy2;
+    keepU3 = keep3;
+    filter2 = keep3;
+    keepWithIndexU2 = keepWithIndex2;
+    filterWithIndex = keepWithIndex2;
+    keepMapU2 = keepMap2;
+    partitionU2 = partition2;
+    getAssocU = getAssoc;
+    hasAssocU = hasAssoc;
+    removeAssocU = removeAssoc;
+    setAssocU = setAssoc;
+    sortU = sort;
+    exports.length = length;
+    exports.size = size;
+    exports.head = head;
+    exports.headExn = headExn;
+    exports.headOrThrow = headOrThrow;
+    exports.tail = tail;
+    exports.tailExn = tailExn;
+    exports.tailOrThrow = tailOrThrow;
+    exports.add = add;
+    exports.get = get2;
+    exports.getExn = getExn5;
+    exports.getOrThrow = getOrThrow5;
+    exports.make = make3;
+    exports.makeByU = makeByU2;
+    exports.makeBy = makeBy2;
+    exports.shuffle = shuffle2;
+    exports.drop = drop;
+    exports.take = take;
+    exports.splitAt = splitAt;
+    exports.concat = concat2;
+    exports.concatMany = concatMany2;
+    exports.reverseConcat = reverseConcat;
+    exports.flatten = flatten;
+    exports.mapU = mapU4;
+    exports.map = map5;
+    exports.zip = zip2;
+    exports.zipByU = zipByU2;
+    exports.zipBy = zipBy2;
+    exports.mapWithIndexU = mapWithIndexU2;
+    exports.mapWithIndex = mapWithIndex2;
+    exports.fromArray = fromArray;
+    exports.toArray = toArray;
+    exports.reverse = reverse2;
+    exports.mapReverseU = mapReverseU;
+    exports.mapReverse = mapReverse;
+    exports.forEachU = forEachU3;
+    exports.forEach = forEach4;
+    exports.forEachWithIndexU = forEachWithIndexU2;
+    exports.forEachWithIndex = forEachWithIndex2;
+    exports.reduceU = reduceU2;
+    exports.reduce = reduce2;
+    exports.reduceWithIndexU = reduceWithIndexU2;
+    exports.reduceWithIndex = reduceWithIndex2;
+    exports.reduceReverseU = reduceReverseU2;
+    exports.reduceReverse = reduceReverse3;
+    exports.mapReverse2U = mapReverse2U;
+    exports.mapReverse2 = mapReverse2;
+    exports.forEach2U = forEach2U;
+    exports.forEach2 = forEach22;
+    exports.reduce2U = reduce2U;
+    exports.reduce2 = reduce22;
+    exports.reduceReverse2U = reduceReverse2U2;
+    exports.reduceReverse2 = reduceReverse22;
+    exports.everyU = everyU2;
+    exports.every = every3;
+    exports.someU = someU2;
+    exports.some = some3;
+    exports.every2U = every2U2;
+    exports.every2 = every22;
+    exports.some2U = some2U2;
+    exports.some2 = some23;
+    exports.cmpByLength = cmpByLength;
+    exports.cmpU = cmpU4;
+    exports.cmp = cmp4;
+    exports.eqU = eqU4;
+    exports.eq = eq4;
+    exports.hasU = hasU;
+    exports.has = has;
+    exports.getByU = getByU2;
+    exports.getBy = getBy2;
+    exports.keepU = keepU3;
+    exports.keep = keep3;
+    exports.filter = filter2;
+    exports.keepWithIndexU = keepWithIndexU2;
+    exports.keepWithIndex = keepWithIndex2;
+    exports.filterWithIndex = filterWithIndex;
+    exports.keepMapU = keepMapU2;
+    exports.keepMap = keepMap2;
+    exports.partitionU = partitionU2;
+    exports.partition = partition2;
+    exports.unzip = unzip2;
+    exports.getAssocU = getAssocU;
+    exports.getAssoc = getAssoc;
+    exports.hasAssocU = hasAssocU;
+    exports.hasAssoc = hasAssoc;
+    exports.removeAssocU = removeAssocU;
+    exports.removeAssoc = removeAssoc;
+    exports.setAssocU = setAssocU;
+    exports.setAssoc = setAssoc;
+    exports.sortU = sortU;
+    exports.sort = sort;
   }
 });
 
@@ -11753,23 +9346,23 @@ var require_belt_List = __commonJS({
 var require_ResultExt = __commonJS({
   "src/ResultExt.js"(exports2) {
     "use strict";
-    var Belt_List = require_belt_List();
+    var Belt_List = (init_Belt_List(), __toCommonJS(Belt_List_exports));
     function allOkOrError(results) {
-      var _good = (
+      let _good = (
         /* [] */
         0
       );
-      var _entriesLeft = Belt_List.fromArray(results);
+      let _entriesLeft = Belt_List.fromArray(results);
       while (true) {
-        var entriesLeft = _entriesLeft;
-        var good = _good;
-        if (!entriesLeft) {
+        let entriesLeft = _entriesLeft;
+        let good = _good;
+        if (entriesLeft === 0) {
           return {
             TAG: "Ok",
             _0: Belt_List.toArray(good)
           };
         }
-        var entry = entriesLeft.hd;
+        let entry = entriesLeft.hd;
         if (entry.TAG !== "Ok") {
           return entry;
         }
@@ -11786,1708 +9379,1650 @@ var require_ResultExt = __commonJS({
   }
 });
 
-// node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/belt_internalAVLtree.js
-var require_belt_internalAVLtree = __commonJS({
-  "node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/belt_internalAVLtree.js"(exports2) {
-    "use strict";
-    var Curry = require_curry();
-    var Caml_option = require_caml_option();
-    var Belt_SortArray = require_belt_SortArray();
-    function treeHeight(n) {
-      if (n !== void 0) {
-        return n.h;
-      } else {
-        return 0;
-      }
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_internalAVLtree.js
+var Belt_internalAVLtree_exports = {};
+function treeHeight(n) {
+  if (n !== void 0) {
+    return n.h;
+  } else {
+    return 0;
+  }
+}
+function copy(n) {
+  if (n !== void 0) {
+    return {
+      k: n.k,
+      v: n.v,
+      h: n.h,
+      l: copy(n.l),
+      r: copy(n.r)
+    };
+  } else {
+    return n;
+  }
+}
+function create2(l, x, d, r) {
+  let hl = treeHeight(l);
+  let hr = treeHeight(r);
+  return {
+    k: x,
+    v: d,
+    h: hl >= hr ? hl + 1 | 0 : hr + 1 | 0,
+    l,
+    r
+  };
+}
+function singleton(x, d) {
+  return {
+    k: x,
+    v: d,
+    h: 1,
+    l: void 0,
+    r: void 0
+  };
+}
+function heightGe(l, r) {
+  if (r !== void 0) {
+    if (l !== void 0) {
+      return l.h >= r.h;
+    } else {
+      return false;
     }
-    function copy(n) {
-      if (n !== void 0) {
-        return {
-          k: n.k,
-          v: n.v,
-          h: n.h,
-          l: copy(n.l),
-          r: copy(n.r)
-        };
-      } else {
-        return n;
-      }
+  } else {
+    return true;
+  }
+}
+function updateValue(n, newValue) {
+  if (n.v === newValue) {
+    return n;
+  } else {
+    return {
+      k: n.k,
+      v: newValue,
+      h: n.h,
+      l: n.l,
+      r: n.r
+    };
+  }
+}
+function bal(l, x, d, r) {
+  let hl = l !== void 0 ? l.h : 0;
+  let hr = r !== void 0 ? r.h : 0;
+  if (hl > (hr + 2 | 0)) {
+    let ll = l.l;
+    let lr = l.r;
+    if (treeHeight(ll) >= treeHeight(lr)) {
+      return create2(ll, l.k, l.v, create2(lr, x, d, r));
+    } else {
+      return create2(create2(ll, l.k, l.v, lr.l), lr.k, lr.v, create2(lr.r, x, d, r));
     }
-    function create(l, x, d, r) {
-      var hl = treeHeight(l);
-      var hr = treeHeight(r);
-      return {
-        k: x,
-        v: d,
-        h: hl >= hr ? hl + 1 | 0 : hr + 1 | 0,
-        l,
-        r
+  }
+  if (hr <= (hl + 2 | 0)) {
+    return {
+      k: x,
+      v: d,
+      h: hl >= hr ? hl + 1 | 0 : hr + 1 | 0,
+      l,
+      r
+    };
+  }
+  let rl = r.l;
+  let rr = r.r;
+  if (treeHeight(rr) >= treeHeight(rl)) {
+    return create2(create2(l, x, d, rl), r.k, r.v, rr);
+  } else {
+    return create2(create2(l, x, d, rl.l), rl.k, rl.v, create2(rl.r, r.k, r.v, rr));
+  }
+}
+function minKey0Aux(_n) {
+  while (true) {
+    let n = _n;
+    let n$1 = n.l;
+    if (n$1 === void 0) {
+      return n.k;
+    }
+    _n = n$1;
+    continue;
+  }
+  ;
+}
+function minKey(n) {
+  if (n !== void 0) {
+    return Primitive_option5.some(minKey0Aux(n));
+  }
+}
+function minKeyUndefined(n) {
+  if (n !== void 0) {
+    return minKey0Aux(n);
+  }
+}
+function maxKey0Aux(_n) {
+  while (true) {
+    let n = _n;
+    let n$1 = n.r;
+    if (n$1 === void 0) {
+      return n.k;
+    }
+    _n = n$1;
+    continue;
+  }
+  ;
+}
+function maxKey(n) {
+  if (n !== void 0) {
+    return Primitive_option5.some(maxKey0Aux(n));
+  }
+}
+function maxKeyUndefined(n) {
+  if (n !== void 0) {
+    return maxKey0Aux(n);
+  }
+}
+function minKV0Aux(_n) {
+  while (true) {
+    let n = _n;
+    let n$1 = n.l;
+    if (n$1 === void 0) {
+      return [
+        n.k,
+        n.v
+      ];
+    }
+    _n = n$1;
+    continue;
+  }
+  ;
+}
+function minimum(n) {
+  if (n !== void 0) {
+    return minKV0Aux(n);
+  }
+}
+function minUndefined(n) {
+  if (n !== void 0) {
+    return minKV0Aux(n);
+  }
+}
+function maxKV0Aux(_n) {
+  while (true) {
+    let n = _n;
+    let n$1 = n.r;
+    if (n$1 === void 0) {
+      return [
+        n.k,
+        n.v
+      ];
+    }
+    _n = n$1;
+    continue;
+  }
+  ;
+}
+function maximum(n) {
+  if (n !== void 0) {
+    return maxKV0Aux(n);
+  }
+}
+function maxUndefined(n) {
+  if (n !== void 0) {
+    return maxKV0Aux(n);
+  }
+}
+function removeMinAuxWithRef(n, kr, vr) {
+  let ln = n.l;
+  if (ln !== void 0) {
+    return bal(removeMinAuxWithRef(ln, kr, vr), n.k, n.v, n.r);
+  } else {
+    kr.contents = n.k;
+    vr.contents = n.v;
+    return n.r;
+  }
+}
+function isEmpty(x) {
+  return x === void 0;
+}
+function stackAllLeft(_v, _s) {
+  while (true) {
+    let s = _s;
+    let v = _v;
+    if (v === void 0) {
+      return s;
+    }
+    _s = {
+      hd: v,
+      tl: s
+    };
+    _v = v.l;
+    continue;
+  }
+  ;
+}
+function findFirstBy(n, p) {
+  if (n === void 0) {
+    return;
+  }
+  let left = findFirstBy(n.l, p);
+  if (left !== void 0) {
+    return left;
+  }
+  let v = n.k;
+  let d = n.v;
+  let pvd = p(v, d);
+  if (pvd) {
+    return [
+      v,
+      d
+    ];
+  }
+  let right = findFirstBy(n.r, p);
+  if (right !== void 0) {
+    return right;
+  }
+}
+function forEach5(_n, f) {
+  while (true) {
+    let n = _n;
+    if (n === void 0) {
+      return;
+    }
+    forEach5(n.l, f);
+    f(n.k, n.v);
+    _n = n.r;
+    continue;
+  }
+  ;
+}
+function map6(n, f) {
+  if (n === void 0) {
+    return;
+  }
+  let newLeft = map6(n.l, f);
+  let newD = f(n.v);
+  let newRight = map6(n.r, f);
+  return {
+    k: n.k,
+    v: newD,
+    h: n.h,
+    l: newLeft,
+    r: newRight
+  };
+}
+function mapWithKey(n, f) {
+  if (n === void 0) {
+    return;
+  }
+  let key = n.k;
+  let newLeft = mapWithKey(n.l, f);
+  let newD = f(key, n.v);
+  let newRight = mapWithKey(n.r, f);
+  return {
+    k: key,
+    v: newD,
+    h: n.h,
+    l: newLeft,
+    r: newRight
+  };
+}
+function reduce3(_m, _accu, f) {
+  while (true) {
+    let accu = _accu;
+    let m = _m;
+    if (m === void 0) {
+      return accu;
+    }
+    let v = m.k;
+    let d = m.v;
+    let l = m.l;
+    let r = m.r;
+    _accu = f(reduce3(l, accu, f), v, d);
+    _m = r;
+    continue;
+  }
+  ;
+}
+function every4(_n, p) {
+  while (true) {
+    let n = _n;
+    if (n === void 0) {
+      return true;
+    }
+    if (!p(n.k, n.v)) {
+      return false;
+    }
+    if (!every4(n.l, p)) {
+      return false;
+    }
+    _n = n.r;
+    continue;
+  }
+  ;
+}
+function some4(_n, p) {
+  while (true) {
+    let n = _n;
+    if (n === void 0) {
+      return false;
+    }
+    if (p(n.k, n.v)) {
+      return true;
+    }
+    if (some4(n.l, p)) {
+      return true;
+    }
+    _n = n.r;
+    continue;
+  }
+  ;
+}
+function addMinElement(n, k, v) {
+  if (n !== void 0) {
+    return bal(addMinElement(n.l, k, v), n.k, n.v, n.r);
+  } else {
+    return singleton(k, v);
+  }
+}
+function addMaxElement(n, k, v) {
+  if (n !== void 0) {
+    return bal(n.l, n.k, n.v, addMaxElement(n.r, k, v));
+  } else {
+    return singleton(k, v);
+  }
+}
+function join(ln, v, d, rn) {
+  if (ln === void 0) {
+    return addMinElement(rn, v, d);
+  }
+  if (rn === void 0) {
+    return addMaxElement(ln, v, d);
+  }
+  let lv = ln.k;
+  let ld = ln.v;
+  let lh = ln.h;
+  let ll = ln.l;
+  let lr = ln.r;
+  let rv = rn.k;
+  let rd = rn.v;
+  let rh = rn.h;
+  let rl = rn.l;
+  let rr = rn.r;
+  if (lh > (rh + 2 | 0)) {
+    return bal(ll, lv, ld, join(lr, v, d, rn));
+  } else if (rh > (lh + 2 | 0)) {
+    return bal(join(ln, v, d, rl), rv, rd, rr);
+  } else {
+    return create2(ln, v, d, rn);
+  }
+}
+function concat3(t1, t2) {
+  if (t1 === void 0) {
+    return t2;
+  }
+  if (t2 === void 0) {
+    return t1;
+  }
+  let kr = {
+    contents: t2.k
+  };
+  let vr = {
+    contents: t2.v
+  };
+  let t2r = removeMinAuxWithRef(t2, kr, vr);
+  return join(t1, kr.contents, vr.contents, t2r);
+}
+function concatOrJoin(t1, v, d, t2) {
+  if (d !== void 0) {
+    return join(t1, v, Primitive_option5.valFromOption(d), t2);
+  } else {
+    return concat3(t1, t2);
+  }
+}
+function keepShared(n, p) {
+  if (n === void 0) {
+    return;
+  }
+  let v = n.k;
+  let d = n.v;
+  let newLeft = keepShared(n.l, p);
+  let pvd = p(v, d);
+  let newRight = keepShared(n.r, p);
+  if (pvd) {
+    return join(newLeft, v, d, newRight);
+  } else {
+    return concat3(newLeft, newRight);
+  }
+}
+function keepMap3(n, p) {
+  if (n === void 0) {
+    return;
+  }
+  let v = n.k;
+  let d = n.v;
+  let newLeft = keepMap3(n.l, p);
+  let pvd = p(v, d);
+  let newRight = keepMap3(n.r, p);
+  if (pvd !== void 0) {
+    return join(newLeft, v, Primitive_option5.valFromOption(pvd), newRight);
+  } else {
+    return concat3(newLeft, newRight);
+  }
+}
+function partitionShared(n, p) {
+  if (n === void 0) {
+    return [
+      void 0,
+      void 0
+    ];
+  }
+  let key = n.k;
+  let value = n.v;
+  let match = partitionShared(n.l, p);
+  let lf = match[1];
+  let lt = match[0];
+  let pvd = p(key, value);
+  let match$1 = partitionShared(n.r, p);
+  let rf = match$1[1];
+  let rt = match$1[0];
+  if (pvd) {
+    return [
+      join(lt, key, value, rt),
+      concat3(lf, rf)
+    ];
+  } else {
+    return [
+      concat3(lt, rt),
+      join(lf, key, value, rf)
+    ];
+  }
+}
+function lengthNode(n) {
+  let l = n.l;
+  let r = n.r;
+  let sizeL = l !== void 0 ? lengthNode(l) : 0;
+  let sizeR = r !== void 0 ? lengthNode(r) : 0;
+  return (1 + sizeL | 0) + sizeR | 0;
+}
+function size2(n) {
+  if (n !== void 0) {
+    return lengthNode(n);
+  } else {
+    return 0;
+  }
+}
+function toListAux(_n, _accu) {
+  while (true) {
+    let accu = _accu;
+    let n = _n;
+    if (n === void 0) {
+      return accu;
+    }
+    let k = n.k;
+    let v = n.v;
+    let l = n.l;
+    let r = n.r;
+    _accu = {
+      hd: [
+        k,
+        v
+      ],
+      tl: toListAux(r, accu)
+    };
+    _n = l;
+    continue;
+  }
+  ;
+}
+function toList(s) {
+  return toListAux(
+    s,
+    /* [] */
+    0
+  );
+}
+function checkInvariantInternal(_v) {
+  while (true) {
+    let v = _v;
+    if (v === void 0) {
+      return;
+    }
+    let l = v.l;
+    let r = v.r;
+    let diff2 = treeHeight(l) - treeHeight(r) | 0;
+    if (!(diff2 <= 2 && diff2 >= -2)) {
+      throw {
+        RE_EXN_ID: "Assert_failure",
+        _1: [
+          "Belt_internalAVLtree.res",
+          439,
+          4
+        ],
+        Error: new Error()
       };
     }
-    function singleton(x, d) {
+    checkInvariantInternal(l);
+    _v = r;
+    continue;
+  }
+  ;
+}
+function fillArrayKey(_n, _i, arr) {
+  while (true) {
+    let i = _i;
+    let n = _n;
+    let v = n.k;
+    let l = n.l;
+    let r = n.r;
+    let next = l !== void 0 ? fillArrayKey(l, i, arr) : i;
+    arr[next] = v;
+    let rnext = next + 1 | 0;
+    if (r === void 0) {
+      return rnext;
+    }
+    _i = rnext;
+    _n = r;
+    continue;
+  }
+  ;
+}
+function fillArrayValue(_n, _i, arr) {
+  while (true) {
+    let i = _i;
+    let n = _n;
+    let l = n.l;
+    let r = n.r;
+    let next = l !== void 0 ? fillArrayValue(l, i, arr) : i;
+    arr[next] = n.v;
+    let rnext = next + 1 | 0;
+    if (r === void 0) {
+      return rnext;
+    }
+    _i = rnext;
+    _n = r;
+    continue;
+  }
+  ;
+}
+function fillArray(_n, _i, arr) {
+  while (true) {
+    let i = _i;
+    let n = _n;
+    let l = n.l;
+    let v = n.k;
+    let r = n.r;
+    let next = l !== void 0 ? fillArray(l, i, arr) : i;
+    arr[next] = [
+      v,
+      n.v
+    ];
+    let rnext = next + 1 | 0;
+    if (r === void 0) {
+      return rnext;
+    }
+    _i = rnext;
+    _n = r;
+    continue;
+  }
+  ;
+}
+function toArray2(n) {
+  if (n === void 0) {
+    return [];
+  }
+  let size4 = lengthNode(n);
+  let v = new Array(size4);
+  fillArray(n, 0, v);
+  return v;
+}
+function keysToArray(n) {
+  if (n === void 0) {
+    return [];
+  }
+  let size4 = lengthNode(n);
+  let v = new Array(size4);
+  fillArrayKey(n, 0, v);
+  return v;
+}
+function valuesToArray(n) {
+  if (n === void 0) {
+    return [];
+  }
+  let size4 = lengthNode(n);
+  let v = new Array(size4);
+  fillArrayValue(n, 0, v);
+  return v;
+}
+function fromSortedArrayRevAux(arr, off, len) {
+  switch (len) {
+    case 0:
+      return;
+    case 1:
+      let match = arr[off];
+      return singleton(match[0], match[1]);
+    case 2:
+      let match_0 = arr[off];
+      let match_1 = arr[off - 1 | 0];
+      let match$1 = match_1;
+      let match$2 = match_0;
       return {
-        k: x,
-        v: d,
-        h: 1,
-        l: void 0,
+        k: match$1[0],
+        v: match$1[1],
+        h: 2,
+        l: singleton(match$2[0], match$2[1]),
         r: void 0
       };
-    }
-    function heightGe(l, r) {
-      if (r !== void 0) {
-        if (l !== void 0) {
-          return l.h >= r.h;
-        } else {
-          return false;
-        }
-      } else {
-        return true;
-      }
-    }
-    function updateValue(n, newValue) {
-      if (n.v === newValue) {
-        return n;
-      } else {
-        return {
-          k: n.k,
-          v: newValue,
-          h: n.h,
-          l: n.l,
-          r: n.r
-        };
-      }
-    }
-    function bal(l, x, d, r) {
-      var hl = l !== void 0 ? l.h : 0;
-      var hr = r !== void 0 ? r.h : 0;
-      if (hl > (hr + 2 | 0)) {
-        var ll = l.l;
-        var lr = l.r;
-        if (treeHeight(ll) >= treeHeight(lr)) {
-          return create(ll, l.k, l.v, create(lr, x, d, r));
-        } else {
-          return create(create(ll, l.k, l.v, lr.l), lr.k, lr.v, create(lr.r, x, d, r));
-        }
-      }
-      if (hr <= (hl + 2 | 0)) {
-        return {
-          k: x,
-          v: d,
-          h: hl >= hr ? hl + 1 | 0 : hr + 1 | 0,
-          l,
-          r
-        };
-      }
-      var rl = r.l;
-      var rr = r.r;
-      if (treeHeight(rr) >= treeHeight(rl)) {
-        return create(create(l, x, d, rl), r.k, r.v, rr);
-      } else {
-        return create(create(l, x, d, rl.l), rl.k, rl.v, create(rl.r, r.k, r.v, rr));
-      }
-    }
-    function minKey0Aux(_n) {
-      while (true) {
-        var n = _n;
-        var n$1 = n.l;
-        if (n$1 === void 0) {
-          return n.k;
-        }
-        _n = n$1;
-        continue;
-      }
-      ;
-    }
-    function minKey(n) {
-      if (n !== void 0) {
-        return Caml_option.some(minKey0Aux(n));
-      }
-    }
-    function minKeyUndefined(n) {
-      if (n !== void 0) {
-        return minKey0Aux(n);
-      }
-    }
-    function maxKey0Aux(_n) {
-      while (true) {
-        var n = _n;
-        var n$1 = n.r;
-        if (n$1 === void 0) {
-          return n.k;
-        }
-        _n = n$1;
-        continue;
-      }
-      ;
-    }
-    function maxKey(n) {
-      if (n !== void 0) {
-        return Caml_option.some(maxKey0Aux(n));
-      }
-    }
-    function maxKeyUndefined(n) {
-      if (n !== void 0) {
-        return maxKey0Aux(n);
-      }
-    }
-    function minKV0Aux(_n) {
-      while (true) {
-        var n = _n;
-        var n$1 = n.l;
-        if (n$1 === void 0) {
-          return [
-            n.k,
-            n.v
-          ];
-        }
-        _n = n$1;
-        continue;
-      }
-      ;
-    }
-    function minimum(n) {
-      if (n !== void 0) {
-        return minKV0Aux(n);
-      }
-    }
-    function minUndefined(n) {
-      if (n !== void 0) {
-        return minKV0Aux(n);
-      }
-    }
-    function maxKV0Aux(_n) {
-      while (true) {
-        var n = _n;
-        var n$1 = n.r;
-        if (n$1 === void 0) {
-          return [
-            n.k,
-            n.v
-          ];
-        }
-        _n = n$1;
-        continue;
-      }
-      ;
-    }
-    function maximum(n) {
-      if (n !== void 0) {
-        return maxKV0Aux(n);
-      }
-    }
-    function maxUndefined(n) {
-      if (n !== void 0) {
-        return maxKV0Aux(n);
-      }
-    }
-    function removeMinAuxWithRef(n, kr, vr) {
-      var ln = n.l;
-      if (ln !== void 0) {
-        return bal(removeMinAuxWithRef(ln, kr, vr), n.k, n.v, n.r);
-      } else {
-        kr.contents = n.k;
-        vr.contents = n.v;
-        return n.r;
-      }
-    }
-    function isEmpty(x) {
-      return x === void 0;
-    }
-    function stackAllLeft(_v, _s) {
-      while (true) {
-        var s = _s;
-        var v = _v;
-        if (v === void 0) {
-          return s;
-        }
-        _s = {
-          hd: v,
-          tl: s
-        };
-        _v = v.l;
-        continue;
-      }
-      ;
-    }
-    function findFirstByU(n, p) {
-      if (n === void 0) {
-        return;
-      }
-      var left = findFirstByU(n.l, p);
-      if (left !== void 0) {
-        return left;
-      }
-      var v = n.k;
-      var d = n.v;
-      var pvd = p(v, d);
-      if (pvd) {
-        return [
-          v,
-          d
-        ];
-      }
-      var right = findFirstByU(n.r, p);
-      if (right !== void 0) {
-        return right;
-      }
-    }
-    function findFirstBy(n, p) {
-      return findFirstByU(n, Curry.__2(p));
-    }
-    function forEachU(_n, f) {
-      while (true) {
-        var n = _n;
-        if (n === void 0) {
-          return;
-        }
-        forEachU(n.l, f);
-        f(n.k, n.v);
-        _n = n.r;
-        continue;
-      }
-      ;
-    }
-    function forEach(n, f) {
-      forEachU(n, Curry.__2(f));
-    }
-    function mapU(n, f) {
-      if (n === void 0) {
-        return;
-      }
-      var newLeft = mapU(n.l, f);
-      var newD = f(n.v);
-      var newRight = mapU(n.r, f);
+    case 3:
+      let match_0$1 = arr[off];
+      let match_1$1 = arr[off - 1 | 0];
+      let match_2 = arr[off - 2 | 0];
+      let match$3 = match_2;
+      let match$4 = match_1$1;
+      let match$5 = match_0$1;
       return {
-        k: n.k,
-        v: newD,
-        h: n.h,
-        l: newLeft,
-        r: newRight
+        k: match$4[0],
+        v: match$4[1],
+        h: 2,
+        l: singleton(match$5[0], match$5[1]),
+        r: singleton(match$3[0], match$3[1])
       };
-    }
-    function map(n, f) {
-      return mapU(n, Curry.__1(f));
-    }
-    function mapWithKeyU(n, f) {
-      if (n === void 0) {
-        return;
-      }
-      var key = n.k;
-      var newLeft = mapWithKeyU(n.l, f);
-      var newD = f(key, n.v);
-      var newRight = mapWithKeyU(n.r, f);
+    default:
+      let nl = len / 2 | 0;
+      let left = fromSortedArrayRevAux(arr, off, nl);
+      let match$6 = arr[off - nl | 0];
+      let right = fromSortedArrayRevAux(arr, (off - nl | 0) - 1 | 0, (len - nl | 0) - 1 | 0);
+      return create2(left, match$6[0], match$6[1], right);
+  }
+}
+function fromSortedArrayAux(arr, off, len) {
+  switch (len) {
+    case 0:
+      return;
+    case 1:
+      let match = arr[off];
+      return singleton(match[0], match[1]);
+    case 2:
+      let match_0 = arr[off];
+      let match_1 = arr[off + 1 | 0];
+      let match$1 = match_1;
+      let match$2 = match_0;
       return {
-        k: key,
-        v: newD,
-        h: n.h,
-        l: newLeft,
-        r: newRight
+        k: match$1[0],
+        v: match$1[1],
+        h: 2,
+        l: singleton(match$2[0], match$2[1]),
+        r: void 0
       };
-    }
-    function mapWithKey(n, f) {
-      return mapWithKeyU(n, Curry.__2(f));
-    }
-    function reduceU(_m, _accu, f) {
-      while (true) {
-        var accu = _accu;
-        var m = _m;
-        if (m === void 0) {
-          return accu;
-        }
-        var v = m.k;
-        var d = m.v;
-        var l = m.l;
-        var r = m.r;
-        _accu = f(reduceU(l, accu, f), v, d);
-        _m = r;
-        continue;
-      }
-      ;
-    }
-    function reduce(m, accu, f) {
-      return reduceU(m, accu, Curry.__3(f));
-    }
-    function everyU(_n, p) {
-      while (true) {
-        var n = _n;
-        if (n === void 0) {
-          return true;
-        }
-        if (!p(n.k, n.v)) {
-          return false;
-        }
-        if (!everyU(n.l, p)) {
-          return false;
-        }
-        _n = n.r;
-        continue;
-      }
-      ;
-    }
-    function every(n, p) {
-      return everyU(n, Curry.__2(p));
-    }
-    function someU(_n, p) {
-      while (true) {
-        var n = _n;
-        if (n === void 0) {
-          return false;
-        }
-        if (p(n.k, n.v)) {
-          return true;
-        }
-        if (someU(n.l, p)) {
-          return true;
-        }
-        _n = n.r;
-        continue;
-      }
-      ;
-    }
-    function some(n, p) {
-      return someU(n, Curry.__2(p));
-    }
-    function addMinElement(n, k, v) {
-      if (n !== void 0) {
-        return bal(addMinElement(n.l, k, v), n.k, n.v, n.r);
-      } else {
-        return singleton(k, v);
-      }
-    }
-    function addMaxElement(n, k, v) {
-      if (n !== void 0) {
-        return bal(n.l, n.k, n.v, addMaxElement(n.r, k, v));
-      } else {
-        return singleton(k, v);
-      }
-    }
-    function join(ln, v, d, rn) {
-      if (ln === void 0) {
-        return addMinElement(rn, v, d);
-      }
-      if (rn === void 0) {
-        return addMaxElement(ln, v, d);
-      }
-      var lv = ln.k;
-      var ld = ln.v;
-      var lh = ln.h;
-      var ll = ln.l;
-      var lr = ln.r;
-      var rv = rn.k;
-      var rd = rn.v;
-      var rh = rn.h;
-      var rl = rn.l;
-      var rr = rn.r;
-      if (lh > (rh + 2 | 0)) {
-        return bal(ll, lv, ld, join(lr, v, d, rn));
-      } else if (rh > (lh + 2 | 0)) {
-        return bal(join(ln, v, d, rl), rv, rd, rr);
-      } else {
-        return create(ln, v, d, rn);
-      }
-    }
-    function concat(t1, t2) {
-      if (t1 === void 0) {
-        return t2;
-      }
-      if (t2 === void 0) {
-        return t1;
-      }
-      var kr = {
-        contents: t2.k
+    case 3:
+      let match_0$1 = arr[off];
+      let match_1$1 = arr[off + 1 | 0];
+      let match_2 = arr[off + 2 | 0];
+      let match$3 = match_2;
+      let match$4 = match_1$1;
+      let match$5 = match_0$1;
+      return {
+        k: match$4[0],
+        v: match$4[1],
+        h: 2,
+        l: singleton(match$5[0], match$5[1]),
+        r: singleton(match$3[0], match$3[1])
       };
-      var vr = {
-        contents: t2.v
-      };
-      var t2r = removeMinAuxWithRef(t2, kr, vr);
-      return join(t1, kr.contents, vr.contents, t2r);
-    }
-    function concatOrJoin(t1, v, d, t2) {
-      if (d !== void 0) {
-        return join(t1, v, Caml_option.valFromOption(d), t2);
-      } else {
-        return concat(t1, t2);
-      }
-    }
-    function keepSharedU(n, p) {
-      if (n === void 0) {
-        return;
-      }
-      var v = n.k;
-      var d = n.v;
-      var newLeft = keepSharedU(n.l, p);
-      var pvd = p(v, d);
-      var newRight = keepSharedU(n.r, p);
-      if (pvd) {
-        return join(newLeft, v, d, newRight);
-      } else {
-        return concat(newLeft, newRight);
-      }
-    }
-    function keepShared(n, p) {
-      return keepSharedU(n, Curry.__2(p));
-    }
-    function keepMapU(n, p) {
-      if (n === void 0) {
-        return;
-      }
-      var v = n.k;
-      var d = n.v;
-      var newLeft = keepMapU(n.l, p);
-      var pvd = p(v, d);
-      var newRight = keepMapU(n.r, p);
-      if (pvd !== void 0) {
-        return join(newLeft, v, Caml_option.valFromOption(pvd), newRight);
-      } else {
-        return concat(newLeft, newRight);
-      }
-    }
-    function keepMap(n, p) {
-      return keepMapU(n, Curry.__2(p));
-    }
-    function partitionSharedU(n, p) {
-      if (n === void 0) {
-        return [
-          void 0,
-          void 0
-        ];
-      }
-      var key = n.k;
-      var value = n.v;
-      var match = partitionSharedU(n.l, p);
-      var lf = match[1];
-      var lt = match[0];
-      var pvd = p(key, value);
-      var match$1 = partitionSharedU(n.r, p);
-      var rf = match$1[1];
-      var rt = match$1[0];
-      if (pvd) {
-        return [
-          join(lt, key, value, rt),
-          concat(lf, rf)
-        ];
-      } else {
-        return [
-          concat(lt, rt),
-          join(lf, key, value, rf)
-        ];
-      }
-    }
-    function partitionShared(n, p) {
-      return partitionSharedU(n, Curry.__2(p));
-    }
-    function lengthNode(n) {
-      var l = n.l;
-      var r = n.r;
-      var sizeL = l !== void 0 ? lengthNode(l) : 0;
-      var sizeR = r !== void 0 ? lengthNode(r) : 0;
-      return (1 + sizeL | 0) + sizeR | 0;
-    }
-    function size(n) {
-      if (n !== void 0) {
-        return lengthNode(n);
-      } else {
+    default:
+      let nl = len / 2 | 0;
+      let left = fromSortedArrayAux(arr, off, nl);
+      let match$6 = arr[off + nl | 0];
+      let right = fromSortedArrayAux(arr, (off + nl | 0) + 1 | 0, (len - nl | 0) - 1 | 0);
+      return create2(left, match$6[0], match$6[1], right);
+  }
+}
+function fromSortedArrayUnsafe(arr) {
+  return fromSortedArrayAux(arr, 0, arr.length);
+}
+function cmp5(s1, s2, kcmp, vcmp) {
+  let len1 = size2(s1);
+  let len2 = size2(s2);
+  if (len1 === len2) {
+    let _e1 = stackAllLeft(
+      s1,
+      /* [] */
+      0
+    );
+    let _e2 = stackAllLeft(
+      s2,
+      /* [] */
+      0
+    );
+    while (true) {
+      let e2 = _e2;
+      let e1 = _e1;
+      if (e1 === 0) {
         return 0;
       }
-    }
-    function toListAux(_n, _accu) {
-      while (true) {
-        var accu = _accu;
-        var n = _n;
-        if (n === void 0) {
-          return accu;
-        }
-        var k = n.k;
-        var v = n.v;
-        var l = n.l;
-        var r = n.r;
-        _accu = {
-          hd: [
-            k,
-            v
-          ],
-          tl: toListAux(r, accu)
-        };
-        _n = l;
-        continue;
+      if (e2 === 0) {
+        return 0;
       }
-      ;
-    }
-    function toList(s) {
-      return toListAux(
-        s,
-        /* [] */
-        0
-      );
-    }
-    function checkInvariantInternal(_v) {
-      while (true) {
-        var v = _v;
-        if (v === void 0) {
-          return;
-        }
-        var l = v.l;
-        var r = v.r;
-        var diff = treeHeight(l) - treeHeight(r) | 0;
-        if (!(diff <= 2 && diff >= -2)) {
-          throw {
-            RE_EXN_ID: "Assert_failure",
-            _1: [
-              "belt_internalAVLtree.res",
-              457,
-              4
-            ],
-            Error: new Error()
-          };
-        }
-        checkInvariantInternal(l);
-        _v = r;
-        continue;
+      let h2 = e2.hd;
+      let h1 = e1.hd;
+      let c = kcmp(h1.k, h2.k);
+      if (c !== 0) {
+        return c;
       }
-      ;
-    }
-    function fillArrayKey(_n, _i, arr) {
-      while (true) {
-        var i = _i;
-        var n = _n;
-        var v = n.k;
-        var l = n.l;
-        var r = n.r;
-        var next = l !== void 0 ? fillArrayKey(l, i, arr) : i;
-        arr[next] = v;
-        var rnext = next + 1 | 0;
-        if (r === void 0) {
-          return rnext;
-        }
-        _i = rnext;
-        _n = r;
-        continue;
+      let cx = vcmp(h1.v, h2.v);
+      if (cx !== 0) {
+        return cx;
       }
-      ;
+      _e2 = stackAllLeft(h2.r, e2.tl);
+      _e1 = stackAllLeft(h1.r, e1.tl);
+      continue;
     }
-    function fillArrayValue(_n, _i, arr) {
-      while (true) {
-        var i = _i;
-        var n = _n;
-        var l = n.l;
-        var r = n.r;
-        var next = l !== void 0 ? fillArrayValue(l, i, arr) : i;
-        arr[next] = n.v;
-        var rnext = next + 1 | 0;
-        if (r === void 0) {
-          return rnext;
-        }
-        _i = rnext;
-        _n = r;
-        continue;
+    ;
+  } else if (len1 < len2) {
+    return -1;
+  } else {
+    return 1;
+  }
+}
+function eq5(s1, s2, kcmp, veq) {
+  let len1 = size2(s1);
+  let len2 = size2(s2);
+  if (len1 === len2) {
+    let _e1 = stackAllLeft(
+      s1,
+      /* [] */
+      0
+    );
+    let _e2 = stackAllLeft(
+      s2,
+      /* [] */
+      0
+    );
+    while (true) {
+      let e2 = _e2;
+      let e1 = _e1;
+      if (e1 === 0) {
+        return true;
       }
-      ;
-    }
-    function fillArray(_n, _i, arr) {
-      while (true) {
-        var i = _i;
-        var n = _n;
-        var l = n.l;
-        var v = n.k;
-        var r = n.r;
-        var next = l !== void 0 ? fillArray(l, i, arr) : i;
-        arr[next] = [
-          v,
-          n.v
-        ];
-        var rnext = next + 1 | 0;
-        if (r === void 0) {
-          return rnext;
-        }
-        _i = rnext;
-        _n = r;
-        continue;
+      if (e2 === 0) {
+        return true;
       }
-      ;
-    }
-    function toArray(n) {
-      if (n === void 0) {
-        return [];
-      }
-      var size2 = lengthNode(n);
-      var v = new Array(size2);
-      fillArray(n, 0, v);
-      return v;
-    }
-    function keysToArray(n) {
-      if (n === void 0) {
-        return [];
-      }
-      var size2 = lengthNode(n);
-      var v = new Array(size2);
-      fillArrayKey(n, 0, v);
-      return v;
-    }
-    function valuesToArray(n) {
-      if (n === void 0) {
-        return [];
-      }
-      var size2 = lengthNode(n);
-      var v = new Array(size2);
-      fillArrayValue(n, 0, v);
-      return v;
-    }
-    function fromSortedArrayRevAux(arr, off, len) {
-      switch (len) {
-        case 0:
-          return;
-        case 1:
-          var match = arr[off];
-          return singleton(match[0], match[1]);
-        case 2:
-          var match_0 = arr[off];
-          var match_1 = arr[off - 1 | 0];
-          var match$1 = match_1;
-          var match$2 = match_0;
-          return {
-            k: match$1[0],
-            v: match$1[1],
-            h: 2,
-            l: singleton(match$2[0], match$2[1]),
-            r: void 0
-          };
-        case 3:
-          var match_0$1 = arr[off];
-          var match_1$1 = arr[off - 1 | 0];
-          var match_2 = arr[off - 2 | 0];
-          var match$3 = match_2;
-          var match$4 = match_1$1;
-          var match$5 = match_0$1;
-          return {
-            k: match$4[0],
-            v: match$4[1],
-            h: 2,
-            l: singleton(match$5[0], match$5[1]),
-            r: singleton(match$3[0], match$3[1])
-          };
-        default:
-          var nl = len / 2 | 0;
-          var left = fromSortedArrayRevAux(arr, off, nl);
-          var match$6 = arr[off - nl | 0];
-          var right = fromSortedArrayRevAux(arr, (off - nl | 0) - 1 | 0, (len - nl | 0) - 1 | 0);
-          return create(left, match$6[0], match$6[1], right);
-      }
-    }
-    function fromSortedArrayAux(arr, off, len) {
-      switch (len) {
-        case 0:
-          return;
-        case 1:
-          var match = arr[off];
-          return singleton(match[0], match[1]);
-        case 2:
-          var match_0 = arr[off];
-          var match_1 = arr[off + 1 | 0];
-          var match$1 = match_1;
-          var match$2 = match_0;
-          return {
-            k: match$1[0],
-            v: match$1[1],
-            h: 2,
-            l: singleton(match$2[0], match$2[1]),
-            r: void 0
-          };
-        case 3:
-          var match_0$1 = arr[off];
-          var match_1$1 = arr[off + 1 | 0];
-          var match_2 = arr[off + 2 | 0];
-          var match$3 = match_2;
-          var match$4 = match_1$1;
-          var match$5 = match_0$1;
-          return {
-            k: match$4[0],
-            v: match$4[1],
-            h: 2,
-            l: singleton(match$5[0], match$5[1]),
-            r: singleton(match$3[0], match$3[1])
-          };
-        default:
-          var nl = len / 2 | 0;
-          var left = fromSortedArrayAux(arr, off, nl);
-          var match$6 = arr[off + nl | 0];
-          var right = fromSortedArrayAux(arr, (off + nl | 0) + 1 | 0, (len - nl | 0) - 1 | 0);
-          return create(left, match$6[0], match$6[1], right);
-      }
-    }
-    function fromSortedArrayUnsafe(arr) {
-      return fromSortedArrayAux(arr, 0, arr.length);
-    }
-    function cmpU(s1, s2, kcmp, vcmp) {
-      var len1 = size(s1);
-      var len2 = size(s2);
-      if (len1 === len2) {
-        var _e1 = stackAllLeft(
-          s1,
-          /* [] */
-          0
-        );
-        var _e2 = stackAllLeft(
-          s2,
-          /* [] */
-          0
-        );
-        while (true) {
-          var e2 = _e2;
-          var e1 = _e1;
-          if (!e1) {
-            return 0;
-          }
-          if (!e2) {
-            return 0;
-          }
-          var h2 = e2.hd;
-          var h1 = e1.hd;
-          var c = kcmp(h1.k, h2.k);
-          if (c !== 0) {
-            return c;
-          }
-          var cx = vcmp(h1.v, h2.v);
-          if (cx !== 0) {
-            return cx;
-          }
-          _e2 = stackAllLeft(h2.r, e2.tl);
-          _e1 = stackAllLeft(h1.r, e1.tl);
-          continue;
-        }
-        ;
-      } else if (len1 < len2) {
-        return -1;
-      } else {
-        return 1;
-      }
-    }
-    function cmp(s1, s2, kcmp, vcmp) {
-      return cmpU(s1, s2, kcmp, Curry.__2(vcmp));
-    }
-    function eqU(s1, s2, kcmp, veq) {
-      var len1 = size(s1);
-      var len2 = size(s2);
-      if (len1 === len2) {
-        var _e1 = stackAllLeft(
-          s1,
-          /* [] */
-          0
-        );
-        var _e2 = stackAllLeft(
-          s2,
-          /* [] */
-          0
-        );
-        while (true) {
-          var e2 = _e2;
-          var e1 = _e1;
-          if (!e1) {
-            return true;
-          }
-          if (!e2) {
-            return true;
-          }
-          var h2 = e2.hd;
-          var h1 = e1.hd;
-          if (!(kcmp(h1.k, h2.k) === 0 && veq(h1.v, h2.v))) {
-            return false;
-          }
-          _e2 = stackAllLeft(h2.r, e2.tl);
-          _e1 = stackAllLeft(h1.r, e1.tl);
-          continue;
-        }
-        ;
-      } else {
+      let h2 = e2.hd;
+      let h1 = e1.hd;
+      if (!(kcmp(h1.k, h2.k) === 0 && veq(h1.v, h2.v))) {
         return false;
       }
+      _e2 = stackAllLeft(h2.r, e2.tl);
+      _e1 = stackAllLeft(h1.r, e1.tl);
+      continue;
     }
-    function eq(s1, s2, kcmp, veq) {
-      return eqU(s1, s2, kcmp, Curry.__2(veq));
+    ;
+  } else {
+    return false;
+  }
+}
+function get3(_n, x, cmp8) {
+  while (true) {
+    let n = _n;
+    if (n === void 0) {
+      return;
     }
-    function get(_n, x, cmp2) {
-      while (true) {
-        var n = _n;
-        if (n === void 0) {
-          return;
-        }
-        var v = n.k;
-        var c = cmp2(x, v);
-        if (c === 0) {
-          return Caml_option.some(n.v);
-        }
-        _n = c < 0 ? n.l : n.r;
-        continue;
-      }
-      ;
+    let v = n.k;
+    let c = cmp8(x, v);
+    if (c === 0) {
+      return Primitive_option5.some(n.v);
     }
-    function getUndefined(_n, x, cmp2) {
-      while (true) {
-        var n = _n;
-        if (n === void 0) {
-          return;
-        }
-        var v = n.k;
-        var c = cmp2(x, v);
-        if (c === 0) {
-          return n.v;
-        }
-        _n = c < 0 ? n.l : n.r;
-        continue;
-      }
-      ;
+    _n = c < 0 ? n.l : n.r;
+    continue;
+  }
+  ;
+}
+function getUndefined(_n, x, cmp8) {
+  while (true) {
+    let n = _n;
+    if (n === void 0) {
+      return;
     }
-    function getExn(_n, x, cmp2) {
-      while (true) {
-        var n = _n;
-        if (n !== void 0) {
-          var v = n.k;
-          var c = cmp2(x, v);
-          if (c === 0) {
-            return n.v;
-          }
-          _n = c < 0 ? n.l : n.r;
-          continue;
-        }
-        throw {
-          RE_EXN_ID: "Not_found",
-          Error: new Error()
-        };
-      }
-      ;
+    let v = n.k;
+    let c = cmp8(x, v);
+    if (c === 0) {
+      return n.v;
     }
-    function getWithDefault(_n, x, def, cmp2) {
-      while (true) {
-        var n = _n;
-        if (n === void 0) {
-          return def;
-        }
-        var v = n.k;
-        var c = cmp2(x, v);
-        if (c === 0) {
-          return n.v;
-        }
-        _n = c < 0 ? n.l : n.r;
-        continue;
-      }
-      ;
-    }
-    function has(_n, x, cmp2) {
-      while (true) {
-        var n = _n;
-        if (n === void 0) {
-          return false;
-        }
-        var v = n.k;
-        var c = cmp2(x, v);
-        if (c === 0) {
-          return true;
-        }
-        _n = c < 0 ? n.l : n.r;
-        continue;
-      }
-      ;
-    }
-    function rotateWithLeftChild(k2) {
-      var k1 = k2.l;
-      k2.l = k1.r;
-      k1.r = k2;
-      var hlk2 = treeHeight(k2.l);
-      var hrk2 = treeHeight(k2.r);
-      k2.h = (hlk2 > hrk2 ? hlk2 : hrk2) + 1 | 0;
-      var hlk1 = treeHeight(k1.l);
-      var hk2 = k2.h;
-      k1.h = (hlk1 > hk2 ? hlk1 : hk2) + 1 | 0;
-      return k1;
-    }
-    function rotateWithRightChild(k1) {
-      var k2 = k1.r;
-      k1.r = k2.l;
-      k2.l = k1;
-      var hlk1 = treeHeight(k1.l);
-      var hrk1 = treeHeight(k1.r);
-      k1.h = (hlk1 > hrk1 ? hlk1 : hrk1) + 1 | 0;
-      var hrk2 = treeHeight(k2.r);
-      var hk1 = k1.h;
-      k2.h = (hrk2 > hk1 ? hrk2 : hk1) + 1 | 0;
-      return k2;
-    }
-    function doubleWithLeftChild(k3) {
-      var x = k3.l;
-      var v = rotateWithRightChild(x);
-      k3.l = v;
-      return rotateWithLeftChild(k3);
-    }
-    function doubleWithRightChild(k2) {
-      var x = k2.r;
-      var v = rotateWithLeftChild(x);
-      k2.r = v;
-      return rotateWithRightChild(k2);
-    }
-    function heightUpdateMutate(t) {
-      var hlt = treeHeight(t.l);
-      var hrt = treeHeight(t.r);
-      t.h = (hlt > hrt ? hlt : hrt) + 1 | 0;
-      return t;
-    }
-    function balMutate(nt) {
-      var l = nt.l;
-      var r = nt.r;
-      var hl = treeHeight(l);
-      var hr = treeHeight(r);
-      if (hl > (2 + hr | 0)) {
-        var ll = l.l;
-        var lr = l.r;
-        if (heightGe(ll, lr)) {
-          return heightUpdateMutate(rotateWithLeftChild(nt));
-        } else {
-          return heightUpdateMutate(doubleWithLeftChild(nt));
-        }
-      }
-      if (hr > (2 + hl | 0)) {
-        var rl = r.l;
-        var rr = r.r;
-        if (heightGe(rr, rl)) {
-          return heightUpdateMutate(rotateWithRightChild(nt));
-        } else {
-          return heightUpdateMutate(doubleWithRightChild(nt));
-        }
-      }
-      nt.h = (hl > hr ? hl : hr) + 1 | 0;
-      return nt;
-    }
-    function updateMutate(t, x, data, cmp2) {
-      if (t === void 0) {
-        return singleton(x, data);
-      }
-      var k = t.k;
-      var c = cmp2(x, k);
+    _n = c < 0 ? n.l : n.r;
+    continue;
+  }
+  ;
+}
+function getOrThrow6(_n, x, cmp8) {
+  while (true) {
+    let n = _n;
+    if (n !== void 0) {
+      let v = n.k;
+      let c = cmp8(x, v);
       if (c === 0) {
-        t.v = data;
-        return t;
+        return n.v;
       }
-      var l = t.l;
-      var r = t.r;
-      if (c < 0) {
-        var ll = updateMutate(l, x, data, cmp2);
-        t.l = ll;
-      } else {
-        t.r = updateMutate(r, x, data, cmp2);
-      }
-      return balMutate(t);
+      _n = c < 0 ? n.l : n.r;
+      continue;
     }
-    function fromArray(xs, cmp2) {
-      var len = xs.length;
-      if (len === 0) {
-        return;
-      }
-      var next = Belt_SortArray.strictlySortedLengthU(xs, function(param, param$1) {
-        return cmp2(param[0], param$1[0]) < 0;
-      });
-      var result;
-      if (next >= 0) {
-        result = fromSortedArrayAux(xs, 0, next);
-      } else {
-        next = -next | 0;
-        result = fromSortedArrayRevAux(xs, next - 1 | 0, next);
-      }
-      for (var i = next; i < len; ++i) {
-        var match = xs[i];
-        result = updateMutate(result, match[0], match[1], cmp2);
-      }
-      return result;
+    throw {
+      RE_EXN_ID: "Not_found",
+      Error: new Error()
+    };
+  }
+  ;
+}
+function getWithDefault4(_n, x, def, cmp8) {
+  while (true) {
+    let n = _n;
+    if (n === void 0) {
+      return def;
     }
-    function removeMinAuxWithRootMutate(nt, n) {
-      var rn = n.r;
-      var ln = n.l;
-      if (ln !== void 0) {
-        n.l = removeMinAuxWithRootMutate(nt, ln);
-        return balMutate(n);
-      } else {
-        nt.k = n.k;
-        nt.v = n.v;
-        return rn;
-      }
+    let v = n.k;
+    let c = cmp8(x, v);
+    if (c === 0) {
+      return n.v;
     }
-    exports2.copy = copy;
-    exports2.create = create;
-    exports2.bal = bal;
-    exports2.singleton = singleton;
-    exports2.updateValue = updateValue;
-    exports2.minKey = minKey;
-    exports2.minKeyUndefined = minKeyUndefined;
-    exports2.maxKey = maxKey;
-    exports2.maxKeyUndefined = maxKeyUndefined;
-    exports2.minimum = minimum;
-    exports2.minUndefined = minUndefined;
-    exports2.maximum = maximum;
-    exports2.maxUndefined = maxUndefined;
-    exports2.removeMinAuxWithRef = removeMinAuxWithRef;
-    exports2.isEmpty = isEmpty;
-    exports2.stackAllLeft = stackAllLeft;
-    exports2.findFirstByU = findFirstByU;
-    exports2.findFirstBy = findFirstBy;
-    exports2.forEachU = forEachU;
-    exports2.forEach = forEach;
-    exports2.mapU = mapU;
-    exports2.map = map;
-    exports2.mapWithKeyU = mapWithKeyU;
-    exports2.mapWithKey = mapWithKey;
-    exports2.reduceU = reduceU;
-    exports2.reduce = reduce;
-    exports2.everyU = everyU;
-    exports2.every = every;
-    exports2.someU = someU;
-    exports2.some = some;
-    exports2.join = join;
-    exports2.concat = concat;
-    exports2.concatOrJoin = concatOrJoin;
-    exports2.keepSharedU = keepSharedU;
-    exports2.keepShared = keepShared;
-    exports2.keepMapU = keepMapU;
-    exports2.keepMap = keepMap;
-    exports2.partitionSharedU = partitionSharedU;
-    exports2.partitionShared = partitionShared;
-    exports2.lengthNode = lengthNode;
-    exports2.size = size;
-    exports2.toList = toList;
-    exports2.checkInvariantInternal = checkInvariantInternal;
-    exports2.fillArray = fillArray;
-    exports2.toArray = toArray;
-    exports2.keysToArray = keysToArray;
-    exports2.valuesToArray = valuesToArray;
-    exports2.fromSortedArrayAux = fromSortedArrayAux;
-    exports2.fromSortedArrayRevAux = fromSortedArrayRevAux;
-    exports2.fromSortedArrayUnsafe = fromSortedArrayUnsafe;
-    exports2.cmpU = cmpU;
-    exports2.cmp = cmp;
-    exports2.eqU = eqU;
-    exports2.eq = eq;
-    exports2.get = get;
-    exports2.getUndefined = getUndefined;
-    exports2.getWithDefault = getWithDefault;
-    exports2.getExn = getExn;
-    exports2.has = has;
-    exports2.fromArray = fromArray;
-    exports2.updateMutate = updateMutate;
-    exports2.balMutate = balMutate;
-    exports2.removeMinAuxWithRootMutate = removeMinAuxWithRootMutate;
+    _n = c < 0 ? n.l : n.r;
+    continue;
+  }
+  ;
+}
+function has2(_n, x, cmp8) {
+  while (true) {
+    let n = _n;
+    if (n === void 0) {
+      return false;
+    }
+    let v = n.k;
+    let c = cmp8(x, v);
+    if (c === 0) {
+      return true;
+    }
+    _n = c < 0 ? n.l : n.r;
+    continue;
+  }
+  ;
+}
+function rotateWithLeftChild(k2) {
+  let k1 = k2.l;
+  k2.l = k1.r;
+  k1.r = k2;
+  let hlk2 = treeHeight(k2.l);
+  let hrk2 = treeHeight(k2.r);
+  k2.h = Primitive_int2.max(hlk2, hrk2) + 1 | 0;
+  let hlk1 = treeHeight(k1.l);
+  let hk2 = k2.h;
+  k1.h = Primitive_int2.max(hlk1, hk2) + 1 | 0;
+  return k1;
+}
+function rotateWithRightChild(k1) {
+  let k2 = k1.r;
+  k1.r = k2.l;
+  k2.l = k1;
+  let hlk1 = treeHeight(k1.l);
+  let hrk1 = treeHeight(k1.r);
+  k1.h = Primitive_int2.max(hlk1, hrk1) + 1 | 0;
+  let hrk2 = treeHeight(k2.r);
+  let hk1 = k1.h;
+  k2.h = Primitive_int2.max(hrk2, hk1) + 1 | 0;
+  return k2;
+}
+function doubleWithLeftChild(k3) {
+  let x = k3.l;
+  let v = rotateWithRightChild(x);
+  k3.l = v;
+  return rotateWithLeftChild(k3);
+}
+function doubleWithRightChild(k2) {
+  let x = k2.r;
+  let v = rotateWithLeftChild(x);
+  k2.r = v;
+  return rotateWithRightChild(k2);
+}
+function heightUpdateMutate(t) {
+  let hlt = treeHeight(t.l);
+  let hrt = treeHeight(t.r);
+  t.h = Primitive_int2.max(hlt, hrt) + 1 | 0;
+  return t;
+}
+function balMutate(nt) {
+  let l = nt.l;
+  let r = nt.r;
+  let hl = treeHeight(l);
+  let hr = treeHeight(r);
+  if (hl > (2 + hr | 0)) {
+    let ll = l.l;
+    let lr = l.r;
+    if (heightGe(ll, lr)) {
+      return heightUpdateMutate(rotateWithLeftChild(nt));
+    } else {
+      return heightUpdateMutate(doubleWithLeftChild(nt));
+    }
+  }
+  if (hr > (2 + hl | 0)) {
+    let rl = r.l;
+    let rr = r.r;
+    if (heightGe(rr, rl)) {
+      return heightUpdateMutate(rotateWithRightChild(nt));
+    } else {
+      return heightUpdateMutate(doubleWithRightChild(nt));
+    }
+  }
+  nt.h = Primitive_int2.max(hl, hr) + 1 | 0;
+  return nt;
+}
+function updateMutate(t, x, data, cmp8) {
+  if (t === void 0) {
+    return singleton(x, data);
+  }
+  let k = t.k;
+  let c = cmp8(x, k);
+  if (c === 0) {
+    t.v = data;
+    return t;
+  }
+  let l = t.l;
+  let r = t.r;
+  if (c < 0) {
+    let ll = updateMutate(l, x, data, cmp8);
+    t.l = ll;
+  } else {
+    t.r = updateMutate(r, x, data, cmp8);
+  }
+  return balMutate(t);
+}
+function fromArray2(xs, cmp8) {
+  let len = xs.length;
+  if (len === 0) {
+    return;
+  }
+  let next = Belt_SortArray2.strictlySortedLength(xs, (param, param$1) => cmp8(param[0], param$1[0]) < 0);
+  let result;
+  if (next >= 0) {
+    result = fromSortedArrayAux(xs, 0, next);
+  } else {
+    next = -next | 0;
+    result = fromSortedArrayRevAux(xs, next - 1 | 0, next);
+  }
+  for (let i = next; i < len; ++i) {
+    let match = xs[i];
+    result = updateMutate(result, match[0], match[1], cmp8);
+  }
+  return result;
+}
+function removeMinAuxWithRootMutate(nt, n) {
+  let rn = n.r;
+  let ln = n.l;
+  if (ln !== void 0) {
+    n.l = removeMinAuxWithRootMutate(nt, ln);
+    return balMutate(n);
+  } else {
+    nt.k = n.k;
+    nt.v = n.v;
+    return rn;
+  }
+}
+var Primitive_int2, Belt_SortArray2, Primitive_option5;
+var init_Belt_internalAVLtree = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_internalAVLtree.js"() {
+    "use strict";
+    Primitive_int2 = (init_Primitive_int(), __toCommonJS(Primitive_int_exports));
+    Belt_SortArray2 = (init_Belt_SortArray(), __toCommonJS(Belt_SortArray_exports));
+    Primitive_option5 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
+    exports.copy = copy;
+    exports.create = create2;
+    exports.bal = bal;
+    exports.singleton = singleton;
+    exports.updateValue = updateValue;
+    exports.minKey = minKey;
+    exports.minKeyUndefined = minKeyUndefined;
+    exports.maxKey = maxKey;
+    exports.maxKeyUndefined = maxKeyUndefined;
+    exports.minimum = minimum;
+    exports.minUndefined = minUndefined;
+    exports.maximum = maximum;
+    exports.maxUndefined = maxUndefined;
+    exports.removeMinAuxWithRef = removeMinAuxWithRef;
+    exports.isEmpty = isEmpty;
+    exports.stackAllLeft = stackAllLeft;
+    exports.findFirstBy = findFirstBy;
+    exports.forEach = forEach5;
+    exports.map = map6;
+    exports.mapWithKey = mapWithKey;
+    exports.reduce = reduce3;
+    exports.every = every4;
+    exports.some = some4;
+    exports.join = join;
+    exports.concat = concat3;
+    exports.concatOrJoin = concatOrJoin;
+    exports.keepShared = keepShared;
+    exports.keepMap = keepMap3;
+    exports.partitionShared = partitionShared;
+    exports.lengthNode = lengthNode;
+    exports.size = size2;
+    exports.toList = toList;
+    exports.checkInvariantInternal = checkInvariantInternal;
+    exports.fillArray = fillArray;
+    exports.toArray = toArray2;
+    exports.keysToArray = keysToArray;
+    exports.valuesToArray = valuesToArray;
+    exports.fromSortedArrayAux = fromSortedArrayAux;
+    exports.fromSortedArrayRevAux = fromSortedArrayRevAux;
+    exports.fromSortedArrayUnsafe = fromSortedArrayUnsafe;
+    exports.cmp = cmp5;
+    exports.eq = eq5;
+    exports.get = get3;
+    exports.getUndefined = getUndefined;
+    exports.getWithDefault = getWithDefault4;
+    exports.getOrThrow = getOrThrow6;
+    exports.has = has2;
+    exports.fromArray = fromArray2;
+    exports.updateMutate = updateMutate;
+    exports.balMutate = balMutate;
+    exports.removeMinAuxWithRootMutate = removeMinAuxWithRootMutate;
   }
 });
 
-// node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/belt_internalMapInt.js
-var require_belt_internalMapInt = __commonJS({
-  "node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/belt_internalMapInt.js"(exports2) {
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_internalMapInt.js
+var Belt_internalMapInt_exports = {};
+function add2(t, x, data) {
+  if (t === void 0) {
+    return Belt_internalAVLtree.singleton(x, data);
+  }
+  let k = t.k;
+  if (x === k) {
+    return Belt_internalAVLtree.updateValue(t, data);
+  }
+  let v = t.v;
+  if (x < k) {
+    return Belt_internalAVLtree.bal(add2(t.l, x, data), k, v, t.r);
+  } else {
+    return Belt_internalAVLtree.bal(t.l, k, v, add2(t.r, x, data));
+  }
+}
+function get4(_n, x) {
+  while (true) {
+    let n = _n;
+    if (n === void 0) {
+      return;
+    }
+    let v = n.k;
+    if (x === v) {
+      return Primitive_option6.some(n.v);
+    }
+    _n = x < v ? n.l : n.r;
+    continue;
+  }
+  ;
+}
+function getUndefined2(_n, x) {
+  while (true) {
+    let n = _n;
+    if (n === void 0) {
+      return;
+    }
+    let v = n.k;
+    if (x === v) {
+      return n.v;
+    }
+    _n = x < v ? n.l : n.r;
+    continue;
+  }
+  ;
+}
+function getOrThrow7(_n, x) {
+  while (true) {
+    let n = _n;
+    if (n !== void 0) {
+      let v = n.k;
+      if (x === v) {
+        return n.v;
+      }
+      _n = x < v ? n.l : n.r;
+      continue;
+    }
+    throw {
+      RE_EXN_ID: "Not_found",
+      Error: new Error()
+    };
+  }
+  ;
+}
+function getWithDefault5(_n, x, def) {
+  while (true) {
+    let n = _n;
+    if (n === void 0) {
+      return def;
+    }
+    let v = n.k;
+    if (x === v) {
+      return n.v;
+    }
+    _n = x < v ? n.l : n.r;
+    continue;
+  }
+  ;
+}
+function has3(_n, x) {
+  while (true) {
+    let n = _n;
+    if (n === void 0) {
+      return false;
+    }
+    let v = n.k;
+    if (x === v) {
+      return true;
+    }
+    _n = x < v ? n.l : n.r;
+    continue;
+  }
+  ;
+}
+function remove(n, x) {
+  if (n === void 0) {
+    return n;
+  }
+  let v = n.k;
+  let l = n.l;
+  let r = n.r;
+  if (x !== v) {
+    if (x < v) {
+      return Belt_internalAVLtree.bal(remove(l, x), v, n.v, r);
+    } else {
+      return Belt_internalAVLtree.bal(l, v, n.v, remove(r, x));
+    }
+  }
+  if (l === void 0) {
+    return r;
+  }
+  if (r === void 0) {
+    return l;
+  }
+  let kr = {
+    contents: r.k
+  };
+  let vr = {
+    contents: r.v
+  };
+  let r$1 = Belt_internalAVLtree.removeMinAuxWithRef(r, kr, vr);
+  return Belt_internalAVLtree.bal(l, kr.contents, vr.contents, r$1);
+}
+function splitAux2(x, n) {
+  let v = n.k;
+  let d = n.v;
+  let l = n.l;
+  let r = n.r;
+  if (x === v) {
+    return [
+      l,
+      Primitive_option6.some(d),
+      r
+    ];
+  }
+  if (x < v) {
+    if (l === void 0) {
+      return [
+        void 0,
+        void 0,
+        n
+      ];
+    }
+    let match = splitAux2(x, l);
+    return [
+      match[0],
+      match[1],
+      Belt_internalAVLtree.join(match[2], v, d, r)
+    ];
+  }
+  if (r === void 0) {
+    return [
+      n,
+      void 0,
+      void 0
+    ];
+  }
+  let match$1 = splitAux2(x, r);
+  return [
+    Belt_internalAVLtree.join(l, v, d, match$1[0]),
+    match$1[1],
+    match$1[2]
+  ];
+}
+function split(x, n) {
+  if (n !== void 0) {
+    return splitAux2(x, n);
+  } else {
+    return [
+      void 0,
+      void 0,
+      void 0
+    ];
+  }
+}
+function merge2(s1, s2, f) {
+  if (s1 !== void 0) {
+    if (s1.h >= (s2 !== void 0 ? s2.h : 0)) {
+      let v1 = s1.k;
+      let d1 = s1.v;
+      let l1 = s1.l;
+      let r1 = s1.r;
+      let match = split(v1, s2);
+      return Belt_internalAVLtree.concatOrJoin(merge2(l1, match[0], f), v1, f(v1, Primitive_option6.some(d1), match[1]), merge2(r1, match[2], f));
+    }
+  } else if (s2 === void 0) {
+    return;
+  }
+  let v2 = s2.k;
+  let d2 = s2.v;
+  let l2 = s2.l;
+  let r2 = s2.r;
+  let match$1 = split(v2, s1);
+  return Belt_internalAVLtree.concatOrJoin(merge2(match$1[0], l2, f), v2, f(v2, match$1[1], Primitive_option6.some(d2)), merge2(match$1[2], r2, f));
+}
+function compareAux(_e1, _e2, vcmp) {
+  while (true) {
+    let e2 = _e2;
+    let e1 = _e1;
+    if (e1 === 0) {
+      return 0;
+    }
+    if (e2 === 0) {
+      return 0;
+    }
+    let h2 = e2.hd;
+    let h1 = e1.hd;
+    let c = Primitive_int3.compare(h1.k, h2.k);
+    if (c !== 0) {
+      return c;
+    }
+    let cx = vcmp(h1.v, h2.v);
+    if (cx !== 0) {
+      return cx;
+    }
+    _e2 = Belt_internalAVLtree.stackAllLeft(h2.r, e2.tl);
+    _e1 = Belt_internalAVLtree.stackAllLeft(h1.r, e1.tl);
+    continue;
+  }
+  ;
+}
+function cmp6(s1, s2, cmp$1) {
+  let len1 = Belt_internalAVLtree.size(s1);
+  let len2 = Belt_internalAVLtree.size(s2);
+  if (len1 === len2) {
+    return compareAux(Belt_internalAVLtree.stackAllLeft(
+      s1,
+      /* [] */
+      0
+    ), Belt_internalAVLtree.stackAllLeft(
+      s2,
+      /* [] */
+      0
+    ), cmp$1);
+  } else if (len1 < len2) {
+    return -1;
+  } else {
+    return 1;
+  }
+}
+function eqAux(_e1, _e2, eq8) {
+  while (true) {
+    let e2 = _e2;
+    let e1 = _e1;
+    if (e1 === 0) {
+      return true;
+    }
+    if (e2 === 0) {
+      return true;
+    }
+    let h2 = e2.hd;
+    let h1 = e1.hd;
+    if (!(h1.k === h2.k && eq8(h1.v, h2.v))) {
+      return false;
+    }
+    _e2 = Belt_internalAVLtree.stackAllLeft(h2.r, e2.tl);
+    _e1 = Belt_internalAVLtree.stackAllLeft(h1.r, e1.tl);
+    continue;
+  }
+  ;
+}
+function eq6(s1, s2, eq$1) {
+  let len1 = Belt_internalAVLtree.size(s1);
+  let len2 = Belt_internalAVLtree.size(s2);
+  if (len1 === len2) {
+    return eqAux(Belt_internalAVLtree.stackAllLeft(
+      s1,
+      /* [] */
+      0
+    ), Belt_internalAVLtree.stackAllLeft(
+      s2,
+      /* [] */
+      0
+    ), eq$1);
+  } else {
+    return false;
+  }
+}
+function addMutate(t, x, data) {
+  if (t === void 0) {
+    return Belt_internalAVLtree.singleton(x, data);
+  }
+  let k = t.k;
+  if (x === k) {
+    t.k = x;
+    t.v = data;
+    return t;
+  }
+  let l = t.l;
+  let r = t.r;
+  if (x < k) {
+    let ll = addMutate(l, x, data);
+    t.l = ll;
+  } else {
+    t.r = addMutate(r, x, data);
+  }
+  return Belt_internalAVLtree.balMutate(t);
+}
+function fromArray3(xs) {
+  let len = xs.length;
+  if (len === 0) {
+    return;
+  }
+  let next = Belt_SortArray3.strictlySortedLength(xs, (param, param$1) => param[0] < param$1[0]);
+  let result;
+  if (next >= 0) {
+    result = Belt_internalAVLtree.fromSortedArrayAux(xs, 0, next);
+  } else {
+    next = -next | 0;
+    result = Belt_internalAVLtree.fromSortedArrayRevAux(xs, next - 1 | 0, next);
+  }
+  for (let i = next; i < len; ++i) {
+    let match = xs[i];
+    result = addMutate(result, match[0], match[1]);
+  }
+  return result;
+}
+var Primitive_int3, Belt_SortArray3, Primitive_option6, Belt_internalAVLtree, N, A, S, cmpU5, eqU5, mergeU;
+var init_Belt_internalMapInt = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_internalMapInt.js"() {
     "use strict";
-    var Caml = require_caml();
-    var Curry = require_curry();
-    var Caml_option = require_caml_option();
-    var Belt_SortArray = require_belt_SortArray();
-    var Belt_internalAVLtree = require_belt_internalAVLtree();
-    function add(t, x, data) {
-      if (t === void 0) {
-        return Belt_internalAVLtree.singleton(x, data);
+    Primitive_int3 = (init_Primitive_int(), __toCommonJS(Primitive_int_exports));
+    Belt_SortArray3 = (init_Belt_SortArray(), __toCommonJS(Belt_SortArray_exports));
+    Primitive_option6 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
+    Belt_internalAVLtree = (init_Belt_internalAVLtree(), __toCommonJS(Belt_internalAVLtree_exports));
+    cmpU5 = cmp6;
+    eqU5 = eq6;
+    mergeU = merge2;
+    exports.N = N;
+    exports.A = A;
+    exports.S = S;
+    exports.add = add2;
+    exports.get = get4;
+    exports.getUndefined = getUndefined2;
+    exports.getOrThrow = getOrThrow7;
+    exports.getWithDefault = getWithDefault5;
+    exports.has = has3;
+    exports.remove = remove;
+    exports.splitAux = splitAux2;
+    exports.split = split;
+    exports.merge = merge2;
+    exports.compareAux = compareAux;
+    exports.cmp = cmp6;
+    exports.eqAux = eqAux;
+    exports.eq = eq6;
+    exports.addMutate = addMutate;
+    exports.fromArray = fromArray3;
+    exports.cmpU = cmpU5;
+    exports.eqU = eqU5;
+    exports.mergeU = mergeU;
+  }
+});
+
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_MapInt.js
+var Belt_MapInt_exports = {};
+function set2(t, newK, newD) {
+  if (t === void 0) {
+    return Belt_internalAVLtree2.singleton(newK, newD);
+  }
+  let k = t.k;
+  if (newK === k) {
+    return Belt_internalAVLtree2.updateValue(t, newD);
+  }
+  let v = t.v;
+  if (newK < k) {
+    return Belt_internalAVLtree2.bal(set2(t.l, newK, newD), k, v, t.r);
+  } else {
+    return Belt_internalAVLtree2.bal(t.l, k, v, set2(t.r, newK, newD));
+  }
+}
+function update(t, x, f) {
+  if (t !== void 0) {
+    let k = t.k;
+    if (x === k) {
+      let data = f(Primitive_option7.some(t.v));
+      if (data !== void 0) {
+        return Belt_internalAVLtree2.updateValue(t, Primitive_option7.valFromOption(data));
       }
-      var k = t.k;
-      if (x === k) {
-        return Belt_internalAVLtree.updateValue(t, data);
-      }
-      var v = t.v;
-      if (x < k) {
-        return Belt_internalAVLtree.bal(add(t.l, x, data), k, v, t.r);
-      } else {
-        return Belt_internalAVLtree.bal(t.l, k, v, add(t.r, x, data));
-      }
-    }
-    function get(_n, x) {
-      while (true) {
-        var n = _n;
-        if (n === void 0) {
-          return;
-        }
-        var v = n.k;
-        if (x === v) {
-          return Caml_option.some(n.v);
-        }
-        _n = x < v ? n.l : n.r;
-        continue;
-      }
-      ;
-    }
-    function getUndefined(_n, x) {
-      while (true) {
-        var n = _n;
-        if (n === void 0) {
-          return;
-        }
-        var v = n.k;
-        if (x === v) {
-          return n.v;
-        }
-        _n = x < v ? n.l : n.r;
-        continue;
-      }
-      ;
-    }
-    function getExn(_n, x) {
-      while (true) {
-        var n = _n;
-        if (n !== void 0) {
-          var v = n.k;
-          if (x === v) {
-            return n.v;
-          }
-          _n = x < v ? n.l : n.r;
-          continue;
-        }
-        throw {
-          RE_EXN_ID: "Not_found",
-          Error: new Error()
-        };
-      }
-      ;
-    }
-    function getWithDefault(_n, x, def) {
-      while (true) {
-        var n = _n;
-        if (n === void 0) {
-          return def;
-        }
-        var v = n.k;
-        if (x === v) {
-          return n.v;
-        }
-        _n = x < v ? n.l : n.r;
-        continue;
-      }
-      ;
-    }
-    function has(_n, x) {
-      while (true) {
-        var n = _n;
-        if (n === void 0) {
-          return false;
-        }
-        var v = n.k;
-        if (x === v) {
-          return true;
-        }
-        _n = x < v ? n.l : n.r;
-        continue;
-      }
-      ;
-    }
-    function remove(n, x) {
-      if (n === void 0) {
-        return n;
-      }
-      var v = n.k;
-      var l = n.l;
-      var r = n.r;
-      if (x !== v) {
-        if (x < v) {
-          return Belt_internalAVLtree.bal(remove(l, x), v, n.v, r);
-        } else {
-          return Belt_internalAVLtree.bal(l, v, n.v, remove(r, x));
-        }
-      }
+      let l = t.l;
+      let r = t.r;
       if (l === void 0) {
         return r;
       }
       if (r === void 0) {
         return l;
       }
-      var kr = {
+      let kr = {
         contents: r.k
       };
-      var vr = {
+      let vr = {
         contents: r.v
       };
-      var r$1 = Belt_internalAVLtree.removeMinAuxWithRef(r, kr, vr);
-      return Belt_internalAVLtree.bal(l, kr.contents, vr.contents, r$1);
+      let r$1 = Belt_internalAVLtree2.removeMinAuxWithRef(r, kr, vr);
+      return Belt_internalAVLtree2.bal(l, kr.contents, vr.contents, r$1);
     }
-    function splitAux(x, n) {
-      var v = n.k;
-      var d = n.v;
-      var l = n.l;
-      var r = n.r;
-      if (x === v) {
-        return [
-          l,
-          Caml_option.some(d),
-          r
-        ];
-      }
-      if (x < v) {
-        if (l === void 0) {
-          return [
-            void 0,
-            void 0,
-            n
-          ];
-        }
-        var match = splitAux(x, l);
-        return [
-          match[0],
-          match[1],
-          Belt_internalAVLtree.join(match[2], v, d, r)
-        ];
-      }
-      if (r === void 0) {
-        return [
-          n,
-          void 0,
-          void 0
-        ];
-      }
-      var match$1 = splitAux(x, r);
-      return [
-        Belt_internalAVLtree.join(l, v, d, match$1[0]),
-        match$1[1],
-        match$1[2]
-      ];
-    }
-    function split(x, n) {
-      if (n !== void 0) {
-        return splitAux(x, n);
-      } else {
-        return [
-          void 0,
-          void 0,
-          void 0
-        ];
-      }
-    }
-    function mergeU(s1, s2, f) {
-      if (s1 !== void 0) {
-        if (s1.h >= (s2 !== void 0 ? s2.h : 0)) {
-          var v1 = s1.k;
-          var d1 = s1.v;
-          var l1 = s1.l;
-          var r1 = s1.r;
-          var match = split(v1, s2);
-          return Belt_internalAVLtree.concatOrJoin(mergeU(l1, match[0], f), v1, f(v1, Caml_option.some(d1), match[1]), mergeU(r1, match[2], f));
-        }
-      } else if (s2 === void 0) {
-        return;
-      }
-      var v2 = s2.k;
-      var d2 = s2.v;
-      var l2 = s2.l;
-      var r2 = s2.r;
-      var match$1 = split(v2, s1);
-      return Belt_internalAVLtree.concatOrJoin(mergeU(match$1[0], l2, f), v2, f(v2, match$1[1], Caml_option.some(d2)), mergeU(match$1[2], r2, f));
-    }
-    function merge(s1, s2, f) {
-      return mergeU(s1, s2, Curry.__3(f));
-    }
-    function compareAux(_e1, _e2, vcmp) {
-      while (true) {
-        var e2 = _e2;
-        var e1 = _e1;
-        if (!e1) {
-          return 0;
-        }
-        if (!e2) {
-          return 0;
-        }
-        var h2 = e2.hd;
-        var h1 = e1.hd;
-        var c = Caml.int_compare(h1.k, h2.k);
-        if (c !== 0) {
-          return c;
-        }
-        var cx = vcmp(h1.v, h2.v);
-        if (cx !== 0) {
-          return cx;
-        }
-        _e2 = Belt_internalAVLtree.stackAllLeft(h2.r, e2.tl);
-        _e1 = Belt_internalAVLtree.stackAllLeft(h1.r, e1.tl);
-        continue;
-      }
-      ;
-    }
-    function cmpU(s1, s2, cmp2) {
-      var len1 = Belt_internalAVLtree.size(s1);
-      var len2 = Belt_internalAVLtree.size(s2);
-      if (len1 === len2) {
-        return compareAux(Belt_internalAVLtree.stackAllLeft(
-          s1,
-          /* [] */
-          0
-        ), Belt_internalAVLtree.stackAllLeft(
-          s2,
-          /* [] */
-          0
-        ), cmp2);
-      } else if (len1 < len2) {
-        return -1;
-      } else {
-        return 1;
-      }
-    }
-    function cmp(s1, s2, f) {
-      return cmpU(s1, s2, Curry.__2(f));
-    }
-    function eqAux(_e1, _e2, eq2) {
-      while (true) {
-        var e2 = _e2;
-        var e1 = _e1;
-        if (!e1) {
-          return true;
-        }
-        if (!e2) {
-          return true;
-        }
-        var h2 = e2.hd;
-        var h1 = e1.hd;
-        if (!(h1.k === h2.k && eq2(h1.v, h2.v))) {
-          return false;
-        }
-        _e2 = Belt_internalAVLtree.stackAllLeft(h2.r, e2.tl);
-        _e1 = Belt_internalAVLtree.stackAllLeft(h1.r, e1.tl);
-        continue;
-      }
-      ;
-    }
-    function eqU(s1, s2, eq2) {
-      var len1 = Belt_internalAVLtree.size(s1);
-      var len2 = Belt_internalAVLtree.size(s2);
-      if (len1 === len2) {
-        return eqAux(Belt_internalAVLtree.stackAllLeft(
-          s1,
-          /* [] */
-          0
-        ), Belt_internalAVLtree.stackAllLeft(
-          s2,
-          /* [] */
-          0
-        ), eq2);
-      } else {
-        return false;
-      }
-    }
-    function eq(s1, s2, f) {
-      return eqU(s1, s2, Curry.__2(f));
-    }
-    function addMutate(t, x, data) {
-      if (t === void 0) {
-        return Belt_internalAVLtree.singleton(x, data);
-      }
-      var k = t.k;
-      if (x === k) {
-        t.k = x;
-        t.v = data;
+    let v = t.v;
+    let l$1 = t.l;
+    let r$2 = t.r;
+    if (x < k) {
+      let ll = update(l$1, x, f);
+      if (l$1 === ll) {
         return t;
-      }
-      var l = t.l;
-      var r = t.r;
-      if (x < k) {
-        var ll = addMutate(l, x, data);
-        t.l = ll;
       } else {
-        t.r = addMutate(r, x, data);
+        return Belt_internalAVLtree2.bal(ll, k, v, r$2);
       }
-      return Belt_internalAVLtree.balMutate(t);
     }
-    function fromArray(xs) {
-      var len = xs.length;
-      if (len === 0) {
-        return;
-      }
-      var next = Belt_SortArray.strictlySortedLengthU(xs, function(param, param$1) {
-        return param[0] < param$1[0];
-      });
-      var result;
-      if (next >= 0) {
-        result = Belt_internalAVLtree.fromSortedArrayAux(xs, 0, next);
-      } else {
-        next = -next | 0;
-        result = Belt_internalAVLtree.fromSortedArrayRevAux(xs, next - 1 | 0, next);
-      }
-      for (var i = next; i < len; ++i) {
-        var match = xs[i];
-        result = addMutate(result, match[0], match[1]);
-      }
-      return result;
+    let rr = update(r$2, x, f);
+    if (r$2 === rr) {
+      return t;
+    } else {
+      return Belt_internalAVLtree2.bal(l$1, k, v, rr);
     }
-    var N;
-    var A;
-    var S;
-    exports2.N = N;
-    exports2.A = A;
-    exports2.S = S;
-    exports2.add = add;
-    exports2.get = get;
-    exports2.getUndefined = getUndefined;
-    exports2.getExn = getExn;
-    exports2.getWithDefault = getWithDefault;
-    exports2.has = has;
-    exports2.remove = remove;
-    exports2.splitAux = splitAux;
-    exports2.split = split;
-    exports2.mergeU = mergeU;
-    exports2.merge = merge;
-    exports2.compareAux = compareAux;
-    exports2.cmpU = cmpU;
-    exports2.cmp = cmp;
-    exports2.eqAux = eqAux;
-    exports2.eqU = eqU;
-    exports2.eq = eq;
-    exports2.addMutate = addMutate;
-    exports2.fromArray = fromArray;
   }
-});
-
-// node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/belt_MapInt.js
-var require_belt_MapInt = __commonJS({
-  "node_modules/.pnpm/rescript@11.1.4/node_modules/rescript/lib/js/belt_MapInt.js"(exports2) {
+  let data$1 = f(void 0);
+  if (data$1 !== void 0) {
+    return Belt_internalAVLtree2.singleton(x, Primitive_option7.valFromOption(data$1));
+  } else {
+    return t;
+  }
+}
+function removeAux(n, x) {
+  let v = n.k;
+  let l = n.l;
+  let r = n.r;
+  if (x === v) {
+    if (l === void 0) {
+      return r;
+    }
+    if (r === void 0) {
+      return l;
+    }
+    let kr = {
+      contents: r.k
+    };
+    let vr = {
+      contents: r.v
+    };
+    let r$1 = Belt_internalAVLtree2.removeMinAuxWithRef(r, kr, vr);
+    return Belt_internalAVLtree2.bal(l, kr.contents, vr.contents, r$1);
+  }
+  if (x < v) {
+    if (l === void 0) {
+      return n;
+    }
+    let ll = removeAux(l, x);
+    if (ll === l) {
+      return n;
+    } else {
+      return Belt_internalAVLtree2.bal(ll, v, n.v, r);
+    }
+  }
+  if (r === void 0) {
+    return n;
+  }
+  let rr = removeAux(r, x);
+  return Belt_internalAVLtree2.bal(l, v, n.v, rr);
+}
+function remove2(n, x) {
+  if (n !== void 0) {
+    return removeAux(n, x);
+  }
+}
+function removeMany(t, keys) {
+  let len = keys.length;
+  if (t !== void 0) {
+    let _t = t;
+    let _i = 0;
+    while (true) {
+      let i = _i;
+      let t$1 = _t;
+      if (i >= len) {
+        return t$1;
+      }
+      let ele = keys[i];
+      let u = removeAux(t$1, ele);
+      if (u === void 0) {
+        return u;
+      }
+      _i = i + 1 | 0;
+      _t = u;
+      continue;
+    }
+    ;
+  }
+}
+function mergeMany(h, arr) {
+  let len = arr.length;
+  let v = h;
+  for (let i = 0; i < len; ++i) {
+    let match = arr[i];
+    v = set2(v, match[0], match[1]);
+  }
+  return v;
+}
+var Primitive_option7, Belt_internalMapInt, Belt_internalAVLtree2, empty, isEmpty2, has4, cmpU6, cmp7, eqU6, eq7, findFirstByU, findFirstBy2, forEachU4, forEach6, reduceU3, reduce4, everyU3, every5, someU3, some5, size3, toList2, toArray3, fromArray4, keysToArray2, valuesToArray2, minKey2, minKeyUndefined2, maxKey2, maxKeyUndefined2, minimum2, minUndefined2, maximum2, maxUndefined2, get5, getUndefined3, getWithDefault6, getExn6, getOrThrow8, checkInvariantInternal2, updateU, mergeU2, merge3, keepU4, keep4, partitionU3, partition3, split2, mapU5, map7, mapWithKeyU, mapWithKey2;
+var init_Belt_MapInt = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_MapInt.js"() {
     "use strict";
-    var Curry = require_curry();
-    var Caml_option = require_caml_option();
-    var Belt_internalMapInt = require_belt_internalMapInt();
-    var Belt_internalAVLtree = require_belt_internalAVLtree();
-    function set(t, newK, newD) {
-      if (t === void 0) {
-        return Belt_internalAVLtree.singleton(newK, newD);
-      }
-      var k = t.k;
-      if (newK === k) {
-        return Belt_internalAVLtree.updateValue(t, newD);
-      }
-      var v = t.v;
-      if (newK < k) {
-        return Belt_internalAVLtree.bal(set(t.l, newK, newD), k, v, t.r);
-      } else {
-        return Belt_internalAVLtree.bal(t.l, k, v, set(t.r, newK, newD));
-      }
-    }
-    function updateU(t, x, f) {
-      if (t !== void 0) {
-        var k = t.k;
-        if (x === k) {
-          var data = f(Caml_option.some(t.v));
-          if (data !== void 0) {
-            return Belt_internalAVLtree.updateValue(t, Caml_option.valFromOption(data));
-          }
-          var l = t.l;
-          var r = t.r;
-          if (l === void 0) {
-            return r;
-          }
-          if (r === void 0) {
-            return l;
-          }
-          var kr = {
-            contents: r.k
-          };
-          var vr = {
-            contents: r.v
-          };
-          var r$1 = Belt_internalAVLtree.removeMinAuxWithRef(r, kr, vr);
-          return Belt_internalAVLtree.bal(l, kr.contents, vr.contents, r$1);
-        }
-        var v = t.v;
-        var l$1 = t.l;
-        var r$2 = t.r;
-        if (x < k) {
-          var ll = updateU(l$1, x, f);
-          if (l$1 === ll) {
-            return t;
-          } else {
-            return Belt_internalAVLtree.bal(ll, k, v, r$2);
-          }
-        }
-        var rr = updateU(r$2, x, f);
-        if (r$2 === rr) {
-          return t;
-        } else {
-          return Belt_internalAVLtree.bal(l$1, k, v, rr);
-        }
-      }
-      var data$1 = f(void 0);
-      if (data$1 !== void 0) {
-        return Belt_internalAVLtree.singleton(x, Caml_option.valFromOption(data$1));
-      } else {
-        return t;
-      }
-    }
-    function update(t, x, f) {
-      return updateU(t, x, Curry.__1(f));
-    }
-    function removeAux(n, x) {
-      var v = n.k;
-      var l = n.l;
-      var r = n.r;
-      if (x === v) {
-        if (l === void 0) {
-          return r;
-        }
-        if (r === void 0) {
-          return l;
-        }
-        var kr = {
-          contents: r.k
-        };
-        var vr = {
-          contents: r.v
-        };
-        var r$1 = Belt_internalAVLtree.removeMinAuxWithRef(r, kr, vr);
-        return Belt_internalAVLtree.bal(l, kr.contents, vr.contents, r$1);
-      }
-      if (x < v) {
-        if (l === void 0) {
-          return n;
-        }
-        var ll = removeAux(l, x);
-        if (ll === l) {
-          return n;
-        } else {
-          return Belt_internalAVLtree.bal(ll, v, n.v, r);
-        }
-      }
-      if (r === void 0) {
-        return n;
-      }
-      var rr = removeAux(r, x);
-      return Belt_internalAVLtree.bal(l, v, n.v, rr);
-    }
-    function remove(n, x) {
-      if (n !== void 0) {
-        return removeAux(n, x);
-      }
-    }
-    function removeMany(t, keys) {
-      var len = keys.length;
-      if (t !== void 0) {
-        var _t = t;
-        var _i = 0;
-        while (true) {
-          var i = _i;
-          var t$1 = _t;
-          if (i >= len) {
-            return t$1;
-          }
-          var ele = keys[i];
-          var u = removeAux(t$1, ele);
-          if (u === void 0) {
-            return u;
-          }
-          _i = i + 1 | 0;
-          _t = u;
-          continue;
-        }
-        ;
-      }
-    }
-    function mergeMany(h, arr) {
-      var len = arr.length;
-      var v = h;
-      for (var i = 0; i < len; ++i) {
-        var match = arr[i];
-        v = set(v, match[0], match[1]);
-      }
-      return v;
-    }
-    var empty;
-    var isEmpty = Belt_internalAVLtree.isEmpty;
-    var has = Belt_internalMapInt.has;
-    var cmpU = Belt_internalMapInt.cmpU;
-    var cmp = Belt_internalMapInt.cmp;
-    var eqU = Belt_internalMapInt.eqU;
-    var eq = Belt_internalMapInt.eq;
-    var findFirstByU = Belt_internalAVLtree.findFirstByU;
-    var findFirstBy = Belt_internalAVLtree.findFirstBy;
-    var forEachU = Belt_internalAVLtree.forEachU;
-    var forEach = Belt_internalAVLtree.forEach;
-    var reduceU = Belt_internalAVLtree.reduceU;
-    var reduce = Belt_internalAVLtree.reduce;
-    var everyU = Belt_internalAVLtree.everyU;
-    var every = Belt_internalAVLtree.every;
-    var someU = Belt_internalAVLtree.someU;
-    var some = Belt_internalAVLtree.some;
-    var size = Belt_internalAVLtree.size;
-    var toList = Belt_internalAVLtree.toList;
-    var toArray = Belt_internalAVLtree.toArray;
-    var fromArray = Belt_internalMapInt.fromArray;
-    var keysToArray = Belt_internalAVLtree.keysToArray;
-    var valuesToArray = Belt_internalAVLtree.valuesToArray;
-    var minKey = Belt_internalAVLtree.minKey;
-    var minKeyUndefined = Belt_internalAVLtree.minKeyUndefined;
-    var maxKey = Belt_internalAVLtree.maxKey;
-    var maxKeyUndefined = Belt_internalAVLtree.maxKeyUndefined;
-    var minimum = Belt_internalAVLtree.minimum;
-    var minUndefined = Belt_internalAVLtree.minUndefined;
-    var maximum = Belt_internalAVLtree.maximum;
-    var maxUndefined = Belt_internalAVLtree.maxUndefined;
-    var get = Belt_internalMapInt.get;
-    var getUndefined = Belt_internalMapInt.getUndefined;
-    var getWithDefault = Belt_internalMapInt.getWithDefault;
-    var getExn = Belt_internalMapInt.getExn;
-    var checkInvariantInternal = Belt_internalAVLtree.checkInvariantInternal;
-    var mergeU = Belt_internalMapInt.mergeU;
-    var merge = Belt_internalMapInt.merge;
-    var keepU = Belt_internalAVLtree.keepSharedU;
-    var keep = Belt_internalAVLtree.keepShared;
-    var partitionU = Belt_internalAVLtree.partitionSharedU;
-    var partition = Belt_internalAVLtree.partitionShared;
-    var split = Belt_internalMapInt.split;
-    var mapU = Belt_internalAVLtree.mapU;
-    var map = Belt_internalAVLtree.map;
-    var mapWithKeyU = Belt_internalAVLtree.mapWithKeyU;
-    var mapWithKey = Belt_internalAVLtree.mapWithKey;
-    exports2.empty = empty;
-    exports2.isEmpty = isEmpty;
-    exports2.has = has;
-    exports2.cmpU = cmpU;
-    exports2.cmp = cmp;
-    exports2.eqU = eqU;
-    exports2.eq = eq;
-    exports2.findFirstByU = findFirstByU;
-    exports2.findFirstBy = findFirstBy;
-    exports2.forEachU = forEachU;
-    exports2.forEach = forEach;
-    exports2.reduceU = reduceU;
-    exports2.reduce = reduce;
-    exports2.everyU = everyU;
-    exports2.every = every;
-    exports2.someU = someU;
-    exports2.some = some;
-    exports2.size = size;
-    exports2.toList = toList;
-    exports2.toArray = toArray;
-    exports2.fromArray = fromArray;
-    exports2.keysToArray = keysToArray;
-    exports2.valuesToArray = valuesToArray;
-    exports2.minKey = minKey;
-    exports2.minKeyUndefined = minKeyUndefined;
-    exports2.maxKey = maxKey;
-    exports2.maxKeyUndefined = maxKeyUndefined;
-    exports2.minimum = minimum;
-    exports2.minUndefined = minUndefined;
-    exports2.maximum = maximum;
-    exports2.maxUndefined = maxUndefined;
-    exports2.get = get;
-    exports2.getUndefined = getUndefined;
-    exports2.getWithDefault = getWithDefault;
-    exports2.getExn = getExn;
-    exports2.checkInvariantInternal = checkInvariantInternal;
-    exports2.remove = remove;
-    exports2.removeMany = removeMany;
-    exports2.set = set;
-    exports2.updateU = updateU;
-    exports2.update = update;
-    exports2.mergeU = mergeU;
-    exports2.merge = merge;
-    exports2.mergeMany = mergeMany;
-    exports2.keepU = keepU;
-    exports2.keep = keep;
-    exports2.partitionU = partitionU;
-    exports2.partition = partition;
-    exports2.split = split;
-    exports2.mapU = mapU;
-    exports2.map = map;
-    exports2.mapWithKeyU = mapWithKeyU;
-    exports2.mapWithKey = mapWithKey;
+    Primitive_option7 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
+    Belt_internalMapInt = (init_Belt_internalMapInt(), __toCommonJS(Belt_internalMapInt_exports));
+    Belt_internalAVLtree2 = (init_Belt_internalAVLtree(), __toCommonJS(Belt_internalAVLtree_exports));
+    isEmpty2 = Belt_internalAVLtree2.isEmpty;
+    has4 = Belt_internalMapInt.has;
+    cmpU6 = Belt_internalMapInt.cmp;
+    cmp7 = Belt_internalMapInt.cmp;
+    eqU6 = Belt_internalMapInt.eq;
+    eq7 = Belt_internalMapInt.eq;
+    findFirstByU = Belt_internalAVLtree2.findFirstBy;
+    findFirstBy2 = Belt_internalAVLtree2.findFirstBy;
+    forEachU4 = Belt_internalAVLtree2.forEach;
+    forEach6 = Belt_internalAVLtree2.forEach;
+    reduceU3 = Belt_internalAVLtree2.reduce;
+    reduce4 = Belt_internalAVLtree2.reduce;
+    everyU3 = Belt_internalAVLtree2.every;
+    every5 = Belt_internalAVLtree2.every;
+    someU3 = Belt_internalAVLtree2.some;
+    some5 = Belt_internalAVLtree2.some;
+    size3 = Belt_internalAVLtree2.size;
+    toList2 = Belt_internalAVLtree2.toList;
+    toArray3 = Belt_internalAVLtree2.toArray;
+    fromArray4 = Belt_internalMapInt.fromArray;
+    keysToArray2 = Belt_internalAVLtree2.keysToArray;
+    valuesToArray2 = Belt_internalAVLtree2.valuesToArray;
+    minKey2 = Belt_internalAVLtree2.minKey;
+    minKeyUndefined2 = Belt_internalAVLtree2.minKeyUndefined;
+    maxKey2 = Belt_internalAVLtree2.maxKey;
+    maxKeyUndefined2 = Belt_internalAVLtree2.maxKeyUndefined;
+    minimum2 = Belt_internalAVLtree2.minimum;
+    minUndefined2 = Belt_internalAVLtree2.minUndefined;
+    maximum2 = Belt_internalAVLtree2.maximum;
+    maxUndefined2 = Belt_internalAVLtree2.maxUndefined;
+    get5 = Belt_internalMapInt.get;
+    getUndefined3 = Belt_internalMapInt.getUndefined;
+    getWithDefault6 = Belt_internalMapInt.getWithDefault;
+    getExn6 = Belt_internalMapInt.getOrThrow;
+    getOrThrow8 = Belt_internalMapInt.getOrThrow;
+    checkInvariantInternal2 = Belt_internalAVLtree2.checkInvariantInternal;
+    updateU = update;
+    mergeU2 = Belt_internalMapInt.merge;
+    merge3 = Belt_internalMapInt.merge;
+    keepU4 = Belt_internalAVLtree2.keepShared;
+    keep4 = Belt_internalAVLtree2.keepShared;
+    partitionU3 = Belt_internalAVLtree2.partitionShared;
+    partition3 = Belt_internalAVLtree2.partitionShared;
+    split2 = Belt_internalMapInt.split;
+    mapU5 = Belt_internalAVLtree2.map;
+    map7 = Belt_internalAVLtree2.map;
+    mapWithKeyU = Belt_internalAVLtree2.mapWithKey;
+    mapWithKey2 = Belt_internalAVLtree2.mapWithKey;
+    exports.empty = empty;
+    exports.isEmpty = isEmpty2;
+    exports.has = has4;
+    exports.cmpU = cmpU6;
+    exports.cmp = cmp7;
+    exports.eqU = eqU6;
+    exports.eq = eq7;
+    exports.findFirstByU = findFirstByU;
+    exports.findFirstBy = findFirstBy2;
+    exports.forEachU = forEachU4;
+    exports.forEach = forEach6;
+    exports.reduceU = reduceU3;
+    exports.reduce = reduce4;
+    exports.everyU = everyU3;
+    exports.every = every5;
+    exports.someU = someU3;
+    exports.some = some5;
+    exports.size = size3;
+    exports.toList = toList2;
+    exports.toArray = toArray3;
+    exports.fromArray = fromArray4;
+    exports.keysToArray = keysToArray2;
+    exports.valuesToArray = valuesToArray2;
+    exports.minKey = minKey2;
+    exports.minKeyUndefined = minKeyUndefined2;
+    exports.maxKey = maxKey2;
+    exports.maxKeyUndefined = maxKeyUndefined2;
+    exports.minimum = minimum2;
+    exports.minUndefined = minUndefined2;
+    exports.maximum = maximum2;
+    exports.maxUndefined = maxUndefined2;
+    exports.get = get5;
+    exports.getUndefined = getUndefined3;
+    exports.getWithDefault = getWithDefault6;
+    exports.getExn = getExn6;
+    exports.getOrThrow = getOrThrow8;
+    exports.checkInvariantInternal = checkInvariantInternal2;
+    exports.remove = remove2;
+    exports.removeMany = removeMany;
+    exports.set = set2;
+    exports.updateU = updateU;
+    exports.update = update;
+    exports.mergeU = mergeU2;
+    exports.merge = merge3;
+    exports.mergeMany = mergeMany;
+    exports.keepU = keepU4;
+    exports.keep = keep4;
+    exports.partitionU = partitionU3;
+    exports.partition = partition3;
+    exports.split = split2;
+    exports.mapU = mapU5;
+    exports.map = map7;
+    exports.mapWithKeyU = mapWithKeyU;
+    exports.mapWithKey = mapWithKey2;
   }
 });
 
@@ -13495,8 +11030,8 @@ var require_belt_MapInt = __commonJS({
 var require_TileSolid = __commonJS({
   "src/TileSolid.js"(exports2) {
     "use strict";
-    var Belt_MapInt = require_belt_MapInt();
-    var map = Belt_MapInt.fromArray([
+    var Belt_MapInt = (init_Belt_MapInt(), __toCommonJS(Belt_MapInt_exports));
+    var map8 = Belt_MapInt.fromArray([
       [
         379,
         true
@@ -14267,9 +11802,9 @@ var require_TileSolid = __commonJS({
       ]
     ]);
     function isSolid(tileType) {
-      return Belt_MapInt.getWithDefault(map, tileType, false);
+      return Belt_MapInt.getWithDefault(map8, tileType, false);
     }
-    exports2.map = map;
+    exports2.map = map8;
     exports2.isSolid = isSolid;
   }
 });
@@ -14278,8 +11813,8 @@ var require_TileSolid = __commonJS({
 var require_TileFrameImportant = __commonJS({
   "src/TileFrameImportant.js"(exports2) {
     "use strict";
-    var Belt_MapInt = require_belt_MapInt();
-    var map = Belt_MapInt.fromArray([
+    var Belt_MapInt = (init_Belt_MapInt(), __toCommonJS(Belt_MapInt_exports));
+    var map8 = Belt_MapInt.fromArray([
       [
         0,
         false
@@ -16774,9 +14309,9 @@ var require_TileFrameImportant = __commonJS({
       ]
     ]);
     function isImportant(tileType) {
-      return Belt_MapInt.getWithDefault(map, tileType, false);
+      return Belt_MapInt.getWithDefault(map8, tileType, false);
     }
-    exports2.map = map;
+    exports2.map = map8;
     exports2.isImportant = isImportant;
   }
 });
@@ -16785,16 +14320,14 @@ var require_TileFrameImportant = __commonJS({
 var require_ErrorAwareBufferReader = __commonJS({
   "src/ErrorAwareBufferReader.js"(exports2) {
     "use strict";
-    var Js_exn = require_js_exn();
-    var Caml_exceptions = require_caml_exceptions();
-    var Caml_js_exceptions = require_caml_js_exceptions();
-    var ReadError = /* @__PURE__ */ Caml_exceptions.create("ErrorAwareBufferReader-TerrariaPacket.ReadError");
+    var Primitive_exceptions3 = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
+    var ReadError = /* @__PURE__ */ Primitive_exceptions3.create("ErrorAwareBufferReader-TerrariaPacket.ReadError");
     function readByte(reader, context) {
       try {
         return reader.readByte();
       } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
           throw {
             RE_EXN_ID: ReadError,
             _1: {
@@ -16811,8 +14344,8 @@ var require_ErrorAwareBufferReader = __commonJS({
       try {
         return reader.readInt16();
       } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
           throw {
             RE_EXN_ID: ReadError,
             _1: {
@@ -16829,8 +14362,8 @@ var require_ErrorAwareBufferReader = __commonJS({
       try {
         return reader.readInt32();
       } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
           throw {
             RE_EXN_ID: ReadError,
             _1: {
@@ -16847,8 +14380,8 @@ var require_ErrorAwareBufferReader = __commonJS({
       try {
         return reader.readUInt64();
       } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
           throw {
             RE_EXN_ID: ReadError,
             _1: {
@@ -16865,8 +14398,8 @@ var require_ErrorAwareBufferReader = __commonJS({
       try {
         return reader.readString();
       } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
           throw {
             RE_EXN_ID: ReadError,
             _1: {
@@ -16883,8 +14416,8 @@ var require_ErrorAwareBufferReader = __commonJS({
       try {
         return reader.readBytes(count);
       } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
           throw {
             RE_EXN_ID: ReadError,
             _1: {
@@ -16901,8 +14434,8 @@ var require_ErrorAwareBufferReader = __commonJS({
       try {
         return reader.readSingle();
       } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
           throw {
             RE_EXN_ID: ReadError,
             _1: {
@@ -16919,8 +14452,8 @@ var require_ErrorAwareBufferReader = __commonJS({
       try {
         return reader.readSByte();
       } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
           throw {
             RE_EXN_ID: ReadError,
             _1: {
@@ -16937,8 +14470,8 @@ var require_ErrorAwareBufferReader = __commonJS({
       try {
         return reader.readColor();
       } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
           throw {
             RE_EXN_ID: ReadError,
             _1: {
@@ -16955,8 +14488,8 @@ var require_ErrorAwareBufferReader = __commonJS({
       try {
         return reader.readBuffer(bytes);
       } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
           throw {
             RE_EXN_ID: ReadError,
             _1: {
@@ -16991,22 +14524,21 @@ var require_ErrorAwareBufferReader = __commonJS({
 var require_ErrorAwareBufferWriter = __commonJS({
   "src/ErrorAwareBufferWriter.js"(exports2) {
     "use strict";
-    var Js_exn = require_js_exn();
-    var Caml_js_exceptions = require_caml_js_exceptions();
+    var Primitive_exceptions3 = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
     var Bufferwriter = require_bufferwriter().default;
     function packSingle(self, value, context) {
       if (self.TAG !== "Writing") {
         return self;
       }
       try {
-        var writer = self._0.packSingle(value);
+        let writer = self._0.packSingle(value);
         return {
           TAG: "Writing",
           _0: writer
         };
       } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
           return {
             TAG: "Error",
             _0: {
@@ -17023,14 +14555,14 @@ var require_ErrorAwareBufferWriter = __commonJS({
         return self;
       }
       try {
-        var writer = self._0.packInt32(value);
+        let writer = self._0.packInt32(value);
         return {
           TAG: "Writing",
           _0: writer
         };
       } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
           return {
             TAG: "Error",
             _0: {
@@ -17047,14 +14579,14 @@ var require_ErrorAwareBufferWriter = __commonJS({
         return self;
       }
       try {
-        var writer = self._0.packByte(value);
+        let writer = self._0.packByte(value);
         return {
           TAG: "Writing",
           _0: writer
         };
       } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
           return {
             TAG: "Error",
             _0: {
@@ -17071,14 +14603,14 @@ var require_ErrorAwareBufferWriter = __commonJS({
         return self;
       }
       try {
-        var writer = self._0.packInt16(value);
+        let writer = self._0.packInt16(value);
         return {
           TAG: "Writing",
           _0: writer
         };
       } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
           return {
             TAG: "Error",
             _0: {
@@ -17095,14 +14627,14 @@ var require_ErrorAwareBufferWriter = __commonJS({
         return self;
       }
       try {
-        var writer = self._0.packUInt64(value);
+        let writer = self._0.packUInt64(value);
         return {
           TAG: "Writing",
           _0: writer
         };
       } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
           return {
             TAG: "Error",
             _0: {
@@ -17119,14 +14651,14 @@ var require_ErrorAwareBufferWriter = __commonJS({
         return self;
       }
       try {
-        var writer = self._0.packString(value);
+        let writer = self._0.packString(value);
         return {
           TAG: "Writing",
           _0: writer
         };
       } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
           return {
             TAG: "Error",
             _0: {
@@ -17143,14 +14675,14 @@ var require_ErrorAwareBufferWriter = __commonJS({
         return self;
       }
       try {
-        var writer = self._0.packSByte(value);
+        let writer = self._0.packSByte(value);
         return {
           TAG: "Writing",
           _0: writer
         };
       } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
           return {
             TAG: "Error",
             _0: {
@@ -17167,14 +14699,14 @@ var require_ErrorAwareBufferWriter = __commonJS({
         return self;
       }
       try {
-        var writer = self._0.packBytes(value);
+        let writer = self._0.packBytes(value);
         return {
           TAG: "Writing",
           _0: writer
         };
       } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
           return {
             TAG: "Error",
             _0: {
@@ -17191,14 +14723,14 @@ var require_ErrorAwareBufferWriter = __commonJS({
         return self;
       }
       try {
-        var writer = self._0.packColor(value);
+        let writer = self._0.packColor(value);
         return {
           TAG: "Writing",
           _0: writer
         };
       } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
           return {
             TAG: "Error",
             _0: {
@@ -17215,14 +14747,14 @@ var require_ErrorAwareBufferWriter = __commonJS({
         return self;
       }
       try {
-        var writer = self._0.packBuffer(value);
+        let writer = self._0.packBuffer(value);
         return {
           TAG: "Writing",
           _0: writer
         };
       } catch (raw_obj) {
-        var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-        if (obj.RE_EXN_ID === Js_exn.$$Error) {
+        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
           return {
             TAG: "Error",
             _0: {
@@ -17247,7 +14779,7 @@ var require_ErrorAwareBufferWriter = __commonJS({
         };
       }
     }
-    function make(buffer) {
+    function make5(buffer) {
       return {
         TAG: "Writing",
         _0: new Bufferwriter(buffer)
@@ -17264,7 +14796,7 @@ var require_ErrorAwareBufferWriter = __commonJS({
     exports2.packColor = packColor;
     exports2.packBuffer = packBuffer;
     exports2.data = data;
-    exports2.make = make;
+    exports2.make = make5;
   }
 });
 
@@ -17272,11 +14804,11 @@ var require_ErrorAwareBufferWriter = __commonJS({
 var require_Packet_TileSectionSend = __commonJS({
   "src/packet/Packet_TileSectionSend.js"(exports2) {
     "use strict";
-    var Caml_obj = require_caml_obj();
     var Nodezlib = require("node:zlib");
-    var Belt_Array = require_belt_Array();
-    var Belt_Option = require_belt_Option();
-    var Belt_Result = require_belt_Result();
+    var Belt_Array3 = (init_Belt_Array(), __toCommonJS(Belt_Array_exports));
+    var Belt_Option = (init_Belt_Option(), __toCommonJS(Belt_Option_exports));
+    var Belt_Result = (init_Belt_Result(), __toCommonJS(Belt_Result_exports));
+    var Primitive_object = (init_Primitive_object(), __toCommonJS(Primitive_object_exports));
     var BitFlags$TerrariaPacket = require_BitFlags();
     var ResultExt$TerrariaPacket = require_ResultExt();
     var TileSolid$TerrariaPacket = require_TileSolid();
@@ -17329,10 +14861,10 @@ var require_Packet_TileSectionSend = __commonJS({
       };
     }
     function parse(reader) {
-      var id = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "id");
-      var x = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
-      var y = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
-      var name = ErrorAwareBufferReader$TerrariaPacket.readString(reader, "name");
+      let id = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "id");
+      let x = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
+      let y = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
+      let name = ErrorAwareBufferReader$TerrariaPacket.readString(reader, "name");
       return {
         id,
         x,
@@ -17352,10 +14884,10 @@ var require_Packet_TileSectionSend = __commonJS({
       pack
     };
     function parse$1(reader) {
-      var id = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "id");
-      var x = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
-      var y = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
-      var name = ErrorAwareBufferReader$TerrariaPacket.readString(reader, "name");
+      let id = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "id");
+      let x = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
+      let y = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
+      let name = ErrorAwareBufferReader$TerrariaPacket.readString(reader, "name");
       return {
         id,
         x,
@@ -17380,9 +14912,9 @@ var require_Packet_TileSectionSend = __commonJS({
       };
     }
     function parseDisplayItem(reader) {
-      var netId = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "netId");
-      var prefix = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "prefix");
-      var stack = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "stack");
+      let netId = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "netId");
+      let prefix = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "prefix");
+      let stack = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "stack");
       return {
         netId,
         prefix,
@@ -17390,26 +14922,26 @@ var require_Packet_TileSectionSend = __commonJS({
       };
     }
     function parseLogicSensorKind(reader) {
-      var checkType = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "checkType");
-      var on = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "on") === 1;
+      let checkType = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "checkType");
+      let on = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "on") === 1;
       return {
         checkType,
         on
       };
     }
     function parseDisplayDollKind(reader) {
-      var itemsFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "itemsFlags"));
-      var dyeFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "dyeFlags"));
-      var items = [];
-      var dyes = [];
-      for (var i = 0; i <= 7; ++i) {
+      let itemsFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "itemsFlags"));
+      let dyeFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "dyeFlags"));
+      let items = [];
+      let dyes = [];
+      for (let i = 0; i <= 7; ++i) {
         if (BitFlags$TerrariaPacket.flagN(itemsFlags, i)) {
           items.push(parseDisplayItem(reader));
         } else {
           items.push(void 0);
         }
       }
-      for (var i$1 = 0; i$1 <= 7; ++i$1) {
+      for (let i$1 = 0; i$1 <= 7; ++i$1) {
         if (BitFlags$TerrariaPacket.flagN(dyeFlags, i$1)) {
           dyes.push(parseDisplayItem(reader));
         } else {
@@ -17422,17 +14954,17 @@ var require_Packet_TileSectionSend = __commonJS({
       };
     }
     function parseHatRackKind(reader) {
-      var flags = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "flags"));
-      var items = [];
-      var dyes = [];
-      for (var i = 0; i <= 1; ++i) {
+      let flags = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "flags"));
+      let items = [];
+      let dyes = [];
+      for (let i = 0; i <= 1; ++i) {
         if (BitFlags$TerrariaPacket.flagN(flags, i)) {
           items.push(parseDisplayItem(reader));
         } else {
           items.push(void 0);
         }
       }
-      for (var i$1 = 0; i$1 <= 1; ++i$1) {
+      for (let i$1 = 0; i$1 <= 1; ++i$1) {
         if (BitFlags$TerrariaPacket.flagN(flags, i$1 + 2 | 0)) {
           dyes.push(parseDisplayItem(reader));
         } else {
@@ -17445,17 +14977,19 @@ var require_Packet_TileSectionSend = __commonJS({
       };
     }
     function parse$2(reader) {
-      var entityType = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "entityType");
-      var x = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
-      var y = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
-      var entityKind;
+      let entityType = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "entityType");
+      let x = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
+      let y = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
+      let entityKind;
       switch (entityType) {
         case 0:
           entityKind = {
             TAG: "Ok",
             _0: {
               TAG: "TrainingDummy",
-              _0: parseTrainingDummyKind(reader)
+              _0: {
+                npcSlotId: ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "npcSlotId")
+              }
             }
           };
           break;
@@ -17528,14 +15062,12 @@ var require_Packet_TileSectionSend = __commonJS({
             _0: 'File "Packet_TileSectionSend.res", line 317, characters 17-24Unknown entity kind. '
           };
       }
-      return Belt_Result.map(entityKind, function(entityKind2) {
-        return {
-          entityType,
-          x,
-          y,
-          entityKind: entityKind2
-        };
-      });
+      return Belt_Result.map(entityKind, (entityKind2) => ({
+        entityType,
+        x,
+        y,
+        entityKind: entityKind2
+      }));
     }
     function packTrainingDummy(writer, trainingDummy) {
       return ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer, trainingDummy.npcSlotId, "npcSlotId");
@@ -17547,26 +15079,20 @@ var require_Packet_TileSectionSend = __commonJS({
       return ErrorAwareBufferWriter$TerrariaPacket.packByte(ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, logicSensorKind.checkType, "checkType"), logicSensorKind.on ? 1 : 0, "on");
     }
     function hasItem(arr, n) {
-      return Belt_Option.isSome(Belt_Option.flatMap(Belt_Array.get(arr, n), function(a) {
-        return a;
-      }));
+      return Belt_Option.isSome(Belt_Option.flatMap(Belt_Array3.get(arr, n), (a) => a));
     }
     function packDisplayDoll(writer, displayDollKind) {
-      var itemFlags = BitFlags$TerrariaPacket.fromFlags(hasItem(displayDollKind.items, 0), hasItem(displayDollKind.items, 1), hasItem(displayDollKind.items, 2), hasItem(displayDollKind.items, 3), hasItem(displayDollKind.items, 4), hasItem(displayDollKind.items, 5), hasItem(displayDollKind.items, 6), hasItem(displayDollKind.items, 7));
-      var dyeFlags = BitFlags$TerrariaPacket.fromFlags(hasItem(displayDollKind.dyes, 0), hasItem(displayDollKind.dyes, 1), hasItem(displayDollKind.dyes, 2), hasItem(displayDollKind.dyes, 3), hasItem(displayDollKind.dyes, 4), hasItem(displayDollKind.dyes, 5), hasItem(displayDollKind.dyes, 6), hasItem(displayDollKind.dyes, 7));
+      let itemFlags = BitFlags$TerrariaPacket.fromFlags(hasItem(displayDollKind.items, 0), hasItem(displayDollKind.items, 1), hasItem(displayDollKind.items, 2), hasItem(displayDollKind.items, 3), hasItem(displayDollKind.items, 4), hasItem(displayDollKind.items, 5), hasItem(displayDollKind.items, 6), hasItem(displayDollKind.items, 7));
+      let dyeFlags = BitFlags$TerrariaPacket.fromFlags(hasItem(displayDollKind.dyes, 0), hasItem(displayDollKind.dyes, 1), hasItem(displayDollKind.dyes, 2), hasItem(displayDollKind.dyes, 3), hasItem(displayDollKind.dyes, 4), hasItem(displayDollKind.dyes, 5), hasItem(displayDollKind.dyes, 6), hasItem(displayDollKind.dyes, 7));
       ErrorAwareBufferWriter$TerrariaPacket.packByte(ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(itemFlags), "itemFlags"), BitFlags$TerrariaPacket.toByte(dyeFlags), "dyeFlags");
-      for (var i = 0; i <= 7; ++i) {
-        var item = Belt_Option.flatMap(Belt_Array.get(displayDollKind.items, i), function(a) {
-          return a;
-        });
+      for (let i = 0; i <= 7; ++i) {
+        let item = Belt_Option.flatMap(Belt_Array3.get(displayDollKind.items, i), (a) => a);
         if (item !== void 0) {
           packDisplayItem(writer, item);
         }
       }
-      for (var i$1 = 0; i$1 <= 7; ++i$1) {
-        var item$1 = Belt_Option.flatMap(Belt_Array.get(displayDollKind.dyes, i$1), function(a) {
-          return a;
-        });
+      for (let i$1 = 0; i$1 <= 7; ++i$1) {
+        let item$1 = Belt_Option.flatMap(Belt_Array3.get(displayDollKind.dyes, i$1), (a) => a);
         if (item$1 !== void 0) {
           packDisplayItem(writer, item$1);
         }
@@ -17574,20 +15100,16 @@ var require_Packet_TileSectionSend = __commonJS({
       return writer;
     }
     function packHatRack(writer, hatRackKind) {
-      var flags = BitFlags$TerrariaPacket.fromFlags(hasItem(hatRackKind.items, 0), hasItem(hatRackKind.items, 1), hasItem(hatRackKind.dyes, 2), hasItem(hatRackKind.dyes, 3), false, false, false, false);
+      let flags = BitFlags$TerrariaPacket.fromFlags(hasItem(hatRackKind.items, 0), hasItem(hatRackKind.items, 1), hasItem(hatRackKind.dyes, 2), hasItem(hatRackKind.dyes, 3), false, false, false, false);
       ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(flags), "flags");
-      for (var i = 0; i <= 1; ++i) {
-        var item = Belt_Option.flatMap(Belt_Array.get(hatRackKind.items, i), function(a) {
-          return a;
-        });
+      for (let i = 0; i <= 1; ++i) {
+        let item = Belt_Option.flatMap(Belt_Array3.get(hatRackKind.items, i), (a) => a);
         if (item !== void 0) {
           packDisplayItem(writer, item);
         }
       }
-      for (var i$1 = 0; i$1 <= 1; ++i$1) {
-        var item$1 = Belt_Option.flatMap(Belt_Array.get(hatRackKind.dyes, i$1), function(a) {
-          return a;
-        });
+      for (let i$1 = 0; i$1 <= 1; ++i$1) {
+        let item$1 = Belt_Option.flatMap(Belt_Array3.get(hatRackKind.dyes, i$1), (a) => a);
         if (item$1 !== void 0) {
           packDisplayItem(writer, item$1);
         }
@@ -17645,7 +15167,7 @@ var require_Packet_TileSectionSend = __commonJS({
       packEntityKind,
       pack: pack$2
     };
-    var isTheSameAs = Caml_obj.equal;
+    var isTheSameAs = Primitive_object.equal;
     function clearTileCache(tile) {
       tile.activeTile = void 0;
       tile.color = void 0;
@@ -17664,33 +15186,33 @@ var require_Packet_TileSectionSend = __commonJS({
       tile.inActive = false;
     }
     function parse$3(payload) {
-      var packetReader = new Packetreader(payload);
-      var deflated = ErrorAwarePacketReader$TerrariaPacket.readBuffer(packetReader, ErrorAwarePacketReader$TerrariaPacket.getBytesLeft(packetReader), "deflatedPayload");
-      var reader = new Bufferreader(Nodezlib.inflateRawSync(deflated));
-      var tileX = ErrorAwareBufferReader$TerrariaPacket.readInt32(reader, "tileX");
-      var tileY = ErrorAwareBufferReader$TerrariaPacket.readInt32(reader, "tileY");
-      var width = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "width");
-      var height = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "height");
-      var tiles = [];
-      var tileCache = defaultTileCache();
-      var rleCount = 0;
+      let packetReader = new Packetreader(payload);
+      let deflated = ErrorAwarePacketReader$TerrariaPacket.readBuffer(packetReader, ErrorAwarePacketReader$TerrariaPacket.getBytesLeft(packetReader), "deflatedPayload");
+      let reader = new Bufferreader(Nodezlib.inflateRawSync(deflated));
+      let tileX = ErrorAwareBufferReader$TerrariaPacket.readInt32(reader, "tileX");
+      let tileY = ErrorAwareBufferReader$TerrariaPacket.readInt32(reader, "tileY");
+      let width = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "width");
+      let height = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "height");
+      let tiles = [];
+      let tileCache = defaultTileCache();
+      let rleCount = 0;
       if (height < 0 || width < 0) {
         return;
       }
-      for (var _y = 0; _y < height; ++_y) {
-        var row = [];
-        for (var _x = 0; _x < width; ++_x) {
+      for (let _y = 0; _y < height; ++_y) {
+        let row = [];
+        for (let _x = 0; _x < width; ++_x) {
           if (rleCount !== 0) {
             rleCount = rleCount - 1 | 0;
             row.push(cacheToTile(tileCache));
           } else {
             clearTileCache(tileCache);
-            var header5 = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header5"));
-            var match;
+            let header5 = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header5"));
+            let match;
             if (BitFlags$TerrariaPacket.flag1(header5)) {
-              var header4 = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header4_conditional"));
-              var header3 = BitFlags$TerrariaPacket.flag1(header4) ? BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header3_conditional")) : BitFlags$TerrariaPacket.fromByte(0);
-              var header2 = BitFlags$TerrariaPacket.flag1(header3) ? ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header2_conditional") : 0;
+              let header4 = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header4_conditional"));
+              let header3 = BitFlags$TerrariaPacket.flag1(header4) ? BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header3_conditional")) : BitFlags$TerrariaPacket.fromByte(0);
+              let header2 = BitFlags$TerrariaPacket.flag1(header3) ? ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header2_conditional") : 0;
               match = [
                 header4,
                 header3,
@@ -17703,26 +15225,24 @@ var require_Packet_TileSectionSend = __commonJS({
                 0
               ];
             }
-            var header3$1 = match[1];
-            var header4$1 = match[0];
+            let header3$1 = match[1];
+            let header4$1 = match[0];
             tileCache.coatHeader = match[2];
-            var oldActive = tileCache.activeTile;
+            let oldActive = tileCache.activeTile;
             if (BitFlags$TerrariaPacket.flag2(header5)) {
-              var oldType = Belt_Option.mapWithDefault(tileCache.activeTile, 0, function(active) {
-                return active.tileType;
-              });
-              var tileType;
+              let oldType = Belt_Option.mapWithDefault(tileCache.activeTile, 0, (active) => active.tileType);
+              let tileType;
               if (BitFlags$TerrariaPacket.flag6(header5)) {
-                var $$byte = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "tileType_byte1");
-                var secondByte = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "tileType_byte2");
-                tileType = secondByte << 8 | $$byte;
+                let byte = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "tileType_byte1");
+                let secondByte = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "tileType_byte2");
+                tileType = secondByte << 8 | byte;
               } else {
                 tileType = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "tileType");
               }
-              var frame;
+              let frame;
               if (TileFrameImportant$TerrariaPacket.isImportant(tileType)) {
-                var x = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "frameX");
-                var y = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "frameY");
+                let x = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "frameX");
+                let y = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "frameY");
                 frame = {
                   x,
                   y
@@ -17744,7 +15264,7 @@ var require_Packet_TileSectionSend = __commonJS({
                 tileCache.wallColor = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "wallColor");
               }
             }
-            var liquidBits = (BitFlags$TerrariaPacket.toByte(header5) & 24) >>> 3;
+            let liquidBits = (BitFlags$TerrariaPacket.toByte(header5) & 24) >> 3;
             if (liquidBits !== 0) {
               tileCache.liquid = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "liquidValue");
               if (liquidBits > 1) {
@@ -17765,10 +15285,8 @@ var require_Packet_TileSectionSend = __commonJS({
               if (BitFlags$TerrariaPacket.flag4(header4$1)) {
                 tileCache.wire3 = true;
               }
-              var slopeBits = (BitFlags$TerrariaPacket.toByte(header4$1) & 112) >>> 4;
-              if (slopeBits !== 0 && TileSolid$TerrariaPacket.isSolid(Belt_Option.mapWithDefault(tileCache.activeTile, 0, function(tile) {
-                return tile.tileType;
-              }))) {
+              let slopeBits = (BitFlags$TerrariaPacket.toByte(header4$1) & 112) >> 4;
+              if (slopeBits !== 0 && TileSolid$TerrariaPacket.isSolid(Belt_Option.mapWithDefault(tileCache.activeTile, 0, (tile) => tile.tileType))) {
                 if (slopeBits === 1) {
                   tileCache.halfBrick = true;
                 } else {
@@ -17787,29 +15305,23 @@ var require_Packet_TileSectionSend = __commonJS({
                 tileCache.wire4 = true;
               }
               if (BitFlags$TerrariaPacket.flag7(header3$1)) {
-                var $$byte$1 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "wall_highByte");
-                tileCache.wall = $$byte$1 << 8 | tileCache.wall;
+                let byte$1 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "wall_highByte");
+                tileCache.wall = byte$1 << 8 | tileCache.wall;
               }
             }
-            var repeatCountBytes = (BitFlags$TerrariaPacket.toByte(header5) & 192) >>> 6;
+            let repeatCountBytes = (BitFlags$TerrariaPacket.toByte(header5) & 192) >> 6;
             rleCount = repeatCountBytes !== 0 ? repeatCountBytes !== 1 ? ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "rle_int16") : ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "rle_byte") : 0;
             row.push(cacheToTile(tileCache));
           }
         }
         tiles.push(row);
       }
-      var chestCount = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "chestCount");
-      var chests = Belt_Array.make(chestCount, 0).map(function(param) {
-        return parse(reader);
-      });
-      var signCount = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "signCount");
-      var signs = Belt_Array.make(signCount, 0).map(function(param) {
-        return parse$1(reader);
-      });
-      var entityCount = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "entityCount");
-      var entities = ResultExt$TerrariaPacket.allOkOrError(Belt_Array.make(entityCount, 0).map(function(param) {
-        return parse$2(reader);
-      }));
+      let chestCount = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "chestCount");
+      let chests = Belt_Array3.make(chestCount, 0).map((param) => parse(reader));
+      let signCount = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "signCount");
+      let signs = Belt_Array3.make(signCount, 0).map((param) => parse$1(reader));
+      let entityCount = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "entityCount");
+      let entities = ResultExt$TerrariaPacket.allOkOrError(Belt_Array3.make(entityCount, 0).map((param) => parse$2(reader)));
       if (entities.TAG === "Ok") {
         return {
           height,
@@ -17834,7 +15346,7 @@ var require_Packet_TileSectionSend = __commonJS({
       parse: parse$3
     };
     function getLiquidBitFlags(tile) {
-      var liquidBits = tile.honey ? "Three" : tile.lava ? "Two" : Belt_Option.isSome(tile.liquid) ? "One" : "Zero";
+      let liquidBits = tile.honey ? "Three" : tile.lava ? "Two" : Belt_Option.isSome(tile.liquid) ? "One" : "Zero";
       switch (liquidBits) {
         case "Zero":
           return [
@@ -17866,7 +15378,7 @@ var require_Packet_TileSectionSend = __commonJS({
           true
         ];
       }
-      var match = tile.slope;
+      let match = tile.slope;
       if (match === void 0) {
         return [
           false,
@@ -17929,7 +15441,7 @@ var require_Packet_TileSectionSend = __commonJS({
       }
     }
     function getRepeatCountBitFlags(repeatCount) {
-      var repeatCountBytes = getRepeatCountByteLength(repeatCount);
+      let repeatCountBytes = getRepeatCountByteLength(repeatCount);
       switch (repeatCountBytes) {
         case 0:
           return [
@@ -17949,15 +15461,15 @@ var require_Packet_TileSectionSend = __commonJS({
       }
     }
     function packTile(writer, tile, repeatCount) {
-      var header2 = tile.coatHeader;
-      var wall = tile.wall;
-      var header3 = BitFlags$TerrariaPacket.fromFlags(header2 > 0, tile.actuator, tile.inActive, Belt_Option.isSome(tile.color), Belt_Option.isSome(tile.wall) && Belt_Option.isSome(tile.wallColor), tile.wire4, wall !== void 0 ? wall > 255 : false, false);
-      var match = getSlopeBitFlags(tile);
-      var header4 = BitFlags$TerrariaPacket.fromFlags(BitFlags$TerrariaPacket.toByte(header3) > 0, tile.wire, tile.wire2, tile.wire3, match[2], match[1], match[0], false);
-      var match$1 = getLiquidBitFlags(tile);
-      var match$2 = getRepeatCountBitFlags(repeatCount);
-      var activeTile = tile.activeTile;
-      var tileFlags = BitFlags$TerrariaPacket.fromFlags(BitFlags$TerrariaPacket.toByte(header4) > 0, Belt_Option.isSome(tile.activeTile), Belt_Option.isSome(tile.wall), match$1[1], match$1[0], activeTile !== void 0 ? activeTile.tileType > 255 : false, match$2[1], match$2[0]);
+      let header2 = tile.coatHeader;
+      let wall = tile.wall;
+      let header3 = BitFlags$TerrariaPacket.fromFlags(header2 > 0, tile.actuator, tile.inActive, Belt_Option.isSome(tile.color), Belt_Option.isSome(tile.wall) && Belt_Option.isSome(tile.wallColor), tile.wire4, wall !== void 0 ? wall > 255 : false, false);
+      let match = getSlopeBitFlags(tile);
+      let header4 = BitFlags$TerrariaPacket.fromFlags(BitFlags$TerrariaPacket.toByte(header3) > 0, tile.wire, tile.wire2, tile.wire3, match[2], match[1], match[0], false);
+      let match$1 = getLiquidBitFlags(tile);
+      let match$2 = getRepeatCountBitFlags(repeatCount);
+      let activeTile = tile.activeTile;
+      let tileFlags = BitFlags$TerrariaPacket.fromFlags(BitFlags$TerrariaPacket.toByte(header4) > 0, Belt_Option.isSome(tile.activeTile), Belt_Option.isSome(tile.wall), match$1[1], match$1[0], activeTile !== void 0 ? activeTile.tileType > 255 : false, match$2[1], match$2[0]);
       ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(tileFlags), "tileFlags");
       if (BitFlags$TerrariaPacket.flag1(tileFlags)) {
         ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(header4), "header4");
@@ -17968,41 +15480,41 @@ var require_Packet_TileSectionSend = __commonJS({
           }
         }
       }
-      var activeTile$1 = tile.activeTile;
+      let activeTile$1 = tile.activeTile;
       if (activeTile$1 !== void 0) {
         if (BitFlags$TerrariaPacket.flag6(tileFlags)) {
           ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, activeTile$1.tileType & 255, "tileType_lowByte");
-          ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, (activeTile$1.tileType & 65280) >>> 8, "tileType_highByte");
+          ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, (activeTile$1.tileType & 65280) >> 8, "tileType_highByte");
         } else {
           ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, activeTile$1.tileType, "tileType");
         }
-        var match$3 = activeTile$1.frame;
+        let match$3 = activeTile$1.frame;
         if (match$3 !== void 0) {
           ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer, match$3.x, "frameX");
           ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer, match$3.y, "frameY");
         }
-        var color = tile.color;
+        let color = tile.color;
         if (color !== void 0) {
           ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, color, "color");
         }
       }
-      var wall$1 = tile.wall;
+      let wall$1 = tile.wall;
       if (wall$1 !== void 0) {
         ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, wall$1 & 255, "wall_lowByte");
-        var wallColor = tile.wallColor;
+        let wallColor = tile.wallColor;
         if (wallColor !== void 0) {
           ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, wallColor, "wallColor");
         }
       }
-      var liquid = tile.liquid;
+      let liquid = tile.liquid;
       if (liquid !== void 0) {
         ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, liquid, "liquidValue");
       }
-      var wall$2 = tile.wall;
+      let wall$2 = tile.wall;
       if (wall$2 !== void 0 && wall$2 > 255) {
-        ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, wall$2 >>> 8, "wall_highByte");
+        ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, wall$2 >> 8, "wall_highByte");
       }
-      var match$4 = getRepeatCountByteLength(repeatCount);
+      let match$4 = getRepeatCountByteLength(repeatCount);
       if (match$4 !== 0) {
         if (match$4 !== 1) {
           ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer, repeatCount, "rle_int16");
@@ -18013,9 +15525,9 @@ var require_Packet_TileSectionSend = __commonJS({
       return writer;
     }
     function decidePackTile(writer, lastTile, tile) {
-      var last = lastTile.contents;
+      let last = lastTile.contents;
       if (last !== void 0) {
-        if (Caml_obj.equal(tile, last.tile)) {
+        if (Primitive_object.equal(tile, last.tile)) {
           last.count = last.count + 1 | 0;
         } else {
           packTile(writer, last.tile, last.count);
@@ -18032,40 +15544,40 @@ var require_Packet_TileSectionSend = __commonJS({
       }
     }
     function toBuffer(self) {
-      var outerPacketWriter = ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TileSectionSend"));
-      var innerWriter = ErrorAwareBufferWriter$TerrariaPacket.make(Buffer.allocUnsafe(64e3));
+      let outerPacketWriter = ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TileSectionSend"));
+      let innerWriter = ErrorAwareBufferWriter$TerrariaPacket.make(Buffer.allocUnsafe(64e3));
       ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt32(ErrorAwareBufferWriter$TerrariaPacket.packInt32(innerWriter, self.tileX, "tileX"), self.tileY, "tileY"), self.width, "width"), self.height, "height");
-      var lastTile = {
+      let lastTile = {
         contents: void 0
       };
-      for (var y = 0, y_finish = self.height; y < y_finish; ++y) {
-        for (var x = 0, x_finish = self.width; x < x_finish; ++x) {
-          var tile = self.tiles[y][x];
+      for (let y = 0, y_finish = self.height; y < y_finish; ++y) {
+        for (let x = 0, x_finish = self.width; x < x_finish; ++x) {
+          let tile = self.tiles[y][x];
           decidePackTile(innerWriter, lastTile, tile);
         }
       }
-      var lastTileValue = lastTile.contents;
+      let lastTileValue = lastTile.contents;
       if (lastTileValue !== void 0) {
         packTile(innerWriter, lastTileValue.tile, lastTileValue.count);
       }
       ErrorAwareBufferWriter$TerrariaPacket.packInt16(innerWriter, self.chests.length, "chestCount");
-      self.chests.forEach(function(chest) {
+      self.chests.forEach((chest) => {
         pack(innerWriter, chest);
       });
       ErrorAwareBufferWriter$TerrariaPacket.packInt16(innerWriter, self.signs.length, "signCount");
-      self.signs.forEach(function(sign) {
+      self.signs.forEach((sign) => {
         pack$1(innerWriter, sign);
       });
       ErrorAwareBufferWriter$TerrariaPacket.packInt16(innerWriter, self.entities.length, "entityCount");
-      self.entities.forEach(function(entity) {
+      self.entities.forEach((entity) => {
         pack$2(innerWriter, entity);
       });
-      var innerBuffer = ErrorAwareBufferWriter$TerrariaPacket.data(innerWriter);
+      let innerBuffer = ErrorAwareBufferWriter$TerrariaPacket.data(innerWriter);
       if (innerBuffer.TAG === "Ok") {
-        var deflatedPayload = Nodezlib.deflateRawSync(innerBuffer._0);
+        let deflatedPayload = Nodezlib.deflateRawSync(innerBuffer._0);
         return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packBuffer(outerPacketWriter, deflatedPayload, "deflatedPayload"));
       }
-      var e = innerBuffer._0;
+      let e = innerBuffer._0;
       return {
         TAG: "Error",
         _0: {
@@ -18089,10 +15601,10 @@ var require_Packet_TileSectionSend = __commonJS({
       decidePackTile,
       toBuffer
     };
-    var Int;
-    var $$Option;
-    exports2.Int = Int;
-    exports2.$$Option = $$Option;
+    var Int2;
+    var Option;
+    exports2.Int = Int2;
+    exports2.Option = Option;
     exports2.defaultTileCache = defaultTileCache;
     exports2.cacheToTile = cacheToTile;
     exports2.Chest = Chest;
@@ -18110,7 +15622,7 @@ var require_Packet_TileSectionSend = __commonJS({
 var require_Packet_TileSquareSend = __commonJS({
   "src/packet/Packet_TileSquareSend.js"(exports2) {
     "use strict";
-    var Belt_Option = require_belt_Option();
+    var Belt_Option = (init_Belt_Option(), __toCommonJS(Belt_Option_exports));
     var BitFlags$TerrariaPacket = require_BitFlags();
     var PacketType$TerrariaPacket = require_PacketType();
     var TileFrameImportant$TerrariaPacket = require_TileFrameImportant();
@@ -18118,38 +15630,38 @@ var require_Packet_TileSquareSend = __commonJS({
     var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var tileX = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "tileX");
-      var tileY = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "tileY");
-      var width = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "width");
-      var height = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "height");
-      var changeType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "changeType");
-      var tiles = [];
-      for (var _x = 0; _x < width; ++_x) {
-        var column = [];
-        for (var _y = 0; _y < height; ++_y) {
-          var flags1 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags1"));
-          var flags2 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags2"));
-          var flags3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags3");
-          var active = BitFlags$TerrariaPacket.flag1(flags1);
-          var hasWall = BitFlags$TerrariaPacket.flag3(flags1);
-          var hasLiquid = BitFlags$TerrariaPacket.flag4(flags1);
-          var wire = BitFlags$TerrariaPacket.flag5(flags1);
-          var halfBrick = BitFlags$TerrariaPacket.flag6(flags1);
-          var actuator = BitFlags$TerrariaPacket.flag7(flags1);
-          var inActive = BitFlags$TerrariaPacket.flag8(flags1);
-          var wire2 = BitFlags$TerrariaPacket.flag1(flags2);
-          var wire3 = BitFlags$TerrariaPacket.flag2(flags2);
-          var color = BitFlags$TerrariaPacket.flag3(flags2) ? ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "color") : void 0;
-          var wallColor = BitFlags$TerrariaPacket.flag4(flags2) ? ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "wallColor") : void 0;
-          var activeTile;
+      let reader = new Packetreader(payload);
+      let tileX = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "tileX");
+      let tileY = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "tileY");
+      let width = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "width");
+      let height = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "height");
+      let changeType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "changeType");
+      let tiles = [];
+      for (let _x = 0; _x < width; ++_x) {
+        let column = [];
+        for (let _y = 0; _y < height; ++_y) {
+          let flags1 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags1"));
+          let flags2 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags2"));
+          let flags3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags3");
+          let active = BitFlags$TerrariaPacket.flag1(flags1);
+          let hasWall = BitFlags$TerrariaPacket.flag3(flags1);
+          let hasLiquid = BitFlags$TerrariaPacket.flag4(flags1);
+          let wire = BitFlags$TerrariaPacket.flag5(flags1);
+          let halfBrick = BitFlags$TerrariaPacket.flag6(flags1);
+          let actuator = BitFlags$TerrariaPacket.flag7(flags1);
+          let inActive = BitFlags$TerrariaPacket.flag8(flags1);
+          let wire2 = BitFlags$TerrariaPacket.flag1(flags2);
+          let wire3 = BitFlags$TerrariaPacket.flag2(flags2);
+          let color = BitFlags$TerrariaPacket.flag3(flags2) ? ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "color") : void 0;
+          let wallColor = BitFlags$TerrariaPacket.flag4(flags2) ? ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "wallColor") : void 0;
+          let activeTile;
           if (active) {
-            var tileType = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "tileType");
-            var frame = TileFrameImportant$TerrariaPacket.isImportant(tileType) ? {
+            let tileType = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "tileType");
+            let frame = TileFrameImportant$TerrariaPacket.isImportant(tileType) ? {
               x: ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "frameX"),
               y: ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "frameY")
             } : void 0;
-            var slope = ((0 + (BitFlags$TerrariaPacket.flag5(flags2) ? 1 : 0) | 0) + (BitFlags$TerrariaPacket.flag6(flags2) ? 2 : 0) | 0) + (BitFlags$TerrariaPacket.flag7(flags2) ? 4 : 0) | 0;
+            let slope = ((0 + (BitFlags$TerrariaPacket.flag5(flags2) ? 1 : 0) | 0) + (BitFlags$TerrariaPacket.flag6(flags2) ? 2 : 0) | 0) + (BitFlags$TerrariaPacket.flag7(flags2) ? 4 : 0) | 0;
             activeTile = {
               tileType,
               slope,
@@ -18158,12 +15670,12 @@ var require_Packet_TileSquareSend = __commonJS({
           } else {
             activeTile = void 0;
           }
-          var wall = hasWall ? ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "wall") : void 0;
-          var liquid = hasLiquid ? {
+          let wall = hasWall ? ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "wall") : void 0;
+          let liquid = hasLiquid ? {
             liquidValue: ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "liquidValue"),
             liquidType: ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "liquidType")
           } : void 0;
-          var wire4 = BitFlags$TerrariaPacket.flag8(flags2);
+          let wire4 = BitFlags$TerrariaPacket.flag8(flags2);
           column.push({
             wire,
             halfBrick,
@@ -18192,47 +15704,37 @@ var require_Packet_TileSquareSend = __commonJS({
       };
     }
     function packTile(writer, tile) {
-      var flags1 = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(tile.activeTile), false, Belt_Option.isSome(tile.wall), Belt_Option.isSome(tile.liquid), tile.wire, tile.halfBrick, tile.actuator, tile.inActive);
-      var flags2 = BitFlags$TerrariaPacket.fromFlags(tile.wire2, tile.wire3, Belt_Option.isSome(tile.color), Belt_Option.isSome(tile.wallColor), Belt_Option.mapWithDefault(tile.activeTile, false, function(tile2) {
-        return (tile2.slope & 1) === 1;
-      }), Belt_Option.mapWithDefault(tile.activeTile, false, function(tile2) {
-        return (tile2.slope & 2) === 2;
-      }), Belt_Option.mapWithDefault(tile.activeTile, false, function(tile2) {
-        return (tile2.slope & 4) === 4;
-      }), tile.wire4);
+      let flags1 = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(tile.activeTile), false, Belt_Option.isSome(tile.wall), Belt_Option.isSome(tile.liquid), tile.wire, tile.halfBrick, tile.actuator, tile.inActive);
+      let flags2 = BitFlags$TerrariaPacket.fromFlags(tile.wire2, tile.wire3, Belt_Option.isSome(tile.color), Belt_Option.isSome(tile.wallColor), Belt_Option.mapWithDefault(tile.activeTile, false, (tile2) => (tile2.slope & 1) === 1), Belt_Option.mapWithDefault(tile.activeTile, false, (tile2) => (tile2.slope & 2) === 2), Belt_Option.mapWithDefault(tile.activeTile, false, (tile2) => (tile2.slope & 4) === 4), tile.wire4);
       ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(flags1), "flags1"), BitFlags$TerrariaPacket.toByte(flags2), "flags2"), tile.coatHeader, "coatHeader");
-      var c = tile.color;
+      let c = tile.color;
       if (c !== void 0) {
         ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, c, "color");
       }
-      var wc = tile.wallColor;
+      let wc = tile.wallColor;
       if (wc !== void 0) {
         ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, wc, "wallColor");
       }
-      var at = tile.activeTile;
+      let at = tile.activeTile;
       if (at !== void 0) {
         ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, at.tileType, "tileType");
         if (TileFrameImportant$TerrariaPacket.isImportant(at.tileType)) {
-          ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, Belt_Option.mapWithDefault(at.frame, 0, function(frame) {
-            return frame.x;
-          }), "frameX"), Belt_Option.mapWithDefault(at.frame, 0, function(frame) {
-            return frame.y;
-          }), "frameY");
+          ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, Belt_Option.mapWithDefault(at.frame, 0, (frame) => frame.x), "frameX"), Belt_Option.mapWithDefault(at.frame, 0, (frame) => frame.y), "frameY");
         }
       }
-      var w = tile.wall;
+      let w = tile.wall;
       if (w !== void 0) {
         ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, w, "wall");
       }
-      var l = tile.liquid;
+      let l = tile.liquid;
       if (l !== void 0) {
         ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, l.liquidValue, "liquidValue"), l.liquidType, "liquidType");
       }
       return writer;
     }
     function packTiles(writer, tiles) {
-      for (var x = 0, x_finish = tiles.length; x < x_finish; ++x) {
-        for (var y = 0, y_finish = tiles[x].length; y < y_finish; ++y) {
+      for (let x = 0, x_finish = tiles.length; x < x_finish; ++x) {
+        for (let y = 0, y_finish = tiles[x].length; y < y_finish; ++y) {
           packTile(writer, tiles[x][y]);
         }
       }
@@ -18258,9 +15760,9 @@ var require_Packet_TileSquareSend = __commonJS({
 var require_Packet_TimeSet = __commonJS({
   "src/packet/Packet_TimeSet.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -18278,9 +15780,9 @@ var require_Packet_TravellingMerchantInventory = __commonJS({
       return prim.readInt16();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var items = [];
-      for (var _for = 1; _for <= 40; ++_for) {
+      let reader = new Packetreader(payload);
+      let items = [];
+      for (let _for = 1; _for <= 40; ++_for) {
         items.push(reader.readInt16());
       }
       return {
@@ -18298,8 +15800,8 @@ var require_Packet_TravellingMerchantInventory = __commonJS({
       return prim.data;
     }
     function toBuffer(self) {
-      var writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("TravellingMerchantInventory"));
-      self.items.forEach(function(item) {
+      let writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("TravellingMerchantInventory"));
+      self.items.forEach((item) => {
         writer.packInt16(item);
       });
       return writer.data;
@@ -18322,9 +15824,9 @@ var require_Packet_TravellingMerchantInventory = __commonJS({
 var require_Packet_TreeGrowFx = __commonJS({
   "src/packet/Packet_TreeGrowFx.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -18334,9 +15836,9 @@ var require_Packet_TreeGrowFx = __commonJS({
 var require_Packet_Unused = __commonJS({
   "src/packet/Packet_Unused.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -18351,11 +15853,11 @@ var require_Packet_WallPaint = __commonJS({
     var Packetreader = require_packetreader().default;
     var Packetwriter = require_packetwriter().default;
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var x = reader.readInt16();
-      var y = reader.readInt16();
-      var color = reader.readByte();
-      var coat = reader.readByte();
+      let reader = new Packetreader(payload);
+      let x = reader.readInt16();
+      let y = reader.readInt16();
+      let color = reader.readByte();
+      let coat = reader.readByte();
       return {
         x,
         y,
@@ -18386,12 +15888,12 @@ var require_Packet_WeaponsRackTryPlacing = __commonJS({
       return prim.readInt16();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var x = reader.readInt16();
-      var y = reader.readInt16();
-      var itemId = reader.readInt16();
-      var prefix = reader.readByte();
-      var stack = reader.readInt16();
+      let reader = new Packetreader(payload);
+      let x = reader.readInt16();
+      let y = reader.readInt16();
+      let itemId = reader.readInt16();
+      let prefix = reader.readByte();
+      let stack = reader.readInt16();
       return {
         x,
         y,
@@ -18436,9 +15938,9 @@ var require_Packet_WeaponsRackTryPlacing = __commonJS({
 var require_Packet_WiredCannonShot = __commonJS({
   "src/packet/Packet_WiredCannonShot.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -18448,12 +15950,12 @@ var require_Packet_WiredCannonShot = __commonJS({
 var require_Packet_WorldDataRequest = __commonJS({
   "src/packet/Packet_WorldDataRequest.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     var PacketType$TerrariaPacket = require_PacketType();
     var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
     var Packetwriter = require_packetwriter().default;
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     var Decode = {
       parse
@@ -18480,9 +15982,9 @@ var require_Packet_WorldDataRequest = __commonJS({
 var require_Packet_Zones = __commonJS({
   "src/packet/Packet_Zones.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -18492,7 +15994,7 @@ var require_Packet_Zones = __commonJS({
 var require_Array16 = __commonJS({
   "src/Array16.js"(exports2) {
     "use strict";
-    function fromArray(a) {
+    function fromArray5(a) {
       if (a.length === 16) {
         return a;
       }
@@ -18500,7 +16002,7 @@ var require_Array16 = __commonJS({
     function asArray(self) {
       return self;
     }
-    exports2.fromArray = fromArray;
+    exports2.fromArray = fromArray5;
     exports2.asArray = asArray;
   }
 });
@@ -18514,7 +16016,7 @@ var require_Packet_PlayerSlotSet = __commonJS({
     var Packetreader = require_packetreader().default;
     var Packetwriter = require_packetwriter().default;
     function parse(payload) {
-      var reader = new Packetreader(payload);
+      let reader = new Packetreader(payload);
       return reader.readByte();
     }
     function toBuffer(self) {
@@ -18535,19 +16037,19 @@ var require_Packet_PlayerUpdate = __commonJS({
     var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var playerId = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
-      var controlFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "controlFlags"));
-      var miscFlags1 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags1"));
-      var miscFlags2 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags2"));
-      var miscFlags3 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags3"));
-      var control_isHoldingUp = BitFlags$TerrariaPacket.flag1(controlFlags);
-      var control_isHoldingDown = BitFlags$TerrariaPacket.flag2(controlFlags);
-      var control_isHoldingLeft = BitFlags$TerrariaPacket.flag3(controlFlags);
-      var control_isHoldingRight = BitFlags$TerrariaPacket.flag4(controlFlags);
-      var control_isHoldingJump = BitFlags$TerrariaPacket.flag5(controlFlags);
-      var control_isHoldingItemUse = BitFlags$TerrariaPacket.flag6(controlFlags);
-      var control = {
+      let reader = new Packetreader(payload);
+      let playerId = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      let controlFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "controlFlags"));
+      let miscFlags1 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags1"));
+      let miscFlags2 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags2"));
+      let miscFlags3 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags3"));
+      let control_isHoldingUp = BitFlags$TerrariaPacket.flag1(controlFlags);
+      let control_isHoldingDown = BitFlags$TerrariaPacket.flag2(controlFlags);
+      let control_isHoldingLeft = BitFlags$TerrariaPacket.flag3(controlFlags);
+      let control_isHoldingRight = BitFlags$TerrariaPacket.flag4(controlFlags);
+      let control_isHoldingJump = BitFlags$TerrariaPacket.flag5(controlFlags);
+      let control_isHoldingItemUse = BitFlags$TerrariaPacket.flag6(controlFlags);
+      let control = {
         isHoldingUp: control_isHoldingUp,
         isHoldingDown: control_isHoldingDown,
         isHoldingLeft: control_isHoldingLeft,
@@ -18555,24 +16057,24 @@ var require_Packet_PlayerUpdate = __commonJS({
         isHoldingJump: control_isHoldingJump,
         isHoldingItemUse: control_isHoldingItemUse
       };
-      var direction = BitFlags$TerrariaPacket.flag7(controlFlags) ? "Right" : "Left";
-      var pulleyDirection = BitFlags$TerrariaPacket.flag1(miscFlags1) ? BitFlags$TerrariaPacket.flag2(miscFlags1) ? "Two" : "One" : void 0;
-      var vortexStealthActive = BitFlags$TerrariaPacket.flag4(miscFlags1);
-      var gravityDirection = BitFlags$TerrariaPacket.flag5(miscFlags1) ? "Normal" : "Inverted";
-      var shouldGuard = BitFlags$TerrariaPacket.flag6(miscFlags1);
-      var ghost = BitFlags$TerrariaPacket.flag7(miscFlags1);
-      var selectedItem = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "selectedItem");
-      var position_x = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionX");
-      var position_y = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionY");
-      var position = {
+      let direction = BitFlags$TerrariaPacket.flag7(controlFlags) ? "Right" : "Left";
+      let pulleyDirection = BitFlags$TerrariaPacket.flag1(miscFlags1) ? BitFlags$TerrariaPacket.flag2(miscFlags1) ? "Two" : "One" : void 0;
+      let vortexStealthActive = BitFlags$TerrariaPacket.flag4(miscFlags1);
+      let gravityDirection = BitFlags$TerrariaPacket.flag5(miscFlags1) ? "Normal" : "Inverted";
+      let shouldGuard = BitFlags$TerrariaPacket.flag6(miscFlags1);
+      let ghost = BitFlags$TerrariaPacket.flag7(miscFlags1);
+      let selectedItem = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "selectedItem");
+      let position_x = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionX");
+      let position_y = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionY");
+      let position = {
         x: position_x,
         y: position_y
       };
-      var velocity = BitFlags$TerrariaPacket.flag3(miscFlags1) ? {
+      let velocity = BitFlags$TerrariaPacket.flag3(miscFlags1) ? {
         x: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityX"),
         y: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityY")
       } : void 0;
-      var potionOfReturn = BitFlags$TerrariaPacket.flag7(miscFlags2) ? {
+      let potionOfReturn = BitFlags$TerrariaPacket.flag7(miscFlags2) ? {
         originalUsePosition: {
           x: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnOrigX"),
           y: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnOrigY")
@@ -18582,14 +16084,14 @@ var require_Packet_PlayerUpdate = __commonJS({
           y: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnHomeY")
         }
       } : void 0;
-      var tryKeepingHoveringUp = BitFlags$TerrariaPacket.flag1(miscFlags2);
-      var isVoidVaultEnabled = BitFlags$TerrariaPacket.flag2(miscFlags2);
-      var isSitting = BitFlags$TerrariaPacket.flag3(miscFlags2);
-      var hasFinishedAnyDd2Event = BitFlags$TerrariaPacket.flag4(miscFlags2);
-      var isPettingAnimal = BitFlags$TerrariaPacket.flag5(miscFlags2);
-      var isTheAnimalBeingPetSmall = BitFlags$TerrariaPacket.flag6(miscFlags2);
-      var tryKeepingHoveringDown = BitFlags$TerrariaPacket.flag8(miscFlags2);
-      var isSleeping = BitFlags$TerrariaPacket.flag1(miscFlags3);
+      let tryKeepingHoveringUp = BitFlags$TerrariaPacket.flag1(miscFlags2);
+      let isVoidVaultEnabled = BitFlags$TerrariaPacket.flag2(miscFlags2);
+      let isSitting = BitFlags$TerrariaPacket.flag3(miscFlags2);
+      let hasFinishedAnyDd2Event = BitFlags$TerrariaPacket.flag4(miscFlags2);
+      let isPettingAnimal = BitFlags$TerrariaPacket.flag5(miscFlags2);
+      let isTheAnimalBeingPetSmall = BitFlags$TerrariaPacket.flag6(miscFlags2);
+      let tryKeepingHoveringDown = BitFlags$TerrariaPacket.flag8(miscFlags2);
+      let isSleeping = BitFlags$TerrariaPacket.flag1(miscFlags3);
       return {
         playerId,
         control,
@@ -18614,15 +16116,15 @@ var require_Packet_PlayerUpdate = __commonJS({
       };
     }
     function packControlFlags(writer, control, direction) {
-      var tmp;
-      tmp = direction === "Left" ? false : true;
+      let tmp;
+      tmp = direction !== "Left";
       return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(control.isHoldingUp, control.isHoldingDown, control.isHoldingLeft, control.isHoldingRight, control.isHoldingJump, control.isHoldingItemUse, tmp, false)), "controlFlags");
     }
     function packMiscFlags1(writer, pulleyDirection, velocity, vortexStealthActive, gravityDirection, shouldGuard, ghost) {
-      var tmp;
-      tmp = pulleyDirection !== void 0 && pulleyDirection !== "One" ? true : false;
-      var tmp$1;
-      tmp$1 = gravityDirection === "Normal" ? true : false;
+      let tmp;
+      tmp = pulleyDirection !== void 0 ? pulleyDirection !== "One" : false;
+      let tmp$1;
+      tmp$1 = gravityDirection === "Normal";
       return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(pulleyDirection !== void 0, tmp, velocity !== void 0, vortexStealthActive, tmp$1, shouldGuard, ghost, false)), "miscFlags1");
     }
     function packMiscFlags2(writer, tryKeepingHoveringUp, isVoidVaultEnabled, isSitting, hasFinishedAnyDd2Event, isPettingAnimal, isTheAnimalBeingPetSmall, potionOfReturn, tryKeepingHoveringDown) {
@@ -18672,40 +16174,40 @@ var require_Packet_PlayerInfo = __commonJS({
       }
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var playerId = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
-      var skinVariant = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "skinVariant");
-      var hair = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hair");
-      var name = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "name");
-      var hairDye = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hairDye");
-      var hideVisuals = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideVisuals");
-      var hideVisuals2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideVisuals2");
-      var hideMisc = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideMisc");
-      var hairColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "hairColor");
-      var skinColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "skinColor");
-      var eyeColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "eyeColor");
-      var shirtColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "shirtColor");
-      var underShirtColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "underShirtColor");
-      var pantsColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "pantsColor");
-      var shoeColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "shoeColor");
-      var difficultyFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "difficultyFlags"));
-      var torchFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "torchFlags"));
-      var difficulty = getDifficulty(difficultyFlags);
-      var extraAccessory = BitFlags$TerrariaPacket.flag3(difficultyFlags);
-      var mode = BitFlags$TerrariaPacket.flag4(difficultyFlags) ? "Journey" : "Classic";
-      var usingBiomeTorches = BitFlags$TerrariaPacket.flag1(torchFlags);
-      var happyFunTorchTime = BitFlags$TerrariaPacket.flag2(torchFlags);
-      var unlockedBiomeTorches = BitFlags$TerrariaPacket.flag3(torchFlags);
-      var unlockedSuperCart = BitFlags$TerrariaPacket.flag4(torchFlags);
-      var enabledSuperCart = BitFlags$TerrariaPacket.flag5(torchFlags);
-      var usedFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "usedFlags"));
-      var usedAegisCrystal = BitFlags$TerrariaPacket.flag1(usedFlags);
-      var usedAegisFruit = BitFlags$TerrariaPacket.flag2(usedFlags);
-      var usedArcaneCrystal = BitFlags$TerrariaPacket.flag3(usedFlags);
-      var usedGalaxyPearl = BitFlags$TerrariaPacket.flag4(usedFlags);
-      var usedGummyWorm = BitFlags$TerrariaPacket.flag5(usedFlags);
-      var usedAmbrosia = BitFlags$TerrariaPacket.flag6(usedFlags);
-      var ateArtisanBread = BitFlags$TerrariaPacket.flag7(usedFlags);
+      let reader = new Packetreader(payload);
+      let playerId = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      let skinVariant = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "skinVariant");
+      let hair = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hair");
+      let name = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "name");
+      let hairDye = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hairDye");
+      let hideVisuals = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideVisuals");
+      let hideVisuals2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideVisuals2");
+      let hideMisc = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideMisc");
+      let hairColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "hairColor");
+      let skinColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "skinColor");
+      let eyeColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "eyeColor");
+      let shirtColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "shirtColor");
+      let underShirtColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "underShirtColor");
+      let pantsColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "pantsColor");
+      let shoeColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "shoeColor");
+      let difficultyFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "difficultyFlags"));
+      let torchFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "torchFlags"));
+      let difficulty = getDifficulty(difficultyFlags);
+      let extraAccessory = BitFlags$TerrariaPacket.flag3(difficultyFlags);
+      let mode = BitFlags$TerrariaPacket.flag4(difficultyFlags) ? "Journey" : "Classic";
+      let usingBiomeTorches = BitFlags$TerrariaPacket.flag1(torchFlags);
+      let happyFunTorchTime = BitFlags$TerrariaPacket.flag2(torchFlags);
+      let unlockedBiomeTorches = BitFlags$TerrariaPacket.flag3(torchFlags);
+      let unlockedSuperCart = BitFlags$TerrariaPacket.flag4(torchFlags);
+      let enabledSuperCart = BitFlags$TerrariaPacket.flag5(torchFlags);
+      let usedFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "usedFlags"));
+      let usedAegisCrystal = BitFlags$TerrariaPacket.flag1(usedFlags);
+      let usedAegisFruit = BitFlags$TerrariaPacket.flag2(usedFlags);
+      let usedArcaneCrystal = BitFlags$TerrariaPacket.flag3(usedFlags);
+      let usedGalaxyPearl = BitFlags$TerrariaPacket.flag4(usedFlags);
+      let usedGummyWorm = BitFlags$TerrariaPacket.flag5(usedFlags);
+      let usedAmbrosia = BitFlags$TerrariaPacket.flag6(usedFlags);
+      let ateArtisanBread = BitFlags$TerrariaPacket.flag7(usedFlags);
       return {
         playerId,
         skinVariant,
@@ -18740,8 +16242,8 @@ var require_Packet_PlayerInfo = __commonJS({
       };
     }
     function packDifficultyFlags(writer, difficulty, extraAccessory, mode) {
-      var $$byte = 0;
-      var tmp;
+      let byte = 0;
+      let tmp;
       switch (difficulty) {
         case "Softcore":
           tmp = 0;
@@ -18753,30 +16255,30 @@ var require_Packet_PlayerInfo = __commonJS({
           tmp = 2;
           break;
       }
-      $$byte = $$byte | tmp;
-      $$byte = $$byte | (extraAccessory ? 4 : 0);
-      $$byte = $$byte | (mode === "Journey" ? 8 : 0);
-      return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, $$byte, "difficultyFlags");
+      byte = byte | tmp;
+      byte = byte | (extraAccessory ? 4 : 0);
+      byte = byte | (mode === "Journey" ? 8 : 0);
+      return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, byte, "difficultyFlags");
     }
     function packTorchFlags(writer, usingBiomeTorches, happyFunTorchTime, unlockedBiomeTorches, unlockedSuperCart, enabledSuperCart) {
-      var $$byte = 0;
-      $$byte = $$byte | (usingBiomeTorches ? 1 : 0);
-      $$byte = $$byte | (happyFunTorchTime ? 2 : 0);
-      $$byte = $$byte | (unlockedBiomeTorches ? 4 : 0);
-      $$byte = $$byte | (unlockedSuperCart ? 8 : 0);
-      $$byte = $$byte | (enabledSuperCart ? 16 : 0);
-      return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, $$byte, "torchFlags");
+      let byte = 0;
+      byte = byte | (usingBiomeTorches ? 1 : 0);
+      byte = byte | (happyFunTorchTime ? 2 : 0);
+      byte = byte | (unlockedBiomeTorches ? 4 : 0);
+      byte = byte | (unlockedSuperCart ? 8 : 0);
+      byte = byte | (enabledSuperCart ? 16 : 0);
+      return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, byte, "torchFlags");
     }
     function packUsedFlags(writer, usedAegisCrystal, usedAegisFruit, usedArcaneCrystal, usedGalaxyPearl, usedGummyWorm, usedAmbrosia, ateArtisanBread) {
-      var $$byte = 0;
-      $$byte = $$byte | (usedAegisCrystal ? 1 : 0);
-      $$byte = $$byte | (usedAegisFruit ? 2 : 0);
-      $$byte = $$byte | (usedArcaneCrystal ? 4 : 0);
-      $$byte = $$byte | (usedGalaxyPearl ? 8 : 0);
-      $$byte = $$byte | (usedGummyWorm ? 16 : 0);
-      $$byte = $$byte | (usedAmbrosia ? 32 : 0);
-      $$byte = $$byte | (ateArtisanBread ? 64 : 0);
-      return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, $$byte, "usedFlags");
+      let byte = 0;
+      byte = byte | (usedAegisCrystal ? 1 : 0);
+      byte = byte | (usedAegisFruit ? 2 : 0);
+      byte = byte | (usedArcaneCrystal ? 4 : 0);
+      byte = byte | (usedGalaxyPearl ? 8 : 0);
+      byte = byte | (usedGummyWorm ? 16 : 0);
+      byte = byte | (usedAmbrosia ? 32 : 0);
+      byte = byte | (ateArtisanBread ? 64 : 0);
+      return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, byte, "usedFlags");
     }
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(packUsedFlags(packTorchFlags(packDifficultyFlags(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerInfo")), self.playerId, "playerId"), self.skinVariant, "skinVariant"), self.hair, "hair"), self.name, "name"), self.hairDye, "hairDye"), self.hideVisuals, "hideVisuals"), self.hideVisuals2, "hideVisuals2"), self.hideMisc, "hideMisc"), self.hairColor, "hairColor"), self.skinColor, "skinColor"), self.eyeColor, "eyeColor"), self.shirtColor, "shirtColor"), self.underShirtColor, "underShirtColor"), self.pantsColor, "pantsColor"), self.shoeColor, "shoeColor"), self.difficulty, self.extraAccessory, self.mode), self.usingBiomeTorches, self.happyFunTorchTime, self.unlockedBiomeTorches, self.unlockedSuperCart, self.enabledSuperCart), self.usedAegisCrystal, self.usedAegisFruit, self.usedArcaneCrystal, self.usedGalaxyPearl, self.usedGummyWorm, self.usedAmbrosia, self.ateArtisanBread));
@@ -18795,15 +16297,15 @@ var require_Packet_PlayerSpawn = __commonJS({
     var Packetreader = require_packetreader().default;
     var Packetwriter = require_packetwriter().default;
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var playerId = reader.readByte();
-      var x = reader.readInt16();
-      var y = reader.readInt16();
-      var timeRemaining = reader.readInt32();
-      var numberOfDeathsPve = reader.readInt16();
-      var numberOfDeathsPvp = reader.readInt16();
-      var rawContext = reader.readByte();
-      var context;
+      let reader = new Packetreader(payload);
+      let playerId = reader.readByte();
+      let x = reader.readInt16();
+      let y = reader.readInt16();
+      let timeRemaining = reader.readInt32();
+      let numberOfDeathsPve = reader.readInt16();
+      let numberOfDeathsPvp = reader.readInt16();
+      let rawContext = reader.readByte();
+      let context;
       switch (rawContext) {
         case 0:
           context = "ReviveFromDeath";
@@ -18830,8 +16332,8 @@ var require_Packet_PlayerSpawn = __commonJS({
       }
     }
     function toBuffer(self) {
-      var match = self.context;
-      var tmp;
+      let match = self.context;
+      let tmp;
       switch (match) {
         case "ReviveFromDeath":
           tmp = 0;
@@ -18859,12 +16361,12 @@ var require_Packet_PlayerInventorySlot = __commonJS({
     var Packetreader = require_packetreader().default;
     var Packetwriter = require_packetwriter().default;
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var playerId = reader.readByte();
-      var slot = reader.readInt16();
-      var stack = reader.readInt16();
-      var prefix = reader.readByte();
-      var itemId = reader.readInt16();
+      let reader = new Packetreader(payload);
+      let playerId = reader.readByte();
+      let slot = reader.readInt16();
+      let stack = reader.readInt16();
+      let prefix = reader.readByte();
+      let itemId = reader.readInt16();
       return {
         playerId,
         slot,
@@ -18890,10 +16392,10 @@ var require_Packet_PlayerHealth = __commonJS({
     var Packetreader = require_packetreader().default;
     var Packetwriter = require_packetwriter().default;
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var playerId = reader.readByte();
-      var health = reader.readInt16();
-      var maxHealth = reader.readInt16();
+      let reader = new Packetreader(payload);
+      let playerId = reader.readByte();
+      let health = reader.readInt16();
+      let maxHealth = reader.readInt16();
       return {
         playerId,
         health,
@@ -18917,8 +16419,8 @@ var require_Packet_ClientUuid = __commonJS({
     var Packetreader = require_packetreader().default;
     var Packetwriter = require_packetwriter().default;
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var uuid = reader.readString();
+      let reader = new Packetreader(payload);
+      let uuid = reader.readString();
       return {
         uuid
       };
@@ -18935,32 +16437,32 @@ var require_Packet_ClientUuid = __commonJS({
 var require_Packet_ProjectileSync = __commonJS({
   "src/packet/Packet_ProjectileSync.js"(exports2) {
     "use strict";
-    var Belt_Option = require_belt_Option();
-    var Caml_option = require_caml_option();
+    var Belt_Option = (init_Belt_Option(), __toCommonJS(Belt_Option_exports));
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     var BitFlags$TerrariaPacket = require_BitFlags();
     var PacketType$TerrariaPacket = require_PacketType();
     var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
     var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var projectileId = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "projectileId");
-      var x = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
-      var y = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
-      var vx = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
-      var vy = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
-      var owner = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "owner");
-      var projectileType = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "projectileType");
-      var flags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags"));
-      var flags2 = BitFlags$TerrariaPacket.flag3(flags) ? Caml_option.some(BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags2"))) : void 0;
-      var ai0 = BitFlags$TerrariaPacket.flag1(flags) ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai0") : void 0;
-      var ai1 = BitFlags$TerrariaPacket.flag2(flags) ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai1") : void 0;
-      var bannerIdToRespondTo = BitFlags$TerrariaPacket.flag4(flags) ? ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "bannerIdToRespondTo") : void 0;
-      var damage = BitFlags$TerrariaPacket.flag5(flags) ? ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "damage") : void 0;
-      var knockback = BitFlags$TerrariaPacket.flag6(flags) ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "knockback") : void 0;
-      var originalDamage = BitFlags$TerrariaPacket.flag7(flags) ? ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "originalDamage") : void 0;
-      var projectileUuid = BitFlags$TerrariaPacket.flag8(flags) ? ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "projectileUuid") : void 0;
-      var ai2 = flags2 !== void 0 && BitFlags$TerrariaPacket.flag1(Caml_option.valFromOption(flags2)) ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai2") : void 0;
+      let reader = new Packetreader(payload);
+      let projectileId = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "projectileId");
+      let x = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+      let y = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+      let vx = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
+      let vy = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
+      let owner = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "owner");
+      let projectileType = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "projectileType");
+      let flags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags"));
+      let flags2 = BitFlags$TerrariaPacket.flag3(flags) ? Primitive_option8.some(BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags2"))) : void 0;
+      let ai0 = BitFlags$TerrariaPacket.flag1(flags) ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai0") : void 0;
+      let ai1 = BitFlags$TerrariaPacket.flag2(flags) ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai1") : void 0;
+      let bannerIdToRespondTo = BitFlags$TerrariaPacket.flag4(flags) ? ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "bannerIdToRespondTo") : void 0;
+      let damage = BitFlags$TerrariaPacket.flag5(flags) ? ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "damage") : void 0;
+      let knockback = BitFlags$TerrariaPacket.flag6(flags) ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "knockback") : void 0;
+      let originalDamage = BitFlags$TerrariaPacket.flag7(flags) ? ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "originalDamage") : void 0;
+      let projectileUuid = BitFlags$TerrariaPacket.flag8(flags) ? ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "projectileUuid") : void 0;
+      let ai2 = flags2 !== void 0 && BitFlags$TerrariaPacket.flag1(Primitive_option8.valFromOption(flags2)) ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai2") : void 0;
       return {
         projectileId,
         x,
@@ -18982,13 +16484,13 @@ var require_Packet_ProjectileSync = __commonJS({
       };
     }
     function packOptionalData(writer, self) {
-      var match = self.ai;
-      var ai2 = match[2];
-      var ai1 = match[1];
-      var ai0 = match[0];
-      var bitFlags2 = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(ai2), false, false, false, false, false, false, false);
-      var bannerIdToRespondTo = self.bannerIdToRespondTo;
-      var bitFlags = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(ai0), Belt_Option.isSome(ai1), BitFlags$TerrariaPacket.toByte(bitFlags2) !== 0, bannerIdToRespondTo !== void 0 ? bannerIdToRespondTo !== 0 : false, Belt_Option.isSome(self.damage), Belt_Option.isSome(self.knockback), Belt_Option.isSome(self.originalDamage), Belt_Option.isSome(self.projectileUuid));
+      let match = self.ai;
+      let ai2 = match[2];
+      let ai1 = match[1];
+      let ai0 = match[0];
+      let bitFlags2 = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(ai2), false, false, false, false, false, false, false);
+      let bannerIdToRespondTo = self.bannerIdToRespondTo;
+      let bitFlags = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(ai0), Belt_Option.isSome(ai1), BitFlags$TerrariaPacket.toByte(bitFlags2) !== 0, bannerIdToRespondTo !== void 0 ? bannerIdToRespondTo !== 0 : false, Belt_Option.isSome(self.damage), Belt_Option.isSome(self.knockback), Belt_Option.isSome(self.originalDamage), Belt_Option.isSome(self.projectileUuid));
       ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(bitFlags), "flags");
       if (BitFlags$TerrariaPacket.flag3(bitFlags)) {
         ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(bitFlags2), "flags2");
@@ -19038,22 +16540,22 @@ var require_Packet_PlayerDamage = __commonJS({
     var Packetreader = require_packetreader().default;
     var Packetwriter = require_packetwriter().default;
     function readDamageFlags(reader) {
-      var flags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+      let flags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
       return {
         critical: BitFlags$TerrariaPacket.flag1(flags),
         pvp: BitFlags$TerrariaPacket.flag2(flags)
       };
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var target = reader.readByte();
-      var deathReason = PlayerDeathReason$TerrariaPacket.readDeathReason(reader);
-      var damage = reader.readInt16();
-      var hitDirection = reader.readByte();
-      var damageFlags = readDamageFlags(reader);
-      var critical = damageFlags.critical;
-      var pvp = damageFlags.pvp;
-      var cooldownCounter = reader.readSByte();
+      let reader = new Packetreader(payload);
+      let target = reader.readByte();
+      let deathReason = PlayerDeathReason$TerrariaPacket.readDeathReason(reader);
+      let damage = reader.readInt16();
+      let hitDirection = reader.readByte();
+      let damageFlags = readDamageFlags(reader);
+      let critical = damageFlags.critical;
+      let pvp = damageFlags.pvp;
+      let cooldownCounter = reader.readSByte();
       return {
         target,
         deathReason,
@@ -19065,9 +16567,7 @@ var require_Packet_PlayerDamage = __commonJS({
       };
     }
     function toBuffer(self) {
-      var damageFlags = function(self2) {
-        return BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(self2.critical, self2.pvp, false, false, false, false, false, false));
-      };
+      let damageFlags = (self2) => BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(self2.critical, self2.pvp, false, false, false, false, false, false));
       return PlayerDeathReason$TerrariaPacket.packDeathReason(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerDamage")).packByte(self.target), self.deathReason).packInt16(self.damage).packByte(self.hitDirection).packByte(damageFlags(self)).packSByte(self.cooldownCounter).data;
     }
     exports2.parse = parse;
@@ -19079,7 +16579,7 @@ var require_Packet_PlayerDamage = __commonJS({
 var require_Packet_WorldInfo = __commonJS({
   "src/packet/Packet_WorldInfo.js"(exports2) {
     "use strict";
-    var Belt_Option = require_belt_Option();
+    var Belt_Option = (init_Belt_Option(), __toCommonJS(Belt_Option_exports));
     var Array16$TerrariaPacket = require_Array16();
     var BitFlags$TerrariaPacket = require_BitFlags();
     var PacketType$TerrariaPacket = require_PacketType();
@@ -19087,91 +16587,91 @@ var require_Packet_WorldInfo = __commonJS({
     var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
     function readEventInfo(reader) {
-      var eventInfo1 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo1"));
-      var eventInfo2 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo2"));
-      var eventInfo3 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo3"));
-      var eventInfo4 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo4"));
-      var eventInfo5 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo5"));
-      var eventInfo6 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo6"));
-      var eventInfo7 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo7"));
-      var eventInfo8 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo8"));
-      var eventInfo9 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo9"));
-      var eventInfo10 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo10"));
-      var shadowOrbSmashed = BitFlags$TerrariaPacket.flag1(eventInfo1);
-      var killedBoss1 = BitFlags$TerrariaPacket.flag2(eventInfo1);
-      var killedBoss2 = BitFlags$TerrariaPacket.flag3(eventInfo1);
-      var killedBoss3 = BitFlags$TerrariaPacket.flag4(eventInfo1);
-      var hardMode = BitFlags$TerrariaPacket.flag5(eventInfo1);
-      var killedClown = BitFlags$TerrariaPacket.flag6(eventInfo1);
-      var serverSidedCharacters = BitFlags$TerrariaPacket.flag7(eventInfo1);
-      var killedPlantBoss = BitFlags$TerrariaPacket.flag8(eventInfo1);
-      var killedMechBoss = BitFlags$TerrariaPacket.flag1(eventInfo2);
-      var killedMechBoss2 = BitFlags$TerrariaPacket.flag2(eventInfo2);
-      var killedMechBoss3 = BitFlags$TerrariaPacket.flag3(eventInfo2);
-      var killedAnyMechBoss = BitFlags$TerrariaPacket.flag4(eventInfo2);
-      var cloudBg = BitFlags$TerrariaPacket.flag5(eventInfo2);
-      var crimson = BitFlags$TerrariaPacket.flag6(eventInfo2);
-      var pumpkinMoon = BitFlags$TerrariaPacket.flag7(eventInfo2);
-      var snowMoon = BitFlags$TerrariaPacket.flag8(eventInfo2);
-      var expertMode = BitFlags$TerrariaPacket.flag1(eventInfo3);
-      var fastForwardTime = BitFlags$TerrariaPacket.flag2(eventInfo3);
-      var slimeRain = BitFlags$TerrariaPacket.flag3(eventInfo3);
-      var killedKingSlime = BitFlags$TerrariaPacket.flag4(eventInfo3);
-      var killedQueenBee = BitFlags$TerrariaPacket.flag5(eventInfo3);
-      var killedFishron = BitFlags$TerrariaPacket.flag6(eventInfo3);
-      var killedMartians = BitFlags$TerrariaPacket.flag7(eventInfo3);
-      var killedAncientCultist = BitFlags$TerrariaPacket.flag8(eventInfo3);
-      var killedMoonLord = BitFlags$TerrariaPacket.flag1(eventInfo4);
-      var killedPumpking = BitFlags$TerrariaPacket.flag2(eventInfo4);
-      var killedMourningWood = BitFlags$TerrariaPacket.flag3(eventInfo4);
-      var killedIceQueen = BitFlags$TerrariaPacket.flag4(eventInfo4);
-      var killedSantank = BitFlags$TerrariaPacket.flag5(eventInfo4);
-      var killedEverscream = BitFlags$TerrariaPacket.flag6(eventInfo4);
-      var killedGolem = BitFlags$TerrariaPacket.flag7(eventInfo4);
-      var birthdayParty = BitFlags$TerrariaPacket.flag8(eventInfo4);
-      var killedPirates = BitFlags$TerrariaPacket.flag1(eventInfo5);
-      var killedFrostLegion = BitFlags$TerrariaPacket.flag2(eventInfo5);
-      var killedGoblins = BitFlags$TerrariaPacket.flag3(eventInfo5);
-      var sandstorm = BitFlags$TerrariaPacket.flag4(eventInfo5);
-      var dungeonDefendersEvent = BitFlags$TerrariaPacket.flag5(eventInfo5);
-      var killedDungeonDefendersTier1 = BitFlags$TerrariaPacket.flag6(eventInfo5);
-      var killedDungeonDefendersTier2 = BitFlags$TerrariaPacket.flag7(eventInfo5);
-      var killedDungeonDefendersTier3 = BitFlags$TerrariaPacket.flag8(eventInfo5);
-      var combatBookUsed = BitFlags$TerrariaPacket.flag1(eventInfo6);
-      var manualLanterns = BitFlags$TerrariaPacket.flag2(eventInfo6);
-      var killedSolarTower = BitFlags$TerrariaPacket.flag3(eventInfo6);
-      var killedVortexTower = BitFlags$TerrariaPacket.flag4(eventInfo6);
-      var killedNebulaTower = BitFlags$TerrariaPacket.flag5(eventInfo6);
-      var killedStardustTower = BitFlags$TerrariaPacket.flag6(eventInfo6);
-      var forceHalloween = BitFlags$TerrariaPacket.flag7(eventInfo6);
-      var forceChristmas = BitFlags$TerrariaPacket.flag8(eventInfo6);
-      var boughtCat = BitFlags$TerrariaPacket.flag1(eventInfo7);
-      var boughtDog = BitFlags$TerrariaPacket.flag2(eventInfo7);
-      var boughtBunny = BitFlags$TerrariaPacket.flag3(eventInfo7);
-      var freeCake = BitFlags$TerrariaPacket.flag4(eventInfo7);
-      var drunkWorld = BitFlags$TerrariaPacket.flag5(eventInfo7);
-      var killedEmpressOfLight = BitFlags$TerrariaPacket.flag6(eventInfo7);
-      var killedQueenSlime = BitFlags$TerrariaPacket.flag7(eventInfo7);
-      var getGoodWorld = BitFlags$TerrariaPacket.flag8(eventInfo7);
-      var tenthAnniversaryWorld = BitFlags$TerrariaPacket.flag1(eventInfo8);
-      var dontStarveWorld = BitFlags$TerrariaPacket.flag2(eventInfo8);
-      var downedDeerClops = BitFlags$TerrariaPacket.flag3(eventInfo8);
-      var notTheBeesWorld = BitFlags$TerrariaPacket.flag4(eventInfo8);
-      var remixWorld = BitFlags$TerrariaPacket.flag5(eventInfo8);
-      var unlockedSlimeBlueSpawn = BitFlags$TerrariaPacket.flag6(eventInfo8);
-      var combatBookVolumeTwoWasUsed = BitFlags$TerrariaPacket.flag7(eventInfo8);
-      var peddlersSatchelWasUsed = BitFlags$TerrariaPacket.flag8(eventInfo8);
-      var unlockedSlimeGreenSpawn = BitFlags$TerrariaPacket.flag1(eventInfo9);
-      var unlockedSlimeOldSpawn = BitFlags$TerrariaPacket.flag2(eventInfo9);
-      var unlockedSlimePurpleSpawn = BitFlags$TerrariaPacket.flag3(eventInfo9);
-      var unlockedSlimeRainbowSpawn = BitFlags$TerrariaPacket.flag4(eventInfo9);
-      var unlockedSlimeRedSpawn = BitFlags$TerrariaPacket.flag5(eventInfo9);
-      var unlockedSlimeYellowSpawn = BitFlags$TerrariaPacket.flag6(eventInfo9);
-      var unlockedSlimeCopperSpawn = BitFlags$TerrariaPacket.flag7(eventInfo9);
-      var fastForwardTimeToDusk = BitFlags$TerrariaPacket.flag8(eventInfo9);
-      var noTrapsWorld = BitFlags$TerrariaPacket.flag1(eventInfo10);
-      var zenithWorld = BitFlags$TerrariaPacket.flag2(eventInfo10);
-      var unlockedTruffleSpawn = BitFlags$TerrariaPacket.flag3(eventInfo10);
+      let eventInfo1 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo1"));
+      let eventInfo2 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo2"));
+      let eventInfo3 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo3"));
+      let eventInfo4 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo4"));
+      let eventInfo5 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo5"));
+      let eventInfo6 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo6"));
+      let eventInfo7 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo7"));
+      let eventInfo8 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo8"));
+      let eventInfo9 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo9"));
+      let eventInfo10 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo10"));
+      let shadowOrbSmashed = BitFlags$TerrariaPacket.flag1(eventInfo1);
+      let killedBoss1 = BitFlags$TerrariaPacket.flag2(eventInfo1);
+      let killedBoss2 = BitFlags$TerrariaPacket.flag3(eventInfo1);
+      let killedBoss3 = BitFlags$TerrariaPacket.flag4(eventInfo1);
+      let hardMode = BitFlags$TerrariaPacket.flag5(eventInfo1);
+      let killedClown = BitFlags$TerrariaPacket.flag6(eventInfo1);
+      let serverSidedCharacters = BitFlags$TerrariaPacket.flag7(eventInfo1);
+      let killedPlantBoss = BitFlags$TerrariaPacket.flag8(eventInfo1);
+      let killedMechBoss = BitFlags$TerrariaPacket.flag1(eventInfo2);
+      let killedMechBoss2 = BitFlags$TerrariaPacket.flag2(eventInfo2);
+      let killedMechBoss3 = BitFlags$TerrariaPacket.flag3(eventInfo2);
+      let killedAnyMechBoss = BitFlags$TerrariaPacket.flag4(eventInfo2);
+      let cloudBg = BitFlags$TerrariaPacket.flag5(eventInfo2);
+      let crimson = BitFlags$TerrariaPacket.flag6(eventInfo2);
+      let pumpkinMoon = BitFlags$TerrariaPacket.flag7(eventInfo2);
+      let snowMoon = BitFlags$TerrariaPacket.flag8(eventInfo2);
+      let expertMode = BitFlags$TerrariaPacket.flag1(eventInfo3);
+      let fastForwardTime = BitFlags$TerrariaPacket.flag2(eventInfo3);
+      let slimeRain = BitFlags$TerrariaPacket.flag3(eventInfo3);
+      let killedKingSlime = BitFlags$TerrariaPacket.flag4(eventInfo3);
+      let killedQueenBee = BitFlags$TerrariaPacket.flag5(eventInfo3);
+      let killedFishron = BitFlags$TerrariaPacket.flag6(eventInfo3);
+      let killedMartians = BitFlags$TerrariaPacket.flag7(eventInfo3);
+      let killedAncientCultist = BitFlags$TerrariaPacket.flag8(eventInfo3);
+      let killedMoonLord = BitFlags$TerrariaPacket.flag1(eventInfo4);
+      let killedPumpking = BitFlags$TerrariaPacket.flag2(eventInfo4);
+      let killedMourningWood = BitFlags$TerrariaPacket.flag3(eventInfo4);
+      let killedIceQueen = BitFlags$TerrariaPacket.flag4(eventInfo4);
+      let killedSantank = BitFlags$TerrariaPacket.flag5(eventInfo4);
+      let killedEverscream = BitFlags$TerrariaPacket.flag6(eventInfo4);
+      let killedGolem = BitFlags$TerrariaPacket.flag7(eventInfo4);
+      let birthdayParty = BitFlags$TerrariaPacket.flag8(eventInfo4);
+      let killedPirates = BitFlags$TerrariaPacket.flag1(eventInfo5);
+      let killedFrostLegion = BitFlags$TerrariaPacket.flag2(eventInfo5);
+      let killedGoblins = BitFlags$TerrariaPacket.flag3(eventInfo5);
+      let sandstorm = BitFlags$TerrariaPacket.flag4(eventInfo5);
+      let dungeonDefendersEvent = BitFlags$TerrariaPacket.flag5(eventInfo5);
+      let killedDungeonDefendersTier1 = BitFlags$TerrariaPacket.flag6(eventInfo5);
+      let killedDungeonDefendersTier2 = BitFlags$TerrariaPacket.flag7(eventInfo5);
+      let killedDungeonDefendersTier3 = BitFlags$TerrariaPacket.flag8(eventInfo5);
+      let combatBookUsed = BitFlags$TerrariaPacket.flag1(eventInfo6);
+      let manualLanterns = BitFlags$TerrariaPacket.flag2(eventInfo6);
+      let killedSolarTower = BitFlags$TerrariaPacket.flag3(eventInfo6);
+      let killedVortexTower = BitFlags$TerrariaPacket.flag4(eventInfo6);
+      let killedNebulaTower = BitFlags$TerrariaPacket.flag5(eventInfo6);
+      let killedStardustTower = BitFlags$TerrariaPacket.flag6(eventInfo6);
+      let forceHalloween = BitFlags$TerrariaPacket.flag7(eventInfo6);
+      let forceChristmas = BitFlags$TerrariaPacket.flag8(eventInfo6);
+      let boughtCat = BitFlags$TerrariaPacket.flag1(eventInfo7);
+      let boughtDog = BitFlags$TerrariaPacket.flag2(eventInfo7);
+      let boughtBunny = BitFlags$TerrariaPacket.flag3(eventInfo7);
+      let freeCake = BitFlags$TerrariaPacket.flag4(eventInfo7);
+      let drunkWorld = BitFlags$TerrariaPacket.flag5(eventInfo7);
+      let killedEmpressOfLight = BitFlags$TerrariaPacket.flag6(eventInfo7);
+      let killedQueenSlime = BitFlags$TerrariaPacket.flag7(eventInfo7);
+      let getGoodWorld = BitFlags$TerrariaPacket.flag8(eventInfo7);
+      let tenthAnniversaryWorld = BitFlags$TerrariaPacket.flag1(eventInfo8);
+      let dontStarveWorld = BitFlags$TerrariaPacket.flag2(eventInfo8);
+      let downedDeerClops = BitFlags$TerrariaPacket.flag3(eventInfo8);
+      let notTheBeesWorld = BitFlags$TerrariaPacket.flag4(eventInfo8);
+      let remixWorld = BitFlags$TerrariaPacket.flag5(eventInfo8);
+      let unlockedSlimeBlueSpawn = BitFlags$TerrariaPacket.flag6(eventInfo8);
+      let combatBookVolumeTwoWasUsed = BitFlags$TerrariaPacket.flag7(eventInfo8);
+      let peddlersSatchelWasUsed = BitFlags$TerrariaPacket.flag8(eventInfo8);
+      let unlockedSlimeGreenSpawn = BitFlags$TerrariaPacket.flag1(eventInfo9);
+      let unlockedSlimeOldSpawn = BitFlags$TerrariaPacket.flag2(eventInfo9);
+      let unlockedSlimePurpleSpawn = BitFlags$TerrariaPacket.flag3(eventInfo9);
+      let unlockedSlimeRainbowSpawn = BitFlags$TerrariaPacket.flag4(eventInfo9);
+      let unlockedSlimeRedSpawn = BitFlags$TerrariaPacket.flag5(eventInfo9);
+      let unlockedSlimeYellowSpawn = BitFlags$TerrariaPacket.flag6(eventInfo9);
+      let unlockedSlimeCopperSpawn = BitFlags$TerrariaPacket.flag7(eventInfo9);
+      let fastForwardTimeToDusk = BitFlags$TerrariaPacket.flag8(eventInfo9);
+      let noTrapsWorld = BitFlags$TerrariaPacket.flag1(eventInfo10);
+      let zenithWorld = BitFlags$TerrariaPacket.flag2(eventInfo10);
+      let unlockedTruffleSpawn = BitFlags$TerrariaPacket.flag3(eventInfo10);
       return {
         shadowOrbSmashed,
         killedBoss1,
@@ -19251,171 +16751,169 @@ var require_Packet_WorldInfo = __commonJS({
       };
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var time = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "time");
-      var dayAndMoonInfo = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "dayAndMoonInfo");
-      var moonPhase = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "moonPhase");
-      var maxTilesX = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "maxTilesX");
-      var maxTilesY = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "maxTilesY");
-      var spawnX = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "spawnX");
-      var spawnY = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "spawnY");
-      var worldSurface = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "worldSurface");
-      var rockLayer = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "rockLayer");
-      var worldId = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "worldId");
-      var worldName = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "worldName");
-      var gameMode = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "gameMode");
-      var worldUniqueId = Array16$TerrariaPacket.fromArray(ErrorAwarePacketReader$TerrariaPacket.readBytes(reader, 16, "worldUniqueId"));
-      var worldGeneratorVersion = ErrorAwarePacketReader$TerrariaPacket.readUInt64(reader, "worldGeneratorVersion");
-      var moonType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "moonType");
-      var treeBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeBackground");
-      var treeBackground2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeBackground2");
-      var treeBackground3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeBackground3");
-      var treeBackground4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeBackground4");
-      var corruptionBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "corruptionBackground");
-      var jungleBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "jungleBackground");
-      var snowBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "snowBackground");
-      var hallowBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hallowBackground");
-      var crimsonBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "crimsonBackground");
-      var desertBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "desertBackground");
-      var oceanBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "oceanBackground");
-      var mushroomBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "mushroomBackground");
-      var underworldBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "underworldBackground");
-      var iceBackStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "iceBackStyle");
-      var jungleBackStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "jungleBackStyle");
-      var hellBackStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hellBackStyle");
-      var windSpeedSet = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "windSpeedSet");
-      var cloudNumber = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "cloudNumber");
-      var tree1 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "tree1");
-      var tree2 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "tree2");
-      var tree3 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "tree3");
-      var treeStyle1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeStyle1");
-      var treeStyle2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeStyle2");
-      var treeStyle3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeStyle3");
-      var treeStyle4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeStyle4");
-      var caveBack1 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "caveBack1");
-      var caveBack2 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "caveBack2");
-      var caveBack3 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "caveBack3");
-      var caveBackStyle1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "caveBackStyle1");
-      var caveBackStyle2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "caveBackStyle2");
-      var caveBackStyle3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "caveBackStyle3");
-      var caveBackStyle4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "caveBackStyle4");
-      var forest1TreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "forest1TreeTopStyle");
-      var forest2TreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "forest2TreeTopStyle");
-      var forest3TreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "forest3TreeTopStyle");
-      var forest4TreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "forest4TreeTopStyle");
-      var corruptionTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "corruptionTreeTopStyle");
-      var jungleTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "jungleTreeTopStyle");
-      var snowTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "snowTreeTopStyle");
-      var hallowTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hallowTreeTopStyle");
-      var crimsonTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "crimsonTreeTopStyle");
-      var desertTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "desertTreeTopStyle");
-      var oceanTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "oceanTreeTopStyle");
-      var glowingMushroomTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "glowingMushroomTreeTopStyle");
-      var underworldTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "underworldTreeTopStyle");
-      var rain = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "rain");
-      var eventInfo = readEventInfo(reader);
-      var sundialCooldown = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "sundialCooldown");
-      var moondialCooldown = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "moondialCooldown");
-      var copperOreTier = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "copperOreTier");
-      var ironOreTier = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "ironOreTier");
-      var silverOreTier = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "silverOreTier");
-      var goldOreTier = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "goldOreTier");
-      var cobaltOreTier = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "cobaltOreTier");
-      var mythrilOreTier = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "mythrilOreTier");
-      var adamantiteOreTier = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "adamantiteOreTier");
-      var invasionType = ErrorAwarePacketReader$TerrariaPacket.readSByte(reader, "invasionType");
-      var lobbyId = ErrorAwarePacketReader$TerrariaPacket.readUInt64(reader, "lobbyId");
-      var sandstormSeverity = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "sandstormSeverity");
-      return Belt_Option.map(worldUniqueId, function(worldUniqueId2) {
-        return {
-          time,
-          dayAndMoonInfo,
-          moonPhase,
-          maxTilesX,
-          maxTilesY,
-          spawnX,
-          spawnY,
-          worldSurface,
-          rockLayer,
-          worldId,
-          worldName,
-          gameMode,
-          worldUniqueId: worldUniqueId2,
-          worldGeneratorVersion,
-          moonType,
-          treeBackground,
-          treeBackground2,
-          treeBackground3,
-          treeBackground4,
-          corruptionBackground,
-          jungleBackground,
-          snowBackground,
-          hallowBackground,
-          crimsonBackground,
-          desertBackground,
-          oceanBackground,
-          mushroomBackground,
-          underworldBackground,
-          iceBackStyle,
-          jungleBackStyle,
-          hellBackStyle,
-          windSpeedSet,
-          cloudNumber,
-          tree1,
-          tree2,
-          tree3,
-          treeStyle1,
-          treeStyle2,
-          treeStyle3,
-          treeStyle4,
-          caveBack1,
-          caveBack2,
-          caveBack3,
-          caveBackStyle1,
-          caveBackStyle2,
-          caveBackStyle3,
-          caveBackStyle4,
-          forest1TreeTopStyle,
-          forest2TreeTopStyle,
-          forest3TreeTopStyle,
-          forest4TreeTopStyle,
-          corruptionTreeTopStyle,
-          jungleTreeTopStyle,
-          snowTreeTopStyle,
-          hallowTreeTopStyle,
-          crimsonTreeTopStyle,
-          desertTreeTopStyle,
-          oceanTreeTopStyle,
-          glowingMushroomTreeTopStyle,
-          underworldTreeTopStyle,
-          rain,
-          eventInfo,
-          sundialCooldown,
-          moondialCooldown,
-          copperOreTier,
-          ironOreTier,
-          silverOreTier,
-          goldOreTier,
-          cobaltOreTier,
-          mythrilOreTier,
-          adamantiteOreTier,
-          invasionType,
-          lobbyId,
-          sandstormSeverity
-        };
-      });
+      let reader = new Packetreader(payload);
+      let time = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "time");
+      let dayAndMoonInfo = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "dayAndMoonInfo");
+      let moonPhase = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "moonPhase");
+      let maxTilesX = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "maxTilesX");
+      let maxTilesY = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "maxTilesY");
+      let spawnX = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "spawnX");
+      let spawnY = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "spawnY");
+      let worldSurface = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "worldSurface");
+      let rockLayer = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "rockLayer");
+      let worldId = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "worldId");
+      let worldName = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "worldName");
+      let gameMode = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "gameMode");
+      let worldUniqueId = Array16$TerrariaPacket.fromArray(ErrorAwarePacketReader$TerrariaPacket.readBytes(reader, 16, "worldUniqueId"));
+      let worldGeneratorVersion = ErrorAwarePacketReader$TerrariaPacket.readUInt64(reader, "worldGeneratorVersion");
+      let moonType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "moonType");
+      let treeBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeBackground");
+      let treeBackground2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeBackground2");
+      let treeBackground3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeBackground3");
+      let treeBackground4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeBackground4");
+      let corruptionBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "corruptionBackground");
+      let jungleBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "jungleBackground");
+      let snowBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "snowBackground");
+      let hallowBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hallowBackground");
+      let crimsonBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "crimsonBackground");
+      let desertBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "desertBackground");
+      let oceanBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "oceanBackground");
+      let mushroomBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "mushroomBackground");
+      let underworldBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "underworldBackground");
+      let iceBackStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "iceBackStyle");
+      let jungleBackStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "jungleBackStyle");
+      let hellBackStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hellBackStyle");
+      let windSpeedSet = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "windSpeedSet");
+      let cloudNumber = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "cloudNumber");
+      let tree1 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "tree1");
+      let tree2 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "tree2");
+      let tree3 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "tree3");
+      let treeStyle1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeStyle1");
+      let treeStyle2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeStyle2");
+      let treeStyle3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeStyle3");
+      let treeStyle4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeStyle4");
+      let caveBack1 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "caveBack1");
+      let caveBack2 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "caveBack2");
+      let caveBack3 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "caveBack3");
+      let caveBackStyle1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "caveBackStyle1");
+      let caveBackStyle2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "caveBackStyle2");
+      let caveBackStyle3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "caveBackStyle3");
+      let caveBackStyle4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "caveBackStyle4");
+      let forest1TreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "forest1TreeTopStyle");
+      let forest2TreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "forest2TreeTopStyle");
+      let forest3TreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "forest3TreeTopStyle");
+      let forest4TreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "forest4TreeTopStyle");
+      let corruptionTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "corruptionTreeTopStyle");
+      let jungleTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "jungleTreeTopStyle");
+      let snowTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "snowTreeTopStyle");
+      let hallowTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hallowTreeTopStyle");
+      let crimsonTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "crimsonTreeTopStyle");
+      let desertTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "desertTreeTopStyle");
+      let oceanTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "oceanTreeTopStyle");
+      let glowingMushroomTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "glowingMushroomTreeTopStyle");
+      let underworldTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "underworldTreeTopStyle");
+      let rain = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "rain");
+      let eventInfo = readEventInfo(reader);
+      let sundialCooldown = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "sundialCooldown");
+      let moondialCooldown = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "moondialCooldown");
+      let copperOreTier = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "copperOreTier");
+      let ironOreTier = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "ironOreTier");
+      let silverOreTier = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "silverOreTier");
+      let goldOreTier = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "goldOreTier");
+      let cobaltOreTier = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "cobaltOreTier");
+      let mythrilOreTier = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "mythrilOreTier");
+      let adamantiteOreTier = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "adamantiteOreTier");
+      let invasionType = ErrorAwarePacketReader$TerrariaPacket.readSByte(reader, "invasionType");
+      let lobbyId = ErrorAwarePacketReader$TerrariaPacket.readUInt64(reader, "lobbyId");
+      let sandstormSeverity = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "sandstormSeverity");
+      return Belt_Option.map(worldUniqueId, (worldUniqueId2) => ({
+        time,
+        dayAndMoonInfo,
+        moonPhase,
+        maxTilesX,
+        maxTilesY,
+        spawnX,
+        spawnY,
+        worldSurface,
+        rockLayer,
+        worldId,
+        worldName,
+        gameMode,
+        worldUniqueId: worldUniqueId2,
+        worldGeneratorVersion,
+        moonType,
+        treeBackground,
+        treeBackground2,
+        treeBackground3,
+        treeBackground4,
+        corruptionBackground,
+        jungleBackground,
+        snowBackground,
+        hallowBackground,
+        crimsonBackground,
+        desertBackground,
+        oceanBackground,
+        mushroomBackground,
+        underworldBackground,
+        iceBackStyle,
+        jungleBackStyle,
+        hellBackStyle,
+        windSpeedSet,
+        cloudNumber,
+        tree1,
+        tree2,
+        tree3,
+        treeStyle1,
+        treeStyle2,
+        treeStyle3,
+        treeStyle4,
+        caveBack1,
+        caveBack2,
+        caveBack3,
+        caveBackStyle1,
+        caveBackStyle2,
+        caveBackStyle3,
+        caveBackStyle4,
+        forest1TreeTopStyle,
+        forest2TreeTopStyle,
+        forest3TreeTopStyle,
+        forest4TreeTopStyle,
+        corruptionTreeTopStyle,
+        jungleTreeTopStyle,
+        snowTreeTopStyle,
+        hallowTreeTopStyle,
+        crimsonTreeTopStyle,
+        desertTreeTopStyle,
+        oceanTreeTopStyle,
+        glowingMushroomTreeTopStyle,
+        underworldTreeTopStyle,
+        rain,
+        eventInfo,
+        sundialCooldown,
+        moondialCooldown,
+        copperOreTier,
+        ironOreTier,
+        silverOreTier,
+        goldOreTier,
+        cobaltOreTier,
+        mythrilOreTier,
+        adamantiteOreTier,
+        invasionType,
+        lobbyId,
+        sandstormSeverity
+      }));
     }
     function packEventInfo(writer, eventInfo) {
-      var eventInfo1 = BitFlags$TerrariaPacket.fromFlags(eventInfo.shadowOrbSmashed, eventInfo.killedBoss1, eventInfo.killedBoss2, eventInfo.killedBoss3, eventInfo.hardMode, eventInfo.killedClown, eventInfo.serverSidedCharacters, eventInfo.killedPlantBoss);
-      var eventInfo2 = BitFlags$TerrariaPacket.fromFlags(eventInfo.killedMechBoss, eventInfo.killedMechBoss2, eventInfo.killedMechBoss3, eventInfo.killedAnyMechBoss, eventInfo.cloudBg, eventInfo.crimson, eventInfo.pumpkinMoon, eventInfo.snowMoon);
-      var eventInfo3 = BitFlags$TerrariaPacket.fromFlags(eventInfo.expertMode, eventInfo.fastForwardTime, eventInfo.slimeRain, eventInfo.killedKingSlime, eventInfo.killedQueenBee, eventInfo.killedFishron, eventInfo.killedMartians, eventInfo.killedAncientCultist);
-      var eventInfo4 = BitFlags$TerrariaPacket.fromFlags(eventInfo.killedMoonLord, eventInfo.killedPumpking, eventInfo.killedMourningWood, eventInfo.killedIceQueen, eventInfo.killedSantank, eventInfo.killedEverscream, eventInfo.killedGolem, eventInfo.birthdayParty);
-      var eventInfo5 = BitFlags$TerrariaPacket.fromFlags(eventInfo.killedPirates, eventInfo.killedFrostLegion, eventInfo.killedGoblins, eventInfo.sandstorm, eventInfo.dungeonDefendersEvent, eventInfo.killedDungeonDefendersTier1, eventInfo.killedDungeonDefendersTier2, eventInfo.killedDungeonDefendersTier3);
-      var eventInfo6 = BitFlags$TerrariaPacket.fromFlags(eventInfo.combatBookUsed, eventInfo.manualLanterns, eventInfo.killedSolarTower, eventInfo.killedVortexTower, eventInfo.killedNebulaTower, eventInfo.killedStardustTower, eventInfo.forceHalloween, eventInfo.forceChristmas);
-      var eventInfo7 = BitFlags$TerrariaPacket.fromFlags(eventInfo.boughtCat, eventInfo.boughtDog, eventInfo.boughtBunny, eventInfo.freeCake, eventInfo.drunkWorld, eventInfo.killedEmpressOfLight, eventInfo.killedQueenSlime, eventInfo.getGoodWorld);
-      var eventInfo8 = BitFlags$TerrariaPacket.fromFlags(eventInfo.tenthAnniversaryWorld, eventInfo.dontStarveWorld, eventInfo.downedDeerClops, eventInfo.notTheBeesWorld, eventInfo.remixWorld, eventInfo.unlockedSlimeBlueSpawn, eventInfo.combatBookVolumeTwoWasUsed, eventInfo.peddlersSatchelWasUsed);
-      var eventInfo9 = BitFlags$TerrariaPacket.fromFlags(eventInfo.unlockedSlimeGreenSpawn, eventInfo.unlockedSlimeOldSpawn, eventInfo.unlockedSlimePurpleSpawn, eventInfo.unlockedSlimeRainbowSpawn, eventInfo.unlockedSlimeRedSpawn, eventInfo.unlockedSlimeYellowSpawn, eventInfo.unlockedSlimeCopperSpawn, eventInfo.fastForwardTimeToDusk);
-      var eventInfo10 = BitFlags$TerrariaPacket.fromFlags(eventInfo.noTrapsWorld, eventInfo.zenithWorld, eventInfo.unlockedTruffleSpawn, false, false, false, false, false);
+      let eventInfo1 = BitFlags$TerrariaPacket.fromFlags(eventInfo.shadowOrbSmashed, eventInfo.killedBoss1, eventInfo.killedBoss2, eventInfo.killedBoss3, eventInfo.hardMode, eventInfo.killedClown, eventInfo.serverSidedCharacters, eventInfo.killedPlantBoss);
+      let eventInfo2 = BitFlags$TerrariaPacket.fromFlags(eventInfo.killedMechBoss, eventInfo.killedMechBoss2, eventInfo.killedMechBoss3, eventInfo.killedAnyMechBoss, eventInfo.cloudBg, eventInfo.crimson, eventInfo.pumpkinMoon, eventInfo.snowMoon);
+      let eventInfo3 = BitFlags$TerrariaPacket.fromFlags(eventInfo.expertMode, eventInfo.fastForwardTime, eventInfo.slimeRain, eventInfo.killedKingSlime, eventInfo.killedQueenBee, eventInfo.killedFishron, eventInfo.killedMartians, eventInfo.killedAncientCultist);
+      let eventInfo4 = BitFlags$TerrariaPacket.fromFlags(eventInfo.killedMoonLord, eventInfo.killedPumpking, eventInfo.killedMourningWood, eventInfo.killedIceQueen, eventInfo.killedSantank, eventInfo.killedEverscream, eventInfo.killedGolem, eventInfo.birthdayParty);
+      let eventInfo5 = BitFlags$TerrariaPacket.fromFlags(eventInfo.killedPirates, eventInfo.killedFrostLegion, eventInfo.killedGoblins, eventInfo.sandstorm, eventInfo.dungeonDefendersEvent, eventInfo.killedDungeonDefendersTier1, eventInfo.killedDungeonDefendersTier2, eventInfo.killedDungeonDefendersTier3);
+      let eventInfo6 = BitFlags$TerrariaPacket.fromFlags(eventInfo.combatBookUsed, eventInfo.manualLanterns, eventInfo.killedSolarTower, eventInfo.killedVortexTower, eventInfo.killedNebulaTower, eventInfo.killedStardustTower, eventInfo.forceHalloween, eventInfo.forceChristmas);
+      let eventInfo7 = BitFlags$TerrariaPacket.fromFlags(eventInfo.boughtCat, eventInfo.boughtDog, eventInfo.boughtBunny, eventInfo.freeCake, eventInfo.drunkWorld, eventInfo.killedEmpressOfLight, eventInfo.killedQueenSlime, eventInfo.getGoodWorld);
+      let eventInfo8 = BitFlags$TerrariaPacket.fromFlags(eventInfo.tenthAnniversaryWorld, eventInfo.dontStarveWorld, eventInfo.downedDeerClops, eventInfo.notTheBeesWorld, eventInfo.remixWorld, eventInfo.unlockedSlimeBlueSpawn, eventInfo.combatBookVolumeTwoWasUsed, eventInfo.peddlersSatchelWasUsed);
+      let eventInfo9 = BitFlags$TerrariaPacket.fromFlags(eventInfo.unlockedSlimeGreenSpawn, eventInfo.unlockedSlimeOldSpawn, eventInfo.unlockedSlimePurpleSpawn, eventInfo.unlockedSlimeRainbowSpawn, eventInfo.unlockedSlimeRedSpawn, eventInfo.unlockedSlimeYellowSpawn, eventInfo.unlockedSlimeCopperSpawn, eventInfo.fastForwardTimeToDusk);
+      let eventInfo10 = BitFlags$TerrariaPacket.fromFlags(eventInfo.noTrapsWorld, eventInfo.zenithWorld, eventInfo.unlockedTruffleSpawn, false, false, false, false, false);
       return ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(eventInfo1), "eventInfo1"), BitFlags$TerrariaPacket.toByte(eventInfo2), "eventInfo2"), BitFlags$TerrariaPacket.toByte(eventInfo3), "eventInfo3"), BitFlags$TerrariaPacket.toByte(eventInfo4), "eventInfo4"), BitFlags$TerrariaPacket.toByte(eventInfo5), "eventInfo5"), BitFlags$TerrariaPacket.toByte(eventInfo6), "eventInfo6"), BitFlags$TerrariaPacket.toByte(eventInfo7), "eventInfo7"), BitFlags$TerrariaPacket.toByte(eventInfo8), "eventInfo8"), BitFlags$TerrariaPacket.toByte(eventInfo9), "eventInfo9"), BitFlags$TerrariaPacket.toByte(eventInfo10), "eventInfo10");
     }
     function toBuffer(self) {
@@ -19435,9 +16933,9 @@ var require_Packet_PlayerActive = __commonJS({
     var Packetreader = require_packetreader().default;
     var Packetwriter = require_packetwriter().default;
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var playerId = reader.readByte();
-      var active = reader.readByte() !== 0;
+      let reader = new Packetreader(payload);
+      let playerId = reader.readByte();
+      let active = reader.readByte() !== 0;
       return {
         playerId,
         active
@@ -19455,14 +16953,14 @@ var require_Packet_PlayerActive = __commonJS({
 var require_Packet_NpcUpdate = __commonJS({
   "src/packet/Packet_NpcUpdate.js"(exports2) {
     "use strict";
-    var Belt_Option = require_belt_Option();
+    var Belt_Option = (init_Belt_Option(), __toCommonJS(Belt_Option_exports));
     var BitFlags$TerrariaPacket = require_BitFlags();
     var PacketType$TerrariaPacket = require_PacketType();
     var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
     var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
     function readNpcFlags1(reader, fieldName) {
-      var flags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, fieldName));
+      let flags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, fieldName));
       return {
         directionX: BitFlags$TerrariaPacket.flag1(flags),
         directionY: BitFlags$TerrariaPacket.flag2(flags),
@@ -19475,7 +16973,7 @@ var require_Packet_NpcUpdate = __commonJS({
       };
     }
     function readNpcFlags2(reader, fieldName) {
-      var flags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, fieldName));
+      let flags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, fieldName));
       return {
         statsScaled: BitFlags$TerrariaPacket.flag1(flags),
         spawnedFromStatue: BitFlags$TerrariaPacket.flag2(flags),
@@ -19483,33 +16981,33 @@ var require_Packet_NpcUpdate = __commonJS({
       };
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var npcSlotId = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcSlotId");
-      var x = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
-      var y = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
-      var vx = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
-      var vy = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
-      var target = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "target");
-      var npcFlags12 = readNpcFlags1(reader, "npcFlags1");
-      var npcFlags22 = readNpcFlags2(reader, "npcFlags2");
-      var ai_0 = npcFlags12.ai0 ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai0") : void 0;
-      var ai_1 = npcFlags12.ai1 ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai1") : void 0;
-      var ai_2 = npcFlags12.ai2 ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai2") : void 0;
-      var ai_3 = npcFlags12.ai3 ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai3") : void 0;
-      var ai = [
+      let reader = new Packetreader(payload);
+      let npcSlotId = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcSlotId");
+      let x = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+      let y = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+      let vx = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
+      let vy = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
+      let target = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "target");
+      let npcFlags12 = readNpcFlags1(reader, "npcFlags1");
+      let npcFlags22 = readNpcFlags2(reader, "npcFlags2");
+      let ai_0 = npcFlags12.ai0 ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai0") : void 0;
+      let ai_1 = npcFlags12.ai1 ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai1") : void 0;
+      let ai_2 = npcFlags12.ai2 ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai2") : void 0;
+      let ai_3 = npcFlags12.ai3 ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai3") : void 0;
+      let ai = [
         ai_0,
         ai_1,
         ai_2,
         ai_3
       ];
-      var npcTypeId = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcTypeId");
-      var playerCountScale = npcFlags22.statsScaled ? ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerCountScale") : void 0;
-      var strengthMultiplier = npcFlags22.strengthMultiplier ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "strengthMultiplier") : void 0;
-      var life;
+      let npcTypeId = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcTypeId");
+      let playerCountScale = npcFlags22.statsScaled ? ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerCountScale") : void 0;
+      let strengthMultiplier = npcFlags22.strengthMultiplier ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "strengthMultiplier") : void 0;
+      let life;
       if (npcFlags12.lifeMax) {
         life = "Max";
       } else {
-        var lifeBytes = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "lifeBytes");
+        let lifeBytes = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "lifeBytes");
         switch (lifeBytes) {
           case 1:
             life = {
@@ -19533,7 +17031,7 @@ var require_Packet_NpcUpdate = __commonJS({
             life = void 0;
         }
       }
-      var releaseOwner;
+      let releaseOwner;
       try {
         releaseOwner = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "releaseOwner");
       } catch (exn) {
@@ -19561,17 +17059,17 @@ var require_Packet_NpcUpdate = __commonJS({
       }
     }
     function npcFlags1(self) {
-      var match = self.ai;
+      let match = self.ai;
       return BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(self.directionX, self.directionY, Belt_Option.isSome(match[0]), Belt_Option.isSome(match[1]), Belt_Option.isSome(match[2]), Belt_Option.isSome(match[3]), self.spriteDirection, self.life === "Max"));
     }
     function npcFlags2(self) {
       return BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(self.playerCountScale), self.spawnedFromStatue, Belt_Option.isSome(self.strengthMultiplier), false, false, false, false, false));
     }
     function packAi(writer, param) {
-      var ai3 = param[3];
-      var ai2 = param[2];
-      var ai1 = param[1];
-      var ai0 = param[0];
+      let ai3 = param[3];
+      let ai2 = param[2];
+      let ai1 = param[1];
+      let ai0 = param[0];
       if (ai0 !== void 0) {
         ErrorAwarePacketWriter$TerrariaPacket.packSingle(writer, ai0, "ai0");
       }
@@ -19640,8 +17138,8 @@ var require_Packet_Disconnect = __commonJS({
       return prim.readNetworkText();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var reason = reader.readNetworkText();
+      let reader = new Packetreader(payload);
+      let reason = reader.readNetworkText();
       return {
         reason
       };
@@ -19672,13 +17170,88 @@ var require_Packet_Disconnect = __commonJS({
   }
 });
 
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Stdlib_Lazy.js
+var Stdlib_Lazy_exports = {};
+function is_val(l) {
+  return l.LAZY_DONE;
+}
+function forward_with_closure(blk, closure) {
+  let result = closure();
+  blk.VAL = result;
+  blk.LAZY_DONE = true;
+  return result;
+}
+function raise_undefined() {
+  throw {
+    RE_EXN_ID: Undefined,
+    Error: new Error()
+  };
+}
+function force(lzv) {
+  if (lzv.LAZY_DONE) {
+    return lzv.VAL;
+  } else {
+    let closure = lzv.VAL;
+    lzv.VAL = raise_undefined;
+    try {
+      return forward_with_closure(lzv, closure);
+    } catch (e) {
+      lzv.VAL = () => {
+        throw e;
+      };
+      throw e;
+    }
+  }
+}
+function force_val(lzv) {
+  if (lzv.LAZY_DONE) {
+    return lzv.VAL;
+  } else {
+    let closure = lzv.VAL;
+    lzv.VAL = raise_undefined;
+    return forward_with_closure(lzv, closure);
+  }
+}
+function from_fun(closure) {
+  return {
+    LAZY_DONE: false,
+    VAL: closure
+  };
+}
+function from_val(value) {
+  return {
+    LAZY_DONE: true,
+    VAL: value
+  };
+}
+var Primitive_exceptions2, Undefined, make4, get6, isEvaluated;
+var init_Stdlib_Lazy = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Stdlib_Lazy.js"() {
+    "use strict";
+    Primitive_exceptions2 = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
+    Undefined = /* @__PURE__ */ Primitive_exceptions2.create("Stdlib_Lazy.Undefined");
+    make4 = from_fun;
+    get6 = force;
+    isEvaluated = is_val;
+    exports.make = make4;
+    exports.get = get6;
+    exports.isEvaluated = isEvaluated;
+    exports.Undefined = Undefined;
+    exports.force = force;
+    exports.force_val = force_val;
+    exports.from_fun = from_fun;
+    exports.from_val = from_val;
+    exports.is_val = is_val;
+  }
+});
+
 // src/packet/Packet_Emoji.js
 var require_Packet_Emoji = __commonJS({
   "src/packet/Packet_Emoji.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -19688,9 +17261,9 @@ var require_Packet_Emoji = __commonJS({
 var require_Packet_DoorUse = __commonJS({
   "src/packet/Packet_DoorUse.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -19700,9 +17273,9 @@ var require_Packet_DoorUse = __commonJS({
 var require_Packet_HarpPlay = __commonJS({
   "src/packet/Packet_HarpPlay.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -19712,9 +17285,9 @@ var require_Packet_HarpPlay = __commonJS({
 var require_Packet_ChestName = __commonJS({
   "src/packet/Packet_ChestName.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -19724,9 +17297,9 @@ var require_Packet_ChestName = __commonJS({
 var require_Packet_ChestOpen = __commonJS({
   "src/packet/Packet_ChestOpen.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -19736,9 +17309,9 @@ var require_Packet_ChestOpen = __commonJS({
 var require_Packet_LiquidSet = __commonJS({
   "src/packet/Packet_LiquidSet.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -19748,9 +17321,9 @@ var require_Packet_LiquidSet = __commonJS({
 var require_Packet_NpcStrike = __commonJS({
   "src/packet/Packet_NpcStrike.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -19798,10 +17371,10 @@ var require_Packet_NpcTamper = __commonJS({
       return prim.readInt16();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var npcId = reader.readUInt16();
-      var setNpcImmunity = reader.readByte() === 1;
-      var match = setNpcImmunity ? [
+      let reader = new Packetreader(payload);
+      let npcId = reader.readUInt16();
+      let setNpcImmunity = reader.readByte() === 1;
+      let match = setNpcImmunity ? [
         reader.readInt32(),
         fromInt(reader.readInt16())
       ] : [
@@ -19856,8 +17429,8 @@ var require_Packet_NpcTamper = __commonJS({
       packImmunity,
       toBuffer
     };
-    var $$Option;
-    exports2.$$Option = $$Option;
+    var Option;
+    exports2.Option = Option;
     exports2.Immunity = Immunity;
     exports2.Decode = Decode;
     exports2.Encode = Encode;
@@ -19881,9 +17454,9 @@ var require_Packet_HealEffect = __commonJS({
       return prim.readByte();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var playerId = reader.readByte();
-      var healAmount = reader.readInt16();
+      let reader = new Packetreader(payload);
+      let playerId = reader.readByte();
+      let healAmount = reader.readInt16();
       return {
         playerId,
         healAmount
@@ -19935,9 +17508,9 @@ var require_Packet_ManaEffect = __commonJS({
       return prim.readByte();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var playerId = reader.readByte();
-      var manaAmount = reader.readInt16();
+      let reader = new Packetreader(payload);
+      let playerId = reader.readByte();
+      let manaAmount = reader.readInt16();
       return {
         playerId,
         manaAmount
@@ -19978,9 +17551,9 @@ var require_Packet_ManaEffect = __commonJS({
 var require_Packet_NpcBuffAdd = __commonJS({
   "src/packet/Packet_NpcBuffAdd.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20004,11 +17577,11 @@ var require_Packet_NpcRelease = __commonJS({
       return prim.readInt32();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var x = reader.readInt32();
-      var y = reader.readInt32();
-      var npcType = reader.readInt16();
-      var style = reader.readByte();
+      let reader = new Packetreader(payload);
+      let x = reader.readInt32();
+      let y = reader.readInt32();
+      let npcType = reader.readInt16();
+      let style = reader.readByte();
       return {
         x,
         y,
@@ -20056,9 +17629,9 @@ var require_Packet_NpcRelease = __commonJS({
 var require_Packet_PortalKill = __commonJS({
   "src/packet/Packet_PortalKill.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20068,9 +17641,9 @@ var require_Packet_PortalKill = __commonJS({
 var require_Packet_EmoteBubble = __commonJS({
   "src/packet/Packet_EmoteBubble.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20080,9 +17653,9 @@ var require_Packet_EmoteBubble = __commonJS({
 var require_Packet_PasswordSend = __commonJS({
   "src/packet/Packet_PasswordSend.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20092,9 +17665,9 @@ var require_Packet_PasswordSend = __commonJS({
 var require_Packet_GemLockToggle = __commonJS({
   "src/packet/Packet_GemLockToggle.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20104,9 +17677,9 @@ var require_Packet_GemLockToggle = __commonJS({
 var require_Packet_NebulaLevelUp = __commonJS({
   "src/packet/Packet_NebulaLevelUp.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20116,9 +17689,9 @@ var require_Packet_NebulaLevelUp = __commonJS({
 var require_Packet_NpcItemStrike = __commonJS({
   "src/packet/Packet_NpcItemStrike.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20128,9 +17701,9 @@ var require_Packet_NpcItemStrike = __commonJS({
 var require_Packet_PlayerStealth = __commonJS({
   "src/packet/Packet_PlayerStealth.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20140,9 +17713,9 @@ var require_Packet_PlayerStealth = __commonJS({
 var require_Packet_GoodEvilUpdate = __commonJS({
   "src/packet/Packet_GoodEvilUpdate.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20152,9 +17725,9 @@ var require_Packet_GoodEvilUpdate = __commonJS({
 var require_Packet_ItemDropModify = __commonJS({
   "src/packet/Packet_ItemDropModify.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20175,12 +17748,12 @@ var require_Packet_ItemFramePlace = __commonJS({
       return prim.readInt16();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var x = reader.readInt16();
-      var y = reader.readInt16();
-      var itemId = reader.readInt16();
-      var prefix = reader.readByte();
-      var stack = reader.readInt16();
+      let reader = new Packetreader(payload);
+      let x = reader.readInt16();
+      let y = reader.readInt16();
+      let itemId = reader.readInt16();
+      let prefix = reader.readByte();
+      let stack = reader.readInt16();
       return {
         x,
         y,
@@ -20239,18 +17812,18 @@ var require_Packet_LucyAxeMessage = __commonJS({
       return prim.readInt32();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var source = reader.readByte();
-      var variant = reader.readByte();
-      var velocity_x = reader.readSingle();
-      var velocity_y = reader.readSingle();
-      var velocity = {
+      let reader = new Packetreader(payload);
+      let source = reader.readByte();
+      let variant = reader.readByte();
+      let velocity_x = reader.readSingle();
+      let velocity_y = reader.readSingle();
+      let velocity = {
         x: velocity_x,
         y: velocity_y
       };
-      var position_x = reader.readInt32();
-      var position_y = reader.readInt32();
-      var position = {
+      let position_x = reader.readInt32();
+      let position_y = reader.readInt32();
+      let position = {
         x: position_x,
         y: position_y
       };
@@ -20310,8 +17883,8 @@ var require_Packet_ItemOwnerRemove = __commonJS({
       return prim.readInt16();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var itemDropId = reader.readInt16();
+      let reader = new Packetreader(payload);
+      let itemDropId = reader.readInt16();
       return {
         itemDropId
       };
@@ -20346,9 +17919,9 @@ var require_Packet_ItemOwnerRemove = __commonJS({
 var require_Packet_LegacySoundPlay = __commonJS({
   "src/packet/Packet_LegacySoundPlay.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20358,9 +17931,9 @@ var require_Packet_LegacySoundPlay = __commonJS({
 var require_Packet_PlayerHealOther = __commonJS({
   "src/packet/Packet_PlayerHealOther.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20370,9 +17943,9 @@ var require_Packet_PlayerHealOther = __commonJS({
 var require_Packet_PlayerSpawnSelf = __commonJS({
   "src/packet/Packet_PlayerSpawnSelf.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20382,9 +17955,9 @@ var require_Packet_PlayerSpawnSelf = __commonJS({
 var require_Packet_CombatTextCreate = __commonJS({
   "src/packet/Packet_CombatTextCreate.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20394,9 +17967,9 @@ var require_Packet_CombatTextCreate = __commonJS({
 var require_Packet_NpcSpecialEffect = __commonJS({
   "src/packet/Packet_NpcSpecialEffect.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20406,9 +17979,9 @@ var require_Packet_NpcSpecialEffect = __commonJS({
 var require_Packet_PasswordRequired = __commonJS({
   "src/packet/Packet_PasswordRequired.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20418,9 +17991,9 @@ var require_Packet_PasswordRequired = __commonJS({
 var require_Packet_EventNotification = __commonJS({
   "src/packet/Packet_EventNotification.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20430,9 +18003,9 @@ var require_Packet_EventNotification = __commonJS({
 var require_Packet_GolfBallLandInCup = __commonJS({
   "src/packet/Packet_GolfBallLandInCup.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20442,9 +18015,9 @@ var require_Packet_GolfBallLandInCup = __commonJS({
 var require_Packet_MassWireOperation = __commonJS({
   "src/packet/Packet_MassWireOperation.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20462,7 +18035,7 @@ var require_Packet_MoonLordCountdown = __commonJS({
       return prim.readInt32();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
+      let reader = new Packetreader(payload);
       return {
         maxMoonLordCountdown: reader.readInt32(),
         moonLordCountdown: reader.readInt32()
@@ -20509,9 +18082,9 @@ var require_Packet_ProjectileDestroy = __commonJS({
       return prim.readInt16();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var projectileId = reader.readInt16();
-      var owner = reader.readByte();
+      let reader = new Packetreader(payload);
+      let projectileId = reader.readInt16();
+      let owner = reader.readByte();
       return {
         projectileId,
         owner
@@ -20552,9 +18125,9 @@ var require_Packet_ProjectileDestroy = __commonJS({
 var require_Packet_RevengeMarkerSync = __commonJS({
   "src/packet/Packet_RevengeMarkerSync.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20564,9 +18137,9 @@ var require_Packet_RevengeMarkerSync = __commonJS({
 var require_Packet_CombatNumberCreate = __commonJS({
   "src/packet/Packet_CombatNumberCreate.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20576,9 +18149,9 @@ var require_Packet_CombatNumberCreate = __commonJS({
 var require_Packet_MinionTargetUpdate = __commonJS({
   "src/packet/Packet_MinionTargetUpdate.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20602,12 +18175,12 @@ var require_Packet_ActiveContainerSync = __commonJS({
       return prim.readString();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var chestId = reader.readInt16();
-      var x = reader.readInt16();
-      var y = reader.readInt16();
-      var nameLength = reader.readByte();
-      var name = nameLength > 0 && nameLength <= 20 ? reader.readString() : "";
+      let reader = new Packetreader(payload);
+      let chestId = reader.readInt16();
+      let x = reader.readInt16();
+      let y = reader.readInt16();
+      let nameLength = reader.readByte();
+      let name = nameLength > 0 && nameLength <= 20 ? reader.readString() : "";
       return {
         chestId,
         x,
@@ -20635,7 +18208,7 @@ var require_Packet_ActiveContainerSync = __commonJS({
       return prim.data;
     }
     function toBuffer(self) {
-      var writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ActiveContainerSync")).packInt16(self.chestId).packInt16(self.x).packInt16(self.y).packByte(self.nameLength);
+      let writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ActiveContainerSync")).packInt16(self.chestId).packInt16(self.x).packInt16(self.y).packByte(self.nameLength);
       if (self.nameLength > 0 && self.nameLength <= 20) {
         writer.packString(self.name);
       }
@@ -20660,9 +18233,9 @@ var require_Packet_ActiveContainerSync = __commonJS({
 var require_Packet_RevengeMarkerRemove = __commonJS({
   "src/packet/Packet_RevengeMarkerRemove.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20672,9 +18245,9 @@ var require_Packet_RevengeMarkerRemove = __commonJS({
 var require_Packet_MassWireOperationPay = __commonJS({
   "src/packet/Packet_MassWireOperationPay.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20684,11 +18257,54 @@ var require_Packet_MassWireOperationPay = __commonJS({
 var require_Packet_PlayerTeleportPortal = __commonJS({
   "src/packet/Packet_PlayerTeleportPortal.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
-    function parse(_payload) {
-      return Caml_option.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let playerId = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      let extraInfo = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "extraInfo");
+      let position_x = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionX");
+      let position_y = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionY");
+      let position = {
+        x: position_x,
+        y: position_y
+      };
+      let velocity_x = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityX");
+      let velocity_y = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityY");
+      let velocity = {
+        x: velocity_x,
+        y: velocity_y
+      };
+      return {
+        playerId,
+        extraInfo,
+        position,
+        velocity
+      };
     }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerTeleportPortal")), self.playerId, "playerId"), self.extraInfo, "extraInfo"), self.position.x, "positionX"), self.position.y, "positionY"), self.velocity.x, "velocityX"), self.velocity.y, "velocityY"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -20696,9 +18312,9 @@ var require_Packet_PlayerTeleportPortal = __commonJS({
 var require_Packet_CavernMonsterTypeSync = __commonJS({
   "src/packet/Packet_CavernMonsterTypeSync.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20708,9 +18324,9 @@ var require_Packet_CavernMonsterTypeSync = __commonJS({
 var require_Packet_ClientSyncedInventory = __commonJS({
   "src/packet/Packet_ClientSyncedInventory.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20731,12 +18347,12 @@ var require_Packet_FoodPlatterTryPlacing = __commonJS({
       return prim.readInt16();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var x = reader.readInt16();
-      var y = reader.readInt16();
-      var itemId = reader.readInt16();
-      var prefix = reader.readByte();
-      var stack = reader.readInt16();
+      let reader = new Packetreader(payload);
+      let x = reader.readInt16();
+      let y = reader.readInt16();
+      let itemId = reader.readInt16();
+      let prefix = reader.readByte();
+      let stack = reader.readInt16();
       return {
         x,
         y,
@@ -20781,9 +18397,9 @@ var require_Packet_FoodPlatterTryPlacing = __commonJS({
 var require_Packet_NpcKilledNotification = __commonJS({
   "src/packet/Packet_NpcKilledNotification.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20793,9 +18409,9 @@ var require_Packet_NpcKilledNotification = __commonJS({
 var require_Packet_ShieldStrengthsUpdate = __commonJS({
   "src/packet/Packet_ShieldStrengthsUpdate.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20805,9 +18421,9 @@ var require_Packet_ShieldStrengthsUpdate = __commonJS({
 var require_Packet_CrystalInvasionWipeAll = __commonJS({
   "src/packet/Packet_CrystalInvasionWipeAll.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -20829,7 +18445,7 @@ var require_Packet_ItemDropInstancedUpdate = __commonJS({
 var require_Packet_ItemDropProtectedUpdate = __commonJS({
   "src/packet/Packet_ItemDropProtectedUpdate.js"(exports2) {
     "use strict";
-    var Core__Option = require_Core_Option();
+    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
     var PacketType$TerrariaPacket = require_PacketType();
     var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
     var Packet_ItemDropUpdate$TerrariaPacket = require_Packet_ItemDropUpdate();
@@ -20845,10 +18461,10 @@ var require_Packet_ItemDropProtectedUpdate = __commonJS({
       return prim0.readBytes(prim1);
     }
     function parse(payload) {
-      return Core__Option.map(Packet_ItemDropUpdate$TerrariaPacket.parse(payload), function(itemDropUpdate) {
-        var reader = new Packetreader(payload);
+      return Stdlib_Option.map(Packet_ItemDropUpdate$TerrariaPacket.parse(payload), (itemDropUpdate) => {
+        let reader = new Packetreader(payload);
         reader.readBytes(24);
-        var timeLeftInWhichTheItemCannotBeTakenByEnemies = reader.readByte();
+        let timeLeftInWhichTheItemCannotBeTakenByEnemies = reader.readByte();
         return {
           itemDropId: itemDropUpdate.itemDropId,
           x: itemDropUpdate.x,
@@ -20916,12 +18532,12 @@ var require_Packet_PiggyBankVoidLensUpdate = __commonJS({
       return prim.readInt16();
     }
     function tryReading(reader) {
-      var n = reader.readInt16();
+      let n = reader.readInt16();
       if (n !== -1) {
         return;
       }
-      var expectedIdentity = reader.readInt16();
-      var expectedType = reader.readInt16();
+      let expectedIdentity = reader.readInt16();
+      let expectedType = reader.readInt16();
       return {
         expectedIdentity,
         expectedType
@@ -20953,10 +18569,10 @@ var require_Packet_PiggyBankVoidLensUpdate = __commonJS({
       return prim.readInt32();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var playerId = reader.readByte();
-      var piggyBankProj = tryReading(reader);
-      var voidLensChest = tryReading(reader);
+      let reader = new Packetreader(payload);
+      let playerId = reader.readByte();
+      let piggyBankProj = tryReading(reader);
+      let voidLensChest = tryReading(reader);
       return {
         playerId,
         piggyBankProj,
@@ -21022,14 +18638,14 @@ var require_Packet_PlayerLuckFactorsUpdate = __commonJS({
       return prim.readSingle();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var player = reader.readByte();
-      var ladyBugLuckTimeLeft = reader.readInt32();
-      var torchLuck = reader.readSingle();
-      var luckPotion = reader.readByte();
-      var hasGardenGnomeNearby = reader.readByte() === 1;
-      var equipmentBasedLuckBonus = reader.readSingle();
-      var coinLuck = reader.readSingle();
+      let reader = new Packetreader(payload);
+      let player = reader.readByte();
+      let ladyBugLuckTimeLeft = reader.readInt32();
+      let torchLuck = reader.readSingle();
+      let luckPotion = reader.readByte();
+      let hasGardenGnomeNearby = reader.readByte() === 1;
+      let equipmentBasedLuckBonus = reader.readSingle();
+      let coinLuck = reader.readSingle();
       return {
         playerId: player,
         ladyBugLuckTimeLeft,
@@ -21085,9 +18701,9 @@ var require_Packet_PlayerLuckFactorsUpdate = __commonJS({
 var require_Packet_MinionAttackTargetUpdate = __commonJS({
   "src/packet/Packet_MinionAttackTargetUpdate.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -21097,9 +18713,9 @@ var require_Packet_MinionAttackTargetUpdate = __commonJS({
 var require_Packet_ItemForceIntoNearestChest = __commonJS({
   "src/packet/Packet_ItemForceIntoNearestChest.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -21117,9 +18733,9 @@ var require_Packet_InitialTileSectionsRequest = __commonJS({
       return prim.readInt32();
     }
     function parse(payload) {
-      var reader = new Packetreader(payload);
-      var x = reader.readInt32();
-      var y = reader.readInt32();
+      let reader = new Packetreader(payload);
+      let x = reader.readInt32();
+      let y = reader.readInt32();
       return {
         x,
         y
@@ -21146,9 +18762,9 @@ var require_Packet_InitialTileSectionsRequest = __commonJS({
 var require_Packet_AnglerQuestsCompletedAmount = __commonJS({
   "src/packet/Packet_AnglerQuestsCompletedAmount.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -21158,9 +18774,9 @@ var require_Packet_AnglerQuestsCompletedAmount = __commonJS({
 var require_Packet_CrystalInvasionSendWaitTime = __commonJS({
   "src/packet/Packet_CrystalInvasionSendWaitTime.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     exports2.parse = parse;
   }
@@ -21170,12 +18786,12 @@ var require_Packet_CrystalInvasionSendWaitTime = __commonJS({
 var require_Packet_DungeonDefendersEventAttemptSkipWait = __commonJS({
   "src/packet/Packet_DungeonDefendersEventAttemptSkipWait.js"(exports2) {
     "use strict";
-    var Caml_option = require_caml_option();
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     var PacketType$TerrariaPacket = require_PacketType();
     var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
     var Packetwriter = require_packetwriter().default;
     function parse(_payload) {
-      return Caml_option.some(void 0);
+      return Primitive_option8.some(void 0);
     }
     var Decode = {
       parse
@@ -21215,7 +18831,8 @@ var require_Packet_DungeonDefendersEventAttemptSkipWait = __commonJS({
 var require_Parser = __commonJS({
   "src/Parser.js"(exports2) {
     "use strict";
-    var Core__Option = require_Core_Option();
+    var Stdlib_Lazy = (init_Stdlib_Lazy(), __toCommonJS(Stdlib_Lazy_exports));
+    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
     var PacketType$TerrariaPacket = require_PacketType();
     var Packet_Emoji$TerrariaPacket = require_Packet_Emoji();
     var Packet_Zones$TerrariaPacket = require_Packet_Zones();
@@ -21367,68 +18984,54 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_ConnectRequest$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "ConnectRequest",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_ConnectRequest$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "ConnectRequest",
+              _0: a
+            }));
           }
         case "Disconnect":
           if (fromServer) {
-            return Core__Option.map(Packet_Disconnect$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "Disconnect",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_Disconnect$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "Disconnect",
+              _0: a
+            }));
           } else {
             return;
           }
         case "PlayerSlotSet":
           if (fromServer) {
-            return Core__Option.map(Packet_PlayerSlotSet$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "PlayerSlotSet",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_PlayerSlotSet$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "PlayerSlotSet",
+              _0: a
+            }));
           } else {
             return;
           }
         case "PlayerInfo":
-          return Core__Option.map(Packet_PlayerInfo$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "PlayerInfo",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_PlayerInfo$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "PlayerInfo",
+            _0: a
+          }));
         case "PlayerInventorySlot":
-          return Core__Option.map(Packet_PlayerInventorySlot$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "PlayerInventorySlot",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_PlayerInventorySlot$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "PlayerInventorySlot",
+            _0: a
+          }));
         case "WorldDataRequest":
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_WorldDataRequest$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "WorldDataRequest",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_WorldDataRequest$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "WorldDataRequest",
+              _0: a
+            }));
           }
         case "WorldInfo":
           if (fromServer) {
-            return Core__Option.map(Packet_WorldInfo$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "WorldInfo",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_WorldInfo$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "WorldInfo",
+              _0: a
+            }));
           } else {
             return;
           }
@@ -21436,224 +19039,170 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_InitialTileSectionsRequest$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "InitialTileSectionsRequest",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_InitialTileSectionsRequest$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "InitialTileSectionsRequest",
+              _0: a
+            }));
           }
         case "Status":
           if (fromServer) {
-            return Core__Option.map(Packet_Status$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "Status",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_Status$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "Status",
+              _0: a
+            }));
           } else {
             return;
           }
         case "TileSectionSend":
           if (fromServer) {
-            return Core__Option.map(Packet_TileSectionSend$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "TileSectionSend",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_TileSectionSend$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "TileSectionSend",
+              _0: a
+            }));
           } else {
             return;
           }
         case "TileSectionFrame":
           if (fromServer) {
-            return Core__Option.map(Packet_TileSectionFrame$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "TileSectionFrame",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_TileSectionFrame$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "TileSectionFrame",
+              _0: a
+            }));
           } else {
             return;
           }
         case "PlayerSpawn":
-          return Core__Option.map(Packet_PlayerSpawn$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "PlayerSpawn",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_PlayerSpawn$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "PlayerSpawn",
+            _0: a
+          }));
         case "PlayerUpdate":
-          return Core__Option.map(Packet_PlayerUpdate$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "PlayerUpdate",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_PlayerUpdate$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "PlayerUpdate",
+            _0: a
+          }));
         case "PlayerActive":
           if (fromServer) {
-            return Core__Option.map(Packet_PlayerActive$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "PlayerActive",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_PlayerActive$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "PlayerActive",
+              _0: a
+            }));
           } else {
             return;
           }
         case "PlayerHealth":
-          return Core__Option.map(Packet_PlayerHealth$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "PlayerHealth",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_PlayerHealth$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "PlayerHealth",
+            _0: a
+          }));
         case "TileModify":
-          return Core__Option.map(Packet_TileModify$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "TileModify",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_TileModify$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "TileModify",
+            _0: a
+          }));
         case "TimeSet":
           if (fromServer) {
-            return Core__Option.map(Packet_TimeSet$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "TimeSet",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_TimeSet$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "TimeSet",
+              _0: a
+            }));
           } else {
             return;
           }
         case "DoorUse":
-          return Core__Option.map(Packet_DoorUse$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "DoorUse",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_DoorUse$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "DoorUse",
+            _0: a
+          }));
         case "TileSquareSend":
-          return Core__Option.map(Packet_TileSquareSend$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "TileSquareSend",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_TileSquareSend$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "TileSquareSend",
+            _0: a
+          }));
         case "ItemDropUpdate":
-          return Core__Option.map(Packet_ItemDropUpdate$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "ItemDropUpdate",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_ItemDropUpdate$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "ItemDropUpdate",
+            _0: a
+          }));
         case "ItemOwner":
-          return Core__Option.map(Packet_ItemOwner$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "ItemOwner",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_ItemOwner$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "ItemOwner",
+            _0: a
+          }));
         case "NpcUpdate":
           if (fromServer) {
-            return Core__Option.map(Packet_NpcUpdate$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "NpcUpdate",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_NpcUpdate$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "NpcUpdate",
+              _0: a
+            }));
           } else {
             return;
           }
         case "NpcItemStrike":
-          return Core__Option.map(Packet_NpcItemStrike$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "NpcItemStrike",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_NpcItemStrike$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "NpcItemStrike",
+            _0: a
+          }));
         case "ProjectileSync":
-          return Core__Option.map(Packet_ProjectileSync$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "ProjectileSync",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_ProjectileSync$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "ProjectileSync",
+            _0: a
+          }));
         case "NpcStrike":
-          return Core__Option.map(Packet_NpcStrike$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "NpcStrike",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_NpcStrike$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "NpcStrike",
+            _0: a
+          }));
         case "ProjectileDestroy":
-          return Core__Option.map(Packet_ProjectileDestroy$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "ProjectileDestroy",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_ProjectileDestroy$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "ProjectileDestroy",
+            _0: a
+          }));
         case "PvpToggle":
-          return Core__Option.map(Packet_PvpToggle$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "PvpToggle",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_PvpToggle$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "PvpToggle",
+            _0: a
+          }));
         case "ChestOpen":
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_ChestOpen$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "ChestOpen",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_ChestOpen$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "ChestOpen",
+              _0: a
+            }));
           }
         case "ChestItem":
-          return Core__Option.map(Packet_ChestItem$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "ChestItem",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_ChestItem$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "ChestItem",
+            _0: a
+          }));
         case "ActiveContainerSync":
-          return Core__Option.map(Packet_ActiveContainerSync$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "ActiveContainerSync",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_ActiveContainerSync$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "ActiveContainerSync",
+            _0: a
+          }));
         case "ChestPlace":
-          return Core__Option.map(Packet_ChestPlace$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "ChestPlace",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_ChestPlace$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "ChestPlace",
+            _0: a
+          }));
         case "HealEffect":
-          return Core__Option.map(Packet_HealEffect$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "HealEffect",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_HealEffect$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "HealEffect",
+            _0: a
+          }));
         case "Zones":
-          return Core__Option.map(Packet_Zones$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "Zones",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_Zones$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "Zones",
+            _0: a
+          }));
         case "PasswordRequired":
           if (fromServer) {
-            return Core__Option.map(Packet_PasswordRequired$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "PasswordRequired",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_PasswordRequired$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "PasswordRequired",
+              _0: a
+            }));
           } else {
             return;
           }
@@ -21661,299 +19210,227 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_PasswordSend$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "PasswordSend",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_PasswordSend$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "PasswordSend",
+              _0: a
+            }));
           }
         case "ItemOwnerRemove":
           if (fromServer) {
-            return Core__Option.map(Packet_ItemOwnerRemove$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "ItemOwnerRemove",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_ItemOwnerRemove$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "ItemOwnerRemove",
+              _0: a
+            }));
           } else {
             return;
           }
         case "NpcTalk":
-          return Core__Option.map(Packet_NpcTalk$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "NpcTalk",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_NpcTalk$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "NpcTalk",
+            _0: a
+          }));
         case "PlayerAnimation":
-          return Core__Option.map(Packet_PlayerAnimation$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "PlayerAnimation",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_PlayerAnimation$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "PlayerAnimation",
+            _0: a
+          }));
         case "PlayerMana":
-          return Core__Option.map(Packet_PlayerMana$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "PlayerMana",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_PlayerMana$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "PlayerMana",
+            _0: a
+          }));
         case "ManaEffect":
-          return Core__Option.map(Packet_ManaEffect$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "ManaEffect",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_ManaEffect$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "ManaEffect",
+            _0: a
+          }));
         case "PlayerTeam":
-          return Core__Option.map(Packet_PlayerTeam$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "PlayerTeam",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_PlayerTeam$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "PlayerTeam",
+            _0: a
+          }));
         case "SignRead":
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_SignRead$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "SignRead",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_SignRead$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "SignRead",
+              _0: a
+            }));
           }
         case "SignNew":
-          return Core__Option.map(Packet_SignNew$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "SignNew",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_SignNew$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "SignNew",
+            _0: a
+          }));
         case "LiquidSet":
-          return Core__Option.map(Packet_LiquidSet$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "LiquidSet",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_LiquidSet$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "LiquidSet",
+            _0: a
+          }));
         case "PlayerSpawnSelf":
           if (fromServer) {
-            return Core__Option.map(Packet_PlayerSpawnSelf$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "PlayerSpawnSelf",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_PlayerSpawnSelf$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "PlayerSpawnSelf",
+              _0: a
+            }));
           } else {
             return;
           }
         case "PlayerBuffsSet":
-          return Core__Option.map(Packet_PlayerBuffsSet$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "PlayerBuffsSet",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_PlayerBuffsSet$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "PlayerBuffsSet",
+            _0: a
+          }));
         case "NpcSpecialEffect":
-          return Core__Option.map(Packet_NpcSpecialEffect$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "NpcSpecialEffect",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_NpcSpecialEffect$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "NpcSpecialEffect",
+            _0: a
+          }));
         case "ChestOrTempleUnlock":
-          return Core__Option.map(Packet_ChestOrTempleUnlock$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "ChestOrTempleUnlock",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_ChestOrTempleUnlock$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "ChestOrTempleUnlock",
+            _0: a
+          }));
         case "NpcBuffAdd":
-          return Core__Option.map(Packet_NpcBuffAdd$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "NpcBuffAdd",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_NpcBuffAdd$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "NpcBuffAdd",
+            _0: a
+          }));
         case "NpcBuffUpdate":
           if (fromServer) {
-            return Core__Option.map(Packet_NpcBuffUpdate$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "NpcBuffUpdate",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_NpcBuffUpdate$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "NpcBuffUpdate",
+              _0: a
+            }));
           } else {
             return;
           }
         case "PlayerBuffAdd":
-          return Core__Option.map(Packet_PlayerBuffAdd$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "PlayerBuffAdd",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_PlayerBuffAdd$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "PlayerBuffAdd",
+            _0: a
+          }));
         case "NpcNameUpdate":
-          return Core__Option.map(Packet_NpcNameUpdate$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "NpcNameUpdate",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_NpcNameUpdate$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "NpcNameUpdate",
+            _0: a
+          }));
         case "GoodEvilUpdate":
           if (fromServer) {
-            return Core__Option.map(Packet_GoodEvilUpdate$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "GoodEvilUpdate",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_GoodEvilUpdate$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "GoodEvilUpdate",
+              _0: a
+            }));
           } else {
             return;
           }
         case "HarpPlay":
-          return Core__Option.map(Packet_HarpPlay$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "HarpPlay",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_HarpPlay$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "HarpPlay",
+            _0: a
+          }));
         case "SwitchHit":
-          return Core__Option.map(Packet_SwitchHit$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "SwitchHit",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_SwitchHit$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "SwitchHit",
+            _0: a
+          }));
         case "NpcHomeUpdate":
-          return Core__Option.map(Packet_NpcHomeUpdate$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "NpcHomeUpdate",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_NpcHomeUpdate$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "NpcHomeUpdate",
+            _0: a
+          }));
         case "BossOrInvasionSpawn":
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_BossOrInvasionSpawn$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "BossOrInvasionSpawn",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_BossOrInvasionSpawn$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "BossOrInvasionSpawn",
+              _0: a
+            }));
           }
         case "PlayerDodge":
-          return Core__Option.map(Packet_PlayerDodge$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "PlayerDodge",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_PlayerDodge$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "PlayerDodge",
+            _0: a
+          }));
         case "TilePaint":
-          return Core__Option.map(Packet_TilePaint$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "TilePaint",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_TilePaint$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "TilePaint",
+            _0: a
+          }));
         case "WallPaint":
-          return Core__Option.map(Packet_WallPaint$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "WallPaint",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_WallPaint$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "WallPaint",
+            _0: a
+          }));
         case "Teleport":
-          return Core__Option.map(Packet_Teleport$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "Teleport",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_Teleport$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "Teleport",
+            _0: a
+          }));
         case "PlayerHealOther":
-          return Core__Option.map(Packet_PlayerHealOther$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "PlayerHealOther",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_PlayerHealOther$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "PlayerHealOther",
+            _0: a
+          }));
         case "DimensionsUpdate":
-          return Core__Option.map(Packet_DimensionsUpdate$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "DimensionsUpdate",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_DimensionsUpdate$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "DimensionsUpdate",
+            _0: a
+          }));
         case "ClientUuid":
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_ClientUuid$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "ClientUuid",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_ClientUuid$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "ClientUuid",
+              _0: a
+            }));
           }
         case "ChestName":
-          return Core__Option.map(Packet_ChestName$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "ChestName",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_ChestName$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "ChestName",
+            _0: a
+          }));
         case "NpcCatch":
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_NpcCatch$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "NpcCatch",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_NpcCatch$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "NpcCatch",
+              _0: a
+            }));
           }
         case "NpcRelease":
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_NpcRelease$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "NpcRelease",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_NpcRelease$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "NpcRelease",
+              _0: a
+            }));
           }
         case "TravellingMerchantInventory":
           if (fromServer) {
-            return Core__Option.map(Packet_TravellingMerchantInventory$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "TravellingMerchantInventory",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_TravellingMerchantInventory$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "TravellingMerchantInventory",
+              _0: a
+            }));
           } else {
             return;
           }
         case "TeleportationPotion":
-          return Core__Option.map(Packet_TeleportationPotion$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "TeleportationPotion",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_TeleportationPotion$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "TeleportationPotion",
+            _0: a
+          }));
         case "AnglerQuest":
           if (fromServer) {
-            return Core__Option.map(Packet_AnglerQuest$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "AnglerQuest",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_AnglerQuest$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "AnglerQuest",
+              _0: a
+            }));
           } else {
             return;
           }
@@ -21961,115 +19438,91 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_AnglerQuestComplete$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "AnglerQuestComplete",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_AnglerQuestComplete$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "AnglerQuestComplete",
+              _0: a
+            }));
           }
         case "AnglerQuestsCompletedAmount":
-          return Core__Option.map(Packet_AnglerQuestsCompletedAmount$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "AnglerQuestsCompletedAmount",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_AnglerQuestsCompletedAmount$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "AnglerQuestsCompletedAmount",
+            _0: a
+          }));
         case "TemporaryAnimationCreate":
           if (fromServer) {
-            return Core__Option.map(Packet_TemporaryAnimationCreate$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "TemporaryAnimationCreate",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_TemporaryAnimationCreate$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "TemporaryAnimationCreate",
+              _0: a
+            }));
           } else {
             return;
           }
         case "InvasionProgressReport":
           if (fromServer) {
-            return Core__Option.map(Packet_InvasionProgressReport$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "InvasionProgressReport",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_InvasionProgressReport$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "InvasionProgressReport",
+              _0: a
+            }));
           } else {
             return;
           }
         case "ObjectPlace":
-          return Core__Option.map(Packet_ObjectPlace$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "ObjectPlace",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_ObjectPlace$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "ObjectPlace",
+            _0: a
+          }));
         case "PlayerChestIndexSync":
           if (fromServer) {
-            return Core__Option.map(Packet_PlayerChestIndexSync$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "PlayerChestIndexSync",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_PlayerChestIndexSync$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "PlayerChestIndexSync",
+              _0: a
+            }));
           } else {
             return;
           }
         case "CombatNumberCreate":
           if (fromServer) {
-            return Core__Option.map(Packet_CombatNumberCreate$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "CombatNumberCreate",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_CombatNumberCreate$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "CombatNumberCreate",
+              _0: a
+            }));
           } else {
             return;
           }
         case "NetModuleLoad":
-          return Core__Option.map(Packet_NetModuleLoad$TerrariaPacket.parse(payload, fromServer), function(a) {
-            return {
-              TAG: "NetModuleLoad",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_NetModuleLoad$TerrariaPacket.parse(payload, fromServer), (a) => ({
+            TAG: "NetModuleLoad",
+            _0: a
+          }));
         case "NpcKillCount":
           if (fromServer) {
-            return Core__Option.map(Packet_NpcKillCount$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "NpcKillCount",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_NpcKillCount$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "NpcKillCount",
+              _0: a
+            }));
           } else {
             return;
           }
         case "PlayerStealth":
-          return Core__Option.map(Packet_PlayerStealth$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "PlayerStealth",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_PlayerStealth$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "PlayerStealth",
+            _0: a
+          }));
         case "ItemForceIntoNearestChest":
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_ItemForceIntoNearestChest$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "ItemForceIntoNearestChest",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_ItemForceIntoNearestChest$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "ItemForceIntoNearestChest",
+              _0: a
+            }));
           }
         case "TileEntityUpdate":
           if (fromServer) {
-            return Core__Option.map(Packet_TileEntityUpdate$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "TileEntityUpdate",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_TileEntityUpdate$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "TileEntityUpdate",
+              _0: a
+            }));
           } else {
             return;
           }
@@ -22077,21 +19530,17 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_TileEntityPlace$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "TileEntityPlace",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_TileEntityPlace$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "TileEntityPlace",
+              _0: a
+            }));
           }
         case "ItemDropModify":
           if (fromServer) {
-            return Core__Option.map(Packet_ItemDropModify$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "ItemDropModify",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_ItemDropModify$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "ItemDropModify",
+              _0: a
+            }));
           } else {
             return;
           }
@@ -22099,143 +19548,111 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_ItemFramePlace$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "ItemFramePlace",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_ItemFramePlace$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "ItemFramePlace",
+              _0: a
+            }));
           }
         case "ItemDropInstancedUpdate":
-          return Core__Option.map(Packet_ItemDropInstancedUpdate$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "ItemDropInstancedUpdate",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_ItemDropInstancedUpdate$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "ItemDropInstancedUpdate",
+            _0: a
+          }));
         case "EmoteBubble":
           if (fromServer) {
-            return Core__Option.map(Packet_EmoteBubble$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "EmoteBubble",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_EmoteBubble$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "EmoteBubble",
+              _0: a
+            }));
           } else {
             return;
           }
         case "ExtraValueSync":
-          return Core__Option.map(Packet_ExtraValueSync$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "ExtraValueSync",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_ExtraValueSync$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "ExtraValueSync",
+            _0: a
+          }));
         case "SocialHandshake":
-          return Core__Option.map(Packet_SocialHandshake$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "SocialHandshake",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_SocialHandshake$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "SocialHandshake",
+            _0: a
+          }));
         case "Unused":
-          return Core__Option.map(Packet_Unused$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "Unused",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_Unused$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "Unused",
+            _0: a
+          }));
         case "PortalKill":
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_PortalKill$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "PortalKill",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_PortalKill$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "PortalKill",
+              _0: a
+            }));
           }
         case "PlayerTeleportPortal":
-          return Core__Option.map(Packet_PlayerTeleportPortal$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "PlayerTeleportPortal",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_PlayerTeleportPortal$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "PlayerTeleportPortal",
+            _0: a
+          }));
         case "NpcKilledNotification":
           if (fromServer) {
-            return Core__Option.map(Packet_NpcKilledNotification$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "NpcKilledNotification",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_NpcKilledNotification$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "NpcKilledNotification",
+              _0: a
+            }));
           } else {
             return;
           }
         case "EventNotification":
           if (fromServer) {
-            return Core__Option.map(Packet_EventNotification$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "EventNotification",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_EventNotification$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "EventNotification",
+              _0: a
+            }));
           } else {
             return;
           }
         case "MinionTargetUpdate":
-          return Core__Option.map(Packet_MinionTargetUpdate$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "MinionTargetUpdate",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_MinionTargetUpdate$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "MinionTargetUpdate",
+            _0: a
+          }));
         case "NpcTeleportPortal":
-          return Core__Option.map(Packet_NpcTeleportPortal$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "NpcTeleportPortal",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_NpcTeleportPortal$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "NpcTeleportPortal",
+            _0: a
+          }));
         case "ShieldStrengthsUpdate":
           if (fromServer) {
-            return Core__Option.map(Packet_ShieldStrengthsUpdate$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "ShieldStrengthsUpdate",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_ShieldStrengthsUpdate$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "ShieldStrengthsUpdate",
+              _0: a
+            }));
           } else {
             return;
           }
         case "NebulaLevelUp":
-          return Core__Option.map(Packet_NebulaLevelUp$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "NebulaLevelUp",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_NebulaLevelUp$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "NebulaLevelUp",
+            _0: a
+          }));
         case "MoonLordCountdown":
           if (fromServer) {
-            return Core__Option.map(Packet_MoonLordCountdown$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "MoonLordCountdown",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_MoonLordCountdown$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "MoonLordCountdown",
+              _0: a
+            }));
           } else {
             return;
           }
         case "NpcShopItem":
           if (fromServer) {
-            return Core__Option.map(Packet_NpcShopItem$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "NpcShopItem",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_NpcShopItem$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "NpcShopItem",
+              _0: a
+            }));
           } else {
             return;
           }
@@ -22243,43 +19660,35 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_GemLockToggle$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "GemLockToggle",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_GemLockToggle$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "GemLockToggle",
+              _0: a
+            }));
           }
         case "SmokePoof":
           if (fromServer) {
-            return Core__Option.map(Packet_SmokePoof$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "SmokePoof",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_SmokePoof$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "SmokePoof",
+              _0: a
+            }));
           } else {
             return;
           }
         case "ChatMessageSmart":
           if (fromServer) {
-            return Core__Option.map(Packet_ChatMessageSmart$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "ChatMessageSmart",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_ChatMessageSmart$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "ChatMessageSmart",
+              _0: a
+            }));
           } else {
             return;
           }
         case "WiredCannonShot":
           if (fromServer) {
-            return Core__Option.map(Packet_WiredCannonShot$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "WiredCannonShot",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_WiredCannonShot$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "WiredCannonShot",
+              _0: a
+            }));
           } else {
             return;
           }
@@ -22287,21 +19696,17 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_MassWireOperation$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "MassWireOperation",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_MassWireOperation$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "MassWireOperation",
+              _0: a
+            }));
           }
         case "MassWireOperationPay":
           if (fromServer) {
-            return Core__Option.map(Packet_MassWireOperationPay$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "MassWireOperationPay",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_MassWireOperationPay$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "MassWireOperationPay",
+              _0: a
+            }));
           } else {
             return;
           }
@@ -22309,82 +19714,64 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_PartyToggle$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "PartyToggle",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_PartyToggle$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "PartyToggle",
+              _0: a
+            }));
           }
         case "TreeGrowFx":
-          return Core__Option.map(Packet_TreeGrowFx$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "TreeGrowFx",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_TreeGrowFx$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "TreeGrowFx",
+            _0: a
+          }));
         case "CrystalInvasionStart":
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_CrystalInvasionStart$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "CrystalInvasionStart",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_CrystalInvasionStart$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "CrystalInvasionStart",
+              _0: a
+            }));
           }
         case "CrystalInvasionWipeAll":
           if (fromServer) {
-            return Core__Option.map(Packet_CrystalInvasionWipeAll$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "CrystalInvasionWipeAll",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_CrystalInvasionWipeAll$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "CrystalInvasionWipeAll",
+              _0: a
+            }));
           } else {
             return;
           }
         case "MinionAttackTargetUpdate":
-          return Core__Option.map(Packet_MinionAttackTargetUpdate$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "MinionAttackTargetUpdate",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_MinionAttackTargetUpdate$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "MinionAttackTargetUpdate",
+            _0: a
+          }));
         case "CrystalInvasionSendWaitTime":
           if (fromServer) {
-            return Core__Option.map(Packet_CrystalInvasionSendWaitTime$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "CrystalInvasionSendWaitTime",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_CrystalInvasionSendWaitTime$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "CrystalInvasionSendWaitTime",
+              _0: a
+            }));
           } else {
             return;
           }
         case "PlayerDamage":
-          return Core__Option.map(Packet_PlayerDamage$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "PlayerDamage",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_PlayerDamage$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "PlayerDamage",
+            _0: a
+          }));
         case "PlayerDeath":
-          return Core__Option.map(Packet_PlayerDeath$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "PlayerDeath",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_PlayerDeath$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "PlayerDeath",
+            _0: a
+          }));
         case "CombatTextCreate":
           if (fromServer) {
-            return Core__Option.map(Packet_CombatTextCreate$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "CombatTextCreate",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_CombatTextCreate$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "CombatTextCreate",
+              _0: a
+            }));
           } else {
             return;
           }
@@ -22392,89 +19779,69 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_Emoji$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "Emoji",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_Emoji$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "Emoji",
+              _0: a
+            }));
           }
         case "TileEntityDisplayDollItemSync":
-          return Core__Option.map(Packet_TileEntityDisplayDollItemSync$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "TileEntityDisplayDollItemSync",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_TileEntityDisplayDollItemSync$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "TileEntityDisplayDollItemSync",
+            _0: a
+          }));
         case "TileEntityInteractionRequest":
-          return Core__Option.map(Packet_TileEntityInteractionRequest$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "TileEntityInteractionRequest",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_TileEntityInteractionRequest$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "TileEntityInteractionRequest",
+            _0: a
+          }));
         case "WeaponsRackTryPlacing":
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_WeaponsRackTryPlacing$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "WeaponsRackTryPlacing",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_WeaponsRackTryPlacing$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "WeaponsRackTryPlacing",
+              _0: a
+            }));
           }
         case "TileEntityHatRackItemSync":
-          return Core__Option.map(Packet_TileEntityHatRackItemSync$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "TileEntityHatRackItemSync",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_TileEntityHatRackItemSync$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "TileEntityHatRackItemSync",
+            _0: a
+          }));
         case "TilePickingSync":
-          return Core__Option.map(Packet_TilePickingSync$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "TilePickingSync",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_TilePickingSync$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "TilePickingSync",
+            _0: a
+          }));
         case "RevengeMarkerSync":
           if (fromServer) {
-            return Core__Option.map(Packet_RevengeMarkerSync$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "RevengeMarkerSync",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_RevengeMarkerSync$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "RevengeMarkerSync",
+              _0: a
+            }));
           } else {
             return;
           }
         case "RevengeMarkerRemove":
           if (fromServer) {
-            return Core__Option.map(Packet_RevengeMarkerRemove$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "RevengeMarkerRemove",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_RevengeMarkerRemove$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "RevengeMarkerRemove",
+              _0: a
+            }));
           } else {
             return;
           }
         case "GolfBallLandInCup":
-          return Core__Option.map(Packet_GolfBallLandInCup$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "GolfBallLandInCup",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_GolfBallLandInCup$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "GolfBallLandInCup",
+            _0: a
+          }));
         case "ClientFinishConnectingToServer":
           if (fromServer) {
-            return Core__Option.map(Packet_ClientFinishConnectingToServer$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "ClientFinishConnectingToServer",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_ClientFinishConnectingToServer$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "ClientFinishConnectingToServer",
+              _0: a
+            }));
           } else {
             return;
           }
@@ -22482,32 +19849,26 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_NpcFishOut$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "NpcFishOut",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_NpcFishOut$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "NpcFishOut",
+              _0: a
+            }));
           }
         case "NpcTamper":
           if (fromServer) {
-            return Core__Option.map(Packet_NpcTamper$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "NpcTamper",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_NpcTamper$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "NpcTamper",
+              _0: a
+            }));
           } else {
             return;
           }
         case "LegacySoundPlay":
           if (fromServer) {
-            return Core__Option.map(Packet_LegacySoundPlay$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "LegacySoundPlay",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_LegacySoundPlay$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "LegacySoundPlay",
+              _0: a
+            }));
           } else {
             return;
           }
@@ -22515,159 +19876,125 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_FoodPlatterTryPlacing$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "FoodPlatterTryPlacing",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_FoodPlatterTryPlacing$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "FoodPlatterTryPlacing",
+              _0: a
+            }));
           }
         case "PlayerLuckFactorsUpdate":
-          return Core__Option.map(Packet_PlayerLuckFactorsUpdate$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "PlayerLuckFactorsUpdate",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_PlayerLuckFactorsUpdate$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "PlayerLuckFactorsUpdate",
+            _0: a
+          }));
         case "PlayerDead":
           if (fromServer) {
-            return Core__Option.map(Packet_PlayerDead$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "PlayerDead",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_PlayerDead$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "PlayerDead",
+              _0: a
+            }));
           } else {
             return;
           }
         case "CavernMonsterTypeSync":
-          return Core__Option.map(Packet_CavernMonsterTypeSync$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "CavernMonsterTypeSync",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_CavernMonsterTypeSync$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "CavernMonsterTypeSync",
+            _0: a
+          }));
         case "NpcBuffRemovalRequest":
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_NpcBuffRemovalRequest$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "NpcBuffRemovalRequest",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_NpcBuffRemovalRequest$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "NpcBuffRemovalRequest",
+              _0: a
+            }));
           }
         case "ClientSyncedInventory":
           if (fromServer) {
             return;
           } else {
-            return Core__Option.map(Packet_ClientSyncedInventory$TerrariaPacket.parse(payload), function(a) {
-              return {
-                TAG: "ClientSyncedInventory",
-                _0: a
-              };
-            });
+            return Stdlib_Option.map(Packet_ClientSyncedInventory$TerrariaPacket.parse(payload), (a) => ({
+              TAG: "ClientSyncedInventory",
+              _0: a
+            }));
           }
         case "CountsAsHostForGameplaySet":
-          return Core__Option.map(Packet_CountsAsHostForGameplaySet$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "CountsAsHostForGameplaySet",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_CountsAsHostForGameplaySet$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "CountsAsHostForGameplaySet",
+            _0: a
+          }));
         case "CreditsOrSlimeTransform":
-          return Core__Option.map(Packet_CreditsOrSlimeTransform$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "CreditsOrSlimeTransform",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_CreditsOrSlimeTransform$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "CreditsOrSlimeTransform",
+            _0: a
+          }));
         case "LucyAxeMessage":
-          return Core__Option.map(Packet_LucyAxeMessage$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "LucyAxeMessage",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_LucyAxeMessage$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "LucyAxeMessage",
+            _0: a
+          }));
         case "PiggyBankVoidLensUpdate":
-          return Core__Option.map(Packet_PiggyBankVoidLensUpdate$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "PiggyBankVoidLensUpdate",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_PiggyBankVoidLensUpdate$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "PiggyBankVoidLensUpdate",
+            _0: a
+          }));
         case "DungeonDefendersEventAttemptSkipWait":
-          return Core__Option.map(Packet_DungeonDefendersEventAttemptSkipWait$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "DungeonDefendersEventAttemptSkipWait",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_DungeonDefendersEventAttemptSkipWait$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "DungeonDefendersEventAttemptSkipWait",
+            _0: a
+          }));
         case "HaveDryadDoStardewAnimation":
-          return Core__Option.map(Packet_HaveDryadDoStardewAnimation$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "HaveDryadDoStardewAnimation",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_HaveDryadDoStardewAnimation$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "HaveDryadDoStardewAnimation",
+            _0: a
+          }));
         case "ItemDropShimmeredUpdate":
-          return Core__Option.map(Packet_ItemDropShimmeredUpdate$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "ItemDropShimmeredUpdate",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_ItemDropShimmeredUpdate$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "ItemDropShimmeredUpdate",
+            _0: a
+          }));
         case "ShimmerEffectOrCoinLuck":
-          return Core__Option.map(Packet_ShimmerEffectOrCoinLuck$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "ShimmerEffectOrCoinLuck",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_ShimmerEffectOrCoinLuck$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "ShimmerEffectOrCoinLuck",
+            _0: a
+          }));
         case "LoadoutSwitch":
-          return Core__Option.map(Packet_LoadoutSwitch$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "LoadoutSwitch",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_LoadoutSwitch$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "LoadoutSwitch",
+            _0: a
+          }));
         case "ItemDropProtectedUpdate":
-          return Core__Option.map(Packet_ItemDropProtectedUpdate$TerrariaPacket.parse(payload), function(a) {
-            return {
-              TAG: "ItemDropProtectedUpdate",
-              _0: a
-            };
-          });
+          return Stdlib_Option.map(Packet_ItemDropProtectedUpdate$TerrariaPacket.parse(payload), (a) => ({
+            TAG: "ItemDropProtectedUpdate",
+            _0: a
+          }));
       }
     }
     function parse(buffer, fromServer) {
-      var match = buffer.length;
+      let match = buffer.length;
       if (!(match > 2 || match < 0)) {
         return;
       }
-      var packetType = PacketType$TerrariaPacket.fromInt(buffer[2]);
+      let packetType = PacketType$TerrariaPacket.fromInt(buffer[2]);
       if (packetType === void 0) {
         return;
       }
       try {
-        return Core__Option.map(parsePayload(packetType, buffer, fromServer), function(packet) {
-          return {
-            TAG: "SerializeNotNecessary",
-            _0: packet,
-            _1: buffer
-          };
-        });
+        return Stdlib_Option.map(parsePayload(packetType, buffer, fromServer), (packet) => ({
+          TAG: "SerializeNotNecessary",
+          _0: packet,
+          _1: buffer
+        }));
       } catch (_e) {
         return;
       }
     }
     function parseLazy(buffer, fromServer) {
-      var match = buffer.length;
+      let match = buffer.length;
       if (!(match > 2 || match < 0)) {
         return;
       }
-      var packetType = PacketType$TerrariaPacket.fromInt(buffer[2]);
+      let packetType = PacketType$TerrariaPacket.fromInt(buffer[2]);
       if (packetType === void 0) {
         return;
       }
@@ -22679,24 +20006,14 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "ConnectRequest",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_ConnectRequest$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_ConnectRequest$TerrariaPacket.parse(buffer))
               };
             }
           case "Disconnect":
             if (fromServer) {
               return {
                 TAG: "Disconnect",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_Disconnect$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_Disconnect$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -22705,12 +20022,7 @@ var require_Parser = __commonJS({
             if (fromServer) {
               return {
                 TAG: "PlayerSlotSet",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_PlayerSlotSet$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_PlayerSlotSet$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -22718,22 +20030,12 @@ var require_Parser = __commonJS({
           case "PlayerInfo":
             return {
               TAG: "PlayerInfo",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_PlayerInfo$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_PlayerInfo$TerrariaPacket.parse(buffer))
             };
           case "PlayerInventorySlot":
             return {
               TAG: "PlayerInventorySlot",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_PlayerInventorySlot$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_PlayerInventorySlot$TerrariaPacket.parse(buffer))
             };
           case "WorldDataRequest":
             if (fromServer) {
@@ -22741,24 +20043,14 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "WorldDataRequest",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_WorldDataRequest$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_WorldDataRequest$TerrariaPacket.parse(buffer))
               };
             }
           case "WorldInfo":
             if (fromServer) {
               return {
                 TAG: "WorldInfo",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_WorldInfo$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_WorldInfo$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -22769,24 +20061,14 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "InitialTileSectionsRequest",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_InitialTileSectionsRequest$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_InitialTileSectionsRequest$TerrariaPacket.parse(buffer))
               };
             }
           case "Status":
             if (fromServer) {
               return {
                 TAG: "Status",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_Status$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_Status$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -22795,12 +20077,7 @@ var require_Parser = __commonJS({
             if (fromServer) {
               return {
                 TAG: "TileSectionSend",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_TileSectionSend$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_TileSectionSend$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -22809,12 +20086,7 @@ var require_Parser = __commonJS({
             if (fromServer) {
               return {
                 TAG: "TileSectionFrame",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_TileSectionFrame$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_TileSectionFrame$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -22822,33 +20094,18 @@ var require_Parser = __commonJS({
           case "PlayerSpawn":
             return {
               TAG: "PlayerSpawn",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_PlayerSpawn$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_PlayerSpawn$TerrariaPacket.parse(buffer))
             };
           case "PlayerUpdate":
             return {
               TAG: "PlayerUpdate",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_PlayerUpdate$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_PlayerUpdate$TerrariaPacket.parse(buffer))
             };
           case "PlayerActive":
             if (fromServer) {
               return {
                 TAG: "PlayerActive",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_PlayerActive$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_PlayerActive$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -22856,33 +20113,18 @@ var require_Parser = __commonJS({
           case "PlayerHealth":
             return {
               TAG: "PlayerHealth",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_PlayerHealth$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_PlayerHealth$TerrariaPacket.parse(buffer))
             };
           case "TileModify":
             return {
               TAG: "TileModify",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_TileModify$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_TileModify$TerrariaPacket.parse(buffer))
             };
           case "TimeSet":
             if (fromServer) {
               return {
                 TAG: "TimeSet",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_TimeSet$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_TimeSet$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -22890,53 +20132,28 @@ var require_Parser = __commonJS({
           case "DoorUse":
             return {
               TAG: "DoorUse",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_DoorUse$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_DoorUse$TerrariaPacket.parse(buffer))
             };
           case "TileSquareSend":
             return {
               TAG: "TileSquareSend",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_TileSquareSend$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_TileSquareSend$TerrariaPacket.parse(buffer))
             };
           case "ItemDropUpdate":
             return {
               TAG: "ItemDropUpdate",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_ItemDropUpdate$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_ItemDropUpdate$TerrariaPacket.parse(buffer))
             };
           case "ItemOwner":
             return {
               TAG: "ItemOwner",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_ItemOwner$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_ItemOwner$TerrariaPacket.parse(buffer))
             };
           case "NpcUpdate":
             if (fromServer) {
               return {
                 TAG: "NpcUpdate",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_NpcUpdate$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_NpcUpdate$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -22944,52 +20161,27 @@ var require_Parser = __commonJS({
           case "NpcItemStrike":
             return {
               TAG: "NpcItemStrike",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_NpcItemStrike$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_NpcItemStrike$TerrariaPacket.parse(buffer))
             };
           case "ProjectileSync":
             return {
               TAG: "ProjectileSync",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_ProjectileSync$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_ProjectileSync$TerrariaPacket.parse(buffer))
             };
           case "NpcStrike":
             return {
               TAG: "NpcStrike",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_NpcStrike$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_NpcStrike$TerrariaPacket.parse(buffer))
             };
           case "ProjectileDestroy":
             return {
               TAG: "ProjectileDestroy",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_ProjectileDestroy$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_ProjectileDestroy$TerrariaPacket.parse(buffer))
             };
           case "PvpToggle":
             return {
               TAG: "PvpToggle",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_PvpToggle$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_PvpToggle$TerrariaPacket.parse(buffer))
             };
           case "ChestOpen":
             if (fromServer) {
@@ -22997,74 +20189,39 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "ChestOpen",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_ChestOpen$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_ChestOpen$TerrariaPacket.parse(buffer))
               };
             }
           case "ChestItem":
             return {
               TAG: "ChestItem",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_ChestItem$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_ChestItem$TerrariaPacket.parse(buffer))
             };
           case "ActiveContainerSync":
             return {
               TAG: "ActiveContainerSync",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_ActiveContainerSync$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_ActiveContainerSync$TerrariaPacket.parse(buffer))
             };
           case "ChestPlace":
             return {
               TAG: "ChestPlace",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_ChestPlace$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_ChestPlace$TerrariaPacket.parse(buffer))
             };
           case "HealEffect":
             return {
               TAG: "HealEffect",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_HealEffect$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_HealEffect$TerrariaPacket.parse(buffer))
             };
           case "Zones":
             return {
               TAG: "Zones",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_Zones$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_Zones$TerrariaPacket.parse(buffer))
             };
           case "PasswordRequired":
             if (fromServer) {
               return {
                 TAG: "PasswordRequired",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_PasswordRequired$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_PasswordRequired$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23075,24 +20232,14 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "PasswordSend",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_PasswordSend$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_PasswordSend$TerrariaPacket.parse(buffer))
               };
             }
           case "ItemOwnerRemove":
             if (fromServer) {
               return {
                 TAG: "ItemOwnerRemove",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_ItemOwnerRemove$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_ItemOwnerRemove$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23100,52 +20247,27 @@ var require_Parser = __commonJS({
           case "NpcTalk":
             return {
               TAG: "NpcTalk",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_NpcTalk$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_NpcTalk$TerrariaPacket.parse(buffer))
             };
           case "PlayerAnimation":
             return {
               TAG: "PlayerAnimation",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_PlayerAnimation$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_PlayerAnimation$TerrariaPacket.parse(buffer))
             };
           case "PlayerMana":
             return {
               TAG: "PlayerMana",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_PlayerMana$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_PlayerMana$TerrariaPacket.parse(buffer))
             };
           case "ManaEffect":
             return {
               TAG: "ManaEffect",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_ManaEffect$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_ManaEffect$TerrariaPacket.parse(buffer))
             };
           case "PlayerTeam":
             return {
               TAG: "PlayerTeam",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_PlayerTeam$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_PlayerTeam$TerrariaPacket.parse(buffer))
             };
           case "SignRead":
             if (fromServer) {
@@ -23153,44 +20275,24 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "SignRead",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_SignRead$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_SignRead$TerrariaPacket.parse(buffer))
               };
             }
           case "SignNew":
             return {
               TAG: "SignNew",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_SignNew$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_SignNew$TerrariaPacket.parse(buffer))
             };
           case "LiquidSet":
             return {
               TAG: "LiquidSet",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_LiquidSet$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_LiquidSet$TerrariaPacket.parse(buffer))
             };
           case "PlayerSpawnSelf":
             if (fromServer) {
               return {
                 TAG: "PlayerSpawnSelf",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_PlayerSpawnSelf$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_PlayerSpawnSelf$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23198,53 +20300,28 @@ var require_Parser = __commonJS({
           case "PlayerBuffsSet":
             return {
               TAG: "PlayerBuffsSet",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_PlayerBuffsSet$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_PlayerBuffsSet$TerrariaPacket.parse(buffer))
             };
           case "NpcSpecialEffect":
             return {
               TAG: "NpcSpecialEffect",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_NpcSpecialEffect$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_NpcSpecialEffect$TerrariaPacket.parse(buffer))
             };
           case "ChestOrTempleUnlock":
             return {
               TAG: "ChestOrTempleUnlock",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_ChestOrTempleUnlock$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_ChestOrTempleUnlock$TerrariaPacket.parse(buffer))
             };
           case "NpcBuffAdd":
             return {
               TAG: "NpcBuffAdd",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_NpcBuffAdd$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_NpcBuffAdd$TerrariaPacket.parse(buffer))
             };
           case "NpcBuffUpdate":
             if (fromServer) {
               return {
                 TAG: "NpcBuffUpdate",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_NpcBuffUpdate$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_NpcBuffUpdate$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23252,33 +20329,18 @@ var require_Parser = __commonJS({
           case "PlayerBuffAdd":
             return {
               TAG: "PlayerBuffAdd",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_PlayerBuffAdd$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_PlayerBuffAdd$TerrariaPacket.parse(buffer))
             };
           case "NpcNameUpdate":
             return {
               TAG: "NpcNameUpdate",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_NpcNameUpdate$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_NpcNameUpdate$TerrariaPacket.parse(buffer))
             };
           case "GoodEvilUpdate":
             if (fromServer) {
               return {
                 TAG: "GoodEvilUpdate",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_GoodEvilUpdate$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_GoodEvilUpdate$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23286,32 +20348,17 @@ var require_Parser = __commonJS({
           case "HarpPlay":
             return {
               TAG: "HarpPlay",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_HarpPlay$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_HarpPlay$TerrariaPacket.parse(buffer))
             };
           case "SwitchHit":
             return {
               TAG: "SwitchHit",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_SwitchHit$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_SwitchHit$TerrariaPacket.parse(buffer))
             };
           case "NpcHomeUpdate":
             return {
               TAG: "NpcHomeUpdate",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_NpcHomeUpdate$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_NpcHomeUpdate$TerrariaPacket.parse(buffer))
             };
           case "BossOrInvasionSpawn":
             if (fromServer) {
@@ -23319,73 +20366,38 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "BossOrInvasionSpawn",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_BossOrInvasionSpawn$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_BossOrInvasionSpawn$TerrariaPacket.parse(buffer))
               };
             }
           case "PlayerDodge":
             return {
               TAG: "PlayerDodge",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_PlayerDodge$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_PlayerDodge$TerrariaPacket.parse(buffer))
             };
           case "TilePaint":
             return {
               TAG: "TilePaint",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_TilePaint$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_TilePaint$TerrariaPacket.parse(buffer))
             };
           case "WallPaint":
             return {
               TAG: "WallPaint",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_WallPaint$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_WallPaint$TerrariaPacket.parse(buffer))
             };
           case "Teleport":
             return {
               TAG: "Teleport",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_Teleport$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_Teleport$TerrariaPacket.parse(buffer))
             };
           case "PlayerHealOther":
             return {
               TAG: "PlayerHealOther",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_PlayerHealOther$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_PlayerHealOther$TerrariaPacket.parse(buffer))
             };
           case "DimensionsUpdate":
             return {
               TAG: "DimensionsUpdate",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_DimensionsUpdate$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_DimensionsUpdate$TerrariaPacket.parse(buffer))
             };
           case "ClientUuid":
             if (fromServer) {
@@ -23393,23 +20405,13 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "ClientUuid",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_ClientUuid$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_ClientUuid$TerrariaPacket.parse(buffer))
               };
             }
           case "ChestName":
             return {
               TAG: "ChestName",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_ChestName$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_ChestName$TerrariaPacket.parse(buffer))
             };
           case "NpcCatch":
             if (fromServer) {
@@ -23417,12 +20419,7 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "NpcCatch",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_NpcCatch$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_NpcCatch$TerrariaPacket.parse(buffer))
               };
             }
           case "NpcRelease":
@@ -23431,24 +20428,14 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "NpcRelease",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_NpcRelease$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_NpcRelease$TerrariaPacket.parse(buffer))
               };
             }
           case "TravellingMerchantInventory":
             if (fromServer) {
               return {
                 TAG: "TravellingMerchantInventory",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_TravellingMerchantInventory$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_TravellingMerchantInventory$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23456,23 +20443,13 @@ var require_Parser = __commonJS({
           case "TeleportationPotion":
             return {
               TAG: "TeleportationPotion",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_TeleportationPotion$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_TeleportationPotion$TerrariaPacket.parse(buffer))
             };
           case "AnglerQuest":
             if (fromServer) {
               return {
                 TAG: "AnglerQuest",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_AnglerQuest$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_AnglerQuest$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23483,34 +20460,19 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "AnglerQuestComplete",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_AnglerQuestComplete$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_AnglerQuestComplete$TerrariaPacket.parse(buffer))
               };
             }
           case "AnglerQuestsCompletedAmount":
             return {
               TAG: "AnglerQuestsCompletedAmount",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_AnglerQuestsCompletedAmount$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_AnglerQuestsCompletedAmount$TerrariaPacket.parse(buffer))
             };
           case "TemporaryAnimationCreate":
             if (fromServer) {
               return {
                 TAG: "TemporaryAnimationCreate",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_TemporaryAnimationCreate$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_TemporaryAnimationCreate$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23519,12 +20481,7 @@ var require_Parser = __commonJS({
             if (fromServer) {
               return {
                 TAG: "InvasionProgressReport",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_InvasionProgressReport$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_InvasionProgressReport$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23532,23 +20489,13 @@ var require_Parser = __commonJS({
           case "ObjectPlace":
             return {
               TAG: "ObjectPlace",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_ObjectPlace$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_ObjectPlace$TerrariaPacket.parse(buffer))
             };
           case "PlayerChestIndexSync":
             if (fromServer) {
               return {
                 TAG: "PlayerChestIndexSync",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_PlayerChestIndexSync$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_PlayerChestIndexSync$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23557,12 +20504,7 @@ var require_Parser = __commonJS({
             if (fromServer) {
               return {
                 TAG: "CombatNumberCreate",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_CombatNumberCreate$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_CombatNumberCreate$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23570,23 +20512,13 @@ var require_Parser = __commonJS({
           case "NetModuleLoad":
             return {
               TAG: "NetModuleLoad",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_NetModuleLoad$TerrariaPacket.parse(buffer, fromServer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_NetModuleLoad$TerrariaPacket.parse(buffer, fromServer))
             };
           case "NpcKillCount":
             if (fromServer) {
               return {
                 TAG: "NpcKillCount",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_NpcKillCount$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_NpcKillCount$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23594,12 +20526,7 @@ var require_Parser = __commonJS({
           case "PlayerStealth":
             return {
               TAG: "PlayerStealth",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_PlayerStealth$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_PlayerStealth$TerrariaPacket.parse(buffer))
             };
           case "ItemForceIntoNearestChest":
             if (fromServer) {
@@ -23607,24 +20534,14 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "ItemForceIntoNearestChest",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_ItemForceIntoNearestChest$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_ItemForceIntoNearestChest$TerrariaPacket.parse(buffer))
               };
             }
           case "TileEntityUpdate":
             if (fromServer) {
               return {
                 TAG: "TileEntityUpdate",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_TileEntityUpdate$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_TileEntityUpdate$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23635,24 +20552,14 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "TileEntityPlace",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_TileEntityPlace$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_TileEntityPlace$TerrariaPacket.parse(buffer))
               };
             }
           case "ItemDropModify":
             if (fromServer) {
               return {
                 TAG: "ItemDropModify",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_ItemDropModify$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_ItemDropModify$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23663,34 +20570,19 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "ItemFramePlace",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_ItemFramePlace$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_ItemFramePlace$TerrariaPacket.parse(buffer))
               };
             }
           case "ItemDropInstancedUpdate":
             return {
               TAG: "ItemDropInstancedUpdate",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_ItemDropInstancedUpdate$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_ItemDropInstancedUpdate$TerrariaPacket.parse(buffer))
             };
           case "EmoteBubble":
             if (fromServer) {
               return {
                 TAG: "EmoteBubble",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_EmoteBubble$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_EmoteBubble$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23698,32 +20590,17 @@ var require_Parser = __commonJS({
           case "ExtraValueSync":
             return {
               TAG: "ExtraValueSync",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_ExtraValueSync$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_ExtraValueSync$TerrariaPacket.parse(buffer))
             };
           case "SocialHandshake":
             return {
               TAG: "SocialHandshake",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_SocialHandshake$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_SocialHandshake$TerrariaPacket.parse(buffer))
             };
           case "Unused":
             return {
               TAG: "Unused",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_Unused$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_Unused$TerrariaPacket.parse(buffer))
             };
           case "PortalKill":
             if (fromServer) {
@@ -23731,34 +20608,19 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "PortalKill",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_PortalKill$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_PortalKill$TerrariaPacket.parse(buffer))
               };
             }
           case "PlayerTeleportPortal":
             return {
               TAG: "PlayerTeleportPortal",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_PlayerTeleportPortal$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_PlayerTeleportPortal$TerrariaPacket.parse(buffer))
             };
           case "NpcKilledNotification":
             if (fromServer) {
               return {
                 TAG: "NpcKilledNotification",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_NpcKilledNotification$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_NpcKilledNotification$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23767,12 +20629,7 @@ var require_Parser = __commonJS({
             if (fromServer) {
               return {
                 TAG: "EventNotification",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_EventNotification$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_EventNotification$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23780,33 +20637,18 @@ var require_Parser = __commonJS({
           case "MinionTargetUpdate":
             return {
               TAG: "MinionTargetUpdate",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_MinionTargetUpdate$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_MinionTargetUpdate$TerrariaPacket.parse(buffer))
             };
           case "NpcTeleportPortal":
             return {
               TAG: "NpcTeleportPortal",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_NpcTeleportPortal$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_NpcTeleportPortal$TerrariaPacket.parse(buffer))
             };
           case "ShieldStrengthsUpdate":
             if (fromServer) {
               return {
                 TAG: "ShieldStrengthsUpdate",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_ShieldStrengthsUpdate$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_ShieldStrengthsUpdate$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23814,23 +20656,13 @@ var require_Parser = __commonJS({
           case "NebulaLevelUp":
             return {
               TAG: "NebulaLevelUp",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_NebulaLevelUp$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_NebulaLevelUp$TerrariaPacket.parse(buffer))
             };
           case "MoonLordCountdown":
             if (fromServer) {
               return {
                 TAG: "MoonLordCountdown",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_MoonLordCountdown$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_MoonLordCountdown$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23839,12 +20671,7 @@ var require_Parser = __commonJS({
             if (fromServer) {
               return {
                 TAG: "NpcShopItem",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_NpcShopItem$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_NpcShopItem$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23855,24 +20682,14 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "GemLockToggle",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_GemLockToggle$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_GemLockToggle$TerrariaPacket.parse(buffer))
               };
             }
           case "SmokePoof":
             if (fromServer) {
               return {
                 TAG: "SmokePoof",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_SmokePoof$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_SmokePoof$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23881,12 +20698,7 @@ var require_Parser = __commonJS({
             if (fromServer) {
               return {
                 TAG: "ChatMessageSmart",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_ChatMessageSmart$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_ChatMessageSmart$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23895,12 +20707,7 @@ var require_Parser = __commonJS({
             if (fromServer) {
               return {
                 TAG: "WiredCannonShot",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_WiredCannonShot$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_WiredCannonShot$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23911,24 +20718,14 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "MassWireOperation",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_MassWireOperation$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_MassWireOperation$TerrariaPacket.parse(buffer))
               };
             }
           case "MassWireOperationPay":
             if (fromServer) {
               return {
                 TAG: "MassWireOperationPay",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_MassWireOperationPay$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_MassWireOperationPay$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23939,23 +20736,13 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "PartyToggle",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_PartyToggle$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_PartyToggle$TerrariaPacket.parse(buffer))
               };
             }
           case "TreeGrowFx":
             return {
               TAG: "TreeGrowFx",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_TreeGrowFx$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_TreeGrowFx$TerrariaPacket.parse(buffer))
             };
           case "CrystalInvasionStart":
             if (fromServer) {
@@ -23963,24 +20750,14 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "CrystalInvasionStart",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_CrystalInvasionStart$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_CrystalInvasionStart$TerrariaPacket.parse(buffer))
               };
             }
           case "CrystalInvasionWipeAll":
             if (fromServer) {
               return {
                 TAG: "CrystalInvasionWipeAll",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_CrystalInvasionWipeAll$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_CrystalInvasionWipeAll$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -23988,23 +20765,13 @@ var require_Parser = __commonJS({
           case "MinionAttackTargetUpdate":
             return {
               TAG: "MinionAttackTargetUpdate",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_MinionAttackTargetUpdate$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_MinionAttackTargetUpdate$TerrariaPacket.parse(buffer))
             };
           case "CrystalInvasionSendWaitTime":
             if (fromServer) {
               return {
                 TAG: "CrystalInvasionSendWaitTime",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_CrystalInvasionSendWaitTime$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_CrystalInvasionSendWaitTime$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -24012,33 +20779,18 @@ var require_Parser = __commonJS({
           case "PlayerDamage":
             return {
               TAG: "PlayerDamage",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_PlayerDamage$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_PlayerDamage$TerrariaPacket.parse(buffer))
             };
           case "PlayerDeath":
             return {
               TAG: "PlayerDeath",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_PlayerDeath$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_PlayerDeath$TerrariaPacket.parse(buffer))
             };
           case "CombatTextCreate":
             if (fromServer) {
               return {
                 TAG: "CombatTextCreate",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_CombatTextCreate$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_CombatTextCreate$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -24049,33 +20801,18 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "Emoji",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_Emoji$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_Emoji$TerrariaPacket.parse(buffer))
               };
             }
           case "TileEntityDisplayDollItemSync":
             return {
               TAG: "TileEntityDisplayDollItemSync",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_TileEntityDisplayDollItemSync$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_TileEntityDisplayDollItemSync$TerrariaPacket.parse(buffer))
             };
           case "TileEntityInteractionRequest":
             return {
               TAG: "TileEntityInteractionRequest",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_TileEntityInteractionRequest$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_TileEntityInteractionRequest$TerrariaPacket.parse(buffer))
             };
           case "WeaponsRackTryPlacing":
             if (fromServer) {
@@ -24083,44 +20820,24 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "WeaponsRackTryPlacing",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_WeaponsRackTryPlacing$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_WeaponsRackTryPlacing$TerrariaPacket.parse(buffer))
               };
             }
           case "TileEntityHatRackItemSync":
             return {
               TAG: "TileEntityHatRackItemSync",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_TileEntityHatRackItemSync$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_TileEntityHatRackItemSync$TerrariaPacket.parse(buffer))
             };
           case "TilePickingSync":
             return {
               TAG: "TilePickingSync",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_TilePickingSync$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_TilePickingSync$TerrariaPacket.parse(buffer))
             };
           case "RevengeMarkerSync":
             if (fromServer) {
               return {
                 TAG: "RevengeMarkerSync",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_RevengeMarkerSync$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_RevengeMarkerSync$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -24129,12 +20846,7 @@ var require_Parser = __commonJS({
             if (fromServer) {
               return {
                 TAG: "RevengeMarkerRemove",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_RevengeMarkerRemove$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_RevengeMarkerRemove$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -24142,23 +20854,13 @@ var require_Parser = __commonJS({
           case "GolfBallLandInCup":
             return {
               TAG: "GolfBallLandInCup",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_GolfBallLandInCup$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_GolfBallLandInCup$TerrariaPacket.parse(buffer))
             };
           case "ClientFinishConnectingToServer":
             if (fromServer) {
               return {
                 TAG: "ClientFinishConnectingToServer",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_ClientFinishConnectingToServer$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_ClientFinishConnectingToServer$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -24169,24 +20871,14 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "NpcFishOut",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_NpcFishOut$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_NpcFishOut$TerrariaPacket.parse(buffer))
               };
             }
           case "NpcTamper":
             if (fromServer) {
               return {
                 TAG: "NpcTamper",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_NpcTamper$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_NpcTamper$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -24195,12 +20887,7 @@ var require_Parser = __commonJS({
             if (fromServer) {
               return {
                 TAG: "LegacySoundPlay",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_LegacySoundPlay$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_LegacySoundPlay$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -24211,34 +20898,19 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "FoodPlatterTryPlacing",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_FoodPlatterTryPlacing$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_FoodPlatterTryPlacing$TerrariaPacket.parse(buffer))
               };
             }
           case "PlayerLuckFactorsUpdate":
             return {
               TAG: "PlayerLuckFactorsUpdate",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_PlayerLuckFactorsUpdate$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_PlayerLuckFactorsUpdate$TerrariaPacket.parse(buffer))
             };
           case "PlayerDead":
             if (fromServer) {
               return {
                 TAG: "PlayerDead",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_PlayerDead$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_PlayerDead$TerrariaPacket.parse(buffer))
               };
             } else {
               return;
@@ -24246,12 +20918,7 @@ var require_Parser = __commonJS({
           case "CavernMonsterTypeSync":
             return {
               TAG: "CavernMonsterTypeSync",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_CavernMonsterTypeSync$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_CavernMonsterTypeSync$TerrariaPacket.parse(buffer))
             };
           case "NpcBuffRemovalRequest":
             if (fromServer) {
@@ -24259,12 +20926,7 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "NpcBuffRemovalRequest",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_NpcBuffRemovalRequest$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_NpcBuffRemovalRequest$TerrariaPacket.parse(buffer))
               };
             }
           case "ClientSyncedInventory":
@@ -24273,113 +20935,58 @@ var require_Parser = __commonJS({
             } else {
               return {
                 TAG: "ClientSyncedInventory",
-                _0: {
-                  LAZY_DONE: false,
-                  VAL: function() {
-                    return Packet_ClientSyncedInventory$TerrariaPacket.parse(buffer);
-                  }
-                }
+                _0: Stdlib_Lazy.make(() => Packet_ClientSyncedInventory$TerrariaPacket.parse(buffer))
               };
             }
           case "CountsAsHostForGameplaySet":
             return {
               TAG: "CountsAsHostForGameplaySet",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_CountsAsHostForGameplaySet$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_CountsAsHostForGameplaySet$TerrariaPacket.parse(buffer))
             };
           case "CreditsOrSlimeTransform":
             return {
               TAG: "CreditsOrSlimeTransform",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_CreditsOrSlimeTransform$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_CreditsOrSlimeTransform$TerrariaPacket.parse(buffer))
             };
           case "LucyAxeMessage":
             return {
               TAG: "LucyAxeMessage",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_LucyAxeMessage$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_LucyAxeMessage$TerrariaPacket.parse(buffer))
             };
           case "PiggyBankVoidLensUpdate":
             return {
               TAG: "PiggyBankVoidLensUpdate",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_PiggyBankVoidLensUpdate$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_PiggyBankVoidLensUpdate$TerrariaPacket.parse(buffer))
             };
           case "DungeonDefendersEventAttemptSkipWait":
             return {
               TAG: "DungeonDefendersEventAttemptSkipWait",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_DungeonDefendersEventAttemptSkipWait$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_DungeonDefendersEventAttemptSkipWait$TerrariaPacket.parse(buffer))
             };
           case "HaveDryadDoStardewAnimation":
             return {
               TAG: "HaveDryadDoStardewAnimation",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_HaveDryadDoStardewAnimation$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_HaveDryadDoStardewAnimation$TerrariaPacket.parse(buffer))
             };
           case "ItemDropShimmeredUpdate":
             return {
               TAG: "ItemDropShimmeredUpdate",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_ItemDropShimmeredUpdate$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_ItemDropShimmeredUpdate$TerrariaPacket.parse(buffer))
             };
           case "ShimmerEffectOrCoinLuck":
             return {
               TAG: "ShimmerEffectOrCoinLuck",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_ShimmerEffectOrCoinLuck$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_ShimmerEffectOrCoinLuck$TerrariaPacket.parse(buffer))
             };
           case "LoadoutSwitch":
             return {
               TAG: "LoadoutSwitch",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_LoadoutSwitch$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_LoadoutSwitch$TerrariaPacket.parse(buffer))
             };
           case "ItemDropProtectedUpdate":
             return {
               TAG: "ItemDropProtectedUpdate",
-              _0: {
-                LAZY_DONE: false,
-                VAL: function() {
-                  return Packet_ItemDropProtectedUpdate$TerrariaPacket.parse(buffer);
-                }
-              }
+              _0: Stdlib_Lazy.make(() => Packet_ItemDropProtectedUpdate$TerrariaPacket.parse(buffer))
             };
         }
       } catch (_e) {
@@ -24396,18 +21003,18 @@ var require_Point = __commonJS({
   "src/Point.js"(exports2) {
     "use strict";
     function toString(self) {
-      return "{ x: " + String(self.x) + ", y: " + String(self.y) + " }";
+      return `{ x: ` + String(self.x) + `, y: ` + String(self.y) + ` }`;
     }
-    var Int = {
+    var Int2 = {
       toString
     };
     function toString$1(self) {
-      return "{ x: " + String(self.x) + ", y: " + String(self.y) + " }";
+      return `{ x: ` + String(self.x) + `, y: ` + String(self.y) + ` }`;
     }
     var Float = {
       toString: toString$1
     };
-    exports2.Int = Int;
+    exports2.Int = Int2;
     exports2.Float = Float;
   }
 });

@@ -6,7 +6,6 @@ function fromArray(a) {
   if (a.length === 16) {
     return a;
   }
-  
 }
 
 function asArray(self) {

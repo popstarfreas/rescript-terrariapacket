@@ -25,7 +25,7 @@ zoraBlock("should correctly parse and serialise GodmodePower", t => {
   | Some(netModuleLoad) =>
     switch netModuleLoad {
     | CreativePower(GodmodePower(Everyone(values))) =>
-      t->ok(values->Array.sliceToEnd(~start=1)->Array.every(v => !v))
+      t->ok(values->Array.slice(~start=1)->Array.every(v => !v))
       t->equal(values[0], Some(true))
     | _ => t->fail(~msg="Failed to parse packet")
     }

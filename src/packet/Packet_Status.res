@@ -49,9 +49,9 @@ module Encode = {
 
   let flagsToByte = (flags: flags) => {
     let byte = ref(0)
-    byte := byte.contents->lor(flags.hideStatusTextPercent ? 1 : 0)
-    byte := byte.contents->lor(flags.statusTextHasShadows ? 2 : 0)
-    byte := byte.contents->lor(flags.runCheckBytes ? 4 : 0)
+    byte := byte.contents ||| (flags.hideStatusTextPercent ? 1 : 0)
+    byte := byte.contents ||| (flags.statusTextHasShadows ? 2 : 0)
+    byte := byte.contents ||| (flags.runCheckBytes ? 4 : 0)
     byte.contents
   }
 

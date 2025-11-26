@@ -5,14 +5,14 @@
 function toBufferResult(result) {
   if (result.TAG === "Ok") {
     return {
-            TAG: "Ok",
-            _0: result._0
-          };
+      TAG: "Ok",
+      _0: result._0
+    };
   } else {
     return {
-            TAG: "Error",
-            _0: result._0
-          };
+      TAG: "Error",
+      _0: result._0
+    };
   }
 }
 

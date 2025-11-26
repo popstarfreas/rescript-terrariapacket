@@ -111,7 +111,7 @@ module Decode = {
         }
         let wire4 = flags2->BitFlags.flag8
         column
-        ->Js.Array2.push({
+        ->Array.push({
           wire,
           halfBrick,
           actuator,
@@ -128,7 +128,7 @@ module Decode = {
         })
         ->ignore
       }
-      tiles->Js.Array2.push(column)->ignore
+      tiles->Array.push(column)
     }
 
     Some({
@@ -144,10 +144,7 @@ module Decode = {
 
 module Encode = {
   let {packUInt16, packInt16, packByte, setType, data} = module(ErrorAwarePacketWriter)
-  let packTile = (
-    writer: ErrorAwarePacketWriter.t, // Assuming ManagedPacketWriter.t is compatible or ErrorAwarePacketWriter.t
-    tile: tile,
-  ): ErrorAwarePacketWriter.t => {
+  let packTile = (writer: ErrorAwarePacketWriter.t, tile: tile): ErrorAwarePacketWriter.t => { // Assuming ManagedPacketWriter.t is compatible or ErrorAwarePacketWriter.t
     let flags1 = BitFlags.fromFlags(
       ~flag1=tile.activeTile->Option.isSome,
       ~flag2=false,
@@ -163,9 +160,9 @@ module Encode = {
       ~flag2=tile.wire3,
       ~flag3=tile.color->Option.isSome,
       ~flag4=tile.wallColor->Option.isSome,
-      ~flag5=tile.activeTile->Option.mapWithDefault(false, tile => tile.slope->land(1) == 1),
-      ~flag6=tile.activeTile->Option.mapWithDefault(false, tile => tile.slope->land(2) == 2),
-      ~flag7=tile.activeTile->Option.mapWithDefault(false, tile => tile.slope->land(4) == 4),
+      ~flag5=tile.activeTile->Option.mapWithDefault(false, tile => (tile.slope &&& 1) == 1),
+      ~flag6=tile.activeTile->Option.mapWithDefault(false, tile => (tile.slope &&& 2) == 2),
+      ~flag7=tile.activeTile->Option.mapWithDefault(false, tile => (tile.slope &&& 4) == 4),
       ~flag8=tile.wire4,
     )
     writer
@@ -200,7 +197,8 @@ module Encode = {
     | None => ()
     }
     switch tile.liquid {
-    | Some(l) => writer->packByte(l.liquidValue, "liquidValue")->packByte(l.liquidType, "liquidType")->ignore
+    | Some(l) =>
+      writer->packByte(l.liquidValue, "liquidValue")->packByte(l.liquidType, "liquidType")->ignore
     | None => ()
     }
     writer

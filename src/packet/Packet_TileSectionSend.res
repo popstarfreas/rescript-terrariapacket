@@ -519,7 +519,7 @@ module Decode = {
         let row: array<tile> = []
         for _x in 0 to width - 1 {
           if rleCount.contents != 0 {
-            decr(rleCount)
+            rleCount.contents = rleCount.contents - 1
             row->Array.push(tileCache->cacheToTile)
           } else {
             clearTileCache(tileCache)
@@ -549,7 +549,7 @@ module Decode = {
               let tileType = if header5->BitFlags.flag6 {
                 let byte = reader->readByte("tileType_byte1")
                 let secondByte = reader->readByte("tileType_byte2")
-                secondByte->lsl(8)->lor(byte)
+                secondByte << 8 ||| byte
               } else {
                 reader->readByte("tileType")
               }
@@ -582,7 +582,7 @@ module Decode = {
               }
             }
 
-            let liquidBits = header5->BitFlags.toByte->land(24)->lsr(3)
+            let liquidBits = (header5->BitFlags.toByte &&& 24) >> 3
             if liquidBits != 0 {
               tileCache.liquid = Some(reader->readByte("liquidValue"))
               if liquidBits > 1 {
@@ -605,7 +605,7 @@ module Decode = {
                 tileCache.wire3 = true
               }
 
-              let slopeBits = header4->BitFlags.toByte->land(112)->lsr(4)
+              let slopeBits = (header4->BitFlags.toByte &&& 112) >> 4
               if (
                 slopeBits != 0 &&
                   TileSolid.isSolid(
@@ -632,11 +632,11 @@ module Decode = {
               }
               if header3->BitFlags.flag7 {
                 let byte = reader->readByte("wall_highByte")
-                tileCache.wall = Some(byte->lsl(8)->lor(tileCache.wall->Option.getUnsafe))
+                tileCache.wall = Some(byte << 8 ||| Option.getUnsafe(tileCache.wall))
               }
             }
 
-            let repeatCountBytes = header5->BitFlags.toByte->land(192)->lsr(6)
+            let repeatCountBytes = (header5->BitFlags.toByte &&& 192) >> 6
             switch repeatCountBytes {
             | 0 => rleCount.contents = 0
             | 1 => rleCount.contents = reader->readByte("rle_byte")
@@ -806,8 +806,8 @@ module Encode = {
     switch tile.activeTile {
     | Some(activeTile) => {
         if tileFlags->BitFlags.flag6 {
-          writer->packByte(activeTile.tileType->land(255), "tileType_lowByte")->ignore
-          writer->packByte(activeTile.tileType->land(65280)->lsr(8), "tileType_highByte")->ignore
+          writer->packByte(activeTile.tileType &&& 255, "tileType_lowByte")->ignore
+          writer->packByte((activeTile.tileType &&& 65280) >> 8, "tileType_highByte")->ignore
         } else {
           writer->packByte(activeTile.tileType, "tileType")->ignore
         }
@@ -830,7 +830,7 @@ module Encode = {
 
     switch tile.wall {
     | Some(wall) => {
-        writer->packByte(wall->land(255), "wall_lowByte")->ignore
+        writer->packByte(wall &&& 255, "wall_lowByte")->ignore
         switch tile.wallColor {
         | Some(wallColor) => writer->packByte(wallColor, "wallColor")->ignore
         | None => ()
@@ -845,7 +845,7 @@ module Encode = {
     }
 
     switch tile.wall {
-    | Some(wall) if wall > 255 => writer->packByte(wall->lsr(8), "wall_highByte")->ignore
+    | Some(wall) if wall > 255 => writer->packByte(wall >> 8, "wall_highByte")->ignore
     | Some(_) | None => ()
     }
 

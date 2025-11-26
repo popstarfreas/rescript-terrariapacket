@@ -9,8 +9,14 @@ importers:
   .:
     dependencies:
       '@popstarfreas/packetfactory':
-        specifier: ^6.1.1
-        version: 6.2.0
+        specifier: ^6.3.0
+        version: 6.3.0
+      '@rescript/core':
+        specifier: ^1.6.1
+        version: 1.6.1(rescript@12.0.0)
+      rescript:
+        specifier: ^12.0.0
+        version: 12.0.0
     devDependencies:
       '@dusty-phillips/rescript-zora':
         specifier: ^5.0.1
@@ -21,9 +27,6 @@ importers:
       '@popstarfreas/rescript-nodejs':
         specifier: git+https://github.com/popstarfreas/rescript-nodejs.git#f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7
         version: https://codeload.github.com/popstarfreas/rescript-nodejs/tar.gz/f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7
-      '@rescript/core':
-        specifier: git+https://github.com/popstarfreas/rescript-core.git#36c55da8f25a9b84499529a73a2aeeccd671768d
-        version: https://codeload.github.com/popstarfreas/rescript-core/tar.gz/36c55da8f25a9b84499529a73a2aeeccd671768d(rescript@11.1.4)
       '@types/node':
         specifier: ^20.5.9
         version: 20.19.4
@@ -33,9 +36,6 @@ importers:
       pta:
         specifier: ^1.2.0
         version: 1.3.0(zora@5.2.0)
-      rescript:
-        specifier: ^11.0.0
-        version: 11.1.4
       typescript:
         specifier: ^5.2.2
         version: 5.8.3
@@ -226,18 +226,50 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@popstarfreas/packetfactory@6.2.0':
-    resolution: {integrity: sha512-4iWspFbivSMMxETe8gpHjYBJSjtZhk01BoGyZcy5GtbDjrNuVTIhw86EQpZNTT3mh5uN07Up59IY8ZN8/aMOyw==}
+  '@popstarfreas/packetfactory@6.3.0':
+    resolution: {integrity: sha512-1Ch07cpHeT4TYSVfqWRkAEuBo51XoEx7CyFKJs/Unj+LvJA5UnJ0P4YB3h4L9gqvOQRg4iCA+NvhmHXKxYHsRg==}
 
   '@popstarfreas/rescript-nodejs@https://codeload.github.com/popstarfreas/rescript-nodejs/tar.gz/f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7':
     resolution: {tarball: https://codeload.github.com/popstarfreas/rescript-nodejs/tar.gz/f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7}
     version: 16.1.0
 
-  '@rescript/core@https://codeload.github.com/popstarfreas/rescript-core/tar.gz/36c55da8f25a9b84499529a73a2aeeccd671768d':
-    resolution: {tarball: https://codeload.github.com/popstarfreas/rescript-core/tar.gz/36c55da8f25a9b84499529a73a2aeeccd671768d}
-    version: 1.6.1
+  '@rescript/core@1.6.1':
+    resolution: {integrity: sha512-vyb5k90ck+65Fgui+5vCja/mUfzKaK3kOPT4Z6aAJdHLH1eljEi1zKhXroCiCtpNLSWp8k4ulh1bdB5WS0hvqA==}
     peerDependencies:
       rescript: '>=11.1.0'
+
+  '@rescript/darwin-arm64@12.0.0':
+    resolution: {integrity: sha512-N2zNj/Uh0zrg8BJGWxdQjYTDf0d2ZV8D+Vmct8xORaUcEZvAkvZb+xA66UxP2QGhWmATcHmBth7oJ48xpWz/Vg==}
+    engines: {node: '>=20.11.0'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@rescript/darwin-x64@12.0.0':
+    resolution: {integrity: sha512-Qx/ao3Fl2lx3rF8mbRsyRK5HGAx8pmzyCdpSIAaUun5wLBnsJbNqgvqUH7VeI2TwaczHvcIljrYmnB7T5LJdFQ==}
+    engines: {node: '>=20.11.0'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@rescript/linux-arm64@12.0.0':
+    resolution: {integrity: sha512-H65csj/0uqqjYy235m0h5CFxbrsas6RoVfjy5Xjf91Vyg/r5R/QIGQvhMtFvl4QojYsa1wXzXGcujwXh+S15xQ==}
+    engines: {node: '>=20.11.0'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@rescript/linux-x64@12.0.0':
+    resolution: {integrity: sha512-WizQwyfMadxF096foZYU3I4zxcnNIc9XP7TP4fqdfe0v6OvQ5yHMI/uIfOsJ1GfNALce2UxvgS0pn67uxc55uA==}
+    engines: {node: '>=20.11.0'}
+    cpu: [x64]
+    os: [linux]
+
+  '@rescript/runtime@12.0.0':
+    resolution: {integrity: sha512-STRbYHT5rnW61vWn2+Bdtj620XaprnoBSbPbkvOYZ+Zs8nfqtpBjhNw+JNpGQLXf73crk6MhxFGPxL2o5vb8TQ==}
+
+  '@rescript/win32-x64@12.0.0':
+    resolution: {integrity: sha512-kkqj4kQGbni5YglWoPm76M6hUuzKJHDEiLce5EZxW2Q4FrkS9dNRgm02c2Ck1cz/uKCS3m+ZoKQGIMMXTvo5Jw==}
+    engines: {node: '>=20.11.0'}
+    cpu: [x64]
+    os: [win32]
 
   '@rushstack/node-core-library@5.13.1':
     resolution: {integrity: sha512-5yXhzPFGEkVc9Fu92wsNJ9jlvdwz4RNb2bMso+/+TH0nMm1jDDDsOIf4l8GAkPxGuwPw5DH24RliWVfSPhlW/Q==}
@@ -443,9 +475,9 @@ packages:
     resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
     engines: {node: '>=0.10.0'}
 
-  rescript@11.1.4:
-    resolution: {integrity: sha512-0bGU0bocihjSC6MsE3TMjHjY0EUpchyrREquLS8VsZ3ohSMD+VHUEwimEfB3kpBI1vYkw3UFZ3WD8R28guz/Vw==}
-    engines: {node: '>=10'}
+  rescript@12.0.0:
+    resolution: {integrity: sha512-DGcZI2L5W0c6FuEnspLE0MIe1UtTt1VsW/vQfzBFCEBxSsQtoA6YRHUB8Puwnb30PHqZiFK1ADhn6UgA8LWK0A==}
+    engines: {node: '>=20.11.0'}
     hasBin: true
 
   resolve@1.22.10:
@@ -665,18 +697,35 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.19.1
 
-  '@popstarfreas/packetfactory@6.2.0':
+  '@popstarfreas/packetfactory@6.3.0':
     dependencies:
       '@popstarfreas/rescript-nodejs': https://codeload.github.com/popstarfreas/rescript-nodejs/tar.gz/f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7
       utf8: 2.1.2
     optionalDependencies:
-      rescript: 11.1.4
+      rescript: 12.0.0
 
   '@popstarfreas/rescript-nodejs@https://codeload.github.com/popstarfreas/rescript-nodejs/tar.gz/f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7': {}
 
-  '@rescript/core@https://codeload.github.com/popstarfreas/rescript-core/tar.gz/36c55da8f25a9b84499529a73a2aeeccd671768d(rescript@11.1.4)':
+  '@rescript/core@1.6.1(rescript@12.0.0)':
     dependencies:
-      rescript: 11.1.4
+      rescript: 12.0.0
+
+  '@rescript/darwin-arm64@12.0.0':
+    optional: true
+
+  '@rescript/darwin-x64@12.0.0':
+    optional: true
+
+  '@rescript/linux-arm64@12.0.0':
+    optional: true
+
+  '@rescript/linux-x64@12.0.0':
+    optional: true
+
+  '@rescript/runtime@12.0.0': {}
+
+  '@rescript/win32-x64@12.0.0':
+    optional: true
 
   '@rushstack/node-core-library@5.13.1(@types/node@20.19.4)':
     dependencies:
@@ -903,7 +952,15 @@ snapshots:
 
   require-from-string@2.0.2: {}
 
-  rescript@11.1.4: {}
+  rescript@12.0.0:
+    dependencies:
+      '@rescript/runtime': 12.0.0
+    optionalDependencies:
+      '@rescript/darwin-arm64': 12.0.0
+      '@rescript/darwin-x64': 12.0.0
+      '@rescript/linux-arm64': 12.0.0
+      '@rescript/linux-x64': 12.0.0
+      '@rescript/win32-x64': 12.0.0
 
   resolve@1.22.10:
     dependencies:

@@ -10,7 +10,7 @@ module Decode = {
     let playerId = reader->readByte
     let buffs = []
     for _i in 1 to 22 {
-      let _: int = buffs->Js.Array2.push(reader->readUInt16)
+      buffs->Array.push(reader->readUInt16)
     }
     Some({
       playerId,
@@ -23,7 +23,7 @@ module Encode = {
   let {packByte, packUInt16, setType, data} = module(PacketFactory.ManagedPacketWriter)
   type writer = PacketFactory.ManagedPacketWriter.t
   let packBuffs = (writer: writer, buffs: array<int>): writer => {
-    buffs->Js.Array2.forEach(buff => writer->packUInt16(buff)->ignore)
+    buffs->Array.forEach(buff => writer->packUInt16(buff)->ignore)
     writer
   }
 

@@ -29,7 +29,8 @@ module Decode = {
     let flags2 = flags->BitFlags.flag3 ? Some(BitFlags.fromByte(reader->readByte("flags2"))) : None
     let ai0 = flags->BitFlags.flag1 ? Some(reader->readSingle("ai0")) : None
     let ai1 = flags->BitFlags.flag2 ? Some(reader->readSingle("ai1")) : None
-    let bannerIdToRespondTo = flags->BitFlags.flag4 ? Some(reader->readUInt16("bannerIdToRespondTo")) : None
+    let bannerIdToRespondTo =
+      flags->BitFlags.flag4 ? Some(reader->readUInt16("bannerIdToRespondTo")) : None
     let damage = if flags->BitFlags.flag5 {
       Some(reader->readInt16("damage"))
     } else {
@@ -73,9 +74,7 @@ module Decode = {
 }
 
 module Encode = {
-  let {packSingle, packInt16, packUInt16, packByte, setType, data} = module(
-    ErrorAwarePacketWriter
-  )
+  let {packSingle, packInt16, packUInt16, packByte, setType, data} = module(ErrorAwarePacketWriter)
   let packOptionalData = (writer, self) => {
     let (ai0, ai1, ai2) = self.ai
     let bitFlags2 = BitFlags.fromFlags(
@@ -117,7 +116,9 @@ module Encode = {
     }
 
     if bitFlags->BitFlags.flag4 {
-      writer->packUInt16(self.bannerIdToRespondTo->Belt.Option.getUnsafe, "bannerIdToRespondTo")->ignore
+      writer
+      ->packUInt16(self.bannerIdToRespondTo->Belt.Option.getUnsafe, "bannerIdToRespondTo")
+      ->ignore
     }
 
     if bitFlags->BitFlags.flag5 {
@@ -136,7 +137,8 @@ module Encode = {
       writer->packInt16(self.projectileUuid->Belt.Option.getUnsafe, "projectileUuid")->ignore
     }
 
-    if bitFlags2->BitFlags.flag1 { // This check should use bitFlags2Value if it was stored
+    if bitFlags2->BitFlags.flag1 {
+      // This check should use bitFlags2Value if it was stored
       writer->packSingle(ai2->Belt.Option.getUnsafe, "ai2")->ignore
     }
 

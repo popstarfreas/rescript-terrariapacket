@@ -135,16 +135,15 @@ module Encode = {
   let packDifficultyFlags = (writer, difficulty: difficulty, extraAccessory: bool, mode: mode) => {
     let byte = ref(0)
     byte :=
-      byte.contents->lor(
-        switch difficulty {
-        | Softcore => 0
-        | Mediumcore => 1
-        | Hardcore => 2
-        },
-      )
+      byte.contents |||
+      switch difficulty {
+      | Softcore => 0
+      | Mediumcore => 1
+      | Hardcore => 2
+      }
 
-    byte := byte.contents->lor(extraAccessory ? 4 : 0)
-    byte := byte.contents->lor(mode == Journey ? 8 : 0)
+    byte := byte.contents ||| (extraAccessory ? 4 : 0)
+    byte := byte.contents ||| (mode == Journey ? 8 : 0)
     writer->packByte(byte.contents, "difficultyFlags")
   }
 
@@ -157,11 +156,11 @@ module Encode = {
     ~enabledSuperCart: bool,
   ) => {
     let byte = ref(0)
-    byte := byte.contents->lor(usingBiomeTorches ? 1 : 0)
-    byte := byte.contents->lor(happyFunTorchTime ? 2 : 0)
-    byte := byte.contents->lor(unlockedBiomeTorches ? 4 : 0)
-    byte := byte.contents->lor(unlockedSuperCart ? 8 : 0)
-    byte := byte.contents->lor(enabledSuperCart ? 16 : 0)
+    byte := byte.contents ||| (usingBiomeTorches ? 1 : 0)
+    byte := byte.contents ||| (happyFunTorchTime ? 2 : 0)
+    byte := byte.contents ||| (unlockedBiomeTorches ? 4 : 0)
+    byte := byte.contents ||| (unlockedSuperCart ? 8 : 0)
+    byte := byte.contents ||| (enabledSuperCart ? 16 : 0)
     writer->packByte(byte.contents, "torchFlags")
   }
 
@@ -176,13 +175,13 @@ module Encode = {
     ~ateArtisanBread: bool,
   ) => {
     let byte = ref(0)
-    byte := byte.contents->lor(usedAegisCrystal ? 1 : 0)
-    byte := byte.contents->lor(usedAegisFruit ? 2 : 0)
-    byte := byte.contents->lor(usedArcaneCrystal ? 4 : 0)
-    byte := byte.contents->lor(usedGalaxyPearl ? 8 : 0)
-    byte := byte.contents->lor(usedGummyWorm ? 16 : 0)
-    byte := byte.contents->lor(usedAmbrosia ? 32 : 0)
-    byte := byte.contents->lor(ateArtisanBread ? 64 : 0)
+    byte := byte.contents ||| (usedAegisCrystal ? 1 : 0)
+    byte := byte.contents ||| (usedAegisFruit ? 2 : 0)
+    byte := byte.contents ||| (usedArcaneCrystal ? 4 : 0)
+    byte := byte.contents ||| (usedGalaxyPearl ? 8 : 0)
+    byte := byte.contents ||| (usedGummyWorm ? 16 : 0)
+    byte := byte.contents ||| (usedAmbrosia ? 32 : 0)
+    byte := byte.contents ||| (ateArtisanBread ? 64 : 0)
     writer->packByte(byte.contents, "usedFlags")
   }
 

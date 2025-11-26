@@ -3,18 +3,18 @@
 
 
 function toString(self) {
-  return "{ x: " + String(self.x) + ", y: " + String(self.y) + " }";
+  return `{ x: ` + String(self.x) + `, y: ` + String(self.y) + ` }`;
 }
 
-var Int = {
+let Int = {
   toString: toString
 };
 
 function toString$1(self) {
-  return "{ x: " + String(self.x) + ", y: " + String(self.y) + " }";
+  return `{ x: ` + String(self.x) + `, y: ` + String(self.y) + ` }`;
 }
 
-var Float = {
+let Float = {
   toString: toString$1
 };
 

@@ -7,7 +7,7 @@ module Decode = {
     let reader = PacketFactory.PacketReader.make(payload)
     let items = []
     for _ in 1 to 40 {
-      let _: int = items->Js.Array2.push(reader->readInt16)
+      items->Array.push(reader->readInt16)
     }
 
     Some({
@@ -22,7 +22,7 @@ module Encode = {
   let toBuffer = (self: t): NodeJs.Buffer.t => {
     let writer = Writer.make()->setType(PacketType.TravellingMerchantInventory->PacketType.toInt)
 
-    self.items->Js.Array2.forEach(item => writer->packInt16(item)->ignore)
+    self.items->Array.forEach(item => writer->packInt16(item)->ignore)
 
     writer->data
   }
