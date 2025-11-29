@@ -1,6 +1,8 @@
 module Int = Belt.Int
 module Option = Belt.Option
 
+let makeError = (_message: string): JsExn.t => %raw("new Error(_message)")
+
 @genType
 type frame = {
   x: int,
@@ -107,12 +109,12 @@ module Chest = {
     name: string,
   }
 
-  let parse = (reader): t => {
-    let id = reader->readInt16("id")
-    let x = reader->readInt16("x")
-    let y = reader->readInt16("y")
-    let name = reader->readString("name")
-    {id, x, y, name}
+  let parse = (reader): result<t, ErrorAwarePacketReader.readError> => {
+    let? Ok(id) = reader->readInt16("id")
+    let? Ok(x) = reader->readInt16("x")
+    let? Ok(y) = reader->readInt16("y")
+    let? Ok(name) = reader->readString("name")
+    Ok({id, x, y, name})
   }
 
   let {packInt16, packString} = module(ErrorAwareBufferWriter)
@@ -137,13 +139,13 @@ module Sign = {
     name: string,
   }
 
-  let parse = (reader): t => {
-    let id = reader->readInt16("id")
-    let x = reader->readInt16("x")
-    let y = reader->readInt16("y")
-    let name = reader->readString("name")
+  let parse = (reader): result<t, ErrorAwarePacketReader.readError> => {
+    let? Ok(id) = reader->readInt16("id")
+    let? Ok(x) = reader->readInt16("x")
+    let? Ok(y) = reader->readInt16("y")
+    let? Ok(name) = reader->readString("name")
 
-    {id, x, y, name}
+    Ok({id, x, y, name})
   }
 
   let {packInt16, packString} = module(ErrorAwareBufferWriter)
@@ -214,116 +216,163 @@ module Entity = {
     entityKind: kind,
   }
 
-  let parseTrainingDummyKind = (reader): trainingDummy => {
-    npcSlotId: reader->readInt16("npcSlotId"),
+  let parseTrainingDummyKind = (reader): result<
+    trainingDummy,
+    ErrorAwarePacketReader.readError,
+  > => {
+    let? Ok(npcSlotId) = reader->readInt16("npcSlotId")
+    Ok({npcSlotId: npcSlotId})
   }
 
-  let parseDisplayItem = (reader): displayItem => {
-    let netId = reader->readInt16("netId")
-    let prefix = reader->readByte("prefix")
-    let stack = reader->readInt16("stack")
+  let parseDisplayItem = (reader): result<displayItem, ErrorAwarePacketReader.readError> => {
+    let? Ok(netId) = reader->readInt16("netId")
+    let? Ok(prefix) = reader->readByte("prefix")
+    let? Ok(stack) = reader->readInt16("stack")
 
-    {
+    Ok({
       netId,
       prefix,
       stack,
-    }
+    })
   }
 
   let parseItemFrameKind = parseDisplayItem
 
-  let parseLogicSensorKind = (reader): logicSensor => {
-    let checkType = reader->readByte("checkType")
-    let on = reader->readByte("on") == 1
+  let parseLogicSensorKind = (reader): result<logicSensor, ErrorAwarePacketReader.readError> => {
+    let? Ok(checkType) = reader->readByte("checkType")
+    let? Ok(onRaw) = reader->readByte("on")
 
-    {
+    Ok({
       checkType,
-      on,
-    }
+      on: onRaw == 1,
+    })
   }
 
-  let parseDisplayDollKind = (reader): displayDoll => {
-    let itemsFlags = BitFlags.fromByte(reader->readByte("itemsFlags"))
-    let dyeFlags = BitFlags.fromByte(reader->readByte("dyeFlags"))
+  let parseDisplayDollKind = (reader): result<displayDoll, ErrorAwarePacketReader.readError> => {
+    let? Ok(itemsFlagsRaw) = reader->readByte("itemsFlags")
+    let itemsFlags = BitFlags.fromByte(itemsFlagsRaw)
+    let? Ok(dyeFlagsRaw) = reader->readByte("dyeFlags")
+    let dyeFlags = BitFlags.fromByte(dyeFlagsRaw)
     let items = []
     let dyes = []
+    let parseResult = ref(Ok())
 
     for i in 0 to 7 {
-      if itemsFlags->BitFlags.flagN(i) {
-        items->Array.push(Some(parseDisplayItem(reader)))
-      } else {
-        items->Array.push(None)
+      switch parseResult.contents {
+      | Error(_) => ()
+      | Ok(_) =>
+        if itemsFlags->BitFlags.flagN(i) {
+          switch parseDisplayItem(reader) {
+          | Ok(item) => items->Array.push(Some(item))->ignore
+          | Error(err) => parseResult := Error(err)
+          }
+        } else {
+          items->Array.push(None)->ignore
+        }
       }
     }
 
     for i in 0 to 7 {
-      if dyeFlags->BitFlags.flagN(i) {
-        dyes->Array.push(Some(parseDisplayItem(reader)))
-      } else {
-        dyes->Array.push(None)
+      switch parseResult.contents {
+      | Error(_) => ()
+      | Ok(_) =>
+        if dyeFlags->BitFlags.flagN(i) {
+          switch parseDisplayItem(reader) {
+          | Ok(item) => dyes->Array.push(Some(item))->ignore
+          | Error(err) => parseResult := Error(err)
+          }
+        } else {
+          dyes->Array.push(None)->ignore
+        }
       }
     }
 
-    {
-      items,
-      dyes,
+    switch parseResult.contents {
+    | Ok(_) =>
+      Ok({
+        items,
+        dyes,
+      })
+    | Error(err) => Error(err)
     }
   }
 
   let parseWeaponsRackKind = parseDisplayItem
 
-  let parseHatRackKind = (reader): hatRack => {
-    let flags = BitFlags.fromByte(reader->readByte("flags"))
+  let parseHatRackKind = (reader): result<hatRack, ErrorAwarePacketReader.readError> => {
+    let? Ok(flagsRaw) = reader->readByte("flags")
+    let flags = BitFlags.fromByte(flagsRaw)
     let items = []
     let dyes = []
+    let parseResult = ref(Ok())
 
     for i in 0 to 1 {
-      if flags->BitFlags.flagN(i) {
-        items->Array.push(Some(parseDisplayItem(reader)))
-      } else {
-        items->Array.push(None)
+      switch parseResult.contents {
+      | Error(_) => ()
+      | Ok(_) =>
+        if flags->BitFlags.flagN(i) {
+          switch parseDisplayItem(reader) {
+          | Ok(item) => items->Array.push(Some(item))->ignore
+          | Error(err) => parseResult := Error(err)
+          }
+        } else {
+          items->Array.push(None)->ignore
+        }
       }
     }
 
     for i in 0 to 1 {
-      if flags->BitFlags.flagN(i + 2) {
-        dyes->Array.push(Some(parseDisplayItem(reader)))
-      } else {
-        dyes->Array.push(None)
+      switch parseResult.contents {
+      | Error(_) => ()
+      | Ok(_) =>
+        if flags->BitFlags.flagN(i + 2) {
+          switch parseDisplayItem(reader) {
+          | Ok(item) => dyes->Array.push(Some(item))->ignore
+          | Error(err) => parseResult := Error(err)
+          }
+        } else {
+          dyes->Array.push(None)->ignore
+        }
       }
     }
 
-    {
-      items,
-      dyes,
+    switch parseResult.contents {
+    | Ok(_) =>
+      Ok({
+        items,
+        dyes,
+      })
+    | Error(err) => Error(err)
     }
   }
 
   let parseFoodPlatterKind = parseDisplayItem
 
-  let parse = (reader): result<t, string> => {
-    let entityType = reader->readByte("entityType")
-    let x = reader->readInt16("x")
-    let y = reader->readInt16("y")
-    let entityKind = switch entityType {
-    | 0 => Ok(TrainingDummy(reader->parseTrainingDummyKind))
-    | 1 => Ok(ItemFrame(reader->parseItemFrameKind))
-    | 2 => Ok(LogicSensor(reader->parseLogicSensorKind))
-    | 3 => Ok(DisplayDoll(reader->parseDisplayDollKind))
-    | 4 => Ok(WeaponsRack(reader->parseWeaponsRackKind))
-    | 5 => Ok(HatRack(reader->parseHatRackKind))
-    | 6 => Ok(FoodPlatter(reader->parseFoodPlatterKind))
+  let parse = (reader): result<t, ErrorAwarePacketReader.readError> => {
+    let? Ok(entityType) = reader->readByte("entityType")
+    let? Ok(x) = reader->readInt16("x")
+    let? Ok(y) = reader->readInt16("y")
+    let? Ok(entityKind) = switch entityType {
+    | 0 => parseTrainingDummyKind(reader)->Result.map(v => TrainingDummy(v))
+    | 1 => parseItemFrameKind(reader)->Result.map(v => ItemFrame(v))
+    | 2 => parseLogicSensorKind(reader)->Result.map(v => LogicSensor(v))
+    | 3 => parseDisplayDollKind(reader)->Result.map(v => DisplayDoll(v))
+    | 4 => parseWeaponsRackKind(reader)->Result.map(v => WeaponsRack(v))
+    | 5 => parseHatRackKind(reader)->Result.map(v => HatRack(v))
+    | 6 => parseFoodPlatterKind(reader)->Result.map(v => FoodPlatter(v))
     | 7 => Ok(TeleportationPylon())
-    | _ => Error(__LOC__ ++ "Unknown entity kind. ")
+    | _ =>
+      Error({
+        context: "Entity.parse",
+        error: ErrorExt.makeJsError("Unknown entity kind: " ++ Int.toString(entityType)),
+      })
     }
 
-    entityKind->Belt.Result.map(entityKind => {
-      {
-        entityType,
-        x,
-        y,
-        entityKind,
-      }
+    Ok({
+      entityType,
+      x,
+      y,
+      entityKind,
     })
   }
 
@@ -501,172 +550,253 @@ module Decode = {
   module PacketReader = ErrorAwarePacketReader
   let {readBuffer, getBytesLeft} = module(ErrorAwarePacketReader)
   let {readInt16, readInt32, readByte} = module(ErrorAwareBufferReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
-    let packetReader = PacketFactory.PacketReader.make(payload) // Remains PacketFactory.PacketReader as per refined plan
-    let deflated = packetReader->readBuffer(packetReader->getBytesLeft, "deflatedPayload")
-    let reader = PacketFactory.BufferReader.make(NodeJs.Zlib.inflateRawSync(deflated)) // This reader is for the uncompressed data.
-    let tileX = reader->readInt32("tileX")
-    let tileY = reader->readInt32("tileY")
-    let width = reader->readInt16("width")
-    let height = reader->readInt16("height")
+  let readRepeated = (
+    count: int,
+    parseItem: unit => result<'a, ErrorAwarePacketReader.readError>,
+  ): result<array<'a>, ErrorAwarePacketReader.readError> => {
+    let items: array<'a> = []
+    let parseResult = ref(Ok())
+    for _i in 0 to count - 1 {
+      switch parseResult.contents {
+      | Error(_) => ()
+      | Ok(_) =>
+        switch parseItem() {
+        | Ok(item) => items->Array.push(item)->ignore
+        | Error(err) => parseResult := Error(err)
+        }
+      }
+    }
+    switch parseResult.contents {
+    | Ok(_) => Ok(items)
+    | Error(err) => Error(err)
+    }
+  }
+
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
+    let packetReader = PacketFactory.PacketReader.make(payload)
+    let? Ok(bytesLeft) = packetReader->getBytesLeft
+    let? Ok(deflated) = packetReader->readBuffer(bytesLeft, "deflatedPayload")
+    let inflated = try {
+      Ok(NodeJs.Zlib.inflateRawSync(deflated))
+    } catch {
+    | JsExn(obj) => Error({ErrorAwarePacketReader.context: "inflateRawSync", error: obj})
+    }
+    let? Ok(inflatedBuffer) = inflated
+    let reader = PacketFactory.BufferReader.make(inflatedBuffer)
+    let? Ok(tileX) = reader->readInt32("tileX")
+    let? Ok(tileY) = reader->readInt32("tileY")
+    let? Ok(width) = reader->readInt16("width")
+    let? Ok(height) = reader->readInt16("height")
     let tiles: array<array<tile>> = []
     let tileCache = defaultTileCache()
     let rleCount = ref(0)
     if height < 0 || width < 0 {
-      None
+      Error({
+        context: "Packet_TileSectionSend.parse",
+        error: makeError("Tile section dimensions must be non-negative"),
+      })
     } else {
-      for _y in 0 to height - 1 {
-        let row: array<tile> = []
-        for _x in 0 to width - 1 {
-          if rleCount.contents != 0 {
-            rleCount.contents = rleCount.contents - 1
-            row->Array.push(tileCache->cacheToTile)
-          } else {
-            clearTileCache(tileCache)
-            let header5 = reader->readByte("header5")->BitFlags.fromByte
-            let (header4, header3, header2) = if header5->BitFlags.flag1 {
-              let header4 = reader->readByte("header4_conditional")->BitFlags.fromByte
-              let header3 = if header4->BitFlags.flag1 {
-                reader->readByte("header3_conditional")->BitFlags.fromByte
-              } else {
-                BitFlags.fromByte(0)
-              }
-              let header2 = if header3->BitFlags.flag1 {
-                reader->readByte("header2_conditional")
-              } else {
-                0
-              }
-              (header4, header3, header2)
+      let parseResult = ref(Ok())
+
+      let readTile = (): result<tile, ErrorAwarePacketReader.readError> => {
+        clearTileCache(tileCache)
+        let? Ok(header5Raw) = reader->readByte("header5")
+        let header5 = header5Raw->BitFlags.fromByte
+        let? Ok((header4, header3, header2)) = if header5->BitFlags.flag1 {
+          let? Ok(header4Raw) = reader->readByte("header4_conditional")
+          let header4 = header4Raw->BitFlags.fromByte
+          let? Ok((header3, header2)) = if header4->BitFlags.flag1 {
+            let? Ok(header3Raw) = reader->readByte("header3_conditional")
+            let header3 = header3Raw->BitFlags.fromByte
+            let? Ok(header2) = if header3->BitFlags.flag1 {
+              reader->readByte("header2_conditional")
             } else {
-              (BitFlags.fromByte(0), BitFlags.fromByte(0), 0)
+              Ok(0)
             }
-            tileCache.coatHeader = header2
+            Ok((header3, header2))
+          } else {
+            Ok((BitFlags.fromByte(0), 0))
+          }
+          Ok((header4, header3, header2))
+        } else {
+          Ok((BitFlags.fromByte(0), BitFlags.fromByte(0), 0))
+        }
+        tileCache.coatHeader = header2
 
-            let oldActive = tileCache.activeTile
-            if header5->BitFlags.flag2 {
-              let oldType =
-                tileCache.activeTile->Option.mapWithDefault(0, active => active.tileType)
-              let tileType = if header5->BitFlags.flag6 {
-                let byte = reader->readByte("tileType_byte1")
-                let secondByte = reader->readByte("tileType_byte2")
-                secondByte << 8 ||| byte
-              } else {
-                reader->readByte("tileType")
-              }
+        let oldActive = tileCache.activeTile
+        let? Ok() = if header5->BitFlags.flag2 {
+          let oldType = tileCache.activeTile->Option.mapWithDefault(0, active => active.tileType)
+          let? Ok(tileType) = if header5->BitFlags.flag6 {
+            let? Ok(byte) = reader->readByte("tileType_byte1")
+            let? Ok(secondByte) = reader->readByte("tileType_byte2")
+            Ok(secondByte << 8 ||| byte)
+          } else {
+            reader->readByte("tileType")
+          }
 
-              let frame = if TileFrameImportant.isImportant(tileType) {
-                let x = reader->readInt16("frameX")
-                let y = reader->readInt16("frameY")
-                Some({x, y})
-              } else if oldActive->Option.isSome && tileType === oldType {
-                (oldActive->Option.getUnsafe).frame
-              } else {
-                None
-              }
+          let? Ok(frame) = if TileFrameImportant.isImportant(tileType) {
+            let? Ok(x) = reader->readInt16("frameX")
+            let? Ok(y) = reader->readInt16("frameY")
+            Ok(Some({x, y}))
+          } else if oldActive->Option.isSome && tileType === oldType {
+            Ok((oldActive->Option.getUnsafe).frame)
+          } else {
+            Ok(None)
+          }
 
-              if header3->BitFlags.flag4 {
-                tileCache.color = Some(reader->readByte("color"))
-              }
+          let? Ok() = if header3->BitFlags.flag4 {
+            let? Ok(color) = reader->readByte("color")
+            tileCache.color = Some(color)
+            Ok()
+          } else {
+            Ok()
+          }
 
-              tileCache.activeTile = Some({
-                tileType,
-                frame,
-              })
+          tileCache.activeTile = Some({
+            tileType,
+            frame,
+          })
+          Ok()
+        } else {
+          Ok()
+        }
+
+        let? Ok() = if header5->BitFlags.flag3 {
+          let? Ok(wall) = reader->readByte("wall")
+          tileCache.wall = Some(wall)
+
+          if header3->BitFlags.flag5 {
+            let? Ok(wallColor) = reader->readByte("wallColor")
+            tileCache.wallColor = Some(wallColor)
+            Ok()
+          } else {
+            Ok()
+          }
+        } else {
+          Ok()
+        }
+
+        let liquidBits = (header5->BitFlags.toByte &&& 24) >> 3
+        let? Ok() = if liquidBits != 0 {
+          let? Ok(liquidValue) = reader->readByte("liquidValue")
+          tileCache.liquid = Some(liquidValue)
+          if liquidBits > 1 {
+            if liquidBits == 2 {
+              tileCache.lava = true
+            } else {
+              tileCache.honey = true
             }
+          }
+          Ok()
+        } else {
+          Ok()
+        }
 
-            if header5->BitFlags.flag3 {
-              tileCache.wall = Some(reader->readByte("wall"))
+        if header4->BitFlags.toByte > 1 {
+          if header4->BitFlags.flag2 {
+            tileCache.wire = true
+          }
+          if header4->BitFlags.flag3 {
+            tileCache.wire2 = true
+          }
+          if header4->BitFlags.flag4 {
+            tileCache.wire3 = true
+          }
 
-              if header3->BitFlags.flag5 {
-                tileCache.wallColor = Some(reader->readByte("wallColor"))
-              }
+          let slopeBits = (header4->BitFlags.toByte &&& 112) >> 4
+          if (
+            slopeBits != 0 &&
+              TileSolid.isSolid(
+                tileCache.activeTile->Option.mapWithDefault(0, tile => tile.tileType),
+              )
+          ) {
+            if slopeBits == 1 {
+              tileCache.halfBrick = true
+            } else {
+              tileCache.slope = Some(slopeBits - 1)
             }
-
-            let liquidBits = (header5->BitFlags.toByte &&& 24) >> 3
-            if liquidBits != 0 {
-              tileCache.liquid = Some(reader->readByte("liquidValue"))
-              if liquidBits > 1 {
-                if liquidBits == 2 {
-                  tileCache.lava = true
-                } else {
-                  tileCache.honey = true
-                }
-              }
-            }
-
-            if header4->BitFlags.toByte > 1 {
-              if header4->BitFlags.flag2 {
-                tileCache.wire = true
-              }
-              if header4->BitFlags.flag3 {
-                tileCache.wire2 = true
-              }
-              if header4->BitFlags.flag4 {
-                tileCache.wire3 = true
-              }
-
-              let slopeBits = (header4->BitFlags.toByte &&& 112) >> 4
-              if (
-                slopeBits != 0 &&
-                  TileSolid.isSolid(
-                    tileCache.activeTile->Option.mapWithDefault(0, tile => tile.tileType),
-                  )
-              ) {
-                if slopeBits == 1 {
-                  tileCache.halfBrick = true
-                } else {
-                  tileCache.slope = Some(slopeBits - 1)
-                }
-              }
-            }
-
-            if header3->BitFlags.toByte > 0 {
-              if header3->BitFlags.flag2 {
-                tileCache.actuator = true
-              }
-              if header3->BitFlags.flag3 {
-                tileCache.inActive = true
-              }
-              if header3->BitFlags.flag6 {
-                tileCache.wire4 = true
-              }
-              if header3->BitFlags.flag7 {
-                let byte = reader->readByte("wall_highByte")
-                tileCache.wall = Some(byte << 8 ||| Option.getUnsafe(tileCache.wall))
-              }
-            }
-
-            let repeatCountBytes = (header5->BitFlags.toByte &&& 192) >> 6
-            switch repeatCountBytes {
-            | 0 => rleCount.contents = 0
-            | 1 => rleCount.contents = reader->readByte("rle_byte")
-            | _ => rleCount.contents = reader->readInt16("rle_int16")
-            }
-            row->Array.push(tileCache->cacheToTile)
           }
         }
-        tiles->Array.push(row)
+
+        let? Ok() = if header3->BitFlags.toByte > 0 {
+          if header3->BitFlags.flag2 {
+            tileCache.actuator = true
+          }
+          if header3->BitFlags.flag3 {
+            tileCache.inActive = true
+          }
+          if header3->BitFlags.flag6 {
+            tileCache.wire4 = true
+          }
+          let? Ok() = if header3->BitFlags.flag7 {
+            let? Ok(byte) = reader->readByte("wall_highByte")
+            tileCache.wall = Some(byte << 8 ||| Option.getUnsafe(tileCache.wall))
+            Ok()
+          } else {
+            Ok()
+          }
+
+          Ok()
+        } else {
+          Ok()
+        }
+
+        let repeatCountBytes = (header5->BitFlags.toByte &&& 192) >> 6
+        let? Ok() = switch repeatCountBytes {
+        | 0 => {
+            rleCount.contents = 0
+            Ok()
+          }
+        | 1 =>
+          let? Ok(rleByte) = reader->readByte("rle_byte")
+          rleCount.contents = rleByte
+          Ok()
+        | _ =>
+          let? Ok(rleInt) = reader->readInt16("rle_int16")
+          rleCount.contents = rleInt
+          Ok()
+        }
+        Ok(tileCache->cacheToTile)
       }
 
-      let chestCount = reader->readInt16("chestCount")
-      let chests = Belt.Array.make(chestCount, 0)->Array.map(_ => {
-        reader->Chest.parse
-      })
-      let signCount = reader->readInt16("signCount")
-      let signs = Belt.Array.make(signCount, 0)->Array.map(_ => {
-        reader->Sign.parse
-      })
-      let entityCount = reader->readInt16("entityCount")
-      let entities =
-        Belt.Array.make(entityCount, 0)
-        ->Array.map(_ => {
-          reader->Entity.parse
-        })
-        ->ResultExt.allOkOrError
+      for _y in 0 to height - 1 {
+        switch parseResult.contents {
+        | Error(_) => ()
+        | Ok(_) =>
+          let row: array<tile> = []
+          for _x in 0 to width - 1 {
+            switch parseResult.contents {
+            | Error(_) => ()
+            | Ok(_) =>
+              if rleCount.contents != 0 {
+                rleCount.contents = rleCount.contents - 1
+                row->Array.push(tileCache->cacheToTile)
+              } else {
+                switch readTile() {
+                | Ok(tile) => row->Array.push(tile)
+                | Error(err) => parseResult := Error(err)
+                }
+              }
+            }
+          }
+          switch parseResult.contents {
+          | Ok(_) => tiles->Array.push(row)
+          | Error(_) => ()
+          }
+        }
+      }
 
-      switch entities {
-      | Ok(entities) =>
-        Some({
+      switch parseResult.contents {
+      | Error(err) => Error(err)
+      | Ok(_) =>
+        let? Ok(chestCount) = reader->readInt16("chestCount")
+        let? Ok(chests) = readRepeated(chestCount, () => reader->Chest.parse)
+        let? Ok(signCount) = reader->readInt16("signCount")
+        let? Ok(signs) = readRepeated(signCount, () => reader->Sign.parse)
+        let? Ok(entityCount) = reader->readInt16("entityCount")
+        let? Ok(entities) = readRepeated(entityCount, () => reader->Entity.parse)
+
+        Ok({
           height,
           width,
           tileX,
@@ -676,7 +806,6 @@ module Decode = {
           signs,
           entities,
         })
-      | Error(_) => None
       }
     }
   }

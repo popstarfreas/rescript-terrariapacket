@@ -17,22 +17,20 @@ let teleportTypeToInt = teleportType =>
 type t = {teleportType: teleportType}
 
 module Decode = {
-  let {readByte, readInt16} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readByte, readInt16} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let teleportType = switch reader->readByte {
-    | 0 => Some(TeleportationPotion)
-    | 1 => Some(MagicConch)
-    | 2 => Some(DemonConch)
-    | 3 => Some(ShellphoneSpawn)
-    | _ => None
-    }
-    switch teleportType {
-    | Some(teleportType) =>
-      Some({
-        teleportType: teleportType,
+    let? Ok(rawTeleportType) = reader->readByte("teleportType")
+    switch rawTeleportType {
+    | 0 => Ok({teleportType: TeleportationPotion})
+    | 1 => Ok({teleportType: MagicConch})
+    | 2 => Ok({teleportType: DemonConch})
+    | 3 => Ok({teleportType: ShellphoneSpawn})
+    | _ =>
+      Error({
+        context: "Packet_TeleportationPotion.parse",
+        error: ErrorExt.makeJsError("Unknown teleport type"),
       })
-    | None => None
     }
   }
 }

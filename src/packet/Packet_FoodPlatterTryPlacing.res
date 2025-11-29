@@ -8,15 +8,15 @@ type t = {
 }
 
 module Decode = {
-  let {readByte, readInt16} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readByte, readInt16} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let x = reader->readInt16
-    let y = reader->readInt16
-    let itemId = reader->readInt16
-    let prefix = reader->readByte
-    let stack = reader->readInt16
-    Some({
+    let? Ok(x) = reader->readInt16("x")
+    let? Ok(y) = reader->readInt16("y")
+    let? Ok(itemId) = reader->readInt16("itemId")
+    let? Ok(prefix) = reader->readByte("prefix")
+    let? Ok(stack) = reader->readInt16("stack")
+    Ok({
       x,
       y,
       itemId,

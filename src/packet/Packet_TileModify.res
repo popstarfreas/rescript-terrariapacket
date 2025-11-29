@@ -91,40 +91,51 @@ type t = {
   value2: int,
 }
 
+let makeError = (_message: string): JsExn.t => %raw("new Error(_message)")
+
 module Decode = {
-  let {readInt16, readByte} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readInt16, readByte} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let action = reader->readByte->Action.fromInt
-    let tileX = reader->readInt16
-    let tileY = reader->readInt16
-    let value1 = reader->readInt16
-    let value2 = reader->readByte
+    let? Ok(actionRaw) = reader->readByte("action")
+    let? Ok(tileX) = reader->readInt16("tileX")
+    let? Ok(tileY) = reader->readInt16("tileY")
+    let? Ok(value1) = reader->readInt16("value1")
+    let? Ok(value2) = reader->readByte("value2")
+    let action =
+      switch actionRaw->Action.fromInt {
+      | Some(action) => Ok(action)
+      | None =>
+        Error({
+          ErrorAwarePacketReader.context: "TileModify.parse.action",
+          error: makeError("Unknown action"),
+        })
+      }
 
     switch action {
-    | Some(action) =>
-      Some({
+    | Ok(action) =>
+      Ok({
         action,
         tileX,
         tileY,
         value1,
         value2,
       })
-    | None => None
+    | Error(err) => Error(err)
     }
   }
 }
 
 module Encode = {
-  let {packByte, packInt16, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let {packByte, packInt16, setType, data} = module(ErrorAwarePacketWriter)
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.TileModify->PacketType.toInt)
-    ->packByte(self.action->Action.toInt)
-    ->packInt16(self.tileX)
-    ->packInt16(self.tileY)
-    ->packInt16(self.value1)
-    ->packByte(self.value2)
+    ->packByte(self.action->Action.toInt, "action")
+    ->packInt16(self.tileX, "tileX")
+    ->packInt16(self.tileY, "tileY")
+    ->packInt16(self.value1, "value1")
+    ->packByte(self.value2, "value2")
     ->data
   }
 }

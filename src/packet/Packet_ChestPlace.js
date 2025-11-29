@@ -2,9 +2,9 @@
 'use strict';
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
-let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
 function toInt(action) {
   switch (action) {
@@ -65,20 +65,58 @@ let Action = {
   toString: toString
 };
 
+function makeError(_message) {
+  return (new Error(_message));
+}
+
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let action = fromInt(reader.readByte());
-  let x = reader.readInt16();
-  let y = reader.readInt16();
-  let style = reader.readInt16();
-  let id = reader.readInt16();
-  if (action !== undefined) {
+  let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "action");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "style");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "id");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let action = fromInt(e._0);
+  let action$1 = action !== undefined ? ({
+      TAG: "Ok",
+      _0: action
+    }) : ({
+      TAG: "Error",
+      _0: {
+        context: "ChestPlace.parse.action",
+        error: makeError("Unknown action")
+      }
+    });
+  if (action$1.TAG === "Ok") {
     return {
-      action: action,
-      x: x,
-      y: y,
-      style: style,
-      id: id
+      TAG: "Ok",
+      _0: {
+        action: action$1._0,
+        x: e$1._0,
+        y: e$2._0,
+        style: e$3._0,
+        id: e$4._0
+      }
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: action$1._0
     };
   }
 }
@@ -105,14 +143,14 @@ function packAction(writer, action) {
       byte = 5;
       break;
   }
-  return writer.packByte(byte);
+  return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, byte, "action");
 }
 
 function toBuffer(self) {
-  return packAction(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ChestPlace")), self.action).packInt16(self.x).packInt16(self.y).packInt16(self.style).packInt16(self.id).data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(packAction(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ChestPlace")), self.action), self.x, "x"), self.y, "y"), self.style, "style"), self.id, "id"));
 }
 
 exports.Action = Action;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

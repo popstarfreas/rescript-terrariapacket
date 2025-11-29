@@ -5,12 +5,12 @@ type t = {
 }
 
 module Decode = {
-  let {readByte, readInt16} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readByte, readInt16} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let projectileId = reader->readInt16
-    let owner = reader->readByte
-    Some({
+    let? Ok(projectileId) = reader->readInt16("projectileId")
+    let? Ok(owner) = reader->readByte("owner")
+    Ok({
       projectileId,
       owner,
     })

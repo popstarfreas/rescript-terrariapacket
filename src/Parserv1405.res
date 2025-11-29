@@ -1,466 +1,473 @@
-let parsePayload = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServer: bool) =>
+let mapPacket = (packetResult, fn) => packetResult->Result.map(fn)->Result.map(Some)
+
+let parsePayload = (
+  packetType: PacketType.t,
+  payload: NodeJs.Buffer.t,
+  fromServer: bool,
+): result<option<Packetv1405.t>, ErrorAwarePacketReader.readError> =>
   switch (packetType, fromServer) {
-  | (ConnectRequest, true) => None
+  | (ConnectRequest, true) => Ok(None)
   | (ConnectRequest, false) =>
-    Packetv1405.ConnectRequest.parse(payload)->Belt.Option.map(a => Packetv1405.ConnectRequest(a))
-  | (Disconnect, false) => None
+    Packetv1405.ConnectRequest.parse(payload)->mapPacket(a => Packetv1405.ConnectRequest(a))
+  | (Disconnect, false) => Ok(None)
   | (Disconnect, true) =>
-    Packetv1405.Disconnect.parse(payload)->Belt.Option.map(a => Packetv1405.Disconnect(a))
-  | (PlayerSlotSet, false) => None
+    Packetv1405.Disconnect.parse(payload)->mapPacket(a => Packetv1405.Disconnect(a))
+  | (PlayerSlotSet, false) => Ok(None)
   | (PlayerSlotSet, true) =>
-    Packetv1405.PlayerSlotSet.parse(payload)->Belt.Option.map(a => Packetv1405.PlayerSlotSet(a))
+    Packetv1405.PlayerSlotSet.parse(payload)->mapPacket(a => Packetv1405.PlayerSlotSet(a))
   | (PlayerInfo, true | false) =>
-    Packetv1405.PlayerInfo.parse(payload)->Belt.Option.map(a => Packetv1405.PlayerInfo(a))
+    Packetv1405.PlayerInfo.parse(payload)->mapPacket(a => Packetv1405.PlayerInfo(a))
   | (PlayerInventorySlot, true | false) =>
     Packetv1405.PlayerInventorySlot.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.PlayerInventorySlot(a))
-  | (WorldDataRequest, true) => None
+    )->mapPacket(a => Packetv1405.PlayerInventorySlot(a))
+  | (WorldDataRequest, true) => Ok(None)
   | (WorldDataRequest, false) =>
-    Packetv1405.WorldDataRequest.parse(payload)->Belt.Option.map(a => Packetv1405.WorldDataRequest(
+    Packetv1405.WorldDataRequest.parse(payload)->mapPacket(a => Packetv1405.WorldDataRequest(
       a,
     ))
-  | (WorldInfo, false) => None
+  | (WorldInfo, false) => Ok(None)
   | (WorldInfo, true) =>
-    Packetv1405.WorldInfo.parse(payload)->Belt.Option.map(a => Packetv1405.WorldInfo(a))
-  | (InitialTileSectionsRequest, true) => None
+    Packetv1405.WorldInfo.parse(payload)->mapPacket(a => Packetv1405.WorldInfo(a))
+  | (InitialTileSectionsRequest, true) => Ok(None)
   | (InitialTileSectionsRequest, false) =>
     Packetv1405.InitialTileSectionsRequest.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.InitialTileSectionsRequest(a))
-  | (Status, false) => None
-  | (Status, true) => Packetv1405.Status.parse(payload)->Belt.Option.map(a => Packetv1405.Status(a))
-  | (TileSectionSend, false) => None
+    )->mapPacket(a => Packetv1405.InitialTileSectionsRequest(a))
+  | (Status, false) => Ok(None)
+  | (Status, true) => Packetv1405.Status.parse(payload)->mapPacket(a => Packetv1405.Status(a))
+  | (TileSectionSend, false) => Ok(None)
   | (TileSectionSend, true) =>
-    Packetv1405.TileSectionSend.parse(payload)->Belt.Option.map(a => Packetv1405.TileSectionSend(a))
-  | (TileSectionFrame, false) => None
+    Packetv1405.TileSectionSend.parse(payload)->mapPacket(a => Packetv1405.TileSectionSend(a))
+  | (TileSectionFrame, false) => Ok(None)
   | (TileSectionFrame, true) =>
-    Packetv1405.TileSectionFrame.parse(payload)->Belt.Option.map(a => Packetv1405.TileSectionFrame(
+    Packetv1405.TileSectionFrame.parse(payload)->mapPacket(a => Packetv1405.TileSectionFrame(
       a,
     ))
   | (PlayerSpawn, true | false) =>
-    Packetv1405.PlayerSpawn.parse(payload)->Belt.Option.map(a => Packetv1405.PlayerSpawn(a))
+    Packetv1405.PlayerSpawn.parse(payload)->mapPacket(a => Packetv1405.PlayerSpawn(a))
   | (PlayerUpdate, true | false) =>
-    Packetv1405.PlayerUpdate.parse(payload)->Belt.Option.map(a => Packetv1405.PlayerUpdate(a))
-  | (PlayerActive, false) => None
+    Packetv1405.PlayerUpdate.parse(payload)->mapPacket(a => Packetv1405.PlayerUpdate(a))
+  | (PlayerActive, false) => Ok(None)
   | (PlayerActive, true) =>
-    Packetv1405.PlayerActive.parse(payload)->Belt.Option.map(a => Packetv1405.PlayerActive(a))
+    Packetv1405.PlayerActive.parse(payload)->mapPacket(a => Packetv1405.PlayerActive(a))
   | (PlayerHealth, true | false) =>
-    Packetv1405.PlayerHealth.parse(payload)->Belt.Option.map(a => Packetv1405.PlayerHealth(a))
+    Packetv1405.PlayerHealth.parse(payload)->mapPacket(a => Packetv1405.PlayerHealth(a))
   | (TileModify, true | false) =>
-    Packetv1405.TileModify.parse(payload)->Belt.Option.map(a => Packetv1405.TileModify(a))
-  | (TimeSet, false) => None
+    Packetv1405.TileModify.parse(payload)->mapPacket(a => Packetv1405.TileModify(a))
+  | (TimeSet, false) => Ok(None)
   | (TimeSet, true) =>
-    Packetv1405.TimeSet.parse(payload)->Belt.Option.map(a => Packetv1405.TimeSet(a))
+    Packetv1405.TimeSet.parse(payload)->mapPacket(a => Packetv1405.TimeSet(a))
   | (DoorUse, true | false) =>
-    Packetv1405.DoorUse.parse(payload)->Belt.Option.map(a => Packetv1405.DoorUse(a))
+    Packetv1405.DoorUse.parse(payload)->mapPacket(a => Packetv1405.DoorUse(a))
   | (TileSquareSend, true | false) =>
-    Packetv1405.TileSquareSend.parse(payload)->Belt.Option.map(a => Packetv1405.TileSquareSend(a))
+    Packetv1405.TileSquareSend.parse(payload)->mapPacket(a => Packetv1405.TileSquareSend(a))
   | (ItemDropUpdate, true | false) =>
-    Packetv1405.ItemDropUpdate.parse(payload)->Belt.Option.map(a => Packetv1405.ItemDropUpdate(a))
+    Packetv1405.ItemDropUpdate.parse(payload)->mapPacket(a => Packetv1405.ItemDropUpdate(a))
   | (ItemOwner, true | false) =>
-    Packetv1405.ItemOwner.parse(payload)->Belt.Option.map(a => Packetv1405.ItemOwner(a))
-  | (NpcUpdate, false) => None
+    Packetv1405.ItemOwner.parse(payload)->mapPacket(a => Packetv1405.ItemOwner(a))
+  | (NpcUpdate, false) => Ok(None)
   | (NpcUpdate, true) =>
-    Packetv1405.NpcUpdate.parse(payload)->Belt.Option.map(a => Packetv1405.NpcUpdate(a))
+    Packetv1405.NpcUpdate.parse(payload)->mapPacket(a => Packetv1405.NpcUpdate(a))
   | (NpcItemStrike, true | false) =>
-    Packetv1405.NpcItemStrike.parse(payload)->Belt.Option.map(a => Packetv1405.NpcItemStrike(a))
+    Packetv1405.NpcItemStrike.parse(payload)->mapPacket(a => Packetv1405.NpcItemStrike(a))
   | (ProjectileSync, true | false) =>
-    Packetv1405.ProjectileSync.parse(payload)->Belt.Option.map(a => Packetv1405.ProjectileSync(a))
+    Packetv1405.ProjectileSync.parse(payload)->mapPacket(a => Packetv1405.ProjectileSync(a))
   | (NpcStrike, true | false) =>
-    Packetv1405.NpcStrike.parse(payload)->Belt.Option.map(a => Packetv1405.NpcStrike(a))
+    Packetv1405.NpcStrike.parse(payload)->mapPacket(a => Packetv1405.NpcStrike(a))
   | (ProjectileDestroy, true | false) =>
     Packetv1405.ProjectileDestroy.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.ProjectileDestroy(a))
+    )->mapPacket(a => Packetv1405.ProjectileDestroy(a))
   | (PvpToggle, true | false) =>
-    Packetv1405.PvpToggle.parse(payload)->Belt.Option.map(a => Packetv1405.PvpToggle(a))
-  | (ChestOpen, true) => None
+    Packetv1405.PvpToggle.parse(payload)->mapPacket(a => Packetv1405.PvpToggle(a))
+  | (ChestOpen, true) => Ok(None)
   | (ChestOpen, false) =>
-    Packetv1405.ChestOpen.parse(payload)->Belt.Option.map(a => Packetv1405.ChestOpen(a))
+    Packetv1405.ChestOpen.parse(payload)->mapPacket(a => Packetv1405.ChestOpen(a))
   | (ChestItem, true | false) =>
-    Packetv1405.ChestItem.parse(payload)->Belt.Option.map(a => Packetv1405.ChestItem(a))
+    Packetv1405.ChestItem.parse(payload)->mapPacket(a => Packetv1405.ChestItem(a))
   | (ActiveContainerSync, true | false) =>
     Packetv1405.ActiveContainerSync.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.ActiveContainerSync(a))
+    )->mapPacket(a => Packetv1405.ActiveContainerSync(a))
   | (ChestPlace, true | false) =>
-    Packetv1405.ChestPlace.parse(payload)->Belt.Option.map(a => Packetv1405.ChestPlace(a))
+    Packetv1405.ChestPlace.parse(payload)->mapPacket(a => Packetv1405.ChestPlace(a))
   | (HealEffect, true | false) =>
-    Packetv1405.HealEffect.parse(payload)->Belt.Option.map(a => Packetv1405.HealEffect(a))
+    Packetv1405.HealEffect.parse(payload)->mapPacket(a => Packetv1405.HealEffect(a))
   | (Zones, true | false) =>
-    Packetv1405.Zones.parse(payload)->Belt.Option.map(a => Packetv1405.Zones(a))
-  | (PasswordRequired, false) => None
+    Packetv1405.Zones.parse(payload)->mapPacket(a => Packetv1405.Zones(a))
+  | (PasswordRequired, false) => Ok(None)
   | (PasswordRequired, true) =>
-    Packetv1405.PasswordRequired.parse(payload)->Belt.Option.map(a => Packetv1405.PasswordRequired(
+    Packetv1405.PasswordRequired.parse(payload)->mapPacket(a => Packetv1405.PasswordRequired(
       a,
     ))
-  | (PasswordSend, true) => None
+  | (PasswordSend, true) => Ok(None)
   | (PasswordSend, false) =>
-    Packetv1405.PasswordSend.parse(payload)->Belt.Option.map(a => Packetv1405.PasswordSend(a))
-  | (ItemOwnerRemove, false) => None
+    Packetv1405.PasswordSend.parse(payload)->mapPacket(a => Packetv1405.PasswordSend(a))
+  | (ItemOwnerRemove, false) => Ok(None)
   | (ItemOwnerRemove, true) =>
-    Packetv1405.ItemOwnerRemove.parse(payload)->Belt.Option.map(a => Packetv1405.ItemOwnerRemove(a))
+    Packetv1405.ItemOwnerRemove.parse(payload)->mapPacket(a => Packetv1405.ItemOwnerRemove(a))
   | (NpcTalk, true | false) =>
-    Packetv1405.NpcTalk.parse(payload)->Belt.Option.map(a => Packetv1405.NpcTalk(a))
+    Packetv1405.NpcTalk.parse(payload)->mapPacket(a => Packetv1405.NpcTalk(a))
   | (PlayerAnimation, true | false) =>
-    Packetv1405.PlayerAnimation.parse(payload)->Belt.Option.map(a => Packetv1405.PlayerAnimation(a))
+    Packetv1405.PlayerAnimation.parse(payload)->mapPacket(a => Packetv1405.PlayerAnimation(a))
   | (PlayerMana, true | false) =>
-    Packetv1405.PlayerMana.parse(payload)->Belt.Option.map(a => Packetv1405.PlayerMana(a))
+    Packetv1405.PlayerMana.parse(payload)->mapPacket(a => Packetv1405.PlayerMana(a))
   | (ManaEffect, true | false) =>
-    Packetv1405.ManaEffect.parse(payload)->Belt.Option.map(a => Packetv1405.ManaEffect(a))
+    Packetv1405.ManaEffect.parse(payload)->mapPacket(a => Packetv1405.ManaEffect(a))
   | (PlayerTeam, true | false) =>
-    Packetv1405.PlayerTeam.parse(payload)->Belt.Option.map(a => Packetv1405.PlayerTeam(a))
-  | (SignRead, true) => None
+    Packetv1405.PlayerTeam.parse(payload)->mapPacket(a => Packetv1405.PlayerTeam(a))
+  | (SignRead, true) => Ok(None)
   | (SignRead, false) =>
-    Packetv1405.SignRead.parse(payload)->Belt.Option.map(a => Packetv1405.SignRead(a))
+    Packetv1405.SignRead.parse(payload)->mapPacket(a => Packetv1405.SignRead(a))
   | (SignNew, true | false) =>
-    Packetv1405.SignNew.parse(payload)->Belt.Option.map(a => Packetv1405.SignNew(a))
+    Packetv1405.SignNew.parse(payload)->mapPacket(a => Packetv1405.SignNew(a))
   | (LiquidSet, true | false) =>
-    Packetv1405.LiquidSet.parse(payload)->Belt.Option.map(a => Packetv1405.LiquidSet(a))
-  | (PlayerSpawnSelf, false) => None
+    Packetv1405.LiquidSet.parse(payload)->mapPacket(a => Packetv1405.LiquidSet(a))
+  | (PlayerSpawnSelf, false) => Ok(None)
   | (PlayerSpawnSelf, true) =>
-    Packetv1405.PlayerSpawnSelf.parse(payload)->Belt.Option.map(a => Packetv1405.PlayerSpawnSelf(a))
+    Packetv1405.PlayerSpawnSelf.parse(payload)->mapPacket(a => Packetv1405.PlayerSpawnSelf(a))
   | (PlayerBuffsSet, true | false) =>
-    Packetv1405.PlayerBuffsSet.parse(payload)->Belt.Option.map(a => Packetv1405.PlayerBuffsSet(a))
+    Packetv1405.PlayerBuffsSet.parse(payload)->mapPacket(a => Packetv1405.PlayerBuffsSet(a))
   | (NpcSpecialEffect, true | false) =>
-    Packetv1405.NpcSpecialEffect.parse(payload)->Belt.Option.map(a => Packetv1405.NpcSpecialEffect(
+    Packetv1405.NpcSpecialEffect.parse(payload)->mapPacket(a => Packetv1405.NpcSpecialEffect(
       a,
     ))
   | (ChestOrTempleUnlock, true | false) =>
     Packetv1405.ChestOrTempleUnlock.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.ChestOrTempleUnlock(a))
+    )->mapPacket(a => Packetv1405.ChestOrTempleUnlock(a))
   | (NpcBuffAdd, true | false) =>
-    Packetv1405.NpcBuffAdd.parse(payload)->Belt.Option.map(a => Packetv1405.NpcBuffAdd(a))
-  | (NpcBuffUpdate, false) => None
+    Packetv1405.NpcBuffAdd.parse(payload)->mapPacket(a => Packetv1405.NpcBuffAdd(a))
+  | (NpcBuffUpdate, false) => Ok(None)
   | (NpcBuffUpdate, true) =>
-    Packetv1405.NpcBuffUpdate.parse(payload)->Belt.Option.map(a => Packetv1405.NpcBuffUpdate(a))
+    Packetv1405.NpcBuffUpdate.parse(payload)->mapPacket(a => Packetv1405.NpcBuffUpdate(a))
   | (PlayerBuffAdd, true | false) =>
-    Packetv1405.PlayerBuffAdd.parse(payload)->Belt.Option.map(a => Packetv1405.PlayerBuffAdd(a))
+    Packetv1405.PlayerBuffAdd.parse(payload)->mapPacket(a => Packetv1405.PlayerBuffAdd(a))
   | (NpcNameUpdate, true | false) =>
-    Packetv1405.NpcNameUpdate.parse(payload)->Belt.Option.map(a => Packetv1405.NpcNameUpdate(a))
-  | (GoodEvilUpdate, false) => None
+    Packetv1405.NpcNameUpdate.parse(payload)->mapPacket(a => Packetv1405.NpcNameUpdate(a))
+  | (GoodEvilUpdate, false) => Ok(None)
   | (GoodEvilUpdate, true) =>
-    Packetv1405.GoodEvilUpdate.parse(payload)->Belt.Option.map(a => Packetv1405.GoodEvilUpdate(a))
+    Packetv1405.GoodEvilUpdate.parse(payload)->mapPacket(a => Packetv1405.GoodEvilUpdate(a))
   | (HarpPlay, true | false) =>
-    Packetv1405.HarpPlay.parse(payload)->Belt.Option.map(a => Packetv1405.HarpPlay(a))
+    Packetv1405.HarpPlay.parse(payload)->mapPacket(a => Packetv1405.HarpPlay(a))
   | (SwitchHit, true | false) =>
-    Packetv1405.SwitchHit.parse(payload)->Belt.Option.map(a => Packetv1405.SwitchHit(a))
+    Packetv1405.SwitchHit.parse(payload)->mapPacket(a => Packetv1405.SwitchHit(a))
   | (NpcHomeUpdate, true | false) =>
-    Packetv1405.NpcHomeUpdate.parse(payload)->Belt.Option.map(a => Packetv1405.NpcHomeUpdate(a))
-  | (BossOrInvasionSpawn, true) => None
+    Packetv1405.NpcHomeUpdate.parse(payload)->mapPacket(a => Packetv1405.NpcHomeUpdate(a))
+  | (BossOrInvasionSpawn, true) => Ok(None)
   | (BossOrInvasionSpawn, false) =>
     Packetv1405.BossOrInvasionSpawn.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.BossOrInvasionSpawn(a))
+    )->mapPacket(a => Packetv1405.BossOrInvasionSpawn(a))
   | (PlayerDodge, true | false) =>
-    Packetv1405.PlayerDodge.parse(payload)->Belt.Option.map(a => Packetv1405.PlayerDodge(a))
+    Packetv1405.PlayerDodge.parse(payload)->mapPacket(a => Packetv1405.PlayerDodge(a))
   | (TilePaint, true | false) =>
-    Packetv1405.TilePaint.parse(payload)->Belt.Option.map(a => Packetv1405.TilePaint(a))
+    Packetv1405.TilePaint.parse(payload)->mapPacket(a => Packetv1405.TilePaint(a))
   | (WallPaint, true | false) =>
-    Packetv1405.WallPaint.parse(payload)->Belt.Option.map(a => Packetv1405.WallPaint(a))
+    Packetv1405.WallPaint.parse(payload)->mapPacket(a => Packetv1405.WallPaint(a))
   | (Teleport, true | false) =>
-    Packetv1405.Teleport.parse(payload)->Belt.Option.map(a => Packetv1405.Teleport(a))
+    Packetv1405.Teleport.parse(payload)->mapPacket(a => Packetv1405.Teleport(a))
   | (PlayerHealOther, true | false) =>
-    Packetv1405.PlayerHealOther.parse(payload)->Belt.Option.map(a => Packetv1405.PlayerHealOther(a))
+    Packetv1405.PlayerHealOther.parse(payload)->mapPacket(a => Packetv1405.PlayerHealOther(a))
   | (DimensionsUpdate, true | false) =>
-    Packetv1405.DimensionsUpdate.parse(payload)->Belt.Option.map(a => Packetv1405.DimensionsUpdate(
+    Packetv1405.DimensionsUpdate.parse(payload)->mapPacket(a => Packetv1405.DimensionsUpdate(
       a,
     ))
-  | (ClientUuid, true) => None
+  | (ClientUuid, true) => Ok(None)
   | (ClientUuid, false) =>
-    Packetv1405.ClientUuid.parse(payload)->Belt.Option.map(a => Packetv1405.ClientUuid(a))
+    Packetv1405.ClientUuid.parse(payload)->mapPacket(a => Packetv1405.ClientUuid(a))
   | (ChestName, true | false) =>
-    Packetv1405.ChestName.parse(payload)->Belt.Option.map(a => Packetv1405.ChestName(a))
-  | (NpcCatch, true) => None
+    Packetv1405.ChestName.parse(payload)->mapPacket(a => Packetv1405.ChestName(a))
+  | (NpcCatch, true) => Ok(None)
   | (NpcCatch, false) =>
-    Packetv1405.NpcCatch.parse(payload)->Belt.Option.map(a => Packetv1405.NpcCatch(a))
-  | (NpcRelease, true) => None
+    Packetv1405.NpcCatch.parse(payload)->mapPacket(a => Packetv1405.NpcCatch(a))
+  | (NpcRelease, true) => Ok(None)
   | (NpcRelease, false) =>
-    Packetv1405.NpcRelease.parse(payload)->Belt.Option.map(a => Packetv1405.NpcRelease(a))
-  | (TravellingMerchantInventory, false) => None
+    Packetv1405.NpcRelease.parse(payload)->mapPacket(a => Packetv1405.NpcRelease(a))
+  | (TravellingMerchantInventory, false) => Ok(None)
   | (TravellingMerchantInventory, true) =>
     Packetv1405.TravellingMerchantInventory.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.TravellingMerchantInventory(a))
+    )->mapPacket(a => Packetv1405.TravellingMerchantInventory(a))
   | (TeleportationPotion, true | false) =>
     Packetv1405.TeleportationPotion.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.TeleportationPotion(a))
-  | (AnglerQuest, false) => None
+    )->mapPacket(a => Packetv1405.TeleportationPotion(a))
+  | (AnglerQuest, false) => Ok(None)
   | (AnglerQuest, true) =>
-    Packetv1405.AnglerQuest.parse(payload)->Belt.Option.map(a => Packetv1405.AnglerQuest(a))
-  | (AnglerQuestComplete, true) => None
+    Packetv1405.AnglerQuest.parse(payload)->mapPacket(a => Packetv1405.AnglerQuest(a))
+  | (AnglerQuestComplete, true) => Ok(None)
   | (AnglerQuestComplete, false) =>
     Packetv1405.AnglerQuestComplete.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.AnglerQuestComplete(a))
+    )->mapPacket(a => Packetv1405.AnglerQuestComplete(a))
   | (AnglerQuestsCompletedAmount, true)
   | (AnglerQuestsCompletedAmount, false) =>
     Packetv1405.AnglerQuestsCompletedAmount.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.AnglerQuestsCompletedAmount(a))
-  | (TemporaryAnimationCreate, false) => None
+    )->mapPacket(a => Packetv1405.AnglerQuestsCompletedAmount(a))
+  | (TemporaryAnimationCreate, false) => Ok(None)
   | (TemporaryAnimationCreate, true) =>
     Packetv1405.TemporaryAnimationCreate.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.TemporaryAnimationCreate(a))
-  | (InvasionProgressReport, false) => None
+    )->mapPacket(a => Packetv1405.TemporaryAnimationCreate(a))
+  | (InvasionProgressReport, false) => Ok(None)
   | (InvasionProgressReport, true) =>
     Packetv1405.InvasionProgressReport.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.InvasionProgressReport(a))
+    )->mapPacket(a => Packetv1405.InvasionProgressReport(a))
   | (ObjectPlace, true | false) =>
-    Packetv1405.ObjectPlace.parse(payload)->Belt.Option.map(a => Packetv1405.ObjectPlace(a))
-  | (PlayerChestIndexSync, false) => None
+    Packetv1405.ObjectPlace.parse(payload)->mapPacket(a => Packetv1405.ObjectPlace(a))
+  | (PlayerChestIndexSync, false) => Ok(None)
   | (PlayerChestIndexSync, true) =>
     Packetv1405.PlayerChestIndexSync.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.PlayerChestIndexSync(a))
-  | (CombatNumberCreate, false) => None
+    )->mapPacket(a => Packetv1405.PlayerChestIndexSync(a))
+  | (CombatNumberCreate, false) => Ok(None)
   | (CombatNumberCreate, true) =>
     Packetv1405.CombatNumberCreate.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.CombatNumberCreate(a))
+    )->mapPacket(a => Packetv1405.CombatNumberCreate(a))
   | (NetModuleLoad, true | false) =>
     Packetv1405.NetModuleLoad.parse(
       payload,
       ~fromServer,
-    )->Belt.Option.map(a => Packetv1405.NetModuleLoad(a))
-  | (NpcKillCount, false) => None
+    )->mapPacket(a => Packetv1405.NetModuleLoad(a))
+  | (NpcKillCount, false) => Ok(None)
   | (NpcKillCount, true) =>
-    Packetv1405.NpcKillCount.parse(payload)->Belt.Option.map(a => Packetv1405.NpcKillCount(a))
+    Packetv1405.NpcKillCount.parse(payload)->mapPacket(a => Packetv1405.NpcKillCount(a))
   | (PlayerStealth, true | false) =>
-    Packetv1405.PlayerStealth.parse(payload)->Belt.Option.map(a => Packetv1405.PlayerStealth(a))
-  | (ItemForceIntoNearestChest, true) => None
+    Packetv1405.PlayerStealth.parse(payload)->mapPacket(a => Packetv1405.PlayerStealth(a))
+  | (ItemForceIntoNearestChest, true) => Ok(None)
   | (ItemForceIntoNearestChest, false) =>
     Packetv1405.ItemForceIntoNearestChest.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.ItemForceIntoNearestChest(a))
-  | (TileEntityUpdate, false) => None
+    )->mapPacket(a => Packetv1405.ItemForceIntoNearestChest(a))
+  | (TileEntityUpdate, false) => Ok(None)
   | (TileEntityUpdate, true) =>
-    Packetv1405.TileEntityUpdate.parse(payload)->Belt.Option.map(a => Packetv1405.TileEntityUpdate(
+    Packetv1405.TileEntityUpdate.parse(payload)->mapPacket(a => Packetv1405.TileEntityUpdate(
       a,
     ))
-  | (TileEntityPlace, true) => None
+  | (TileEntityPlace, true) => Ok(None)
   | (TileEntityPlace, false) =>
-    Packetv1405.TileEntityPlace.parse(payload)->Belt.Option.map(a => Packetv1405.TileEntityPlace(a))
-  | (ItemDropModify, false) => None
+    Packetv1405.TileEntityPlace.parse(payload)->mapPacket(a => Packetv1405.TileEntityPlace(a))
+  | (ItemDropModify, false) => Ok(None)
   | (ItemDropModify, true) =>
-    Packetv1405.ItemDropModify.parse(payload)->Belt.Option.map(a => Packetv1405.ItemDropModify(a))
-  | (ItemFramePlace, true) => None
+    Packetv1405.ItemDropModify.parse(payload)->mapPacket(a => Packetv1405.ItemDropModify(a))
+  | (ItemFramePlace, true) => Ok(None)
   | (ItemFramePlace, false) =>
-    Packetv1405.ItemFramePlace.parse(payload)->Belt.Option.map(a => Packetv1405.ItemFramePlace(a))
+    Packetv1405.ItemFramePlace.parse(payload)->mapPacket(a => Packetv1405.ItemFramePlace(a))
   | (ItemDropInstancedUpdate, true | false) =>
     Packetv1405.ItemDropInstancedUpdate.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.ItemDropInstancedUpdate(a))
-  | (EmoteBubble, false) => None
+    )->mapPacket(a => Packetv1405.ItemDropInstancedUpdate(a))
+  | (EmoteBubble, false) => Ok(None)
   | (EmoteBubble, true) =>
-    Packetv1405.EmoteBubble.parse(payload)->Belt.Option.map(a => Packetv1405.EmoteBubble(a))
+    Packetv1405.EmoteBubble.parse(payload)->mapPacket(a => Packetv1405.EmoteBubble(a))
   | (ExtraValueSync, true | false) =>
-    Packetv1405.ExtraValueSync.parse(payload)->Belt.Option.map(a => Packetv1405.ExtraValueSync(a))
+    Packetv1405.ExtraValueSync.parse(payload)->mapPacket(a => Packetv1405.ExtraValueSync(a))
   | (SocialHandshake, true | false) =>
-    Packetv1405.SocialHandshake.parse(payload)->Belt.Option.map(a => Packetv1405.SocialHandshake(a))
+    Packetv1405.SocialHandshake.parse(payload)->mapPacket(a => Packetv1405.SocialHandshake(a))
   | (Unused, true | false) =>
-    Packetv1405.Unused.parse(payload)->Belt.Option.map(a => Packetv1405.Unused(a))
-  | (PortalKill, true) => None
+    Packetv1405.Unused.parse(payload)->mapPacket(a => Packetv1405.Unused(a))
+  | (PortalKill, true) => Ok(None)
   | (PortalKill, false) =>
-    Packetv1405.PortalKill.parse(payload)->Belt.Option.map(a => Packetv1405.PortalKill(a))
+    Packetv1405.PortalKill.parse(payload)->mapPacket(a => Packetv1405.PortalKill(a))
   | (PlayerTeleportPortal, true | false) =>
     Packetv1405.PlayerTeleportPortal.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.PlayerTeleportPortal(a))
-  | (NpcKilledNotification, false) => None
+    )->mapPacket(a => Packetv1405.PlayerTeleportPortal(a))
+  | (NpcKilledNotification, false) => Ok(None)
   | (NpcKilledNotification, true) =>
     Packetv1405.NpcKilledNotification.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.NpcKilledNotification(a))
-  | (EventNotification, false) => None
+    )->mapPacket(a => Packetv1405.NpcKilledNotification(a))
+  | (EventNotification, false) => Ok(None)
   | (EventNotification, true) =>
     Packetv1405.EventNotification.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.EventNotification(a))
+    )->mapPacket(a => Packetv1405.EventNotification(a))
   | (MinionTargetUpdate, true | false) =>
     Packetv1405.MinionTargetUpdate.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.MinionTargetUpdate(a))
+    )->mapPacket(a => Packetv1405.MinionTargetUpdate(a))
   | (NpcTeleportPortal, true | false) =>
     Packetv1405.NpcTeleportPortal.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.NpcTeleportPortal(a))
-  | (ShieldStrengthsUpdate, false) => None
+    )->mapPacket(a => Packetv1405.NpcTeleportPortal(a))
+  | (ShieldStrengthsUpdate, false) => Ok(None)
   | (ShieldStrengthsUpdate, true) =>
     Packetv1405.ShieldStrengthsUpdate.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.ShieldStrengthsUpdate(a))
+    )->mapPacket(a => Packetv1405.ShieldStrengthsUpdate(a))
   | (NebulaLevelUp, true | false) =>
-    Packetv1405.NebulaLevelUp.parse(payload)->Belt.Option.map(a => Packetv1405.NebulaLevelUp(a))
-  | (MoonLordCountdown, false) => None
+    Packetv1405.NebulaLevelUp.parse(payload)->mapPacket(a => Packetv1405.NebulaLevelUp(a))
+  | (MoonLordCountdown, false) => Ok(None)
   | (MoonLordCountdown, true) =>
     Packetv1405.MoonLordCountdown.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.MoonLordCountdown(a))
-  | (NpcShopItem, false) => None
+    )->mapPacket(a => Packetv1405.MoonLordCountdown(a))
+  | (NpcShopItem, false) => Ok(None)
   | (NpcShopItem, true) =>
-    Packetv1405.NpcShopItem.parse(payload)->Belt.Option.map(a => Packetv1405.NpcShopItem(a))
-  | (GemLockToggle, true) => None
+    Packetv1405.NpcShopItem.parse(payload)->mapPacket(a => Packetv1405.NpcShopItem(a))
+  | (GemLockToggle, true) => Ok(None)
   | (GemLockToggle, false) =>
-    Packetv1405.GemLockToggle.parse(payload)->Belt.Option.map(a => Packetv1405.GemLockToggle(a))
-  | (SmokePoof, false) => None
+    Packetv1405.GemLockToggle.parse(payload)->mapPacket(a => Packetv1405.GemLockToggle(a))
+  | (SmokePoof, false) => Ok(None)
   | (SmokePoof, true) =>
-    Packetv1405.SmokePoof.parse(payload)->Belt.Option.map(a => Packetv1405.SmokePoof(a))
-  | (ChatMessageSmart, false) => None
+    Packetv1405.SmokePoof.parse(payload)->mapPacket(a => Packetv1405.SmokePoof(a))
+  | (ChatMessageSmart, false) => Ok(None)
   | (ChatMessageSmart, true) =>
-    Packetv1405.ChatMessageSmart.parse(payload)->Belt.Option.map(a => Packetv1405.ChatMessageSmart(
+    Packetv1405.ChatMessageSmart.parse(payload)->mapPacket(a => Packetv1405.ChatMessageSmart(
       a,
     ))
-  | (WiredCannonShot, false) => None
+  | (WiredCannonShot, false) => Ok(None)
   | (WiredCannonShot, true) =>
-    Packetv1405.WiredCannonShot.parse(payload)->Belt.Option.map(a => Packetv1405.WiredCannonShot(a))
-  | (MassWireOperation, true) => None
+    Packetv1405.WiredCannonShot.parse(payload)->mapPacket(a => Packetv1405.WiredCannonShot(a))
+  | (MassWireOperation, true) => Ok(None)
   | (MassWireOperation, false) =>
     Packetv1405.MassWireOperation.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.MassWireOperation(a))
-  | (MassWireOperationPay, false) => None
+    )->mapPacket(a => Packetv1405.MassWireOperation(a))
+  | (MassWireOperationPay, false) => Ok(None)
   | (MassWireOperationPay, true) =>
     Packetv1405.MassWireOperationPay.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.MassWireOperationPay(a))
-  | (PartyToggle, true) => None
+    )->mapPacket(a => Packetv1405.MassWireOperationPay(a))
+  | (PartyToggle, true) => Ok(None)
   | (PartyToggle, false) =>
-    Packetv1405.PartyToggle.parse(payload)->Belt.Option.map(a => Packetv1405.PartyToggle(a))
+    Packetv1405.PartyToggle.parse(payload)->mapPacket(a => Packetv1405.PartyToggle(a))
   | (TreeGrowFx, true | false) =>
-    Packetv1405.TreeGrowFx.parse(payload)->Belt.Option.map(a => Packetv1405.TreeGrowFx(a))
-  | (CrystalInvasionStart, true) => None
+    Packetv1405.TreeGrowFx.parse(payload)->mapPacket(a => Packetv1405.TreeGrowFx(a))
+  | (CrystalInvasionStart, true) => Ok(None)
   | (CrystalInvasionStart, false) =>
     Packetv1405.CrystalInvasionStart.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.CrystalInvasionStart(a))
-  | (CrystalInvasionWipeAll, false) => None
+    )->mapPacket(a => Packetv1405.CrystalInvasionStart(a))
+  | (CrystalInvasionWipeAll, false) => Ok(None)
   | (CrystalInvasionWipeAll, true) =>
     Packetv1405.CrystalInvasionWipeAll.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.CrystalInvasionWipeAll(a))
+    )->mapPacket(a => Packetv1405.CrystalInvasionWipeAll(a))
   | (MinionAttackTargetUpdate, true | false) =>
     Packetv1405.MinionAttackTargetUpdate.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.MinionAttackTargetUpdate(a))
-  | (CrystalInvasionSendWaitTime, false) => None
+    )->mapPacket(a => Packetv1405.MinionAttackTargetUpdate(a))
+  | (CrystalInvasionSendWaitTime, false) => Ok(None)
   | (CrystalInvasionSendWaitTime, true) =>
     Packetv1405.CrystalInvasionSendWaitTime.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.CrystalInvasionSendWaitTime(a))
+    )->mapPacket(a => Packetv1405.CrystalInvasionSendWaitTime(a))
   | (PlayerDamage, true | false) =>
-    Packetv1405.PlayerDamage.parse(payload)->Belt.Option.map(a => Packetv1405.PlayerDamage(a))
+    Packetv1405.PlayerDamage.parse(payload)->mapPacket(a => Packetv1405.PlayerDamage(a))
   | (PlayerDeath, true | false) =>
-    Packetv1405.PlayerDeath.parse(payload)->Belt.Option.map(a => Packetv1405.PlayerDeath(a))
-  | (CombatTextCreate, false) => None
+    Packetv1405.PlayerDeath.parse(payload)->mapPacket(a => Packetv1405.PlayerDeath(a))
+  | (CombatTextCreate, false) => Ok(None)
   | (CombatTextCreate, true) =>
-    Packetv1405.CombatTextCreate.parse(payload)->Belt.Option.map(a => Packetv1405.CombatTextCreate(
+    Packetv1405.CombatTextCreate.parse(payload)->mapPacket(a => Packetv1405.CombatTextCreate(
       a,
     ))
-  | (Emoji, true) => None
-  | (Emoji, false) => Packetv1405.Emoji.parse(payload)->Belt.Option.map(a => Packetv1405.Emoji(a))
+  | (Emoji, true) => Ok(None)
+  | (Emoji, false) => Packetv1405.Emoji.parse(payload)->mapPacket(a => Packetv1405.Emoji(a))
   | (TileEntityDisplayDollItemSync, true | false) =>
     Packetv1405.TileEntityDisplayDollItemSync.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.TileEntityDisplayDollItemSync(a))
+    )->mapPacket(a => Packetv1405.TileEntityDisplayDollItemSync(a))
   | (TileEntityInteractionRequest, true | false) =>
     Packetv1405.TileEntityInteractionRequest.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.TileEntityInteractionRequest(a))
-  | (WeaponsRackTryPlacing, true) => None
+    )->mapPacket(a => Packetv1405.TileEntityInteractionRequest(a))
+  | (WeaponsRackTryPlacing, true) => Ok(None)
   | (WeaponsRackTryPlacing, false) =>
     Packetv1405.WeaponsRackTryPlacing.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.WeaponsRackTryPlacing(a))
+    )->mapPacket(a => Packetv1405.WeaponsRackTryPlacing(a))
   | (TileEntityHatRackItemSync, true | false) =>
     Packetv1405.TileEntityHatRackItemSync.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.TileEntityHatRackItemSync(a))
+    )->mapPacket(a => Packetv1405.TileEntityHatRackItemSync(a))
   | (TilePickingSync, true | false) =>
-    Packetv1405.TilePickingSync.parse(payload)->Belt.Option.map(a => Packetv1405.TilePickingSync(a))
-  | (RevengeMarkerSync, false) => None
+    Packetv1405.TilePickingSync.parse(payload)->mapPacket(a => Packetv1405.TilePickingSync(a))
+  | (RevengeMarkerSync, false) => Ok(None)
   | (RevengeMarkerSync, true) =>
     Packetv1405.RevengeMarkerSync.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.RevengeMarkerSync(a))
-  | (RevengeMarkerRemove, false) => None
+    )->mapPacket(a => Packetv1405.RevengeMarkerSync(a))
+  | (RevengeMarkerRemove, false) => Ok(None)
   | (RevengeMarkerRemove, true) =>
     Packetv1405.RevengeMarkerRemove.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.RevengeMarkerRemove(a))
+    )->mapPacket(a => Packetv1405.RevengeMarkerRemove(a))
   | (GolfBallLandInCup, true | false) =>
     Packetv1405.GolfBallLandInCup.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.GolfBallLandInCup(a))
-  | (ClientFinishConnectingToServer, false) => None
+    )->mapPacket(a => Packetv1405.GolfBallLandInCup(a))
+  | (ClientFinishConnectingToServer, false) => Ok(None)
   | (ClientFinishConnectingToServer, true) =>
     Packetv1405.ClientFinishConnectingToServer.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.ClientFinishConnectingToServer(a))
-  | (NpcFishOut, true) => None
+    )->mapPacket(a => Packetv1405.ClientFinishConnectingToServer(a))
+  | (NpcFishOut, true) => Ok(None)
   | (NpcFishOut, false) =>
-    Packetv1405.NpcFishOut.parse(payload)->Belt.Option.map(a => Packetv1405.NpcFishOut(a))
-  | (NpcTamper, false) => None
+    Packetv1405.NpcFishOut.parse(payload)->mapPacket(a => Packetv1405.NpcFishOut(a))
+  | (NpcTamper, false) => Ok(None)
   | (NpcTamper, true) =>
-    Packetv1405.NpcTamper.parse(payload)->Belt.Option.map(a => Packetv1405.NpcTamper(a))
-  | (LegacySoundPlay, false) => None
+    Packetv1405.NpcTamper.parse(payload)->mapPacket(a => Packetv1405.NpcTamper(a))
+  | (LegacySoundPlay, false) => Ok(None)
   | (LegacySoundPlay, true) =>
-    Packetv1405.LegacySoundPlay.parse(payload)->Belt.Option.map(a => Packetv1405.LegacySoundPlay(a))
-  | (FoodPlatterTryPlacing, true) => None
+    Packetv1405.LegacySoundPlay.parse(payload)->mapPacket(a => Packetv1405.LegacySoundPlay(a))
+  | (FoodPlatterTryPlacing, true) => Ok(None)
   | (FoodPlatterTryPlacing, false) =>
     Packetv1405.FoodPlatterTryPlacing.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.FoodPlatterTryPlacing(a))
+    )->mapPacket(a => Packetv1405.FoodPlatterTryPlacing(a))
   | (PlayerLuckFactorsUpdate, true | false) =>
     Packetv1405.PlayerLuckFactorsUpdate.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.PlayerLuckFactorsUpdate(a))
-  | (PlayerDead, false) => None
+    )->mapPacket(a => Packetv1405.PlayerLuckFactorsUpdate(a))
+  | (PlayerDead, false) => Ok(None)
   | (PlayerDead, true) =>
-    Packetv1405.PlayerDead.parse(payload)->Belt.Option.map(a => Packetv1405.PlayerDead(a))
+    Packetv1405.PlayerDead.parse(payload)->mapPacket(a => Packetv1405.PlayerDead(a))
   | (CavernMonsterTypeSync, true | false) =>
     Packetv1405.CavernMonsterTypeSync.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.CavernMonsterTypeSync(a))
-  | (NpcBuffRemovalRequest, true) => None
+    )->mapPacket(a => Packetv1405.CavernMonsterTypeSync(a))
+  | (NpcBuffRemovalRequest, true) => Ok(None)
   | (NpcBuffRemovalRequest, false) =>
     Packetv1405.NpcBuffRemovalRequest.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.NpcBuffRemovalRequest(a))
-  | (ClientSyncedInventory, true) => None
+    )->mapPacket(a => Packetv1405.NpcBuffRemovalRequest(a))
+  | (ClientSyncedInventory, true) => Ok(None)
   | (ClientSyncedInventory, false) =>
     Packetv1405.ClientSyncedInventory.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.ClientSyncedInventory(a))
-  | (CountsAsHostForGameplaySet, false) => None
+    )->mapPacket(a => Packetv1405.ClientSyncedInventory(a))
+  | (CountsAsHostForGameplaySet, false) => Ok(None)
   | (CountsAsHostForGameplaySet, true) =>
     Packetv1405.CountsAsHostForGameplaySet.parse(
       payload,
-    )->Belt.Option.map(a => Packetv1405.CountsAsHostForGameplaySet(a))
+    )->mapPacket(a => Packetv1405.CountsAsHostForGameplaySet(a))
 
   // Newer packets
-  | (CreditsOrSlimeTransform, true | false) => None
-  | (LucyAxeMessage, true | false) => None
-  | (PiggyBankVoidLensUpdate, true | false) => None
-  | (DungeonDefendersEventAttemptSkipWait, true | false) => None
-  | (HaveDryadDoStardewAnimation, true | false) => None
-  | (ItemDropShimmeredUpdate, true | false) => None
-  | (ShimmerEffectOrCoinLuck, true | false) => None
-  | (LoadoutSwitch, true | false) => None
-  | (ItemDropProtectedUpdate, true | false) => None
+  | (CreditsOrSlimeTransform, true | false) => Ok(None)
+  | (LucyAxeMessage, true | false) => Ok(None)
+  | (PiggyBankVoidLensUpdate, true | false) => Ok(None)
+  | (DungeonDefendersEventAttemptSkipWait, true | false) => Ok(None)
+  | (HaveDryadDoStardewAnimation, true | false) => Ok(None)
+  | (ItemDropShimmeredUpdate, true | false) => Ok(None)
+  | (ShimmerEffectOrCoinLuck, true | false) => Ok(None)
+  | (LoadoutSwitch, true | false) => Ok(None)
+  | (ItemDropProtectedUpdate, true | false) => Ok(None)
   }
 
 let parsePayloadLazy = (
   packetType: PacketType.t,
   payload: NodeJs.Buffer.t,
   fromServer: bool,
-): option<Packetv1405.LazyPacket.t> =>
-  switch (packetType, fromServer) {
+): result<option<Packetv1405.LazyPacket.t>, ErrorAwarePacketReader.readError> =>
+  Ok(
+    switch (packetType, fromServer) {
   | (ConnectRequest, true) => None
   | (ConnectRequest, false) =>
     Some(Packetv1405.LazyPacket.ConnectRequest(Lazy.make(() => Packetv1405.ConnectRequest.parse(payload))))
@@ -966,11 +973,14 @@ let parsePayloadLazy = (
   | (ShimmerEffectOrCoinLuck, true | false) => None
   | (LoadoutSwitch, true | false) => None
   | (ItemDropProtectedUpdate, true | false) => None
-  }
+  })
 
-let simpleParse = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): option<Packetv1405.t> => {
+let simpleParse = (
+  ~buffer: NodeJs.Buffer.t,
+  ~fromServer: bool,
+): result<option<Packetv1405.t>, ErrorAwarePacketReader.readError> => {
   switch buffer->NodeJs.Buffer.length {
-  | 0 | 1 | 2 => None
+  | 0 | 1 | 2 => Ok(None)
   | _ =>
     switch buffer->NodeJs.Buffer.unsafeGet(2)->PacketType.fromInt {
     | Some(packetType) =>
@@ -979,18 +989,19 @@ let simpleParse = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): option<Packetv1
         // it won't ever need Serializing after only parsing - only when it gets converted will this change
         parsePayload(packetType, buffer, fromServer)
       } catch {
-      | _e => None
+      | JsExn(obj) => Error({context: "Parserv1405.simpleParse", error: obj})
       }
-    | None => None
+    | None => Ok(None)
     }
   }
 }
 
-let simpleParseLazy = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): option<
-  Packetv1405.LazyPacket.t,
-> => {
+let simpleParseLazy = (
+  ~buffer: NodeJs.Buffer.t,
+  ~fromServer: bool,
+): result<option<Packetv1405.LazyPacket.t>, ErrorAwarePacketReader.readError> => {
   switch buffer->NodeJs.Buffer.length {
-  | 0 | 1 | 2 => None
+  | 0 | 1 | 2 => Ok(None)
   | _ =>
     switch buffer->NodeJs.Buffer.unsafeGet(2)->PacketType.fromInt {
     | Some(packetType) =>
@@ -999,26 +1010,27 @@ let simpleParseLazy = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): option<
         // it won't ever need Serializing after only parsing - only when it gets converted will this change
         parsePayloadLazy(packetType, buffer, fromServer)
       } catch {
-      | _e => None
+      | JsExn(obj) => Error({context: "Parserv1405.simpleParseLazy", error: obj})
       }
-    | None => None
+    | None => Ok(None)
     }
   }
 }
 
 let parse: IParser.parse<Packetv1405.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => {
-  simpleParse(~buffer, ~fromServer)->Belt.Option.map(packet => IParser.SerializeNotNecessary(
-    packet,
-    buffer,
+  simpleParse(~buffer, ~fromServer)->Result.map(opt => opt->Belt.Option.map(packet =>
+    IParser.SerializeNotNecessary(packet, buffer)
   ))
 }
 
 let parseAsLatest: IParser.parse<Packet.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => {
-  simpleParse(~buffer, ~fromServer)->Belt.Option.map(packet =>
-    switch Packetv1405.toLatest(packet, fromServer) {
-    | Same(packet) => IParser.SerializeNotNecessary(packet, buffer)
-    | NotSame(packet) => IParser.ShouldSerialize(packet)
-    }
+  simpleParse(~buffer, ~fromServer)->Result.map(opt =>
+    opt->Belt.Option.map(packet =>
+      switch Packetv1405.toLatest(packet, fromServer) {
+      | Same(packet) => IParser.SerializeNotNecessary(packet, buffer)
+      | NotSame(packet) => IParser.ShouldSerialize(packet)
+      }
+    )
   )
 }
 
@@ -1026,7 +1038,7 @@ let parseAsLatestLazy: IParser.parseLazy<Packet.LazyPacket.t> = (
   ~buffer: NodeJs.Buffer.t,
   ~fromServer: bool,
 ) => {
-  simpleParseLazy(~buffer, ~fromServer)->Belt.Option.map(packet =>
-    Packetv1405.LazyPacket.toLatest(packet, fromServer)
+  simpleParseLazy(~buffer, ~fromServer)->Result.map(opt =>
+    opt->Belt.Option.map(packet => Packetv1405.LazyPacket.toLatest(packet, fromServer))
   )
 }

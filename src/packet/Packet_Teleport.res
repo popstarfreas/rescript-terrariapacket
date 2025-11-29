@@ -15,11 +15,14 @@ type t = {
   extraInfo: option<int>,
 }
 
+let makeError = (_message: string): JsExn.t => %raw("new Error(_message)")
+
 module Decode = {
-  let {readByte, readInt16, readSingle, readInt32} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readByte, readInt16, readSingle, readInt32} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let flags = BitFlags.fromByte(reader->readByte)
+    let? Ok(flagsRaw) = reader->readByte("flags")
+    let flags = BitFlags.fromByte(flagsRaw)
     let getPositionFromTarget = flags->BitFlags.flag3
     let teleportType = switch (flags->BitFlags.flag1, flags->BitFlags.flag2) {
     | (false, false) => Some(Player)
@@ -27,18 +30,18 @@ module Decode = {
     | (false, true) => Some(PlayerToPlayer)
     | (true, true) => None
     }
-    let targetId = reader->readInt16
-    let x = reader->readSingle
-    let y = reader->readSingle
-    let style = reader->readByte
-    let extraInfo = switch flags->BitFlags.flag4 {
-    | true => Some(reader->readInt32)
-    | false => None
+    let? Ok(targetId) = reader->readInt16("targetId")
+    let? Ok(x) = reader->readSingle("x")
+    let? Ok(y) = reader->readSingle("y")
+    let? Ok(style) = reader->readByte("style")
+    let? Ok(extraInfo) = switch flags->BitFlags.flag4 {
+    | true => reader->readInt32("extraInfo")->Result.map(v => Some(v))
+    | false => Ok(None)
     }
 
     switch teleportType {
     | Some(teleportType) =>
-      Some({
+      Ok({
         teleportType,
         getPositionFromTarget,
         targetId,
@@ -47,7 +50,11 @@ module Decode = {
         style,
         extraInfo,
       })
-    | None => None
+    | None =>
+      Error({
+        context: "Packet_Teleport.parse",
+        error: makeError("Invalid teleport type flags"),
+      })
     }
   }
 }

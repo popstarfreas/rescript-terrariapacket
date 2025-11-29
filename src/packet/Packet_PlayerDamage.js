@@ -4,44 +4,72 @@
 let BitFlags$TerrariaPacket = require("../BitFlags.js");
 let PacketType$TerrariaPacket = require("../PacketType.js");
 let PlayerDeathReason$TerrariaPacket = require("../PlayerDeathReason.js");
-let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
 function readDamageFlags(reader) {
-  let flags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+  let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "damageFlags");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let flags = BitFlags$TerrariaPacket.fromByte(e._0);
   return {
-    critical: BitFlags$TerrariaPacket.flag1(flags),
-    pvp: BitFlags$TerrariaPacket.flag2(flags)
+    TAG: "Ok",
+    _0: {
+      critical: BitFlags$TerrariaPacket.flag1(flags),
+      pvp: BitFlags$TerrariaPacket.flag2(flags)
+    }
   };
 }
 
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let target = reader.readByte();
-  let deathReason = PlayerDeathReason$TerrariaPacket.readDeathReason(reader);
-  let damage = reader.readInt16();
-  let hitDirection = reader.readByte();
-  let damageFlags = readDamageFlags(reader);
-  let critical = damageFlags.critical;
-  let pvp = damageFlags.pvp;
-  let cooldownCounter = reader.readSByte();
-  return {
-    target: target,
-    deathReason: deathReason,
-    damage: damage,
-    hitDirection: hitDirection,
-    critical: critical,
-    pvp: pvp,
-    cooldownCounter: cooldownCounter
-  };
+  let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "target");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = PlayerDeathReason$TerrariaPacket.readDeathReason(reader);
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "damage");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hitDirection");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readDamageFlags(reader);
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let damageFlags = e$4._0;
+  let e$5 = ErrorAwarePacketReader$TerrariaPacket.readSByte(reader, "cooldownCounter");
+  if (e$5.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        target: e._0,
+        deathReason: e$1._0,
+        damage: e$2._0,
+        hitDirection: e$3._0,
+        critical: damageFlags.critical,
+        pvp: damageFlags.pvp,
+        cooldownCounter: e$5._0
+      }
+    };
+  } else {
+    return e$5;
+  }
 }
 
 function toBuffer(self) {
   let damageFlags = self => BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(self.critical, self.pvp, false, false, false, false, false, false));
-  return PlayerDeathReason$TerrariaPacket.packDeathReason(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerDamage")).packByte(self.target), self.deathReason).packInt16(self.damage).packByte(self.hitDirection).packByte(damageFlags(self)).packSByte(self.cooldownCounter).data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(PlayerDeathReason$TerrariaPacket.packDeathReason(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerDamage")), self.target, "target"), self.deathReason), self.damage, "damage"), self.hitDirection, "hitDirection"), damageFlags(self), "damageFlags"), self.cooldownCounter, "cooldownCounter"));
 }
 
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* PlayerDeathReason-TerrariaPacket Not a pure module */

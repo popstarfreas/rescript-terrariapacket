@@ -6,17 +6,27 @@ type t = {
 }
 
 module Decode = {
-  let {readUInt16, readInt16, readByte} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readUInt16, readInt16, readByte} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let npcId = reader->readInt16
+    let? Ok(npcId) = reader->readInt16("npcId")
     let buffs = []
     let buffTimes = []
-    for _i in 1 to 20 {
-      buffs->Array.push(reader->readUInt16)
-      buffTimes->Array.push(reader->readInt16)
-    }
-    Some({
+
+    let rec readBuffs = idx =>
+      if idx >= 20 {
+        Ok()
+      } else {
+        let? Ok(buff) = reader->readUInt16(`buff${Int.toString(idx + 1)}`)
+        let? Ok(buffTime) = reader->readInt16(`buffTime${Int.toString(idx + 1)}`)
+        buffs->Array.push(buff)
+        buffTimes->Array.push(buffTime)
+        readBuffs(idx + 1)
+      }
+
+    let? Ok(_) = readBuffs(0)
+
+    Ok({
       npcId,
       buffs,
       buffTimes,

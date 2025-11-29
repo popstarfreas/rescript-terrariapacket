@@ -3,9 +3,7 @@ type t = unit
 
 module Decode = {
   let {} = module(PacketFactory.PacketReader)
-  let parse = (_payload: NodeJs.Buffer.t) => {
-    Some()
-  }
+  let parse = (_payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => Ok()
 }
 
 module Encode = {

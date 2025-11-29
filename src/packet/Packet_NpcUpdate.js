@@ -2,112 +2,267 @@
 'use strict';
 
 let Belt_Option = require("@rescript/runtime/lib/js/Belt_Option.js");
+let Stdlib_Result = require("@rescript/runtime/lib/js/Stdlib_Result.js");
 let BitFlags$TerrariaPacket = require("../BitFlags.js");
 let PacketType$TerrariaPacket = require("../PacketType.js");
 let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
 let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 
+function makeError(_message) {
+  return (new Error(_message));
+}
+
 function readNpcFlags1(reader, fieldName) {
-  let flags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, fieldName));
+  let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, fieldName);
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let flags = BitFlags$TerrariaPacket.fromByte(e._0);
   return {
-    directionX: BitFlags$TerrariaPacket.flag1(flags),
-    directionY: BitFlags$TerrariaPacket.flag2(flags),
-    ai0: BitFlags$TerrariaPacket.flag3(flags),
-    ai1: BitFlags$TerrariaPacket.flag4(flags),
-    ai2: BitFlags$TerrariaPacket.flag5(flags),
-    ai3: BitFlags$TerrariaPacket.flag6(flags),
-    spriteDirection: BitFlags$TerrariaPacket.flag7(flags),
-    lifeMax: BitFlags$TerrariaPacket.flag8(flags)
+    TAG: "Ok",
+    _0: {
+      directionX: BitFlags$TerrariaPacket.flag1(flags),
+      directionY: BitFlags$TerrariaPacket.flag2(flags),
+      ai0: BitFlags$TerrariaPacket.flag3(flags),
+      ai1: BitFlags$TerrariaPacket.flag4(flags),
+      ai2: BitFlags$TerrariaPacket.flag5(flags),
+      ai3: BitFlags$TerrariaPacket.flag6(flags),
+      spriteDirection: BitFlags$TerrariaPacket.flag7(flags),
+      lifeMax: BitFlags$TerrariaPacket.flag8(flags)
+    }
   };
 }
 
 function readNpcFlags2(reader, fieldName) {
-  let flags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, fieldName));
+  let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, fieldName);
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let flags = BitFlags$TerrariaPacket.fromByte(e._0);
   return {
-    statsScaled: BitFlags$TerrariaPacket.flag1(flags),
-    spawnedFromStatue: BitFlags$TerrariaPacket.flag2(flags),
-    strengthMultiplier: BitFlags$TerrariaPacket.flag3(flags)
+    TAG: "Ok",
+    _0: {
+      statsScaled: BitFlags$TerrariaPacket.flag1(flags),
+      spawnedFromStatue: BitFlags$TerrariaPacket.flag2(flags),
+      strengthMultiplier: BitFlags$TerrariaPacket.flag3(flags)
+    }
   };
 }
 
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let npcSlotId = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcSlotId");
-  let x = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
-  let y = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
-  let vx = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
-  let vy = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
-  let target = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "target");
-  let npcFlags1 = readNpcFlags1(reader, "npcFlags1");
-  let npcFlags2 = readNpcFlags2(reader, "npcFlags2");
-  let ai_0 = npcFlags1.ai0 ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai0") : undefined;
-  let ai_1 = npcFlags1.ai1 ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai1") : undefined;
-  let ai_2 = npcFlags1.ai2 ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai2") : undefined;
-  let ai_3 = npcFlags1.ai3 ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai3") : undefined;
-  let ai = [
-    ai_0,
-    ai_1,
-    ai_2,
-    ai_3
-  ];
-  let npcTypeId = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcTypeId");
-  let playerCountScale = npcFlags2.statsScaled ? ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerCountScale") : undefined;
-  let strengthMultiplier = npcFlags2.strengthMultiplier ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "strengthMultiplier") : undefined;
-  let life;
-  if (npcFlags1.lifeMax) {
-    life = "Max";
+  let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcSlotId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "target");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = readNpcFlags1(reader, "npcFlags1");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let npcFlags1 = e$6._0;
+  let e$7 = readNpcFlags2(reader, "npcFlags2");
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let npcFlags2 = e$7._0;
+  let tmp;
+  if (npcFlags1.ai0) {
+    let e$8 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai0");
+    tmp = e$8.TAG === "Ok" ? ({
+        TAG: "Ok",
+        _0: e$8._0
+      }) : e$8;
   } else {
-    let lifeBytes = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "lifeBytes");
-    switch (lifeBytes) {
-      case 1 :
-        life = {
-          TAG: "Byte",
-          _0: ErrorAwarePacketReader$TerrariaPacket.readSByte(reader, "life_sbyte")
-        };
-        break;
-      case 2 :
-        life = {
-          TAG: "Int16",
-          _0: ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "life_int16")
-        };
-        break;
-      case 4 :
-        life = {
-          TAG: "Int32",
-          _0: ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "life_int32")
-        };
-        break;
-      default:
-        life = undefined;
-    }
-  }
-  let releaseOwner;
-  try {
-    releaseOwner = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "releaseOwner");
-  } catch (exn) {
-    releaseOwner = undefined;
-  }
-  if (life !== undefined) {
-    return {
-      npcSlotId: npcSlotId,
-      npcTypeId: npcTypeId,
-      x: x,
-      y: y,
-      vx: vx,
-      vy: vy,
-      target: target,
-      directionX: npcFlags1.directionX,
-      directionY: npcFlags1.directionY,
-      ai: ai,
-      spriteDirection: npcFlags1.spriteDirection,
-      life: life,
-      releaseOwner: releaseOwner,
-      playerCountScale: playerCountScale,
-      strengthMultiplier: strengthMultiplier,
-      spawnedFromStatue: npcFlags2.spawnedFromStatue
+    tmp = {
+      TAG: "Ok",
+      _0: undefined
     };
   }
+  let tmp$1;
+  if (npcFlags1.ai1) {
+    let e$9 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai1");
+    tmp$1 = e$9.TAG === "Ok" ? ({
+        TAG: "Ok",
+        _0: e$9._0
+      }) : e$9;
+  } else {
+    tmp$1 = {
+      TAG: "Ok",
+      _0: undefined
+    };
+  }
+  let tmp$2;
+  if (npcFlags1.ai2) {
+    let e$10 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai2");
+    tmp$2 = e$10.TAG === "Ok" ? ({
+        TAG: "Ok",
+        _0: e$10._0
+      }) : e$10;
+  } else {
+    tmp$2 = {
+      TAG: "Ok",
+      _0: undefined
+    };
+  }
+  let tmp$3;
+  if (npcFlags1.ai3) {
+    let e$11 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai3");
+    tmp$3 = e$11.TAG === "Ok" ? ({
+        TAG: "Ok",
+        _0: e$11._0
+      }) : e$11;
+  } else {
+    tmp$3 = {
+      TAG: "Ok",
+      _0: undefined
+    };
+  }
+  let e$12 = Stdlib_Result.all4([
+    tmp,
+    tmp$1,
+    tmp$2,
+    tmp$3
+  ]);
+  if (e$12.TAG !== "Ok") {
+    return e$12;
+  }
+  let e$13 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcTypeId");
+  if (e$13.TAG !== "Ok") {
+    return e$13;
+  }
+  let e$14;
+  if (npcFlags2.statsScaled) {
+    let e$15 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerCountScale");
+    e$14 = e$15.TAG === "Ok" ? ({
+        TAG: "Ok",
+        _0: e$15._0
+      }) : e$15;
+  } else {
+    e$14 = {
+      TAG: "Ok",
+      _0: undefined
+    };
+  }
+  if (e$14.TAG !== "Ok") {
+    return e$14;
+  }
+  let e$16;
+  if (npcFlags2.strengthMultiplier) {
+    let e$17 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "strengthMultiplier");
+    e$16 = e$17.TAG === "Ok" ? ({
+        TAG: "Ok",
+        _0: e$17._0
+      }) : e$17;
+  } else {
+    e$16 = {
+      TAG: "Ok",
+      _0: undefined
+    };
+  }
+  if (e$16.TAG !== "Ok") {
+    return e$16;
+  }
+  let e$18;
+  if (npcFlags1.lifeMax) {
+    e$18 = {
+      TAG: "Ok",
+      _0: "Max"
+    };
+  } else {
+    let e$19 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "lifeBytes");
+    if (e$19.TAG === "Ok") {
+      switch (e$19._0) {
+        case 1 :
+          let e$20 = ErrorAwarePacketReader$TerrariaPacket.readSByte(reader, "life_sbyte");
+          e$18 = e$20.TAG === "Ok" ? ({
+              TAG: "Ok",
+              _0: {
+                TAG: "Byte",
+                _0: e$20._0
+              }
+            }) : e$20;
+          break;
+        case 2 :
+          let e$21 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "life_int16");
+          e$18 = e$21.TAG === "Ok" ? ({
+              TAG: "Ok",
+              _0: {
+                TAG: "Int16",
+                _0: e$21._0
+              }
+            }) : e$21;
+          break;
+        case 4 :
+          let e$22 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "life_int32");
+          e$18 = e$22.TAG === "Ok" ? ({
+              TAG: "Ok",
+              _0: {
+                TAG: "Int32",
+                _0: e$22._0
+              }
+            }) : e$22;
+          break;
+        default:
+          e$18 = {
+            TAG: "Error",
+            _0: {
+              context: "Packet_NpcUpdate.parse",
+              error: makeError("Invalid life byte count")
+            }
+          };
+      }
+    } else {
+      e$18 = e$19;
+    }
+  }
+  if (e$18.TAG !== "Ok") {
+    return e$18;
+  }
+  let releaseOwner = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "releaseOwner");
+  let releaseOwner$1;
+  releaseOwner$1 = releaseOwner.TAG === "Ok" ? releaseOwner._0 : undefined;
+  return {
+    TAG: "Ok",
+    _0: {
+      npcSlotId: e._0,
+      npcTypeId: e$13._0,
+      x: e$1._0,
+      y: e$2._0,
+      vx: e$3._0,
+      vy: e$4._0,
+      target: e$5._0,
+      directionX: npcFlags1.directionX,
+      directionY: npcFlags1.directionY,
+      ai: e$12._0,
+      spriteDirection: npcFlags1.spriteDirection,
+      life: e$18._0,
+      releaseOwner: releaseOwner$1,
+      playerCountScale: e$14._0,
+      strengthMultiplier: e$16._0,
+      spawnedFromStatue: npcFlags2.spawnedFromStatue
+    }
+  };
 }
 
 function npcFlags1(self) {

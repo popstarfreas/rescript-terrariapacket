@@ -2,6 +2,8 @@
 'use strict';
 
 let Zora = require("zora");
+let Stdlib_JsExn = require("@rescript/runtime/lib/js/Stdlib_JsExn.js");
+let Stdlib_Option = require("@rescript/runtime/lib/js/Stdlib_Option.js");
 let Stdlib_Result = require("@rescript/runtime/lib/js/Stdlib_Result.js");
 let Packet_NetModuleLoad$TerrariaPacket = require("../src/packet/Packet_NetModuleLoad.js");
 
@@ -9,9 +11,10 @@ Zora.test("should correctly parse and serialise FarPlacementRangePower", t => {
   let hex = "28005206000b0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f";
   let buffer = Buffer.from(hex, "hex");
   let p = Packet_NetModuleLoad$TerrariaPacket.parse(buffer, true);
-  if (p !== undefined) {
-    if (p.TAG === "CreativePower") {
-      let match = p._0;
+  if (p.TAG === "Ok") {
+    let netModuleLoad = p._0;
+    if (netModuleLoad.TAG === "CreativePower") {
+      let match = netModuleLoad._0;
       if (typeof match !== "object" || match.TAG !== "FarPlacementRangePower") {
         t.fail("Failed to parse packet");
       } else {
@@ -25,7 +28,7 @@ Zora.test("should correctly parse and serialise FarPlacementRangePower", t => {
     } else {
       t.fail("Failed to parse packet");
     }
-    let buffer$1 = Packet_NetModuleLoad$TerrariaPacket.toBuffer(p);
+    let buffer$1 = Packet_NetModuleLoad$TerrariaPacket.toBuffer(netModuleLoad);
     let hexOutput = Stdlib_Result.map(buffer$1, v => v.toString("hex"));
     t.equal({
       TAG: "Ok",
@@ -33,16 +36,17 @@ Zora.test("should correctly parse and serialise FarPlacementRangePower", t => {
     }, hexOutput);
     return;
   }
-  t.fail("Failed to parse packet");
+  t.fail(Stdlib_Option.getOrThrow(Stdlib_JsExn.message(p._0.error), undefined));
 });
 
 Zora.test("should correctly parse and serialise GodmodePower", t => {
   let hex = "28005206000500000100000000000000000000000000000000000000000000000000000000000000";
   let buffer = Buffer.from(hex, "hex");
   let p = Packet_NetModuleLoad$TerrariaPacket.parse(buffer, true);
-  if (p !== undefined) {
-    if (p.TAG === "CreativePower") {
-      let match = p._0;
+  if (p.TAG === "Ok") {
+    let netModuleLoad = p._0;
+    if (netModuleLoad.TAG === "CreativePower") {
+      let match = netModuleLoad._0;
       if (typeof match !== "object" || match.TAG !== "GodmodePower") {
         t.fail("Failed to parse packet");
       } else {
@@ -58,7 +62,7 @@ Zora.test("should correctly parse and serialise GodmodePower", t => {
     } else {
       t.fail("Failed to parse packet");
     }
-    let buffer$1 = Packet_NetModuleLoad$TerrariaPacket.toBuffer(p);
+    let buffer$1 = Packet_NetModuleLoad$TerrariaPacket.toBuffer(netModuleLoad);
     let hexOutput = Stdlib_Result.map(buffer$1, v => v.toString("hex"));
     t.equal({
       TAG: "Ok",
@@ -66,7 +70,7 @@ Zora.test("should correctly parse and serialise GodmodePower", t => {
     }, hexOutput);
     return;
   }
-  t.fail("Failed to parse packet");
+  t.fail(Stdlib_Option.getOrThrow(Stdlib_JsExn.message(p._0.error), undefined));
 });
 
 /*  Not a pure module */

@@ -4,7 +4,7 @@ zoraBlock("should correctly parse and serialise FarPlacementRangePower", t => {
   let buffer = NodeJs.Buffer.fromStringWithEncoding(hex, NodeJs.StringEncoding.hex)
   let p = Packet.NetModuleLoad.parse(buffer, ~fromServer=true)
   switch p {
-  | Some(netModuleLoad) =>
+  | Ok(netModuleLoad) =>
     switch netModuleLoad {
     | CreativePower(FarPlacementRangePower(Everyone(values))) => t->ok(values->Array.every(v => v))
     | _ => t->fail(~msg="Failed to parse packet")
@@ -13,7 +13,7 @@ zoraBlock("should correctly parse and serialise FarPlacementRangePower", t => {
     let hexOutput =
       buffer->Result.map(v => v->NodeJs.Buffer.toStringWithEncoding(NodeJs.StringEncoding.hex))
     t->equal(Ok(hex), hexOutput)
-  | None => t->fail(~msg="Failed to parse packet")
+  | Error(err) => t->fail(~msg=JsExn.message(err.error)->Option.getOrThrow)
   }
 })
 
@@ -22,7 +22,7 @@ zoraBlock("should correctly parse and serialise GodmodePower", t => {
   let buffer = NodeJs.Buffer.fromStringWithEncoding(hex, NodeJs.StringEncoding.hex)
   let p = Packet.NetModuleLoad.parse(buffer, ~fromServer=true)
   switch p {
-  | Some(netModuleLoad) =>
+  | Ok(netModuleLoad) =>
     switch netModuleLoad {
     | CreativePower(GodmodePower(Everyone(values))) =>
       t->ok(values->Array.slice(~start=1)->Array.every(v => !v))
@@ -33,6 +33,6 @@ zoraBlock("should correctly parse and serialise GodmodePower", t => {
     let hexOutput =
       buffer->Result.map(v => v->NodeJs.Buffer.toStringWithEncoding(NodeJs.StringEncoding.hex))
     t->equal(Ok(hex), hexOutput)
-  | None => t->fail(~msg="Failed to parse packet")
+  | Error(err) => t->fail(~msg=JsExn.message(err.error)->Option.getOrThrow)
   }
 })

@@ -24,6 +24,8 @@ type t = {
   spawnedFromStatue: bool,
 }
 
+let makeError = (_message: string): JsExn.t => %raw("new Error(_message)")
+
 module Decode = {
   let {readInt32, readInt16, readSingle, readUInt16, readByte, readSByte} = module(
     ErrorAwarePacketReader
@@ -41,8 +43,9 @@ module Decode = {
   }
 
   let readNpcFlags1 = (reader, fieldName) => {
-    let flags = reader->readByte(fieldName)->BitFlags.fromByte
-    {
+    let? Ok(flagsRaw) = reader->readByte(fieldName)
+    let flags = flagsRaw->BitFlags.fromByte
+    Ok({
       directionX: flags->BitFlags.flag1,
       directionY: flags->BitFlags.flag2,
       ai0: flags->BitFlags.flag3,
@@ -51,7 +54,7 @@ module Decode = {
       ai3: flags->BitFlags.flag6,
       spriteDirection: flags->BitFlags.flag7,
       lifeMax: flags->BitFlags.flag8,
-    }
+    })
   }
 
   type npcFlags2 = {
@@ -61,82 +64,109 @@ module Decode = {
   }
 
   let readNpcFlags2 = (reader, fieldName) => {
-    let flags = reader->readByte(fieldName)->BitFlags.fromByte
-    {
+    let? Ok(flagsRaw) = reader->readByte(fieldName)
+    let flags = flagsRaw->BitFlags.fromByte
+    Ok({
       statsScaled: flags->BitFlags.flag1,
       spawnedFromStatue: flags->BitFlags.flag2,
       strengthMultiplier: flags->BitFlags.flag3,
-    }
+    })
   }
 
   let parse = (payload: NodeJs.Buffer.t) => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let npcSlotId = reader->readInt16("npcSlotId")
-    let x = reader->readSingle("x")
-    let y = reader->readSingle("y")
-    let vx = reader->readSingle("vx")
-    let vy = reader->readSingle("vy")
-    let target = reader->readUInt16("target")
-    let npcFlags1 = reader->readNpcFlags1("npcFlags1")
-    let npcFlags2 = reader->readNpcFlags2("npcFlags2")
-    let ai = (
-      npcFlags1.ai0 ? Some(reader->readSingle("ai0")) : None,
-      npcFlags1.ai1 ? Some(reader->readSingle("ai1")) : None,
-      npcFlags1.ai2 ? Some(reader->readSingle("ai2")) : None,
-      npcFlags1.ai3 ? Some(reader->readSingle("ai3")) : None,
-    )
-    let npcTypeId = reader->readInt16("npcTypeId")
-    let playerCountScale = if npcFlags2.statsScaled {
-      Some(reader->readByte("playerCountScale"))
+    let? Ok(npcSlotId) = reader->readInt16("npcSlotId")
+    let? Ok(x) = reader->readSingle("x")
+    let? Ok(y) = reader->readSingle("y")
+    let? Ok(vx) = reader->readSingle("vx")
+    let? Ok(vy) = reader->readSingle("vy")
+    let? Ok(target) = reader->readUInt16("target")
+    let? Ok(npcFlags1) = reader->readNpcFlags1("npcFlags1")
+    let? Ok(npcFlags2) = reader->readNpcFlags2("npcFlags2")
+    let? Ok(ai) = Result.all4((
+      npcFlags1.ai0
+        ? {
+            let? Ok(ai0) = reader->readSingle("ai0")
+            Ok(Some(ai0))
+          }
+        : Ok(None),
+      npcFlags1.ai1
+        ? {
+            let? Ok(ai1) = reader->readSingle("ai1")
+            Ok(Some(ai1))
+          }
+        : Ok(None),
+      npcFlags1.ai2
+        ? {
+            let? Ok(ai2) = reader->readSingle("ai2")
+            Ok(Some(ai2))
+          }
+        : Ok(None),
+      npcFlags1.ai3
+        ? {
+            let? Ok(ai3) = reader->readSingle("ai3")
+            Ok(Some(ai3))
+          }
+        : Ok(None),
+    ))
+    let? Ok(npcTypeId) = reader->readInt16("npcTypeId")
+    let? Ok(playerCountScale) = if npcFlags2.statsScaled {
+      let? Ok(playerCountScale) = reader->readByte("playerCountScale")
+      Ok(Some(playerCountScale))
     } else {
-      None
+      Ok(None)
     }
-    let strengthMultiplier = if npcFlags2.strengthMultiplier {
-      Some(reader->readSingle("strengthMultiplier"))
+    let? Ok(strengthMultiplier) = if npcFlags2.strengthMultiplier {
+      let? Ok(strengthMultiplier) = reader->readSingle("strengthMultiplier")
+      Ok(Some(strengthMultiplier))
     } else {
-      None
+      Ok(None)
     }
-    let life = if npcFlags1.lifeMax {
-      Some(Max)
+    let? Ok(life) = if npcFlags1.lifeMax {
+      Ok(Max)
     } else {
-      let lifeBytes = reader->readByte("lifeBytes")
+      let? Ok(lifeBytes) = reader->readByte("lifeBytes")
       switch lifeBytes {
-      | 0 => None
-      | 1 => Some(Byte(reader->readSByte("life_sbyte")))
-      | 2 => Some(Int16(reader->readInt16("life_int16")))
-      | 4 => Some(Int32(reader->readInt32("life_int32")))
-      | _ => None
+      | 1 =>
+        let? Ok(life_sbyte) = reader->readSByte("life_sbyte")
+        Ok(Byte(life_sbyte))
+      | 2 =>
+        let? Ok(life_int16) = reader->readInt16("life_int16")
+        Ok(Int16(life_int16))
+      | 4 =>
+        let? Ok(life_int32) = reader->readInt32("life_int32")
+        Ok(Int32(life_int32))
+      | _ =>
+        Error({
+          context: "Packet_NpcUpdate.parse",
+          error: makeError("Invalid life byte count"),
+        })
       }
     }
 
-    let releaseOwner = try {
-      Some(reader->readByte("releaseOwner"))
-    } catch {
-    | _ => None
+    let releaseOwner = switch reader->readByte("releaseOwner") {
+    | Ok(releaseOwner) => Some(releaseOwner)
+    | Error(_) => None
     }
 
-    switch life {
-    | Some(life) =>
-      Some({
-        npcSlotId,
-        npcTypeId,
-        x,
-        y,
-        vx,
-        vy,
-        target,
-        directionX: npcFlags1.directionX,
-        directionY: npcFlags1.directionY,
-        ai,
-        spriteDirection: npcFlags1.spriteDirection,
-        life,
-        releaseOwner,
-        playerCountScale,
-        strengthMultiplier,
-        spawnedFromStatue: npcFlags2.spawnedFromStatue,
-      })
-    | None => None
-    }
+    Ok({
+      npcSlotId,
+      npcTypeId,
+      x,
+      y,
+      vx,
+      vy,
+      target,
+      directionX: npcFlags1.directionX,
+      directionY: npcFlags1.directionY,
+      ai,
+      spriteDirection: npcFlags1.spriteDirection,
+      life,
+      releaseOwner,
+      playerCountScale,
+      strengthMultiplier,
+      spawnedFromStatue: npcFlags2.spawnedFromStatue,
+    })
   }
 }
 

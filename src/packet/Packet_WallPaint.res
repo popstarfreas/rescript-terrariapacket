@@ -6,14 +6,14 @@ type t = {
 }
 
 module Decode = {
-  let {readByte, readInt16} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readByte, readInt16} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let x = reader->readInt16
-    let y = reader->readInt16
-    let color = reader->readByte
-    let coat = reader->readByte
-    Some({
+    let? Ok(x) = reader->readInt16("x")
+    let? Ok(y) = reader->readInt16("y")
+    let? Ok(color) = reader->readByte("color")
+    let? Ok(coat) = reader->readByte("coat")
+    Ok({
       x,
       y,
       color,
@@ -23,14 +23,14 @@ module Decode = {
 }
 
 module Encode = {
-  let {packByte, packInt16, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let {packByte, packInt16, setType, data} = module(ErrorAwarePacketWriter)
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.WallPaint->PacketType.toInt)
-    ->packInt16(self.x)
-    ->packInt16(self.y)
-    ->packByte(self.color)
-    ->packByte(self.coat)
+    ->packInt16(self.x, "x")
+    ->packInt16(self.y, "y")
+    ->packByte(self.color, "color")
+    ->packByte(self.coat, "coat")
     ->data
   }
 }

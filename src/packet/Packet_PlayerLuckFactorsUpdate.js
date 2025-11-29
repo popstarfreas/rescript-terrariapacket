@@ -3,50 +3,61 @@
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
 let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
-function readInt16(prim) {
-  return prim.readInt16();
-}
-
-function readInt32(prim) {
-  return prim.readInt32();
-}
-
-function readByte(prim) {
-  return prim.readByte();
-}
-
-function readSingle(prim) {
-  return prim.readSingle();
-}
-
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let player = reader.readByte();
-  let ladyBugLuckTimeLeft = reader.readInt32();
-  let torchLuck = reader.readSingle();
-  let luckPotion = reader.readByte();
-  let hasGardenGnomeNearby = reader.readByte() === 1;
-  let equipmentBasedLuckBonus = reader.readSingle();
-  let coinLuck = reader.readSingle();
-  return {
-    playerId: player,
-    ladyBugLuckTimeLeft: ladyBugLuckTimeLeft,
-    torchLuck: torchLuck,
-    luckPotion: luckPotion,
-    hasGardenGnomeNearby: hasGardenGnomeNearby,
-    equipmentBasedLuckBonus: equipmentBasedLuckBonus,
-    coinLuck: coinLuck
-  };
+  let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "ladyBugLuckTimeLeft");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "torchLuck");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "luckPotion");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hasGardenGnomeNearby");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let hasGardenGnomeNearby = e$4._0 === 1;
+  let e$5 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "equipmentBasedLuckBonus");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "coinLuck");
+  if (e$6.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        ladyBugLuckTimeLeft: e$1._0,
+        torchLuck: e$2._0,
+        luckPotion: e$3._0,
+        hasGardenGnomeNearby: hasGardenGnomeNearby,
+        equipmentBasedLuckBonus: e$5._0,
+        coinLuck: e$6._0
+      }
+    };
+  } else {
+    return e$6;
+  }
 }
 
 let Decode = {
-  readInt16: readInt16,
-  readInt32: readInt32,
-  readByte: readByte,
-  readSingle: readSingle,
+  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+  readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+  readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+  readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
   parse: parse
 };
 

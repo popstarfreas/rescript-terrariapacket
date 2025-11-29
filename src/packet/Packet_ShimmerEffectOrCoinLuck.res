@@ -11,20 +11,33 @@ type t =
   | NewShimmerEffect(int)
 
 module Decode = {
-  let {readByte, readInt32, readSingle} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readByte, readInt32, readSingle} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    switch reader->readByte {
-    | 0 => Some(ShimmerEffect(reader->readSingle, reader->readSingle))
+    let? Ok(kind) = reader->readByte("kind")
+    switch kind {
+    | 0 =>
+      let? Ok(x) = reader->readSingle("shimmerX")
+      let? Ok(y) = reader->readSingle("shimmerY")
+      Ok(ShimmerEffect(x, y))
     | 1 =>
-      Some(
+      let? Ok(posX) = reader->readSingle("coinLuckX")
+      let? Ok(posY) = reader->readSingle("coinLuckY")
+      let? Ok(amount) = reader->readInt32("coinLuckAmount")
+      Ok(
         CoinLuck({
-          position: {x: reader->readSingle, y: reader->readSingle},
-          amount: reader->readInt32,
+          position: {x: posX, y: posY},
+          amount,
         }),
       )
-    | 2 => Some(NewShimmerEffect(reader->readInt32))
-    | _ => None
+    | 2 =>
+      let? Ok(id) = reader->readInt32("newShimmerEffectId")
+      Ok(NewShimmerEffect(id))
+    | _ =>
+      Error({
+        context: "Packet_ShimmerEffectOrCoinLuck.parse",
+        error: ErrorExt.makeJsError("Unknown shimmer effect kind"),
+      })
     }
   }
 }

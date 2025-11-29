@@ -11,58 +11,185 @@ let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let tileX = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "tileX");
-  let tileY = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "tileY");
-  let width = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "width");
-  let height = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "height");
-  let changeType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "changeType");
-  let tiles = [];
-  for (let _x = 0; _x < width; ++_x) {
-    let column = [];
-    for (let _y = 0; _y < height; ++_y) {
-      let flags1 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags1"));
-      let flags2 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags2"));
-      let flags3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags3");
-      let active = BitFlags$TerrariaPacket.flag1(flags1);
-      let hasWall = BitFlags$TerrariaPacket.flag3(flags1);
-      let hasLiquid = BitFlags$TerrariaPacket.flag4(flags1);
-      let wire = BitFlags$TerrariaPacket.flag5(flags1);
-      let halfBrick = BitFlags$TerrariaPacket.flag6(flags1);
-      let actuator = BitFlags$TerrariaPacket.flag7(flags1);
-      let inActive = BitFlags$TerrariaPacket.flag8(flags1);
-      let wire2 = BitFlags$TerrariaPacket.flag1(flags2);
-      let wire3 = BitFlags$TerrariaPacket.flag2(flags2);
-      let color = BitFlags$TerrariaPacket.flag3(flags2) ? ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "color") : undefined;
-      let wallColor = BitFlags$TerrariaPacket.flag4(flags2) ? ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "wallColor") : undefined;
-      let activeTile;
-      if (active) {
-        let tileType = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "tileType");
-        let frame = TileFrameImportant$TerrariaPacket.isImportant(tileType) ? ({
-            x: ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "frameX"),
-            y: ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "frameY")
-          }) : undefined;
-        let slope = ((0 + (
-          BitFlags$TerrariaPacket.flag5(flags2) ? 1 : 0
-        ) | 0) + (
-          BitFlags$TerrariaPacket.flag6(flags2) ? 2 : 0
-        ) | 0) + (
-          BitFlags$TerrariaPacket.flag7(flags2) ? 4 : 0
-        ) | 0;
-        activeTile = {
-          tileType: tileType,
-          slope: slope,
-          frame: frame
-        };
+  let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "tileX");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "tileY");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "width");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let width = e$2._0;
+  let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "height");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let height = e$3._0;
+  let e$4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "changeType");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let readTile = () => {
+    let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags1");
+    if (e.TAG !== "Ok") {
+      return e;
+    }
+    let flags1 = BitFlags$TerrariaPacket.fromByte(e._0);
+    let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags2");
+    if (e$1.TAG !== "Ok") {
+      return e$1;
+    }
+    let flags2 = BitFlags$TerrariaPacket.fromByte(e$1._0);
+    let e$2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags3");
+    if (e$2.TAG !== "Ok") {
+      return e$2;
+    }
+    let active = BitFlags$TerrariaPacket.flag1(flags1);
+    let hasWall = BitFlags$TerrariaPacket.flag3(flags1);
+    let hasLiquid = BitFlags$TerrariaPacket.flag4(flags1);
+    let wire = BitFlags$TerrariaPacket.flag5(flags1);
+    let halfBrick = BitFlags$TerrariaPacket.flag6(flags1);
+    let actuator = BitFlags$TerrariaPacket.flag7(flags1);
+    let inActive = BitFlags$TerrariaPacket.flag8(flags1);
+    let wire2 = BitFlags$TerrariaPacket.flag1(flags2);
+    let wire3 = BitFlags$TerrariaPacket.flag2(flags2);
+    let e$3;
+    if (BitFlags$TerrariaPacket.flag3(flags2)) {
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "color");
+      e$3 = e$4.TAG === "Ok" ? ({
+          TAG: "Ok",
+          _0: e$4._0
+        }) : e$4;
+    } else {
+      e$3 = {
+        TAG: "Ok",
+        _0: undefined
+      };
+    }
+    if (e$3.TAG !== "Ok") {
+      return e$3;
+    }
+    let e$5;
+    if (BitFlags$TerrariaPacket.flag4(flags2)) {
+      let e$6 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "wallColor");
+      e$5 = e$6.TAG === "Ok" ? ({
+          TAG: "Ok",
+          _0: e$6._0
+        }) : e$6;
+    } else {
+      e$5 = {
+        TAG: "Ok",
+        _0: undefined
+      };
+    }
+    if (e$5.TAG !== "Ok") {
+      return e$5;
+    }
+    let e$7;
+    if (active) {
+      let e$8 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "tileType");
+      if (e$8.TAG === "Ok") {
+        let tileType = e$8._0;
+        let e$9;
+        if (TileFrameImportant$TerrariaPacket.isImportant(tileType)) {
+          let e$10 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "frameX");
+          if (e$10.TAG === "Ok") {
+            let e$11 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "frameY");
+            e$9 = e$11.TAG === "Ok" ? ({
+                TAG: "Ok",
+                _0: {
+                  x: e$10._0,
+                  y: e$11._0
+                }
+              }) : e$11;
+          } else {
+            e$9 = e$10;
+          }
+        } else {
+          e$9 = {
+            TAG: "Ok",
+            _0: undefined
+          };
+        }
+        if (e$9.TAG === "Ok") {
+          let slope = ((0 + (
+            BitFlags$TerrariaPacket.flag5(flags2) ? 1 : 0
+          ) | 0) + (
+            BitFlags$TerrariaPacket.flag6(flags2) ? 2 : 0
+          ) | 0) + (
+            BitFlags$TerrariaPacket.flag7(flags2) ? 4 : 0
+          ) | 0;
+          e$7 = {
+            TAG: "Ok",
+            _0: {
+              tileType: tileType,
+              slope: slope,
+              frame: e$9._0
+            }
+          };
+        } else {
+          e$7 = e$9;
+        }
       } else {
-        activeTile = undefined;
+        e$7 = e$8;
       }
-      let wall = hasWall ? ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "wall") : undefined;
-      let liquid = hasLiquid ? ({
-          liquidValue: ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "liquidValue"),
-          liquidType: ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "liquidType")
-        }) : undefined;
-      let wire4 = BitFlags$TerrariaPacket.flag8(flags2);
-      column.push({
+    } else {
+      e$7 = {
+        TAG: "Ok",
+        _0: undefined
+      };
+    }
+    if (e$7.TAG !== "Ok") {
+      return e$7;
+    }
+    let e$12;
+    if (hasWall) {
+      let e$13 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "wall");
+      e$12 = e$13.TAG === "Ok" ? ({
+          TAG: "Ok",
+          _0: e$13._0
+        }) : e$13;
+    } else {
+      e$12 = {
+        TAG: "Ok",
+        _0: undefined
+      };
+    }
+    if (e$12.TAG !== "Ok") {
+      return e$12;
+    }
+    let e$14;
+    if (hasLiquid) {
+      let e$15 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "liquidValue");
+      if (e$15.TAG === "Ok") {
+        let e$16 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "liquidType");
+        e$14 = e$16.TAG === "Ok" ? ({
+            TAG: "Ok",
+            _0: {
+              liquidValue: e$15._0,
+              liquidType: e$16._0
+            }
+          }) : e$16;
+      } else {
+        e$14 = e$15;
+      }
+    } else {
+      e$14 = {
+        TAG: "Ok",
+        _0: undefined
+      };
+    }
+    if (e$14.TAG !== "Ok") {
+      return e$14;
+    }
+    let wire4 = BitFlags$TerrariaPacket.flag8(flags2);
+    return {
+      TAG: "Ok",
+      _0: {
         wire: wire,
         halfBrick: halfBrick,
         actuator: actuator,
@@ -70,24 +197,63 @@ function parse(payload) {
         wire2: wire2,
         wire3: wire3,
         wire4: wire4,
-        color: color,
-        wallColor: wallColor,
-        activeTile: activeTile,
-        wall: wall,
-        liquid: liquid,
-        coatHeader: flags3
-      });
-    }
-    tiles.push(column);
-  }
-  return {
-    width: width,
-    height: height,
-    changeType: changeType,
-    tileX: tileX,
-    tileY: tileY,
-    tiles: tiles
+        color: e$3._0,
+        wallColor: e$5._0,
+        activeTile: e$7._0,
+        wall: e$12._0,
+        liquid: e$14._0,
+        coatHeader: e$2._0
+      }
+    };
   };
+  let tiles = [];
+  let parseResult = {
+    TAG: "Ok",
+    _0: undefined
+  };
+  for (let _x = 0; _x < width; ++_x) {
+    let match = parseResult;
+    if (match.TAG === "Ok") {
+      let column = [];
+      for (let _y = 0; _y < height; ++_y) {
+        let match$1 = parseResult;
+        if (match$1.TAG === "Ok") {
+          let tile = readTile();
+          if (tile.TAG === "Ok") {
+            column.push(tile._0);
+          } else {
+            parseResult = {
+              TAG: "Error",
+              _0: tile._0
+            };
+          }
+        }
+      }
+      let match$2 = parseResult;
+      if (match$2.TAG === "Ok") {
+        tiles.push(column);
+      }
+    }
+  }
+  let err = parseResult;
+  if (err.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        width: width,
+        height: height,
+        changeType: e$4._0,
+        tileX: e._0,
+        tileY: e$1._0,
+        tiles: tiles
+      }
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: err._0
+    };
+  }
 }
 
 function packTile(writer, tile) {

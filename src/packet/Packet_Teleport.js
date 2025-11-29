@@ -2,31 +2,25 @@
 'use strict';
 
 let Belt_Option = require("@rescript/runtime/lib/js/Belt_Option.js");
+let Stdlib_Result = require("@rescript/runtime/lib/js/Stdlib_Result.js");
 let BitFlags$TerrariaPacket = require("../BitFlags.js");
 let PacketType$TerrariaPacket = require("../PacketType.js");
 let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
-function readByte(prim) {
-  return prim.readByte();
-}
-
-function readInt16(prim) {
-  return prim.readInt16();
-}
-
-function readSingle(prim) {
-  return prim.readSingle();
-}
-
-function readInt32(prim) {
-  return prim.readInt32();
+function makeError(_message) {
+  return (new Error(_message));
 }
 
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let flags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+  let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let flags = BitFlags$TerrariaPacket.fromByte(e._0);
   let getPositionFromTarget = BitFlags$TerrariaPacket.flag3(flags);
   let match = BitFlags$TerrariaPacket.flag1(flags);
   let match$1 = BitFlags$TerrariaPacket.flag2(flags);
@@ -35,29 +29,59 @@ function parse(payload) {
     ) : (
       match$1 ? "PlayerToPlayer" : "Player"
     );
-  let targetId = reader.readInt16();
-  let x = reader.readSingle();
-  let y = reader.readSingle();
-  let style = reader.readByte();
-  let extraInfo = BitFlags$TerrariaPacket.flag4(flags) ? reader.readInt32() : undefined;
-  if (teleportType !== undefined) {
-    return {
-      teleportType: teleportType,
-      getPositionFromTarget: getPositionFromTarget,
-      targetId: targetId,
-      x: x,
-      y: y,
-      style: style,
-      extraInfo: extraInfo
-    };
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "targetId");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "style");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = BitFlags$TerrariaPacket.flag4(flags) ? Stdlib_Result.map(ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "extraInfo"), v => v) : ({
+      TAG: "Ok",
+      _0: undefined
+    });
+  if (e$5.TAG === "Ok") {
+    if (teleportType !== undefined) {
+      return {
+        TAG: "Ok",
+        _0: {
+          teleportType: teleportType,
+          getPositionFromTarget: getPositionFromTarget,
+          targetId: e$1._0,
+          x: e$2._0,
+          y: e$3._0,
+          style: e$4._0,
+          extraInfo: e$5._0
+        }
+      };
+    } else {
+      return {
+        TAG: "Error",
+        _0: {
+          context: "Packet_Teleport.parse",
+          error: makeError("Invalid teleport type flags")
+        }
+      };
+    }
+  } else {
+    return e$5;
   }
 }
 
 let Decode = {
-  readByte: readByte,
-  readInt16: readInt16,
-  readSingle: readSingle,
-  readInt32: readInt32,
+  readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+  readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
+  readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
   parse: parse
 };
 
@@ -105,6 +129,7 @@ let Encode = {
   toBuffer: toBuffer
 };
 
+exports.makeError = makeError;
 exports.Decode = Decode;
 exports.Encode = Encode;
 exports.parse = parse;

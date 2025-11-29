@@ -1,11 +1,11 @@
 type t = {version: string}
 
 module Decode = {
-  let {readString} = module(PacketFactory.PacketReader)
+  let {readString} = module(ErrorAwarePacketReader)
   let parse = (payload: NodeJs.Buffer.t) => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let version = reader->readString
-    Some({version: version})
+    let? Ok(version) = reader->readString("version")
+    Ok({version: version})
   }
 }
 

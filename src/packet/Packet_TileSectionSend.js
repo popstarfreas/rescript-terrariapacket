@@ -4,10 +4,10 @@
 let Nodezlib = require("node:zlib");
 let Belt_Array = require("@rescript/runtime/lib/js/Belt_Array.js");
 let Belt_Option = require("@rescript/runtime/lib/js/Belt_Option.js");
-let Belt_Result = require("@rescript/runtime/lib/js/Belt_Result.js");
+let Stdlib_Result = require("@rescript/runtime/lib/js/Stdlib_Result.js");
 let Primitive_object = require("@rescript/runtime/lib/js/Primitive_object.js");
+let Primitive_exceptions = require("@rescript/runtime/lib/js/Primitive_exceptions.js");
 let BitFlags$TerrariaPacket = require("../BitFlags.js");
-let ResultExt$TerrariaPacket = require("../ResultExt.js");
 let TileSolid$TerrariaPacket = require("../TileSolid.js");
 let PacketType$TerrariaPacket = require("../PacketType.js");
 let TileFrameImportant$TerrariaPacket = require("../TileFrameImportant.js");
@@ -17,6 +17,10 @@ let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.j
 let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Bufferreader = require("@popstarfreas/packetfactory/bufferreader").default;
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
+
+function makeError(_message) {
+  return (new Error(_message));
+}
 
 function defaultTileCache() {
   return {
@@ -61,16 +65,32 @@ function cacheToTile(cache) {
 }
 
 function parse(reader) {
-  let id = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "id");
-  let x = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
-  let y = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
-  let name = ErrorAwareBufferReader$TerrariaPacket.readString(reader, "name");
-  return {
-    id: id,
-    x: x,
-    y: y,
-    name: name
-  };
+  let e = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "id");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = ErrorAwareBufferReader$TerrariaPacket.readString(reader, "name");
+  if (e$3.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        id: e._0,
+        x: e$1._0,
+        y: e$2._0,
+        name: e$3._0
+      }
+    };
+  } else {
+    return e$3;
+  }
 }
 
 function pack(writer, chest) {
@@ -87,16 +107,32 @@ let Chest = {
 };
 
 function parse$1(reader) {
-  let id = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "id");
-  let x = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
-  let y = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
-  let name = ErrorAwareBufferReader$TerrariaPacket.readString(reader, "name");
-  return {
-    id: id,
-    x: x,
-    y: y,
-    name: name
-  };
+  let e = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "id");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = ErrorAwareBufferReader$TerrariaPacket.readString(reader, "name");
+  if (e$3.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        id: e._0,
+        x: e$1._0,
+        y: e$2._0,
+        name: e$3._0
+      }
+    };
+  } else {
+    return e$3;
+  }
 }
 
 function pack$1(writer, sign) {
@@ -113,153 +149,257 @@ let Sign = {
 };
 
 function parseTrainingDummyKind(reader) {
-  return {
-    npcSlotId: ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "npcSlotId")
-  };
+  let e = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "npcSlotId");
+  if (e.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        npcSlotId: e._0
+      }
+    };
+  } else {
+    return e;
+  }
 }
 
 function parseDisplayItem(reader) {
-  let netId = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "netId");
-  let prefix = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "prefix");
-  let stack = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "stack");
-  return {
-    netId: netId,
-    prefix: prefix,
-    stack: stack
-  };
+  let e = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "netId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "prefix");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "stack");
+  if (e$2.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        netId: e._0,
+        prefix: e$1._0,
+        stack: e$2._0
+      }
+    };
+  } else {
+    return e$2;
+  }
 }
 
 function parseLogicSensorKind(reader) {
-  let checkType = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "checkType");
-  let on = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "on") === 1;
-  return {
-    checkType: checkType,
-    on: on
-  };
+  let e = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "checkType");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "on");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        checkType: e._0,
+        on: e$1._0 === 1
+      }
+    };
+  } else {
+    return e$1;
+  }
 }
 
 function parseDisplayDollKind(reader) {
-  let itemsFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "itemsFlags"));
-  let dyeFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "dyeFlags"));
+  let e = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "itemsFlags");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let itemsFlags = BitFlags$TerrariaPacket.fromByte(e._0);
+  let e$1 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "dyeFlags");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let dyeFlags = BitFlags$TerrariaPacket.fromByte(e$1._0);
   let items = [];
   let dyes = [];
+  let parseResult = {
+    TAG: "Ok",
+    _0: undefined
+  };
   for (let i = 0; i <= 7; ++i) {
-    if (BitFlags$TerrariaPacket.flagN(itemsFlags, i)) {
-      items.push(parseDisplayItem(reader));
-    } else {
-      items.push(undefined);
+    let match = parseResult;
+    if (match.TAG === "Ok") {
+      if (BitFlags$TerrariaPacket.flagN(itemsFlags, i)) {
+        let item = parseDisplayItem(reader);
+        if (item.TAG === "Ok") {
+          items.push(item._0);
+        } else {
+          parseResult = {
+            TAG: "Error",
+            _0: item._0
+          };
+        }
+      } else {
+        items.push(undefined);
+      }
     }
   }
   for (let i$1 = 0; i$1 <= 7; ++i$1) {
-    if (BitFlags$TerrariaPacket.flagN(dyeFlags, i$1)) {
-      dyes.push(parseDisplayItem(reader));
-    } else {
-      dyes.push(undefined);
+    let match$1 = parseResult;
+    if (match$1.TAG === "Ok") {
+      if (BitFlags$TerrariaPacket.flagN(dyeFlags, i$1)) {
+        let item$1 = parseDisplayItem(reader);
+        if (item$1.TAG === "Ok") {
+          dyes.push(item$1._0);
+        } else {
+          parseResult = {
+            TAG: "Error",
+            _0: item$1._0
+          };
+        }
+      } else {
+        dyes.push(undefined);
+      }
     }
   }
-  return {
-    items: items,
-    dyes: dyes
-  };
+  let err = parseResult;
+  if (err.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        items: items,
+        dyes: dyes
+      }
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: err._0
+    };
+  }
 }
 
 function parseHatRackKind(reader) {
-  let flags = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "flags"));
+  let e = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "flags");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let flags = BitFlags$TerrariaPacket.fromByte(e._0);
   let items = [];
   let dyes = [];
+  let parseResult = {
+    TAG: "Ok",
+    _0: undefined
+  };
   for (let i = 0; i <= 1; ++i) {
-    if (BitFlags$TerrariaPacket.flagN(flags, i)) {
-      items.push(parseDisplayItem(reader));
-    } else {
-      items.push(undefined);
+    let match = parseResult;
+    if (match.TAG === "Ok") {
+      if (BitFlags$TerrariaPacket.flagN(flags, i)) {
+        let item = parseDisplayItem(reader);
+        if (item.TAG === "Ok") {
+          items.push(item._0);
+        } else {
+          parseResult = {
+            TAG: "Error",
+            _0: item._0
+          };
+        }
+      } else {
+        items.push(undefined);
+      }
     }
   }
   for (let i$1 = 0; i$1 <= 1; ++i$1) {
-    if (BitFlags$TerrariaPacket.flagN(flags, i$1 + 2 | 0)) {
-      dyes.push(parseDisplayItem(reader));
-    } else {
-      dyes.push(undefined);
+    let match$1 = parseResult;
+    if (match$1.TAG === "Ok") {
+      if (BitFlags$TerrariaPacket.flagN(flags, i$1 + 2 | 0)) {
+        let item$1 = parseDisplayItem(reader);
+        if (item$1.TAG === "Ok") {
+          dyes.push(item$1._0);
+        } else {
+          parseResult = {
+            TAG: "Error",
+            _0: item$1._0
+          };
+        }
+      } else {
+        dyes.push(undefined);
+      }
     }
   }
-  return {
-    items: items,
-    dyes: dyes
-  };
+  let err = parseResult;
+  if (err.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        items: items,
+        dyes: dyes
+      }
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: err._0
+    };
+  }
 }
 
 function parse$2(reader) {
-  let entityType = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "entityType");
-  let x = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
-  let y = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
-  let entityKind;
+  let e = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "entityType");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let entityType = e._0;
+  let e$1 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3;
   switch (entityType) {
     case 0 :
-      entityKind = {
-        TAG: "Ok",
-        _0: {
-          TAG: "TrainingDummy",
-          _0: {
-            npcSlotId: ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "npcSlotId")
-          }
-        }
-      };
+      e$3 = Stdlib_Result.map(parseTrainingDummyKind(reader), v => ({
+        TAG: "TrainingDummy",
+        _0: v
+      }));
       break;
     case 1 :
-      entityKind = {
-        TAG: "Ok",
-        _0: {
-          TAG: "ItemFrame",
-          _0: parseDisplayItem(reader)
-        }
-      };
+      e$3 = Stdlib_Result.map(parseDisplayItem(reader), v => ({
+        TAG: "ItemFrame",
+        _0: v
+      }));
       break;
     case 2 :
-      entityKind = {
-        TAG: "Ok",
-        _0: {
-          TAG: "LogicSensor",
-          _0: parseLogicSensorKind(reader)
-        }
-      };
+      e$3 = Stdlib_Result.map(parseLogicSensorKind(reader), v => ({
+        TAG: "LogicSensor",
+        _0: v
+      }));
       break;
     case 3 :
-      entityKind = {
-        TAG: "Ok",
-        _0: {
-          TAG: "DisplayDoll",
-          _0: parseDisplayDollKind(reader)
-        }
-      };
+      e$3 = Stdlib_Result.map(parseDisplayDollKind(reader), v => ({
+        TAG: "DisplayDoll",
+        _0: v
+      }));
       break;
     case 4 :
-      entityKind = {
-        TAG: "Ok",
-        _0: {
-          TAG: "WeaponsRack",
-          _0: parseDisplayItem(reader)
-        }
-      };
+      e$3 = Stdlib_Result.map(parseDisplayItem(reader), v => ({
+        TAG: "WeaponsRack",
+        _0: v
+      }));
       break;
     case 5 :
-      entityKind = {
-        TAG: "Ok",
-        _0: {
-          TAG: "HatRack",
-          _0: parseHatRackKind(reader)
-        }
-      };
+      e$3 = Stdlib_Result.map(parseHatRackKind(reader), v => ({
+        TAG: "HatRack",
+        _0: v
+      }));
       break;
     case 6 :
-      entityKind = {
-        TAG: "Ok",
-        _0: {
-          TAG: "FoodPlatter",
-          _0: parseDisplayItem(reader)
-        }
-      };
+      e$3 = Stdlib_Result.map(parseDisplayItem(reader), v => ({
+        TAG: "FoodPlatter",
+        _0: v
+      }));
       break;
     case 7 :
-      entityKind = {
+      e$3 = {
         TAG: "Ok",
         _0: {
           TAG: "TeleportationPylon",
@@ -268,17 +408,27 @@ function parse$2(reader) {
       };
       break;
     default:
-      entityKind = {
+      e$3 = {
         TAG: "Error",
-        _0: "File \"Packet_TileSectionSend.res\", line 317, characters 17-24" + "Unknown entity kind. "
+        _0: {
+          context: "Entity.parse",
+          error: new Error("Unknown entity kind: " + String(entityType))
+        }
       };
   }
-  return Belt_Result.map(entityKind, entityKind => ({
-    entityType: entityType,
-    x: x,
-    y: y,
-    entityKind: entityKind
-  }));
+  if (e$3.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        entityType: entityType,
+        x: e$1._0,
+        y: e$2._0,
+        entityKind: e$3._0
+      }
+    };
+  } else {
+    return e$3;
+  }
 }
 
 function packTrainingDummy(writer, trainingDummy) {
@@ -409,156 +559,513 @@ function clearTileCache(tile) {
   tile.inActive = false;
 }
 
-function parse$3(payload) {
-  let packetReader = new Packetreader(payload);
-  let deflated = ErrorAwarePacketReader$TerrariaPacket.readBuffer(packetReader, ErrorAwarePacketReader$TerrariaPacket.getBytesLeft(packetReader), "deflatedPayload");
-  let reader = new Bufferreader(Nodezlib.inflateRawSync(deflated));
-  let tileX = ErrorAwareBufferReader$TerrariaPacket.readInt32(reader, "tileX");
-  let tileY = ErrorAwareBufferReader$TerrariaPacket.readInt32(reader, "tileY");
-  let width = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "width");
-  let height = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "height");
-  let tiles = [];
-  let tileCache = defaultTileCache();
-  let rleCount = 0;
-  if (height < 0 || width < 0) {
-    return;
-  }
-  for (let _y = 0; _y < height; ++_y) {
-    let row = [];
-    for (let _x = 0; _x < width; ++_x) {
-      if (rleCount !== 0) {
-        rleCount = rleCount - 1 | 0;
-        row.push(cacheToTile(tileCache));
+function readRepeated(count, parseItem) {
+  let items = [];
+  let parseResult = {
+    TAG: "Ok",
+    _0: undefined
+  };
+  for (let _i = 0; _i < count; ++_i) {
+    let match = parseResult;
+    if (match.TAG === "Ok") {
+      let item = parseItem();
+      if (item.TAG === "Ok") {
+        items.push(item._0);
       } else {
-        clearTileCache(tileCache);
-        let header5 = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header5"));
-        let match;
-        if (BitFlags$TerrariaPacket.flag1(header5)) {
-          let header4 = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header4_conditional"));
-          let header3 = BitFlags$TerrariaPacket.flag1(header4) ? BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header3_conditional")) : BitFlags$TerrariaPacket.fromByte(0);
-          let header2 = BitFlags$TerrariaPacket.flag1(header3) ? ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header2_conditional") : 0;
-          match = [
-            header4,
-            header3,
-            header2
-          ];
-        } else {
-          match = [
-            BitFlags$TerrariaPacket.fromByte(0),
-            BitFlags$TerrariaPacket.fromByte(0),
-            0
-          ];
-        }
-        let header3$1 = match[1];
-        let header4$1 = match[0];
-        tileCache.coatHeader = match[2];
-        let oldActive = tileCache.activeTile;
-        if (BitFlags$TerrariaPacket.flag2(header5)) {
-          let oldType = Belt_Option.mapWithDefault(tileCache.activeTile, 0, active => active.tileType);
-          let tileType;
-          if (BitFlags$TerrariaPacket.flag6(header5)) {
-            let byte = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "tileType_byte1");
-            let secondByte = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "tileType_byte2");
-            tileType = (secondByte << 8) | byte;
-          } else {
-            tileType = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "tileType");
-          }
-          let frame;
-          if (TileFrameImportant$TerrariaPacket.isImportant(tileType)) {
-            let x = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "frameX");
-            let y = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "frameY");
-            frame = {
-              x: x,
-              y: y
-            };
-          } else {
-            frame = Belt_Option.isSome(oldActive) && tileType === oldType ? oldActive.frame : undefined;
-          }
-          if (BitFlags$TerrariaPacket.flag4(header3$1)) {
-            tileCache.color = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "color");
-          }
-          tileCache.activeTile = {
-            tileType: tileType,
-            frame: frame
-          };
-        }
-        if (BitFlags$TerrariaPacket.flag3(header5)) {
-          tileCache.wall = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "wall");
-          if (BitFlags$TerrariaPacket.flag5(header3$1)) {
-            tileCache.wallColor = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "wallColor");
-          }
-        }
-        let liquidBits = ((BitFlags$TerrariaPacket.toByte(header5) & 24) >> 3);
-        if (liquidBits !== 0) {
-          tileCache.liquid = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "liquidValue");
-          if (liquidBits > 1) {
-            if (liquidBits === 2) {
-              tileCache.lava = true;
-            } else {
-              tileCache.honey = true;
-            }
-          }
-        }
-        if (BitFlags$TerrariaPacket.toByte(header4$1) > 1) {
-          if (BitFlags$TerrariaPacket.flag2(header4$1)) {
-            tileCache.wire = true;
-          }
-          if (BitFlags$TerrariaPacket.flag3(header4$1)) {
-            tileCache.wire2 = true;
-          }
-          if (BitFlags$TerrariaPacket.flag4(header4$1)) {
-            tileCache.wire3 = true;
-          }
-          let slopeBits = ((BitFlags$TerrariaPacket.toByte(header4$1) & 112) >> 4);
-          if (slopeBits !== 0 && TileSolid$TerrariaPacket.isSolid(Belt_Option.mapWithDefault(tileCache.activeTile, 0, tile => tile.tileType))) {
-            if (slopeBits === 1) {
-              tileCache.halfBrick = true;
-            } else {
-              tileCache.slope = slopeBits - 1 | 0;
-            }
-          }
-        }
-        if (BitFlags$TerrariaPacket.toByte(header3$1) > 0) {
-          if (BitFlags$TerrariaPacket.flag2(header3$1)) {
-            tileCache.actuator = true;
-          }
-          if (BitFlags$TerrariaPacket.flag3(header3$1)) {
-            tileCache.inActive = true;
-          }
-          if (BitFlags$TerrariaPacket.flag6(header3$1)) {
-            tileCache.wire4 = true;
-          }
-          if (BitFlags$TerrariaPacket.flag7(header3$1)) {
-            let byte$1 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "wall_highByte");
-            tileCache.wall = (byte$1 << 8) | tileCache.wall;
-          }
-        }
-        let repeatCountBytes = ((BitFlags$TerrariaPacket.toByte(header5) & 192) >> 6);
-        rleCount = repeatCountBytes !== 0 ? (
-            repeatCountBytes !== 1 ? ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "rle_int16") : ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "rle_byte")
-          ) : 0;
-        row.push(cacheToTile(tileCache));
+        parseResult = {
+          TAG: "Error",
+          _0: item._0
+        };
       }
     }
-    tiles.push(row);
   }
-  let chestCount = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "chestCount");
-  let chests = Belt_Array.make(chestCount, 0).map(param => parse(reader));
-  let signCount = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "signCount");
-  let signs = Belt_Array.make(signCount, 0).map(param => parse$1(reader));
-  let entityCount = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "entityCount");
-  let entities = ResultExt$TerrariaPacket.allOkOrError(Belt_Array.make(entityCount, 0).map(param => parse$2(reader)));
-  if (entities.TAG === "Ok") {
+  let err = parseResult;
+  if (err.TAG === "Ok") {
     return {
-      height: height,
-      width: width,
-      tileX: tileX,
-      tileY: tileY,
-      tiles: tiles,
-      chests: chests,
-      signs: signs,
-      entities: entities._0
+      TAG: "Ok",
+      _0: items
     };
+  } else {
+    return {
+      TAG: "Error",
+      _0: err._0
+    };
+  }
+}
+
+function parse$3(payload) {
+  let packetReader = new Packetreader(payload);
+  let e = ErrorAwarePacketReader$TerrariaPacket.getBytesLeft(packetReader);
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readBuffer(packetReader, e._0, "deflatedPayload");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let inflated;
+  try {
+    inflated = {
+      TAG: "Ok",
+      _0: Nodezlib.inflateRawSync(e$1._0)
+    };
+  } catch (raw_obj) {
+    let obj = Primitive_exceptions.internalToException(raw_obj);
+    if (obj.RE_EXN_ID === "JsExn") {
+      inflated = {
+        TAG: "Error",
+        _0: {
+          context: "inflateRawSync",
+          error: obj._1
+        }
+      };
+    } else {
+      throw obj;
+    }
+  }
+  if (inflated.TAG !== "Ok") {
+    return inflated;
+  }
+  let reader = new Bufferreader(inflated._0);
+  let e$2 = ErrorAwareBufferReader$TerrariaPacket.readInt32(reader, "tileX");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = ErrorAwareBufferReader$TerrariaPacket.readInt32(reader, "tileY");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "width");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let width = e$4._0;
+  let e$5 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "height");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let height = e$5._0;
+  let tiles = [];
+  let tileCache = defaultTileCache();
+  let rleCount = {
+    contents: 0
+  };
+  if (height < 0 || width < 0) {
+    return {
+      TAG: "Error",
+      _0: {
+        context: "Packet_TileSectionSend.parse",
+        error: makeError("Tile section dimensions must be non-negative")
+      }
+    };
+  }
+  let parseResult = {
+    TAG: "Ok",
+    _0: undefined
+  };
+  let readTile = () => {
+    clearTileCache(tileCache);
+    let e = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header5");
+    if (e.TAG !== "Ok") {
+      return e;
+    }
+    let header5 = BitFlags$TerrariaPacket.fromByte(e._0);
+    let e$1;
+    if (BitFlags$TerrariaPacket.flag1(header5)) {
+      let e$2 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header4_conditional");
+      if (e$2.TAG === "Ok") {
+        let header4 = BitFlags$TerrariaPacket.fromByte(e$2._0);
+        let e$3;
+        if (BitFlags$TerrariaPacket.flag1(header4)) {
+          let e$4 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header3_conditional");
+          if (e$4.TAG === "Ok") {
+            let header3 = BitFlags$TerrariaPacket.fromByte(e$4._0);
+            let e$5 = BitFlags$TerrariaPacket.flag1(header3) ? ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header2_conditional") : ({
+                TAG: "Ok",
+                _0: 0
+              });
+            e$3 = e$5.TAG === "Ok" ? ({
+                TAG: "Ok",
+                _0: [
+                  header3,
+                  e$5._0
+                ]
+              }) : e$5;
+          } else {
+            e$3 = e$4;
+          }
+        } else {
+          e$3 = {
+            TAG: "Ok",
+            _0: [
+              BitFlags$TerrariaPacket.fromByte(0),
+              0
+            ]
+          };
+        }
+        if (e$3.TAG === "Ok") {
+          let match = e$3._0;
+          e$1 = {
+            TAG: "Ok",
+            _0: [
+              header4,
+              match[0],
+              match[1]
+            ]
+          };
+        } else {
+          e$1 = e$3;
+        }
+      } else {
+        e$1 = e$2;
+      }
+    } else {
+      e$1 = {
+        TAG: "Ok",
+        _0: [
+          BitFlags$TerrariaPacket.fromByte(0),
+          BitFlags$TerrariaPacket.fromByte(0),
+          0
+        ]
+      };
+    }
+    if (e$1.TAG !== "Ok") {
+      return e$1;
+    }
+    let match$1 = e$1._0;
+    let header3$1 = match$1[1];
+    let header4$1 = match$1[0];
+    tileCache.coatHeader = match$1[2];
+    let oldActive = tileCache.activeTile;
+    let e$6;
+    if (BitFlags$TerrariaPacket.flag2(header5)) {
+      let oldType = Belt_Option.mapWithDefault(tileCache.activeTile, 0, active => active.tileType);
+      let e$7;
+      if (BitFlags$TerrariaPacket.flag6(header5)) {
+        let e$8 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "tileType_byte1");
+        if (e$8.TAG === "Ok") {
+          let e$9 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "tileType_byte2");
+          e$7 = e$9.TAG === "Ok" ? ({
+              TAG: "Ok",
+              _0: (e$9._0 << 8) | e$8._0
+            }) : e$9;
+        } else {
+          e$7 = e$8;
+        }
+      } else {
+        e$7 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "tileType");
+      }
+      if (e$7.TAG === "Ok") {
+        let tileType = e$7._0;
+        let e$10;
+        if (TileFrameImportant$TerrariaPacket.isImportant(tileType)) {
+          let e$11 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "frameX");
+          if (e$11.TAG === "Ok") {
+            let e$12 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "frameY");
+            e$10 = e$12.TAG === "Ok" ? ({
+                TAG: "Ok",
+                _0: {
+                  x: e$11._0,
+                  y: e$12._0
+                }
+              }) : e$12;
+          } else {
+            e$10 = e$11;
+          }
+        } else {
+          e$10 = Belt_Option.isSome(oldActive) && tileType === oldType ? ({
+              TAG: "Ok",
+              _0: oldActive.frame
+            }) : ({
+              TAG: "Ok",
+              _0: undefined
+            });
+        }
+        if (e$10.TAG === "Ok") {
+          let e$13;
+          if (BitFlags$TerrariaPacket.flag4(header3$1)) {
+            let e$14 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "color");
+            if (e$14.TAG === "Ok") {
+              tileCache.color = e$14._0;
+              e$13 = {
+                TAG: "Ok",
+                _0: undefined
+              };
+            } else {
+              e$13 = e$14;
+            }
+          } else {
+            e$13 = {
+              TAG: "Ok",
+              _0: undefined
+            };
+          }
+          if (e$13.TAG === "Ok") {
+            tileCache.activeTile = {
+              tileType: tileType,
+              frame: e$10._0
+            };
+            e$6 = {
+              TAG: "Ok",
+              _0: undefined
+            };
+          } else {
+            e$6 = e$13;
+          }
+        } else {
+          e$6 = e$10;
+        }
+      } else {
+        e$6 = e$7;
+      }
+    } else {
+      e$6 = {
+        TAG: "Ok",
+        _0: undefined
+      };
+    }
+    if (e$6.TAG !== "Ok") {
+      return e$6;
+    }
+    let e$15;
+    if (BitFlags$TerrariaPacket.flag3(header5)) {
+      let e$16 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "wall");
+      if (e$16.TAG === "Ok") {
+        tileCache.wall = e$16._0;
+        if (BitFlags$TerrariaPacket.flag5(header3$1)) {
+          let e$17 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "wallColor");
+          if (e$17.TAG === "Ok") {
+            tileCache.wallColor = e$17._0;
+            e$15 = {
+              TAG: "Ok",
+              _0: undefined
+            };
+          } else {
+            e$15 = e$17;
+          }
+        } else {
+          e$15 = {
+            TAG: "Ok",
+            _0: undefined
+          };
+        }
+      } else {
+        e$15 = e$16;
+      }
+    } else {
+      e$15 = {
+        TAG: "Ok",
+        _0: undefined
+      };
+    }
+    if (e$15.TAG !== "Ok") {
+      return e$15;
+    }
+    let liquidBits = ((BitFlags$TerrariaPacket.toByte(header5) & 24) >> 3);
+    let e$18;
+    if (liquidBits !== 0) {
+      let e$19 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "liquidValue");
+      if (e$19.TAG === "Ok") {
+        tileCache.liquid = e$19._0;
+        if (liquidBits > 1) {
+          if (liquidBits === 2) {
+            tileCache.lava = true;
+          } else {
+            tileCache.honey = true;
+          }
+        }
+        e$18 = {
+          TAG: "Ok",
+          _0: undefined
+        };
+      } else {
+        e$18 = e$19;
+      }
+    } else {
+      e$18 = {
+        TAG: "Ok",
+        _0: undefined
+      };
+    }
+    if (e$18.TAG !== "Ok") {
+      return e$18;
+    }
+    if (BitFlags$TerrariaPacket.toByte(header4$1) > 1) {
+      if (BitFlags$TerrariaPacket.flag2(header4$1)) {
+        tileCache.wire = true;
+      }
+      if (BitFlags$TerrariaPacket.flag3(header4$1)) {
+        tileCache.wire2 = true;
+      }
+      if (BitFlags$TerrariaPacket.flag4(header4$1)) {
+        tileCache.wire3 = true;
+      }
+      let slopeBits = ((BitFlags$TerrariaPacket.toByte(header4$1) & 112) >> 4);
+      if (slopeBits !== 0 && TileSolid$TerrariaPacket.isSolid(Belt_Option.mapWithDefault(tileCache.activeTile, 0, tile => tile.tileType))) {
+        if (slopeBits === 1) {
+          tileCache.halfBrick = true;
+        } else {
+          tileCache.slope = slopeBits - 1 | 0;
+        }
+      }
+    }
+    let e$20;
+    if (BitFlags$TerrariaPacket.toByte(header3$1) > 0) {
+      if (BitFlags$TerrariaPacket.flag2(header3$1)) {
+        tileCache.actuator = true;
+      }
+      if (BitFlags$TerrariaPacket.flag3(header3$1)) {
+        tileCache.inActive = true;
+      }
+      if (BitFlags$TerrariaPacket.flag6(header3$1)) {
+        tileCache.wire4 = true;
+      }
+      let e$21;
+      if (BitFlags$TerrariaPacket.flag7(header3$1)) {
+        let e$22 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "wall_highByte");
+        if (e$22.TAG === "Ok") {
+          tileCache.wall = (e$22._0 << 8) | tileCache.wall;
+          e$21 = {
+            TAG: "Ok",
+            _0: undefined
+          };
+        } else {
+          e$21 = e$22;
+        }
+      } else {
+        e$21 = {
+          TAG: "Ok",
+          _0: undefined
+        };
+      }
+      e$20 = e$21.TAG === "Ok" ? ({
+          TAG: "Ok",
+          _0: undefined
+        }) : e$21;
+    } else {
+      e$20 = {
+        TAG: "Ok",
+        _0: undefined
+      };
+    }
+    if (e$20.TAG !== "Ok") {
+      return e$20;
+    }
+    let repeatCountBytes = ((BitFlags$TerrariaPacket.toByte(header5) & 192) >> 6);
+    let e$23;
+    if (repeatCountBytes !== 0) {
+      if (repeatCountBytes !== 1) {
+        let e$24 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "rle_int16");
+        if (e$24.TAG === "Ok") {
+          rleCount.contents = e$24._0;
+          e$23 = {
+            TAG: "Ok",
+            _0: undefined
+          };
+        } else {
+          e$23 = e$24;
+        }
+      } else {
+        let e$25 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "rle_byte");
+        if (e$25.TAG === "Ok") {
+          rleCount.contents = e$25._0;
+          e$23 = {
+            TAG: "Ok",
+            _0: undefined
+          };
+        } else {
+          e$23 = e$25;
+        }
+      }
+    } else {
+      rleCount.contents = 0;
+      e$23 = {
+        TAG: "Ok",
+        _0: undefined
+      };
+    }
+    if (e$23.TAG === "Ok") {
+      return {
+        TAG: "Ok",
+        _0: cacheToTile(tileCache)
+      };
+    } else {
+      return e$23;
+    }
+  };
+  for (let _y = 0; _y < height; ++_y) {
+    let match = parseResult;
+    if (match.TAG === "Ok") {
+      let row = [];
+      for (let _x = 0; _x < width; ++_x) {
+        let match$1 = parseResult;
+        if (match$1.TAG === "Ok") {
+          if (rleCount.contents !== 0) {
+            rleCount.contents = rleCount.contents - 1 | 0;
+            row.push(cacheToTile(tileCache));
+          } else {
+            let tile = readTile();
+            if (tile.TAG === "Ok") {
+              row.push(tile._0);
+            } else {
+              parseResult = {
+                TAG: "Error",
+                _0: tile._0
+              };
+            }
+          }
+        }
+      }
+      let match$2 = parseResult;
+      if (match$2.TAG === "Ok") {
+        tiles.push(row);
+      }
+    }
+  }
+  let err = parseResult;
+  if (err.TAG !== "Ok") {
+    return {
+      TAG: "Error",
+      _0: err._0
+    };
+  }
+  let e$6 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "chestCount");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let e$7 = readRepeated(e$6._0, () => parse(reader));
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let e$8 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "signCount");
+  if (e$8.TAG !== "Ok") {
+    return e$8;
+  }
+  let e$9 = readRepeated(e$8._0, () => parse$1(reader));
+  if (e$9.TAG !== "Ok") {
+    return e$9;
+  }
+  let e$10 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "entityCount");
+  if (e$10.TAG !== "Ok") {
+    return e$10;
+  }
+  let e$11 = readRepeated(e$10._0, () => parse$2(reader));
+  if (e$11.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        height: height,
+        width: width,
+        tileX: e$2._0,
+        tileY: e$3._0,
+        tiles: tiles,
+        chests: e$7._0,
+        signs: e$9._0,
+        entities: e$11._0
+      }
+    };
+  } else {
+    return e$11;
   }
 }
 
@@ -570,6 +1077,7 @@ let Decode = {
   readInt16: ErrorAwareBufferReader$TerrariaPacket.readInt16,
   readInt32: ErrorAwareBufferReader$TerrariaPacket.readInt32,
   readByte: ErrorAwareBufferReader$TerrariaPacket.readByte,
+  readRepeated: readRepeated,
   parse: parse$3
 };
 
@@ -847,6 +1355,7 @@ let Option;
 
 exports.Int = Int;
 exports.Option = Option;
+exports.makeError = makeError;
 exports.defaultTileCache = defaultTileCache;
 exports.cacheToTile = cacheToTile;
 exports.Chest = Chest;

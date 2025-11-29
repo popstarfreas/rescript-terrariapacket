@@ -32,16 +32,20 @@ type t = {
 }
 
 module Decode = {
-  let {readByte, readInt32} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readByte, readInt32} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let eventType = reader->readByte
-    let value = reader->readInt32
+    let? Ok(eventTypeRaw) = reader->readByte("eventType")
+    let? Ok(value) = reader->readInt32("value")
 
-    EventType.fromInt(eventType)->Option.map(eventType => {
-      eventType,
-      value,
-    })
+    switch EventType.fromInt(eventTypeRaw) {
+    | Some(eventType) => Ok({eventType, value})
+    | None =>
+      Error({
+        context: "Packet_CreditsOrSlimeTransform.parse",
+        error: ErrorExt.makeJsError("Unknown event type"),
+      })
+    }
   }
 }
 

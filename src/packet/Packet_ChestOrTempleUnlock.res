@@ -19,6 +19,8 @@ let unlockTypeFromInt = self =>
   | _ => None
   }
 
+let makeError = (_message: string): JsExn.t => %raw("new Error(_message)")
+
 @genType
 type t = {
   unlockType: unlockType,
@@ -27,21 +29,25 @@ type t = {
 }
 
 module Decode = {
-  let {readByte, readInt16} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readByte, readInt16} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let unlockType = reader->readByte->unlockTypeFromInt
-    let x = reader->readInt16
-    let y = reader->readInt16
-    switch unlockType {
-    | Some(unlockType) =>
-      Some({
-        unlockType,
-        x,
-        y,
+    let? Ok(rawUnlockType) = reader->readByte("unlockType")
+    let? Ok(unlockType) = switch rawUnlockType->unlockTypeFromInt {
+    | Some(unlockType) => Ok(unlockType)
+    | None =>
+      Error({
+        ErrorAwarePacketReader.context: "Packet_ChestOrTempleUnlock.parse",
+        error: makeError("Unknown unlock type"),
       })
-    | None => None
     }
+    let? Ok(x) = reader->readInt16("x")
+    let? Ok(y) = reader->readInt16("y")
+    Ok({
+      unlockType,
+      x,
+      y,
+    })
   }
 }
 

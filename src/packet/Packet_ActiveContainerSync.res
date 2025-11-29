@@ -8,20 +8,20 @@ type t = {
 }
 
 module Decode = {
-  let {readByte, readInt16, readString} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readByte, readInt16, readString} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let chestId = reader->readInt16
-    let x = reader->readInt16
-    let y = reader->readInt16
-    let nameLength = reader->readByte
-    let name = if nameLength > 0 && nameLength <= 20 {
-      reader->readString
+    let? Ok(chestId) = reader->readInt16("chestId")
+    let? Ok(x) = reader->readInt16("x")
+    let? Ok(y) = reader->readInt16("y")
+    let? Ok(nameLength) = reader->readByte("nameLength")
+    let? Ok(name) = if nameLength > 0 && nameLength <= 20 {
+      reader->readString("name")
     } else {
-      ""
+      Ok("")
     }
 
-    Some({
+    Ok({
       chestId,
       x,
       y,

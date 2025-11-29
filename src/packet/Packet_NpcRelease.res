@@ -7,14 +7,14 @@ type t = {
 }
 
 module Decode = {
-  let {readByte, readInt16, readInt32} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readByte, readInt16, readInt32} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let x = reader->readInt32
-    let y = reader->readInt32
-    let npcType = reader->readInt16
-    let style = reader->readByte
-    Some({
+    let? Ok(x) = reader->readInt32("x")
+    let? Ok(y) = reader->readInt32("y")
+    let? Ok(npcType) = reader->readInt16("npcType")
+    let? Ok(style) = reader->readByte("style")
+    Ok({
       x,
       y,
       npcType,

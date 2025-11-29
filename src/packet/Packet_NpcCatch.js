@@ -3,30 +3,33 @@
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
 let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
-function readByte(prim) {
-  return prim.readByte();
-}
-
-function readInt16(prim) {
-  return prim.readInt16();
-}
-
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let npcId = reader.readInt16();
-  let playerId = reader.readByte();
-  return {
-    npcId: npcId,
-    playerId: playerId
-  };
+  let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        npcId: e._0,
+        playerId: e$1._0
+      }
+    };
+  } else {
+    return e$1;
+  }
 }
 
 let Decode = {
-  readByte: readByte,
-  readInt16: readInt16,
+  readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
   parse: parse
 };
 

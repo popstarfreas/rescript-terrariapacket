@@ -7,39 +7,40 @@ type t = {
 }
 
 module Decode = {
-  let {readByte, readInt16} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readByte, readInt16} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let playerId = reader->readByte
-    let deathReason = reader->PlayerDeathReason.readDeathReason
-    let damage = reader->readInt16
-    let hitDirection = reader->readByte
-    let pvp = reader->readByte == 1
-    Some({
+    let? Ok(playerId) = reader->readByte("playerId")
+    let? Ok(deathReason) = reader->PlayerDeathReason.readDeathReason
+    let? Ok(damage) = reader->readInt16("damage")
+    let? Ok(hitDirection) = reader->readByte("hitDirection")
+    let? Ok(pvpRaw) = reader->readByte("pvp")
+    Ok({
       playerId,
       deathReason,
       damage,
       hitDirection,
-      pvp,
+      pvp: pvpRaw == 1,
     })
   }
 }
 
 module Encode = {
-  let {packByte, packInt16, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let {packByte, packInt16, setType, data} = module(ErrorAwarePacketWriter)
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.PlayerDeath->PacketType.toInt)
-    ->packByte(self.playerId)
+    ->packByte(self.playerId, "playerId")
     ->PlayerDeathReason.packDeathReason(self.deathReason)
-    ->packInt16(self.damage)
-    ->packByte(self.hitDirection)
+    ->packInt16(self.damage, "damage")
+    ->packByte(self.hitDirection, "hitDirection")
     ->packByte(
       if self.pvp {
         1
       } else {
         0
       },
+      "pvp",
     )
     ->data
   }

@@ -1,101 +1,59 @@
 let {
-  readByte,
-  readInt16,
-  readInt32,
-  readUInt64,
-  readString,
-  readBytes,
-  readSingle,
-  readSByte,
-  readColor,
-  readBuffer,
-  getBytesLeft,
+  readByte: readByteUnsafe,
+  readInt16: readInt16Unsafe,
+  readInt32: readInt32Unsafe,
+  readUInt64: readUInt64Unsafe,
+  readString: readStringUnsafe,
+  readBytes: readBytesUnsafe,
+  readSingle: readSingleUnsafe,
+  readSByte: readSByteUnsafe,
+  readColor: readColorUnsafe,
+  readBuffer: readBufferUnsafe,
+  getBytesLeft: getBytesLeftUnsafe,
 } = module(PacketFactory.BufferReader)
 
-type readError = {context: string, error: JsExn.t}
+type readError = ErrorAwarePacketReader.readError
 exception ReadError(readError)
 
 type t = PacketFactory.BufferReader.t
-let readByte = (reader: t, context: string): int => {
+
+let withContext = (fn, reader, context) => {
   try {
-    readByte(reader)
+    Ok(fn(reader))
   } catch {
-  | JsExn(obj) => throw(ReadError({context, error: obj}))
+  | JsExn(obj) => Error({ErrorAwarePacketReader.context, error: obj})
   }
 }
 
-let readInt16 = (reader: t, context: string): int => {
-  try {
-    readInt16(reader)
-  } catch {
-  | JsExn(obj) => throw(ReadError({context, error: obj}))
-  }
-}
+let readByte = (reader: t, context: string): result<int, readError> =>
+  withContext(readByteUnsafe, reader, context)
 
-let readInt32 = (reader: t, context: string): int => {
-  try {
-    readInt32(reader)
-  } catch {
-  | JsExn(obj) => throw(ReadError({context, error: obj}))
-  }
-}
+let readInt16 = (reader: t, context: string): result<int, readError> =>
+  withContext(readInt16Unsafe, reader, context)
 
-let readUInt64 = (reader: t, context: string): NodeJs.BigInt.t => {
-  try {
-    readUInt64(reader)
-  } catch {
-  | JsExn(obj) => throw(ReadError({context, error: obj}))
-  }
-}
+let readInt32 = (reader: t, context: string): result<int, readError> =>
+  withContext(readInt32Unsafe, reader, context)
 
-let readString = (reader: t, context: string): string => {
-  try {
-    readString(reader)
-  } catch {
-  | JsExn(obj) => throw(ReadError({context, error: obj}))
-  }
-}
+let readUInt64 = (reader: t, context: string): result<NodeJs.BigInt.t, readError> =>
+  withContext(readUInt64Unsafe, reader, context)
 
-let readBytes = (reader: t, count: int, context: string): array<int> => {
-  try {
-    readBytes(reader, count)
-  } catch {
-  | JsExn(obj) => throw(ReadError({context, error: obj}))
-  }
-}
+let readString = (reader: t, context: string): result<string, readError> =>
+  withContext(readStringUnsafe, reader, context)
 
-let readSingle = (reader: t, context: string): float => {
-  try {
-    readSingle(reader)
-  } catch {
-  | JsExn(obj) => throw(ReadError({context, error: obj}))
-  }
-}
+let readBytes = (reader: t, count: int, context: string): result<array<int>, readError> =>
+  withContext(reader => readBytesUnsafe(reader, count), reader, context)
 
-let readSByte = (reader: t, context: string): int => {
-  try {
-    readSByte(reader)
-  } catch {
-  | JsExn(obj) => throw(ReadError({context, error: obj}))
-  }
-}
+let readSingle = (reader: t, context: string): result<float, readError> =>
+  withContext(readSingleUnsafe, reader, context)
 
-let readColor = (reader: t, context: string): PacketFactory.Color.t => {
-  try {
-    readColor(reader)
-  } catch {
-  | JsExn(obj) => throw(ReadError({context, error: obj}))
-  }
-}
+let readSByte = (reader: t, context: string): result<int, readError> =>
+  withContext(readSByteUnsafe, reader, context)
 
-let readBuffer = (reader: t, bytes: int, context: string): NodeJs.Buffer.t => {
-  try {
-    readBuffer(reader, bytes)
-  } catch {
-  | JsExn(obj) => throw(ReadError({context, error: obj}))
-  }
-}
+let readColor = (reader: t, context: string): result<PacketFactory.Color.t, readError> =>
+  withContext(readColorUnsafe, reader, context)
 
-let getBytesLeft = (reader: t): int => {
-  getBytesLeft(reader)
-}
+let readBuffer = (reader: t, bytes: int, context: string): result<NodeJs.Buffer.t, readError> =>
+  withContext(reader => readBufferUnsafe(reader, bytes), reader, context)
+
+let getBytesLeft = (reader: t): result<int, readError> =>
+  withContext(getBytesLeftUnsafe, reader, "getBytesLeft")

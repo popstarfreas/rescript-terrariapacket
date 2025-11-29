@@ -4,25 +4,25 @@ type t = {
 }
 
 module Decode = {
-  let {readByte} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readByte} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let playerId = reader->readByte
-    let active = reader->readByte !== 0
-    Some({
+    let? Ok(playerId) = reader->readByte("playerId")
+    let? Ok(activeRaw) = reader->readByte("active")
+    Ok({
       playerId,
-      active,
+      active: activeRaw !== 0,
     })
   }
 }
 
 module Encode = {
-  let {packByte, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let {packByte, setType, data} = module(ErrorAwarePacketWriter)
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.PlayerActive->PacketType.toInt)
-    ->packByte(self.playerId)
-    ->packByte(self.active ? 1 : 0)
+    ->packByte(self.playerId, "playerId")
+    ->packByte(self.active ? 1 : 0, "active")
     ->data
   }
 }

@@ -1,18 +1,18 @@
 type t = {uuid: string}
 
-let {readString} = module(PacketFactory.PacketReader)
+let {readString} = module(ErrorAwarePacketReader)
 
-let parse = (payload: NodeJs.Buffer.t): option<t> => {
+let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
   let reader = PacketFactory.PacketReader.make(payload)
-  let uuid = reader->readString
-  Some({
+  let? Ok(uuid) = reader->readString("uuid")
+  Ok({
     uuid: uuid,
   })
 }
 
-let {packString, setType, data} = module(PacketFactory.ManagedPacketWriter)
-let toBuffer = (self: t): NodeJs.Buffer.t =>
-  PacketFactory.ManagedPacketWriter.make()
+let {packString, setType, data} = module(ErrorAwarePacketWriter)
+let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> =>
+  ErrorAwarePacketWriter.make()
   ->setType(PacketType.ClientUuid->PacketType.toInt)
-  ->packString(self.uuid)
+  ->packString(self.uuid, "uuid")
   ->data

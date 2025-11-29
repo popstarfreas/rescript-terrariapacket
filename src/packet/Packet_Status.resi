@@ -12,5 +12,5 @@ type t = {
   flags: flags,
 }
 
-let parse: NodeJs.Buffer.t => option<t>
-let toBuffer: t => NodeJs.Buffer.t
+let parse: NodeJs.Buffer.t => result<t, ErrorAwarePacketReader.readError>
+let toBuffer: t => result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError>

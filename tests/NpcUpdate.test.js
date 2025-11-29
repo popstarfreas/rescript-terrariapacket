@@ -2,6 +2,7 @@
 'use strict';
 
 let Zora = require("zora");
+let Stdlib_JsExn = require("@rescript/runtime/lib/js/Stdlib_JsExn.js");
 let Stdlib_Option = require("@rescript/runtime/lib/js/Stdlib_Option.js");
 let Stdlib_Result = require("@rescript/runtime/lib/js/Stdlib_Result.js");
 let Packet_NpcUpdate$TerrariaPacket = require("../src/packet/Packet_NpcUpdate.js");
@@ -38,11 +39,11 @@ Zora.test("should correctly parse and serialise NpcUpdate", t => {
     t.fail("Failed to serialise NpcUpdate");
   }
   let result$1 = Packet_NpcUpdate$TerrariaPacket.parse(Stdlib_Result.getOrThrow(result, undefined));
-  if (Stdlib_Option.isNone(result$1)) {
-    t.fail("Failed to serialise NpcUpdate");
+  if (result$1.TAG === "Ok") {
+    t.equal(data, result$1._0);
+    return;
   }
-  let data2 = Stdlib_Option.getOrThrow(result$1, undefined);
-  t.equal(data, data2);
+  t.fail(Stdlib_Option.getOrThrow(Stdlib_JsExn.message(result$1._0.error), undefined));
 });
 
 /*  Not a pure module */

@@ -56,23 +56,25 @@ module Decode = {
 
   let parse = (payload: NodeJs.Buffer.t) => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let playerId = reader->readByte("playerId")
-    let skinVariant = reader->readByte("skinVariant")
-    let hair = reader->readByte("hair")
-    let name = reader->readString("name")
-    let hairDye = reader->readByte("hairDye")
-    let hideVisuals = reader->readByte("hideVisuals")
-    let hideVisuals2 = reader->readByte("hideVisuals2")
-    let hideMisc = reader->readByte("hideMisc")
-    let hairColor = reader->readColor("hairColor")
-    let skinColor = reader->readColor("skinColor")
-    let eyeColor = reader->readColor("eyeColor")
-    let shirtColor = reader->readColor("shirtColor")
-    let underShirtColor = reader->readColor("underShirtColor")
-    let pantsColor = reader->readColor("pantsColor")
-    let shoeColor = reader->readColor("shoeColor")
-    let difficultyFlags = BitFlags.fromByte(reader->readByte("difficultyFlags"))
-    let torchFlags = BitFlags.fromByte(reader->readByte("torchFlags"))
+    let? Ok(playerId) = reader->readByte("playerId")
+    let? Ok(skinVariant) = reader->readByte("skinVariant")
+    let? Ok(hair) = reader->readByte("hair")
+    let? Ok(name) = reader->readString("name")
+    let? Ok(hairDye) = reader->readByte("hairDye")
+    let? Ok(hideVisuals) = reader->readByte("hideVisuals")
+    let? Ok(hideVisuals2) = reader->readByte("hideVisuals2")
+    let? Ok(hideMisc) = reader->readByte("hideMisc")
+    let? Ok(hairColor) = reader->readColor("hairColor")
+    let? Ok(skinColor) = reader->readColor("skinColor")
+    let? Ok(eyeColor) = reader->readColor("eyeColor")
+    let? Ok(shirtColor) = reader->readColor("shirtColor")
+    let? Ok(underShirtColor) = reader->readColor("underShirtColor")
+    let? Ok(pantsColor) = reader->readColor("pantsColor")
+    let? Ok(shoeColor) = reader->readColor("shoeColor")
+    let? Ok(difficultyFlagsRaw) = reader->readByte("difficultyFlags")
+    let difficultyFlags = BitFlags.fromByte(difficultyFlagsRaw)
+    let? Ok(torchFlagsRaw) = reader->readByte("torchFlags")
+    let torchFlags = BitFlags.fromByte(torchFlagsRaw)
 
     let difficulty = difficultyFlags->getDifficulty
     let extraAccessory = difficultyFlags->BitFlags.flag3
@@ -86,7 +88,10 @@ module Decode = {
     let unlockedBiomeTorches = torchFlags->BitFlags.flag3
     let unlockedSuperCart = torchFlags->BitFlags.flag4
     let enabledSuperCart = torchFlags->BitFlags.flag5
-    let usedFlags = BitFlags.fromByte(reader->readByte("usedFlags"))
+    let? Ok(usedFlags) = {
+      let? Ok(usedFlags) = reader->readByte("usedFlags")
+      Ok(BitFlags.fromByte(usedFlags))
+    }
     let usedAegisCrystal = usedFlags->BitFlags.flag1
     let usedAegisFruit = usedFlags->BitFlags.flag2
     let usedArcaneCrystal = usedFlags->BitFlags.flag3
@@ -95,7 +100,7 @@ module Decode = {
     let usedAmbrosia = usedFlags->BitFlags.flag6
     let ateArtisanBread = usedFlags->BitFlags.flag7
 
-    Some({
+    Ok({
       playerId,
       skinVariant,
       hair,

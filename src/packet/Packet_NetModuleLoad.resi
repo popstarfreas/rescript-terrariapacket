@@ -126,4 +126,4 @@ module NetModuleType: {
 @genType
 let toBuffer: t => result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError>
 @genType
-let parse: (NodeJs.Buffer.t, ~fromServer: bool) => option<t>
+let parse: (NodeJs.Buffer.t, ~fromServer: bool) => result<t, ErrorAwarePacketReader.readError>

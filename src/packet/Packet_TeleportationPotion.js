@@ -3,6 +3,7 @@
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
 let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
@@ -19,44 +20,55 @@ function teleportTypeToInt(teleportType) {
   }
 }
 
-function readByte(prim) {
-  return prim.readByte();
-}
-
-function readInt16(prim) {
-  return prim.readInt16();
-}
-
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let match = reader.readByte();
-  let teleportType;
-  switch (match) {
-    case 0 :
-      teleportType = "TeleportationPotion";
-      break;
-    case 1 :
-      teleportType = "MagicConch";
-      break;
-    case 2 :
-      teleportType = "DemonConch";
-      break;
-    case 3 :
-      teleportType = "ShellphoneSpawn";
-      break;
-    default:
-      teleportType = undefined;
+  let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "teleportType");
+  if (e.TAG !== "Ok") {
+    return e;
   }
-  if (teleportType !== undefined) {
-    return {
-      teleportType: teleportType
-    };
+  switch (e._0) {
+    case 0 :
+      return {
+        TAG: "Ok",
+        _0: {
+          teleportType: "TeleportationPotion"
+        }
+      };
+    case 1 :
+      return {
+        TAG: "Ok",
+        _0: {
+          teleportType: "MagicConch"
+        }
+      };
+    case 2 :
+      return {
+        TAG: "Ok",
+        _0: {
+          teleportType: "DemonConch"
+        }
+      };
+    case 3 :
+      return {
+        TAG: "Ok",
+        _0: {
+          teleportType: "ShellphoneSpawn"
+        }
+      };
+    default:
+      return {
+        TAG: "Error",
+        _0: {
+          context: "Packet_TeleportationPotion.parse",
+          error: new Error("Unknown teleport type")
+        }
+      };
   }
 }
 
 let Decode = {
-  readByte: readByte,
-  readInt16: readInt16,
+  readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
   parse: parse
 };
 

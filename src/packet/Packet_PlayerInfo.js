@@ -19,23 +19,76 @@ function getDifficulty(difficultyFlags) {
 
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let playerId = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
-  let skinVariant = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "skinVariant");
-  let hair = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hair");
-  let name = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "name");
-  let hairDye = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hairDye");
-  let hideVisuals = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideVisuals");
-  let hideVisuals2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideVisuals2");
-  let hideMisc = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideMisc");
-  let hairColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "hairColor");
-  let skinColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "skinColor");
-  let eyeColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "eyeColor");
-  let shirtColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "shirtColor");
-  let underShirtColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "underShirtColor");
-  let pantsColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "pantsColor");
-  let shoeColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "shoeColor");
-  let difficultyFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "difficultyFlags"));
-  let torchFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "torchFlags"));
+  let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "skinVariant");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hair");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "name");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hairDye");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideVisuals");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideVisuals2");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let e$7 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideMisc");
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let e$8 = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "hairColor");
+  if (e$8.TAG !== "Ok") {
+    return e$8;
+  }
+  let e$9 = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "skinColor");
+  if (e$9.TAG !== "Ok") {
+    return e$9;
+  }
+  let e$10 = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "eyeColor");
+  if (e$10.TAG !== "Ok") {
+    return e$10;
+  }
+  let e$11 = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "shirtColor");
+  if (e$11.TAG !== "Ok") {
+    return e$11;
+  }
+  let e$12 = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "underShirtColor");
+  if (e$12.TAG !== "Ok") {
+    return e$12;
+  }
+  let e$13 = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "pantsColor");
+  if (e$13.TAG !== "Ok") {
+    return e$13;
+  }
+  let e$14 = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "shoeColor");
+  if (e$14.TAG !== "Ok") {
+    return e$14;
+  }
+  let e$15 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "difficultyFlags");
+  if (e$15.TAG !== "Ok") {
+    return e$15;
+  }
+  let difficultyFlags = BitFlags$TerrariaPacket.fromByte(e$15._0);
+  let e$16 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "torchFlags");
+  if (e$16.TAG !== "Ok") {
+    return e$16;
+  }
+  let torchFlags = BitFlags$TerrariaPacket.fromByte(e$16._0);
   let difficulty = getDifficulty(difficultyFlags);
   let extraAccessory = BitFlags$TerrariaPacket.flag3(difficultyFlags);
   let mode = BitFlags$TerrariaPacket.flag4(difficultyFlags) ? "Journey" : "Classic";
@@ -44,7 +97,16 @@ function parse(payload) {
   let unlockedBiomeTorches = BitFlags$TerrariaPacket.flag3(torchFlags);
   let unlockedSuperCart = BitFlags$TerrariaPacket.flag4(torchFlags);
   let enabledSuperCart = BitFlags$TerrariaPacket.flag5(torchFlags);
-  let usedFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "usedFlags"));
+  let e$17 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "usedFlags");
+  let e$18;
+  e$18 = e$17.TAG === "Ok" ? ({
+      TAG: "Ok",
+      _0: BitFlags$TerrariaPacket.fromByte(e$17._0)
+    }) : e$17;
+  if (e$18.TAG !== "Ok") {
+    return e$18;
+  }
+  let usedFlags = e$18._0;
   let usedAegisCrystal = BitFlags$TerrariaPacket.flag1(usedFlags);
   let usedAegisFruit = BitFlags$TerrariaPacket.flag2(usedFlags);
   let usedArcaneCrystal = BitFlags$TerrariaPacket.flag3(usedFlags);
@@ -53,36 +115,39 @@ function parse(payload) {
   let usedAmbrosia = BitFlags$TerrariaPacket.flag6(usedFlags);
   let ateArtisanBread = BitFlags$TerrariaPacket.flag7(usedFlags);
   return {
-    playerId: playerId,
-    skinVariant: skinVariant,
-    hair: hair,
-    name: name,
-    hairDye: hairDye,
-    hideVisuals: hideVisuals,
-    hideVisuals2: hideVisuals2,
-    hideMisc: hideMisc,
-    hairColor: hairColor,
-    skinColor: skinColor,
-    eyeColor: eyeColor,
-    shirtColor: shirtColor,
-    underShirtColor: underShirtColor,
-    pantsColor: pantsColor,
-    shoeColor: shoeColor,
-    difficulty: difficulty,
-    mode: mode,
-    extraAccessory: extraAccessory,
-    usingBiomeTorches: usingBiomeTorches,
-    unlockedBiomeTorches: unlockedBiomeTorches,
-    happyFunTorchTime: happyFunTorchTime,
-    unlockedSuperCart: unlockedSuperCart,
-    enabledSuperCart: enabledSuperCart,
-    usedAegisCrystal: usedAegisCrystal,
-    usedAegisFruit: usedAegisFruit,
-    usedArcaneCrystal: usedArcaneCrystal,
-    usedGalaxyPearl: usedGalaxyPearl,
-    usedGummyWorm: usedGummyWorm,
-    usedAmbrosia: usedAmbrosia,
-    ateArtisanBread: ateArtisanBread
+    TAG: "Ok",
+    _0: {
+      playerId: e._0,
+      skinVariant: e$1._0,
+      hair: e$2._0,
+      name: e$3._0,
+      hairDye: e$4._0,
+      hideVisuals: e$5._0,
+      hideVisuals2: e$6._0,
+      hideMisc: e$7._0,
+      hairColor: e$8._0,
+      skinColor: e$9._0,
+      eyeColor: e$10._0,
+      shirtColor: e$11._0,
+      underShirtColor: e$12._0,
+      pantsColor: e$13._0,
+      shoeColor: e$14._0,
+      difficulty: difficulty,
+      mode: mode,
+      extraAccessory: extraAccessory,
+      usingBiomeTorches: usingBiomeTorches,
+      unlockedBiomeTorches: unlockedBiomeTorches,
+      happyFunTorchTime: happyFunTorchTime,
+      unlockedSuperCart: unlockedSuperCart,
+      enabledSuperCart: enabledSuperCart,
+      usedAegisCrystal: usedAegisCrystal,
+      usedAegisFruit: usedAegisFruit,
+      usedArcaneCrystal: usedArcaneCrystal,
+      usedGalaxyPearl: usedGalaxyPearl,
+      usedGummyWorm: usedGummyWorm,
+      usedAmbrosia: usedAmbrosia,
+      ateArtisanBread: ateArtisanBread
+    }
   };
 }
 

@@ -5,13 +5,13 @@ type t = {
 }
 
 module Decode = {
-  let {readByte, readInt16} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readByte, readInt16} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let playerId = reader->readByte
-    let mana = reader->readInt16
-    let maxMana = reader->readInt16
-    Some({
+    let? Ok(playerId) = reader->readByte("playerId")
+    let? Ok(mana) = reader->readInt16("mana")
+    let? Ok(maxMana) = reader->readInt16("maxMana")
+    Ok({
       playerId,
       mana,
       maxMana,
@@ -20,13 +20,13 @@ module Decode = {
 }
 
 module Encode = {
-  let {packByte, packInt16, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let {packByte, packInt16, setType, data} = module(ErrorAwarePacketWriter)
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.PlayerMana->PacketType.toInt)
-    ->packByte(self.playerId)
-    ->packInt16(self.mana)
-    ->packInt16(self.maxMana)
+    ->packByte(self.playerId, "playerId")
+    ->packInt16(self.mana, "mana")
+    ->packInt16(self.maxMana, "maxMana")
     ->data
   }
 }

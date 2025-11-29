@@ -3,22 +3,35 @@
 
 let BitFlags$TerrariaPacket = require("../BitFlags.js");
 let PacketType$TerrariaPacket = require("../PacketType.js");
-let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let max = reader.readInt32();
-  let text = reader.readNetworkText();
-  let flags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+  let e = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "max");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readNetworkText(reader, "text");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let flags = BitFlags$TerrariaPacket.fromByte(e$2._0);
   return {
-    max: max,
-    text: text,
-    flags: {
-      hideStatusTextPercent: BitFlags$TerrariaPacket.flag1(flags),
-      statusTextHasShadows: BitFlags$TerrariaPacket.flag2(flags),
-      runCheckBytes: BitFlags$TerrariaPacket.flag3(flags)
+    TAG: "Ok",
+    _0: {
+      max: e._0,
+      text: e$1._0,
+      flags: {
+        hideStatusTextPercent: BitFlags$TerrariaPacket.flag1(flags),
+        statusTextHasShadows: BitFlags$TerrariaPacket.flag2(flags),
+        runCheckBytes: BitFlags$TerrariaPacket.flag3(flags)
+      }
     }
   };
 }
@@ -38,9 +51,9 @@ function flagsToByte(flags) {
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("Status")).packInt32(self.max).packNetworkText(self.text).packByte(flagsToByte(self.flags)).data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packNetworkText(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("Status")), self.max, "max"), self.text, "text"), flagsToByte(self.flags), "flags"));
 }
 
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

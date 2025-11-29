@@ -7,14 +7,14 @@ type t = {
 }
 
 module Decode = {
-  let {readInt16} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readInt16} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let startX = reader->readInt16
-    let startY = reader->readInt16
-    let endX = reader->readInt16
-    let endY = reader->readInt16
-    Some({startX, startY, endX, endY})
+    let? Ok(startX) = reader->readInt16("startX")
+    let? Ok(startY) = reader->readInt16("startY")
+    let? Ok(endX) = reader->readInt16("endX")
+    let? Ok(endY) = reader->readInt16("endY")
+    Ok({startX, startY, endX, endY})
   }
 }
 

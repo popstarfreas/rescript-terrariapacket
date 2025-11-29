@@ -3,23 +3,27 @@
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
 let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
-function readInt16(prim) {
-  return prim.readInt16();
-}
-
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let itemDropId = reader.readInt16();
-  return {
-    itemDropId: itemDropId
-  };
+  let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemDropId");
+  if (e.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        itemDropId: e._0
+      }
+    };
+  } else {
+    return e;
+  }
 }
 
 let Decode = {
-  readInt16: readInt16,
+  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
   parse: parse
 };
 

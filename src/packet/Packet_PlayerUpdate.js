@@ -9,11 +9,30 @@ let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let playerId = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
-  let controlFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "controlFlags"));
-  let miscFlags1 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags1"));
-  let miscFlags2 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags2"));
-  let miscFlags3 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags3"));
+  let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "controlFlags");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let controlFlags = BitFlags$TerrariaPacket.fromByte(e$1._0);
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags1");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let miscFlags1 = BitFlags$TerrariaPacket.fromByte(e$2._0);
+  let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags2");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let miscFlags2 = BitFlags$TerrariaPacket.fromByte(e$3._0);
+  let e$4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags3");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let miscFlags3 = BitFlags$TerrariaPacket.fromByte(e$4._0);
   let control_isHoldingUp = BitFlags$TerrariaPacket.flag1(controlFlags);
   let control_isHoldingDown = BitFlags$TerrariaPacket.flag2(controlFlags);
   let control_isHoldingLeft = BitFlags$TerrariaPacket.flag3(controlFlags);
@@ -36,27 +55,88 @@ function parse(payload) {
   let gravityDirection = BitFlags$TerrariaPacket.flag5(miscFlags1) ? "Normal" : "Inverted";
   let shouldGuard = BitFlags$TerrariaPacket.flag6(miscFlags1);
   let ghost = BitFlags$TerrariaPacket.flag7(miscFlags1);
-  let selectedItem = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "selectedItem");
-  let position_x = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionX");
-  let position_y = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionY");
+  let e$5 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "selectedItem");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionX");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let e$7 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionY");
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let position_x = e$6._0;
+  let position_y = e$7._0;
   let position = {
     x: position_x,
     y: position_y
   };
-  let velocity = BitFlags$TerrariaPacket.flag3(miscFlags1) ? ({
-      x: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityX"),
-      y: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityY")
-    }) : undefined;
-  let potionOfReturn = BitFlags$TerrariaPacket.flag7(miscFlags2) ? ({
-      originalUsePosition: {
-        x: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnOrigX"),
-        y: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnOrigY")
-      },
-      homePosition: {
-        x: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnHomeX"),
-        y: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnHomeY")
+  let e$8;
+  if (BitFlags$TerrariaPacket.flag3(miscFlags1)) {
+    let e$9 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityX");
+    if (e$9.TAG === "Ok") {
+      let e$10 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityY");
+      e$8 = e$10.TAG === "Ok" ? ({
+          TAG: "Ok",
+          _0: {
+            x: e$9._0,
+            y: e$10._0
+          }
+        }) : e$10;
+    } else {
+      e$8 = e$9;
+    }
+  } else {
+    e$8 = {
+      TAG: "Ok",
+      _0: undefined
+    };
+  }
+  if (e$8.TAG !== "Ok") {
+    return e$8;
+  }
+  let e$11;
+  if (BitFlags$TerrariaPacket.flag7(miscFlags2)) {
+    let e$12 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnOrigX");
+    if (e$12.TAG === "Ok") {
+      let e$13 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnOrigY");
+      if (e$13.TAG === "Ok") {
+        let e$14 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnHomeX");
+        if (e$14.TAG === "Ok") {
+          let e$15 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnHomeY");
+          e$11 = e$15.TAG === "Ok" ? ({
+              TAG: "Ok",
+              _0: {
+                originalUsePosition: {
+                  x: e$12._0,
+                  y: e$13._0
+                },
+                homePosition: {
+                  x: e$14._0,
+                  y: e$15._0
+                }
+              }
+            }) : e$15;
+        } else {
+          e$11 = e$14;
+        }
+      } else {
+        e$11 = e$13;
       }
-    }) : undefined;
+    } else {
+      e$11 = e$12;
+    }
+  } else {
+    e$11 = {
+      TAG: "Ok",
+      _0: undefined
+    };
+  }
+  if (e$11.TAG !== "Ok") {
+    return e$11;
+  }
   let tryKeepingHoveringUp = BitFlags$TerrariaPacket.flag1(miscFlags2);
   let isVoidVaultEnabled = BitFlags$TerrariaPacket.flag2(miscFlags2);
   let isSitting = BitFlags$TerrariaPacket.flag3(miscFlags2);
@@ -66,26 +146,29 @@ function parse(payload) {
   let tryKeepingHoveringDown = BitFlags$TerrariaPacket.flag8(miscFlags2);
   let isSleeping = BitFlags$TerrariaPacket.flag1(miscFlags3);
   return {
-    playerId: playerId,
-    control: control,
-    direction: direction,
-    pulleyDirection: pulleyDirection,
-    vortexStealthActive: vortexStealthActive,
-    gravityDirection: gravityDirection,
-    shouldGuard: shouldGuard,
-    ghost: ghost,
-    selectedItem: selectedItem,
-    position: position,
-    velocity: velocity,
-    potionOfReturn: potionOfReturn,
-    tryKeepingHoveringUp: tryKeepingHoveringUp,
-    isVoidVaultEnabled: isVoidVaultEnabled,
-    isSitting: isSitting,
-    hasFinishedAnyDd2Event: hasFinishedAnyDd2Event,
-    isPettingAnimal: isPettingAnimal,
-    isTheAnimalBeingPetSmall: isTheAnimalBeingPetSmall,
-    tryKeepingHoveringDown: tryKeepingHoveringDown,
-    isSleeping: isSleeping
+    TAG: "Ok",
+    _0: {
+      playerId: e._0,
+      control: control,
+      direction: direction,
+      pulleyDirection: pulleyDirection,
+      vortexStealthActive: vortexStealthActive,
+      gravityDirection: gravityDirection,
+      shouldGuard: shouldGuard,
+      ghost: ghost,
+      selectedItem: e$5._0,
+      position: position,
+      velocity: e$8._0,
+      potionOfReturn: e$11._0,
+      tryKeepingHoveringUp: tryKeepingHoveringUp,
+      isVoidVaultEnabled: isVoidVaultEnabled,
+      isSitting: isSitting,
+      hasFinishedAnyDd2Event: hasFinishedAnyDd2Event,
+      isPettingAnimal: isPettingAnimal,
+      isTheAnimalBeingPetSmall: isTheAnimalBeingPetSmall,
+      tryKeepingHoveringDown: tryKeepingHoveringDown,
+      isSleeping: isSleeping
+    }
   };
 }
 

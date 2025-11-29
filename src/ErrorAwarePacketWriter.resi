@@ -1,4 +1,4 @@
-type untypedT
+type untypedT = PacketFactory.ManagedPacketWriter.untypedT
 type packError = {context: string, error: JsExn.t}
 type t
 let packSingle: (t, float, string) => t

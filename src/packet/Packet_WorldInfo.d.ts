@@ -1,5 +1,6 @@
 import { Array16 } from "../Array16";
 import { PackError } from "../ErrorAwarePacketWriter";
+import type { readError } from "../ErrorAwarePacketReader";
 
 export type eventInfo = {
   readonly shadowOrbSmashed: boolean;
@@ -156,7 +157,10 @@ export type WorldInfo = {
   readonly sandstormSeverity: number;
 };
 
-export function parse(buffer: Buffer): WorldInfo | undefined;
+export type parseOk = { TAG: "Ok"; _0: WorldInfo | undefined };
+export type parseError = { TAG: "Error"; _0: readError };
+export type parse = parseOk | parseError;
+export function parse(buffer: Buffer): parse;
 
 export type toBufferOk = { TAG: "Ok"; _0: Buffer };
 export type toBufferError = { TAG: "Error"; _0: PackError };

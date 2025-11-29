@@ -3,6 +3,7 @@
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
 let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
@@ -30,45 +31,59 @@ let Immunity = {
   toInt: toInt
 };
 
-function readUInt16(prim) {
-  return prim.readUInt16();
-}
-
-function readByte(prim) {
-  return prim.readByte();
-}
-
-function readInt32(prim) {
-  return prim.readInt32();
-}
-
-function readInt16(prim) {
-  return prim.readInt16();
-}
-
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let npcId = reader.readUInt16();
-  let setNpcImmunity = reader.readByte() === 1;
-  let match = setNpcImmunity ? [
-      reader.readInt32(),
-      fromInt(reader.readInt16())
-    ] : [
-      undefined,
-      undefined
-    ];
+  let e = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "npcId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "setNpcImmunity");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2;
+  if (e$1._0 === 1) {
+    let e$3 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "immunityTime");
+    if (e$3.TAG === "Ok") {
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "immunityFromPlayerId");
+      e$2 = e$4.TAG === "Ok" ? ({
+          TAG: "Ok",
+          _0: [
+            e$3._0,
+            fromInt(e$4._0)
+          ]
+        }) : e$4;
+    } else {
+      e$2 = e$3;
+    }
+  } else {
+    e$2 = {
+      TAG: "Ok",
+      _0: [
+        undefined,
+        undefined
+      ]
+    };
+  }
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let match = e$2._0;
   return {
-    npcId: npcId,
-    immunityTime: match[0],
-    immunityFromPlayerId: match[1]
+    TAG: "Ok",
+    _0: {
+      npcId: e._0,
+      immunityTime: match[0],
+      immunityFromPlayerId: match[1]
+    }
   };
 }
 
 let Decode = {
-  readUInt16: readUInt16,
-  readByte: readByte,
-  readInt32: readInt32,
-  readInt16: readInt16,
+  readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
+  readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+  readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
   parse: parse
 };
 

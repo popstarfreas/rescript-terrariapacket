@@ -3,6 +3,7 @@
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
 let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
@@ -30,31 +31,52 @@ function unlockTypeFromInt(self) {
   }
 }
 
-function readByte(prim) {
-  return prim.readByte();
-}
-
-function readInt16(prim) {
-  return prim.readInt16();
+function makeError(_message) {
+  return (new Error(_message));
 }
 
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let unlockType = unlockTypeFromInt(reader.readByte());
-  let x = reader.readInt16();
-  let y = reader.readInt16();
-  if (unlockType !== undefined) {
+  let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "unlockType");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let unlockType = unlockTypeFromInt(e._0);
+  let e$1 = unlockType !== undefined ? ({
+      TAG: "Ok",
+      _0: unlockType
+    }) : ({
+      TAG: "Error",
+      _0: {
+        context: "Packet_ChestOrTempleUnlock.parse",
+        error: makeError("Unknown unlock type")
+      }
+    });
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+  if (e$3.TAG === "Ok") {
     return {
-      unlockType: unlockType,
-      x: x,
-      y: y
+      TAG: "Ok",
+      _0: {
+        unlockType: e$1._0,
+        x: e$2._0,
+        y: e$3._0
+      }
     };
+  } else {
+    return e$3;
   }
 }
 
 let Decode = {
-  readByte: readByte,
-  readInt16: readInt16,
+  readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
   parse: parse
 };
 
@@ -85,6 +107,7 @@ let Encode = {
 
 exports.unlockTypeToInt = unlockTypeToInt;
 exports.unlockTypeFromInt = unlockTypeFromInt;
+exports.makeError = makeError;
 exports.Decode = Decode;
 exports.Encode = Encode;
 exports.parse = parse;

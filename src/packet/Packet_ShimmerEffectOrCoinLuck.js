@@ -3,56 +3,90 @@
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
 let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
-function readByte(prim) {
-  return prim.readByte();
-}
-
-function readInt32(prim) {
-  return prim.readInt32();
-}
-
-function readSingle(prim) {
-  return prim.readSingle();
-}
-
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let match = reader.readByte();
-  switch (match) {
+  let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "kind");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  switch (e._0) {
     case 0 :
-      return {
-        TAG: "ShimmerEffect",
-        _0: reader.readSingle(),
-        _1: reader.readSingle()
-      };
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "shimmerX");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "shimmerY");
+      if (e$2.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "ShimmerEffect",
+            _0: e$1._0,
+            _1: e$2._0
+          }
+        };
+      } else {
+        return e$2;
+      }
     case 1 :
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "coinLuckX");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "coinLuckY");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "coinLuckAmount");
+      if (e$5.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "CoinLuck",
+            _0: {
+              position: {
+                x: e$3._0,
+                y: e$4._0
+              },
+              amount: e$5._0
+            }
+          }
+        };
+      } else {
+        return e$5;
+      }
+    case 2 :
+      let e$6 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "newShimmerEffectId");
+      if (e$6.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "NewShimmerEffect",
+            _0: e$6._0
+          }
+        };
+      } else {
+        return e$6;
+      }
+    default:
       return {
-        TAG: "CoinLuck",
+        TAG: "Error",
         _0: {
-          position: {
-            x: reader.readSingle(),
-            y: reader.readSingle()
-          },
-          amount: reader.readInt32()
+          context: "Packet_ShimmerEffectOrCoinLuck.parse",
+          error: new Error("Unknown shimmer effect kind")
         }
       };
-    case 2 :
-      return {
-        TAG: "NewShimmerEffect",
-        _0: reader.readInt32()
-      };
-    default:
-      return;
   }
 }
 
 let Decode = {
-  readByte: readByte,
-  readInt32: readInt32,
-  readSingle: readSingle,
+  readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+  readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+  readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
   parse: parse
 };
 

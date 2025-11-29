@@ -3,20 +3,24 @@
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
 let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
-function readInt16(prim) {
-  return prim.readInt16();
-}
-
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let playerId = reader.readInt16();
-  let invasionType = reader.readInt16();
+  let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "spawnType");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let rawSpawnType = e$1._0;
   let spawnType;
   let exit = 0;
-  switch (invasionType) {
+  switch (rawSpawnType) {
     case -18 :
       spawnType = "PeddlersSatchel";
       break;
@@ -72,22 +76,25 @@ function parse(payload) {
       exit = 1;
   }
   if (exit === 1) {
-    spawnType = invasionType < 0 ? ({
+    spawnType = rawSpawnType < 0 ? ({
         TAG: "Invasion",
-        _0: -invasionType | 0
+        _0: -rawSpawnType | 0
       }) : ({
         TAG: "Npc",
-        _0: invasionType
+        _0: rawSpawnType
       });
   }
   return {
-    playerId: playerId,
-    spawnType: spawnType
+    TAG: "Ok",
+    _0: {
+      playerId: e._0,
+      spawnType: spawnType
+    }
   };
 }
 
 let Decode = {
-  readInt16: readInt16,
+  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
   parse: parse
 };
 

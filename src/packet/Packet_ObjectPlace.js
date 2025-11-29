@@ -2,38 +2,88 @@
 'use strict';
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
-let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
+
+function makeError(_message) {
+  return (new Error(_message));
+}
 
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let x = reader.readInt16();
-  let y = reader.readInt16();
-  let objectType = reader.readInt16();
-  let style = reader.readInt16();
-  let alternate = reader.readByte();
-  let random = reader.readSByte();
-  let match = reader.readByte();
-  let direction = match !== 0 ? "Right" : "Left";
-  return {
-    x: x,
-    y: y,
-    objectType: objectType,
-    style: style,
-    alternate: alternate,
-    random: random,
-    direction: direction
-  };
+  let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "objectType");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "style");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "alternate");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = ErrorAwarePacketReader$TerrariaPacket.readSByte(reader, "random");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "direction");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let directionRaw = e$6._0;
+  let direction = directionRaw !== 0 ? (
+      directionRaw !== 1 ? ({
+          TAG: "Error",
+          _0: {
+            context: "ObjectPlace.parse.direction",
+            error: makeError("Unknown direction")
+          }
+        }) : ({
+          TAG: "Ok",
+          _0: "Right"
+        })
+    ) : ({
+      TAG: "Ok",
+      _0: "Left"
+    });
+  if (direction.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        x: e._0,
+        y: e$1._0,
+        objectType: e$2._0,
+        style: e$3._0,
+        alternate: e$4._0,
+        random: e$5._0,
+        direction: direction._0
+      }
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: direction._0
+    };
+  }
 }
 
 function toBuffer(self) {
   let match = self.direction;
   let tmp;
   tmp = match === "Left" ? 0 : 1;
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ObjectPlace")).packInt16(self.x).packInt16(self.y).packInt16(self.objectType).packInt16(self.style).packByte(self.alternate).packSByte(self.random).packByte(tmp).data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packSByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ObjectPlace")), self.x, "x"), self.y, "y"), self.objectType, "objectType"), self.style, "style"), self.alternate, "alternate"), self.random, "random"), tmp, "direction"));
 }
 
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

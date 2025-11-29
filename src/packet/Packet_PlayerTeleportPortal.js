@@ -8,25 +8,50 @@ let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let playerId = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
-  let extraInfo = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "extraInfo");
-  let position_x = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionX");
-  let position_y = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionY");
+  let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "extraInfo");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionX");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionY");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let position_x = e$2._0;
+  let position_y = e$3._0;
   let position = {
     x: position_x,
     y: position_y
   };
-  let velocity_x = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityX");
-  let velocity_y = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityY");
+  let e$4 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityX");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityY");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let velocity_x = e$4._0;
+  let velocity_y = e$5._0;
   let velocity = {
     x: velocity_x,
     y: velocity_y
   };
   return {
-    playerId: playerId,
-    extraInfo: extraInfo,
-    position: position,
-    velocity: velocity
+    TAG: "Ok",
+    _0: {
+      playerId: e._0,
+      extraInfo: e$1._0,
+      position: position,
+      velocity: velocity
+    }
   };
 }
 

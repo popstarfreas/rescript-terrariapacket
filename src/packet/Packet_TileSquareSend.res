@@ -45,106 +45,137 @@ module Decode = {
   let {readInt16, readUInt16, readByte} = module(ErrorAwarePacketReader)
   let parse = (payload: NodeJs.Buffer.t) => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let tileX = reader->readInt16("tileX")
-    let tileY = reader->readInt16("tileY")
-    let width = reader->readByte("width")
-    let height = reader->readByte("height")
-    let changeType = reader->readByte("changeType")
-    let tiles: array<array<tile>> = []
-    for _x in 0 to width - 1 {
-      let column: array<tile> = []
-      for _y in 0 to height - 1 {
-        let flags1 = reader->readByte("flags1")->BitFlags.fromByte
-        let flags2 = reader->readByte("flags2")->BitFlags.fromByte
-        let flags3 = reader->readByte("flags3") // coatHeader
-        let active = flags1->BitFlags.flag1
-        let hasWall = flags1->BitFlags.flag3
-        let hasLiquid = flags1->BitFlags.flag4
-        let wire = flags1->BitFlags.flag5
-        let halfBrick = flags1->BitFlags.flag6
-        let actuator = flags1->BitFlags.flag7
-        let inActive = flags1->BitFlags.flag8
-        let wire2 = flags2->BitFlags.flag1
-        let wire3 = flags2->BitFlags.flag2
-        let color = switch flags2->BitFlags.flag3 {
-        | true => Some(reader->readByte("color"))
-        | false => None
-        }
-        let wallColor = switch flags2->BitFlags.flag4 {
-        | true => Some(reader->readByte("wallColor"))
-        | false => None
-        }
-        let activeTile = switch active {
-        | true => {
-            let tileType = reader->readUInt16("tileType")
-            let frame = switch TileFrameImportant.isImportant(tileType) {
-            | true =>
-              Some({
-                x: reader->readInt16("frameX"), // Changed from PacketFactory.PacketReader.readInt16
-                y: reader->readInt16("frameY"), // Changed from PacketFactory.PacketReader.readInt16
-              })
-            | false => None
-            }
-            let slope =
-              0 +
-              (flags2->BitFlags.flag5 ? 1 : 0) +
-              (flags2->BitFlags.flag6 ? 2 : 0) + (flags2->BitFlags.flag7 ? 4 : 0)
-            Some({
-              tileType,
-              slope,
-              frame,
-            })
-          }
-        | false => None
-        }
-        let wall = switch hasWall {
-        | true => Some(reader->readUInt16("wall"))
-        | false => None
-        }
-        let liquid = switch hasLiquid {
-        | true =>
-          Some({
-            liquidValue: reader->readByte("liquidValue"),
-            liquidType: reader->readByte("liquidType"),
-          })
-        | false => None
-        }
-        let wire4 = flags2->BitFlags.flag8
-        column
-        ->Array.push({
-          wire,
-          halfBrick,
-          actuator,
-          inActive,
-          wire2,
-          wire3,
-          wire4,
-          color,
-          wallColor,
-          activeTile,
-          wall,
-          liquid,
-          coatHeader: flags3,
-        })
-        ->ignore
+    let? Ok(tileX) = reader->readInt16("tileX")
+    let? Ok(tileY) = reader->readInt16("tileY")
+    let? Ok(width) = reader->readByte("width")
+    let? Ok(height) = reader->readByte("height")
+    let? Ok(changeType) = reader->readByte("changeType")
+
+    let readTile = () => {
+      let? Ok(flags1Raw) = reader->readByte("flags1")
+      let flags1 = flags1Raw->BitFlags.fromByte
+      let? Ok(flags2Raw) = reader->readByte("flags2")
+      let flags2 = flags2Raw->BitFlags.fromByte
+      let? Ok(flags3) = reader->readByte("flags3") // coatHeader
+      let active = flags1->BitFlags.flag1
+      let hasWall = flags1->BitFlags.flag3
+      let hasLiquid = flags1->BitFlags.flag4
+      let wire = flags1->BitFlags.flag5
+      let halfBrick = flags1->BitFlags.flag6
+      let actuator = flags1->BitFlags.flag7
+      let inActive = flags1->BitFlags.flag8
+      let wire2 = flags2->BitFlags.flag1
+      let wire3 = flags2->BitFlags.flag2
+      let? Ok(color) = switch flags2->BitFlags.flag3 {
+      | true =>
+        let? Ok(color) = reader->readByte("color")
+        Ok(Some(color))
+      | false => Ok(None)
       }
-      tiles->Array.push(column)
+      let? Ok(wallColor) = switch flags2->BitFlags.flag4 {
+      | true =>
+        let? Ok(wallColor) = reader->readByte("wallColor")
+        Ok(Some(wallColor))
+      | false => Ok(None)
+      }
+      let? Ok(activeTile) = switch active {
+      | true =>
+        let? Ok(tileType) = reader->readUInt16("tileType")
+        let? Ok(frame) = switch TileFrameImportant.isImportant(tileType) {
+        | true =>
+          let? Ok(frameX) = reader->readInt16("frameX")
+          let? Ok(frameY) = reader->readInt16("frameY")
+          Ok(Some({x: frameX, y: frameY}))
+        | false => Ok(None)
+        }
+        let slope =
+          0 +
+          (flags2->BitFlags.flag5 ? 1 : 0) +
+          (flags2->BitFlags.flag6 ? 2 : 0) + (flags2->BitFlags.flag7 ? 4 : 0)
+        Ok(
+          Some({
+            tileType,
+            slope,
+            frame,
+          }),
+        )
+      | false => Ok(None)
+      }
+      let? Ok(wall) = switch hasWall {
+      | true =>
+        let? Ok(wall) = reader->readUInt16("wall")
+        Ok(Some(wall))
+      | false => Ok(None)
+      }
+      let? Ok(liquid) = switch hasLiquid {
+      | true =>
+        let? Ok(liquidValue) = reader->readByte("liquidValue")
+        let? Ok(liquidType) = reader->readByte("liquidType")
+        Ok(Some({liquidValue, liquidType}))
+      | false => Ok(None)
+      }
+      let wire4 = flags2->BitFlags.flag8
+
+      Ok({
+        wire,
+        halfBrick,
+        actuator,
+        inActive,
+        wire2,
+        wire3,
+        wire4,
+        color,
+        wallColor,
+        activeTile,
+        wall,
+        liquid,
+        coatHeader: flags3,
+      })
     }
 
-    Some({
-      height,
-      width,
-      changeType,
-      tileX,
-      tileY,
-      tiles,
-    })
+    let tiles: array<array<tile>> = []
+    let parseResult = ref(Ok())
+    for _x in 0 to width - 1 {
+      switch parseResult.contents {
+      | Error(_) => ()
+      | Ok(_) =>
+        let column: array<tile> = []
+        for _y in 0 to height - 1 {
+          switch parseResult.contents {
+          | Error(_) => ()
+          | Ok(_) =>
+            switch readTile() {
+            | Ok(tile) => column->Array.push(tile)->ignore
+            | Error(err) => parseResult := Error(err)
+            }
+          }
+        }
+        switch parseResult.contents {
+        | Ok(_) => tiles->Array.push(column)->ignore
+        | Error(_) => ()
+        }
+      }
+    }
+
+    switch parseResult.contents {
+    | Ok(_) =>
+      Ok({
+        width,
+        height,
+        changeType,
+        tileX,
+        tileY,
+        tiles,
+      })
+    | Error(err) => Error(err)
+    }
   }
 }
 
 module Encode = {
   let {packUInt16, packInt16, packByte, setType, data} = module(ErrorAwarePacketWriter)
-  let packTile = (writer: ErrorAwarePacketWriter.t, tile: tile): ErrorAwarePacketWriter.t => { // Assuming ManagedPacketWriter.t is compatible or ErrorAwarePacketWriter.t
+  let packTile = (writer: ErrorAwarePacketWriter.t, tile: tile): ErrorAwarePacketWriter.t => {
+    // Assuming ManagedPacketWriter.t is compatible or ErrorAwarePacketWriter.t
     let flags1 = BitFlags.fromFlags(
       ~flag1=tile.activeTile->Option.isSome,
       ~flag2=false,

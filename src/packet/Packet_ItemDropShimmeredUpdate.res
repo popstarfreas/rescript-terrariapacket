@@ -6,47 +6,53 @@ type t = {
 }
 
 module Decode = {
-  let {readByte, readSingle, readBytes} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t): option<t> => {
-    Packet_ItemDropUpdate.parse(payload)->Option.map(itemDropUpdate => {
-      let reader = PacketFactory.PacketReader.make(payload)
-      let _: array<int> = reader->readBytes(24)
-      let shimmered = reader->readByte == 1
-      let shimmeredTime = reader->readSingle
-      {
-        itemDropId: itemDropUpdate.itemDropId,
-        x: itemDropUpdate.x,
-        y: itemDropUpdate.y,
-        vx: itemDropUpdate.vx,
-        vy: itemDropUpdate.vy,
-        stack: itemDropUpdate.stack,
-        prefix: itemDropUpdate.prefix,
-        noDelay: itemDropUpdate.noDelay,
-        itemId: itemDropUpdate.itemId,
-        shimmered,
-        shimmeredTime,
-      }
+  let {readByte, readSingle, readInt16} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
+    let reader = PacketFactory.PacketReader.make(payload)
+    let? Ok(itemDropId) = reader->readInt16("itemDropId")
+    let? Ok(x) = reader->readSingle("x")
+    let? Ok(y) = reader->readSingle("y")
+    let? Ok(vx) = reader->readSingle("vx")
+    let? Ok(vy) = reader->readSingle("vy")
+    let? Ok(stack) = reader->readInt16("stack")
+    let? Ok(prefix) = reader->readByte("prefix")
+    let? Ok(noDelay) = reader->readByte("noDelay")
+    let? Ok(itemId) = reader->readInt16("itemId")
+    let? Ok(shimmeredRaw) = reader->readByte("shimmered")
+    let? Ok(shimmeredTime) = reader->readSingle("shimmeredTime")
+    Ok({
+      itemDropId,
+      x,
+      y,
+      vx,
+      vy,
+      stack,
+      prefix,
+      noDelay,
+      itemId,
+      shimmered: shimmeredRaw == 1,
+      shimmeredTime,
     })
   }
 }
 
 module Encode = {
-  module Writer = PacketFactory.ManagedPacketWriter
+  module Writer = ErrorAwarePacketWriter
   let {packByte, packInt16, packInt32, packSingle, setType, data} = module(Writer)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
     Writer.make()
     ->setType(PacketType.ItemDropShimmeredUpdate->PacketType.toInt)
-    ->packInt16(self.itemDropId)
-    ->packSingle(self.x)
-    ->packSingle(self.y)
-    ->packSingle(self.vx)
-    ->packSingle(self.vy)
-    ->packInt16(self.stack)
-    ->packByte(self.prefix)
-    ->packByte(self.noDelay)
-    ->packInt16(self.itemId)
-    ->packByte(self.shimmered ? 1 : 0)
-    ->packSingle(self.shimmeredTime)
+    ->packInt16(self.itemDropId, "itemDropId")
+    ->packSingle(self.x, "x")
+    ->packSingle(self.y, "y")
+    ->packSingle(self.vx, "vx")
+    ->packSingle(self.vy, "vy")
+    ->packInt16(self.stack, "stack")
+    ->packByte(self.prefix, "prefix")
+    ->packByte(self.noDelay, "noDelay")
+    ->packInt16(self.itemId, "itemId")
+    ->packByte(self.shimmered ? 1 : 0, "shimmered")
+    ->packSingle(self.shimmeredTime, "shimmeredTime")
     ->data
   }
 }

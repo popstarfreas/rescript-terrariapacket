@@ -3,49 +3,63 @@
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
 let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
-function readByte(prim) {
-  return prim.readByte();
-}
-
-function readSingle(prim) {
-  return prim.readSingle();
-}
-
-function readInt32(prim) {
-  return prim.readInt32();
-}
-
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let source = reader.readByte();
-  let variant = reader.readByte();
-  let velocity_x = reader.readSingle();
-  let velocity_y = reader.readSingle();
+  let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "source");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "variant");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityX");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityY");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let velocity_x = e$2._0;
+  let velocity_y = e$3._0;
   let velocity = {
     x: velocity_x,
     y: velocity_y
   };
-  let position_x = reader.readInt32();
-  let position_y = reader.readInt32();
+  let e$4 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "positionX");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "positionY");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let position_x = e$4._0;
+  let position_y = e$5._0;
   let position = {
     x: position_x,
     y: position_y
   };
   return {
-    source: source,
-    variant: variant,
-    velocity: velocity,
-    position: position
+    TAG: "Ok",
+    _0: {
+      source: e._0,
+      variant: e$1._0,
+      velocity: velocity,
+      position: position
+    }
   };
 }
 
 let Decode = {
-  readByte: readByte,
-  readSingle: readSingle,
-  readInt32: readInt32,
+  readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+  readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
+  readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
   parse: parse
 };
 

@@ -3,39 +3,44 @@
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
 let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
-function readInt16(prim) {
-  return prim.readInt16();
-}
-
-function readInt32(prim) {
-  return prim.readInt32();
-}
-
-function readSingle(prim) {
-  return prim.readSingle();
-}
-
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let npcSlotId = reader.readInt16();
-  let extraValue = reader.readInt32();
-  let x = reader.readSingle();
-  let y = reader.readSingle();
-  return {
-    npcSlotId: npcSlotId,
-    extraValue: extraValue,
-    x: x,
-    y: y
-  };
+  let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcSlotId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "extraValue");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+  if (e$3.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        npcSlotId: e._0,
+        extraValue: e$1._0,
+        x: e$2._0,
+        y: e$3._0
+      }
+    };
+  } else {
+    return e$3;
+  }
 }
 
 let Decode = {
-  readInt16: readInt16,
-  readInt32: readInt32,
-  readSingle: readSingle,
+  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+  readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+  readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
   parse: parse
 };
 

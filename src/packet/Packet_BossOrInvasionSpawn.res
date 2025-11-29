@@ -27,11 +27,12 @@ type t = {
 }
 
 module Decode = {
-  let {readInt16} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readInt16} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let playerId = reader->readInt16
-    let spawnType = switch reader->readInt16 {
+    let? Ok(playerId) = reader->readInt16("playerId")
+    let? Ok(rawSpawnType) = reader->readInt16("spawnType")
+    let spawnType = switch rawSpawnType {
     | -1 => GoblinInvasion
     | -2 => FrostInvasion
     | -3 => PirateInvasion
@@ -53,7 +54,7 @@ module Decode = {
     | npcType => Npc(npcType)
     }
 
-    Some({
+    Ok({
       playerId,
       spawnType,
     })

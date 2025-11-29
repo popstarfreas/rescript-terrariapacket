@@ -3,6 +3,8 @@
 
 let Belt_Option = require("@rescript/runtime/lib/js/Belt_Option.js");
 let BitFlags$TerrariaPacket = require("./BitFlags.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("./ErrorAwarePacketReader.js");
+let ErrorAwarePacketWriter$TerrariaPacket = require("./ErrorAwarePacketWriter.js");
 
 function otherFromByte(byte) {
   switch (byte) {
@@ -77,36 +79,164 @@ function otherToByte(other) {
 }
 
 function readDeathReason(reader) {
-  let reasonType = BitFlags$TerrariaPacket.fromByte(reader.readByte());
-  let killerPlayerId = BitFlags$TerrariaPacket.flag1(reasonType) ? reader.readInt16() : undefined;
-  let killerNpcId = BitFlags$TerrariaPacket.flag2(reasonType) ? reader.readInt16() : undefined;
-  let killerProjectileId = BitFlags$TerrariaPacket.flag3(reasonType) ? reader.readInt16() : undefined;
-  let typeOfDeathOther = BitFlags$TerrariaPacket.flag4(reasonType) ? otherFromByte(reader.readByte()) : undefined;
-  let projectileType = BitFlags$TerrariaPacket.flag5(reasonType) ? reader.readInt16() : undefined;
-  let itemType = BitFlags$TerrariaPacket.flag6(reasonType) ? reader.readInt16() : undefined;
-  let itemPrefix = BitFlags$TerrariaPacket.flag7(reasonType) ? reader.readByte() : undefined;
-  let deathReason = BitFlags$TerrariaPacket.flag8(reasonType) ? reader.readString() : undefined;
-  return {
-    killerPlayerId: killerPlayerId,
-    killerNpcId: killerNpcId,
-    killerProjectileId: killerProjectileId,
-    typeOfDeathOther: typeOfDeathOther,
-    projectileType: projectileType,
-    itemType: itemType,
-    itemPrefix: itemPrefix,
-    deathReason: deathReason
-  };
+  let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "reasonType");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let reasonType = BitFlags$TerrariaPacket.fromByte(e._0);
+  let e$1;
+  if (BitFlags$TerrariaPacket.flag1(reasonType)) {
+    let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "killerPlayerId");
+    e$1 = e$2.TAG === "Ok" ? ({
+        TAG: "Ok",
+        _0: e$2._0
+      }) : e$2;
+  } else {
+    e$1 = {
+      TAG: "Ok",
+      _0: undefined
+    };
+  }
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$3;
+  if (BitFlags$TerrariaPacket.flag2(reasonType)) {
+    let e$4 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "killerNpcId");
+    e$3 = e$4.TAG === "Ok" ? ({
+        TAG: "Ok",
+        _0: e$4._0
+      }) : e$4;
+  } else {
+    e$3 = {
+      TAG: "Ok",
+      _0: undefined
+    };
+  }
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$5;
+  if (BitFlags$TerrariaPacket.flag3(reasonType)) {
+    let e$6 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "killerProjectileId");
+    e$5 = e$6.TAG === "Ok" ? ({
+        TAG: "Ok",
+        _0: e$6._0
+      }) : e$6;
+  } else {
+    e$5 = {
+      TAG: "Ok",
+      _0: undefined
+    };
+  }
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$7;
+  if (BitFlags$TerrariaPacket.flag4(reasonType)) {
+    let e$8 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "typeOfDeathOther");
+    e$7 = e$8.TAG === "Ok" ? ({
+        TAG: "Ok",
+        _0: otherFromByte(e$8._0)
+      }) : e$8;
+  } else {
+    e$7 = {
+      TAG: "Ok",
+      _0: undefined
+    };
+  }
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let e$9;
+  if (BitFlags$TerrariaPacket.flag5(reasonType)) {
+    let e$10 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "projectileType");
+    e$9 = e$10.TAG === "Ok" ? ({
+        TAG: "Ok",
+        _0: e$10._0
+      }) : e$10;
+  } else {
+    e$9 = {
+      TAG: "Ok",
+      _0: undefined
+    };
+  }
+  if (e$9.TAG !== "Ok") {
+    return e$9;
+  }
+  let e$11;
+  if (BitFlags$TerrariaPacket.flag6(reasonType)) {
+    let e$12 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemType");
+    e$11 = e$12.TAG === "Ok" ? ({
+        TAG: "Ok",
+        _0: e$12._0
+      }) : e$12;
+  } else {
+    e$11 = {
+      TAG: "Ok",
+      _0: undefined
+    };
+  }
+  if (e$11.TAG !== "Ok") {
+    return e$11;
+  }
+  let e$13;
+  if (BitFlags$TerrariaPacket.flag7(reasonType)) {
+    let e$14 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "itemPrefix");
+    e$13 = e$14.TAG === "Ok" ? ({
+        TAG: "Ok",
+        _0: e$14._0
+      }) : e$14;
+  } else {
+    e$13 = {
+      TAG: "Ok",
+      _0: undefined
+    };
+  }
+  if (e$13.TAG !== "Ok") {
+    return e$13;
+  }
+  let e$15;
+  if (BitFlags$TerrariaPacket.flag8(reasonType)) {
+    let e$16 = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "deathReason");
+    e$15 = e$16.TAG === "Ok" ? ({
+        TAG: "Ok",
+        _0: e$16._0
+      }) : e$16;
+  } else {
+    e$15 = {
+      TAG: "Ok",
+      _0: undefined
+    };
+  }
+  if (e$15.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        killerPlayerId: e$1._0,
+        killerNpcId: e$3._0,
+        killerProjectileId: e$5._0,
+        typeOfDeathOther: e$7._0,
+        projectileType: e$9._0,
+        itemType: e$11._0,
+        itemPrefix: e$13._0,
+        deathReason: e$15._0
+      }
+    };
+  } else {
+    return e$15;
+  }
 }
 
 function packFlags(writer, self) {
   let flags = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(self.killerPlayerId), Belt_Option.isSome(self.killerNpcId), Belt_Option.isSome(self.killerProjectileId), Belt_Option.isSome(self.typeOfDeathOther), Belt_Option.isSome(self.projectileType), Belt_Option.isSome(self.itemType), Belt_Option.isSome(self.itemPrefix), Belt_Option.isSome(self.deathReason));
-  return writer.packByte(BitFlags$TerrariaPacket.toByte(flags));
+  return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(flags), "reasonType");
 }
 
 function packKillerPlayerId(writer, self) {
   let killerPlayerId = self.killerPlayerId;
   if (killerPlayerId !== undefined) {
-    return writer.packInt16(killerPlayerId);
+    return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, killerPlayerId, "killerPlayerId");
   } else {
     return writer;
   }
@@ -115,7 +245,7 @@ function packKillerPlayerId(writer, self) {
 function packKillerNpcId(writer, self) {
   let killerNpcId = self.killerNpcId;
   if (killerNpcId !== undefined) {
-    return writer.packInt16(killerNpcId);
+    return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, killerNpcId, "killerNpcId");
   } else {
     return writer;
   }
@@ -124,7 +254,7 @@ function packKillerNpcId(writer, self) {
 function packKillerProjectileId(writer, self) {
   let killerProjectileId = self.killerProjectileId;
   if (killerProjectileId !== undefined) {
-    return writer.packInt16(killerProjectileId);
+    return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, killerProjectileId, "killerProjectileId");
   } else {
     return writer;
   }
@@ -133,7 +263,7 @@ function packKillerProjectileId(writer, self) {
 function packTypeOfDeathOther(writer, self) {
   let typeOfDeathOther = self.typeOfDeathOther;
   if (typeOfDeathOther !== undefined) {
-    return writer.packByte(otherToByte(typeOfDeathOther));
+    return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, otherToByte(typeOfDeathOther), "typeOfDeathOther");
   } else {
     return writer;
   }
@@ -142,7 +272,7 @@ function packTypeOfDeathOther(writer, self) {
 function packProjectileType(writer, self) {
   let projectileType = self.projectileType;
   if (projectileType !== undefined) {
-    return writer.packInt16(projectileType);
+    return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, projectileType, "projectileType");
   } else {
     return writer;
   }
@@ -151,7 +281,7 @@ function packProjectileType(writer, self) {
 function packItemType(writer, self) {
   let itemType = self.itemType;
   if (itemType !== undefined) {
-    return writer.packInt16(itemType);
+    return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, itemType, "itemType");
   } else {
     return writer;
   }
@@ -160,7 +290,7 @@ function packItemType(writer, self) {
 function packItemPrefix(writer, self) {
   let itemPrefix = self.itemPrefix;
   if (itemPrefix !== undefined) {
-    return writer.packByte(itemPrefix);
+    return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, itemPrefix, "itemPrefix");
   } else {
     return writer;
   }
@@ -170,7 +300,7 @@ function pack(writer, self) {
   let writer$1 = packItemPrefix(packItemType(packProjectileType(packTypeOfDeathOther(packKillerProjectileId(packKillerNpcId(packKillerPlayerId(packFlags(writer, self), self), self), self), self), self), self), self);
   let deathReason = self.deathReason;
   if (deathReason !== undefined) {
-    return writer$1.packString(deathReason);
+    return ErrorAwarePacketWriter$TerrariaPacket.packString(writer$1, deathReason, "deathReason");
   } else {
     return writer$1;
   }
@@ -180,4 +310,4 @@ let packDeathReason = pack;
 
 exports.readDeathReason = readDeathReason;
 exports.packDeathReason = packDeathReason;
-/* No side effect */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

@@ -5,23 +5,23 @@ type t = {
 }
 
 module Decode = {
-  let {readInt32} = module(PacketFactory.PacketReader)
+  let {readInt32} = module(ErrorAwarePacketReader)
 
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let x = reader->readInt32
-    let y = reader->readInt32
-    Some({x, y})
+    let? Ok(x) = reader->readInt32("x")
+    let? Ok(y) = reader->readInt32("y")
+    Ok({x, y})
   }
 }
 
 module Encode = {
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    let {packInt32, setType, data} = module(PacketFactory.ManagedPacketWriter)
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    let {packInt32, setType, data} = module(ErrorAwarePacketWriter)
     PacketFactory.ManagedPacketWriter.make()
     ->setType(PacketType.InitialTileSectionsRequest->PacketType.toInt)
-    ->packInt32(self.x)
-    ->packInt32(self.y)
+    ->packInt32(self.x, "x")
+    ->packInt32(self.y, "y")
     ->data
   }
 }

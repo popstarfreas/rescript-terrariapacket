@@ -34,77 +34,90 @@ module UpdateType = {
 }
 
 module Decode = {
-  let {readString, readUInt16, readInt16} = module(PacketFactory.PacketReader)
+  let {readString, readUInt16, readInt16} = module(ErrorAwarePacketReader)
 
   let parseRealIpAddress = reader => {
-    let ip = reader->readString
-    Some(RealIpAddress(ip))
+    let? Ok(ip) = reader->readString("ip")
+    Ok(RealIpAddress(ip))
   }
 
   // Not Fully Supported
-  let parseGamemodesJoinMode = _reader => Some(GamemodesJoinMode)
+  let parseGamemodesJoinMode = _reader => Ok(GamemodesJoinMode)
 
   let parseSwitchServer = reader => {
-    let dimensionName = reader->readString
-    Some(SwitchServer(dimensionName))
+    let? Ok(dimensionName) = reader->readString("dimensionName")
+    Ok(SwitchServer(dimensionName))
   }
 
   let parseSwitchServerManual = reader => {
-    let ip = reader->readString
-    let port = reader->readUInt16
-    Some(SwitchServerManual(ip, port))
+    let? Ok(ip) = reader->readString("ip")
+    let? Ok(port) = reader->readUInt16("port")
+    Ok(SwitchServerManual(ip, port))
   }
 
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let updateType = reader->readInt16
+    let? Ok(updateType) = reader->readInt16("updateType")
     switch updateType->UpdateType.fromInt {
     | Some(RealIpAddress) => parseRealIpAddress(reader)
     | Some(GamemodesJoinMode) => parseGamemodesJoinMode(reader)
     | Some(SwitchServer) => parseSwitchServer(reader)
     | Some(SwitchServerManual) => parseSwitchServerManual(reader)
-    | None => None
+    | None =>
+      Error({
+        context: "DimensionsUpdate.parse.updateType",
+        error: ErrorExt.makeJsError("Unknown updateType"),
+      })
     }
   }
 }
 
 module Encode = {
-  let {packString, packInt16, packUInt16, setType, data} = module(PacketFactory.ManagedPacketWriter)
+  let {packString, packInt16, packUInt16, setType, data} = module(ErrorAwarePacketWriter)
 
-  let realIpAddressToBuffer = (ip: string): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let realIpAddressToBuffer = (ip: string): result<
+    NodeJs.Buffer.t,
+    ErrorAwarePacketWriter.packError,
+  > => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.DimensionsUpdate->PacketType.toInt)
-    ->packInt16(UpdateType.RealIpAddress->UpdateType.toInt)
-    ->packString(ip)
+    ->packInt16(UpdateType.RealIpAddress->UpdateType.toInt, "updateType")
+    ->packString(ip, "ip")
     ->data
   }
 
   // Not Supported
-  let gamemodesJoinModeToBuffer = (): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let gamemodesJoinModeToBuffer = (): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.DimensionsUpdate->PacketType.toInt)
-    ->packInt16(UpdateType.GamemodesJoinMode->UpdateType.toInt)
+    ->packInt16(UpdateType.GamemodesJoinMode->UpdateType.toInt, "updateType")
     ->data
   }
 
-  let switchServerToBuffer = (dimensionName: string): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let switchServerToBuffer = (dimensionName: string): result<
+    NodeJs.Buffer.t,
+    ErrorAwarePacketWriter.packError,
+  > => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.DimensionsUpdate->PacketType.toInt)
-    ->packInt16(UpdateType.SwitchServer->UpdateType.toInt)
-    ->packString(dimensionName)
+    ->packInt16(UpdateType.SwitchServer->UpdateType.toInt, "updateType")
+    ->packString(dimensionName, "dimensionName")
     ->data
   }
 
-  let switchServerManualToBuffer = (ip: string, port: int): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let switchServerManualToBuffer = (ip: string, port: int): result<
+    NodeJs.Buffer.t,
+    ErrorAwarePacketWriter.packError,
+  > => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.DimensionsUpdate->PacketType.toInt)
-    ->packInt16(UpdateType.SwitchServerManual->UpdateType.toInt)
-    ->packString(ip)
-    ->packUInt16(port)
+    ->packInt16(UpdateType.SwitchServerManual->UpdateType.toInt, "updateType")
+    ->packString(ip, "ip")
+    ->packUInt16(port, "port")
     ->data
   }
 
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
     switch self {
     | RealIpAddress(ip) => realIpAddressToBuffer(ip)
     | GamemodesJoinMode => gamemodesJoinModeToBuffer()

@@ -7,15 +7,19 @@ type t = {
 }
 
 module Decode = {
-  let {readByte, readSingle, readInt32} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readByte, readSingle, readInt32} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let source = reader->readByte
-    let variant = reader->readByte
-    let velocity = {Point.x: reader->readSingle, y: reader->readSingle}
-    let position = {Point.x: reader->readInt32, y: reader->readInt32}
+    let? Ok(source) = reader->readByte("source")
+    let? Ok(variant) = reader->readByte("variant")
+    let? Ok(velocityX) = reader->readSingle("velocityX")
+    let? Ok(velocityY) = reader->readSingle("velocityY")
+    let velocity = {Point.x: velocityX, y: velocityY}
+    let? Ok(positionX) = reader->readInt32("positionX")
+    let? Ok(positionY) = reader->readInt32("positionY")
+    let position = {Point.x: positionX, y: positionY}
 
-    Some({
+    Ok({
       source,
       variant,
       velocity,

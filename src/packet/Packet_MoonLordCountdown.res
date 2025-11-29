@@ -2,13 +2,12 @@
 type t = {maxMoonLordCountdown: int, moonLordCountdown: int}
 
 module Decode = {
-  let {readInt32} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readInt32} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    Some({
-      maxMoonLordCountdown: reader->readInt32,
-      moonLordCountdown: reader->readInt32,
-    })
+    let? Ok(maxMoonLordCountdown) = reader->readInt32("maxMoonLordCountdown")
+    let? Ok(moonLordCountdown) = reader->readInt32("moonLordCountdown")
+    Ok({maxMoonLordCountdown, moonLordCountdown})
   }
 }
 

@@ -10,18 +10,19 @@ type t = {
 }
 
 module Decode = {
-  let {readInt16, readInt32, readByte, readSingle} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readInt16, readInt32, readByte, readSingle} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let player = reader->readByte
-    let ladyBugLuckTimeLeft = reader->readInt32
-    let torchLuck = reader->readSingle
-    let luckPotion = reader->readByte
-    let hasGardenGnomeNearby = reader->readByte == 1
-    let equipmentBasedLuckBonus = reader->readSingle
-    let coinLuck = reader->readSingle
+    let? Ok(player) = reader->readByte("playerId")
+    let? Ok(ladyBugLuckTimeLeft) = reader->readInt32("ladyBugLuckTimeLeft")
+    let? Ok(torchLuck) = reader->readSingle("torchLuck")
+    let? Ok(luckPotion) = reader->readByte("luckPotion")
+    let? Ok(hasGardenGnomeNearbyRaw) = reader->readByte("hasGardenGnomeNearby")
+    let hasGardenGnomeNearby = hasGardenGnomeNearbyRaw == 1
+    let? Ok(equipmentBasedLuckBonus) = reader->readSingle("equipmentBasedLuckBonus")
+    let? Ok(coinLuck) = reader->readSingle("coinLuck")
 
-    Some({
+    Ok({
       playerId: player,
       ladyBugLuckTimeLeft,
       torchLuck,

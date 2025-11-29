@@ -27,17 +27,19 @@ type t = {
 }
 
 module Decode = {
-  let {readUInt16, readByte, readInt32, readInt16} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readUInt16, readByte, readInt32, readInt16} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let npcId = reader->readUInt16
-    let setNpcImmunity = reader->readByte == 1
-    let (immunityTime, immunityFromPlayerId) = if setNpcImmunity {
-      (Some(reader->readInt32), Some(Immunity.fromInt(reader->readInt16)))
+    let? Ok(npcId) = reader->readUInt16("npcId")
+    let? Ok(setNpcImmunity) = reader->readByte("setNpcImmunity")
+    let? Ok((immunityTime, immunityFromPlayerId)) = if setNpcImmunity == 1 {
+      let? Ok(immunityTime) = reader->readInt32("immunityTime")
+      let? Ok(immunityFromPlayerId) = reader->readInt16("immunityFromPlayerId")
+      Ok((Some(immunityTime), Some(Immunity.fromInt(immunityFromPlayerId))))
     } else {
-      (None, None)
+      Ok((None, None))
     }
-    Some({
+    Ok({
       npcId,
       immunityTime,
       immunityFromPlayerId,

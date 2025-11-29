@@ -2,9 +2,9 @@
 'use strict';
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
-let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
 function toInt(self) {
   switch (self) {
@@ -41,39 +41,75 @@ let UpdateType = {
 
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let updateType = reader.readInt16();
-  let match = fromInt(updateType);
+  let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "updateType");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let match = fromInt(e._0);
   if (match === undefined) {
-    return;
+    return {
+      TAG: "Error",
+      _0: {
+        context: "DimensionsUpdate.parse.updateType",
+        error: new Error("Unknown updateType")
+      }
+    };
   }
   switch (match) {
     case "RealIpAddress" :
-      let ip = reader.readString();
-      return {
-        TAG: "RealIpAddress",
-        _0: ip
-      };
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "ip");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "RealIpAddress",
+            _0: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     case "GamemodesJoinMode" :
-      return "GamemodesJoinMode";
+      return {
+        TAG: "Ok",
+        _0: "GamemodesJoinMode"
+      };
     case "SwitchServer" :
-      let dimensionName = reader.readString();
-      return {
-        TAG: "SwitchServer",
-        _0: dimensionName
-      };
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "dimensionName");
+      if (e$2.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "SwitchServer",
+            _0: e$2._0
+          }
+        };
+      } else {
+        return e$2;
+      }
     case "SwitchServerManual" :
-      let ip$1 = reader.readString();
-      let port = reader.readUInt16();
-      return {
-        TAG: "SwitchServerManual",
-        _0: ip$1,
-        _1: port
-      };
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "ip");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "port");
+      if (e$4.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "SwitchServerManual",
+            _0: e$3._0,
+            _1: e$4._0
+          }
+        };
+      } else {
+        return e$4;
+      }
   }
 }
 
 function gamemodesJoinModeToBuffer() {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("DimensionsUpdate")).packInt16(1).data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("DimensionsUpdate")), 1, "updateType"));
 }
 
 function toBuffer(self) {
@@ -83,18 +119,18 @@ function toBuffer(self) {
   switch (self.TAG) {
     case "RealIpAddress" :
       let ip = self._0;
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("DimensionsUpdate")).packInt16(0).packString(ip).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("DimensionsUpdate")), 0, "updateType"), ip, "ip"));
     case "SwitchServer" :
       let dimensionName = self._0;
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("DimensionsUpdate")).packInt16(2).packString(dimensionName).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("DimensionsUpdate")), 2, "updateType"), dimensionName, "dimensionName"));
     case "SwitchServerManual" :
       let ip$1 = self._0;
       let port = self._1;
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("DimensionsUpdate")).packInt16(3).packString(ip$1).packUInt16(port).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("DimensionsUpdate")), 3, "updateType"), ip$1, "ip"), port, "port"));
   }
 }
 
 exports.UpdateType = UpdateType;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

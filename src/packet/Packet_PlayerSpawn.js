@@ -2,21 +2,46 @@
 'use strict';
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
-let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
+
+function makeError(_message) {
+  return (new Error(_message));
+}
 
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let playerId = reader.readByte();
-  let x = reader.readInt16();
-  let y = reader.readInt16();
-  let timeRemaining = reader.readInt32();
-  let numberOfDeathsPve = reader.readInt16();
-  let numberOfDeathsPvp = reader.readInt16();
-  let rawContext = reader.readByte();
+  let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "timeRemaining");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "numberOfDeathsPve");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "numberOfDeathsPvp");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "context");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
   let context;
-  switch (rawContext) {
+  switch (e$6._0) {
     case 0 :
       context = "ReviveFromDeath";
       break;
@@ -31,13 +56,24 @@ function parse(payload) {
   }
   if (context !== undefined) {
     return {
-      playerId: playerId,
-      x: x,
-      y: y,
-      timeRemaining: timeRemaining,
-      numberOfDeathsPve: numberOfDeathsPve,
-      numberOfDeathsPvp: numberOfDeathsPvp,
-      context: context
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        x: e$1._0,
+        y: e$2._0,
+        timeRemaining: e$3._0,
+        numberOfDeathsPve: e$4._0,
+        numberOfDeathsPvp: e$5._0,
+        context: context
+      }
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: {
+        context: "PlayerSpawn.parse.context",
+        error: makeError("Unknown context")
+      }
     };
   }
 }
@@ -56,9 +92,9 @@ function toBuffer(self) {
       tmp = 2;
       break;
   }
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerSpawn")).packByte(self.playerId).packInt16(self.x).packInt16(self.y).packInt32(self.timeRemaining).packInt16(self.numberOfDeathsPve).packInt16(self.numberOfDeathsPvp).packByte(tmp).data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerSpawn")), self.playerId, "playerId"), self.x, "x"), self.y, "y"), self.timeRemaining, "timeRemaining"), self.numberOfDeathsPve, "numberOfDeathsPve"), self.numberOfDeathsPvp, "numberOfDeathsPvp"), tmp, "context"));
 }
 
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

@@ -3,24 +3,37 @@
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
 let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
-function readInt16(prim) {
-  return prim.readInt16();
-}
-
-function tryReading(reader) {
-  let n = reader.readInt16();
-  if (n !== -1) {
-    return;
+function tryReading(reader, context) {
+  let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, context);
+  if (e.TAG !== "Ok") {
+    return e;
   }
-  let expectedIdentity = reader.readInt16();
-  let expectedType = reader.readInt16();
-  return {
-    expectedIdentity: expectedIdentity,
-    expectedType: expectedType
-  };
+  if (e._0 !== -1) {
+    return {
+      TAG: "Ok",
+      _0: undefined
+    };
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, context + "_expectedIdentity");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, context + "_expectedType");
+  if (e$2.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        expectedIdentity: e$1._0,
+        expectedType: e$2._0
+      }
+    };
+  } else {
+    return e$2;
+  }
 }
 
 function packInt16(prim0, prim1) {
@@ -36,40 +49,39 @@ function pack(writer, self) {
 }
 
 let TrackedProjectileReference = {
-  readInt16: readInt16,
+  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
   tryReading: tryReading,
   packInt16: packInt16,
   pack: pack
 };
 
-function readByte(prim) {
-  return prim.readByte();
-}
-
-function readSingle(prim) {
-  return prim.readSingle();
-}
-
-function readInt32(prim) {
-  return prim.readInt32();
-}
-
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let playerId = reader.readByte();
-  let piggyBankProj = tryReading(reader);
-  let voidLensChest = tryReading(reader);
-  return {
-    playerId: playerId,
-    piggyBankProj: piggyBankProj,
-    voidLensChest: voidLensChest
-  };
+  let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = tryReading(reader, "piggyBankProj");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = tryReading(reader, "voidLensChest");
+  if (e$2.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        piggyBankProj: e$1._0,
+        voidLensChest: e$2._0
+      }
+    };
+  } else {
+    return e$2;
+  }
 }
 
 let Decode = {
-  readByte: readByte,
-  readSingle: readSingle,
-  readInt32: readInt32,
+  readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
   parse: parse
 };
 

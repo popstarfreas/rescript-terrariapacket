@@ -4,41 +4,60 @@
 let Pervasives = require("@rescript/runtime/lib/js/Pervasives.js");
 let PacketType$TerrariaPacket = require("../PacketType.js");
 let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
-function readUInt16(prim) {
-  return prim.readUInt16();
-}
-
-function readInt16(prim) {
-  return prim.readInt16();
-}
-
-function readByte(prim) {
-  return prim.readByte();
-}
-
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let npcId = reader.readInt16();
+  let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
   let buffs = [];
   let buffTimes = [];
-  for (let _i = 1; _i <= 20; ++_i) {
-    buffs.push(reader.readUInt16());
-    buffTimes.push(reader.readInt16());
-  }
-  return {
-    npcId: npcId,
-    buffs: buffs,
-    buffTimes: buffTimes
+  let readBuffs = _idx => {
+    while (true) {
+      let idx = _idx;
+      if (idx >= 20) {
+        return {
+          TAG: "Ok",
+          _0: undefined
+        };
+      }
+      let e = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, `buff` + (idx + 1 | 0).toString());
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, `buffTime` + (idx + 1 | 0).toString());
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      buffs.push(e._0);
+      buffTimes.push(e$1._0);
+      _idx = idx + 1 | 0;
+      continue;
+    };
   };
+  let e$1 = readBuffs(0);
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        npcId: e._0,
+        buffs: buffs,
+        buffTimes: buffTimes
+      }
+    };
+  } else {
+    return e$1;
+  }
 }
 
 let Decode = {
-  readUInt16: readUInt16,
-  readInt16: readInt16,
-  readByte: readByte,
+  readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
+  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+  readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
   parse: parse
 };
 

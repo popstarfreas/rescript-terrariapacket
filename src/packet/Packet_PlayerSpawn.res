@@ -13,18 +13,20 @@ type t = {
   context: context,
 }
 
-module Decode = {
-  let {readByte, readInt16, readInt32} = module(PacketFactory.PacketReader)
+let makeError = (_message: string): JsExn.t => %raw("new Error(_message)")
 
-  let parse = (payload: NodeJs.Buffer.t) => {
+module Decode = {
+  let {readByte, readInt16, readInt32} = module(ErrorAwarePacketReader)
+
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let playerId = reader->readByte
-    let x = reader->readInt16
-    let y = reader->readInt16
-    let timeRemaining = reader->readInt32
-    let numberOfDeathsPve = reader->readInt16
-    let numberOfDeathsPvp = reader->readInt16
-    let rawContext = reader->readByte
+    let? Ok(playerId) = reader->readByte("playerId")
+    let? Ok(x) = reader->readInt16("x")
+    let? Ok(y) = reader->readInt16("y")
+    let? Ok(timeRemaining) = reader->readInt32("timeRemaining")
+    let? Ok(numberOfDeathsPve) = reader->readInt16("numberOfDeathsPve")
+    let? Ok(numberOfDeathsPvp) = reader->readInt16("numberOfDeathsPvp")
+    let? Ok(rawContext) = reader->readByte("context")
     let context = switch rawContext {
     | 0 => Some(ReviveFromDeath)
     | 1 => Some(SpawningIntoWorld)
@@ -34,7 +36,7 @@ module Decode = {
 
     switch context {
     | Some(context) =>
-      Some({
+      Ok({
         playerId,
         x,
         y,
@@ -43,28 +45,33 @@ module Decode = {
         numberOfDeathsPvp,
         context,
       })
-    | None => None
+    | None =>
+      Error({
+        ErrorAwarePacketReader.context: "PlayerSpawn.parse.context",
+        error: makeError("Unknown context"),
+      })
     }
   }
 }
 
 module Encode = {
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    let {packByte, packInt16, packInt32, setType, data} = module(PacketFactory.ManagedPacketWriter)
-    PacketFactory.ManagedPacketWriter.make()
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    let {packByte, packInt16, packInt32, setType, data} = module(ErrorAwarePacketWriter)
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.PlayerSpawn->PacketType.toInt)
-    ->packByte(self.playerId)
-    ->packInt16(self.x)
-    ->packInt16(self.y)
-    ->packInt32(self.timeRemaining)
-    ->packInt16(self.numberOfDeathsPve)
-    ->packInt16(self.numberOfDeathsPvp)
+    ->packByte(self.playerId, "playerId")
+    ->packInt16(self.x, "x")
+    ->packInt16(self.y, "y")
+    ->packInt32(self.timeRemaining, "timeRemaining")
+    ->packInt16(self.numberOfDeathsPve, "numberOfDeathsPve")
+    ->packInt16(self.numberOfDeathsPvp, "numberOfDeathsPvp")
     ->packByte(
       switch self.context {
       | ReviveFromDeath => 0
       | SpawningIntoWorld => 1
       | RecallFromItem => 2
       },
+      "context",
     )
     ->data
   }

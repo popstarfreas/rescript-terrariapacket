@@ -3,30 +3,49 @@
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
 let PlayerDeathReason$TerrariaPacket = require("../PlayerDeathReason.js");
-let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let playerId = reader.readByte();
-  let deathReason = PlayerDeathReason$TerrariaPacket.readDeathReason(reader);
-  let damage = reader.readInt16();
-  let hitDirection = reader.readByte();
-  let pvp = reader.readByte() === 1;
-  return {
-    playerId: playerId,
-    deathReason: deathReason,
-    damage: damage,
-    hitDirection: hitDirection,
-    pvp: pvp
-  };
+  let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = PlayerDeathReason$TerrariaPacket.readDeathReason(reader);
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "damage");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hitDirection");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "pvp");
+  if (e$4.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        deathReason: e$1._0,
+        damage: e$2._0,
+        hitDirection: e$3._0,
+        pvp: e$4._0 === 1
+      }
+    };
+  } else {
+    return e$4;
+  }
 }
 
 function toBuffer(self) {
-  return PlayerDeathReason$TerrariaPacket.packDeathReason(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerDeath")).packByte(self.playerId), self.deathReason).packInt16(self.damage).packByte(self.hitDirection).packByte(self.pvp ? 1 : 0).data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(PlayerDeathReason$TerrariaPacket.packDeathReason(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerDeath")), self.playerId, "playerId"), self.deathReason), self.damage, "damage"), self.hitDirection, "hitDirection"), self.pvp ? 1 : 0, "pvp"));
 }
 
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* PlayerDeathReason-TerrariaPacket Not a pure module */

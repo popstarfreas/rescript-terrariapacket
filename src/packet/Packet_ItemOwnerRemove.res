@@ -2,13 +2,11 @@
 type t = {itemDropId: int}
 
 module Decode = {
-  let {readInt16} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readInt16} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let itemDropId = reader->readInt16
-    Some({
-      itemDropId: itemDropId,
-    })
+    let? Ok(itemDropId) = reader->readInt16("itemDropId")
+    Ok({itemDropId: itemDropId})
   }
 }
 

@@ -35,13 +35,13 @@ type t = {
 }
 
 module Decode: {
-  let parse: NodeJs.Buffer.t => option<t>
+  let parse: NodeJs.Buffer.t => result<t, ErrorAwarePacketReader.readError>
 }
 module Encode: {
   let toBuffer: t => result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError>
 }
 
 @genType
-let parse: NodeJs.Buffer.t => option<t>
+let parse: NodeJs.Buffer.t => result<t, ErrorAwarePacketReader.readError>
 @genType
 let toBuffer: t => result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError>

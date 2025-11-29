@@ -8,14 +8,27 @@ let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let color = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "color");
-  let message = ErrorAwarePacketReader$TerrariaPacket.readNetworkText(reader, "message");
-  let widthLimit = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "widthLimit");
-  return {
-    color: color,
-    message: message,
-    widthLimit: widthLimit
-  };
+  let e = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "color");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readNetworkText(reader, "message");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "widthLimit");
+  if (e$2.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        color: e._0,
+        message: e$1._0,
+        widthLimit: e$2._0
+      }
+    };
+  } else {
+    return e$2;
+  }
 }
 
 let Decode = {

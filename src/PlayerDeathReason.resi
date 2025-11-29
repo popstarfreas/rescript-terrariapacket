@@ -28,5 +28,5 @@ type t = {
   deathReason: option<string>,
 }
 
-let readDeathReason: PacketFactory.PacketReader.t => t
-let packDeathReason: (PacketFactory.ManagedPacketWriter.t, t) => PacketFactory.ManagedPacketWriter.t
+let readDeathReason: ErrorAwarePacketReader.t => result<t, ErrorAwarePacketReader.readError>
+let packDeathReason: (ErrorAwarePacketWriter.t, t) => ErrorAwarePacketWriter.t

@@ -4,6 +4,7 @@
 /* tslint:disable */
 
 import type { PackError } from "../ErrorAwarePacketWriter";
+import type { readError } from "../ErrorAwarePacketReader";
 
 export type frame = { readonly x: number; readonly y: number };
 
@@ -40,7 +41,10 @@ export type t = {
   readonly tiles: Array<tile[]>
 };
 
-export declare const parse: (_1: Buffer) => (undefined | t);
+export type parseOk = { TAG: "Ok"; _0: (undefined | t) };
+export type parseError = { TAG: "Error"; _0: readError };
+export type parse = parseOk | parseError;
+export declare const parse: (_1: Buffer) => parse;
 
 export type toBufferOk = { TAG: "Ok"; _0: Buffer };
 export type toBufferError = { TAG: "Error"; _0: PackError };

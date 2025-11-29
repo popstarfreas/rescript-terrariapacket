@@ -3,43 +3,54 @@
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
 let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
-function readByte(prim) {
-  return prim.readByte();
-}
-
-function readInt32(prim) {
-  return prim.readInt32();
-}
-
-function readUInt16(prim) {
-  return prim.readUInt16();
-}
-
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let playerId = reader.readByte();
-  let tileEntityId = reader.readInt32();
-  let itemIndex = reader.readByte();
-  let itemId = reader.readUInt16();
-  let stack = reader.readUInt16();
-  let prefix = reader.readByte();
-  return {
-    playerId: playerId,
-    tileEntityId: tileEntityId,
-    itemIndex: itemIndex,
-    itemId: itemId,
-    stack: stack,
-    prefix: prefix
-  };
+  let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "tileEntityId");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "itemIndex");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "itemId");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "stack");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "prefix");
+  if (e$5.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        tileEntityId: e$1._0,
+        itemIndex: e$2._0,
+        itemId: e$3._0,
+        stack: e$4._0,
+        prefix: e$5._0
+      }
+    };
+  } else {
+    return e$5;
+  }
 }
 
 let Decode = {
-  readByte: readByte,
-  readInt32: readInt32,
-  readUInt16: readUInt16,
+  readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+  readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+  readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
   parse: parse
 };
 

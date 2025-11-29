@@ -52,11 +52,15 @@ module Decode = {
   let {readByte, readSingle} = module(ErrorAwarePacketReader)
   let parse = (payload: NodeJs.Buffer.t) => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let playerId = reader->readByte("playerId")
-    let controlFlags = BitFlags.fromByte(reader->readByte("controlFlags"))
-    let miscFlags1 = BitFlags.fromByte(reader->readByte("miscFlags1"))
-    let miscFlags2 = BitFlags.fromByte(reader->readByte("miscFlags2"))
-    let miscFlags3 = BitFlags.fromByte(reader->readByte("miscFlags3"))
+    let? Ok(playerId) = reader->readByte("playerId")
+    let? Ok(controlFlagsRaw) = reader->readByte("controlFlags")
+    let controlFlags = BitFlags.fromByte(controlFlagsRaw)
+    let? Ok(miscFlags1Raw) = reader->readByte("miscFlags1")
+    let miscFlags1 = BitFlags.fromByte(miscFlags1Raw)
+    let? Ok(miscFlags2Raw) = reader->readByte("miscFlags2")
+    let miscFlags2 = BitFlags.fromByte(miscFlags2Raw)
+    let? Ok(miscFlags3Raw) = reader->readByte("miscFlags3")
+    let miscFlags3 = BitFlags.fromByte(miscFlags3Raw)
     let control = {
       isHoldingUp: controlFlags->BitFlags.flag1,
       isHoldingDown: controlFlags->BitFlags.flag2,
@@ -84,32 +88,44 @@ module Decode = {
     }
     let shouldGuard = miscFlags1->BitFlags.flag6
     let ghost = miscFlags1->BitFlags.flag7
-    let selectedItem = reader->readByte("selectedItem")
+    let? Ok(selectedItem) = reader->readByte("selectedItem")
+    let? Ok(positionX) = reader->readSingle("positionX")
+    let? Ok(positionY) = reader->readSingle("positionY")
     let position: Point.t<float> = {
-      x: reader->readSingle("positionX"),
-      y: reader->readSingle("positionY"),
+      x: positionX,
+      y: positionY,
     }
-    let velocity: option<Point.t<float>> = switch miscFlags1->BitFlags.flag3 {
+    let? Ok(velocity: option<Point.t<float>>) = switch miscFlags1->BitFlags.flag3 {
     | true =>
-      Some({
-        x: reader->readSingle("velocityX"),
-        y: reader->readSingle("velocityY"),
-      })
-    | false => None
+      let? Ok(velocityX) = reader->readSingle("velocityX")
+      let? Ok(velocityY) = reader->readSingle("velocityY")
+      Ok(
+        Some({
+          Point.x: velocityX,
+          y: velocityY,
+        }),
+      )
+    | false => Ok(None)
     }
-    let potionOfReturn = switch miscFlags2->BitFlags.flag7 {
+    let? Ok(potionOfReturn) = switch miscFlags2->BitFlags.flag7 {
     | true =>
-      Some({
-        originalUsePosition: {
-          x: reader->readSingle("potionOfReturnOrigX"),
-          y: reader->readSingle("potionOfReturnOrigY"),
-        },
-        homePosition: {
-          x: reader->readSingle("potionOfReturnHomeX"),
-          y: reader->readSingle("potionOfReturnHomeY"),
-        },
-      })
-    | false => None
+      let? Ok(potionOfReturnOrigX) = reader->readSingle("potionOfReturnOrigX")
+      let? Ok(potionOfReturnOrigY) = reader->readSingle("potionOfReturnOrigY")
+      let? Ok(potionOfReturnHomeX) = reader->readSingle("potionOfReturnHomeX")
+      let? Ok(potionOfReturnHomeY) = reader->readSingle("potionOfReturnHomeY")
+      Ok(
+        Some({
+          originalUsePosition: {
+            x: potionOfReturnOrigX,
+            y: potionOfReturnOrigY,
+          },
+          homePosition: {
+            x: potionOfReturnHomeX,
+            y: potionOfReturnHomeY,
+          },
+        }),
+      )
+    | false => Ok(None)
     }
     let tryKeepingHoveringUp = miscFlags2->BitFlags.flag1
     let isVoidVaultEnabled = miscFlags2->BitFlags.flag2
@@ -120,7 +136,7 @@ module Decode = {
     let tryKeepingHoveringDown = miscFlags2->BitFlags.flag8
     let isSleeping = miscFlags3->BitFlags.flag1
 
-    Some({
+    Ok({
       playerId,
       control,
       direction,

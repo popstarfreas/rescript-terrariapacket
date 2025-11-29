@@ -6,7 +6,13 @@ type parsed<'a> =
   | ShouldSerialize('a) // The packet as parsed was modified in some way from the original buffer
   | SerializeNotNecessary('a, NodeJs.Buffer.t) // The buffer is equivalent to the parsed data
 @genType
-type parse<'a> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => option<parsed<'a>>
+type parse<'a> = (
+  ~buffer: NodeJs.Buffer.t,
+  ~fromServer: bool,
+) => result<option<parsed<'a>>, ErrorAwarePacketReader.readError>
 // Serializtion is not considered for now for simplicity
 @genType
-type parseLazy<'a> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => option<'a>
+type parseLazy<'a> = (
+  ~buffer: NodeJs.Buffer.t,
+  ~fromServer: bool,
+) => result<option<'a>, ErrorAwarePacketReader.readError>

@@ -5,13 +5,13 @@ type t = {
 }
 
 module Decode = {
-  let {readUInt16, readInt32, readByte} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readUInt16, readInt32, readByte} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let playerId = reader->readByte
-    let buff = reader->readUInt16
-    let time = reader->readInt32
-    Some({
+    let? Ok(playerId) = reader->readByte("playerId")
+    let? Ok(buff) = reader->readUInt16("buff")
+    let? Ok(time) = reader->readInt32("time")
+    Ok({
       playerId,
       buff,
       time,
@@ -20,13 +20,13 @@ module Decode = {
 }
 
 module Encode = {
-  let {packByte, packUInt16, packInt32, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let {packByte, packUInt16, packInt32, setType, data} = module(ErrorAwarePacketWriter)
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.PlayerBuffAdd->PacketType.toInt)
-    ->packByte(self.playerId)
-    ->packUInt16(self.buff)
-    ->packInt32(self.time)
+    ->packByte(self.playerId, "playerId")
+    ->packUInt16(self.buff, "buff")
+    ->packInt32(self.time, "time")
     ->data
   }
 }

@@ -9,16 +9,16 @@ type t = {
 }
 
 module Decode = {
-  let {readByte, readInt32, readUInt16} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readByte, readInt32, readUInt16} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let playerId = reader->readByte
-    let tileEntityId = reader->readInt32
-    let itemIndex = reader->readByte
-    let itemId = reader->readUInt16
-    let stack = reader->readUInt16
-    let prefix = reader->readByte
-    Some({
+    let? Ok(playerId) = reader->readByte("playerId")
+    let? Ok(tileEntityId) = reader->readInt32("tileEntityId")
+    let? Ok(itemIndex) = reader->readByte("itemIndex")
+    let? Ok(itemId) = reader->readUInt16("itemId")
+    let? Ok(stack) = reader->readUInt16("stack")
+    let? Ok(prefix) = reader->readByte("prefix")
+    Ok({
       playerId,
       tileEntityId,
       itemIndex,

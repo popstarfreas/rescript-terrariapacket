@@ -3,23 +3,32 @@
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
 let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
-function readInt32(prim) {
-  return prim.readInt32();
-}
-
 function parse(payload) {
   let reader = new Packetreader(payload);
-  return {
-    maxMoonLordCountdown: reader.readInt32(),
-    moonLordCountdown: reader.readInt32()
-  };
+  let e = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "maxMoonLordCountdown");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "moonLordCountdown");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        maxMoonLordCountdown: e._0,
+        moonLordCountdown: e$1._0
+      }
+    };
+  } else {
+    return e$1;
+  }
 }
 
 let Decode = {
-  readInt32: readInt32,
+  readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
   parse: parse
 };
 

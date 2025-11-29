@@ -2,17 +2,22 @@
 type t = {items: array<int>}
 
 module Decode = {
-  let {readInt16} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readInt16} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
     let items = []
-    for _ in 1 to 40 {
-      items->Array.push(reader->readInt16)
-    }
+    let rec readItems = idx =>
+      if idx >= 40 {
+        Ok()
+      } else {
+        let? Ok(item) = reader->readInt16(`item${Int.toString(idx + 1)}`)
+        items->Array.push(item)
+        readItems(idx + 1)
+      }
 
-    Some({
-      items: items,
-    })
+    let? Ok(_) = readItems(0)
+
+    Ok({items: items})
   }
 }
 

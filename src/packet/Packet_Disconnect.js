@@ -2,43 +2,38 @@
 'use strict';
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
-let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
-
-function readNetworkText(prim) {
-  return prim.readNetworkText();
-}
 
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let reason = reader.readNetworkText();
-  return {
-    reason: reason
-  };
+  let e = ErrorAwarePacketReader$TerrariaPacket.readNetworkText(reader, "reason");
+  if (e.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        reason: e._0
+      }
+    };
+  } else {
+    return e;
+  }
 }
 
 let Decode = {
-  readNetworkText: readNetworkText,
+  readNetworkText: ErrorAwarePacketReader$TerrariaPacket.readNetworkText,
   parse: parse
 };
 
-function packNetworkText(prim0, prim1) {
-  return prim0.packNetworkText(prim1);
-}
-
-function data(prim) {
-  return prim.data;
-}
-
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("Disconnect")).packNetworkText(self.reason).data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packNetworkText(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("Disconnect")), self.reason, "reason"));
 }
 
 let Encode = {
-  packNetworkText: packNetworkText,
-  setType: ManagedPacketWriter$PacketFactory.setType,
-  data: data,
+  packNetworkText: ErrorAwarePacketWriter$TerrariaPacket.packNetworkText,
+  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+  data: ErrorAwarePacketWriter$TerrariaPacket.data,
   toBuffer: toBuffer
 };
 
@@ -46,4 +41,4 @@ exports.Decode = Decode;
 exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

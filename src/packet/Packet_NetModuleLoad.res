@@ -71,6 +71,8 @@ type powerLevel =
   | CanBeChangedByHostAlone
   | CanBeChangedByEveryone
 
+let makeError = (_message: string): JsExn.t => %raw("new Error(_message)")
+
 type creativePowerPermission = {
   powerType: int,
   powerLevel: powerLevel,
@@ -169,7 +171,7 @@ module Encode = {
       ErrorAwarePacketWriter.make()
       ->setType(PacketType.NetModuleLoad->PacketType.toInt)
       ->packUInt16(NetModuleType.Liquid->NetModuleType.toInt, "moduleType")
-      ->packUInt16(liquid.changes->Belt.Array.length, "changesCount")
+      ->packUInt16(liquid.changes->Array.length, "changesCount")
     liquid.changes->Array.forEach(change => {
       writer
       ->packInt16(change.y, "y")
@@ -361,95 +363,112 @@ module Decode = {
   } = module(ErrorAwarePacketReader)
 
   let parseLiquid = (reader: PacketFactory.PacketReader.t) => {
-    let changesCount = reader->readUInt16("changesCount")
-    let changes = []
-    for _ in 0 to changesCount - 1 {
-      let y = reader->readInt16("y")
-      let x = reader->readInt16("x")
-      let amount = reader->readByte("amount")
-      let liquidType = reader->readByte("liquidType")
-      changes
-      ->Array.push({
-        y,
-        x,
-        amount,
-        liquidType,
-      })
-      ->ignore
-    }
+    let? Ok(changesCount) = reader->readUInt16("changesCount")
 
-    Some(Liquid({changes: changes}))
+    let rec readChanges = (idx, acc) =>
+      if idx >= changesCount {
+        Ok(Belt.Array.reverse(acc))
+      } else {
+        let? Ok(y) = reader->readInt16("y")
+        let? Ok(x) = reader->readInt16("x")
+        let? Ok(amount) = reader->readByte("amount")
+        let? Ok(liquidType) = reader->readByte("liquidType")
+        readChanges(
+          idx + 1,
+          [
+            {
+              y,
+              x,
+              amount,
+              liquidType,
+            },
+            ...acc,
+          ],
+        )
+      }
+
+    let? Ok(changes: array<liquidChange>) = readChanges(0, [])
+
+    Ok(Liquid({changes: changes}))
   }
 
   let parseText = (reader: PacketFactory.PacketReader.t, fromServer: bool) => {
     if fromServer {
-      let playerId = reader->readByte("playerId")
-      let message = reader->readNetworkText("message")
-      let color = reader->readColor("color")
-      ServerText(playerId, message, color)->Some
+      let? Ok(playerId) = reader->readByte("playerId")
+      let? Ok(message) = reader->readNetworkText("message")
+      let? Ok(color) = reader->readColor("color")
+      Ok(ServerText(playerId, message, color))
     } else {
-      let commandId = reader->readString("commandId")
-      let message = reader->readString("message")
-      ClientText(commandId, message)->Some
+      let? Ok(commandId) = reader->readString("commandId")
+      let? Ok(message) = reader->readString("message")
+      Ok(ClientText(commandId, message))
     }
   }
 
   let parsePing = (reader: PacketFactory.PacketReader.t) => {
-    let x = reader->readSingle("x")
-    let y = reader->readSingle("y")
+    let? Ok(x) = reader->readSingle("x")
+    let? Ok(y) = reader->readSingle("y")
 
-    Some(Ping({x, y}))
+    Ok(Ping({x, y}))
   }
 
   let parseAmbience = (reader: PacketFactory.PacketReader.t) => {
-    let playerId = reader->readByte("playerId")
-    let seed = reader->readInt32("seed")
-    let skyEntityType = reader->readByte("skyEntityType")
+    let? Ok(playerId) = reader->readByte("playerId")
+    let? Ok(seed) = reader->readInt32("seed")
+    let? Ok(skyEntityType) = reader->readByte("skyEntityType")
 
-    Some(Ambience({playerId, seed, skyEntityType}))
+    Ok(Ambience({playerId, seed, skyEntityType}))
   }
 
   let parseBestiary = (reader: PacketFactory.PacketReader.t) => {
-    let rawBestiaryUnlockType = reader->readByte("rawBestiaryUnlockType")
-    let npcId = reader->readInt16("npcId")
-    let bestiaryUnlockType = switch rawBestiaryUnlockType {
-    | 0 => Some(Kill(reader->readUInt16("killCount")))
-    | 1 => Some(Sight)
-    | 2 => Some(Chat)
-    | _ => None
+    let? Ok(rawBestiaryUnlockType) = reader->readByte("rawBestiaryUnlockType")
+    let? Ok(npcId) = reader->readInt16("npcId")
+    let? Ok(bestiaryUnlockType) = switch rawBestiaryUnlockType {
+    | 0 =>
+      let? Ok(killCount) = reader->readUInt16("killCount")
+      Ok(Kill(killCount))
+    | 1 => Ok(Sight)
+    | 2 => Ok(Chat)
+    | _ =>
+      Error({
+        context: "Packet_NetModuleLoad.parseBestiary",
+        error: makeError("Unknown bestiary unlock type"),
+      })
     }
 
-    switch bestiaryUnlockType {
-    | Some(unlockType) => Some(Bestiary({unlockType, npcId}))
-    | None => None
-    }
+    Ok(Bestiary({unlockType: bestiaryUnlockType, npcId}))
   }
 
   let parseCreativeUnlock = (reader: PacketFactory.PacketReader.t) => {
-    let itemId = reader->readInt16("itemId")
-    let researchedCount = reader->readUInt16("researchedCount")
-    Some(CreativeUnlocks({itemId, researchedCount}))
+    let? Ok(itemId) = reader->readInt16("itemId")
+    let? Ok(researchedCount) = reader->readUInt16("researchedCount")
+    Ok(CreativeUnlocks({itemId, researchedCount}))
   }
 
   // TODO: Add missing power deserialize
   let parseCreativePower = (reader: PacketFactory.PacketReader.t) => {
-    reader
-    ->CreativePowers.parse // Assuming CreativePowers.parse is compatible or will be updated separately
-    ->Option.map(p => CreativePower(p))
+    switch reader->CreativePowers.parse {
+    | Some(p) => Ok(CreativePower(p))
+    | None =>
+      Error({
+        ErrorAwarePacketReader.context: "Packet_NetModuleLoad.parseCreativePower",
+        error: makeError("Failed to parse creative power"),
+      })
+    }
   }
 
   let parseCreativeUnlocksPlayerReport = (reader: PacketFactory.PacketReader.t) => {
-    let _ = reader->readByte("unknownByte") // previously implicit _
-    let itemId = reader->readUInt16("itemId")
-    let researchedCount = reader->readUInt16("researchedCount")
-    Some(CreativeUnlocksPlayerReport({itemId, researchedCount}))
+    let? Ok(_) = reader->readByte("unknownByte") // previously implicit _
+    let? Ok(itemId) = reader->readUInt16("itemId")
+    let? Ok(researchedCount) = reader->readUInt16("researchedCount")
+    Ok(CreativeUnlocksPlayerReport({itemId, researchedCount}))
   }
 
   let parseTeleportPylon = (reader: PacketFactory.PacketReader.t) => {
-    let rawPylonAction = reader->readByte("rawPylonAction")
-    let x = reader->readInt16("x")
-    let y = reader->readInt16("y")
-    let pylonType = reader->readByte("pylonType")
+    let? Ok(rawPylonAction) = reader->readByte("rawPylonAction")
+    let? Ok(x) = reader->readInt16("x")
+    let? Ok(y) = reader->readInt16("y")
+    let? Ok(pylonType) = reader->readByte("pylonType")
 
     let pylonAction = switch rawPylonAction {
     | 0 => Some(Added)
@@ -459,21 +478,25 @@ module Decode = {
     }
 
     switch pylonAction {
-    | Some(pylonAction) => Some(TeleportPylon({pylonAction, x, y, pylonType}))
-    | None => None
+    | Some(pylonAction) => Ok(TeleportPylon({pylonAction, x, y, pylonType}))
+    | None =>
+      Error({
+        context: "Packet_NetModuleLoad.parseTeleportPylon",
+        error: makeError("Unknown pylon action"),
+      })
     }
   }
 
   let parseParticle = (reader: PacketFactory.PacketReader.t) => {
-    let particleType = reader->readByte("particleType")
-    let x = reader->readSingle("x")
-    let y = reader->readSingle("y")
-    let vx = reader->readSingle("vx")
-    let vy = reader->readSingle("vy")
-    let shaderIndex = reader->readInt32("shaderIndex")
-    let invokedByPlayer = reader->readByte("invokedByPlayer")
+    let? Ok(particleType) = reader->readByte("particleType")
+    let? Ok(x) = reader->readSingle("x")
+    let? Ok(y) = reader->readSingle("y")
+    let? Ok(vx) = reader->readSingle("vx")
+    let? Ok(vy) = reader->readSingle("vy")
+    let? Ok(shaderIndex) = reader->readInt32("shaderIndex")
+    let? Ok(invokedByPlayer) = reader->readByte("invokedByPlayer")
 
-    Some(
+    Ok(
       Particles({
         particleType,
         x,
@@ -487,9 +510,9 @@ module Decode = {
   }
 
   let parseCreativePowerPermission = (reader: PacketFactory.PacketReader.t) => {
-    let _ = reader->readByte("unknownByte") // previously implicit _
-    let powerType = reader->readUInt16("powerType")
-    let rawPowerLevel = reader->readByte("rawPowerLevel")
+    let? Ok(_) = reader->readByte("unknownByte") // previously implicit _
+    let? Ok(powerType) = reader->readUInt16("powerType")
+    let? Ok(rawPowerLevel) = reader->readByte("rawPowerLevel")
 
     let powerLevel = switch rawPowerLevel {
     | 0 => Some(LockedForEveryone)
@@ -499,14 +522,18 @@ module Decode = {
     }
 
     switch powerLevel {
-    | Some(powerLevel) => Some(CreativePowerPermissions({powerType, powerLevel}))
-    | None => None
+    | Some(powerLevel) => Ok(CreativePowerPermissions({powerType, powerLevel}))
+    | None =>
+      Error({
+        context: "Packet_NetModuleLoad.parseCreativePowerPermission",
+        error: makeError("Unknown creative power permission level"),
+      })
     }
   }
 
   let parse = (payload: NodeJs.Buffer.t, ~fromServer: bool) => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let moduleType = reader->readUInt16("moduleType")
+    let? Ok(moduleType) = reader->readUInt16("moduleType")
     switch NetModuleType.fromInt(moduleType) {
     | Some(NetModuleType.Liquid) => reader->parseLiquid
     | Some(NetModuleType.Text) => reader->parseText(fromServer)
@@ -519,7 +546,11 @@ module Decode = {
     | Some(NetModuleType.TeleportPylon) => reader->parseTeleportPylon
     | Some(NetModuleType.Particles) => reader->parseParticle
     | Some(NetModuleType.CreativePowerPermissions) => reader->parseCreativePowerPermission
-    | None => None
+    | None =>
+      Error({
+        context: "Packet_NetModuleLoad.parse",
+        error: makeError("Unknown net module type"),
+      })
     }
   }
 }

@@ -3,41 +3,53 @@
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
 let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
-function readByte(prim) {
-  return prim.readByte();
-}
-
-function readInt16(prim) {
-  return prim.readInt16();
-}
-
-function readString(prim) {
-  return prim.readString();
-}
-
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let chestId = reader.readInt16();
-  let x = reader.readInt16();
-  let y = reader.readInt16();
-  let nameLength = reader.readByte();
-  let name = nameLength > 0 && nameLength <= 20 ? reader.readString() : "";
-  return {
-    chestId: chestId,
-    x: x,
-    y: y,
-    nameLength: nameLength,
-    name: name
-  };
+  let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "chestId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "nameLength");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let nameLength = e$3._0;
+  let e$4 = nameLength > 0 && nameLength <= 20 ? ErrorAwarePacketReader$TerrariaPacket.readString(reader, "name") : ({
+      TAG: "Ok",
+      _0: ""
+    });
+  if (e$4.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        chestId: e._0,
+        x: e$1._0,
+        y: e$2._0,
+        nameLength: nameLength,
+        name: e$4._0
+      }
+    };
+  } else {
+    return e$4;
+  }
 }
 
 let Decode = {
-  readByte: readByte,
-  readInt16: readInt16,
-  readString: readString,
+  readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+  readString: ErrorAwarePacketReader$TerrariaPacket.readString,
   parse: parse
 };
 

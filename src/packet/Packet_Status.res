@@ -11,7 +11,7 @@ type t = {
 }
 
 module Decode = {
-  let {readInt32, readNetworkText, readByte} = module(PacketFactory.PacketReader)
+  let {readInt32, readNetworkText, readByte} = module(ErrorAwarePacketReader)
 
   let hasHideStatusTextPercent = flags => {
     flags->BitFlags.flag1
@@ -25,12 +25,13 @@ module Decode = {
     flags->BitFlags.flag3
   }
 
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let max = reader->readInt32
-    let text = reader->readNetworkText
-    let flags = BitFlags.fromByte(reader->readByte)
-    Some({
+    let? Ok(max) = reader->readInt32("max")
+    let? Ok(text) = reader->readNetworkText("text")
+    let? Ok(flagsRaw) = reader->readByte("flags")
+    let flags = BitFlags.fromByte(flagsRaw)
+    Ok({
       max,
       text,
       flags: {
@@ -43,9 +44,7 @@ module Decode = {
 }
 
 module Encode = {
-  let {packInt32, packNetworkText, packByte, setType, data} = module(
-    PacketFactory.ManagedPacketWriter
-  )
+  let {packInt32, packNetworkText, packByte, setType, data} = module(ErrorAwarePacketWriter)
 
   let flagsToByte = (flags: flags) => {
     let byte = ref(0)
@@ -55,12 +54,12 @@ module Encode = {
     byte.contents
   }
 
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.Status->PacketType.toInt)
-    ->packInt32(self.max)
-    ->packNetworkText(self.text)
-    ->packByte(self.flags->flagsToByte)
+    ->packInt32(self.max, "max")
+    ->packNetworkText(self.text, "text")
+    ->packByte(self.flags->flagsToByte, "flags")
     ->data
   }
 }

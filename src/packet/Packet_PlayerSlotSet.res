@@ -1,19 +1,19 @@
 type t = int
 module Decode = {
-  let parse = (payload: NodeJs.Buffer.t) => {
-    let {readByte} = module(PacketFactory.PacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
+    let {readByte} = module(ErrorAwarePacketReader)
     let reader = PacketFactory.PacketReader.make(payload)
-    let playerSlotId = reader->readByte
-    Some(playerSlotId)
+    let? Ok(playerSlotId) = reader->readByte("playerSlotId")
+    Ok(playerSlotId)
   }
 }
 
 module Encode = {
-  let {packByte, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let {packByte, setType, data} = module(ErrorAwarePacketWriter)
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.PlayerSlotSet->PacketType.toInt)
-    ->packByte(self)
+    ->packByte(self, "playerSlotId")
     ->data
   }
 }

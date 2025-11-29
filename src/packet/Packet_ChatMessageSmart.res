@@ -6,13 +6,13 @@ type t = {
 }
 module Decode = {
   let {readInt16, readSingle, readColor, readNetworkText} = module(ErrorAwarePacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let color = reader->readColor("color")
-    let message = reader->readNetworkText("message")
-    let widthLimit = reader->readInt16("widthLimit")
+    let? Ok(color) = reader->readColor("color")
+    let? Ok(message) = reader->readNetworkText("message")
+    let? Ok(widthLimit) = reader->readInt16("widthLimit")
 
-    Some({
+    Ok({
       color,
       message,
       widthLimit,

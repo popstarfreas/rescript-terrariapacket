@@ -3,15 +3,23 @@
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
 let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let version = reader.readString();
-  return {
-    version: version
-  };
+  let e = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "version");
+  if (e.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        version: e._0
+      }
+    };
+  } else {
+    return e;
+  }
 }
 
 function toBuffer(self) {

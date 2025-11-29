@@ -1,4 +1,5 @@
 import { PackError } from "../ErrorAwarePacketWriter";
+import type { readError } from "../ErrorAwarePacketReader";
 
 import type { CreativePower } from '../CreativePowers';
 import NetworkText from "@popstarfreas/packetfactory/networktext";
@@ -93,7 +94,10 @@ export type NetModuleType_t =
   | "Particles"
   | "CreativePowerPermissions";
 
-export function parse(buffer: Buffer, fromServer: boolean): NetModuleLoad | undefined;
+export type parseOk = { TAG: "Ok"; _0: (NetModuleLoad | undefined) };
+export type parseError = { TAG: "Error"; _0: readError };
+export type parse = parseOk | parseError;
+export function parse(buffer: Buffer, fromServer: boolean): parse;
 
 export type toBufferOk = { TAG: "Ok"; _0: Buffer };
 export type toBufferError = { TAG: "Error"; _0: PackError };

@@ -3,241 +3,148 @@
 
 let Primitive_exceptions = require("@rescript/runtime/lib/js/Primitive_exceptions.js");
 
+function readByteUnsafe(prim) {
+  return prim.readByte();
+}
+
+function readUInt16Unsafe(prim) {
+  return prim.readUInt16();
+}
+
+function readInt16Unsafe(prim) {
+  return prim.readInt16();
+}
+
+function readInt32Unsafe(prim) {
+  return prim.readInt32();
+}
+
+function readUInt64Unsafe(prim) {
+  return prim.readUInt64();
+}
+
+function readStringUnsafe(prim) {
+  return prim.readString();
+}
+
+function readBytesUnsafe(prim0, prim1) {
+  return prim0.readBytes(prim1);
+}
+
+function readSingleUnsafe(prim) {
+  return prim.readSingle();
+}
+
+function readSByteUnsafe(prim) {
+  return prim.readSByte();
+}
+
+function readColorUnsafe(prim) {
+  return prim.readColor();
+}
+
+function readBufferUnsafe(prim0, prim1) {
+  return prim0.readBuffer(prim1);
+}
+
+function readNetworkTextUnsafe(prim) {
+  return prim.readNetworkText();
+}
+
+function getBytesLeftUnsafe(prim) {
+  return prim.bytesLeft;
+}
+
 let ReadError = /* @__PURE__ */Primitive_exceptions.create("ErrorAwarePacketReader-TerrariaPacket.ReadError");
 
-function readByte(reader, context) {
+function withContext(fn, reader, context) {
   try {
-    return reader.readByte();
+    return {
+      TAG: "Ok",
+      _0: fn(reader)
+    };
   } catch (raw_obj) {
     let obj = Primitive_exceptions.internalToException(raw_obj);
     if (obj.RE_EXN_ID === "JsExn") {
-      throw {
-        RE_EXN_ID: ReadError,
-        _1: {
+      return {
+        TAG: "Error",
+        _0: {
           context: context,
           error: obj._1
-        },
-        Error: new Error()
+        }
       };
     }
     throw obj;
   }
+}
+
+function readByte(reader, context) {
+  return withContext(readByteUnsafe, reader, context);
 }
 
 function readUInt16(reader, context) {
-  try {
-    return reader.readUInt16();
-  } catch (raw_obj) {
-    let obj = Primitive_exceptions.internalToException(raw_obj);
-    if (obj.RE_EXN_ID === "JsExn") {
-      throw {
-        RE_EXN_ID: ReadError,
-        _1: {
-          context: context,
-          error: obj._1
-        },
-        Error: new Error()
-      };
-    }
-    throw obj;
-  }
+  return withContext(readUInt16Unsafe, reader, context);
 }
 
 function readInt16(reader, context) {
-  try {
-    return reader.readInt16();
-  } catch (raw_obj) {
-    let obj = Primitive_exceptions.internalToException(raw_obj);
-    if (obj.RE_EXN_ID === "JsExn") {
-      throw {
-        RE_EXN_ID: ReadError,
-        _1: {
-          context: context,
-          error: obj._1
-        },
-        Error: new Error()
-      };
-    }
-    throw obj;
-  }
+  return withContext(readInt16Unsafe, reader, context);
 }
 
 function readInt32(reader, context) {
-  try {
-    return reader.readInt32();
-  } catch (raw_obj) {
-    let obj = Primitive_exceptions.internalToException(raw_obj);
-    if (obj.RE_EXN_ID === "JsExn") {
-      throw {
-        RE_EXN_ID: ReadError,
-        _1: {
-          context: context,
-          error: obj._1
-        },
-        Error: new Error()
-      };
-    }
-    throw obj;
-  }
+  return withContext(readInt32Unsafe, reader, context);
 }
 
 function readUInt64(reader, context) {
-  try {
-    return reader.readUInt64();
-  } catch (raw_obj) {
-    let obj = Primitive_exceptions.internalToException(raw_obj);
-    if (obj.RE_EXN_ID === "JsExn") {
-      throw {
-        RE_EXN_ID: ReadError,
-        _1: {
-          context: context,
-          error: obj._1
-        },
-        Error: new Error()
-      };
-    }
-    throw obj;
-  }
+  return withContext(readUInt64Unsafe, reader, context);
 }
 
 function readString(reader, context) {
-  try {
-    return reader.readString();
-  } catch (raw_obj) {
-    let obj = Primitive_exceptions.internalToException(raw_obj);
-    if (obj.RE_EXN_ID === "JsExn") {
-      throw {
-        RE_EXN_ID: ReadError,
-        _1: {
-          context: context,
-          error: obj._1
-        },
-        Error: new Error()
-      };
-    }
-    throw obj;
-  }
+  return withContext(readStringUnsafe, reader, context);
 }
 
 function readBytes(reader, count, context) {
-  try {
-    return reader.readBytes(count);
-  } catch (raw_obj) {
-    let obj = Primitive_exceptions.internalToException(raw_obj);
-    if (obj.RE_EXN_ID === "JsExn") {
-      throw {
-        RE_EXN_ID: ReadError,
-        _1: {
-          context: context,
-          error: obj._1
-        },
-        Error: new Error()
-      };
-    }
-    throw obj;
-  }
+  return withContext(reader => reader.readBytes(count), reader, context);
 }
 
 function readSingle(reader, context) {
-  try {
-    return reader.readSingle();
-  } catch (raw_obj) {
-    let obj = Primitive_exceptions.internalToException(raw_obj);
-    if (obj.RE_EXN_ID === "JsExn") {
-      throw {
-        RE_EXN_ID: ReadError,
-        _1: {
-          context: context,
-          error: obj._1
-        },
-        Error: new Error()
-      };
-    }
-    throw obj;
-  }
+  return withContext(readSingleUnsafe, reader, context);
 }
 
 function readSByte(reader, context) {
-  try {
-    return reader.readSByte();
-  } catch (raw_obj) {
-    let obj = Primitive_exceptions.internalToException(raw_obj);
-    if (obj.RE_EXN_ID === "JsExn") {
-      throw {
-        RE_EXN_ID: ReadError,
-        _1: {
-          context: context,
-          error: obj._1
-        },
-        Error: new Error()
-      };
-    }
-    throw obj;
-  }
+  return withContext(readSByteUnsafe, reader, context);
 }
 
 function readColor(reader, context) {
-  try {
-    return reader.readColor();
-  } catch (raw_obj) {
-    let obj = Primitive_exceptions.internalToException(raw_obj);
-    if (obj.RE_EXN_ID === "JsExn") {
-      throw {
-        RE_EXN_ID: ReadError,
-        _1: {
-          context: context,
-          error: obj._1
-        },
-        Error: new Error()
-      };
-    }
-    throw obj;
-  }
+  return withContext(readColorUnsafe, reader, context);
 }
 
 function readBuffer(reader, bytes, context) {
-  try {
-    return reader.readBuffer(bytes);
-  } catch (raw_obj) {
-    let obj = Primitive_exceptions.internalToException(raw_obj);
-    if (obj.RE_EXN_ID === "JsExn") {
-      throw {
-        RE_EXN_ID: ReadError,
-        _1: {
-          context: context,
-          error: obj._1
-        },
-        Error: new Error()
-      };
-    }
-    throw obj;
-  }
+  return withContext(reader => reader.readBuffer(bytes), reader, context);
 }
 
 function readNetworkText(reader, context) {
-  try {
-    return reader.readNetworkText();
-  } catch (raw_obj) {
-    let obj = Primitive_exceptions.internalToException(raw_obj);
-    if (obj.RE_EXN_ID === "JsExn") {
-      throw {
-        RE_EXN_ID: ReadError,
-        _1: {
-          context: context,
-          error: obj._1
-        },
-        Error: new Error()
-      };
-    }
-    throw obj;
-  }
+  return withContext(readNetworkTextUnsafe, reader, context);
 }
 
 function getBytesLeft(reader) {
-  return reader.bytesLeft;
+  return withContext(getBytesLeftUnsafe, reader, "getBytesLeft");
 }
 
+exports.readByteUnsafe = readByteUnsafe;
+exports.readUInt16Unsafe = readUInt16Unsafe;
+exports.readInt16Unsafe = readInt16Unsafe;
+exports.readInt32Unsafe = readInt32Unsafe;
+exports.readUInt64Unsafe = readUInt64Unsafe;
+exports.readStringUnsafe = readStringUnsafe;
+exports.readBytesUnsafe = readBytesUnsafe;
+exports.readSingleUnsafe = readSingleUnsafe;
+exports.readSByteUnsafe = readSByteUnsafe;
+exports.readColorUnsafe = readColorUnsafe;
+exports.readBufferUnsafe = readBufferUnsafe;
+exports.readNetworkTextUnsafe = readNetworkTextUnsafe;
+exports.getBytesLeftUnsafe = getBytesLeftUnsafe;
 exports.ReadError = ReadError;
+exports.withContext = withContext;
 exports.readByte = readByte;
 exports.readUInt16 = readUInt16;
 exports.readInt16 = readInt16;

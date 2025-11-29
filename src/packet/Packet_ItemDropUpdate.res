@@ -11,19 +11,19 @@ type t = {
 }
 
 module Decode = {
-  let {readInt16, readSingle, readByte} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readInt16, readSingle, readByte} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let itemDropId = reader->readInt16
-    let x = reader->readSingle
-    let y = reader->readSingle
-    let vx = reader->readSingle
-    let vy = reader->readSingle
-    let stack = reader->readInt16
-    let prefix = reader->readByte
-    let noDelay = reader->readByte
-    let itemId = reader->readInt16
-    Some({
+    let? Ok(itemDropId) = reader->readInt16("itemDropId")
+    let? Ok(x) = reader->readSingle("x")
+    let? Ok(y) = reader->readSingle("y")
+    let? Ok(vx) = reader->readSingle("vx")
+    let? Ok(vy) = reader->readSingle("vy")
+    let? Ok(stack) = reader->readInt16("stack")
+    let? Ok(prefix) = reader->readByte("prefix")
+    let? Ok(noDelay) = reader->readByte("noDelay")
+    let? Ok(itemId) = reader->readInt16("itemId")
+    Ok({
       itemDropId,
       x,
       y,
@@ -38,19 +38,19 @@ module Decode = {
 }
 
 module Encode = {
-  let {packSingle, packInt16, packByte, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let {packSingle, packInt16, packByte, setType, data} = module(ErrorAwarePacketWriter)
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.ItemDropUpdate->PacketType.toInt)
-    ->packInt16(self.itemDropId)
-    ->packSingle(self.x)
-    ->packSingle(self.y)
-    ->packSingle(self.vx)
-    ->packSingle(self.vy)
-    ->packInt16(self.stack)
-    ->packByte(self.prefix)
-    ->packByte(self.noDelay)
-    ->packInt16(self.itemId)
+    ->packInt16(self.itemDropId, "itemDropId")
+    ->packSingle(self.x, "x")
+    ->packSingle(self.y, "y")
+    ->packSingle(self.vx, "vx")
+    ->packSingle(self.vy, "vy")
+    ->packInt16(self.stack, "stack")
+    ->packByte(self.prefix, "prefix")
+    ->packByte(self.noDelay, "noDelay")
+    ->packInt16(self.itemId, "itemId")
     ->data
   }
 }

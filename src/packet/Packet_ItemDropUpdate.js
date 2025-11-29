@@ -2,38 +2,69 @@
 'use strict';
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
-let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let itemDropId = reader.readInt16();
-  let x = reader.readSingle();
-  let y = reader.readSingle();
-  let vx = reader.readSingle();
-  let vy = reader.readSingle();
-  let stack = reader.readInt16();
-  let prefix = reader.readByte();
-  let noDelay = reader.readByte();
-  let itemId = reader.readInt16();
-  return {
-    itemDropId: itemDropId,
-    x: x,
-    y: y,
-    vx: vx,
-    vy: vy,
-    stack: stack,
-    prefix: prefix,
-    noDelay: noDelay,
-    itemId: itemId
-  };
+  let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemDropId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "stack");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "prefix");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let e$7 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "noDelay");
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let e$8 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemId");
+  if (e$8.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        itemDropId: e._0,
+        x: e$1._0,
+        y: e$2._0,
+        vx: e$3._0,
+        vy: e$4._0,
+        stack: e$5._0,
+        prefix: e$6._0,
+        noDelay: e$7._0,
+        itemId: e$8._0
+      }
+    };
+  } else {
+    return e$8;
+  }
 }
 
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ItemDropUpdate")).packInt16(self.itemDropId).packSingle(self.x).packSingle(self.y).packSingle(self.vx).packSingle(self.vy).packInt16(self.stack).packByte(self.prefix).packByte(self.noDelay).packInt16(self.itemId).data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ItemDropUpdate")), self.itemDropId, "itemDropId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.stack, "stack"), self.prefix, "prefix"), self.noDelay, "noDelay"), self.itemId, "itemId"));
 }
 
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

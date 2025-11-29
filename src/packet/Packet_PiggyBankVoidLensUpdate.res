@@ -4,15 +4,18 @@ module TrackedProjectileReference = {
     expectedIdentity: int,
     expectedType: int,
   }
-  let {readInt16} = module(PacketFactory.PacketReader)
-  let tryReading = (reader: PacketFactory.PacketReader.t) => {
-    let n = reader->readInt16
-    if n == -1 {
-      let expectedIdentity = reader->readInt16
-      let expectedType = reader->readInt16
-      Some({expectedIdentity, expectedType})
+  let {readInt16} = module(ErrorAwarePacketReader)
+  let tryReading = (
+    reader: PacketFactory.PacketReader.t,
+    context: string,
+  ): result<option<t>, ErrorAwarePacketReader.readError> => {
+    let? Ok(marker) = reader->readInt16(context)
+    if marker == -1 {
+      let? Ok(expectedIdentity) = reader->readInt16(context ++ "_expectedIdentity")
+      let? Ok(expectedType) = reader->readInt16(context ++ "_expectedType")
+      Ok(Some({expectedIdentity, expectedType}))
     } else {
-      None
+      Ok(None)
     }
   }
 
@@ -36,14 +39,14 @@ type t = {
 }
 
 module Decode = {
-  let {readByte, readSingle, readInt32} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let {readByte} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let playerId = reader->readByte
-    let piggyBankProj = TrackedProjectileReference.tryReading(reader)
-    let voidLensChest = TrackedProjectileReference.tryReading(reader)
+    let? Ok(playerId) = reader->readByte("playerId")
+    let? Ok(piggyBankProj) = TrackedProjectileReference.tryReading(reader, "piggyBankProj")
+    let? Ok(voidLensChest) = TrackedProjectileReference.tryReading(reader, "voidLensChest")
 
-    Some({
+    Ok({
       playerId,
       piggyBankProj,
       voidLensChest,
