@@ -805,9 +805,7 @@ module LazyPacket = {
     | WorldDataRequest(worldDataRequest) => Packet.LazyPacket.WorldDataRequest(worldDataRequest)
     | WorldInfo(worldInfo) =>
       Packet.LazyPacket.WorldInfo(
-        Lazy.make(() =>
-          worldInfo->Lazy.get->Option.map(worldInfo => WorldInfo.toLatest(worldInfo))
-        ),
+        Lazy.make(() => worldInfo->Lazy.get->Result.map(WorldInfo.toLatest)),
       )
     | InitialTileSectionsRequest(initialTileSectionsRequest) =>
       Packet.LazyPacket.InitialTileSectionsRequest(initialTileSectionsRequest)
@@ -817,13 +815,13 @@ module LazyPacket = {
         Lazy.make(() =>
           tileSectionSend
           ->Lazy.get
-          ->Option.map(tileSectionSend => tileSectionSend->TileSectionSend.toLatest)
+          ->Result.map(TileSectionSend.toLatest)
         ),
       )
     | TileSectionFrame(tileSectionFrame) => Packet.LazyPacket.TileSectionFrame(tileSectionFrame)
     | PlayerSpawn(playerSpawn) =>
       Packet.LazyPacket.PlayerSpawn(
-        Lazy.make(() => playerSpawn->Lazy.get->Option.map(PlayerSpawn.toLatest)),
+        Lazy.make(() => playerSpawn->Lazy.get->Result.map(PlayerSpawn.toLatest)),
       )
     | PlayerUpdate(playerUpdate) => Packet.LazyPacket.PlayerUpdate(playerUpdate)
     | PlayerActive(playerActive) => Packet.LazyPacket.PlayerActive(playerActive)
@@ -836,7 +834,7 @@ module LazyPacket = {
         Lazy.make(() =>
           tileSquareSend
           ->Lazy.get
-          ->Option.map(tileSquareSend => tileSquareSend->TileSquareSend.toLatest)
+          ->Result.map(TileSquareSend.toLatest)
         ),
       )
     | ItemDropUpdate(itemDropUpdate) => Packet.LazyPacket.ItemDropUpdate(itemDropUpdate)
@@ -868,7 +866,7 @@ module LazyPacket = {
     | PlayerSpawnSelf(playerSpawnSelf) => Packet.LazyPacket.PlayerSpawnSelf(playerSpawnSelf)
     | PlayerBuffsSet(playerBuffsSet) =>
       Packet.LazyPacket.PlayerBuffsSet(
-        Lazy.make(() => playerBuffsSet->Lazy.get->Option.map(PlayerBuffsSet.toLatest)),
+        Lazy.make(() => playerBuffsSet->Lazy.get->Result.map(PlayerBuffsSet.toLatest)),
       )
     | NpcSpecialEffect(npcSpecialEffect) => Packet.LazyPacket.NpcSpecialEffect(npcSpecialEffect)
     | ChestOrTempleUnlock(chestOrTempleUnlock) =>
@@ -876,7 +874,7 @@ module LazyPacket = {
     | NpcBuffAdd(npcBuffAdd) => Packet.LazyPacket.NpcBuffAdd(npcBuffAdd)
     | NpcBuffUpdate(npcBuffUpdate) =>
       Packet.LazyPacket.NpcBuffUpdate(
-        Lazy.make(() => npcBuffUpdate->Lazy.get->Option.map(NpcBuffUpdate.toLatest)),
+        Lazy.make(() => npcBuffUpdate->Lazy.get->Result.map(NpcBuffUpdate.toLatest)),
       )
     | PlayerBuffAdd(playerBuffAdd) => Packet.LazyPacket.PlayerBuffAdd(playerBuffAdd)
     | NpcNameUpdate(npcNameUpdate) => Packet.LazyPacket.NpcNameUpdate(npcNameUpdate)
@@ -946,7 +944,7 @@ module LazyPacket = {
         Lazy.make(() =>
           moonLordCountdown
           ->Lazy.get
-          ->Option.map(moonLordCountdown => MoonLordCountdown.toLatest(moonLordCountdown))
+          ->Result.map(MoonLordCountdown.toLatest)
         ),
       )
     | NpcShopItem(npcShopItem) => Packet.LazyPacket.NpcShopItem(npcShopItem)
@@ -994,7 +992,7 @@ module LazyPacket = {
     | PlayerLuckFactorsUpdate(playerLuckFactorsUpdate) =>
       Packet.LazyPacket.PlayerLuckFactorsUpdate(
         Lazy.make(() =>
-          playerLuckFactorsUpdate->Lazy.get->Option.map(PlayerLuckFactorsUpdate.toLatest)
+          playerLuckFactorsUpdate->Lazy.get->Result.map(PlayerLuckFactorsUpdate.toLatest)
         ),
       )
     | PlayerDead(playerDead) => Packet.LazyPacket.PlayerDead(playerDead)
@@ -1012,38 +1010,41 @@ module LazyPacket = {
 
 let toBuffer = (packet: t, _fromServer: bool): ISerializer.toBufferResult => {
   switch packet {
-  | ConnectRequest(connectRequest) => Ok(ConnectRequest.toBuffer(connectRequest))
-  | Disconnect(disconnect) => Ok(Disconnect.toBuffer(disconnect))
-  | PlayerSlotSet(playerSlotSet) => Ok(PlayerSlotSet.toBuffer(playerSlotSet))
-  | PlayerInfo(playerInfo) => Ok(PlayerInfo.toBuffer(playerInfo))
+  | ConnectRequest(connectRequest) =>
+    ConnectRequest.toBuffer(connectRequest)->ISerializer.toBufferResult
+  | Disconnect(disconnect) => Disconnect.toBuffer(disconnect)->ISerializer.toBufferResult
+  | PlayerSlotSet(playerSlotSet) =>
+    PlayerSlotSet.toBuffer(playerSlotSet)->ISerializer.toBufferResult
+  | PlayerInfo(playerInfo) => PlayerInfo.toBuffer(playerInfo)->ISerializer.toBufferResult
   | PlayerInventorySlot(playerInventorySlot) =>
-    Ok(PlayerInventorySlot.toBuffer(playerInventorySlot))
-  | WorldDataRequest(worldDataRequest) => Ok(WorldDataRequest.toBuffer(worldDataRequest))
-  | WorldInfo(worldInfo) => Ok(WorldInfo.toBuffer(worldInfo))
+    PlayerInventorySlot.toBuffer(playerInventorySlot)->ISerializer.toBufferResult
+  | WorldDataRequest(worldDataRequest) =>
+    WorldDataRequest.toBuffer(worldDataRequest)->ISerializer.toBufferResult
+  | WorldInfo(worldInfo) => WorldInfo.toBuffer(worldInfo)->ISerializer.toBufferResult
   | InitialTileSectionsRequest(initialTileSectionsRequest) =>
-    Ok(InitialTileSectionsRequest.toBuffer(initialTileSectionsRequest))
-  | Status(status) => Ok(Status.toBuffer(status))
+    InitialTileSectionsRequest.toBuffer(initialTileSectionsRequest)->ISerializer.toBufferResult
+  | Status(status) => Status.toBuffer(status)->ISerializer.toBufferResult
   | TileSectionSend(_tileSectionSend) => NotImplemented
   | TileSectionFrame(_tileSectionFrame) => NotImplemented
-  | PlayerSpawn(playerSpawn) => Ok(PlayerSpawn.toBuffer(playerSpawn))
+  | PlayerSpawn(playerSpawn) => PlayerSpawn.toBuffer(playerSpawn)->ISerializer.toBufferResult
   | PlayerUpdate(_playerUpdate) => NotImplemented
-  | PlayerActive(playerActive) => Ok(PlayerActive.toBuffer(playerActive))
-  | PlayerHealth(playerHealth) => Ok(PlayerHealth.toBuffer(playerHealth))
+  | PlayerActive(playerActive) => PlayerActive.toBuffer(playerActive)->ISerializer.toBufferResult
+  | PlayerHealth(playerHealth) => PlayerHealth.toBuffer(playerHealth)->ISerializer.toBufferResult
   | TileModify(_tileModify) => NotImplemented
   | TimeSet(_timeSet) => NotImplemented
   | DoorUse(_doorUse) => NotImplemented
-  | TileSquareSend(tileSquareSend) => Ok(TileSquareSend.toBuffer(tileSquareSend))
-  | ItemDropUpdate(itemDropUpdate) => Ok(ItemDropUpdate.toBuffer(itemDropUpdate))
+  | TileSquareSend(tileSquareSend) =>
+    TileSquareSend.toBuffer(tileSquareSend)->ISerializer.toBufferResult
+  | ItemDropUpdate(itemDropUpdate) =>
+    ItemDropUpdate.toBuffer(itemDropUpdate)->ISerializer.toBufferResult
   | ItemOwner(_itemOwner) => NotImplemented
-  | NpcUpdate(npcUpdate) =>
-    switch NpcUpdate.toBuffer(npcUpdate) {
-    | Ok(buffer) => Ok(buffer)
-    | Error(error) => Error(error)
-    }
+  | NpcUpdate(npcUpdate) => NpcUpdate.toBuffer(npcUpdate)->ISerializer.toBufferResult
   | NpcItemStrike(_npcItemStrike) => NotImplemented
-  | ProjectileSync(projectileSync) => Ok(ProjectileSync.toBuffer(projectileSync))
+  | ProjectileSync(projectileSync) =>
+    ProjectileSync.toBuffer(projectileSync)->ISerializer.toBufferResult
   | NpcStrike(_npcStrike) => NotImplemented
-  | ProjectileDestroy(projectileDestroy) => Ok(ProjectileDestroy.toBuffer(projectileDestroy))
+  | ProjectileDestroy(projectileDestroy) =>
+    ProjectileDestroy.toBuffer(projectileDestroy)->ISerializer.toBufferResult
   | PvpToggle(_pvpToggle) => NotImplemented
   | ChestOpen(_chestOpen) => NotImplemented
   | ChestItem(_chestItem) => NotImplemented
@@ -1056,7 +1057,7 @@ let toBuffer = (packet: t, _fromServer: bool): ISerializer.toBufferResult => {
   | ItemOwnerRemove(_itemOwnerRemove) => NotImplemented
   | NpcTalk(_npcTalk) => NotImplemented
   | PlayerAnimation(_playerAnimation) => NotImplemented
-  | PlayerMana(playerMana) => Ok(PlayerMana.toBuffer(playerMana))
+  | PlayerMana(playerMana) => PlayerMana.toBuffer(playerMana)->ISerializer.toBufferResult
   | ManaEffect(_manaEffect) => NotImplemented
   | PlayerTeam(_playerTeam) => NotImplemented
   | SignRead(_signRead) => NotImplemented
@@ -1080,7 +1081,8 @@ let toBuffer = (packet: t, _fromServer: bool): ISerializer.toBufferResult => {
   | WallPaint(_wallPaint) => NotImplemented
   | Teleport(_teleport) => NotImplemented
   | PlayerHealOther(_playerHealOther) => NotImplemented
-  | DimensionsUpdate(dimensionsUpdate) => Ok(DimensionsUpdate.toBuffer(dimensionsUpdate))
+  | DimensionsUpdate(dimensionsUpdate) =>
+    DimensionsUpdate.toBuffer(dimensionsUpdate)->ISerializer.toBufferResult
   | ClientUuid(_clientUuid) => NotImplemented
   | ChestName(_chestName) => NotImplemented
   | NpcCatch(_catchNpc) => NotImplemented
@@ -1096,10 +1098,7 @@ let toBuffer = (packet: t, _fromServer: bool): ISerializer.toBufferResult => {
   | PlayerChestIndexSync(_playerChestIndexSync) => NotImplemented
   | CombatNumberCreate(_combatNumberCreate) => NotImplemented
   | NetModuleLoad(netModuleLoad) =>
-    switch NetModuleLoad.toBuffer(netModuleLoad) {
-    | Ok(buffer) => Ok(buffer)
-    | Error(error) => Error(error)
-    }
+    NetModuleLoad.toBuffer(netModuleLoad)->ISerializer.toBufferResult
   | NpcKillCount(_npcKillCount) => NotImplemented
   | PlayerStealth(_playerStealth) => NotImplemented
   | ItemForceIntoNearestChest(_itemForceIntoNearestChest) => NotImplemented

@@ -31,10 +31,6 @@ function unlockTypeFromInt(self) {
   }
 }
 
-function makeError(_message) {
-  return (new Error(_message));
-}
-
 function parse(payload) {
   let reader = new Packetreader(payload);
   let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "unlockType");
@@ -49,7 +45,7 @@ function parse(payload) {
       TAG: "Error",
       _0: {
         context: "Packet_ChestOrTempleUnlock.parse",
-        error: makeError("Unknown unlock type")
+        error: new Error("Unknown unlock type")
       }
     });
   if (e$1.TAG !== "Ok") {
@@ -107,7 +103,6 @@ let Encode = {
 
 exports.unlockTypeToInt = unlockTypeToInt;
 exports.unlockTypeFromInt = unlockTypeFromInt;
-exports.makeError = makeError;
 exports.Decode = Decode;
 exports.Encode = Encode;
 exports.parse = parse;

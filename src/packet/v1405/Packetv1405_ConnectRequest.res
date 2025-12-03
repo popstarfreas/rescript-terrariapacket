@@ -1,11 +1,11 @@
 type t = Packet.ConnectRequest.t
 
 module Decode = {
-  let {readString} = module(PacketFactory.PacketReader)
-  let parse = (payload: NodeJs.Buffer.t): option<t> => {
+  let {readString} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let version = reader->readString
-    Some({version: version})
+    let? Ok(version) = reader->readString("version")
+    Ok({version: version})
   }
 }
 
@@ -23,13 +23,12 @@ module Encode = {
     ->packedLength
   }
 
-  let {packString, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let {packString, setType, data} = module(ErrorAwarePacketWriter)
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> =>
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.ConnectRequest->PacketType.toInt)
-    ->packString(self.version)
+    ->packString(self.version, "version")
     ->data
-  }
 }
 
 let parse = Decode.parse

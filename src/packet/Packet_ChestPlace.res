@@ -47,8 +47,6 @@ type t = {
   id: int,
 }
 
-let makeError = (_message: string): JsExn.t => %raw("new Error(_message)")
-
 module Decode = {
   let {readInt16, readByte} = module(ErrorAwarePacketReader)
   let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
@@ -59,15 +57,14 @@ module Decode = {
     let? Ok(style) = reader->readInt16("style")
     let? Ok(id) = reader->readInt16("id")
 
-    let action =
-      switch actionRaw->Action.fromInt {
-      | Some(action) => Ok(action)
-      | None =>
-        Error({
-          ErrorAwarePacketReader.context: "ChestPlace.parse.action",
-          error: makeError("Unknown action"),
-        })
-      }
+    let action = switch actionRaw->Action.fromInt {
+    | Some(action) => Ok(action)
+    | None =>
+      Error({
+        ErrorAwarePacketReader.context: "ChestPlace.parse.action",
+        error: JsError.make("Unknown action")->JsError.toJsExn,
+      })
+    }
 
     switch action {
     | Ok(action) =>

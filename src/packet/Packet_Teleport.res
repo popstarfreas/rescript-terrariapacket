@@ -15,8 +15,6 @@ type t = {
   extraInfo: option<int>,
 }
 
-let makeError = (_message: string): JsExn.t => %raw("new Error(_message)")
-
 module Decode = {
   let {readByte, readInt16, readSingle, readInt32} = module(ErrorAwarePacketReader)
   let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
@@ -53,7 +51,7 @@ module Decode = {
     | None =>
       Error({
         context: "Packet_Teleport.parse",
-        error: makeError("Invalid teleport type flags"),
+        error: JsError.make("Invalid teleport type flags")->JsError.toJsExn,
       })
     }
   }

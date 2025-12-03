@@ -9,10 +9,6 @@ let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.j
 let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 
-function makeError(_message) {
-  return (new Error(_message));
-}
-
 function readNpcFlags1(reader, fieldName) {
   let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, fieldName);
   if (e.TAG !== "Ok") {
@@ -228,7 +224,7 @@ function parse(payload) {
             TAG: "Error",
             _0: {
               context: "Packet_NpcUpdate.parse",
-              error: makeError("Invalid life byte count")
+              error: new Error("Invalid life byte count")
             }
           };
       }

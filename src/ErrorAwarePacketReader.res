@@ -15,7 +15,6 @@ let {
 } = module(PacketFactory.PacketReader)
 
 type readError = {context: string, error: JsExn.t}
-exception ReadError(readError)
 
 type t = PacketFactory.PacketReader.t
 
@@ -57,18 +56,13 @@ let readSByte = (reader: t, context: string): result<int, readError> =>
 let readColor = (reader: t, context: string): result<PacketFactory.Color.t, readError> =>
   withContext(readColorUnsafe, reader, context)
 
-let readBuffer = (
-  reader: t,
-  bytes: int,
-  context: string,
-): result<NodeJs.Buffer.t, readError> =>
+let readBuffer = (reader: t, bytes: int, context: string): result<NodeJs.Buffer.t, readError> =>
   withContext(reader => readBufferUnsafe(reader, bytes), reader, context)
 
-let readNetworkText = (
-  reader: t,
-  context: string,
-): result<PacketFactory.NetworkText.t, readError> =>
-  withContext(readNetworkTextUnsafe, reader, context)
+let readNetworkText = (reader: t, context: string): result<
+  PacketFactory.NetworkText.t,
+  readError,
+> => withContext(readNetworkTextUnsafe, reader, context)
 
 let getBytesLeft = (reader: t): result<int, readError> =>
   withContext(getBytesLeftUnsafe, reader, "getBytesLeft")

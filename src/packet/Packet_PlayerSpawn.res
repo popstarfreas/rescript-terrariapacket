@@ -13,8 +13,6 @@ type t = {
   context: context,
 }
 
-let makeError = (_message: string): JsExn.t => %raw("new Error(_message)")
-
 module Decode = {
   let {readByte, readInt16, readInt32} = module(ErrorAwarePacketReader)
 
@@ -48,7 +46,7 @@ module Decode = {
     | None =>
       Error({
         ErrorAwarePacketReader.context: "PlayerSpawn.parse.context",
-        error: makeError("Unknown context"),
+        error: JsError.make("Unknown context")->JsError.toJsExn,
       })
     }
   }

@@ -71,8 +71,6 @@ type powerLevel =
   | CanBeChangedByHostAlone
   | CanBeChangedByEveryone
 
-let makeError = (_message: string): JsExn.t => %raw("new Error(_message)")
-
 type creativePowerPermission = {
   powerType: int,
   powerLevel: powerLevel,
@@ -432,7 +430,7 @@ module Decode = {
     | _ =>
       Error({
         context: "Packet_NetModuleLoad.parseBestiary",
-        error: makeError("Unknown bestiary unlock type"),
+        error: JsError.make("Unknown bestiary unlock type")->JsError.toJsExn,
       })
     }
 
@@ -452,7 +450,7 @@ module Decode = {
     | None =>
       Error({
         ErrorAwarePacketReader.context: "Packet_NetModuleLoad.parseCreativePower",
-        error: makeError("Failed to parse creative power"),
+        error: JsError.make("Failed to parse creative power")->JsError.toJsExn,
       })
     }
   }
@@ -482,7 +480,7 @@ module Decode = {
     | None =>
       Error({
         context: "Packet_NetModuleLoad.parseTeleportPylon",
-        error: makeError("Unknown pylon action"),
+        error: JsError.make("Unknown pylon action")->JsError.toJsExn,
       })
     }
   }
@@ -526,7 +524,7 @@ module Decode = {
     | None =>
       Error({
         context: "Packet_NetModuleLoad.parseCreativePowerPermission",
-        error: makeError("Unknown creative power permission level"),
+        error: JsError.make("Unknown creative power permission level")->JsError.toJsExn,
       })
     }
   }
@@ -549,7 +547,7 @@ module Decode = {
     | None =>
       Error({
         context: "Packet_NetModuleLoad.parse",
-        error: makeError("Unknown net module type"),
+        error: JsError.make("Unknown net module type")->JsError.toJsExn,
       })
     }
   }

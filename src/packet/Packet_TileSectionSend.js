@@ -18,10 +18,6 @@ let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.j
 let Bufferreader = require("@popstarfreas/packetfactory/bufferreader").default;
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 
-function makeError(_message) {
-  return (new Error(_message));
-}
-
 function defaultTileCache() {
   return {
     activeTile: undefined,
@@ -655,7 +651,7 @@ function parse$3(payload) {
       TAG: "Error",
       _0: {
         context: "Packet_TileSectionSend.parse",
-        error: makeError("Tile section dimensions must be non-negative")
+        error: new Error("Tile section dimensions must be non-negative")
       }
     };
   }
@@ -1355,7 +1351,6 @@ let Option;
 
 exports.Int = Int;
 exports.Option = Option;
-exports.makeError = makeError;
 exports.defaultTileCache = defaultTileCache;
 exports.cacheToTile = cacheToTile;
 exports.Chest = Chest;

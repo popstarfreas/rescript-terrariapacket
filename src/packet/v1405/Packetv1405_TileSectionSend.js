@@ -6,6 +6,7 @@ let Belt_Array = require("@rescript/runtime/lib/js/Belt_Array.js");
 let Belt_Result = require("@rescript/runtime/lib/js/Belt_Result.js");
 let Stdlib_Option = require("@rescript/runtime/lib/js/Stdlib_Option.js");
 let Primitive_object = require("@rescript/runtime/lib/js/Primitive_object.js");
+let Primitive_exceptions = require("@rescript/runtime/lib/js/Primitive_exceptions.js");
 let BitFlags$TerrariaPacket = require("../../BitFlags.js");
 let ResultExt$TerrariaPacket = require("../../ResultExt.js");
 let TileSolid$TerrariaPacket = require("../../TileSolid.js");
@@ -545,157 +546,194 @@ function readByte$3(prim) {
 }
 
 function parse$3(payload) {
-  let reader = new Packetreader(payload);
-  let compressed = reader.readByte() === 1;
-  if (!compressed) {
-    return;
-  }
-  let deflated = reader.readBuffer(reader.bytesLeft);
-  let reader$1 = new Bufferreader(Nodezlib.inflateRawSync(deflated));
-  let tileX = reader$1.readInt32();
-  let tileY = reader$1.readInt32();
-  let width = reader$1.readInt16();
-  let height = reader$1.readInt16();
-  let tiles = [];
-  let tileCache = defaultTileCache();
-  let rleCount = 0;
-  if (height < 0 || width < 0) {
-    return;
-  }
-  for (let _y = 0; _y < height; ++_y) {
-    let row = [];
-    for (let _x = 0; _x < width; ++_x) {
-      if (rleCount !== 0) {
-        rleCount = rleCount - 1 | 0;
-        row.push(cacheToTile(tileCache));
-      } else {
-        clearTileCache(tileCache);
-        let header5 = BitFlags$TerrariaPacket.fromByte(reader$1.readByte());
-        let match;
-        if (BitFlags$TerrariaPacket.flag1(header5)) {
-          let header4 = BitFlags$TerrariaPacket.fromByte(reader$1.readByte());
-          let header3 = BitFlags$TerrariaPacket.flag1(header4) ? BitFlags$TerrariaPacket.fromByte(reader$1.readByte()) : BitFlags$TerrariaPacket.fromByte(0);
-          match = [
-            header4,
-            header3
-          ];
-        } else {
-          match = [
-            BitFlags$TerrariaPacket.fromByte(0),
-            BitFlags$TerrariaPacket.fromByte(0)
-          ];
+  try {
+    let reader = new Packetreader(payload);
+    let compressed = reader.readByte() === 1;
+    if (!compressed) {
+      return {
+        TAG: "Error",
+        _0: {
+          context: "Packetv1405_TileSectionSend.parse",
+          error: new Error("Uncompressed TileSectionSend not supported")
         }
-        let header3$1 = match[1];
-        let header4$1 = match[0];
-        tileCache.coatHeader = 0;
-        let oldActive = tileCache.activeTile;
-        if (BitFlags$TerrariaPacket.flag2(header5)) {
-          let oldType = Stdlib_Option.mapOr(tileCache.activeTile, 0, active => active.tileType);
-          let tileType;
-          if (BitFlags$TerrariaPacket.flag6(header5)) {
-            let byte = reader$1.readByte();
-            let secondByte = reader$1.readByte();
-            tileType = (secondByte << 8) | byte;
-          } else {
-            tileType = reader$1.readByte();
-          }
-          let frame;
-          if (TileFrameImportant$TerrariaPacket.isImportant(tileType)) {
-            let x = reader$1.readInt16();
-            let y = reader$1.readInt16();
-            frame = {
-              x: x,
-              y: y
-            };
-          } else {
-            frame = Stdlib_Option.isSome(oldActive) && tileType === oldType ? oldActive.frame : undefined;
-          }
-          if (BitFlags$TerrariaPacket.flag4(header3$1)) {
-            tileCache.color = reader$1.readByte();
-          }
-          tileCache.activeTile = {
-            tileType: tileType,
-            frame: frame
-          };
-        }
-        if (BitFlags$TerrariaPacket.flag3(header5)) {
-          tileCache.wall = reader$1.readByte();
-          if (BitFlags$TerrariaPacket.flag5(header3$1)) {
-            tileCache.wallColor = reader$1.readByte();
-          }
-        }
-        let liquidBits = ((BitFlags$TerrariaPacket.toByte(header5) & 24) >> 3);
-        if (liquidBits !== 0) {
-          tileCache.liquid = reader$1.readByte();
-          if (liquidBits > 1) {
-            if (liquidBits === 2) {
-              tileCache.lava = true;
-            } else {
-              tileCache.honey = true;
-            }
-          }
-        }
-        if (BitFlags$TerrariaPacket.toByte(header4$1) > 1) {
-          if (BitFlags$TerrariaPacket.flag2(header4$1)) {
-            tileCache.wire = true;
-          }
-          if (BitFlags$TerrariaPacket.flag3(header4$1)) {
-            tileCache.wire2 = true;
-          }
-          if (BitFlags$TerrariaPacket.flag4(header4$1)) {
-            tileCache.wire3 = true;
-          }
-          let slopeBits = ((BitFlags$TerrariaPacket.toByte(header4$1) & 112) >> 4);
-          if (slopeBits !== 0 && TileSolid$TerrariaPacket.isSolid(Stdlib_Option.mapOr(tileCache.activeTile, 0, tile => tile.tileType))) {
-            if (slopeBits === 1) {
-              tileCache.halfBrick = true;
-            } else {
-              tileCache.slope = slopeBits - 1 | 0;
-            }
-          }
-        }
-        if (BitFlags$TerrariaPacket.toByte(header3$1) > 0) {
-          if (BitFlags$TerrariaPacket.flag2(header3$1)) {
-            tileCache.actuator = true;
-          }
-          if (BitFlags$TerrariaPacket.flag3(header3$1)) {
-            tileCache.inActive = true;
-          }
-          if (BitFlags$TerrariaPacket.flag6(header3$1)) {
-            tileCache.wire4 = true;
-          }
-          if (BitFlags$TerrariaPacket.flag7(header3$1)) {
-            let byte$1 = reader$1.readByte();
-            tileCache.wall = (byte$1 << 8) | tileCache.wall;
-          }
-        }
-        let repeatCountBytes = ((BitFlags$TerrariaPacket.toByte(header5) & 192) >> 6);
-        rleCount = repeatCountBytes !== 0 ? (
-            repeatCountBytes !== 1 ? reader$1.readInt16() : reader$1.readByte()
-          ) : 0;
-        row.push(cacheToTile(tileCache));
-      }
+      };
     }
-    tiles.push(row);
-  }
-  let chestCount = reader$1.readInt16();
-  let chests = Belt_Array.make(chestCount, 0).map(param => parse(reader$1));
-  let signCount = reader$1.readInt16();
-  let signs = Belt_Array.make(signCount, 0).map(param => parse$1(reader$1));
-  let entityCount = reader$1.readInt16();
-  let entities = ResultExt$TerrariaPacket.allOkOrError(Belt_Array.make(entityCount, 0).map(param => parse$2(reader$1)));
-  if (entities.TAG === "Ok") {
-    return {
-      compressed: true,
-      height: height,
-      width: width,
-      tileX: tileX,
-      tileY: tileY,
-      tiles: tiles,
-      chests: chests,
-      signs: signs,
-      entities: entities._0
-    };
+    let deflated = reader.readBuffer(reader.bytesLeft);
+    let reader$1 = new Bufferreader(Nodezlib.inflateRawSync(deflated));
+    let tileX = reader$1.readInt32();
+    let tileY = reader$1.readInt32();
+    let width = reader$1.readInt16();
+    let height = reader$1.readInt16();
+    let tiles = [];
+    let tileCache = defaultTileCache();
+    let rleCount = 0;
+    if (height < 0 || width < 0) {
+      return {
+        TAG: "Error",
+        _0: {
+          context: "Packetv1405_TileSectionSend.parse",
+          error: new Error("Invalid dimensions")
+        }
+      };
+    }
+    for (let _y = 0; _y < height; ++_y) {
+      let row = [];
+      for (let _x = 0; _x < width; ++_x) {
+        if (rleCount !== 0) {
+          rleCount = rleCount - 1 | 0;
+          row.push(cacheToTile(tileCache));
+        } else {
+          clearTileCache(tileCache);
+          let header5 = BitFlags$TerrariaPacket.fromByte(reader$1.readByte());
+          let match;
+          if (BitFlags$TerrariaPacket.flag1(header5)) {
+            let header4 = BitFlags$TerrariaPacket.fromByte(reader$1.readByte());
+            let header3 = BitFlags$TerrariaPacket.flag1(header4) ? BitFlags$TerrariaPacket.fromByte(reader$1.readByte()) : BitFlags$TerrariaPacket.fromByte(0);
+            match = [
+              header4,
+              header3
+            ];
+          } else {
+            match = [
+              BitFlags$TerrariaPacket.fromByte(0),
+              BitFlags$TerrariaPacket.fromByte(0)
+            ];
+          }
+          let header3$1 = match[1];
+          let header4$1 = match[0];
+          tileCache.coatHeader = 0;
+          let oldActive = tileCache.activeTile;
+          if (BitFlags$TerrariaPacket.flag2(header5)) {
+            let oldType = Stdlib_Option.mapOr(tileCache.activeTile, 0, active => active.tileType);
+            let tileType;
+            if (BitFlags$TerrariaPacket.flag6(header5)) {
+              let byte = reader$1.readByte();
+              let secondByte = reader$1.readByte();
+              tileType = (secondByte << 8) | byte;
+            } else {
+              tileType = reader$1.readByte();
+            }
+            let frame;
+            if (TileFrameImportant$TerrariaPacket.isImportant(tileType)) {
+              let x = reader$1.readInt16();
+              let y = reader$1.readInt16();
+              frame = {
+                x: x,
+                y: y
+              };
+            } else {
+              frame = Stdlib_Option.isSome(oldActive) && tileType === oldType ? oldActive.frame : undefined;
+            }
+            if (BitFlags$TerrariaPacket.flag4(header3$1)) {
+              tileCache.color = reader$1.readByte();
+            }
+            tileCache.activeTile = {
+              tileType: tileType,
+              frame: frame
+            };
+          }
+          if (BitFlags$TerrariaPacket.flag3(header5)) {
+            tileCache.wall = reader$1.readByte();
+            if (BitFlags$TerrariaPacket.flag5(header3$1)) {
+              tileCache.wallColor = reader$1.readByte();
+            }
+          }
+          let liquidBits = ((BitFlags$TerrariaPacket.toByte(header5) & 24) >> 3);
+          if (liquidBits !== 0) {
+            tileCache.liquid = reader$1.readByte();
+            if (liquidBits > 1) {
+              if (liquidBits === 2) {
+                tileCache.lava = true;
+              } else {
+                tileCache.honey = true;
+              }
+            }
+          }
+          if (BitFlags$TerrariaPacket.toByte(header4$1) > 1) {
+            if (BitFlags$TerrariaPacket.flag2(header4$1)) {
+              tileCache.wire = true;
+            }
+            if (BitFlags$TerrariaPacket.flag3(header4$1)) {
+              tileCache.wire2 = true;
+            }
+            if (BitFlags$TerrariaPacket.flag4(header4$1)) {
+              tileCache.wire3 = true;
+            }
+            let slopeBits = ((BitFlags$TerrariaPacket.toByte(header4$1) & 112) >> 4);
+            if (slopeBits !== 0 && TileSolid$TerrariaPacket.isSolid(Stdlib_Option.mapOr(tileCache.activeTile, 0, tile => tile.tileType))) {
+              if (slopeBits === 1) {
+                tileCache.halfBrick = true;
+              } else {
+                tileCache.slope = slopeBits - 1 | 0;
+              }
+            }
+          }
+          if (BitFlags$TerrariaPacket.toByte(header3$1) > 0) {
+            if (BitFlags$TerrariaPacket.flag2(header3$1)) {
+              tileCache.actuator = true;
+            }
+            if (BitFlags$TerrariaPacket.flag3(header3$1)) {
+              tileCache.inActive = true;
+            }
+            if (BitFlags$TerrariaPacket.flag6(header3$1)) {
+              tileCache.wire4 = true;
+            }
+            if (BitFlags$TerrariaPacket.flag7(header3$1)) {
+              let byte$1 = reader$1.readByte();
+              tileCache.wall = (byte$1 << 8) | tileCache.wall;
+            }
+          }
+          let repeatCountBytes = ((BitFlags$TerrariaPacket.toByte(header5) & 192) >> 6);
+          rleCount = repeatCountBytes !== 0 ? (
+              repeatCountBytes !== 1 ? reader$1.readInt16() : reader$1.readByte()
+            ) : 0;
+          row.push(cacheToTile(tileCache));
+        }
+      }
+      tiles.push(row);
+    }
+    let chestCount = reader$1.readInt16();
+    let chests = Belt_Array.make(chestCount, 0).map(param => parse(reader$1));
+    let signCount = reader$1.readInt16();
+    let signs = Belt_Array.make(signCount, 0).map(param => parse$1(reader$1));
+    let entityCount = reader$1.readInt16();
+    let entities = ResultExt$TerrariaPacket.allOkOrError(Belt_Array.make(entityCount, 0).map(param => parse$2(reader$1)));
+    if (entities.TAG === "Ok") {
+      return {
+        TAG: "Ok",
+        _0: {
+          compressed: true,
+          height: height,
+          width: width,
+          tileX: tileX,
+          tileY: tileY,
+          tiles: tiles,
+          chests: chests,
+          signs: signs,
+          entities: entities._0
+        }
+      };
+    } else {
+      return {
+        TAG: "Error",
+        _0: {
+          context: "Packetv1405_TileSectionSend.parse.entities",
+          error: new Error("Failed to parse entities")
+        }
+      };
+    }
+  } catch (raw_obj) {
+    let obj = Primitive_exceptions.internalToException(raw_obj);
+    if (obj.RE_EXN_ID === "JsExn") {
+      return {
+        TAG: "Error",
+        _0: {
+          context: "Packetv1405_TileSectionSend.parse",
+          error: obj._1
+        }
+      };
+    }
+    throw obj;
   }
 }
 
@@ -933,35 +971,52 @@ function data(prim) {
 }
 
 function toBuffer(self) {
-  let packetWriter = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("TileSectionSend"));
-  let writer = new Bufferwriter(Buffer.allocUnsafe(64000));
-  writer.packInt32(self.tileX).packInt32(self.tileY).packInt16(self.width).packInt16(self.height);
-  let lastTile = {
-    contents: undefined
-  };
-  for (let y = 0, y_finish = self.height; y < y_finish; ++y) {
-    for (let x = 0, x_finish = self.width; x < x_finish; ++x) {
-      let tile = self.tiles[y][x];
-      decidePackTile(writer, lastTile, tile);
+  try {
+    let packetWriter = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("TileSectionSend"));
+    let writer = new Bufferwriter(Buffer.allocUnsafe(64000));
+    writer.packInt32(self.tileX).packInt32(self.tileY).packInt16(self.width).packInt16(self.height);
+    let lastTile = {
+      contents: undefined
+    };
+    for (let y = 0, y_finish = self.height; y < y_finish; ++y) {
+      for (let x = 0, x_finish = self.width; x < x_finish; ++x) {
+        let tile = self.tiles[y][x];
+        decidePackTile(writer, lastTile, tile);
+      }
     }
+    let lastTile$1 = lastTile.contents;
+    if (lastTile$1 !== undefined) {
+      packTile(writer, lastTile$1.tile, lastTile$1.count);
+    }
+    writer.packInt16(self.chests.length);
+    self.chests.forEach(chest => {
+      pack(writer, chest);
+    });
+    writer.packInt16(self.signs.length);
+    self.signs.forEach(sign => {
+      pack$1(writer, sign);
+    });
+    writer.packInt16(self.entities.length);
+    self.entities.forEach(entity => {
+      pack$2(writer, entity);
+    });
+    return {
+      TAG: "Ok",
+      _0: packetWriter.packBuffer(Nodezlib.deflateRawSync(writer.slicedData)).data
+    };
+  } catch (raw_obj) {
+    let obj = Primitive_exceptions.internalToException(raw_obj);
+    if (obj.RE_EXN_ID === "JsExn") {
+      return {
+        TAG: "Error",
+        _0: {
+          context: "Packetv1405_TileSectionSend.toBuffer",
+          error: obj._1
+        }
+      };
+    }
+    throw obj;
   }
-  let lastTile$1 = lastTile.contents;
-  if (lastTile$1 !== undefined) {
-    packTile(writer, lastTile$1.tile, lastTile$1.count);
-  }
-  writer.packInt16(self.chests.length);
-  self.chests.forEach(chest => {
-    pack(writer, chest);
-  });
-  writer.packInt16(self.signs.length);
-  self.signs.forEach(sign => {
-    pack$1(writer, sign);
-  });
-  writer.packInt16(self.entities.length);
-  self.entities.forEach(entity => {
-    pack$2(writer, entity);
-  });
-  return packetWriter.packBuffer(Nodezlib.deflateRawSync(writer.slicedData)).data;
 }
 
 let Encode = {

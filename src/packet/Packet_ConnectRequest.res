@@ -10,13 +10,12 @@ module Decode = {
 }
 
 module Encode = {
-  let {packString, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let {packString, setType, data} = module(ErrorAwarePacketWriter)
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> =>
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.ConnectRequest->PacketType.toInt)
-    ->packString(self.version)
+    ->packString(self.version, "version")
     ->data
-  }
 }
 
 let parse = Decode.parse

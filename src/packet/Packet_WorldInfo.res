@@ -362,7 +362,7 @@ module Decode = {
     | None =>
       Error({
         ErrorAwarePacketReader.context: "WorldInfo.parse.worldUniqueId",
-        error: ErrorExt.makeJsError("Invalid worldUniqueId"),
+        error: JsError.make("Invalid worldUniqueId")->JsError.toJsExn,
       })
     }
     let? Ok(worldGeneratorVersion) = reader->readUInt64("worldGeneratorVersion")

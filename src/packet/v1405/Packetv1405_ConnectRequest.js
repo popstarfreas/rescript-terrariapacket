@@ -3,25 +3,28 @@
 
 let PacketType$TerrariaPacket = require("../../PacketType.js");
 let PacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/PacketWriter.js");
-let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../../ErrorAwarePacketReader.js");
+let ErrorAwarePacketWriter$TerrariaPacket = require("../../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 let Dumbpacketwriter = require("@popstarfreas/packetfactory/dumbpacketwriter").default;
-
-function readString(prim) {
-  return prim.readString();
-}
 
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let version = reader.readString();
-  return {
-    version: version
-  };
+  let e = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "version");
+  if (e.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        version: e._0
+      }
+    };
+  } else {
+    return e;
+  }
 }
 
 let Decode = {
-  readString: readString,
+  readString: ErrorAwarePacketReader$TerrariaPacket.readString,
   parse: parse
 };
 
@@ -29,23 +32,15 @@ function packIntoBufferUnsafe(self, buffer) {
   return PacketWriter$PacketFactory.setType(new Dumbpacketwriter(buffer), PacketType$TerrariaPacket.toInt("ConnectRequest")).packString(self.version).packedLength;
 }
 
-function packString(prim0, prim1) {
-  return prim0.packString(prim1);
-}
-
-function data(prim) {
-  return prim.data;
-}
-
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ConnectRequest")).packString(self.version).data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ConnectRequest")), self.version, "version"));
 }
 
 let Encode = {
   packIntoBufferUnsafe: packIntoBufferUnsafe,
-  packString: packString,
-  setType: ManagedPacketWriter$PacketFactory.setType,
-  data: data,
+  packString: ErrorAwarePacketWriter$TerrariaPacket.packString,
+  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+  data: ErrorAwarePacketWriter$TerrariaPacket.data,
   toBuffer: toBuffer
 };
 
@@ -53,4 +48,4 @@ exports.Decode = Decode;
 exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

@@ -24,8 +24,6 @@ type t = {
   spawnedFromStatue: bool,
 }
 
-let makeError = (_message: string): JsExn.t => %raw("new Error(_message)")
-
 module Decode = {
   let {readInt32, readInt16, readSingle, readUInt16, readByte, readSByte} = module(
     ErrorAwarePacketReader
@@ -139,7 +137,7 @@ module Decode = {
       | _ =>
         Error({
           context: "Packet_NpcUpdate.parse",
-          error: makeError("Invalid life byte count"),
+          error: JsError.make("Invalid life byte count")->JsError.toJsExn,
         })
       }
     }

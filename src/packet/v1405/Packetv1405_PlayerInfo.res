@@ -27,7 +27,7 @@ type t = {
 }
 
 module Decode = {
-  let {readByte, readColor, readString} = module(PacketFactory.PacketReader)
+  let {readByte, readColor, readString} = module(ErrorAwarePacketReader)
   let getDifficulty = (difficultyFlags: BitFlags.t): difficulty => {
     if difficultyFlags->BitFlags.flag2 {
       Hardcore
@@ -38,25 +38,27 @@ module Decode = {
     }
   }
 
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let playerId = reader->readByte
-    let skinVariant = reader->readByte
-    let hair = reader->readByte
-    let name = reader->readString
-    let hairDye = reader->readByte
-    let hideVisuals = reader->readByte
-    let hideVisuals2 = reader->readByte
-    let hideMisc = reader->readByte
-    let hairColor = reader->readColor
-    let skinColor = reader->readColor
-    let eyeColor = reader->readColor
-    let shirtColor = reader->readColor
-    let underShirtColor = reader->readColor
-    let pantsColor = reader->readColor
-    let shoeColor = reader->readColor
-    let difficultyFlags = BitFlags.fromByte(reader->readByte)
-    let torchFlags = BitFlags.fromByte(reader->readByte)
+    let? Ok(playerId) = reader->readByte("playerId")
+    let? Ok(skinVariant) = reader->readByte("skinVariant")
+    let? Ok(hair) = reader->readByte("hair")
+    let? Ok(name) = reader->readString("name")
+    let? Ok(hairDye) = reader->readByte("hairDye")
+    let? Ok(hideVisuals) = reader->readByte("hideVisuals")
+    let? Ok(hideVisuals2) = reader->readByte("hideVisuals2")
+    let? Ok(hideMisc) = reader->readByte("hideMisc")
+    let? Ok(hairColor) = reader->readColor("hairColor")
+    let? Ok(skinColor) = reader->readColor("skinColor")
+    let? Ok(eyeColor) = reader->readColor("eyeColor")
+    let? Ok(shirtColor) = reader->readColor("shirtColor")
+    let? Ok(underShirtColor) = reader->readColor("underShirtColor")
+    let? Ok(pantsColor) = reader->readColor("pantsColor")
+    let? Ok(shoeColor) = reader->readColor("shoeColor")
+    let? Ok(difficultyFlagsRaw) = reader->readByte("difficultyFlags")
+    let difficultyFlags = BitFlags.fromByte(difficultyFlagsRaw)
+    let? Ok(torchFlagsRaw) = reader->readByte("torchFlags")
+    let torchFlags = BitFlags.fromByte(torchFlagsRaw)
 
     let difficulty = difficultyFlags->getDifficulty
     let extraAccessory = difficultyFlags->BitFlags.flag3
@@ -69,7 +71,7 @@ module Decode = {
     let happyFunTorchTime = torchFlags->BitFlags.flag2
     let unlockedBiomeTorches = torchFlags->BitFlags.flag3
 
-    Some({
+    Ok({
       playerId,
       skinVariant,
       hair,
@@ -96,8 +98,13 @@ module Decode = {
 }
 
 module Encode = {
-  let {packByte, packString, packColor, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  let packDifficultyFlags = (writer, difficulty: difficulty, extraAccessory: bool, mode: mode) => {
+  let {packByte, packString, packColor, setType, data} = module(ErrorAwarePacketWriter)
+  let packDifficultyFlags = (
+    writer: ErrorAwarePacketWriter.t,
+    difficulty: difficulty,
+    extraAccessory: bool,
+    mode: mode,
+  ) => {
     let byte = ref(0)
     byte :=
       byte.contents ||| (
@@ -110,11 +117,11 @@ module Encode = {
 
     byte := byte.contents ||| (extraAccessory ? 4 : 0)
     byte := byte.contents ||| (mode == Journey ? 8 : 0)
-    writer->packByte(byte.contents)
+    writer->packByte(byte.contents, "difficultyFlags")
   }
 
   let packTorchFlags = (
-    writer,
+    writer: ErrorAwarePacketWriter.t,
     usingBiomeTorches: bool,
     happyFunTorchTime: bool,
     unlockedBiomeTorches: bool,
@@ -123,27 +130,27 @@ module Encode = {
     byte := byte.contents ||| (usingBiomeTorches ? 1 : 0)
     byte := byte.contents ||| (happyFunTorchTime ? 2 : 0)
     byte := byte.contents ||| (unlockedBiomeTorches ? 4 : 0)
-    writer->packByte(byte.contents)
+    writer->packByte(byte.contents, "torchFlags")
   }
 
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.PlayerInfo->PacketType.toInt)
-    ->packByte(self.playerId)
-    ->packByte(self.skinVariant)
-    ->packByte(self.hair)
-    ->packString(self.name)
-    ->packByte(self.hairDye)
-    ->packByte(self.hideVisuals)
-    ->packByte(self.hideVisuals2)
-    ->packByte(self.hideMisc)
-    ->packColor(self.hairColor)
-    ->packColor(self.skinColor)
-    ->packColor(self.eyeColor)
-    ->packColor(self.shirtColor)
-    ->packColor(self.underShirtColor)
-    ->packColor(self.pantsColor)
-    ->packColor(self.shoeColor)
+    ->packByte(self.playerId, "playerId")
+    ->packByte(self.skinVariant, "skinVariant")
+    ->packByte(self.hair, "hair")
+    ->packString(self.name, "name")
+    ->packByte(self.hairDye, "hairDye")
+    ->packByte(self.hideVisuals, "hideVisuals")
+    ->packByte(self.hideVisuals2, "hideVisuals2")
+    ->packByte(self.hideMisc, "hideMisc")
+    ->packColor(self.hairColor, "hairColor")
+    ->packColor(self.skinColor, "skinColor")
+    ->packColor(self.eyeColor, "eyeColor")
+    ->packColor(self.shirtColor, "shirtColor")
+    ->packColor(self.underShirtColor, "underShirtColor")
+    ->packColor(self.pantsColor, "pantsColor")
+    ->packColor(self.shoeColor, "shoeColor")
     ->packDifficultyFlags(self.difficulty, self.extraAccessory, self.mode)
     ->packTorchFlags(self.usingBiomeTorches, self.happyFunTorchTime, self.unlockedBiomeTorches)
     ->data

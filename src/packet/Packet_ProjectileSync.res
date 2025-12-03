@@ -16,7 +16,7 @@ type t = {
 
 module Decode = {
   let {readSingle, readInt16, readUInt16, readByte} = module(ErrorAwarePacketReader)
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
     let? Ok(projectileId) = reader->readInt16("projectileId")
     let? Ok(x) = reader->readSingle("x")
@@ -109,7 +109,10 @@ module Decode = {
 
 module Encode = {
   let {packSingle, packInt16, packUInt16, packByte, setType, data} = module(ErrorAwarePacketWriter)
-  let packOptionalData = (writer, self) => {
+  let packOptionalData = (
+    writer: ErrorAwarePacketWriter.t,
+    self: t,
+  ): ErrorAwarePacketWriter.t => {
     let (ai0, ai1, ai2) = self.ai
     let bitFlags2 = BitFlags.fromFlags(
       ~flag1=ai2->Option.isSome,

@@ -1,10 +1,9 @@
-let mapPacket = (packetResult, fn) => packetResult->Result.map(fn)->Result.map(Some)
+let mapPacket = (packetResult, fn) => packetResult->Result.map(fn)->Result.map(v => Some(v))
 
-let parsePayload = (
-  packetType: PacketType.t,
-  payload: NodeJs.Buffer.t,
-  fromServer: bool,
-): result<option<Packetv1405.t>, ErrorAwarePacketReader.readError> =>
+let parsePayload = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServer: bool): result<
+  option<Packetv1405.t>,
+  ErrorAwarePacketReader.readError,
+> =>
   switch (packetType, fromServer) {
   | (ConnectRequest, true) => Ok(None)
   | (ConnectRequest, false) =>
@@ -18,14 +17,12 @@ let parsePayload = (
   | (PlayerInfo, true | false) =>
     Packetv1405.PlayerInfo.parse(payload)->mapPacket(a => Packetv1405.PlayerInfo(a))
   | (PlayerInventorySlot, true | false) =>
-    Packetv1405.PlayerInventorySlot.parse(
-      payload,
-    )->mapPacket(a => Packetv1405.PlayerInventorySlot(a))
-  | (WorldDataRequest, true) => Ok(None)
-  | (WorldDataRequest, false) =>
-    Packetv1405.WorldDataRequest.parse(payload)->mapPacket(a => Packetv1405.WorldDataRequest(
+    Packetv1405.PlayerInventorySlot.parse(payload)->mapPacket(a => Packetv1405.PlayerInventorySlot(
       a,
     ))
+  | (WorldDataRequest, true) => Ok(None)
+  | (WorldDataRequest, false) =>
+    Packetv1405.WorldDataRequest.parse(payload)->mapPacket(a => Packetv1405.WorldDataRequest(a))
   | (WorldInfo, false) => Ok(None)
   | (WorldInfo, true) =>
     Packetv1405.WorldInfo.parse(payload)->mapPacket(a => Packetv1405.WorldInfo(a))
@@ -41,9 +38,7 @@ let parsePayload = (
     Packetv1405.TileSectionSend.parse(payload)->mapPacket(a => Packetv1405.TileSectionSend(a))
   | (TileSectionFrame, false) => Ok(None)
   | (TileSectionFrame, true) =>
-    Packetv1405.TileSectionFrame.parse(payload)->mapPacket(a => Packetv1405.TileSectionFrame(
-      a,
-    ))
+    Packetv1405.TileSectionFrame.parse(payload)->mapPacket(a => Packetv1405.TileSectionFrame(a))
   | (PlayerSpawn, true | false) =>
     Packetv1405.PlayerSpawn.parse(payload)->mapPacket(a => Packetv1405.PlayerSpawn(a))
   | (PlayerUpdate, true | false) =>
@@ -56,8 +51,7 @@ let parsePayload = (
   | (TileModify, true | false) =>
     Packetv1405.TileModify.parse(payload)->mapPacket(a => Packetv1405.TileModify(a))
   | (TimeSet, false) => Ok(None)
-  | (TimeSet, true) =>
-    Packetv1405.TimeSet.parse(payload)->mapPacket(a => Packetv1405.TimeSet(a))
+  | (TimeSet, true) => Packetv1405.TimeSet.parse(payload)->mapPacket(a => Packetv1405.TimeSet(a))
   | (DoorUse, true | false) =>
     Packetv1405.DoorUse.parse(payload)->mapPacket(a => Packetv1405.DoorUse(a))
   | (TileSquareSend, true | false) =>
@@ -76,9 +70,7 @@ let parsePayload = (
   | (NpcStrike, true | false) =>
     Packetv1405.NpcStrike.parse(payload)->mapPacket(a => Packetv1405.NpcStrike(a))
   | (ProjectileDestroy, true | false) =>
-    Packetv1405.ProjectileDestroy.parse(
-      payload,
-    )->mapPacket(a => Packetv1405.ProjectileDestroy(a))
+    Packetv1405.ProjectileDestroy.parse(payload)->mapPacket(a => Packetv1405.ProjectileDestroy(a))
   | (PvpToggle, true | false) =>
     Packetv1405.PvpToggle.parse(payload)->mapPacket(a => Packetv1405.PvpToggle(a))
   | (ChestOpen, true) => Ok(None)
@@ -87,20 +79,17 @@ let parsePayload = (
   | (ChestItem, true | false) =>
     Packetv1405.ChestItem.parse(payload)->mapPacket(a => Packetv1405.ChestItem(a))
   | (ActiveContainerSync, true | false) =>
-    Packetv1405.ActiveContainerSync.parse(
-      payload,
-    )->mapPacket(a => Packetv1405.ActiveContainerSync(a))
+    Packetv1405.ActiveContainerSync.parse(payload)->mapPacket(a => Packetv1405.ActiveContainerSync(
+      a,
+    ))
   | (ChestPlace, true | false) =>
     Packetv1405.ChestPlace.parse(payload)->mapPacket(a => Packetv1405.ChestPlace(a))
   | (HealEffect, true | false) =>
     Packetv1405.HealEffect.parse(payload)->mapPacket(a => Packetv1405.HealEffect(a))
-  | (Zones, true | false) =>
-    Packetv1405.Zones.parse(payload)->mapPacket(a => Packetv1405.Zones(a))
+  | (Zones, true | false) => Packetv1405.Zones.parse(payload)->mapPacket(a => Packetv1405.Zones(a))
   | (PasswordRequired, false) => Ok(None)
   | (PasswordRequired, true) =>
-    Packetv1405.PasswordRequired.parse(payload)->mapPacket(a => Packetv1405.PasswordRequired(
-      a,
-    ))
+    Packetv1405.PasswordRequired.parse(payload)->mapPacket(a => Packetv1405.PasswordRequired(a))
   | (PasswordSend, true) => Ok(None)
   | (PasswordSend, false) =>
     Packetv1405.PasswordSend.parse(payload)->mapPacket(a => Packetv1405.PasswordSend(a))
@@ -130,13 +119,11 @@ let parsePayload = (
   | (PlayerBuffsSet, true | false) =>
     Packetv1405.PlayerBuffsSet.parse(payload)->mapPacket(a => Packetv1405.PlayerBuffsSet(a))
   | (NpcSpecialEffect, true | false) =>
-    Packetv1405.NpcSpecialEffect.parse(payload)->mapPacket(a => Packetv1405.NpcSpecialEffect(
+    Packetv1405.NpcSpecialEffect.parse(payload)->mapPacket(a => Packetv1405.NpcSpecialEffect(a))
+  | (ChestOrTempleUnlock, true | false) =>
+    Packetv1405.ChestOrTempleUnlock.parse(payload)->mapPacket(a => Packetv1405.ChestOrTempleUnlock(
       a,
     ))
-  | (ChestOrTempleUnlock, true | false) =>
-    Packetv1405.ChestOrTempleUnlock.parse(
-      payload,
-    )->mapPacket(a => Packetv1405.ChestOrTempleUnlock(a))
   | (NpcBuffAdd, true | false) =>
     Packetv1405.NpcBuffAdd.parse(payload)->mapPacket(a => Packetv1405.NpcBuffAdd(a))
   | (NpcBuffUpdate, false) => Ok(None)
@@ -157,9 +144,9 @@ let parsePayload = (
     Packetv1405.NpcHomeUpdate.parse(payload)->mapPacket(a => Packetv1405.NpcHomeUpdate(a))
   | (BossOrInvasionSpawn, true) => Ok(None)
   | (BossOrInvasionSpawn, false) =>
-    Packetv1405.BossOrInvasionSpawn.parse(
-      payload,
-    )->mapPacket(a => Packetv1405.BossOrInvasionSpawn(a))
+    Packetv1405.BossOrInvasionSpawn.parse(payload)->mapPacket(a => Packetv1405.BossOrInvasionSpawn(
+      a,
+    ))
   | (PlayerDodge, true | false) =>
     Packetv1405.PlayerDodge.parse(payload)->mapPacket(a => Packetv1405.PlayerDodge(a))
   | (TilePaint, true | false) =>
@@ -171,9 +158,7 @@ let parsePayload = (
   | (PlayerHealOther, true | false) =>
     Packetv1405.PlayerHealOther.parse(payload)->mapPacket(a => Packetv1405.PlayerHealOther(a))
   | (DimensionsUpdate, true | false) =>
-    Packetv1405.DimensionsUpdate.parse(payload)->mapPacket(a => Packetv1405.DimensionsUpdate(
-      a,
-    ))
+    Packetv1405.DimensionsUpdate.parse(payload)->mapPacket(a => Packetv1405.DimensionsUpdate(a))
   | (ClientUuid, true) => Ok(None)
   | (ClientUuid, false) =>
     Packetv1405.ClientUuid.parse(payload)->mapPacket(a => Packetv1405.ClientUuid(a))
@@ -191,17 +176,17 @@ let parsePayload = (
       payload,
     )->mapPacket(a => Packetv1405.TravellingMerchantInventory(a))
   | (TeleportationPotion, true | false) =>
-    Packetv1405.TeleportationPotion.parse(
-      payload,
-    )->mapPacket(a => Packetv1405.TeleportationPotion(a))
+    Packetv1405.TeleportationPotion.parse(payload)->mapPacket(a => Packetv1405.TeleportationPotion(
+      a,
+    ))
   | (AnglerQuest, false) => Ok(None)
   | (AnglerQuest, true) =>
     Packetv1405.AnglerQuest.parse(payload)->mapPacket(a => Packetv1405.AnglerQuest(a))
   | (AnglerQuestComplete, true) => Ok(None)
   | (AnglerQuestComplete, false) =>
-    Packetv1405.AnglerQuestComplete.parse(
-      payload,
-    )->mapPacket(a => Packetv1405.AnglerQuestComplete(a))
+    Packetv1405.AnglerQuestComplete.parse(payload)->mapPacket(a => Packetv1405.AnglerQuestComplete(
+      a,
+    ))
   | (AnglerQuestsCompletedAmount, true)
   | (AnglerQuestsCompletedAmount, false) =>
     Packetv1405.AnglerQuestsCompletedAmount.parse(
@@ -226,14 +211,11 @@ let parsePayload = (
     )->mapPacket(a => Packetv1405.PlayerChestIndexSync(a))
   | (CombatNumberCreate, false) => Ok(None)
   | (CombatNumberCreate, true) =>
-    Packetv1405.CombatNumberCreate.parse(
-      payload,
-    )->mapPacket(a => Packetv1405.CombatNumberCreate(a))
+    Packetv1405.CombatNumberCreate.parse(payload)->mapPacket(a => Packetv1405.CombatNumberCreate(a))
   | (NetModuleLoad, true | false) =>
-    Packetv1405.NetModuleLoad.parse(
-      payload,
-      ~fromServer,
-    )->mapPacket(a => Packetv1405.NetModuleLoad(a))
+    Packetv1405.NetModuleLoad.parse(payload, ~fromServer)->mapPacket(a => Packetv1405.NetModuleLoad(
+      a,
+    ))
   | (NpcKillCount, false) => Ok(None)
   | (NpcKillCount, true) =>
     Packetv1405.NpcKillCount.parse(payload)->mapPacket(a => Packetv1405.NpcKillCount(a))
@@ -246,9 +228,7 @@ let parsePayload = (
     )->mapPacket(a => Packetv1405.ItemForceIntoNearestChest(a))
   | (TileEntityUpdate, false) => Ok(None)
   | (TileEntityUpdate, true) =>
-    Packetv1405.TileEntityUpdate.parse(payload)->mapPacket(a => Packetv1405.TileEntityUpdate(
-      a,
-    ))
+    Packetv1405.TileEntityUpdate.parse(payload)->mapPacket(a => Packetv1405.TileEntityUpdate(a))
   | (TileEntityPlace, true) => Ok(None)
   | (TileEntityPlace, false) =>
     Packetv1405.TileEntityPlace.parse(payload)->mapPacket(a => Packetv1405.TileEntityPlace(a))
@@ -285,17 +265,11 @@ let parsePayload = (
     )->mapPacket(a => Packetv1405.NpcKilledNotification(a))
   | (EventNotification, false) => Ok(None)
   | (EventNotification, true) =>
-    Packetv1405.EventNotification.parse(
-      payload,
-    )->mapPacket(a => Packetv1405.EventNotification(a))
+    Packetv1405.EventNotification.parse(payload)->mapPacket(a => Packetv1405.EventNotification(a))
   | (MinionTargetUpdate, true | false) =>
-    Packetv1405.MinionTargetUpdate.parse(
-      payload,
-    )->mapPacket(a => Packetv1405.MinionTargetUpdate(a))
+    Packetv1405.MinionTargetUpdate.parse(payload)->mapPacket(a => Packetv1405.MinionTargetUpdate(a))
   | (NpcTeleportPortal, true | false) =>
-    Packetv1405.NpcTeleportPortal.parse(
-      payload,
-    )->mapPacket(a => Packetv1405.NpcTeleportPortal(a))
+    Packetv1405.NpcTeleportPortal.parse(payload)->mapPacket(a => Packetv1405.NpcTeleportPortal(a))
   | (ShieldStrengthsUpdate, false) => Ok(None)
   | (ShieldStrengthsUpdate, true) =>
     Packetv1405.ShieldStrengthsUpdate.parse(
@@ -305,9 +279,7 @@ let parsePayload = (
     Packetv1405.NebulaLevelUp.parse(payload)->mapPacket(a => Packetv1405.NebulaLevelUp(a))
   | (MoonLordCountdown, false) => Ok(None)
   | (MoonLordCountdown, true) =>
-    Packetv1405.MoonLordCountdown.parse(
-      payload,
-    )->mapPacket(a => Packetv1405.MoonLordCountdown(a))
+    Packetv1405.MoonLordCountdown.parse(payload)->mapPacket(a => Packetv1405.MoonLordCountdown(a))
   | (NpcShopItem, false) => Ok(None)
   | (NpcShopItem, true) =>
     Packetv1405.NpcShopItem.parse(payload)->mapPacket(a => Packetv1405.NpcShopItem(a))
@@ -319,17 +291,13 @@ let parsePayload = (
     Packetv1405.SmokePoof.parse(payload)->mapPacket(a => Packetv1405.SmokePoof(a))
   | (ChatMessageSmart, false) => Ok(None)
   | (ChatMessageSmart, true) =>
-    Packetv1405.ChatMessageSmart.parse(payload)->mapPacket(a => Packetv1405.ChatMessageSmart(
-      a,
-    ))
+    Packetv1405.ChatMessageSmart.parse(payload)->mapPacket(a => Packetv1405.ChatMessageSmart(a))
   | (WiredCannonShot, false) => Ok(None)
   | (WiredCannonShot, true) =>
     Packetv1405.WiredCannonShot.parse(payload)->mapPacket(a => Packetv1405.WiredCannonShot(a))
   | (MassWireOperation, true) => Ok(None)
   | (MassWireOperation, false) =>
-    Packetv1405.MassWireOperation.parse(
-      payload,
-    )->mapPacket(a => Packetv1405.MassWireOperation(a))
+    Packetv1405.MassWireOperation.parse(payload)->mapPacket(a => Packetv1405.MassWireOperation(a))
   | (MassWireOperationPay, false) => Ok(None)
   | (MassWireOperationPay, true) =>
     Packetv1405.MassWireOperationPay.parse(
@@ -365,9 +333,7 @@ let parsePayload = (
     Packetv1405.PlayerDeath.parse(payload)->mapPacket(a => Packetv1405.PlayerDeath(a))
   | (CombatTextCreate, false) => Ok(None)
   | (CombatTextCreate, true) =>
-    Packetv1405.CombatTextCreate.parse(payload)->mapPacket(a => Packetv1405.CombatTextCreate(
-      a,
-    ))
+    Packetv1405.CombatTextCreate.parse(payload)->mapPacket(a => Packetv1405.CombatTextCreate(a))
   | (Emoji, true) => Ok(None)
   | (Emoji, false) => Packetv1405.Emoji.parse(payload)->mapPacket(a => Packetv1405.Emoji(a))
   | (TileEntityDisplayDollItemSync, true | false) =>
@@ -391,18 +357,14 @@ let parsePayload = (
     Packetv1405.TilePickingSync.parse(payload)->mapPacket(a => Packetv1405.TilePickingSync(a))
   | (RevengeMarkerSync, false) => Ok(None)
   | (RevengeMarkerSync, true) =>
-    Packetv1405.RevengeMarkerSync.parse(
-      payload,
-    )->mapPacket(a => Packetv1405.RevengeMarkerSync(a))
+    Packetv1405.RevengeMarkerSync.parse(payload)->mapPacket(a => Packetv1405.RevengeMarkerSync(a))
   | (RevengeMarkerRemove, false) => Ok(None)
   | (RevengeMarkerRemove, true) =>
-    Packetv1405.RevengeMarkerRemove.parse(
-      payload,
-    )->mapPacket(a => Packetv1405.RevengeMarkerRemove(a))
+    Packetv1405.RevengeMarkerRemove.parse(payload)->mapPacket(a => Packetv1405.RevengeMarkerRemove(
+      a,
+    ))
   | (GolfBallLandInCup, true | false) =>
-    Packetv1405.GolfBallLandInCup.parse(
-      payload,
-    )->mapPacket(a => Packetv1405.GolfBallLandInCup(a))
+    Packetv1405.GolfBallLandInCup.parse(payload)->mapPacket(a => Packetv1405.GolfBallLandInCup(a))
   | (ClientFinishConnectingToServer, false) => Ok(None)
   | (ClientFinishConnectingToServer, true) =>
     Packetv1405.ClientFinishConnectingToServer.parse(
@@ -465,18 +427,25 @@ let parsePayloadLazy = (
   packetType: PacketType.t,
   payload: NodeJs.Buffer.t,
   fromServer: bool,
-): result<option<Packetv1405.LazyPacket.t>, ErrorAwarePacketReader.readError> =>
-  Ok(
-    switch (packetType, fromServer) {
+): result<option<Packetv1405.LazyPacket.t>, ErrorAwarePacketReader.readError> => Ok(
+  switch (packetType, fromServer) {
   | (ConnectRequest, true) => None
   | (ConnectRequest, false) =>
-    Some(Packetv1405.LazyPacket.ConnectRequest(Lazy.make(() => Packetv1405.ConnectRequest.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.ConnectRequest(
+        Lazy.make(() => Packetv1405.ConnectRequest.parse(payload)),
+      ),
+    )
   | (Disconnect, false) => None
   | (Disconnect, true) =>
     Some(Packetv1405.LazyPacket.Disconnect(Lazy.make(() => Packetv1405.Disconnect.parse(payload))))
   | (PlayerSlotSet, false) => None
   | (PlayerSlotSet, true) =>
-    Some(Packetv1405.LazyPacket.PlayerSlotSet(Lazy.make(() => Packetv1405.PlayerSlotSet.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.PlayerSlotSet(
+        Lazy.make(() => Packetv1405.PlayerSlotSet.parse(payload)),
+      ),
+    )
   | (PlayerInfo, true | false) =>
     Some(Packetv1405.LazyPacket.PlayerInfo(Lazy.make(() => Packetv1405.PlayerInfo.parse(payload))))
   | (PlayerInventorySlot, true | false) =>
@@ -487,7 +456,11 @@ let parsePayloadLazy = (
     )
   | (WorldDataRequest, true) => None
   | (WorldDataRequest, false) =>
-    Some(Packetv1405.LazyPacket.WorldDataRequest(Lazy.make(() => Packetv1405.WorldDataRequest.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.WorldDataRequest(
+        Lazy.make(() => Packetv1405.WorldDataRequest.parse(payload)),
+      ),
+    )
   | (WorldInfo, false) => None
   | (WorldInfo, true) =>
     Some(Packetv1405.LazyPacket.WorldInfo(Lazy.make(() => Packetv1405.WorldInfo.parse(payload))))
@@ -499,46 +472,82 @@ let parsePayloadLazy = (
       ),
     )
   | (Status, false) => None
-  | (Status, true) => Some(Packetv1405.LazyPacket.Status(Lazy.make(() => Packetv1405.Status.parse(payload))))
+  | (Status, true) =>
+    Some(Packetv1405.LazyPacket.Status(Lazy.make(() => Packetv1405.Status.parse(payload))))
   | (TileSectionSend, false) => None
   | (TileSectionSend, true) =>
-    Some(Packetv1405.LazyPacket.TileSectionSend(Lazy.make(() => Packetv1405.TileSectionSend.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.TileSectionSend(
+        Lazy.make(() => Packetv1405.TileSectionSend.parse(payload)),
+      ),
+    )
   | (TileSectionFrame, false) => None
   | (TileSectionFrame, true) =>
-    Some(Packetv1405.LazyPacket.TileSectionFrame(Lazy.make(() => Packetv1405.TileSectionFrame.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.TileSectionFrame(
+        Lazy.make(() => Packetv1405.TileSectionFrame.parse(payload)),
+      ),
+    )
   | (PlayerSpawn, true | false) =>
-    Some(Packetv1405.LazyPacket.PlayerSpawn(Lazy.make(() => Packetv1405.PlayerSpawn.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.PlayerSpawn(Lazy.make(() => Packetv1405.PlayerSpawn.parse(payload))),
+    )
   | (PlayerUpdate, true | false) =>
-    Some(Packetv1405.LazyPacket.PlayerUpdate(Lazy.make(() => Packetv1405.PlayerUpdate.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.PlayerUpdate(Lazy.make(() => Packetv1405.PlayerUpdate.parse(payload))),
+    )
   | (PlayerActive, false) => None
   | (PlayerActive, true) =>
-    Some(Packetv1405.LazyPacket.PlayerActive(Lazy.make(() => Packetv1405.PlayerActive.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.PlayerActive(Lazy.make(() => Packetv1405.PlayerActive.parse(payload))),
+    )
   | (PlayerHealth, true | false) =>
-    Some(Packetv1405.LazyPacket.PlayerHealth(Lazy.make(() => Packetv1405.PlayerHealth.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.PlayerHealth(Lazy.make(() => Packetv1405.PlayerHealth.parse(payload))),
+    )
   | (TileModify, true | false) =>
     Some(Packetv1405.LazyPacket.TileModify(Lazy.make(() => Packetv1405.TileModify.parse(payload))))
   | (TimeSet, false) => None
-  | (TimeSet, true) => Some(Packetv1405.LazyPacket.TimeSet(Lazy.make(() => Packetv1405.TimeSet.parse(payload))))
+  | (TimeSet, true) =>
+    Some(Packetv1405.LazyPacket.TimeSet(Lazy.make(() => Packetv1405.TimeSet.parse(payload))))
   | (DoorUse, true | false) =>
     Some(Packetv1405.LazyPacket.DoorUse(Lazy.make(() => Packetv1405.DoorUse.parse(payload))))
   | (TileSquareSend, true | false) =>
-    Some(Packetv1405.LazyPacket.TileSquareSend(Lazy.make(() => Packetv1405.TileSquareSend.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.TileSquareSend(
+        Lazy.make(() => Packetv1405.TileSquareSend.parse(payload)),
+      ),
+    )
   | (ItemDropUpdate, true | false) =>
-    Some(Packetv1405.LazyPacket.ItemDropUpdate(Lazy.make(() => Packetv1405.ItemDropUpdate.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.ItemDropUpdate(
+        Lazy.make(() => Packetv1405.ItemDropUpdate.parse(payload)),
+      ),
+    )
   | (ItemOwner, true | false) =>
     Some(Packetv1405.LazyPacket.ItemOwner(Lazy.make(() => Packetv1405.ItemOwner.parse(payload))))
   | (NpcUpdate, false) => None
   | (NpcUpdate, true) =>
     Some(Packetv1405.LazyPacket.NpcUpdate(Lazy.make(() => Packetv1405.NpcUpdate.parse(payload))))
   | (NpcItemStrike, true | false) =>
-    Some(Packetv1405.LazyPacket.NpcItemStrike(Lazy.make(() => Packetv1405.NpcItemStrike.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.NpcItemStrike(
+        Lazy.make(() => Packetv1405.NpcItemStrike.parse(payload)),
+      ),
+    )
   | (ProjectileSync, true | false) =>
-    Some(Packetv1405.LazyPacket.ProjectileSync(Lazy.make(() => Packetv1405.ProjectileSync.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.ProjectileSync(
+        Lazy.make(() => Packetv1405.ProjectileSync.parse(payload)),
+      ),
+    )
   | (NpcStrike, true | false) =>
     Some(Packetv1405.LazyPacket.NpcStrike(Lazy.make(() => Packetv1405.NpcStrike.parse(payload))))
   | (ProjectileDestroy, true | false) =>
     Some(
-      Packetv1405.LazyPacket.ProjectileDestroy(Lazy.make(() => Packetv1405.ProjectileDestroy.parse(payload))),
+      Packetv1405.LazyPacket.ProjectileDestroy(
+        Lazy.make(() => Packetv1405.ProjectileDestroy.parse(payload)),
+      ),
     )
   | (PvpToggle, true | false) =>
     Some(Packetv1405.LazyPacket.PvpToggle(Lazy.make(() => Packetv1405.PvpToggle.parse(payload))))
@@ -561,17 +570,31 @@ let parsePayloadLazy = (
     Some(Packetv1405.LazyPacket.Zones(Lazy.make(() => Packetv1405.Zones.parse(payload))))
   | (PasswordRequired, false) => None
   | (PasswordRequired, true) =>
-    Some(Packetv1405.LazyPacket.PasswordRequired(Lazy.make(() => Packetv1405.PasswordRequired.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.PasswordRequired(
+        Lazy.make(() => Packetv1405.PasswordRequired.parse(payload)),
+      ),
+    )
   | (PasswordSend, true) => None
   | (PasswordSend, false) =>
-    Some(Packetv1405.LazyPacket.PasswordSend(Lazy.make(() => Packetv1405.PasswordSend.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.PasswordSend(Lazy.make(() => Packetv1405.PasswordSend.parse(payload))),
+    )
   | (ItemOwnerRemove, false) => None
   | (ItemOwnerRemove, true) =>
-    Some(Packetv1405.LazyPacket.ItemOwnerRemove(Lazy.make(() => Packetv1405.ItemOwnerRemove.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.ItemOwnerRemove(
+        Lazy.make(() => Packetv1405.ItemOwnerRemove.parse(payload)),
+      ),
+    )
   | (NpcTalk, true | false) =>
     Some(Packetv1405.LazyPacket.NpcTalk(Lazy.make(() => Packetv1405.NpcTalk.parse(payload))))
   | (PlayerAnimation, true | false) =>
-    Some(Packetv1405.LazyPacket.PlayerAnimation(Lazy.make(() => Packetv1405.PlayerAnimation.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.PlayerAnimation(
+        Lazy.make(() => Packetv1405.PlayerAnimation.parse(payload)),
+      ),
+    )
   | (PlayerMana, true | false) =>
     Some(Packetv1405.LazyPacket.PlayerMana(Lazy.make(() => Packetv1405.PlayerMana.parse(payload))))
   | (ManaEffect, true | false) =>
@@ -587,11 +610,23 @@ let parsePayloadLazy = (
     Some(Packetv1405.LazyPacket.LiquidSet(Lazy.make(() => Packetv1405.LiquidSet.parse(payload))))
   | (PlayerSpawnSelf, false) => None
   | (PlayerSpawnSelf, true) =>
-    Some(Packetv1405.LazyPacket.PlayerSpawnSelf(Lazy.make(() => Packetv1405.PlayerSpawnSelf.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.PlayerSpawnSelf(
+        Lazy.make(() => Packetv1405.PlayerSpawnSelf.parse(payload)),
+      ),
+    )
   | (PlayerBuffsSet, true | false) =>
-    Some(Packetv1405.LazyPacket.PlayerBuffsSet(Lazy.make(() => Packetv1405.PlayerBuffsSet.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.PlayerBuffsSet(
+        Lazy.make(() => Packetv1405.PlayerBuffsSet.parse(payload)),
+      ),
+    )
   | (NpcSpecialEffect, true | false) =>
-    Some(Packetv1405.LazyPacket.NpcSpecialEffect(Lazy.make(() => Packetv1405.NpcSpecialEffect.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.NpcSpecialEffect(
+        Lazy.make(() => Packetv1405.NpcSpecialEffect.parse(payload)),
+      ),
+    )
   | (ChestOrTempleUnlock, true | false) =>
     Some(
       Packetv1405.LazyPacket.ChestOrTempleUnlock(
@@ -602,20 +637,40 @@ let parsePayloadLazy = (
     Some(Packetv1405.LazyPacket.NpcBuffAdd(Lazy.make(() => Packetv1405.NpcBuffAdd.parse(payload))))
   | (NpcBuffUpdate, false) => None
   | (NpcBuffUpdate, true) =>
-    Some(Packetv1405.LazyPacket.NpcBuffUpdate(Lazy.make(() => Packetv1405.NpcBuffUpdate.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.NpcBuffUpdate(
+        Lazy.make(() => Packetv1405.NpcBuffUpdate.parse(payload)),
+      ),
+    )
   | (PlayerBuffAdd, true | false) =>
-    Some(Packetv1405.LazyPacket.PlayerBuffAdd(Lazy.make(() => Packetv1405.PlayerBuffAdd.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.PlayerBuffAdd(
+        Lazy.make(() => Packetv1405.PlayerBuffAdd.parse(payload)),
+      ),
+    )
   | (NpcNameUpdate, true | false) =>
-    Some(Packetv1405.LazyPacket.NpcNameUpdate(Lazy.make(() => Packetv1405.NpcNameUpdate.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.NpcNameUpdate(
+        Lazy.make(() => Packetv1405.NpcNameUpdate.parse(payload)),
+      ),
+    )
   | (GoodEvilUpdate, false) => None
   | (GoodEvilUpdate, true) =>
-    Some(Packetv1405.LazyPacket.GoodEvilUpdate(Lazy.make(() => Packetv1405.GoodEvilUpdate.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.GoodEvilUpdate(
+        Lazy.make(() => Packetv1405.GoodEvilUpdate.parse(payload)),
+      ),
+    )
   | (HarpPlay, true | false) =>
     Some(Packetv1405.LazyPacket.HarpPlay(Lazy.make(() => Packetv1405.HarpPlay.parse(payload))))
   | (SwitchHit, true | false) =>
     Some(Packetv1405.LazyPacket.SwitchHit(Lazy.make(() => Packetv1405.SwitchHit.parse(payload))))
   | (NpcHomeUpdate, true | false) =>
-    Some(Packetv1405.LazyPacket.NpcHomeUpdate(Lazy.make(() => Packetv1405.NpcHomeUpdate.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.NpcHomeUpdate(
+        Lazy.make(() => Packetv1405.NpcHomeUpdate.parse(payload)),
+      ),
+    )
   | (BossOrInvasionSpawn, true) => None
   | (BossOrInvasionSpawn, false) =>
     Some(
@@ -624,7 +679,9 @@ let parsePayloadLazy = (
       ),
     )
   | (PlayerDodge, true | false) =>
-    Some(Packetv1405.LazyPacket.PlayerDodge(Lazy.make(() => Packetv1405.PlayerDodge.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.PlayerDodge(Lazy.make(() => Packetv1405.PlayerDodge.parse(payload))),
+    )
   | (TilePaint, true | false) =>
     Some(Packetv1405.LazyPacket.TilePaint(Lazy.make(() => Packetv1405.TilePaint.parse(payload))))
   | (WallPaint, true | false) =>
@@ -632,9 +689,17 @@ let parsePayloadLazy = (
   | (Teleport, true | false) =>
     Some(Packetv1405.LazyPacket.Teleport(Lazy.make(() => Packetv1405.Teleport.parse(payload))))
   | (PlayerHealOther, true | false) =>
-    Some(Packetv1405.LazyPacket.PlayerHealOther(Lazy.make(() => Packetv1405.PlayerHealOther.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.PlayerHealOther(
+        Lazy.make(() => Packetv1405.PlayerHealOther.parse(payload)),
+      ),
+    )
   | (DimensionsUpdate, true | false) =>
-    Some(Packetv1405.LazyPacket.DimensionsUpdate(Lazy.make(() => Packetv1405.DimensionsUpdate.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.DimensionsUpdate(
+        Lazy.make(() => Packetv1405.DimensionsUpdate.parse(payload)),
+      ),
+    )
   | (ClientUuid, true) => None
   | (ClientUuid, false) =>
     Some(Packetv1405.LazyPacket.ClientUuid(Lazy.make(() => Packetv1405.ClientUuid.parse(payload))))
@@ -661,7 +726,9 @@ let parsePayloadLazy = (
     )
   | (AnglerQuest, false) => None
   | (AnglerQuest, true) =>
-    Some(Packetv1405.LazyPacket.AnglerQuest(Lazy.make(() => Packetv1405.AnglerQuest.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.AnglerQuest(Lazy.make(() => Packetv1405.AnglerQuest.parse(payload))),
+    )
   | (AnglerQuestComplete, true) => None
   | (AnglerQuestComplete, false) =>
     Some(
@@ -691,7 +758,9 @@ let parsePayloadLazy = (
       ),
     )
   | (ObjectPlace, true | false) =>
-    Some(Packetv1405.LazyPacket.ObjectPlace(Lazy.make(() => Packetv1405.ObjectPlace.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.ObjectPlace(Lazy.make(() => Packetv1405.ObjectPlace.parse(payload))),
+    )
   | (PlayerChestIndexSync, false) => None
   | (PlayerChestIndexSync, true) =>
     Some(
@@ -702,7 +771,9 @@ let parsePayloadLazy = (
   | (CombatNumberCreate, false) => None
   | (CombatNumberCreate, true) =>
     Some(
-      Packetv1405.LazyPacket.CombatNumberCreate(Lazy.make(() => Packetv1405.CombatNumberCreate.parse(payload))),
+      Packetv1405.LazyPacket.CombatNumberCreate(
+        Lazy.make(() => Packetv1405.CombatNumberCreate.parse(payload)),
+      ),
     )
   | (NetModuleLoad, true | false) =>
     Some(
@@ -712,9 +783,15 @@ let parsePayloadLazy = (
     )
   | (NpcKillCount, false) => None
   | (NpcKillCount, true) =>
-    Some(Packetv1405.LazyPacket.NpcKillCount(Lazy.make(() => Packetv1405.NpcKillCount.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.NpcKillCount(Lazy.make(() => Packetv1405.NpcKillCount.parse(payload))),
+    )
   | (PlayerStealth, true | false) =>
-    Some(Packetv1405.LazyPacket.PlayerStealth(Lazy.make(() => Packetv1405.PlayerStealth.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.PlayerStealth(
+        Lazy.make(() => Packetv1405.PlayerStealth.parse(payload)),
+      ),
+    )
   | (ItemForceIntoNearestChest, true) => None
   | (ItemForceIntoNearestChest, false) =>
     Some(
@@ -724,16 +801,32 @@ let parsePayloadLazy = (
     )
   | (TileEntityUpdate, false) => None
   | (TileEntityUpdate, true) =>
-    Some(Packetv1405.LazyPacket.TileEntityUpdate(Lazy.make(() => Packetv1405.TileEntityUpdate.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.TileEntityUpdate(
+        Lazy.make(() => Packetv1405.TileEntityUpdate.parse(payload)),
+      ),
+    )
   | (TileEntityPlace, true) => None
   | (TileEntityPlace, false) =>
-    Some(Packetv1405.LazyPacket.TileEntityPlace(Lazy.make(() => Packetv1405.TileEntityPlace.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.TileEntityPlace(
+        Lazy.make(() => Packetv1405.TileEntityPlace.parse(payload)),
+      ),
+    )
   | (ItemDropModify, false) => None
   | (ItemDropModify, true) =>
-    Some(Packetv1405.LazyPacket.ItemDropModify(Lazy.make(() => Packetv1405.ItemDropModify.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.ItemDropModify(
+        Lazy.make(() => Packetv1405.ItemDropModify.parse(payload)),
+      ),
+    )
   | (ItemFramePlace, true) => None
   | (ItemFramePlace, false) =>
-    Some(Packetv1405.LazyPacket.ItemFramePlace(Lazy.make(() => Packetv1405.ItemFramePlace.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.ItemFramePlace(
+        Lazy.make(() => Packetv1405.ItemFramePlace.parse(payload)),
+      ),
+    )
   | (ItemDropInstancedUpdate, true | false) =>
     Some(
       Packetv1405.LazyPacket.ItemDropInstancedUpdate(
@@ -742,11 +835,21 @@ let parsePayloadLazy = (
     )
   | (EmoteBubble, false) => None
   | (EmoteBubble, true) =>
-    Some(Packetv1405.LazyPacket.EmoteBubble(Lazy.make(() => Packetv1405.EmoteBubble.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.EmoteBubble(Lazy.make(() => Packetv1405.EmoteBubble.parse(payload))),
+    )
   | (ExtraValueSync, true | false) =>
-    Some(Packetv1405.LazyPacket.ExtraValueSync(Lazy.make(() => Packetv1405.ExtraValueSync.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.ExtraValueSync(
+        Lazy.make(() => Packetv1405.ExtraValueSync.parse(payload)),
+      ),
+    )
   | (SocialHandshake, true | false) =>
-    Some(Packetv1405.LazyPacket.SocialHandshake(Lazy.make(() => Packetv1405.SocialHandshake.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.SocialHandshake(
+        Lazy.make(() => Packetv1405.SocialHandshake.parse(payload)),
+      ),
+    )
   | (Unused, true | false) =>
     Some(Packetv1405.LazyPacket.Unused(Lazy.make(() => Packetv1405.Unused.parse(payload))))
   | (PortalKill, true) => None
@@ -768,15 +871,21 @@ let parsePayloadLazy = (
   | (EventNotification, false) => None
   | (EventNotification, true) =>
     Some(
-      Packetv1405.LazyPacket.EventNotification(Lazy.make(() => Packetv1405.EventNotification.parse(payload))),
+      Packetv1405.LazyPacket.EventNotification(
+        Lazy.make(() => Packetv1405.EventNotification.parse(payload)),
+      ),
     )
   | (MinionTargetUpdate, true | false) =>
     Some(
-      Packetv1405.LazyPacket.MinionTargetUpdate(Lazy.make(() => Packetv1405.MinionTargetUpdate.parse(payload))),
+      Packetv1405.LazyPacket.MinionTargetUpdate(
+        Lazy.make(() => Packetv1405.MinionTargetUpdate.parse(payload)),
+      ),
     )
   | (NpcTeleportPortal, true | false) =>
     Some(
-      Packetv1405.LazyPacket.NpcTeleportPortal(Lazy.make(() => Packetv1405.NpcTeleportPortal.parse(payload))),
+      Packetv1405.LazyPacket.NpcTeleportPortal(
+        Lazy.make(() => Packetv1405.NpcTeleportPortal.parse(payload)),
+      ),
     )
   | (ShieldStrengthsUpdate, false) => None
   | (ShieldStrengthsUpdate, true) =>
@@ -786,31 +895,53 @@ let parsePayloadLazy = (
       ),
     )
   | (NebulaLevelUp, true | false) =>
-    Some(Packetv1405.LazyPacket.NebulaLevelUp(Lazy.make(() => Packetv1405.NebulaLevelUp.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.NebulaLevelUp(
+        Lazy.make(() => Packetv1405.NebulaLevelUp.parse(payload)),
+      ),
+    )
   | (MoonLordCountdown, false) => None
   | (MoonLordCountdown, true) =>
     Some(
-      Packetv1405.LazyPacket.MoonLordCountdown(Lazy.make(() => Packetv1405.MoonLordCountdown.parse(payload))),
+      Packetv1405.LazyPacket.MoonLordCountdown(
+        Lazy.make(() => Packetv1405.MoonLordCountdown.parse(payload)),
+      ),
     )
   | (NpcShopItem, false) => None
   | (NpcShopItem, true) =>
-    Some(Packetv1405.LazyPacket.NpcShopItem(Lazy.make(() => Packetv1405.NpcShopItem.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.NpcShopItem(Lazy.make(() => Packetv1405.NpcShopItem.parse(payload))),
+    )
   | (GemLockToggle, true) => None
   | (GemLockToggle, false) =>
-    Some(Packetv1405.LazyPacket.GemLockToggle(Lazy.make(() => Packetv1405.GemLockToggle.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.GemLockToggle(
+        Lazy.make(() => Packetv1405.GemLockToggle.parse(payload)),
+      ),
+    )
   | (SmokePoof, false) => None
   | (SmokePoof, true) =>
     Some(Packetv1405.LazyPacket.SmokePoof(Lazy.make(() => Packetv1405.SmokePoof.parse(payload))))
   | (ChatMessageSmart, false) => None
   | (ChatMessageSmart, true) =>
-    Some(Packetv1405.LazyPacket.ChatMessageSmart(Lazy.make(() => Packetv1405.ChatMessageSmart.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.ChatMessageSmart(
+        Lazy.make(() => Packetv1405.ChatMessageSmart.parse(payload)),
+      ),
+    )
   | (WiredCannonShot, false) => None
   | (WiredCannonShot, true) =>
-    Some(Packetv1405.LazyPacket.WiredCannonShot(Lazy.make(() => Packetv1405.WiredCannonShot.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.WiredCannonShot(
+        Lazy.make(() => Packetv1405.WiredCannonShot.parse(payload)),
+      ),
+    )
   | (MassWireOperation, true) => None
   | (MassWireOperation, false) =>
     Some(
-      Packetv1405.LazyPacket.MassWireOperation(Lazy.make(() => Packetv1405.MassWireOperation.parse(payload))),
+      Packetv1405.LazyPacket.MassWireOperation(
+        Lazy.make(() => Packetv1405.MassWireOperation.parse(payload)),
+      ),
     )
   | (MassWireOperationPay, false) => None
   | (MassWireOperationPay, true) =>
@@ -821,7 +952,9 @@ let parsePayloadLazy = (
     )
   | (PartyToggle, true) => None
   | (PartyToggle, false) =>
-    Some(Packetv1405.LazyPacket.PartyToggle(Lazy.make(() => Packetv1405.PartyToggle.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.PartyToggle(Lazy.make(() => Packetv1405.PartyToggle.parse(payload))),
+    )
   | (TreeGrowFx, true | false) =>
     Some(Packetv1405.LazyPacket.TreeGrowFx(Lazy.make(() => Packetv1405.TreeGrowFx.parse(payload))))
   | (CrystalInvasionStart, true) => None
@@ -852,14 +985,23 @@ let parsePayloadLazy = (
       ),
     )
   | (PlayerDamage, true | false) =>
-    Some(Packetv1405.LazyPacket.PlayerDamage(Lazy.make(() => Packetv1405.PlayerDamage.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.PlayerDamage(Lazy.make(() => Packetv1405.PlayerDamage.parse(payload))),
+    )
   | (PlayerDeath, true | false) =>
-    Some(Packetv1405.LazyPacket.PlayerDeath(Lazy.make(() => Packetv1405.PlayerDeath.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.PlayerDeath(Lazy.make(() => Packetv1405.PlayerDeath.parse(payload))),
+    )
   | (CombatTextCreate, false) => None
   | (CombatTextCreate, true) =>
-    Some(Packetv1405.LazyPacket.CombatTextCreate(Lazy.make(() => Packetv1405.CombatTextCreate.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.CombatTextCreate(
+        Lazy.make(() => Packetv1405.CombatTextCreate.parse(payload)),
+      ),
+    )
   | (Emoji, true) => None
-  | (Emoji, false) => Some(Packetv1405.LazyPacket.Emoji(Lazy.make(() => Packetv1405.Emoji.parse(payload))))
+  | (Emoji, false) =>
+    Some(Packetv1405.LazyPacket.Emoji(Lazy.make(() => Packetv1405.Emoji.parse(payload))))
   | (TileEntityDisplayDollItemSync, true | false) =>
     Some(
       Packetv1405.LazyPacket.TileEntityDisplayDollItemSync(
@@ -886,11 +1028,17 @@ let parsePayloadLazy = (
       ),
     )
   | (TilePickingSync, true | false) =>
-    Some(Packetv1405.LazyPacket.TilePickingSync(Lazy.make(() => Packetv1405.TilePickingSync.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.TilePickingSync(
+        Lazy.make(() => Packetv1405.TilePickingSync.parse(payload)),
+      ),
+    )
   | (RevengeMarkerSync, false) => None
   | (RevengeMarkerSync, true) =>
     Some(
-      Packetv1405.LazyPacket.RevengeMarkerSync(Lazy.make(() => Packetv1405.RevengeMarkerSync.parse(payload))),
+      Packetv1405.LazyPacket.RevengeMarkerSync(
+        Lazy.make(() => Packetv1405.RevengeMarkerSync.parse(payload)),
+      ),
     )
   | (RevengeMarkerRemove, false) => None
   | (RevengeMarkerRemove, true) =>
@@ -901,7 +1049,9 @@ let parsePayloadLazy = (
     )
   | (GolfBallLandInCup, true | false) =>
     Some(
-      Packetv1405.LazyPacket.GolfBallLandInCup(Lazy.make(() => Packetv1405.GolfBallLandInCup.parse(payload))),
+      Packetv1405.LazyPacket.GolfBallLandInCup(
+        Lazy.make(() => Packetv1405.GolfBallLandInCup.parse(payload)),
+      ),
     )
   | (ClientFinishConnectingToServer, false) => None
   | (ClientFinishConnectingToServer, true) =>
@@ -918,7 +1068,11 @@ let parsePayloadLazy = (
     Some(Packetv1405.LazyPacket.NpcTamper(Lazy.make(() => Packetv1405.NpcTamper.parse(payload))))
   | (LegacySoundPlay, false) => None
   | (LegacySoundPlay, true) =>
-    Some(Packetv1405.LazyPacket.LegacySoundPlay(Lazy.make(() => Packetv1405.LegacySoundPlay.parse(payload))))
+    Some(
+      Packetv1405.LazyPacket.LegacySoundPlay(
+        Lazy.make(() => Packetv1405.LegacySoundPlay.parse(payload)),
+      ),
+    )
   | (FoodPlatterTryPlacing, true) => None
   | (FoodPlatterTryPlacing, false) =>
     Some(
@@ -973,12 +1127,13 @@ let parsePayloadLazy = (
   | (ShimmerEffectOrCoinLuck, true | false) => None
   | (LoadoutSwitch, true | false) => None
   | (ItemDropProtectedUpdate, true | false) => None
-  })
+  },
+)
 
-let simpleParse = (
-  ~buffer: NodeJs.Buffer.t,
-  ~fromServer: bool,
-): result<option<Packetv1405.t>, ErrorAwarePacketReader.readError> => {
+let simpleParse = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): result<
+  option<Packetv1405.t>,
+  ErrorAwarePacketReader.readError,
+> => {
   switch buffer->NodeJs.Buffer.length {
   | 0 | 1 | 2 => Ok(None)
   | _ =>
@@ -996,10 +1151,10 @@ let simpleParse = (
   }
 }
 
-let simpleParseLazy = (
-  ~buffer: NodeJs.Buffer.t,
-  ~fromServer: bool,
-): result<option<Packetv1405.LazyPacket.t>, ErrorAwarePacketReader.readError> => {
+let simpleParseLazy = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): result<
+  option<Packetv1405.LazyPacket.t>,
+  ErrorAwarePacketReader.readError,
+> => {
   switch buffer->NodeJs.Buffer.length {
   | 0 | 1 | 2 => Ok(None)
   | _ =>
@@ -1018,9 +1173,9 @@ let simpleParseLazy = (
 }
 
 let parse: IParser.parse<Packetv1405.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => {
-  simpleParse(~buffer, ~fromServer)->Result.map(opt => opt->Belt.Option.map(packet =>
-    IParser.SerializeNotNecessary(packet, buffer)
-  ))
+  simpleParse(~buffer, ~fromServer)->Result.map(opt =>
+    opt->Belt.Option.map(packet => IParser.SerializeNotNecessary(packet, buffer))
+  )
 }
 
 let parseAsLatest: IParser.parse<Packet.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => {

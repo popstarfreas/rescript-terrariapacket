@@ -2,58 +2,81 @@
 'use strict';
 
 let PacketType$TerrariaPacket = require("../../PacketType.js");
-let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
+let ErrorAwarePacketReader$TerrariaPacket = require("../../ErrorAwarePacketReader.js");
+let ErrorAwarePacketWriter$TerrariaPacket = require("../../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
-
-function readByte(prim) {
-  return prim.readByte();
-}
-
-function readInt16(prim) {
-  return prim.readInt16();
-}
-
-function readInt32(prim) {
-  return prim.readInt32();
-}
 
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let playerId = reader.readByte();
-  let x = reader.readInt16();
-  let y = reader.readInt16();
-  let timeRemaining = reader.readInt32();
-  let rawContext = reader.readByte();
-  let context;
-  switch (rawContext) {
+  let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "timeRemaining");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "context");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5;
+  switch (e$4._0) {
     case 0 :
-      context = "ReviveFromDeath";
+      e$5 = {
+        TAG: "Ok",
+        _0: "ReviveFromDeath"
+      };
       break;
     case 1 :
-      context = "SpawningIntoWorld";
+      e$5 = {
+        TAG: "Ok",
+        _0: "SpawningIntoWorld"
+      };
       break;
     case 2 :
-      context = "RecallFromItem";
+      e$5 = {
+        TAG: "Ok",
+        _0: "RecallFromItem"
+      };
       break;
     default:
-      context = undefined;
+      e$5 = {
+        TAG: "Error",
+        _0: {
+          context: "context",
+          error: new Error("Unknown context")
+        }
+      };
   }
-  if (context !== undefined) {
+  if (e$5.TAG === "Ok") {
     return {
-      playerId: playerId,
-      x: x,
-      y: y,
-      timeRemaining: timeRemaining,
-      context: context
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        x: e$1._0,
+        y: e$2._0,
+        timeRemaining: e$3._0,
+        context: e$5._0
+      }
     };
+  } else {
+    return e$5;
   }
 }
 
 let Decode = {
-  readByte: readByte,
-  readInt16: readInt16,
-  readInt32: readInt32,
+  readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+  readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
   parse: parse
 };
 
@@ -71,7 +94,7 @@ function toBuffer(self) {
       tmp = 2;
       break;
   }
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerSpawn")).packByte(self.playerId).packInt16(self.x).packInt16(self.y).packInt32(self.timeRemaining).packByte(tmp).data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerSpawn")), self.playerId, "playerId"), self.x, "x"), self.y, "y"), self.timeRemaining, "timeRemaining"), tmp, "context"));
 }
 
 let Encode = {
@@ -106,4 +129,4 @@ exports.parse = parse;
 exports.toBuffer = toBuffer;
 exports.toLatest = toLatest;
 exports.fromLatest = fromLatest;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

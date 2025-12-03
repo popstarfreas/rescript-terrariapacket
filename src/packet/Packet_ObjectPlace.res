@@ -10,8 +10,6 @@ type t = {
   direction: direction,
 }
 
-let makeError = (_message: string): JsExn.t => %raw("new Error(_message)")
-
 module Decode = {
   let {readInt16, readByte, readSByte} = module(ErrorAwarePacketReader)
   let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
@@ -23,16 +21,15 @@ module Decode = {
     let? Ok(alternate) = reader->readByte("alternate")
     let? Ok(random) = reader->readSByte("random")
     let? Ok(directionRaw) = reader->readByte("direction")
-    let direction =
-      switch directionRaw {
-      | 0 => Ok(Left)
-      | 1 => Ok(Right)
-      | _ =>
-        Error({
-          ErrorAwarePacketReader.context: "ObjectPlace.parse.direction",
-          error: makeError("Unknown direction"),
-        })
-      }
+    let direction = switch directionRaw {
+    | 0 => Ok(Left)
+    | 1 => Ok(Right)
+    | _ =>
+      Error({
+        ErrorAwarePacketReader.context: "ObjectPlace.parse.direction",
+        error: JsError.make("Unknown direction")->JsError.toJsExn,
+      })
+    }
     switch direction {
     | Ok(direction) =>
       Ok({

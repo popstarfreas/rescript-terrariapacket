@@ -9,51 +9,52 @@ type t = {
 }
 
 module Decode = {
-  let {readByte, readInt16, readInt32} = module(PacketFactory.PacketReader)
+  let {readByte, readInt16, readInt32} = module(ErrorAwarePacketReader)
 
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let playerId = reader->readByte
-    let x = reader->readInt16
-    let y = reader->readInt16
-    let timeRemaining = reader->readInt32
-    let rawContext = reader->readByte
-    let context = switch rawContext {
-    | 0 => Some(Packet_PlayerSpawn.ReviveFromDeath)
-    | 1 => Some(SpawningIntoWorld)
-    | 2 => Some(RecallFromItem)
-    | _ => None
+    let? Ok(playerId) = reader->readByte("playerId")
+    let? Ok(x) = reader->readInt16("x")
+    let? Ok(y) = reader->readInt16("y")
+    let? Ok(timeRemaining) = reader->readInt32("timeRemaining")
+    let? Ok(rawContext) = reader->readByte("context")
+    let? Ok(context) = switch rawContext {
+    | 0 => Ok(Packet_PlayerSpawn.ReviveFromDeath)
+    | 1 => Ok(SpawningIntoWorld)
+    | 2 => Ok(RecallFromItem)
+    | _ =>
+      Error({
+        ErrorAwarePacketReader.context: "context",
+        error: JsError.make("Unknown context")->JsError.toJsExn,
+      })
     }
 
-    switch context {
-    | Some(context) =>
-      Some({
-        playerId,
-        x,
-        y,
-        timeRemaining,
-        context,
-      })
-    | None => None
-    }
+    Ok({
+      playerId,
+      x,
+      y,
+      timeRemaining,
+      context,
+    })
   }
 }
 
 module Encode = {
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    let {packByte, packInt16, packInt32, setType, data} = module(PacketFactory.ManagedPacketWriter)
-    PacketFactory.ManagedPacketWriter.make()
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    let {packByte, packInt16, packInt32, setType, data} = module(ErrorAwarePacketWriter)
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.PlayerSpawn->PacketType.toInt)
-    ->packByte(self.playerId)
-    ->packInt16(self.x)
-    ->packInt16(self.y)
-    ->packInt32(self.timeRemaining)
+    ->packByte(self.playerId, "playerId")
+    ->packInt16(self.x, "x")
+    ->packInt16(self.y, "y")
+    ->packInt32(self.timeRemaining, "timeRemaining")
     ->packByte(
       switch self.context {
       | ReviveFromDeath => 0
       | SpawningIntoWorld => 1
       | RecallFromItem => 2
       },
+      "context",
     )
     ->data
   }

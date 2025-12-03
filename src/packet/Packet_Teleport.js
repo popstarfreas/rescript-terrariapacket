@@ -10,10 +10,6 @@ let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.j
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
-function makeError(_message) {
-  return (new Error(_message));
-}
-
 function parse(payload) {
   let reader = new Packetreader(payload);
   let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags");
@@ -68,7 +64,7 @@ function parse(payload) {
         TAG: "Error",
         _0: {
           context: "Packet_Teleport.parse",
-          error: makeError("Invalid teleport type flags")
+          error: new Error("Invalid teleport type flags")
         }
       };
     }
@@ -129,7 +125,6 @@ let Encode = {
   toBuffer: toBuffer
 };
 
-exports.makeError = makeError;
 exports.Decode = Decode;
 exports.Encode = Encode;
 exports.parse = parse;

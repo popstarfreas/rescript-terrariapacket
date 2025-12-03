@@ -91,8 +91,6 @@ type t = {
   value2: int,
 }
 
-let makeError = (_message: string): JsExn.t => %raw("new Error(_message)")
-
 module Decode = {
   let {readInt16, readByte} = module(ErrorAwarePacketReader)
   let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
@@ -102,15 +100,14 @@ module Decode = {
     let? Ok(tileY) = reader->readInt16("tileY")
     let? Ok(value1) = reader->readInt16("value1")
     let? Ok(value2) = reader->readByte("value2")
-    let action =
-      switch actionRaw->Action.fromInt {
-      | Some(action) => Ok(action)
-      | None =>
-        Error({
-          ErrorAwarePacketReader.context: "TileModify.parse.action",
-          error: makeError("Unknown action"),
-        })
-      }
+    let action = switch actionRaw->Action.fromInt {
+    | Some(action) => Ok(action)
+    | None =>
+      Error({
+        ErrorAwarePacketReader.context: "TileModify.parse.action",
+        error: JsError.make("Unknown action")->JsError.toJsExn,
+      })
+    }
 
     switch action {
     | Ok(action) =>

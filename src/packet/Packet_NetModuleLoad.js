@@ -8,10 +8,6 @@ let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.j
 let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 
-function makeError(_message) {
-  return (new Error(_message));
-}
-
 function pylonActionToInt(pylonAction) {
   switch (pylonAction) {
     case "Added" :
@@ -165,7 +161,7 @@ function parse(payload, fromServer) {
       TAG: "Error",
       _0: {
         context: "Packet_NetModuleLoad.parse",
-        error: makeError("Unknown net module type")
+        error: new Error("Unknown net module type")
       }
     };
   }
@@ -354,7 +350,7 @@ function parse(payload, fromServer) {
             TAG: "Error",
             _0: {
               context: "Packet_NetModuleLoad.parseBestiary",
-              error: makeError("Unknown bestiary unlock type")
+              error: new Error("Unknown bestiary unlock type")
             }
           };
       }
@@ -407,7 +403,7 @@ function parse(payload, fromServer) {
           TAG: "Error",
           _0: {
             context: "Packet_NetModuleLoad.parseCreativePower",
-            error: makeError("Failed to parse creative power")
+            error: new Error("Failed to parse creative power")
           }
         };
       }
@@ -484,7 +480,7 @@ function parse(payload, fromServer) {
           TAG: "Error",
           _0: {
             context: "Packet_NetModuleLoad.parseTeleportPylon",
-            error: makeError("Unknown pylon action")
+            error: new Error("Unknown pylon action")
           }
         };
       }
@@ -576,7 +572,7 @@ function parse(payload, fromServer) {
           TAG: "Error",
           _0: {
             context: "Packet_NetModuleLoad.parseCreativePowerPermission",
-            error: makeError("Unknown creative power permission level")
+            error: new Error("Unknown creative power permission level")
           }
         };
       }

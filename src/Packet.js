@@ -350,10 +350,7 @@ let LazyPacket = {
 function toBuffer(packet, _fromServer) {
   switch (packet.TAG) {
     case "ConnectRequest" :
-      return {
-        TAG: "Ok",
-        _0: Packet_ConnectRequest$TerrariaPacket.toBuffer(packet._0)
-      };
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_ConnectRequest$TerrariaPacket.toBuffer(packet._0));
     case "Disconnect" :
       return ISerializer$TerrariaPacket.toBufferResult(Packet_Disconnect$TerrariaPacket.toBuffer(packet._0));
     case "PlayerSlotSet" :
@@ -363,10 +360,7 @@ function toBuffer(packet, _fromServer) {
     case "PlayerInventorySlot" :
       return ISerializer$TerrariaPacket.toBufferResult(Packet_PlayerInventorySlot$TerrariaPacket.toBuffer(packet._0));
     case "WorldDataRequest" :
-      return {
-        TAG: "Ok",
-        _0: Packet_WorldDataRequest$TerrariaPacket.toBuffer(packet._0)
-      };
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_WorldDataRequest$TerrariaPacket.toBuffer(packet._0));
     case "WorldInfo" :
       return ISerializer$TerrariaPacket.toBufferResult(Packet_WorldInfo$TerrariaPacket.toBuffer(packet._0));
     case "InitialTileSectionsRequest" :
@@ -376,10 +370,7 @@ function toBuffer(packet, _fromServer) {
     case "TileSectionSend" :
       return ISerializer$TerrariaPacket.toBufferResult(Packet_TileSectionSend$TerrariaPacket.toBuffer(packet._0));
     case "TileSectionFrame" :
-      return {
-        TAG: "Ok",
-        _0: Packet_TileSectionFrame$TerrariaPacket.toBuffer(packet._0)
-      };
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_TileSectionFrame$TerrariaPacket.toBuffer(packet._0));
     case "PlayerSpawn" :
       return ISerializer$TerrariaPacket.toBufferResult(Packet_PlayerSpawn$TerrariaPacket.toBuffer(packet._0));
     case "PlayerUpdate" :
@@ -401,10 +392,7 @@ function toBuffer(packet, _fromServer) {
     case "ProjectileSync" :
       return ISerializer$TerrariaPacket.toBufferResult(Packet_ProjectileSync$TerrariaPacket.toBuffer(packet._0));
     case "ProjectileDestroy" :
-      return {
-        TAG: "Ok",
-        _0: Packet_ProjectileDestroy$TerrariaPacket.toBuffer(packet._0)
-      };
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_ProjectileDestroy$TerrariaPacket.toBuffer(packet._0));
     case "ChestItem" :
       return {
         TAG: "Ok",

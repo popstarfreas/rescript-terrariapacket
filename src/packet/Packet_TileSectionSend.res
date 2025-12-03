@@ -1,8 +1,6 @@
 module Int = Belt.Int
 module Option = Belt.Option
 
-let makeError = (_message: string): JsExn.t => %raw("new Error(_message)")
-
 @genType
 type frame = {
   x: int,
@@ -364,7 +362,7 @@ module Entity = {
     | _ =>
       Error({
         context: "Entity.parse",
-        error: ErrorExt.makeJsError("Unknown entity kind: " ++ Int.toString(entityType)),
+        error: JsError.make("Unknown entity kind: " ++ Int.toString(entityType))->JsError.toJsExn,
       })
     }
 
@@ -593,7 +591,7 @@ module Decode = {
     if height < 0 || width < 0 {
       Error({
         context: "Packet_TileSectionSend.parse",
-        error: makeError("Tile section dimensions must be non-negative"),
+        error: JsError.make("Tile section dimensions must be non-negative")->JsError.toJsExn,
       })
     } else {
       let parseResult = ref(Ok())

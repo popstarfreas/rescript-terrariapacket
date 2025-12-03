@@ -119,10 +119,6 @@ let Action = {
   toInt: toInt
 };
 
-function makeError(_message) {
-  return (new Error(_message));
-}
-
 function parse(payload) {
   let reader = new Packetreader(payload);
   let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "action");
@@ -153,7 +149,7 @@ function parse(payload) {
       TAG: "Error",
       _0: {
         context: "TileModify.parse.action",
-        error: makeError("Unknown action")
+        error: new Error("Unknown action")
       }
     });
   if (action$1.TAG === "Ok") {

@@ -19,14 +19,14 @@ module Decode = {
 }
 
 module Encode = {
-  let {packInt16, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let {packInt16, setType, data} = module(ErrorAwarePacketWriter)
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.TileSectionFrame->PacketType.toInt)
-    ->packInt16(self.startX)
-    ->packInt16(self.startY)
-    ->packInt16(self.endX)
-    ->packInt16(self.endY)
+    ->packInt16(self.startX, "startX")
+    ->packInt16(self.startY, "startY")
+    ->packInt16(self.endX, "endX")
+    ->packInt16(self.endY, "endY")
     ->data
   }
 }

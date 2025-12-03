@@ -6,10 +6,6 @@ let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.j
 let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 
-function makeError(_message) {
-  return (new Error(_message));
-}
-
 function parse(payload) {
   let reader = new Packetreader(payload);
   let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
@@ -46,7 +42,7 @@ function parse(payload) {
           TAG: "Error",
           _0: {
             context: "ObjectPlace.parse.direction",
-            error: makeError("Unknown direction")
+            error: new Error("Unknown direction")
           }
         }) : ({
           TAG: "Ok",

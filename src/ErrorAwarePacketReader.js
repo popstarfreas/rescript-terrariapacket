@@ -55,8 +55,6 @@ function getBytesLeftUnsafe(prim) {
   return prim.bytesLeft;
 }
 
-let ReadError = /* @__PURE__ */Primitive_exceptions.create("ErrorAwarePacketReader-TerrariaPacket.ReadError");
-
 function withContext(fn, reader, context) {
   try {
     return {
@@ -143,7 +141,6 @@ exports.readColorUnsafe = readColorUnsafe;
 exports.readBufferUnsafe = readBufferUnsafe;
 exports.readNetworkTextUnsafe = readNetworkTextUnsafe;
 exports.getBytesLeftUnsafe = getBytesLeftUnsafe;
-exports.ReadError = ReadError;
 exports.withContext = withContext;
 exports.readByte = readByte;
 exports.readUInt16 = readUInt16;

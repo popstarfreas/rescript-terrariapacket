@@ -142,206 +142,178 @@ module Decode = {
     readBytes,
     readSingle,
     readSByte,
-  } = module(PacketFactory.PacketReader)
-  let readEventInfo = reader => {
-    let eventInfo1 = BitFlags.fromByte(reader->readByte)
-    let eventInfo2 = BitFlags.fromByte(reader->readByte)
-    let eventInfo3 = BitFlags.fromByte(reader->readByte)
-    let eventInfo4 = BitFlags.fromByte(reader->readByte)
-    let eventInfo5 = BitFlags.fromByte(reader->readByte)
-    let eventInfo6 = BitFlags.fromByte(reader->readByte)
-    let eventInfo7 = BitFlags.fromByte(reader->readByte)
-    let shadowOrbSmashed = eventInfo1->BitFlags.flag1
-    let killedBoss1 = eventInfo1->BitFlags.flag2
-    let killedBoss2 = eventInfo1->BitFlags.flag3
-    let killedBoss3 = eventInfo1->BitFlags.flag4
-    let hardMode = eventInfo1->BitFlags.flag5
-    let killedClown = eventInfo1->BitFlags.flag6
-    let serverSidedCharacters = eventInfo1->BitFlags.flag7
-    let killedPlantBoss = eventInfo1->BitFlags.flag8
-    let killedMechBoss = eventInfo2->BitFlags.flag1
-    let killedMechBoss2 = eventInfo2->BitFlags.flag2
-    let killedMechBoss3 = eventInfo2->BitFlags.flag3
-    let killedAnyMechBoss = eventInfo2->BitFlags.flag4
-    let cloudBg = eventInfo2->BitFlags.flag5
-    let crimson = eventInfo2->BitFlags.flag6
-    let pumpkinMoon = eventInfo2->BitFlags.flag7
-    let snowMoon = eventInfo2->BitFlags.flag8
-    let expertMode = eventInfo3->BitFlags.flag1
-    let fastForwardTime = eventInfo3->BitFlags.flag2
-    let slimeRain = eventInfo3->BitFlags.flag3
-    let killedKingSlime = eventInfo3->BitFlags.flag4
-    let killedQueenBee = eventInfo3->BitFlags.flag5
-    let killedFishron = eventInfo3->BitFlags.flag6
-    let killedMartians = eventInfo3->BitFlags.flag7
-    let killedAncientCultist = eventInfo3->BitFlags.flag8
-    let killedMoonLord = eventInfo4->BitFlags.flag1
-    let killedPumpking = eventInfo4->BitFlags.flag2
-    let killedMourningWood = eventInfo4->BitFlags.flag3
-    let killedIceQueen = eventInfo4->BitFlags.flag4
-    let killedSantank = eventInfo4->BitFlags.flag5
-    let killedEverscream = eventInfo4->BitFlags.flag6
-    let killedGolem = eventInfo4->BitFlags.flag7
-    let birthdayParty = eventInfo4->BitFlags.flag8
-    let killedPirates = eventInfo5->BitFlags.flag1
-    let killedFrostLegion = eventInfo5->BitFlags.flag2
-    let killedGoblins = eventInfo5->BitFlags.flag3
-    let sandstorm = eventInfo5->BitFlags.flag4
-    let dungeonDefendersEvent = eventInfo5->BitFlags.flag5
-    let killedDungeonDefendersTier1 = eventInfo5->BitFlags.flag6
-    let killedDungeonDefendersTier2 = eventInfo5->BitFlags.flag7
-    let killedDungeonDefendersTier3 = eventInfo5->BitFlags.flag8
-    let combatBookUsed = eventInfo6->BitFlags.flag1
-    let manualLanterns = eventInfo6->BitFlags.flag2
-    let killedSolarTower = eventInfo6->BitFlags.flag3
-    let killedVortexTower = eventInfo6->BitFlags.flag4
-    let killedNebulaTower = eventInfo6->BitFlags.flag5
-    let killedStardustTower = eventInfo6->BitFlags.flag6
-    let forceHalloween = eventInfo6->BitFlags.flag7
-    let forceChristmas = eventInfo6->BitFlags.flag8
-    let boughtCat = eventInfo7->BitFlags.flag1
-    let boughtDog = eventInfo7->BitFlags.flag2
-    let boughtBunny = eventInfo7->BitFlags.flag3
-    let freeCake = eventInfo7->BitFlags.flag4
-    let drunkWorld = eventInfo7->BitFlags.flag5
-    let killedEmpressOfLight = eventInfo7->BitFlags.flag6
-    let killedQueenSlime = eventInfo7->BitFlags.flag7
-    let getGoodWorld = eventInfo7->BitFlags.flag8
-    {
-      shadowOrbSmashed,
-      killedBoss1,
-      killedBoss2,
-      killedBoss3,
-      hardMode,
-      killedClown,
-      serverSidedCharacters,
-      killedPlantBoss,
-      killedMechBoss,
-      killedMechBoss2,
-      killedMechBoss3,
-      killedAnyMechBoss,
-      cloudBg,
-      crimson,
-      pumpkinMoon,
-      snowMoon,
-      expertMode,
-      fastForwardTime,
-      slimeRain,
-      killedKingSlime,
-      killedQueenBee,
-      killedFishron,
-      killedMartians,
-      killedAncientCultist,
-      killedMoonLord,
-      killedPumpking,
-      killedMourningWood,
-      killedIceQueen,
-      killedSantank,
-      killedEverscream,
-      killedGolem,
-      birthdayParty,
-      killedPirates,
-      killedFrostLegion,
-      killedGoblins,
-      sandstorm,
-      dungeonDefendersEvent,
-      killedDungeonDefendersTier1,
-      killedDungeonDefendersTier2,
-      killedDungeonDefendersTier3,
-      combatBookUsed,
-      manualLanterns,
-      killedSolarTower,
-      killedVortexTower,
-      killedNebulaTower,
-      killedStardustTower,
-      forceHalloween,
-      forceChristmas,
-      boughtCat,
-      boughtDog,
-      boughtBunny,
-      freeCake,
-      drunkWorld,
-      killedEmpressOfLight,
-      killedQueenSlime,
-      getGoodWorld,
+  } = module(ErrorAwarePacketReader)
+
+  let readEventInfo = (reader: PacketFactory.PacketReader.t): result<
+    eventInfo,
+    ErrorAwarePacketReader.readError,
+  > => {
+    let? Ok(eventInfo1Raw) = reader->readByte("eventInfo1")
+    let? Ok(eventInfo2Raw) = reader->readByte("eventInfo2")
+    let? Ok(eventInfo3Raw) = reader->readByte("eventInfo3")
+    let? Ok(eventInfo4Raw) = reader->readByte("eventInfo4")
+    let? Ok(eventInfo5Raw) = reader->readByte("eventInfo5")
+    let? Ok(eventInfo6Raw) = reader->readByte("eventInfo6")
+    let? Ok(eventInfo7Raw) = reader->readByte("eventInfo7")
+
+    let eventInfo1 = BitFlags.fromByte(eventInfo1Raw)
+    let eventInfo2 = BitFlags.fromByte(eventInfo2Raw)
+    let eventInfo3 = BitFlags.fromByte(eventInfo3Raw)
+    let eventInfo4 = BitFlags.fromByte(eventInfo4Raw)
+    let eventInfo5 = BitFlags.fromByte(eventInfo5Raw)
+    let eventInfo6 = BitFlags.fromByte(eventInfo6Raw)
+    let eventInfo7 = BitFlags.fromByte(eventInfo7Raw)
+
+    Ok({
+      shadowOrbSmashed: eventInfo1->BitFlags.flag1,
+      killedBoss1: eventInfo1->BitFlags.flag2,
+      killedBoss2: eventInfo1->BitFlags.flag3,
+      killedBoss3: eventInfo1->BitFlags.flag4,
+      hardMode: eventInfo1->BitFlags.flag5,
+      killedClown: eventInfo1->BitFlags.flag6,
+      serverSidedCharacters: eventInfo1->BitFlags.flag7,
+      killedPlantBoss: eventInfo1->BitFlags.flag8,
+      killedMechBoss: eventInfo2->BitFlags.flag1,
+      killedMechBoss2: eventInfo2->BitFlags.flag2,
+      killedMechBoss3: eventInfo2->BitFlags.flag3,
+      killedAnyMechBoss: eventInfo2->BitFlags.flag4,
+      cloudBg: eventInfo2->BitFlags.flag5,
+      crimson: eventInfo2->BitFlags.flag6,
+      pumpkinMoon: eventInfo2->BitFlags.flag7,
+      snowMoon: eventInfo2->BitFlags.flag8,
+      expertMode: eventInfo3->BitFlags.flag1,
+      fastForwardTime: eventInfo3->BitFlags.flag2,
+      slimeRain: eventInfo3->BitFlags.flag3,
+      killedKingSlime: eventInfo3->BitFlags.flag4,
+      killedQueenBee: eventInfo3->BitFlags.flag5,
+      killedFishron: eventInfo3->BitFlags.flag6,
+      killedMartians: eventInfo3->BitFlags.flag7,
+      killedAncientCultist: eventInfo3->BitFlags.flag8,
+      killedMoonLord: eventInfo4->BitFlags.flag1,
+      killedPumpking: eventInfo4->BitFlags.flag2,
+      killedMourningWood: eventInfo4->BitFlags.flag3,
+      killedIceQueen: eventInfo4->BitFlags.flag4,
+      killedSantank: eventInfo4->BitFlags.flag5,
+      killedEverscream: eventInfo4->BitFlags.flag6,
+      killedGolem: eventInfo4->BitFlags.flag7,
+      birthdayParty: eventInfo4->BitFlags.flag8,
+      killedPirates: eventInfo5->BitFlags.flag1,
+      killedFrostLegion: eventInfo5->BitFlags.flag2,
+      killedGoblins: eventInfo5->BitFlags.flag3,
+      sandstorm: eventInfo5->BitFlags.flag4,
+      dungeonDefendersEvent: eventInfo5->BitFlags.flag5,
+      killedDungeonDefendersTier1: eventInfo5->BitFlags.flag6,
+      killedDungeonDefendersTier2: eventInfo5->BitFlags.flag7,
+      killedDungeonDefendersTier3: eventInfo5->BitFlags.flag8,
+      combatBookUsed: eventInfo6->BitFlags.flag1,
+      manualLanterns: eventInfo6->BitFlags.flag2,
+      killedSolarTower: eventInfo6->BitFlags.flag3,
+      killedVortexTower: eventInfo6->BitFlags.flag4,
+      killedNebulaTower: eventInfo6->BitFlags.flag5,
+      killedStardustTower: eventInfo6->BitFlags.flag6,
+      forceHalloween: eventInfo6->BitFlags.flag7,
+      forceChristmas: eventInfo6->BitFlags.flag8,
+      boughtCat: eventInfo7->BitFlags.flag1,
+      boughtDog: eventInfo7->BitFlags.flag2,
+      boughtBunny: eventInfo7->BitFlags.flag3,
+      freeCake: eventInfo7->BitFlags.flag4,
+      drunkWorld: eventInfo7->BitFlags.flag5,
+      killedEmpressOfLight: eventInfo7->BitFlags.flag6,
+      killedQueenSlime: eventInfo7->BitFlags.flag7,
+      getGoodWorld: eventInfo7->BitFlags.flag8,
+    })
+  }
+
+  let optionToResult = (option: option<'a>, fn: unit => 'b): result<'a, 'b> => {
+    switch option {
+    | Some(value) => Ok(value)
+    | None => Error(fn())
     }
   }
 
-  let parse = (payload: NodeJs.Buffer.t) => {
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let time = reader->readInt32
-    let dayAndMoonInfo = reader->readByte
-    let moonPhase = reader->readByte
-    let maxTilesX = reader->readInt16
-    let maxTilesY = reader->readInt16
-    let spawnX = reader->readInt16
-    let spawnY = reader->readInt16
-    let worldSurface = reader->readInt16
-    let rockLayer = reader->readInt16
-    let worldId = reader->readInt32
-    let worldName = reader->readString
-    let gameMode = reader->readByte
-    let worldUniqueId = Array16.fromArray(reader->readBytes(16))
-    let worldGeneratorVersion = reader->readUInt64
-    let moonType = reader->readByte
-    let treeBackground = reader->readByte
-    let treeBackground2 = reader->readByte
-    let treeBackground3 = reader->readByte
-    let treeBackground4 = reader->readByte
-    let corruptionBackground = reader->readByte
-    let jungleBackground = reader->readByte
-    let snowBackground = reader->readByte
-    let hallowBackground = reader->readByte
-    let crimsonBackground = reader->readByte
-    let desertBackground = reader->readByte
-    let oceanBackground = reader->readByte
-    let mushroomBackground = reader->readByte
-    let underworldBackground = reader->readByte
-    let iceBackStyle = reader->readByte
-    let jungleBackStyle = reader->readByte
-    let hellBackStyle = reader->readByte
-    let windSpeedSet = reader->readSingle
-    let cloudNumber = reader->readByte
-    let tree1 = reader->readInt32
-    let tree2 = reader->readInt32
-    let tree3 = reader->readInt32
-    let treeStyle1 = reader->readByte
-    let treeStyle2 = reader->readByte
-    let treeStyle3 = reader->readByte
-    let treeStyle4 = reader->readByte
-    let caveBack1 = reader->readInt32
-    let caveBack2 = reader->readInt32
-    let caveBack3 = reader->readInt32
-    let caveBackStyle1 = reader->readByte
-    let caveBackStyle2 = reader->readByte
-    let caveBackStyle3 = reader->readByte
-    let caveBackStyle4 = reader->readByte
-    let forest1TreeTopStyle = reader->readByte
-    let forest2TreeTopStyle = reader->readByte
-    let forest3TreeTopStyle = reader->readByte
-    let forest4TreeTopStyle = reader->readByte
-    let corruptionTreeTopStyle = reader->readByte
-    let jungleTreeTopStyle = reader->readByte
-    let snowTreeTopStyle = reader->readByte
-    let hallowTreeTopStyle = reader->readByte
-    let crimsonTreeTopStyle = reader->readByte
-    let desertTreeTopStyle = reader->readByte
-    let oceanTreeTopStyle = reader->readByte
-    let glowingMushroomTreeTopStyle = reader->readByte
-    let underworldTreeTopStyle = reader->readByte
-    let rain = reader->readSingle
-    let eventInfo = reader->readEventInfo
-    let copperOreTier = reader->readInt16
-    let ironOreTier = reader->readInt16
-    let silverOreTier = reader->readInt16
-    let goldOreTier = reader->readInt16
-    let cobaltOreTier = reader->readInt16
-    let mythrilOreTier = reader->readInt16
-    let adamantiteOreTier = reader->readInt16
-    let invasionType = reader->readSByte
-    let lobbyId = reader->readUInt64
-    let sandstormSeverity = reader->readSingle
-    worldUniqueId->Belt.Option.map(worldUniqueId => {
+    let? Ok(time) = reader->readInt32("time")
+    let? Ok(dayAndMoonInfo) = reader->readByte("dayAndMoonInfo")
+    let? Ok(moonPhase) = reader->readByte("moonPhase")
+    let? Ok(maxTilesX) = reader->readInt16("maxTilesX")
+    let? Ok(maxTilesY) = reader->readInt16("maxTilesY")
+    let? Ok(spawnX) = reader->readInt16("spawnX")
+    let? Ok(spawnY) = reader->readInt16("spawnY")
+    let? Ok(worldSurface) = reader->readInt16("worldSurface")
+    let? Ok(rockLayer) = reader->readInt16("rockLayer")
+    let? Ok(worldId) = reader->readInt32("worldId")
+    let? Ok(worldName) = reader->readString("worldName")
+    let? Ok(gameMode) = reader->readByte("gameMode")
+    let? Ok(worldUniqueIdRaw) = reader->readBytes(16, "worldUniqueId")
+    let? Ok(worldUniqueId) =
+      worldUniqueIdRaw
+      ->Array16.fromArray
+      ->optionToResult(_ => {
+        ErrorAwarePacketReader.context: "worldUniqueId",
+        error: JsError.make("Expected 16 bytes")->JsError.toJsExn,
+      })
+    let? Ok(worldGeneratorVersion) = reader->readUInt64("worldGeneratorVersion")
+    let? Ok(moonType) = reader->readByte("moonType")
+    let? Ok(treeBackground) = reader->readByte("treeBackground")
+    let? Ok(treeBackground2) = reader->readByte("treeBackground2")
+    let? Ok(treeBackground3) = reader->readByte("treeBackground3")
+    let? Ok(treeBackground4) = reader->readByte("treeBackground4")
+    let? Ok(corruptionBackground) = reader->readByte("corruptionBackground")
+    let? Ok(jungleBackground) = reader->readByte("jungleBackground")
+    let? Ok(snowBackground) = reader->readByte("snowBackground")
+    let? Ok(hallowBackground) = reader->readByte("hallowBackground")
+    let? Ok(crimsonBackground) = reader->readByte("crimsonBackground")
+    let? Ok(desertBackground) = reader->readByte("desertBackground")
+    let? Ok(oceanBackground) = reader->readByte("oceanBackground")
+    let? Ok(mushroomBackground) = reader->readByte("mushroomBackground")
+    let? Ok(underworldBackground) = reader->readByte("underworldBackground")
+    let? Ok(iceBackStyle) = reader->readByte("iceBackStyle")
+    let? Ok(jungleBackStyle) = reader->readByte("jungleBackStyle")
+    let? Ok(hellBackStyle) = reader->readByte("hellBackStyle")
+    let? Ok(windSpeedSet) = reader->readSingle("windSpeedSet")
+    let? Ok(cloudNumber) = reader->readByte("cloudNumber")
+    let? Ok(tree1) = reader->readInt32("tree1")
+    let? Ok(tree2) = reader->readInt32("tree2")
+    let? Ok(tree3) = reader->readInt32("tree3")
+    let? Ok(treeStyle1) = reader->readByte("treeStyle1")
+    let? Ok(treeStyle2) = reader->readByte("treeStyle2")
+    let? Ok(treeStyle3) = reader->readByte("treeStyle3")
+    let? Ok(treeStyle4) = reader->readByte("treeStyle4")
+    let? Ok(caveBack1) = reader->readInt32("caveBack1")
+    let? Ok(caveBack2) = reader->readInt32("caveBack2")
+    let? Ok(caveBack3) = reader->readInt32("caveBack3")
+    let? Ok(caveBackStyle1) = reader->readByte("caveBackStyle1")
+    let? Ok(caveBackStyle2) = reader->readByte("caveBackStyle2")
+    let? Ok(caveBackStyle3) = reader->readByte("caveBackStyle3")
+    let? Ok(caveBackStyle4) = reader->readByte("caveBackStyle4")
+    let? Ok(forest1TreeTopStyle) = reader->readByte("forest1TreeTopStyle")
+    let? Ok(forest2TreeTopStyle) = reader->readByte("forest2TreeTopStyle")
+    let? Ok(forest3TreeTopStyle) = reader->readByte("forest3TreeTopStyle")
+    let? Ok(forest4TreeTopStyle) = reader->readByte("forest4TreeTopStyle")
+    let? Ok(corruptionTreeTopStyle) = reader->readByte("corruptionTreeTopStyle")
+    let? Ok(jungleTreeTopStyle) = reader->readByte("jungleTreeTopStyle")
+    let? Ok(snowTreeTopStyle) = reader->readByte("snowTreeTopStyle")
+    let? Ok(hallowTreeTopStyle) = reader->readByte("hallowTreeTopStyle")
+    let? Ok(crimsonTreeTopStyle) = reader->readByte("crimsonTreeTopStyle")
+    let? Ok(desertTreeTopStyle) = reader->readByte("desertTreeTopStyle")
+    let? Ok(oceanTreeTopStyle) = reader->readByte("oceanTreeTopStyle")
+    let? Ok(glowingMushroomTreeTopStyle) = reader->readByte("glowingMushroomTreeTopStyle")
+    let? Ok(underworldTreeTopStyle) = reader->readByte("underworldTreeTopStyle")
+    let? Ok(rain) = reader->readSingle("rain")
+    let? Ok(eventInfo) = reader->readEventInfo
+    let? Ok(copperOreTier) = reader->readInt16("copperOreTier")
+    let? Ok(ironOreTier) = reader->readInt16("ironOreTier")
+    let? Ok(silverOreTier) = reader->readInt16("silverOreTier")
+    let? Ok(goldOreTier) = reader->readInt16("goldOreTier")
+    let? Ok(cobaltOreTier) = reader->readInt16("cobaltOreTier")
+    let? Ok(mythrilOreTier) = reader->readInt16("mythrilOreTier")
+    let? Ok(adamantiteOreTier) = reader->readInt16("adamantiteOreTier")
+    let? Ok(invasionType) = reader->readSByte("invasionType")
+    let? Ok(lobbyId) = reader->readUInt64("lobbyId")
+    let? Ok(sandstormSeverity) = reader->readSingle("sandstormSeverity")
+
+    Ok({
       time,
       dayAndMoonInfo,
       moonPhase,
@@ -430,8 +402,8 @@ module Encode = {
     packBytes,
     setType,
     data,
-  } = module(PacketFactory.ManagedPacketWriter)
-  let packEventInfo = (writer, eventInfo: eventInfo) => {
+  } = module(ErrorAwarePacketWriter)
+  let packEventInfo = (writer: ErrorAwarePacketWriter.t, eventInfo: eventInfo) => {
     let eventInfo1 = BitFlags.fromFlags(
       ~flag1=eventInfo.shadowOrbSmashed,
       ~flag2=eventInfo.killedBoss1,
@@ -503,90 +475,90 @@ module Encode = {
       ~flag8=eventInfo.getGoodWorld,
     )
     writer
-    ->packByte(eventInfo1->BitFlags.toByte)
-    ->packByte(eventInfo2->BitFlags.toByte)
-    ->packByte(eventInfo3->BitFlags.toByte)
-    ->packByte(eventInfo4->BitFlags.toByte)
-    ->packByte(eventInfo5->BitFlags.toByte)
-    ->packByte(eventInfo6->BitFlags.toByte)
-    ->packByte(eventInfo7->BitFlags.toByte)
+    ->packByte(eventInfo1->BitFlags.toByte, "eventInfo1")
+    ->packByte(eventInfo2->BitFlags.toByte, "eventInfo2")
+    ->packByte(eventInfo3->BitFlags.toByte, "eventInfo3")
+    ->packByte(eventInfo4->BitFlags.toByte, "eventInfo4")
+    ->packByte(eventInfo5->BitFlags.toByte, "eventInfo5")
+    ->packByte(eventInfo6->BitFlags.toByte, "eventInfo6")
+    ->packByte(eventInfo7->BitFlags.toByte, "eventInfo7")
   }
 
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.WorldInfo->PacketType.toInt)
-    ->packInt32(self.time)
-    ->packByte(self.dayAndMoonInfo)
-    ->packByte(self.moonPhase)
-    ->packInt16(self.maxTilesX)
-    ->packInt16(self.maxTilesY)
-    ->packInt16(self.spawnX)
-    ->packInt16(self.spawnY)
-    ->packInt16(self.worldSurface)
-    ->packInt16(self.rockLayer)
-    ->packInt32(self.worldId)
-    ->packString(self.worldName)
-    ->packByte(self.gameMode)
-    ->packBytes(self.worldUniqueId->Array16.asArray)
-    ->packUInt64(self.worldGeneratorVersion)
-    ->packByte(self.moonType)
-    ->packByte(self.treeBackground)
-    ->packByte(self.treeBackground2)
-    ->packByte(self.treeBackground3)
-    ->packByte(self.treeBackground4)
-    ->packByte(self.corruptionBackground)
-    ->packByte(self.jungleBackground)
-    ->packByte(self.snowBackground)
-    ->packByte(self.hallowBackground)
-    ->packByte(self.crimsonBackground)
-    ->packByte(self.desertBackground)
-    ->packByte(self.oceanBackground)
-    ->packByte(self.mushroomBackground)
-    ->packByte(self.underworldBackground)
-    ->packByte(self.iceBackStyle)
-    ->packByte(self.jungleBackStyle)
-    ->packByte(self.hellBackStyle)
-    ->packSingle(self.windSpeedSet)
-    ->packByte(self.cloudNumber)
-    ->packInt32(self.tree1)
-    ->packInt32(self.tree2)
-    ->packInt32(self.tree3)
-    ->packByte(self.treeStyle1)
-    ->packByte(self.treeStyle2)
-    ->packByte(self.treeStyle3)
-    ->packByte(self.treeStyle4)
-    ->packInt32(self.caveBack1)
-    ->packInt32(self.caveBack2)
-    ->packInt32(self.caveBack3)
-    ->packByte(self.caveBackStyle1)
-    ->packByte(self.caveBackStyle2)
-    ->packByte(self.caveBackStyle3)
-    ->packByte(self.caveBackStyle4)
-    ->packByte(self.forest1TreeTopStyle)
-    ->packByte(self.forest2TreeTopStyle)
-    ->packByte(self.forest3TreeTopStyle)
-    ->packByte(self.forest4TreeTopStyle)
-    ->packByte(self.corruptionTreeTopStyle)
-    ->packByte(self.jungleTreeTopStyle)
-    ->packByte(self.snowTreeTopStyle)
-    ->packByte(self.hallowTreeTopStyle)
-    ->packByte(self.crimsonTreeTopStyle)
-    ->packByte(self.desertTreeTopStyle)
-    ->packByte(self.oceanTreeTopStyle)
-    ->packByte(self.glowingMushroomTreeTopStyle)
-    ->packByte(self.underworldTreeTopStyle)
-    ->packSingle(self.rain)
+    ->packInt32(self.time, "time")
+    ->packByte(self.dayAndMoonInfo, "dayAndMoonInfo")
+    ->packByte(self.moonPhase, "moonPhase")
+    ->packInt16(self.maxTilesX, "maxTilesX")
+    ->packInt16(self.maxTilesY, "maxTilesY")
+    ->packInt16(self.spawnX, "spawnX")
+    ->packInt16(self.spawnY, "spawnY")
+    ->packInt16(self.worldSurface, "worldSurface")
+    ->packInt16(self.rockLayer, "rockLayer")
+    ->packInt32(self.worldId, "worldId")
+    ->packString(self.worldName, "worldName")
+    ->packByte(self.gameMode, "gameMode")
+    ->packBytes(self.worldUniqueId->Array16.asArray, "worldUniqueId")
+    ->packUInt64(self.worldGeneratorVersion, "worldGeneratorVersion")
+    ->packByte(self.moonType, "moonType")
+    ->packByte(self.treeBackground, "treeBackground")
+    ->packByte(self.treeBackground2, "treeBackground2")
+    ->packByte(self.treeBackground3, "treeBackground3")
+    ->packByte(self.treeBackground4, "treeBackground4")
+    ->packByte(self.corruptionBackground, "corruptionBackground")
+    ->packByte(self.jungleBackground, "jungleBackground")
+    ->packByte(self.snowBackground, "snowBackground")
+    ->packByte(self.hallowBackground, "hallowBackground")
+    ->packByte(self.crimsonBackground, "crimsonBackground")
+    ->packByte(self.desertBackground, "desertBackground")
+    ->packByte(self.oceanBackground, "oceanBackground")
+    ->packByte(self.mushroomBackground, "mushroomBackground")
+    ->packByte(self.underworldBackground, "underworldBackground")
+    ->packByte(self.iceBackStyle, "iceBackStyle")
+    ->packByte(self.jungleBackStyle, "jungleBackStyle")
+    ->packByte(self.hellBackStyle, "hellBackStyle")
+    ->packSingle(self.windSpeedSet, "windSpeedSet")
+    ->packByte(self.cloudNumber, "cloudNumber")
+    ->packInt32(self.tree1, "tree1")
+    ->packInt32(self.tree2, "tree2")
+    ->packInt32(self.tree3, "tree3")
+    ->packByte(self.treeStyle1, "treeStyle1")
+    ->packByte(self.treeStyle2, "treeStyle2")
+    ->packByte(self.treeStyle3, "treeStyle3")
+    ->packByte(self.treeStyle4, "treeStyle4")
+    ->packInt32(self.caveBack1, "caveBack1")
+    ->packInt32(self.caveBack2, "caveBack2")
+    ->packInt32(self.caveBack3, "caveBack3")
+    ->packByte(self.caveBackStyle1, "caveBackStyle1")
+    ->packByte(self.caveBackStyle2, "caveBackStyle2")
+    ->packByte(self.caveBackStyle3, "caveBackStyle3")
+    ->packByte(self.caveBackStyle4, "caveBackStyle4")
+    ->packByte(self.forest1TreeTopStyle, "forest1TreeTopStyle")
+    ->packByte(self.forest2TreeTopStyle, "forest2TreeTopStyle")
+    ->packByte(self.forest3TreeTopStyle, "forest3TreeTopStyle")
+    ->packByte(self.forest4TreeTopStyle, "forest4TreeTopStyle")
+    ->packByte(self.corruptionTreeTopStyle, "corruptionTreeTopStyle")
+    ->packByte(self.jungleTreeTopStyle, "jungleTreeTopStyle")
+    ->packByte(self.snowTreeTopStyle, "snowTreeTopStyle")
+    ->packByte(self.hallowTreeTopStyle, "hallowTreeTopStyle")
+    ->packByte(self.crimsonTreeTopStyle, "crimsonTreeTopStyle")
+    ->packByte(self.desertTreeTopStyle, "desertTreeTopStyle")
+    ->packByte(self.oceanTreeTopStyle, "oceanTreeTopStyle")
+    ->packByte(self.glowingMushroomTreeTopStyle, "glowingMushroomTreeTopStyle")
+    ->packByte(self.underworldTreeTopStyle, "underworldTreeTopStyle")
+    ->packSingle(self.rain, "rain")
     ->packEventInfo(self.eventInfo)
-    ->packInt16(self.copperOreTier)
-    ->packInt16(self.ironOreTier)
-    ->packInt16(self.silverOreTier)
-    ->packInt16(self.goldOreTier)
-    ->packInt16(self.cobaltOreTier)
-    ->packInt16(self.mythrilOreTier)
-    ->packInt16(self.adamantiteOreTier)
-    ->packSByte(self.invasionType)
-    ->packUInt64(self.lobbyId)
-    ->packSingle(self.sandstormSeverity)
+    ->packInt16(self.copperOreTier, "copperOreTier")
+    ->packInt16(self.ironOreTier, "ironOreTier")
+    ->packInt16(self.silverOreTier, "silverOreTier")
+    ->packInt16(self.goldOreTier, "goldOreTier")
+    ->packInt16(self.cobaltOreTier, "cobaltOreTier")
+    ->packInt16(self.mythrilOreTier, "mythrilOreTier")
+    ->packInt16(self.adamantiteOreTier, "adamantiteOreTier")
+    ->packSByte(self.invasionType, "invasionType")
+    ->packUInt64(self.lobbyId, "lobbyId")
+    ->packSingle(self.sandstormSeverity, "sandstormSeverity")
     ->data
   }
 }

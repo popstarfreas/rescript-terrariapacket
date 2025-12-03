@@ -19,8 +19,6 @@ let unlockTypeFromInt = self =>
   | _ => None
   }
 
-let makeError = (_message: string): JsExn.t => %raw("new Error(_message)")
-
 @genType
 type t = {
   unlockType: unlockType,
@@ -38,7 +36,7 @@ module Decode = {
     | None =>
       Error({
         ErrorAwarePacketReader.context: "Packet_ChestOrTempleUnlock.parse",
-        error: makeError("Unknown unlock type"),
+        error: JsError.make("Unknown unlock type")->JsError.toJsExn,
       })
     }
     let? Ok(x) = reader->readInt16("x")

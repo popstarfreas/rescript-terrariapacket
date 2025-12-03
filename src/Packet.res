@@ -595,21 +595,24 @@ module LazyPacket = {
 
 let toBuffer = (packet: t, _fromServer: bool): ISerializer.toBufferResult => {
   switch packet {
-  | ConnectRequest(connectRequest) => Ok(ConnectRequest.toBuffer(connectRequest))
+  | ConnectRequest(connectRequest) =>
+    ConnectRequest.toBuffer(connectRequest)->ISerializer.toBufferResult
   | Disconnect(disconnect) => Disconnect.toBuffer(disconnect)->ISerializer.toBufferResult
   | PlayerSlotSet(playerSlotSet) =>
     PlayerSlotSet.toBuffer(playerSlotSet)->ISerializer.toBufferResult
   | PlayerInfo(playerInfo) => PlayerInfo.toBuffer(playerInfo)->ISerializer.toBufferResult
   | PlayerInventorySlot(playerInventorySlot) =>
     PlayerInventorySlot.toBuffer(playerInventorySlot)->ISerializer.toBufferResult
-  | WorldDataRequest(worldDataRequest) => Ok(WorldDataRequest.toBuffer(worldDataRequest))
+  | WorldDataRequest(worldDataRequest) =>
+    WorldDataRequest.toBuffer(worldDataRequest)->ISerializer.toBufferResult
   | WorldInfo(worldInfo) => WorldInfo.toBuffer(worldInfo)->ISerializer.toBufferResult
   | InitialTileSectionsRequest(initialTileSectionsRequest) =>
     InitialTileSectionsRequest.toBuffer(initialTileSectionsRequest)->ISerializer.toBufferResult
   | Status(status) => Status.toBuffer(status)->ISerializer.toBufferResult
   | TileSectionSend(tileSectionSend) =>
     TileSectionSend.toBuffer(tileSectionSend)->ISerializer.toBufferResult
-  | TileSectionFrame(tileSectionFrame) => Ok(TileSectionFrame.toBuffer(tileSectionFrame))
+  | TileSectionFrame(tileSectionFrame) =>
+    TileSectionFrame.toBuffer(tileSectionFrame)->ISerializer.toBufferResult
   | PlayerSpawn(playerSpawn) => PlayerSpawn.toBuffer(playerSpawn)->ISerializer.toBufferResult
   | PlayerUpdate(playerUpdate) => PlayerUpdate.toBuffer(playerUpdate)->ISerializer.toBufferResult
   | PlayerActive(playerActive) => PlayerActive.toBuffer(playerActive)->ISerializer.toBufferResult
@@ -627,7 +630,8 @@ let toBuffer = (packet: t, _fromServer: bool): ISerializer.toBufferResult => {
   | ProjectileSync(projectileSync) =>
     ProjectileSync.toBuffer(projectileSync)->ISerializer.toBufferResult
   | NpcStrike(_npcStrike) => NotImplemented
-  | ProjectileDestroy(projectileDestroy) => Ok(ProjectileDestroy.toBuffer(projectileDestroy))
+  | ProjectileDestroy(projectileDestroy) =>
+    ProjectileDestroy.toBuffer(projectileDestroy)->ISerializer.toBufferResult
   | PvpToggle(_pvpToggle) => NotImplemented
   | ChestOpen(_chestOpen) => NotImplemented
   | ChestItem(chestItem) => Ok(ChestItem.toBuffer(chestItem))
