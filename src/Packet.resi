@@ -442,5 +442,4 @@ module LazyPacket: {
   let toPacketName: t => string
 }
 let toBuffer: (t, bool) => ISerializer.toBufferResult
-let serialize: ISerializer.serialize<t>
 let toPacketName: t => string

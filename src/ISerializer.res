@@ -12,4 +12,4 @@ let toBufferResult = (
   }
 }
 
-type serialize<'a> = (~parsed: IParser.parsed<'a>, ~fromServer: bool) => toBufferResult
+type serialize<'a> = (~parsed: 'a, ~fromServer: bool) => toBufferResult

@@ -1430,17 +1430,6 @@ function toBuffer(packet, fromServer) {
   }
 }
 
-function serialize(parsed, fromServer) {
-  if (parsed.TAG === "ShouldSerialize") {
-    return toBuffer(parsed._0, fromServer);
-  } else {
-    return {
-      TAG: "Ok",
-      _0: parsed._1
-    };
-  }
-}
-
 function toPacketName$1(packet) {
   switch (packet.TAG) {
     case "ConnectRequest" :
@@ -2215,6 +2204,5 @@ exports.LoadoutSwitch = LoadoutSwitch;
 exports.ItemDropProtectedUpdate = ItemDropProtectedUpdate;
 exports.LazyPacket = LazyPacket;
 exports.toBuffer = toBuffer;
-exports.serialize = serialize;
 exports.toPacketName = toPacketName$1;
 /* Packet_Emoji-TerrariaPacket Not a pure module */

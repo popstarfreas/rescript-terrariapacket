@@ -2239,18 +2239,6 @@ function getParsers(packetType, fromServer) {
   }
 }
 
-function parsePayload(packetType, payload, fromServer) {
-  let parsers = getParsers(packetType, fromServer);
-  if (parsers.TAG === "Ok") {
-    return parsers._0.parse(payload, fromServer);
-  } else {
-    return {
-      TAG: "Error",
-      _0: parsers._0
-    };
-  }
-}
-
 function parse(buffer, fromServer) {
   let match = buffer.length;
   if (!(match > 2 || match < 0)) {
@@ -2267,11 +2255,15 @@ function parse(buffer, fromServer) {
     };
   }
   try {
-    return Stdlib_Result.map(parsePayload(packetType, buffer, fromServer), packet => ({
-      TAG: "SerializeNotNecessary",
-      _0: packet,
-      _1: buffer
-    }));
+    let parsers = getParsers(packetType, fromServer);
+    if (parsers.TAG === "Ok") {
+      return parsers._0.parse(buffer, fromServer);
+    } else {
+      return {
+        TAG: "Error",
+        _0: parsers._0
+      };
+    }
   } catch (raw_obj) {
     let obj = Primitive_exceptions.internalToException(raw_obj);
     if (obj.RE_EXN_ID === "JsExn") {
