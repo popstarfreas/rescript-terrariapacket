@@ -15,6 +15,10 @@ function readInt16Unsafe(prim) {
   return prim.readInt16();
 }
 
+function readUInt32Unsafe(prim) {
+  return prim.readUInt32();
+}
+
 function readInt32Unsafe(prim) {
   return prim.readInt32();
 }
@@ -80,12 +84,20 @@ function readByte(reader, context) {
   return withContext(readByteUnsafe, reader, context);
 }
 
+function readBool(reader, context) {
+  return withContext(reader => reader.readByte() === 1, reader, context);
+}
+
 function readUInt16(reader, context) {
   return withContext(readUInt16Unsafe, reader, context);
 }
 
 function readInt16(reader, context) {
   return withContext(readInt16Unsafe, reader, context);
+}
+
+function readUInt32(reader, context) {
+  return withContext(readUInt32Unsafe, reader, context);
 }
 
 function readInt32(reader, context) {
@@ -131,6 +143,7 @@ function getBytesLeft(reader) {
 exports.readByteUnsafe = readByteUnsafe;
 exports.readUInt16Unsafe = readUInt16Unsafe;
 exports.readInt16Unsafe = readInt16Unsafe;
+exports.readUInt32Unsafe = readUInt32Unsafe;
 exports.readInt32Unsafe = readInt32Unsafe;
 exports.readUInt64Unsafe = readUInt64Unsafe;
 exports.readStringUnsafe = readStringUnsafe;
@@ -143,8 +156,10 @@ exports.readNetworkTextUnsafe = readNetworkTextUnsafe;
 exports.getBytesLeftUnsafe = getBytesLeftUnsafe;
 exports.withContext = withContext;
 exports.readByte = readByte;
+exports.readBool = readBool;
 exports.readUInt16 = readUInt16;
 exports.readInt16 = readInt16;
+exports.readUInt32 = readUInt32;
 exports.readInt32 = readInt32;
 exports.readUInt64 = readUInt64;
 exports.readString = readString;

@@ -52,7 +52,7 @@ module Encode = {
     }
     PacketFactory.ManagedPacketWriter.make()
     ->setType(PacketType.NpcBuffUpdate->PacketType.toInt)
-    ->packByte(self.npcId)
+    ->packInt16(self.npcId)
     ->packBuffs(self.buffs)
     ->packBuffTimes(self.buffTimes)
     ->data

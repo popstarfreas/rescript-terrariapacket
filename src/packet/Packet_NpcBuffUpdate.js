@@ -95,7 +95,7 @@ function toBuffer(self) {
   if (self.buffs.length !== 20) {
     Pervasives.failwith(`Expected 20 buffs, got ` + self.buffs.length.toString());
   }
-  return packBuffTimes(packBuffs(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NpcBuffUpdate")).packByte(self.npcId), self.buffs), self.buffTimes).data;
+  return packBuffTimes(packBuffs(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NpcBuffUpdate")).packInt16(self.npcId), self.buffs), self.buffTimes).data;
 }
 
 let Encode = {

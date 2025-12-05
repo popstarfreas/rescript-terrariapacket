@@ -30,6 +30,31 @@ function packSingle(self, value, context) {
   }
 }
 
+function packUInt32(self, value, context) {
+  if (self.TAG !== "Writing") {
+    return self;
+  }
+  try {
+    let writer = self._0.packUInt32(value);
+    return {
+      TAG: "Writing",
+      _0: writer
+    };
+  } catch (raw_obj) {
+    let obj = Primitive_exceptions.internalToException(raw_obj);
+    if (obj.RE_EXN_ID === "JsExn") {
+      return {
+        TAG: "Error",
+        _0: {
+          context: context,
+          error: obj._1
+        }
+      };
+    }
+    throw obj;
+  }
+}
+
 function packInt32(self, value, context) {
   if (self.TAG !== "Writing") {
     return self;
@@ -78,6 +103,10 @@ function packByte(self, value, context) {
     }
     throw obj;
   }
+}
+
+function packBool(self, value, context) {
+  return packByte(self, value ? 1 : 0, context);
 }
 
 function packUInt16(self, value, context) {
@@ -331,8 +360,10 @@ function make() {
 }
 
 exports.packSingle = packSingle;
+exports.packUInt32 = packUInt32;
 exports.packInt32 = packInt32;
 exports.packByte = packByte;
+exports.packBool = packBool;
 exports.packUInt16 = packUInt16;
 exports.packInt16 = packInt16;
 exports.packUInt64 = packUInt64;

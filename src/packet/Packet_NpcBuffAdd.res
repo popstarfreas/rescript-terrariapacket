@@ -1,3 +1,31 @@
 @genType
-type t = unit
-let parse = (_payload: NodeJs.Buffer.t) => Some()
+type t = {
+  npcId: int,
+  buffType: int,
+  time: int,
+}
+
+module Decode = {
+  let {readInt16, readUInt16} = module(ErrorAwarePacketReader)
+  let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
+    let reader = PacketFactory.PacketReader.make(payload)
+    let? Ok(npcId) = reader->readInt16("npcId")
+    let? Ok(buffType) = reader->readUInt16("buffType")
+    let? Ok(time) = reader->readInt16("time")
+    Ok({npcId, buffType, time})
+  }
+}
+
+module Encode = {
+  let {packInt16, packUInt16, setType, data} = module(ErrorAwarePacketWriter)
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> =>
+    ErrorAwarePacketWriter.make()
+    ->setType(PacketType.NpcBuffAdd->PacketType.toInt)
+    ->packInt16(self.npcId, "npcId")
+    ->packUInt16(self.buffType, "buffType")
+    ->packInt16(self.time, "time")
+    ->data
+}
+
+let parse = Decode.parse
+let toBuffer = Encode.toBuffer

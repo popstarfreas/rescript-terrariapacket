@@ -9,18 +9,25 @@ let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
 function parse(payload) {
   let reader = new Packetreader(payload);
   let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerSlotId");
-  if (e.TAG === "Ok") {
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "serverWantsToRunCheckBytesInClientLoopThread");
+  if (e$1.TAG === "Ok") {
     return {
       TAG: "Ok",
-      _0: e._0
+      _0: {
+        playerSlotId: e._0,
+        serverWantsToRunCheckBytesInClientLoopThread: e$1._0 === 1
+      }
     };
   } else {
-    return e;
+    return e$1;
   }
 }
 
 function toBuffer(self) {
-  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerSlotSet")), self, "playerSlotId"));
+  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerSlotSet")), self.playerSlotId, "playerSlotId"), self.serverWantsToRunCheckBytesInClientLoopThread ? 1 : 0, "serverWantsToRunCheckBytesInClientLoopThread"));
 }
 
 exports.parse = parse;

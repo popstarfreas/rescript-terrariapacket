@@ -29,7 +29,7 @@ module Decode = {
     | _ =>
       Error({
         context: "Packet_TeleportationPotion.parse",
-        error: ErrorExt.makeJsError("Unknown teleport type"),
+        error: JsError.make("Unknown teleport type")->JsError.toJsExn,
       })
     }
   }

@@ -2,8 +2,10 @@ type untypedT = PacketFactory.ManagedPacketWriter.untypedT
 type packError = {context: string, error: JsExn.t}
 type t
 let packSingle: (t, float, string) => t
+let packUInt32: (t, int, string) => t
 let packInt32: (t, int, string) => t
 let packByte: (t, int, string) => t
+let packBool: (t, bool, string) => t
 let packUInt16: (t, int, string) => t
 let packInt16: (t, int, string) => t
 let packUInt64: (t, NodeJs.BigInt.t, string) => t

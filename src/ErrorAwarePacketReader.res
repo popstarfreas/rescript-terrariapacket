@@ -2,6 +2,7 @@ let {
   readByte: readByteUnsafe,
   readUInt16: readUInt16Unsafe,
   readInt16: readInt16Unsafe,
+  readUInt32: readUInt32Unsafe,
   readInt32: readInt32Unsafe,
   readUInt64: readUInt64Unsafe,
   readString: readStringUnsafe,
@@ -29,11 +30,17 @@ let withContext = (fn, reader, context) => {
 let readByte = (reader: t, context: string): result<int, readError> =>
   withContext(readByteUnsafe, reader, context)
 
+let readBool = (reader: t, context: string): result<bool, readError> =>
+  withContext(reader => readByteUnsafe(reader) == 1, reader, context)
+
 let readUInt16 = (reader: t, context: string): result<int, readError> =>
   withContext(readUInt16Unsafe, reader, context)
 
 let readInt16 = (reader: t, context: string): result<int, readError> =>
   withContext(readInt16Unsafe, reader, context)
+
+let readUInt32 = (reader: t, context: string): result<int, readError> =>
+  withContext(readUInt32Unsafe, reader, context)
 
 let readInt32 = (reader: t, context: string): result<int, readError> =>
   withContext(readInt32Unsafe, reader, context)

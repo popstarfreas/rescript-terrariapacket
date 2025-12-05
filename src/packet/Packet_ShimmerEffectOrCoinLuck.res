@@ -36,7 +36,7 @@ module Decode = {
     | _ =>
       Error({
         context: "Packet_ShimmerEffectOrCoinLuck.parse",
-        error: ErrorExt.makeJsError("Unknown shimmer effect kind"),
+        error: JsError.make("Unknown shimmer effect kind")->JsError.toJsExn,
       })
     }
   }

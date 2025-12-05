@@ -5,6 +5,7 @@
  */
 let {
   packSingle,
+  packUInt32,
   packInt32,
   packByte,
   packUInt16,
@@ -39,6 +40,19 @@ let packSingle = (self: t, value: float, context: string): t => {
   }
 }
 
+let packUInt32 = (self: t, value: int, context: string): t => {
+  switch self {
+  | Writing(writer) =>
+    try {
+      let writer = writer->packUInt32(value)
+      Writing(writer)
+    } catch {
+    | JsExn(obj) => Error({context, error: obj})
+    }
+  | Error(_error) => self
+  }
+}
+
 let packInt32 = (self: t, value: int, context: string): t => {
   switch self {
   | Writing(writer) =>
@@ -63,6 +77,10 @@ let packByte = (self: t, value: int, context: string): t => {
     }
   | Error(_error) => self
   }
+}
+
+let packBool = (self: t, value: bool, context: string): t => {
+  self->packByte(value ? 1 : 0, context)
 }
 
 let packUInt16 = (self: t, value: int, context: string): t => {

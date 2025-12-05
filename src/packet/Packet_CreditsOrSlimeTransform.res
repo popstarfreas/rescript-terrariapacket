@@ -43,7 +43,7 @@ module Decode = {
     | None =>
       Error({
         context: "Packet_CreditsOrSlimeTransform.parse",
-        error: ErrorExt.makeJsError("Unknown event type"),
+        error: JsError.make("Unknown event type")->JsError.toJsExn,
       })
     }
   }

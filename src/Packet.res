@@ -691,12 +691,15 @@ let toBuffer = (packet: t, _fromServer: bool): ISerializer.toBufferResult => {
   | NpcKillCount(_npcKillCount) => NotImplemented
   | PlayerStealth(_playerStealth) => NotImplemented
   | ItemForceIntoNearestChest(_itemForceIntoNearestChest) => NotImplemented
-  | TileEntityUpdate(_tileEntityUpdate) => NotImplemented
-  | TileEntityPlace(_tileEntityPlace) => NotImplemented
-  | ItemDropModify(_itemDropModify) => NotImplemented
+  | TileEntityUpdate(tileEntityUpdate) =>
+    TileEntityUpdate.toBuffer(tileEntityUpdate)->ISerializer.toBufferResult
+  | TileEntityPlace(tileEntityPlace) =>
+    TileEntityPlace.toBuffer(tileEntityPlace)->ISerializer.toBufferResult
+  | ItemDropModify(itemDropModify) =>
+    ItemDropModify.toBuffer(itemDropModify)->ISerializer.toBufferResult
   | ItemFramePlace(_itemFramePlace) => NotImplemented
   | ItemDropInstancedUpdate(_itemDropInstancedUpdate) => NotImplemented
-  | EmoteBubble(_emoteBubble) => NotImplemented
+  | EmoteBubble(emoteBubble) => EmoteBubble.toBuffer(emoteBubble)->ISerializer.toBufferResult
   | ExtraValueSync(_extraValueSync) => NotImplemented
   | SocialHandshake(_socialHandshake) => NotImplemented
   | Unused(_unused) => NotImplemented
@@ -709,14 +712,16 @@ let toBuffer = (packet: t, _fromServer: bool): ISerializer.toBufferResult => {
   | ShieldStrengthsUpdate(_shieldStrengthsUpdate) => NotImplemented
   | NebulaLevelUp(_nebulaLevelUp) => NotImplemented
   | MoonLordCountdown(_moonLordCountdown) => NotImplemented
-  | NpcShopItem(_npcShopItem) => NotImplemented
+  | NpcShopItem(npcShopItem) => NpcShopItem.toBuffer(npcShopItem)->ISerializer.toBufferResult
   | GemLockToggle(_gemLockToggle) => NotImplemented
-  | SmokePoof(_smokePoof) => NotImplemented
+  | SmokePoof(smokePoof) => SmokePoof.toBuffer(smokePoof)->ISerializer.toBufferResult
   | ChatMessageSmart(chatMessageSmart) =>
     ChatMessageSmart.toBuffer(chatMessageSmart)->ISerializer.toBufferResult
   | WiredCannonShot(_wiredCannonShot) => NotImplemented
-  | MassWireOperation(_massWireOperation) => NotImplemented
-  | MassWireOperationPay(_massWireOperationPay) => NotImplemented
+  | MassWireOperation(massWireOperation) =>
+    MassWireOperation.toBuffer(massWireOperation)->ISerializer.toBufferResult
+  | MassWireOperationPay(massWireOperationPay) =>
+    MassWireOperationPay.toBuffer(massWireOperationPay)->ISerializer.toBufferResult
   | PartyToggle(_partyToggle) => NotImplemented
   | TreeGrowFx(_treeGrowFx) => NotImplemented
   | CrystalInvasionStart(_crystalInvasionStart) => NotImplemented
@@ -726,19 +731,23 @@ let toBuffer = (packet: t, _fromServer: bool): ISerializer.toBufferResult => {
   | PlayerDamage(_playerDamage) => NotImplemented
   | PlayerDeath(_playerDeath) => NotImplemented
   | CombatTextCreate(_combatTextCreate) => NotImplemented
-  | Emoji(_emoji) => NotImplemented
+  | Emoji(emoji) => Ok(Emoji.toBuffer(emoji))
   | TileEntityDisplayDollItemSync(_tileEntityDisplayDollItemSync) => NotImplemented
-  | TileEntityInteractionRequest(_tileEntityInteractionRequest) => NotImplemented
+  | TileEntityInteractionRequest(tileEntityInteractionRequest) =>
+    TileEntityInteractionRequest.toBuffer(tileEntityInteractionRequest)
+    ->ISerializer.toBufferResult
   | WeaponsRackTryPlacing(_weaponsRackTryPlacing) => NotImplemented
   | TileEntityHatRackItemSync(_tileEntityHatRackItemSync) => NotImplemented
   | TilePickingSync(_tilePickingSync) => NotImplemented
-  | RevengeMarkerSync(_revengeMarkerSync) => NotImplemented
+  | RevengeMarkerSync(revengeMarkerSync) =>
+    RevengeMarkerSync.toBuffer(revengeMarkerSync)->ISerializer.toBufferResult
   | RevengeMarkerRemove(_revengeMarkerRemove) => NotImplemented
   | GolfBallLandInCup(_golfBallLandInCup) => NotImplemented
   | ClientFinishConnectingToServer(_clientFinishConnectingToServer) => NotImplemented
   | NpcFishOut(_npcFishOut) => NotImplemented
   | NpcTamper(npcTamper) => Ok(NpcTamper.toBuffer(npcTamper))
-  | LegacySoundPlay(_legacySoundPlay) => NotImplemented
+  | LegacySoundPlay(legacySoundPlay) =>
+    LegacySoundPlay.toBuffer(legacySoundPlay)->ISerializer.toBufferResult
   | FoodPlatterTryPlacing(_foodPlatterTryPlacing) => NotImplemented
   | PlayerLuckFactorsUpdate(_playerLuckFactorsUpdate) => NotImplemented
   | PlayerDead(_playerDead) => NotImplemented

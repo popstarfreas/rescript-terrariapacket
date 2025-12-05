@@ -66,7 +66,7 @@ module Decode = {
     | None =>
       Error({
         context: "DimensionsUpdate.parse.updateType",
-        error: ErrorExt.makeJsError("Unknown updateType"),
+        error: JsError.make("Unknown updateType")->JsError.toJsExn,
       })
     }
   }

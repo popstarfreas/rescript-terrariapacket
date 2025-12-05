@@ -47,9 +47,9 @@ module Encode = {
     if self.buffs->Array.length != 44 {
       Error({
         context: "PlayerBuffsSet.toBuffer",
-        error: ErrorExt.makeJsError(
+        error: JsError.make(
           `Expected 44 buffs, got ${Array.length(self.buffs)->Int.toString}`,
-        ),
+        )->JsError.toJsExn,
       })
     } else {
       ErrorAwarePacketWriter.make()
