@@ -43,27 +43,27 @@ module Decode = {
 }
 
 module Encode = {
-  module Writer = PacketFactory.ManagedPacketWriter
+  module Writer = ErrorAwarePacketWriter
   let {packByte, packInt32, packSingle, setType, data} = module(Writer)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
     let writer = Writer.make()->setType(PacketType.ShimmerEffectOrCoinLuck->PacketType.toInt)
 
     switch self {
     | ShimmerEffect(x, y) =>
       writer
-      ->packByte(0)
-      ->packSingle(x)
-      ->packSingle(y)
+      ->packByte(0, "kind")
+      ->packSingle(x, "shimmerX")
+      ->packSingle(y, "shimmerY")
     | CoinLuck({position, amount}) =>
       writer
-      ->packByte(1)
-      ->packSingle(position.x)
-      ->packSingle(position.y)
-      ->packInt32(amount)
+      ->packByte(1, "kind")
+      ->packSingle(position.x, "coinLuckX")
+      ->packSingle(position.y, "coinLuckY")
+      ->packInt32(amount, "coinLuckAmount")
     | NewShimmerEffect(id) =>
       writer
-      ->packByte(2)
-      ->packInt32(id)
+      ->packByte(2, "kind")
+      ->packInt32(id, "newShimmerEffectId")
     }->data
   }
 }

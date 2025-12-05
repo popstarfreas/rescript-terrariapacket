@@ -20,16 +20,16 @@ module Decode = {
 }
 
 module Encode = {
-  module Writer = PacketFactory.ManagedPacketWriter
-  let {packUInt16, packByte, packInt32, packSingle, setType, data} = module(Writer)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
+  module Writer = ErrorAwarePacketWriter
+  let {packUInt16, packByte, setType, data} = module(Writer)
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
     let (flags0, flags1) = Array16.toBitFlagsPair(self.hideVisibleAccessory)
     let hideVisibleAccessory = BitFlags.toByte(flags0) ||| BitFlags.toByte(flags1) << 8
     Writer.make()
     ->setType(PacketType.LoadoutSwitch->PacketType.toInt)
-    ->packByte(self.playerId)
-    ->packByte(self.loadout)
-    ->packUInt16(hideVisibleAccessory)
+    ->packByte(self.playerId, "playerId")
+    ->packByte(self.loadout, "loadout")
+    ->packUInt16(hideVisibleAccessory, "hideVisibleAccessory")
     ->data
   }
 }

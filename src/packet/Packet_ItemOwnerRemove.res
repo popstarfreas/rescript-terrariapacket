@@ -11,11 +11,11 @@ module Decode = {
 }
 
 module Encode = {
-  let {packInt16, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let {packInt16, setType, data} = module(ErrorAwarePacketWriter)
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.ItemOwnerRemove->PacketType.toInt)
-    ->packInt16(self.itemDropId)
+    ->packInt16(self.itemDropId, "itemDropId")
     ->data
   }
 }

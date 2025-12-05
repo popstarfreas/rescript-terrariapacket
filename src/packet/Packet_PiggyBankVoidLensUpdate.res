@@ -19,14 +19,14 @@ module TrackedProjectileReference = {
     }
   }
 
-  let {packInt16} = module(PacketFactory.ManagedPacketWriter)
-  let pack = (writer: PacketFactory.ManagedPacketWriter.t, self: option<t>) => {
+  let {packInt16} = module(ErrorAwarePacketWriter)
+  let pack = (writer: ErrorAwarePacketWriter.t, self: option<t>) => {
     switch self {
-    | None => writer->packInt16(-1)
+    | None => writer->packInt16(-1, "trackedProjectileReference")
     | Some({expectedIdentity, expectedType}) =>
       writer
-      ->packInt16(expectedIdentity)
-      ->packInt16(expectedType)
+      ->packInt16(expectedIdentity, "expectedIdentity")
+      ->packInt16(expectedType, "expectedType")
     }
   }
 }
@@ -55,12 +55,12 @@ module Decode = {
 }
 
 module Encode = {
-  module Writer = PacketFactory.ManagedPacketWriter
-  let {packByte, packInt32, packSingle, setType, data} = module(Writer)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
+  module Writer = ErrorAwarePacketWriter
+  let {packByte, setType, data} = module(Writer)
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
     Writer.make()
     ->setType(PacketType.PiggyBankVoidLensUpdate->PacketType.toInt)
-    ->packByte(self.playerId)
+    ->packByte(self.playerId, "playerId")
     ->TrackedProjectileReference.pack(self.piggyBankProj)
     ->TrackedProjectileReference.pack(self.voidLensChest)
     ->data

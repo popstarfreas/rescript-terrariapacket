@@ -36,12 +36,12 @@ module Decode = {
 }
 
 module Encode = {
-  module Writer = PacketFactory.ManagedPacketWriter
+  module Writer = ErrorAwarePacketWriter
   let {packByte, packInt16, setType, data} = module(Writer)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
     Writer.make()
     ->setType(PacketType.TeleportationPotion->PacketType.toInt)
-    ->packByte(teleportTypeToInt(self.teleportType))
+    ->packByte(teleportTypeToInt(self.teleportType), "teleportType")
     ->data
   }
 }

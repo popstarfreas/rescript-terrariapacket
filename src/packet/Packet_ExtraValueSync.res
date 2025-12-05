@@ -24,14 +24,14 @@ module Decode = {
 }
 
 module Encode = {
-  let {packInt16, packInt32, packSingle, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let {packInt16, packInt32, packSingle, setType, data} = module(ErrorAwarePacketWriter)
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.ExtraValueSync->PacketType.toInt)
-    ->packInt16(self.npcSlotId)
-    ->packInt32(self.extraValue)
-    ->packSingle(self.x)
-    ->packSingle(self.y)
+    ->packInt16(self.npcSlotId, "npcSlotId")
+    ->packInt32(self.extraValue, "extraValue")
+    ->packSingle(self.x, "x")
+    ->packSingle(self.y, "y")
     ->data
   }
 }

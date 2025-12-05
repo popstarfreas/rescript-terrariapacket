@@ -2,10 +2,9 @@
 'use strict';
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
-let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
 let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
 function parse(payload) {
   let reader = new Packetreader(payload);
@@ -38,27 +37,15 @@ let Decode = {
   parse: parse
 };
 
-function packByte(prim0, prim1) {
-  return prim0.packByte(prim1);
-}
-
-function packInt32(prim0, prim1) {
-  return prim0.packInt32(prim1);
-}
-
-function data(prim) {
-  return prim.data;
-}
-
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("AnglerQuestsCompletedAmount")).packByte(self.playerId).packInt32(self.anglerQuestsFinished).packInt32(self.golferScoreAccumulated).data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("AnglerQuestsCompletedAmount")), self.playerId, "playerId"), self.anglerQuestsFinished, "anglerQuestsFinished"), self.golferScoreAccumulated, "golferScoreAccumulated"));
 }
 
 let Encode = {
-  packByte: packByte,
-  packInt32: packInt32,
-  setType: ManagedPacketWriter$PacketFactory.setType,
-  data: data,
+  packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+  packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+  data: ErrorAwarePacketWriter$TerrariaPacket.data,
   toBuffer: toBuffer
 };
 
@@ -66,4 +53,4 @@ exports.Decode = Decode;
 exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

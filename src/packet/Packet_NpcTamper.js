@@ -2,10 +2,9 @@
 'use strict';
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
-let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
 let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
 function fromInt(playerId) {
   if (playerId !== -1) {
@@ -87,45 +86,25 @@ let Decode = {
   parse: parse
 };
 
-function packUInt16(prim0, prim1) {
-  return prim0.packUInt16(prim1);
-}
-
-function packByte(prim0, prim1) {
-  return prim0.packByte(prim1);
-}
-
-function packInt32(prim0, prim1) {
-  return prim0.packInt32(prim1);
-}
-
-function packInt16(prim0, prim1) {
-  return prim0.packInt16(prim1);
-}
-
-function data(prim) {
-  return prim.data;
-}
-
 function packImmunity(writer, immunityTime, immunityOrigin) {
   if (immunityTime !== undefined && immunityOrigin !== undefined) {
-    return writer.packByte(1).packInt32(immunityTime).packInt16(toInt(immunityOrigin));
+    return ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, 1, "setNpcImmunity"), immunityTime, "immunityTime"), toInt(immunityOrigin), "immunityFromPlayerId");
   } else {
-    return writer.packByte(0);
+    return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, 0, "setNpcImmunity");
   }
 }
 
 function toBuffer(self) {
-  return packImmunity(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NpcTamper")).packUInt16(self.npcId), self.immunityTime, self.immunityFromPlayerId).data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(packImmunity(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcTamper")), self.npcId, "npcId"), self.immunityTime, self.immunityFromPlayerId));
 }
 
 let Encode = {
-  packUInt16: packUInt16,
-  packByte: packByte,
-  packInt32: packInt32,
-  packInt16: packInt16,
-  setType: ManagedPacketWriter$PacketFactory.setType,
-  data: data,
+  packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
+  packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+  packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+  packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+  data: ErrorAwarePacketWriter$TerrariaPacket.data,
   packImmunity: packImmunity,
   toBuffer: toBuffer
 };
@@ -138,4 +117,4 @@ exports.Decode = Decode;
 exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

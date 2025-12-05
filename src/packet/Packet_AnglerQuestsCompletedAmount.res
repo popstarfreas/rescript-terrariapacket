@@ -21,13 +21,13 @@ module Decode = {
 }
 
 module Encode = {
-  let {packByte, packInt32, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let {packByte, packInt32, setType, data} = module(ErrorAwarePacketWriter)
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.AnglerQuestsCompletedAmount->PacketType.toInt)
-    ->packByte(self.playerId)
-    ->packInt32(self.anglerQuestsFinished)
-    ->packInt32(self.golferScoreAccumulated)
+    ->packByte(self.playerId, "playerId")
+    ->packInt32(self.anglerQuestsFinished, "anglerQuestsFinished")
+    ->packInt32(self.golferScoreAccumulated, "golferScoreAccumulated")
     ->data
   }
 }

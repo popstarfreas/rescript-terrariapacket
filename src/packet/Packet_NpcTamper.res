@@ -48,10 +48,8 @@ module Decode = {
 }
 
 module Encode = {
-  type writer = PacketFactory.ManagedPacketWriter.t
-  let {packUInt16, packByte, packInt32, packInt16, setType, data} = module(
-    PacketFactory.ManagedPacketWriter
-  )
+  type writer = ErrorAwarePacketWriter.t
+  let {packUInt16, packByte, packInt32, packInt16, setType, data} = module(ErrorAwarePacketWriter)
   let packImmunity = (
     writer: writer,
     immunityTime: option<int>,
@@ -59,14 +57,17 @@ module Encode = {
   ): writer => {
     switch (immunityTime, immunityOrigin) {
     | (Some(time), Some(origin)) =>
-      writer->packByte(1)->packInt32(time)->packInt16(origin->Immunity.toInt)
-    | (_, _) => writer->packByte(0)
+      writer
+      ->packByte(1, "setNpcImmunity")
+      ->packInt32(time, "immunityTime")
+      ->packInt16(origin->Immunity.toInt, "immunityFromPlayerId")
+    | (_, _) => writer->packByte(0, "setNpcImmunity")
     }
   }
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.NpcTamper->PacketType.toInt)
-    ->packUInt16(self.npcId)
+    ->packUInt16(self.npcId, "npcId")
     ->packImmunity(self.immunityTime, self.immunityFromPlayerId)
     ->data
   }

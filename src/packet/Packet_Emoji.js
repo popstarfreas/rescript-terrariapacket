@@ -2,10 +2,9 @@
 'use strict';
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
-let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
 let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
 function parse(payload) {
   let reader = new Packetreader(payload);
@@ -32,22 +31,14 @@ let Decode = {
   parse: parse
 };
 
-function packByte(prim0, prim1) {
-  return prim0.packByte(prim1);
-}
-
-function data(prim) {
-  return prim.data;
-}
-
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("Emoji")).packByte(self.playerId).packByte(self.emojiId).data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("Emoji")), self.playerId, "playerId"), self.emojiId, "emojiId"));
 }
 
 let Encode = {
-  packByte: packByte,
-  setType: ManagedPacketWriter$PacketFactory.setType,
-  data: data,
+  packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+  data: ErrorAwarePacketWriter$TerrariaPacket.data,
   toBuffer: toBuffer
 };
 
@@ -55,4 +46,4 @@ exports.Decode = Decode;
 exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

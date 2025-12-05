@@ -12,14 +12,14 @@ module Decode = {
 }
 
 module Encode = {
-  let {packInt32, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  type writer = PacketFactory.ManagedPacketWriter.t
+  let {packInt32, setType, data} = module(ErrorAwarePacketWriter)
+  type writer = ErrorAwarePacketWriter.t
 
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.MoonLordCountdown->PacketType.toInt)
-    ->packInt32(self.maxMoonLordCountdown)
-    ->packInt32(self.moonLordCountdown)
+    ->packInt32(self.maxMoonLordCountdown, "maxMoonLordCountdown")
+    ->packInt32(self.moonLordCountdown, "moonLordCountdown")
     ->data
   }
 }

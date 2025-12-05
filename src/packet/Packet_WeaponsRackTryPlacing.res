@@ -27,16 +27,16 @@ module Decode = {
 }
 
 module Encode = {
-  module Writer = PacketFactory.ManagedPacketWriter
+  module Writer = ErrorAwarePacketWriter
   let {packByte, packInt16, setType, data} = module(Writer)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
     Writer.make()
     ->setType(PacketType.WeaponsRackTryPlacing->PacketType.toInt)
-    ->packInt16(self.x)
-    ->packInt16(self.y)
-    ->packInt16(self.itemId)
-    ->packInt16(self.prefix)
-    ->packInt16(self.stack)
+    ->packInt16(self.x, "x")
+    ->packInt16(self.y, "y")
+    ->packInt16(self.itemId, "itemId")
+    ->packInt16(self.prefix, "prefix")
+    ->packInt16(self.stack, "stack")
     ->data
   }
 }

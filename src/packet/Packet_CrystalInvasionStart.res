@@ -18,13 +18,13 @@ module Decode = {
 }
 
 module Encode = {
-  module Writer = PacketFactory.ManagedPacketWriter
-  let {packByte, packInt16, setType, data} = module(Writer)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
+  module Writer = ErrorAwarePacketWriter
+  let {packInt16, setType, data} = module(Writer)
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
     Writer.make()
     ->setType(PacketType.CrystalInvasionStart->PacketType.toInt)
-    ->packInt16(self.x)
-    ->packInt16(self.y)
+    ->packInt16(self.x, "x")
+    ->packInt16(self.y, "y")
     ->data
   }
 }

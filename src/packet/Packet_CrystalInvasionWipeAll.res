@@ -6,9 +6,9 @@ module Decode = {
 }
 
 module Encode = {
-  let {setType, data} = module(PacketFactory.ManagedPacketWriter)
-  let toBuffer = (_self: t): NodeJs.Buffer.t =>
-    PacketFactory.ManagedPacketWriter.make()
+  let {setType, data} = module(ErrorAwarePacketWriter)
+  let toBuffer = (_self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> =>
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.CrystalInvasionWipeAll->PacketType.toInt)
     ->data
 }

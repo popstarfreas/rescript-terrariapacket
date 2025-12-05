@@ -2,10 +2,9 @@
 'use strict';
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
-let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
 let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
 function parse(payload) {
   let reader = new Packetreader(payload);
@@ -27,22 +26,14 @@ let Decode = {
   parse: parse
 };
 
-function packInt16(prim0, prim1) {
-  return prim0.packInt16(prim1);
-}
-
-function data(prim) {
-  return prim.data;
-}
-
 function toBuffer(self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ItemOwnerRemove")).packInt16(self.itemDropId).data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ItemOwnerRemove")), self.itemDropId, "itemDropId"));
 }
 
 let Encode = {
-  packInt16: packInt16,
-  setType: ManagedPacketWriter$PacketFactory.setType,
-  data: data,
+  packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+  data: ErrorAwarePacketWriter$TerrariaPacket.data,
   toBuffer: toBuffer
 };
 
@@ -50,4 +41,4 @@ exports.Decode = Decode;
 exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

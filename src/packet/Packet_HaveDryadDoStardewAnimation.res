@@ -7,9 +7,9 @@ module Decode = {
 }
 
 module Encode = {
-  module Writer = PacketFactory.ManagedPacketWriter
-  let {packByte, packInt32, packSingle, setType, data} = module(Writer)
-  let toBuffer = (_self: t): NodeJs.Buffer.t => {
+  module Writer = ErrorAwarePacketWriter
+  let {setType, data} = module(Writer)
+  let toBuffer = (_self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
     Writer.make()
     ->setType(PacketType.HaveDryadDoStardewAnimation->PacketType.toInt)
     ->data

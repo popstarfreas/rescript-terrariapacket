@@ -2,8 +2,7 @@
 'use strict';
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
-let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
-let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
+let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 
 function parse(_payload) {
   return {
@@ -16,17 +15,13 @@ let Decode = {
   parse: parse
 };
 
-function data(prim) {
-  return prim.data;
-}
-
 function toBuffer(_self) {
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("CrystalInvasionWipeAll")).data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("CrystalInvasionWipeAll")));
 }
 
 let Encode = {
-  setType: ManagedPacketWriter$PacketFactory.setType,
-  data: data,
+  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+  data: ErrorAwarePacketWriter$TerrariaPacket.data,
   toBuffer: toBuffer
 };
 
@@ -34,4 +29,4 @@ exports.Decode = Decode;
 exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetwriter Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

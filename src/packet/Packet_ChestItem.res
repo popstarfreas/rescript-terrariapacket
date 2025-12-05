@@ -27,17 +27,17 @@ module Decode = {
 }
 
 module Encode = {
-  let {packByte, packInt16, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  type writer = PacketFactory.ManagedPacketWriter.t
+  let {packByte, packInt16, setType, data} = module(ErrorAwarePacketWriter)
+  type writer = ErrorAwarePacketWriter.t
 
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.ChestItem->PacketType.toInt)
-    ->packInt16(self.chestId)
-    ->packByte(self.slot)
-    ->packInt16(self.stack)
-    ->packByte(self.prefix)
-    ->packInt16(self.itemNetId)
+    ->packInt16(self.chestId, "chestId")
+    ->packByte(self.slot, "slot")
+    ->packInt16(self.stack, "stack")
+    ->packByte(self.prefix, "prefix")
+    ->packInt16(self.itemNetId, "itemNetId")
     ->data
   }
 }

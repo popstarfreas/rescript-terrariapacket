@@ -4,50 +4,148 @@
 let Pervasives = require("@rescript/runtime/lib/js/Pervasives.js");
 let Belt_Option = require("@rescript/runtime/lib/js/Belt_Option.js");
 let ISerializer$TerrariaPacket = require("./ISerializer.js");
+let Packet_Emoji$TerrariaPacket = require("./packet/Packet_Emoji.js");
+let Packet_Zones$TerrariaPacket = require("./packet/Packet_Zones.js");
 let Packet_Status$TerrariaPacket = require("./packet/Packet_Status.js");
 let CreativePowers$TerrariaPacket = require("./CreativePowers.js");
+let Packet_DoorUse$TerrariaPacket = require("./packet/Packet_DoorUse.js");
+let Packet_NpcTalk$TerrariaPacket = require("./packet/Packet_NpcTalk.js");
+let Packet_SignNew$TerrariaPacket = require("./packet/Packet_SignNew.js");
+let Packet_TimeSet$TerrariaPacket = require("./packet/Packet_TimeSet.js");
+let Packet_HarpPlay$TerrariaPacket = require("./packet/Packet_HarpPlay.js");
+let Packet_NpcCatch$TerrariaPacket = require("./packet/Packet_NpcCatch.js");
+let Packet_SignRead$TerrariaPacket = require("./packet/Packet_SignRead.js");
+let Packet_Teleport$TerrariaPacket = require("./packet/Packet_Teleport.js");
 let Packet_ChestItem$TerrariaPacket = require("./packet/Packet_ChestItem.js");
+let Packet_ChestName$TerrariaPacket = require("./packet/Packet_ChestName.js");
+let Packet_ChestOpen$TerrariaPacket = require("./packet/Packet_ChestOpen.js");
 let Packet_ItemOwner$TerrariaPacket = require("./packet/Packet_ItemOwner.js");
+let Packet_LiquidSet$TerrariaPacket = require("./packet/Packet_LiquidSet.js");
+let Packet_NpcStrike$TerrariaPacket = require("./packet/Packet_NpcStrike.js");
 let Packet_NpcTamper$TerrariaPacket = require("./packet/Packet_NpcTamper.js");
 let Packet_NpcUpdate$TerrariaPacket = require("./packet/Packet_NpcUpdate.js");
+let Packet_PvpToggle$TerrariaPacket = require("./packet/Packet_PvpToggle.js");
+let Packet_SmokePoof$TerrariaPacket = require("./packet/Packet_SmokePoof.js");
+let Packet_SwitchHit$TerrariaPacket = require("./packet/Packet_SwitchHit.js");
+let Packet_TilePaint$TerrariaPacket = require("./packet/Packet_TilePaint.js");
+let Packet_WallPaint$TerrariaPacket = require("./packet/Packet_WallPaint.js");
 let Packet_WorldInfo$TerrariaPacket = require("./packet/Packet_WorldInfo.js");
 let Packet_ChestPlace$TerrariaPacket = require("./packet/Packet_ChestPlace.js");
 let Packet_ClientUuid$TerrariaPacket = require("./packet/Packet_ClientUuid.js");
 let Packet_Disconnect$TerrariaPacket = require("./packet/Packet_Disconnect.js");
 let Packet_HealEffect$TerrariaPacket = require("./packet/Packet_HealEffect.js");
 let Packet_ManaEffect$TerrariaPacket = require("./packet/Packet_ManaEffect.js");
+let Packet_NpcBuffAdd$TerrariaPacket = require("./packet/Packet_NpcBuffAdd.js");
+let Packet_NpcFishOut$TerrariaPacket = require("./packet/Packet_NpcFishOut.js");
+let Packet_NpcRelease$TerrariaPacket = require("./packet/Packet_NpcRelease.js");
+let Packet_PlayerDead$TerrariaPacket = require("./packet/Packet_PlayerDead.js");
 let Packet_PlayerInfo$TerrariaPacket = require("./packet/Packet_PlayerInfo.js");
 let Packet_PlayerMana$TerrariaPacket = require("./packet/Packet_PlayerMana.js");
+let Packet_PlayerTeam$TerrariaPacket = require("./packet/Packet_PlayerTeam.js");
+let Packet_PortalKill$TerrariaPacket = require("./packet/Packet_PortalKill.js");
 let Packet_TileModify$TerrariaPacket = require("./packet/Packet_TileModify.js");
+let Packet_TreeGrowFx$TerrariaPacket = require("./packet/Packet_TreeGrowFx.js");
+let Packet_AnglerQuest$TerrariaPacket = require("./packet/Packet_AnglerQuest.js");
+let Packet_EmoteBubble$TerrariaPacket = require("./packet/Packet_EmoteBubble.js");
+let Packet_NpcShopItem$TerrariaPacket = require("./packet/Packet_NpcShopItem.js");
+let Packet_ObjectPlace$TerrariaPacket = require("./packet/Packet_ObjectPlace.js");
+let Packet_PartyToggle$TerrariaPacket = require("./packet/Packet_PartyToggle.js");
+let Packet_PlayerDeath$TerrariaPacket = require("./packet/Packet_PlayerDeath.js");
+let Packet_PlayerDodge$TerrariaPacket = require("./packet/Packet_PlayerDodge.js");
 let Packet_PlayerSpawn$TerrariaPacket = require("./packet/Packet_PlayerSpawn.js");
+let Packet_NpcKillCount$TerrariaPacket = require("./packet/Packet_NpcKillCount.js");
+let Packet_PasswordSend$TerrariaPacket = require("./packet/Packet_PasswordSend.js");
 let Packet_PlayerActive$TerrariaPacket = require("./packet/Packet_PlayerActive.js");
+let Packet_PlayerDamage$TerrariaPacket = require("./packet/Packet_PlayerDamage.js");
 let Packet_PlayerHealth$TerrariaPacket = require("./packet/Packet_PlayerHealth.js");
 let Packet_PlayerUpdate$TerrariaPacket = require("./packet/Packet_PlayerUpdate.js");
+let Packet_GemLockToggle$TerrariaPacket = require("./packet/Packet_GemLockToggle.js");
 let Packet_LoadoutSwitch$TerrariaPacket = require("./packet/Packet_LoadoutSwitch.js");
+let Packet_NebulaLevelUp$TerrariaPacket = require("./packet/Packet_NebulaLevelUp.js");
 let Packet_NetModuleLoad$TerrariaPacket = require("./packet/Packet_NetModuleLoad.js");
+let Packet_NpcBuffUpdate$TerrariaPacket = require("./packet/Packet_NpcBuffUpdate.js");
+let Packet_NpcHomeUpdate$TerrariaPacket = require("./packet/Packet_NpcHomeUpdate.js");
+let Packet_NpcItemStrike$TerrariaPacket = require("./packet/Packet_NpcItemStrike.js");
+let Packet_NpcNameUpdate$TerrariaPacket = require("./packet/Packet_NpcNameUpdate.js");
+let Packet_PlayerBuffAdd$TerrariaPacket = require("./packet/Packet_PlayerBuffAdd.js");
 let Packet_PlayerSlotSet$TerrariaPacket = require("./packet/Packet_PlayerSlotSet.js");
+let Packet_PlayerStealth$TerrariaPacket = require("./packet/Packet_PlayerStealth.js");
 let Packet_ConnectRequest$TerrariaPacket = require("./packet/Packet_ConnectRequest.js");
+let Packet_ExtraValueSync$TerrariaPacket = require("./packet/Packet_ExtraValueSync.js");
+let Packet_GoodEvilUpdate$TerrariaPacket = require("./packet/Packet_GoodEvilUpdate.js");
+let Packet_ItemDropModify$TerrariaPacket = require("./packet/Packet_ItemDropModify.js");
 let Packet_ItemDropUpdate$TerrariaPacket = require("./packet/Packet_ItemDropUpdate.js");
+let Packet_ItemFramePlace$TerrariaPacket = require("./packet/Packet_ItemFramePlace.js");
 let Packet_LucyAxeMessage$TerrariaPacket = require("./packet/Packet_LucyAxeMessage.js");
 let Packet_PlayerBuffsSet$TerrariaPacket = require("./packet/Packet_PlayerBuffsSet.js");
 let Packet_ProjectileSync$TerrariaPacket = require("./packet/Packet_ProjectileSync.js");
 let Packet_TileSquareSend$TerrariaPacket = require("./packet/Packet_TileSquareSend.js");
 let Packet_ItemOwnerRemove$TerrariaPacket = require("./packet/Packet_ItemOwnerRemove.js");
+let Packet_LegacySoundPlay$TerrariaPacket = require("./packet/Packet_LegacySoundPlay.js");
+let Packet_PlayerAnimation$TerrariaPacket = require("./packet/Packet_PlayerAnimation.js");
+let Packet_PlayerHealOther$TerrariaPacket = require("./packet/Packet_PlayerHealOther.js");
+let Packet_PlayerSpawnSelf$TerrariaPacket = require("./packet/Packet_PlayerSpawnSelf.js");
+let Packet_SocialHandshake$TerrariaPacket = require("./packet/Packet_SocialHandshake.js");
+let Packet_TileEntityPlace$TerrariaPacket = require("./packet/Packet_TileEntityPlace.js");
+let Packet_TilePickingSync$TerrariaPacket = require("./packet/Packet_TilePickingSync.js");
 let Packet_TileSectionSend$TerrariaPacket = require("./packet/Packet_TileSectionSend.js");
+let Packet_WiredCannonShot$TerrariaPacket = require("./packet/Packet_WiredCannonShot.js");
 let Packet_ChatMessageSmart$TerrariaPacket = require("./packet/Packet_ChatMessageSmart.js");
+let Packet_CombatTextCreate$TerrariaPacket = require("./packet/Packet_CombatTextCreate.js");
 let Packet_DimensionsUpdate$TerrariaPacket = require("./packet/Packet_DimensionsUpdate.js");
+let Packet_NpcSpecialEffect$TerrariaPacket = require("./packet/Packet_NpcSpecialEffect.js");
+let Packet_PasswordRequired$TerrariaPacket = require("./packet/Packet_PasswordRequired.js");
+let Packet_TileEntityUpdate$TerrariaPacket = require("./packet/Packet_TileEntityUpdate.js");
 let Packet_TileSectionFrame$TerrariaPacket = require("./packet/Packet_TileSectionFrame.js");
 let Packet_WorldDataRequest$TerrariaPacket = require("./packet/Packet_WorldDataRequest.js");
+let Packet_EventNotification$TerrariaPacket = require("./packet/Packet_EventNotification.js");
+let Packet_GolfBallLandInCup$TerrariaPacket = require("./packet/Packet_GolfBallLandInCup.js");
+let Packet_MassWireOperation$TerrariaPacket = require("./packet/Packet_MassWireOperation.js");
+let Packet_MoonLordCountdown$TerrariaPacket = require("./packet/Packet_MoonLordCountdown.js");
+let Packet_NpcTeleportPortal$TerrariaPacket = require("./packet/Packet_NpcTeleportPortal.js");
 let Packet_ProjectileDestroy$TerrariaPacket = require("./packet/Packet_ProjectileDestroy.js");
+let Packet_RevengeMarkerSync$TerrariaPacket = require("./packet/Packet_RevengeMarkerSync.js");
+let Packet_CombatNumberCreate$TerrariaPacket = require("./packet/Packet_CombatNumberCreate.js");
+let Packet_MinionTargetUpdate$TerrariaPacket = require("./packet/Packet_MinionTargetUpdate.js");
 let Packet_ActiveContainerSync$TerrariaPacket = require("./packet/Packet_ActiveContainerSync.js");
+let Packet_AnglerQuestComplete$TerrariaPacket = require("./packet/Packet_AnglerQuestComplete.js");
+let Packet_BossOrInvasionSpawn$TerrariaPacket = require("./packet/Packet_BossOrInvasionSpawn.js");
+let Packet_ChestOrTempleUnlock$TerrariaPacket = require("./packet/Packet_ChestOrTempleUnlock.js");
 let Packet_PlayerInventorySlot$TerrariaPacket = require("./packet/Packet_PlayerInventorySlot.js");
+let Packet_RevengeMarkerRemove$TerrariaPacket = require("./packet/Packet_RevengeMarkerRemove.js");
+let Packet_TeleportationPotion$TerrariaPacket = require("./packet/Packet_TeleportationPotion.js");
+let Packet_CrystalInvasionStart$TerrariaPacket = require("./packet/Packet_CrystalInvasionStart.js");
+let Packet_MassWireOperationPay$TerrariaPacket = require("./packet/Packet_MassWireOperationPay.js");
+let Packet_PlayerChestIndexSync$TerrariaPacket = require("./packet/Packet_PlayerChestIndexSync.js");
+let Packet_PlayerTeleportPortal$TerrariaPacket = require("./packet/Packet_PlayerTeleportPortal.js");
+let Packet_CavernMonsterTypeSync$TerrariaPacket = require("./packet/Packet_CavernMonsterTypeSync.js");
+let Packet_FoodPlatterTryPlacing$TerrariaPacket = require("./packet/Packet_FoodPlatterTryPlacing.js");
+let Packet_NpcBuffRemovalRequest$TerrariaPacket = require("./packet/Packet_NpcBuffRemovalRequest.js");
+let Packet_NpcKilledNotification$TerrariaPacket = require("./packet/Packet_NpcKilledNotification.js");
+let Packet_ShieldStrengthsUpdate$TerrariaPacket = require("./packet/Packet_ShieldStrengthsUpdate.js");
+let Packet_WeaponsRackTryPlacing$TerrariaPacket = require("./packet/Packet_WeaponsRackTryPlacing.js");
+let Packet_CrystalInvasionWipeAll$TerrariaPacket = require("./packet/Packet_CrystalInvasionWipeAll.js");
+let Packet_InvasionProgressReport$TerrariaPacket = require("./packet/Packet_InvasionProgressReport.js");
 let Packet_CreditsOrSlimeTransform$TerrariaPacket = require("./packet/Packet_CreditsOrSlimeTransform.js");
+let Packet_ItemDropInstancedUpdate$TerrariaPacket = require("./packet/Packet_ItemDropInstancedUpdate.js");
 let Packet_ItemDropProtectedUpdate$TerrariaPacket = require("./packet/Packet_ItemDropProtectedUpdate.js");
 let Packet_ItemDropShimmeredUpdate$TerrariaPacket = require("./packet/Packet_ItemDropShimmeredUpdate.js");
 let Packet_PiggyBankVoidLensUpdate$TerrariaPacket = require("./packet/Packet_PiggyBankVoidLensUpdate.js");
+let Packet_PlayerLuckFactorsUpdate$TerrariaPacket = require("./packet/Packet_PlayerLuckFactorsUpdate.js");
 let Packet_ShimmerEffectOrCoinLuck$TerrariaPacket = require("./packet/Packet_ShimmerEffectOrCoinLuck.js");
+let Packet_MinionAttackTargetUpdate$TerrariaPacket = require("./packet/Packet_MinionAttackTargetUpdate.js");
+let Packet_TemporaryAnimationCreate$TerrariaPacket = require("./packet/Packet_TemporaryAnimationCreate.js");
+let Packet_ItemForceIntoNearestChest$TerrariaPacket = require("./packet/Packet_ItemForceIntoNearestChest.js");
+let Packet_TileEntityHatRackItemSync$TerrariaPacket = require("./packet/Packet_TileEntityHatRackItemSync.js");
+let Packet_CountsAsHostForGameplaySet$TerrariaPacket = require("./packet/Packet_CountsAsHostForGameplaySet.js");
 let Packet_InitialTileSectionsRequest$TerrariaPacket = require("./packet/Packet_InitialTileSectionsRequest.js");
+let Packet_AnglerQuestsCompletedAmount$TerrariaPacket = require("./packet/Packet_AnglerQuestsCompletedAmount.js");
+let Packet_CrystalInvasionSendWaitTime$TerrariaPacket = require("./packet/Packet_CrystalInvasionSendWaitTime.js");
 let Packet_HaveDryadDoStardewAnimation$TerrariaPacket = require("./packet/Packet_HaveDryadDoStardewAnimation.js");
+let Packet_TravellingMerchantInventory$TerrariaPacket = require("./packet/Packet_TravellingMerchantInventory.js");
+let Packet_TileEntityInteractionRequest$TerrariaPacket = require("./packet/Packet_TileEntityInteractionRequest.js");
+let Packet_TileEntityDisplayDollItemSync$TerrariaPacket = require("./packet/Packet_TileEntityDisplayDollItemSync.js");
+let Packet_ClientFinishConnectingToServer$TerrariaPacket = require("./packet/Packet_ClientFinishConnectingToServer.js");
 let Packet_DungeonDefendersEventAttemptSkipWait$TerrariaPacket = require("./packet/Packet_DungeonDefendersEventAttemptSkipWait.js");
 
 function toPacketName(packet) {
@@ -381,6 +479,10 @@ function toBuffer(packet, _fromServer) {
       return ISerializer$TerrariaPacket.toBufferResult(Packet_PlayerHealth$TerrariaPacket.toBuffer(packet._0));
     case "TileModify" :
       return ISerializer$TerrariaPacket.toBufferResult(Packet_TileModify$TerrariaPacket.toBuffer(packet._0));
+    case "TimeSet" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_TimeSet$TerrariaPacket.toBuffer(packet._0));
+    case "DoorUse" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_DoorUse$TerrariaPacket.toBuffer(packet._0));
     case "TileSquareSend" :
       return ISerializer$TerrariaPacket.toBufferResult(Packet_TileSquareSend$TerrariaPacket.toBuffer(packet._0));
     case "ItemDropUpdate" :
@@ -389,95 +491,249 @@ function toBuffer(packet, _fromServer) {
       return ISerializer$TerrariaPacket.toBufferResult(Packet_ItemOwner$TerrariaPacket.toBuffer(packet._0));
     case "NpcUpdate" :
       return ISerializer$TerrariaPacket.toBufferResult(Packet_NpcUpdate$TerrariaPacket.toBuffer(packet._0));
+    case "NpcItemStrike" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_NpcItemStrike$TerrariaPacket.toBuffer(packet._0));
     case "ProjectileSync" :
       return ISerializer$TerrariaPacket.toBufferResult(Packet_ProjectileSync$TerrariaPacket.toBuffer(packet._0));
+    case "NpcStrike" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_NpcStrike$TerrariaPacket.toBuffer(packet._0));
     case "ProjectileDestroy" :
       return ISerializer$TerrariaPacket.toBufferResult(Packet_ProjectileDestroy$TerrariaPacket.toBuffer(packet._0));
+    case "PvpToggle" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_PvpToggle$TerrariaPacket.toBuffer(packet._0));
+    case "ChestOpen" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_ChestOpen$TerrariaPacket.toBuffer(packet._0));
     case "ChestItem" :
-      return {
-        TAG: "Ok",
-        _0: Packet_ChestItem$TerrariaPacket.toBuffer(packet._0)
-      };
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_ChestItem$TerrariaPacket.toBuffer(packet._0));
     case "ActiveContainerSync" :
-      return {
-        TAG: "Ok",
-        _0: Packet_ActiveContainerSync$TerrariaPacket.toBuffer(packet._0)
-      };
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_ActiveContainerSync$TerrariaPacket.toBuffer(packet._0));
     case "ChestPlace" :
       return ISerializer$TerrariaPacket.toBufferResult(Packet_ChestPlace$TerrariaPacket.toBuffer(packet._0));
     case "HealEffect" :
-      return {
-        TAG: "Ok",
-        _0: Packet_HealEffect$TerrariaPacket.toBuffer(packet._0)
-      };
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_HealEffect$TerrariaPacket.toBuffer(packet._0));
+    case "Zones" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_Zones$TerrariaPacket.toBuffer(packet._0));
+    case "PasswordRequired" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_PasswordRequired$TerrariaPacket.toBuffer(packet._0));
+    case "PasswordSend" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_PasswordSend$TerrariaPacket.toBuffer(packet._0));
     case "ItemOwnerRemove" :
-      return {
-        TAG: "Ok",
-        _0: Packet_ItemOwnerRemove$TerrariaPacket.toBuffer(packet._0)
-      };
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_ItemOwnerRemove$TerrariaPacket.toBuffer(packet._0));
+    case "NpcTalk" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_NpcTalk$TerrariaPacket.toBuffer(packet._0));
+    case "PlayerAnimation" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_PlayerAnimation$TerrariaPacket.toBuffer(packet._0));
     case "PlayerMana" :
       return ISerializer$TerrariaPacket.toBufferResult(Packet_PlayerMana$TerrariaPacket.toBuffer(packet._0));
     case "ManaEffect" :
-      return {
-        TAG: "Ok",
-        _0: Packet_ManaEffect$TerrariaPacket.toBuffer(packet._0)
-      };
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_ManaEffect$TerrariaPacket.toBuffer(packet._0));
+    case "PlayerTeam" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_PlayerTeam$TerrariaPacket.toBuffer(packet._0));
+    case "SignRead" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_SignRead$TerrariaPacket.toBuffer(packet._0));
+    case "SignNew" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_SignNew$TerrariaPacket.toBuffer(packet._0));
+    case "LiquidSet" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_LiquidSet$TerrariaPacket.toBuffer(packet._0));
+    case "PlayerSpawnSelf" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_PlayerSpawnSelf$TerrariaPacket.toBuffer(packet._0));
     case "PlayerBuffsSet" :
       return ISerializer$TerrariaPacket.toBufferResult(Packet_PlayerBuffsSet$TerrariaPacket.toBuffer(packet._0));
+    case "NpcSpecialEffect" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_NpcSpecialEffect$TerrariaPacket.toBuffer(packet._0));
+    case "ChestOrTempleUnlock" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_ChestOrTempleUnlock$TerrariaPacket.toBuffer(packet._0));
+    case "NpcBuffAdd" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_NpcBuffAdd$TerrariaPacket.toBuffer(packet._0));
+    case "NpcBuffUpdate" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_NpcBuffUpdate$TerrariaPacket.toBuffer(packet._0));
+    case "PlayerBuffAdd" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_PlayerBuffAdd$TerrariaPacket.toBuffer(packet._0));
+    case "NpcNameUpdate" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_NpcNameUpdate$TerrariaPacket.toBuffer(packet._0));
+    case "GoodEvilUpdate" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_GoodEvilUpdate$TerrariaPacket.toBuffer(packet._0));
+    case "HarpPlay" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_HarpPlay$TerrariaPacket.toBuffer(packet._0));
+    case "SwitchHit" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_SwitchHit$TerrariaPacket.toBuffer(packet._0));
+    case "NpcHomeUpdate" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_NpcHomeUpdate$TerrariaPacket.toBuffer(packet._0));
+    case "BossOrInvasionSpawn" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_BossOrInvasionSpawn$TerrariaPacket.toBuffer(packet._0));
+    case "PlayerDodge" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_PlayerDodge$TerrariaPacket.toBuffer(packet._0));
+    case "TilePaint" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_TilePaint$TerrariaPacket.toBuffer(packet._0));
+    case "WallPaint" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_WallPaint$TerrariaPacket.toBuffer(packet._0));
+    case "Teleport" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_Teleport$TerrariaPacket.toBuffer(packet._0));
+    case "PlayerHealOther" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_PlayerHealOther$TerrariaPacket.toBuffer(packet._0));
     case "DimensionsUpdate" :
       return ISerializer$TerrariaPacket.toBufferResult(Packet_DimensionsUpdate$TerrariaPacket.toBuffer(packet._0));
     case "ClientUuid" :
       return ISerializer$TerrariaPacket.toBufferResult(Packet_ClientUuid$TerrariaPacket.toBuffer(packet._0));
+    case "ChestName" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_ChestName$TerrariaPacket.toBuffer(packet._0));
+    case "NpcCatch" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_NpcCatch$TerrariaPacket.toBuffer(packet._0));
+    case "NpcRelease" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_NpcRelease$TerrariaPacket.toBuffer(packet._0));
+    case "TravellingMerchantInventory" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_TravellingMerchantInventory$TerrariaPacket.toBuffer(packet._0));
+    case "TeleportationPotion" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_TeleportationPotion$TerrariaPacket.toBuffer(packet._0));
+    case "AnglerQuest" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_AnglerQuest$TerrariaPacket.toBuffer(packet._0));
+    case "AnglerQuestComplete" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_AnglerQuestComplete$TerrariaPacket.toBuffer(packet._0));
+    case "AnglerQuestsCompletedAmount" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_AnglerQuestsCompletedAmount$TerrariaPacket.toBuffer(packet._0));
+    case "TemporaryAnimationCreate" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_TemporaryAnimationCreate$TerrariaPacket.toBuffer(packet._0));
+    case "InvasionProgressReport" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_InvasionProgressReport$TerrariaPacket.toBuffer(packet._0));
+    case "ObjectPlace" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_ObjectPlace$TerrariaPacket.toBuffer(packet._0));
+    case "PlayerChestIndexSync" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_PlayerChestIndexSync$TerrariaPacket.toBuffer(packet._0));
+    case "CombatNumberCreate" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_CombatNumberCreate$TerrariaPacket.toBuffer(packet._0));
     case "NetModuleLoad" :
       return ISerializer$TerrariaPacket.toBufferResult(Packet_NetModuleLoad$TerrariaPacket.toBuffer(packet._0));
+    case "NpcKillCount" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_NpcKillCount$TerrariaPacket.toBuffer(packet._0));
+    case "PlayerStealth" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_PlayerStealth$TerrariaPacket.toBuffer(packet._0));
+    case "ItemForceIntoNearestChest" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_ItemForceIntoNearestChest$TerrariaPacket.toBuffer(packet._0));
+    case "TileEntityUpdate" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_TileEntityUpdate$TerrariaPacket.toBuffer(packet._0));
+    case "TileEntityPlace" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_TileEntityPlace$TerrariaPacket.toBuffer(packet._0));
+    case "ItemDropModify" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_ItemDropModify$TerrariaPacket.toBuffer(packet._0));
+    case "ItemFramePlace" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_ItemFramePlace$TerrariaPacket.toBuffer(packet._0));
+    case "ItemDropInstancedUpdate" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_ItemDropInstancedUpdate$TerrariaPacket.toBuffer(packet._0));
+    case "EmoteBubble" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_EmoteBubble$TerrariaPacket.toBuffer(packet._0));
+    case "ExtraValueSync" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_ExtraValueSync$TerrariaPacket.toBuffer(packet._0));
+    case "SocialHandshake" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_SocialHandshake$TerrariaPacket.toBuffer(packet._0));
+    case "PortalKill" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_PortalKill$TerrariaPacket.toBuffer(packet._0));
+    case "PlayerTeleportPortal" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_PlayerTeleportPortal$TerrariaPacket.toBuffer(packet._0));
+    case "NpcKilledNotification" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_NpcKilledNotification$TerrariaPacket.toBuffer(packet._0));
+    case "EventNotification" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_EventNotification$TerrariaPacket.toBuffer(packet._0));
+    case "MinionTargetUpdate" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_MinionTargetUpdate$TerrariaPacket.toBuffer(packet._0));
+    case "NpcTeleportPortal" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_NpcTeleportPortal$TerrariaPacket.toBuffer(packet._0));
+    case "ShieldStrengthsUpdate" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_ShieldStrengthsUpdate$TerrariaPacket.toBuffer(packet._0));
+    case "NebulaLevelUp" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_NebulaLevelUp$TerrariaPacket.toBuffer(packet._0));
+    case "MoonLordCountdown" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_MoonLordCountdown$TerrariaPacket.toBuffer(packet._0));
+    case "NpcShopItem" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_NpcShopItem$TerrariaPacket.toBuffer(packet._0));
+    case "GemLockToggle" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_GemLockToggle$TerrariaPacket.toBuffer(packet._0));
+    case "SmokePoof" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_SmokePoof$TerrariaPacket.toBuffer(packet._0));
     case "ChatMessageSmart" :
       return ISerializer$TerrariaPacket.toBufferResult(Packet_ChatMessageSmart$TerrariaPacket.toBuffer(packet._0));
+    case "WiredCannonShot" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_WiredCannonShot$TerrariaPacket.toBuffer(packet._0));
+    case "MassWireOperation" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_MassWireOperation$TerrariaPacket.toBuffer(packet._0));
+    case "MassWireOperationPay" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_MassWireOperationPay$TerrariaPacket.toBuffer(packet._0));
+    case "PartyToggle" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_PartyToggle$TerrariaPacket.toBuffer(packet._0));
+    case "TreeGrowFx" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_TreeGrowFx$TerrariaPacket.toBuffer(packet._0));
+    case "CrystalInvasionStart" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_CrystalInvasionStart$TerrariaPacket.toBuffer(packet._0));
+    case "CrystalInvasionWipeAll" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_CrystalInvasionWipeAll$TerrariaPacket.toBuffer(packet._0));
+    case "MinionAttackTargetUpdate" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_MinionAttackTargetUpdate$TerrariaPacket.toBuffer(packet._0));
+    case "CrystalInvasionSendWaitTime" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_CrystalInvasionSendWaitTime$TerrariaPacket.toBuffer(packet._0));
+    case "PlayerDamage" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_PlayerDamage$TerrariaPacket.toBuffer(packet._0));
+    case "PlayerDeath" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_PlayerDeath$TerrariaPacket.toBuffer(packet._0));
+    case "CombatTextCreate" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_CombatTextCreate$TerrariaPacket.toBuffer(packet._0));
+    case "Emoji" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_Emoji$TerrariaPacket.toBuffer(packet._0));
+    case "TileEntityDisplayDollItemSync" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_TileEntityDisplayDollItemSync$TerrariaPacket.toBuffer(packet._0));
+    case "TileEntityInteractionRequest" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_TileEntityInteractionRequest$TerrariaPacket.toBuffer(packet._0));
+    case "WeaponsRackTryPlacing" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_WeaponsRackTryPlacing$TerrariaPacket.toBuffer(packet._0));
+    case "TileEntityHatRackItemSync" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_TileEntityHatRackItemSync$TerrariaPacket.toBuffer(packet._0));
+    case "TilePickingSync" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_TilePickingSync$TerrariaPacket.toBuffer(packet._0));
+    case "RevengeMarkerSync" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_RevengeMarkerSync$TerrariaPacket.toBuffer(packet._0));
+    case "RevengeMarkerRemove" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_RevengeMarkerRemove$TerrariaPacket.toBuffer(packet._0));
+    case "GolfBallLandInCup" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_GolfBallLandInCup$TerrariaPacket.toBuffer(packet._0));
+    case "ClientFinishConnectingToServer" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_ClientFinishConnectingToServer$TerrariaPacket.toBuffer(packet._0));
+    case "NpcFishOut" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_NpcFishOut$TerrariaPacket.toBuffer(packet._0));
     case "NpcTamper" :
-      return {
-        TAG: "Ok",
-        _0: Packet_NpcTamper$TerrariaPacket.toBuffer(packet._0)
-      };
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_NpcTamper$TerrariaPacket.toBuffer(packet._0));
+    case "LegacySoundPlay" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_LegacySoundPlay$TerrariaPacket.toBuffer(packet._0));
+    case "FoodPlatterTryPlacing" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_FoodPlatterTryPlacing$TerrariaPacket.toBuffer(packet._0));
+    case "PlayerLuckFactorsUpdate" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_PlayerLuckFactorsUpdate$TerrariaPacket.toBuffer(packet._0));
+    case "PlayerDead" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_PlayerDead$TerrariaPacket.toBuffer(packet._0));
+    case "CavernMonsterTypeSync" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_CavernMonsterTypeSync$TerrariaPacket.toBuffer(packet._0));
+    case "NpcBuffRemovalRequest" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_NpcBuffRemovalRequest$TerrariaPacket.toBuffer(packet._0));
+    case "Unused" :
+    case "ClientSyncedInventory" :
+      return "NotImplemented";
+    case "CountsAsHostForGameplaySet" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_CountsAsHostForGameplaySet$TerrariaPacket.toBuffer(packet._0));
     case "CreditsOrSlimeTransform" :
-      return {
-        TAG: "Ok",
-        _0: Packet_CreditsOrSlimeTransform$TerrariaPacket.toBuffer(packet._0)
-      };
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_CreditsOrSlimeTransform$TerrariaPacket.toBuffer(packet._0));
     case "LucyAxeMessage" :
-      return {
-        TAG: "Ok",
-        _0: Packet_LucyAxeMessage$TerrariaPacket.toBuffer(packet._0)
-      };
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_LucyAxeMessage$TerrariaPacket.toBuffer(packet._0));
     case "PiggyBankVoidLensUpdate" :
-      return {
-        TAG: "Ok",
-        _0: Packet_PiggyBankVoidLensUpdate$TerrariaPacket.toBuffer(packet._0)
-      };
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_PiggyBankVoidLensUpdate$TerrariaPacket.toBuffer(packet._0));
     case "DungeonDefendersEventAttemptSkipWait" :
-      return {
-        TAG: "Ok",
-        _0: Packet_DungeonDefendersEventAttemptSkipWait$TerrariaPacket.toBuffer(packet._0)
-      };
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_DungeonDefendersEventAttemptSkipWait$TerrariaPacket.toBuffer(packet._0));
     case "HaveDryadDoStardewAnimation" :
-      return {
-        TAG: "Ok",
-        _0: Packet_HaveDryadDoStardewAnimation$TerrariaPacket.toBuffer(packet._0)
-      };
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_HaveDryadDoStardewAnimation$TerrariaPacket.toBuffer(packet._0));
     case "ItemDropShimmeredUpdate" :
       return ISerializer$TerrariaPacket.toBufferResult(Packet_ItemDropShimmeredUpdate$TerrariaPacket.toBuffer(packet._0));
     case "ShimmerEffectOrCoinLuck" :
-      return {
-        TAG: "Ok",
-        _0: Packet_ShimmerEffectOrCoinLuck$TerrariaPacket.toBuffer(packet._0)
-      };
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_ShimmerEffectOrCoinLuck$TerrariaPacket.toBuffer(packet._0));
     case "LoadoutSwitch" :
-      return {
-        TAG: "Ok",
-        _0: Packet_LoadoutSwitch$TerrariaPacket.toBuffer(packet._0)
-      };
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_LoadoutSwitch$TerrariaPacket.toBuffer(packet._0));
     case "ItemDropProtectedUpdate" :
       return ISerializer$TerrariaPacket.toBufferResult(Packet_ItemDropProtectedUpdate$TerrariaPacket.toBuffer(packet._0));
-    default:
-      return "NotImplemented";
   }
 }
 
@@ -1264,4 +1520,4 @@ exports.LazyPacket = LazyPacket;
 exports.toBuffer = toBuffer;
 exports.serialize = serialize;
 exports.toPacketName = toPacketName$1;
-/* Packet_Status-TerrariaPacket Not a pure module */
+/* Packet_Emoji-TerrariaPacket Not a pure module */

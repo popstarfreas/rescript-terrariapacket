@@ -35,21 +35,19 @@ module Decode = {
 }
 
 module Encode = {
-  let {packByte, packInt16, packInt32, packSingle, setType, data} = module(
-    PacketFactory.ManagedPacketWriter
-  )
-  type writer = PacketFactory.ManagedPacketWriter.t
+  let {packByte, packInt32, packSingle, setType, data} = module(ErrorAwarePacketWriter)
+  type writer = ErrorAwarePacketWriter.t
 
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.PlayerLuckFactorsUpdate->PacketType.toInt)
-    ->packByte(self.playerId)
-    ->packInt32(self.ladyBugLuckTimeLeft)
-    ->packSingle(self.torchLuck)
-    ->packByte(self.luckPotion)
-    ->packByte(self.hasGardenGnomeNearby ? 1 : 0)
-    ->packSingle(self.equipmentBasedLuckBonus)
-    ->packSingle(self.coinLuck)
+    ->packByte(self.playerId, "playerId")
+    ->packInt32(self.ladyBugLuckTimeLeft, "ladyBugLuckTimeLeft")
+    ->packSingle(self.torchLuck, "torchLuck")
+    ->packByte(self.luckPotion, "luckPotion")
+    ->packByte(self.hasGardenGnomeNearby ? 1 : 0, "hasGardenGnomeNearby")
+    ->packSingle(self.equipmentBasedLuckBonus, "equipmentBasedLuckBonus")
+    ->packSingle(self.coinLuck, "coinLuck")
     ->data
   }
 }

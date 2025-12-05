@@ -58,9 +58,7 @@ module Decode = {
 }
 
 module Encode = {
-  let {packByte, packInt16, packSingle, packInt32, setType, data} = module(
-    PacketFactory.ManagedPacketWriter
-  )
+  let {packByte, packInt16, packSingle, packInt32, setType, data} = module(ErrorAwarePacketWriter)
   let getFlags = (self: t): int => {
     BitFlags.fromFlags(
       ~flag1=self.teleportType == Npc,
@@ -73,20 +71,21 @@ module Encode = {
       ~flag8=false,
     )->BitFlags.toByte
   }
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
     let writer =
-      PacketFactory.ManagedPacketWriter.make()
+      ErrorAwarePacketWriter.make()
       ->setType(PacketType.Teleport->PacketType.toInt)
-      ->packByte(self->getFlags)
-      ->packInt16(self.targetId)
-      ->packSingle(self.x)
-      ->packSingle(self.y)
-      ->packByte(self.style)
+      ->packByte(self->getFlags, "flags")
+      ->packInt16(self.targetId, "targetId")
+      ->packSingle(self.x, "x")
+      ->packSingle(self.y, "y")
+      ->packByte(self.style, "style")
 
-    switch self.extraInfo {
-    | Some(extraInfo) => writer->packInt32(extraInfo)->ignore
-    | None => ()
-    }
+    let writer =
+      switch self.extraInfo {
+      | Some(extraInfo) => writer->packInt32(extraInfo, "extraInfo")
+      | None => writer
+      }
 
     writer->data
   }

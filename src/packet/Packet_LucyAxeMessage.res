@@ -29,17 +29,17 @@ module Decode = {
 }
 
 module Encode = {
-  module Writer = PacketFactory.ManagedPacketWriter
+  module Writer = ErrorAwarePacketWriter
   let {packByte, packInt32, packSingle, setType, data} = module(Writer)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
     Writer.make()
     ->setType(PacketType.LucyAxeMessage->PacketType.toInt)
-    ->packByte(self.source)
-    ->packByte(self.variant)
-    ->packSingle(self.velocity.x)
-    ->packSingle(self.velocity.y)
-    ->packInt32(self.position.x)
-    ->packInt32(self.position.y)
+    ->packByte(self.source, "source")
+    ->packByte(self.variant, "variant")
+    ->packSingle(self.velocity.x, "velocityX")
+    ->packSingle(self.velocity.y, "velocityY")
+    ->packInt32(self.position.x, "positionX")
+    ->packInt32(self.position.y, "positionY")
     ->data
   }
 }

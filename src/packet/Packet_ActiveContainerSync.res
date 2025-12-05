@@ -32,18 +32,21 @@ module Decode = {
 }
 
 module Encode = {
-  let {packByte, packInt16, packString, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
+  let {packByte, packInt16, packString, setType, data} = module(ErrorAwarePacketWriter)
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
     let writer =
-      PacketFactory.ManagedPacketWriter.make()
+      ErrorAwarePacketWriter.make()
       ->setType(PacketType.ActiveContainerSync->PacketType.toInt)
-      ->packInt16(self.chestId)
-      ->packInt16(self.x)
-      ->packInt16(self.y)
-      ->packByte(self.nameLength)
-    if self.nameLength > 0 && self.nameLength <= 20 {
-      writer->packString(self.name)->ignore
-    }
+      ->packInt16(self.chestId, "chestId")
+      ->packInt16(self.x, "x")
+      ->packInt16(self.y, "y")
+      ->packByte(self.nameLength, "nameLength")
+    let writer =
+      if self.nameLength > 0 && self.nameLength <= 20 {
+        writer->packString(self.name, "name")
+      } else {
+        writer
+      }
     writer->data
   }
 }

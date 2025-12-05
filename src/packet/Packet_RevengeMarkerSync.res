@@ -12,7 +12,7 @@ type t = {
 }
 
 module Decode = {
-  let {readInt32, readSingle, readBoolean} = module(ErrorAwarePacketReader)
+  let {readInt32, readSingle, readBool} = module(ErrorAwarePacketReader)
   let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
     let? Ok(uniqueId) = reader->readInt32("uniqueId")
@@ -24,7 +24,7 @@ module Decode = {
     let? Ok(npcAiStyleAgainstDiscouragement) = reader->readInt32("npcAiStyleAgainstDiscouragement")
     let? Ok(coinValue) = reader->readInt32("coinValue")
     let? Ok(baseValue) = reader->readSingle("baseValue")
-    let? Ok(spawnedFromStatue) = reader->readBoolean("spawnedFromStatue")
+    let? Ok(spawnedFromStatue) = reader->readBool("spawnedFromStatue")
     Ok({
       uniqueId,
       position: {x: posX, y: posY},
@@ -40,7 +40,7 @@ module Decode = {
 }
 
 module Encode = {
-  let {packInt32, packSingle, packBoolean, setType, data} = module(ErrorAwarePacketWriter)
+  let {packInt32, packSingle, packBool, setType, data} = module(ErrorAwarePacketWriter)
   let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> =>
     ErrorAwarePacketWriter.make()
     ->setType(PacketType.RevengeMarkerSync->PacketType.toInt)
@@ -53,7 +53,7 @@ module Encode = {
     ->packInt32(self.npcAiStyleAgainstDiscouragement, "npcAiStyleAgainstDiscouragement")
     ->packInt32(self.coinValue, "coinValue")
     ->packSingle(self.baseValue, "baseValue")
-    ->packBoolean(self.spawnedFromStatue, "spawnedFromStatue")
+    ->packBool(self.spawnedFromStatue, "spawnedFromStatue")
     ->data
 }
 

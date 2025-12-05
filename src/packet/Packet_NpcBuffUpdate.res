@@ -35,27 +35,53 @@ module Decode = {
 }
 
 module Encode = {
-  let {packByte, packInt16, packUInt16, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  type writer = PacketFactory.ManagedPacketWriter.t
+  let {packInt16, packUInt16, setType, data} = module(ErrorAwarePacketWriter)
+  type writer = ErrorAwarePacketWriter.t
   let packBuffs = (writer: writer, buffs: array<int>): writer => {
-    buffs->Array.forEach(buff => writer->packUInt16(buff)->ignore)
-    writer
+    let rec loop = (writer: writer, idx: int): writer =>
+      if idx >= buffs->Array.length {
+        writer
+      } else {
+        loop(
+          writer->packUInt16(
+            buffs->Array.getUnsafe(idx),
+            `buff${(idx + 1)->Int.toString}`,
+          ),
+          idx + 1,
+        )
+      }
+    loop(writer, 0)
   }
   let packBuffTimes = (writer: writer, buffTimes: array<int>): writer => {
-    buffTimes->Array.forEach(buff => writer->packInt16(buff)->ignore)
-    writer
+    let rec loop = (writer: writer, idx: int): writer =>
+      if idx >= buffTimes->Array.length {
+        writer
+      } else {
+        loop(
+          writer->packInt16(
+            buffTimes->Array.getUnsafe(idx),
+            `buffTime${(idx + 1)->Int.toString}`,
+          ),
+          idx + 1,
+        )
+      }
+    loop(writer, 0)
   }
 
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    if self.buffs->Array.length != 20 {
-      failwith(`Expected 20 buffs, got ${Array.length(self.buffs)->Int.toString}`)
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    if self.buffs->Array.length != 20 || self.buffTimes->Array.length != 20 {
+      Error({
+        context: "Packet_NpcBuffUpdate.toBuffer",
+        error: JsError.make("Expected 20 buffs and 20 buffTimes")->JsError.toJsExn,
+      })
+    } else {
+      ErrorAwarePacketWriter.make()
+      ->setType(PacketType.NpcBuffUpdate->PacketType.toInt)
+      ->packInt16(self.npcId, "npcId")
+      ->packBuffs(self.buffs)
+      ->packBuffTimes(self.buffTimes)
+      ->data
     }
-    PacketFactory.ManagedPacketWriter.make()
-    ->setType(PacketType.NpcBuffUpdate->PacketType.toInt)
-    ->packInt16(self.npcId)
-    ->packBuffs(self.buffs)
-    ->packBuffTimes(self.buffTimes)
-    ->data
   }
 }
 

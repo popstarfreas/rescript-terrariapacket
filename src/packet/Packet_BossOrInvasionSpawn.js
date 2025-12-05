@@ -2,10 +2,9 @@
 'use strict';
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
-let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
 let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
 function parse(payload) {
   let reader = new Packetreader(payload);
@@ -98,69 +97,61 @@ let Decode = {
   parse: parse
 };
 
-function packInt16(prim0, prim1) {
-  return prim0.packInt16(prim1);
-}
-
-function data(prim) {
-  return prim.data;
-}
-
 function packSpawnType(writer, spawnType) {
   if (typeof spawnType === "object") {
     if (spawnType.TAG === "Invasion") {
-      return writer.packInt16(-spawnType._0 | 0);
+      return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -spawnType._0 | 0, "spawnType");
     } else {
-      return writer.packInt16(spawnType._0);
+      return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, spawnType._0, "spawnType");
     }
   }
   switch (spawnType) {
     case "GoblinInvasion" :
-      return writer.packInt16(-1);
+      return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -1, "spawnType");
     case "FrostInvasion" :
-      return writer.packInt16(-2);
+      return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -2, "spawnType");
     case "PirateInvasion" :
-      return writer.packInt16(-3);
+      return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -3, "spawnType");
     case "PumpkinMoon" :
-      return writer.packInt16(-4);
+      return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -4, "spawnType");
     case "SnowMoon" :
-      return writer.packInt16(-5);
+      return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -5, "spawnType");
     case "Eclipse" :
-      return writer.packInt16(-6);
+      return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -6, "spawnType");
     case "MartianMoon" :
-      return writer.packInt16(-7);
+      return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -7, "spawnType");
     case "ImpendingDoom" :
-      return writer.packInt16(-8);
+      return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -8, "spawnType");
     case "BloodMoon" :
-      return writer.packInt16(-10);
+      return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -10, "spawnType");
     case "CombatBookUsed" :
-      return writer.packInt16(-11);
+      return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -11, "spawnType");
     case "BoughtCat" :
-      return writer.packInt16(-12);
+      return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -12, "spawnType");
     case "BoughtDog" :
-      return writer.packInt16(-13);
+      return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -13, "spawnType");
     case "BoughtBunny" :
-      return writer.packInt16(-14);
+      return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -14, "spawnType");
     case "BoughtSlime" :
-      return writer.packInt16(-15);
+      return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -15, "spawnType");
     case "MechQueen" :
-      return writer.packInt16(-16);
+      return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -16, "spawnType");
     case "CombatBookVolumeTwo" :
-      return writer.packInt16(-17);
+      return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -17, "spawnType");
     case "PeddlersSatchel" :
-      return writer.packInt16(-18);
+      return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -18, "spawnType");
   }
 }
 
 function toBuffer(self) {
-  return packSpawnType(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("BossOrInvasionSpawn")).packInt16(self.playerId), self.spawnType).data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(packSpawnType(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("BossOrInvasionSpawn")), self.playerId, "playerId"), self.spawnType));
 }
 
 let Encode = {
   Writer: undefined,
-  packInt16: packInt16,
-  setType: ManagedPacketWriter$PacketFactory.setType,
-  data: data,
+  packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+  data: ErrorAwarePacketWriter$TerrariaPacket.data,
   packSpawnType: packSpawnType,
   toBuffer: toBuffer
 };
@@ -169,4 +160,4 @@ exports.Decode = Decode;
 exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

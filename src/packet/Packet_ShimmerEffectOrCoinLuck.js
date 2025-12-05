@@ -2,10 +2,9 @@
 'use strict';
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
-let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
 let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
 function parse(payload) {
   let reader = new Packetreader(payload);
@@ -90,48 +89,32 @@ let Decode = {
   parse: parse
 };
 
-function packByte(prim0, prim1) {
-  return prim0.packByte(prim1);
-}
-
-function packInt32(prim0, prim1) {
-  return prim0.packInt32(prim1);
-}
-
-function packSingle(prim0, prim1) {
-  return prim0.packSingle(prim1);
-}
-
-function data(prim) {
-  return prim.data;
-}
-
 function toBuffer(self) {
-  let writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ShimmerEffectOrCoinLuck"));
+  let writer = ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ShimmerEffectOrCoinLuck"));
   let tmp;
   switch (self.TAG) {
     case "ShimmerEffect" :
-      tmp = writer.packByte(0).packSingle(self._0).packSingle(self._1);
+      tmp = ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, 0, "kind"), self._0, "shimmerX"), self._1, "shimmerY");
       break;
     case "CoinLuck" :
       let match = self._0;
       let position = match.position;
-      tmp = writer.packByte(1).packSingle(position.x).packSingle(position.y).packInt32(match.amount);
+      tmp = ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, 1, "kind"), position.x, "coinLuckX"), position.y, "coinLuckY"), match.amount, "coinLuckAmount");
       break;
     case "NewShimmerEffect" :
-      tmp = writer.packByte(2).packInt32(self._0);
+      tmp = ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, 2, "kind"), self._0, "newShimmerEffectId");
       break;
   }
-  return tmp.data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(tmp);
 }
 
 let Encode = {
   Writer: undefined,
-  packByte: packByte,
-  packInt32: packInt32,
-  packSingle: packSingle,
-  setType: ManagedPacketWriter$PacketFactory.setType,
-  data: data,
+  packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+  packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+  packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
+  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+  data: ErrorAwarePacketWriter$TerrariaPacket.data,
   toBuffer: toBuffer
 };
 
@@ -139,4 +122,4 @@ exports.Decode = Decode;
 exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

@@ -18,12 +18,12 @@ module Decode = {
 }
 
 module Encode = {
-  let {packByte, packInt16, setType, data} = module(PacketFactory.ManagedPacketWriter)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    PacketFactory.ManagedPacketWriter.make()
+  let {packByte, packInt16, setType, data} = module(ErrorAwarePacketWriter)
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    ErrorAwarePacketWriter.make()
     ->setType(PacketType.ManaEffect->PacketType.toInt)
-    ->packByte(self.playerId)
-    ->packInt16(self.manaAmount)
+    ->packByte(self.playerId, "playerId")
+    ->packInt16(self.manaAmount, "manaAmount")
     ->data
   }
 }

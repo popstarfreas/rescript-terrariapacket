@@ -22,14 +22,36 @@ module Decode = {
 }
 
 module Encode = {
-  module Writer = PacketFactory.ManagedPacketWriter
+  module Writer = ErrorAwarePacketWriter
   let {packInt16, setType, data} = module(Writer)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
-    let writer = Writer.make()->setType(PacketType.TravellingMerchantInventory->PacketType.toInt)
+  let packItems = (writer: Writer.t, items: array<int>): Writer.t => {
+    let rec loop = (writer: Writer.t, idx: int): Writer.t =>
+      if idx >= items->Array.length {
+        writer
+      } else {
+        loop(
+          writer->packInt16(
+            items->Array.getUnsafe(idx),
+            `item${(idx + 1)->Int.toString}`,
+          ),
+          idx + 1,
+        )
+      }
+    loop(writer, 0)
+  }
 
-    self.items->Array.forEach(item => writer->packInt16(item)->ignore)
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
+    if self.items->Array.length != 40 {
+      Error({
+        context: "Packet_TravellingMerchantInventory.toBuffer",
+        error: JsError.make("Expected 40 items")->JsError.toJsExn,
+      })
+    } else {
+      let writer = Writer.make()->setType(PacketType.TravellingMerchantInventory->PacketType.toInt)
 
-    writer->data
+      writer->packItems(self.items)->data
+    }
+
   }
 }
 

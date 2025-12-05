@@ -618,157 +618,218 @@ let toBuffer = (packet: t, _fromServer: bool): ISerializer.toBufferResult => {
   | PlayerActive(playerActive) => PlayerActive.toBuffer(playerActive)->ISerializer.toBufferResult
   | PlayerHealth(playerHealth) => PlayerHealth.toBuffer(playerHealth)->ISerializer.toBufferResult
   | TileModify(tileModify) => TileModify.toBuffer(tileModify)->ISerializer.toBufferResult
-  | TimeSet(_timeSet) => NotImplemented
-  | DoorUse(_doorUse) => NotImplemented
+  | TimeSet(timeSet) => TimeSet.toBuffer(timeSet)->ISerializer.toBufferResult
+  | DoorUse(doorUse) => DoorUse.toBuffer(doorUse)->ISerializer.toBufferResult
   | TileSquareSend(tileSquareSend) =>
     TileSquareSend.toBuffer(tileSquareSend)->ISerializer.toBufferResult
   | ItemDropUpdate(itemDropUpdate) =>
     ItemDropUpdate.toBuffer(itemDropUpdate)->ISerializer.toBufferResult
   | ItemOwner(itemOwner) => ItemOwner.toBuffer(itemOwner)->ISerializer.toBufferResult
   | NpcUpdate(npcUpdate) => NpcUpdate.toBuffer(npcUpdate)->ISerializer.toBufferResult
-  | NpcItemStrike(_npcItemStrike) => NotImplemented
+  | NpcItemStrike(npcItemStrike) =>
+    NpcItemStrike.toBuffer(npcItemStrike)->ISerializer.toBufferResult
   | ProjectileSync(projectileSync) =>
     ProjectileSync.toBuffer(projectileSync)->ISerializer.toBufferResult
-  | NpcStrike(_npcStrike) => NotImplemented
+  | NpcStrike(npcStrike) => NpcStrike.toBuffer(npcStrike)->ISerializer.toBufferResult
   | ProjectileDestroy(projectileDestroy) =>
     ProjectileDestroy.toBuffer(projectileDestroy)->ISerializer.toBufferResult
-  | PvpToggle(_pvpToggle) => NotImplemented
-  | ChestOpen(_chestOpen) => NotImplemented
-  | ChestItem(chestItem) => Ok(ChestItem.toBuffer(chestItem))
+  | PvpToggle(pvpToggle) => PvpToggle.toBuffer(pvpToggle)->ISerializer.toBufferResult
+  | ChestOpen(chestOpen) => ChestOpen.toBuffer(chestOpen)->ISerializer.toBufferResult
+  | ChestItem(chestItem) => ChestItem.toBuffer(chestItem)->ISerializer.toBufferResult
   | ActiveContainerSync(activeContainerSync) =>
-    Ok(ActiveContainerSync.toBuffer(activeContainerSync))
+    ActiveContainerSync.toBuffer(activeContainerSync)->ISerializer.toBufferResult
   | ChestPlace(chestPlace) => ChestPlace.toBuffer(chestPlace)->ISerializer.toBufferResult
-  | HealEffect(healEffect) => Ok(HealEffect.toBuffer(healEffect))
-  | Zones(_zones) => NotImplemented
-  | PasswordRequired(_passwordRequired) => NotImplemented
-  | PasswordSend(_passwordSend) => NotImplemented
-  | ItemOwnerRemove(itemOwnerRemove) => Ok(ItemOwnerRemove.toBuffer(itemOwnerRemove))
-  | NpcTalk(_npcTalk) => NotImplemented
-  | PlayerAnimation(_playerAnimation) => NotImplemented
+  | HealEffect(healEffect) => HealEffect.toBuffer(healEffect)->ISerializer.toBufferResult
+  | Zones(zones) => Zones.toBuffer(zones)->ISerializer.toBufferResult
+  | PasswordRequired(passwordRequired) =>
+    PasswordRequired.toBuffer(passwordRequired)->ISerializer.toBufferResult
+  | PasswordSend(passwordSend) => PasswordSend.toBuffer(passwordSend)->ISerializer.toBufferResult
+  | ItemOwnerRemove(itemOwnerRemove) =>
+    ItemOwnerRemove.toBuffer(itemOwnerRemove)->ISerializer.toBufferResult
+  | NpcTalk(npcTalk) => NpcTalk.toBuffer(npcTalk)->ISerializer.toBufferResult
+  | PlayerAnimation(playerAnimation) =>
+    PlayerAnimation.toBuffer(playerAnimation)->ISerializer.toBufferResult
   | PlayerMana(playerMana) => PlayerMana.toBuffer(playerMana)->ISerializer.toBufferResult
-  | ManaEffect(manaEffect) => Ok(ManaEffect.toBuffer(manaEffect))
-  | PlayerTeam(_playerTeam) => NotImplemented
-  | SignRead(_signRead) => NotImplemented
-  | SignNew(_signNew) => NotImplemented
-  | LiquidSet(_liquidSet) => NotImplemented
-  | PlayerSpawnSelf(_playerSpawnSelf) => NotImplemented
+  | ManaEffect(manaEffect) => ManaEffect.toBuffer(manaEffect)->ISerializer.toBufferResult
+  | PlayerTeam(playerTeam) => PlayerTeam.toBuffer(playerTeam)->ISerializer.toBufferResult
+  | SignRead(signRead) => SignRead.toBuffer(signRead)->ISerializer.toBufferResult
+  | SignNew(signNew) => SignNew.toBuffer(signNew)->ISerializer.toBufferResult
+  | LiquidSet(liquidSet) => LiquidSet.toBuffer(liquidSet)->ISerializer.toBufferResult
+  | PlayerSpawnSelf(playerSpawnSelf) =>
+    PlayerSpawnSelf.toBuffer(playerSpawnSelf)->ISerializer.toBufferResult
   | PlayerBuffsSet(playerBuffsSet) =>
     PlayerBuffsSet.toBuffer(playerBuffsSet)->ISerializer.toBufferResult
-  | NpcSpecialEffect(_npcSpecialEffect) => NotImplemented
-  | ChestOrTempleUnlock(_chestOrTempleUnlock) => NotImplemented
-  | NpcBuffAdd(_npcBuffAdd) => NotImplemented
-  | NpcBuffUpdate(_npcBuffUpdate) => NotImplemented
-  | PlayerBuffAdd(_playerBuffAdd) => NotImplemented
-  | NpcNameUpdate(_npcNameUpdate) => NotImplemented
-  | GoodEvilUpdate(_goodEvilUpdate) => NotImplemented
-  | HarpPlay(_harpPlay) => NotImplemented
-  | SwitchHit(_switchHit) => NotImplemented
-  | NpcHomeUpdate(_npcHomeUpdate) => NotImplemented
-  | BossOrInvasionSpawn(_bossOrInvasionSpawn) => NotImplemented
-  | PlayerDodge(_playerDodge) => NotImplemented
-  | TilePaint(_tilePaint) => NotImplemented
-  | WallPaint(_wallPaint) => NotImplemented
-  | Teleport(_teleport) => NotImplemented
-  | PlayerHealOther(_playerHealOther) => NotImplemented
+  | NpcSpecialEffect(npcSpecialEffect) =>
+    NpcSpecialEffect.toBuffer(npcSpecialEffect)->ISerializer.toBufferResult
+  | ChestOrTempleUnlock(chestOrTempleUnlock) =>
+    ChestOrTempleUnlock.toBuffer(chestOrTempleUnlock)->ISerializer.toBufferResult
+  | NpcBuffAdd(npcBuffAdd) => NpcBuffAdd.toBuffer(npcBuffAdd)->ISerializer.toBufferResult
+  | NpcBuffUpdate(npcBuffUpdate) =>
+    NpcBuffUpdate.toBuffer(npcBuffUpdate)->ISerializer.toBufferResult
+  | PlayerBuffAdd(playerBuffAdd) =>
+    PlayerBuffAdd.toBuffer(playerBuffAdd)->ISerializer.toBufferResult
+  | NpcNameUpdate(npcNameUpdate) =>
+    NpcNameUpdate.toBuffer(npcNameUpdate)->ISerializer.toBufferResult
+  | GoodEvilUpdate(goodEvilUpdate) =>
+    GoodEvilUpdate.toBuffer(goodEvilUpdate)->ISerializer.toBufferResult
+  | HarpPlay(harpPlay) => HarpPlay.toBuffer(harpPlay)->ISerializer.toBufferResult
+  | SwitchHit(switchHit) => SwitchHit.toBuffer(switchHit)->ISerializer.toBufferResult
+  | NpcHomeUpdate(npcHomeUpdate) =>
+    NpcHomeUpdate.toBuffer(npcHomeUpdate)->ISerializer.toBufferResult
+  | BossOrInvasionSpawn(bossOrInvasionSpawn) =>
+    BossOrInvasionSpawn.toBuffer(bossOrInvasionSpawn)->ISerializer.toBufferResult
+  | PlayerDodge(playerDodge) => PlayerDodge.toBuffer(playerDodge)->ISerializer.toBufferResult
+  | TilePaint(tilePaint) => TilePaint.toBuffer(tilePaint)->ISerializer.toBufferResult
+  | WallPaint(wallPaint) => WallPaint.toBuffer(wallPaint)->ISerializer.toBufferResult
+  | Teleport(teleport) => Teleport.toBuffer(teleport)->ISerializer.toBufferResult
+  | PlayerHealOther(playerHealOther) =>
+    PlayerHealOther.toBuffer(playerHealOther)->ISerializer.toBufferResult
   | DimensionsUpdate(dimensionsUpdate) =>
     DimensionsUpdate.toBuffer(dimensionsUpdate)->ISerializer.toBufferResult
   | ClientUuid(clientUuid) => ClientUuid.toBuffer(clientUuid)->ISerializer.toBufferResult
-  | ChestName(_chestName) => NotImplemented
-  | NpcCatch(_catchNpc) => NotImplemented
-  | NpcRelease(_releaseNpc) => NotImplemented
-  | TravellingMerchantInventory(_travellingMerchantInventory) => NotImplemented
-  | TeleportationPotion(_teleportationPotion) => NotImplemented
-  | AnglerQuest(_anglerQuest) => NotImplemented
-  | AnglerQuestComplete(_anglerQuestComplete) => NotImplemented
-  | AnglerQuestsCompletedAmount(_anglerQuestsCompletedAmount) => NotImplemented
-  | TemporaryAnimationCreate(_temporaryAnimationCreate) => NotImplemented
-  | InvasionProgressReport(_invasionProgressReport) => NotImplemented
-  | ObjectPlace(_objectPlace) => NotImplemented
-  | PlayerChestIndexSync(_playerChestIndexSync) => NotImplemented
-  | CombatNumberCreate(_combatNumberCreate) => NotImplemented
+  | ChestName(chestName) => ChestName.toBuffer(chestName)->ISerializer.toBufferResult
+  | NpcCatch(npcCatch) => NpcCatch.toBuffer(npcCatch)->ISerializer.toBufferResult
+  | NpcRelease(npcRelease) => NpcRelease.toBuffer(npcRelease)->ISerializer.toBufferResult
+  | TravellingMerchantInventory(travellingMerchantInventory) =>
+    TravellingMerchantInventory.toBuffer(travellingMerchantInventory)->ISerializer.toBufferResult
+  | TeleportationPotion(teleportationPotion) =>
+    TeleportationPotion.toBuffer(teleportationPotion)->ISerializer.toBufferResult
+  | AnglerQuest(anglerQuest) => AnglerQuest.toBuffer(anglerQuest)->ISerializer.toBufferResult
+  | AnglerQuestComplete(anglerQuestComplete) =>
+    AnglerQuestComplete.toBuffer(anglerQuestComplete)->ISerializer.toBufferResult
+  | AnglerQuestsCompletedAmount(anglerQuestsCompletedAmount) =>
+    AnglerQuestsCompletedAmount.toBuffer(anglerQuestsCompletedAmount)
+    ->ISerializer.toBufferResult
+  | TemporaryAnimationCreate(temporaryAnimationCreate) =>
+    TemporaryAnimationCreate.toBuffer(temporaryAnimationCreate)->ISerializer.toBufferResult
+  | InvasionProgressReport(invasionProgressReport) =>
+    InvasionProgressReport.toBuffer(invasionProgressReport)->ISerializer.toBufferResult
+  | ObjectPlace(objectPlace) => ObjectPlace.toBuffer(objectPlace)->ISerializer.toBufferResult
+  | PlayerChestIndexSync(playerChestIndexSync) =>
+    PlayerChestIndexSync.toBuffer(playerChestIndexSync)->ISerializer.toBufferResult
+  | CombatNumberCreate(combatNumberCreate) =>
+    CombatNumberCreate.toBuffer(combatNumberCreate)->ISerializer.toBufferResult
   | NetModuleLoad(netModuleLoad) =>
     NetModuleLoad.toBuffer(netModuleLoad)->ISerializer.toBufferResult
-  | NpcKillCount(_npcKillCount) => NotImplemented
-  | PlayerStealth(_playerStealth) => NotImplemented
-  | ItemForceIntoNearestChest(_itemForceIntoNearestChest) => NotImplemented
+  | NpcKillCount(npcKillCount) => NpcKillCount.toBuffer(npcKillCount)->ISerializer.toBufferResult
+  | PlayerStealth(playerStealth) =>
+    PlayerStealth.toBuffer(playerStealth)->ISerializer.toBufferResult
+  | ItemForceIntoNearestChest(itemForceIntoNearestChest) =>
+    ItemForceIntoNearestChest.toBuffer(itemForceIntoNearestChest)->ISerializer.toBufferResult
   | TileEntityUpdate(tileEntityUpdate) =>
     TileEntityUpdate.toBuffer(tileEntityUpdate)->ISerializer.toBufferResult
   | TileEntityPlace(tileEntityPlace) =>
     TileEntityPlace.toBuffer(tileEntityPlace)->ISerializer.toBufferResult
   | ItemDropModify(itemDropModify) =>
     ItemDropModify.toBuffer(itemDropModify)->ISerializer.toBufferResult
-  | ItemFramePlace(_itemFramePlace) => NotImplemented
-  | ItemDropInstancedUpdate(_itemDropInstancedUpdate) => NotImplemented
+  | ItemFramePlace(itemFramePlace) =>
+    ItemFramePlace.toBuffer(itemFramePlace)->ISerializer.toBufferResult
+  | ItemDropInstancedUpdate(itemDropInstancedUpdate) =>
+    ItemDropInstancedUpdate.toBuffer(itemDropInstancedUpdate)->ISerializer.toBufferResult
   | EmoteBubble(emoteBubble) => EmoteBubble.toBuffer(emoteBubble)->ISerializer.toBufferResult
-  | ExtraValueSync(_extraValueSync) => NotImplemented
-  | SocialHandshake(_socialHandshake) => NotImplemented
+  | ExtraValueSync(extraValueSync) =>
+    ExtraValueSync.toBuffer(extraValueSync)->ISerializer.toBufferResult
+  | SocialHandshake(socialHandshake) =>
+    SocialHandshake.toBuffer(socialHandshake)->ISerializer.toBufferResult
   | Unused(_unused) => NotImplemented
-  | PortalKill(_portalKill) => NotImplemented
-  | PlayerTeleportPortal(_playerTeleportPortal) => NotImplemented
-  | NpcKilledNotification(_npcKilledNotification) => NotImplemented
-  | EventNotification(_eventNotification) => NotImplemented
-  | MinionTargetUpdate(_minionTargetUpdate) => NotImplemented
-  | NpcTeleportPortal(_npcTeleportPortal) => NotImplemented
-  | ShieldStrengthsUpdate(_shieldStrengthsUpdate) => NotImplemented
-  | NebulaLevelUp(_nebulaLevelUp) => NotImplemented
-  | MoonLordCountdown(_moonLordCountdown) => NotImplemented
+  | PortalKill(portalKill) => PortalKill.toBuffer(portalKill)->ISerializer.toBufferResult
+  | PlayerTeleportPortal(playerTeleportPortal) =>
+    PlayerTeleportPortal.toBuffer(playerTeleportPortal)->ISerializer.toBufferResult
+  | NpcKilledNotification(npcKilledNotification) =>
+    NpcKilledNotification.toBuffer(npcKilledNotification)->ISerializer.toBufferResult
+  | EventNotification(eventNotification) =>
+    EventNotification.toBuffer(eventNotification)->ISerializer.toBufferResult
+  | MinionTargetUpdate(minionTargetUpdate) =>
+    MinionTargetUpdate.toBuffer(minionTargetUpdate)->ISerializer.toBufferResult
+  | NpcTeleportPortal(npcTeleportPortal) =>
+    NpcTeleportPortal.toBuffer(npcTeleportPortal)->ISerializer.toBufferResult
+  | ShieldStrengthsUpdate(shieldStrengthsUpdate) =>
+    ShieldStrengthsUpdate.toBuffer(shieldStrengthsUpdate)->ISerializer.toBufferResult
+  | NebulaLevelUp(nebulaLevelUp) =>
+    NebulaLevelUp.toBuffer(nebulaLevelUp)->ISerializer.toBufferResult
+  | MoonLordCountdown(moonLordCountdown) =>
+    MoonLordCountdown.toBuffer(moonLordCountdown)->ISerializer.toBufferResult
   | NpcShopItem(npcShopItem) => NpcShopItem.toBuffer(npcShopItem)->ISerializer.toBufferResult
-  | GemLockToggle(_gemLockToggle) => NotImplemented
+  | GemLockToggle(gemLockToggle) =>
+    GemLockToggle.toBuffer(gemLockToggle)->ISerializer.toBufferResult
   | SmokePoof(smokePoof) => SmokePoof.toBuffer(smokePoof)->ISerializer.toBufferResult
   | ChatMessageSmart(chatMessageSmart) =>
     ChatMessageSmart.toBuffer(chatMessageSmart)->ISerializer.toBufferResult
-  | WiredCannonShot(_wiredCannonShot) => NotImplemented
+  | WiredCannonShot(wiredCannonShot) =>
+    WiredCannonShot.toBuffer(wiredCannonShot)->ISerializer.toBufferResult
   | MassWireOperation(massWireOperation) =>
     MassWireOperation.toBuffer(massWireOperation)->ISerializer.toBufferResult
   | MassWireOperationPay(massWireOperationPay) =>
     MassWireOperationPay.toBuffer(massWireOperationPay)->ISerializer.toBufferResult
-  | PartyToggle(_partyToggle) => NotImplemented
-  | TreeGrowFx(_treeGrowFx) => NotImplemented
-  | CrystalInvasionStart(_crystalInvasionStart) => NotImplemented
-  | CrystalInvasionWipeAll(_crystalInvasionWipeAll) => NotImplemented
-  | MinionAttackTargetUpdate(_minionAttackTargetUpdate) => NotImplemented
-  | CrystalInvasionSendWaitTime(_crystalInvasionSendWaitTime) => NotImplemented
-  | PlayerDamage(_playerDamage) => NotImplemented
-  | PlayerDeath(_playerDeath) => NotImplemented
-  | CombatTextCreate(_combatTextCreate) => NotImplemented
-  | Emoji(emoji) => Ok(Emoji.toBuffer(emoji))
-  | TileEntityDisplayDollItemSync(_tileEntityDisplayDollItemSync) => NotImplemented
-  | TileEntityInteractionRequest(tileEntityInteractionRequest) =>
-    TileEntityInteractionRequest.toBuffer(tileEntityInteractionRequest)
+  | PartyToggle(partyToggle) => PartyToggle.toBuffer(partyToggle)->ISerializer.toBufferResult
+  | TreeGrowFx(treeGrowFx) => TreeGrowFx.toBuffer(treeGrowFx)->ISerializer.toBufferResult
+  | CrystalInvasionStart(crystalInvasionStart) =>
+    CrystalInvasionStart.toBuffer(crystalInvasionStart)->ISerializer.toBufferResult
+  | CrystalInvasionWipeAll(crystalInvasionWipeAll) =>
+    CrystalInvasionWipeAll.toBuffer(crystalInvasionWipeAll)->ISerializer.toBufferResult
+  | MinionAttackTargetUpdate(minionAttackTargetUpdate) =>
+    MinionAttackTargetUpdate.toBuffer(minionAttackTargetUpdate)->ISerializer.toBufferResult
+  | CrystalInvasionSendWaitTime(crystalInvasionSendWaitTime) =>
+    CrystalInvasionSendWaitTime.toBuffer(crystalInvasionSendWaitTime)->ISerializer.toBufferResult
+  | PlayerDamage(playerDamage) => PlayerDamage.toBuffer(playerDamage)->ISerializer.toBufferResult
+  | PlayerDeath(playerDeath) => PlayerDeath.toBuffer(playerDeath)->ISerializer.toBufferResult
+  | CombatTextCreate(combatTextCreate) =>
+    CombatTextCreate.toBuffer(combatTextCreate)->ISerializer.toBufferResult
+  | Emoji(emoji) => Emoji.toBuffer(emoji)->ISerializer.toBufferResult
+  | TileEntityDisplayDollItemSync(tileEntityDisplayDollItemSync) =>
+    TileEntityDisplayDollItemSync.toBuffer(tileEntityDisplayDollItemSync)
     ->ISerializer.toBufferResult
-  | WeaponsRackTryPlacing(_weaponsRackTryPlacing) => NotImplemented
-  | TileEntityHatRackItemSync(_tileEntityHatRackItemSync) => NotImplemented
-  | TilePickingSync(_tilePickingSync) => NotImplemented
+  | TileEntityInteractionRequest(tileEntityInteractionRequest) =>
+    TileEntityInteractionRequest.toBuffer(tileEntityInteractionRequest)->ISerializer.toBufferResult
+  | WeaponsRackTryPlacing(weaponsRackTryPlacing) =>
+    WeaponsRackTryPlacing.toBuffer(weaponsRackTryPlacing)->ISerializer.toBufferResult
+  | TileEntityHatRackItemSync(tileEntityHatRackItemSync) =>
+    TileEntityHatRackItemSync.toBuffer(tileEntityHatRackItemSync)->ISerializer.toBufferResult
+  | TilePickingSync(tilePickingSync) =>
+    TilePickingSync.toBuffer(tilePickingSync)->ISerializer.toBufferResult
   | RevengeMarkerSync(revengeMarkerSync) =>
     RevengeMarkerSync.toBuffer(revengeMarkerSync)->ISerializer.toBufferResult
-  | RevengeMarkerRemove(_revengeMarkerRemove) => NotImplemented
-  | GolfBallLandInCup(_golfBallLandInCup) => NotImplemented
-  | ClientFinishConnectingToServer(_clientFinishConnectingToServer) => NotImplemented
-  | NpcFishOut(_npcFishOut) => NotImplemented
-  | NpcTamper(npcTamper) => Ok(NpcTamper.toBuffer(npcTamper))
+  | RevengeMarkerRemove(revengeMarkerRemove) =>
+    RevengeMarkerRemove.toBuffer(revengeMarkerRemove)->ISerializer.toBufferResult
+  | GolfBallLandInCup(golfBallLandInCup) =>
+    GolfBallLandInCup.toBuffer(golfBallLandInCup)->ISerializer.toBufferResult
+  | ClientFinishConnectingToServer(clientFinishConnectingToServer) =>
+    ClientFinishConnectingToServer.toBuffer(clientFinishConnectingToServer)
+    ->ISerializer.toBufferResult
+  | NpcFishOut(npcFishOut) => NpcFishOut.toBuffer(npcFishOut)->ISerializer.toBufferResult
+  | NpcTamper(npcTamper) => NpcTamper.toBuffer(npcTamper)->ISerializer.toBufferResult
   | LegacySoundPlay(legacySoundPlay) =>
     LegacySoundPlay.toBuffer(legacySoundPlay)->ISerializer.toBufferResult
-  | FoodPlatterTryPlacing(_foodPlatterTryPlacing) => NotImplemented
-  | PlayerLuckFactorsUpdate(_playerLuckFactorsUpdate) => NotImplemented
-  | PlayerDead(_playerDead) => NotImplemented
-  | CavernMonsterTypeSync(_cavernMonsterTypeSync) => NotImplemented
-  | NpcBuffRemovalRequest(_npcBuffRemovalRequest) => NotImplemented
+  | FoodPlatterTryPlacing(foodPlatterTryPlacing) =>
+    FoodPlatterTryPlacing.toBuffer(foodPlatterTryPlacing)->ISerializer.toBufferResult
+  | PlayerLuckFactorsUpdate(playerLuckFactorsUpdate) =>
+    PlayerLuckFactorsUpdate.toBuffer(playerLuckFactorsUpdate)->ISerializer.toBufferResult
+  | PlayerDead(playerDead) => PlayerDead.toBuffer(playerDead)->ISerializer.toBufferResult
+  | CavernMonsterTypeSync(cavernMonsterTypeSync) =>
+    CavernMonsterTypeSync.toBuffer(cavernMonsterTypeSync)->ISerializer.toBufferResult
+  | NpcBuffRemovalRequest(npcBuffRemovalRequest) =>
+    NpcBuffRemovalRequest.toBuffer(npcBuffRemovalRequest)->ISerializer.toBufferResult
   | ClientSyncedInventory(_clientSyncedInventory) => NotImplemented
-  | CountsAsHostForGameplaySet(_countsAsHostForGameplaySet) => NotImplemented
+  | CountsAsHostForGameplaySet(countsAsHostForGameplaySet) =>
+    CountsAsHostForGameplaySet.toBuffer(countsAsHostForGameplaySet)->ISerializer.toBufferResult
   | CreditsOrSlimeTransform(creditsOrSlimeTransform) =>
-    Ok(CreditsOrSlimeTransform.toBuffer(creditsOrSlimeTransform))
-  | LucyAxeMessage(lucyAxeMessage) => Ok(LucyAxeMessage.toBuffer(lucyAxeMessage))
+    CreditsOrSlimeTransform.toBuffer(creditsOrSlimeTransform)->ISerializer.toBufferResult
+  | LucyAxeMessage(lucyAxeMessage) =>
+    LucyAxeMessage.toBuffer(lucyAxeMessage)->ISerializer.toBufferResult
   | PiggyBankVoidLensUpdate(piggyBankVoidLensUpdate) =>
-    Ok(PiggyBankVoidLensUpdate.toBuffer(piggyBankVoidLensUpdate))
+    PiggyBankVoidLensUpdate.toBuffer(piggyBankVoidLensUpdate)->ISerializer.toBufferResult
   | DungeonDefendersEventAttemptSkipWait(dungeonDefendersEventAttemptSkipWait) =>
-    Ok(DungeonDefendersEventAttemptSkipWait.toBuffer(dungeonDefendersEventAttemptSkipWait))
+    DungeonDefendersEventAttemptSkipWait.toBuffer(dungeonDefendersEventAttemptSkipWait)
+    ->ISerializer.toBufferResult
   | HaveDryadDoStardewAnimation(haveDryadDoStardewAnimation) =>
-    Ok(HaveDryadDoStardewAnimation.toBuffer(haveDryadDoStardewAnimation))
+    HaveDryadDoStardewAnimation.toBuffer(haveDryadDoStardewAnimation)
+    ->ISerializer.toBufferResult
   | ItemDropShimmeredUpdate(itemDropShimmeredUpdate) =>
     ItemDropShimmeredUpdate.toBuffer(itemDropShimmeredUpdate)->ISerializer.toBufferResult
   | ShimmerEffectOrCoinLuck(shimmerEffectOrCoinLuck) =>
-    Ok(ShimmerEffectOrCoinLuck.toBuffer(shimmerEffectOrCoinLuck))
-  | LoadoutSwitch(loadoutSwitch) => Ok(LoadoutSwitch.toBuffer(loadoutSwitch))
+    ShimmerEffectOrCoinLuck.toBuffer(shimmerEffectOrCoinLuck)->ISerializer.toBufferResult
+  | LoadoutSwitch(loadoutSwitch) =>
+    LoadoutSwitch.toBuffer(loadoutSwitch)->ISerializer.toBufferResult
   | ItemDropProtectedUpdate(itemDropProtectedUpdate) =>
     ItemDropProtectedUpdate.toBuffer(itemDropProtectedUpdate)->ISerializer.toBufferResult
   }

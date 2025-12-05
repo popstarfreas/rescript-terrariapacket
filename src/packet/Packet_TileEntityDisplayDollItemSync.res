@@ -30,17 +30,17 @@ module Decode = {
 }
 
 module Encode = {
-  module Writer = PacketFactory.ManagedPacketWriter
+  module Writer = ErrorAwarePacketWriter
   let {packByte, packInt32, packUInt16, setType, data} = module(Writer)
-  let toBuffer = (self: t): NodeJs.Buffer.t => {
+  let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
     Writer.make()
     ->setType(PacketType.TileEntityDisplayDollItemSync->PacketType.toInt)
-    ->packByte(self.playerId)
-    ->packInt32(self.tileEntityId)
-    ->packByte(self.itemIndex)
-    ->packUInt16(self.itemId)
-    ->packUInt16(self.stack)
-    ->packByte(self.prefix)
+    ->packByte(self.playerId, "playerId")
+    ->packInt32(self.tileEntityId, "tileEntityId")
+    ->packByte(self.itemIndex, "itemIndex")
+    ->packUInt16(self.itemId, "itemId")
+    ->packUInt16(self.stack, "stack")
+    ->packByte(self.prefix, "prefix")
     ->data
   }
 }

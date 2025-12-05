@@ -5,10 +5,9 @@ let Belt_Option = require("@rescript/runtime/lib/js/Belt_Option.js");
 let Stdlib_Result = require("@rescript/runtime/lib/js/Stdlib_Result.js");
 let BitFlags$TerrariaPacket = require("../BitFlags.js");
 let PacketType$TerrariaPacket = require("../PacketType.js");
-let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
 let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
 function parse(payload) {
   let reader = new Packetreader(payload);
@@ -81,46 +80,23 @@ let Decode = {
   parse: parse
 };
 
-function packByte(prim0, prim1) {
-  return prim0.packByte(prim1);
-}
-
-function packInt16(prim0, prim1) {
-  return prim0.packInt16(prim1);
-}
-
-function packSingle(prim0, prim1) {
-  return prim0.packSingle(prim1);
-}
-
-function packInt32(prim0, prim1) {
-  return prim0.packInt32(prim1);
-}
-
-function data(prim) {
-  return prim.data;
-}
-
 function getFlags(self) {
   return BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(self.teleportType === "Npc", self.teleportType === "PlayerToPlayer", self.getPositionFromTarget, Belt_Option.isSome(self.extraInfo), false, false, false, false));
 }
 
 function toBuffer(self) {
-  let writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("Teleport")).packByte(getFlags(self)).packInt16(self.targetId).packSingle(self.x).packSingle(self.y).packByte(self.style);
+  let writer = ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("Teleport")), getFlags(self), "flags"), self.targetId, "targetId"), self.x, "x"), self.y, "y"), self.style, "style");
   let extraInfo = self.extraInfo;
-  if (extraInfo !== undefined) {
-    writer.packInt32(extraInfo);
-  }
-  return writer.data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(extraInfo !== undefined ? ErrorAwarePacketWriter$TerrariaPacket.packInt32(writer, extraInfo, "extraInfo") : writer);
 }
 
 let Encode = {
-  packByte: packByte,
-  packInt16: packInt16,
-  packSingle: packSingle,
-  packInt32: packInt32,
-  setType: ManagedPacketWriter$PacketFactory.setType,
-  data: data,
+  packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+  packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+  packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
+  packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+  data: ErrorAwarePacketWriter$TerrariaPacket.data,
   getFlags: getFlags,
   toBuffer: toBuffer
 };
@@ -129,4 +105,4 @@ exports.Decode = Decode;
 exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

@@ -2,10 +2,9 @@
 'use strict';
 
 let PacketType$TerrariaPacket = require("../PacketType.js");
-let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
 let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
 function tryReading(reader, context) {
   let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, context);
@@ -36,22 +35,18 @@ function tryReading(reader, context) {
   }
 }
 
-function packInt16(prim0, prim1) {
-  return prim0.packInt16(prim1);
-}
-
 function pack(writer, self) {
   if (self !== undefined) {
-    return writer.packInt16(self.expectedIdentity).packInt16(self.expectedType);
+    return ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, self.expectedIdentity, "expectedIdentity"), self.expectedType, "expectedType");
   } else {
-    return writer.packInt16(-1);
+    return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -1, "trackedProjectileReference");
   }
 }
 
 let TrackedProjectileReference = {
   readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
   tryReading: tryReading,
-  packInt16: packInt16,
+  packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
   pack: pack
 };
 
@@ -85,33 +80,15 @@ let Decode = {
   parse: parse
 };
 
-function packByte(prim0, prim1) {
-  return prim0.packByte(prim1);
-}
-
-function packInt32(prim0, prim1) {
-  return prim0.packInt32(prim1);
-}
-
-function packSingle(prim0, prim1) {
-  return prim0.packSingle(prim1);
-}
-
-function data(prim) {
-  return prim.data;
-}
-
 function toBuffer(self) {
-  return pack(pack(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PiggyBankVoidLensUpdate")).packByte(self.playerId), self.piggyBankProj), self.voidLensChest).data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(pack(pack(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PiggyBankVoidLensUpdate")), self.playerId, "playerId"), self.piggyBankProj), self.voidLensChest));
 }
 
 let Encode = {
   Writer: undefined,
-  packByte: packByte,
-  packInt32: packInt32,
-  packSingle: packSingle,
-  setType: ManagedPacketWriter$PacketFactory.setType,
-  data: data,
+  packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+  data: ErrorAwarePacketWriter$TerrariaPacket.data,
   toBuffer: toBuffer
 };
 
@@ -120,4 +97,4 @@ exports.Decode = Decode;
 exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

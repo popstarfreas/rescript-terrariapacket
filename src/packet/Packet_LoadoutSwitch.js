@@ -4,10 +4,9 @@
 let Array16$TerrariaPacket = require("../Array16.js");
 let BitFlags$TerrariaPacket = require("../BitFlags.js");
 let PacketType$TerrariaPacket = require("../PacketType.js");
-let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
 let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
 function parse(payload) {
   let reader = new Packetreader(payload);
@@ -43,40 +42,18 @@ let Decode = {
   parse: parse
 };
 
-function packUInt16(prim0, prim1) {
-  return prim0.packUInt16(prim1);
-}
-
-function packByte(prim0, prim1) {
-  return prim0.packByte(prim1);
-}
-
-function packInt32(prim0, prim1) {
-  return prim0.packInt32(prim1);
-}
-
-function packSingle(prim0, prim1) {
-  return prim0.packSingle(prim1);
-}
-
-function data(prim) {
-  return prim.data;
-}
-
 function toBuffer(self) {
   let match = Array16$TerrariaPacket.toBitFlagsPair(self.hideVisibleAccessory);
   let hideVisibleAccessory = BitFlags$TerrariaPacket.toByte(match[0]) | (BitFlags$TerrariaPacket.toByte(match[1]) << 8);
-  return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("LoadoutSwitch")).packByte(self.playerId).packByte(self.loadout).packUInt16(hideVisibleAccessory).data;
+  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("LoadoutSwitch")), self.playerId, "playerId"), self.loadout, "loadout"), hideVisibleAccessory, "hideVisibleAccessory"));
 }
 
 let Encode = {
   Writer: undefined,
-  packUInt16: packUInt16,
-  packByte: packByte,
-  packInt32: packInt32,
-  packSingle: packSingle,
-  setType: ManagedPacketWriter$PacketFactory.setType,
-  data: data,
+  packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
+  packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+  data: ErrorAwarePacketWriter$TerrariaPacket.data,
   toBuffer: toBuffer
 };
 
@@ -84,4 +61,4 @@ exports.Decode = Decode;
 exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

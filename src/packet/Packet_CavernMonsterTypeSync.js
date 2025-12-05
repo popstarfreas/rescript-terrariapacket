@@ -3,10 +3,9 @@
 
 let Stdlib_Array = require("@rescript/runtime/lib/js/Stdlib_Array.js");
 let PacketType$TerrariaPacket = require("../PacketType.js");
-let ManagedPacketWriter$PacketFactory = require("@popstarfreas/packetfactory/src/ManagedPacketWriter.js");
 let ErrorAwarePacketReader$TerrariaPacket = require("../ErrorAwarePacketReader.js");
+let ErrorAwarePacketWriter$TerrariaPacket = require("../ErrorAwarePacketWriter.js");
 let Packetreader = require("@popstarfreas/packetfactory/packetreader").default;
-let Packetwriter = require("@popstarfreas/packetfactory/packetwriter").default;
 
 function parse(payload) {
   let reader = new Packetreader(payload);
@@ -47,28 +46,56 @@ let Decode = {
   parse: parse
 };
 
-function packUInt16(prim0, prim1) {
-  return prim0.packUInt16(prim1);
+function packRow(writer, row, rowIdx) {
+  let _writer = writer;
+  let _colIdx = 0;
+  while (true) {
+    let colIdx = _colIdx;
+    let writer$1 = _writer;
+    if (colIdx >= row.length) {
+      return writer$1;
+    }
+    _colIdx = colIdx + 1 | 0;
+    _writer = ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer$1, row[colIdx], `monster_` + rowIdx.toString() + `_` + colIdx.toString());
+    continue;
+  };
 }
 
-function data(prim) {
-  return prim.data;
+function packRows(writer, rows) {
+  let _writer = writer;
+  let _rowIdx = 0;
+  while (true) {
+    let rowIdx = _rowIdx;
+    let writer$1 = _writer;
+    if (rowIdx >= rows.length) {
+      return writer$1;
+    }
+    _rowIdx = rowIdx + 1 | 0;
+    _writer = packRow(writer$1, rows[rowIdx], rowIdx);
+    continue;
+  };
 }
 
 function toBuffer(self) {
-  let writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("CavernMonsterTypeSync"));
-  self.forEach(row => {
-    row.forEach(value => {
-      writer.packUInt16(value);
-    });
-  });
-  return writer.data;
+  if (self.length !== 2 || self[0].length !== 3 || self[1].length !== 3) {
+    return {
+      TAG: "Error",
+      _0: {
+        context: "Packet_CavernMonsterTypeSync.toBuffer",
+        error: new Error("Expected a 2x3 array of monster types")
+      }
+    };
+  } else {
+    return ErrorAwarePacketWriter$TerrariaPacket.data(packRows(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("CavernMonsterTypeSync")), self));
+  }
 }
 
 let Encode = {
-  packUInt16: packUInt16,
-  setType: ManagedPacketWriter$PacketFactory.setType,
-  data: data,
+  packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
+  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+  data: ErrorAwarePacketWriter$TerrariaPacket.data,
+  packRow: packRow,
+  packRows: packRows,
   toBuffer: toBuffer
 };
 
@@ -76,4 +103,4 @@ exports.Decode = Decode;
 exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
-/* @popstarfreas/packetfactory/packetreader Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */
