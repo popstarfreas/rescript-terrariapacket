@@ -243,7 +243,7 @@ export declare namespace ClientFinishConnectingToServerPacket {
 export declare namespace ClientUuidPacket {
     export {
         t_83 as t,
-        parse_22 as parse,
+        parse_23 as parse,
         toBuffer_22 as toBuffer
     }
 }
@@ -413,7 +413,7 @@ declare type direction_4 = "Left" | "Right";
 
 export declare namespace DisconnectPacket {
     export {
-        parse_28 as parse,
+        parse_29 as parse,
         toBuffer_28 as toBuffer,
         t_88 as t
     }
@@ -1036,6 +1036,8 @@ export declare namespace NetModuleLoadPacket {
         creativePowerPermission,
         NetModuleLoad,
         NetModuleType_t,
+        parseOk,
+        parseError,
         toBufferOk,
         toBufferError
     }
@@ -1119,7 +1121,9 @@ export declare namespace NpcUpdatePacket {
         ai,
         life,
         t_87 as t,
-        parse_27 as parse,
+        parseOk_7 as parseOk,
+        parseError_7 as parseError,
+        parse_28 as parse,
         toBufferOk_7 as toBufferOk,
         toBufferError_7 as toBufferError,
         toBuffer_27 as toBuffer
@@ -1268,47 +1272,65 @@ declare const parse_12: (_1: Buffer) => (undefined | t_60);
 
 declare const parse_13: (_1: Buffer) => (undefined | t_61);
 
-declare const parse_14: (_1: Buffer) => (undefined | t_65);
+declare type parse_14 = parseOk_2 | parseError_2;
 
-declare const parse_15: (_1: Buffer) => (undefined | t_70);
+declare const parse_14: (_1: Buffer) => parse_14;
 
-declare function parse_16(payload: Buffer): t_77;
+declare type parse_15 = { TAG: "Ok"; _0: t_69 };
 
-declare const parse_17: (_1: Buffer) => (undefined | t_78);
+declare const parse_15: (_1: Buffer) => parse_15;
 
-declare const parse_18: (_1: Buffer) => (undefined | t_79);
+declare const parse_16: (_1: Buffer) => (undefined | t_70);
 
-declare const parse_19: (_1: Buffer) => (undefined | t_80);
+declare function parse_17(payload: Buffer): t_77;
+
+declare type parse_18 = parseOk_3 | parseError_3;
+
+declare const parse_18: (_1: Buffer) => parse_18;
+
+declare type parse_19 = parseOk_4 | parseError_4;
+
+declare const parse_19: (_1: Buffer) => parse_19;
 
 declare const parse_2: (_1: Buffer) => (undefined | t_9);
 
-declare function parse_20(payload: Buffer): t_81;
+declare const parse_20: (_1: Buffer) => (undefined | t_80);
 
-declare const parse_21: (_1: Buffer) => (undefined | t_82);
+declare function parse_21(payload: Buffer): t_81;
 
-declare const parse_22: (_1: Buffer) => (undefined | t_83);
+declare const parse_22: (_1: Buffer) => (undefined | t_82);
 
-declare const parse_23: (_1: Buffer) => (undefined | t_84);
+declare const parse_23: (_1: Buffer) => (undefined | t_83);
 
-declare const parse_24: (_1: Buffer) => (undefined | t_85);
+declare type parse_24 = parseOk_5 | parseError_5;
 
-declare function parse_25(buffer: Buffer): WorldInfo | undefined;
+declare const parse_24: (_1: Buffer) => parse_24;
 
-declare function parse_26(payload: Buffer): t_86;
+declare const parse_25: (_1: Buffer) => (undefined | t_85);
 
-declare const parse_27: (_1: Buffer) => (undefined | t_87);
+declare function parse_26(buffer: Buffer): parse_26;
 
-declare function parse_28(payload: Buffer): t_88 | undefined;
+declare type parse_26 = parseOk_6 | parseError_6;
 
-declare const parse_29: parse_30<t_89>;
+declare function parse_27(payload: Buffer): t_86;
+
+declare type parse_28 = parseOk_7 | parseError_7;
+
+declare const parse_28: (_1: Buffer) => parse_28;
+
+declare function parse_29(payload: Buffer): t_88 | undefined;
 
 declare function parse_3(payload: Buffer): t_18 | undefined;
 
-declare type parse_30<a> = (buffer: Buffer, fromServer: boolean) => (undefined | parsed<a>);
+declare const parse_30: parse_31<t_89>;
+
+declare type parse_31<a> = (buffer: Buffer, fromServer: boolean) => parseResult<a>;
 
 declare const parse_4: (_1: Buffer) => (undefined | t_19);
 
-declare function parse_5(buffer: Buffer, fromServer: boolean): NetModuleLoad | undefined;
+declare function parse_5(buffer: Buffer, fromServer: boolean): parse_5;
+
+declare type parse_5 = parseOk | parseError;
 
 declare const parse_6: (_1: Buffer) => (undefined | t_31);
 
@@ -1322,16 +1344,51 @@ declare type parsed<a> =
     { TAG: "ShouldSerialize"; _0: a }
 | { TAG: "SerializeNotNecessary"; _0: a; _1: Buffer };
 
+declare type parseError = { TAG: "Error"; _0: readError };
+
+declare type parseError_2 = { TAG: "Error"; _0: readError };
+
+declare type parseError_3 = { TAG: "Error"; _0: readError };
+
+declare type parseError_4 = { TAG: "Error"; _0: readError };
+
+declare type parseError_5 = { TAG: "Error"; _0: readError };
+
+declare type parseError_6 = { TAG: "Error"; _0: readError };
+
+declare type parseError_7 = { TAG: "Error"; _0: readError };
+
 declare const parseLazy: parseLazy_2<LazyPacket_t>;
 
-declare type parseLazy_2<a> = (buffer: Buffer, fromServer: boolean) => (undefined | a);
+declare type parseLazy_2<a> = (buffer: Buffer, fromServer: boolean) => (
+    { TAG: "Ok"; _0: (undefined | a) }
+| { TAG: "Error"; _0: readError }
+);
+
+declare type parseOk = { TAG: "Ok"; _0: (NetModuleLoad | undefined) };
+
+declare type parseOk_2 = { TAG: "Ok"; _0: (undefined | t_65) };
+
+declare type parseOk_3 = { TAG: "Ok"; _0: (undefined | t_78) };
+
+declare type parseOk_4 = { TAG: "Ok"; _0: (undefined | t_79) };
+
+declare type parseOk_5 = { TAG: "Ok"; _0: (undefined | t_84) };
+
+declare type parseOk_6 = { TAG: "Ok"; _0: WorldInfo | undefined };
+
+declare type parseOk_7 = { TAG: "Ok"; _0: (undefined | t_87) };
 
 export declare namespace Parser {
     export {
-        parse_29 as parse,
+        parse_30 as parse,
         parseLazy
     }
 }
+
+declare type parseResult<a> =
+    { TAG: "Ok"; _0: (undefined | parsed<a>) }
+| { TAG: "Error"; _0: readError };
 
 declare type particle = {
     readonly particleType: number;
@@ -1360,7 +1417,7 @@ declare type PerPlayerTogglePower =
 
 export declare namespace PlayerActivePacket {
     export {
-        parse_26 as parse,
+        parse_27 as parse,
         toBuffer_26 as toBuffer,
         t_86 as t
     }
@@ -1397,7 +1454,7 @@ export declare namespace PlayerChestIndexSyncPacket {
 export declare namespace PlayerDamagePacket {
     export {
         t_85 as t,
-        parse_24 as parse,
+        parse_25 as parse,
         toBuffer_24 as toBuffer
     }
 }
@@ -1432,7 +1489,7 @@ export declare namespace PlayerDodgePacket {
 export declare namespace PlayerHealthPacket {
     export {
         t_82 as t,
-        parse_21 as parse,
+        parse_22 as parse,
         toBuffer_21 as toBuffer
     }
 }
@@ -1444,7 +1501,9 @@ export declare namespace PlayerInfoPacket {
         difficulty,
         mode,
         t_79 as t,
-        parse_18 as parse,
+        parseOk_4 as parseOk,
+        parseError_4 as parseError,
+        parse_19 as parse,
         toBufferOk_4 as toBufferOk,
         toBufferError_4 as toBufferError,
         toBuffer_18 as toBuffer
@@ -1453,7 +1512,7 @@ export declare namespace PlayerInfoPacket {
 
 export declare namespace PlayerInventorySlotPacket {
     export {
-        parse_20 as parse,
+        parse_21 as parse,
         toBuffer_20 as toBuffer,
         t_81 as t
     }
@@ -1469,7 +1528,7 @@ export declare namespace PlayerManaPacket {
 
 export declare namespace PlayerSlotSetPacket {
     export {
-        parse_16 as parse,
+        parse_17 as parse,
         toBuffer_16 as toBuffer,
         t_77 as t
     }
@@ -1479,7 +1538,7 @@ export declare namespace PlayerSpawnPacket {
     export {
         context,
         t_80 as t,
-        parse_19 as parse,
+        parse_20 as parse,
         toBuffer_19 as toBuffer
     }
 }
@@ -1498,7 +1557,9 @@ export declare namespace PlayerUpdatePacket {
         pulleyDirection,
         gravityDirection,
         t_78 as t,
-        parse_17 as parse,
+        parseOk_3 as parseOk,
+        parseError_3 as parseError,
+        parse_18 as parse,
         toBufferOk_3 as toBufferOk,
         toBufferError_3 as toBufferError,
         toBuffer_17 as toBuffer
@@ -1531,7 +1592,9 @@ declare type powerLevel =
 export declare namespace ProjectileSyncPacket {
     export {
         t_84 as t,
-        parse_23 as parse,
+        parseOk_5 as parseOk,
+        parseError_5 as parseError,
+        parse_24 as parse,
         toBufferOk_5 as toBufferOk,
         toBufferError_5 as toBufferError,
         toBuffer_23 as toBuffer
@@ -1551,6 +1614,8 @@ export declare namespace PvpTogglePacket {
 }
 
 declare type pylonAction = "Added" | "Removed" | "RequestTeleport";
+
+declare type readError = { readonly context: string; readonly error: unknown };
 
 export declare namespace Result {
     export {
@@ -2037,7 +2102,7 @@ declare type t_175 = {
 
 declare type t_176 = void;
 
-declare type t_177 = void;
+declare type t_177 = undefined;
 
 declare type t_178 = void;
 
@@ -2469,7 +2534,7 @@ declare type t_67 = { readonly items: number[] };
 
 declare type t_68 = void;
 
-declare type t_69 = void;
+declare type t_69 = undefined;
 
 declare type t_7 = {
     readonly action: Action_t;
@@ -3101,6 +3166,8 @@ export declare namespace TileSquareSendPacket {
         liquid_3 as liquid,
         tile_2 as tile,
         t_65 as t,
+        parseOk_2 as parseOk,
+        parseError_2 as parseError,
         parse_14 as parse,
         toBufferOk_2 as toBufferOk,
         toBufferError_2 as toBufferError,
@@ -3243,7 +3310,8 @@ declare class untypedT { }
 
 export declare namespace UnusedPacket {
     export {
-        t_69 as t
+        t_69 as t,
+        parse_15 as parse
     }
 }
 
@@ -3256,7 +3324,7 @@ declare type UpdateType_t =
 export declare namespace WallPaintPacket {
     export {
         t_70 as t,
-        parse_15 as parse,
+        parse_16 as parse,
         toBuffer_15 as toBuffer
     }
 }
@@ -3435,10 +3503,12 @@ declare type WorldInfo_2 = {
 
 export declare namespace WorldInfoPacket {
     export {
-        parse_25 as parse,
+        parse_26 as parse,
         toBuffer_25 as toBuffer,
         eventInfo,
         WorldInfo,
+        parseOk_6 as parseOk,
+        parseError_6 as parseError,
         toBufferOk_6 as toBufferOk,
         toBufferError_6 as toBufferError
     }

@@ -11,9 +11,9 @@ var __esm = (fn, res) => function __init() {
 var __commonJS = (cb, mod) => function __require() {
   return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
 };
-var __export = (target, all7) => {
-  for (var name in all7)
-    __defProp(target, name, { get: all7[name], enumerable: true });
+var __export = (target, all8) => {
+  for (var name in all8)
+    __defProp(target, name, { get: all8[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
@@ -32,110 +32,6 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-
-// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_option.js
-var Primitive_option_exports = {};
-function isNested(x) {
-  return x.BS_PRIVATE_NESTED_SOME_NONE !== void 0;
-}
-function some(x) {
-  if (x === void 0) {
-    return {
-      BS_PRIVATE_NESTED_SOME_NONE: 0
-    };
-  } else if (x !== null && x.BS_PRIVATE_NESTED_SOME_NONE !== void 0) {
-    return {
-      BS_PRIVATE_NESTED_SOME_NONE: x.BS_PRIVATE_NESTED_SOME_NONE + 1 | 0
-    };
-  } else {
-    return x;
-  }
-}
-function fromNullable(x) {
-  if (x == null) {
-    return;
-  } else {
-    return some(x);
-  }
-}
-function fromUndefined(x) {
-  if (x === void 0) {
-    return;
-  } else {
-    return some(x);
-  }
-}
-function fromNull(x) {
-  if (x === null) {
-    return;
-  } else {
-    return some(x);
-  }
-}
-function valFromOption(x) {
-  if (x === null || x.BS_PRIVATE_NESTED_SOME_NONE === void 0) {
-    return x;
-  }
-  let depth = x.BS_PRIVATE_NESTED_SOME_NONE;
-  if (depth === 0) {
-    return;
-  } else {
-    return {
-      BS_PRIVATE_NESTED_SOME_NONE: depth - 1 | 0
-    };
-  }
-}
-function toUndefined(x) {
-  if (x === void 0) {
-    return;
-  } else {
-    return valFromOption(x);
-  }
-}
-function unwrapPolyVar(x) {
-  if (x !== void 0) {
-    return x.VAL;
-  } else {
-    return x;
-  }
-}
-var init_Primitive_option = __esm({
-  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_option.js"() {
-    "use strict";
-    exports.fromNullable = fromNullable;
-    exports.fromUndefined = fromUndefined;
-    exports.fromNull = fromNull;
-    exports.valFromOption = valFromOption;
-    exports.some = some;
-    exports.isNested = isNested;
-    exports.toUndefined = toUndefined;
-    exports.unwrapPolyVar = unwrapPolyVar;
-  }
-});
-
-// src/packet/Packet_AnglerQuest.js
-var require_Packet_AnglerQuest = __commonJS({
-  "src/packet/Packet_AnglerQuest.js"(exports2) {
-    "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
-    }
-    exports2.parse = parse;
-  }
-});
-
-// src/packet/Packet_AnglerQuestComplete.js
-var require_Packet_AnglerQuestComplete = __commonJS({
-  "src/packet/Packet_AnglerQuestComplete.js"(exports2) {
-    "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
-    }
-    exports2.parse = parse;
-  }
-});
 
 // src/PacketType.js
 var require_PacketType = __commonJS({
@@ -732,6 +628,192 @@ var require_PacketType = __commonJS({
   }
 });
 
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_exceptions.js
+var Primitive_exceptions_exports = {};
+function isExtension(e) {
+  if (e == null) {
+    return false;
+  } else {
+    return typeof e.RE_EXN_ID === "string";
+  }
+}
+function internalToException(e) {
+  if (isExtension(e)) {
+    return e;
+  } else {
+    return {
+      RE_EXN_ID: "JsExn",
+      _1: e
+    };
+  }
+}
+function create(str) {
+  let v = idMap[str];
+  if (v !== void 0) {
+    let id = v + 1 | 0;
+    idMap[str] = id;
+    return str + ("/" + id);
+  }
+  idMap[str] = 1;
+  return str;
+}
+var idMap, $$Error;
+var init_Primitive_exceptions = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_exceptions.js"() {
+    "use strict";
+    idMap = {};
+    $$Error = "JsExn";
+    exports.$$Error = $$Error;
+    exports.create = create;
+    exports.internalToException = internalToException;
+  }
+});
+
+// src/ErrorAwarePacketReader.js
+var require_ErrorAwarePacketReader = __commonJS({
+  "src/ErrorAwarePacketReader.js"(exports2) {
+    "use strict";
+    var Primitive_exceptions2 = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
+    function readByteUnsafe(prim) {
+      return prim.readByte();
+    }
+    function readUInt16Unsafe(prim) {
+      return prim.readUInt16();
+    }
+    function readInt16Unsafe(prim) {
+      return prim.readInt16();
+    }
+    function readUInt32Unsafe(prim) {
+      return prim.readUInt32();
+    }
+    function readInt32Unsafe(prim) {
+      return prim.readInt32();
+    }
+    function readUInt64Unsafe(prim) {
+      return prim.readUInt64();
+    }
+    function readStringUnsafe(prim) {
+      return prim.readString();
+    }
+    function readBytesUnsafe(prim0, prim1) {
+      return prim0.readBytes(prim1);
+    }
+    function readSingleUnsafe(prim) {
+      return prim.readSingle();
+    }
+    function readSByteUnsafe(prim) {
+      return prim.readSByte();
+    }
+    function readColorUnsafe(prim) {
+      return prim.readColor();
+    }
+    function readBufferUnsafe(prim0, prim1) {
+      return prim0.readBuffer(prim1);
+    }
+    function readNetworkTextUnsafe(prim) {
+      return prim.readNetworkText();
+    }
+    function getBytesLeftUnsafe(prim) {
+      return prim.bytesLeft;
+    }
+    function withContext(fn, reader, context) {
+      try {
+        return {
+          TAG: "Ok",
+          _0: fn(reader)
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function readByte(reader, context) {
+      return withContext(readByteUnsafe, reader, context);
+    }
+    function readBool(reader, context) {
+      return withContext((reader2) => reader2.readByte() === 1, reader, context);
+    }
+    function readUInt16(reader, context) {
+      return withContext(readUInt16Unsafe, reader, context);
+    }
+    function readInt16(reader, context) {
+      return withContext(readInt16Unsafe, reader, context);
+    }
+    function readUInt32(reader, context) {
+      return withContext(readUInt32Unsafe, reader, context);
+    }
+    function readInt32(reader, context) {
+      return withContext(readInt32Unsafe, reader, context);
+    }
+    function readUInt64(reader, context) {
+      return withContext(readUInt64Unsafe, reader, context);
+    }
+    function readString(reader, context) {
+      return withContext(readStringUnsafe, reader, context);
+    }
+    function readBytes(reader, count, context) {
+      return withContext((reader2) => reader2.readBytes(count), reader, context);
+    }
+    function readSingle(reader, context) {
+      return withContext(readSingleUnsafe, reader, context);
+    }
+    function readSByte(reader, context) {
+      return withContext(readSByteUnsafe, reader, context);
+    }
+    function readColor(reader, context) {
+      return withContext(readColorUnsafe, reader, context);
+    }
+    function readBuffer(reader, bytes, context) {
+      return withContext((reader2) => reader2.readBuffer(bytes), reader, context);
+    }
+    function readNetworkText(reader, context) {
+      return withContext(readNetworkTextUnsafe, reader, context);
+    }
+    function getBytesLeft(reader) {
+      return withContext(getBytesLeftUnsafe, reader, "getBytesLeft");
+    }
+    exports2.readByteUnsafe = readByteUnsafe;
+    exports2.readUInt16Unsafe = readUInt16Unsafe;
+    exports2.readInt16Unsafe = readInt16Unsafe;
+    exports2.readUInt32Unsafe = readUInt32Unsafe;
+    exports2.readInt32Unsafe = readInt32Unsafe;
+    exports2.readUInt64Unsafe = readUInt64Unsafe;
+    exports2.readStringUnsafe = readStringUnsafe;
+    exports2.readBytesUnsafe = readBytesUnsafe;
+    exports2.readSingleUnsafe = readSingleUnsafe;
+    exports2.readSByteUnsafe = readSByteUnsafe;
+    exports2.readColorUnsafe = readColorUnsafe;
+    exports2.readBufferUnsafe = readBufferUnsafe;
+    exports2.readNetworkTextUnsafe = readNetworkTextUnsafe;
+    exports2.getBytesLeftUnsafe = getBytesLeftUnsafe;
+    exports2.withContext = withContext;
+    exports2.readByte = readByte;
+    exports2.readBool = readBool;
+    exports2.readUInt16 = readUInt16;
+    exports2.readInt16 = readInt16;
+    exports2.readUInt32 = readUInt32;
+    exports2.readInt32 = readInt32;
+    exports2.readUInt64 = readUInt64;
+    exports2.readString = readString;
+    exports2.readBytes = readBytes;
+    exports2.readSingle = readSingle;
+    exports2.readSByte = readSByte;
+    exports2.readColor = readColor;
+    exports2.readBuffer = readBuffer;
+    exports2.readNetworkText = readNetworkText;
+    exports2.getBytesLeft = getBytesLeft;
+  }
+});
+
 // node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/src/ManagedPacketWriter.js
 var require_ManagedPacketWriter = __commonJS({
   "node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/src/ManagedPacketWriter.js"(exports2) {
@@ -781,12 +863,12 @@ var require_utf8 = __commonJS({
       function ucs2decode(string) {
         var output = [];
         var counter = 0;
-        var length2 = string.length;
+        var length = string.length;
         var value;
         var extra;
-        while (counter < length2) {
+        while (counter < length) {
           value = string.charCodeAt(counter++);
-          if (value >= 55296 && value <= 56319 && counter < length2) {
+          if (value >= 55296 && value <= 56319 && counter < length) {
             extra = string.charCodeAt(counter++);
             if ((extra & 64512) == 56320) {
               output.push(((value & 1023) << 10) + (extra & 1023) + 65536);
@@ -801,11 +883,11 @@ var require_utf8 = __commonJS({
         return output;
       }
       function ucs2encode(array) {
-        var length2 = array.length;
+        var length = array.length;
         var index = -1;
         var value;
         var output = "";
-        while (++index < length2) {
+        while (++index < length) {
           value = array[index];
           if (value > 65535) {
             value -= 65536;
@@ -847,11 +929,11 @@ var require_utf8 = __commonJS({
       }
       function utf8encode(string) {
         var codePoints = ucs2decode(string);
-        var length2 = codePoints.length;
+        var length = codePoints.length;
         var index = -1;
         var codePoint;
         var byteString = "";
-        while (++index < length2) {
+        while (++index < length) {
           codePoint = codePoints[index];
           byteString += encodeCodePoint(codePoint);
         }
@@ -956,229 +1038,6 @@ var require_utf8 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/bufferwriter.js
-var require_bufferwriter = __commonJS({
-  "node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/bufferwriter.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    var utils_1 = require_utils();
-    var utf8 = require_utf8();
-    var BufferWriter = class {
-      constructor(buffer) {
-        this._offset = 0;
-        this._buffer = buffer;
-      }
-      changeOffset(offset) {
-        this._offset = offset;
-      }
-      packInt16(int16) {
-        this._buffer.writeInt16LE(int16, this._offset);
-        this._offset += 2;
-        return this;
-      }
-      packUInt16(uint16) {
-        this._buffer.writeUInt16LE(uint16, this._offset);
-        this._offset += 2;
-        return this;
-      }
-      packInt32(int32) {
-        this._buffer.writeInt32LE(int32, this._offset);
-        this._offset += 4;
-        return this;
-      }
-      packUInt32(uint32) {
-        this._buffer.writeUInt32LE(uint32, this._offset);
-        this._offset += 4;
-        return this;
-      }
-      packInt64(int64) {
-        this._buffer.writeBigInt64LE(int64, this._offset);
-        this._offset += 8;
-        return this;
-      }
-      packUInt64(uint64) {
-        this._buffer.writeBigUInt64LE(uint64, this._offset);
-        this._offset += 8;
-        return this;
-      }
-      packSingle(single) {
-        this._buffer.writeFloatLE(single, this._offset);
-        this._offset += 4;
-        return this;
-      }
-      packDouble(double) {
-        this._buffer.writeDoubleLE(double, this._offset);
-        this._offset += 8;
-        return this;
-      }
-      packByte(byte) {
-        if (byte < 0)
-          byte = -byte;
-        this._buffer.writeUInt8(byte, this._offset);
-        this._offset += 1;
-        return this;
-      }
-      packSByte(byte) {
-        this._buffer.writeInt8(byte, this._offset);
-        this._offset += 1;
-        return this;
-      }
-      packBytes(bytes) {
-        for (const byte of bytes) {
-          this.packByte(byte);
-        }
-        return this;
-      }
-      packHex(hex) {
-        const buf = Buffer.from(hex, "hex");
-        buf.copy(this._buffer, this._offset, 0);
-        this._offset += buf.length;
-        return this;
-      }
-      packBuffer(buffer) {
-        buffer.copy(this._buffer, this._offset, 0);
-        this._offset += buffer.length;
-        return this;
-      }
-      packString(str) {
-        const packedStr = (0, utils_1.textToBuffer)(utf8.encode(str));
-        const strLen = packedStr.length;
-        if (strLen >= 128) {
-          this.packByte(strLen % 128 + 128);
-          this.packByte(Math.floor(strLen / 128));
-        } else {
-          this.packByte(strLen);
-        }
-        this.packBuffer(packedStr);
-        return this;
-      }
-      packColor(color) {
-        this.packByte(color.R);
-        this.packByte(color.G);
-        this.packByte(color.B);
-        return this;
-      }
-      packNetworkText(networkText) {
-        this.packByte(networkText.mode);
-        this.packString(networkText.text);
-        return this;
-      }
-      get data() {
-        return this._buffer;
-      }
-      get packedLength() {
-        return this._offset;
-      }
-      get slicedData() {
-        return this._buffer.slice(0, this._offset);
-      }
-    };
-    exports2.default = BufferWriter;
-  }
-});
-
-// node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/utils.js
-var require_utils = __commonJS({
-  "node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/utils.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.getPackedStringByteLen = exports2.requireNoCache = exports2._invalidateRequireCacheForFile = exports2.getPacketsFromBuffer = exports2.getPacketTypeFromBuffer = exports2.getProperIP = exports2.textToBuffer = exports2.bufferToText = void 0;
-    var path = require("path");
-    var bufferreader_1 = require_bufferreader();
-    var utf8 = require_utf8();
-    var bufferwriter_1 = require_bufferwriter();
-    function bufferToText(buf) {
-      const reader = new bufferreader_1.default(buf);
-      let str = "";
-      for (let i = 0; i < buf.length; i++) {
-        str += String.fromCharCode(reader.readByte());
-      }
-      return str;
-    }
-    exports2.bufferToText = bufferToText;
-    function textToBuffer(str) {
-      const writer = new bufferwriter_1.default(Buffer.allocUnsafe(str.length));
-      for (var i = 0, l = str.length; i < l; i++) {
-        writer.packByte(str.charCodeAt(i));
-      }
-      return writer.data;
-    }
-    exports2.textToBuffer = textToBuffer;
-    function getProperIP(ip) {
-      if (typeof ip === "undefined")
-        return void 0;
-      let IPFromRequest = ip;
-      let indexOfColon = IPFromRequest.lastIndexOf(":");
-      let IP = IPFromRequest.substring(indexOfColon + 1, IPFromRequest.length);
-      return IP;
-    }
-    exports2.getProperIP = getProperIP;
-    function getPacketTypeFromBuffer(buf) {
-      return buf.readUInt8(2);
-    }
-    exports2.getPacketTypeFromBuffer = getPacketTypeFromBuffer;
-    function getPacketsFromBuffer(buf) {
-      const reader = new bufferreader_1.default(buf);
-      let packets = [];
-      let end = false;
-      let length2;
-      let data;
-      let index = 0;
-      let packetType;
-      let bufferPacket = Buffer.allocUnsafe(0);
-      if (buf.length > 1) {
-        while (!end) {
-          length2 = reader.readUInt16();
-          if (length2 === 0) {
-            end = true;
-          } else {
-            data = buf.slice(reader.head - 2, reader.head - 2 + length2);
-            reader.head += length2 - 2;
-            if (reader.head > buf.length) {
-              bufferPacket = data;
-              end = true;
-            } else {
-              packetType = getPacketTypeFromBuffer(data);
-              packets.push({
-                packetType,
-                data
-              });
-              if (reader.head === buf.length - 1) {
-                bufferPacket = buf.slice(buf.length - 1, buf.length);
-                end = true;
-              } else if (reader.head === buf.length) {
-                end = true;
-              }
-            }
-          }
-        }
-      } else {
-        bufferPacket = buf.slice(0, 1);
-      }
-      return { bufferPacket, packets };
-    }
-    exports2.getPacketsFromBuffer = getPacketsFromBuffer;
-    function _invalidateRequireCacheForFile(filePath, require2) {
-      var realPath = path.resolve(filePath);
-      delete require2.cache[realPath];
-    }
-    exports2._invalidateRequireCacheForFile = _invalidateRequireCacheForFile;
-    function requireNoCache(filePath, require2) {
-      _invalidateRequireCacheForFile(filePath, require2);
-      return require2(filePath);
-    }
-    exports2.requireNoCache = requireNoCache;
-    function getPackedStringByteLen(str) {
-      const strLen = textToBuffer(utf8.encode(str)).length;
-      if (strLen >= 128) {
-        return 2 + strLen;
-      }
-      return 1 + strLen;
-    }
-    exports2.getPackedStringByteLen = getPackedStringByteLen;
-  }
-});
-
 // node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/bufferreader.js
 var require_bufferreader = __commonJS({
   "node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/bufferreader.js"(exports2) {
@@ -1234,9 +1093,9 @@ var require_bufferreader = __commonJS({
        *
        * @param size The number of bytes to read
        */
-      readBuffer(size4) {
-        const buffer = this._data.slice(this.head, this.head + size4);
-        this.head += size4;
+      readBuffer(size3) {
+        const buffer = this._data.slice(this.head, this.head + size3);
+        this.head += size3;
         return buffer;
       }
       /**
@@ -1377,28 +1236,226 @@ var require_bufferreader = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/packetreader.js
-var require_packetreader = __commonJS({
-  "node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/packetreader.js"(exports2) {
+// node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/utils.js
+var require_utils = __commonJS({
+  "node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/utils.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.getPackedStringByteLen = exports2.requireNoCache = exports2._invalidateRequireCacheForFile = exports2.getPacketsFromBuffer = exports2.getPacketTypeFromBuffer = exports2.getProperIP = exports2.textToBuffer = exports2.bufferToText = void 0;
+    var path = require("path");
     var bufferreader_1 = require_bufferreader();
-    var PacketReader = class extends bufferreader_1.default {
-      constructor(data) {
-        super(data);
-        this.readUInt16();
-        this._type = this.readByte();
+    var utf8 = require_utf8();
+    var bufferwriter_1 = require_bufferwriter();
+    function bufferToText(buf) {
+      const reader = new bufferreader_1.default(buf);
+      let str = "";
+      for (let i = 0; i < buf.length; i++) {
+        str += String.fromCharCode(reader.readByte());
       }
-      /**
-       * Gets the packet type
-       *
-       * @return The packet type of the packet
-       */
-      get type() {
-        return this._type;
+      return str;
+    }
+    exports2.bufferToText = bufferToText;
+    function textToBuffer(str) {
+      const writer = new bufferwriter_1.default(Buffer.allocUnsafe(str.length));
+      for (var i = 0, l = str.length; i < l; i++) {
+        writer.packByte(str.charCodeAt(i));
+      }
+      return writer.data;
+    }
+    exports2.textToBuffer = textToBuffer;
+    function getProperIP(ip) {
+      if (typeof ip === "undefined")
+        return void 0;
+      let IPFromRequest = ip;
+      let indexOfColon = IPFromRequest.lastIndexOf(":");
+      let IP = IPFromRequest.substring(indexOfColon + 1, IPFromRequest.length);
+      return IP;
+    }
+    exports2.getProperIP = getProperIP;
+    function getPacketTypeFromBuffer(buf) {
+      return buf.readUInt8(2);
+    }
+    exports2.getPacketTypeFromBuffer = getPacketTypeFromBuffer;
+    function getPacketsFromBuffer(buf) {
+      const reader = new bufferreader_1.default(buf);
+      let packets = [];
+      let end = false;
+      let length;
+      let data;
+      let index = 0;
+      let packetType;
+      let bufferPacket = Buffer.allocUnsafe(0);
+      if (buf.length > 1) {
+        while (!end) {
+          length = reader.readUInt16();
+          if (length === 0) {
+            end = true;
+          } else {
+            data = buf.slice(reader.head - 2, reader.head - 2 + length);
+            reader.head += length - 2;
+            if (reader.head > buf.length) {
+              bufferPacket = data;
+              end = true;
+            } else {
+              packetType = getPacketTypeFromBuffer(data);
+              packets.push({
+                packetType,
+                data
+              });
+              if (reader.head === buf.length - 1) {
+                bufferPacket = buf.slice(buf.length - 1, buf.length);
+                end = true;
+              } else if (reader.head === buf.length) {
+                end = true;
+              }
+            }
+          }
+        }
+      } else {
+        bufferPacket = buf.slice(0, 1);
+      }
+      return { bufferPacket, packets };
+    }
+    exports2.getPacketsFromBuffer = getPacketsFromBuffer;
+    function _invalidateRequireCacheForFile(filePath, require2) {
+      var realPath = path.resolve(filePath);
+      delete require2.cache[realPath];
+    }
+    exports2._invalidateRequireCacheForFile = _invalidateRequireCacheForFile;
+    function requireNoCache(filePath, require2) {
+      _invalidateRequireCacheForFile(filePath, require2);
+      return require2(filePath);
+    }
+    exports2.requireNoCache = requireNoCache;
+    function getPackedStringByteLen(str) {
+      const strLen = textToBuffer(utf8.encode(str)).length;
+      if (strLen >= 128) {
+        return 2 + strLen;
+      }
+      return 1 + strLen;
+    }
+    exports2.getPackedStringByteLen = getPackedStringByteLen;
+  }
+});
+
+// node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/bufferwriter.js
+var require_bufferwriter = __commonJS({
+  "node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/bufferwriter.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    var utils_1 = require_utils();
+    var utf8 = require_utf8();
+    var BufferWriter = class {
+      constructor(buffer) {
+        this._offset = 0;
+        this._buffer = buffer;
+      }
+      changeOffset(offset) {
+        this._offset = offset;
+      }
+      packInt16(int16) {
+        this._buffer.writeInt16LE(int16, this._offset);
+        this._offset += 2;
+        return this;
+      }
+      packUInt16(uint16) {
+        this._buffer.writeUInt16LE(uint16, this._offset);
+        this._offset += 2;
+        return this;
+      }
+      packInt32(int32) {
+        this._buffer.writeInt32LE(int32, this._offset);
+        this._offset += 4;
+        return this;
+      }
+      packUInt32(uint32) {
+        this._buffer.writeUInt32LE(uint32, this._offset);
+        this._offset += 4;
+        return this;
+      }
+      packInt64(int64) {
+        this._buffer.writeBigInt64LE(int64, this._offset);
+        this._offset += 8;
+        return this;
+      }
+      packUInt64(uint64) {
+        this._buffer.writeBigUInt64LE(uint64, this._offset);
+        this._offset += 8;
+        return this;
+      }
+      packSingle(single) {
+        this._buffer.writeFloatLE(single, this._offset);
+        this._offset += 4;
+        return this;
+      }
+      packDouble(double) {
+        this._buffer.writeDoubleLE(double, this._offset);
+        this._offset += 8;
+        return this;
+      }
+      packByte(byte) {
+        if (byte < 0)
+          byte = -byte;
+        this._buffer.writeUInt8(byte, this._offset);
+        this._offset += 1;
+        return this;
+      }
+      packSByte(byte) {
+        this._buffer.writeInt8(byte, this._offset);
+        this._offset += 1;
+        return this;
+      }
+      packBytes(bytes) {
+        for (const byte of bytes) {
+          this.packByte(byte);
+        }
+        return this;
+      }
+      packHex(hex) {
+        const buf = Buffer.from(hex, "hex");
+        buf.copy(this._buffer, this._offset, 0);
+        this._offset += buf.length;
+        return this;
+      }
+      packBuffer(buffer) {
+        buffer.copy(this._buffer, this._offset, 0);
+        this._offset += buffer.length;
+        return this;
+      }
+      packString(str) {
+        const packedStr = (0, utils_1.textToBuffer)(utf8.encode(str));
+        const strLen = packedStr.length;
+        if (strLen >= 128) {
+          this.packByte(strLen % 128 + 128);
+          this.packByte(Math.floor(strLen / 128));
+        } else {
+          this.packByte(strLen);
+        }
+        this.packBuffer(packedStr);
+        return this;
+      }
+      packColor(color) {
+        this.packByte(color.R);
+        this.packByte(color.G);
+        this.packByte(color.B);
+        return this;
+      }
+      packNetworkText(networkText) {
+        this.packByte(networkText.mode);
+        this.packString(networkText.text);
+        return this;
+      }
+      get data() {
+        return this._buffer;
+      }
+      get packedLength() {
+        return this._offset;
+      }
+      get slicedData() {
+        return this._buffer.slice(0, this._offset);
       }
     };
-    exports2.default = PacketReader;
+    exports2.default = BufferWriter;
   }
 });
 
@@ -1608,24 +1665,497 @@ var require_packetwriter = __commonJS({
   }
 });
 
+// src/ErrorAwarePacketWriter.js
+var require_ErrorAwarePacketWriter = __commonJS({
+  "src/ErrorAwarePacketWriter.js"(exports2) {
+    "use strict";
+    var Primitive_exceptions2 = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
+    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var Packetwriter = require_packetwriter().default;
+    function packSingle(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packSingle(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function packUInt32(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packUInt32(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function packInt32(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packInt32(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function packByte(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packByte(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function packBool(self, value, context) {
+      return packByte(self, value ? 1 : 0, context);
+    }
+    function packUInt16(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packUInt16(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function packInt16(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packInt16(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function packUInt64(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packUInt64(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function packString(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packString(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function packSByte(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packSByte(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function packBytes(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packBytes(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function packColor(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packColor(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function packBuffer(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packBuffer(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function packNetworkText(self, value, context) {
+      if (self.TAG !== "Writing") {
+        return self;
+      }
+      try {
+        let writer = self._0.packNetworkText(value);
+        return {
+          TAG: "Writing",
+          _0: writer
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              context,
+              error: obj._1
+            }
+          };
+        }
+        throw obj;
+      }
+    }
+    function setType(self, value) {
+      return {
+        TAG: "Writing",
+        _0: ManagedPacketWriter$PacketFactory.setType(self, value)
+      };
+    }
+    function data(self) {
+      if (self.TAG === "Writing") {
+        return {
+          TAG: "Ok",
+          _0: self._0.data
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: self._0
+        };
+      }
+    }
+    function make5() {
+      return new Packetwriter();
+    }
+    exports2.packSingle = packSingle;
+    exports2.packUInt32 = packUInt32;
+    exports2.packInt32 = packInt32;
+    exports2.packByte = packByte;
+    exports2.packBool = packBool;
+    exports2.packUInt16 = packUInt16;
+    exports2.packInt16 = packInt16;
+    exports2.packUInt64 = packUInt64;
+    exports2.packString = packString;
+    exports2.packSByte = packSByte;
+    exports2.packBytes = packBytes;
+    exports2.packColor = packColor;
+    exports2.packBuffer = packBuffer;
+    exports2.packNetworkText = packNetworkText;
+    exports2.setType = setType;
+    exports2.data = data;
+    exports2.make = make5;
+  }
+});
+
+// node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/packetreader.js
+var require_packetreader = __commonJS({
+  "node_modules/.pnpm/@popstarfreas+packetfactory@6.3.0/node_modules/@popstarfreas/packetfactory/packetreader.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    var bufferreader_1 = require_bufferreader();
+    var PacketReader = class extends bufferreader_1.default {
+      constructor(data) {
+        super(data);
+        this.readUInt16();
+        this._type = this.readByte();
+      }
+      /**
+       * Gets the packet type
+       *
+       * @return The packet type of the packet
+       */
+      get type() {
+        return this._type;
+      }
+    };
+    exports2.default = PacketReader;
+  }
+});
+
+// src/packet/Packet_AnglerQuest.js
+var require_Packet_AnglerQuest = __commonJS({
+  "src/packet/Packet_AnglerQuest.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "anglerQuest");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readBool(reader, "anglerQuestFinished");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            anglerQuest: e._0,
+            anglerQuestFinished: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
+    }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readBool: ErrorAwarePacketReader$TerrariaPacket.readBool,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packBool(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("AnglerQuest")), self.anglerQuest, "anglerQuest"), self.anglerQuestFinished, "anglerQuestFinished"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packBool: ErrorAwarePacketWriter$TerrariaPacket.packBool,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_AnglerQuestComplete.js
+var require_Packet_AnglerQuestComplete = __commonJS({
+  "src/packet/Packet_AnglerQuestComplete.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    function parse(_payload) {
+      return {
+        TAG: "Ok",
+        _0: void 0
+      };
+    }
+    var Decode = {
+      parse
+    };
+    function toBuffer(_self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("AnglerQuestComplete")));
+    }
+    var Encode = {
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
 // src/packet/Packet_BossOrInvasionSpawn.js
 var require_Packet_BossOrInvasionSpawn = __commonJS({
   "src/packet/Packet_BossOrInvasionSpawn.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readInt16(prim) {
-      return prim.readInt16();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let playerId = reader.readInt16();
-      let invasionType = reader.readInt16();
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "spawnType");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let rawSpawnType = e$1._0;
       let spawnType;
       let exit = 0;
-      switch (invasionType) {
+      switch (rawSpawnType) {
         case -18:
           spawnType = "PeddlersSatchel";
           break;
@@ -1681,82 +2211,79 @@ var require_Packet_BossOrInvasionSpawn = __commonJS({
           exit = 1;
       }
       if (exit === 1) {
-        spawnType = invasionType < 0 ? {
+        spawnType = rawSpawnType < 0 ? {
           TAG: "Invasion",
-          _0: -invasionType | 0
+          _0: -rawSpawnType | 0
         } : {
           TAG: "Npc",
-          _0: invasionType
+          _0: rawSpawnType
         };
       }
       return {
-        playerId,
-        spawnType
+        TAG: "Ok",
+        _0: {
+          playerId: e._0,
+          spawnType
+        }
       };
     }
     var Decode = {
-      readInt16,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
       parse
     };
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function packSpawnType(writer, spawnType) {
       if (typeof spawnType === "object") {
         if (spawnType.TAG === "Invasion") {
-          return writer.packInt16(-spawnType._0 | 0);
+          return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -spawnType._0 | 0, "spawnType");
         } else {
-          return writer.packInt16(spawnType._0);
+          return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, spawnType._0, "spawnType");
         }
       }
       switch (spawnType) {
         case "GoblinInvasion":
-          return writer.packInt16(-1);
+          return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -1, "spawnType");
         case "FrostInvasion":
-          return writer.packInt16(-2);
+          return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -2, "spawnType");
         case "PirateInvasion":
-          return writer.packInt16(-3);
+          return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -3, "spawnType");
         case "PumpkinMoon":
-          return writer.packInt16(-4);
+          return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -4, "spawnType");
         case "SnowMoon":
-          return writer.packInt16(-5);
+          return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -5, "spawnType");
         case "Eclipse":
-          return writer.packInt16(-6);
+          return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -6, "spawnType");
         case "MartianMoon":
-          return writer.packInt16(-7);
+          return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -7, "spawnType");
         case "ImpendingDoom":
-          return writer.packInt16(-8);
+          return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -8, "spawnType");
         case "BloodMoon":
-          return writer.packInt16(-10);
+          return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -10, "spawnType");
         case "CombatBookUsed":
-          return writer.packInt16(-11);
+          return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -11, "spawnType");
         case "BoughtCat":
-          return writer.packInt16(-12);
+          return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -12, "spawnType");
         case "BoughtDog":
-          return writer.packInt16(-13);
+          return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -13, "spawnType");
         case "BoughtBunny":
-          return writer.packInt16(-14);
+          return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -14, "spawnType");
         case "BoughtSlime":
-          return writer.packInt16(-15);
+          return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -15, "spawnType");
         case "MechQueen":
-          return writer.packInt16(-16);
+          return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -16, "spawnType");
         case "CombatBookVolumeTwo":
-          return writer.packInt16(-17);
+          return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -17, "spawnType");
         case "PeddlersSatchel":
-          return writer.packInt16(-18);
+          return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -18, "spawnType");
       }
     }
     function toBuffer(self) {
-      return packSpawnType(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("BossOrInvasionSpawn")).packInt16(self.playerId), self.spawnType).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(packSpawnType(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("BossOrInvasionSpawn")), self.playerId, "playerId"), self.spawnType));
     }
     var Encode = {
       Writer: void 0,
-      packInt16,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       packSpawnType,
       toBuffer
     };
@@ -1764,624 +2291,6 @@ var require_Packet_BossOrInvasionSpawn = __commonJS({
     exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
-  }
-});
-
-// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_exceptions.js
-var Primitive_exceptions_exports = {};
-function isExtension(e) {
-  if (e == null) {
-    return false;
-  } else {
-    return typeof e.RE_EXN_ID === "string";
-  }
-}
-function internalToException(e) {
-  if (isExtension(e)) {
-    return e;
-  } else {
-    return {
-      RE_EXN_ID: "JsExn",
-      _1: e
-    };
-  }
-}
-function create(str) {
-  let v = idMap[str];
-  if (v !== void 0) {
-    let id = v + 1 | 0;
-    idMap[str] = id;
-    return str + ("/" + id);
-  }
-  idMap[str] = 1;
-  return str;
-}
-var idMap, $$Error;
-var init_Primitive_exceptions = __esm({
-  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_exceptions.js"() {
-    "use strict";
-    idMap = {};
-    $$Error = "JsExn";
-    exports.$$Error = $$Error;
-    exports.create = create;
-    exports.internalToException = internalToException;
-  }
-});
-
-// src/ErrorAwarePacketReader.js
-var require_ErrorAwarePacketReader = __commonJS({
-  "src/ErrorAwarePacketReader.js"(exports2) {
-    "use strict";
-    var Primitive_exceptions3 = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
-    var ReadError = /* @__PURE__ */ Primitive_exceptions3.create("ErrorAwarePacketReader-TerrariaPacket.ReadError");
-    function readByte(reader, context) {
-      try {
-        return reader.readByte();
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function readUInt16(reader, context) {
-      try {
-        return reader.readUInt16();
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function readInt16(reader, context) {
-      try {
-        return reader.readInt16();
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function readInt32(reader, context) {
-      try {
-        return reader.readInt32();
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function readUInt64(reader, context) {
-      try {
-        return reader.readUInt64();
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function readString(reader, context) {
-      try {
-        return reader.readString();
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function readBytes(reader, count, context) {
-      try {
-        return reader.readBytes(count);
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function readSingle(reader, context) {
-      try {
-        return reader.readSingle();
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function readSByte(reader, context) {
-      try {
-        return reader.readSByte();
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function readColor(reader, context) {
-      try {
-        return reader.readColor();
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function readBuffer(reader, bytes, context) {
-      try {
-        return reader.readBuffer(bytes);
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function readNetworkText(reader, context) {
-      try {
-        return reader.readNetworkText();
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
-    }
-    function getBytesLeft(reader) {
-      return reader.bytesLeft;
-    }
-    exports2.ReadError = ReadError;
-    exports2.readByte = readByte;
-    exports2.readUInt16 = readUInt16;
-    exports2.readInt16 = readInt16;
-    exports2.readInt32 = readInt32;
-    exports2.readUInt64 = readUInt64;
-    exports2.readString = readString;
-    exports2.readBytes = readBytes;
-    exports2.readSingle = readSingle;
-    exports2.readSByte = readSByte;
-    exports2.readColor = readColor;
-    exports2.readBuffer = readBuffer;
-    exports2.readNetworkText = readNetworkText;
-    exports2.getBytesLeft = getBytesLeft;
-  }
-});
-
-// src/ErrorAwarePacketWriter.js
-var require_ErrorAwarePacketWriter = __commonJS({
-  "src/ErrorAwarePacketWriter.js"(exports2) {
-    "use strict";
-    var Primitive_exceptions3 = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
-    var Packetwriter = require_packetwriter().default;
-    function packSingle(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        let writer = self._0.packSingle(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function packInt32(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        let writer = self._0.packInt32(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function packByte(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        let writer = self._0.packByte(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function packUInt16(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        let writer = self._0.packUInt16(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function packInt16(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        let writer = self._0.packInt16(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function packUInt64(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        let writer = self._0.packUInt64(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function packString(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        let writer = self._0.packString(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function packSByte(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        let writer = self._0.packSByte(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function packBytes(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        let writer = self._0.packBytes(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function packColor(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        let writer = self._0.packColor(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function packBuffer(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        let writer = self._0.packBuffer(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function packNetworkText(self, value, context) {
-      if (self.TAG !== "Writing") {
-        return self;
-      }
-      try {
-        let writer = self._0.packNetworkText(value);
-        return {
-          TAG: "Writing",
-          _0: writer
-        };
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          return {
-            TAG: "Error",
-            _0: {
-              context,
-              error: obj._1
-            }
-          };
-        }
-        throw obj;
-      }
-    }
-    function setType(self, value) {
-      return {
-        TAG: "Writing",
-        _0: ManagedPacketWriter$PacketFactory.setType(self, value)
-      };
-    }
-    function data(self) {
-      if (self.TAG === "Writing") {
-        return {
-          TAG: "Ok",
-          _0: self._0.data
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: self._0
-        };
-      }
-    }
-    function make5() {
-      return new Packetwriter();
-    }
-    exports2.packSingle = packSingle;
-    exports2.packInt32 = packInt32;
-    exports2.packByte = packByte;
-    exports2.packUInt16 = packUInt16;
-    exports2.packInt16 = packInt16;
-    exports2.packUInt64 = packUInt64;
-    exports2.packString = packString;
-    exports2.packSByte = packSByte;
-    exports2.packBytes = packBytes;
-    exports2.packColor = packColor;
-    exports2.packBuffer = packBuffer;
-    exports2.packNetworkText = packNetworkText;
-    exports2.setType = setType;
-    exports2.data = data;
-    exports2.make = make5;
   }
 });
 
@@ -2395,14 +2304,27 @@ var require_Packet_ChatMessageSmart = __commonJS({
     var Packetreader = require_packetreader().default;
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let color = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "color");
-      let message = ErrorAwarePacketReader$TerrariaPacket.readNetworkText(reader, "message");
-      let widthLimit = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "widthLimit");
-      return {
-        color,
-        message,
-        widthLimit
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "color");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readNetworkText(reader, "message");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "widthLimit");
+      if (e$2.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            color: e._0,
+            message: e$1._0,
+            widthLimit: e$2._0
+          }
+        };
+      } else {
+        return e$2;
+      }
     }
     var Decode = {
       readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
@@ -2434,52 +2356,56 @@ var require_Packet_ChestItem = __commonJS({
   "src/packet/Packet_ChestItem.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readInt16(prim) {
-      return prim.readInt16();
-    }
-    function readByte(prim) {
-      return prim.readByte();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let chestId = reader.readInt16();
-      let slot = reader.readByte();
-      let stack = reader.readInt16();
-      let prefix = reader.readByte();
-      let itemNetId = reader.readInt16();
-      return {
-        chestId,
-        slot,
-        stack,
-        prefix,
-        itemNetId
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "chestId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "slot");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "stack");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "prefix");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemNetId");
+      if (e$4.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            chestId: e._0,
+            slot: e$1._0,
+            stack: e$2._0,
+            prefix: e$3._0,
+            itemNetId: e$4._0
+          }
+        };
+      } else {
+        return e$4;
+      }
     }
     var Decode = {
-      readInt16,
-      readByte,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ChestItem")).packInt16(self.chestId).packByte(self.slot).packInt16(self.stack).packByte(self.prefix).packInt16(self.itemNetId).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ChestItem")), self.chestId, "chestId"), self.slot, "slot"), self.stack, "stack"), self.prefix, "prefix"), self.itemNetId, "itemNetId"));
     }
     var Encode = {
-      packByte,
-      packInt16,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -2494,9 +2420,9 @@ var require_Packet_ChestOrTempleUnlock = __commonJS({
   "src/packet/Packet_ChestOrTempleUnlock.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function unlockTypeToInt(self) {
       switch (self) {
         case "Chest":
@@ -2519,48 +2445,58 @@ var require_Packet_ChestOrTempleUnlock = __commonJS({
           return;
       }
     }
-    function readByte(prim) {
-      return prim.readByte();
-    }
-    function readInt16(prim) {
-      return prim.readInt16();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let unlockType = unlockTypeFromInt(reader.readByte());
-      let x = reader.readInt16();
-      let y = reader.readInt16();
-      if (unlockType !== void 0) {
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "unlockType");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let unlockType = unlockTypeFromInt(e._0);
+      let e$1 = unlockType !== void 0 ? {
+        TAG: "Ok",
+        _0: unlockType
+      } : {
+        TAG: "Error",
+        _0: {
+          context: "Packet_ChestOrTempleUnlock.parse",
+          error: new Error("Unknown unlock type")
+        }
+      };
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$3.TAG === "Ok") {
         return {
-          unlockType,
-          x,
-          y
+          TAG: "Ok",
+          _0: {
+            unlockType: e$1._0,
+            x: e$2._0,
+            y: e$3._0
+          }
         };
+      } else {
+        return e$3;
       }
     }
     var Decode = {
-      readByte,
-      readInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ChestOrTempleUnlock")).packByte(unlockTypeToInt(self.unlockType)).packInt16(self.x).packInt16(self.y).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ChestOrTempleUnlock")), unlockTypeToInt(self.unlockType), "unlockType"), self.x, "x"), self.y, "y"));
     }
     var Encode = {
       Writer: void 0,
-      packByte,
-      packInt16,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.unlockTypeToInt = unlockTypeToInt;
@@ -2577,9 +2513,9 @@ var require_Packet_ChestPlace = __commonJS({
   "src/packet/Packet_ChestPlace.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function toInt(action) {
       switch (action) {
         case "PlaceChest":
@@ -2637,18 +2573,52 @@ var require_Packet_ChestPlace = __commonJS({
     };
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let action = fromInt(reader.readByte());
-      let x = reader.readInt16();
-      let y = reader.readInt16();
-      let style = reader.readInt16();
-      let id = reader.readInt16();
-      if (action !== void 0) {
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "action");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "style");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "id");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let action = fromInt(e._0);
+      let action$1 = action !== void 0 ? {
+        TAG: "Ok",
+        _0: action
+      } : {
+        TAG: "Error",
+        _0: {
+          context: "ChestPlace.parse.action",
+          error: new Error("Unknown action")
+        }
+      };
+      if (action$1.TAG === "Ok") {
         return {
-          action,
-          x,
-          y,
-          style,
-          id
+          TAG: "Ok",
+          _0: {
+            action: action$1._0,
+            x: e$1._0,
+            y: e$2._0,
+            style: e$3._0,
+            id: e$4._0
+          }
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: action$1._0
         };
       }
     }
@@ -2674,10 +2644,10 @@ var require_Packet_ChestPlace = __commonJS({
           byte = 5;
           break;
       }
-      return writer.packByte(byte);
+      return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, byte, "action");
     }
     function toBuffer(self) {
-      return packAction(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ChestPlace")), self.action).packInt16(self.x).packInt16(self.y).packInt16(self.style).packInt16(self.id).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(packAction(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ChestPlace")), self.action), self.x, "x"), self.y, "y"), self.style, "style"), self.id, "id"));
     }
     exports2.Action = Action;
     exports2.parse = parse;
@@ -2689,11 +2659,29 @@ var require_Packet_ChestPlace = __commonJS({
 var require_Packet_ClientFinishConnectingToServer = __commonJS({
   "src/packet/Packet_ClientFinishConnectingToServer.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     function parse(_payload) {
-      return Primitive_option8.some(void 0);
+      return {
+        TAG: "Ok",
+        _0: void 0
+      };
     }
+    var Decode = {
+      parse
+    };
+    function toBuffer(_self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ClientFinishConnectingToServer")));
+    }
+    var Encode = {
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -2702,18 +2690,25 @@ var require_Packet_ConnectRequest = __commonJS({
   "src/packet/Packet_ConnectRequest.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let version = reader.readString();
-      return {
-        version
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "version");
+      if (e.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            version: e._0
+          }
+        };
+      } else {
+        return e;
+      }
     }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ConnectRequest")).packString(self.version).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ConnectRequest")), self.version, "version"));
     }
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
@@ -2724,129 +2719,49 @@ var require_Packet_ConnectRequest = __commonJS({
 var require_Packet_CountsAsHostForGameplaySet = __commonJS({
   "src/packet/Packet_CountsAsHostForGameplaySet.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readBool(reader, "countsAsHost");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            countsAsHost: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readBool: ErrorAwarePacketReader$TerrariaPacket.readBool,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packBool(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("CountsAsHostForGameplaySet")), self.playerId, "playerId"), self.countsAsHost, "countsAsHost"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packBool: ErrorAwarePacketWriter$TerrariaPacket.packBool,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
-  }
-});
-
-// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_Option.js
-var Belt_Option_exports = {};
-function keep(opt, p) {
-  if (opt !== void 0 && p(Primitive_option.valFromOption(opt))) {
-    return opt;
-  }
-}
-function forEach(opt, f) {
-  if (opt !== void 0) {
-    return f(Primitive_option.valFromOption(opt));
-  }
-}
-function getOrThrow(x) {
-  if (x !== void 0) {
-    return Primitive_option.valFromOption(x);
-  }
-  throw {
-    RE_EXN_ID: "Not_found",
-    Error: new Error()
-  };
-}
-function mapWithDefault(opt, $$default, f) {
-  if (opt !== void 0) {
-    return f(Primitive_option.valFromOption(opt));
-  } else {
-    return $$default;
-  }
-}
-function map(opt, f) {
-  if (opt !== void 0) {
-    return Primitive_option.some(f(Primitive_option.valFromOption(opt)));
-  }
-}
-function flatMap(opt, f) {
-  if (opt !== void 0) {
-    return f(Primitive_option.valFromOption(opt));
-  }
-}
-function getWithDefault(opt, $$default) {
-  if (opt !== void 0) {
-    return Primitive_option.valFromOption(opt);
-  } else {
-    return $$default;
-  }
-}
-function orElse(opt, other) {
-  if (opt !== void 0) {
-    return opt;
-  } else {
-    return other;
-  }
-}
-function isSome(x) {
-  return x !== void 0;
-}
-function isNone(x) {
-  return x === void 0;
-}
-function eq(a, b, f) {
-  if (a !== void 0) {
-    if (b !== void 0) {
-      return f(Primitive_option.valFromOption(a), Primitive_option.valFromOption(b));
-    } else {
-      return false;
-    }
-  } else {
-    return b === void 0;
-  }
-}
-function cmp(a, b, f) {
-  if (a !== void 0) {
-    if (b !== void 0) {
-      return f(Primitive_option.valFromOption(a), Primitive_option.valFromOption(b));
-    } else {
-      return 1;
-    }
-  } else if (b !== void 0) {
-    return -1;
-  } else {
-    return 0;
-  }
-}
-var Primitive_option, keepU, forEachU, getExn, mapWithDefaultU, mapU, flatMapU, eqU, cmpU;
-var init_Belt_Option = __esm({
-  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_Option.js"() {
-    "use strict";
-    Primitive_option = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    keepU = keep;
-    forEachU = forEach;
-    getExn = getOrThrow;
-    mapWithDefaultU = mapWithDefault;
-    mapU = map;
-    flatMapU = flatMap;
-    eqU = eq;
-    cmpU = cmp;
-    exports.keepU = keepU;
-    exports.keep = keep;
-    exports.forEachU = forEachU;
-    exports.forEach = forEach;
-    exports.getExn = getExn;
-    exports.getOrThrow = getOrThrow;
-    exports.mapWithDefaultU = mapWithDefaultU;
-    exports.mapWithDefault = mapWithDefault;
-    exports.mapU = mapU;
-    exports.map = map;
-    exports.flatMapU = flatMapU;
-    exports.flatMap = flatMap;
-    exports.getWithDefault = getWithDefault;
-    exports.orElse = orElse;
-    exports.isSome = isSome;
-    exports.isNone = isNone;
-    exports.eqU = eqU;
-    exports.eq = eq;
-    exports.cmpU = cmpU;
-    exports.cmp = cmp;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -2854,11 +2769,10 @@ var init_Belt_Option = __esm({
 var require_Packet_CreditsOrSlimeTransform = __commonJS({
   "src/packet/Packet_CreditsOrSlimeTransform.js"(exports2) {
     "use strict";
-    var Belt_Option = (init_Belt_Option(), __toCommonJS(Belt_Option_exports));
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function fromInt(num) {
       switch (num) {
         case 0:
@@ -2885,44 +2799,49 @@ var require_Packet_CreditsOrSlimeTransform = __commonJS({
       fromInt,
       toInt
     };
-    function readByte(prim) {
-      return prim.readByte();
-    }
-    function readInt32(prim) {
-      return prim.readInt32();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let eventType = reader.readByte();
-      let value = reader.readInt32();
-      return Belt_Option.map(fromInt(eventType), (eventType2) => ({
-        eventType: eventType2,
-        value
-      }));
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventType");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "value");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let eventType = fromInt(e._0);
+      if (eventType !== void 0) {
+        return {
+          TAG: "Ok",
+          _0: {
+            eventType,
+            value: e$1._0
+          }
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: {
+            context: "Packet_CreditsOrSlimeTransform.parse",
+            error: new Error("Unknown event type")
+          }
+        };
+      }
     }
     var Decode = {
-      readByte,
-      readInt32,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt32(prim0, prim1) {
-      return prim0.packInt32(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("CreditsOrSlimeTransform")).packByte(toInt(self.eventType)).packInt32(self.value).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("CreditsOrSlimeTransform")), toInt(self.eventType), "eventType"), self.value, "value"));
     }
     var Encode = {
       Writer: void 0,
-      packByte,
-      packInt32,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     var Option;
@@ -2940,47 +2859,41 @@ var require_Packet_CrystalInvasionStart = __commonJS({
   "src/packet/Packet_CrystalInvasionStart.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readByte(prim) {
-      return prim.readByte();
-    }
-    function readInt16(prim) {
-      return prim.readInt16();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let x = reader.readInt16();
-      let y = reader.readInt16();
-      return {
-        x,
-        y
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            x: e._0,
+            y: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
     var Decode = {
-      readByte,
-      readInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("CrystalInvasionStart")).packInt16(self.x).packInt16(self.y).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("CrystalInvasionStart")), self.x, "x"), self.y, "y"));
     }
     var Encode = {
       Writer: void 0,
-      packByte,
-      packInt16,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -2995,9 +2908,9 @@ var require_Packet_DimensionsUpdate = __commonJS({
   "src/packet/Packet_DimensionsUpdate.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function toInt(self) {
       switch (self) {
         case "RealIpAddress":
@@ -3030,38 +2943,74 @@ var require_Packet_DimensionsUpdate = __commonJS({
     };
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let updateType = reader.readInt16();
-      let match = fromInt(updateType);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "updateType");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let match = fromInt(e._0);
       if (match === void 0) {
-        return;
+        return {
+          TAG: "Error",
+          _0: {
+            context: "DimensionsUpdate.parse.updateType",
+            error: new Error("Unknown updateType")
+          }
+        };
       }
       switch (match) {
         case "RealIpAddress":
-          let ip = reader.readString();
-          return {
-            TAG: "RealIpAddress",
-            _0: ip
-          };
+          let e$1 = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "ip");
+          if (e$1.TAG === "Ok") {
+            return {
+              TAG: "Ok",
+              _0: {
+                TAG: "RealIpAddress",
+                _0: e$1._0
+              }
+            };
+          } else {
+            return e$1;
+          }
         case "GamemodesJoinMode":
-          return "GamemodesJoinMode";
+          return {
+            TAG: "Ok",
+            _0: "GamemodesJoinMode"
+          };
         case "SwitchServer":
-          let dimensionName = reader.readString();
-          return {
-            TAG: "SwitchServer",
-            _0: dimensionName
-          };
+          let e$2 = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "dimensionName");
+          if (e$2.TAG === "Ok") {
+            return {
+              TAG: "Ok",
+              _0: {
+                TAG: "SwitchServer",
+                _0: e$2._0
+              }
+            };
+          } else {
+            return e$2;
+          }
         case "SwitchServerManual":
-          let ip$1 = reader.readString();
-          let port = reader.readUInt16();
-          return {
-            TAG: "SwitchServerManual",
-            _0: ip$1,
-            _1: port
-          };
+          let e$3 = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "ip");
+          if (e$3.TAG !== "Ok") {
+            return e$3;
+          }
+          let e$4 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "port");
+          if (e$4.TAG === "Ok") {
+            return {
+              TAG: "Ok",
+              _0: {
+                TAG: "SwitchServerManual",
+                _0: e$3._0,
+                _1: e$4._0
+              }
+            };
+          } else {
+            return e$4;
+          }
       }
     }
     function gamemodesJoinModeToBuffer() {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("DimensionsUpdate")).packInt16(1).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("DimensionsUpdate")), 1, "updateType"));
     }
     function toBuffer(self) {
       if (typeof self !== "object") {
@@ -3070,14 +3019,14 @@ var require_Packet_DimensionsUpdate = __commonJS({
       switch (self.TAG) {
         case "RealIpAddress":
           let ip = self._0;
-          return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("DimensionsUpdate")).packInt16(0).packString(ip).data;
+          return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("DimensionsUpdate")), 0, "updateType"), ip, "ip"));
         case "SwitchServer":
           let dimensionName = self._0;
-          return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("DimensionsUpdate")).packInt16(2).packString(dimensionName).data;
+          return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("DimensionsUpdate")), 2, "updateType"), dimensionName, "dimensionName"));
         case "SwitchServerManual":
           let ip$1 = self._0;
           let port = self._1;
-          return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("DimensionsUpdate")).packInt16(3).packString(ip$1).packUInt16(port).data;
+          return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("DimensionsUpdate")), 3, "updateType"), ip$1, "ip"), port, "port"));
       }
     }
     exports2.UpdateType = UpdateType;
@@ -3091,58 +3040,53 @@ var require_Packet_ExtraValueSync = __commonJS({
   "src/packet/Packet_ExtraValueSync.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readInt16(prim) {
-      return prim.readInt16();
-    }
-    function readInt32(prim) {
-      return prim.readInt32();
-    }
-    function readSingle(prim) {
-      return prim.readSingle();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let npcSlotId = reader.readInt16();
-      let extraValue = reader.readInt32();
-      let x = reader.readSingle();
-      let y = reader.readSingle();
-      return {
-        npcSlotId,
-        extraValue,
-        x,
-        y
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcSlotId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "extraValue");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+      if (e$3.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            npcSlotId: e._0,
+            extraValue: e$1._0,
+            x: e$2._0,
+            y: e$3._0
+          }
+        };
+      } else {
+        return e$3;
+      }
     }
     var Decode = {
-      readInt16,
-      readInt32,
-      readSingle,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
       parse
     };
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function packInt32(prim0, prim1) {
-      return prim0.packInt32(prim1);
-    }
-    function packSingle(prim0, prim1) {
-      return prim0.packSingle(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ExtraValueSync")).packInt16(self.npcSlotId).packInt32(self.extraValue).packSingle(self.x).packSingle(self.y).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ExtraValueSync")), self.npcSlotId, "npcSlotId"), self.extraValue, "extraValue"), self.x, "x"), self.y, "y"));
     }
     var Encode = {
-      packInt16,
-      packInt32,
-      packSingle,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -3156,38 +3100,24 @@ var require_Packet_ExtraValueSync = __commonJS({
 var require_Packet_HaveDryadDoStardewAnimation = __commonJS({
   "src/packet/Packet_HaveDryadDoStardewAnimation.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
-    var Packetwriter = require_packetwriter().default;
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     function parse(_payload) {
-      return Primitive_option8.some(void 0);
+      return {
+        TAG: "Ok",
+        _0: void 0
+      };
     }
     var Decode = {
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt32(prim0, prim1) {
-      return prim0.packInt32(prim1);
-    }
-    function packSingle(prim0, prim1) {
-      return prim0.packSingle(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(_self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("HaveDryadDoStardewAnimation")).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("HaveDryadDoStardewAnimation")));
     }
     var Encode = {
       Writer: void 0,
-      packByte,
-      packInt32,
-      packSingle,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -3201,11 +3131,543 @@ var require_Packet_HaveDryadDoStardewAnimation = __commonJS({
 var require_Packet_InvasionProgressReport = __commonJS({
   "src/packet/Packet_InvasionProgressReport.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "progress");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "progressMax");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSByte(reader, "icon");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readSByte(reader, "wave");
+      if (e$3.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            progress: e._0,
+            progressMax: e$1._0,
+            icon: e$2._0,
+            wave: e$3._0
+          }
+        };
+      } else {
+        return e$3;
+      }
+    }
+    var Decode = {
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+      readSByte: ErrorAwarePacketReader$TerrariaPacket.readSByte,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSByte(ErrorAwarePacketWriter$TerrariaPacket.packSByte(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("InvasionProgressReport")), self.progress, "progress"), self.progressMax, "progressMax"), self.icon, "icon"), self.wave, "wave"));
+    }
+    var Encode = {
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      packSByte: ErrorAwarePacketWriter$TerrariaPacket.packSByte,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_ItemDropShimmeredUpdate.js
+var require_Packet_ItemDropShimmeredUpdate = __commonJS({
+  "src/packet/Packet_ItemDropShimmeredUpdate.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemDropId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "stack");
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let e$6 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "prefix");
+      if (e$6.TAG !== "Ok") {
+        return e$6;
+      }
+      let e$7 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "noDelay");
+      if (e$7.TAG !== "Ok") {
+        return e$7;
+      }
+      let e$8 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemId");
+      if (e$8.TAG !== "Ok") {
+        return e$8;
+      }
+      let e$9 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "shimmered");
+      if (e$9.TAG !== "Ok") {
+        return e$9;
+      }
+      let e$10 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "shimmeredTime");
+      if (e$10.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            itemDropId: e._0,
+            x: e$1._0,
+            y: e$2._0,
+            vx: e$3._0,
+            vy: e$4._0,
+            stack: e$5._0,
+            prefix: e$6._0,
+            noDelay: e$7._0,
+            itemId: e$8._0,
+            shimmered: e$9._0 === 1,
+            shimmeredTime: e$10._0
+          }
+        };
+      } else {
+        return e$10;
+      }
+    }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ItemDropShimmeredUpdate")), self.itemDropId, "itemDropId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.stack, "stack"), self.prefix, "prefix"), self.noDelay, "noDelay"), self.itemId, "itemId"), self.shimmered ? 1 : 0, "shimmered"), self.shimmeredTime, "shimmeredTime"));
+    }
+    var Encode = {
+      Writer: void 0,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_ItemDropUpdate.js
+var require_Packet_ItemDropUpdate = __commonJS({
+  "src/packet/Packet_ItemDropUpdate.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemDropId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "stack");
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let e$6 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "prefix");
+      if (e$6.TAG !== "Ok") {
+        return e$6;
+      }
+      let e$7 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "noDelay");
+      if (e$7.TAG !== "Ok") {
+        return e$7;
+      }
+      let e$8 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemId");
+      if (e$8.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            itemDropId: e._0,
+            x: e$1._0,
+            y: e$2._0,
+            vx: e$3._0,
+            vy: e$4._0,
+            stack: e$5._0,
+            prefix: e$6._0,
+            noDelay: e$7._0,
+            itemId: e$8._0
+          }
+        };
+      } else {
+        return e$8;
+      }
+    }
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ItemDropUpdate")), self.itemDropId, "itemDropId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.stack, "stack"), self.prefix, "prefix"), self.noDelay, "noDelay"), self.itemId, "itemId"));
     }
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// src/packet/Packet_ItemOwner.js
+var require_Packet_ItemOwner = __commonJS({
+  "src/packet/Packet_ItemOwner.js"(exports2) {
+    "use strict";
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemDropId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "owner");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            itemDropId: e._0,
+            owner: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
+    }
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ItemOwner")), self.itemDropId, "itemDropId"), self.owner, "owner"));
+    }
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_option.js
+var Primitive_option_exports = {};
+function isNested(x) {
+  return x.BS_PRIVATE_NESTED_SOME_NONE !== void 0;
+}
+function some(x) {
+  if (x === void 0) {
+    return {
+      BS_PRIVATE_NESTED_SOME_NONE: 0
+    };
+  } else if (x !== null && x.BS_PRIVATE_NESTED_SOME_NONE !== void 0) {
+    return {
+      BS_PRIVATE_NESTED_SOME_NONE: x.BS_PRIVATE_NESTED_SOME_NONE + 1 | 0
+    };
+  } else {
+    return x;
+  }
+}
+function fromNullable(x) {
+  if (x == null) {
+    return;
+  } else {
+    return some(x);
+  }
+}
+function fromUndefined(x) {
+  if (x === void 0) {
+    return;
+  } else {
+    return some(x);
+  }
+}
+function fromNull(x) {
+  if (x === null) {
+    return;
+  } else {
+    return some(x);
+  }
+}
+function valFromOption(x) {
+  if (x === null || x.BS_PRIVATE_NESTED_SOME_NONE === void 0) {
+    return x;
+  }
+  let depth = x.BS_PRIVATE_NESTED_SOME_NONE;
+  if (depth === 0) {
+    return;
+  } else {
+    return {
+      BS_PRIVATE_NESTED_SOME_NONE: depth - 1 | 0
+    };
+  }
+}
+function toUndefined(x) {
+  if (x === void 0) {
+    return;
+  } else {
+    return valFromOption(x);
+  }
+}
+function unwrapPolyVar(x) {
+  if (x !== void 0) {
+    return x.VAL;
+  } else {
+    return x;
+  }
+}
+var init_Primitive_option = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_option.js"() {
+    "use strict";
+    exports.fromNullable = fromNullable;
+    exports.fromUndefined = fromUndefined;
+    exports.fromNull = fromNull;
+    exports.valFromOption = valFromOption;
+    exports.some = some;
+    exports.isNested = isNested;
+    exports.toUndefined = toUndefined;
+    exports.unwrapPolyVar = unwrapPolyVar;
+  }
+});
+
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Stdlib_Array.js
+var Stdlib_Array_exports = {};
+function make(length, x) {
+  if (length <= 0) {
+    return [];
+  }
+  let arr = new Array(length);
+  arr.fill(x);
+  return arr;
+}
+function fromInitializer(length, f) {
+  if (length <= 0) {
+    return [];
+  }
+  let arr = new Array(length);
+  for (let i = 0; i < length; ++i) {
+    arr[i] = f(i);
+  }
+  return arr;
+}
+function isEmpty(arr) {
+  return arr.length === 0;
+}
+function equal(a, b, eq6) {
+  let len = a.length;
+  if (len === b.length) {
+    let _i = 0;
+    while (true) {
+      let i = _i;
+      if (i === len) {
+        return true;
+      }
+      if (!eq6(a[i], b[i])) {
+        return false;
+      }
+      _i = i + 1 | 0;
+      continue;
+    }
+    ;
+  } else {
+    return false;
+  }
+}
+function compare(a, b, cmp6) {
+  let lenA = a.length;
+  let lenB = b.length;
+  if (lenA < lenB) {
+    return -1;
+  } else if (lenA > lenB) {
+    return 1;
+  } else {
+    let _i = 0;
+    while (true) {
+      let i = _i;
+      if (i === lenA) {
+        return 0;
+      }
+      let c = cmp6(a[i], b[i]);
+      if (c !== 0) {
+        return c;
+      }
+      _i = i + 1 | 0;
+      continue;
+    }
+    ;
+  }
+}
+function indexOfOpt(arr, item) {
+  let index = arr.indexOf(item);
+  if (index !== -1) {
+    return index;
+  }
+}
+function lastIndexOfOpt(arr, item) {
+  let index = arr.lastIndexOf(item);
+  if (index !== -1) {
+    return index;
+  }
+}
+function reduce(arr, init2, f) {
+  return arr.reduce(f, init2);
+}
+function reduceWithIndex(arr, init2, f) {
+  return arr.reduce(f, init2);
+}
+function reduceRight(arr, init2, f) {
+  return arr.reduceRight(f, init2);
+}
+function reduceRightWithIndex(arr, init2, f) {
+  return arr.reduceRight(f, init2);
+}
+function findIndexOpt(array, finder) {
+  let index = array.findIndex(finder);
+  if (index !== -1) {
+    return index;
+  }
+}
+function findLastIndexOpt(array, finder) {
+  let index = array.findLastIndex(finder);
+  if (index !== -1) {
+    return index;
+  }
+}
+function swapUnsafe(xs, i, j) {
+  let tmp = xs[i];
+  xs[i] = xs[j];
+  xs[j] = tmp;
+}
+function random_int(min6, max6) {
+  return (Math.floor(Math.random() * (max6 - min6 | 0)) | 0) + min6 | 0;
+}
+function shuffle(xs) {
+  let len = xs.length;
+  for (let i = 0; i < len; ++i) {
+    swapUnsafe(xs, i, random_int(i, len));
+  }
+}
+function toShuffled(xs) {
+  let result = xs.slice();
+  shuffle(result);
+  return result;
+}
+function filterMap(a, f) {
+  let l = a.length;
+  let r = new Array(l);
+  let j = 0;
+  for (let i = 0; i < l; ++i) {
+    let v = a[i];
+    let v$1 = f(v);
+    if (v$1 !== void 0) {
+      r[j] = Primitive_option.valFromOption(v$1);
+      j = j + 1 | 0;
+    }
+  }
+  r.length = j;
+  return r;
+}
+function keepSome(__x) {
+  return filterMap(__x, (x) => x);
+}
+function filterMapWithIndex(a, f) {
+  let l = a.length;
+  let r = new Array(l);
+  let j = 0;
+  for (let i = 0; i < l; ++i) {
+    let v = a[i];
+    let v$1 = f(v, i);
+    if (v$1 !== void 0) {
+      r[j] = Primitive_option.valFromOption(v$1);
+      j = j + 1 | 0;
+    }
+  }
+  r.length = j;
+  return r;
+}
+function findMap(arr, f) {
+  let _i = 0;
+  while (true) {
+    let i = _i;
+    if (i === arr.length) {
+      return;
+    }
+    let r = f(arr[i]);
+    if (r !== void 0) {
+      return r;
+    }
+    _i = i + 1 | 0;
+    continue;
+  }
+  ;
+}
+function last(a) {
+  return a[a.length - 1 | 0];
+}
+var Primitive_option;
+var init_Stdlib_Array = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Stdlib_Array.js"() {
+    "use strict";
+    Primitive_option = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
+    exports.make = make;
+    exports.fromInitializer = fromInitializer;
+    exports.equal = equal;
+    exports.compare = compare;
+    exports.isEmpty = isEmpty;
+    exports.indexOfOpt = indexOfOpt;
+    exports.lastIndexOfOpt = lastIndexOfOpt;
+    exports.reduce = reduce;
+    exports.reduceWithIndex = reduceWithIndex;
+    exports.reduceRight = reduceRight;
+    exports.reduceRightWithIndex = reduceRightWithIndex;
+    exports.findIndexOpt = findIndexOpt;
+    exports.findLastIndexOpt = findLastIndexOpt;
+    exports.filterMap = filterMap;
+    exports.filterMapWithIndex = filterMapWithIndex;
+    exports.keepSome = keepSome;
+    exports.toShuffled = toShuffled;
+    exports.shuffle = shuffle;
+    exports.findMap = findMap;
+    exports.last = last;
   }
 });
 
@@ -3275,12 +3737,12 @@ function filter(opt, p) {
     return opt;
   }
 }
-function forEach2(opt, f) {
+function forEach(opt, f) {
   if (opt !== void 0) {
     return f(Primitive_option2.valFromOption(opt));
   }
 }
-function getOrThrow2(x, message) {
+function getOrThrow(x, message) {
   if (x !== void 0) {
     return Primitive_option2.valFromOption(x);
   } else {
@@ -3294,12 +3756,12 @@ function mapOr(opt, $$default, f) {
     return $$default;
   }
 }
-function map2(opt, f) {
+function map(opt, f) {
   if (opt !== void 0) {
     return Primitive_option2.some(f(Primitive_option2.valFromOption(opt)));
   }
 }
-function flatMap2(opt, f) {
+function flatMap(opt, f) {
   if (opt !== void 0) {
     return f(Primitive_option2.valFromOption(opt));
   }
@@ -3311,23 +3773,23 @@ function getOr(opt, $$default) {
     return $$default;
   }
 }
-function orElse2(opt, other) {
+function orElse(opt, other) {
   if (opt !== void 0) {
     return opt;
   } else {
     return other;
   }
 }
-function isSome2(x) {
+function isSome(x) {
   return x !== void 0;
 }
-function isNone2(x) {
+function isNone(x) {
   return x === void 0;
 }
-function equal(a, b, eq8) {
+function equal2(a, b, eq6) {
   if (a !== void 0) {
     if (b !== void 0) {
-      return eq8(Primitive_option2.valFromOption(a), Primitive_option2.valFromOption(b));
+      return eq6(Primitive_option2.valFromOption(a), Primitive_option2.valFromOption(b));
     } else {
       return false;
     }
@@ -3335,10 +3797,10 @@ function equal(a, b, eq8) {
     return b === void 0;
   }
 }
-function compare(a, b, cmp8) {
+function compare2(a, b, cmp6) {
   if (a !== void 0) {
     if (b !== void 0) {
-      return cmp8(Primitive_option2.valFromOption(a), Primitive_option2.valFromOption(b));
+      return cmp6(Primitive_option2.valFromOption(a), Primitive_option2.valFromOption(b));
     } else {
       return 1;
     }
@@ -3438,236 +3900,36 @@ function all6(param) {
     ];
   }
 }
-var Stdlib_JsError, Primitive_option2, getExn2, mapWithDefault2, getWithDefault2;
+var Stdlib_JsError, Primitive_option2, getExn, mapWithDefault, getWithDefault;
 var init_Stdlib_Option = __esm({
   "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Stdlib_Option.js"() {
     "use strict";
     Stdlib_JsError = (init_Stdlib_JsError(), __toCommonJS(Stdlib_JsError_exports));
     Primitive_option2 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    getExn2 = getOrThrow2;
-    mapWithDefault2 = mapOr;
-    getWithDefault2 = getOr;
+    getExn = getOrThrow;
+    mapWithDefault = mapOr;
+    getWithDefault = getOr;
     exports.filter = filter;
-    exports.forEach = forEach2;
-    exports.getExn = getExn2;
-    exports.getOrThrow = getOrThrow2;
+    exports.forEach = forEach;
+    exports.getExn = getExn;
+    exports.getOrThrow = getOrThrow;
     exports.mapOr = mapOr;
-    exports.mapWithDefault = mapWithDefault2;
-    exports.map = map2;
-    exports.flatMap = flatMap2;
+    exports.mapWithDefault = mapWithDefault;
+    exports.map = map;
+    exports.flatMap = flatMap;
     exports.getOr = getOr;
-    exports.getWithDefault = getWithDefault2;
-    exports.orElse = orElse2;
-    exports.isSome = isSome2;
-    exports.isNone = isNone2;
-    exports.equal = equal;
-    exports.compare = compare;
+    exports.getWithDefault = getWithDefault;
+    exports.orElse = orElse;
+    exports.isSome = isSome;
+    exports.isNone = isNone;
+    exports.equal = equal2;
+    exports.compare = compare2;
     exports.all = all;
     exports.all2 = all2;
     exports.all3 = all3;
     exports.all4 = all4;
     exports.all5 = all5;
     exports.all6 = all6;
-  }
-});
-
-// src/packet/Packet_ItemDropUpdate.js
-var require_Packet_ItemDropUpdate = __commonJS({
-  "src/packet/Packet_ItemDropUpdate.js"(exports2) {
-    "use strict";
-    var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
-    var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function parse(payload) {
-      let reader = new Packetreader(payload);
-      let itemDropId = reader.readInt16();
-      let x = reader.readSingle();
-      let y = reader.readSingle();
-      let vx = reader.readSingle();
-      let vy = reader.readSingle();
-      let stack = reader.readInt16();
-      let prefix = reader.readByte();
-      let noDelay = reader.readByte();
-      let itemId = reader.readInt16();
-      return {
-        itemDropId,
-        x,
-        y,
-        vx,
-        vy,
-        stack,
-        prefix,
-        noDelay,
-        itemId
-      };
-    }
-    function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ItemDropUpdate")).packInt16(self.itemDropId).packSingle(self.x).packSingle(self.y).packSingle(self.vx).packSingle(self.vy).packInt16(self.stack).packByte(self.prefix).packByte(self.noDelay).packInt16(self.itemId).data;
-    }
-    exports2.parse = parse;
-    exports2.toBuffer = toBuffer;
-  }
-});
-
-// src/packet/Packet_ItemDropShimmeredUpdate.js
-var require_Packet_ItemDropShimmeredUpdate = __commonJS({
-  "src/packet/Packet_ItemDropShimmeredUpdate.js"(exports2) {
-    "use strict";
-    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
-    var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
-    var Packet_ItemDropUpdate$TerrariaPacket = require_Packet_ItemDropUpdate();
-    var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readByte(prim) {
-      return prim.readByte();
-    }
-    function readSingle(prim) {
-      return prim.readSingle();
-    }
-    function readBytes(prim0, prim1) {
-      return prim0.readBytes(prim1);
-    }
-    function parse(payload) {
-      return Stdlib_Option.map(Packet_ItemDropUpdate$TerrariaPacket.parse(payload), (itemDropUpdate) => {
-        let reader = new Packetreader(payload);
-        reader.readBytes(24);
-        let shimmered = reader.readByte() === 1;
-        let shimmeredTime = reader.readSingle();
-        return {
-          itemDropId: itemDropUpdate.itemDropId,
-          x: itemDropUpdate.x,
-          y: itemDropUpdate.y,
-          vx: itemDropUpdate.vx,
-          vy: itemDropUpdate.vy,
-          stack: itemDropUpdate.stack,
-          prefix: itemDropUpdate.prefix,
-          noDelay: itemDropUpdate.noDelay,
-          itemId: itemDropUpdate.itemId,
-          shimmered,
-          shimmeredTime
-        };
-      });
-    }
-    var Decode = {
-      readByte,
-      readSingle,
-      readBytes,
-      parse
-    };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function packInt32(prim0, prim1) {
-      return prim0.packInt32(prim1);
-    }
-    function packSingle(prim0, prim1) {
-      return prim0.packSingle(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
-    function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ItemDropShimmeredUpdate")).packInt16(self.itemDropId).packSingle(self.x).packSingle(self.y).packSingle(self.vx).packSingle(self.vy).packInt16(self.stack).packByte(self.prefix).packByte(self.noDelay).packInt16(self.itemId).packByte(self.shimmered ? 1 : 0).packSingle(self.shimmeredTime).data;
-    }
-    var Encode = {
-      Writer: void 0,
-      packByte,
-      packInt16,
-      packInt32,
-      packSingle,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
-    exports2.parse = parse;
-    exports2.toBuffer = toBuffer;
-  }
-});
-
-// src/packet/Packet_ItemOwner.js
-var require_Packet_ItemOwner = __commonJS({
-  "src/packet/Packet_ItemOwner.js"(exports2) {
-    "use strict";
-    var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
-    var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function parse(payload) {
-      let reader = new Packetreader(payload);
-      let itemDropId = reader.readInt16();
-      let owner = reader.readByte();
-      return {
-        itemDropId,
-        owner
-      };
-    }
-    function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ItemOwner")).packInt16(self.itemDropId).packByte(self.owner).data;
-    }
-    exports2.parse = parse;
-    exports2.toBuffer = toBuffer;
-  }
-});
-
-// src/packet/Packet_LoadoutSwitch.js
-var require_Packet_LoadoutSwitch = __commonJS({
-  "src/packet/Packet_LoadoutSwitch.js"(exports2) {
-    "use strict";
-    var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
-    var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readByte(prim) {
-      return prim.readByte();
-    }
-    function parse(payload) {
-      let reader = new Packetreader(payload);
-      let playerId = reader.readByte();
-      let loadout = reader.readByte();
-      return {
-        playerId,
-        loadout
-      };
-    }
-    var Decode = {
-      readByte,
-      parse
-    };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt32(prim0, prim1) {
-      return prim0.packInt32(prim1);
-    }
-    function packSingle(prim0, prim1) {
-      return prim0.packSingle(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
-    function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("LoadoutSwitch")).packByte(self.playerId).packByte(self.loadout).data;
-    }
-    var Encode = {
-      Writer: void 0,
-      packByte,
-      packInt32,
-      packSingle,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
-    exports2.parse = parse;
-    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -3686,11 +3948,11 @@ var require_ArrayExt = __commonJS({
       }
       return chunked;
     }
-    function getOr2(self, index, or) {
+    function getOr3(self, index, or) {
       return Stdlib_Option.getOr(self[index], or);
     }
     exports2.intoChunks = intoChunks;
-    exports2.getOr = getOr2;
+    exports2.getOr = getOr3;
   }
 });
 
@@ -3714,7 +3976,7 @@ var require_BitFlags = __commonJS({
       byte = byte | (flag82 ? 128 : 0);
       return byte;
     }
-    function fromArray5(flags) {
+    function fromArray4(flags) {
       return fromFlags(ArrayExt$TerrariaPacket.getOr(flags, 0, false), ArrayExt$TerrariaPacket.getOr(flags, 1, false), ArrayExt$TerrariaPacket.getOr(flags, 2, false), ArrayExt$TerrariaPacket.getOr(flags, 3, false), ArrayExt$TerrariaPacket.getOr(flags, 4, false), ArrayExt$TerrariaPacket.getOr(flags, 5, false), ArrayExt$TerrariaPacket.getOr(flags, 6, false), ArrayExt$TerrariaPacket.getOr(flags, 7, false));
     }
     function flagN(self, n) {
@@ -3759,7 +4021,7 @@ var require_BitFlags = __commonJS({
     }
     exports2.fromByte = fromByte;
     exports2.fromFlags = fromFlags;
-    exports2.fromArray = fromArray5;
+    exports2.fromArray = fromArray4;
     exports2.flag1 = flag1;
     exports2.flag2 = flag2;
     exports2.flag3 = flag3;
@@ -3771,6 +4033,819 @@ var require_BitFlags = __commonJS({
     exports2.flagN = flagN;
     exports2.forEach = forEach7;
     exports2.toByte = toByte;
+  }
+});
+
+// src/Array16.js
+var require_Array16 = __commonJS({
+  "src/Array16.js"(exports2) {
+    "use strict";
+    var Stdlib_Array = (init_Stdlib_Array(), __toCommonJS(Stdlib_Array_exports));
+    var BitFlags$TerrariaPacket = require_BitFlags();
+    function fromArray4(a) {
+      if (a.length === 16) {
+        return a;
+      }
+    }
+    function fromBitFlagsPair(a, b) {
+      let array = Stdlib_Array.make(16, false);
+      array[0] = BitFlags$TerrariaPacket.flag1(a);
+      array[1] = BitFlags$TerrariaPacket.flag2(a);
+      array[2] = BitFlags$TerrariaPacket.flag3(a);
+      array[3] = BitFlags$TerrariaPacket.flag4(a);
+      array[4] = BitFlags$TerrariaPacket.flag5(a);
+      array[5] = BitFlags$TerrariaPacket.flag6(a);
+      array[6] = BitFlags$TerrariaPacket.flag7(a);
+      array[7] = BitFlags$TerrariaPacket.flag8(a);
+      array[8] = BitFlags$TerrariaPacket.flag1(b);
+      array[9] = BitFlags$TerrariaPacket.flag2(b);
+      array[10] = BitFlags$TerrariaPacket.flag3(b);
+      array[11] = BitFlags$TerrariaPacket.flag4(b);
+      array[12] = BitFlags$TerrariaPacket.flag5(b);
+      array[13] = BitFlags$TerrariaPacket.flag6(b);
+      array[14] = BitFlags$TerrariaPacket.flag7(b);
+      array[15] = BitFlags$TerrariaPacket.flag8(b);
+      return array;
+    }
+    function toBitFlagsPair(self) {
+      let a = BitFlags$TerrariaPacket.fromArray(self.slice(0, 8));
+      let b = BitFlags$TerrariaPacket.fromArray(self.slice(8, 16));
+      return [
+        a,
+        b
+      ];
+    }
+    function asArray(self) {
+      return self;
+    }
+    exports2.fromArray = fromArray4;
+    exports2.asArray = asArray;
+    exports2.fromBitFlagsPair = fromBitFlagsPair;
+    exports2.toBitFlagsPair = toBitFlagsPair;
+  }
+});
+
+// src/packet/Packet_LoadoutSwitch.js
+var require_Packet_LoadoutSwitch = __commonJS({
+  "src/packet/Packet_LoadoutSwitch.js"(exports2) {
+    "use strict";
+    var Array16$TerrariaPacket = require_Array16();
+    var BitFlags$TerrariaPacket = require_BitFlags();
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "loadout");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "hideVisibleAccessory");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let hideVisibleAccessory = e$2._0;
+      let flags0 = BitFlags$TerrariaPacket.fromByte(hideVisibleAccessory & 255);
+      let flags1 = BitFlags$TerrariaPacket.fromByte(hideVisibleAccessory >> 8 & 255);
+      let hideVisibleAccessory$1 = Array16$TerrariaPacket.fromBitFlagsPair(flags0, flags1);
+      return {
+        TAG: "Ok",
+        _0: {
+          playerId: e._0,
+          loadout: e$1._0,
+          hideVisibleAccessory: hideVisibleAccessory$1
+        }
+      };
+    }
+    var Decode = {
+      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      parse
+    };
+    function toBuffer(self) {
+      let match = Array16$TerrariaPacket.toBitFlagsPair(self.hideVisibleAccessory);
+      let hideVisibleAccessory = BitFlags$TerrariaPacket.toByte(match[0]) | BitFlags$TerrariaPacket.toByte(match[1]) << 8;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("LoadoutSwitch")), self.playerId, "playerId"), self.loadout, "loadout"), hideVisibleAccessory, "hideVisibleAccessory"));
+    }
+    var Encode = {
+      Writer: void 0,
+      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_int.js
+var Primitive_int_exports = {};
+function compare3(x, y) {
+  if (x < y) {
+    return -1;
+  } else if (x === y) {
+    return 0;
+  } else {
+    return 1;
+  }
+}
+function min(x, y) {
+  if (x < y) {
+    return x;
+  } else {
+    return y;
+  }
+}
+function max(x, y) {
+  if (x > y) {
+    return x;
+  } else {
+    return y;
+  }
+}
+function div(x, y) {
+  if (y === 0) {
+    throw {
+      RE_EXN_ID: "Division_by_zero",
+      Error: new Error()
+    };
+  }
+  return x / y | 0;
+}
+function mod_(x, y) {
+  if (y === 0) {
+    throw {
+      RE_EXN_ID: "Division_by_zero",
+      Error: new Error()
+    };
+  }
+  return x % y;
+}
+var init_Primitive_int = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_int.js"() {
+    "use strict";
+    exports.compare = compare3;
+    exports.min = min;
+    exports.max = max;
+    exports.div = div;
+    exports.mod_ = mod_;
+  }
+});
+
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_Array.js
+var Belt_Array_exports = {};
+function get(arr, i) {
+  if (i >= 0 && i < arr.length) {
+    return Primitive_option3.some(arr[i]);
+  }
+}
+function getOrThrow2(arr, i) {
+  if (!(i >= 0 && i < arr.length)) {
+    throw {
+      RE_EXN_ID: "Assert_failure",
+      _1: [
+        "Belt_Array.res",
+        36,
+        2
+      ],
+      Error: new Error()
+    };
+  }
+  return arr[i];
+}
+function set(arr, i, v) {
+  if (i >= 0 && i < arr.length) {
+    arr[i] = v;
+    return true;
+  } else {
+    return false;
+  }
+}
+function setOrThrow(arr, i, v) {
+  if (!(i >= 0 && i < arr.length)) {
+    throw {
+      RE_EXN_ID: "Assert_failure",
+      _1: [
+        "Belt_Array.res",
+        51,
+        2
+      ],
+      Error: new Error()
+    };
+  }
+  arr[i] = v;
+}
+function swapUnsafe2(xs, i, j) {
+  let tmp = xs[i];
+  xs[i] = xs[j];
+  xs[j] = tmp;
+}
+function shuffleInPlace(xs) {
+  let len = xs.length;
+  let random_int2 = (min6, max6) => Math.floor(Math.random() * (max6 - min6 | 0)) + min6 | 0;
+  for (let i = 0; i < len; ++i) {
+    swapUnsafe2(xs, i, random_int2(i, len));
+  }
+}
+function shuffle2(xs) {
+  let result = xs.slice(0);
+  shuffleInPlace(result);
+  return result;
+}
+function reverseInPlace(xs) {
+  let len = xs.length;
+  let ofs = 0;
+  for (let i = 0, i_finish = len / 2 | 0; i < i_finish; ++i) {
+    swapUnsafe2(xs, ofs + i | 0, ((ofs + len | 0) - i | 0) - 1 | 0);
+  }
+}
+function reverse(xs) {
+  let len = xs.length;
+  let result = new Array(len);
+  for (let i = 0; i < len; ++i) {
+    result[i] = xs[(len - 1 | 0) - i | 0];
+  }
+  return result;
+}
+function make2(l, f) {
+  if (l <= 0) {
+    return [];
+  }
+  let res = new Array(l);
+  for (let i = 0; i < l; ++i) {
+    res[i] = f;
+  }
+  return res;
+}
+function makeBy(l, f) {
+  if (l <= 0) {
+    return [];
+  }
+  let res = new Array(l);
+  for (let i = 0; i < l; ++i) {
+    res[i] = f(i);
+  }
+  return res;
+}
+function makeByAndShuffle(l, f) {
+  let u = makeBy(l, f);
+  shuffleInPlace(u);
+  return u;
+}
+function range(start, finish) {
+  let cut = finish - start | 0;
+  if (cut < 0) {
+    return [];
+  }
+  let arr = new Array(cut + 1 | 0);
+  for (let i = 0; i <= cut; ++i) {
+    arr[i] = start + i | 0;
+  }
+  return arr;
+}
+function rangeBy(start, finish, step) {
+  let cut = finish - start | 0;
+  if (cut < 0 || step <= 0) {
+    return [];
+  }
+  let nb = (cut / step | 0) + 1 | 0;
+  let arr = new Array(nb);
+  let cur = start;
+  for (let i = 0; i < nb; ++i) {
+    arr[i] = cur;
+    cur = cur + step | 0;
+  }
+  return arr;
+}
+function zip(xs, ys) {
+  let lenx = xs.length;
+  let leny = ys.length;
+  let len = Primitive_int.min(lenx, leny);
+  let s = new Array(len);
+  for (let i = 0; i < len; ++i) {
+    s[i] = [
+      xs[i],
+      ys[i]
+    ];
+  }
+  return s;
+}
+function zipBy(xs, ys, f) {
+  let lenx = xs.length;
+  let leny = ys.length;
+  let len = Primitive_int.min(lenx, leny);
+  let s = new Array(len);
+  for (let i = 0; i < len; ++i) {
+    s[i] = f(xs[i], ys[i]);
+  }
+  return s;
+}
+function concat(a1, a2) {
+  let l1 = a1.length;
+  let l2 = a2.length;
+  let a1a2 = new Array(l1 + l2 | 0);
+  for (let i = 0; i < l1; ++i) {
+    a1a2[i] = a1[i];
+  }
+  for (let i$1 = 0; i$1 < l2; ++i$1) {
+    a1a2[l1 + i$1 | 0] = a2[i$1];
+  }
+  return a1a2;
+}
+function concatMany(arrs) {
+  let lenArrs = arrs.length;
+  let totalLen = 0;
+  for (let i = 0; i < lenArrs; ++i) {
+    totalLen = totalLen + arrs[i].length | 0;
+  }
+  let result = new Array(totalLen);
+  totalLen = 0;
+  for (let j = 0; j < lenArrs; ++j) {
+    let cur = arrs[j];
+    for (let k = 0, k_finish = cur.length; k < k_finish; ++k) {
+      result[totalLen] = cur[k];
+      totalLen = totalLen + 1 | 0;
+    }
+  }
+  return result;
+}
+function slice(a, offset, len) {
+  if (len <= 0) {
+    return [];
+  }
+  let lena = a.length;
+  let ofs = offset < 0 ? Primitive_int.max(lena + offset | 0, 0) : offset;
+  let hasLen = lena - ofs | 0;
+  let copyLength = Primitive_int.min(hasLen, len);
+  if (copyLength <= 0) {
+    return [];
+  }
+  let result = new Array(copyLength);
+  for (let i = 0; i < copyLength; ++i) {
+    result[i] = a[ofs + i | 0];
+  }
+  return result;
+}
+function sliceToEnd(a, offset) {
+  let lena = a.length;
+  let ofs = offset < 0 ? Primitive_int.max(lena + offset | 0, 0) : offset;
+  let len = lena > ofs ? lena - ofs | 0 : 0;
+  let result = new Array(len);
+  for (let i = 0; i < len; ++i) {
+    result[i] = a[ofs + i | 0];
+  }
+  return result;
+}
+function fill(a, offset, len, v) {
+  if (len <= 0) {
+    return;
+  }
+  let lena = a.length;
+  let ofs = offset < 0 ? Primitive_int.max(lena + offset | 0, 0) : offset;
+  let hasLen = lena - ofs | 0;
+  let fillLength = Primitive_int.min(hasLen, len);
+  if (fillLength <= 0) {
+    return;
+  }
+  for (let i = ofs, i_finish = ofs + fillLength | 0; i < i_finish; ++i) {
+    a[i] = v;
+  }
+}
+function blitUnsafe(a1, srcofs1, a2, srcofs2, blitLength) {
+  if (srcofs2 <= srcofs1) {
+    for (let j = 0; j < blitLength; ++j) {
+      a2[j + srcofs2 | 0] = a1[j + srcofs1 | 0];
+    }
+    return;
+  }
+  for (let j$1 = blitLength - 1 | 0; j$1 >= 0; --j$1) {
+    a2[j$1 + srcofs2 | 0] = a1[j$1 + srcofs1 | 0];
+  }
+}
+function blit(a1, ofs1, a2, ofs2, len) {
+  let lena1 = a1.length;
+  let lena2 = a2.length;
+  let srcofs1 = ofs1 < 0 ? Primitive_int.max(lena1 + ofs1 | 0, 0) : ofs1;
+  let srcofs2 = ofs2 < 0 ? Primitive_int.max(lena2 + ofs2 | 0, 0) : ofs2;
+  let blitLength = Primitive_int.min(len, Primitive_int.min(lena1 - srcofs1 | 0, lena2 - srcofs2 | 0));
+  if (srcofs2 <= srcofs1) {
+    for (let j = 0; j < blitLength; ++j) {
+      a2[j + srcofs2 | 0] = a1[j + srcofs1 | 0];
+    }
+    return;
+  }
+  for (let j$1 = blitLength - 1 | 0; j$1 >= 0; --j$1) {
+    a2[j$1 + srcofs2 | 0] = a1[j$1 + srcofs1 | 0];
+  }
+}
+function forEach2(a, f) {
+  for (let i = 0, i_finish = a.length; i < i_finish; ++i) {
+    f(a[i]);
+  }
+}
+function map2(a, f) {
+  let l = a.length;
+  let r = new Array(l);
+  for (let i = 0; i < l; ++i) {
+    r[i] = f(a[i]);
+  }
+  return r;
+}
+function flatMap2(a, f) {
+  return concatMany(map2(a, f));
+}
+function getBy(a, p) {
+  let l = a.length;
+  let i = 0;
+  let r;
+  while (r === void 0 && i < l) {
+    let v = a[i];
+    if (p(v)) {
+      r = Primitive_option3.some(v);
+    }
+    i = i + 1 | 0;
+  }
+  ;
+  return r;
+}
+function getIndexBy(a, p) {
+  let l = a.length;
+  let i = 0;
+  let r;
+  while (r === void 0 && i < l) {
+    let v = a[i];
+    if (p(v)) {
+      r = i;
+    }
+    i = i + 1 | 0;
+  }
+  ;
+  return r;
+}
+function keep(a, f) {
+  let l = a.length;
+  let r = new Array(l);
+  let j = 0;
+  for (let i = 0; i < l; ++i) {
+    let v = a[i];
+    if (f(v)) {
+      r[j] = v;
+      j = j + 1 | 0;
+    }
+  }
+  r.length = j;
+  return r;
+}
+function keepWithIndex(a, f) {
+  let l = a.length;
+  let r = new Array(l);
+  let j = 0;
+  for (let i = 0; i < l; ++i) {
+    let v = a[i];
+    if (f(v, i)) {
+      r[j] = v;
+      j = j + 1 | 0;
+    }
+  }
+  r.length = j;
+  return r;
+}
+function keepMap(a, f) {
+  let l = a.length;
+  let r = new Array(l);
+  let j = 0;
+  for (let i = 0; i < l; ++i) {
+    let v = a[i];
+    let v$1 = f(v);
+    if (v$1 !== void 0) {
+      r[j] = Primitive_option3.valFromOption(v$1);
+      j = j + 1 | 0;
+    }
+  }
+  r.length = j;
+  return r;
+}
+function forEachWithIndex(a, f) {
+  for (let i = 0, i_finish = a.length; i < i_finish; ++i) {
+    f(i, a[i]);
+  }
+}
+function mapWithIndex(a, f) {
+  let l = a.length;
+  let r = new Array(l);
+  for (let i = 0; i < l; ++i) {
+    r[i] = f(i, a[i]);
+  }
+  return r;
+}
+function reduce2(a, x, f) {
+  let r = x;
+  for (let i = 0, i_finish = a.length; i < i_finish; ++i) {
+    r = f(r, a[i]);
+  }
+  return r;
+}
+function reduceReverse(a, x, f) {
+  let r = x;
+  for (let i = a.length - 1 | 0; i >= 0; --i) {
+    r = f(r, a[i]);
+  }
+  return r;
+}
+function reduceReverse2(a, b, x, f) {
+  let r = x;
+  let len = Primitive_int.min(a.length, b.length);
+  for (let i = len - 1 | 0; i >= 0; --i) {
+    r = f(r, a[i], b[i]);
+  }
+  return r;
+}
+function reduceWithIndex2(a, x, f) {
+  let r = x;
+  for (let i = 0, i_finish = a.length; i < i_finish; ++i) {
+    r = f(r, a[i], i);
+  }
+  return r;
+}
+function every(arr, b) {
+  let len = arr.length;
+  let _i = 0;
+  while (true) {
+    let i = _i;
+    if (i === len) {
+      return true;
+    }
+    if (!b(arr[i])) {
+      return false;
+    }
+    _i = i + 1 | 0;
+    continue;
+  }
+  ;
+}
+function some2(arr, b) {
+  let len = arr.length;
+  let _i = 0;
+  while (true) {
+    let i = _i;
+    if (i === len) {
+      return false;
+    }
+    if (b(arr[i])) {
+      return true;
+    }
+    _i = i + 1 | 0;
+    continue;
+  }
+  ;
+}
+function everyAux2(arr1, arr2, _i, b, len) {
+  while (true) {
+    let i = _i;
+    if (i === len) {
+      return true;
+    }
+    if (!b(arr1[i], arr2[i])) {
+      return false;
+    }
+    _i = i + 1 | 0;
+    continue;
+  }
+  ;
+}
+function every2(a, b, p) {
+  return everyAux2(a, b, 0, p, Primitive_int.min(a.length, b.length));
+}
+function some22(a, b, p) {
+  let _i = 0;
+  let len = Primitive_int.min(a.length, b.length);
+  while (true) {
+    let i = _i;
+    if (i === len) {
+      return false;
+    }
+    if (p(a[i], b[i])) {
+      return true;
+    }
+    _i = i + 1 | 0;
+    continue;
+  }
+  ;
+}
+function eq(a, b, p) {
+  let lena = a.length;
+  let lenb = b.length;
+  if (lena === lenb) {
+    return everyAux2(a, b, 0, p, lena);
+  } else {
+    return false;
+  }
+}
+function cmp(a, b, p) {
+  let lena = a.length;
+  let lenb = b.length;
+  if (lena > lenb) {
+    return 1;
+  } else if (lena < lenb) {
+    return -1;
+  } else {
+    let _i = 0;
+    while (true) {
+      let i = _i;
+      if (i === lena) {
+        return 0;
+      }
+      let c = p(a[i], b[i]);
+      if (c !== 0) {
+        return c;
+      }
+      _i = i + 1 | 0;
+      continue;
+    }
+    ;
+  }
+}
+function partition(a, f) {
+  let l = a.length;
+  let i = 0;
+  let j = 0;
+  let a1 = new Array(l);
+  let a2 = new Array(l);
+  for (let ii = 0; ii < l; ++ii) {
+    let v = a[ii];
+    if (f(v)) {
+      a1[i] = v;
+      i = i + 1 | 0;
+    } else {
+      a2[j] = v;
+      j = j + 1 | 0;
+    }
+  }
+  a1.length = i;
+  a2.length = j;
+  return [
+    a1,
+    a2
+  ];
+}
+function unzip(a) {
+  let l = a.length;
+  let a1 = new Array(l);
+  let a2 = new Array(l);
+  for (let i = 0; i < l; ++i) {
+    let match = a[i];
+    a1[i] = match[0];
+    a2[i] = match[1];
+  }
+  return [
+    a1,
+    a2
+  ];
+}
+function joinWith(a, sep, toString) {
+  let l = a.length;
+  if (l === 0) {
+    return "";
+  }
+  let lastIndex = l - 1 | 0;
+  let _i = 0;
+  let _res = "";
+  while (true) {
+    let res = _res;
+    let i = _i;
+    if (i === lastIndex) {
+      return res + toString(a[i]);
+    }
+    _res = res + (toString(a[i]) + sep);
+    _i = i + 1 | 0;
+    continue;
+  }
+  ;
+}
+function init(n, f) {
+  let v = new Array(n);
+  for (let i = 0; i < n; ++i) {
+    v[i] = f(i);
+  }
+  return v;
+}
+var Primitive_int, Primitive_option3, getExn2, setExn, makeByU, makeByAndShuffleU, zipByU, forEachU, mapU, flatMapU, getByU, getIndexByU, keepU, keepWithIndexU, keepMapU, forEachWithIndexU, mapWithIndexU, partitionU, reduceU, reduceReverseU, reduceReverse2U, reduceWithIndexU, joinWithU, someU, everyU, every2U, some2U, cmpU, eqU, initU;
+var init_Belt_Array = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_Array.js"() {
+    "use strict";
+    Primitive_int = (init_Primitive_int(), __toCommonJS(Primitive_int_exports));
+    Primitive_option3 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
+    getExn2 = getOrThrow2;
+    setExn = setOrThrow;
+    makeByU = makeBy;
+    makeByAndShuffleU = makeByAndShuffle;
+    zipByU = zipBy;
+    forEachU = forEach2;
+    mapU = map2;
+    flatMapU = flatMap2;
+    getByU = getBy;
+    getIndexByU = getIndexBy;
+    keepU = keep;
+    keepWithIndexU = keepWithIndex;
+    keepMapU = keepMap;
+    forEachWithIndexU = forEachWithIndex;
+    mapWithIndexU = mapWithIndex;
+    partitionU = partition;
+    reduceU = reduce2;
+    reduceReverseU = reduceReverse;
+    reduceReverse2U = reduceReverse2;
+    reduceWithIndexU = reduceWithIndex2;
+    joinWithU = joinWith;
+    someU = some2;
+    everyU = every;
+    every2U = every2;
+    some2U = some22;
+    cmpU = cmp;
+    eqU = eq;
+    initU = init;
+    exports.get = get;
+    exports.getExn = getExn2;
+    exports.getOrThrow = getOrThrow2;
+    exports.set = set;
+    exports.setExn = setExn;
+    exports.setOrThrow = setOrThrow;
+    exports.shuffleInPlace = shuffleInPlace;
+    exports.shuffle = shuffle2;
+    exports.reverseInPlace = reverseInPlace;
+    exports.reverse = reverse;
+    exports.make = make2;
+    exports.range = range;
+    exports.rangeBy = rangeBy;
+    exports.makeByU = makeByU;
+    exports.makeBy = makeBy;
+    exports.makeByAndShuffleU = makeByAndShuffleU;
+    exports.makeByAndShuffle = makeByAndShuffle;
+    exports.zip = zip;
+    exports.zipByU = zipByU;
+    exports.zipBy = zipBy;
+    exports.unzip = unzip;
+    exports.concat = concat;
+    exports.concatMany = concatMany;
+    exports.slice = slice;
+    exports.sliceToEnd = sliceToEnd;
+    exports.fill = fill;
+    exports.blit = blit;
+    exports.blitUnsafe = blitUnsafe;
+    exports.forEachU = forEachU;
+    exports.forEach = forEach2;
+    exports.mapU = mapU;
+    exports.map = map2;
+    exports.flatMapU = flatMapU;
+    exports.flatMap = flatMap2;
+    exports.getByU = getByU;
+    exports.getBy = getBy;
+    exports.getIndexByU = getIndexByU;
+    exports.getIndexBy = getIndexBy;
+    exports.keepU = keepU;
+    exports.keep = keep;
+    exports.keepWithIndexU = keepWithIndexU;
+    exports.keepWithIndex = keepWithIndex;
+    exports.keepMapU = keepMapU;
+    exports.keepMap = keepMap;
+    exports.forEachWithIndexU = forEachWithIndexU;
+    exports.forEachWithIndex = forEachWithIndex;
+    exports.mapWithIndexU = mapWithIndexU;
+    exports.mapWithIndex = mapWithIndex;
+    exports.partitionU = partitionU;
+    exports.partition = partition;
+    exports.reduceU = reduceU;
+    exports.reduce = reduce2;
+    exports.reduceReverseU = reduceReverseU;
+    exports.reduceReverse = reduceReverse;
+    exports.reduceReverse2U = reduceReverse2U;
+    exports.reduceReverse2 = reduceReverse2;
+    exports.reduceWithIndexU = reduceWithIndexU;
+    exports.reduceWithIndex = reduceWithIndex2;
+    exports.joinWithU = joinWithU;
+    exports.joinWith = joinWith;
+    exports.someU = someU;
+    exports.some = some2;
+    exports.everyU = everyU;
+    exports.every = every;
+    exports.every2U = every2U;
+    exports.every2 = every2;
+    exports.some2U = some2U;
+    exports.some2 = some22;
+    exports.cmpU = cmpU;
+    exports.cmp = cmp;
+    exports.eqU = eqU;
+    exports.eq = eq;
+    exports.initU = initU;
+    exports.init = init;
   }
 });
 
@@ -4134,7 +5209,7 @@ var require_CreativePowers = __commonJS({
 var require_Packet_NetModuleLoad = __commonJS({
   "src/packet/Packet_NetModuleLoad.js"(exports2) {
     "use strict";
-    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
+    var Belt_Array2 = (init_Belt_Array(), __toCommonJS(Belt_Array_exports));
     var PacketType$TerrariaPacket = require_PacketType();
     var CreativePowers$TerrariaPacket = require_CreativePowers();
     var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
@@ -4275,138 +5350,306 @@ var require_Packet_NetModuleLoad = __commonJS({
     }
     function parse(payload, fromServer) {
       let reader = new Packetreader(payload);
-      let moduleType = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "moduleType");
-      let match = fromInt(moduleType);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "moduleType");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let match = fromInt(e._0);
       if (match === void 0) {
-        return;
+        return {
+          TAG: "Error",
+          _0: {
+            context: "Packet_NetModuleLoad.parse",
+            error: new Error("Unknown net module type")
+          }
+        };
       }
       switch (match) {
         case "Liquid":
-          let changesCount = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "changesCount");
-          let changes = [];
-          for (let _for = 0; _for < changesCount; ++_for) {
-            let y = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
-            let x = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
-            let amount = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "amount");
-            let liquidType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "liquidType");
-            changes.push({
-              x,
-              y,
-              amount,
-              liquidType
-            });
+          let e$1 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "changesCount");
+          if (e$1.TAG !== "Ok") {
+            return e$1;
           }
-          return {
-            TAG: "Liquid",
-            _0: {
-              changes
+          let changesCount = e$1._0;
+          let readChanges = (_idx, _acc) => {
+            while (true) {
+              let acc = _acc;
+              let idx = _idx;
+              if (idx >= changesCount) {
+                return {
+                  TAG: "Ok",
+                  _0: Belt_Array2.reverse(acc)
+                };
+              }
+              let e2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+              if (e2.TAG !== "Ok") {
+                return e2;
+              }
+              let e$16 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+              if (e$16.TAG !== "Ok") {
+                return e$16;
+              }
+              let e$210 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "amount");
+              if (e$210.TAG !== "Ok") {
+                return e$210;
+              }
+              let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "liquidType");
+              if (e$3.TAG !== "Ok") {
+                return e$3;
+              }
+              _acc = Belt_Array2.concatMany([
+                [{
+                  x: e$16._0,
+                  y: e2._0,
+                  amount: e$210._0,
+                  liquidType: e$3._0
+                }],
+                acc
+              ]);
+              _idx = idx + 1 | 0;
+              continue;
             }
+            ;
           };
-        case "Text":
-          if (fromServer) {
-            let playerId = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
-            let message = ErrorAwarePacketReader$TerrariaPacket.readNetworkText(reader, "message");
-            let color = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "color");
+          let e$2 = readChanges(0, []);
+          if (e$2.TAG === "Ok") {
             return {
-              TAG: "ServerText",
-              _0: playerId,
-              _1: message,
-              _2: color
-            };
-          }
-          let commandId = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "commandId");
-          let message$1 = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "message");
-          return {
-            TAG: "ClientText",
-            _0: commandId,
-            _1: message$1
-          };
-        case "Ping":
-          let x$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
-          let y$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
-          return {
-            TAG: "Ping",
-            _0: {
-              x: x$1,
-              y: y$1
-            }
-          };
-        case "Ambience":
-          let playerId$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
-          let seed = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "seed");
-          let skyEntityType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "skyEntityType");
-          return {
-            TAG: "Ambience",
-            _0: {
-              playerId: playerId$1,
-              seed,
-              skyEntityType
-            }
-          };
-        case "Bestiary":
-          let rawBestiaryUnlockType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "rawBestiaryUnlockType");
-          let npcId = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcId");
-          let bestiaryUnlockType;
-          switch (rawBestiaryUnlockType) {
-            case 0:
-              bestiaryUnlockType = {
-                TAG: "Kill",
-                _0: ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "killCount")
-              };
-              break;
-            case 1:
-              bestiaryUnlockType = "Sight";
-              break;
-            case 2:
-              bestiaryUnlockType = "Chat";
-              break;
-            default:
-              bestiaryUnlockType = void 0;
-          }
-          if (bestiaryUnlockType !== void 0) {
-            return {
-              TAG: "Bestiary",
+              TAG: "Ok",
               _0: {
-                unlockType: bestiaryUnlockType,
-                npcId
+                TAG: "Liquid",
+                _0: {
+                  changes: e$2._0
+                }
               }
             };
           } else {
-            return;
+            return e$2;
+          }
+        case "Text":
+          if (fromServer) {
+            let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+            if (e$3.TAG !== "Ok") {
+              return e$3;
+            }
+            let e$4 = ErrorAwarePacketReader$TerrariaPacket.readNetworkText(reader, "message");
+            if (e$4.TAG !== "Ok") {
+              return e$4;
+            }
+            let e$5 = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "color");
+            if (e$5.TAG === "Ok") {
+              return {
+                TAG: "Ok",
+                _0: {
+                  TAG: "ServerText",
+                  _0: e$3._0,
+                  _1: e$4._0,
+                  _2: e$5._0
+                }
+              };
+            } else {
+              return e$5;
+            }
+          }
+          let e$6 = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "commandId");
+          if (e$6.TAG !== "Ok") {
+            return e$6;
+          }
+          let e$7 = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "message");
+          if (e$7.TAG === "Ok") {
+            return {
+              TAG: "Ok",
+              _0: {
+                TAG: "ClientText",
+                _0: e$6._0,
+                _1: e$7._0
+              }
+            };
+          } else {
+            return e$7;
+          }
+        case "Ping":
+          let e$8 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+          if (e$8.TAG !== "Ok") {
+            return e$8;
+          }
+          let e$9 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+          if (e$9.TAG === "Ok") {
+            return {
+              TAG: "Ok",
+              _0: {
+                TAG: "Ping",
+                _0: {
+                  x: e$8._0,
+                  y: e$9._0
+                }
+              }
+            };
+          } else {
+            return e$9;
+          }
+        case "Ambience":
+          let e$10 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+          if (e$10.TAG !== "Ok") {
+            return e$10;
+          }
+          let e$11 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "seed");
+          if (e$11.TAG !== "Ok") {
+            return e$11;
+          }
+          let e$12 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "skyEntityType");
+          if (e$12.TAG === "Ok") {
+            return {
+              TAG: "Ok",
+              _0: {
+                TAG: "Ambience",
+                _0: {
+                  playerId: e$10._0,
+                  seed: e$11._0,
+                  skyEntityType: e$12._0
+                }
+              }
+            };
+          } else {
+            return e$12;
+          }
+        case "Bestiary":
+          let e$13 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "rawBestiaryUnlockType");
+          if (e$13.TAG !== "Ok") {
+            return e$13;
+          }
+          let e$14 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcId");
+          if (e$14.TAG !== "Ok") {
+            return e$14;
+          }
+          let e$15;
+          switch (e$13._0) {
+            case 0:
+              let e$16 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "killCount");
+              e$15 = e$16.TAG === "Ok" ? {
+                TAG: "Ok",
+                _0: {
+                  TAG: "Kill",
+                  _0: e$16._0
+                }
+              } : e$16;
+              break;
+            case 1:
+              e$15 = {
+                TAG: "Ok",
+                _0: "Sight"
+              };
+              break;
+            case 2:
+              e$15 = {
+                TAG: "Ok",
+                _0: "Chat"
+              };
+              break;
+            default:
+              e$15 = {
+                TAG: "Error",
+                _0: {
+                  context: "Packet_NetModuleLoad.parseBestiary",
+                  error: new Error("Unknown bestiary unlock type")
+                }
+              };
+          }
+          if (e$15.TAG === "Ok") {
+            return {
+              TAG: "Ok",
+              _0: {
+                TAG: "Bestiary",
+                _0: {
+                  unlockType: e$15._0,
+                  npcId: e$14._0
+                }
+              }
+            };
+          } else {
+            return e$15;
           }
         case "CreativeUnlocks":
-          let itemId = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemId");
-          let researchedCount = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "researchedCount");
-          return {
-            TAG: "CreativeUnlocks",
-            _0: {
-              itemId,
-              researchedCount
-            }
-          };
+          let e$17 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemId");
+          if (e$17.TAG !== "Ok") {
+            return e$17;
+          }
+          let e$18 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "researchedCount");
+          if (e$18.TAG === "Ok") {
+            return {
+              TAG: "Ok",
+              _0: {
+                TAG: "CreativeUnlocks",
+                _0: {
+                  itemId: e$17._0,
+                  researchedCount: e$18._0
+                }
+              }
+            };
+          } else {
+            return e$18;
+          }
         case "CreativePower":
-          return Stdlib_Option.map(CreativePowers$TerrariaPacket.parse(reader), (p) => ({
-            TAG: "CreativePower",
-            _0: p
-          }));
+          let p = CreativePowers$TerrariaPacket.parse(reader);
+          if (p !== void 0) {
+            return {
+              TAG: "Ok",
+              _0: {
+                TAG: "CreativePower",
+                _0: p
+              }
+            };
+          } else {
+            return {
+              TAG: "Error",
+              _0: {
+                context: "Packet_NetModuleLoad.parseCreativePower",
+                error: new Error("Failed to parse creative power")
+              }
+            };
+          }
         case "CreativeUnlocksPlayerReport":
-          ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "unknownByte");
-          let itemId$1 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "itemId");
-          let researchedCount$1 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "researchedCount");
-          return {
-            TAG: "CreativeUnlocksPlayerReport",
-            _0: {
-              itemId: itemId$1,
-              researchedCount: researchedCount$1
-            }
-          };
+          let e$19 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "unknownByte");
+          if (e$19.TAG !== "Ok") {
+            return e$19;
+          }
+          let e$20 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "itemId");
+          if (e$20.TAG !== "Ok") {
+            return e$20;
+          }
+          let e$21 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "researchedCount");
+          if (e$21.TAG === "Ok") {
+            return {
+              TAG: "Ok",
+              _0: {
+                TAG: "CreativeUnlocksPlayerReport",
+                _0: {
+                  itemId: e$20._0,
+                  researchedCount: e$21._0
+                }
+              }
+            };
+          } else {
+            return e$21;
+          }
         case "TeleportPylon":
-          let rawPylonAction = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "rawPylonAction");
-          let x$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
-          let y$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
-          let pylonType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "pylonType");
+          let e$22 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "rawPylonAction");
+          if (e$22.TAG !== "Ok") {
+            return e$22;
+          }
+          let e$23 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+          if (e$23.TAG !== "Ok") {
+            return e$23;
+          }
+          let e$24 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+          if (e$24.TAG !== "Ok") {
+            return e$24;
+          }
+          let e$25 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "pylonType");
+          if (e$25.TAG !== "Ok") {
+            return e$25;
+          }
           let pylonAction;
-          switch (rawPylonAction) {
+          switch (e$22._0) {
             case 0:
               pylonAction = "Added";
               break;
@@ -4421,43 +5664,86 @@ var require_Packet_NetModuleLoad = __commonJS({
           }
           if (pylonAction !== void 0) {
             return {
-              TAG: "TeleportPylon",
+              TAG: "Ok",
               _0: {
-                pylonAction,
-                x: x$2,
-                y: y$2,
-                pylonType
+                TAG: "TeleportPylon",
+                _0: {
+                  pylonAction,
+                  x: e$23._0,
+                  y: e$24._0,
+                  pylonType: e$25._0
+                }
               }
             };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: {
+                context: "Packet_NetModuleLoad.parseTeleportPylon",
+                error: new Error("Unknown pylon action")
+              }
+            };
           }
         case "Particles":
-          let particleType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "particleType");
-          let x$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
-          let y$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
-          let vx = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
-          let vy = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
-          let shaderIndex = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "shaderIndex");
-          let invokedByPlayer = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "invokedByPlayer");
-          return {
-            TAG: "Particles",
-            _0: {
-              particleType,
-              x: x$3,
-              y: y$3,
-              vx,
-              vy,
-              shaderIndex,
-              invokedByPlayer
-            }
-          };
+          let e$26 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "particleType");
+          if (e$26.TAG !== "Ok") {
+            return e$26;
+          }
+          let e$27 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+          if (e$27.TAG !== "Ok") {
+            return e$27;
+          }
+          let e$28 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+          if (e$28.TAG !== "Ok") {
+            return e$28;
+          }
+          let e$29 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
+          if (e$29.TAG !== "Ok") {
+            return e$29;
+          }
+          let e$30 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
+          if (e$30.TAG !== "Ok") {
+            return e$30;
+          }
+          let e$31 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "shaderIndex");
+          if (e$31.TAG !== "Ok") {
+            return e$31;
+          }
+          let e$32 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "invokedByPlayer");
+          if (e$32.TAG === "Ok") {
+            return {
+              TAG: "Ok",
+              _0: {
+                TAG: "Particles",
+                _0: {
+                  particleType: e$26._0,
+                  x: e$27._0,
+                  y: e$28._0,
+                  vx: e$29._0,
+                  vy: e$30._0,
+                  shaderIndex: e$31._0,
+                  invokedByPlayer: e$32._0
+                }
+              }
+            };
+          } else {
+            return e$32;
+          }
         case "CreativePowerPermissions":
-          ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "unknownByte");
-          let powerType = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "powerType");
-          let rawPowerLevel = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "rawPowerLevel");
+          let e$33 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "unknownByte");
+          if (e$33.TAG !== "Ok") {
+            return e$33;
+          }
+          let e$34 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "powerType");
+          if (e$34.TAG !== "Ok") {
+            return e$34;
+          }
+          let e$35 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "rawPowerLevel");
+          if (e$35.TAG !== "Ok") {
+            return e$35;
+          }
           let powerLevel;
-          switch (rawPowerLevel) {
+          switch (e$35._0) {
             case 0:
               powerLevel = "LockedForEveryone";
               break;
@@ -4472,14 +5758,23 @@ var require_Packet_NetModuleLoad = __commonJS({
           }
           if (powerLevel !== void 0) {
             return {
-              TAG: "CreativePowerPermissions",
+              TAG: "Ok",
               _0: {
-                powerType,
-                powerLevel
+                TAG: "CreativePowerPermissions",
+                _0: {
+                  powerType: e$34._0,
+                  powerLevel
+                }
               }
             };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: {
+                context: "Packet_NetModuleLoad.parseCreativePowerPermission",
+                error: new Error("Unknown creative power permission level")
+              }
+            };
           }
       }
     }
@@ -4493,142 +5788,48 @@ var require_Packet_NetModuleLoad = __commonJS({
 var require_Packet_NpcBuffRemovalRequest = __commonJS({
   "src/packet/Packet_NpcBuffRemovalRequest.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "buffType");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            npcId: e._0,
+            buffType: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcBuffRemovalRequest")), self.npcId, "npcId"), self.buffType, "buffType"));
+    }
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
-  }
-});
-
-// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Pervasives.js
-var Pervasives_exports = {};
-function failwith(s) {
-  throw {
-    RE_EXN_ID: "Failure",
-    _1: s,
-    Error: new Error()
-  };
-}
-function invalid_arg(s) {
-  throw {
-    RE_EXN_ID: "Invalid_argument",
-    _1: s,
-    Error: new Error()
-  };
-}
-function abs(x) {
-  if (x >= 0) {
-    return x;
-  } else {
-    return -x | 0;
-  }
-}
-function classify_float(x) {
-  if (isFinite(x)) {
-    if (Math.abs(x) >= 22250738585072014e-324) {
-      return "FP_normal";
-    } else if (x !== 0) {
-      return "FP_subnormal";
-    } else {
-      return "FP_zero";
-    }
-  } else if (isNaN(x)) {
-    return "FP_nan";
-  } else {
-    return "FP_infinite";
-  }
-}
-function char_of_int(n) {
-  if (n < 0 || n > 255) {
-    throw {
-      RE_EXN_ID: "Invalid_argument",
-      _1: "char_of_int",
-      Error: new Error()
-    };
-  }
-  return n;
-}
-function string_of_bool(b) {
-  if (b) {
-    return "true";
-  } else {
-    return "false";
-  }
-}
-function bool_of_string(param) {
-  switch (param) {
-    case "false":
-      return false;
-    case "true":
-      return true;
-    default:
-      throw {
-        RE_EXN_ID: "Invalid_argument",
-        _1: "bool_of_string",
-        Error: new Error()
-      };
-  }
-}
-function bool_of_string_opt(param) {
-  switch (param) {
-    case "false":
-      return false;
-    case "true":
-      return true;
-    default:
-      return;
-  }
-}
-function int_of_string_opt(s) {
-  let n = Number.parseInt(s);
-  if (n === NaN) {
-    return;
-  } else {
-    return n;
-  }
-}
-function $at(l1, l2) {
-  if (l1 !== 0) {
-    return {
-      hd: l1.hd,
-      tl: $at(l1.tl, l2)
-    };
-  } else {
-    return l2;
-  }
-}
-var Primitive_exceptions, Exit, min_int, max_int, infinity, neg_infinity, max_float, min_float, epsilon_float;
-var init_Pervasives = __esm({
-  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Pervasives.js"() {
-    "use strict";
-    Primitive_exceptions = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
-    Exit = /* @__PURE__ */ Primitive_exceptions.create("Pervasives.Exit");
-    min_int = -2147483648;
-    max_int = 2147483647;
-    infinity = Infinity;
-    neg_infinity = -Infinity;
-    max_float = 17976931348623157e292;
-    min_float = 22250738585072014e-324;
-    epsilon_float = 2220446049250313e-31;
-    exports.failwith = failwith;
-    exports.invalid_arg = invalid_arg;
-    exports.Exit = Exit;
-    exports.abs = abs;
-    exports.max_int = max_int;
-    exports.min_int = min_int;
-    exports.infinity = infinity;
-    exports.neg_infinity = neg_infinity;
-    exports.max_float = max_float;
-    exports.min_float = min_float;
-    exports.epsilon_float = epsilon_float;
-    exports.classify_float = classify_float;
-    exports.char_of_int = char_of_int;
-    exports.string_of_bool = string_of_bool;
-    exports.bool_of_string = bool_of_string;
-    exports.bool_of_string_opt = bool_of_string_opt;
-    exports.int_of_string_opt = int_of_string_opt;
-    exports.$at = $at;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -4636,77 +5837,110 @@ var init_Pervasives = __esm({
 var require_Packet_NpcBuffUpdate = __commonJS({
   "src/packet/Packet_NpcBuffUpdate.js"(exports2) {
     "use strict";
-    var Pervasives = (init_Pervasives(), __toCommonJS(Pervasives_exports));
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readUInt16(prim) {
-      return prim.readUInt16();
-    }
-    function readInt16(prim) {
-      return prim.readInt16();
-    }
-    function readByte(prim) {
-      return prim.readByte();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let npcId = reader.readInt16();
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
       let buffs = [];
       let buffTimes = [];
-      for (let _i = 1; _i <= 20; ++_i) {
-        buffs.push(reader.readUInt16());
-        buffTimes.push(reader.readInt16());
-      }
-      return {
-        npcId,
-        buffs,
-        buffTimes
+      let readBuffs = (_idx) => {
+        while (true) {
+          let idx = _idx;
+          if (idx >= 20) {
+            return {
+              TAG: "Ok",
+              _0: void 0
+            };
+          }
+          let e2 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, `buff` + (idx + 1 | 0).toString());
+          if (e2.TAG !== "Ok") {
+            return e2;
+          }
+          let e$12 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, `buffTime` + (idx + 1 | 0).toString());
+          if (e$12.TAG !== "Ok") {
+            return e$12;
+          }
+          buffs.push(e2._0);
+          buffTimes.push(e$12._0);
+          _idx = idx + 1 | 0;
+          continue;
+        }
+        ;
       };
+      let e$1 = readBuffs(0);
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            npcId: e._0,
+            buffs,
+            buffTimes
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
     var Decode = {
-      readUInt16,
-      readInt16,
-      readByte,
+      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function packUInt16(prim0, prim1) {
-      return prim0.packUInt16(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function packBuffs(writer, buffs) {
-      buffs.forEach((buff) => {
-        writer.packUInt16(buff);
-      });
-      return writer;
+      let _writer = writer;
+      let _idx = 0;
+      while (true) {
+        let idx = _idx;
+        let writer$1 = _writer;
+        if (idx >= buffs.length) {
+          return writer$1;
+        }
+        _idx = idx + 1 | 0;
+        _writer = ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer$1, buffs[idx], `buff` + (idx + 1 | 0).toString());
+        continue;
+      }
+      ;
     }
     function packBuffTimes(writer, buffTimes) {
-      buffTimes.forEach((buff) => {
-        writer.packInt16(buff);
-      });
-      return writer;
+      let _writer = writer;
+      let _idx = 0;
+      while (true) {
+        let idx = _idx;
+        let writer$1 = _writer;
+        if (idx >= buffTimes.length) {
+          return writer$1;
+        }
+        _idx = idx + 1 | 0;
+        _writer = ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer$1, buffTimes[idx], `buffTime` + (idx + 1 | 0).toString());
+        continue;
+      }
+      ;
     }
     function toBuffer(self) {
-      if (self.buffs.length !== 20) {
-        Pervasives.failwith(`Expected 20 buffs, got ` + self.buffs.length.toString());
+      if (self.buffs.length !== 20 || self.buffTimes.length !== 20) {
+        return {
+          TAG: "Error",
+          _0: {
+            context: "Packet_NpcBuffUpdate.toBuffer",
+            error: new Error("Expected 20 buffs and 20 buffTimes")
+          }
+        };
+      } else {
+        return ErrorAwarePacketWriter$TerrariaPacket.data(packBuffTimes(packBuffs(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcBuffUpdate")), self.npcId, "npcId"), self.buffs), self.buffTimes));
       }
-      return packBuffTimes(packBuffs(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NpcBuffUpdate")).packByte(self.npcId), self.buffs), self.buffTimes).data;
     }
     var Encode = {
-      packByte,
-      packInt16,
-      packUInt16,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       packBuffs,
       packBuffTimes,
       toBuffer
@@ -4723,46 +5957,41 @@ var require_Packet_NpcCatch = __commonJS({
   "src/packet/Packet_NpcCatch.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readByte(prim) {
-      return prim.readByte();
-    }
-    function readInt16(prim) {
-      return prim.readInt16();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let npcId = reader.readInt16();
-      let playerId = reader.readByte();
-      return {
-        npcId,
-        playerId
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            npcId: e._0,
+            playerId: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
     var Decode = {
-      readByte,
-      readInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NpcCatch")).packInt16(self.npcId).packByte(self.playerId).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcCatch")), self.npcId, "npcId"), self.playerId, "playerId"));
     }
     var Encode = {
-      packByte,
-      packInt16,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -4776,11 +6005,53 @@ var require_Packet_NpcCatch = __commonJS({
 var require_Packet_NpcFishOut = __commonJS({
   "src/packet/Packet_NpcFishOut.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "x");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "y");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcNetId");
+      if (e$2.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            x: e._0,
+            y: e$1._0,
+            npcNetId: e$2._0
+          }
+        };
+      } else {
+        return e$2;
+      }
     }
+    var Decode = {
+      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcFishOut")), self.x, "x"), self.y, "y"), self.npcNetId, "npcNetId"));
+    }
+    var Encode = {
+      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -4788,11 +6059,58 @@ var require_Packet_NpcFishOut = __commonJS({
 var require_Packet_NpcHomeUpdate = __commonJS({
   "src/packet/Packet_NpcHomeUpdate.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "homeTileX");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "homeTileY");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "state");
+      if (e$3.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            npcId: e._0,
+            homeTileX: e$1._0,
+            homeTileY: e$2._0,
+            state: e$3._0
+          }
+        };
+      } else {
+        return e$3;
+      }
     }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcHomeUpdate")), self.npcId, "npcId"), self.homeTileX, "homeTileX"), self.homeTileY, "homeTileY"), self.state, "state"));
+    }
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -4800,11 +6118,48 @@ var require_Packet_NpcHomeUpdate = __commonJS({
 var require_Packet_NpcKillCount = __commonJS({
   "src/packet/Packet_NpcKillCount.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "killCount");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            npcId: e._0,
+            killCount: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcKillCount")), self.npcId, "npcId"), self.killCount, "killCount"));
+    }
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -4812,11 +6167,55 @@ var require_Packet_NpcKillCount = __commonJS({
 var require_Packet_NpcNameUpdate = __commonJS({
   "src/packet/Packet_NpcNameUpdate.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "name");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "townNpcVariationIndex");
+      if (e$2.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            npcId: e._0,
+            name: e$1._0,
+            townNpcVariationIndex: e$2._0
+          }
+        };
+      } else {
+        return e$2;
+      }
     }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readString: ErrorAwarePacketReader$TerrariaPacket.readString,
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcNameUpdate")), self.npcId, "npcId"), self.name, "name"), self.townNpcVariationIndex, "townNpcVariationIndex"));
+    }
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packString: ErrorAwarePacketWriter$TerrariaPacket.packString,
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -4824,11 +6223,72 @@ var require_Packet_NpcNameUpdate = __commonJS({
 var require_Packet_NpcShopItem = __commonJS({
   "src/packet/Packet_NpcShopItem.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var BitFlags$TerrariaPacket = require_BitFlags();
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "slot");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemId");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "stack");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "prefix");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "value");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags");
+      if (e$5.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            slot: e._0,
+            itemId: e$1._0,
+            stack: e$2._0,
+            prefix: e$3._0,
+            value: e$4._0,
+            buyOnce: BitFlags$TerrariaPacket.flag1(BitFlags$TerrariaPacket.fromByte(e$5._0))
+          }
+        };
+      } else {
+        return e$5;
+      }
     }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+      parse
+    };
+    function toBuffer(self) {
+      let flags = BitFlags$TerrariaPacket.fromFlags(self.buyOnce, false, false, false, false, false, false, false);
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcShopItem")), self.slot, "slot"), self.itemId, "itemId"), self.stack, "stack"), self.prefix, "prefix"), self.value, "value"), BitFlags$TerrariaPacket.toByte(flags), "flags"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -4836,11 +6296,48 @@ var require_Packet_NpcShopItem = __commonJS({
 var require_Packet_NpcTalk = __commonJS({
   "src/packet/Packet_NpcTalk.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcId");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            npcId: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcTalk")), self.playerId, "playerId"), self.npcId, "npcId"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -4848,11 +6345,74 @@ var require_Packet_NpcTalk = __commonJS({
 var require_Packet_NpcTeleportPortal = __commonJS({
   "src/packet/Packet_NpcTeleportPortal.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "npcId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "portalColor");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "posX");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "posY");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velX");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velY");
+      if (e$5.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            npcId: e._0,
+            portalColor: e$1._0,
+            position: {
+              x: e$2._0,
+              y: e$3._0
+            },
+            velocity: {
+              x: e$4._0,
+              y: e$5._0
+            }
+          }
+        };
+      } else {
+        return e$5;
+      }
     }
+    var Decode = {
+      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcTeleportPortal")), self.npcId, "npcId"), self.portalColor, "portalColor"), self.position.x, "posX"), self.position.y, "posY"), self.velocity.x, "velX"), self.velocity.y, "velY"));
+    }
+    var Encode = {
+      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -4861,34 +6421,78 @@ var require_Packet_ObjectPlace = __commonJS({
   "src/packet/Packet_ObjectPlace.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let x = reader.readInt16();
-      let y = reader.readInt16();
-      let objectType = reader.readInt16();
-      let style = reader.readInt16();
-      let alternate = reader.readByte();
-      let random = reader.readSByte();
-      let match = reader.readByte();
-      let direction = match !== 0 ? "Right" : "Left";
-      return {
-        x,
-        y,
-        objectType,
-        style,
-        alternate,
-        random,
-        direction
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "objectType");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "style");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "alternate");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readSByte(reader, "random");
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let e$6 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "direction");
+      if (e$6.TAG !== "Ok") {
+        return e$6;
+      }
+      let directionRaw = e$6._0;
+      let direction = directionRaw !== 0 ? directionRaw !== 1 ? {
+        TAG: "Error",
+        _0: {
+          context: "ObjectPlace.parse.direction",
+          error: new Error("Unknown direction")
+        }
+      } : {
+        TAG: "Ok",
+        _0: "Right"
+      } : {
+        TAG: "Ok",
+        _0: "Left"
       };
+      if (direction.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            x: e._0,
+            y: e$1._0,
+            objectType: e$2._0,
+            style: e$3._0,
+            alternate: e$4._0,
+            random: e$5._0,
+            direction: direction._0
+          }
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: direction._0
+        };
+      }
     }
     function toBuffer(self) {
       let match = self.direction;
       let tmp;
       tmp = match === "Left" ? 0 : 1;
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ObjectPlace")).packInt16(self.x).packInt16(self.y).packInt16(self.objectType).packInt16(self.style).packByte(self.alternate).packSByte(self.random).packByte(tmp).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packSByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ObjectPlace")), self.x, "x"), self.y, "y"), self.objectType, "objectType"), self.style, "style"), self.alternate, "alternate"), self.random, "random"), tmp, "direction"));
     }
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
@@ -4899,11 +6503,29 @@ var require_Packet_ObjectPlace = __commonJS({
 var require_Packet_PartyToggle = __commonJS({
   "src/packet/Packet_PartyToggle.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     function parse(_payload) {
-      return Primitive_option8.some(void 0);
+      return {
+        TAG: "Ok",
+        _0: void 0
+      };
     }
+    var Decode = {
+      parse
+    };
+    function toBuffer(_self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PartyToggle")));
+    }
+    var Encode = {
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -4911,11 +6533,55 @@ var require_Packet_PartyToggle = __commonJS({
 var require_Packet_PlayerAnimation = __commonJS({
   "src/packet/Packet_PlayerAnimation.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "itemRotation");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemAnimation");
+      if (e$2.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            itemRotation: e$1._0,
+            itemAnimation: e$2._0
+          }
+        };
+      } else {
+        return e$2;
+      }
     }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerAnimation")), self.playerId, "playerId"), self.itemRotation, "itemRotation"), self.itemAnimation, "itemAnimation"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -4924,22 +6590,35 @@ var require_Packet_PlayerBuffAdd = __commonJS({
   "src/packet/Packet_PlayerBuffAdd.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let playerId = reader.readByte();
-      let buff = reader.readUInt16();
-      let time = reader.readInt32();
-      return {
-        playerId,
-        buff,
-        time
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "buff");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "time");
+      if (e$2.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            buff: e$1._0,
+            time: e$2._0
+          }
+        };
+      } else {
+        return e$2;
+      }
     }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerBuffAdd")).packByte(self.playerId).packUInt16(self.buff).packInt32(self.time).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerBuffAdd")), self.playerId, "playerId"), self.buff, "buff"), self.time, "time"));
     }
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
@@ -4950,34 +6629,71 @@ var require_Packet_PlayerBuffAdd = __commonJS({
 var require_Packet_PlayerBuffsSet = __commonJS({
   "src/packet/Packet_PlayerBuffsSet.js"(exports2) {
     "use strict";
-    var Pervasives = (init_Pervasives(), __toCommonJS(Pervasives_exports));
+    var Stdlib_Array = (init_Stdlib_Array(), __toCommonJS(Stdlib_Array_exports));
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let playerId = reader.readByte();
-      let buffs = [];
-      for (let _i = 1; _i <= 44; ++_i) {
-        buffs.push(reader.readUInt16());
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
       }
-      return {
-        playerId,
-        buffs
+      let buffs = Stdlib_Array.make(44, 0);
+      let buffsParseResult = {
+        TAG: "Ok",
+        _0: void 0
       };
+      for (let i = 0; i <= 43; ++i) {
+        let match = buffsParseResult;
+        if (match.TAG === "Ok") {
+          let label = "buff_" + i.toString();
+          let buff = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, label);
+          if (buff.TAG === "Ok") {
+            buffs[i] = buff._0;
+          } else {
+            buffsParseResult = {
+              TAG: "Error",
+              _0: buff._0
+            };
+          }
+        }
+      }
+      let err = buffsParseResult;
+      if (err.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            buffs
+          }
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: err._0
+        };
+      }
     }
     function packBuffs(writer, buffs) {
-      buffs.forEach((buff) => {
-        writer.packUInt16(buff);
+      buffs.forEach((buff, idx) => {
+        ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, buff, `buff_` + idx.toString());
       });
       return writer;
     }
     function toBuffer(self) {
       if (self.buffs.length !== 44) {
-        Pervasives.failwith(`Expected 44 buffs, got ` + self.buffs.length.toString());
+        return {
+          TAG: "Error",
+          _0: {
+            context: "PlayerBuffsSet.toBuffer",
+            error: new Error(`Expected 44 buffs, got ` + self.buffs.length.toString())
+          }
+        };
+      } else {
+        return ErrorAwarePacketWriter$TerrariaPacket.data(packBuffs(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerBuffsSet")), self.playerId, "playerId"), self.buffs));
       }
-      return packBuffs(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerBuffsSet")).packByte(self.playerId), self.buffs).data;
     }
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
@@ -4988,11 +6704,48 @@ var require_Packet_PlayerBuffsSet = __commonJS({
 var require_Packet_PlayerChestIndexSync = __commonJS({
   "src/packet/Packet_PlayerChestIndexSync.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "chestId");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            chestId: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerChestIndexSync")), self.playerId, "playerId"), self.chestId, "chestId"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -5000,11 +6753,159 @@ var require_Packet_PlayerChestIndexSync = __commonJS({
 var require_Packet_PlayerDead = __commonJS({
   "src/packet/Packet_PlayerDead.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0
+          }
+        };
+      } else {
+        return e;
+      }
     }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerDead")), self.playerId, "playerId"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_Option.js
+var Belt_Option_exports = {};
+function keep2(opt, p) {
+  if (opt !== void 0 && p(Primitive_option4.valFromOption(opt))) {
+    return opt;
+  }
+}
+function forEach3(opt, f) {
+  if (opt !== void 0) {
+    return f(Primitive_option4.valFromOption(opt));
+  }
+}
+function getOrThrow3(x) {
+  if (x !== void 0) {
+    return Primitive_option4.valFromOption(x);
+  }
+  throw {
+    RE_EXN_ID: "Not_found",
+    Error: new Error()
+  };
+}
+function mapWithDefault2(opt, $$default, f) {
+  if (opt !== void 0) {
+    return f(Primitive_option4.valFromOption(opt));
+  } else {
+    return $$default;
+  }
+}
+function map3(opt, f) {
+  if (opt !== void 0) {
+    return Primitive_option4.some(f(Primitive_option4.valFromOption(opt)));
+  }
+}
+function flatMap3(opt, f) {
+  if (opt !== void 0) {
+    return f(Primitive_option4.valFromOption(opt));
+  }
+}
+function getWithDefault2(opt, $$default) {
+  if (opt !== void 0) {
+    return Primitive_option4.valFromOption(opt);
+  } else {
+    return $$default;
+  }
+}
+function orElse2(opt, other) {
+  if (opt !== void 0) {
+    return opt;
+  } else {
+    return other;
+  }
+}
+function isSome2(x) {
+  return x !== void 0;
+}
+function isNone2(x) {
+  return x === void 0;
+}
+function eq2(a, b, f) {
+  if (a !== void 0) {
+    if (b !== void 0) {
+      return f(Primitive_option4.valFromOption(a), Primitive_option4.valFromOption(b));
+    } else {
+      return false;
+    }
+  } else {
+    return b === void 0;
+  }
+}
+function cmp2(a, b, f) {
+  if (a !== void 0) {
+    if (b !== void 0) {
+      return f(Primitive_option4.valFromOption(a), Primitive_option4.valFromOption(b));
+    } else {
+      return 1;
+    }
+  } else if (b !== void 0) {
+    return -1;
+  } else {
+    return 0;
+  }
+}
+var Primitive_option4, keepU2, forEachU2, getExn3, mapWithDefaultU, mapU2, flatMapU2, eqU2, cmpU2;
+var init_Belt_Option = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_Option.js"() {
+    "use strict";
+    Primitive_option4 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
+    keepU2 = keep2;
+    forEachU2 = forEach3;
+    getExn3 = getOrThrow3;
+    mapWithDefaultU = mapWithDefault2;
+    mapU2 = map3;
+    flatMapU2 = flatMap3;
+    eqU2 = eq2;
+    cmpU2 = cmp2;
+    exports.keepU = keepU2;
+    exports.keep = keep2;
+    exports.forEachU = forEachU2;
+    exports.forEach = forEach3;
+    exports.getExn = getExn3;
+    exports.getOrThrow = getOrThrow3;
+    exports.mapWithDefaultU = mapWithDefaultU;
+    exports.mapWithDefault = mapWithDefault2;
+    exports.mapU = mapU2;
+    exports.map = map3;
+    exports.flatMapU = flatMapU2;
+    exports.flatMap = flatMap3;
+    exports.getWithDefault = getWithDefault2;
+    exports.orElse = orElse2;
+    exports.isSome = isSome2;
+    exports.isNone = isNone2;
+    exports.eqU = eqU2;
+    exports.eq = eq2;
+    exports.cmpU = cmpU2;
+    exports.cmp = cmp2;
   }
 });
 
@@ -5014,6 +6915,8 @@ var require_PlayerDeathReason = __commonJS({
     "use strict";
     var Belt_Option = (init_Belt_Option(), __toCommonJS(Belt_Option_exports));
     var BitFlags$TerrariaPacket = require_BitFlags();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     function otherFromByte(byte) {
       switch (byte) {
         case 0:
@@ -5085,34 +6988,162 @@ var require_PlayerDeathReason = __commonJS({
       }
     }
     function readDeathReason(reader) {
-      let reasonType = BitFlags$TerrariaPacket.fromByte(reader.readByte());
-      let killerPlayerId = BitFlags$TerrariaPacket.flag1(reasonType) ? reader.readInt16() : void 0;
-      let killerNpcId = BitFlags$TerrariaPacket.flag2(reasonType) ? reader.readInt16() : void 0;
-      let killerProjectileId = BitFlags$TerrariaPacket.flag3(reasonType) ? reader.readInt16() : void 0;
-      let typeOfDeathOther = BitFlags$TerrariaPacket.flag4(reasonType) ? otherFromByte(reader.readByte()) : void 0;
-      let projectileType = BitFlags$TerrariaPacket.flag5(reasonType) ? reader.readInt16() : void 0;
-      let itemType = BitFlags$TerrariaPacket.flag6(reasonType) ? reader.readInt16() : void 0;
-      let itemPrefix = BitFlags$TerrariaPacket.flag7(reasonType) ? reader.readByte() : void 0;
-      let deathReason = BitFlags$TerrariaPacket.flag8(reasonType) ? reader.readString() : void 0;
-      return {
-        killerPlayerId,
-        killerNpcId,
-        killerProjectileId,
-        typeOfDeathOther,
-        projectileType,
-        itemType,
-        itemPrefix,
-        deathReason
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "reasonType");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let reasonType = BitFlags$TerrariaPacket.fromByte(e._0);
+      let e$1;
+      if (BitFlags$TerrariaPacket.flag1(reasonType)) {
+        let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "killerPlayerId");
+        e$1 = e$2.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: e$2._0
+        } : e$2;
+      } else {
+        e$1 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$3;
+      if (BitFlags$TerrariaPacket.flag2(reasonType)) {
+        let e$4 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "killerNpcId");
+        e$3 = e$4.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: e$4._0
+        } : e$4;
+      } else {
+        e$3 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$5;
+      if (BitFlags$TerrariaPacket.flag3(reasonType)) {
+        let e$6 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "killerProjectileId");
+        e$5 = e$6.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: e$6._0
+        } : e$6;
+      } else {
+        e$5 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let e$7;
+      if (BitFlags$TerrariaPacket.flag4(reasonType)) {
+        let e$8 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "typeOfDeathOther");
+        e$7 = e$8.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: otherFromByte(e$8._0)
+        } : e$8;
+      } else {
+        e$7 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      if (e$7.TAG !== "Ok") {
+        return e$7;
+      }
+      let e$9;
+      if (BitFlags$TerrariaPacket.flag5(reasonType)) {
+        let e$10 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "projectileType");
+        e$9 = e$10.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: e$10._0
+        } : e$10;
+      } else {
+        e$9 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      if (e$9.TAG !== "Ok") {
+        return e$9;
+      }
+      let e$11;
+      if (BitFlags$TerrariaPacket.flag6(reasonType)) {
+        let e$12 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemType");
+        e$11 = e$12.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: e$12._0
+        } : e$12;
+      } else {
+        e$11 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      if (e$11.TAG !== "Ok") {
+        return e$11;
+      }
+      let e$13;
+      if (BitFlags$TerrariaPacket.flag7(reasonType)) {
+        let e$14 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "itemPrefix");
+        e$13 = e$14.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: e$14._0
+        } : e$14;
+      } else {
+        e$13 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      if (e$13.TAG !== "Ok") {
+        return e$13;
+      }
+      let e$15;
+      if (BitFlags$TerrariaPacket.flag8(reasonType)) {
+        let e$16 = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "deathReason");
+        e$15 = e$16.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: e$16._0
+        } : e$16;
+      } else {
+        e$15 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      if (e$15.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            killerPlayerId: e$1._0,
+            killerNpcId: e$3._0,
+            killerProjectileId: e$5._0,
+            typeOfDeathOther: e$7._0,
+            projectileType: e$9._0,
+            itemType: e$11._0,
+            itemPrefix: e$13._0,
+            deathReason: e$15._0
+          }
+        };
+      } else {
+        return e$15;
+      }
     }
     function packFlags(writer, self) {
       let flags = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(self.killerPlayerId), Belt_Option.isSome(self.killerNpcId), Belt_Option.isSome(self.killerProjectileId), Belt_Option.isSome(self.typeOfDeathOther), Belt_Option.isSome(self.projectileType), Belt_Option.isSome(self.itemType), Belt_Option.isSome(self.itemPrefix), Belt_Option.isSome(self.deathReason));
-      return writer.packByte(BitFlags$TerrariaPacket.toByte(flags));
+      return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(flags), "reasonType");
     }
     function packKillerPlayerId(writer, self) {
       let killerPlayerId = self.killerPlayerId;
       if (killerPlayerId !== void 0) {
-        return writer.packInt16(killerPlayerId);
+        return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, killerPlayerId, "killerPlayerId");
       } else {
         return writer;
       }
@@ -5120,7 +7151,7 @@ var require_PlayerDeathReason = __commonJS({
     function packKillerNpcId(writer, self) {
       let killerNpcId = self.killerNpcId;
       if (killerNpcId !== void 0) {
-        return writer.packInt16(killerNpcId);
+        return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, killerNpcId, "killerNpcId");
       } else {
         return writer;
       }
@@ -5128,7 +7159,7 @@ var require_PlayerDeathReason = __commonJS({
     function packKillerProjectileId(writer, self) {
       let killerProjectileId = self.killerProjectileId;
       if (killerProjectileId !== void 0) {
-        return writer.packInt16(killerProjectileId);
+        return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, killerProjectileId, "killerProjectileId");
       } else {
         return writer;
       }
@@ -5136,7 +7167,7 @@ var require_PlayerDeathReason = __commonJS({
     function packTypeOfDeathOther(writer, self) {
       let typeOfDeathOther = self.typeOfDeathOther;
       if (typeOfDeathOther !== void 0) {
-        return writer.packByte(otherToByte(typeOfDeathOther));
+        return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, otherToByte(typeOfDeathOther), "typeOfDeathOther");
       } else {
         return writer;
       }
@@ -5144,7 +7175,7 @@ var require_PlayerDeathReason = __commonJS({
     function packProjectileType(writer, self) {
       let projectileType = self.projectileType;
       if (projectileType !== void 0) {
-        return writer.packInt16(projectileType);
+        return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, projectileType, "projectileType");
       } else {
         return writer;
       }
@@ -5152,7 +7183,7 @@ var require_PlayerDeathReason = __commonJS({
     function packItemType(writer, self) {
       let itemType = self.itemType;
       if (itemType !== void 0) {
-        return writer.packInt16(itemType);
+        return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, itemType, "itemType");
       } else {
         return writer;
       }
@@ -5160,7 +7191,7 @@ var require_PlayerDeathReason = __commonJS({
     function packItemPrefix(writer, self) {
       let itemPrefix = self.itemPrefix;
       if (itemPrefix !== void 0) {
-        return writer.packByte(itemPrefix);
+        return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, itemPrefix, "itemPrefix");
       } else {
         return writer;
       }
@@ -5169,7 +7200,7 @@ var require_PlayerDeathReason = __commonJS({
       let writer$1 = packItemPrefix(packItemType(packProjectileType(packTypeOfDeathOther(packKillerProjectileId(packKillerNpcId(packKillerPlayerId(packFlags(writer, self), self), self), self), self), self), self), self);
       let deathReason = self.deathReason;
       if (deathReason !== void 0) {
-        return writer$1.packString(deathReason);
+        return ErrorAwarePacketWriter$TerrariaPacket.packString(writer$1, deathReason, "deathReason");
       } else {
         return writer$1;
       }
@@ -5186,26 +7217,45 @@ var require_Packet_PlayerDeath = __commonJS({
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
     var PlayerDeathReason$TerrariaPacket = require_PlayerDeathReason();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let playerId = reader.readByte();
-      let deathReason = PlayerDeathReason$TerrariaPacket.readDeathReason(reader);
-      let damage = reader.readInt16();
-      let hitDirection = reader.readByte();
-      let pvp = reader.readByte() === 1;
-      return {
-        playerId,
-        deathReason,
-        damage,
-        hitDirection,
-        pvp
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = PlayerDeathReason$TerrariaPacket.readDeathReason(reader);
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "damage");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hitDirection");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "pvp");
+      if (e$4.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            deathReason: e$1._0,
+            damage: e$2._0,
+            hitDirection: e$3._0,
+            pvp: e$4._0 === 1
+          }
+        };
+      } else {
+        return e$4;
+      }
     }
     function toBuffer(self) {
-      return PlayerDeathReason$TerrariaPacket.packDeathReason(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerDeath")).packByte(self.playerId), self.deathReason).packInt16(self.damage).packByte(self.hitDirection).packByte(self.pvp ? 1 : 0).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(PlayerDeathReason$TerrariaPacket.packDeathReason(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerDeath")), self.playerId, "playerId"), self.deathReason), self.damage, "damage"), self.hitDirection, "hitDirection"), self.pvp ? 1 : 0, "pvp"));
     }
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
@@ -5216,11 +7266,87 @@ var require_Packet_PlayerDeath = __commonJS({
 var require_Packet_PlayerDodge = __commonJS({
   "src/packet/Packet_PlayerDodge.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function dodgeFromByte(b) {
+      switch (b) {
+        case 1:
+          return "Ninja";
+        case 2:
+          return "Shadow";
+        case 4:
+          return "BrainOfConfusion";
+        default:
+          return;
+      }
     }
+    function dodgeToByte(d) {
+      switch (d) {
+        case "Ninja":
+          return 1;
+        case "Shadow":
+          return 2;
+        case "BrainOfConfusion":
+          return 4;
+      }
+    }
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "dodge");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let dodge = dodgeFromByte(e$1._0);
+      let dodge$1 = dodge !== void 0 ? {
+        TAG: "Ok",
+        _0: dodge
+      } : {
+        TAG: "Error",
+        _0: {
+          context: "Packet_PlayerDodge.parse.dodge",
+          error: new Error("Unknown dodge type")
+        }
+      };
+      if (dodge$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            dodge: dodge$1._0
+          }
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: dodge$1._0
+        };
+      }
+    }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerDodge")), self.playerId, "playerId"), dodgeToByte(self.dodge), "dodge"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.dodgeFromByte = dodgeFromByte;
+    exports2.dodgeToByte = dodgeToByte;
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -5229,22 +7355,35 @@ var require_Packet_PlayerMana = __commonJS({
   "src/packet/Packet_PlayerMana.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let playerId = reader.readByte();
-      let mana = reader.readInt16();
-      let maxMana = reader.readInt16();
-      return {
-        playerId,
-        mana,
-        maxMana
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "mana");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "maxMana");
+      if (e$2.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            mana: e$1._0,
+            maxMana: e$2._0
+          }
+        };
+      } else {
+        return e$2;
+      }
     }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerMana")).packByte(self.playerId).packInt16(self.mana).packInt16(self.maxMana).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerMana")), self.playerId, "playerId"), self.mana, "mana"), self.maxMana, "maxMana"));
     }
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
@@ -5255,11 +7394,46 @@ var require_Packet_PlayerMana = __commonJS({
 var require_Packet_PlayerTeam = __commonJS({
   "src/packet/Packet_PlayerTeam.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "team");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            team: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerTeam")), self.playerId, "playerId"), self.team, "team"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -5268,20 +7442,30 @@ var require_Packet_PvpToggle = __commonJS({
   "src/packet/Packet_PvpToggle.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let playerId = reader.readByte();
-      let pvpEnabled = reader.readByte() === 1;
-      return {
-        playerId,
-        pvpEnabled
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "pvpEnabled");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            pvpEnabled: e$1._0 === 1
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ItemOwner")).packByte(self.playerId).packByte(self.pvpEnabled ? 1 : 0).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PvpToggle")), self.playerId, "playerId"), self.pvpEnabled ? 1 : 0, "pvpEnabled"));
     }
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
@@ -5293,91 +7477,115 @@ var require_Packet_ShimmerEffectOrCoinLuck = __commonJS({
   "src/packet/Packet_ShimmerEffectOrCoinLuck.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readByte(prim) {
-      return prim.readByte();
-    }
-    function readInt32(prim) {
-      return prim.readInt32();
-    }
-    function readSingle(prim) {
-      return prim.readSingle();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let match = reader.readByte();
-      switch (match) {
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "kind");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      switch (e._0) {
         case 0:
-          return {
-            TAG: "ShimmerEffect",
-            _0: reader.readSingle(),
-            _1: reader.readSingle()
-          };
+          let e$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "shimmerX");
+          if (e$1.TAG !== "Ok") {
+            return e$1;
+          }
+          let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "shimmerY");
+          if (e$2.TAG === "Ok") {
+            return {
+              TAG: "Ok",
+              _0: {
+                TAG: "ShimmerEffect",
+                _0: e$1._0,
+                _1: e$2._0
+              }
+            };
+          } else {
+            return e$2;
+          }
         case 1:
+          let e$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "coinLuckX");
+          if (e$3.TAG !== "Ok") {
+            return e$3;
+          }
+          let e$4 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "coinLuckY");
+          if (e$4.TAG !== "Ok") {
+            return e$4;
+          }
+          let e$5 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "coinLuckAmount");
+          if (e$5.TAG === "Ok") {
+            return {
+              TAG: "Ok",
+              _0: {
+                TAG: "CoinLuck",
+                _0: {
+                  position: {
+                    x: e$3._0,
+                    y: e$4._0
+                  },
+                  amount: e$5._0
+                }
+              }
+            };
+          } else {
+            return e$5;
+          }
+        case 2:
+          let e$6 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "newShimmerEffectId");
+          if (e$6.TAG === "Ok") {
+            return {
+              TAG: "Ok",
+              _0: {
+                TAG: "NewShimmerEffect",
+                _0: e$6._0
+              }
+            };
+          } else {
+            return e$6;
+          }
+        default:
           return {
-            TAG: "CoinLuck",
+            TAG: "Error",
             _0: {
-              position: {
-                x: reader.readSingle(),
-                y: reader.readSingle()
-              },
-              amount: reader.readInt32()
+              context: "Packet_ShimmerEffectOrCoinLuck.parse",
+              error: new Error("Unknown shimmer effect kind")
             }
           };
-        case 2:
-          return {
-            TAG: "NewShimmerEffect",
-            _0: reader.readInt32()
-          };
-        default:
-          return;
       }
     }
     var Decode = {
-      readByte,
-      readInt32,
-      readSingle,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt32(prim0, prim1) {
-      return prim0.packInt32(prim1);
-    }
-    function packSingle(prim0, prim1) {
-      return prim0.packSingle(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      let writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ShimmerEffectOrCoinLuck"));
+      let writer = ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ShimmerEffectOrCoinLuck"));
       let tmp;
       switch (self.TAG) {
         case "ShimmerEffect":
-          tmp = writer.packByte(0).packSingle(self._0).packSingle(self._1);
+          tmp = ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, 0, "kind"), self._0, "shimmerX"), self._1, "shimmerY");
           break;
         case "CoinLuck":
           let match = self._0;
           let position = match.position;
-          tmp = writer.packByte(1).packSingle(position.x).packSingle(position.y).packInt32(match.amount);
+          tmp = ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, 1, "kind"), position.x, "coinLuckX"), position.y, "coinLuckY"), match.amount, "coinLuckAmount");
           break;
         case "NewShimmerEffect":
-          tmp = writer.packByte(2).packInt32(self._0);
+          tmp = ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, 2, "kind"), self._0, "newShimmerEffectId");
           break;
       }
-      return tmp.data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(tmp);
     }
     var Encode = {
       Writer: void 0,
-      packByte,
-      packInt32,
-      packSingle,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -5391,11 +7599,72 @@ var require_Packet_ShimmerEffectOrCoinLuck = __commonJS({
 var require_Packet_SignNew = __commonJS({
   "src/packet/Packet_SignNew.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var BitFlags$TerrariaPacket = require_BitFlags();
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "signId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "text");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags");
+      if (e$5.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            signId: e._0,
+            x: e$1._0,
+            y: e$2._0,
+            text: e$3._0,
+            playerId: e$4._0,
+            deleteSign: BitFlags$TerrariaPacket.flag1(BitFlags$TerrariaPacket.fromByte(e$5._0))
+          }
+        };
+      } else {
+        return e$5;
+      }
     }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readString: ErrorAwarePacketReader$TerrariaPacket.readString,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      parse
+    };
+    function toBuffer(self) {
+      let flags = BitFlags$TerrariaPacket.fromFlags(self.deleteSign, false, false, false, false, false, false, false);
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("SignNew")), self.signId, "signId"), self.x, "x"), self.y, "y"), self.text, "text"), self.playerId, "playerId"), BitFlags$TerrariaPacket.toByte(flags), "flags"));
+    }
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packString: ErrorAwarePacketWriter$TerrariaPacket.packString,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -5403,11 +7672,46 @@ var require_Packet_SignNew = __commonJS({
 var require_Packet_SignRead = __commonJS({
   "src/packet/Packet_SignRead.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            x: e._0,
+            y: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("SignRead")), self.x, "x"), self.y, "y"));
+    }
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -5415,11 +7719,41 @@ var require_Packet_SignRead = __commonJS({
 var require_Packet_SmokePoof = __commonJS({
   "src/packet/Packet_SmokePoof.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readUInt32(reader, "packedPosition");
+      if (e.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            packedPosition: e._0
+          }
+        };
+      } else {
+        return e;
+      }
     }
+    var Decode = {
+      readUInt32: ErrorAwarePacketReader$TerrariaPacket.readUInt32,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packUInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("SmokePoof")), self.packedPosition, "packedPosition"));
+    }
+    var Encode = {
+      packUInt32: ErrorAwarePacketWriter$TerrariaPacket.packUInt32,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -5427,11 +7761,29 @@ var require_Packet_SmokePoof = __commonJS({
 var require_Packet_SocialHandshake = __commonJS({
   "src/packet/Packet_SocialHandshake.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     function parse(_payload) {
-      return Primitive_option8.some(void 0);
+      return {
+        TAG: "Ok",
+        _0: void 0
+      };
     }
+    var Decode = {
+      parse
+    };
+    function toBuffer(_self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("SocialHandshake")));
+    }
+    var Encode = {
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -5441,21 +7793,34 @@ var require_Packet_Status = __commonJS({
     "use strict";
     var BitFlags$TerrariaPacket = require_BitFlags();
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let max6 = reader.readInt32();
-      let text = reader.readNetworkText();
-      let flags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "max");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readNetworkText(reader, "text");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let flags = BitFlags$TerrariaPacket.fromByte(e$2._0);
       return {
-        max: max6,
-        text,
-        flags: {
-          hideStatusTextPercent: BitFlags$TerrariaPacket.flag1(flags),
-          statusTextHasShadows: BitFlags$TerrariaPacket.flag2(flags),
-          runCheckBytes: BitFlags$TerrariaPacket.flag3(flags)
+        TAG: "Ok",
+        _0: {
+          max: e._0,
+          text: e$1._0,
+          flags: {
+            hideStatusTextPercent: BitFlags$TerrariaPacket.flag1(flags),
+            statusTextHasShadows: BitFlags$TerrariaPacket.flag2(flags),
+            runCheckBytes: BitFlags$TerrariaPacket.flag3(flags)
+          }
         }
       };
     }
@@ -5467,7 +7832,7 @@ var require_Packet_Status = __commonJS({
       return byte;
     }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("Status")).packInt32(self.max).packNetworkText(self.text).packByte(flagsToByte(self.flags)).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packNetworkText(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("Status")), self.max, "max"), self.text, "text"), flagsToByte(self.flags), "flags"));
     }
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
@@ -5478,11 +7843,457 @@ var require_Packet_Status = __commonJS({
 var require_Packet_SwitchHit = __commonJS({
   "src/packet/Packet_SwitchHit.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            x: e._0,
+            y: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("SwitchHit")), self.x, "x"), self.y, "y"));
+    }
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
+  }
+});
+
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Stdlib_Result.js
+var Stdlib_Result_exports = {};
+function getOrThrow4(x, message) {
+  if (x.TAG === "Ok") {
+    return x._0;
+  } else {
+    return Stdlib_JsError2.panic(message !== void 0 ? message : "Result.getOrThrow called for Error value");
+  }
+}
+function mapOr2(opt, $$default, f) {
+  if (opt.TAG === "Ok") {
+    return f(opt._0);
+  } else {
+    return $$default;
+  }
+}
+function map4(opt, f) {
+  if (opt.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: f(opt._0)
+    };
+  } else {
+    return opt;
+  }
+}
+function flatMap4(opt, f) {
+  if (opt.TAG === "Ok") {
+    return f(opt._0);
+  } else {
+    return opt;
+  }
+}
+function getOr2(opt, $$default) {
+  if (opt.TAG === "Ok") {
+    return opt._0;
+  } else {
+    return $$default;
+  }
+}
+function isOk(x) {
+  return x.TAG === "Ok";
+}
+function isError(x) {
+  return x.TAG !== "Ok";
+}
+function equal3(a, b, eqOk, eqError) {
+  if (a.TAG === "Ok") {
+    if (b.TAG === "Ok") {
+      return eqOk(a._0, b._0);
+    } else {
+      return false;
+    }
+  } else if (b.TAG === "Ok") {
+    return false;
+  } else {
+    return eqError(a._0, b._0);
+  }
+}
+function compare4(a, b, cmpOk, cmpError) {
+  if (a.TAG === "Ok") {
+    if (b.TAG === "Ok") {
+      return cmpOk(a._0, b._0);
+    } else {
+      return 1;
+    }
+  } else if (b.TAG === "Ok") {
+    return -1;
+  } else {
+    return cmpError(a._0, b._0);
+  }
+}
+function forEach4(r, f) {
+  if (r.TAG === "Ok") {
+    return f(r._0);
+  }
+}
+function mapError(r, f) {
+  if (r.TAG === "Ok") {
+    return r;
+  } else {
+    return {
+      TAG: "Error",
+      _0: f(r._0)
+    };
+  }
+}
+function all7(results) {
+  let acc = [];
+  let returnValue;
+  let index = 0;
+  while (returnValue === void 0 && index < results.length) {
+    let err = results[index];
+    if (err.TAG === "Ok") {
+      acc.push(err._0);
+      index = index + 1 | 0;
+    } else {
+      returnValue = err;
+    }
+  }
+  ;
+  let error = returnValue;
+  if (error !== void 0) {
+    return error;
+  } else {
+    return {
+      TAG: "Ok",
+      _0: acc
+    };
+  }
+}
+function all22(param) {
+  let b = param[1];
+  let a = param[0];
+  if (a.TAG === "Ok") {
+    if (b.TAG === "Ok") {
+      return {
+        TAG: "Ok",
+        _0: [
+          a._0,
+          b._0
+        ]
+      };
+    } else {
+      return {
+        TAG: "Error",
+        _0: b._0
+      };
+    }
+  } else {
+    return {
+      TAG: "Error",
+      _0: a._0
+    };
+  }
+}
+function all32(param) {
+  let c = param[2];
+  let b = param[1];
+  let a = param[0];
+  if (a.TAG === "Ok") {
+    if (b.TAG === "Ok") {
+      if (c.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: [
+            a._0,
+            b._0,
+            c._0
+          ]
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: c._0
+        };
+      }
+    } else {
+      return {
+        TAG: "Error",
+        _0: b._0
+      };
+    }
+  } else {
+    return {
+      TAG: "Error",
+      _0: a._0
+    };
+  }
+}
+function all42(param) {
+  let d = param[3];
+  let c = param[2];
+  let b = param[1];
+  let a = param[0];
+  if (a.TAG === "Ok") {
+    if (b.TAG === "Ok") {
+      if (c.TAG === "Ok") {
+        if (d.TAG === "Ok") {
+          return {
+            TAG: "Ok",
+            _0: [
+              a._0,
+              b._0,
+              c._0,
+              d._0
+            ]
+          };
+        } else {
+          return {
+            TAG: "Error",
+            _0: d._0
+          };
+        }
+      } else {
+        return {
+          TAG: "Error",
+          _0: c._0
+        };
+      }
+    } else {
+      return {
+        TAG: "Error",
+        _0: b._0
+      };
+    }
+  } else {
+    return {
+      TAG: "Error",
+      _0: a._0
+    };
+  }
+}
+function all52(param) {
+  let e = param[4];
+  let d = param[3];
+  let c = param[2];
+  let b = param[1];
+  let a = param[0];
+  if (a.TAG === "Ok") {
+    if (b.TAG === "Ok") {
+      if (c.TAG === "Ok") {
+        if (d.TAG === "Ok") {
+          if (e.TAG === "Ok") {
+            return {
+              TAG: "Ok",
+              _0: [
+                a._0,
+                b._0,
+                c._0,
+                d._0,
+                e._0
+              ]
+            };
+          } else {
+            return {
+              TAG: "Error",
+              _0: e._0
+            };
+          }
+        } else {
+          return {
+            TAG: "Error",
+            _0: d._0
+          };
+        }
+      } else {
+        return {
+          TAG: "Error",
+          _0: c._0
+        };
+      }
+    } else {
+      return {
+        TAG: "Error",
+        _0: b._0
+      };
+    }
+  } else {
+    return {
+      TAG: "Error",
+      _0: a._0
+    };
+  }
+}
+function all62(param) {
+  let f = param[5];
+  let e = param[4];
+  let d = param[3];
+  let c = param[2];
+  let b = param[1];
+  let a = param[0];
+  if (a.TAG === "Ok") {
+    if (b.TAG === "Ok") {
+      if (c.TAG === "Ok") {
+        if (d.TAG === "Ok") {
+          if (e.TAG === "Ok") {
+            if (f.TAG === "Ok") {
+              return {
+                TAG: "Ok",
+                _0: [
+                  a._0,
+                  b._0,
+                  c._0,
+                  d._0,
+                  e._0,
+                  f._0
+                ]
+              };
+            } else {
+              return {
+                TAG: "Error",
+                _0: f._0
+              };
+            }
+          } else {
+            return {
+              TAG: "Error",
+              _0: e._0
+            };
+          }
+        } else {
+          return {
+            TAG: "Error",
+            _0: d._0
+          };
+        }
+      } else {
+        return {
+          TAG: "Error",
+          _0: c._0
+        };
+      }
+    } else {
+      return {
+        TAG: "Error",
+        _0: b._0
+      };
+    }
+  } else {
+    return {
+      TAG: "Error",
+      _0: a._0
+    };
+  }
+}
+async function mapOkAsync(res, f) {
+  let value = await res;
+  if (value.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: f(value._0)
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: value._0
+    };
+  }
+}
+async function mapErrorAsync(res, f) {
+  let value = await res;
+  if (value.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: value._0
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: f(value._0)
+    };
+  }
+}
+async function flatMapOkAsync(res, f) {
+  let value = await res;
+  if (value.TAG === "Ok") {
+    return await f(value._0);
+  } else {
+    return {
+      TAG: "Error",
+      _0: value._0
+    };
+  }
+}
+async function flatMapErrorAsync(res, f) {
+  let value = await res;
+  if (value.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: value._0
+    };
+  } else {
+    return await f(value._0);
+  }
+}
+var Stdlib_JsError2, getExn4, mapWithDefault3, getWithDefault3;
+var init_Stdlib_Result = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Stdlib_Result.js"() {
+    "use strict";
+    Stdlib_JsError2 = (init_Stdlib_JsError(), __toCommonJS(Stdlib_JsError_exports));
+    getExn4 = getOrThrow4;
+    mapWithDefault3 = mapOr2;
+    getWithDefault3 = getOr2;
+    exports.getExn = getExn4;
+    exports.getOrThrow = getOrThrow4;
+    exports.mapOr = mapOr2;
+    exports.mapWithDefault = mapWithDefault3;
+    exports.map = map4;
+    exports.flatMap = flatMap4;
+    exports.getOr = getOr2;
+    exports.getWithDefault = getWithDefault3;
+    exports.isOk = isOk;
+    exports.isError = isError;
+    exports.equal = equal3;
+    exports.compare = compare4;
+    exports.forEach = forEach4;
+    exports.mapError = mapError;
+    exports.all = all7;
+    exports.all2 = all22;
+    exports.all3 = all32;
+    exports.all4 = all42;
+    exports.all5 = all52;
+    exports.all6 = all62;
+    exports.mapOkAsync = mapOkAsync;
+    exports.mapErrorAsync = mapErrorAsync;
+    exports.flatMapOkAsync = flatMapOkAsync;
+    exports.flatMapErrorAsync = flatMapErrorAsync;
   }
 });
 
@@ -5491,87 +8302,92 @@ var require_Packet_Teleport = __commonJS({
   "src/packet/Packet_Teleport.js"(exports2) {
     "use strict";
     var Belt_Option = (init_Belt_Option(), __toCommonJS(Belt_Option_exports));
+    var Stdlib_Result = (init_Stdlib_Result(), __toCommonJS(Stdlib_Result_exports));
     var BitFlags$TerrariaPacket = require_BitFlags();
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readByte(prim) {
-      return prim.readByte();
-    }
-    function readInt16(prim) {
-      return prim.readInt16();
-    }
-    function readSingle(prim) {
-      return prim.readSingle();
-    }
-    function readInt32(prim) {
-      return prim.readInt32();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let flags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let flags = BitFlags$TerrariaPacket.fromByte(e._0);
       let getPositionFromTarget = BitFlags$TerrariaPacket.flag3(flags);
       let match = BitFlags$TerrariaPacket.flag1(flags);
       let match$1 = BitFlags$TerrariaPacket.flag2(flags);
       let teleportType = match ? match$1 ? void 0 : "Npc" : match$1 ? "PlayerToPlayer" : "Player";
-      let targetId = reader.readInt16();
-      let x = reader.readSingle();
-      let y = reader.readSingle();
-      let style = reader.readByte();
-      let extraInfo = BitFlags$TerrariaPacket.flag4(flags) ? reader.readInt32() : void 0;
-      if (teleportType !== void 0) {
-        return {
-          teleportType,
-          getPositionFromTarget,
-          targetId,
-          x,
-          y,
-          style,
-          extraInfo
-        };
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "targetId");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "style");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = BitFlags$TerrariaPacket.flag4(flags) ? Stdlib_Result.map(ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "extraInfo"), (v) => v) : {
+        TAG: "Ok",
+        _0: void 0
+      };
+      if (e$5.TAG === "Ok") {
+        if (teleportType !== void 0) {
+          return {
+            TAG: "Ok",
+            _0: {
+              teleportType,
+              getPositionFromTarget,
+              targetId: e$1._0,
+              x: e$2._0,
+              y: e$3._0,
+              style: e$4._0,
+              extraInfo: e$5._0
+            }
+          };
+        } else {
+          return {
+            TAG: "Error",
+            _0: {
+              context: "Packet_Teleport.parse",
+              error: new Error("Invalid teleport type flags")
+            }
+          };
+        }
+      } else {
+        return e$5;
       }
     }
     var Decode = {
-      readByte,
-      readInt16,
-      readSingle,
-      readInt32,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function packSingle(prim0, prim1) {
-      return prim0.packSingle(prim1);
-    }
-    function packInt32(prim0, prim1) {
-      return prim0.packInt32(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function getFlags(self) {
       return BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(self.teleportType === "Npc", self.teleportType === "PlayerToPlayer", self.getPositionFromTarget, Belt_Option.isSome(self.extraInfo), false, false, false, false));
     }
     function toBuffer(self) {
-      let writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("Teleport")).packByte(getFlags(self)).packInt16(self.targetId).packSingle(self.x).packSingle(self.y).packByte(self.style);
+      let writer = ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("Teleport")), getFlags(self), "flags"), self.targetId, "targetId"), self.x, "x"), self.y, "y"), self.style, "style");
       let extraInfo = self.extraInfo;
-      if (extraInfo !== void 0) {
-        writer.packInt32(extraInfo);
-      }
-      return writer.data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(extraInfo !== void 0 ? ErrorAwarePacketWriter$TerrariaPacket.packInt32(writer, extraInfo, "extraInfo") : writer);
     }
     var Encode = {
-      packByte,
-      packInt16,
-      packSingle,
-      packInt32,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       getFlags,
       toBuffer
     };
@@ -5587,9 +8403,9 @@ var require_Packet_TeleportationPotion = __commonJS({
   "src/packet/Packet_TeleportationPotion.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function teleportTypeToInt(teleportType) {
       switch (teleportType) {
         case "TeleportationPotion":
@@ -5602,61 +8418,65 @@ var require_Packet_TeleportationPotion = __commonJS({
           return 3;
       }
     }
-    function readByte(prim) {
-      return prim.readByte();
-    }
-    function readInt16(prim) {
-      return prim.readInt16();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let match = reader.readByte();
-      let teleportType;
-      switch (match) {
-        case 0:
-          teleportType = "TeleportationPotion";
-          break;
-        case 1:
-          teleportType = "MagicConch";
-          break;
-        case 2:
-          teleportType = "DemonConch";
-          break;
-        case 3:
-          teleportType = "ShellphoneSpawn";
-          break;
-        default:
-          teleportType = void 0;
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "teleportType");
+      if (e.TAG !== "Ok") {
+        return e;
       }
-      if (teleportType !== void 0) {
-        return {
-          teleportType
-        };
+      switch (e._0) {
+        case 0:
+          return {
+            TAG: "Ok",
+            _0: {
+              teleportType: "TeleportationPotion"
+            }
+          };
+        case 1:
+          return {
+            TAG: "Ok",
+            _0: {
+              teleportType: "MagicConch"
+            }
+          };
+        case 2:
+          return {
+            TAG: "Ok",
+            _0: {
+              teleportType: "DemonConch"
+            }
+          };
+        case 3:
+          return {
+            TAG: "Ok",
+            _0: {
+              teleportType: "ShellphoneSpawn"
+            }
+          };
+        default:
+          return {
+            TAG: "Error",
+            _0: {
+              context: "Packet_TeleportationPotion.parse",
+              error: new Error("Unknown teleport type")
+            }
+          };
       }
     }
     var Decode = {
-      readByte,
-      readInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("TeleportationPotion")).packByte(teleportTypeToInt(self.teleportType)).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TeleportationPotion")), teleportTypeToInt(self.teleportType), "teleportType"));
     }
     var Encode = {
       Writer: void 0,
-      packByte,
-      packInt16,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.teleportTypeToInt = teleportTypeToInt;
@@ -5671,11 +8491,58 @@ var require_Packet_TeleportationPotion = __commonJS({
 var require_Packet_TemporaryAnimationCreate = __commonJS({
   "src/packet/Packet_TemporaryAnimationCreate.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "typeId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "tileType");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$3.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            typeId: e._0,
+            tileType: e$1._0,
+            x: e$2._0,
+            y: e$3._0
+          }
+        };
+      } else {
+        return e$3;
+      }
     }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TemporaryAnimationCreate")), self.typeId, "typeId"), self.tileType, "tileType"), self.x, "x"), self.y, "y"));
+    }
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -5684,63 +8551,64 @@ var require_Packet_TileEntityDisplayDollItemSync = __commonJS({
   "src/packet/Packet_TileEntityDisplayDollItemSync.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readByte(prim) {
-      return prim.readByte();
-    }
-    function readInt32(prim) {
-      return prim.readInt32();
-    }
-    function readUInt16(prim) {
-      return prim.readUInt16();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let playerId = reader.readByte();
-      let tileEntityId = reader.readInt32();
-      let itemIndex = reader.readByte();
-      let itemId = reader.readUInt16();
-      let stack = reader.readUInt16();
-      let prefix = reader.readByte();
-      return {
-        playerId,
-        tileEntityId,
-        itemIndex,
-        itemId,
-        stack,
-        prefix
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "tileEntityId");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "itemIndex");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "itemId");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "stack");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "prefix");
+      if (e$5.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            tileEntityId: e$1._0,
+            itemIndex: e$2._0,
+            itemId: e$3._0,
+            stack: e$4._0,
+            prefix: e$5._0
+          }
+        };
+      } else {
+        return e$5;
+      }
     }
     var Decode = {
-      readByte,
-      readInt32,
-      readUInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt32(prim0, prim1) {
-      return prim0.packInt32(prim1);
-    }
-    function packUInt16(prim0, prim1) {
-      return prim0.packUInt16(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("TileEntityDisplayDollItemSync")).packByte(self.playerId).packInt32(self.tileEntityId).packByte(self.itemIndex).packUInt16(self.itemId).packUInt16(self.stack).packByte(self.prefix).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TileEntityDisplayDollItemSync")), self.playerId, "playerId"), self.tileEntityId, "tileEntityId"), self.itemIndex, "itemIndex"), self.itemId, "itemId"), self.stack, "stack"), self.prefix, "prefix"));
     }
     var Encode = {
       Writer: void 0,
-      packByte,
-      packInt32,
-      packUInt16,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -5755,63 +8623,64 @@ var require_Packet_TileEntityHatRackItemSync = __commonJS({
   "src/packet/Packet_TileEntityHatRackItemSync.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readByte(prim) {
-      return prim.readByte();
-    }
-    function readInt32(prim) {
-      return prim.readInt32();
-    }
-    function readUInt16(prim) {
-      return prim.readUInt16();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let playerId = reader.readByte();
-      let tileEntityId = reader.readInt32();
-      let itemIndex = reader.readByte();
-      let itemId = reader.readUInt16();
-      let stack = reader.readUInt16();
-      let prefix = reader.readByte();
-      return {
-        playerId,
-        tileEntityId,
-        itemIndex,
-        itemId,
-        stack,
-        prefix
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "tileEntityId");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "itemIndex");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "itemId");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "stack");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "prefix");
+      if (e$5.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            tileEntityId: e$1._0,
+            itemIndex: e$2._0,
+            itemId: e$3._0,
+            stack: e$4._0,
+            prefix: e$5._0
+          }
+        };
+      } else {
+        return e$5;
+      }
     }
     var Decode = {
-      readByte,
-      readInt32,
-      readUInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt32(prim0, prim1) {
-      return prim0.packInt32(prim1);
-    }
-    function packUInt16(prim0, prim1) {
-      return prim0.packUInt16(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("TileEntityHatRackItemSync")).packByte(self.playerId).packInt32(self.tileEntityId).packByte(self.itemIndex).packUInt16(self.itemId).packUInt16(self.stack).packByte(self.prefix).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TileEntityHatRackItemSync")), self.playerId, "playerId"), self.tileEntityId, "tileEntityId"), self.itemIndex, "itemIndex"), self.itemId, "itemId"), self.stack, "stack"), self.prefix, "prefix"));
     }
     var Encode = {
       Writer: void 0,
-      packByte,
-      packInt32,
-      packUInt16,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -5825,11 +8694,48 @@ var require_Packet_TileEntityHatRackItemSync = __commonJS({
 var require_Packet_TileEntityInteractionRequest = __commonJS({
   "src/packet/Packet_TileEntityInteractionRequest.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "tileEntityId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            tileEntityId: e._0,
+            playerId: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
+    var Decode = {
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TileEntityInteractionRequest")), self.tileEntityId, "tileEntityId"), self.playerId, "playerId"));
+    }
+    var Encode = {
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -5837,11 +8743,53 @@ var require_Packet_TileEntityInteractionRequest = __commonJS({
 var require_Packet_TileEntityPlace = __commonJS({
   "src/packet/Packet_TileEntityPlace.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "tileEntityType");
+      if (e$2.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            x: e._0,
+            y: e$1._0,
+            tileEntityType: e$2._0
+          }
+        };
+      } else {
+        return e$2;
+      }
     }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TileEntityPlace")), self.x, "x"), self.y, "y"), self.tileEntityType, "tileEntityType"));
+    }
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -5849,11 +8797,78 @@ var require_Packet_TileEntityPlace = __commonJS({
 var require_Packet_TileEntityUpdate = __commonJS({
   "src/packet/Packet_TileEntityUpdate.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "tileEntityId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let tileEntityId = e._0;
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readBool(reader, "hasData");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      if (!e$1._0) {
+        return {
+          TAG: "Ok",
+          _0: {
+            tileEntityId,
+            payload: "Remove"
+          }
+        };
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.getBytesLeft(reader);
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readBuffer(reader, e$2._0, "tileEntityData");
+      if (e$3.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            tileEntityId,
+            payload: {
+              TAG: "Data",
+              _0: e$3._0
+            }
+          }
+        };
+      } else {
+        return e$3;
+      }
     }
+    var Decode = {
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+      readBool: ErrorAwarePacketReader$TerrariaPacket.readBool,
+      getBytesLeft: ErrorAwarePacketReader$TerrariaPacket.getBytesLeft,
+      readBuffer: ErrorAwarePacketReader$TerrariaPacket.readBuffer,
+      parse
+    };
+    function toBuffer(self) {
+      let writer = ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TileEntityUpdate")), self.tileEntityId, "tileEntityId");
+      let tileEntityData = self.payload;
+      if (typeof tileEntityData !== "object") {
+        return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packBool(writer, false, "hasData"));
+      } else {
+        return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packBuffer(ErrorAwarePacketWriter$TerrariaPacket.packBool(writer, true, "hasData"), tileEntityData._0, "tileEntityData"));
+      }
+    }
+    var Encode = {
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      packBool: ErrorAwarePacketWriter$TerrariaPacket.packBool,
+      packBuffer: ErrorAwarePacketWriter$TerrariaPacket.packBuffer,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -5862,9 +8877,9 @@ var require_Packet_TileModify = __commonJS({
   "src/packet/Packet_TileModify.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function fromInt(action) {
       switch (action) {
         case 0:
@@ -5977,23 +8992,57 @@ var require_Packet_TileModify = __commonJS({
     };
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let action = fromInt(reader.readByte());
-      let tileX = reader.readInt16();
-      let tileY = reader.readInt16();
-      let value1 = reader.readInt16();
-      let value2 = reader.readByte();
-      if (action !== void 0) {
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "action");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "tileX");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "tileY");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "value1");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "value2");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let action = fromInt(e._0);
+      let action$1 = action !== void 0 ? {
+        TAG: "Ok",
+        _0: action
+      } : {
+        TAG: "Error",
+        _0: {
+          context: "TileModify.parse.action",
+          error: new Error("Unknown action")
+        }
+      };
+      if (action$1.TAG === "Ok") {
         return {
-          action,
-          tileX,
-          tileY,
-          value1,
-          value2
+          TAG: "Ok",
+          _0: {
+            action: action$1._0,
+            tileX: e$1._0,
+            tileY: e$2._0,
+            value1: e$3._0,
+            value2: e$4._0
+          }
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: action$1._0
         };
       }
     }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("TileModify")).packByte(toInt(self.action)).packInt16(self.tileX).packInt16(self.tileY).packInt16(self.value1).packByte(self.value2).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TileModify")), toInt(self.action), "action"), self.tileX, "tileX"), self.tileY, "tileY"), self.value1, "value1"), self.value2, "value2"));
     }
     exports2.Action = Action;
     exports2.parse = parse;
@@ -6006,24 +9055,40 @@ var require_Packet_TilePaint = __commonJS({
   "src/packet/Packet_TilePaint.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let x = reader.readInt16();
-      let y = reader.readInt16();
-      let color = reader.readByte();
-      let coat = reader.readByte();
-      return {
-        x,
-        y,
-        color,
-        coat
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "color");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "coat");
+      if (e$3.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            x: e._0,
+            y: e$1._0,
+            color: e$2._0,
+            coat: e$3._0
+          }
+        };
+      } else {
+        return e$3;
+      }
     }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("TilePaint")).packInt16(self.x).packInt16(self.y).packByte(self.color).packByte(self.coat).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TilePaint")), self.x, "x"), self.y, "y"), self.color, "color"), self.coat, "coat"));
     }
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
@@ -6034,55 +9099,52 @@ var require_Packet_TilePaint = __commonJS({
 var require_Packet_TilePickingSync = __commonJS({
   "src/packet/Packet_TilePickingSync.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
-    }
-    exports2.parse = parse;
-  }
-});
-
-// src/packet/Packet_TileSectionFrame.js
-var require_Packet_TileSectionFrame = __commonJS({
-  "src/packet/Packet_TileSectionFrame.js"(exports2) {
-    "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readInt16(prim) {
-      return prim.readInt16();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let startX = reader.readInt16();
-      let startY = reader.readInt16();
-      let endX = reader.readInt16();
-      let endY = reader.readInt16();
-      return {
-        startX,
-        startY,
-        endX,
-        endY
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "pickPower");
+      if (e$3.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            x: e$1._0,
+            y: e$2._0,
+            pickPower: e$3._0
+          }
+        };
+      } else {
+        return e$3;
+      }
     }
     var Decode = {
-      readInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
       parse
     };
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("TileSectionFrame")).packInt16(self.startX).packInt16(self.startY).packInt16(self.endX).packInt16(self.endY).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TilePickingSync")), self.playerId, "playerId"), self.x, "x"), self.y, "y"), self.pickPower, "pickPower"));
     }
     var Encode = {
-      packInt16,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -6092,817 +9154,66 @@ var require_Packet_TileSectionFrame = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_int.js
-var Primitive_int_exports = {};
-function compare2(x, y) {
-  if (x < y) {
-    return -1;
-  } else if (x === y) {
-    return 0;
-  } else {
-    return 1;
-  }
-}
-function min(x, y) {
-  if (x < y) {
-    return x;
-  } else {
-    return y;
-  }
-}
-function max(x, y) {
-  if (x > y) {
-    return x;
-  } else {
-    return y;
-  }
-}
-function div(x, y) {
-  if (y === 0) {
-    throw {
-      RE_EXN_ID: "Division_by_zero",
-      Error: new Error()
-    };
-  }
-  return x / y | 0;
-}
-function mod_(x, y) {
-  if (y === 0) {
-    throw {
-      RE_EXN_ID: "Division_by_zero",
-      Error: new Error()
-    };
-  }
-  return x % y;
-}
-var init_Primitive_int = __esm({
-  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_int.js"() {
+// src/packet/Packet_TileSectionFrame.js
+var require_Packet_TileSectionFrame = __commonJS({
+  "src/packet/Packet_TileSectionFrame.js"(exports2) {
     "use strict";
-    exports.compare = compare2;
-    exports.min = min;
-    exports.max = max;
-    exports.div = div;
-    exports.mod_ = mod_;
-  }
-});
-
-// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_Array.js
-var Belt_Array_exports = {};
-function get(arr, i) {
-  if (i >= 0 && i < arr.length) {
-    return Primitive_option3.some(arr[i]);
-  }
-}
-function getOrThrow3(arr, i) {
-  if (!(i >= 0 && i < arr.length)) {
-    throw {
-      RE_EXN_ID: "Assert_failure",
-      _1: [
-        "Belt_Array.res",
-        36,
-        2
-      ],
-      Error: new Error()
-    };
-  }
-  return arr[i];
-}
-function set(arr, i, v) {
-  if (i >= 0 && i < arr.length) {
-    arr[i] = v;
-    return true;
-  } else {
-    return false;
-  }
-}
-function setOrThrow(arr, i, v) {
-  if (!(i >= 0 && i < arr.length)) {
-    throw {
-      RE_EXN_ID: "Assert_failure",
-      _1: [
-        "Belt_Array.res",
-        51,
-        2
-      ],
-      Error: new Error()
-    };
-  }
-  arr[i] = v;
-}
-function swapUnsafe(xs, i, j) {
-  let tmp = xs[i];
-  xs[i] = xs[j];
-  xs[j] = tmp;
-}
-function shuffleInPlace(xs) {
-  let len = xs.length;
-  let random_int = (min6, max6) => Math.floor(Math.random() * (max6 - min6 | 0)) + min6 | 0;
-  for (let i = 0; i < len; ++i) {
-    swapUnsafe(xs, i, random_int(i, len));
-  }
-}
-function shuffle(xs) {
-  let result = xs.slice(0);
-  shuffleInPlace(result);
-  return result;
-}
-function reverseInPlace(xs) {
-  let len = xs.length;
-  let ofs = 0;
-  for (let i = 0, i_finish = len / 2 | 0; i < i_finish; ++i) {
-    swapUnsafe(xs, ofs + i | 0, ((ofs + len | 0) - i | 0) - 1 | 0);
-  }
-}
-function reverse(xs) {
-  let len = xs.length;
-  let result = new Array(len);
-  for (let i = 0; i < len; ++i) {
-    result[i] = xs[(len - 1 | 0) - i | 0];
-  }
-  return result;
-}
-function make(l, f) {
-  if (l <= 0) {
-    return [];
-  }
-  let res = new Array(l);
-  for (let i = 0; i < l; ++i) {
-    res[i] = f;
-  }
-  return res;
-}
-function makeBy(l, f) {
-  if (l <= 0) {
-    return [];
-  }
-  let res = new Array(l);
-  for (let i = 0; i < l; ++i) {
-    res[i] = f(i);
-  }
-  return res;
-}
-function makeByAndShuffle(l, f) {
-  let u = makeBy(l, f);
-  shuffleInPlace(u);
-  return u;
-}
-function range(start, finish) {
-  let cut = finish - start | 0;
-  if (cut < 0) {
-    return [];
-  }
-  let arr = new Array(cut + 1 | 0);
-  for (let i = 0; i <= cut; ++i) {
-    arr[i] = start + i | 0;
-  }
-  return arr;
-}
-function rangeBy(start, finish, step) {
-  let cut = finish - start | 0;
-  if (cut < 0 || step <= 0) {
-    return [];
-  }
-  let nb = (cut / step | 0) + 1 | 0;
-  let arr = new Array(nb);
-  let cur = start;
-  for (let i = 0; i < nb; ++i) {
-    arr[i] = cur;
-    cur = cur + step | 0;
-  }
-  return arr;
-}
-function zip(xs, ys) {
-  let lenx = xs.length;
-  let leny = ys.length;
-  let len = Primitive_int.min(lenx, leny);
-  let s = new Array(len);
-  for (let i = 0; i < len; ++i) {
-    s[i] = [
-      xs[i],
-      ys[i]
-    ];
-  }
-  return s;
-}
-function zipBy(xs, ys, f) {
-  let lenx = xs.length;
-  let leny = ys.length;
-  let len = Primitive_int.min(lenx, leny);
-  let s = new Array(len);
-  for (let i = 0; i < len; ++i) {
-    s[i] = f(xs[i], ys[i]);
-  }
-  return s;
-}
-function concat(a1, a2) {
-  let l1 = a1.length;
-  let l2 = a2.length;
-  let a1a2 = new Array(l1 + l2 | 0);
-  for (let i = 0; i < l1; ++i) {
-    a1a2[i] = a1[i];
-  }
-  for (let i$1 = 0; i$1 < l2; ++i$1) {
-    a1a2[l1 + i$1 | 0] = a2[i$1];
-  }
-  return a1a2;
-}
-function concatMany(arrs) {
-  let lenArrs = arrs.length;
-  let totalLen = 0;
-  for (let i = 0; i < lenArrs; ++i) {
-    totalLen = totalLen + arrs[i].length | 0;
-  }
-  let result = new Array(totalLen);
-  totalLen = 0;
-  for (let j = 0; j < lenArrs; ++j) {
-    let cur = arrs[j];
-    for (let k = 0, k_finish = cur.length; k < k_finish; ++k) {
-      result[totalLen] = cur[k];
-      totalLen = totalLen + 1 | 0;
-    }
-  }
-  return result;
-}
-function slice(a, offset, len) {
-  if (len <= 0) {
-    return [];
-  }
-  let lena = a.length;
-  let ofs = offset < 0 ? Primitive_int.max(lena + offset | 0, 0) : offset;
-  let hasLen = lena - ofs | 0;
-  let copyLength = Primitive_int.min(hasLen, len);
-  if (copyLength <= 0) {
-    return [];
-  }
-  let result = new Array(copyLength);
-  for (let i = 0; i < copyLength; ++i) {
-    result[i] = a[ofs + i | 0];
-  }
-  return result;
-}
-function sliceToEnd(a, offset) {
-  let lena = a.length;
-  let ofs = offset < 0 ? Primitive_int.max(lena + offset | 0, 0) : offset;
-  let len = lena > ofs ? lena - ofs | 0 : 0;
-  let result = new Array(len);
-  for (let i = 0; i < len; ++i) {
-    result[i] = a[ofs + i | 0];
-  }
-  return result;
-}
-function fill(a, offset, len, v) {
-  if (len <= 0) {
-    return;
-  }
-  let lena = a.length;
-  let ofs = offset < 0 ? Primitive_int.max(lena + offset | 0, 0) : offset;
-  let hasLen = lena - ofs | 0;
-  let fillLength = Primitive_int.min(hasLen, len);
-  if (fillLength <= 0) {
-    return;
-  }
-  for (let i = ofs, i_finish = ofs + fillLength | 0; i < i_finish; ++i) {
-    a[i] = v;
-  }
-}
-function blitUnsafe(a1, srcofs1, a2, srcofs2, blitLength) {
-  if (srcofs2 <= srcofs1) {
-    for (let j = 0; j < blitLength; ++j) {
-      a2[j + srcofs2 | 0] = a1[j + srcofs1 | 0];
-    }
-    return;
-  }
-  for (let j$1 = blitLength - 1 | 0; j$1 >= 0; --j$1) {
-    a2[j$1 + srcofs2 | 0] = a1[j$1 + srcofs1 | 0];
-  }
-}
-function blit(a1, ofs1, a2, ofs2, len) {
-  let lena1 = a1.length;
-  let lena2 = a2.length;
-  let srcofs1 = ofs1 < 0 ? Primitive_int.max(lena1 + ofs1 | 0, 0) : ofs1;
-  let srcofs2 = ofs2 < 0 ? Primitive_int.max(lena2 + ofs2 | 0, 0) : ofs2;
-  let blitLength = Primitive_int.min(len, Primitive_int.min(lena1 - srcofs1 | 0, lena2 - srcofs2 | 0));
-  if (srcofs2 <= srcofs1) {
-    for (let j = 0; j < blitLength; ++j) {
-      a2[j + srcofs2 | 0] = a1[j + srcofs1 | 0];
-    }
-    return;
-  }
-  for (let j$1 = blitLength - 1 | 0; j$1 >= 0; --j$1) {
-    a2[j$1 + srcofs2 | 0] = a1[j$1 + srcofs1 | 0];
-  }
-}
-function forEach3(a, f) {
-  for (let i = 0, i_finish = a.length; i < i_finish; ++i) {
-    f(a[i]);
-  }
-}
-function map3(a, f) {
-  let l = a.length;
-  let r = new Array(l);
-  for (let i = 0; i < l; ++i) {
-    r[i] = f(a[i]);
-  }
-  return r;
-}
-function flatMap3(a, f) {
-  return concatMany(map3(a, f));
-}
-function getBy(a, p) {
-  let l = a.length;
-  let i = 0;
-  let r;
-  while (r === void 0 && i < l) {
-    let v = a[i];
-    if (p(v)) {
-      r = Primitive_option3.some(v);
-    }
-    i = i + 1 | 0;
-  }
-  ;
-  return r;
-}
-function getIndexBy(a, p) {
-  let l = a.length;
-  let i = 0;
-  let r;
-  while (r === void 0 && i < l) {
-    let v = a[i];
-    if (p(v)) {
-      r = i;
-    }
-    i = i + 1 | 0;
-  }
-  ;
-  return r;
-}
-function keep2(a, f) {
-  let l = a.length;
-  let r = new Array(l);
-  let j = 0;
-  for (let i = 0; i < l; ++i) {
-    let v = a[i];
-    if (f(v)) {
-      r[j] = v;
-      j = j + 1 | 0;
-    }
-  }
-  r.length = j;
-  return r;
-}
-function keepWithIndex(a, f) {
-  let l = a.length;
-  let r = new Array(l);
-  let j = 0;
-  for (let i = 0; i < l; ++i) {
-    let v = a[i];
-    if (f(v, i)) {
-      r[j] = v;
-      j = j + 1 | 0;
-    }
-  }
-  r.length = j;
-  return r;
-}
-function keepMap(a, f) {
-  let l = a.length;
-  let r = new Array(l);
-  let j = 0;
-  for (let i = 0; i < l; ++i) {
-    let v = a[i];
-    let v$1 = f(v);
-    if (v$1 !== void 0) {
-      r[j] = Primitive_option3.valFromOption(v$1);
-      j = j + 1 | 0;
-    }
-  }
-  r.length = j;
-  return r;
-}
-function forEachWithIndex(a, f) {
-  for (let i = 0, i_finish = a.length; i < i_finish; ++i) {
-    f(i, a[i]);
-  }
-}
-function mapWithIndex(a, f) {
-  let l = a.length;
-  let r = new Array(l);
-  for (let i = 0; i < l; ++i) {
-    r[i] = f(i, a[i]);
-  }
-  return r;
-}
-function reduce(a, x, f) {
-  let r = x;
-  for (let i = 0, i_finish = a.length; i < i_finish; ++i) {
-    r = f(r, a[i]);
-  }
-  return r;
-}
-function reduceReverse(a, x, f) {
-  let r = x;
-  for (let i = a.length - 1 | 0; i >= 0; --i) {
-    r = f(r, a[i]);
-  }
-  return r;
-}
-function reduceReverse2(a, b, x, f) {
-  let r = x;
-  let len = Primitive_int.min(a.length, b.length);
-  for (let i = len - 1 | 0; i >= 0; --i) {
-    r = f(r, a[i], b[i]);
-  }
-  return r;
-}
-function reduceWithIndex(a, x, f) {
-  let r = x;
-  for (let i = 0, i_finish = a.length; i < i_finish; ++i) {
-    r = f(r, a[i], i);
-  }
-  return r;
-}
-function every(arr, b) {
-  let len = arr.length;
-  let _i = 0;
-  while (true) {
-    let i = _i;
-    if (i === len) {
-      return true;
-    }
-    if (!b(arr[i])) {
-      return false;
-    }
-    _i = i + 1 | 0;
-    continue;
-  }
-  ;
-}
-function some2(arr, b) {
-  let len = arr.length;
-  let _i = 0;
-  while (true) {
-    let i = _i;
-    if (i === len) {
-      return false;
-    }
-    if (b(arr[i])) {
-      return true;
-    }
-    _i = i + 1 | 0;
-    continue;
-  }
-  ;
-}
-function everyAux2(arr1, arr2, _i, b, len) {
-  while (true) {
-    let i = _i;
-    if (i === len) {
-      return true;
-    }
-    if (!b(arr1[i], arr2[i])) {
-      return false;
-    }
-    _i = i + 1 | 0;
-    continue;
-  }
-  ;
-}
-function every2(a, b, p) {
-  return everyAux2(a, b, 0, p, Primitive_int.min(a.length, b.length));
-}
-function some22(a, b, p) {
-  let _i = 0;
-  let len = Primitive_int.min(a.length, b.length);
-  while (true) {
-    let i = _i;
-    if (i === len) {
-      return false;
-    }
-    if (p(a[i], b[i])) {
-      return true;
-    }
-    _i = i + 1 | 0;
-    continue;
-  }
-  ;
-}
-function eq2(a, b, p) {
-  let lena = a.length;
-  let lenb = b.length;
-  if (lena === lenb) {
-    return everyAux2(a, b, 0, p, lena);
-  } else {
-    return false;
-  }
-}
-function cmp2(a, b, p) {
-  let lena = a.length;
-  let lenb = b.length;
-  if (lena > lenb) {
-    return 1;
-  } else if (lena < lenb) {
-    return -1;
-  } else {
-    let _i = 0;
-    while (true) {
-      let i = _i;
-      if (i === lena) {
-        return 0;
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "startX");
+      if (e.TAG !== "Ok") {
+        return e;
       }
-      let c = p(a[i], b[i]);
-      if (c !== 0) {
-        return c;
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "startY");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
       }
-      _i = i + 1 | 0;
-      continue;
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "endX");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "endY");
+      if (e$3.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            startX: e._0,
+            startY: e$1._0,
+            endX: e$2._0,
+            endY: e$3._0
+          }
+        };
+      } else {
+        return e$3;
+      }
     }
-    ;
-  }
-}
-function partition(a, f) {
-  let l = a.length;
-  let i = 0;
-  let j = 0;
-  let a1 = new Array(l);
-  let a2 = new Array(l);
-  for (let ii = 0; ii < l; ++ii) {
-    let v = a[ii];
-    if (f(v)) {
-      a1[i] = v;
-      i = i + 1 | 0;
-    } else {
-      a2[j] = v;
-      j = j + 1 | 0;
-    }
-  }
-  a1.length = i;
-  a2.length = j;
-  return [
-    a1,
-    a2
-  ];
-}
-function unzip(a) {
-  let l = a.length;
-  let a1 = new Array(l);
-  let a2 = new Array(l);
-  for (let i = 0; i < l; ++i) {
-    let match = a[i];
-    a1[i] = match[0];
-    a2[i] = match[1];
-  }
-  return [
-    a1,
-    a2
-  ];
-}
-function joinWith(a, sep, toString) {
-  let l = a.length;
-  if (l === 0) {
-    return "";
-  }
-  let lastIndex = l - 1 | 0;
-  let _i = 0;
-  let _res = "";
-  while (true) {
-    let res = _res;
-    let i = _i;
-    if (i === lastIndex) {
-      return res + toString(a[i]);
-    }
-    _res = res + (toString(a[i]) + sep);
-    _i = i + 1 | 0;
-    continue;
-  }
-  ;
-}
-function init(n, f) {
-  let v = new Array(n);
-  for (let i = 0; i < n; ++i) {
-    v[i] = f(i);
-  }
-  return v;
-}
-var Primitive_int, Primitive_option3, getExn3, setExn, makeByU, makeByAndShuffleU, zipByU, forEachU2, mapU2, flatMapU2, getByU, getIndexByU, keepU2, keepWithIndexU, keepMapU, forEachWithIndexU, mapWithIndexU, partitionU, reduceU, reduceReverseU, reduceReverse2U, reduceWithIndexU, joinWithU, someU, everyU, every2U, some2U, cmpU2, eqU2, initU;
-var init_Belt_Array = __esm({
-  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_Array.js"() {
-    "use strict";
-    Primitive_int = (init_Primitive_int(), __toCommonJS(Primitive_int_exports));
-    Primitive_option3 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    getExn3 = getOrThrow3;
-    setExn = setOrThrow;
-    makeByU = makeBy;
-    makeByAndShuffleU = makeByAndShuffle;
-    zipByU = zipBy;
-    forEachU2 = forEach3;
-    mapU2 = map3;
-    flatMapU2 = flatMap3;
-    getByU = getBy;
-    getIndexByU = getIndexBy;
-    keepU2 = keep2;
-    keepWithIndexU = keepWithIndex;
-    keepMapU = keepMap;
-    forEachWithIndexU = forEachWithIndex;
-    mapWithIndexU = mapWithIndex;
-    partitionU = partition;
-    reduceU = reduce;
-    reduceReverseU = reduceReverse;
-    reduceReverse2U = reduceReverse2;
-    reduceWithIndexU = reduceWithIndex;
-    joinWithU = joinWith;
-    someU = some2;
-    everyU = every;
-    every2U = every2;
-    some2U = some22;
-    cmpU2 = cmp2;
-    eqU2 = eq2;
-    initU = init;
-    exports.get = get;
-    exports.getExn = getExn3;
-    exports.getOrThrow = getOrThrow3;
-    exports.set = set;
-    exports.setExn = setExn;
-    exports.setOrThrow = setOrThrow;
-    exports.shuffleInPlace = shuffleInPlace;
-    exports.shuffle = shuffle;
-    exports.reverseInPlace = reverseInPlace;
-    exports.reverse = reverse;
-    exports.make = make;
-    exports.range = range;
-    exports.rangeBy = rangeBy;
-    exports.makeByU = makeByU;
-    exports.makeBy = makeBy;
-    exports.makeByAndShuffleU = makeByAndShuffleU;
-    exports.makeByAndShuffle = makeByAndShuffle;
-    exports.zip = zip;
-    exports.zipByU = zipByU;
-    exports.zipBy = zipBy;
-    exports.unzip = unzip;
-    exports.concat = concat;
-    exports.concatMany = concatMany;
-    exports.slice = slice;
-    exports.sliceToEnd = sliceToEnd;
-    exports.fill = fill;
-    exports.blit = blit;
-    exports.blitUnsafe = blitUnsafe;
-    exports.forEachU = forEachU2;
-    exports.forEach = forEach3;
-    exports.mapU = mapU2;
-    exports.map = map3;
-    exports.flatMapU = flatMapU2;
-    exports.flatMap = flatMap3;
-    exports.getByU = getByU;
-    exports.getBy = getBy;
-    exports.getIndexByU = getIndexByU;
-    exports.getIndexBy = getIndexBy;
-    exports.keepU = keepU2;
-    exports.keep = keep2;
-    exports.keepWithIndexU = keepWithIndexU;
-    exports.keepWithIndex = keepWithIndex;
-    exports.keepMapU = keepMapU;
-    exports.keepMap = keepMap;
-    exports.forEachWithIndexU = forEachWithIndexU;
-    exports.forEachWithIndex = forEachWithIndex;
-    exports.mapWithIndexU = mapWithIndexU;
-    exports.mapWithIndex = mapWithIndex;
-    exports.partitionU = partitionU;
-    exports.partition = partition;
-    exports.reduceU = reduceU;
-    exports.reduce = reduce;
-    exports.reduceReverseU = reduceReverseU;
-    exports.reduceReverse = reduceReverse;
-    exports.reduceReverse2U = reduceReverse2U;
-    exports.reduceReverse2 = reduceReverse2;
-    exports.reduceWithIndexU = reduceWithIndexU;
-    exports.reduceWithIndex = reduceWithIndex;
-    exports.joinWithU = joinWithU;
-    exports.joinWith = joinWith;
-    exports.someU = someU;
-    exports.some = some2;
-    exports.everyU = everyU;
-    exports.every = every;
-    exports.every2U = every2U;
-    exports.every2 = every2;
-    exports.some2U = some2U;
-    exports.some2 = some22;
-    exports.cmpU = cmpU2;
-    exports.cmp = cmp2;
-    exports.eqU = eqU2;
-    exports.eq = eq2;
-    exports.initU = initU;
-    exports.init = init;
-  }
-});
-
-// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_Result.js
-var Belt_Result_exports = {};
-function getOrThrow4(x) {
-  if (x.TAG === "Ok") {
-    return x._0;
-  }
-  throw {
-    RE_EXN_ID: "Not_found",
-    Error: new Error()
-  };
-}
-function mapWithDefault3(opt, $$default, f) {
-  if (opt.TAG === "Ok") {
-    return f(opt._0);
-  } else {
-    return $$default;
-  }
-}
-function map4(opt, f) {
-  if (opt.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: f(opt._0)
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      parse
     };
-  } else {
-    return {
-      TAG: "Error",
-      _0: opt._0
-    };
-  }
-}
-function flatMap4(opt, f) {
-  if (opt.TAG === "Ok") {
-    return f(opt._0);
-  } else {
-    return {
-      TAG: "Error",
-      _0: opt._0
-    };
-  }
-}
-function getWithDefault3(opt, $$default) {
-  if (opt.TAG === "Ok") {
-    return opt._0;
-  } else {
-    return $$default;
-  }
-}
-function isOk(x) {
-  return x.TAG === "Ok";
-}
-function isError(x) {
-  return x.TAG !== "Ok";
-}
-function eq3(a, b, f) {
-  if (a.TAG === "Ok") {
-    if (b.TAG === "Ok") {
-      return f(a._0, b._0);
-    } else {
-      return false;
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TileSectionFrame")), self.startX, "startX"), self.startY, "startY"), self.endX, "endX"), self.endY, "endY"));
     }
-  } else {
-    return b.TAG !== "Ok";
-  }
-}
-function cmp3(a, b, f) {
-  if (a.TAG === "Ok") {
-    if (b.TAG === "Ok") {
-      return f(a._0, b._0);
-    } else {
-      return 1;
-    }
-  } else if (b.TAG === "Ok") {
-    return -1;
-  } else {
-    return 0;
-  }
-}
-var getExn4, mapWithDefaultU2, mapU3, flatMapU3, eqU3, cmpU3;
-var init_Belt_Result = __esm({
-  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_Result.js"() {
-    "use strict";
-    getExn4 = getOrThrow4;
-    mapWithDefaultU2 = mapWithDefault3;
-    mapU3 = map4;
-    flatMapU3 = flatMap4;
-    eqU3 = eq3;
-    cmpU3 = cmp3;
-    exports.getExn = getExn4;
-    exports.getOrThrow = getOrThrow4;
-    exports.mapWithDefaultU = mapWithDefaultU2;
-    exports.mapWithDefault = mapWithDefault3;
-    exports.mapU = mapU3;
-    exports.map = map4;
-    exports.flatMapU = flatMapU3;
-    exports.flatMap = flatMap4;
-    exports.getWithDefault = getWithDefault3;
-    exports.isOk = isOk;
-    exports.isError = isError;
-    exports.eqU = eqU3;
-    exports.eq = eq3;
-    exports.cmpU = cmpU3;
-    exports.cmp = cmp3;
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
 // node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_bool.js
 var Primitive_bool_exports = {};
-function compare3(x, y) {
+function compare5(x, y) {
   if (x) {
     if (y) {
       return 0;
@@ -6932,7 +9243,7 @@ function max2(x, y) {
 var init_Primitive_bool = __esm({
   "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_bool.js"() {
     "use strict";
-    exports.compare = compare3;
+    exports.compare = compare5;
     exports.min = min2;
     exports.max = max2;
   }
@@ -6940,7 +9251,7 @@ var init_Primitive_bool = __esm({
 
 // node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_float.js
 var Primitive_float_exports = {};
-function compare4(x, y) {
+function compare6(x, y) {
   if (x === y) {
     return 0;
   } else if (x < y) {
@@ -6970,7 +9281,7 @@ function max3(x, y) {
 var init_Primitive_float = __esm({
   "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_float.js"() {
     "use strict";
-    exports.compare = compare4;
+    exports.compare = compare6;
     exports.min = min3;
     exports.max = max3;
   }
@@ -6978,7 +9289,7 @@ var init_Primitive_float = __esm({
 
 // node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_string.js
 var Primitive_string_exports = {};
-function compare5(s1, s2) {
+function compare7(s1, s2) {
   if (s1 === s2) {
     return 0;
   } else if (s1 < s2) {
@@ -7011,17 +9322,17 @@ function getChar(s, i) {
   }
   return s.codePointAt(i);
 }
-function make2(n, ch) {
+function make3(n, ch) {
   return String.fromCodePoint(ch).repeat(n);
 }
 var init_Primitive_string = __esm({
   "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Primitive_string.js"() {
     "use strict";
-    exports.compare = compare5;
+    exports.compare = compare7;
     exports.min = min4;
     exports.max = max4;
     exports.getChar = getChar;
-    exports.make = make2;
+    exports.make = make3;
   }
 });
 
@@ -7030,7 +9341,7 @@ var Primitive_object_exports = {};
 function updateDummy(prim0, prim1) {
   Object.assign(prim0, prim1);
 }
-function compare6(a, b) {
+function compare8(a, b) {
   if (a === b) {
     return 0;
   }
@@ -7142,7 +9453,7 @@ function compare6(a, b) {
             if (i === len_a) {
               return 0;
             }
-            let res = compare6(a[i], b[i]);
+            let res = compare8(a[i], b[i]);
             if (res !== 0) {
               return res;
             }
@@ -7162,7 +9473,7 @@ function compare6(a, b) {
           if (i$1 === len_a) {
             return -1;
           }
-          let res$1 = compare6(a[i$1], b[i$1]);
+          let res$1 = compare8(a[i$1], b[i$1]);
           if (res$1 !== 0) {
             return res$1;
           }
@@ -7177,7 +9488,7 @@ function compare6(a, b) {
           if (i$2 === len_b) {
             return 1;
           }
-          let res$2 = compare6(a[i$2], b[i$2]);
+          let res$2 = compare8(a[i$2], b[i$2]);
           if (res$2 !== 0) {
             return res$2;
           }
@@ -7198,7 +9509,7 @@ function aux_obj_compare(a, b) {
   let do_key = (param, key) => {
     let min_key = param[2];
     let b2 = param[1];
-    if (!(!Object.prototype.hasOwnProperty.call(b2, key) || compare6(param[0][key], b2[key]) > 0)) {
+    if (!(!Object.prototype.hasOwnProperty.call(b2, key) || compare8(param[0][key], b2[key]) > 0)) {
       return;
     }
     let mk = min_key.contents;
@@ -7235,7 +9546,7 @@ function aux_obj_compare(a, b) {
     return 0;
   }
 }
-function equal2(a, b) {
+function equal4(a, b) {
   if (a === b) {
     return true;
   }
@@ -7269,7 +9580,7 @@ function equal2(a, b) {
         if (i === len_a) {
           return true;
         }
-        if (!equal2(a[i], b[i])) {
+        if (!equal4(a[i], b[i])) {
           return false;
         }
         _i = i + 1 | 0;
@@ -7289,7 +9600,7 @@ function equal2(a, b) {
         }
       };
       let do_key_b = (key) => {
-        if (!Object.prototype.hasOwnProperty.call(a, key) || !equal2(b[key], a[key])) {
+        if (!Object.prototype.hasOwnProperty.call(a, key) || !equal4(b[key], a[key])) {
           result.contents = false;
           return;
         }
@@ -7308,46 +9619,46 @@ function notequal(a, b) {
   if ((typeof a === "number" || typeof a === "bigint") && (typeof b === "number" || typeof b === "bigint")) {
     return a !== b;
   } else {
-    return !equal2(a, b);
+    return !equal4(a, b);
   }
 }
 function greaterequal(a, b) {
   if ((typeof a === "number" || typeof a === "bigint") && (typeof b === "number" || typeof b === "bigint")) {
     return a >= b;
   } else {
-    return compare6(a, b) >= 0;
+    return compare8(a, b) >= 0;
   }
 }
 function greaterthan(a, b) {
   if ((typeof a === "number" || typeof a === "bigint") && (typeof b === "number" || typeof b === "bigint")) {
     return a > b;
   } else {
-    return compare6(a, b) > 0;
+    return compare8(a, b) > 0;
   }
 }
 function lessequal(a, b) {
   if ((typeof a === "number" || typeof a === "bigint") && (typeof b === "number" || typeof b === "bigint")) {
     return a <= b;
   } else {
-    return compare6(a, b) <= 0;
+    return compare8(a, b) <= 0;
   }
 }
 function lessthan(a, b) {
   if ((typeof a === "number" || typeof a === "bigint") && (typeof b === "number" || typeof b === "bigint")) {
     return a < b;
   } else {
-    return compare6(a, b) < 0;
+    return compare8(a, b) < 0;
   }
 }
 function min5(x, y) {
-  if (compare6(x, y) <= 0) {
+  if (compare8(x, y) <= 0) {
     return x;
   } else {
     return y;
   }
 }
 function max5(x, y) {
-  if (compare6(x, y) >= 0) {
+  if (compare8(x, y) >= 0) {
     return x;
   } else {
     return y;
@@ -7366,8 +9677,8 @@ var init_Primitive_object = __esm({
       }
     };
     exports.updateDummy = updateDummy;
-    exports.compare = compare6;
-    exports.equal = equal2;
+    exports.compare = compare8;
+    exports.equal = equal4;
     exports.notequal = notequal;
     exports.greaterequal = greaterequal;
     exports.greaterthan = greaterthan;
@@ -7428,7 +9739,7 @@ function strictlySortedLength(xs, lt) {
     return 1;
   }
 }
-function isSorted(a, cmp8) {
+function isSorted(a, cmp6) {
   let len = a.length;
   if (len === 0) {
     return true;
@@ -7440,7 +9751,7 @@ function isSorted(a, cmp8) {
       if (i === last_bound) {
         return true;
       }
-      if (cmp8(a[i], a[i + 1 | 0]) > 0) {
+      if (cmp6(a[i], a[i + 1 | 0]) > 0) {
         return false;
       }
       _i = i + 1 | 0;
@@ -7449,7 +9760,7 @@ function isSorted(a, cmp8) {
     ;
   }
 }
-function merge(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp8) {
+function merge(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp6) {
   let src1r = src1ofs + src1len | 0;
   let src2r = src2ofs + src2len | 0;
   let _i1 = src1ofs;
@@ -7463,7 +9774,7 @@ function merge(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp8)
     let i2 = _i2;
     let s1 = _s1;
     let i1 = _i1;
-    if (cmp8(s1, s2) <= 0) {
+    if (cmp6(s1, s2) <= 0) {
       dst[d] = s1;
       let i1$1 = i1 + 1 | 0;
       if (i1$1 >= src1r) {
@@ -7486,7 +9797,7 @@ function merge(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp8)
   }
   ;
 }
-function union(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp8) {
+function union(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp6) {
   let src1r = src1ofs + src1len | 0;
   let src2r = src2ofs + src2len | 0;
   let _i1 = src1ofs;
@@ -7500,7 +9811,7 @@ function union(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp8)
     let i2 = _i2;
     let s1 = _s1;
     let i1 = _i1;
-    let c = cmp8(s1, s2);
+    let c = cmp6(s1, s2);
     if (c < 0) {
       dst[d] = s1;
       let i1$1 = i1 + 1 | 0;
@@ -7549,7 +9860,7 @@ function union(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp8)
   }
   ;
 }
-function intersect(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp8) {
+function intersect(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp6) {
   let src1r = src1ofs + src1len | 0;
   let src2r = src2ofs + src2len | 0;
   let _i1 = src1ofs;
@@ -7563,7 +9874,7 @@ function intersect(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, c
     let i2 = _i2;
     let s1 = _s1;
     let i1 = _i1;
-    let c = cmp8(s1, s2);
+    let c = cmp6(s1, s2);
     if (c < 0) {
       let i1$1 = i1 + 1 | 0;
       if (i1$1 >= src1r) {
@@ -7598,7 +9909,7 @@ function intersect(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, c
   }
   ;
 }
-function diff(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp8) {
+function diff(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp6) {
   let src1r = src1ofs + src1len | 0;
   let src2r = src2ofs + src2len | 0;
   let _i1 = src1ofs;
@@ -7612,7 +9923,7 @@ function diff(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp8) 
     let i2 = _i2;
     let s1 = _s1;
     let i1 = _i1;
-    let c = cmp8(s1, s2);
+    let c = cmp6(s1, s2);
     if (c < 0) {
       dst[d] = s1;
       let d$1 = d + 1 | 0;
@@ -7653,11 +9964,11 @@ function diff(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp8) 
   }
   ;
 }
-function insertionSort(src, srcofs, dst, dstofs, len, cmp8) {
+function insertionSort(src, srcofs, dst, dstofs, len, cmp6) {
   for (let i = 0; i < len; ++i) {
     let e = src[srcofs + i | 0];
     let j = (dstofs + i | 0) - 1 | 0;
-    while (j >= dstofs && cmp8(dst[j], e) > 0) {
+    while (j >= dstofs && cmp6(dst[j], e) > 0) {
       dst[j + 1 | 0] = dst[j];
       j = j - 1 | 0;
     }
@@ -7665,45 +9976,45 @@ function insertionSort(src, srcofs, dst, dstofs, len, cmp8) {
     dst[j + 1 | 0] = e;
   }
 }
-function sortTo(src, srcofs, dst, dstofs, len, cmp8) {
+function sortTo(src, srcofs, dst, dstofs, len, cmp6) {
   if (len <= 5) {
-    return insertionSort(src, srcofs, dst, dstofs, len, cmp8);
+    return insertionSort(src, srcofs, dst, dstofs, len, cmp6);
   }
   let l1 = len / 2 | 0;
   let l2 = len - l1 | 0;
-  sortTo(src, srcofs + l1 | 0, dst, dstofs + l1 | 0, l2, cmp8);
-  sortTo(src, srcofs, src, srcofs + l2 | 0, l1, cmp8);
-  merge(src, srcofs + l2 | 0, l1, dst, dstofs + l1 | 0, l2, dst, dstofs, cmp8);
+  sortTo(src, srcofs + l1 | 0, dst, dstofs + l1 | 0, l2, cmp6);
+  sortTo(src, srcofs, src, srcofs + l2 | 0, l1, cmp6);
+  merge(src, srcofs + l2 | 0, l1, dst, dstofs + l1 | 0, l2, dst, dstofs, cmp6);
 }
-function stableSortInPlaceBy(a, cmp8) {
+function stableSortInPlaceBy(a, cmp6) {
   let l = a.length;
   if (l <= 5) {
-    return insertionSort(a, 0, a, 0, l, cmp8);
+    return insertionSort(a, 0, a, 0, l, cmp6);
   }
   let l1 = l / 2 | 0;
   let l2 = l - l1 | 0;
   let t = new Array(l2);
-  sortTo(a, l1, t, 0, l2, cmp8);
-  sortTo(a, 0, a, l2, l1, cmp8);
-  merge(a, l2, l1, t, 0, l2, a, 0, cmp8);
+  sortTo(a, l1, t, 0, l2, cmp6);
+  sortTo(a, 0, a, l2, l1, cmp6);
+  merge(a, l2, l1, t, 0, l2, a, 0, cmp6);
 }
-function stableSortBy(a, cmp8) {
+function stableSortBy(a, cmp6) {
   let b = a.slice(0);
-  stableSortInPlaceBy(b, cmp8);
+  stableSortInPlaceBy(b, cmp6);
   return b;
 }
-function binarySearchBy(sorted, key, cmp8) {
+function binarySearchBy(sorted, key, cmp6) {
   let len = sorted.length;
   if (len === 0) {
     return -1;
   }
   let lo = sorted[0];
-  let c = cmp8(key, lo);
+  let c = cmp6(key, lo);
   if (c < 0) {
     return -1;
   }
   let hi = sorted[len - 1 | 0];
-  let c2 = cmp8(key, hi);
+  let c2 = cmp6(key, hi);
   if (c2 > 0) {
     return -(len + 1 | 0) | 0;
   } else {
@@ -7714,13 +10025,13 @@ function binarySearchBy(sorted, key, cmp8) {
       let lo$1 = _lo;
       let mid = (lo$1 + hi$1 | 0) / 2 | 0;
       let midVal = sorted[mid];
-      let c$1 = cmp8(key, midVal);
+      let c$1 = cmp6(key, midVal);
       if (c$1 === 0) {
         return mid;
       }
       if (c$1 < 0) {
         if (hi$1 === mid) {
-          if (cmp8(sorted[lo$1], key) === 0) {
+          if (cmp6(sorted[lo$1], key) === 0) {
             return lo$1;
           } else {
             return -(hi$1 + 1 | 0) | 0;
@@ -7730,7 +10041,7 @@ function binarySearchBy(sorted, key, cmp8) {
         continue;
       }
       if (lo$1 === mid) {
-        if (cmp8(sorted[hi$1], key) === 0) {
+        if (cmp6(sorted[hi$1], key) === 0) {
           return hi$1;
         } else {
           return -(hi$1 + 1 | 0) | 0;
@@ -7773,1609 +10084,6 @@ var init_Belt_SortArray = __esm({
     exports.intersect = intersect;
     exports.diffU = diffU;
     exports.diff = diff;
-  }
-});
-
-// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_List.js
-var Belt_List_exports = {};
-function head(x) {
-  if (x !== 0) {
-    return Primitive_option4.some(x.hd);
-  }
-}
-function headOrThrow(x) {
-  if (x !== 0) {
-    return x.hd;
-  }
-  throw {
-    RE_EXN_ID: "Not_found",
-    Error: new Error()
-  };
-}
-function tail(x) {
-  if (x !== 0) {
-    return x.tl;
-  }
-}
-function tailOrThrow(x) {
-  if (x !== 0) {
-    return x.tl;
-  }
-  throw {
-    RE_EXN_ID: "Not_found",
-    Error: new Error()
-  };
-}
-function add(xs, x) {
-  return {
-    hd: x,
-    tl: xs
-  };
-}
-function get2(x, n) {
-  if (n < 0) {
-    return;
-  } else {
-    let _x = x;
-    let _n = n;
-    while (true) {
-      let n$1 = _n;
-      let x$1 = _x;
-      if (x$1 === 0) {
-        return;
-      }
-      if (n$1 === 0) {
-        return Primitive_option4.some(x$1.hd);
-      }
-      _n = n$1 - 1 | 0;
-      _x = x$1.tl;
-      continue;
-    }
-    ;
-  }
-}
-function getOrThrow5(x, n) {
-  if (n < 0) {
-    throw {
-      RE_EXN_ID: "Not_found",
-      Error: new Error()
-    };
-  }
-  let _x = x;
-  let _n = n;
-  while (true) {
-    let n$1 = _n;
-    let x$1 = _x;
-    if (x$1 !== 0) {
-      if (n$1 === 0) {
-        return x$1.hd;
-      }
-      _n = n$1 - 1 | 0;
-      _x = x$1.tl;
-      continue;
-    }
-    throw {
-      RE_EXN_ID: "Not_found",
-      Error: new Error()
-    };
-  }
-  ;
-}
-function partitionAux(p, _cell, _precX, _precY) {
-  while (true) {
-    let precY = _precY;
-    let precX = _precX;
-    let cell = _cell;
-    if (cell === 0) {
-      return;
-    }
-    let t = cell.tl;
-    let h = cell.hd;
-    let next = {
-      hd: h,
-      tl: (
-        /* [] */
-        0
-      )
-    };
-    if (p(h)) {
-      precX.tl = next;
-      _precX = next;
-      _cell = t;
-      continue;
-    }
-    precY.tl = next;
-    _precY = next;
-    _cell = t;
-    continue;
-  }
-  ;
-}
-function splitAux(_cell, _precX, _precY) {
-  while (true) {
-    let precY = _precY;
-    let precX = _precX;
-    let cell = _cell;
-    if (cell === 0) {
-      return;
-    }
-    let match = cell.hd;
-    let nextA = {
-      hd: match[0],
-      tl: (
-        /* [] */
-        0
-      )
-    };
-    let nextB = {
-      hd: match[1],
-      tl: (
-        /* [] */
-        0
-      )
-    };
-    precX.tl = nextA;
-    precY.tl = nextB;
-    _precY = nextB;
-    _precX = nextA;
-    _cell = cell.tl;
-    continue;
-  }
-  ;
-}
-function copyAuxCont(_cellX, _prec) {
-  while (true) {
-    let prec = _prec;
-    let cellX = _cellX;
-    if (cellX === 0) {
-      return prec;
-    }
-    let next = {
-      hd: cellX.hd,
-      tl: (
-        /* [] */
-        0
-      )
-    };
-    prec.tl = next;
-    _prec = next;
-    _cellX = cellX.tl;
-    continue;
-  }
-  ;
-}
-function copyAuxWitFilter(f, _cellX, _prec) {
-  while (true) {
-    let prec = _prec;
-    let cellX = _cellX;
-    if (cellX === 0) {
-      return;
-    }
-    let t = cellX.tl;
-    let h = cellX.hd;
-    if (f(h)) {
-      let next = {
-        hd: h,
-        tl: (
-          /* [] */
-          0
-        )
-      };
-      prec.tl = next;
-      _prec = next;
-      _cellX = t;
-      continue;
-    }
-    _cellX = t;
-    continue;
-  }
-  ;
-}
-function copyAuxWithFilterIndex(f, _cellX, _prec, _i) {
-  while (true) {
-    let i = _i;
-    let prec = _prec;
-    let cellX = _cellX;
-    if (cellX === 0) {
-      return;
-    }
-    let t = cellX.tl;
-    let h = cellX.hd;
-    if (f(h, i)) {
-      let next = {
-        hd: h,
-        tl: (
-          /* [] */
-          0
-        )
-      };
-      prec.tl = next;
-      _i = i + 1 | 0;
-      _prec = next;
-      _cellX = t;
-      continue;
-    }
-    _i = i + 1 | 0;
-    _cellX = t;
-    continue;
-  }
-  ;
-}
-function copyAuxWitFilterMap(f, _cellX, _prec) {
-  while (true) {
-    let prec = _prec;
-    let cellX = _cellX;
-    if (cellX === 0) {
-      return;
-    }
-    let t = cellX.tl;
-    let h = f(cellX.hd);
-    if (h !== void 0) {
-      let next = {
-        hd: Primitive_option4.valFromOption(h),
-        tl: (
-          /* [] */
-          0
-        )
-      };
-      prec.tl = next;
-      _prec = next;
-      _cellX = t;
-      continue;
-    }
-    _cellX = t;
-    continue;
-  }
-  ;
-}
-function removeAssocAuxWithMap(_cellX, x, _prec, f) {
-  while (true) {
-    let prec = _prec;
-    let cellX = _cellX;
-    if (cellX === 0) {
-      return false;
-    }
-    let t = cellX.tl;
-    let h = cellX.hd;
-    if (f(h[0], x)) {
-      prec.tl = t;
-      return true;
-    }
-    let next = {
-      hd: h,
-      tl: (
-        /* [] */
-        0
-      )
-    };
-    prec.tl = next;
-    _prec = next;
-    _cellX = t;
-    continue;
-  }
-  ;
-}
-function setAssocAuxWithMap(_cellX, x, k, _prec, eq8) {
-  while (true) {
-    let prec = _prec;
-    let cellX = _cellX;
-    if (cellX === 0) {
-      return false;
-    }
-    let t = cellX.tl;
-    let h = cellX.hd;
-    if (eq8(h[0], x)) {
-      prec.tl = {
-        hd: [
-          x,
-          k
-        ],
-        tl: t
-      };
-      return true;
-    }
-    let next = {
-      hd: h,
-      tl: (
-        /* [] */
-        0
-      )
-    };
-    prec.tl = next;
-    _prec = next;
-    _cellX = t;
-    continue;
-  }
-  ;
-}
-function copyAuxWithMap(_cellX, _prec, f) {
-  while (true) {
-    let prec = _prec;
-    let cellX = _cellX;
-    if (cellX === 0) {
-      return;
-    }
-    let next = {
-      hd: f(cellX.hd),
-      tl: (
-        /* [] */
-        0
-      )
-    };
-    prec.tl = next;
-    _prec = next;
-    _cellX = cellX.tl;
-    continue;
-  }
-  ;
-}
-function zipAux(_cellX, _cellY, _prec) {
-  while (true) {
-    let prec = _prec;
-    let cellY = _cellY;
-    let cellX = _cellX;
-    if (cellX === 0) {
-      return;
-    }
-    if (cellY === 0) {
-      return;
-    }
-    let next = {
-      hd: [
-        cellX.hd,
-        cellY.hd
-      ],
-      tl: (
-        /* [] */
-        0
-      )
-    };
-    prec.tl = next;
-    _prec = next;
-    _cellY = cellY.tl;
-    _cellX = cellX.tl;
-    continue;
-  }
-  ;
-}
-function copyAuxWithMap2(f, _cellX, _cellY, _prec) {
-  while (true) {
-    let prec = _prec;
-    let cellY = _cellY;
-    let cellX = _cellX;
-    if (cellX === 0) {
-      return;
-    }
-    if (cellY === 0) {
-      return;
-    }
-    let next = {
-      hd: f(cellX.hd, cellY.hd),
-      tl: (
-        /* [] */
-        0
-      )
-    };
-    prec.tl = next;
-    _prec = next;
-    _cellY = cellY.tl;
-    _cellX = cellX.tl;
-    continue;
-  }
-  ;
-}
-function copyAuxWithMapI(f, _i, _cellX, _prec) {
-  while (true) {
-    let prec = _prec;
-    let cellX = _cellX;
-    let i = _i;
-    if (cellX === 0) {
-      return;
-    }
-    let next = {
-      hd: f(i, cellX.hd),
-      tl: (
-        /* [] */
-        0
-      )
-    };
-    prec.tl = next;
-    _prec = next;
-    _cellX = cellX.tl;
-    _i = i + 1 | 0;
-    continue;
-  }
-  ;
-}
-function takeAux(_n, _cell, _prec) {
-  while (true) {
-    let prec = _prec;
-    let cell = _cell;
-    let n = _n;
-    if (n === 0) {
-      return true;
-    }
-    if (cell === 0) {
-      return false;
-    }
-    let cell$1 = {
-      hd: cell.hd,
-      tl: (
-        /* [] */
-        0
-      )
-    };
-    prec.tl = cell$1;
-    _prec = cell$1;
-    _cell = cell.tl;
-    _n = n - 1 | 0;
-    continue;
-  }
-  ;
-}
-function splitAtAux(_n, _cell, _prec) {
-  while (true) {
-    let prec = _prec;
-    let cell = _cell;
-    let n = _n;
-    if (n === 0) {
-      return cell;
-    }
-    if (cell === 0) {
-      return;
-    }
-    let cell$1 = {
-      hd: cell.hd,
-      tl: (
-        /* [] */
-        0
-      )
-    };
-    prec.tl = cell$1;
-    _prec = cell$1;
-    _cell = cell.tl;
-    _n = n - 1 | 0;
-    continue;
-  }
-  ;
-}
-function take(lst, n) {
-  if (n < 0) {
-    return;
-  }
-  if (n === 0) {
-    return (
-      /* [] */
-      0
-    );
-  }
-  if (lst === 0) {
-    return;
-  }
-  let cell = {
-    hd: lst.hd,
-    tl: (
-      /* [] */
-      0
-    )
-  };
-  let has5 = takeAux(n - 1 | 0, lst.tl, cell);
-  if (has5) {
-    return cell;
-  }
-}
-function drop(lst, n) {
-  if (n < 0) {
-    return;
-  } else {
-    let _l = lst;
-    let _n = n;
-    while (true) {
-      let n$1 = _n;
-      let l = _l;
-      if (n$1 === 0) {
-        return l;
-      }
-      if (l === 0) {
-        return;
-      }
-      _n = n$1 - 1 | 0;
-      _l = l.tl;
-      continue;
-    }
-    ;
-  }
-}
-function splitAt(lst, n) {
-  if (n < 0) {
-    return;
-  }
-  if (n === 0) {
-    return [
-      /* [] */
-      0,
-      lst
-    ];
-  }
-  if (lst === 0) {
-    return;
-  }
-  let cell = {
-    hd: lst.hd,
-    tl: (
-      /* [] */
-      0
-    )
-  };
-  let rest = splitAtAux(n - 1 | 0, lst.tl, cell);
-  if (rest !== void 0) {
-    return [
-      cell,
-      rest
-    ];
-  }
-}
-function concat2(xs, ys) {
-  if (xs === 0) {
-    return ys;
-  }
-  let cell = {
-    hd: xs.hd,
-    tl: (
-      /* [] */
-      0
-    )
-  };
-  copyAuxCont(xs.tl, cell).tl = ys;
-  return cell;
-}
-function map5(xs, f) {
-  if (xs === 0) {
-    return (
-      /* [] */
-      0
-    );
-  }
-  let cell = {
-    hd: f(xs.hd),
-    tl: (
-      /* [] */
-      0
-    )
-  };
-  copyAuxWithMap(xs.tl, cell, f);
-  return cell;
-}
-function zipBy2(l1, l2, f) {
-  if (l1 === 0) {
-    return (
-      /* [] */
-      0
-    );
-  }
-  if (l2 === 0) {
-    return (
-      /* [] */
-      0
-    );
-  }
-  let cell = {
-    hd: f(l1.hd, l2.hd),
-    tl: (
-      /* [] */
-      0
-    )
-  };
-  copyAuxWithMap2(f, l1.tl, l2.tl, cell);
-  return cell;
-}
-function mapWithIndex2(xs, f) {
-  if (xs === 0) {
-    return (
-      /* [] */
-      0
-    );
-  }
-  let cell = {
-    hd: f(0, xs.hd),
-    tl: (
-      /* [] */
-      0
-    )
-  };
-  copyAuxWithMapI(f, 1, xs.tl, cell);
-  return cell;
-}
-function makeBy2(n, f) {
-  if (n <= 0) {
-    return (
-      /* [] */
-      0
-    );
-  }
-  let headX = {
-    hd: f(0),
-    tl: (
-      /* [] */
-      0
-    )
-  };
-  let cur = headX;
-  let i = 1;
-  while (i < n) {
-    let v = {
-      hd: f(i),
-      tl: (
-        /* [] */
-        0
-      )
-    };
-    cur.tl = v;
-    cur = v;
-    i = i + 1 | 0;
-  }
-  ;
-  return headX;
-}
-function make3(n, v) {
-  if (n <= 0) {
-    return (
-      /* [] */
-      0
-    );
-  }
-  let headX = {
-    hd: v,
-    tl: (
-      /* [] */
-      0
-    )
-  };
-  let cur = headX;
-  let i = 1;
-  while (i < n) {
-    let v$1 = {
-      hd: v,
-      tl: (
-        /* [] */
-        0
-      )
-    };
-    cur.tl = v$1;
-    cur = v$1;
-    i = i + 1 | 0;
-  }
-  ;
-  return headX;
-}
-function length(xs) {
-  let _x = xs;
-  let _acc = 0;
-  while (true) {
-    let acc = _acc;
-    let x = _x;
-    if (x === 0) {
-      return acc;
-    }
-    _acc = acc + 1 | 0;
-    _x = x.tl;
-    continue;
-  }
-  ;
-}
-function fillAux(arr, _i, _x) {
-  while (true) {
-    let x = _x;
-    let i = _i;
-    if (x === 0) {
-      return;
-    }
-    arr[i] = x.hd;
-    _x = x.tl;
-    _i = i + 1 | 0;
-    continue;
-  }
-  ;
-}
-function fromArray(a) {
-  let _i = a.length - 1 | 0;
-  let _res = (
-    /* [] */
-    0
-  );
-  while (true) {
-    let res = _res;
-    let i = _i;
-    if (i < 0) {
-      return res;
-    }
-    _res = {
-      hd: a[i],
-      tl: res
-    };
-    _i = i - 1 | 0;
-    continue;
-  }
-  ;
-}
-function toArray(x) {
-  let len = length(x);
-  let arr = new Array(len);
-  fillAux(arr, 0, x);
-  return arr;
-}
-function shuffle2(xs) {
-  let v = toArray(xs);
-  Belt_Array2.shuffleInPlace(v);
-  return fromArray(v);
-}
-function reverseConcat(_l1, _l2) {
-  while (true) {
-    let l2 = _l2;
-    let l1 = _l1;
-    if (l1 === 0) {
-      return l2;
-    }
-    _l2 = {
-      hd: l1.hd,
-      tl: l2
-    };
-    _l1 = l1.tl;
-    continue;
-  }
-  ;
-}
-function reverse2(l) {
-  return reverseConcat(
-    l,
-    /* [] */
-    0
-  );
-}
-function flattenAux(_prec, _xs) {
-  while (true) {
-    let xs = _xs;
-    let prec = _prec;
-    if (xs !== 0) {
-      _xs = xs.tl;
-      _prec = copyAuxCont(xs.hd, prec);
-      continue;
-    }
-    prec.tl = /* [] */
-    0;
-    return;
-  }
-  ;
-}
-function flatten(_xs) {
-  while (true) {
-    let xs = _xs;
-    if (xs === 0) {
-      return (
-        /* [] */
-        0
-      );
-    }
-    let match = xs.hd;
-    if (match !== 0) {
-      let cell = {
-        hd: match.hd,
-        tl: (
-          /* [] */
-          0
-        )
-      };
-      flattenAux(copyAuxCont(match.tl, cell), xs.tl);
-      return cell;
-    }
-    _xs = xs.tl;
-    continue;
-  }
-  ;
-}
-function concatMany2(xs) {
-  let len = xs.length;
-  if (len === 1) {
-    return xs[0];
-  }
-  if (len === 0) {
-    return (
-      /* [] */
-      0
-    );
-  }
-  let len$1 = xs.length;
-  let v = xs[len$1 - 1 | 0];
-  for (let i = len$1 - 2 | 0; i >= 0; --i) {
-    v = concat2(xs[i], v);
-  }
-  return v;
-}
-function mapReverse(l, f) {
-  let _accu = (
-    /* [] */
-    0
-  );
-  let _xs = l;
-  while (true) {
-    let xs = _xs;
-    let accu = _accu;
-    if (xs === 0) {
-      return accu;
-    }
-    _xs = xs.tl;
-    _accu = {
-      hd: f(xs.hd),
-      tl: accu
-    };
-    continue;
-  }
-  ;
-}
-function forEach4(_xs, f) {
-  while (true) {
-    let xs = _xs;
-    if (xs === 0) {
-      return;
-    }
-    f(xs.hd);
-    _xs = xs.tl;
-    continue;
-  }
-  ;
-}
-function forEachWithIndex2(l, f) {
-  let _xs = l;
-  let _i = 0;
-  while (true) {
-    let i = _i;
-    let xs = _xs;
-    if (xs === 0) {
-      return;
-    }
-    f(i, xs.hd);
-    _i = i + 1 | 0;
-    _xs = xs.tl;
-    continue;
-  }
-  ;
-}
-function reduce2(_l, _accu, f) {
-  while (true) {
-    let accu = _accu;
-    let l = _l;
-    if (l === 0) {
-      return accu;
-    }
-    _accu = f(accu, l.hd);
-    _l = l.tl;
-    continue;
-  }
-  ;
-}
-function reduceReverseUnsafe(l, accu, f) {
-  if (l !== 0) {
-    return f(reduceReverseUnsafe(l.tl, accu, f), l.hd);
-  } else {
-    return accu;
-  }
-}
-function reduceReverse3(l, acc, f) {
-  let len = length(l);
-  if (len < 1e3) {
-    return reduceReverseUnsafe(l, acc, f);
-  } else {
-    return Belt_Array2.reduceReverse(toArray(l), acc, f);
-  }
-}
-function reduceWithIndex2(l, acc, f) {
-  let _l = l;
-  let _acc = acc;
-  let _i = 0;
-  while (true) {
-    let i = _i;
-    let acc$1 = _acc;
-    let l$1 = _l;
-    if (l$1 === 0) {
-      return acc$1;
-    }
-    _i = i + 1 | 0;
-    _acc = f(acc$1, l$1.hd, i);
-    _l = l$1.tl;
-    continue;
-  }
-  ;
-}
-function mapReverse2(l1, l2, f) {
-  let _l1 = l1;
-  let _l2 = l2;
-  let _accu = (
-    /* [] */
-    0
-  );
-  while (true) {
-    let accu = _accu;
-    let l2$1 = _l2;
-    let l1$1 = _l1;
-    if (l1$1 === 0) {
-      return accu;
-    }
-    if (l2$1 === 0) {
-      return accu;
-    }
-    _accu = {
-      hd: f(l1$1.hd, l2$1.hd),
-      tl: accu
-    };
-    _l2 = l2$1.tl;
-    _l1 = l1$1.tl;
-    continue;
-  }
-  ;
-}
-function forEach22(_l1, _l2, f) {
-  while (true) {
-    let l2 = _l2;
-    let l1 = _l1;
-    if (l1 === 0) {
-      return;
-    }
-    if (l2 === 0) {
-      return;
-    }
-    f(l1.hd, l2.hd);
-    _l2 = l2.tl;
-    _l1 = l1.tl;
-    continue;
-  }
-  ;
-}
-function reduce22(_l1, _l2, _accu, f) {
-  while (true) {
-    let accu = _accu;
-    let l2 = _l2;
-    let l1 = _l1;
-    if (l1 === 0) {
-      return accu;
-    }
-    if (l2 === 0) {
-      return accu;
-    }
-    _accu = f(accu, l1.hd, l2.hd);
-    _l2 = l2.tl;
-    _l1 = l1.tl;
-    continue;
-  }
-  ;
-}
-function reduceReverse2Unsafe(l1, l2, accu, f) {
-  if (l1 !== 0 && l2 !== 0) {
-    return f(reduceReverse2Unsafe(l1.tl, l2.tl, accu, f), l1.hd, l2.hd);
-  } else {
-    return accu;
-  }
-}
-function reduceReverse22(l1, l2, acc, f) {
-  let len = length(l1);
-  if (len < 1e3) {
-    return reduceReverse2Unsafe(l1, l2, acc, f);
-  } else {
-    return Belt_Array2.reduceReverse2(toArray(l1), toArray(l2), acc, f);
-  }
-}
-function every3(_xs, p) {
-  while (true) {
-    let xs = _xs;
-    if (xs === 0) {
-      return true;
-    }
-    if (!p(xs.hd)) {
-      return false;
-    }
-    _xs = xs.tl;
-    continue;
-  }
-  ;
-}
-function some3(_xs, p) {
-  while (true) {
-    let xs = _xs;
-    if (xs === 0) {
-      return false;
-    }
-    if (p(xs.hd)) {
-      return true;
-    }
-    _xs = xs.tl;
-    continue;
-  }
-  ;
-}
-function every22(_l1, _l2, p) {
-  while (true) {
-    let l2 = _l2;
-    let l1 = _l1;
-    if (l1 === 0) {
-      return true;
-    }
-    if (l2 === 0) {
-      return true;
-    }
-    if (!p(l1.hd, l2.hd)) {
-      return false;
-    }
-    _l2 = l2.tl;
-    _l1 = l1.tl;
-    continue;
-  }
-  ;
-}
-function cmpByLength(_l1, _l2) {
-  while (true) {
-    let l2 = _l2;
-    let l1 = _l1;
-    if (l1 === 0) {
-      if (l2 !== 0) {
-        return -1;
-      } else {
-        return 0;
-      }
-    }
-    if (l2 === 0) {
-      return 1;
-    }
-    _l2 = l2.tl;
-    _l1 = l1.tl;
-    continue;
-  }
-  ;
-}
-function cmp4(_l1, _l2, p) {
-  while (true) {
-    let l2 = _l2;
-    let l1 = _l1;
-    if (l1 === 0) {
-      if (l2 !== 0) {
-        return -1;
-      } else {
-        return 0;
-      }
-    }
-    if (l2 === 0) {
-      return 1;
-    }
-    let c = p(l1.hd, l2.hd);
-    if (c !== 0) {
-      return c;
-    }
-    _l2 = l2.tl;
-    _l1 = l1.tl;
-    continue;
-  }
-  ;
-}
-function eq4(_l1, _l2, p) {
-  while (true) {
-    let l2 = _l2;
-    let l1 = _l1;
-    if (l1 === 0) {
-      return l2 === 0;
-    }
-    if (l2 === 0) {
-      return false;
-    }
-    if (!p(l1.hd, l2.hd)) {
-      return false;
-    }
-    _l2 = l2.tl;
-    _l1 = l1.tl;
-    continue;
-  }
-  ;
-}
-function some23(_l1, _l2, p) {
-  while (true) {
-    let l2 = _l2;
-    let l1 = _l1;
-    if (l1 === 0) {
-      return false;
-    }
-    if (l2 === 0) {
-      return false;
-    }
-    if (p(l1.hd, l2.hd)) {
-      return true;
-    }
-    _l2 = l2.tl;
-    _l1 = l1.tl;
-    continue;
-  }
-  ;
-}
-function has(_xs, x, eq8) {
-  while (true) {
-    let xs = _xs;
-    if (xs === 0) {
-      return false;
-    }
-    if (eq8(xs.hd, x)) {
-      return true;
-    }
-    _xs = xs.tl;
-    continue;
-  }
-  ;
-}
-function getAssoc(_xs, x, eq8) {
-  while (true) {
-    let xs = _xs;
-    if (xs === 0) {
-      return;
-    }
-    let match = xs.hd;
-    if (eq8(match[0], x)) {
-      return Primitive_option4.some(match[1]);
-    }
-    _xs = xs.tl;
-    continue;
-  }
-  ;
-}
-function hasAssoc(_xs, x, eq8) {
-  while (true) {
-    let xs = _xs;
-    if (xs === 0) {
-      return false;
-    }
-    if (eq8(xs.hd[0], x)) {
-      return true;
-    }
-    _xs = xs.tl;
-    continue;
-  }
-  ;
-}
-function removeAssoc(xs, x, eq8) {
-  if (xs === 0) {
-    return (
-      /* [] */
-      0
-    );
-  }
-  let l = xs.tl;
-  let pair = xs.hd;
-  if (eq8(pair[0], x)) {
-    return l;
-  }
-  let cell = {
-    hd: pair,
-    tl: (
-      /* [] */
-      0
-    )
-  };
-  let removed = removeAssocAuxWithMap(l, x, cell, eq8);
-  if (removed) {
-    return cell;
-  } else {
-    return xs;
-  }
-}
-function setAssoc(xs, x, k, eq8) {
-  if (xs === 0) {
-    return {
-      hd: [
-        x,
-        k
-      ],
-      tl: (
-        /* [] */
-        0
-      )
-    };
-  }
-  let l = xs.tl;
-  let pair = xs.hd;
-  if (eq8(pair[0], x)) {
-    return {
-      hd: [
-        x,
-        k
-      ],
-      tl: l
-    };
-  }
-  let cell = {
-    hd: pair,
-    tl: (
-      /* [] */
-      0
-    )
-  };
-  let replaced = setAssocAuxWithMap(l, x, k, cell, eq8);
-  if (replaced) {
-    return cell;
-  } else {
-    return {
-      hd: [
-        x,
-        k
-      ],
-      tl: xs
-    };
-  }
-}
-function sort(xs, cmp8) {
-  let arr = toArray(xs);
-  Belt_SortArray.stableSortInPlaceBy(arr, cmp8);
-  return fromArray(arr);
-}
-function getBy2(_xs, p) {
-  while (true) {
-    let xs = _xs;
-    if (xs === 0) {
-      return;
-    }
-    let x = xs.hd;
-    if (p(x)) {
-      return Primitive_option4.some(x);
-    }
-    _xs = xs.tl;
-    continue;
-  }
-  ;
-}
-function keep3(_xs, p) {
-  while (true) {
-    let xs = _xs;
-    if (xs === 0) {
-      return (
-        /* [] */
-        0
-      );
-    }
-    let t = xs.tl;
-    let h = xs.hd;
-    if (p(h)) {
-      let cell = {
-        hd: h,
-        tl: (
-          /* [] */
-          0
-        )
-      };
-      copyAuxWitFilter(p, t, cell);
-      return cell;
-    }
-    _xs = t;
-    continue;
-  }
-  ;
-}
-function keepWithIndex2(xs, p) {
-  let _xs = xs;
-  let _i = 0;
-  while (true) {
-    let i = _i;
-    let xs$1 = _xs;
-    if (xs$1 === 0) {
-      return (
-        /* [] */
-        0
-      );
-    }
-    let t = xs$1.tl;
-    let h = xs$1.hd;
-    if (p(h, i)) {
-      let cell = {
-        hd: h,
-        tl: (
-          /* [] */
-          0
-        )
-      };
-      copyAuxWithFilterIndex(p, t, cell, i + 1 | 0);
-      return cell;
-    }
-    _i = i + 1 | 0;
-    _xs = t;
-    continue;
-  }
-  ;
-}
-function keepMap2(_xs, p) {
-  while (true) {
-    let xs = _xs;
-    if (xs === 0) {
-      return (
-        /* [] */
-        0
-      );
-    }
-    let t = xs.tl;
-    let h = p(xs.hd);
-    if (h !== void 0) {
-      let cell = {
-        hd: Primitive_option4.valFromOption(h),
-        tl: (
-          /* [] */
-          0
-        )
-      };
-      copyAuxWitFilterMap(p, t, cell);
-      return cell;
-    }
-    _xs = t;
-    continue;
-  }
-  ;
-}
-function partition2(l, p) {
-  if (l === 0) {
-    return [
-      /* [] */
-      0,
-      /* [] */
-      0
-    ];
-  }
-  let h = l.hd;
-  let nextX = {
-    hd: h,
-    tl: (
-      /* [] */
-      0
-    )
-  };
-  let nextY = {
-    hd: h,
-    tl: (
-      /* [] */
-      0
-    )
-  };
-  let b = p(h);
-  partitionAux(p, l.tl, nextX, nextY);
-  if (b) {
-    return [
-      nextX,
-      nextY.tl
-    ];
-  } else {
-    return [
-      nextX.tl,
-      nextY
-    ];
-  }
-}
-function unzip2(xs) {
-  if (xs === 0) {
-    return [
-      /* [] */
-      0,
-      /* [] */
-      0
-    ];
-  }
-  let match = xs.hd;
-  let cellX = {
-    hd: match[0],
-    tl: (
-      /* [] */
-      0
-    )
-  };
-  let cellY = {
-    hd: match[1],
-    tl: (
-      /* [] */
-      0
-    )
-  };
-  splitAux(xs.tl, cellX, cellY);
-  return [
-    cellX,
-    cellY
-  ];
-}
-function zip2(l1, l2) {
-  if (l1 === 0) {
-    return (
-      /* [] */
-      0
-    );
-  }
-  if (l2 === 0) {
-    return (
-      /* [] */
-      0
-    );
-  }
-  let cell = {
-    hd: [
-      l1.hd,
-      l2.hd
-    ],
-    tl: (
-      /* [] */
-      0
-    )
-  };
-  zipAux(l1.tl, l2.tl, cell);
-  return cell;
-}
-var Belt_Array2, Belt_SortArray, Primitive_option4, size, headExn, tailExn, getExn5, makeByU2, mapU4, zipByU2, mapWithIndexU2, mapReverseU, forEachU3, forEachWithIndexU2, reduceU2, reduceWithIndexU2, reduceReverseU2, mapReverse2U, forEach2U, reduce2U, reduceReverse2U2, everyU2, someU2, every2U2, some2U2, cmpU4, eqU4, hasU, getByU2, keepU3, filter2, keepWithIndexU2, filterWithIndex, keepMapU2, partitionU2, getAssocU, hasAssocU, removeAssocU, setAssocU, sortU;
-var init_Belt_List = __esm({
-  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_List.js"() {
-    "use strict";
-    Belt_Array2 = (init_Belt_Array(), __toCommonJS(Belt_Array_exports));
-    Belt_SortArray = (init_Belt_SortArray(), __toCommonJS(Belt_SortArray_exports));
-    Primitive_option4 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    size = length;
-    headExn = headOrThrow;
-    tailExn = tailOrThrow;
-    getExn5 = getOrThrow5;
-    makeByU2 = makeBy2;
-    mapU4 = map5;
-    zipByU2 = zipBy2;
-    mapWithIndexU2 = mapWithIndex2;
-    mapReverseU = mapReverse;
-    forEachU3 = forEach4;
-    forEachWithIndexU2 = forEachWithIndex2;
-    reduceU2 = reduce2;
-    reduceWithIndexU2 = reduceWithIndex2;
-    reduceReverseU2 = reduceReverse3;
-    mapReverse2U = mapReverse2;
-    forEach2U = forEach22;
-    reduce2U = reduce22;
-    reduceReverse2U2 = reduceReverse22;
-    everyU2 = every3;
-    someU2 = some3;
-    every2U2 = every22;
-    some2U2 = some23;
-    cmpU4 = cmp4;
-    eqU4 = eq4;
-    hasU = has;
-    getByU2 = getBy2;
-    keepU3 = keep3;
-    filter2 = keep3;
-    keepWithIndexU2 = keepWithIndex2;
-    filterWithIndex = keepWithIndex2;
-    keepMapU2 = keepMap2;
-    partitionU2 = partition2;
-    getAssocU = getAssoc;
-    hasAssocU = hasAssoc;
-    removeAssocU = removeAssoc;
-    setAssocU = setAssoc;
-    sortU = sort;
-    exports.length = length;
-    exports.size = size;
-    exports.head = head;
-    exports.headExn = headExn;
-    exports.headOrThrow = headOrThrow;
-    exports.tail = tail;
-    exports.tailExn = tailExn;
-    exports.tailOrThrow = tailOrThrow;
-    exports.add = add;
-    exports.get = get2;
-    exports.getExn = getExn5;
-    exports.getOrThrow = getOrThrow5;
-    exports.make = make3;
-    exports.makeByU = makeByU2;
-    exports.makeBy = makeBy2;
-    exports.shuffle = shuffle2;
-    exports.drop = drop;
-    exports.take = take;
-    exports.splitAt = splitAt;
-    exports.concat = concat2;
-    exports.concatMany = concatMany2;
-    exports.reverseConcat = reverseConcat;
-    exports.flatten = flatten;
-    exports.mapU = mapU4;
-    exports.map = map5;
-    exports.zip = zip2;
-    exports.zipByU = zipByU2;
-    exports.zipBy = zipBy2;
-    exports.mapWithIndexU = mapWithIndexU2;
-    exports.mapWithIndex = mapWithIndex2;
-    exports.fromArray = fromArray;
-    exports.toArray = toArray;
-    exports.reverse = reverse2;
-    exports.mapReverseU = mapReverseU;
-    exports.mapReverse = mapReverse;
-    exports.forEachU = forEachU3;
-    exports.forEach = forEach4;
-    exports.forEachWithIndexU = forEachWithIndexU2;
-    exports.forEachWithIndex = forEachWithIndex2;
-    exports.reduceU = reduceU2;
-    exports.reduce = reduce2;
-    exports.reduceWithIndexU = reduceWithIndexU2;
-    exports.reduceWithIndex = reduceWithIndex2;
-    exports.reduceReverseU = reduceReverseU2;
-    exports.reduceReverse = reduceReverse3;
-    exports.mapReverse2U = mapReverse2U;
-    exports.mapReverse2 = mapReverse2;
-    exports.forEach2U = forEach2U;
-    exports.forEach2 = forEach22;
-    exports.reduce2U = reduce2U;
-    exports.reduce2 = reduce22;
-    exports.reduceReverse2U = reduceReverse2U2;
-    exports.reduceReverse2 = reduceReverse22;
-    exports.everyU = everyU2;
-    exports.every = every3;
-    exports.someU = someU2;
-    exports.some = some3;
-    exports.every2U = every2U2;
-    exports.every2 = every22;
-    exports.some2U = some2U2;
-    exports.some2 = some23;
-    exports.cmpByLength = cmpByLength;
-    exports.cmpU = cmpU4;
-    exports.cmp = cmp4;
-    exports.eqU = eqU4;
-    exports.eq = eq4;
-    exports.hasU = hasU;
-    exports.has = has;
-    exports.getByU = getByU2;
-    exports.getBy = getBy2;
-    exports.keepU = keepU3;
-    exports.keep = keep3;
-    exports.filter = filter2;
-    exports.keepWithIndexU = keepWithIndexU2;
-    exports.keepWithIndex = keepWithIndex2;
-    exports.filterWithIndex = filterWithIndex;
-    exports.keepMapU = keepMapU2;
-    exports.keepMap = keepMap2;
-    exports.partitionU = partitionU2;
-    exports.partition = partition2;
-    exports.unzip = unzip2;
-    exports.getAssocU = getAssocU;
-    exports.getAssoc = getAssoc;
-    exports.hasAssocU = hasAssocU;
-    exports.hasAssoc = hasAssoc;
-    exports.removeAssocU = removeAssocU;
-    exports.removeAssoc = removeAssoc;
-    exports.setAssocU = setAssocU;
-    exports.setAssoc = setAssoc;
-    exports.sortU = sortU;
-    exports.sort = sort;
-  }
-});
-
-// src/ResultExt.js
-var require_ResultExt = __commonJS({
-  "src/ResultExt.js"(exports2) {
-    "use strict";
-    var Belt_List = (init_Belt_List(), __toCommonJS(Belt_List_exports));
-    function allOkOrError(results) {
-      let _good = (
-        /* [] */
-        0
-      );
-      let _entriesLeft = Belt_List.fromArray(results);
-      while (true) {
-        let entriesLeft = _entriesLeft;
-        let good = _good;
-        if (entriesLeft === 0) {
-          return {
-            TAG: "Ok",
-            _0: Belt_List.toArray(good)
-          };
-        }
-        let entry = entriesLeft.hd;
-        if (entry.TAG !== "Ok") {
-          return entry;
-        }
-        _entriesLeft = entriesLeft.tl;
-        _good = {
-          hd: entry._0,
-          tl: good
-        };
-        continue;
-      }
-      ;
-    }
-    exports2.allOkOrError = allOkOrError;
   }
 });
 
@@ -9578,7 +10286,7 @@ function removeMinAuxWithRef(n, kr, vr) {
     return n.r;
   }
 }
-function isEmpty(x) {
+function isEmpty2(x) {
   return x === void 0;
 }
 function stackAllLeft(_v, _s) {
@@ -9632,13 +10340,13 @@ function forEach5(_n, f) {
   }
   ;
 }
-function map6(n, f) {
+function map5(n, f) {
   if (n === void 0) {
     return;
   }
-  let newLeft = map6(n.l, f);
+  let newLeft = map5(n.l, f);
   let newD = f(n.v);
-  let newRight = map6(n.r, f);
+  let newRight = map5(n.r, f);
   return {
     k: n.k,
     v: newD,
@@ -9680,7 +10388,7 @@ function reduce3(_m, _accu, f) {
   }
   ;
 }
-function every4(_n, p) {
+function every3(_n, p) {
   while (true) {
     let n = _n;
     if (n === void 0) {
@@ -9689,7 +10397,7 @@ function every4(_n, p) {
     if (!p(n.k, n.v)) {
       return false;
     }
-    if (!every4(n.l, p)) {
+    if (!every3(n.l, p)) {
       return false;
     }
     _n = n.r;
@@ -9697,7 +10405,7 @@ function every4(_n, p) {
   }
   ;
 }
-function some4(_n, p) {
+function some3(_n, p) {
   while (true) {
     let n = _n;
     if (n === void 0) {
@@ -9706,7 +10414,7 @@ function some4(_n, p) {
     if (p(n.k, n.v)) {
       return true;
     }
-    if (some4(n.l, p)) {
+    if (some3(n.l, p)) {
       return true;
     }
     _n = n.r;
@@ -9753,7 +10461,7 @@ function join(ln, v, d, rn) {
     return create2(ln, v, d, rn);
   }
 }
-function concat3(t1, t2) {
+function concat2(t1, t2) {
   if (t1 === void 0) {
     return t2;
   }
@@ -9773,7 +10481,7 @@ function concatOrJoin(t1, v, d, t2) {
   if (d !== void 0) {
     return join(t1, v, Primitive_option5.valFromOption(d), t2);
   } else {
-    return concat3(t1, t2);
+    return concat2(t1, t2);
   }
 }
 function keepShared(n, p) {
@@ -9788,22 +10496,22 @@ function keepShared(n, p) {
   if (pvd) {
     return join(newLeft, v, d, newRight);
   } else {
-    return concat3(newLeft, newRight);
+    return concat2(newLeft, newRight);
   }
 }
-function keepMap3(n, p) {
+function keepMap2(n, p) {
   if (n === void 0) {
     return;
   }
   let v = n.k;
   let d = n.v;
-  let newLeft = keepMap3(n.l, p);
+  let newLeft = keepMap2(n.l, p);
   let pvd = p(v, d);
-  let newRight = keepMap3(n.r, p);
+  let newRight = keepMap2(n.r, p);
   if (pvd !== void 0) {
     return join(newLeft, v, Primitive_option5.valFromOption(pvd), newRight);
   } else {
-    return concat3(newLeft, newRight);
+    return concat2(newLeft, newRight);
   }
 }
 function partitionShared(n, p) {
@@ -9825,11 +10533,11 @@ function partitionShared(n, p) {
   if (pvd) {
     return [
       join(lt, key, value, rt),
-      concat3(lf, rf)
+      concat2(lf, rf)
     ];
   } else {
     return [
-      concat3(lt, rt),
+      concat2(lt, rt),
       join(lf, key, value, rf)
     ];
   }
@@ -9841,7 +10549,7 @@ function lengthNode(n) {
   let sizeR = r !== void 0 ? lengthNode(r) : 0;
   return (1 + sizeL | 0) + sizeR | 0;
 }
-function size2(n) {
+function size(n) {
   if (n !== void 0) {
     return lengthNode(n);
   } else {
@@ -9963,12 +10671,12 @@ function fillArray(_n, _i, arr) {
   }
   ;
 }
-function toArray2(n) {
+function toArray(n) {
   if (n === void 0) {
     return [];
   }
-  let size4 = lengthNode(n);
-  let v = new Array(size4);
+  let size3 = lengthNode(n);
+  let v = new Array(size3);
   fillArray(n, 0, v);
   return v;
 }
@@ -9976,8 +10684,8 @@ function keysToArray(n) {
   if (n === void 0) {
     return [];
   }
-  let size4 = lengthNode(n);
-  let v = new Array(size4);
+  let size3 = lengthNode(n);
+  let v = new Array(size3);
   fillArrayKey(n, 0, v);
   return v;
 }
@@ -9985,8 +10693,8 @@ function valuesToArray(n) {
   if (n === void 0) {
     return [];
   }
-  let size4 = lengthNode(n);
-  let v = new Array(size4);
+  let size3 = lengthNode(n);
+  let v = new Array(size3);
   fillArrayValue(n, 0, v);
   return v;
 }
@@ -10075,9 +10783,9 @@ function fromSortedArrayAux(arr, off, len) {
 function fromSortedArrayUnsafe(arr) {
   return fromSortedArrayAux(arr, 0, arr.length);
 }
-function cmp5(s1, s2, kcmp, vcmp) {
-  let len1 = size2(s1);
-  let len2 = size2(s2);
+function cmp3(s1, s2, kcmp, vcmp) {
+  let len1 = size(s1);
+  let len2 = size(s2);
   if (len1 === len2) {
     let _e1 = stackAllLeft(
       s1,
@@ -10119,9 +10827,9 @@ function cmp5(s1, s2, kcmp, vcmp) {
     return 1;
   }
 }
-function eq5(s1, s2, kcmp, veq) {
-  let len1 = size2(s1);
-  let len2 = size2(s2);
+function eq3(s1, s2, kcmp, veq) {
+  let len1 = size(s1);
+  let len2 = size(s2);
   if (len1 === len2) {
     let _e1 = stackAllLeft(
       s1,
@@ -10156,14 +10864,14 @@ function eq5(s1, s2, kcmp, veq) {
     return false;
   }
 }
-function get3(_n, x, cmp8) {
+function get2(_n, x, cmp6) {
   while (true) {
     let n = _n;
     if (n === void 0) {
       return;
     }
     let v = n.k;
-    let c = cmp8(x, v);
+    let c = cmp6(x, v);
     if (c === 0) {
       return Primitive_option5.some(n.v);
     }
@@ -10172,14 +10880,14 @@ function get3(_n, x, cmp8) {
   }
   ;
 }
-function getUndefined(_n, x, cmp8) {
+function getUndefined(_n, x, cmp6) {
   while (true) {
     let n = _n;
     if (n === void 0) {
       return;
     }
     let v = n.k;
-    let c = cmp8(x, v);
+    let c = cmp6(x, v);
     if (c === 0) {
       return n.v;
     }
@@ -10188,12 +10896,12 @@ function getUndefined(_n, x, cmp8) {
   }
   ;
 }
-function getOrThrow6(_n, x, cmp8) {
+function getOrThrow5(_n, x, cmp6) {
   while (true) {
     let n = _n;
     if (n !== void 0) {
       let v = n.k;
-      let c = cmp8(x, v);
+      let c = cmp6(x, v);
       if (c === 0) {
         return n.v;
       }
@@ -10207,14 +10915,14 @@ function getOrThrow6(_n, x, cmp8) {
   }
   ;
 }
-function getWithDefault4(_n, x, def, cmp8) {
+function getWithDefault4(_n, x, def, cmp6) {
   while (true) {
     let n = _n;
     if (n === void 0) {
       return def;
     }
     let v = n.k;
-    let c = cmp8(x, v);
+    let c = cmp6(x, v);
     if (c === 0) {
       return n.v;
     }
@@ -10223,14 +10931,14 @@ function getWithDefault4(_n, x, def, cmp8) {
   }
   ;
 }
-function has2(_n, x, cmp8) {
+function has(_n, x, cmp6) {
   while (true) {
     let n = _n;
     if (n === void 0) {
       return false;
     }
     let v = n.k;
-    let c = cmp8(x, v);
+    let c = cmp6(x, v);
     if (c === 0) {
       return true;
     }
@@ -10307,12 +11015,12 @@ function balMutate(nt) {
   nt.h = Primitive_int2.max(hl, hr) + 1 | 0;
   return nt;
 }
-function updateMutate(t, x, data, cmp8) {
+function updateMutate(t, x, data, cmp6) {
   if (t === void 0) {
     return singleton(x, data);
   }
   let k = t.k;
-  let c = cmp8(x, k);
+  let c = cmp6(x, k);
   if (c === 0) {
     t.v = data;
     return t;
@@ -10320,19 +11028,19 @@ function updateMutate(t, x, data, cmp8) {
   let l = t.l;
   let r = t.r;
   if (c < 0) {
-    let ll = updateMutate(l, x, data, cmp8);
+    let ll = updateMutate(l, x, data, cmp6);
     t.l = ll;
   } else {
-    t.r = updateMutate(r, x, data, cmp8);
+    t.r = updateMutate(r, x, data, cmp6);
   }
   return balMutate(t);
 }
-function fromArray2(xs, cmp8) {
+function fromArray(xs, cmp6) {
   let len = xs.length;
   if (len === 0) {
     return;
   }
-  let next = Belt_SortArray2.strictlySortedLength(xs, (param, param$1) => cmp8(param[0], param$1[0]) < 0);
+  let next = Belt_SortArray.strictlySortedLength(xs, (param, param$1) => cmp6(param[0], param$1[0]) < 0);
   let result;
   if (next >= 0) {
     result = fromSortedArrayAux(xs, 0, next);
@@ -10342,7 +11050,7 @@ function fromArray2(xs, cmp8) {
   }
   for (let i = next; i < len; ++i) {
     let match = xs[i];
-    result = updateMutate(result, match[0], match[1], cmp8);
+    result = updateMutate(result, match[0], match[1], cmp6);
   }
   return result;
 }
@@ -10358,12 +11066,12 @@ function removeMinAuxWithRootMutate(nt, n) {
     return rn;
   }
 }
-var Primitive_int2, Belt_SortArray2, Primitive_option5;
+var Primitive_int2, Belt_SortArray, Primitive_option5;
 var init_Belt_internalAVLtree = __esm({
   "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_internalAVLtree.js"() {
     "use strict";
     Primitive_int2 = (init_Primitive_int(), __toCommonJS(Primitive_int_exports));
-    Belt_SortArray2 = (init_Belt_SortArray(), __toCommonJS(Belt_SortArray_exports));
+    Belt_SortArray = (init_Belt_SortArray(), __toCommonJS(Belt_SortArray_exports));
     Primitive_option5 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     exports.copy = copy;
     exports.create = create2;
@@ -10379,40 +11087,40 @@ var init_Belt_internalAVLtree = __esm({
     exports.maximum = maximum;
     exports.maxUndefined = maxUndefined;
     exports.removeMinAuxWithRef = removeMinAuxWithRef;
-    exports.isEmpty = isEmpty;
+    exports.isEmpty = isEmpty2;
     exports.stackAllLeft = stackAllLeft;
     exports.findFirstBy = findFirstBy;
     exports.forEach = forEach5;
-    exports.map = map6;
+    exports.map = map5;
     exports.mapWithKey = mapWithKey;
     exports.reduce = reduce3;
-    exports.every = every4;
-    exports.some = some4;
+    exports.every = every3;
+    exports.some = some3;
     exports.join = join;
-    exports.concat = concat3;
+    exports.concat = concat2;
     exports.concatOrJoin = concatOrJoin;
     exports.keepShared = keepShared;
-    exports.keepMap = keepMap3;
+    exports.keepMap = keepMap2;
     exports.partitionShared = partitionShared;
     exports.lengthNode = lengthNode;
-    exports.size = size2;
+    exports.size = size;
     exports.toList = toList;
     exports.checkInvariantInternal = checkInvariantInternal;
     exports.fillArray = fillArray;
-    exports.toArray = toArray2;
+    exports.toArray = toArray;
     exports.keysToArray = keysToArray;
     exports.valuesToArray = valuesToArray;
     exports.fromSortedArrayAux = fromSortedArrayAux;
     exports.fromSortedArrayRevAux = fromSortedArrayRevAux;
     exports.fromSortedArrayUnsafe = fromSortedArrayUnsafe;
-    exports.cmp = cmp5;
-    exports.eq = eq5;
-    exports.get = get3;
+    exports.cmp = cmp3;
+    exports.eq = eq3;
+    exports.get = get2;
     exports.getUndefined = getUndefined;
     exports.getWithDefault = getWithDefault4;
-    exports.getOrThrow = getOrThrow6;
-    exports.has = has2;
-    exports.fromArray = fromArray2;
+    exports.getOrThrow = getOrThrow5;
+    exports.has = has;
+    exports.fromArray = fromArray;
     exports.updateMutate = updateMutate;
     exports.balMutate = balMutate;
     exports.removeMinAuxWithRootMutate = removeMinAuxWithRootMutate;
@@ -10421,7 +11129,7 @@ var init_Belt_internalAVLtree = __esm({
 
 // node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_internalMapInt.js
 var Belt_internalMapInt_exports = {};
-function add2(t, x, data) {
+function add(t, x, data) {
   if (t === void 0) {
     return Belt_internalAVLtree.singleton(x, data);
   }
@@ -10431,12 +11139,12 @@ function add2(t, x, data) {
   }
   let v = t.v;
   if (x < k) {
-    return Belt_internalAVLtree.bal(add2(t.l, x, data), k, v, t.r);
+    return Belt_internalAVLtree.bal(add(t.l, x, data), k, v, t.r);
   } else {
-    return Belt_internalAVLtree.bal(t.l, k, v, add2(t.r, x, data));
+    return Belt_internalAVLtree.bal(t.l, k, v, add(t.r, x, data));
   }
 }
-function get4(_n, x) {
+function get3(_n, x) {
   while (true) {
     let n = _n;
     if (n === void 0) {
@@ -10466,7 +11174,7 @@ function getUndefined2(_n, x) {
   }
   ;
 }
-function getOrThrow7(_n, x) {
+function getOrThrow6(_n, x) {
   while (true) {
     let n = _n;
     if (n !== void 0) {
@@ -10499,7 +11207,7 @@ function getWithDefault5(_n, x, def) {
   }
   ;
 }
-function has3(_n, x) {
+function has2(_n, x) {
   while (true) {
     let n = _n;
     if (n === void 0) {
@@ -10543,7 +11251,7 @@ function remove(n, x) {
   let r$1 = Belt_internalAVLtree.removeMinAuxWithRef(r, kr, vr);
   return Belt_internalAVLtree.bal(l, kr.contents, vr.contents, r$1);
 }
-function splitAux2(x, n) {
+function splitAux(x, n) {
   let v = n.k;
   let d = n.v;
   let l = n.l;
@@ -10563,7 +11271,7 @@ function splitAux2(x, n) {
         n
       ];
     }
-    let match = splitAux2(x, l);
+    let match = splitAux(x, l);
     return [
       match[0],
       match[1],
@@ -10577,7 +11285,7 @@ function splitAux2(x, n) {
       void 0
     ];
   }
-  let match$1 = splitAux2(x, r);
+  let match$1 = splitAux(x, r);
   return [
     Belt_internalAVLtree.join(l, v, d, match$1[0]),
     match$1[1],
@@ -10586,7 +11294,7 @@ function splitAux2(x, n) {
 }
 function split(x, n) {
   if (n !== void 0) {
-    return splitAux2(x, n);
+    return splitAux(x, n);
   } else {
     return [
       void 0,
@@ -10641,7 +11349,7 @@ function compareAux(_e1, _e2, vcmp) {
   }
   ;
 }
-function cmp6(s1, s2, cmp$1) {
+function cmp4(s1, s2, cmp$1) {
   let len1 = Belt_internalAVLtree.size(s1);
   let len2 = Belt_internalAVLtree.size(s2);
   if (len1 === len2) {
@@ -10660,7 +11368,7 @@ function cmp6(s1, s2, cmp$1) {
     return 1;
   }
 }
-function eqAux(_e1, _e2, eq8) {
+function eqAux(_e1, _e2, eq6) {
   while (true) {
     let e2 = _e2;
     let e1 = _e1;
@@ -10672,7 +11380,7 @@ function eqAux(_e1, _e2, eq8) {
     }
     let h2 = e2.hd;
     let h1 = e1.hd;
-    if (!(h1.k === h2.k && eq8(h1.v, h2.v))) {
+    if (!(h1.k === h2.k && eq6(h1.v, h2.v))) {
       return false;
     }
     _e2 = Belt_internalAVLtree.stackAllLeft(h2.r, e2.tl);
@@ -10681,7 +11389,7 @@ function eqAux(_e1, _e2, eq8) {
   }
   ;
 }
-function eq6(s1, s2, eq$1) {
+function eq4(s1, s2, eq$1) {
   let len1 = Belt_internalAVLtree.size(s1);
   let len2 = Belt_internalAVLtree.size(s2);
   if (len1 === len2) {
@@ -10718,12 +11426,12 @@ function addMutate(t, x, data) {
   }
   return Belt_internalAVLtree.balMutate(t);
 }
-function fromArray3(xs) {
+function fromArray2(xs) {
   let len = xs.length;
   if (len === 0) {
     return;
   }
-  let next = Belt_SortArray3.strictlySortedLength(xs, (param, param$1) => param[0] < param$1[0]);
+  let next = Belt_SortArray2.strictlySortedLength(xs, (param, param$1) => param[0] < param$1[0]);
   let result;
   if (next >= 0) {
     result = Belt_internalAVLtree.fromSortedArrayAux(xs, 0, next);
@@ -10737,38 +11445,38 @@ function fromArray3(xs) {
   }
   return result;
 }
-var Primitive_int3, Belt_SortArray3, Primitive_option6, Belt_internalAVLtree, N, A, S, cmpU5, eqU5, mergeU;
+var Primitive_int3, Belt_SortArray2, Primitive_option6, Belt_internalAVLtree, N, A, S, cmpU3, eqU3, mergeU;
 var init_Belt_internalMapInt = __esm({
   "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_internalMapInt.js"() {
     "use strict";
     Primitive_int3 = (init_Primitive_int(), __toCommonJS(Primitive_int_exports));
-    Belt_SortArray3 = (init_Belt_SortArray(), __toCommonJS(Belt_SortArray_exports));
+    Belt_SortArray2 = (init_Belt_SortArray(), __toCommonJS(Belt_SortArray_exports));
     Primitive_option6 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     Belt_internalAVLtree = (init_Belt_internalAVLtree(), __toCommonJS(Belt_internalAVLtree_exports));
-    cmpU5 = cmp6;
-    eqU5 = eq6;
+    cmpU3 = cmp4;
+    eqU3 = eq4;
     mergeU = merge2;
     exports.N = N;
     exports.A = A;
     exports.S = S;
-    exports.add = add2;
-    exports.get = get4;
+    exports.add = add;
+    exports.get = get3;
     exports.getUndefined = getUndefined2;
-    exports.getOrThrow = getOrThrow7;
+    exports.getOrThrow = getOrThrow6;
     exports.getWithDefault = getWithDefault5;
-    exports.has = has3;
+    exports.has = has2;
     exports.remove = remove;
-    exports.splitAux = splitAux2;
+    exports.splitAux = splitAux;
     exports.split = split;
     exports.merge = merge2;
     exports.compareAux = compareAux;
-    exports.cmp = cmp6;
+    exports.cmp = cmp4;
     exports.eqAux = eqAux;
-    exports.eq = eq6;
+    exports.eq = eq4;
     exports.addMutate = addMutate;
-    exports.fromArray = fromArray3;
-    exports.cmpU = cmpU5;
-    exports.eqU = eqU5;
+    exports.fromArray = fromArray2;
+    exports.cmpU = cmpU3;
+    exports.eqU = eqU3;
     exports.mergeU = mergeU;
   }
 });
@@ -10914,33 +11622,33 @@ function mergeMany(h, arr) {
   }
   return v;
 }
-var Primitive_option7, Belt_internalMapInt, Belt_internalAVLtree2, empty, isEmpty2, has4, cmpU6, cmp7, eqU6, eq7, findFirstByU, findFirstBy2, forEachU4, forEach6, reduceU3, reduce4, everyU3, every5, someU3, some5, size3, toList2, toArray3, fromArray4, keysToArray2, valuesToArray2, minKey2, minKeyUndefined2, maxKey2, maxKeyUndefined2, minimum2, minUndefined2, maximum2, maxUndefined2, get5, getUndefined3, getWithDefault6, getExn6, getOrThrow8, checkInvariantInternal2, updateU, mergeU2, merge3, keepU4, keep4, partitionU3, partition3, split2, mapU5, map7, mapWithKeyU, mapWithKey2;
+var Primitive_option7, Belt_internalMapInt, Belt_internalAVLtree2, empty, isEmpty3, has3, cmpU4, cmp5, eqU4, eq5, findFirstByU, findFirstBy2, forEachU3, forEach6, reduceU2, reduce4, everyU2, every4, someU2, some4, size2, toList2, toArray2, fromArray3, keysToArray2, valuesToArray2, minKey2, minKeyUndefined2, maxKey2, maxKeyUndefined2, minimum2, minUndefined2, maximum2, maxUndefined2, get4, getUndefined3, getWithDefault6, getExn5, getOrThrow7, checkInvariantInternal2, updateU, mergeU2, merge3, keepU3, keep3, partitionU2, partition2, split2, mapU3, map6, mapWithKeyU, mapWithKey2;
 var init_Belt_MapInt = __esm({
   "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_MapInt.js"() {
     "use strict";
     Primitive_option7 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     Belt_internalMapInt = (init_Belt_internalMapInt(), __toCommonJS(Belt_internalMapInt_exports));
     Belt_internalAVLtree2 = (init_Belt_internalAVLtree(), __toCommonJS(Belt_internalAVLtree_exports));
-    isEmpty2 = Belt_internalAVLtree2.isEmpty;
-    has4 = Belt_internalMapInt.has;
-    cmpU6 = Belt_internalMapInt.cmp;
-    cmp7 = Belt_internalMapInt.cmp;
-    eqU6 = Belt_internalMapInt.eq;
-    eq7 = Belt_internalMapInt.eq;
+    isEmpty3 = Belt_internalAVLtree2.isEmpty;
+    has3 = Belt_internalMapInt.has;
+    cmpU4 = Belt_internalMapInt.cmp;
+    cmp5 = Belt_internalMapInt.cmp;
+    eqU4 = Belt_internalMapInt.eq;
+    eq5 = Belt_internalMapInt.eq;
     findFirstByU = Belt_internalAVLtree2.findFirstBy;
     findFirstBy2 = Belt_internalAVLtree2.findFirstBy;
-    forEachU4 = Belt_internalAVLtree2.forEach;
+    forEachU3 = Belt_internalAVLtree2.forEach;
     forEach6 = Belt_internalAVLtree2.forEach;
-    reduceU3 = Belt_internalAVLtree2.reduce;
+    reduceU2 = Belt_internalAVLtree2.reduce;
     reduce4 = Belt_internalAVLtree2.reduce;
-    everyU3 = Belt_internalAVLtree2.every;
-    every5 = Belt_internalAVLtree2.every;
-    someU3 = Belt_internalAVLtree2.some;
-    some5 = Belt_internalAVLtree2.some;
-    size3 = Belt_internalAVLtree2.size;
+    everyU2 = Belt_internalAVLtree2.every;
+    every4 = Belt_internalAVLtree2.every;
+    someU2 = Belt_internalAVLtree2.some;
+    some4 = Belt_internalAVLtree2.some;
+    size2 = Belt_internalAVLtree2.size;
     toList2 = Belt_internalAVLtree2.toList;
-    toArray3 = Belt_internalAVLtree2.toArray;
-    fromArray4 = Belt_internalMapInt.fromArray;
+    toArray2 = Belt_internalAVLtree2.toArray;
+    fromArray3 = Belt_internalMapInt.fromArray;
     keysToArray2 = Belt_internalAVLtree2.keysToArray;
     valuesToArray2 = Belt_internalAVLtree2.valuesToArray;
     minKey2 = Belt_internalAVLtree2.minKey;
@@ -10951,45 +11659,45 @@ var init_Belt_MapInt = __esm({
     minUndefined2 = Belt_internalAVLtree2.minUndefined;
     maximum2 = Belt_internalAVLtree2.maximum;
     maxUndefined2 = Belt_internalAVLtree2.maxUndefined;
-    get5 = Belt_internalMapInt.get;
+    get4 = Belt_internalMapInt.get;
     getUndefined3 = Belt_internalMapInt.getUndefined;
     getWithDefault6 = Belt_internalMapInt.getWithDefault;
-    getExn6 = Belt_internalMapInt.getOrThrow;
-    getOrThrow8 = Belt_internalMapInt.getOrThrow;
+    getExn5 = Belt_internalMapInt.getOrThrow;
+    getOrThrow7 = Belt_internalMapInt.getOrThrow;
     checkInvariantInternal2 = Belt_internalAVLtree2.checkInvariantInternal;
     updateU = update;
     mergeU2 = Belt_internalMapInt.merge;
     merge3 = Belt_internalMapInt.merge;
-    keepU4 = Belt_internalAVLtree2.keepShared;
-    keep4 = Belt_internalAVLtree2.keepShared;
-    partitionU3 = Belt_internalAVLtree2.partitionShared;
-    partition3 = Belt_internalAVLtree2.partitionShared;
+    keepU3 = Belt_internalAVLtree2.keepShared;
+    keep3 = Belt_internalAVLtree2.keepShared;
+    partitionU2 = Belt_internalAVLtree2.partitionShared;
+    partition2 = Belt_internalAVLtree2.partitionShared;
     split2 = Belt_internalMapInt.split;
-    mapU5 = Belt_internalAVLtree2.map;
-    map7 = Belt_internalAVLtree2.map;
+    mapU3 = Belt_internalAVLtree2.map;
+    map6 = Belt_internalAVLtree2.map;
     mapWithKeyU = Belt_internalAVLtree2.mapWithKey;
     mapWithKey2 = Belt_internalAVLtree2.mapWithKey;
     exports.empty = empty;
-    exports.isEmpty = isEmpty2;
-    exports.has = has4;
-    exports.cmpU = cmpU6;
-    exports.cmp = cmp7;
-    exports.eqU = eqU6;
-    exports.eq = eq7;
+    exports.isEmpty = isEmpty3;
+    exports.has = has3;
+    exports.cmpU = cmpU4;
+    exports.cmp = cmp5;
+    exports.eqU = eqU4;
+    exports.eq = eq5;
     exports.findFirstByU = findFirstByU;
     exports.findFirstBy = findFirstBy2;
-    exports.forEachU = forEachU4;
+    exports.forEachU = forEachU3;
     exports.forEach = forEach6;
-    exports.reduceU = reduceU3;
+    exports.reduceU = reduceU2;
     exports.reduce = reduce4;
-    exports.everyU = everyU3;
-    exports.every = every5;
-    exports.someU = someU3;
-    exports.some = some5;
-    exports.size = size3;
+    exports.everyU = everyU2;
+    exports.every = every4;
+    exports.someU = someU2;
+    exports.some = some4;
+    exports.size = size2;
     exports.toList = toList2;
-    exports.toArray = toArray3;
-    exports.fromArray = fromArray4;
+    exports.toArray = toArray2;
+    exports.fromArray = fromArray3;
     exports.keysToArray = keysToArray2;
     exports.valuesToArray = valuesToArray2;
     exports.minKey = minKey2;
@@ -11000,11 +11708,11 @@ var init_Belt_MapInt = __esm({
     exports.minUndefined = minUndefined2;
     exports.maximum = maximum2;
     exports.maxUndefined = maxUndefined2;
-    exports.get = get5;
+    exports.get = get4;
     exports.getUndefined = getUndefined3;
     exports.getWithDefault = getWithDefault6;
-    exports.getExn = getExn6;
-    exports.getOrThrow = getOrThrow8;
+    exports.getExn = getExn5;
+    exports.getOrThrow = getOrThrow7;
     exports.checkInvariantInternal = checkInvariantInternal2;
     exports.remove = remove2;
     exports.removeMany = removeMany;
@@ -11014,13 +11722,13 @@ var init_Belt_MapInt = __esm({
     exports.mergeU = mergeU2;
     exports.merge = merge3;
     exports.mergeMany = mergeMany;
-    exports.keepU = keepU4;
-    exports.keep = keep4;
-    exports.partitionU = partitionU3;
-    exports.partition = partition3;
+    exports.keepU = keepU3;
+    exports.keep = keep3;
+    exports.partitionU = partitionU2;
+    exports.partition = partition2;
     exports.split = split2;
-    exports.mapU = mapU5;
-    exports.map = map7;
+    exports.mapU = mapU3;
+    exports.map = map6;
     exports.mapWithKeyU = mapWithKeyU;
     exports.mapWithKey = mapWithKey2;
   }
@@ -11031,7 +11739,7 @@ var require_TileSolid = __commonJS({
   "src/TileSolid.js"(exports2) {
     "use strict";
     var Belt_MapInt = (init_Belt_MapInt(), __toCommonJS(Belt_MapInt_exports));
-    var map8 = Belt_MapInt.fromArray([
+    var map7 = Belt_MapInt.fromArray([
       [
         379,
         true
@@ -11802,9 +12510,9 @@ var require_TileSolid = __commonJS({
       ]
     ]);
     function isSolid(tileType) {
-      return Belt_MapInt.getWithDefault(map8, tileType, false);
+      return Belt_MapInt.getWithDefault(map7, tileType, false);
     }
-    exports2.map = map8;
+    exports2.map = map7;
     exports2.isSolid = isSolid;
   }
 });
@@ -11814,7 +12522,7 @@ var require_TileFrameImportant = __commonJS({
   "src/TileFrameImportant.js"(exports2) {
     "use strict";
     var Belt_MapInt = (init_Belt_MapInt(), __toCommonJS(Belt_MapInt_exports));
-    var map8 = Belt_MapInt.fromArray([
+    var map7 = Belt_MapInt.fromArray([
       [
         0,
         false
@@ -14309,9 +15017,9 @@ var require_TileFrameImportant = __commonJS({
       ]
     ]);
     function isImportant(tileType) {
-      return Belt_MapInt.getWithDefault(map8, tileType, false);
+      return Belt_MapInt.getWithDefault(map7, tileType, false);
     }
-    exports2.map = map8;
+    exports2.map = map7;
     exports2.isImportant = isImportant;
   }
 });
@@ -14320,192 +15028,107 @@ var require_TileFrameImportant = __commonJS({
 var require_ErrorAwareBufferReader = __commonJS({
   "src/ErrorAwareBufferReader.js"(exports2) {
     "use strict";
-    var Primitive_exceptions3 = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
-    var ReadError = /* @__PURE__ */ Primitive_exceptions3.create("ErrorAwareBufferReader-TerrariaPacket.ReadError");
-    function readByte(reader, context) {
+    var Primitive_exceptions2 = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
+    function readByteUnsafe(prim) {
+      return prim.readByte();
+    }
+    function readInt16Unsafe(prim) {
+      return prim.readInt16();
+    }
+    function readInt32Unsafe(prim) {
+      return prim.readInt32();
+    }
+    function readUInt64Unsafe(prim) {
+      return prim.readUInt64();
+    }
+    function readStringUnsafe(prim) {
+      return prim.readString();
+    }
+    function readBytesUnsafe(prim0, prim1) {
+      return prim0.readBytes(prim1);
+    }
+    function readSingleUnsafe(prim) {
+      return prim.readSingle();
+    }
+    function readSByteUnsafe(prim) {
+      return prim.readSByte();
+    }
+    function readColorUnsafe(prim) {
+      return prim.readColor();
+    }
+    function readBufferUnsafe(prim0, prim1) {
+      return prim0.readBuffer(prim1);
+    }
+    function getBytesLeftUnsafe(prim) {
+      return prim.bytesLeft;
+    }
+    var ReadError = /* @__PURE__ */ Primitive_exceptions2.create("ErrorAwareBufferReader-TerrariaPacket.ReadError");
+    function withContext(fn, reader, context) {
       try {
-        return reader.readByte();
+        return {
+          TAG: "Ok",
+          _0: fn(reader)
+        };
       } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
         if (obj.RE_EXN_ID === "JsExn") {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
+          return {
+            TAG: "Error",
+            _0: {
               context,
               error: obj._1
-            },
-            Error: new Error()
+            }
           };
         }
         throw obj;
       }
+    }
+    function readByte(reader, context) {
+      return withContext(readByteUnsafe, reader, context);
     }
     function readInt16(reader, context) {
-      try {
-        return reader.readInt16();
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
+      return withContext(readInt16Unsafe, reader, context);
     }
     function readInt32(reader, context) {
-      try {
-        return reader.readInt32();
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
+      return withContext(readInt32Unsafe, reader, context);
     }
     function readUInt64(reader, context) {
-      try {
-        return reader.readUInt64();
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
+      return withContext(readUInt64Unsafe, reader, context);
     }
     function readString(reader, context) {
-      try {
-        return reader.readString();
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
+      return withContext(readStringUnsafe, reader, context);
     }
     function readBytes(reader, count, context) {
-      try {
-        return reader.readBytes(count);
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
+      return withContext((reader2) => reader2.readBytes(count), reader, context);
     }
     function readSingle(reader, context) {
-      try {
-        return reader.readSingle();
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
+      return withContext(readSingleUnsafe, reader, context);
     }
     function readSByte(reader, context) {
-      try {
-        return reader.readSByte();
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
+      return withContext(readSByteUnsafe, reader, context);
     }
     function readColor(reader, context) {
-      try {
-        return reader.readColor();
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
+      return withContext(readColorUnsafe, reader, context);
     }
     function readBuffer(reader, bytes, context) {
-      try {
-        return reader.readBuffer(bytes);
-      } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
-        if (obj.RE_EXN_ID === "JsExn") {
-          throw {
-            RE_EXN_ID: ReadError,
-            _1: {
-              context,
-              error: obj._1
-            },
-            Error: new Error()
-          };
-        }
-        throw obj;
-      }
+      return withContext((reader2) => reader2.readBuffer(bytes), reader, context);
     }
     function getBytesLeft(reader) {
-      return reader.bytesLeft;
+      return withContext(getBytesLeftUnsafe, reader, "getBytesLeft");
     }
+    exports2.readByteUnsafe = readByteUnsafe;
+    exports2.readInt16Unsafe = readInt16Unsafe;
+    exports2.readInt32Unsafe = readInt32Unsafe;
+    exports2.readUInt64Unsafe = readUInt64Unsafe;
+    exports2.readStringUnsafe = readStringUnsafe;
+    exports2.readBytesUnsafe = readBytesUnsafe;
+    exports2.readSingleUnsafe = readSingleUnsafe;
+    exports2.readSByteUnsafe = readSByteUnsafe;
+    exports2.readColorUnsafe = readColorUnsafe;
+    exports2.readBufferUnsafe = readBufferUnsafe;
+    exports2.getBytesLeftUnsafe = getBytesLeftUnsafe;
     exports2.ReadError = ReadError;
+    exports2.withContext = withContext;
     exports2.readByte = readByte;
     exports2.readInt16 = readInt16;
     exports2.readInt32 = readInt32;
@@ -14524,7 +15147,7 @@ var require_ErrorAwareBufferReader = __commonJS({
 var require_ErrorAwareBufferWriter = __commonJS({
   "src/ErrorAwareBufferWriter.js"(exports2) {
     "use strict";
-    var Primitive_exceptions3 = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
+    var Primitive_exceptions2 = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
     var Bufferwriter = require_bufferwriter().default;
     function packSingle(self, value, context) {
       if (self.TAG !== "Writing") {
@@ -14537,7 +15160,7 @@ var require_ErrorAwareBufferWriter = __commonJS({
           _0: writer
         };
       } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
         if (obj.RE_EXN_ID === "JsExn") {
           return {
             TAG: "Error",
@@ -14561,7 +15184,7 @@ var require_ErrorAwareBufferWriter = __commonJS({
           _0: writer
         };
       } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
         if (obj.RE_EXN_ID === "JsExn") {
           return {
             TAG: "Error",
@@ -14585,7 +15208,7 @@ var require_ErrorAwareBufferWriter = __commonJS({
           _0: writer
         };
       } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
         if (obj.RE_EXN_ID === "JsExn") {
           return {
             TAG: "Error",
@@ -14609,7 +15232,7 @@ var require_ErrorAwareBufferWriter = __commonJS({
           _0: writer
         };
       } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
         if (obj.RE_EXN_ID === "JsExn") {
           return {
             TAG: "Error",
@@ -14633,7 +15256,7 @@ var require_ErrorAwareBufferWriter = __commonJS({
           _0: writer
         };
       } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
         if (obj.RE_EXN_ID === "JsExn") {
           return {
             TAG: "Error",
@@ -14657,7 +15280,7 @@ var require_ErrorAwareBufferWriter = __commonJS({
           _0: writer
         };
       } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
         if (obj.RE_EXN_ID === "JsExn") {
           return {
             TAG: "Error",
@@ -14681,7 +15304,7 @@ var require_ErrorAwareBufferWriter = __commonJS({
           _0: writer
         };
       } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
         if (obj.RE_EXN_ID === "JsExn") {
           return {
             TAG: "Error",
@@ -14705,7 +15328,7 @@ var require_ErrorAwareBufferWriter = __commonJS({
           _0: writer
         };
       } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
         if (obj.RE_EXN_ID === "JsExn") {
           return {
             TAG: "Error",
@@ -14729,7 +15352,7 @@ var require_ErrorAwareBufferWriter = __commonJS({
           _0: writer
         };
       } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
         if (obj.RE_EXN_ID === "JsExn") {
           return {
             TAG: "Error",
@@ -14753,7 +15376,7 @@ var require_ErrorAwareBufferWriter = __commonJS({
           _0: writer
         };
       } catch (raw_obj) {
-        let obj = Primitive_exceptions3.internalToException(raw_obj);
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
         if (obj.RE_EXN_ID === "JsExn") {
           return {
             TAG: "Error",
@@ -14805,12 +15428,12 @@ var require_Packet_TileSectionSend = __commonJS({
   "src/packet/Packet_TileSectionSend.js"(exports2) {
     "use strict";
     var Nodezlib = require("node:zlib");
-    var Belt_Array3 = (init_Belt_Array(), __toCommonJS(Belt_Array_exports));
+    var Belt_Array2 = (init_Belt_Array(), __toCommonJS(Belt_Array_exports));
     var Belt_Option = (init_Belt_Option(), __toCommonJS(Belt_Option_exports));
-    var Belt_Result = (init_Belt_Result(), __toCommonJS(Belt_Result_exports));
+    var Stdlib_Result = (init_Stdlib_Result(), __toCommonJS(Stdlib_Result_exports));
     var Primitive_object = (init_Primitive_object(), __toCommonJS(Primitive_object_exports));
+    var Primitive_exceptions2 = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
     var BitFlags$TerrariaPacket = require_BitFlags();
-    var ResultExt$TerrariaPacket = require_ResultExt();
     var TileSolid$TerrariaPacket = require_TileSolid();
     var PacketType$TerrariaPacket = require_PacketType();
     var TileFrameImportant$TerrariaPacket = require_TileFrameImportant();
@@ -14861,16 +15484,32 @@ var require_Packet_TileSectionSend = __commonJS({
       };
     }
     function parse(reader) {
-      let id = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "id");
-      let x = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
-      let y = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
-      let name = ErrorAwareBufferReader$TerrariaPacket.readString(reader, "name");
-      return {
-        id,
-        x,
-        y,
-        name
-      };
+      let e = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "id");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwareBufferReader$TerrariaPacket.readString(reader, "name");
+      if (e$3.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            id: e._0,
+            x: e$1._0,
+            y: e$2._0,
+            name: e$3._0
+          }
+        };
+      } else {
+        return e$3;
+      }
     }
     function pack(writer, chest) {
       return ErrorAwareBufferWriter$TerrariaPacket.packString(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer, chest.id, "id"), chest.x, "x"), chest.y, "y"), chest.name, "name");
@@ -14884,16 +15523,32 @@ var require_Packet_TileSectionSend = __commonJS({
       pack
     };
     function parse$1(reader) {
-      let id = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "id");
-      let x = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
-      let y = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
-      let name = ErrorAwareBufferReader$TerrariaPacket.readString(reader, "name");
-      return {
-        id,
-        x,
-        y,
-        name
-      };
+      let e = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "id");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwareBufferReader$TerrariaPacket.readString(reader, "name");
+      if (e$3.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            id: e._0,
+            x: e$1._0,
+            y: e$2._0,
+            name: e$3._0
+          }
+        };
+      } else {
+        return e$3;
+      }
     }
     function pack$1(writer, sign) {
       return ErrorAwareBufferWriter$TerrariaPacket.packString(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer, sign.id, "id"), sign.x, "x"), sign.y, "y"), sign.name, "name");
@@ -14907,148 +15562,252 @@ var require_Packet_TileSectionSend = __commonJS({
       pack: pack$1
     };
     function parseTrainingDummyKind(reader) {
-      return {
-        npcSlotId: ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "npcSlotId")
-      };
+      let e = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "npcSlotId");
+      if (e.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            npcSlotId: e._0
+          }
+        };
+      } else {
+        return e;
+      }
     }
     function parseDisplayItem(reader) {
-      let netId = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "netId");
-      let prefix = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "prefix");
-      let stack = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "stack");
-      return {
-        netId,
-        prefix,
-        stack
-      };
+      let e = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "netId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "prefix");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "stack");
+      if (e$2.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            netId: e._0,
+            prefix: e$1._0,
+            stack: e$2._0
+          }
+        };
+      } else {
+        return e$2;
+      }
     }
     function parseLogicSensorKind(reader) {
-      let checkType = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "checkType");
-      let on = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "on") === 1;
-      return {
-        checkType,
-        on
-      };
+      let e = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "checkType");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "on");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            checkType: e._0,
+            on: e$1._0 === 1
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
     function parseDisplayDollKind(reader) {
-      let itemsFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "itemsFlags"));
-      let dyeFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "dyeFlags"));
+      let e = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "itemsFlags");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let itemsFlags = BitFlags$TerrariaPacket.fromByte(e._0);
+      let e$1 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "dyeFlags");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let dyeFlags = BitFlags$TerrariaPacket.fromByte(e$1._0);
       let items = [];
       let dyes = [];
+      let parseResult = {
+        TAG: "Ok",
+        _0: void 0
+      };
       for (let i = 0; i <= 7; ++i) {
-        if (BitFlags$TerrariaPacket.flagN(itemsFlags, i)) {
-          items.push(parseDisplayItem(reader));
-        } else {
-          items.push(void 0);
+        let match = parseResult;
+        if (match.TAG === "Ok") {
+          if (BitFlags$TerrariaPacket.flagN(itemsFlags, i)) {
+            let item = parseDisplayItem(reader);
+            if (item.TAG === "Ok") {
+              items.push(item._0);
+            } else {
+              parseResult = {
+                TAG: "Error",
+                _0: item._0
+              };
+            }
+          } else {
+            items.push(void 0);
+          }
         }
       }
       for (let i$1 = 0; i$1 <= 7; ++i$1) {
-        if (BitFlags$TerrariaPacket.flagN(dyeFlags, i$1)) {
-          dyes.push(parseDisplayItem(reader));
-        } else {
-          dyes.push(void 0);
+        let match$1 = parseResult;
+        if (match$1.TAG === "Ok") {
+          if (BitFlags$TerrariaPacket.flagN(dyeFlags, i$1)) {
+            let item$1 = parseDisplayItem(reader);
+            if (item$1.TAG === "Ok") {
+              dyes.push(item$1._0);
+            } else {
+              parseResult = {
+                TAG: "Error",
+                _0: item$1._0
+              };
+            }
+          } else {
+            dyes.push(void 0);
+          }
         }
       }
-      return {
-        items,
-        dyes
-      };
+      let err = parseResult;
+      if (err.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            items,
+            dyes
+          }
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: err._0
+        };
+      }
     }
     function parseHatRackKind(reader) {
-      let flags = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "flags"));
+      let e = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "flags");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let flags = BitFlags$TerrariaPacket.fromByte(e._0);
       let items = [];
       let dyes = [];
+      let parseResult = {
+        TAG: "Ok",
+        _0: void 0
+      };
       for (let i = 0; i <= 1; ++i) {
-        if (BitFlags$TerrariaPacket.flagN(flags, i)) {
-          items.push(parseDisplayItem(reader));
-        } else {
-          items.push(void 0);
+        let match = parseResult;
+        if (match.TAG === "Ok") {
+          if (BitFlags$TerrariaPacket.flagN(flags, i)) {
+            let item = parseDisplayItem(reader);
+            if (item.TAG === "Ok") {
+              items.push(item._0);
+            } else {
+              parseResult = {
+                TAG: "Error",
+                _0: item._0
+              };
+            }
+          } else {
+            items.push(void 0);
+          }
         }
       }
       for (let i$1 = 0; i$1 <= 1; ++i$1) {
-        if (BitFlags$TerrariaPacket.flagN(flags, i$1 + 2 | 0)) {
-          dyes.push(parseDisplayItem(reader));
-        } else {
-          dyes.push(void 0);
+        let match$1 = parseResult;
+        if (match$1.TAG === "Ok") {
+          if (BitFlags$TerrariaPacket.flagN(flags, i$1 + 2 | 0)) {
+            let item$1 = parseDisplayItem(reader);
+            if (item$1.TAG === "Ok") {
+              dyes.push(item$1._0);
+            } else {
+              parseResult = {
+                TAG: "Error",
+                _0: item$1._0
+              };
+            }
+          } else {
+            dyes.push(void 0);
+          }
         }
       }
-      return {
-        items,
-        dyes
-      };
+      let err = parseResult;
+      if (err.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            items,
+            dyes
+          }
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: err._0
+        };
+      }
     }
     function parse$2(reader) {
-      let entityType = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "entityType");
-      let x = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
-      let y = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
-      let entityKind;
+      let e = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "entityType");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let entityType = e._0;
+      let e$1 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3;
       switch (entityType) {
         case 0:
-          entityKind = {
-            TAG: "Ok",
-            _0: {
-              TAG: "TrainingDummy",
-              _0: {
-                npcSlotId: ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "npcSlotId")
-              }
-            }
-          };
+          e$3 = Stdlib_Result.map(parseTrainingDummyKind(reader), (v) => ({
+            TAG: "TrainingDummy",
+            _0: v
+          }));
           break;
         case 1:
-          entityKind = {
-            TAG: "Ok",
-            _0: {
-              TAG: "ItemFrame",
-              _0: parseDisplayItem(reader)
-            }
-          };
+          e$3 = Stdlib_Result.map(parseDisplayItem(reader), (v) => ({
+            TAG: "ItemFrame",
+            _0: v
+          }));
           break;
         case 2:
-          entityKind = {
-            TAG: "Ok",
-            _0: {
-              TAG: "LogicSensor",
-              _0: parseLogicSensorKind(reader)
-            }
-          };
+          e$3 = Stdlib_Result.map(parseLogicSensorKind(reader), (v) => ({
+            TAG: "LogicSensor",
+            _0: v
+          }));
           break;
         case 3:
-          entityKind = {
-            TAG: "Ok",
-            _0: {
-              TAG: "DisplayDoll",
-              _0: parseDisplayDollKind(reader)
-            }
-          };
+          e$3 = Stdlib_Result.map(parseDisplayDollKind(reader), (v) => ({
+            TAG: "DisplayDoll",
+            _0: v
+          }));
           break;
         case 4:
-          entityKind = {
-            TAG: "Ok",
-            _0: {
-              TAG: "WeaponsRack",
-              _0: parseDisplayItem(reader)
-            }
-          };
+          e$3 = Stdlib_Result.map(parseDisplayItem(reader), (v) => ({
+            TAG: "WeaponsRack",
+            _0: v
+          }));
           break;
         case 5:
-          entityKind = {
-            TAG: "Ok",
-            _0: {
-              TAG: "HatRack",
-              _0: parseHatRackKind(reader)
-            }
-          };
+          e$3 = Stdlib_Result.map(parseHatRackKind(reader), (v) => ({
+            TAG: "HatRack",
+            _0: v
+          }));
           break;
         case 6:
-          entityKind = {
-            TAG: "Ok",
-            _0: {
-              TAG: "FoodPlatter",
-              _0: parseDisplayItem(reader)
-            }
-          };
+          e$3 = Stdlib_Result.map(parseDisplayItem(reader), (v) => ({
+            TAG: "FoodPlatter",
+            _0: v
+          }));
           break;
         case 7:
-          entityKind = {
+          e$3 = {
             TAG: "Ok",
             _0: {
               TAG: "TeleportationPylon",
@@ -15057,17 +15816,27 @@ var require_Packet_TileSectionSend = __commonJS({
           };
           break;
         default:
-          entityKind = {
+          e$3 = {
             TAG: "Error",
-            _0: 'File "Packet_TileSectionSend.res", line 317, characters 17-24Unknown entity kind. '
+            _0: {
+              context: "Entity.parse",
+              error: new Error("Unknown entity kind: " + String(entityType))
+            }
           };
       }
-      return Belt_Result.map(entityKind, (entityKind2) => ({
-        entityType,
-        x,
-        y,
-        entityKind: entityKind2
-      }));
+      if (e$3.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            entityType,
+            x: e$1._0,
+            y: e$2._0,
+            entityKind: e$3._0
+          }
+        };
+      } else {
+        return e$3;
+      }
     }
     function packTrainingDummy(writer, trainingDummy) {
       return ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer, trainingDummy.npcSlotId, "npcSlotId");
@@ -15079,20 +15848,20 @@ var require_Packet_TileSectionSend = __commonJS({
       return ErrorAwareBufferWriter$TerrariaPacket.packByte(ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, logicSensorKind.checkType, "checkType"), logicSensorKind.on ? 1 : 0, "on");
     }
     function hasItem(arr, n) {
-      return Belt_Option.isSome(Belt_Option.flatMap(Belt_Array3.get(arr, n), (a) => a));
+      return Belt_Option.isSome(Belt_Option.flatMap(Belt_Array2.get(arr, n), (a) => a));
     }
     function packDisplayDoll(writer, displayDollKind) {
       let itemFlags = BitFlags$TerrariaPacket.fromFlags(hasItem(displayDollKind.items, 0), hasItem(displayDollKind.items, 1), hasItem(displayDollKind.items, 2), hasItem(displayDollKind.items, 3), hasItem(displayDollKind.items, 4), hasItem(displayDollKind.items, 5), hasItem(displayDollKind.items, 6), hasItem(displayDollKind.items, 7));
       let dyeFlags = BitFlags$TerrariaPacket.fromFlags(hasItem(displayDollKind.dyes, 0), hasItem(displayDollKind.dyes, 1), hasItem(displayDollKind.dyes, 2), hasItem(displayDollKind.dyes, 3), hasItem(displayDollKind.dyes, 4), hasItem(displayDollKind.dyes, 5), hasItem(displayDollKind.dyes, 6), hasItem(displayDollKind.dyes, 7));
       ErrorAwareBufferWriter$TerrariaPacket.packByte(ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(itemFlags), "itemFlags"), BitFlags$TerrariaPacket.toByte(dyeFlags), "dyeFlags");
       for (let i = 0; i <= 7; ++i) {
-        let item = Belt_Option.flatMap(Belt_Array3.get(displayDollKind.items, i), (a) => a);
+        let item = Belt_Option.flatMap(Belt_Array2.get(displayDollKind.items, i), (a) => a);
         if (item !== void 0) {
           packDisplayItem(writer, item);
         }
       }
       for (let i$1 = 0; i$1 <= 7; ++i$1) {
-        let item$1 = Belt_Option.flatMap(Belt_Array3.get(displayDollKind.dyes, i$1), (a) => a);
+        let item$1 = Belt_Option.flatMap(Belt_Array2.get(displayDollKind.dyes, i$1), (a) => a);
         if (item$1 !== void 0) {
           packDisplayItem(writer, item$1);
         }
@@ -15103,13 +15872,13 @@ var require_Packet_TileSectionSend = __commonJS({
       let flags = BitFlags$TerrariaPacket.fromFlags(hasItem(hatRackKind.items, 0), hasItem(hatRackKind.items, 1), hasItem(hatRackKind.dyes, 2), hasItem(hatRackKind.dyes, 3), false, false, false, false);
       ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(flags), "flags");
       for (let i = 0; i <= 1; ++i) {
-        let item = Belt_Option.flatMap(Belt_Array3.get(hatRackKind.items, i), (a) => a);
+        let item = Belt_Option.flatMap(Belt_Array2.get(hatRackKind.items, i), (a) => a);
         if (item !== void 0) {
           packDisplayItem(writer, item);
         }
       }
       for (let i$1 = 0; i$1 <= 1; ++i$1) {
-        let item$1 = Belt_Option.flatMap(Belt_Array3.get(hatRackKind.dyes, i$1), (a) => a);
+        let item$1 = Belt_Option.flatMap(Belt_Array2.get(hatRackKind.dyes, i$1), (a) => a);
         if (item$1 !== void 0) {
           packDisplayItem(writer, item$1);
         }
@@ -15185,154 +15954,512 @@ var require_Packet_TileSectionSend = __commonJS({
       tile.actuator = false;
       tile.inActive = false;
     }
-    function parse$3(payload) {
-      let packetReader = new Packetreader(payload);
-      let deflated = ErrorAwarePacketReader$TerrariaPacket.readBuffer(packetReader, ErrorAwarePacketReader$TerrariaPacket.getBytesLeft(packetReader), "deflatedPayload");
-      let reader = new Bufferreader(Nodezlib.inflateRawSync(deflated));
-      let tileX = ErrorAwareBufferReader$TerrariaPacket.readInt32(reader, "tileX");
-      let tileY = ErrorAwareBufferReader$TerrariaPacket.readInt32(reader, "tileY");
-      let width = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "width");
-      let height = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "height");
-      let tiles = [];
-      let tileCache = defaultTileCache();
-      let rleCount = 0;
-      if (height < 0 || width < 0) {
-        return;
-      }
-      for (let _y = 0; _y < height; ++_y) {
-        let row = [];
-        for (let _x = 0; _x < width; ++_x) {
-          if (rleCount !== 0) {
-            rleCount = rleCount - 1 | 0;
-            row.push(cacheToTile(tileCache));
+    function readRepeated(count, parseItem) {
+      let items = [];
+      let parseResult = {
+        TAG: "Ok",
+        _0: void 0
+      };
+      for (let _i = 0; _i < count; ++_i) {
+        let match = parseResult;
+        if (match.TAG === "Ok") {
+          let item = parseItem();
+          if (item.TAG === "Ok") {
+            items.push(item._0);
           } else {
-            clearTileCache(tileCache);
-            let header5 = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header5"));
-            let match;
-            if (BitFlags$TerrariaPacket.flag1(header5)) {
-              let header4 = BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header4_conditional"));
-              let header3 = BitFlags$TerrariaPacket.flag1(header4) ? BitFlags$TerrariaPacket.fromByte(ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header3_conditional")) : BitFlags$TerrariaPacket.fromByte(0);
-              let header2 = BitFlags$TerrariaPacket.flag1(header3) ? ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header2_conditional") : 0;
-              match = [
-                header4,
-                header3,
-                header2
-              ];
-            } else {
-              match = [
-                BitFlags$TerrariaPacket.fromByte(0),
-                BitFlags$TerrariaPacket.fromByte(0),
-                0
-              ];
-            }
-            let header3$1 = match[1];
-            let header4$1 = match[0];
-            tileCache.coatHeader = match[2];
-            let oldActive = tileCache.activeTile;
-            if (BitFlags$TerrariaPacket.flag2(header5)) {
-              let oldType = Belt_Option.mapWithDefault(tileCache.activeTile, 0, (active) => active.tileType);
-              let tileType;
-              if (BitFlags$TerrariaPacket.flag6(header5)) {
-                let byte = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "tileType_byte1");
-                let secondByte = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "tileType_byte2");
-                tileType = secondByte << 8 | byte;
-              } else {
-                tileType = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "tileType");
-              }
-              let frame;
-              if (TileFrameImportant$TerrariaPacket.isImportant(tileType)) {
-                let x = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "frameX");
-                let y = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "frameY");
-                frame = {
-                  x,
-                  y
-                };
-              } else {
-                frame = Belt_Option.isSome(oldActive) && tileType === oldType ? oldActive.frame : void 0;
-              }
-              if (BitFlags$TerrariaPacket.flag4(header3$1)) {
-                tileCache.color = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "color");
-              }
-              tileCache.activeTile = {
-                tileType,
-                frame
-              };
-            }
-            if (BitFlags$TerrariaPacket.flag3(header5)) {
-              tileCache.wall = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "wall");
-              if (BitFlags$TerrariaPacket.flag5(header3$1)) {
-                tileCache.wallColor = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "wallColor");
-              }
-            }
-            let liquidBits = (BitFlags$TerrariaPacket.toByte(header5) & 24) >> 3;
-            if (liquidBits !== 0) {
-              tileCache.liquid = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "liquidValue");
-              if (liquidBits > 1) {
-                if (liquidBits === 2) {
-                  tileCache.lava = true;
-                } else {
-                  tileCache.honey = true;
-                }
-              }
-            }
-            if (BitFlags$TerrariaPacket.toByte(header4$1) > 1) {
-              if (BitFlags$TerrariaPacket.flag2(header4$1)) {
-                tileCache.wire = true;
-              }
-              if (BitFlags$TerrariaPacket.flag3(header4$1)) {
-                tileCache.wire2 = true;
-              }
-              if (BitFlags$TerrariaPacket.flag4(header4$1)) {
-                tileCache.wire3 = true;
-              }
-              let slopeBits = (BitFlags$TerrariaPacket.toByte(header4$1) & 112) >> 4;
-              if (slopeBits !== 0 && TileSolid$TerrariaPacket.isSolid(Belt_Option.mapWithDefault(tileCache.activeTile, 0, (tile) => tile.tileType))) {
-                if (slopeBits === 1) {
-                  tileCache.halfBrick = true;
-                } else {
-                  tileCache.slope = slopeBits - 1 | 0;
-                }
-              }
-            }
-            if (BitFlags$TerrariaPacket.toByte(header3$1) > 0) {
-              if (BitFlags$TerrariaPacket.flag2(header3$1)) {
-                tileCache.actuator = true;
-              }
-              if (BitFlags$TerrariaPacket.flag3(header3$1)) {
-                tileCache.inActive = true;
-              }
-              if (BitFlags$TerrariaPacket.flag6(header3$1)) {
-                tileCache.wire4 = true;
-              }
-              if (BitFlags$TerrariaPacket.flag7(header3$1)) {
-                let byte$1 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "wall_highByte");
-                tileCache.wall = byte$1 << 8 | tileCache.wall;
-              }
-            }
-            let repeatCountBytes = (BitFlags$TerrariaPacket.toByte(header5) & 192) >> 6;
-            rleCount = repeatCountBytes !== 0 ? repeatCountBytes !== 1 ? ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "rle_int16") : ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "rle_byte") : 0;
-            row.push(cacheToTile(tileCache));
+            parseResult = {
+              TAG: "Error",
+              _0: item._0
+            };
           }
         }
-        tiles.push(row);
       }
-      let chestCount = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "chestCount");
-      let chests = Belt_Array3.make(chestCount, 0).map((param) => parse(reader));
-      let signCount = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "signCount");
-      let signs = Belt_Array3.make(signCount, 0).map((param) => parse$1(reader));
-      let entityCount = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "entityCount");
-      let entities = ResultExt$TerrariaPacket.allOkOrError(Belt_Array3.make(entityCount, 0).map((param) => parse$2(reader)));
-      if (entities.TAG === "Ok") {
+      let err = parseResult;
+      if (err.TAG === "Ok") {
         return {
-          height,
-          width,
-          tileX,
-          tileY,
-          tiles,
-          chests,
-          signs,
-          entities: entities._0
+          TAG: "Ok",
+          _0: items
         };
+      } else {
+        return {
+          TAG: "Error",
+          _0: err._0
+        };
+      }
+    }
+    function parse$3(payload) {
+      let packetReader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.getBytesLeft(packetReader);
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readBuffer(packetReader, e._0, "deflatedPayload");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let inflated;
+      try {
+        inflated = {
+          TAG: "Ok",
+          _0: Nodezlib.inflateRawSync(e$1._0)
+        };
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          inflated = {
+            TAG: "Error",
+            _0: {
+              context: "inflateRawSync",
+              error: obj._1
+            }
+          };
+        } else {
+          throw obj;
+        }
+      }
+      if (inflated.TAG !== "Ok") {
+        return inflated;
+      }
+      let reader = new Bufferreader(inflated._0);
+      let e$2 = ErrorAwareBufferReader$TerrariaPacket.readInt32(reader, "tileX");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwareBufferReader$TerrariaPacket.readInt32(reader, "tileY");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "width");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let width = e$4._0;
+      let e$5 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "height");
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let height = e$5._0;
+      let tiles = [];
+      let tileCache = defaultTileCache();
+      let rleCount = {
+        contents: 0
+      };
+      if (height < 0 || width < 0) {
+        return {
+          TAG: "Error",
+          _0: {
+            context: "Packet_TileSectionSend.parse",
+            error: new Error("Tile section dimensions must be non-negative")
+          }
+        };
+      }
+      let parseResult = {
+        TAG: "Ok",
+        _0: void 0
+      };
+      let readTile = () => {
+        clearTileCache(tileCache);
+        let e2 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header5");
+        if (e2.TAG !== "Ok") {
+          return e2;
+        }
+        let header5 = BitFlags$TerrariaPacket.fromByte(e2._0);
+        let e$12;
+        if (BitFlags$TerrariaPacket.flag1(header5)) {
+          let e$22 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header4_conditional");
+          if (e$22.TAG === "Ok") {
+            let header4 = BitFlags$TerrariaPacket.fromByte(e$22._0);
+            let e$32;
+            if (BitFlags$TerrariaPacket.flag1(header4)) {
+              let e$42 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header3_conditional");
+              if (e$42.TAG === "Ok") {
+                let header3 = BitFlags$TerrariaPacket.fromByte(e$42._0);
+                let e$52 = BitFlags$TerrariaPacket.flag1(header3) ? ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "header2_conditional") : {
+                  TAG: "Ok",
+                  _0: 0
+                };
+                e$32 = e$52.TAG === "Ok" ? {
+                  TAG: "Ok",
+                  _0: [
+                    header3,
+                    e$52._0
+                  ]
+                } : e$52;
+              } else {
+                e$32 = e$42;
+              }
+            } else {
+              e$32 = {
+                TAG: "Ok",
+                _0: [
+                  BitFlags$TerrariaPacket.fromByte(0),
+                  0
+                ]
+              };
+            }
+            if (e$32.TAG === "Ok") {
+              let match = e$32._0;
+              e$12 = {
+                TAG: "Ok",
+                _0: [
+                  header4,
+                  match[0],
+                  match[1]
+                ]
+              };
+            } else {
+              e$12 = e$32;
+            }
+          } else {
+            e$12 = e$22;
+          }
+        } else {
+          e$12 = {
+            TAG: "Ok",
+            _0: [
+              BitFlags$TerrariaPacket.fromByte(0),
+              BitFlags$TerrariaPacket.fromByte(0),
+              0
+            ]
+          };
+        }
+        if (e$12.TAG !== "Ok") {
+          return e$12;
+        }
+        let match$1 = e$12._0;
+        let header3$1 = match$1[1];
+        let header4$1 = match$1[0];
+        tileCache.coatHeader = match$1[2];
+        let oldActive = tileCache.activeTile;
+        let e$62;
+        if (BitFlags$TerrariaPacket.flag2(header5)) {
+          let oldType = Belt_Option.mapWithDefault(tileCache.activeTile, 0, (active) => active.tileType);
+          let e$72;
+          if (BitFlags$TerrariaPacket.flag6(header5)) {
+            let e$82 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "tileType_byte1");
+            if (e$82.TAG === "Ok") {
+              let e$92 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "tileType_byte2");
+              e$72 = e$92.TAG === "Ok" ? {
+                TAG: "Ok",
+                _0: e$92._0 << 8 | e$82._0
+              } : e$92;
+            } else {
+              e$72 = e$82;
+            }
+          } else {
+            e$72 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "tileType");
+          }
+          if (e$72.TAG === "Ok") {
+            let tileType = e$72._0;
+            let e$102;
+            if (TileFrameImportant$TerrariaPacket.isImportant(tileType)) {
+              let e$112 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "frameX");
+              if (e$112.TAG === "Ok") {
+                let e$122 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "frameY");
+                e$102 = e$122.TAG === "Ok" ? {
+                  TAG: "Ok",
+                  _0: {
+                    x: e$112._0,
+                    y: e$122._0
+                  }
+                } : e$122;
+              } else {
+                e$102 = e$112;
+              }
+            } else {
+              e$102 = Belt_Option.isSome(oldActive) && tileType === oldType ? {
+                TAG: "Ok",
+                _0: oldActive.frame
+              } : {
+                TAG: "Ok",
+                _0: void 0
+              };
+            }
+            if (e$102.TAG === "Ok") {
+              let e$13;
+              if (BitFlags$TerrariaPacket.flag4(header3$1)) {
+                let e$14 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "color");
+                if (e$14.TAG === "Ok") {
+                  tileCache.color = e$14._0;
+                  e$13 = {
+                    TAG: "Ok",
+                    _0: void 0
+                  };
+                } else {
+                  e$13 = e$14;
+                }
+              } else {
+                e$13 = {
+                  TAG: "Ok",
+                  _0: void 0
+                };
+              }
+              if (e$13.TAG === "Ok") {
+                tileCache.activeTile = {
+                  tileType,
+                  frame: e$102._0
+                };
+                e$62 = {
+                  TAG: "Ok",
+                  _0: void 0
+                };
+              } else {
+                e$62 = e$13;
+              }
+            } else {
+              e$62 = e$102;
+            }
+          } else {
+            e$62 = e$72;
+          }
+        } else {
+          e$62 = {
+            TAG: "Ok",
+            _0: void 0
+          };
+        }
+        if (e$62.TAG !== "Ok") {
+          return e$62;
+        }
+        let e$15;
+        if (BitFlags$TerrariaPacket.flag3(header5)) {
+          let e$16 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "wall");
+          if (e$16.TAG === "Ok") {
+            tileCache.wall = e$16._0;
+            if (BitFlags$TerrariaPacket.flag5(header3$1)) {
+              let e$17 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "wallColor");
+              if (e$17.TAG === "Ok") {
+                tileCache.wallColor = e$17._0;
+                e$15 = {
+                  TAG: "Ok",
+                  _0: void 0
+                };
+              } else {
+                e$15 = e$17;
+              }
+            } else {
+              e$15 = {
+                TAG: "Ok",
+                _0: void 0
+              };
+            }
+          } else {
+            e$15 = e$16;
+          }
+        } else {
+          e$15 = {
+            TAG: "Ok",
+            _0: void 0
+          };
+        }
+        if (e$15.TAG !== "Ok") {
+          return e$15;
+        }
+        let liquidBits = (BitFlags$TerrariaPacket.toByte(header5) & 24) >> 3;
+        let e$18;
+        if (liquidBits !== 0) {
+          let e$19 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "liquidValue");
+          if (e$19.TAG === "Ok") {
+            tileCache.liquid = e$19._0;
+            if (liquidBits > 1) {
+              if (liquidBits === 2) {
+                tileCache.lava = true;
+              } else {
+                tileCache.honey = true;
+              }
+            }
+            e$18 = {
+              TAG: "Ok",
+              _0: void 0
+            };
+          } else {
+            e$18 = e$19;
+          }
+        } else {
+          e$18 = {
+            TAG: "Ok",
+            _0: void 0
+          };
+        }
+        if (e$18.TAG !== "Ok") {
+          return e$18;
+        }
+        if (BitFlags$TerrariaPacket.toByte(header4$1) > 1) {
+          if (BitFlags$TerrariaPacket.flag2(header4$1)) {
+            tileCache.wire = true;
+          }
+          if (BitFlags$TerrariaPacket.flag3(header4$1)) {
+            tileCache.wire2 = true;
+          }
+          if (BitFlags$TerrariaPacket.flag4(header4$1)) {
+            tileCache.wire3 = true;
+          }
+          let slopeBits = (BitFlags$TerrariaPacket.toByte(header4$1) & 112) >> 4;
+          if (slopeBits !== 0 && TileSolid$TerrariaPacket.isSolid(Belt_Option.mapWithDefault(tileCache.activeTile, 0, (tile) => tile.tileType))) {
+            if (slopeBits === 1) {
+              tileCache.halfBrick = true;
+            } else {
+              tileCache.slope = slopeBits - 1 | 0;
+            }
+          }
+        }
+        let e$20;
+        if (BitFlags$TerrariaPacket.toByte(header3$1) > 0) {
+          if (BitFlags$TerrariaPacket.flag2(header3$1)) {
+            tileCache.actuator = true;
+          }
+          if (BitFlags$TerrariaPacket.flag3(header3$1)) {
+            tileCache.inActive = true;
+          }
+          if (BitFlags$TerrariaPacket.flag6(header3$1)) {
+            tileCache.wire4 = true;
+          }
+          let e$21;
+          if (BitFlags$TerrariaPacket.flag7(header3$1)) {
+            let e$22 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "wall_highByte");
+            if (e$22.TAG === "Ok") {
+              tileCache.wall = e$22._0 << 8 | tileCache.wall;
+              e$21 = {
+                TAG: "Ok",
+                _0: void 0
+              };
+            } else {
+              e$21 = e$22;
+            }
+          } else {
+            e$21 = {
+              TAG: "Ok",
+              _0: void 0
+            };
+          }
+          e$20 = e$21.TAG === "Ok" ? {
+            TAG: "Ok",
+            _0: void 0
+          } : e$21;
+        } else {
+          e$20 = {
+            TAG: "Ok",
+            _0: void 0
+          };
+        }
+        if (e$20.TAG !== "Ok") {
+          return e$20;
+        }
+        let repeatCountBytes = (BitFlags$TerrariaPacket.toByte(header5) & 192) >> 6;
+        let e$23;
+        if (repeatCountBytes !== 0) {
+          if (repeatCountBytes !== 1) {
+            let e$24 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "rle_int16");
+            if (e$24.TAG === "Ok") {
+              rleCount.contents = e$24._0;
+              e$23 = {
+                TAG: "Ok",
+                _0: void 0
+              };
+            } else {
+              e$23 = e$24;
+            }
+          } else {
+            let e$25 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "rle_byte");
+            if (e$25.TAG === "Ok") {
+              rleCount.contents = e$25._0;
+              e$23 = {
+                TAG: "Ok",
+                _0: void 0
+              };
+            } else {
+              e$23 = e$25;
+            }
+          }
+        } else {
+          rleCount.contents = 0;
+          e$23 = {
+            TAG: "Ok",
+            _0: void 0
+          };
+        }
+        if (e$23.TAG === "Ok") {
+          return {
+            TAG: "Ok",
+            _0: cacheToTile(tileCache)
+          };
+        } else {
+          return e$23;
+        }
+      };
+      for (let _y = 0; _y < height; ++_y) {
+        let match = parseResult;
+        if (match.TAG === "Ok") {
+          let row = [];
+          for (let _x = 0; _x < width; ++_x) {
+            let match$1 = parseResult;
+            if (match$1.TAG === "Ok") {
+              if (rleCount.contents !== 0) {
+                rleCount.contents = rleCount.contents - 1 | 0;
+                row.push(cacheToTile(tileCache));
+              } else {
+                let tile = readTile();
+                if (tile.TAG === "Ok") {
+                  row.push(tile._0);
+                } else {
+                  parseResult = {
+                    TAG: "Error",
+                    _0: tile._0
+                  };
+                }
+              }
+            }
+          }
+          let match$2 = parseResult;
+          if (match$2.TAG === "Ok") {
+            tiles.push(row);
+          }
+        }
+      }
+      let err = parseResult;
+      if (err.TAG !== "Ok") {
+        return {
+          TAG: "Error",
+          _0: err._0
+        };
+      }
+      let e$6 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "chestCount");
+      if (e$6.TAG !== "Ok") {
+        return e$6;
+      }
+      let e$7 = readRepeated(e$6._0, () => parse(reader));
+      if (e$7.TAG !== "Ok") {
+        return e$7;
+      }
+      let e$8 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "signCount");
+      if (e$8.TAG !== "Ok") {
+        return e$8;
+      }
+      let e$9 = readRepeated(e$8._0, () => parse$1(reader));
+      if (e$9.TAG !== "Ok") {
+        return e$9;
+      }
+      let e$10 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "entityCount");
+      if (e$10.TAG !== "Ok") {
+        return e$10;
+      }
+      let e$11 = readRepeated(e$10._0, () => parse$2(reader));
+      if (e$11.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            height,
+            width,
+            tileX: e$2._0,
+            tileY: e$3._0,
+            tiles,
+            chests: e$7._0,
+            signs: e$9._0,
+            entities: e$11._0
+          }
+        };
+      } else {
+        return e$11;
       }
     }
     var Decode = {
@@ -15343,6 +16470,7 @@ var require_Packet_TileSectionSend = __commonJS({
       readInt16: ErrorAwareBufferReader$TerrariaPacket.readInt16,
       readInt32: ErrorAwareBufferReader$TerrariaPacket.readInt32,
       readByte: ErrorAwareBufferReader$TerrariaPacket.readByte,
+      readRepeated,
       parse: parse$3
     };
     function getLiquidBitFlags(tile) {
@@ -15525,12 +16653,12 @@ var require_Packet_TileSectionSend = __commonJS({
       return writer;
     }
     function decidePackTile(writer, lastTile, tile) {
-      let last = lastTile.contents;
-      if (last !== void 0) {
-        if (Primitive_object.equal(tile, last.tile)) {
-          last.count = last.count + 1 | 0;
+      let last2 = lastTile.contents;
+      if (last2 !== void 0) {
+        if (Primitive_object.equal(tile, last2.tile)) {
+          last2.count = last2.count + 1 | 0;
         } else {
-          packTile(writer, last.tile, last.count);
+          packTile(writer, last2.tile, last2.count);
           lastTile.contents = {
             tile,
             count: 0
@@ -15631,52 +16759,179 @@ var require_Packet_TileSquareSend = __commonJS({
     var Packetreader = require_packetreader().default;
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let tileX = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "tileX");
-      let tileY = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "tileY");
-      let width = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "width");
-      let height = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "height");
-      let changeType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "changeType");
-      let tiles = [];
-      for (let _x = 0; _x < width; ++_x) {
-        let column = [];
-        for (let _y = 0; _y < height; ++_y) {
-          let flags1 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags1"));
-          let flags2 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags2"));
-          let flags3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags3");
-          let active = BitFlags$TerrariaPacket.flag1(flags1);
-          let hasWall = BitFlags$TerrariaPacket.flag3(flags1);
-          let hasLiquid = BitFlags$TerrariaPacket.flag4(flags1);
-          let wire = BitFlags$TerrariaPacket.flag5(flags1);
-          let halfBrick = BitFlags$TerrariaPacket.flag6(flags1);
-          let actuator = BitFlags$TerrariaPacket.flag7(flags1);
-          let inActive = BitFlags$TerrariaPacket.flag8(flags1);
-          let wire2 = BitFlags$TerrariaPacket.flag1(flags2);
-          let wire3 = BitFlags$TerrariaPacket.flag2(flags2);
-          let color = BitFlags$TerrariaPacket.flag3(flags2) ? ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "color") : void 0;
-          let wallColor = BitFlags$TerrariaPacket.flag4(flags2) ? ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "wallColor") : void 0;
-          let activeTile;
-          if (active) {
-            let tileType = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "tileType");
-            let frame = TileFrameImportant$TerrariaPacket.isImportant(tileType) ? {
-              x: ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "frameX"),
-              y: ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "frameY")
-            } : void 0;
-            let slope = ((0 + (BitFlags$TerrariaPacket.flag5(flags2) ? 1 : 0) | 0) + (BitFlags$TerrariaPacket.flag6(flags2) ? 2 : 0) | 0) + (BitFlags$TerrariaPacket.flag7(flags2) ? 4 : 0) | 0;
-            activeTile = {
-              tileType,
-              slope,
-              frame
-            };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "tileX");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "tileY");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "width");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let width = e$2._0;
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "height");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let height = e$3._0;
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "changeType");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let readTile = () => {
+        let e2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags1");
+        if (e2.TAG !== "Ok") {
+          return e2;
+        }
+        let flags1 = BitFlags$TerrariaPacket.fromByte(e2._0);
+        let e$12 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags2");
+        if (e$12.TAG !== "Ok") {
+          return e$12;
+        }
+        let flags2 = BitFlags$TerrariaPacket.fromByte(e$12._0);
+        let e$22 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags3");
+        if (e$22.TAG !== "Ok") {
+          return e$22;
+        }
+        let active = BitFlags$TerrariaPacket.flag1(flags1);
+        let hasWall = BitFlags$TerrariaPacket.flag3(flags1);
+        let hasLiquid = BitFlags$TerrariaPacket.flag4(flags1);
+        let wire = BitFlags$TerrariaPacket.flag5(flags1);
+        let halfBrick = BitFlags$TerrariaPacket.flag6(flags1);
+        let actuator = BitFlags$TerrariaPacket.flag7(flags1);
+        let inActive = BitFlags$TerrariaPacket.flag8(flags1);
+        let wire2 = BitFlags$TerrariaPacket.flag1(flags2);
+        let wire3 = BitFlags$TerrariaPacket.flag2(flags2);
+        let e$32;
+        if (BitFlags$TerrariaPacket.flag3(flags2)) {
+          let e$42 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "color");
+          e$32 = e$42.TAG === "Ok" ? {
+            TAG: "Ok",
+            _0: e$42._0
+          } : e$42;
+        } else {
+          e$32 = {
+            TAG: "Ok",
+            _0: void 0
+          };
+        }
+        if (e$32.TAG !== "Ok") {
+          return e$32;
+        }
+        let e$5;
+        if (BitFlags$TerrariaPacket.flag4(flags2)) {
+          let e$6 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "wallColor");
+          e$5 = e$6.TAG === "Ok" ? {
+            TAG: "Ok",
+            _0: e$6._0
+          } : e$6;
+        } else {
+          e$5 = {
+            TAG: "Ok",
+            _0: void 0
+          };
+        }
+        if (e$5.TAG !== "Ok") {
+          return e$5;
+        }
+        let e$7;
+        if (active) {
+          let e$8 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "tileType");
+          if (e$8.TAG === "Ok") {
+            let tileType = e$8._0;
+            let e$9;
+            if (TileFrameImportant$TerrariaPacket.isImportant(tileType)) {
+              let e$10 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "frameX");
+              if (e$10.TAG === "Ok") {
+                let e$11 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "frameY");
+                e$9 = e$11.TAG === "Ok" ? {
+                  TAG: "Ok",
+                  _0: {
+                    x: e$10._0,
+                    y: e$11._0
+                  }
+                } : e$11;
+              } else {
+                e$9 = e$10;
+              }
+            } else {
+              e$9 = {
+                TAG: "Ok",
+                _0: void 0
+              };
+            }
+            if (e$9.TAG === "Ok") {
+              let slope = ((0 + (BitFlags$TerrariaPacket.flag5(flags2) ? 1 : 0) | 0) + (BitFlags$TerrariaPacket.flag6(flags2) ? 2 : 0) | 0) + (BitFlags$TerrariaPacket.flag7(flags2) ? 4 : 0) | 0;
+              e$7 = {
+                TAG: "Ok",
+                _0: {
+                  tileType,
+                  slope,
+                  frame: e$9._0
+                }
+              };
+            } else {
+              e$7 = e$9;
+            }
           } else {
-            activeTile = void 0;
+            e$7 = e$8;
           }
-          let wall = hasWall ? ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "wall") : void 0;
-          let liquid = hasLiquid ? {
-            liquidValue: ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "liquidValue"),
-            liquidType: ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "liquidType")
-          } : void 0;
-          let wire4 = BitFlags$TerrariaPacket.flag8(flags2);
-          column.push({
+        } else {
+          e$7 = {
+            TAG: "Ok",
+            _0: void 0
+          };
+        }
+        if (e$7.TAG !== "Ok") {
+          return e$7;
+        }
+        let e$122;
+        if (hasWall) {
+          let e$13 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "wall");
+          e$122 = e$13.TAG === "Ok" ? {
+            TAG: "Ok",
+            _0: e$13._0
+          } : e$13;
+        } else {
+          e$122 = {
+            TAG: "Ok",
+            _0: void 0
+          };
+        }
+        if (e$122.TAG !== "Ok") {
+          return e$122;
+        }
+        let e$14;
+        if (hasLiquid) {
+          let e$15 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "liquidValue");
+          if (e$15.TAG === "Ok") {
+            let e$16 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "liquidType");
+            e$14 = e$16.TAG === "Ok" ? {
+              TAG: "Ok",
+              _0: {
+                liquidValue: e$15._0,
+                liquidType: e$16._0
+              }
+            } : e$16;
+          } else {
+            e$14 = e$15;
+          }
+        } else {
+          e$14 = {
+            TAG: "Ok",
+            _0: void 0
+          };
+        }
+        if (e$14.TAG !== "Ok") {
+          return e$14;
+        }
+        let wire4 = BitFlags$TerrariaPacket.flag8(flags2);
+        return {
+          TAG: "Ok",
+          _0: {
             wire,
             halfBrick,
             actuator,
@@ -15684,24 +16939,63 @@ var require_Packet_TileSquareSend = __commonJS({
             wire2,
             wire3,
             wire4,
-            color,
-            wallColor,
-            activeTile,
-            wall,
-            liquid,
-            coatHeader: flags3
-          });
-        }
-        tiles.push(column);
-      }
-      return {
-        width,
-        height,
-        changeType,
-        tileX,
-        tileY,
-        tiles
+            color: e$32._0,
+            wallColor: e$5._0,
+            activeTile: e$7._0,
+            wall: e$122._0,
+            liquid: e$14._0,
+            coatHeader: e$22._0
+          }
+        };
       };
+      let tiles = [];
+      let parseResult = {
+        TAG: "Ok",
+        _0: void 0
+      };
+      for (let _x = 0; _x < width; ++_x) {
+        let match = parseResult;
+        if (match.TAG === "Ok") {
+          let column = [];
+          for (let _y = 0; _y < height; ++_y) {
+            let match$1 = parseResult;
+            if (match$1.TAG === "Ok") {
+              let tile = readTile();
+              if (tile.TAG === "Ok") {
+                column.push(tile._0);
+              } else {
+                parseResult = {
+                  TAG: "Error",
+                  _0: tile._0
+                };
+              }
+            }
+          }
+          let match$2 = parseResult;
+          if (match$2.TAG === "Ok") {
+            tiles.push(column);
+          }
+        }
+      }
+      let err = parseResult;
+      if (err.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            width,
+            height,
+            changeType: e$4._0,
+            tileX: e._0,
+            tileY: e$1._0,
+            tiles
+          }
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: err._0
+        };
+      }
     }
     function packTile(writer, tile) {
       let flags1 = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(tile.activeTile), false, Belt_Option.isSome(tile.wall), Belt_Option.isSome(tile.liquid), tile.wire, tile.halfBrick, tile.actuator, tile.inActive);
@@ -15760,11 +17054,60 @@ var require_Packet_TileSquareSend = __commonJS({
 var require_Packet_TimeSet = __commonJS({
   "src/packet/Packet_TimeSet.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "dayTime");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "time");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "sunModY");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "moonModY");
+      if (e$3.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            dayTime: e._0 === 1,
+            time: e$1._0,
+            sunModY: e$2._0,
+            moonModY: e$3._0
+          }
+        };
+      } else {
+        return e$3;
+      }
     }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TimeSet")), self.dayTime ? 1 : 0, "dayTime"), self.time, "time"), self.sunModY, "sunModY"), self.moonModY, "moonModY"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -15773,44 +17116,81 @@ var require_Packet_TravellingMerchantInventory = __commonJS({
   "src/packet/Packet_TravellingMerchantInventory.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readInt16(prim) {
-      return prim.readInt16();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
       let items = [];
-      for (let _for = 1; _for <= 40; ++_for) {
-        items.push(reader.readInt16());
-      }
-      return {
-        items
+      let readItems = (_idx) => {
+        while (true) {
+          let idx = _idx;
+          if (idx >= 40) {
+            return {
+              TAG: "Ok",
+              _0: void 0
+            };
+          }
+          let e2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, `item` + (idx + 1 | 0).toString());
+          if (e2.TAG !== "Ok") {
+            return e2;
+          }
+          items.push(e2._0);
+          _idx = idx + 1 | 0;
+          continue;
+        }
+        ;
       };
+      let e = readItems(0);
+      if (e.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            items
+          }
+        };
+      } else {
+        return e;
+      }
     }
     var Decode = {
-      readInt16,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
       parse
     };
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function data(prim) {
-      return prim.data;
+    function packItems(writer, items) {
+      let _writer = writer;
+      let _idx = 0;
+      while (true) {
+        let idx = _idx;
+        let writer$1 = _writer;
+        if (idx >= items.length) {
+          return writer$1;
+        }
+        _idx = idx + 1 | 0;
+        _writer = ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer$1, items[idx], `item` + (idx + 1 | 0).toString());
+        continue;
+      }
+      ;
     }
     function toBuffer(self) {
-      let writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("TravellingMerchantInventory"));
-      self.items.forEach((item) => {
-        writer.packInt16(item);
-      });
-      return writer.data;
+      if (self.items.length !== 40) {
+        return {
+          TAG: "Error",
+          _0: {
+            context: "Packet_TravellingMerchantInventory.toBuffer",
+            error: new Error("Expected 40 items")
+          }
+        };
+      }
+      let writer = ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TravellingMerchantInventory"));
+      return ErrorAwarePacketWriter$TerrariaPacket.data(packItems(writer, self.items));
     }
     var Encode = {
       Writer: void 0,
-      packInt16,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      packItems,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -15824,11 +17204,65 @@ var require_Packet_TravellingMerchantInventory = __commonJS({
 var require_Packet_TreeGrowFx = __commonJS({
   "src/packet/Packet_TreeGrowFx.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "action");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "x");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "y");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "style");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "treeType");
+      if (e$4.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            action: e._0,
+            x: e$1._0,
+            y: e$2._0,
+            style: e$3._0,
+            treeType: e$4._0
+          }
+        };
+      } else {
+        return e$4;
+      }
     }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TreeGrowFx")), self.action, "action"), self.x, "x"), self.y, "y"), self.style, "style"), self.treeType, "treeType"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -15836,9 +17270,11 @@ var require_Packet_TreeGrowFx = __commonJS({
 var require_Packet_Unused = __commonJS({
   "src/packet/Packet_Unused.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Primitive_option8.some(void 0);
+      return {
+        TAG: "Ok",
+        _0: void 0
+      };
     }
     exports2.parse = parse;
   }
@@ -15849,24 +17285,40 @@ var require_Packet_WallPaint = __commonJS({
   "src/packet/Packet_WallPaint.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let x = reader.readInt16();
-      let y = reader.readInt16();
-      let color = reader.readByte();
-      let coat = reader.readByte();
-      return {
-        x,
-        y,
-        color,
-        coat
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "color");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "coat");
+      if (e$3.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            x: e._0,
+            y: e$1._0,
+            color: e$2._0,
+            coat: e$3._0
+          }
+        };
+      } else {
+        return e$3;
+      }
     }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("WallPaint")).packInt16(self.x).packInt16(self.y).packByte(self.color).packByte(self.coat).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("WallPaint")), self.x, "x"), self.y, "y"), self.color, "color"), self.coat, "coat"));
     }
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
@@ -15878,53 +17330,57 @@ var require_Packet_WeaponsRackTryPlacing = __commonJS({
   "src/packet/Packet_WeaponsRackTryPlacing.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readByte(prim) {
-      return prim.readByte();
-    }
-    function readInt16(prim) {
-      return prim.readInt16();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let x = reader.readInt16();
-      let y = reader.readInt16();
-      let itemId = reader.readInt16();
-      let prefix = reader.readByte();
-      let stack = reader.readInt16();
-      return {
-        x,
-        y,
-        itemId,
-        prefix,
-        stack
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemId");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "prefix");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "stack");
+      if (e$4.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            x: e._0,
+            y: e$1._0,
+            itemId: e$2._0,
+            prefix: e$3._0,
+            stack: e$4._0
+          }
+        };
+      } else {
+        return e$4;
+      }
     }
     var Decode = {
-      readByte,
-      readInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("WeaponsRackTryPlacing")).packInt16(self.x).packInt16(self.y).packInt16(self.itemId).packInt16(self.prefix).packInt16(self.stack).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("WeaponsRackTryPlacing")), self.x, "x"), self.y, "y"), self.itemId, "itemId"), self.prefix, "prefix"), self.stack, "stack"));
     }
     var Encode = {
       Writer: void 0,
-      packByte,
-      packInt16,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -15938,11 +17394,75 @@ var require_Packet_WeaponsRackTryPlacing = __commonJS({
 var require_Packet_WiredCannonShot = __commonJS({
   "src/packet/Packet_WiredCannonShot.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "damage");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "knockback");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "angle");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "ammo");
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let e$6 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e$6.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            damage: e._0,
+            knockback: e$1._0,
+            x: e$2._0,
+            y: e$3._0,
+            angle: e$4._0,
+            ammo: e$5._0,
+            playerId: e$6._0
+          }
+        };
+      } else {
+        return e$6;
+      }
     }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("WiredCannonShot")), self.damage, "damage"), self.knockback, "knockback"), self.x, "x"), self.y, "y"), self.angle, "angle"), self.ammo, "ammo"), self.playerId, "playerId"));
+    }
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -15950,12 +17470,14 @@ var require_Packet_WiredCannonShot = __commonJS({
 var require_Packet_WorldDataRequest = __commonJS({
   "src/packet/Packet_WorldDataRequest.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     var PacketType$TerrariaPacket = require_PacketType();
     var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
     var Packetwriter = require_packetwriter().default;
     function parse(_payload) {
-      return Primitive_option8.some(void 0);
+      return {
+        TAG: "Ok",
+        _0: void 0
+      };
     }
     var Decode = {
       parse
@@ -15964,7 +17486,10 @@ var require_Packet_WorldDataRequest = __commonJS({
       return prim.data;
     }
     function toBuffer(_self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("WorldDataRequest")).data;
+      return {
+        TAG: "Ok",
+        _0: ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("WorldDataRequest")).data
+      };
     }
     var Encode = {
       setType: ManagedPacketWriter$PacketFactory.setType,
@@ -15982,28 +17507,66 @@ var require_Packet_WorldDataRequest = __commonJS({
 var require_Packet_Zones = __commonJS({
   "src/packet/Packet_Zones.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
-    }
-    exports2.parse = parse;
-  }
-});
-
-// src/Array16.js
-var require_Array16 = __commonJS({
-  "src/Array16.js"(exports2) {
-    "use strict";
-    function fromArray5(a) {
-      if (a.length === 16) {
-        return a;
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "zone1");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "zone2");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "zone3");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "zone4");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "zone5");
+      if (e$5.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            zone1: e$1._0,
+            zone2: e$2._0,
+            zone3: e$3._0,
+            zone4: e$4._0,
+            zone5: e$5._0
+          }
+        };
+      } else {
+        return e$5;
       }
     }
-    function asArray(self) {
-      return self;
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("Zones")), self.playerId, "playerId"), self.zone1, "zone1"), self.zone2, "zone2"), self.zone3, "zone3"), self.zone4, "zone4"), self.zone5, "zone5"));
     }
-    exports2.fromArray = fromArray5;
-    exports2.asArray = asArray;
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
+    exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -16012,15 +17575,30 @@ var require_Packet_PlayerSlotSet = __commonJS({
   "src/packet/Packet_PlayerSlotSet.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function parse(payload) {
       let reader = new Packetreader(payload);
-      return reader.readByte();
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerSlotId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "serverWantsToRunCheckBytesInClientLoopThread");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerSlotId: e._0,
+            serverWantsToRunCheckBytesInClientLoopThread: e$1._0 === 1
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerSlotSet")).packByte(self).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerSlotSet")), self.playerSlotId, "playerSlotId"), self.serverWantsToRunCheckBytesInClientLoopThread ? 1 : 0, "serverWantsToRunCheckBytesInClientLoopThread"));
     }
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
@@ -16038,11 +17616,30 @@ var require_Packet_PlayerUpdate = __commonJS({
     var Packetreader = require_packetreader().default;
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let playerId = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
-      let controlFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "controlFlags"));
-      let miscFlags1 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags1"));
-      let miscFlags2 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags2"));
-      let miscFlags3 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags3"));
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "controlFlags");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let controlFlags = BitFlags$TerrariaPacket.fromByte(e$1._0);
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags1");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let miscFlags1 = BitFlags$TerrariaPacket.fromByte(e$2._0);
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags2");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let miscFlags2 = BitFlags$TerrariaPacket.fromByte(e$3._0);
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "miscFlags3");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let miscFlags3 = BitFlags$TerrariaPacket.fromByte(e$4._0);
       let control_isHoldingUp = BitFlags$TerrariaPacket.flag1(controlFlags);
       let control_isHoldingDown = BitFlags$TerrariaPacket.flag2(controlFlags);
       let control_isHoldingLeft = BitFlags$TerrariaPacket.flag3(controlFlags);
@@ -16063,27 +17660,88 @@ var require_Packet_PlayerUpdate = __commonJS({
       let gravityDirection = BitFlags$TerrariaPacket.flag5(miscFlags1) ? "Normal" : "Inverted";
       let shouldGuard = BitFlags$TerrariaPacket.flag6(miscFlags1);
       let ghost = BitFlags$TerrariaPacket.flag7(miscFlags1);
-      let selectedItem = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "selectedItem");
-      let position_x = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionX");
-      let position_y = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionY");
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "selectedItem");
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let e$6 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionX");
+      if (e$6.TAG !== "Ok") {
+        return e$6;
+      }
+      let e$7 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionY");
+      if (e$7.TAG !== "Ok") {
+        return e$7;
+      }
+      let position_x = e$6._0;
+      let position_y = e$7._0;
       let position = {
         x: position_x,
         y: position_y
       };
-      let velocity = BitFlags$TerrariaPacket.flag3(miscFlags1) ? {
-        x: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityX"),
-        y: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityY")
-      } : void 0;
-      let potionOfReturn = BitFlags$TerrariaPacket.flag7(miscFlags2) ? {
-        originalUsePosition: {
-          x: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnOrigX"),
-          y: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnOrigY")
-        },
-        homePosition: {
-          x: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnHomeX"),
-          y: ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnHomeY")
+      let e$8;
+      if (BitFlags$TerrariaPacket.flag3(miscFlags1)) {
+        let e$9 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityX");
+        if (e$9.TAG === "Ok") {
+          let e$10 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityY");
+          e$8 = e$10.TAG === "Ok" ? {
+            TAG: "Ok",
+            _0: {
+              x: e$9._0,
+              y: e$10._0
+            }
+          } : e$10;
+        } else {
+          e$8 = e$9;
         }
-      } : void 0;
+      } else {
+        e$8 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      if (e$8.TAG !== "Ok") {
+        return e$8;
+      }
+      let e$11;
+      if (BitFlags$TerrariaPacket.flag7(miscFlags2)) {
+        let e$12 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnOrigX");
+        if (e$12.TAG === "Ok") {
+          let e$13 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnOrigY");
+          if (e$13.TAG === "Ok") {
+            let e$14 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnHomeX");
+            if (e$14.TAG === "Ok") {
+              let e$15 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "potionOfReturnHomeY");
+              e$11 = e$15.TAG === "Ok" ? {
+                TAG: "Ok",
+                _0: {
+                  originalUsePosition: {
+                    x: e$12._0,
+                    y: e$13._0
+                  },
+                  homePosition: {
+                    x: e$14._0,
+                    y: e$15._0
+                  }
+                }
+              } : e$15;
+            } else {
+              e$11 = e$14;
+            }
+          } else {
+            e$11 = e$13;
+          }
+        } else {
+          e$11 = e$12;
+        }
+      } else {
+        e$11 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      if (e$11.TAG !== "Ok") {
+        return e$11;
+      }
       let tryKeepingHoveringUp = BitFlags$TerrariaPacket.flag1(miscFlags2);
       let isVoidVaultEnabled = BitFlags$TerrariaPacket.flag2(miscFlags2);
       let isSitting = BitFlags$TerrariaPacket.flag3(miscFlags2);
@@ -16093,26 +17751,29 @@ var require_Packet_PlayerUpdate = __commonJS({
       let tryKeepingHoveringDown = BitFlags$TerrariaPacket.flag8(miscFlags2);
       let isSleeping = BitFlags$TerrariaPacket.flag1(miscFlags3);
       return {
-        playerId,
-        control,
-        direction,
-        pulleyDirection,
-        vortexStealthActive,
-        gravityDirection,
-        shouldGuard,
-        ghost,
-        selectedItem,
-        position,
-        velocity,
-        potionOfReturn,
-        tryKeepingHoveringUp,
-        isVoidVaultEnabled,
-        isSitting,
-        hasFinishedAnyDd2Event,
-        isPettingAnimal,
-        isTheAnimalBeingPetSmall,
-        tryKeepingHoveringDown,
-        isSleeping
+        TAG: "Ok",
+        _0: {
+          playerId: e._0,
+          control,
+          direction,
+          pulleyDirection,
+          vortexStealthActive,
+          gravityDirection,
+          shouldGuard,
+          ghost,
+          selectedItem: e$5._0,
+          position,
+          velocity: e$8._0,
+          potionOfReturn: e$11._0,
+          tryKeepingHoveringUp,
+          isVoidVaultEnabled,
+          isSitting,
+          hasFinishedAnyDd2Event,
+          isPettingAnimal,
+          isTheAnimalBeingPetSmall,
+          tryKeepingHoveringDown,
+          isSleeping
+        }
       };
     }
     function packControlFlags(writer, control, direction) {
@@ -16175,23 +17836,76 @@ var require_Packet_PlayerInfo = __commonJS({
     }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let playerId = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
-      let skinVariant = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "skinVariant");
-      let hair = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hair");
-      let name = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "name");
-      let hairDye = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hairDye");
-      let hideVisuals = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideVisuals");
-      let hideVisuals2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideVisuals2");
-      let hideMisc = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideMisc");
-      let hairColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "hairColor");
-      let skinColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "skinColor");
-      let eyeColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "eyeColor");
-      let shirtColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "shirtColor");
-      let underShirtColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "underShirtColor");
-      let pantsColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "pantsColor");
-      let shoeColor = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "shoeColor");
-      let difficultyFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "difficultyFlags"));
-      let torchFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "torchFlags"));
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "skinVariant");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hair");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "name");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hairDye");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideVisuals");
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let e$6 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideVisuals2");
+      if (e$6.TAG !== "Ok") {
+        return e$6;
+      }
+      let e$7 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hideMisc");
+      if (e$7.TAG !== "Ok") {
+        return e$7;
+      }
+      let e$8 = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "hairColor");
+      if (e$8.TAG !== "Ok") {
+        return e$8;
+      }
+      let e$9 = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "skinColor");
+      if (e$9.TAG !== "Ok") {
+        return e$9;
+      }
+      let e$10 = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "eyeColor");
+      if (e$10.TAG !== "Ok") {
+        return e$10;
+      }
+      let e$11 = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "shirtColor");
+      if (e$11.TAG !== "Ok") {
+        return e$11;
+      }
+      let e$12 = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "underShirtColor");
+      if (e$12.TAG !== "Ok") {
+        return e$12;
+      }
+      let e$13 = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "pantsColor");
+      if (e$13.TAG !== "Ok") {
+        return e$13;
+      }
+      let e$14 = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "shoeColor");
+      if (e$14.TAG !== "Ok") {
+        return e$14;
+      }
+      let e$15 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "difficultyFlags");
+      if (e$15.TAG !== "Ok") {
+        return e$15;
+      }
+      let difficultyFlags = BitFlags$TerrariaPacket.fromByte(e$15._0);
+      let e$16 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "torchFlags");
+      if (e$16.TAG !== "Ok") {
+        return e$16;
+      }
+      let torchFlags = BitFlags$TerrariaPacket.fromByte(e$16._0);
       let difficulty = getDifficulty(difficultyFlags);
       let extraAccessory = BitFlags$TerrariaPacket.flag3(difficultyFlags);
       let mode = BitFlags$TerrariaPacket.flag4(difficultyFlags) ? "Journey" : "Classic";
@@ -16200,7 +17914,16 @@ var require_Packet_PlayerInfo = __commonJS({
       let unlockedBiomeTorches = BitFlags$TerrariaPacket.flag3(torchFlags);
       let unlockedSuperCart = BitFlags$TerrariaPacket.flag4(torchFlags);
       let enabledSuperCart = BitFlags$TerrariaPacket.flag5(torchFlags);
-      let usedFlags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "usedFlags"));
+      let e$17 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "usedFlags");
+      let e$18;
+      e$18 = e$17.TAG === "Ok" ? {
+        TAG: "Ok",
+        _0: BitFlags$TerrariaPacket.fromByte(e$17._0)
+      } : e$17;
+      if (e$18.TAG !== "Ok") {
+        return e$18;
+      }
+      let usedFlags = e$18._0;
       let usedAegisCrystal = BitFlags$TerrariaPacket.flag1(usedFlags);
       let usedAegisFruit = BitFlags$TerrariaPacket.flag2(usedFlags);
       let usedArcaneCrystal = BitFlags$TerrariaPacket.flag3(usedFlags);
@@ -16209,36 +17932,39 @@ var require_Packet_PlayerInfo = __commonJS({
       let usedAmbrosia = BitFlags$TerrariaPacket.flag6(usedFlags);
       let ateArtisanBread = BitFlags$TerrariaPacket.flag7(usedFlags);
       return {
-        playerId,
-        skinVariant,
-        hair,
-        name,
-        hairDye,
-        hideVisuals,
-        hideVisuals2,
-        hideMisc,
-        hairColor,
-        skinColor,
-        eyeColor,
-        shirtColor,
-        underShirtColor,
-        pantsColor,
-        shoeColor,
-        difficulty,
-        mode,
-        extraAccessory,
-        usingBiomeTorches,
-        unlockedBiomeTorches,
-        happyFunTorchTime,
-        unlockedSuperCart,
-        enabledSuperCart,
-        usedAegisCrystal,
-        usedAegisFruit,
-        usedArcaneCrystal,
-        usedGalaxyPearl,
-        usedGummyWorm,
-        usedAmbrosia,
-        ateArtisanBread
+        TAG: "Ok",
+        _0: {
+          playerId: e._0,
+          skinVariant: e$1._0,
+          hair: e$2._0,
+          name: e$3._0,
+          hairDye: e$4._0,
+          hideVisuals: e$5._0,
+          hideVisuals2: e$6._0,
+          hideMisc: e$7._0,
+          hairColor: e$8._0,
+          skinColor: e$9._0,
+          eyeColor: e$10._0,
+          shirtColor: e$11._0,
+          underShirtColor: e$12._0,
+          pantsColor: e$13._0,
+          shoeColor: e$14._0,
+          difficulty,
+          mode,
+          extraAccessory,
+          usingBiomeTorches,
+          unlockedBiomeTorches,
+          happyFunTorchTime,
+          unlockedSuperCart,
+          enabledSuperCart,
+          usedAegisCrystal,
+          usedAegisFruit,
+          usedArcaneCrystal,
+          usedGalaxyPearl,
+          usedGummyWorm,
+          usedAmbrosia,
+          ateArtisanBread
+        }
       };
     }
     function packDifficultyFlags(writer, difficulty, extraAccessory, mode) {
@@ -16293,20 +18019,41 @@ var require_Packet_PlayerSpawn = __commonJS({
   "src/packet/Packet_PlayerSpawn.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let playerId = reader.readByte();
-      let x = reader.readInt16();
-      let y = reader.readInt16();
-      let timeRemaining = reader.readInt32();
-      let numberOfDeathsPve = reader.readInt16();
-      let numberOfDeathsPvp = reader.readInt16();
-      let rawContext = reader.readByte();
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "timeRemaining");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "numberOfDeathsPve");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "numberOfDeathsPvp");
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let e$6 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "context");
+      if (e$6.TAG !== "Ok") {
+        return e$6;
+      }
       let context;
-      switch (rawContext) {
+      switch (e$6._0) {
         case 0:
           context = "ReviveFromDeath";
           break;
@@ -16321,13 +18068,24 @@ var require_Packet_PlayerSpawn = __commonJS({
       }
       if (context !== void 0) {
         return {
-          playerId,
-          x,
-          y,
-          timeRemaining,
-          numberOfDeathsPve,
-          numberOfDeathsPvp,
-          context
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            x: e$1._0,
+            y: e$2._0,
+            timeRemaining: e$3._0,
+            numberOfDeathsPve: e$4._0,
+            numberOfDeathsPvp: e$5._0,
+            context
+          }
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: {
+            context: "PlayerSpawn.parse.context",
+            error: new Error("Unknown context")
+          }
         };
       }
     }
@@ -16345,7 +18103,7 @@ var require_Packet_PlayerSpawn = __commonJS({
           tmp = 2;
           break;
       }
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerSpawn")).packByte(self.playerId).packInt16(self.x).packInt16(self.y).packInt32(self.timeRemaining).packInt16(self.numberOfDeathsPve).packInt16(self.numberOfDeathsPvp).packByte(tmp).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerSpawn")), self.playerId, "playerId"), self.x, "x"), self.y, "y"), self.timeRemaining, "timeRemaining"), self.numberOfDeathsPve, "numberOfDeathsPve"), self.numberOfDeathsPvp, "numberOfDeathsPvp"), tmp, "context"));
     }
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
@@ -16357,26 +18115,45 @@ var require_Packet_PlayerInventorySlot = __commonJS({
   "src/packet/Packet_PlayerInventorySlot.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let playerId = reader.readByte();
-      let slot = reader.readInt16();
-      let stack = reader.readInt16();
-      let prefix = reader.readByte();
-      let itemId = reader.readInt16();
-      return {
-        playerId,
-        slot,
-        stack,
-        prefix,
-        itemId
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "slot");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "stack");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "prefix");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemId");
+      if (e$4.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            slot: e$1._0,
+            stack: e$2._0,
+            prefix: e$3._0,
+            itemId: e$4._0
+          }
+        };
+      } else {
+        return e$4;
+      }
     }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerInventorySlot")).packByte(self.playerId).packInt16(self.slot).packInt16(self.stack).packByte(self.prefix).packInt16(self.itemId).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerInventorySlot")), self.playerId, "playerId"), self.slot, "slot"), self.stack, "stack"), self.prefix, "prefix"), self.itemId, "itemId"));
     }
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
@@ -16388,22 +18165,35 @@ var require_Packet_PlayerHealth = __commonJS({
   "src/packet/Packet_PlayerHealth.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let playerId = reader.readByte();
-      let health = reader.readInt16();
-      let maxHealth = reader.readInt16();
-      return {
-        playerId,
-        health,
-        maxHealth
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "health");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "maxHealth");
+      if (e$2.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            health: e$1._0,
+            maxHealth: e$2._0
+          }
+        };
+      } else {
+        return e$2;
+      }
     }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerHealth")).packByte(self.playerId).packInt16(self.health).packInt16(self.maxHealth).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerHealth")), self.playerId, "playerId"), self.health, "health"), self.maxHealth, "maxHealth"));
     }
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
@@ -16415,18 +18205,25 @@ var require_Packet_ClientUuid = __commonJS({
   "src/packet/Packet_ClientUuid.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let uuid = reader.readString();
-      return {
-        uuid
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "uuid");
+      if (e.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            uuid: e._0
+          }
+        };
+      } else {
+        return e;
+      }
     }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ClientUuid")).packString(self.uuid).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ClientUuid")), self.uuid, "uuid"));
     }
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
@@ -16437,7 +18234,7 @@ var require_Packet_ClientUuid = __commonJS({
 var require_Packet_ProjectileSync = __commonJS({
   "src/packet/Packet_ProjectileSync.js"(exports2) {
     "use strict";
-    var Belt_Option = (init_Belt_Option(), __toCommonJS(Belt_Option_exports));
+    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
     var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     var BitFlags$TerrariaPacket = require_BitFlags();
     var PacketType$TerrariaPacket = require_PacketType();
@@ -16446,51 +18243,216 @@ var require_Packet_ProjectileSync = __commonJS({
     var Packetreader = require_packetreader().default;
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let projectileId = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "projectileId");
-      let x = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
-      let y = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
-      let vx = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
-      let vy = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
-      let owner = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "owner");
-      let projectileType = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "projectileType");
-      let flags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags"));
-      let flags2 = BitFlags$TerrariaPacket.flag3(flags) ? Primitive_option8.some(BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags2"))) : void 0;
-      let ai0 = BitFlags$TerrariaPacket.flag1(flags) ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai0") : void 0;
-      let ai1 = BitFlags$TerrariaPacket.flag2(flags) ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai1") : void 0;
-      let bannerIdToRespondTo = BitFlags$TerrariaPacket.flag4(flags) ? ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "bannerIdToRespondTo") : void 0;
-      let damage = BitFlags$TerrariaPacket.flag5(flags) ? ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "damage") : void 0;
-      let knockback = BitFlags$TerrariaPacket.flag6(flags) ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "knockback") : void 0;
-      let originalDamage = BitFlags$TerrariaPacket.flag7(flags) ? ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "originalDamage") : void 0;
-      let projectileUuid = BitFlags$TerrariaPacket.flag8(flags) ? ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "projectileUuid") : void 0;
-      let ai2 = flags2 !== void 0 && BitFlags$TerrariaPacket.flag1(Primitive_option8.valFromOption(flags2)) ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai2") : void 0;
-      return {
-        projectileId,
-        x,
-        y,
-        vx,
-        vy,
-        owner,
-        projectileType,
-        ai: [
-          ai0,
-          ai1,
-          ai2
-        ],
-        bannerIdToRespondTo,
-        damage,
-        knockback,
-        originalDamage,
-        projectileUuid
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "projectileId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "owner");
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let e$6 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "projectileType");
+      if (e$6.TAG !== "Ok") {
+        return e$6;
+      }
+      let e$7 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags");
+      if (e$7.TAG !== "Ok") {
+        return e$7;
+      }
+      let flags = BitFlags$TerrariaPacket.fromByte(e$7._0);
+      let e$8;
+      if (BitFlags$TerrariaPacket.flag3(flags)) {
+        let e$9 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags2");
+        e$8 = e$9.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: Primitive_option8.some(BitFlags$TerrariaPacket.fromByte(e$9._0))
+        } : e$9;
+      } else {
+        e$8 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      if (e$8.TAG !== "Ok") {
+        return e$8;
+      }
+      let flags2 = e$8._0;
+      let e$10;
+      if (BitFlags$TerrariaPacket.flag1(flags)) {
+        let e$11 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai0");
+        e$10 = e$11.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: e$11._0
+        } : e$11;
+      } else {
+        e$10 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      if (e$10.TAG !== "Ok") {
+        return e$10;
+      }
+      let e$12;
+      if (BitFlags$TerrariaPacket.flag2(flags)) {
+        let e$13 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai1");
+        e$12 = e$13.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: e$13._0
+        } : e$13;
+      } else {
+        e$12 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      if (e$12.TAG !== "Ok") {
+        return e$12;
+      }
+      let e$14;
+      if (BitFlags$TerrariaPacket.flag4(flags)) {
+        let e$15 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "bannerIdToRespondTo");
+        e$14 = e$15.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: e$15._0
+        } : e$15;
+      } else {
+        e$14 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      if (e$14.TAG !== "Ok") {
+        return e$14;
+      }
+      let e$16;
+      if (BitFlags$TerrariaPacket.flag5(flags)) {
+        let e$17 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "damage");
+        e$16 = e$17.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: e$17._0
+        } : e$17;
+      } else {
+        e$16 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      if (e$16.TAG !== "Ok") {
+        return e$16;
+      }
+      let e$18;
+      if (BitFlags$TerrariaPacket.flag6(flags)) {
+        let e$19 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "knockback");
+        e$18 = e$19.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: e$19._0
+        } : e$19;
+      } else {
+        e$18 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      if (e$18.TAG !== "Ok") {
+        return e$18;
+      }
+      let e$20;
+      if (BitFlags$TerrariaPacket.flag7(flags)) {
+        let e$21 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "originalDamage");
+        e$20 = e$21.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: e$21._0
+        } : e$21;
+      } else {
+        e$20 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      if (e$20.TAG !== "Ok") {
+        return e$20;
+      }
+      let e$22;
+      if (BitFlags$TerrariaPacket.flag8(flags)) {
+        let e$23 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "projectileUuid");
+        e$22 = e$23.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: e$23._0
+        } : e$23;
+      } else {
+        e$22 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      if (e$22.TAG !== "Ok") {
+        return e$22;
+      }
+      let e$24;
+      if (flags2 !== void 0 && BitFlags$TerrariaPacket.flag1(Primitive_option8.valFromOption(flags2))) {
+        let e$25 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai2");
+        e$24 = e$25.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: e$25._0
+        } : e$25;
+      } else {
+        e$24 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      if (e$24.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            projectileId: e._0,
+            x: e$1._0,
+            y: e$2._0,
+            vx: e$3._0,
+            vy: e$4._0,
+            owner: e$5._0,
+            projectileType: e$6._0,
+            ai: [
+              e$10._0,
+              e$12._0,
+              e$24._0
+            ],
+            bannerIdToRespondTo: e$14._0,
+            damage: e$16._0,
+            knockback: e$18._0,
+            originalDamage: e$20._0,
+            projectileUuid: e$22._0
+          }
+        };
+      } else {
+        return e$24;
+      }
     }
     function packOptionalData(writer, self) {
       let match = self.ai;
       let ai2 = match[2];
       let ai1 = match[1];
       let ai0 = match[0];
-      let bitFlags2 = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(ai2), false, false, false, false, false, false, false);
+      let bitFlags2 = BitFlags$TerrariaPacket.fromFlags(Stdlib_Option.isSome(ai2), false, false, false, false, false, false, false);
       let bannerIdToRespondTo = self.bannerIdToRespondTo;
-      let bitFlags = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(ai0), Belt_Option.isSome(ai1), BitFlags$TerrariaPacket.toByte(bitFlags2) !== 0, bannerIdToRespondTo !== void 0 ? bannerIdToRespondTo !== 0 : false, Belt_Option.isSome(self.damage), Belt_Option.isSome(self.knockback), Belt_Option.isSome(self.originalDamage), Belt_Option.isSome(self.projectileUuid));
+      let bitFlags = BitFlags$TerrariaPacket.fromFlags(Stdlib_Option.isSome(ai0), Stdlib_Option.isSome(ai1), BitFlags$TerrariaPacket.toByte(bitFlags2) !== 0, bannerIdToRespondTo !== void 0 ? bannerIdToRespondTo !== 0 : false, Stdlib_Option.isSome(self.damage), Stdlib_Option.isSome(self.knockback), Stdlib_Option.isSome(self.originalDamage), Stdlib_Option.isSome(self.projectileUuid));
       ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(bitFlags), "flags");
       if (BitFlags$TerrariaPacket.flag3(bitFlags)) {
         ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(bitFlags2), "flags2");
@@ -16536,39 +18498,67 @@ var require_Packet_PlayerDamage = __commonJS({
     var BitFlags$TerrariaPacket = require_BitFlags();
     var PacketType$TerrariaPacket = require_PacketType();
     var PlayerDeathReason$TerrariaPacket = require_PlayerDeathReason();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function readDamageFlags(reader) {
-      let flags = BitFlags$TerrariaPacket.fromByte(reader.readByte());
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "damageFlags");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let flags = BitFlags$TerrariaPacket.fromByte(e._0);
       return {
-        critical: BitFlags$TerrariaPacket.flag1(flags),
-        pvp: BitFlags$TerrariaPacket.flag2(flags)
+        TAG: "Ok",
+        _0: {
+          critical: BitFlags$TerrariaPacket.flag1(flags),
+          pvp: BitFlags$TerrariaPacket.flag2(flags)
+        }
       };
     }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let target = reader.readByte();
-      let deathReason = PlayerDeathReason$TerrariaPacket.readDeathReason(reader);
-      let damage = reader.readInt16();
-      let hitDirection = reader.readByte();
-      let damageFlags = readDamageFlags(reader);
-      let critical = damageFlags.critical;
-      let pvp = damageFlags.pvp;
-      let cooldownCounter = reader.readSByte();
-      return {
-        target,
-        deathReason,
-        damage,
-        hitDirection,
-        critical,
-        pvp,
-        cooldownCounter
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "target");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = PlayerDeathReason$TerrariaPacket.readDeathReason(reader);
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "damage");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hitDirection");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = readDamageFlags(reader);
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let damageFlags = e$4._0;
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readSByte(reader, "cooldownCounter");
+      if (e$5.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            target: e._0,
+            deathReason: e$1._0,
+            damage: e$2._0,
+            hitDirection: e$3._0,
+            critical: damageFlags.critical,
+            pvp: damageFlags.pvp,
+            cooldownCounter: e$5._0
+          }
+        };
+      } else {
+        return e$5;
+      }
     }
     function toBuffer(self) {
       let damageFlags = (self2) => BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(self2.critical, self2.pvp, false, false, false, false, false, false));
-      return PlayerDeathReason$TerrariaPacket.packDeathReason(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerDamage")).packByte(self.target), self.deathReason).packInt16(self.damage).packByte(self.hitDirection).packByte(damageFlags(self)).packSByte(self.cooldownCounter).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(PlayerDeathReason$TerrariaPacket.packDeathReason(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerDamage")), self.target, "target"), self.deathReason), self.damage, "damage"), self.hitDirection, "hitDirection"), damageFlags(self), "damageFlags"), self.cooldownCounter, "cooldownCounter"));
     }
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
@@ -16579,7 +18569,7 @@ var require_Packet_PlayerDamage = __commonJS({
 var require_Packet_WorldInfo = __commonJS({
   "src/packet/Packet_WorldInfo.js"(exports2) {
     "use strict";
-    var Belt_Option = (init_Belt_Option(), __toCommonJS(Belt_Option_exports));
+    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     var Array16$TerrariaPacket = require_Array16();
     var BitFlags$TerrariaPacket = require_BitFlags();
     var PacketType$TerrariaPacket = require_PacketType();
@@ -16587,16 +18577,56 @@ var require_Packet_WorldInfo = __commonJS({
     var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
     function readEventInfo(reader) {
-      let eventInfo1 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo1"));
-      let eventInfo2 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo2"));
-      let eventInfo3 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo3"));
-      let eventInfo4 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo4"));
-      let eventInfo5 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo5"));
-      let eventInfo6 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo6"));
-      let eventInfo7 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo7"));
-      let eventInfo8 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo8"));
-      let eventInfo9 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo9"));
-      let eventInfo10 = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo10"));
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo1");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo2");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo3");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo4");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo5");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo6");
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let e$6 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo7");
+      if (e$6.TAG !== "Ok") {
+        return e$6;
+      }
+      let e$7 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo8");
+      if (e$7.TAG !== "Ok") {
+        return e$7;
+      }
+      let e$8 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo9");
+      if (e$8.TAG !== "Ok") {
+        return e$8;
+      }
+      let e$9 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo10");
+      if (e$9.TAG !== "Ok") {
+        return e$9;
+      }
+      let eventInfo1 = BitFlags$TerrariaPacket.fromByte(e._0);
+      let eventInfo2 = BitFlags$TerrariaPacket.fromByte(e$1._0);
+      let eventInfo3 = BitFlags$TerrariaPacket.fromByte(e$2._0);
+      let eventInfo4 = BitFlags$TerrariaPacket.fromByte(e$3._0);
+      let eventInfo5 = BitFlags$TerrariaPacket.fromByte(e$4._0);
+      let eventInfo6 = BitFlags$TerrariaPacket.fromByte(e$5._0);
+      let eventInfo7 = BitFlags$TerrariaPacket.fromByte(e$6._0);
+      let eventInfo8 = BitFlags$TerrariaPacket.fromByte(e$7._0);
+      let eventInfo9 = BitFlags$TerrariaPacket.fromByte(e$8._0);
+      let eventInfo10 = BitFlags$TerrariaPacket.fromByte(e$9._0);
       let shadowOrbSmashed = BitFlags$TerrariaPacket.flag1(eventInfo1);
       let killedBoss1 = BitFlags$TerrariaPacket.flag2(eventInfo1);
       let killedBoss2 = BitFlags$TerrariaPacket.flag3(eventInfo1);
@@ -16673,235 +18703,478 @@ var require_Packet_WorldInfo = __commonJS({
       let zenithWorld = BitFlags$TerrariaPacket.flag2(eventInfo10);
       let unlockedTruffleSpawn = BitFlags$TerrariaPacket.flag3(eventInfo10);
       return {
-        shadowOrbSmashed,
-        killedBoss1,
-        killedBoss2,
-        killedBoss3,
-        hardMode,
-        killedClown,
-        serverSidedCharacters,
-        killedPlantBoss,
-        killedMechBoss,
-        killedMechBoss2,
-        killedMechBoss3,
-        killedAnyMechBoss,
-        cloudBg,
-        crimson,
-        pumpkinMoon,
-        snowMoon,
-        expertMode,
-        fastForwardTime,
-        slimeRain,
-        killedKingSlime,
-        killedQueenBee,
-        killedFishron,
-        killedMartians,
-        killedAncientCultist,
-        killedMoonLord,
-        killedPumpking,
-        killedMourningWood,
-        killedIceQueen,
-        killedSantank,
-        killedEverscream,
-        killedGolem,
-        birthdayParty,
-        killedPirates,
-        killedFrostLegion,
-        killedGoblins,
-        sandstorm,
-        dungeonDefendersEvent,
-        killedDungeonDefendersTier1,
-        killedDungeonDefendersTier2,
-        killedDungeonDefendersTier3,
-        combatBookUsed,
-        manualLanterns,
-        killedSolarTower,
-        killedVortexTower,
-        killedNebulaTower,
-        killedStardustTower,
-        forceHalloween,
-        forceChristmas,
-        boughtCat,
-        boughtDog,
-        boughtBunny,
-        freeCake,
-        drunkWorld,
-        killedEmpressOfLight,
-        killedQueenSlime,
-        getGoodWorld,
-        tenthAnniversaryWorld,
-        dontStarveWorld,
-        downedDeerClops,
-        notTheBeesWorld,
-        remixWorld,
-        unlockedSlimeBlueSpawn,
-        combatBookVolumeTwoWasUsed,
-        peddlersSatchelWasUsed,
-        unlockedSlimeGreenSpawn,
-        unlockedSlimeOldSpawn,
-        unlockedSlimePurpleSpawn,
-        unlockedSlimeRainbowSpawn,
-        unlockedSlimeRedSpawn,
-        unlockedSlimeYellowSpawn,
-        unlockedSlimeCopperSpawn,
-        fastForwardTimeToDusk,
-        noTrapsWorld,
-        zenithWorld,
-        unlockedTruffleSpawn
+        TAG: "Ok",
+        _0: {
+          shadowOrbSmashed,
+          killedBoss1,
+          killedBoss2,
+          killedBoss3,
+          hardMode,
+          killedClown,
+          serverSidedCharacters,
+          killedPlantBoss,
+          killedMechBoss,
+          killedMechBoss2,
+          killedMechBoss3,
+          killedAnyMechBoss,
+          cloudBg,
+          crimson,
+          pumpkinMoon,
+          snowMoon,
+          expertMode,
+          fastForwardTime,
+          slimeRain,
+          killedKingSlime,
+          killedQueenBee,
+          killedFishron,
+          killedMartians,
+          killedAncientCultist,
+          killedMoonLord,
+          killedPumpking,
+          killedMourningWood,
+          killedIceQueen,
+          killedSantank,
+          killedEverscream,
+          killedGolem,
+          birthdayParty,
+          killedPirates,
+          killedFrostLegion,
+          killedGoblins,
+          sandstorm,
+          dungeonDefendersEvent,
+          killedDungeonDefendersTier1,
+          killedDungeonDefendersTier2,
+          killedDungeonDefendersTier3,
+          combatBookUsed,
+          manualLanterns,
+          killedSolarTower,
+          killedVortexTower,
+          killedNebulaTower,
+          killedStardustTower,
+          forceHalloween,
+          forceChristmas,
+          boughtCat,
+          boughtDog,
+          boughtBunny,
+          freeCake,
+          drunkWorld,
+          killedEmpressOfLight,
+          killedQueenSlime,
+          getGoodWorld,
+          tenthAnniversaryWorld,
+          dontStarveWorld,
+          downedDeerClops,
+          notTheBeesWorld,
+          remixWorld,
+          unlockedSlimeBlueSpawn,
+          combatBookVolumeTwoWasUsed,
+          peddlersSatchelWasUsed,
+          unlockedSlimeGreenSpawn,
+          unlockedSlimeOldSpawn,
+          unlockedSlimePurpleSpawn,
+          unlockedSlimeRainbowSpawn,
+          unlockedSlimeRedSpawn,
+          unlockedSlimeYellowSpawn,
+          unlockedSlimeCopperSpawn,
+          fastForwardTimeToDusk,
+          noTrapsWorld,
+          zenithWorld,
+          unlockedTruffleSpawn
+        }
       };
     }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let time = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "time");
-      let dayAndMoonInfo = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "dayAndMoonInfo");
-      let moonPhase = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "moonPhase");
-      let maxTilesX = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "maxTilesX");
-      let maxTilesY = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "maxTilesY");
-      let spawnX = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "spawnX");
-      let spawnY = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "spawnY");
-      let worldSurface = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "worldSurface");
-      let rockLayer = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "rockLayer");
-      let worldId = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "worldId");
-      let worldName = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "worldName");
-      let gameMode = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "gameMode");
-      let worldUniqueId = Array16$TerrariaPacket.fromArray(ErrorAwarePacketReader$TerrariaPacket.readBytes(reader, 16, "worldUniqueId"));
-      let worldGeneratorVersion = ErrorAwarePacketReader$TerrariaPacket.readUInt64(reader, "worldGeneratorVersion");
-      let moonType = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "moonType");
-      let treeBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeBackground");
-      let treeBackground2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeBackground2");
-      let treeBackground3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeBackground3");
-      let treeBackground4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeBackground4");
-      let corruptionBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "corruptionBackground");
-      let jungleBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "jungleBackground");
-      let snowBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "snowBackground");
-      let hallowBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hallowBackground");
-      let crimsonBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "crimsonBackground");
-      let desertBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "desertBackground");
-      let oceanBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "oceanBackground");
-      let mushroomBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "mushroomBackground");
-      let underworldBackground = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "underworldBackground");
-      let iceBackStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "iceBackStyle");
-      let jungleBackStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "jungleBackStyle");
-      let hellBackStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hellBackStyle");
-      let windSpeedSet = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "windSpeedSet");
-      let cloudNumber = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "cloudNumber");
-      let tree1 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "tree1");
-      let tree2 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "tree2");
-      let tree3 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "tree3");
-      let treeStyle1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeStyle1");
-      let treeStyle2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeStyle2");
-      let treeStyle3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeStyle3");
-      let treeStyle4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeStyle4");
-      let caveBack1 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "caveBack1");
-      let caveBack2 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "caveBack2");
-      let caveBack3 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "caveBack3");
-      let caveBackStyle1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "caveBackStyle1");
-      let caveBackStyle2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "caveBackStyle2");
-      let caveBackStyle3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "caveBackStyle3");
-      let caveBackStyle4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "caveBackStyle4");
-      let forest1TreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "forest1TreeTopStyle");
-      let forest2TreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "forest2TreeTopStyle");
-      let forest3TreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "forest3TreeTopStyle");
-      let forest4TreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "forest4TreeTopStyle");
-      let corruptionTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "corruptionTreeTopStyle");
-      let jungleTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "jungleTreeTopStyle");
-      let snowTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "snowTreeTopStyle");
-      let hallowTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hallowTreeTopStyle");
-      let crimsonTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "crimsonTreeTopStyle");
-      let desertTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "desertTreeTopStyle");
-      let oceanTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "oceanTreeTopStyle");
-      let glowingMushroomTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "glowingMushroomTreeTopStyle");
-      let underworldTreeTopStyle = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "underworldTreeTopStyle");
-      let rain = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "rain");
-      let eventInfo = readEventInfo(reader);
-      let sundialCooldown = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "sundialCooldown");
-      let moondialCooldown = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "moondialCooldown");
-      let copperOreTier = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "copperOreTier");
-      let ironOreTier = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "ironOreTier");
-      let silverOreTier = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "silverOreTier");
-      let goldOreTier = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "goldOreTier");
-      let cobaltOreTier = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "cobaltOreTier");
-      let mythrilOreTier = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "mythrilOreTier");
-      let adamantiteOreTier = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "adamantiteOreTier");
-      let invasionType = ErrorAwarePacketReader$TerrariaPacket.readSByte(reader, "invasionType");
-      let lobbyId = ErrorAwarePacketReader$TerrariaPacket.readUInt64(reader, "lobbyId");
-      let sandstormSeverity = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "sandstormSeverity");
-      return Belt_Option.map(worldUniqueId, (worldUniqueId2) => ({
-        time,
-        dayAndMoonInfo,
-        moonPhase,
-        maxTilesX,
-        maxTilesY,
-        spawnX,
-        spawnY,
-        worldSurface,
-        rockLayer,
-        worldId,
-        worldName,
-        gameMode,
-        worldUniqueId: worldUniqueId2,
-        worldGeneratorVersion,
-        moonType,
-        treeBackground,
-        treeBackground2,
-        treeBackground3,
-        treeBackground4,
-        corruptionBackground,
-        jungleBackground,
-        snowBackground,
-        hallowBackground,
-        crimsonBackground,
-        desertBackground,
-        oceanBackground,
-        mushroomBackground,
-        underworldBackground,
-        iceBackStyle,
-        jungleBackStyle,
-        hellBackStyle,
-        windSpeedSet,
-        cloudNumber,
-        tree1,
-        tree2,
-        tree3,
-        treeStyle1,
-        treeStyle2,
-        treeStyle3,
-        treeStyle4,
-        caveBack1,
-        caveBack2,
-        caveBack3,
-        caveBackStyle1,
-        caveBackStyle2,
-        caveBackStyle3,
-        caveBackStyle4,
-        forest1TreeTopStyle,
-        forest2TreeTopStyle,
-        forest3TreeTopStyle,
-        forest4TreeTopStyle,
-        corruptionTreeTopStyle,
-        jungleTreeTopStyle,
-        snowTreeTopStyle,
-        hallowTreeTopStyle,
-        crimsonTreeTopStyle,
-        desertTreeTopStyle,
-        oceanTreeTopStyle,
-        glowingMushroomTreeTopStyle,
-        underworldTreeTopStyle,
-        rain,
-        eventInfo,
-        sundialCooldown,
-        moondialCooldown,
-        copperOreTier,
-        ironOreTier,
-        silverOreTier,
-        goldOreTier,
-        cobaltOreTier,
-        mythrilOreTier,
-        adamantiteOreTier,
-        invasionType,
-        lobbyId,
-        sandstormSeverity
-      }));
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "time");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "dayAndMoonInfo");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "moonPhase");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "maxTilesX");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "maxTilesY");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "spawnX");
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let e$6 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "spawnY");
+      if (e$6.TAG !== "Ok") {
+        return e$6;
+      }
+      let e$7 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "worldSurface");
+      if (e$7.TAG !== "Ok") {
+        return e$7;
+      }
+      let e$8 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "rockLayer");
+      if (e$8.TAG !== "Ok") {
+        return e$8;
+      }
+      let e$9 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "worldId");
+      if (e$9.TAG !== "Ok") {
+        return e$9;
+      }
+      let e$10 = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "worldName");
+      if (e$10.TAG !== "Ok") {
+        return e$10;
+      }
+      let e$11 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "gameMode");
+      if (e$11.TAG !== "Ok") {
+        return e$11;
+      }
+      let e$12 = ErrorAwarePacketReader$TerrariaPacket.readBytes(reader, 16, "worldUniqueId");
+      if (e$12.TAG !== "Ok") {
+        return e$12;
+      }
+      let worldUniqueId = Array16$TerrariaPacket.fromArray(e$12._0);
+      let e$13 = worldUniqueId !== void 0 ? {
+        TAG: "Ok",
+        _0: Primitive_option8.valFromOption(worldUniqueId)
+      } : {
+        TAG: "Error",
+        _0: {
+          context: "WorldInfo.parse.worldUniqueId",
+          error: new Error("Invalid worldUniqueId")
+        }
+      };
+      if (e$13.TAG !== "Ok") {
+        return e$13;
+      }
+      let e$14 = ErrorAwarePacketReader$TerrariaPacket.readUInt64(reader, "worldGeneratorVersion");
+      if (e$14.TAG !== "Ok") {
+        return e$14;
+      }
+      let e$15 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "moonType");
+      if (e$15.TAG !== "Ok") {
+        return e$15;
+      }
+      let e$16 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeBackground");
+      if (e$16.TAG !== "Ok") {
+        return e$16;
+      }
+      let e$17 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeBackground2");
+      if (e$17.TAG !== "Ok") {
+        return e$17;
+      }
+      let e$18 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeBackground3");
+      if (e$18.TAG !== "Ok") {
+        return e$18;
+      }
+      let e$19 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeBackground4");
+      if (e$19.TAG !== "Ok") {
+        return e$19;
+      }
+      let e$20 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "corruptionBackground");
+      if (e$20.TAG !== "Ok") {
+        return e$20;
+      }
+      let e$21 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "jungleBackground");
+      if (e$21.TAG !== "Ok") {
+        return e$21;
+      }
+      let e$22 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "snowBackground");
+      if (e$22.TAG !== "Ok") {
+        return e$22;
+      }
+      let e$23 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hallowBackground");
+      if (e$23.TAG !== "Ok") {
+        return e$23;
+      }
+      let e$24 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "crimsonBackground");
+      if (e$24.TAG !== "Ok") {
+        return e$24;
+      }
+      let e$25 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "desertBackground");
+      if (e$25.TAG !== "Ok") {
+        return e$25;
+      }
+      let e$26 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "oceanBackground");
+      if (e$26.TAG !== "Ok") {
+        return e$26;
+      }
+      let e$27 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "mushroomBackground");
+      if (e$27.TAG !== "Ok") {
+        return e$27;
+      }
+      let e$28 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "underworldBackground");
+      if (e$28.TAG !== "Ok") {
+        return e$28;
+      }
+      let e$29 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "iceBackStyle");
+      if (e$29.TAG !== "Ok") {
+        return e$29;
+      }
+      let e$30 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "jungleBackStyle");
+      if (e$30.TAG !== "Ok") {
+        return e$30;
+      }
+      let e$31 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hellBackStyle");
+      if (e$31.TAG !== "Ok") {
+        return e$31;
+      }
+      let e$32 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "windSpeedSet");
+      if (e$32.TAG !== "Ok") {
+        return e$32;
+      }
+      let e$33 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "cloudNumber");
+      if (e$33.TAG !== "Ok") {
+        return e$33;
+      }
+      let e$34 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "tree1");
+      if (e$34.TAG !== "Ok") {
+        return e$34;
+      }
+      let e$35 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "tree2");
+      if (e$35.TAG !== "Ok") {
+        return e$35;
+      }
+      let e$36 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "tree3");
+      if (e$36.TAG !== "Ok") {
+        return e$36;
+      }
+      let e$37 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeStyle1");
+      if (e$37.TAG !== "Ok") {
+        return e$37;
+      }
+      let e$38 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeStyle2");
+      if (e$38.TAG !== "Ok") {
+        return e$38;
+      }
+      let e$39 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeStyle3");
+      if (e$39.TAG !== "Ok") {
+        return e$39;
+      }
+      let e$40 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "treeStyle4");
+      if (e$40.TAG !== "Ok") {
+        return e$40;
+      }
+      let e$41 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "caveBack1");
+      if (e$41.TAG !== "Ok") {
+        return e$41;
+      }
+      let e$42 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "caveBack2");
+      if (e$42.TAG !== "Ok") {
+        return e$42;
+      }
+      let e$43 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "caveBack3");
+      if (e$43.TAG !== "Ok") {
+        return e$43;
+      }
+      let e$44 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "caveBackStyle1");
+      if (e$44.TAG !== "Ok") {
+        return e$44;
+      }
+      let e$45 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "caveBackStyle2");
+      if (e$45.TAG !== "Ok") {
+        return e$45;
+      }
+      let e$46 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "caveBackStyle3");
+      if (e$46.TAG !== "Ok") {
+        return e$46;
+      }
+      let e$47 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "caveBackStyle4");
+      if (e$47.TAG !== "Ok") {
+        return e$47;
+      }
+      let e$48 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "forest1TreeTopStyle");
+      if (e$48.TAG !== "Ok") {
+        return e$48;
+      }
+      let e$49 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "forest2TreeTopStyle");
+      if (e$49.TAG !== "Ok") {
+        return e$49;
+      }
+      let e$50 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "forest3TreeTopStyle");
+      if (e$50.TAG !== "Ok") {
+        return e$50;
+      }
+      let e$51 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "forest4TreeTopStyle");
+      if (e$51.TAG !== "Ok") {
+        return e$51;
+      }
+      let e$52 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "corruptionTreeTopStyle");
+      if (e$52.TAG !== "Ok") {
+        return e$52;
+      }
+      let e$53 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "jungleTreeTopStyle");
+      if (e$53.TAG !== "Ok") {
+        return e$53;
+      }
+      let e$54 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "snowTreeTopStyle");
+      if (e$54.TAG !== "Ok") {
+        return e$54;
+      }
+      let e$55 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hallowTreeTopStyle");
+      if (e$55.TAG !== "Ok") {
+        return e$55;
+      }
+      let e$56 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "crimsonTreeTopStyle");
+      if (e$56.TAG !== "Ok") {
+        return e$56;
+      }
+      let e$57 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "desertTreeTopStyle");
+      if (e$57.TAG !== "Ok") {
+        return e$57;
+      }
+      let e$58 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "oceanTreeTopStyle");
+      if (e$58.TAG !== "Ok") {
+        return e$58;
+      }
+      let e$59 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "glowingMushroomTreeTopStyle");
+      if (e$59.TAG !== "Ok") {
+        return e$59;
+      }
+      let e$60 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "underworldTreeTopStyle");
+      if (e$60.TAG !== "Ok") {
+        return e$60;
+      }
+      let e$61 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "rain");
+      if (e$61.TAG !== "Ok") {
+        return e$61;
+      }
+      let e$62 = readEventInfo(reader);
+      if (e$62.TAG !== "Ok") {
+        return e$62;
+      }
+      let e$63 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "sundialCooldown");
+      if (e$63.TAG !== "Ok") {
+        return e$63;
+      }
+      let e$64 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "moondialCooldown");
+      if (e$64.TAG !== "Ok") {
+        return e$64;
+      }
+      let e$65 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "copperOreTier");
+      if (e$65.TAG !== "Ok") {
+        return e$65;
+      }
+      let e$66 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "ironOreTier");
+      if (e$66.TAG !== "Ok") {
+        return e$66;
+      }
+      let e$67 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "silverOreTier");
+      if (e$67.TAG !== "Ok") {
+        return e$67;
+      }
+      let e$68 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "goldOreTier");
+      if (e$68.TAG !== "Ok") {
+        return e$68;
+      }
+      let e$69 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "cobaltOreTier");
+      if (e$69.TAG !== "Ok") {
+        return e$69;
+      }
+      let e$70 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "mythrilOreTier");
+      if (e$70.TAG !== "Ok") {
+        return e$70;
+      }
+      let e$71 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "adamantiteOreTier");
+      if (e$71.TAG !== "Ok") {
+        return e$71;
+      }
+      let e$72 = ErrorAwarePacketReader$TerrariaPacket.readSByte(reader, "invasionType");
+      if (e$72.TAG !== "Ok") {
+        return e$72;
+      }
+      let e$73 = ErrorAwarePacketReader$TerrariaPacket.readUInt64(reader, "lobbyId");
+      if (e$73.TAG !== "Ok") {
+        return e$73;
+      }
+      let e$74 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "sandstormSeverity");
+      if (e$74.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            time: e._0,
+            dayAndMoonInfo: e$1._0,
+            moonPhase: e$2._0,
+            maxTilesX: e$3._0,
+            maxTilesY: e$4._0,
+            spawnX: e$5._0,
+            spawnY: e$6._0,
+            worldSurface: e$7._0,
+            rockLayer: e$8._0,
+            worldId: e$9._0,
+            worldName: e$10._0,
+            gameMode: e$11._0,
+            worldUniqueId: e$13._0,
+            worldGeneratorVersion: e$14._0,
+            moonType: e$15._0,
+            treeBackground: e$16._0,
+            treeBackground2: e$17._0,
+            treeBackground3: e$18._0,
+            treeBackground4: e$19._0,
+            corruptionBackground: e$20._0,
+            jungleBackground: e$21._0,
+            snowBackground: e$22._0,
+            hallowBackground: e$23._0,
+            crimsonBackground: e$24._0,
+            desertBackground: e$25._0,
+            oceanBackground: e$26._0,
+            mushroomBackground: e$27._0,
+            underworldBackground: e$28._0,
+            iceBackStyle: e$29._0,
+            jungleBackStyle: e$30._0,
+            hellBackStyle: e$31._0,
+            windSpeedSet: e$32._0,
+            cloudNumber: e$33._0,
+            tree1: e$34._0,
+            tree2: e$35._0,
+            tree3: e$36._0,
+            treeStyle1: e$37._0,
+            treeStyle2: e$38._0,
+            treeStyle3: e$39._0,
+            treeStyle4: e$40._0,
+            caveBack1: e$41._0,
+            caveBack2: e$42._0,
+            caveBack3: e$43._0,
+            caveBackStyle1: e$44._0,
+            caveBackStyle2: e$45._0,
+            caveBackStyle3: e$46._0,
+            caveBackStyle4: e$47._0,
+            forest1TreeTopStyle: e$48._0,
+            forest2TreeTopStyle: e$49._0,
+            forest3TreeTopStyle: e$50._0,
+            forest4TreeTopStyle: e$51._0,
+            corruptionTreeTopStyle: e$52._0,
+            jungleTreeTopStyle: e$53._0,
+            snowTreeTopStyle: e$54._0,
+            hallowTreeTopStyle: e$55._0,
+            crimsonTreeTopStyle: e$56._0,
+            desertTreeTopStyle: e$57._0,
+            oceanTreeTopStyle: e$58._0,
+            glowingMushroomTreeTopStyle: e$59._0,
+            underworldTreeTopStyle: e$60._0,
+            rain: e$61._0,
+            eventInfo: e$62._0,
+            sundialCooldown: e$63._0,
+            moondialCooldown: e$64._0,
+            copperOreTier: e$65._0,
+            ironOreTier: e$66._0,
+            silverOreTier: e$67._0,
+            goldOreTier: e$68._0,
+            cobaltOreTier: e$69._0,
+            mythrilOreTier: e$70._0,
+            adamantiteOreTier: e$71._0,
+            invasionType: e$72._0,
+            lobbyId: e$73._0,
+            sandstormSeverity: e$74._0
+          }
+        };
+      } else {
+        return e$74;
+      }
     }
     function packEventInfo(writer, eventInfo) {
       let eventInfo1 = BitFlags$TerrariaPacket.fromFlags(eventInfo.shadowOrbSmashed, eventInfo.killedBoss1, eventInfo.killedBoss2, eventInfo.killedBoss3, eventInfo.hardMode, eventInfo.killedClown, eventInfo.serverSidedCharacters, eventInfo.killedPlantBoss);
@@ -16929,20 +19202,30 @@ var require_Packet_PlayerActive = __commonJS({
   "src/packet/Packet_PlayerActive.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let playerId = reader.readByte();
-      let active = reader.readByte() !== 0;
-      return {
-        playerId,
-        active
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "active");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            active: e$1._0 !== 0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerActive")).packByte(self.playerId).packByte(self.active ? 1 : 0).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerActive")), self.playerId, "playerId"), self.active ? 1 : 0, "active"));
     }
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
@@ -16954,109 +19237,260 @@ var require_Packet_NpcUpdate = __commonJS({
   "src/packet/Packet_NpcUpdate.js"(exports2) {
     "use strict";
     var Belt_Option = (init_Belt_Option(), __toCommonJS(Belt_Option_exports));
+    var Stdlib_Result = (init_Stdlib_Result(), __toCommonJS(Stdlib_Result_exports));
     var BitFlags$TerrariaPacket = require_BitFlags();
     var PacketType$TerrariaPacket = require_PacketType();
     var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
     var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
     function readNpcFlags1(reader, fieldName) {
-      let flags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, fieldName));
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, fieldName);
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let flags = BitFlags$TerrariaPacket.fromByte(e._0);
       return {
-        directionX: BitFlags$TerrariaPacket.flag1(flags),
-        directionY: BitFlags$TerrariaPacket.flag2(flags),
-        ai0: BitFlags$TerrariaPacket.flag3(flags),
-        ai1: BitFlags$TerrariaPacket.flag4(flags),
-        ai2: BitFlags$TerrariaPacket.flag5(flags),
-        ai3: BitFlags$TerrariaPacket.flag6(flags),
-        spriteDirection: BitFlags$TerrariaPacket.flag7(flags),
-        lifeMax: BitFlags$TerrariaPacket.flag8(flags)
+        TAG: "Ok",
+        _0: {
+          directionX: BitFlags$TerrariaPacket.flag1(flags),
+          directionY: BitFlags$TerrariaPacket.flag2(flags),
+          ai0: BitFlags$TerrariaPacket.flag3(flags),
+          ai1: BitFlags$TerrariaPacket.flag4(flags),
+          ai2: BitFlags$TerrariaPacket.flag5(flags),
+          ai3: BitFlags$TerrariaPacket.flag6(flags),
+          spriteDirection: BitFlags$TerrariaPacket.flag7(flags),
+          lifeMax: BitFlags$TerrariaPacket.flag8(flags)
+        }
       };
     }
     function readNpcFlags2(reader, fieldName) {
-      let flags = BitFlags$TerrariaPacket.fromByte(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, fieldName));
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, fieldName);
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let flags = BitFlags$TerrariaPacket.fromByte(e._0);
       return {
-        statsScaled: BitFlags$TerrariaPacket.flag1(flags),
-        spawnedFromStatue: BitFlags$TerrariaPacket.flag2(flags),
-        strengthMultiplier: BitFlags$TerrariaPacket.flag3(flags)
+        TAG: "Ok",
+        _0: {
+          statsScaled: BitFlags$TerrariaPacket.flag1(flags),
+          spawnedFromStatue: BitFlags$TerrariaPacket.flag2(flags),
+          strengthMultiplier: BitFlags$TerrariaPacket.flag3(flags)
+        }
       };
     }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let npcSlotId = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcSlotId");
-      let x = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
-      let y = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
-      let vx = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
-      let vy = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
-      let target = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "target");
-      let npcFlags12 = readNpcFlags1(reader, "npcFlags1");
-      let npcFlags22 = readNpcFlags2(reader, "npcFlags2");
-      let ai_0 = npcFlags12.ai0 ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai0") : void 0;
-      let ai_1 = npcFlags12.ai1 ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai1") : void 0;
-      let ai_2 = npcFlags12.ai2 ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai2") : void 0;
-      let ai_3 = npcFlags12.ai3 ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai3") : void 0;
-      let ai = [
-        ai_0,
-        ai_1,
-        ai_2,
-        ai_3
-      ];
-      let npcTypeId = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcTypeId");
-      let playerCountScale = npcFlags22.statsScaled ? ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerCountScale") : void 0;
-      let strengthMultiplier = npcFlags22.strengthMultiplier ? ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "strengthMultiplier") : void 0;
-      let life;
-      if (npcFlags12.lifeMax) {
-        life = "Max";
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcSlotId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "target");
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let e$6 = readNpcFlags1(reader, "npcFlags1");
+      if (e$6.TAG !== "Ok") {
+        return e$6;
+      }
+      let npcFlags12 = e$6._0;
+      let e$7 = readNpcFlags2(reader, "npcFlags2");
+      if (e$7.TAG !== "Ok") {
+        return e$7;
+      }
+      let npcFlags22 = e$7._0;
+      let tmp;
+      if (npcFlags12.ai0) {
+        let e$8 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai0");
+        tmp = e$8.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: e$8._0
+        } : e$8;
       } else {
-        let lifeBytes = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "lifeBytes");
-        switch (lifeBytes) {
-          case 1:
-            life = {
-              TAG: "Byte",
-              _0: ErrorAwarePacketReader$TerrariaPacket.readSByte(reader, "life_sbyte")
-            };
-            break;
-          case 2:
-            life = {
-              TAG: "Int16",
-              _0: ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "life_int16")
-            };
-            break;
-          case 4:
-            life = {
-              TAG: "Int32",
-              _0: ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "life_int32")
-            };
-            break;
-          default:
-            life = void 0;
-        }
-      }
-      let releaseOwner;
-      try {
-        releaseOwner = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "releaseOwner");
-      } catch (exn) {
-        releaseOwner = void 0;
-      }
-      if (life !== void 0) {
-        return {
-          npcSlotId,
-          npcTypeId,
-          x,
-          y,
-          vx,
-          vy,
-          target,
-          directionX: npcFlags12.directionX,
-          directionY: npcFlags12.directionY,
-          ai,
-          spriteDirection: npcFlags12.spriteDirection,
-          life,
-          releaseOwner,
-          playerCountScale,
-          strengthMultiplier,
-          spawnedFromStatue: npcFlags22.spawnedFromStatue
+        tmp = {
+          TAG: "Ok",
+          _0: void 0
         };
       }
+      let tmp$1;
+      if (npcFlags12.ai1) {
+        let e$9 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai1");
+        tmp$1 = e$9.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: e$9._0
+        } : e$9;
+      } else {
+        tmp$1 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      let tmp$2;
+      if (npcFlags12.ai2) {
+        let e$10 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai2");
+        tmp$2 = e$10.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: e$10._0
+        } : e$10;
+      } else {
+        tmp$2 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      let tmp$3;
+      if (npcFlags12.ai3) {
+        let e$11 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai3");
+        tmp$3 = e$11.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: e$11._0
+        } : e$11;
+      } else {
+        tmp$3 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      let e$12 = Stdlib_Result.all4([
+        tmp,
+        tmp$1,
+        tmp$2,
+        tmp$3
+      ]);
+      if (e$12.TAG !== "Ok") {
+        return e$12;
+      }
+      let e$13 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcTypeId");
+      if (e$13.TAG !== "Ok") {
+        return e$13;
+      }
+      let e$14;
+      if (npcFlags22.statsScaled) {
+        let e$15 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerCountScale");
+        e$14 = e$15.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: e$15._0
+        } : e$15;
+      } else {
+        e$14 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      if (e$14.TAG !== "Ok") {
+        return e$14;
+      }
+      let e$16;
+      if (npcFlags22.strengthMultiplier) {
+        let e$17 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "strengthMultiplier");
+        e$16 = e$17.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: e$17._0
+        } : e$17;
+      } else {
+        e$16 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      if (e$16.TAG !== "Ok") {
+        return e$16;
+      }
+      let e$18;
+      if (npcFlags12.lifeMax) {
+        e$18 = {
+          TAG: "Ok",
+          _0: "Max"
+        };
+      } else {
+        let e$19 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "lifeBytes");
+        if (e$19.TAG === "Ok") {
+          switch (e$19._0) {
+            case 1:
+              let e$20 = ErrorAwarePacketReader$TerrariaPacket.readSByte(reader, "life_sbyte");
+              e$18 = e$20.TAG === "Ok" ? {
+                TAG: "Ok",
+                _0: {
+                  TAG: "Byte",
+                  _0: e$20._0
+                }
+              } : e$20;
+              break;
+            case 2:
+              let e$21 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "life_int16");
+              e$18 = e$21.TAG === "Ok" ? {
+                TAG: "Ok",
+                _0: {
+                  TAG: "Int16",
+                  _0: e$21._0
+                }
+              } : e$21;
+              break;
+            case 4:
+              let e$22 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "life_int32");
+              e$18 = e$22.TAG === "Ok" ? {
+                TAG: "Ok",
+                _0: {
+                  TAG: "Int32",
+                  _0: e$22._0
+                }
+              } : e$22;
+              break;
+            default:
+              e$18 = {
+                TAG: "Error",
+                _0: {
+                  context: "Packet_NpcUpdate.parse",
+                  error: new Error("Invalid life byte count")
+                }
+              };
+          }
+        } else {
+          e$18 = e$19;
+        }
+      }
+      if (e$18.TAG !== "Ok") {
+        return e$18;
+      }
+      let releaseOwner = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "releaseOwner");
+      let releaseOwner$1;
+      releaseOwner$1 = releaseOwner.TAG === "Ok" ? releaseOwner._0 : void 0;
+      return {
+        TAG: "Ok",
+        _0: {
+          npcSlotId: e._0,
+          npcTypeId: e$13._0,
+          x: e$1._0,
+          y: e$2._0,
+          vx: e$3._0,
+          vy: e$4._0,
+          target: e$5._0,
+          directionX: npcFlags12.directionX,
+          directionY: npcFlags12.directionY,
+          ai: e$12._0,
+          spriteDirection: npcFlags12.spriteDirection,
+          life: e$18._0,
+          releaseOwner: releaseOwner$1,
+          playerCountScale: e$14._0,
+          strengthMultiplier: e$16._0,
+          spawnedFromStatue: npcFlags22.spawnedFromStatue
+        }
+      };
     }
     function npcFlags1(self) {
       let match = self.ai;
@@ -17131,36 +19565,34 @@ var require_Packet_Disconnect = __commonJS({
   "src/packet/Packet_Disconnect.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readNetworkText(prim) {
-      return prim.readNetworkText();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let reason = reader.readNetworkText();
-      return {
-        reason
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readNetworkText(reader, "reason");
+      if (e.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            reason: e._0
+          }
+        };
+      } else {
+        return e;
+      }
     }
     var Decode = {
-      readNetworkText,
+      readNetworkText: ErrorAwarePacketReader$TerrariaPacket.readNetworkText,
       parse
     };
-    function packNetworkText(prim0, prim1) {
-      return prim0.packNetworkText(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("Disconnect")).packNetworkText(self.reason).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packNetworkText(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("Disconnect")), self.reason, "reason"));
     }
     var Encode = {
-      packNetworkText,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packNetworkText: ErrorAwarePacketWriter$TerrariaPacket.packNetworkText,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -17224,17 +19656,17 @@ function from_val(value) {
     VAL: value
   };
 }
-var Primitive_exceptions2, Undefined, make4, get6, isEvaluated;
+var Primitive_exceptions, Undefined, make4, get5, isEvaluated;
 var init_Stdlib_Lazy = __esm({
   "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Stdlib_Lazy.js"() {
     "use strict";
-    Primitive_exceptions2 = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
-    Undefined = /* @__PURE__ */ Primitive_exceptions2.create("Stdlib_Lazy.Undefined");
+    Primitive_exceptions = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
+    Undefined = /* @__PURE__ */ Primitive_exceptions.create("Stdlib_Lazy.Undefined");
     make4 = from_fun;
-    get6 = force;
+    get5 = force;
     isEvaluated = is_val;
     exports.make = make4;
-    exports.get = get6;
+    exports.get = get5;
     exports.isEvaluated = isEvaluated;
     exports.Undefined = Undefined;
     exports.force = force;
@@ -17249,11 +19681,46 @@ var init_Stdlib_Lazy = __esm({
 var require_Packet_Emoji = __commonJS({
   "src/packet/Packet_Emoji.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "emojiId");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            emojiId: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("Emoji")), self.playerId, "playerId"), self.emojiId, "emojiId"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -17261,11 +19728,111 @@ var require_Packet_Emoji = __commonJS({
 var require_Packet_DoorUse = __commonJS({
   "src/packet/Packet_DoorUse.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function actionToInt(self) {
+      switch (self) {
+        case "OpenDoor":
+          return 0;
+        case "CloseDoor":
+          return 1;
+        case "ShiftTrapdoorOpen":
+          return 2;
+        case "ShiftTrapdoorClose":
+          return 3;
+        case "ShiftTallGateOpen":
+          return 4;
+        case "ShiftTallGateClose":
+          return 5;
+      }
     }
+    function actionFromInt(self) {
+      switch (self) {
+        case 0:
+          return "OpenDoor";
+        case 1:
+          return "CloseDoor";
+        case 2:
+          return "ShiftTrapdoorOpen";
+        case 3:
+          return "ShiftTrapdoorClose";
+        case 4:
+          return "ShiftTallGateOpen";
+        case 5:
+          return "ShiftTallGateClose";
+        default:
+          return;
+      }
+    }
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "action");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "direction");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let action = actionFromInt(e._0);
+      let action$1 = action !== void 0 ? {
+        TAG: "Ok",
+        _0: action
+      } : {
+        TAG: "Error",
+        _0: {
+          context: "Packet_DoorUse.parse.action",
+          error: new Error("Unknown door action")
+        }
+      };
+      if (action$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            action: action$1._0,
+            x: e$1._0,
+            y: e$2._0,
+            direction: e$3._0 === 0 ? -1 : 1
+          }
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: action$1._0
+        };
+      }
+    }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("DoorUse")), actionToInt(self.action), "action"), self.x, "x"), self.y, "y"), self.direction >= 0 ? 1 : 0, "direction"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.actionToInt = actionToInt;
+    exports2.actionFromInt = actionFromInt;
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -17273,11 +19840,48 @@ var require_Packet_DoorUse = __commonJS({
 var require_Packet_HarpPlay = __commonJS({
   "src/packet/Packet_HarpPlay.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "pitch");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            pitch: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("HarpPlay")), self.playerId, "playerId"), self.pitch, "pitch"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -17285,11 +19889,58 @@ var require_Packet_HarpPlay = __commonJS({
 var require_Packet_ChestName = __commonJS({
   "src/packet/Packet_ChestName.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "chestId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "name");
+      if (e$3.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            chestId: e._0,
+            x: e$1._0,
+            y: e$2._0,
+            name: e$3._0
+          }
+        };
+      } else {
+        return e$3;
+      }
     }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readString: ErrorAwarePacketReader$TerrariaPacket.readString,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ChestName")), self.chestId, "chestId"), self.x, "x"), self.y, "y"), self.name, "name"));
+    }
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packString: ErrorAwarePacketWriter$TerrariaPacket.packString,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -17297,11 +19948,46 @@ var require_Packet_ChestName = __commonJS({
 var require_Packet_ChestOpen = __commonJS({
   "src/packet/Packet_ChestOpen.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            x: e._0,
+            y: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ChestOpen")), self.x, "x"), self.y, "y"));
+    }
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -17309,11 +19995,58 @@ var require_Packet_ChestOpen = __commonJS({
 var require_Packet_LiquidSet = __commonJS({
   "src/packet/Packet_LiquidSet.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "liquid");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "liquidType");
+      if (e$3.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            x: e._0,
+            y: e$1._0,
+            liquid: e$2._0,
+            liquidType: e$3._0
+          }
+        };
+      } else {
+        return e$3;
+      }
     }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("LiquidSet")), self.x, "x"), self.y, "y"), self.liquid, "liquid"), self.liquidType, "liquidType"));
+    }
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -17321,11 +20054,65 @@ var require_Packet_LiquidSet = __commonJS({
 var require_Packet_NpcStrike = __commonJS({
   "src/packet/Packet_NpcStrike.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "damage");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "knockback");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "direction");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "critical");
+      if (e$4.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            npcId: e._0,
+            damage: e$1._0,
+            knockback: e$2._0,
+            direction: e$3._0 - 1 | 0,
+            critical: e$4._0 === 1
+          }
+        };
+      } else {
+        return e$4;
+      }
     }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcStrike")), self.npcId, "npcId"), self.damage, "damage"), self.knockback, "knockback"), self.direction + 1 | 0, "direction"), self.critical ? 1 : 0, "critical"));
+    }
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -17334,9 +20121,9 @@ var require_Packet_NpcTamper = __commonJS({
   "src/packet/Packet_NpcTamper.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
     function fromInt(playerId) {
       if (playerId !== -1) {
         return {
@@ -17358,74 +20145,77 @@ var require_Packet_NpcTamper = __commonJS({
       fromInt,
       toInt
     };
-    function readUInt16(prim) {
-      return prim.readUInt16();
-    }
-    function readByte(prim) {
-      return prim.readByte();
-    }
-    function readInt32(prim) {
-      return prim.readInt32();
-    }
-    function readInt16(prim) {
-      return prim.readInt16();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let npcId = reader.readUInt16();
-      let setNpcImmunity = reader.readByte() === 1;
-      let match = setNpcImmunity ? [
-        reader.readInt32(),
-        fromInt(reader.readInt16())
-      ] : [
-        void 0,
-        void 0
-      ];
+      let e = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "npcId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "setNpcImmunity");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2;
+      if (e$1._0 === 1) {
+        let e$3 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "immunityTime");
+        if (e$3.TAG === "Ok") {
+          let e$4 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "immunityFromPlayerId");
+          e$2 = e$4.TAG === "Ok" ? {
+            TAG: "Ok",
+            _0: [
+              e$3._0,
+              fromInt(e$4._0)
+            ]
+          } : e$4;
+        } else {
+          e$2 = e$3;
+        }
+      } else {
+        e$2 = {
+          TAG: "Ok",
+          _0: [
+            void 0,
+            void 0
+          ]
+        };
+      }
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let match = e$2._0;
       return {
-        npcId,
-        immunityTime: match[0],
-        immunityFromPlayerId: match[1]
+        TAG: "Ok",
+        _0: {
+          npcId: e._0,
+          immunityTime: match[0],
+          immunityFromPlayerId: match[1]
+        }
       };
     }
     var Decode = {
-      readUInt16,
-      readByte,
-      readInt32,
-      readInt16,
+      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
       parse
     };
-    function packUInt16(prim0, prim1) {
-      return prim0.packUInt16(prim1);
-    }
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt32(prim0, prim1) {
-      return prim0.packInt32(prim1);
-    }
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function packImmunity(writer, immunityTime, immunityOrigin) {
       if (immunityTime !== void 0 && immunityOrigin !== void 0) {
-        return writer.packByte(1).packInt32(immunityTime).packInt16(toInt(immunityOrigin));
+        return ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, 1, "setNpcImmunity"), immunityTime, "immunityTime"), toInt(immunityOrigin), "immunityFromPlayerId");
       } else {
-        return writer.packByte(0);
+        return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, 0, "setNpcImmunity");
       }
     }
     function toBuffer(self) {
-      return packImmunity(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NpcTamper")).packUInt16(self.npcId), self.immunityTime, self.immunityFromPlayerId).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(packImmunity(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcTamper")), self.npcId, "npcId"), self.immunityTime, self.immunityFromPlayerId));
     }
     var Encode = {
-      packUInt16,
-      packByte,
-      packInt32,
-      packInt16,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       packImmunity,
       toBuffer
     };
@@ -17444,46 +20234,41 @@ var require_Packet_HealEffect = __commonJS({
   "src/packet/Packet_HealEffect.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readInt16(prim) {
-      return prim.readInt16();
-    }
-    function readByte(prim) {
-      return prim.readByte();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let playerId = reader.readByte();
-      let healAmount = reader.readInt16();
-      return {
-        playerId,
-        healAmount
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "healAmount");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            healAmount: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
     var Decode = {
-      readInt16,
-      readByte,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("HealEffect")).packByte(self.playerId).packInt16(self.healAmount).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("HealEffect")), self.playerId, "playerId"), self.healAmount, "healAmount"));
     }
     var Encode = {
-      packByte,
-      packInt16,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -17498,46 +20283,41 @@ var require_Packet_ManaEffect = __commonJS({
   "src/packet/Packet_ManaEffect.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readInt16(prim) {
-      return prim.readInt16();
-    }
-    function readByte(prim) {
-      return prim.readByte();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let playerId = reader.readByte();
-      let manaAmount = reader.readInt16();
-      return {
-        playerId,
-        manaAmount
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "manaAmount");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            manaAmount: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
     var Decode = {
-      readInt16,
-      readByte,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ManaEffect")).packByte(self.playerId).packInt16(self.manaAmount).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ManaEffect")), self.playerId, "playerId"), self.manaAmount, "manaAmount"));
     }
     var Encode = {
-      packByte,
-      packInt16,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -17551,11 +20331,53 @@ var require_Packet_ManaEffect = __commonJS({
 var require_Packet_NpcBuffAdd = __commonJS({
   "src/packet/Packet_NpcBuffAdd.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "buffType");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "time");
+      if (e$2.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            npcId: e._0,
+            buffType: e$1._0,
+            time: e$2._0
+          }
+        };
+      } else {
+        return e$2;
+      }
     }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcBuffAdd")), self.npcId, "npcId"), self.buffType, "buffType"), self.time, "time"));
+    }
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -17564,58 +20386,53 @@ var require_Packet_NpcRelease = __commonJS({
   "src/packet/Packet_NpcRelease.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readByte(prim) {
-      return prim.readByte();
-    }
-    function readInt16(prim) {
-      return prim.readInt16();
-    }
-    function readInt32(prim) {
-      return prim.readInt32();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let x = reader.readInt32();
-      let y = reader.readInt32();
-      let npcType = reader.readInt16();
-      let style = reader.readByte();
-      return {
-        x,
-        y,
-        npcType,
-        style
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "x");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "y");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcType");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "style");
+      if (e$3.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            x: e._0,
+            y: e$1._0,
+            npcType: e$2._0,
+            style: e$3._0
+          }
+        };
+      } else {
+        return e$3;
+      }
     }
     var Decode = {
-      readByte,
-      readInt16,
-      readInt32,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function packInt32(prim0, prim1) {
-      return prim0.packInt32(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("NpcRelease")).packInt32(self.x).packInt32(self.y).packInt16(self.npcType).packByte(self.style).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcRelease")), self.x, "x"), self.y, "y"), self.npcType, "npcType"), self.style, "style"));
     }
     var Encode = {
-      packByte,
-      packInt16,
-      packInt32,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -17629,11 +20446,48 @@ var require_Packet_NpcRelease = __commonJS({
 var require_Packet_PortalKill = __commonJS({
   "src/packet/Packet_PortalKill.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "owner");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "portalColor");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            owner: e._0,
+            portalColor: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
+    var Decode = {
+      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PortalKill")), self.owner, "owner"), self.portalColor, "portalColor"));
+    }
+    var Encode = {
+      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -17641,11 +20495,106 @@ var require_Packet_PortalKill = __commonJS({
 var require_Packet_EmoteBubble = __commonJS({
   "src/packet/Packet_EmoteBubble.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var Stdlib_Result = (init_Stdlib_Result(), __toCommonJS(Stdlib_Result_exports));
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "id");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let id = e._0;
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "anchorType");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let anchorType = e$1._0;
+      if (anchorType === 255) {
+        return {
+          TAG: "Ok",
+          _0: {
+            id,
+            anchor: "Remove"
+          }
+        };
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "anchorMeta");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "time");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readSByte(reader, "emote");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let emote = e$4._0;
+      let metadata = emote < 0 ? Stdlib_Result.map(ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "metadata"), (v) => v) : {
+        TAG: "Ok",
+        _0: void 0
+      };
+      if (metadata.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            id,
+            anchor: {
+              TAG: "Anchor",
+              anchorType,
+              anchorMeta: e$2._0,
+              time: e$3._0,
+              emote,
+              metadata: metadata._0
+            }
+          }
+        };
+      } else {
+        return metadata;
+      }
     }
+    var Decode = {
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
+      readSByte: ErrorAwarePacketReader$TerrariaPacket.readSByte,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      parse
+    };
+    function toBuffer(self) {
+      let writer = ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("EmoteBubble")), self.id, "id");
+      let details = self.anchor;
+      if (typeof details !== "object") {
+        return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, 255, "anchorType"));
+      }
+      let writer$1 = ErrorAwarePacketWriter$TerrariaPacket.packSByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, details.anchorType, "anchorType"), details.anchorMeta, "anchorMeta"), details.time, "time"), details.emote, "emote");
+      let tmp;
+      if (details.emote < 0) {
+        let v = details.metadata;
+        tmp = ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer$1, v !== void 0 ? v : 0, "metadata");
+      } else {
+        tmp = writer$1;
+      }
+      return ErrorAwarePacketWriter$TerrariaPacket.data(tmp);
+    }
+    var Encode = {
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
+      packSByte: ErrorAwarePacketWriter$TerrariaPacket.packSByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -17653,11 +20602,41 @@ var require_Packet_EmoteBubble = __commonJS({
 var require_Packet_PasswordSend = __commonJS({
   "src/packet/Packet_PasswordSend.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "password");
+      if (e.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            password: e._0
+          }
+        };
+      } else {
+        return e;
+      }
     }
+    var Decode = {
+      readString: ErrorAwarePacketReader$TerrariaPacket.readString,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PasswordSend")), self.password, "password"));
+    }
+    var Encode = {
+      packString: ErrorAwarePacketWriter$TerrariaPacket.packString,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -17665,11 +20644,53 @@ var require_Packet_PasswordSend = __commonJS({
 var require_Packet_GemLockToggle = __commonJS({
   "src/packet/Packet_GemLockToggle.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readBool(reader, "active");
+      if (e$2.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            x: e._0,
+            y: e$1._0,
+            active: e$2._0
+          }
+        };
+      } else {
+        return e$2;
+      }
     }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readBool: ErrorAwarePacketReader$TerrariaPacket.readBool,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packBool(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("GemLockToggle")), self.x, "x"), self.y, "y"), self.active, "active"));
+    }
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packBool: ErrorAwarePacketWriter$TerrariaPacket.packBool,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -17677,11 +20698,60 @@ var require_Packet_GemLockToggle = __commonJS({
 var require_Packet_NebulaLevelUp = __commonJS({
   "src/packet/Packet_NebulaLevelUp.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "level");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+      if (e$3.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            level: e$1._0,
+            x: e$2._0,
+            y: e$3._0
+          }
+        };
+      } else {
+        return e$3;
+      }
     }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
+      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NebulaLevelUp")), self.playerId, "playerId"), self.level, "level"), self.x, "x"), self.y, "y"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
+      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -17689,11 +20759,48 @@ var require_Packet_NebulaLevelUp = __commonJS({
 var require_Packet_NpcItemStrike = __commonJS({
   "src/packet/Packet_NpcItemStrike.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            npcId: e._0,
+            playerId: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcItemStrike")), self.npcId, "npcId"), self.playerId, "playerId"));
+    }
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -17701,11 +20808,48 @@ var require_Packet_NpcItemStrike = __commonJS({
 var require_Packet_PlayerStealth = __commonJS({
   "src/packet/Packet_PlayerStealth.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "stealth");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            stealth: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerStealth")), self.playerId, "playerId"), self.stealth, "stealth"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -17713,11 +20857,51 @@ var require_Packet_PlayerStealth = __commonJS({
 var require_Packet_GoodEvilUpdate = __commonJS({
   "src/packet/Packet_GoodEvilUpdate.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "good");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "evil");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "blood");
+      if (e$2.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            good: e._0,
+            evil: e$1._0,
+            blood: e$2._0
+          }
+        };
+      } else {
+        return e$2;
+      }
     }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("GoodEvilUpdate")), self.good, "good"), self.evil, "evil"), self.blood, "blood"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -17725,11 +20909,292 @@ var require_Packet_GoodEvilUpdate = __commonJS({
 var require_Packet_ItemDropModify = __commonJS({
   "src/packet/Packet_ItemDropModify.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
+    var Stdlib_Result = (init_Stdlib_Result(), __toCommonJS(Stdlib_Result_exports));
+    var BitFlags$TerrariaPacket = require_BitFlags();
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parseFlags2(reader, flags22) {
+      let width = BitFlags$TerrariaPacket.flag1(flags22) ? Stdlib_Result.map(ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "width"), (v) => v) : {
+        TAG: "Ok",
+        _0: void 0
+      };
+      if (width.TAG !== "Ok") {
+        return width;
+      }
+      let height = BitFlags$TerrariaPacket.flag2(flags22) ? Stdlib_Result.map(ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "height"), (v) => v) : {
+        TAG: "Ok",
+        _0: void 0
+      };
+      if (height.TAG !== "Ok") {
+        return height;
+      }
+      let scale = BitFlags$TerrariaPacket.flag3(flags22) ? Stdlib_Result.map(ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "scale"), (v) => v) : {
+        TAG: "Ok",
+        _0: void 0
+      };
+      if (scale.TAG !== "Ok") {
+        return scale;
+      }
+      let ammo = BitFlags$TerrariaPacket.flag4(flags22) ? Stdlib_Result.map(ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "ammo"), (v) => v) : {
+        TAG: "Ok",
+        _0: void 0
+      };
+      if (ammo.TAG !== "Ok") {
+        return ammo;
+      }
+      let useAmmo = BitFlags$TerrariaPacket.flag5(flags22) ? Stdlib_Result.map(ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "useAmmo"), (v) => v) : {
+        TAG: "Ok",
+        _0: void 0
+      };
+      if (useAmmo.TAG !== "Ok") {
+        return useAmmo;
+      }
+      let notAmmo = BitFlags$TerrariaPacket.flag6(flags22) ? Stdlib_Result.map(ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "notAmmo"), (v) => v === 1) : {
+        TAG: "Ok",
+        _0: void 0
+      };
+      if (notAmmo.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: [
+            width._0,
+            height._0,
+            scale._0,
+            ammo._0,
+            useAmmo._0,
+            notAmmo._0
+          ]
+        };
+      } else {
+        return notAmmo;
+      }
     }
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags1");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let flags12 = BitFlags$TerrariaPacket.fromByte(e$1._0);
+      let color;
+      if (BitFlags$TerrariaPacket.flag1(flags12)) {
+        let e$2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "Color.r");
+        if (e$2.TAG === "Ok") {
+          let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "Color.g");
+          if (e$3.TAG === "Ok") {
+            let e$4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "Color.b");
+            if (e$4.TAG === "Ok") {
+              let e$5 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "Color.a");
+              color = e$5.TAG === "Ok" ? {
+                TAG: "Ok",
+                _0: {
+                  r: e$2._0,
+                  g: e$3._0,
+                  b: e$4._0,
+                  a: e$5._0
+                }
+              } : e$5;
+            } else {
+              color = e$4;
+            }
+          } else {
+            color = e$3;
+          }
+        } else {
+          color = e$2;
+        }
+      } else {
+        color = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      if (color.TAG !== "Ok") {
+        return color;
+      }
+      let damage = BitFlags$TerrariaPacket.flag2(flags12) ? Stdlib_Result.map(ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "damage"), (v) => v) : {
+        TAG: "Ok",
+        _0: void 0
+      };
+      if (damage.TAG !== "Ok") {
+        return damage;
+      }
+      let knockback = BitFlags$TerrariaPacket.flag3(flags12) ? Stdlib_Result.map(ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "knockback"), (v) => v) : {
+        TAG: "Ok",
+        _0: void 0
+      };
+      if (knockback.TAG !== "Ok") {
+        return knockback;
+      }
+      let useAnimation = BitFlags$TerrariaPacket.flag4(flags12) ? Stdlib_Result.map(ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "useAnimation"), (v) => v) : {
+        TAG: "Ok",
+        _0: void 0
+      };
+      if (useAnimation.TAG !== "Ok") {
+        return useAnimation;
+      }
+      let useTime = BitFlags$TerrariaPacket.flag5(flags12) ? Stdlib_Result.map(ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "useTime"), (v) => v) : {
+        TAG: "Ok",
+        _0: void 0
+      };
+      if (useTime.TAG !== "Ok") {
+        return useTime;
+      }
+      let shoot = BitFlags$TerrariaPacket.flag6(flags12) ? Stdlib_Result.map(ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "shoot"), (v) => v) : {
+        TAG: "Ok",
+        _0: void 0
+      };
+      if (shoot.TAG !== "Ok") {
+        return shoot;
+      }
+      let shootSpeed = BitFlags$TerrariaPacket.flag7(flags12) ? Stdlib_Result.map(ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "shootSpeed"), (v) => v) : {
+        TAG: "Ok",
+        _0: void 0
+      };
+      if (shootSpeed.TAG !== "Ok") {
+        return shootSpeed;
+      }
+      let e$6;
+      if (BitFlags$TerrariaPacket.flag8(flags12)) {
+        let e$7 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags2");
+        e$6 = e$7.TAG === "Ok" ? parseFlags2(reader, BitFlags$TerrariaPacket.fromByte(e$7._0)) : e$7;
+      } else {
+        e$6 = {
+          TAG: "Ok",
+          _0: [
+            void 0,
+            void 0,
+            void 0,
+            void 0,
+            void 0,
+            void 0
+          ]
+        };
+      }
+      if (e$6.TAG !== "Ok") {
+        return e$6;
+      }
+      let match = e$6._0;
+      return {
+        TAG: "Ok",
+        _0: {
+          itemId: e._0,
+          color: color._0,
+          damage: damage._0,
+          knockback: knockback._0,
+          useAnimation: useAnimation._0,
+          useTime: useTime._0,
+          shoot: shoot._0,
+          shootSpeed: shootSpeed._0,
+          width: match[0],
+          height: match[1],
+          scale: match[2],
+          ammo: match[3],
+          useAmmo: match[4],
+          notAmmo: match[5]
+        }
+      };
+    }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readUInt32: ErrorAwarePacketReader$TerrariaPacket.readUInt32,
+      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
+      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
+      parseFlags2,
+      parse
+    };
+    function flags1(self) {
+      return BitFlags$TerrariaPacket.fromFlags(Stdlib_Option.isSome(self.color), Stdlib_Option.isSome(self.damage), Stdlib_Option.isSome(self.knockback), Stdlib_Option.isSome(self.useAnimation), Stdlib_Option.isSome(self.useTime), Stdlib_Option.isSome(self.shoot), Stdlib_Option.isSome(self.shootSpeed), Stdlib_Option.isSome(self.width) || Stdlib_Option.isSome(self.height) || Stdlib_Option.isSome(self.scale) || Stdlib_Option.isSome(self.ammo) || Stdlib_Option.isSome(self.useAmmo) || Stdlib_Option.isSome(self.notAmmo));
+    }
+    function flags2(self) {
+      return BitFlags$TerrariaPacket.fromFlags(Stdlib_Option.isSome(self.width), Stdlib_Option.isSome(self.height), Stdlib_Option.isSome(self.scale), Stdlib_Option.isSome(self.ammo), Stdlib_Option.isSome(self.useAmmo), Stdlib_Option.isSome(self.notAmmo), false, false);
+    }
+    function toBuffer(self) {
+      let writer = ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ItemDropModify")), self.itemId, "itemId"), BitFlags$TerrariaPacket.toByte(flags1(self)), "flags1");
+      let c = self.color;
+      if (c !== void 0) {
+        ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, c.r, "Color.r");
+        ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, c.g, "Color.g");
+        ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, c.b, "Color.b");
+        ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, c.a, "Color.a");
+      }
+      let v = self.damage;
+      if (v !== void 0) {
+        ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, v, "damage");
+      }
+      let v$1 = self.knockback;
+      if (v$1 !== void 0) {
+        ErrorAwarePacketWriter$TerrariaPacket.packSingle(writer, v$1, "knockback");
+      }
+      let v$2 = self.useAnimation;
+      if (v$2 !== void 0) {
+        ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, v$2, "useAnimation");
+      }
+      let v$3 = self.useTime;
+      if (v$3 !== void 0) {
+        ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, v$3, "useTime");
+      }
+      let v$4 = self.shoot;
+      if (v$4 !== void 0) {
+        ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, v$4, "shoot");
+      }
+      let v$5 = self.shootSpeed;
+      if (v$5 !== void 0) {
+        ErrorAwarePacketWriter$TerrariaPacket.packSingle(writer, v$5, "shootSpeed");
+      }
+      if (BitFlags$TerrariaPacket.flag8(flags1(self))) {
+        ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(flags2(self)), "flags2");
+        let v$6 = self.width;
+        if (v$6 !== void 0) {
+          ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, v$6, "width");
+        }
+        let v$7 = self.height;
+        if (v$7 !== void 0) {
+          ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, v$7, "height");
+        }
+        let v$8 = self.scale;
+        if (v$8 !== void 0) {
+          ErrorAwarePacketWriter$TerrariaPacket.packSingle(writer, v$8, "scale");
+        }
+        let v$9 = self.ammo;
+        if (v$9 !== void 0) {
+          ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, v$9, "ammo");
+        }
+        let v$10 = self.useAmmo;
+        if (v$10 !== void 0) {
+          ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, v$10, "useAmmo");
+        }
+        let v$11 = self.notAmmo;
+        if (v$11 !== void 0) {
+          ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, v$11 ? 1 : 0, "notAmmo");
+        }
+      }
+      return ErrorAwarePacketWriter$TerrariaPacket.data(writer);
+    }
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packUInt32: ErrorAwarePacketWriter$TerrariaPacket.packUInt32,
+      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
+      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      flags1,
+      flags2,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -17738,53 +21203,57 @@ var require_Packet_ItemFramePlace = __commonJS({
   "src/packet/Packet_ItemFramePlace.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readByte(prim) {
-      return prim.readByte();
-    }
-    function readInt16(prim) {
-      return prim.readInt16();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let x = reader.readInt16();
-      let y = reader.readInt16();
-      let itemId = reader.readInt16();
-      let prefix = reader.readByte();
-      let stack = reader.readInt16();
-      return {
-        x,
-        y,
-        itemId,
-        prefix,
-        stack
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemId");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "prefix");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "stack");
+      if (e$4.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            x: e._0,
+            y: e$1._0,
+            itemId: e$2._0,
+            prefix: e$3._0,
+            stack: e$4._0
+          }
+        };
+      } else {
+        return e$4;
+      }
     }
     var Decode = {
-      readByte,
-      readInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ItemFramePlace")).packInt16(self.x).packInt16(self.y).packInt16(self.itemId).packByte(self.prefix).packInt16(self.stack).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ItemFramePlace")), self.x, "x"), self.y, "y"), self.itemId, "itemId"), self.prefix, "prefix"), self.stack, "stack"));
     }
     var Encode = {
       Writer: void 0,
-      packByte,
-      packInt16,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -17799,69 +21268,73 @@ var require_Packet_LucyAxeMessage = __commonJS({
   "src/packet/Packet_LucyAxeMessage.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readByte(prim) {
-      return prim.readByte();
-    }
-    function readSingle(prim) {
-      return prim.readSingle();
-    }
-    function readInt32(prim) {
-      return prim.readInt32();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let source = reader.readByte();
-      let variant = reader.readByte();
-      let velocity_x = reader.readSingle();
-      let velocity_y = reader.readSingle();
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "source");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "variant");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityX");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityY");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let velocity_x = e$2._0;
+      let velocity_y = e$3._0;
       let velocity = {
         x: velocity_x,
         y: velocity_y
       };
-      let position_x = reader.readInt32();
-      let position_y = reader.readInt32();
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "positionX");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "positionY");
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let position_x = e$4._0;
+      let position_y = e$5._0;
       let position = {
         x: position_x,
         y: position_y
       };
       return {
-        source,
-        variant,
-        velocity,
-        position
+        TAG: "Ok",
+        _0: {
+          source: e._0,
+          variant: e$1._0,
+          velocity,
+          position
+        }
       };
     }
     var Decode = {
-      readByte,
-      readSingle,
-      readInt32,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt32(prim0, prim1) {
-      return prim0.packInt32(prim1);
-    }
-    function packSingle(prim0, prim1) {
-      return prim0.packSingle(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("LucyAxeMessage")).packByte(self.source).packByte(self.variant).packSingle(self.velocity.x).packSingle(self.velocity.y).packInt32(self.position.x).packInt32(self.position.y).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("LucyAxeMessage")), self.source, "source"), self.variant, "variant"), self.velocity.x, "velocityX"), self.velocity.y, "velocityY"), self.position.x, "positionX"), self.position.y, "positionY"));
     }
     var Encode = {
       Writer: void 0,
-      packByte,
-      packInt32,
-      packSingle,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -17876,36 +21349,34 @@ var require_Packet_ItemOwnerRemove = __commonJS({
   "src/packet/Packet_ItemOwnerRemove.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readInt16(prim) {
-      return prim.readInt16();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let itemDropId = reader.readInt16();
-      return {
-        itemDropId
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemDropId");
+      if (e.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            itemDropId: e._0
+          }
+        };
+      } else {
+        return e;
+      }
     }
     var Decode = {
-      readInt16,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
       parse
     };
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ItemOwnerRemove")).packInt16(self.itemDropId).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ItemOwnerRemove")), self.itemDropId, "itemDropId"));
     }
     var Encode = {
-      packInt16,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -17919,11 +21390,105 @@ var require_Packet_ItemOwnerRemove = __commonJS({
 var require_Packet_LegacySoundPlay = __commonJS({
   "src/packet/Packet_LegacySoundPlay.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
+    var Stdlib_Result = (init_Stdlib_Result(), __toCommonJS(Stdlib_Result_exports));
+    var BitFlags$TerrariaPacket = require_BitFlags();
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "soundIndex");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "flags");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let flags = BitFlags$TerrariaPacket.fromByte(e$3._0);
+      let e$4 = BitFlags$TerrariaPacket.flag1(flags) ? Stdlib_Result.map(ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "styleOverride"), (v) => v) : {
+        TAG: "Ok",
+        _0: void 0
+      };
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = BitFlags$TerrariaPacket.flag2(flags) ? Stdlib_Result.map(ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "volumeOverride"), (v) => v) : {
+        TAG: "Ok",
+        _0: void 0
+      };
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let e$6 = BitFlags$TerrariaPacket.flag3(flags) ? Stdlib_Result.map(ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "pitchOverride"), (v) => v) : {
+        TAG: "Ok",
+        _0: void 0
+      };
+      if (e$6.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            position: {
+              x: e._0,
+              y: e$1._0
+            },
+            soundIndex: e$2._0,
+            styleOverride: e$4._0,
+            volumeOverride: e$5._0,
+            pitchOverride: e$6._0
+          }
+        };
+      } else {
+        return e$6;
+      }
     }
+    var Decode = {
+      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
+      parse
+    };
+    function toBuffer(self) {
+      let flags = BitFlags$TerrariaPacket.fromFlags(Stdlib_Option.isSome(self.styleOverride), Stdlib_Option.isSome(self.volumeOverride), Stdlib_Option.isSome(self.pitchOverride), false, false, false, false, false);
+      let writer = ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("LegacySoundPlay")), self.position.x, "x"), self.position.y, "y"), self.soundIndex, "soundIndex"), BitFlags$TerrariaPacket.toByte(flags), "flags");
+      let v = self.styleOverride;
+      if (v !== void 0) {
+        ErrorAwarePacketWriter$TerrariaPacket.packInt32(writer, v, "styleOverride");
+      }
+      let v$1 = self.volumeOverride;
+      if (v$1 !== void 0) {
+        ErrorAwarePacketWriter$TerrariaPacket.packSingle(writer, v$1, "volumeOverride");
+      }
+      let v$2 = self.pitchOverride;
+      if (v$2 !== void 0) {
+        ErrorAwarePacketWriter$TerrariaPacket.packSingle(writer, v$2, "pitchOverride");
+      }
+      return ErrorAwarePacketWriter$TerrariaPacket.data(writer);
+    }
+    var Encode = {
+      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -17931,11 +21496,48 @@ var require_Packet_LegacySoundPlay = __commonJS({
 var require_Packet_PlayerHealOther = __commonJS({
   "src/packet/Packet_PlayerHealOther.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "healAmount");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            healAmount: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerHealOther")), self.playerId, "playerId"), self.healAmount, "healAmount"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -17943,11 +21545,109 @@ var require_Packet_PlayerHealOther = __commonJS({
 var require_Packet_PlayerSpawnSelf = __commonJS({
   "src/packet/Packet_PlayerSpawnSelf.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "respawnTimer");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "numberOfDeathsPve");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "numberOfDeathsPvp");
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let e$6 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "context");
+      if (e$6.TAG !== "Ok") {
+        return e$6;
+      }
+      let context;
+      switch (e$6._0) {
+        case 0:
+          context = "ReviveFromDeath";
+          break;
+        case 1:
+          context = "SpawningIntoWorld";
+          break;
+        case 2:
+          context = "RecallFromItem";
+          break;
+        default:
+          context = void 0;
+      }
+      if (context !== void 0) {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            x: e$1._0,
+            y: e$2._0,
+            respawnTimer: e$3._0,
+            numberOfDeathsPve: e$4._0,
+            numberOfDeathsPvp: e$5._0,
+            context
+          }
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: {
+            context: "Packet_PlayerSpawnSelf.parse.context",
+            error: new Error("Unknown context")
+          }
+        };
+      }
     }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+      parse
+    };
+    function contextToByte(c) {
+      switch (c) {
+        case "ReviveFromDeath":
+          return 0;
+        case "SpawningIntoWorld":
+          return 1;
+        case "RecallFromItem":
+          return 2;
+      }
+    }
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerSpawnSelf")), self.playerId, "playerId"), self.x, "x"), self.y, "y"), self.respawnTimer, "respawnTimer"), self.numberOfDeathsPve, "numberOfDeathsPve"), self.numberOfDeathsPvp, "numberOfDeathsPvp"), contextToByte(self.context), "context"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      contextToByte,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -17955,11 +21655,60 @@ var require_Packet_PlayerSpawnSelf = __commonJS({
 var require_Packet_CombatTextCreate = __commonJS({
   "src/packet/Packet_CombatTextCreate.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "color");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readNetworkText(reader, "text");
+      if (e$3.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            x: e._0,
+            y: e$1._0,
+            color: e$2._0,
+            text: e$3._0
+          }
+        };
+      } else {
+        return e$3;
+      }
     }
+    var Decode = {
+      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
+      readColor: ErrorAwarePacketReader$TerrariaPacket.readColor,
+      readNetworkText: ErrorAwarePacketReader$TerrariaPacket.readNetworkText,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packNetworkText(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("CombatTextCreate")), self.x, "x"), self.y, "y"), self.color, "color"), self.text, "text"));
+    }
+    var Encode = {
+      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
+      packColor: ErrorAwarePacketWriter$TerrariaPacket.packColor,
+      packNetworkText: ErrorAwarePacketWriter$TerrariaPacket.packNetworkText,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -17967,11 +21716,46 @@ var require_Packet_CombatTextCreate = __commonJS({
 var require_Packet_NpcSpecialEffect = __commonJS({
   "src/packet/Packet_NpcSpecialEffect.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "effectType");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            effectType: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcSpecialEffect")), self.playerId, "playerId"), self.effectType, "effectType"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -17979,11 +21763,29 @@ var require_Packet_NpcSpecialEffect = __commonJS({
 var require_Packet_PasswordRequired = __commonJS({
   "src/packet/Packet_PasswordRequired.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     function parse(_payload) {
-      return Primitive_option8.some(void 0);
+      return {
+        TAG: "Ok",
+        _0: void 0
+      };
     }
+    var Decode = {
+      parse
+    };
+    function toBuffer(_self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PasswordRequired")));
+    }
+    var Encode = {
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -17991,11 +21793,41 @@ var require_Packet_PasswordRequired = __commonJS({
 var require_Packet_EventNotification = __commonJS({
   "src/packet/Packet_EventNotification.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "eventId");
+      if (e.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            eventId: e._0
+          }
+        };
+      } else {
+        return e;
+      }
     }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("EventNotification")), self.eventId, "eventId"));
+    }
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -18003,11 +21835,63 @@ var require_Packet_EventNotification = __commonJS({
 var require_Packet_GolfBallLandInCup = __commonJS({
   "src/packet/Packet_GolfBallLandInCup.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "cupX");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "cupY");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "projId");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "projType");
+      if (e$4.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            cupX: e$1._0,
+            cupY: e$2._0,
+            projId: e$3._0,
+            projType: e$4._0
+          }
+        };
+      } else {
+        return e$4;
+      }
     }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("GolfBallLandInCup")), self.playerId, "playerId"), self.cupX, "cupX"), self.cupY, "cupY"), self.projId, "projId"), self.projType, "projType"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -18015,11 +21899,63 @@ var require_Packet_GolfBallLandInCup = __commonJS({
 var require_Packet_MassWireOperation = __commonJS({
   "src/packet/Packet_MassWireOperation.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "startX");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "startY");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "endX");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "endY");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "toolMode");
+      if (e$4.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            startX: e._0,
+            startY: e$1._0,
+            endX: e$2._0,
+            endY: e$3._0,
+            toolMode: e$4._0
+          }
+        };
+      } else {
+        return e$4;
+      }
     }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("MassWireOperation")), self.startX, "startX"), self.startY, "startY"), self.endX, "endX"), self.endY, "endY"), self.toolMode, "toolMode"));
+    }
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -18028,36 +21964,39 @@ var require_Packet_MoonLordCountdown = __commonJS({
   "src/packet/Packet_MoonLordCountdown.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readInt32(prim) {
-      return prim.readInt32();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      return {
-        maxMoonLordCountdown: reader.readInt32(),
-        moonLordCountdown: reader.readInt32()
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "maxMoonLordCountdown");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "moonLordCountdown");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            maxMoonLordCountdown: e._0,
+            moonLordCountdown: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
     var Decode = {
-      readInt32,
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
       parse
     };
-    function packInt32(prim0, prim1) {
-      return prim0.packInt32(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("MoonLordCountdown")).packInt32(self.maxMoonLordCountdown).packInt32(self.moonLordCountdown).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("MoonLordCountdown")), self.maxMoonLordCountdown, "maxMoonLordCountdown"), self.moonLordCountdown, "moonLordCountdown"));
     }
     var Encode = {
-      packInt32,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -18072,46 +22011,41 @@ var require_Packet_ProjectileDestroy = __commonJS({
   "src/packet/Packet_ProjectileDestroy.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readByte(prim) {
-      return prim.readByte();
-    }
-    function readInt16(prim) {
-      return prim.readInt16();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let projectileId = reader.readInt16();
-      let owner = reader.readByte();
-      return {
-        projectileId,
-        owner
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "projectileId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "owner");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            projectileId: e._0,
+            owner: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
     var Decode = {
-      readByte,
-      readInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ProjectileDestroy")).packInt16(self.projectileId).packByte(self.owner).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ProjectileDestroy")), self.projectileId, "projectileId"), self.owner, "owner"));
     }
     var Encode = {
-      packByte,
-      packInt16,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -18125,11 +22059,92 @@ var require_Packet_ProjectileDestroy = __commonJS({
 var require_Packet_RevengeMarkerSync = __commonJS({
   "src/packet/Packet_RevengeMarkerSync.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "uniqueId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "posX");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "posY");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "npcNetId");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "npcHpPercent");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "npcTypeAgainstDiscouragement");
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let e$6 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "npcAiStyleAgainstDiscouragement");
+      if (e$6.TAG !== "Ok") {
+        return e$6;
+      }
+      let e$7 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "coinValue");
+      if (e$7.TAG !== "Ok") {
+        return e$7;
+      }
+      let e$8 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "baseValue");
+      if (e$8.TAG !== "Ok") {
+        return e$8;
+      }
+      let e$9 = ErrorAwarePacketReader$TerrariaPacket.readBool(reader, "spawnedFromStatue");
+      if (e$9.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            uniqueId: e._0,
+            position: {
+              x: e$1._0,
+              y: e$2._0
+            },
+            npcNetId: e$3._0,
+            npcHpPercent: e$4._0,
+            npcTypeAgainstDiscouragement: e$5._0,
+            npcAiStyleAgainstDiscouragement: e$6._0,
+            coinValue: e$7._0,
+            baseValue: e$8._0,
+            spawnedFromStatue: e$9._0
+          }
+        };
+      } else {
+        return e$9;
+      }
     }
+    var Decode = {
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
+      readBool: ErrorAwarePacketReader$TerrariaPacket.readBool,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packBool(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("RevengeMarkerSync")), self.uniqueId, "uniqueId"), self.position.x, "posX"), self.position.y, "posY"), self.npcNetId, "npcNetId"), self.npcHpPercent, "npcHpPercent"), self.npcTypeAgainstDiscouragement, "npcTypeAgainstDiscouragement"), self.npcAiStyleAgainstDiscouragement, "npcAiStyleAgainstDiscouragement"), self.coinValue, "coinValue"), self.baseValue, "baseValue"), self.spawnedFromStatue, "spawnedFromStatue"));
+    }
+    var Encode = {
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
+      packBool: ErrorAwarePacketWriter$TerrariaPacket.packBool,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -18137,11 +22152,60 @@ var require_Packet_RevengeMarkerSync = __commonJS({
 var require_Packet_CombatNumberCreate = __commonJS({
   "src/packet/Packet_CombatNumberCreate.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readColor(reader, "color");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "amount");
+      if (e$3.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            x: e._0,
+            y: e$1._0,
+            color: e$2._0,
+            amount: e$3._0
+          }
+        };
+      } else {
+        return e$3;
+      }
     }
+    var Decode = {
+      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
+      readColor: ErrorAwarePacketReader$TerrariaPacket.readColor,
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("CombatNumberCreate")), self.x, "x"), self.y, "y"), self.color, "color"), self.amount, "amount"));
+    }
+    var Encode = {
+      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
+      packColor: ErrorAwarePacketWriter$TerrariaPacket.packColor,
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -18149,11 +22213,53 @@ var require_Packet_CombatNumberCreate = __commonJS({
 var require_Packet_MinionTargetUpdate = __commonJS({
   "src/packet/Packet_MinionTargetUpdate.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+      if (e$2.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            x: e$1._0,
+            y: e$2._0
+          }
+        };
+      } else {
+        return e$2;
+      }
     }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("MinionTargetUpdate")), self.playerId, "playerId"), self.x, "x"), self.y, "y"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -18162,64 +22268,63 @@ var require_Packet_ActiveContainerSync = __commonJS({
   "src/packet/Packet_ActiveContainerSync.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readByte(prim) {
-      return prim.readByte();
-    }
-    function readInt16(prim) {
-      return prim.readInt16();
-    }
-    function readString(prim) {
-      return prim.readString();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let chestId = reader.readInt16();
-      let x = reader.readInt16();
-      let y = reader.readInt16();
-      let nameLength = reader.readByte();
-      let name = nameLength > 0 && nameLength <= 20 ? reader.readString() : "";
-      return {
-        chestId,
-        x,
-        y,
-        nameLength,
-        name
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "chestId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "nameLength");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let nameLength = e$3._0;
+      let e$4 = nameLength > 0 && nameLength <= 20 ? ErrorAwarePacketReader$TerrariaPacket.readString(reader, "name") : {
+        TAG: "Ok",
+        _0: ""
       };
+      if (e$4.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            chestId: e._0,
+            x: e$1._0,
+            y: e$2._0,
+            nameLength,
+            name: e$4._0
+          }
+        };
+      } else {
+        return e$4;
+      }
     }
     var Decode = {
-      readByte,
-      readInt16,
-      readString,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readString: ErrorAwarePacketReader$TerrariaPacket.readString,
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function packString(prim0, prim1) {
-      return prim0.packString(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      let writer = ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ActiveContainerSync")).packInt16(self.chestId).packInt16(self.x).packInt16(self.y).packByte(self.nameLength);
-      if (self.nameLength > 0 && self.nameLength <= 20) {
-        writer.packString(self.name);
-      }
-      return writer.data;
+      let writer = ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ActiveContainerSync")), self.chestId, "chestId"), self.x, "x"), self.y, "y"), self.nameLength, "nameLength");
+      return ErrorAwarePacketWriter$TerrariaPacket.data(self.nameLength > 0 && self.nameLength <= 20 ? ErrorAwarePacketWriter$TerrariaPacket.packString(writer, self.name, "name") : writer);
     }
     var Encode = {
-      packByte,
-      packInt16,
-      packString,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packString: ErrorAwarePacketWriter$TerrariaPacket.packString,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -18233,11 +22338,41 @@ var require_Packet_ActiveContainerSync = __commonJS({
 var require_Packet_RevengeMarkerRemove = __commonJS({
   "src/packet/Packet_RevengeMarkerRemove.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "markerId");
+      if (e.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            markerId: e._0
+          }
+        };
+      } else {
+        return e;
+      }
     }
+    var Decode = {
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("RevengeMarkerRemove")), self.markerId, "markerId"));
+    }
+    var Encode = {
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -18245,11 +22380,53 @@ var require_Packet_RevengeMarkerRemove = __commonJS({
 var require_Packet_MassWireOperationPay = __commonJS({
   "src/packet/Packet_MassWireOperationPay.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemType");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "stack");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e$2.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            itemType: e._0,
+            stack: e$1._0,
+            playerId: e$2._0
+          }
+        };
+      } else {
+        return e$2;
+      }
     }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("MassWireOperationPay")), self.itemType, "itemType"), self.stack, "stack"), self.playerId, "playerId"));
+    }
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -18263,25 +22440,50 @@ var require_Packet_PlayerTeleportPortal = __commonJS({
     var Packetreader = require_packetreader().default;
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let playerId = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
-      let extraInfo = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "extraInfo");
-      let position_x = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionX");
-      let position_y = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionY");
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "extraInfo");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionX");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionY");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let position_x = e$2._0;
+      let position_y = e$3._0;
       let position = {
         x: position_x,
         y: position_y
       };
-      let velocity_x = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityX");
-      let velocity_y = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityY");
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityX");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "velocityY");
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let velocity_x = e$4._0;
+      let velocity_y = e$5._0;
       let velocity = {
         x: velocity_x,
         y: velocity_y
       };
       return {
-        playerId,
-        extraInfo,
-        position,
-        velocity
+        TAG: "Ok",
+        _0: {
+          playerId: e._0,
+          extraInfo: e$1._0,
+          position,
+          velocity
+        }
       };
     }
     var Decode = {
@@ -18312,11 +22514,103 @@ var require_Packet_PlayerTeleportPortal = __commonJS({
 var require_Packet_CavernMonsterTypeSync = __commonJS({
   "src/packet/Packet_CavernMonsterTypeSync.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var Stdlib_Array = (init_Stdlib_Array(), __toCommonJS(Stdlib_Array_exports));
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let rows = Stdlib_Array.make(2, []);
+      let error;
+      for (let i = 0; i <= 1; ++i) {
+        if (error !== void 0) {
+          let row = Stdlib_Array.make(3, 0);
+          for (let j = 0; j <= 2; ++j) {
+            if (error !== void 0) {
+              let value = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, `monster_` + i.toString() + `_` + j.toString());
+              if (value.TAG === "Ok") {
+                row[j] = value._0;
+              } else {
+                error = value._0;
+              }
+            }
+          }
+          rows[i] = row;
+        }
+      }
+      let err = error;
+      if (err !== void 0) {
+        return {
+          TAG: "Error",
+          _0: err
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: rows
+        };
+      }
     }
+    var Decode = {
+      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
+      parse
+    };
+    function packRow(writer, row, rowIdx) {
+      let _writer = writer;
+      let _colIdx = 0;
+      while (true) {
+        let colIdx = _colIdx;
+        let writer$1 = _writer;
+        if (colIdx >= row.length) {
+          return writer$1;
+        }
+        _colIdx = colIdx + 1 | 0;
+        _writer = ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer$1, row[colIdx], `monster_` + rowIdx.toString() + `_` + colIdx.toString());
+        continue;
+      }
+      ;
+    }
+    function packRows(writer, rows) {
+      let _writer = writer;
+      let _rowIdx = 0;
+      while (true) {
+        let rowIdx = _rowIdx;
+        let writer$1 = _writer;
+        if (rowIdx >= rows.length) {
+          return writer$1;
+        }
+        _rowIdx = rowIdx + 1 | 0;
+        _writer = packRow(writer$1, rows[rowIdx], rowIdx);
+        continue;
+      }
+      ;
+    }
+    function toBuffer(self) {
+      if (self.length !== 2 || self[0].length !== 3 || self[1].length !== 3) {
+        return {
+          TAG: "Error",
+          _0: {
+            context: "Packet_CavernMonsterTypeSync.toBuffer",
+            error: new Error("Expected a 2x3 array of monster types")
+          }
+        };
+      } else {
+        return ErrorAwarePacketWriter$TerrariaPacket.data(packRows(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("CavernMonsterTypeSync")), self));
+      }
+    }
+    var Encode = {
+      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      packRow,
+      packRows,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -18324,9 +22618,11 @@ var require_Packet_CavernMonsterTypeSync = __commonJS({
 var require_Packet_ClientSyncedInventory = __commonJS({
   "src/packet/Packet_ClientSyncedInventory.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     function parse(_payload) {
-      return Primitive_option8.some(void 0);
+      return {
+        TAG: "Ok",
+        _0: void 0
+      };
     }
     exports2.parse = parse;
   }
@@ -18337,53 +22633,57 @@ var require_Packet_FoodPlatterTryPlacing = __commonJS({
   "src/packet/Packet_FoodPlatterTryPlacing.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readByte(prim) {
-      return prim.readByte();
-    }
-    function readInt16(prim) {
-      return prim.readInt16();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let x = reader.readInt16();
-      let y = reader.readInt16();
-      let itemId = reader.readInt16();
-      let prefix = reader.readByte();
-      let stack = reader.readInt16();
-      return {
-        x,
-        y,
-        itemId,
-        prefix,
-        stack
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "x");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemId");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "prefix");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "stack");
+      if (e$4.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            x: e._0,
+            y: e$1._0,
+            itemId: e$2._0,
+            prefix: e$3._0,
+            stack: e$4._0
+          }
+        };
+      } else {
+        return e$4;
+      }
     }
     var Decode = {
-      readByte,
-      readInt16,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("FoodPlatterTryPlacing")).packInt16(self.x).packInt16(self.y).packInt16(self.itemId).packByte(self.prefix).packInt16(self.stack).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("FoodPlatterTryPlacing")), self.x, "x"), self.y, "y"), self.itemId, "itemId"), self.prefix, "prefix"), self.stack, "stack"));
     }
     var Encode = {
       Writer: void 0,
-      packByte,
-      packInt16,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -18397,11 +22697,41 @@ var require_Packet_FoodPlatterTryPlacing = __commonJS({
 var require_Packet_NpcKilledNotification = __commonJS({
   "src/packet/Packet_NpcKilledNotification.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcId");
+      if (e.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            npcId: e._0
+          }
+        };
+      } else {
+        return e;
+      }
     }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcKilledNotification")), self.npcId, "npcId"));
+    }
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -18409,11 +22739,56 @@ var require_Packet_NpcKilledNotification = __commonJS({
 var require_Packet_ShieldStrengthsUpdate = __commonJS({
   "src/packet/Packet_ShieldStrengthsUpdate.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "solar");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "vortex");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "nebula");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "stardust");
+      if (e$3.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            solar: e._0,
+            vortex: e$1._0,
+            nebula: e$2._0,
+            stardust: e$3._0
+          }
+        };
+      } else {
+        return e$3;
+      }
     }
+    var Decode = {
+      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ShieldStrengthsUpdate")), self.solar, "solar"), self.vortex, "vortex"), self.nebula, "nebula"), self.stardust, "stardust"));
+    }
+    var Encode = {
+      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -18421,11 +22796,29 @@ var require_Packet_ShieldStrengthsUpdate = __commonJS({
 var require_Packet_CrystalInvasionWipeAll = __commonJS({
   "src/packet/Packet_CrystalInvasionWipeAll.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     function parse(_payload) {
-      return Primitive_option8.some(void 0);
+      return {
+        TAG: "Ok",
+        _0: void 0
+      };
     }
+    var Decode = {
+      parse
+    };
+    function toBuffer(_self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("CrystalInvasionWipeAll")));
+    }
+    var Encode = {
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -18445,72 +22838,86 @@ var require_Packet_ItemDropInstancedUpdate = __commonJS({
 var require_Packet_ItemDropProtectedUpdate = __commonJS({
   "src/packet/Packet_ItemDropProtectedUpdate.js"(exports2) {
     "use strict";
-    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
-    var Packet_ItemDropUpdate$TerrariaPacket = require_Packet_ItemDropUpdate();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readByte(prim) {
-      return prim.readByte();
-    }
-    function readSingle(prim) {
-      return prim.readSingle();
-    }
-    function readBytes(prim0, prim1) {
-      return prim0.readBytes(prim1);
-    }
     function parse(payload) {
-      return Stdlib_Option.map(Packet_ItemDropUpdate$TerrariaPacket.parse(payload), (itemDropUpdate) => {
-        let reader = new Packetreader(payload);
-        reader.readBytes(24);
-        let timeLeftInWhichTheItemCannotBeTakenByEnemies = reader.readByte();
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemDropId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "stack");
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let e$6 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "prefix");
+      if (e$6.TAG !== "Ok") {
+        return e$6;
+      }
+      let e$7 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "noDelay");
+      if (e$7.TAG !== "Ok") {
+        return e$7;
+      }
+      let e$8 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemId");
+      if (e$8.TAG !== "Ok") {
+        return e$8;
+      }
+      let e$9 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "timeLeftInWhichTheItemCannotBeTakenByEnemies");
+      if (e$9.TAG === "Ok") {
         return {
-          itemDropId: itemDropUpdate.itemDropId,
-          x: itemDropUpdate.x,
-          y: itemDropUpdate.y,
-          vx: itemDropUpdate.vx,
-          vy: itemDropUpdate.vy,
-          stack: itemDropUpdate.stack,
-          prefix: itemDropUpdate.prefix,
-          noDelay: itemDropUpdate.noDelay,
-          itemId: itemDropUpdate.itemId,
-          timeLeftInWhichTheItemCannotBeTakenByEnemies
+          TAG: "Ok",
+          _0: {
+            itemDropId: e._0,
+            x: e$1._0,
+            y: e$2._0,
+            vx: e$3._0,
+            vy: e$4._0,
+            stack: e$5._0,
+            prefix: e$6._0,
+            noDelay: e$7._0,
+            itemId: e$8._0,
+            timeLeftInWhichTheItemCannotBeTakenByEnemies: e$9._0
+          }
         };
-      });
+      } else {
+        return e$9;
+      }
     }
     var Decode = {
-      readByte,
-      readSingle,
-      readBytes,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function packInt32(prim0, prim1) {
-      return prim0.packInt32(prim1);
-    }
-    function packSingle(prim0, prim1) {
-      return prim0.packSingle(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("ItemDropProtectedUpdate")).packInt16(self.itemDropId).packSingle(self.x).packSingle(self.y).packSingle(self.vx).packSingle(self.vy).packInt16(self.stack).packByte(self.prefix).packByte(self.noDelay).packInt16(self.itemId).packByte(self.timeLeftInWhichTheItemCannotBeTakenByEnemies).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ItemDropProtectedUpdate")), self.itemDropId, "itemDropId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.stack, "stack"), self.prefix, "prefix"), self.noDelay, "noDelay"), self.itemId, "itemId"), self.timeLeftInWhichTheItemCannotBeTakenByEnemies, "timeLeftInWhichTheItemCannotBeTakenByEnemies"));
     }
     var Encode = {
       Writer: void 0,
-      packByte,
-      packInt16,
-      packInt32,
-      packSingle,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -18525,88 +22932,86 @@ var require_Packet_PiggyBankVoidLensUpdate = __commonJS({
   "src/packet/Packet_PiggyBankVoidLensUpdate.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readInt16(prim) {
-      return prim.readInt16();
-    }
-    function tryReading(reader) {
-      let n = reader.readInt16();
-      if (n !== -1) {
-        return;
+    function tryReading(reader, context) {
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, context);
+      if (e.TAG !== "Ok") {
+        return e;
       }
-      let expectedIdentity = reader.readInt16();
-      let expectedType = reader.readInt16();
-      return {
-        expectedIdentity,
-        expectedType
-      };
-    }
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
+      if (e._0 !== -1) {
+        return {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, context + "_expectedIdentity");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, context + "_expectedType");
+      if (e$2.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            expectedIdentity: e$1._0,
+            expectedType: e$2._0
+          }
+        };
+      } else {
+        return e$2;
+      }
     }
     function pack(writer, self) {
       if (self !== void 0) {
-        return writer.packInt16(self.expectedIdentity).packInt16(self.expectedType);
+        return ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, self.expectedIdentity, "expectedIdentity"), self.expectedType, "expectedType");
       } else {
-        return writer.packInt16(-1);
+        return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -1, "trackedProjectileReference");
       }
     }
     var TrackedProjectileReference = {
-      readInt16,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
       tryReading,
-      packInt16,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
       pack
     };
-    function readByte(prim) {
-      return prim.readByte();
-    }
-    function readSingle(prim) {
-      return prim.readSingle();
-    }
-    function readInt32(prim) {
-      return prim.readInt32();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let playerId = reader.readByte();
-      let piggyBankProj = tryReading(reader);
-      let voidLensChest = tryReading(reader);
-      return {
-        playerId,
-        piggyBankProj,
-        voidLensChest
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = tryReading(reader, "piggyBankProj");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = tryReading(reader, "voidLensChest");
+      if (e$2.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            piggyBankProj: e$1._0,
+            voidLensChest: e$2._0
+          }
+        };
+      } else {
+        return e$2;
+      }
     }
     var Decode = {
-      readByte,
-      readSingle,
-      readInt32,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt32(prim0, prim1) {
-      return prim0.packInt32(prim1);
-    }
-    function packSingle(prim0, prim1) {
-      return prim0.packSingle(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return pack(pack(ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PiggyBankVoidLensUpdate")).packByte(self.playerId), self.piggyBankProj), self.voidLensChest).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(pack(pack(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PiggyBankVoidLensUpdate")), self.playerId, "playerId"), self.piggyBankProj), self.voidLensChest));
     }
     var Encode = {
       Writer: void 0,
-      packByte,
-      packInt32,
-      packSingle,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.TrackedProjectileReference = TrackedProjectileReference;
@@ -18622,72 +23027,70 @@ var require_Packet_PlayerLuckFactorsUpdate = __commonJS({
   "src/packet/Packet_PlayerLuckFactorsUpdate.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    var Packetwriter = require_packetwriter().default;
-    function readInt16(prim) {
-      return prim.readInt16();
-    }
-    function readInt32(prim) {
-      return prim.readInt32();
-    }
-    function readByte(prim) {
-      return prim.readByte();
-    }
-    function readSingle(prim) {
-      return prim.readSingle();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let player = reader.readByte();
-      let ladyBugLuckTimeLeft = reader.readInt32();
-      let torchLuck = reader.readSingle();
-      let luckPotion = reader.readByte();
-      let hasGardenGnomeNearby = reader.readByte() === 1;
-      let equipmentBasedLuckBonus = reader.readSingle();
-      let coinLuck = reader.readSingle();
-      return {
-        playerId: player,
-        ladyBugLuckTimeLeft,
-        torchLuck,
-        luckPotion,
-        hasGardenGnomeNearby,
-        equipmentBasedLuckBonus,
-        coinLuck
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "ladyBugLuckTimeLeft");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "torchLuck");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "luckPotion");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "hasGardenGnomeNearby");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let hasGardenGnomeNearby = e$4._0 === 1;
+      let e$5 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "equipmentBasedLuckBonus");
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let e$6 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "coinLuck");
+      if (e$6.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            ladyBugLuckTimeLeft: e$1._0,
+            torchLuck: e$2._0,
+            luckPotion: e$3._0,
+            hasGardenGnomeNearby,
+            equipmentBasedLuckBonus: e$5._0,
+            coinLuck: e$6._0
+          }
+        };
+      } else {
+        return e$6;
+      }
     }
     var Decode = {
-      readInt16,
-      readInt32,
-      readByte,
-      readSingle,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt16(prim0, prim1) {
-      return prim0.packInt16(prim1);
-    }
-    function packInt32(prim0, prim1) {
-      return prim0.packInt32(prim1);
-    }
-    function packSingle(prim0, prim1) {
-      return prim0.packSingle(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("PlayerLuckFactorsUpdate")).packByte(self.playerId).packInt32(self.ladyBugLuckTimeLeft).packSingle(self.torchLuck).packByte(self.luckPotion).packByte(self.hasGardenGnomeNearby ? 1 : 0).packSingle(self.equipmentBasedLuckBonus).packSingle(self.coinLuck).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerLuckFactorsUpdate")), self.playerId, "playerId"), self.ladyBugLuckTimeLeft, "ladyBugLuckTimeLeft"), self.torchLuck, "torchLuck"), self.luckPotion, "luckPotion"), self.hasGardenGnomeNearby ? 1 : 0, "hasGardenGnomeNearby"), self.equipmentBasedLuckBonus, "equipmentBasedLuckBonus"), self.coinLuck, "coinLuck"));
     }
     var Encode = {
-      packByte,
-      packInt16,
-      packInt32,
-      packSingle,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -18701,11 +23104,48 @@ var require_Packet_PlayerLuckFactorsUpdate = __commonJS({
 var require_Packet_MinionAttackTargetUpdate = __commonJS({
   "src/packet/Packet_MinionAttackTargetUpdate.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "targetNpcId");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            targetNpcId: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("MinionAttackTargetUpdate")), self.playerId, "playerId"), self.targetNpcId, "targetNpcId"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -18713,11 +23153,41 @@ var require_Packet_MinionAttackTargetUpdate = __commonJS({
 var require_Packet_ItemForceIntoNearestChest = __commonJS({
   "src/packet/Packet_ItemForceIntoNearestChest.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "slot");
+      if (e.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            slot: e._0
+          }
+        };
+      } else {
+        return e;
+      }
     }
+    var Decode = {
+      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ItemForceIntoNearestChest")), self.slot, "slot"));
+    }
+    var Encode = {
+      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -18726,27 +23196,35 @@ var require_Packet_InitialTileSectionsRequest = __commonJS({
   "src/packet/Packet_InitialTileSectionsRequest.js"(exports2) {
     "use strict";
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
     var Packetwriter = require_packetwriter().default;
-    function readInt32(prim) {
-      return prim.readInt32();
-    }
     function parse(payload) {
       let reader = new Packetreader(payload);
-      let x = reader.readInt32();
-      let y = reader.readInt32();
-      return {
-        x,
-        y
-      };
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "x");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "y");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            x: e._0,
+            y: e$1._0
+          }
+        };
+      } else {
+        return e$1;
+      }
     }
     var Decode = {
-      readInt32,
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
       parse
     };
     function toBuffer(self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("InitialTileSectionsRequest")).packInt32(self.x).packInt32(self.y).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("InitialTileSectionsRequest")), self.x, "x"), self.y, "y"));
     }
     var Encode = {
       toBuffer
@@ -18762,11 +23240,53 @@ var require_Packet_InitialTileSectionsRequest = __commonJS({
 var require_Packet_AnglerQuestsCompletedAmount = __commonJS({
   "src/packet/Packet_AnglerQuestsCompletedAmount.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "anglerQuestsFinished");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "golferScoreAccumulated");
+      if (e$2.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            playerId: e._0,
+            anglerQuestsFinished: e$1._0,
+            golferScoreAccumulated: e$2._0
+          }
+        };
+      } else {
+        return e$2;
+      }
     }
+    var Decode = {
+      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("AnglerQuestsCompletedAmount")), self.playerId, "playerId"), self.anglerQuestsFinished, "anglerQuestsFinished"), self.golferScoreAccumulated, "golferScoreAccumulated"));
+    }
+    var Encode = {
+      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -18774,11 +23294,42 @@ var require_Packet_AnglerQuestsCompletedAmount = __commonJS({
 var require_Packet_CrystalInvasionSendWaitTime = __commonJS({
   "src/packet/Packet_CrystalInvasionSendWaitTime.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    function parse(_payload) {
-      return Primitive_option8.some(void 0);
+    var PacketType$TerrariaPacket = require_PacketType();
+    var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
+    var Packetreader = require_packetreader().default;
+    var Packetwriter = require_packetwriter().default;
+    function parse(payload) {
+      let reader = new Packetreader(payload);
+      let e = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "timeLeftBetweenWaves");
+      if (e.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            timeLeftBetweenWaves: e._0
+          }
+        };
+      } else {
+        return e;
+      }
     }
+    var Decode = {
+      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
+      parse
+    };
+    function toBuffer(self) {
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("CrystalInvasionSendWaitTime")), self.timeLeftBetweenWaves, "timeLeftBetweenWaves"));
+    }
+    var Encode = {
+      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
+      toBuffer
+    };
+    exports2.Decode = Decode;
+    exports2.Encode = Encode;
     exports2.parse = parse;
+    exports2.toBuffer = toBuffer;
   }
 });
 
@@ -18786,38 +23337,24 @@ var require_Packet_CrystalInvasionSendWaitTime = __commonJS({
 var require_Packet_DungeonDefendersEventAttemptSkipWait = __commonJS({
   "src/packet/Packet_DungeonDefendersEventAttemptSkipWait.js"(exports2) {
     "use strict";
-    var Primitive_option8 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     var PacketType$TerrariaPacket = require_PacketType();
-    var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
-    var Packetwriter = require_packetwriter().default;
+    var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     function parse(_payload) {
-      return Primitive_option8.some(void 0);
+      return {
+        TAG: "Ok",
+        _0: void 0
+      };
     }
     var Decode = {
       parse
     };
-    function packByte(prim0, prim1) {
-      return prim0.packByte(prim1);
-    }
-    function packInt32(prim0, prim1) {
-      return prim0.packInt32(prim1);
-    }
-    function packSingle(prim0, prim1) {
-      return prim0.packSingle(prim1);
-    }
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(_self) {
-      return ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("DungeonDefendersEventAttemptSkipWait")).data;
+      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("DungeonDefendersEventAttemptSkipWait")));
     }
     var Encode = {
       Writer: void 0,
-      packByte,
-      packInt32,
-      packSingle,
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
+      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
+      data: ErrorAwarePacketWriter$TerrariaPacket.data,
       toBuffer
     };
     exports2.Decode = Decode;
@@ -18832,7 +23369,8 @@ var require_Parser = __commonJS({
   "src/Parser.js"(exports2) {
     "use strict";
     var Stdlib_Lazy = (init_Stdlib_Lazy(), __toCommonJS(Stdlib_Lazy_exports));
-    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
+    var Stdlib_Result = (init_Stdlib_Result(), __toCommonJS(Stdlib_Result_exports));
+    var Primitive_exceptions2 = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
     var PacketType$TerrariaPacket = require_PacketType();
     var Packet_Emoji$TerrariaPacket = require_Packet_Emoji();
     var Packet_Zones$TerrariaPacket = require_Packet_Zones();
@@ -18978,2019 +23516,2180 @@ var require_Parser = __commonJS({
     var Packet_TileEntityDisplayDollItemSync$TerrariaPacket = require_Packet_TileEntityDisplayDollItemSync();
     var Packet_ClientFinishConnectingToServer$TerrariaPacket = require_Packet_ClientFinishConnectingToServer();
     var Packet_DungeonDefendersEventAttemptSkipWait$TerrariaPacket = require_Packet_DungeonDefendersEventAttemptSkipWait();
-    function parsePayload(packetType, payload, fromServer) {
+    function mapPacket(buffer, fn) {
+      return Stdlib_Result.mapError(Stdlib_Result.map(buffer, fn), (e) => ({
+        TAG: "ReaderError",
+        _0: e
+      }));
+    }
+    function makeParsers(parse2, toPacket, toLazyPacket) {
+      let parseWrapped = (payload, _fromServer) => mapPacket(parse2(payload), toPacket);
+      let parseLazyWrapped = (payload, _fromServer) => ({
+        TAG: "Ok",
+        _0: toLazyPacket(Stdlib_Lazy.make(() => parse2(payload)))
+      });
+      return {
+        parse: parseWrapped,
+        parseLazy: parseLazyWrapped
+      };
+    }
+    function makeParsersWithFromServer(parse2, toPacket, toLazyPacket) {
+      let parseWrapped = (payload, fromServer) => mapPacket(parse2(payload, fromServer), toPacket);
+      let parseLazyWrapped = (payload, fromServer) => ({
+        TAG: "Ok",
+        _0: toLazyPacket(Stdlib_Lazy.make(() => parse2(payload, fromServer)))
+      });
+      return {
+        parse: parseWrapped,
+        parseLazy: parseLazyWrapped
+      };
+    }
+    function getParsers(packetType, fromServer) {
       switch (packetType) {
         case "ConnectRequest":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "ConnectRequestFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_ConnectRequest$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "ConnectRequest",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_ConnectRequest$TerrariaPacket.parse, (a) => ({
+                TAG: "ConnectRequest",
+                _0: a
+              }), (a) => ({
+                TAG: "ConnectRequest",
+                _0: a
+              }))
+            };
           }
         case "Disconnect":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_Disconnect$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "Disconnect",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_Disconnect$TerrariaPacket.parse, (a) => ({
+                TAG: "Disconnect",
+                _0: a
+              }), (a) => ({
+                TAG: "Disconnect",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "DisconnectFromClient"
+            };
           }
         case "PlayerSlotSet":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_PlayerSlotSet$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "PlayerSlotSet",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_PlayerSlotSet$TerrariaPacket.parse, (a) => ({
+                TAG: "PlayerSlotSet",
+                _0: a
+              }), (a) => ({
+                TAG: "PlayerSlotSet",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "PlayerSlotSetFromClient"
+            };
           }
         case "PlayerInfo":
-          return Stdlib_Option.map(Packet_PlayerInfo$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "PlayerInfo",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_PlayerInfo$TerrariaPacket.parse, (a) => ({
+              TAG: "PlayerInfo",
+              _0: a
+            }), (a) => ({
+              TAG: "PlayerInfo",
+              _0: a
+            }))
+          };
         case "PlayerInventorySlot":
-          return Stdlib_Option.map(Packet_PlayerInventorySlot$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "PlayerInventorySlot",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_PlayerInventorySlot$TerrariaPacket.parse, (a) => ({
+              TAG: "PlayerInventorySlot",
+              _0: a
+            }), (a) => ({
+              TAG: "PlayerInventorySlot",
+              _0: a
+            }))
+          };
         case "WorldDataRequest":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "WorldDataRequestFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_WorldDataRequest$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "WorldDataRequest",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_WorldDataRequest$TerrariaPacket.parse, (a) => ({
+                TAG: "WorldDataRequest",
+                _0: a
+              }), (a) => ({
+                TAG: "WorldDataRequest",
+                _0: a
+              }))
+            };
           }
         case "WorldInfo":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_WorldInfo$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "WorldInfo",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_WorldInfo$TerrariaPacket.parse, (a) => ({
+                TAG: "WorldInfo",
+                _0: a
+              }), (a) => ({
+                TAG: "WorldInfo",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "WorldInfoFromClient"
+            };
           }
         case "InitialTileSectionsRequest":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "InitialTileSectionsRequestFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_InitialTileSectionsRequest$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "InitialTileSectionsRequest",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_InitialTileSectionsRequest$TerrariaPacket.parse, (a) => ({
+                TAG: "InitialTileSectionsRequest",
+                _0: a
+              }), (a) => ({
+                TAG: "InitialTileSectionsRequest",
+                _0: a
+              }))
+            };
           }
         case "Status":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_Status$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "Status",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_Status$TerrariaPacket.parse, (a) => ({
+                TAG: "Status",
+                _0: a
+              }), (a) => ({
+                TAG: "Status",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "StatusFromClient"
+            };
           }
         case "TileSectionSend":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_TileSectionSend$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "TileSectionSend",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_TileSectionSend$TerrariaPacket.parse, (a) => ({
+                TAG: "TileSectionSend",
+                _0: a
+              }), (a) => ({
+                TAG: "TileSectionSend",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "TileSectionSendFromClient"
+            };
           }
         case "TileSectionFrame":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_TileSectionFrame$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "TileSectionFrame",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_TileSectionFrame$TerrariaPacket.parse, (a) => ({
+                TAG: "TileSectionFrame",
+                _0: a
+              }), (a) => ({
+                TAG: "TileSectionFrame",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "TileSectionFrameFromClient"
+            };
           }
         case "PlayerSpawn":
-          return Stdlib_Option.map(Packet_PlayerSpawn$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "PlayerSpawn",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_PlayerSpawn$TerrariaPacket.parse, (a) => ({
+              TAG: "PlayerSpawn",
+              _0: a
+            }), (a) => ({
+              TAG: "PlayerSpawn",
+              _0: a
+            }))
+          };
         case "PlayerUpdate":
-          return Stdlib_Option.map(Packet_PlayerUpdate$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "PlayerUpdate",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_PlayerUpdate$TerrariaPacket.parse, (a) => ({
+              TAG: "PlayerUpdate",
+              _0: a
+            }), (a) => ({
+              TAG: "PlayerUpdate",
+              _0: a
+            }))
+          };
         case "PlayerActive":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_PlayerActive$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "PlayerActive",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_PlayerActive$TerrariaPacket.parse, (a) => ({
+                TAG: "PlayerActive",
+                _0: a
+              }), (a) => ({
+                TAG: "PlayerActive",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "PlayerActiveFromClient"
+            };
           }
         case "PlayerHealth":
-          return Stdlib_Option.map(Packet_PlayerHealth$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "PlayerHealth",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_PlayerHealth$TerrariaPacket.parse, (a) => ({
+              TAG: "PlayerHealth",
+              _0: a
+            }), (a) => ({
+              TAG: "PlayerHealth",
+              _0: a
+            }))
+          };
         case "TileModify":
-          return Stdlib_Option.map(Packet_TileModify$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "TileModify",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_TileModify$TerrariaPacket.parse, (a) => ({
+              TAG: "TileModify",
+              _0: a
+            }), (a) => ({
+              TAG: "TileModify",
+              _0: a
+            }))
+          };
         case "TimeSet":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_TimeSet$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "TimeSet",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_TimeSet$TerrariaPacket.parse, (a) => ({
+                TAG: "TimeSet",
+                _0: a
+              }), (a) => ({
+                TAG: "TimeSet",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "TimeSetFromClient"
+            };
           }
         case "DoorUse":
-          return Stdlib_Option.map(Packet_DoorUse$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "DoorUse",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_DoorUse$TerrariaPacket.parse, (a) => ({
+              TAG: "DoorUse",
+              _0: a
+            }), (a) => ({
+              TAG: "DoorUse",
+              _0: a
+            }))
+          };
         case "TileSquareSend":
-          return Stdlib_Option.map(Packet_TileSquareSend$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "TileSquareSend",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_TileSquareSend$TerrariaPacket.parse, (a) => ({
+              TAG: "TileSquareSend",
+              _0: a
+            }), (a) => ({
+              TAG: "TileSquareSend",
+              _0: a
+            }))
+          };
         case "ItemDropUpdate":
-          return Stdlib_Option.map(Packet_ItemDropUpdate$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "ItemDropUpdate",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_ItemDropUpdate$TerrariaPacket.parse, (a) => ({
+              TAG: "ItemDropUpdate",
+              _0: a
+            }), (a) => ({
+              TAG: "ItemDropUpdate",
+              _0: a
+            }))
+          };
         case "ItemOwner":
-          return Stdlib_Option.map(Packet_ItemOwner$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "ItemOwner",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_ItemOwner$TerrariaPacket.parse, (a) => ({
+              TAG: "ItemOwner",
+              _0: a
+            }), (a) => ({
+              TAG: "ItemOwner",
+              _0: a
+            }))
+          };
         case "NpcUpdate":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_NpcUpdate$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "NpcUpdate",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_NpcUpdate$TerrariaPacket.parse, (a) => ({
+                TAG: "NpcUpdate",
+                _0: a
+              }), (a) => ({
+                TAG: "NpcUpdate",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "NpcUpdateFromClient"
+            };
           }
         case "NpcItemStrike":
-          return Stdlib_Option.map(Packet_NpcItemStrike$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "NpcItemStrike",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_NpcItemStrike$TerrariaPacket.parse, (a) => ({
+              TAG: "NpcItemStrike",
+              _0: a
+            }), (a) => ({
+              TAG: "NpcItemStrike",
+              _0: a
+            }))
+          };
         case "ProjectileSync":
-          return Stdlib_Option.map(Packet_ProjectileSync$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "ProjectileSync",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_ProjectileSync$TerrariaPacket.parse, (a) => ({
+              TAG: "ProjectileSync",
+              _0: a
+            }), (a) => ({
+              TAG: "ProjectileSync",
+              _0: a
+            }))
+          };
         case "NpcStrike":
-          return Stdlib_Option.map(Packet_NpcStrike$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "NpcStrike",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_NpcStrike$TerrariaPacket.parse, (a) => ({
+              TAG: "NpcStrike",
+              _0: a
+            }), (a) => ({
+              TAG: "NpcStrike",
+              _0: a
+            }))
+          };
         case "ProjectileDestroy":
-          return Stdlib_Option.map(Packet_ProjectileDestroy$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "ProjectileDestroy",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_ProjectileDestroy$TerrariaPacket.parse, (a) => ({
+              TAG: "ProjectileDestroy",
+              _0: a
+            }), (a) => ({
+              TAG: "ProjectileDestroy",
+              _0: a
+            }))
+          };
         case "PvpToggle":
-          return Stdlib_Option.map(Packet_PvpToggle$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "PvpToggle",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_PvpToggle$TerrariaPacket.parse, (a) => ({
+              TAG: "PvpToggle",
+              _0: a
+            }), (a) => ({
+              TAG: "PvpToggle",
+              _0: a
+            }))
+          };
         case "ChestOpen":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "ChestOpenFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_ChestOpen$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "ChestOpen",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_ChestOpen$TerrariaPacket.parse, (a) => ({
+                TAG: "ChestOpen",
+                _0: a
+              }), (a) => ({
+                TAG: "ChestOpen",
+                _0: a
+              }))
+            };
           }
         case "ChestItem":
-          return Stdlib_Option.map(Packet_ChestItem$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "ChestItem",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_ChestItem$TerrariaPacket.parse, (a) => ({
+              TAG: "ChestItem",
+              _0: a
+            }), (a) => ({
+              TAG: "ChestItem",
+              _0: a
+            }))
+          };
         case "ActiveContainerSync":
-          return Stdlib_Option.map(Packet_ActiveContainerSync$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "ActiveContainerSync",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_ActiveContainerSync$TerrariaPacket.parse, (a) => ({
+              TAG: "ActiveContainerSync",
+              _0: a
+            }), (a) => ({
+              TAG: "ActiveContainerSync",
+              _0: a
+            }))
+          };
         case "ChestPlace":
-          return Stdlib_Option.map(Packet_ChestPlace$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "ChestPlace",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_ChestPlace$TerrariaPacket.parse, (a) => ({
+              TAG: "ChestPlace",
+              _0: a
+            }), (a) => ({
+              TAG: "ChestPlace",
+              _0: a
+            }))
+          };
         case "HealEffect":
-          return Stdlib_Option.map(Packet_HealEffect$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "HealEffect",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_HealEffect$TerrariaPacket.parse, (a) => ({
+              TAG: "HealEffect",
+              _0: a
+            }), (a) => ({
+              TAG: "HealEffect",
+              _0: a
+            }))
+          };
         case "Zones":
-          return Stdlib_Option.map(Packet_Zones$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "Zones",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_Zones$TerrariaPacket.parse, (a) => ({
+              TAG: "Zones",
+              _0: a
+            }), (a) => ({
+              TAG: "Zones",
+              _0: a
+            }))
+          };
         case "PasswordRequired":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_PasswordRequired$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "PasswordRequired",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_PasswordRequired$TerrariaPacket.parse, (a) => ({
+                TAG: "PasswordRequired",
+                _0: a
+              }), (a) => ({
+                TAG: "PasswordRequired",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "PasswordRequiredFromClient"
+            };
           }
         case "PasswordSend":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "PasswordSendFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_PasswordSend$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "PasswordSend",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_PasswordSend$TerrariaPacket.parse, (a) => ({
+                TAG: "PasswordSend",
+                _0: a
+              }), (a) => ({
+                TAG: "PasswordSend",
+                _0: a
+              }))
+            };
           }
         case "ItemOwnerRemove":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_ItemOwnerRemove$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "ItemOwnerRemove",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_ItemOwnerRemove$TerrariaPacket.parse, (a) => ({
+                TAG: "ItemOwnerRemove",
+                _0: a
+              }), (a) => ({
+                TAG: "ItemOwnerRemove",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "ItemOwnerRemoveFromClient"
+            };
           }
         case "NpcTalk":
-          return Stdlib_Option.map(Packet_NpcTalk$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "NpcTalk",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_NpcTalk$TerrariaPacket.parse, (a) => ({
+              TAG: "NpcTalk",
+              _0: a
+            }), (a) => ({
+              TAG: "NpcTalk",
+              _0: a
+            }))
+          };
         case "PlayerAnimation":
-          return Stdlib_Option.map(Packet_PlayerAnimation$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "PlayerAnimation",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_PlayerAnimation$TerrariaPacket.parse, (a) => ({
+              TAG: "PlayerAnimation",
+              _0: a
+            }), (a) => ({
+              TAG: "PlayerAnimation",
+              _0: a
+            }))
+          };
         case "PlayerMana":
-          return Stdlib_Option.map(Packet_PlayerMana$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "PlayerMana",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_PlayerMana$TerrariaPacket.parse, (a) => ({
+              TAG: "PlayerMana",
+              _0: a
+            }), (a) => ({
+              TAG: "PlayerMana",
+              _0: a
+            }))
+          };
         case "ManaEffect":
-          return Stdlib_Option.map(Packet_ManaEffect$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "ManaEffect",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_ManaEffect$TerrariaPacket.parse, (a) => ({
+              TAG: "ManaEffect",
+              _0: a
+            }), (a) => ({
+              TAG: "ManaEffect",
+              _0: a
+            }))
+          };
         case "PlayerTeam":
-          return Stdlib_Option.map(Packet_PlayerTeam$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "PlayerTeam",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_PlayerTeam$TerrariaPacket.parse, (a) => ({
+              TAG: "PlayerTeam",
+              _0: a
+            }), (a) => ({
+              TAG: "PlayerTeam",
+              _0: a
+            }))
+          };
         case "SignRead":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "SignReadFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_SignRead$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "SignRead",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_SignRead$TerrariaPacket.parse, (a) => ({
+                TAG: "SignRead",
+                _0: a
+              }), (a) => ({
+                TAG: "SignRead",
+                _0: a
+              }))
+            };
           }
         case "SignNew":
-          return Stdlib_Option.map(Packet_SignNew$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "SignNew",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_SignNew$TerrariaPacket.parse, (a) => ({
+              TAG: "SignNew",
+              _0: a
+            }), (a) => ({
+              TAG: "SignNew",
+              _0: a
+            }))
+          };
         case "LiquidSet":
-          return Stdlib_Option.map(Packet_LiquidSet$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "LiquidSet",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_LiquidSet$TerrariaPacket.parse, (a) => ({
+              TAG: "LiquidSet",
+              _0: a
+            }), (a) => ({
+              TAG: "LiquidSet",
+              _0: a
+            }))
+          };
         case "PlayerSpawnSelf":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_PlayerSpawnSelf$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "PlayerSpawnSelf",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_PlayerSpawnSelf$TerrariaPacket.parse, (a) => ({
+                TAG: "PlayerSpawnSelf",
+                _0: a
+              }), (a) => ({
+                TAG: "PlayerSpawnSelf",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "PlayerSpawnSelfFromClient"
+            };
           }
         case "PlayerBuffsSet":
-          return Stdlib_Option.map(Packet_PlayerBuffsSet$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "PlayerBuffsSet",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_PlayerBuffsSet$TerrariaPacket.parse, (a) => ({
+              TAG: "PlayerBuffsSet",
+              _0: a
+            }), (a) => ({
+              TAG: "PlayerBuffsSet",
+              _0: a
+            }))
+          };
         case "NpcSpecialEffect":
-          return Stdlib_Option.map(Packet_NpcSpecialEffect$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "NpcSpecialEffect",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_NpcSpecialEffect$TerrariaPacket.parse, (a) => ({
+              TAG: "NpcSpecialEffect",
+              _0: a
+            }), (a) => ({
+              TAG: "NpcSpecialEffect",
+              _0: a
+            }))
+          };
         case "ChestOrTempleUnlock":
-          return Stdlib_Option.map(Packet_ChestOrTempleUnlock$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "ChestOrTempleUnlock",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_ChestOrTempleUnlock$TerrariaPacket.parse, (a) => ({
+              TAG: "ChestOrTempleUnlock",
+              _0: a
+            }), (a) => ({
+              TAG: "ChestOrTempleUnlock",
+              _0: a
+            }))
+          };
         case "NpcBuffAdd":
-          return Stdlib_Option.map(Packet_NpcBuffAdd$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "NpcBuffAdd",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_NpcBuffAdd$TerrariaPacket.parse, (a) => ({
+              TAG: "NpcBuffAdd",
+              _0: a
+            }), (a) => ({
+              TAG: "NpcBuffAdd",
+              _0: a
+            }))
+          };
         case "NpcBuffUpdate":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_NpcBuffUpdate$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "NpcBuffUpdate",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_NpcBuffUpdate$TerrariaPacket.parse, (a) => ({
+                TAG: "NpcBuffUpdate",
+                _0: a
+              }), (a) => ({
+                TAG: "NpcBuffUpdate",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "NpcBuffUpdateFromClient"
+            };
           }
         case "PlayerBuffAdd":
-          return Stdlib_Option.map(Packet_PlayerBuffAdd$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "PlayerBuffAdd",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_PlayerBuffAdd$TerrariaPacket.parse, (a) => ({
+              TAG: "PlayerBuffAdd",
+              _0: a
+            }), (a) => ({
+              TAG: "PlayerBuffAdd",
+              _0: a
+            }))
+          };
         case "NpcNameUpdate":
-          return Stdlib_Option.map(Packet_NpcNameUpdate$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "NpcNameUpdate",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_NpcNameUpdate$TerrariaPacket.parse, (a) => ({
+              TAG: "NpcNameUpdate",
+              _0: a
+            }), (a) => ({
+              TAG: "NpcNameUpdate",
+              _0: a
+            }))
+          };
         case "GoodEvilUpdate":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_GoodEvilUpdate$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "GoodEvilUpdate",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_GoodEvilUpdate$TerrariaPacket.parse, (a) => ({
+                TAG: "GoodEvilUpdate",
+                _0: a
+              }), (a) => ({
+                TAG: "GoodEvilUpdate",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "GoodEvilUpdateFromClient"
+            };
           }
         case "HarpPlay":
-          return Stdlib_Option.map(Packet_HarpPlay$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "HarpPlay",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_HarpPlay$TerrariaPacket.parse, (a) => ({
+              TAG: "HarpPlay",
+              _0: a
+            }), (a) => ({
+              TAG: "HarpPlay",
+              _0: a
+            }))
+          };
         case "SwitchHit":
-          return Stdlib_Option.map(Packet_SwitchHit$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "SwitchHit",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_SwitchHit$TerrariaPacket.parse, (a) => ({
+              TAG: "SwitchHit",
+              _0: a
+            }), (a) => ({
+              TAG: "SwitchHit",
+              _0: a
+            }))
+          };
         case "NpcHomeUpdate":
-          return Stdlib_Option.map(Packet_NpcHomeUpdate$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "NpcHomeUpdate",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_NpcHomeUpdate$TerrariaPacket.parse, (a) => ({
+              TAG: "NpcHomeUpdate",
+              _0: a
+            }), (a) => ({
+              TAG: "NpcHomeUpdate",
+              _0: a
+            }))
+          };
         case "BossOrInvasionSpawn":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "BossOrInvasionSpawnFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_BossOrInvasionSpawn$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "BossOrInvasionSpawn",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_BossOrInvasionSpawn$TerrariaPacket.parse, (a) => ({
+                TAG: "BossOrInvasionSpawn",
+                _0: a
+              }), (a) => ({
+                TAG: "BossOrInvasionSpawn",
+                _0: a
+              }))
+            };
           }
         case "PlayerDodge":
-          return Stdlib_Option.map(Packet_PlayerDodge$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "PlayerDodge",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_PlayerDodge$TerrariaPacket.parse, (a) => ({
+              TAG: "PlayerDodge",
+              _0: a
+            }), (a) => ({
+              TAG: "PlayerDodge",
+              _0: a
+            }))
+          };
         case "TilePaint":
-          return Stdlib_Option.map(Packet_TilePaint$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "TilePaint",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_TilePaint$TerrariaPacket.parse, (a) => ({
+              TAG: "TilePaint",
+              _0: a
+            }), (a) => ({
+              TAG: "TilePaint",
+              _0: a
+            }))
+          };
         case "WallPaint":
-          return Stdlib_Option.map(Packet_WallPaint$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "WallPaint",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_WallPaint$TerrariaPacket.parse, (a) => ({
+              TAG: "WallPaint",
+              _0: a
+            }), (a) => ({
+              TAG: "WallPaint",
+              _0: a
+            }))
+          };
         case "Teleport":
-          return Stdlib_Option.map(Packet_Teleport$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "Teleport",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_Teleport$TerrariaPacket.parse, (a) => ({
+              TAG: "Teleport",
+              _0: a
+            }), (a) => ({
+              TAG: "Teleport",
+              _0: a
+            }))
+          };
         case "PlayerHealOther":
-          return Stdlib_Option.map(Packet_PlayerHealOther$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "PlayerHealOther",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_PlayerHealOther$TerrariaPacket.parse, (a) => ({
+              TAG: "PlayerHealOther",
+              _0: a
+            }), (a) => ({
+              TAG: "PlayerHealOther",
+              _0: a
+            }))
+          };
         case "DimensionsUpdate":
-          return Stdlib_Option.map(Packet_DimensionsUpdate$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "DimensionsUpdate",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_DimensionsUpdate$TerrariaPacket.parse, (a) => ({
+              TAG: "DimensionsUpdate",
+              _0: a
+            }), (a) => ({
+              TAG: "DimensionsUpdate",
+              _0: a
+            }))
+          };
         case "ClientUuid":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "ClientUuidFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_ClientUuid$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "ClientUuid",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_ClientUuid$TerrariaPacket.parse, (a) => ({
+                TAG: "ClientUuid",
+                _0: a
+              }), (a) => ({
+                TAG: "ClientUuid",
+                _0: a
+              }))
+            };
           }
         case "ChestName":
-          return Stdlib_Option.map(Packet_ChestName$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "ChestName",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_ChestName$TerrariaPacket.parse, (a) => ({
+              TAG: "ChestName",
+              _0: a
+            }), (a) => ({
+              TAG: "ChestName",
+              _0: a
+            }))
+          };
         case "NpcCatch":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "NpcCatchFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_NpcCatch$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "NpcCatch",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_NpcCatch$TerrariaPacket.parse, (a) => ({
+                TAG: "NpcCatch",
+                _0: a
+              }), (a) => ({
+                TAG: "NpcCatch",
+                _0: a
+              }))
+            };
           }
         case "NpcRelease":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "NpcReleaseFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_NpcRelease$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "NpcRelease",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_NpcRelease$TerrariaPacket.parse, (a) => ({
+                TAG: "NpcRelease",
+                _0: a
+              }), (a) => ({
+                TAG: "NpcRelease",
+                _0: a
+              }))
+            };
           }
         case "TravellingMerchantInventory":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_TravellingMerchantInventory$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "TravellingMerchantInventory",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_TravellingMerchantInventory$TerrariaPacket.parse, (a) => ({
+                TAG: "TravellingMerchantInventory",
+                _0: a
+              }), (a) => ({
+                TAG: "TravellingMerchantInventory",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "TravellingMerchantInventoryFromClient"
+            };
           }
         case "TeleportationPotion":
-          return Stdlib_Option.map(Packet_TeleportationPotion$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "TeleportationPotion",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_TeleportationPotion$TerrariaPacket.parse, (a) => ({
+              TAG: "TeleportationPotion",
+              _0: a
+            }), (a) => ({
+              TAG: "TeleportationPotion",
+              _0: a
+            }))
+          };
         case "AnglerQuest":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_AnglerQuest$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "AnglerQuest",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_AnglerQuest$TerrariaPacket.parse, (a) => ({
+                TAG: "AnglerQuest",
+                _0: a
+              }), (a) => ({
+                TAG: "AnglerQuest",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "AnglerQuestFromClient"
+            };
           }
         case "AnglerQuestComplete":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "AnglerQuestCompleteFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_AnglerQuestComplete$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "AnglerQuestComplete",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_AnglerQuestComplete$TerrariaPacket.parse, (a) => ({
+                TAG: "AnglerQuestComplete",
+                _0: a
+              }), (a) => ({
+                TAG: "AnglerQuestComplete",
+                _0: a
+              }))
+            };
           }
         case "AnglerQuestsCompletedAmount":
-          return Stdlib_Option.map(Packet_AnglerQuestsCompletedAmount$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "AnglerQuestsCompletedAmount",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_AnglerQuestsCompletedAmount$TerrariaPacket.parse, (a) => ({
+              TAG: "AnglerQuestsCompletedAmount",
+              _0: a
+            }), (a) => ({
+              TAG: "AnglerQuestsCompletedAmount",
+              _0: a
+            }))
+          };
         case "TemporaryAnimationCreate":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_TemporaryAnimationCreate$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "TemporaryAnimationCreate",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_TemporaryAnimationCreate$TerrariaPacket.parse, (a) => ({
+                TAG: "TemporaryAnimationCreate",
+                _0: a
+              }), (a) => ({
+                TAG: "TemporaryAnimationCreate",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "TemporaryAnimationCreateFromClient"
+            };
           }
         case "InvasionProgressReport":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_InvasionProgressReport$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "InvasionProgressReport",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_InvasionProgressReport$TerrariaPacket.parse, (a) => ({
+                TAG: "InvasionProgressReport",
+                _0: a
+              }), (a) => ({
+                TAG: "InvasionProgressReport",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "InvasionProgressReportFromClient"
+            };
           }
         case "ObjectPlace":
-          return Stdlib_Option.map(Packet_ObjectPlace$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "ObjectPlace",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_ObjectPlace$TerrariaPacket.parse, (a) => ({
+              TAG: "ObjectPlace",
+              _0: a
+            }), (a) => ({
+              TAG: "ObjectPlace",
+              _0: a
+            }))
+          };
         case "PlayerChestIndexSync":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_PlayerChestIndexSync$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "PlayerChestIndexSync",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_PlayerChestIndexSync$TerrariaPacket.parse, (a) => ({
+                TAG: "PlayerChestIndexSync",
+                _0: a
+              }), (a) => ({
+                TAG: "PlayerChestIndexSync",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "PlayerChestIndexSyncFromClient"
+            };
           }
         case "CombatNumberCreate":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_CombatNumberCreate$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "CombatNumberCreate",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_CombatNumberCreate$TerrariaPacket.parse, (a) => ({
+                TAG: "CombatNumberCreate",
+                _0: a
+              }), (a) => ({
+                TAG: "CombatNumberCreate",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "CombatNumberCreateFromClient"
+            };
           }
         case "NetModuleLoad":
-          return Stdlib_Option.map(Packet_NetModuleLoad$TerrariaPacket.parse(payload, fromServer), (a) => ({
-            TAG: "NetModuleLoad",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsersWithFromServer(Packet_NetModuleLoad$TerrariaPacket.parse, (a) => ({
+              TAG: "NetModuleLoad",
+              _0: a
+            }), (a) => ({
+              TAG: "NetModuleLoad",
+              _0: a
+            }))
+          };
         case "NpcKillCount":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_NpcKillCount$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "NpcKillCount",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_NpcKillCount$TerrariaPacket.parse, (a) => ({
+                TAG: "NpcKillCount",
+                _0: a
+              }), (a) => ({
+                TAG: "NpcKillCount",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "NpcKillCountFromClient"
+            };
           }
         case "PlayerStealth":
-          return Stdlib_Option.map(Packet_PlayerStealth$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "PlayerStealth",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_PlayerStealth$TerrariaPacket.parse, (a) => ({
+              TAG: "PlayerStealth",
+              _0: a
+            }), (a) => ({
+              TAG: "PlayerStealth",
+              _0: a
+            }))
+          };
         case "ItemForceIntoNearestChest":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "ItemForceIntoNearestChestFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_ItemForceIntoNearestChest$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "ItemForceIntoNearestChest",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_ItemForceIntoNearestChest$TerrariaPacket.parse, (a) => ({
+                TAG: "ItemForceIntoNearestChest",
+                _0: a
+              }), (a) => ({
+                TAG: "ItemForceIntoNearestChest",
+                _0: a
+              }))
+            };
           }
         case "TileEntityUpdate":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_TileEntityUpdate$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "TileEntityUpdate",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_TileEntityUpdate$TerrariaPacket.parse, (a) => ({
+                TAG: "TileEntityUpdate",
+                _0: a
+              }), (a) => ({
+                TAG: "TileEntityUpdate",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "TileEntityUpdateFromClient"
+            };
           }
         case "TileEntityPlace":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "TileEntityPlaceFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_TileEntityPlace$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "TileEntityPlace",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_TileEntityPlace$TerrariaPacket.parse, (a) => ({
+                TAG: "TileEntityPlace",
+                _0: a
+              }), (a) => ({
+                TAG: "TileEntityPlace",
+                _0: a
+              }))
+            };
           }
         case "ItemDropModify":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_ItemDropModify$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "ItemDropModify",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_ItemDropModify$TerrariaPacket.parse, (a) => ({
+                TAG: "ItemDropModify",
+                _0: a
+              }), (a) => ({
+                TAG: "ItemDropModify",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "ItemDropModifyFromClient"
+            };
           }
         case "ItemFramePlace":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "ItemFramePlaceFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_ItemFramePlace$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "ItemFramePlace",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_ItemFramePlace$TerrariaPacket.parse, (a) => ({
+                TAG: "ItemFramePlace",
+                _0: a
+              }), (a) => ({
+                TAG: "ItemFramePlace",
+                _0: a
+              }))
+            };
           }
         case "ItemDropInstancedUpdate":
-          return Stdlib_Option.map(Packet_ItemDropInstancedUpdate$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "ItemDropInstancedUpdate",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_ItemDropInstancedUpdate$TerrariaPacket.parse, (a) => ({
+              TAG: "ItemDropInstancedUpdate",
+              _0: a
+            }), (a) => ({
+              TAG: "ItemDropInstancedUpdate",
+              _0: a
+            }))
+          };
         case "EmoteBubble":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_EmoteBubble$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "EmoteBubble",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_EmoteBubble$TerrariaPacket.parse, (a) => ({
+                TAG: "EmoteBubble",
+                _0: a
+              }), (a) => ({
+                TAG: "EmoteBubble",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "EmoteBubbleFromClient"
+            };
           }
         case "ExtraValueSync":
-          return Stdlib_Option.map(Packet_ExtraValueSync$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "ExtraValueSync",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_ExtraValueSync$TerrariaPacket.parse, (a) => ({
+              TAG: "ExtraValueSync",
+              _0: a
+            }), (a) => ({
+              TAG: "ExtraValueSync",
+              _0: a
+            }))
+          };
         case "SocialHandshake":
-          return Stdlib_Option.map(Packet_SocialHandshake$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "SocialHandshake",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_SocialHandshake$TerrariaPacket.parse, (a) => ({
+              TAG: "SocialHandshake",
+              _0: a
+            }), (a) => ({
+              TAG: "SocialHandshake",
+              _0: a
+            }))
+          };
         case "Unused":
-          return Stdlib_Option.map(Packet_Unused$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "Unused",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_Unused$TerrariaPacket.parse, (a) => ({
+              TAG: "Unused",
+              _0: a
+            }), (a) => ({
+              TAG: "Unused",
+              _0: a
+            }))
+          };
         case "PortalKill":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "PortalKillFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_PortalKill$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "PortalKill",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_PortalKill$TerrariaPacket.parse, (a) => ({
+                TAG: "PortalKill",
+                _0: a
+              }), (a) => ({
+                TAG: "PortalKill",
+                _0: a
+              }))
+            };
           }
         case "PlayerTeleportPortal":
-          return Stdlib_Option.map(Packet_PlayerTeleportPortal$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "PlayerTeleportPortal",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_PlayerTeleportPortal$TerrariaPacket.parse, (a) => ({
+              TAG: "PlayerTeleportPortal",
+              _0: a
+            }), (a) => ({
+              TAG: "PlayerTeleportPortal",
+              _0: a
+            }))
+          };
         case "NpcKilledNotification":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_NpcKilledNotification$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "NpcKilledNotification",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_NpcKilledNotification$TerrariaPacket.parse, (a) => ({
+                TAG: "NpcKilledNotification",
+                _0: a
+              }), (a) => ({
+                TAG: "NpcKilledNotification",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "NpcKilledNotificationFromClient"
+            };
           }
         case "EventNotification":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_EventNotification$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "EventNotification",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_EventNotification$TerrariaPacket.parse, (a) => ({
+                TAG: "EventNotification",
+                _0: a
+              }), (a) => ({
+                TAG: "EventNotification",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "EventNotificationFromClient"
+            };
           }
         case "MinionTargetUpdate":
-          return Stdlib_Option.map(Packet_MinionTargetUpdate$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "MinionTargetUpdate",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_MinionTargetUpdate$TerrariaPacket.parse, (a) => ({
+              TAG: "MinionTargetUpdate",
+              _0: a
+            }), (a) => ({
+              TAG: "MinionTargetUpdate",
+              _0: a
+            }))
+          };
         case "NpcTeleportPortal":
-          return Stdlib_Option.map(Packet_NpcTeleportPortal$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "NpcTeleportPortal",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_NpcTeleportPortal$TerrariaPacket.parse, (a) => ({
+              TAG: "NpcTeleportPortal",
+              _0: a
+            }), (a) => ({
+              TAG: "NpcTeleportPortal",
+              _0: a
+            }))
+          };
         case "ShieldStrengthsUpdate":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_ShieldStrengthsUpdate$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "ShieldStrengthsUpdate",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_ShieldStrengthsUpdate$TerrariaPacket.parse, (a) => ({
+                TAG: "ShieldStrengthsUpdate",
+                _0: a
+              }), (a) => ({
+                TAG: "ShieldStrengthsUpdate",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "ShieldStrengthsUpdateFromClient"
+            };
           }
         case "NebulaLevelUp":
-          return Stdlib_Option.map(Packet_NebulaLevelUp$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "NebulaLevelUp",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_NebulaLevelUp$TerrariaPacket.parse, (a) => ({
+              TAG: "NebulaLevelUp",
+              _0: a
+            }), (a) => ({
+              TAG: "NebulaLevelUp",
+              _0: a
+            }))
+          };
         case "MoonLordCountdown":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_MoonLordCountdown$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "MoonLordCountdown",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_MoonLordCountdown$TerrariaPacket.parse, (a) => ({
+                TAG: "MoonLordCountdown",
+                _0: a
+              }), (a) => ({
+                TAG: "MoonLordCountdown",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "MoonLordCountdownFromClient"
+            };
           }
         case "NpcShopItem":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_NpcShopItem$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "NpcShopItem",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_NpcShopItem$TerrariaPacket.parse, (a) => ({
+                TAG: "NpcShopItem",
+                _0: a
+              }), (a) => ({
+                TAG: "NpcShopItem",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "NpcShopItemFromClient"
+            };
           }
         case "GemLockToggle":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "GemLockToggleFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_GemLockToggle$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "GemLockToggle",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_GemLockToggle$TerrariaPacket.parse, (a) => ({
+                TAG: "GemLockToggle",
+                _0: a
+              }), (a) => ({
+                TAG: "GemLockToggle",
+                _0: a
+              }))
+            };
           }
         case "SmokePoof":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_SmokePoof$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "SmokePoof",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_SmokePoof$TerrariaPacket.parse, (a) => ({
+                TAG: "SmokePoof",
+                _0: a
+              }), (a) => ({
+                TAG: "SmokePoof",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "SmokePoofFromClient"
+            };
           }
         case "ChatMessageSmart":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_ChatMessageSmart$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "ChatMessageSmart",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_ChatMessageSmart$TerrariaPacket.parse, (a) => ({
+                TAG: "ChatMessageSmart",
+                _0: a
+              }), (a) => ({
+                TAG: "ChatMessageSmart",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "ChatMessageSmartFromClient"
+            };
           }
         case "WiredCannonShot":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_WiredCannonShot$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "WiredCannonShot",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_WiredCannonShot$TerrariaPacket.parse, (a) => ({
+                TAG: "WiredCannonShot",
+                _0: a
+              }), (a) => ({
+                TAG: "WiredCannonShot",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "WiredCannonShotFromClient"
+            };
           }
         case "MassWireOperation":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "MassWireOperationFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_MassWireOperation$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "MassWireOperation",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_MassWireOperation$TerrariaPacket.parse, (a) => ({
+                TAG: "MassWireOperation",
+                _0: a
+              }), (a) => ({
+                TAG: "MassWireOperation",
+                _0: a
+              }))
+            };
           }
         case "MassWireOperationPay":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_MassWireOperationPay$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "MassWireOperationPay",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_MassWireOperationPay$TerrariaPacket.parse, (a) => ({
+                TAG: "MassWireOperationPay",
+                _0: a
+              }), (a) => ({
+                TAG: "MassWireOperationPay",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "MassWireOperationPayFromClient"
+            };
           }
         case "PartyToggle":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "PartyToggleFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_PartyToggle$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "PartyToggle",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_PartyToggle$TerrariaPacket.parse, (a) => ({
+                TAG: "PartyToggle",
+                _0: a
+              }), (a) => ({
+                TAG: "PartyToggle",
+                _0: a
+              }))
+            };
           }
         case "TreeGrowFx":
-          return Stdlib_Option.map(Packet_TreeGrowFx$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "TreeGrowFx",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_TreeGrowFx$TerrariaPacket.parse, (a) => ({
+              TAG: "TreeGrowFx",
+              _0: a
+            }), (a) => ({
+              TAG: "TreeGrowFx",
+              _0: a
+            }))
+          };
         case "CrystalInvasionStart":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "CrystalInvasionStartFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_CrystalInvasionStart$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "CrystalInvasionStart",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_CrystalInvasionStart$TerrariaPacket.parse, (a) => ({
+                TAG: "CrystalInvasionStart",
+                _0: a
+              }), (a) => ({
+                TAG: "CrystalInvasionStart",
+                _0: a
+              }))
+            };
           }
         case "CrystalInvasionWipeAll":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_CrystalInvasionWipeAll$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "CrystalInvasionWipeAll",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_CrystalInvasionWipeAll$TerrariaPacket.parse, (a) => ({
+                TAG: "CrystalInvasionWipeAll",
+                _0: a
+              }), (a) => ({
+                TAG: "CrystalInvasionWipeAll",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "CrystalInvasionWipeAllFromClient"
+            };
           }
         case "MinionAttackTargetUpdate":
-          return Stdlib_Option.map(Packet_MinionAttackTargetUpdate$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "MinionAttackTargetUpdate",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_MinionAttackTargetUpdate$TerrariaPacket.parse, (a) => ({
+              TAG: "MinionAttackTargetUpdate",
+              _0: a
+            }), (a) => ({
+              TAG: "MinionAttackTargetUpdate",
+              _0: a
+            }))
+          };
         case "CrystalInvasionSendWaitTime":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_CrystalInvasionSendWaitTime$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "CrystalInvasionSendWaitTime",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_CrystalInvasionSendWaitTime$TerrariaPacket.parse, (a) => ({
+                TAG: "CrystalInvasionSendWaitTime",
+                _0: a
+              }), (a) => ({
+                TAG: "CrystalInvasionSendWaitTime",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "CrystalInvasionSendWaitTimeFromClient"
+            };
           }
         case "PlayerDamage":
-          return Stdlib_Option.map(Packet_PlayerDamage$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "PlayerDamage",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_PlayerDamage$TerrariaPacket.parse, (a) => ({
+              TAG: "PlayerDamage",
+              _0: a
+            }), (a) => ({
+              TAG: "PlayerDamage",
+              _0: a
+            }))
+          };
         case "PlayerDeath":
-          return Stdlib_Option.map(Packet_PlayerDeath$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "PlayerDeath",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_PlayerDeath$TerrariaPacket.parse, (a) => ({
+              TAG: "PlayerDeath",
+              _0: a
+            }), (a) => ({
+              TAG: "PlayerDeath",
+              _0: a
+            }))
+          };
         case "CombatTextCreate":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_CombatTextCreate$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "CombatTextCreate",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_CombatTextCreate$TerrariaPacket.parse, (a) => ({
+                TAG: "CombatTextCreate",
+                _0: a
+              }), (a) => ({
+                TAG: "CombatTextCreate",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "CombatTextCreateFromClient"
+            };
           }
         case "Emoji":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "EmojiFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_Emoji$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "Emoji",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_Emoji$TerrariaPacket.parse, (a) => ({
+                TAG: "Emoji",
+                _0: a
+              }), (a) => ({
+                TAG: "Emoji",
+                _0: a
+              }))
+            };
           }
         case "TileEntityDisplayDollItemSync":
-          return Stdlib_Option.map(Packet_TileEntityDisplayDollItemSync$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "TileEntityDisplayDollItemSync",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_TileEntityDisplayDollItemSync$TerrariaPacket.parse, (a) => ({
+              TAG: "TileEntityDisplayDollItemSync",
+              _0: a
+            }), (a) => ({
+              TAG: "TileEntityDisplayDollItemSync",
+              _0: a
+            }))
+          };
         case "TileEntityInteractionRequest":
-          return Stdlib_Option.map(Packet_TileEntityInteractionRequest$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "TileEntityInteractionRequest",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_TileEntityInteractionRequest$TerrariaPacket.parse, (a) => ({
+              TAG: "TileEntityInteractionRequest",
+              _0: a
+            }), (a) => ({
+              TAG: "TileEntityInteractionRequest",
+              _0: a
+            }))
+          };
         case "WeaponsRackTryPlacing":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "WeaponsRackTryPlacingFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_WeaponsRackTryPlacing$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "WeaponsRackTryPlacing",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_WeaponsRackTryPlacing$TerrariaPacket.parse, (a) => ({
+                TAG: "WeaponsRackTryPlacing",
+                _0: a
+              }), (a) => ({
+                TAG: "WeaponsRackTryPlacing",
+                _0: a
+              }))
+            };
           }
         case "TileEntityHatRackItemSync":
-          return Stdlib_Option.map(Packet_TileEntityHatRackItemSync$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "TileEntityHatRackItemSync",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_TileEntityHatRackItemSync$TerrariaPacket.parse, (a) => ({
+              TAG: "TileEntityHatRackItemSync",
+              _0: a
+            }), (a) => ({
+              TAG: "TileEntityHatRackItemSync",
+              _0: a
+            }))
+          };
         case "TilePickingSync":
-          return Stdlib_Option.map(Packet_TilePickingSync$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "TilePickingSync",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_TilePickingSync$TerrariaPacket.parse, (a) => ({
+              TAG: "TilePickingSync",
+              _0: a
+            }), (a) => ({
+              TAG: "TilePickingSync",
+              _0: a
+            }))
+          };
         case "RevengeMarkerSync":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_RevengeMarkerSync$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "RevengeMarkerSync",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_RevengeMarkerSync$TerrariaPacket.parse, (a) => ({
+                TAG: "RevengeMarkerSync",
+                _0: a
+              }), (a) => ({
+                TAG: "RevengeMarkerSync",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "RevengeMarkerSyncFromClient"
+            };
           }
         case "RevengeMarkerRemove":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_RevengeMarkerRemove$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "RevengeMarkerRemove",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_RevengeMarkerRemove$TerrariaPacket.parse, (a) => ({
+                TAG: "RevengeMarkerRemove",
+                _0: a
+              }), (a) => ({
+                TAG: "RevengeMarkerRemove",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "RevengeMarkerRemoveFromClient"
+            };
           }
         case "GolfBallLandInCup":
-          return Stdlib_Option.map(Packet_GolfBallLandInCup$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "GolfBallLandInCup",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_GolfBallLandInCup$TerrariaPacket.parse, (a) => ({
+              TAG: "GolfBallLandInCup",
+              _0: a
+            }), (a) => ({
+              TAG: "GolfBallLandInCup",
+              _0: a
+            }))
+          };
         case "ClientFinishConnectingToServer":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_ClientFinishConnectingToServer$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "ClientFinishConnectingToServer",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_ClientFinishConnectingToServer$TerrariaPacket.parse, (a) => ({
+                TAG: "ClientFinishConnectingToServer",
+                _0: a
+              }), (a) => ({
+                TAG: "ClientFinishConnectingToServer",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "ClientFinishConnectingToServerFromClient"
+            };
           }
         case "NpcFishOut":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "NpcFishOutFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_NpcFishOut$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "NpcFishOut",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_NpcFishOut$TerrariaPacket.parse, (a) => ({
+                TAG: "NpcFishOut",
+                _0: a
+              }), (a) => ({
+                TAG: "NpcFishOut",
+                _0: a
+              }))
+            };
           }
         case "NpcTamper":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_NpcTamper$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "NpcTamper",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_NpcTamper$TerrariaPacket.parse, (a) => ({
+                TAG: "NpcTamper",
+                _0: a
+              }), (a) => ({
+                TAG: "NpcTamper",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "NpcTamperFromClient"
+            };
           }
         case "LegacySoundPlay":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_LegacySoundPlay$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "LegacySoundPlay",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_LegacySoundPlay$TerrariaPacket.parse, (a) => ({
+                TAG: "LegacySoundPlay",
+                _0: a
+              }), (a) => ({
+                TAG: "LegacySoundPlay",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "LegacySoundPlayFromClient"
+            };
           }
         case "FoodPlatterTryPlacing":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "FoodPlatterTryPlacingFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_FoodPlatterTryPlacing$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "FoodPlatterTryPlacing",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_FoodPlatterTryPlacing$TerrariaPacket.parse, (a) => ({
+                TAG: "FoodPlatterTryPlacing",
+                _0: a
+              }), (a) => ({
+                TAG: "FoodPlatterTryPlacing",
+                _0: a
+              }))
+            };
           }
         case "PlayerLuckFactorsUpdate":
-          return Stdlib_Option.map(Packet_PlayerLuckFactorsUpdate$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "PlayerLuckFactorsUpdate",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_PlayerLuckFactorsUpdate$TerrariaPacket.parse, (a) => ({
+              TAG: "PlayerLuckFactorsUpdate",
+              _0: a
+            }), (a) => ({
+              TAG: "PlayerLuckFactorsUpdate",
+              _0: a
+            }))
+          };
         case "PlayerDead":
           if (fromServer) {
-            return Stdlib_Option.map(Packet_PlayerDead$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "PlayerDead",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_PlayerDead$TerrariaPacket.parse, (a) => ({
+                TAG: "PlayerDead",
+                _0: a
+              }), (a) => ({
+                TAG: "PlayerDead",
+                _0: a
+              }))
+            };
           } else {
-            return;
+            return {
+              TAG: "Error",
+              _0: "PlayerDeadFromClient"
+            };
           }
         case "CavernMonsterTypeSync":
-          return Stdlib_Option.map(Packet_CavernMonsterTypeSync$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "CavernMonsterTypeSync",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_CavernMonsterTypeSync$TerrariaPacket.parse, (a) => ({
+              TAG: "CavernMonsterTypeSync",
+              _0: a
+            }), (a) => ({
+              TAG: "CavernMonsterTypeSync",
+              _0: a
+            }))
+          };
         case "NpcBuffRemovalRequest":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "NpcBuffRemovalRequestFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_NpcBuffRemovalRequest$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "NpcBuffRemovalRequest",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_NpcBuffRemovalRequest$TerrariaPacket.parse, (a) => ({
+                TAG: "NpcBuffRemovalRequest",
+                _0: a
+              }), (a) => ({
+                TAG: "NpcBuffRemovalRequest",
+                _0: a
+              }))
+            };
           }
         case "ClientSyncedInventory":
           if (fromServer) {
-            return;
+            return {
+              TAG: "Error",
+              _0: "ClientSyncedInventoryFromServer"
+            };
           } else {
-            return Stdlib_Option.map(Packet_ClientSyncedInventory$TerrariaPacket.parse(payload), (a) => ({
-              TAG: "ClientSyncedInventory",
-              _0: a
-            }));
+            return {
+              TAG: "Ok",
+              _0: makeParsers(Packet_ClientSyncedInventory$TerrariaPacket.parse, (a) => ({
+                TAG: "ClientSyncedInventory",
+                _0: a
+              }), (a) => ({
+                TAG: "ClientSyncedInventory",
+                _0: a
+              }))
+            };
           }
         case "CountsAsHostForGameplaySet":
-          return Stdlib_Option.map(Packet_CountsAsHostForGameplaySet$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "CountsAsHostForGameplaySet",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_CountsAsHostForGameplaySet$TerrariaPacket.parse, (a) => ({
+              TAG: "CountsAsHostForGameplaySet",
+              _0: a
+            }), (a) => ({
+              TAG: "CountsAsHostForGameplaySet",
+              _0: a
+            }))
+          };
         case "CreditsOrSlimeTransform":
-          return Stdlib_Option.map(Packet_CreditsOrSlimeTransform$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "CreditsOrSlimeTransform",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_CreditsOrSlimeTransform$TerrariaPacket.parse, (a) => ({
+              TAG: "CreditsOrSlimeTransform",
+              _0: a
+            }), (a) => ({
+              TAG: "CreditsOrSlimeTransform",
+              _0: a
+            }))
+          };
         case "LucyAxeMessage":
-          return Stdlib_Option.map(Packet_LucyAxeMessage$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "LucyAxeMessage",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_LucyAxeMessage$TerrariaPacket.parse, (a) => ({
+              TAG: "LucyAxeMessage",
+              _0: a
+            }), (a) => ({
+              TAG: "LucyAxeMessage",
+              _0: a
+            }))
+          };
         case "PiggyBankVoidLensUpdate":
-          return Stdlib_Option.map(Packet_PiggyBankVoidLensUpdate$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "PiggyBankVoidLensUpdate",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_PiggyBankVoidLensUpdate$TerrariaPacket.parse, (a) => ({
+              TAG: "PiggyBankVoidLensUpdate",
+              _0: a
+            }), (a) => ({
+              TAG: "PiggyBankVoidLensUpdate",
+              _0: a
+            }))
+          };
         case "DungeonDefendersEventAttemptSkipWait":
-          return Stdlib_Option.map(Packet_DungeonDefendersEventAttemptSkipWait$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "DungeonDefendersEventAttemptSkipWait",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_DungeonDefendersEventAttemptSkipWait$TerrariaPacket.parse, (a) => ({
+              TAG: "DungeonDefendersEventAttemptSkipWait",
+              _0: a
+            }), (a) => ({
+              TAG: "DungeonDefendersEventAttemptSkipWait",
+              _0: a
+            }))
+          };
         case "HaveDryadDoStardewAnimation":
-          return Stdlib_Option.map(Packet_HaveDryadDoStardewAnimation$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "HaveDryadDoStardewAnimation",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_HaveDryadDoStardewAnimation$TerrariaPacket.parse, (a) => ({
+              TAG: "HaveDryadDoStardewAnimation",
+              _0: a
+            }), (a) => ({
+              TAG: "HaveDryadDoStardewAnimation",
+              _0: a
+            }))
+          };
         case "ItemDropShimmeredUpdate":
-          return Stdlib_Option.map(Packet_ItemDropShimmeredUpdate$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "ItemDropShimmeredUpdate",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_ItemDropShimmeredUpdate$TerrariaPacket.parse, (a) => ({
+              TAG: "ItemDropShimmeredUpdate",
+              _0: a
+            }), (a) => ({
+              TAG: "ItemDropShimmeredUpdate",
+              _0: a
+            }))
+          };
         case "ShimmerEffectOrCoinLuck":
-          return Stdlib_Option.map(Packet_ShimmerEffectOrCoinLuck$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "ShimmerEffectOrCoinLuck",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_ShimmerEffectOrCoinLuck$TerrariaPacket.parse, (a) => ({
+              TAG: "ShimmerEffectOrCoinLuck",
+              _0: a
+            }), (a) => ({
+              TAG: "ShimmerEffectOrCoinLuck",
+              _0: a
+            }))
+          };
         case "LoadoutSwitch":
-          return Stdlib_Option.map(Packet_LoadoutSwitch$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "LoadoutSwitch",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_LoadoutSwitch$TerrariaPacket.parse, (a) => ({
+              TAG: "LoadoutSwitch",
+              _0: a
+            }), (a) => ({
+              TAG: "LoadoutSwitch",
+              _0: a
+            }))
+          };
         case "ItemDropProtectedUpdate":
-          return Stdlib_Option.map(Packet_ItemDropProtectedUpdate$TerrariaPacket.parse(payload), (a) => ({
-            TAG: "ItemDropProtectedUpdate",
-            _0: a
-          }));
+          return {
+            TAG: "Ok",
+            _0: makeParsers(Packet_ItemDropProtectedUpdate$TerrariaPacket.parse, (a) => ({
+              TAG: "ItemDropProtectedUpdate",
+              _0: a
+            }), (a) => ({
+              TAG: "ItemDropProtectedUpdate",
+              _0: a
+            }))
+          };
+      }
+    }
+    function parsePayload(packetType, payload, fromServer) {
+      let parsers = getParsers(packetType, fromServer);
+      if (parsers.TAG === "Ok") {
+        return parsers._0.parse(payload, fromServer);
+      } else {
+        return {
+          TAG: "Error",
+          _0: parsers._0
+        };
       }
     }
     function parse(buffer, fromServer) {
       let match = buffer.length;
       if (!(match > 2 || match < 0)) {
-        return;
+        return {
+          TAG: "Error",
+          _0: "InvalidPacketLength"
+        };
       }
       let packetType = PacketType$TerrariaPacket.fromInt(buffer[2]);
       if (packetType === void 0) {
-        return;
+        return {
+          TAG: "Error",
+          _0: "InvalidPacketType"
+        };
       }
       try {
-        return Stdlib_Option.map(parsePayload(packetType, buffer, fromServer), (packet) => ({
+        return Stdlib_Result.map(parsePayload(packetType, buffer, fromServer), (packet) => ({
           TAG: "SerializeNotNecessary",
           _0: packet,
           _1: buffer
         }));
-      } catch (_e) {
-        return;
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              TAG: "ReaderError",
+              _0: {
+                context: "Parser.parse",
+                error: obj._1
+              }
+            }
+          };
+        }
+        throw obj;
       }
     }
     function parseLazy(buffer, fromServer) {
       let match = buffer.length;
       if (!(match > 2 || match < 0)) {
-        return;
+        return {
+          TAG: "Error",
+          _0: "InvalidPacketLength"
+        };
       }
       let packetType = PacketType$TerrariaPacket.fromInt(buffer[2]);
       if (packetType === void 0) {
-        return;
+        return {
+          TAG: "Error",
+          _0: "InvalidPacketType"
+        };
       }
       try {
-        switch (packetType) {
-          case "ConnectRequest":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "ConnectRequest",
-                _0: Stdlib_Lazy.make(() => Packet_ConnectRequest$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "Disconnect":
-            if (fromServer) {
-              return {
-                TAG: "Disconnect",
-                _0: Stdlib_Lazy.make(() => Packet_Disconnect$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "PlayerSlotSet":
-            if (fromServer) {
-              return {
-                TAG: "PlayerSlotSet",
-                _0: Stdlib_Lazy.make(() => Packet_PlayerSlotSet$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "PlayerInfo":
-            return {
-              TAG: "PlayerInfo",
-              _0: Stdlib_Lazy.make(() => Packet_PlayerInfo$TerrariaPacket.parse(buffer))
-            };
-          case "PlayerInventorySlot":
-            return {
-              TAG: "PlayerInventorySlot",
-              _0: Stdlib_Lazy.make(() => Packet_PlayerInventorySlot$TerrariaPacket.parse(buffer))
-            };
-          case "WorldDataRequest":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "WorldDataRequest",
-                _0: Stdlib_Lazy.make(() => Packet_WorldDataRequest$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "WorldInfo":
-            if (fromServer) {
-              return {
-                TAG: "WorldInfo",
-                _0: Stdlib_Lazy.make(() => Packet_WorldInfo$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "InitialTileSectionsRequest":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "InitialTileSectionsRequest",
-                _0: Stdlib_Lazy.make(() => Packet_InitialTileSectionsRequest$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "Status":
-            if (fromServer) {
-              return {
-                TAG: "Status",
-                _0: Stdlib_Lazy.make(() => Packet_Status$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "TileSectionSend":
-            if (fromServer) {
-              return {
-                TAG: "TileSectionSend",
-                _0: Stdlib_Lazy.make(() => Packet_TileSectionSend$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "TileSectionFrame":
-            if (fromServer) {
-              return {
-                TAG: "TileSectionFrame",
-                _0: Stdlib_Lazy.make(() => Packet_TileSectionFrame$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "PlayerSpawn":
-            return {
-              TAG: "PlayerSpawn",
-              _0: Stdlib_Lazy.make(() => Packet_PlayerSpawn$TerrariaPacket.parse(buffer))
-            };
-          case "PlayerUpdate":
-            return {
-              TAG: "PlayerUpdate",
-              _0: Stdlib_Lazy.make(() => Packet_PlayerUpdate$TerrariaPacket.parse(buffer))
-            };
-          case "PlayerActive":
-            if (fromServer) {
-              return {
-                TAG: "PlayerActive",
-                _0: Stdlib_Lazy.make(() => Packet_PlayerActive$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "PlayerHealth":
-            return {
-              TAG: "PlayerHealth",
-              _0: Stdlib_Lazy.make(() => Packet_PlayerHealth$TerrariaPacket.parse(buffer))
-            };
-          case "TileModify":
-            return {
-              TAG: "TileModify",
-              _0: Stdlib_Lazy.make(() => Packet_TileModify$TerrariaPacket.parse(buffer))
-            };
-          case "TimeSet":
-            if (fromServer) {
-              return {
-                TAG: "TimeSet",
-                _0: Stdlib_Lazy.make(() => Packet_TimeSet$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "DoorUse":
-            return {
-              TAG: "DoorUse",
-              _0: Stdlib_Lazy.make(() => Packet_DoorUse$TerrariaPacket.parse(buffer))
-            };
-          case "TileSquareSend":
-            return {
-              TAG: "TileSquareSend",
-              _0: Stdlib_Lazy.make(() => Packet_TileSquareSend$TerrariaPacket.parse(buffer))
-            };
-          case "ItemDropUpdate":
-            return {
-              TAG: "ItemDropUpdate",
-              _0: Stdlib_Lazy.make(() => Packet_ItemDropUpdate$TerrariaPacket.parse(buffer))
-            };
-          case "ItemOwner":
-            return {
-              TAG: "ItemOwner",
-              _0: Stdlib_Lazy.make(() => Packet_ItemOwner$TerrariaPacket.parse(buffer))
-            };
-          case "NpcUpdate":
-            if (fromServer) {
-              return {
-                TAG: "NpcUpdate",
-                _0: Stdlib_Lazy.make(() => Packet_NpcUpdate$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "NpcItemStrike":
-            return {
-              TAG: "NpcItemStrike",
-              _0: Stdlib_Lazy.make(() => Packet_NpcItemStrike$TerrariaPacket.parse(buffer))
-            };
-          case "ProjectileSync":
-            return {
-              TAG: "ProjectileSync",
-              _0: Stdlib_Lazy.make(() => Packet_ProjectileSync$TerrariaPacket.parse(buffer))
-            };
-          case "NpcStrike":
-            return {
-              TAG: "NpcStrike",
-              _0: Stdlib_Lazy.make(() => Packet_NpcStrike$TerrariaPacket.parse(buffer))
-            };
-          case "ProjectileDestroy":
-            return {
-              TAG: "ProjectileDestroy",
-              _0: Stdlib_Lazy.make(() => Packet_ProjectileDestroy$TerrariaPacket.parse(buffer))
-            };
-          case "PvpToggle":
-            return {
-              TAG: "PvpToggle",
-              _0: Stdlib_Lazy.make(() => Packet_PvpToggle$TerrariaPacket.parse(buffer))
-            };
-          case "ChestOpen":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "ChestOpen",
-                _0: Stdlib_Lazy.make(() => Packet_ChestOpen$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "ChestItem":
-            return {
-              TAG: "ChestItem",
-              _0: Stdlib_Lazy.make(() => Packet_ChestItem$TerrariaPacket.parse(buffer))
-            };
-          case "ActiveContainerSync":
-            return {
-              TAG: "ActiveContainerSync",
-              _0: Stdlib_Lazy.make(() => Packet_ActiveContainerSync$TerrariaPacket.parse(buffer))
-            };
-          case "ChestPlace":
-            return {
-              TAG: "ChestPlace",
-              _0: Stdlib_Lazy.make(() => Packet_ChestPlace$TerrariaPacket.parse(buffer))
-            };
-          case "HealEffect":
-            return {
-              TAG: "HealEffect",
-              _0: Stdlib_Lazy.make(() => Packet_HealEffect$TerrariaPacket.parse(buffer))
-            };
-          case "Zones":
-            return {
-              TAG: "Zones",
-              _0: Stdlib_Lazy.make(() => Packet_Zones$TerrariaPacket.parse(buffer))
-            };
-          case "PasswordRequired":
-            if (fromServer) {
-              return {
-                TAG: "PasswordRequired",
-                _0: Stdlib_Lazy.make(() => Packet_PasswordRequired$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "PasswordSend":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "PasswordSend",
-                _0: Stdlib_Lazy.make(() => Packet_PasswordSend$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "ItemOwnerRemove":
-            if (fromServer) {
-              return {
-                TAG: "ItemOwnerRemove",
-                _0: Stdlib_Lazy.make(() => Packet_ItemOwnerRemove$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "NpcTalk":
-            return {
-              TAG: "NpcTalk",
-              _0: Stdlib_Lazy.make(() => Packet_NpcTalk$TerrariaPacket.parse(buffer))
-            };
-          case "PlayerAnimation":
-            return {
-              TAG: "PlayerAnimation",
-              _0: Stdlib_Lazy.make(() => Packet_PlayerAnimation$TerrariaPacket.parse(buffer))
-            };
-          case "PlayerMana":
-            return {
-              TAG: "PlayerMana",
-              _0: Stdlib_Lazy.make(() => Packet_PlayerMana$TerrariaPacket.parse(buffer))
-            };
-          case "ManaEffect":
-            return {
-              TAG: "ManaEffect",
-              _0: Stdlib_Lazy.make(() => Packet_ManaEffect$TerrariaPacket.parse(buffer))
-            };
-          case "PlayerTeam":
-            return {
-              TAG: "PlayerTeam",
-              _0: Stdlib_Lazy.make(() => Packet_PlayerTeam$TerrariaPacket.parse(buffer))
-            };
-          case "SignRead":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "SignRead",
-                _0: Stdlib_Lazy.make(() => Packet_SignRead$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "SignNew":
-            return {
-              TAG: "SignNew",
-              _0: Stdlib_Lazy.make(() => Packet_SignNew$TerrariaPacket.parse(buffer))
-            };
-          case "LiquidSet":
-            return {
-              TAG: "LiquidSet",
-              _0: Stdlib_Lazy.make(() => Packet_LiquidSet$TerrariaPacket.parse(buffer))
-            };
-          case "PlayerSpawnSelf":
-            if (fromServer) {
-              return {
-                TAG: "PlayerSpawnSelf",
-                _0: Stdlib_Lazy.make(() => Packet_PlayerSpawnSelf$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "PlayerBuffsSet":
-            return {
-              TAG: "PlayerBuffsSet",
-              _0: Stdlib_Lazy.make(() => Packet_PlayerBuffsSet$TerrariaPacket.parse(buffer))
-            };
-          case "NpcSpecialEffect":
-            return {
-              TAG: "NpcSpecialEffect",
-              _0: Stdlib_Lazy.make(() => Packet_NpcSpecialEffect$TerrariaPacket.parse(buffer))
-            };
-          case "ChestOrTempleUnlock":
-            return {
-              TAG: "ChestOrTempleUnlock",
-              _0: Stdlib_Lazy.make(() => Packet_ChestOrTempleUnlock$TerrariaPacket.parse(buffer))
-            };
-          case "NpcBuffAdd":
-            return {
-              TAG: "NpcBuffAdd",
-              _0: Stdlib_Lazy.make(() => Packet_NpcBuffAdd$TerrariaPacket.parse(buffer))
-            };
-          case "NpcBuffUpdate":
-            if (fromServer) {
-              return {
-                TAG: "NpcBuffUpdate",
-                _0: Stdlib_Lazy.make(() => Packet_NpcBuffUpdate$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "PlayerBuffAdd":
-            return {
-              TAG: "PlayerBuffAdd",
-              _0: Stdlib_Lazy.make(() => Packet_PlayerBuffAdd$TerrariaPacket.parse(buffer))
-            };
-          case "NpcNameUpdate":
-            return {
-              TAG: "NpcNameUpdate",
-              _0: Stdlib_Lazy.make(() => Packet_NpcNameUpdate$TerrariaPacket.parse(buffer))
-            };
-          case "GoodEvilUpdate":
-            if (fromServer) {
-              return {
-                TAG: "GoodEvilUpdate",
-                _0: Stdlib_Lazy.make(() => Packet_GoodEvilUpdate$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "HarpPlay":
-            return {
-              TAG: "HarpPlay",
-              _0: Stdlib_Lazy.make(() => Packet_HarpPlay$TerrariaPacket.parse(buffer))
-            };
-          case "SwitchHit":
-            return {
-              TAG: "SwitchHit",
-              _0: Stdlib_Lazy.make(() => Packet_SwitchHit$TerrariaPacket.parse(buffer))
-            };
-          case "NpcHomeUpdate":
-            return {
-              TAG: "NpcHomeUpdate",
-              _0: Stdlib_Lazy.make(() => Packet_NpcHomeUpdate$TerrariaPacket.parse(buffer))
-            };
-          case "BossOrInvasionSpawn":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "BossOrInvasionSpawn",
-                _0: Stdlib_Lazy.make(() => Packet_BossOrInvasionSpawn$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "PlayerDodge":
-            return {
-              TAG: "PlayerDodge",
-              _0: Stdlib_Lazy.make(() => Packet_PlayerDodge$TerrariaPacket.parse(buffer))
-            };
-          case "TilePaint":
-            return {
-              TAG: "TilePaint",
-              _0: Stdlib_Lazy.make(() => Packet_TilePaint$TerrariaPacket.parse(buffer))
-            };
-          case "WallPaint":
-            return {
-              TAG: "WallPaint",
-              _0: Stdlib_Lazy.make(() => Packet_WallPaint$TerrariaPacket.parse(buffer))
-            };
-          case "Teleport":
-            return {
-              TAG: "Teleport",
-              _0: Stdlib_Lazy.make(() => Packet_Teleport$TerrariaPacket.parse(buffer))
-            };
-          case "PlayerHealOther":
-            return {
-              TAG: "PlayerHealOther",
-              _0: Stdlib_Lazy.make(() => Packet_PlayerHealOther$TerrariaPacket.parse(buffer))
-            };
-          case "DimensionsUpdate":
-            return {
-              TAG: "DimensionsUpdate",
-              _0: Stdlib_Lazy.make(() => Packet_DimensionsUpdate$TerrariaPacket.parse(buffer))
-            };
-          case "ClientUuid":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "ClientUuid",
-                _0: Stdlib_Lazy.make(() => Packet_ClientUuid$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "ChestName":
-            return {
-              TAG: "ChestName",
-              _0: Stdlib_Lazy.make(() => Packet_ChestName$TerrariaPacket.parse(buffer))
-            };
-          case "NpcCatch":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "NpcCatch",
-                _0: Stdlib_Lazy.make(() => Packet_NpcCatch$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "NpcRelease":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "NpcRelease",
-                _0: Stdlib_Lazy.make(() => Packet_NpcRelease$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "TravellingMerchantInventory":
-            if (fromServer) {
-              return {
-                TAG: "TravellingMerchantInventory",
-                _0: Stdlib_Lazy.make(() => Packet_TravellingMerchantInventory$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "TeleportationPotion":
-            return {
-              TAG: "TeleportationPotion",
-              _0: Stdlib_Lazy.make(() => Packet_TeleportationPotion$TerrariaPacket.parse(buffer))
-            };
-          case "AnglerQuest":
-            if (fromServer) {
-              return {
-                TAG: "AnglerQuest",
-                _0: Stdlib_Lazy.make(() => Packet_AnglerQuest$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "AnglerQuestComplete":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "AnglerQuestComplete",
-                _0: Stdlib_Lazy.make(() => Packet_AnglerQuestComplete$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "AnglerQuestsCompletedAmount":
-            return {
-              TAG: "AnglerQuestsCompletedAmount",
-              _0: Stdlib_Lazy.make(() => Packet_AnglerQuestsCompletedAmount$TerrariaPacket.parse(buffer))
-            };
-          case "TemporaryAnimationCreate":
-            if (fromServer) {
-              return {
-                TAG: "TemporaryAnimationCreate",
-                _0: Stdlib_Lazy.make(() => Packet_TemporaryAnimationCreate$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "InvasionProgressReport":
-            if (fromServer) {
-              return {
-                TAG: "InvasionProgressReport",
-                _0: Stdlib_Lazy.make(() => Packet_InvasionProgressReport$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "ObjectPlace":
-            return {
-              TAG: "ObjectPlace",
-              _0: Stdlib_Lazy.make(() => Packet_ObjectPlace$TerrariaPacket.parse(buffer))
-            };
-          case "PlayerChestIndexSync":
-            if (fromServer) {
-              return {
-                TAG: "PlayerChestIndexSync",
-                _0: Stdlib_Lazy.make(() => Packet_PlayerChestIndexSync$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "CombatNumberCreate":
-            if (fromServer) {
-              return {
-                TAG: "CombatNumberCreate",
-                _0: Stdlib_Lazy.make(() => Packet_CombatNumberCreate$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "NetModuleLoad":
-            return {
-              TAG: "NetModuleLoad",
-              _0: Stdlib_Lazy.make(() => Packet_NetModuleLoad$TerrariaPacket.parse(buffer, fromServer))
-            };
-          case "NpcKillCount":
-            if (fromServer) {
-              return {
-                TAG: "NpcKillCount",
-                _0: Stdlib_Lazy.make(() => Packet_NpcKillCount$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "PlayerStealth":
-            return {
-              TAG: "PlayerStealth",
-              _0: Stdlib_Lazy.make(() => Packet_PlayerStealth$TerrariaPacket.parse(buffer))
-            };
-          case "ItemForceIntoNearestChest":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "ItemForceIntoNearestChest",
-                _0: Stdlib_Lazy.make(() => Packet_ItemForceIntoNearestChest$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "TileEntityUpdate":
-            if (fromServer) {
-              return {
-                TAG: "TileEntityUpdate",
-                _0: Stdlib_Lazy.make(() => Packet_TileEntityUpdate$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "TileEntityPlace":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "TileEntityPlace",
-                _0: Stdlib_Lazy.make(() => Packet_TileEntityPlace$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "ItemDropModify":
-            if (fromServer) {
-              return {
-                TAG: "ItemDropModify",
-                _0: Stdlib_Lazy.make(() => Packet_ItemDropModify$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "ItemFramePlace":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "ItemFramePlace",
-                _0: Stdlib_Lazy.make(() => Packet_ItemFramePlace$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "ItemDropInstancedUpdate":
-            return {
-              TAG: "ItemDropInstancedUpdate",
-              _0: Stdlib_Lazy.make(() => Packet_ItemDropInstancedUpdate$TerrariaPacket.parse(buffer))
-            };
-          case "EmoteBubble":
-            if (fromServer) {
-              return {
-                TAG: "EmoteBubble",
-                _0: Stdlib_Lazy.make(() => Packet_EmoteBubble$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "ExtraValueSync":
-            return {
-              TAG: "ExtraValueSync",
-              _0: Stdlib_Lazy.make(() => Packet_ExtraValueSync$TerrariaPacket.parse(buffer))
-            };
-          case "SocialHandshake":
-            return {
-              TAG: "SocialHandshake",
-              _0: Stdlib_Lazy.make(() => Packet_SocialHandshake$TerrariaPacket.parse(buffer))
-            };
-          case "Unused":
-            return {
-              TAG: "Unused",
-              _0: Stdlib_Lazy.make(() => Packet_Unused$TerrariaPacket.parse(buffer))
-            };
-          case "PortalKill":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "PortalKill",
-                _0: Stdlib_Lazy.make(() => Packet_PortalKill$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "PlayerTeleportPortal":
-            return {
-              TAG: "PlayerTeleportPortal",
-              _0: Stdlib_Lazy.make(() => Packet_PlayerTeleportPortal$TerrariaPacket.parse(buffer))
-            };
-          case "NpcKilledNotification":
-            if (fromServer) {
-              return {
-                TAG: "NpcKilledNotification",
-                _0: Stdlib_Lazy.make(() => Packet_NpcKilledNotification$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "EventNotification":
-            if (fromServer) {
-              return {
-                TAG: "EventNotification",
-                _0: Stdlib_Lazy.make(() => Packet_EventNotification$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "MinionTargetUpdate":
-            return {
-              TAG: "MinionTargetUpdate",
-              _0: Stdlib_Lazy.make(() => Packet_MinionTargetUpdate$TerrariaPacket.parse(buffer))
-            };
-          case "NpcTeleportPortal":
-            return {
-              TAG: "NpcTeleportPortal",
-              _0: Stdlib_Lazy.make(() => Packet_NpcTeleportPortal$TerrariaPacket.parse(buffer))
-            };
-          case "ShieldStrengthsUpdate":
-            if (fromServer) {
-              return {
-                TAG: "ShieldStrengthsUpdate",
-                _0: Stdlib_Lazy.make(() => Packet_ShieldStrengthsUpdate$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "NebulaLevelUp":
-            return {
-              TAG: "NebulaLevelUp",
-              _0: Stdlib_Lazy.make(() => Packet_NebulaLevelUp$TerrariaPacket.parse(buffer))
-            };
-          case "MoonLordCountdown":
-            if (fromServer) {
-              return {
-                TAG: "MoonLordCountdown",
-                _0: Stdlib_Lazy.make(() => Packet_MoonLordCountdown$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "NpcShopItem":
-            if (fromServer) {
-              return {
-                TAG: "NpcShopItem",
-                _0: Stdlib_Lazy.make(() => Packet_NpcShopItem$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "GemLockToggle":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "GemLockToggle",
-                _0: Stdlib_Lazy.make(() => Packet_GemLockToggle$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "SmokePoof":
-            if (fromServer) {
-              return {
-                TAG: "SmokePoof",
-                _0: Stdlib_Lazy.make(() => Packet_SmokePoof$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "ChatMessageSmart":
-            if (fromServer) {
-              return {
-                TAG: "ChatMessageSmart",
-                _0: Stdlib_Lazy.make(() => Packet_ChatMessageSmart$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "WiredCannonShot":
-            if (fromServer) {
-              return {
-                TAG: "WiredCannonShot",
-                _0: Stdlib_Lazy.make(() => Packet_WiredCannonShot$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "MassWireOperation":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "MassWireOperation",
-                _0: Stdlib_Lazy.make(() => Packet_MassWireOperation$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "MassWireOperationPay":
-            if (fromServer) {
-              return {
-                TAG: "MassWireOperationPay",
-                _0: Stdlib_Lazy.make(() => Packet_MassWireOperationPay$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "PartyToggle":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "PartyToggle",
-                _0: Stdlib_Lazy.make(() => Packet_PartyToggle$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "TreeGrowFx":
-            return {
-              TAG: "TreeGrowFx",
-              _0: Stdlib_Lazy.make(() => Packet_TreeGrowFx$TerrariaPacket.parse(buffer))
-            };
-          case "CrystalInvasionStart":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "CrystalInvasionStart",
-                _0: Stdlib_Lazy.make(() => Packet_CrystalInvasionStart$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "CrystalInvasionWipeAll":
-            if (fromServer) {
-              return {
-                TAG: "CrystalInvasionWipeAll",
-                _0: Stdlib_Lazy.make(() => Packet_CrystalInvasionWipeAll$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "MinionAttackTargetUpdate":
-            return {
-              TAG: "MinionAttackTargetUpdate",
-              _0: Stdlib_Lazy.make(() => Packet_MinionAttackTargetUpdate$TerrariaPacket.parse(buffer))
-            };
-          case "CrystalInvasionSendWaitTime":
-            if (fromServer) {
-              return {
-                TAG: "CrystalInvasionSendWaitTime",
-                _0: Stdlib_Lazy.make(() => Packet_CrystalInvasionSendWaitTime$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "PlayerDamage":
-            return {
-              TAG: "PlayerDamage",
-              _0: Stdlib_Lazy.make(() => Packet_PlayerDamage$TerrariaPacket.parse(buffer))
-            };
-          case "PlayerDeath":
-            return {
-              TAG: "PlayerDeath",
-              _0: Stdlib_Lazy.make(() => Packet_PlayerDeath$TerrariaPacket.parse(buffer))
-            };
-          case "CombatTextCreate":
-            if (fromServer) {
-              return {
-                TAG: "CombatTextCreate",
-                _0: Stdlib_Lazy.make(() => Packet_CombatTextCreate$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "Emoji":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "Emoji",
-                _0: Stdlib_Lazy.make(() => Packet_Emoji$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "TileEntityDisplayDollItemSync":
-            return {
-              TAG: "TileEntityDisplayDollItemSync",
-              _0: Stdlib_Lazy.make(() => Packet_TileEntityDisplayDollItemSync$TerrariaPacket.parse(buffer))
-            };
-          case "TileEntityInteractionRequest":
-            return {
-              TAG: "TileEntityInteractionRequest",
-              _0: Stdlib_Lazy.make(() => Packet_TileEntityInteractionRequest$TerrariaPacket.parse(buffer))
-            };
-          case "WeaponsRackTryPlacing":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "WeaponsRackTryPlacing",
-                _0: Stdlib_Lazy.make(() => Packet_WeaponsRackTryPlacing$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "TileEntityHatRackItemSync":
-            return {
-              TAG: "TileEntityHatRackItemSync",
-              _0: Stdlib_Lazy.make(() => Packet_TileEntityHatRackItemSync$TerrariaPacket.parse(buffer))
-            };
-          case "TilePickingSync":
-            return {
-              TAG: "TilePickingSync",
-              _0: Stdlib_Lazy.make(() => Packet_TilePickingSync$TerrariaPacket.parse(buffer))
-            };
-          case "RevengeMarkerSync":
-            if (fromServer) {
-              return {
-                TAG: "RevengeMarkerSync",
-                _0: Stdlib_Lazy.make(() => Packet_RevengeMarkerSync$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "RevengeMarkerRemove":
-            if (fromServer) {
-              return {
-                TAG: "RevengeMarkerRemove",
-                _0: Stdlib_Lazy.make(() => Packet_RevengeMarkerRemove$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "GolfBallLandInCup":
-            return {
-              TAG: "GolfBallLandInCup",
-              _0: Stdlib_Lazy.make(() => Packet_GolfBallLandInCup$TerrariaPacket.parse(buffer))
-            };
-          case "ClientFinishConnectingToServer":
-            if (fromServer) {
-              return {
-                TAG: "ClientFinishConnectingToServer",
-                _0: Stdlib_Lazy.make(() => Packet_ClientFinishConnectingToServer$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "NpcFishOut":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "NpcFishOut",
-                _0: Stdlib_Lazy.make(() => Packet_NpcFishOut$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "NpcTamper":
-            if (fromServer) {
-              return {
-                TAG: "NpcTamper",
-                _0: Stdlib_Lazy.make(() => Packet_NpcTamper$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "LegacySoundPlay":
-            if (fromServer) {
-              return {
-                TAG: "LegacySoundPlay",
-                _0: Stdlib_Lazy.make(() => Packet_LegacySoundPlay$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "FoodPlatterTryPlacing":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "FoodPlatterTryPlacing",
-                _0: Stdlib_Lazy.make(() => Packet_FoodPlatterTryPlacing$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "PlayerLuckFactorsUpdate":
-            return {
-              TAG: "PlayerLuckFactorsUpdate",
-              _0: Stdlib_Lazy.make(() => Packet_PlayerLuckFactorsUpdate$TerrariaPacket.parse(buffer))
-            };
-          case "PlayerDead":
-            if (fromServer) {
-              return {
-                TAG: "PlayerDead",
-                _0: Stdlib_Lazy.make(() => Packet_PlayerDead$TerrariaPacket.parse(buffer))
-              };
-            } else {
-              return;
-            }
-          case "CavernMonsterTypeSync":
-            return {
-              TAG: "CavernMonsterTypeSync",
-              _0: Stdlib_Lazy.make(() => Packet_CavernMonsterTypeSync$TerrariaPacket.parse(buffer))
-            };
-          case "NpcBuffRemovalRequest":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "NpcBuffRemovalRequest",
-                _0: Stdlib_Lazy.make(() => Packet_NpcBuffRemovalRequest$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "ClientSyncedInventory":
-            if (fromServer) {
-              return;
-            } else {
-              return {
-                TAG: "ClientSyncedInventory",
-                _0: Stdlib_Lazy.make(() => Packet_ClientSyncedInventory$TerrariaPacket.parse(buffer))
-              };
-            }
-          case "CountsAsHostForGameplaySet":
-            return {
-              TAG: "CountsAsHostForGameplaySet",
-              _0: Stdlib_Lazy.make(() => Packet_CountsAsHostForGameplaySet$TerrariaPacket.parse(buffer))
-            };
-          case "CreditsOrSlimeTransform":
-            return {
-              TAG: "CreditsOrSlimeTransform",
-              _0: Stdlib_Lazy.make(() => Packet_CreditsOrSlimeTransform$TerrariaPacket.parse(buffer))
-            };
-          case "LucyAxeMessage":
-            return {
-              TAG: "LucyAxeMessage",
-              _0: Stdlib_Lazy.make(() => Packet_LucyAxeMessage$TerrariaPacket.parse(buffer))
-            };
-          case "PiggyBankVoidLensUpdate":
-            return {
-              TAG: "PiggyBankVoidLensUpdate",
-              _0: Stdlib_Lazy.make(() => Packet_PiggyBankVoidLensUpdate$TerrariaPacket.parse(buffer))
-            };
-          case "DungeonDefendersEventAttemptSkipWait":
-            return {
-              TAG: "DungeonDefendersEventAttemptSkipWait",
-              _0: Stdlib_Lazy.make(() => Packet_DungeonDefendersEventAttemptSkipWait$TerrariaPacket.parse(buffer))
-            };
-          case "HaveDryadDoStardewAnimation":
-            return {
-              TAG: "HaveDryadDoStardewAnimation",
-              _0: Stdlib_Lazy.make(() => Packet_HaveDryadDoStardewAnimation$TerrariaPacket.parse(buffer))
-            };
-          case "ItemDropShimmeredUpdate":
-            return {
-              TAG: "ItemDropShimmeredUpdate",
-              _0: Stdlib_Lazy.make(() => Packet_ItemDropShimmeredUpdate$TerrariaPacket.parse(buffer))
-            };
-          case "ShimmerEffectOrCoinLuck":
-            return {
-              TAG: "ShimmerEffectOrCoinLuck",
-              _0: Stdlib_Lazy.make(() => Packet_ShimmerEffectOrCoinLuck$TerrariaPacket.parse(buffer))
-            };
-          case "LoadoutSwitch":
-            return {
-              TAG: "LoadoutSwitch",
-              _0: Stdlib_Lazy.make(() => Packet_LoadoutSwitch$TerrariaPacket.parse(buffer))
-            };
-          case "ItemDropProtectedUpdate":
-            return {
-              TAG: "ItemDropProtectedUpdate",
-              _0: Stdlib_Lazy.make(() => Packet_ItemDropProtectedUpdate$TerrariaPacket.parse(buffer))
-            };
+        let parsers = getParsers(packetType, fromServer);
+        if (parsers.TAG === "Ok") {
+          return parsers._0.parseLazy(buffer, fromServer);
+        } else {
+          return {
+            TAG: "Error",
+            _0: parsers._0
+          };
         }
-      } catch (_e) {
-        return;
+      } catch (raw_obj) {
+        let obj = Primitive_exceptions2.internalToException(raw_obj);
+        if (obj.RE_EXN_ID === "JsExn") {
+          return {
+            TAG: "Error",
+            _0: {
+              TAG: "ReaderError",
+              _0: {
+                context: "Parser.parseLazy",
+                error: obj._1
+              }
+            }
+          };
+        }
+        throw obj;
       }
     }
     exports2.parse = parse;

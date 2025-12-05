@@ -1,5 +1,5 @@
 import type Color from "@popstarfreas/packetfactory/color";
-import type NetworkText from "@popstarfreas/packetfactory/networkText";
+import type NetworkText from "@popstarfreas/packetfactory/networktext";
 
 export type readError = { readonly context: string; readonly error: unknown };
 
