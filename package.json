@@ -12,7 +12,7 @@
     "./*": "./*"
   },
   "scripts": {
-    "build:watch": "rescript build -w",
+    "build:watch": "rescript watch",
     "build:bundle": "rsync -a --include='*/' --include='*.d.ts' --exclude='*' src/ lib/ && esbuild src/Export.ts --bundle --outfile=dist/Export.js --format=cjs --platform=node && tsc -p . && api-extractor run --local",
     "build": "rescript",
     "build:tsc": "tsc -p .",

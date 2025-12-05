@@ -148,7 +148,7 @@ let Packet_TileEntityDisplayDollItemSync$TerrariaPacket = require("./packet/Pack
 let Packet_ClientFinishConnectingToServer$TerrariaPacket = require("./packet/Packet_ClientFinishConnectingToServer.js");
 let Packet_DungeonDefendersEventAttemptSkipWait$TerrariaPacket = require("./packet/Packet_DungeonDefendersEventAttemptSkipWait.js");
 
-function toPacketName(packet) {
+function packetTypeOf(packet) {
   switch (packet.TAG) {
     case "ConnectRequest" :
       return "ConnectRequest";
@@ -197,7 +197,7 @@ function toPacketName(packet) {
     case "NpcItemStrike" :
       return "NpcItemStrike";
     case "ProjectileSync" :
-      return "ProjecitleSync";
+      return "ProjectileSync";
     case "NpcStrike" :
       return "NpcStrike";
     case "ProjectileDestroy" :
@@ -441,11 +441,704 @@ function toPacketName(packet) {
   }
 }
 
-let LazyPacket = {
-  toPacketName: toPacketName
-};
+function directionOfPacketType(packetType) {
+  switch (packetType) {
+    case "Disconnect" :
+    case "PlayerSlotSet" :
+    case "WorldInfo" :
+    case "Status" :
+    case "TileSectionSend" :
+    case "TileSectionFrame" :
+    case "PlayerActive" :
+    case "TimeSet" :
+    case "NpcUpdate" :
+    case "PasswordRequired" :
+    case "PlayerSpawnSelf" :
+    case "NpcBuffUpdate" :
+    case "GoodEvilUpdate" :
+    case "TravellingMerchantInventory" :
+    case "AnglerQuest" :
+    case "TemporaryAnimationCreate" :
+    case "InvasionProgressReport" :
+    case "PlayerChestIndexSync" :
+    case "CombatNumberCreate" :
+    case "NpcKillCount" :
+    case "TileEntityUpdate" :
+    case "ItemDropModify" :
+    case "EmoteBubble" :
+    case "NpcKilledNotification" :
+    case "EventNotification" :
+    case "ShieldStrengthsUpdate" :
+    case "MoonLordCountdown" :
+    case "NpcShopItem" :
+    case "SmokePoof" :
+    case "ChatMessageSmart" :
+    case "WiredCannonShot" :
+    case "MassWireOperationPay" :
+    case "CrystalInvasionWipeAll" :
+    case "CrystalInvasionSendWaitTime" :
+    case "CombatTextCreate" :
+    case "RevengeMarkerSync" :
+    case "RevengeMarkerRemove" :
+    case "ClientFinishConnectingToServer" :
+    case "NpcTamper" :
+    case "LegacySoundPlay" :
+    case "PlayerDead" :
+      return "ServerOnly";
+    case "ConnectRequest" :
+    case "WorldDataRequest" :
+    case "InitialTileSectionsRequest" :
+    case "ChestOpen" :
+    case "PasswordSend" :
+    case "SignRead" :
+    case "BossOrInvasionSpawn" :
+    case "ClientUuid" :
+    case "NpcCatch" :
+    case "NpcRelease" :
+    case "AnglerQuestComplete" :
+    case "ItemForceIntoNearestChest" :
+    case "TileEntityPlace" :
+    case "ItemFramePlace" :
+    case "PortalKill" :
+    case "GemLockToggle" :
+    case "MassWireOperation" :
+    case "PartyToggle" :
+    case "CrystalInvasionStart" :
+    case "Emoji" :
+    case "WeaponsRackTryPlacing" :
+    case "NpcFishOut" :
+    case "FoodPlatterTryPlacing" :
+    case "NpcBuffRemovalRequest" :
+    case "ClientSyncedInventory" :
+      return "ClientOnly";
+    default:
+      return "Both";
+  }
+}
 
-function toBuffer(packet, _fromServer) {
+function directionError(_packetType, fromServer) {
+  return {
+    TAG: "Error",
+    _0: {
+      context: "Packet.toBuffer",
+      error: new Error(fromServer ? "Cannot serialize a client-only packet from the server side" : "Cannot serialize a server-only packet from the client side")
+    }
+  };
+}
+
+function guardDirection(packetType, fromServer) {
+  let match = directionOfPacketType(packetType);
+  switch (match) {
+    case "ServerOnly" :
+      if (fromServer) {
+        return;
+      } else {
+        return directionError(packetType, fromServer);
+      }
+    case "ClientOnly" :
+      if (fromServer) {
+        return directionError(packetType, fromServer);
+      } else {
+        return;
+      }
+    case "Both" :
+      return;
+  }
+}
+
+function packetTypeOf$1(packet) {
+  switch (packet.TAG) {
+    case "ConnectRequest" :
+      return "ConnectRequest";
+    case "Disconnect" :
+      return "Disconnect";
+    case "PlayerSlotSet" :
+      return "PlayerSlotSet";
+    case "PlayerInfo" :
+      return "PlayerInfo";
+    case "PlayerInventorySlot" :
+      return "PlayerInventorySlot";
+    case "WorldDataRequest" :
+      return "WorldDataRequest";
+    case "WorldInfo" :
+      return "WorldInfo";
+    case "InitialTileSectionsRequest" :
+      return "InitialTileSectionsRequest";
+    case "Status" :
+      return "Status";
+    case "TileSectionSend" :
+      return "TileSectionSend";
+    case "TileSectionFrame" :
+      return "TileSectionFrame";
+    case "PlayerSpawn" :
+      return "PlayerSpawn";
+    case "PlayerUpdate" :
+      return "PlayerUpdate";
+    case "PlayerActive" :
+      return "PlayerActive";
+    case "PlayerHealth" :
+      return "PlayerHealth";
+    case "TileModify" :
+      return "TileModify";
+    case "TimeSet" :
+      return "TimeSet";
+    case "DoorUse" :
+      return "DoorUse";
+    case "TileSquareSend" :
+      return "TileSquareSend";
+    case "ItemDropUpdate" :
+      return "ItemDropUpdate";
+    case "ItemOwner" :
+      return "ItemOwner";
+    case "NpcUpdate" :
+      return "NpcUpdate";
+    case "NpcItemStrike" :
+      return "NpcItemStrike";
+    case "ProjectileSync" :
+      return "ProjectileSync";
+    case "NpcStrike" :
+      return "NpcStrike";
+    case "ProjectileDestroy" :
+      return "ProjectileDestroy";
+    case "PvpToggle" :
+      return "PvpToggle";
+    case "ChestOpen" :
+      return "ChestOpen";
+    case "ChestItem" :
+      return "ChestItem";
+    case "ActiveContainerSync" :
+      return "ActiveContainerSync";
+    case "ChestPlace" :
+      return "ChestPlace";
+    case "HealEffect" :
+      return "HealEffect";
+    case "Zones" :
+      return "Zones";
+    case "PasswordRequired" :
+      return "PasswordRequired";
+    case "PasswordSend" :
+      return "PasswordSend";
+    case "ItemOwnerRemove" :
+      return "ItemOwnerRemove";
+    case "NpcTalk" :
+      return "NpcTalk";
+    case "PlayerAnimation" :
+      return "PlayerAnimation";
+    case "PlayerMana" :
+      return "PlayerMana";
+    case "ManaEffect" :
+      return "ManaEffect";
+    case "PlayerTeam" :
+      return "PlayerTeam";
+    case "SignRead" :
+      return "SignRead";
+    case "SignNew" :
+      return "SignNew";
+    case "LiquidSet" :
+      return "LiquidSet";
+    case "PlayerSpawnSelf" :
+      return "PlayerSpawnSelf";
+    case "PlayerBuffsSet" :
+      return "PlayerBuffsSet";
+    case "NpcSpecialEffect" :
+      return "NpcSpecialEffect";
+    case "ChestOrTempleUnlock" :
+      return "ChestOrTempleUnlock";
+    case "NpcBuffAdd" :
+      return "NpcBuffAdd";
+    case "NpcBuffUpdate" :
+      return "NpcBuffUpdate";
+    case "PlayerBuffAdd" :
+      return "PlayerBuffAdd";
+    case "NpcNameUpdate" :
+      return "NpcNameUpdate";
+    case "GoodEvilUpdate" :
+      return "GoodEvilUpdate";
+    case "HarpPlay" :
+      return "HarpPlay";
+    case "SwitchHit" :
+      return "SwitchHit";
+    case "NpcHomeUpdate" :
+      return "NpcHomeUpdate";
+    case "BossOrInvasionSpawn" :
+      return "BossOrInvasionSpawn";
+    case "PlayerDodge" :
+      return "PlayerDodge";
+    case "TilePaint" :
+      return "TilePaint";
+    case "WallPaint" :
+      return "WallPaint";
+    case "Teleport" :
+      return "Teleport";
+    case "PlayerHealOther" :
+      return "PlayerHealOther";
+    case "DimensionsUpdate" :
+      return "DimensionsUpdate";
+    case "ClientUuid" :
+      return "ClientUuid";
+    case "ChestName" :
+      return "ChestName";
+    case "NpcCatch" :
+      return "NpcCatch";
+    case "NpcRelease" :
+      return "NpcRelease";
+    case "TravellingMerchantInventory" :
+      return "TravellingMerchantInventory";
+    case "TeleportationPotion" :
+      return "TeleportationPotion";
+    case "AnglerQuest" :
+      return "AnglerQuest";
+    case "AnglerQuestComplete" :
+      return "AnglerQuestComplete";
+    case "AnglerQuestsCompletedAmount" :
+      return "AnglerQuestsCompletedAmount";
+    case "TemporaryAnimationCreate" :
+      return "TemporaryAnimationCreate";
+    case "InvasionProgressReport" :
+      return "InvasionProgressReport";
+    case "ObjectPlace" :
+      return "ObjectPlace";
+    case "PlayerChestIndexSync" :
+      return "PlayerChestIndexSync";
+    case "CombatNumberCreate" :
+      return "CombatNumberCreate";
+    case "NetModuleLoad" :
+      return "NetModuleLoad";
+    case "NpcKillCount" :
+      return "NpcKillCount";
+    case "PlayerStealth" :
+      return "PlayerStealth";
+    case "ItemForceIntoNearestChest" :
+      return "ItemForceIntoNearestChest";
+    case "TileEntityUpdate" :
+      return "TileEntityUpdate";
+    case "TileEntityPlace" :
+      return "TileEntityPlace";
+    case "ItemDropModify" :
+      return "ItemDropModify";
+    case "ItemFramePlace" :
+      return "ItemFramePlace";
+    case "ItemDropInstancedUpdate" :
+      return "ItemDropInstancedUpdate";
+    case "EmoteBubble" :
+      return "EmoteBubble";
+    case "ExtraValueSync" :
+      return "ExtraValueSync";
+    case "SocialHandshake" :
+      return "SocialHandshake";
+    case "Unused" :
+      return "Unused";
+    case "PortalKill" :
+      return "PortalKill";
+    case "PlayerTeleportPortal" :
+      return "PlayerTeleportPortal";
+    case "NpcKilledNotification" :
+      return "NpcKilledNotification";
+    case "EventNotification" :
+      return "EventNotification";
+    case "MinionTargetUpdate" :
+      return "MinionTargetUpdate";
+    case "NpcTeleportPortal" :
+      return "NpcTeleportPortal";
+    case "ShieldStrengthsUpdate" :
+      return "ShieldStrengthsUpdate";
+    case "NebulaLevelUp" :
+      return "NebulaLevelUp";
+    case "MoonLordCountdown" :
+      return "MoonLordCountdown";
+    case "NpcShopItem" :
+      return "NpcShopItem";
+    case "GemLockToggle" :
+      return "GemLockToggle";
+    case "SmokePoof" :
+      return "SmokePoof";
+    case "ChatMessageSmart" :
+      return "ChatMessageSmart";
+    case "WiredCannonShot" :
+      return "WiredCannonShot";
+    case "MassWireOperation" :
+      return "MassWireOperation";
+    case "MassWireOperationPay" :
+      return "MassWireOperationPay";
+    case "PartyToggle" :
+      return "PartyToggle";
+    case "TreeGrowFx" :
+      return "TreeGrowFx";
+    case "CrystalInvasionStart" :
+      return "CrystalInvasionStart";
+    case "CrystalInvasionWipeAll" :
+      return "CrystalInvasionWipeAll";
+    case "MinionAttackTargetUpdate" :
+      return "MinionAttackTargetUpdate";
+    case "CrystalInvasionSendWaitTime" :
+      return "CrystalInvasionSendWaitTime";
+    case "PlayerDamage" :
+      return "PlayerDamage";
+    case "PlayerDeath" :
+      return "PlayerDeath";
+    case "CombatTextCreate" :
+      return "CombatTextCreate";
+    case "Emoji" :
+      return "Emoji";
+    case "TileEntityDisplayDollItemSync" :
+      return "TileEntityDisplayDollItemSync";
+    case "TileEntityInteractionRequest" :
+      return "TileEntityInteractionRequest";
+    case "WeaponsRackTryPlacing" :
+      return "WeaponsRackTryPlacing";
+    case "TileEntityHatRackItemSync" :
+      return "TileEntityHatRackItemSync";
+    case "TilePickingSync" :
+      return "TilePickingSync";
+    case "RevengeMarkerSync" :
+      return "RevengeMarkerSync";
+    case "RevengeMarkerRemove" :
+      return "RevengeMarkerRemove";
+    case "GolfBallLandInCup" :
+      return "GolfBallLandInCup";
+    case "ClientFinishConnectingToServer" :
+      return "ClientFinishConnectingToServer";
+    case "NpcFishOut" :
+      return "NpcFishOut";
+    case "NpcTamper" :
+      return "NpcTamper";
+    case "LegacySoundPlay" :
+      return "LegacySoundPlay";
+    case "FoodPlatterTryPlacing" :
+      return "FoodPlatterTryPlacing";
+    case "PlayerLuckFactorsUpdate" :
+      return "PlayerLuckFactorsUpdate";
+    case "PlayerDead" :
+      return "PlayerDead";
+    case "CavernMonsterTypeSync" :
+      return "CavernMonsterTypeSync";
+    case "NpcBuffRemovalRequest" :
+      return "NpcBuffRemovalRequest";
+    case "ClientSyncedInventory" :
+      return "ClientSyncedInventory";
+    case "CountsAsHostForGameplaySet" :
+      return "CountsAsHostForGameplaySet";
+    case "CreditsOrSlimeTransform" :
+      return "CreditsOrSlimeTransform";
+    case "LucyAxeMessage" :
+      return "LucyAxeMessage";
+    case "PiggyBankVoidLensUpdate" :
+      return "PiggyBankVoidLensUpdate";
+    case "DungeonDefendersEventAttemptSkipWait" :
+      return "DungeonDefendersEventAttemptSkipWait";
+    case "HaveDryadDoStardewAnimation" :
+      return "HaveDryadDoStardewAnimation";
+    case "ItemDropShimmeredUpdate" :
+      return "ItemDropShimmeredUpdate";
+    case "ShimmerEffectOrCoinLuck" :
+      return "ShimmerEffectOrCoinLuck";
+    case "LoadoutSwitch" :
+      return "LoadoutSwitch";
+    case "ItemDropProtectedUpdate" :
+      return "ItemDropProtectedUpdate";
+  }
+}
+
+function toPacketName(packet) {
+  let packetType = packetTypeOf$1(packet);
+  switch (packetType) {
+    case "ConnectRequest" :
+      return "ConnectRequest";
+    case "Disconnect" :
+      return "Disconnect";
+    case "PlayerSlotSet" :
+      return "PlayerSlotSet";
+    case "PlayerInfo" :
+      return "PlayerInfo";
+    case "PlayerInventorySlot" :
+      return "PlayerInventorySlot";
+    case "WorldDataRequest" :
+      return "WorldDataRequest";
+    case "WorldInfo" :
+      return "WorldInfo";
+    case "InitialTileSectionsRequest" :
+      return "InitialTileSectionsRequest";
+    case "Status" :
+      return "Status";
+    case "TileSectionSend" :
+      return "TileSectionSend";
+    case "TileSectionFrame" :
+      return "TileSectionFrame";
+    case "PlayerSpawn" :
+      return "PlayerSpawn";
+    case "PlayerUpdate" :
+      return "PlayerUpdate";
+    case "PlayerActive" :
+      return "PlayerActive";
+    case "PlayerHealth" :
+      return "PlayerHealth";
+    case "TileModify" :
+      return "TileModify";
+    case "TimeSet" :
+      return "TimeSet";
+    case "DoorUse" :
+      return "DoorUse";
+    case "TileSquareSend" :
+      return "TileSquareSend";
+    case "ItemDropUpdate" :
+      return "ItemDropUpdate";
+    case "ItemOwner" :
+      return "ItemOwner";
+    case "NpcUpdate" :
+      return "NpcUpdate";
+    case "NpcItemStrike" :
+      return "NpcItemStrike";
+    case "ProjectileSync" :
+      return "ProjectileSync";
+    case "NpcStrike" :
+      return "NpcStrike";
+    case "ProjectileDestroy" :
+      return "ProjectileDestroy";
+    case "PvpToggle" :
+      return "PvpToggle";
+    case "ChestOpen" :
+      return "ChestOpen";
+    case "ChestItem" :
+      return "ChestItem";
+    case "ActiveContainerSync" :
+      return "ActiveContainerSync";
+    case "ChestPlace" :
+      return "ChestPlace";
+    case "HealEffect" :
+      return "HealEffect";
+    case "Zones" :
+      return "Zones";
+    case "PasswordRequired" :
+      return "PasswordRequired";
+    case "PasswordSend" :
+      return "PasswordSend";
+    case "ItemOwnerRemove" :
+      return "ItemOwnerRemove";
+    case "NpcTalk" :
+      return "NpcTalk";
+    case "PlayerAnimation" :
+      return "PlayerAnimation";
+    case "PlayerMana" :
+      return "PlayerMana";
+    case "ManaEffect" :
+      return "ManaEffect";
+    case "PlayerTeam" :
+      return "PlayerTeam";
+    case "SignRead" :
+      return "SignRead";
+    case "SignNew" :
+      return "SignNew";
+    case "LiquidSet" :
+      return "LiquidSet";
+    case "PlayerSpawnSelf" :
+      return "PlayerSpawnSelf";
+    case "PlayerBuffsSet" :
+      return "PlayerBuffsSet";
+    case "NpcSpecialEffect" :
+      return "NpcSpecialEffect";
+    case "ChestOrTempleUnlock" :
+      return "ChestOrTempleUnlock";
+    case "NpcBuffAdd" :
+      return "NpcBuffAdd";
+    case "NpcBuffUpdate" :
+      return "NpcBuffUpdate";
+    case "PlayerBuffAdd" :
+      return "PlayerBuffAdd";
+    case "NpcNameUpdate" :
+      return "NpcNameUpdate";
+    case "GoodEvilUpdate" :
+      return "GoodEvilUpdate";
+    case "HarpPlay" :
+      return "HarpPlay";
+    case "SwitchHit" :
+      return "SwitchHit";
+    case "NpcHomeUpdate" :
+      return "NpcHomeUpdate";
+    case "BossOrInvasionSpawn" :
+      return "BossOrInvasionSpawn";
+    case "PlayerDodge" :
+      return "PlayerDodge";
+    case "TilePaint" :
+      return "TilePaint";
+    case "WallPaint" :
+      return "WallPaint";
+    case "Teleport" :
+      return "Teleport";
+    case "PlayerHealOther" :
+      return "PlayerHealOther";
+    case "DimensionsUpdate" :
+      return "DimensionsUpdate";
+    case "ClientUuid" :
+      return "ClientUuid";
+    case "ChestName" :
+      return "ChestName";
+    case "NpcCatch" :
+      return "NpcCatch";
+    case "NpcRelease" :
+      return "NpcRelease";
+    case "TravellingMerchantInventory" :
+      return "TravellingMerchantInventory";
+    case "TeleportationPotion" :
+      return "TeleportationPotion";
+    case "AnglerQuest" :
+      return "AnglerQuest";
+    case "AnglerQuestComplete" :
+      return "AnglerQuestComplete";
+    case "AnglerQuestsCompletedAmount" :
+      return "AnglerQuestsCompletedAmount";
+    case "TemporaryAnimationCreate" :
+      return "TemporaryAnimationCreate";
+    case "InvasionProgressReport" :
+      return "InvasionProgressReport";
+    case "ObjectPlace" :
+      return "ObjectPlace";
+    case "PlayerChestIndexSync" :
+      return "PlayerChestIndexSync";
+    case "CombatNumberCreate" :
+      return "CombatNumberCreate";
+    case "NetModuleLoad" :
+      return "NetModuleLoad";
+    case "NpcKillCount" :
+      return "NpcKillCount";
+    case "PlayerStealth" :
+      return "PlayerStealth";
+    case "ItemForceIntoNearestChest" :
+      return "ItemForceIntoNearestChest";
+    case "TileEntityUpdate" :
+      return "TileEntityUpdate";
+    case "TileEntityPlace" :
+      return "TileEntityPlace";
+    case "ItemDropModify" :
+      return "ItemDropModify";
+    case "ItemFramePlace" :
+      return "ItemFramePlace";
+    case "ItemDropInstancedUpdate" :
+      return "ItemDropInstancedUpdate";
+    case "EmoteBubble" :
+      return "EmoteBubble";
+    case "ExtraValueSync" :
+      return "ExtraValueSync";
+    case "SocialHandshake" :
+      return "SocialHandshake";
+    case "Unused" :
+      return "Unused";
+    case "PortalKill" :
+      return "PortalKill";
+    case "PlayerTeleportPortal" :
+      return "PlayerTeleportPortal";
+    case "NpcKilledNotification" :
+      return "NpcKilledNotification";
+    case "EventNotification" :
+      return "EventNotification";
+    case "MinionTargetUpdate" :
+      return "MinionTargetUpdate";
+    case "NpcTeleportPortal" :
+      return "NpcTeleportPortal";
+    case "ShieldStrengthsUpdate" :
+      return "ShieldStrengthsUpdate";
+    case "NebulaLevelUp" :
+      return "NebulaLevelUp";
+    case "MoonLordCountdown" :
+      return "MoonLordCountdown";
+    case "NpcShopItem" :
+      return "NpcShopItem";
+    case "GemLockToggle" :
+      return "GemLockToggle";
+    case "SmokePoof" :
+      return "SmokePoof";
+    case "ChatMessageSmart" :
+      return "ChatMessageSmart";
+    case "WiredCannonShot" :
+      return "WiredCannonShot";
+    case "MassWireOperation" :
+      return "MassWireOperation";
+    case "MassWireOperationPay" :
+      return "MassWireOperationPay";
+    case "PartyToggle" :
+      return "PartyToggle";
+    case "TreeGrowFx" :
+      return "TreeGrowFx";
+    case "CrystalInvasionStart" :
+      return "CrystalInvasionStart";
+    case "CrystalInvasionWipeAll" :
+      return "CrystalInvasionWipeAll";
+    case "MinionAttackTargetUpdate" :
+      return "MinionAttackTargetUpdate";
+    case "CrystalInvasionSendWaitTime" :
+      return "CrystalInvasionSendWaitTime";
+    case "PlayerDamage" :
+      return "PlayerDamage";
+    case "PlayerDeath" :
+      return "PlayerDeath";
+    case "CombatTextCreate" :
+      return "CombatTextCreate";
+    case "Emoji" :
+      return "Emoji";
+    case "TileEntityDisplayDollItemSync" :
+      return "TileEntityDisplayDollItemSync";
+    case "TileEntityInteractionRequest" :
+      return "TileEntityInteractionRequest";
+    case "WeaponsRackTryPlacing" :
+      return "WeaponsRackTryPlacing";
+    case "TileEntityHatRackItemSync" :
+      return "TileEntityHatRackItemSync";
+    case "TilePickingSync" :
+      return "TilePickingSync";
+    case "RevengeMarkerSync" :
+      return "RevengeMarkerSync";
+    case "RevengeMarkerRemove" :
+      return "RevengeMarkerRemove";
+    case "GolfBallLandInCup" :
+      return "GolfBallLandInCup";
+    case "ClientFinishConnectingToServer" :
+      return "ClientFinishConnectingToServer";
+    case "NpcFishOut" :
+      return "NpcFishOut";
+    case "NpcTamper" :
+      return "NpcTamper";
+    case "LegacySoundPlay" :
+      return "LegacySoundPlay";
+    case "FoodPlatterTryPlacing" :
+      return "FoodPlatterTryPlacing";
+    case "PlayerLuckFactorsUpdate" :
+      return "PlayerLuckFactorsUpdate";
+    case "PlayerDead" :
+      return "PlayerDead";
+    case "CavernMonsterTypeSync" :
+      return "CavernMonsterTypeSync";
+    case "NpcBuffRemovalRequest" :
+      return "NpcBuffRemovalRequest";
+    case "ClientSyncedInventory" :
+      return "ClientSyncedInventory";
+    case "CountsAsHostForGameplaySet" :
+      return "CountsAsHostForGameplaySet";
+    case "CreditsOrSlimeTransform" :
+      return "CreditsOrSlimeTransform";
+    case "LucyAxeMessage" :
+      return "LucyAxeMessage";
+    case "PiggyBankVoidLensUpdate" :
+      return "PiggyBankVoidLensUpdate";
+    case "DungeonDefendersEventAttemptSkipWait" :
+      return "DungeonDefendersEventAttemptSkipWait";
+    case "HaveDryadDoStardewAnimation" :
+      return "HaveDryadDoStardewAnimation";
+    case "ItemDropShimmeredUpdate" :
+      return "ItemDropShimmeredUpdate";
+    case "ShimmerEffectOrCoinLuck" :
+      return "ShimmerEffectOrCoinLuck";
+    case "LoadoutSwitch" :
+      return "LoadoutSwitch";
+    case "ItemDropProtectedUpdate" :
+      return "ItemDropProtectedUpdate";
+  }
+}
+
+function toBuffer(packet, fromServer) {
+  let packetType = packetTypeOf(packet);
+  let err = guardDirection(packetType, fromServer);
+  if (err !== undefined) {
+    return err;
+  }
   switch (packet.TAG) {
     case "ConnectRequest" :
       return ISerializer$TerrariaPacket.toBufferResult(Packet_ConnectRequest$TerrariaPacket.toBuffer(packet._0));
@@ -1371,6 +2064,10 @@ let ShimmerEffectOrCoinLuck;
 let LoadoutSwitch;
 
 let ItemDropProtectedUpdate;
+
+let LazyPacket = {
+  toPacketName: toPacketName
+};
 
 exports.ConnectRequest = ConnectRequest;
 exports.Disconnect = Disconnect;

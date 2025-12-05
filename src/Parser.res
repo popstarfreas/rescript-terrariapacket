@@ -1,380 +1,371 @@
 let mapPacket = (buffer, fn): result<Packet.t, IParser.parseError> =>
   buffer->Result.map(fn)->Result.mapError(e => IParser.ReaderError(e))
-let parsePayload = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServer: bool): result<
-  Packet.t,
-  IParser.parseError,
-> =>
+
+type parsers = {
+  parse: (NodeJs.Buffer.t, bool) => result<Packet.t, IParser.parseError>,
+  parseLazy: (NodeJs.Buffer.t, bool) => result<Packet.LazyPacket.t, IParser.parseError>,
+}
+
+let makeParsers = (
+  ~parse: NodeJs.Buffer.t => result<'a, ErrorAwarePacketReader.readError>,
+  ~toPacket: 'a => Packet.t,
+  ~toLazyPacket: Packet.LazyPacket.lazyParsed<'a> => Packet.LazyPacket.t,
+): parsers => {
+  let parseWrapped = (payload, _fromServer) => parse(payload)->mapPacket(toPacket)
+  let parseLazyWrapped = (payload, _fromServer) =>
+    Ok(toLazyPacket(Lazy.make(() => parse(payload))))
+  {parse: parseWrapped, parseLazy: parseLazyWrapped}
+}
+
+let makeParsersWithFromServer = (
+  ~parse: (NodeJs.Buffer.t, bool) => result<'a, ErrorAwarePacketReader.readError>,
+  ~toPacket: 'a => Packet.t,
+  ~toLazyPacket: Packet.LazyPacket.lazyParsed<'a> => Packet.LazyPacket.t,
+): parsers => {
+  let parseWrapped = (payload, fromServer) => parse(payload, fromServer)->mapPacket(toPacket)
+  let parseLazyWrapped = (payload, fromServer) =>
+    Ok(toLazyPacket(Lazy.make(() => parse(payload, fromServer))))
+  {parse: parseWrapped, parseLazy: parseLazyWrapped}
+}
+
+let getParsers = (packetType: PacketType.t, fromServer: bool): result<parsers, IParser.parseError> =>
   switch (packetType, fromServer) {
   | (ConnectRequest, true) => Error(ConnectRequestFromServer)
   | (ConnectRequest, false) =>
-    Packet.ConnectRequest.parse(payload)->mapPacket(a => Packet.ConnectRequest(a))
+    Ok(makeParsers(~parse=Packet.ConnectRequest.parse, ~toPacket=a => Packet.ConnectRequest(a), ~toLazyPacket=a => Packet.LazyPacket.ConnectRequest(a)))
   | (Disconnect, false) => Error(DisconnectFromClient)
-  | (Disconnect, true) => Packet.Disconnect.parse(payload)->mapPacket(a => Packet.Disconnect(a))
+  | (Disconnect, true) => Ok(makeParsers(~parse=Packet.Disconnect.parse, ~toPacket=a => Packet.Disconnect(a), ~toLazyPacket=a => Packet.LazyPacket.Disconnect(a)))
   | (PlayerSlotSet, false) => Error(PlayerSlotSetFromClient)
   | (PlayerSlotSet, true) =>
-    mapPacket(Packet.PlayerSlotSet.parse(payload), a => Packet.PlayerSlotSet(a))
+    Ok(makeParsers(~parse=Packet.PlayerSlotSet.parse, ~toPacket=a => Packet.PlayerSlotSet(a), ~toLazyPacket=a => Packet.LazyPacket.PlayerSlotSet(a)))
   | (PlayerInfo, true | false) =>
-    mapPacket(Packet.PlayerInfo.parse(payload), a => Packet.PlayerInfo(a))
+    Ok(makeParsers(~parse=Packet.PlayerInfo.parse, ~toPacket=a => Packet.PlayerInfo(a), ~toLazyPacket=a => Packet.LazyPacket.PlayerInfo(a)))
   | (PlayerInventorySlot, true | false) =>
-    mapPacket(Packet.PlayerInventorySlot.parse(payload), a => Packet.PlayerInventorySlot(a))
+    Ok(makeParsers(~parse=Packet.PlayerInventorySlot.parse, ~toPacket=a => Packet.PlayerInventorySlot(a), ~toLazyPacket=a => Packet.LazyPacket.PlayerInventorySlot(a)))
   | (WorldDataRequest, true) => Error(WorldDataRequestFromServer)
   | (WorldDataRequest, false) =>
-    mapPacket(Packet.WorldDataRequest.parse(payload), a => Packet.WorldDataRequest(a))
+    Ok(makeParsers(~parse=Packet.WorldDataRequest.parse, ~toPacket=a => Packet.WorldDataRequest(a), ~toLazyPacket=a => Packet.LazyPacket.WorldDataRequest(a)))
   | (WorldInfo, false) => Error(WorldInfoFromClient)
-  | (WorldInfo, true) => mapPacket(Packet.WorldInfo.parse(payload), a => Packet.WorldInfo(a))
+  | (WorldInfo, true) => Ok(makeParsers(~parse=Packet.WorldInfo.parse, ~toPacket=a => Packet.WorldInfo(a), ~toLazyPacket=a => Packet.LazyPacket.WorldInfo(a)))
   | (InitialTileSectionsRequest, true) => Error(InitialTileSectionsRequestFromServer)
   | (InitialTileSectionsRequest, false) =>
-    mapPacket(
-      Packet.InitialTileSectionsRequest.parse(payload),
-      a => Packet.InitialTileSectionsRequest(a),
-    )
+    Ok(makeParsers(~parse=Packet.InitialTileSectionsRequest.parse, ~toPacket=a => Packet.InitialTileSectionsRequest(a), ~toLazyPacket=a => Packet.LazyPacket.InitialTileSectionsRequest(a)))
   | (Status, false) => Error(StatusFromClient)
-  | (Status, true) => mapPacket(Packet.Status.parse(payload), a => Packet.Status(a))
+  | (Status, true) => Ok(makeParsers(~parse=Packet.Status.parse, ~toPacket=a => Packet.Status(a), ~toLazyPacket=a => Packet.LazyPacket.Status(a)))
   | (TileSectionSend, false) => Error(TileSectionSendFromClient)
   | (TileSectionSend, true) =>
-    mapPacket(Packet.TileSectionSend.parse(payload), a => Packet.TileSectionSend(a))
+    Ok(makeParsers(~parse=Packet.TileSectionSend.parse, ~toPacket=a => Packet.TileSectionSend(a), ~toLazyPacket=a => Packet.LazyPacket.TileSectionSend(a)))
   | (TileSectionFrame, false) => Error(TileSectionFrameFromClient)
   | (TileSectionFrame, true) =>
-    mapPacket(Packet.TileSectionFrame.parse(payload), a => Packet.TileSectionFrame(a))
+    Ok(makeParsers(~parse=Packet.TileSectionFrame.parse, ~toPacket=a => Packet.TileSectionFrame(a), ~toLazyPacket=a => Packet.LazyPacket.TileSectionFrame(a)))
   | (PlayerSpawn, true | false) =>
-    mapPacket(Packet.PlayerSpawn.parse(payload), a => Packet.PlayerSpawn(a))
+    Ok(makeParsers(~parse=Packet.PlayerSpawn.parse, ~toPacket=a => Packet.PlayerSpawn(a), ~toLazyPacket=a => Packet.LazyPacket.PlayerSpawn(a)))
   | (PlayerUpdate, true | false) =>
-    mapPacket(Packet.PlayerUpdate.parse(payload), a => Packet.PlayerUpdate(a))
+    Ok(makeParsers(~parse=Packet.PlayerUpdate.parse, ~toPacket=a => Packet.PlayerUpdate(a), ~toLazyPacket=a => Packet.LazyPacket.PlayerUpdate(a)))
   | (PlayerActive, false) => Error(PlayerActiveFromClient)
   | (PlayerActive, true) =>
-    mapPacket(Packet.PlayerActive.parse(payload), a => Packet.PlayerActive(a))
+    Ok(makeParsers(~parse=Packet.PlayerActive.parse, ~toPacket=a => Packet.PlayerActive(a), ~toLazyPacket=a => Packet.LazyPacket.PlayerActive(a)))
   | (PlayerHealth, true | false) =>
-    mapPacket(Packet.PlayerHealth.parse(payload), a => Packet.PlayerHealth(a))
+    Ok(makeParsers(~parse=Packet.PlayerHealth.parse, ~toPacket=a => Packet.PlayerHealth(a), ~toLazyPacket=a => Packet.LazyPacket.PlayerHealth(a)))
   | (TileModify, true | false) =>
-    mapPacket(Packet.TileModify.parse(payload), a => Packet.TileModify(a))
+    Ok(makeParsers(~parse=Packet.TileModify.parse, ~toPacket=a => Packet.TileModify(a), ~toLazyPacket=a => Packet.LazyPacket.TileModify(a)))
   | (TimeSet, false) => Error(TimeSetFromClient)
-  | (TimeSet, true) => mapPacket(Packet.TimeSet.parse(payload), a => Packet.TimeSet(a))
-  | (DoorUse, true | false) => mapPacket(Packet.DoorUse.parse(payload), a => Packet.DoorUse(a))
+  | (TimeSet, true) => Ok(makeParsers(~parse=Packet.TimeSet.parse, ~toPacket=a => Packet.TimeSet(a), ~toLazyPacket=a => Packet.LazyPacket.TimeSet(a)))
+  | (DoorUse, true | false) => Ok(makeParsers(~parse=Packet.DoorUse.parse, ~toPacket=a => Packet.DoorUse(a), ~toLazyPacket=a => Packet.LazyPacket.DoorUse(a)))
   | (TileSquareSend, true | false) =>
-    mapPacket(Packet.TileSquareSend.parse(payload), a => Packet.TileSquareSend(a))
+    Ok(makeParsers(~parse=Packet.TileSquareSend.parse, ~toPacket=a => Packet.TileSquareSend(a), ~toLazyPacket=a => Packet.LazyPacket.TileSquareSend(a)))
   | (ItemDropUpdate, true | false) =>
-    mapPacket(Packet.ItemDropUpdate.parse(payload), a => Packet.ItemDropUpdate(a))
+    Ok(makeParsers(~parse=Packet.ItemDropUpdate.parse, ~toPacket=a => Packet.ItemDropUpdate(a), ~toLazyPacket=a => Packet.LazyPacket.ItemDropUpdate(a)))
   | (ItemOwner, true | false) =>
-    mapPacket(Packet.ItemOwner.parse(payload), a => Packet.ItemOwner(a))
+    Ok(makeParsers(~parse=Packet.ItemOwner.parse, ~toPacket=a => Packet.ItemOwner(a), ~toLazyPacket=a => Packet.LazyPacket.ItemOwner(a)))
   | (NpcUpdate, false) => Error(NpcUpdateFromClient)
-  | (NpcUpdate, true) => mapPacket(Packet.NpcUpdate.parse(payload), a => Packet.NpcUpdate(a))
+  | (NpcUpdate, true) => Ok(makeParsers(~parse=Packet.NpcUpdate.parse, ~toPacket=a => Packet.NpcUpdate(a), ~toLazyPacket=a => Packet.LazyPacket.NpcUpdate(a)))
   | (NpcItemStrike, true | false) =>
-    mapPacket(Packet.NpcItemStrike.parse(payload), a => Packet.NpcItemStrike(a))
+    Ok(makeParsers(~parse=Packet.NpcItemStrike.parse, ~toPacket=a => Packet.NpcItemStrike(a), ~toLazyPacket=a => Packet.LazyPacket.NpcItemStrike(a)))
   | (ProjectileSync, true | false) =>
-    mapPacket(Packet.ProjectileSync.parse(payload), a => Packet.ProjectileSync(a))
+    Ok(makeParsers(~parse=Packet.ProjectileSync.parse, ~toPacket=a => Packet.ProjectileSync(a), ~toLazyPacket=a => Packet.LazyPacket.ProjectileSync(a)))
   | (NpcStrike, true | false) =>
-    mapPacket(Packet.NpcStrike.parse(payload), a => Packet.NpcStrike(a))
+    Ok(makeParsers(~parse=Packet.NpcStrike.parse, ~toPacket=a => Packet.NpcStrike(a), ~toLazyPacket=a => Packet.LazyPacket.NpcStrike(a)))
   | (ProjectileDestroy, true | false) =>
-    mapPacket(Packet.ProjectileDestroy.parse(payload), a => Packet.ProjectileDestroy(a))
+    Ok(makeParsers(~parse=Packet.ProjectileDestroy.parse, ~toPacket=a => Packet.ProjectileDestroy(a), ~toLazyPacket=a => Packet.LazyPacket.ProjectileDestroy(a)))
   | (PvpToggle, true | false) =>
-    mapPacket(Packet.PvpToggle.parse(payload), a => Packet.PvpToggle(a))
+    Ok(makeParsers(~parse=Packet.PvpToggle.parse, ~toPacket=a => Packet.PvpToggle(a), ~toLazyPacket=a => Packet.LazyPacket.PvpToggle(a)))
   | (ChestOpen, true) => Error(ChestOpenFromServer)
-  | (ChestOpen, false) => mapPacket(Packet.ChestOpen.parse(payload), a => Packet.ChestOpen(a))
+  | (ChestOpen, false) => Ok(makeParsers(~parse=Packet.ChestOpen.parse, ~toPacket=a => Packet.ChestOpen(a), ~toLazyPacket=a => Packet.LazyPacket.ChestOpen(a)))
   | (ChestItem, true | false) =>
-    mapPacket(Packet.ChestItem.parse(payload), a => Packet.ChestItem(a))
+    Ok(makeParsers(~parse=Packet.ChestItem.parse, ~toPacket=a => Packet.ChestItem(a), ~toLazyPacket=a => Packet.LazyPacket.ChestItem(a)))
   | (ActiveContainerSync, true | false) =>
-    mapPacket(Packet.ActiveContainerSync.parse(payload), a => Packet.ActiveContainerSync(a))
+    Ok(makeParsers(~parse=Packet.ActiveContainerSync.parse, ~toPacket=a => Packet.ActiveContainerSync(a), ~toLazyPacket=a => Packet.LazyPacket.ActiveContainerSync(a)))
   | (ChestPlace, true | false) =>
-    mapPacket(Packet.ChestPlace.parse(payload), a => Packet.ChestPlace(a))
+    Ok(makeParsers(~parse=Packet.ChestPlace.parse, ~toPacket=a => Packet.ChestPlace(a), ~toLazyPacket=a => Packet.LazyPacket.ChestPlace(a)))
   | (HealEffect, true | false) =>
-    mapPacket(Packet.HealEffect.parse(payload), a => Packet.HealEffect(a))
-  | (Zones, true | false) => mapPacket(Packet.Zones.parse(payload), a => Packet.Zones(a))
+    Ok(makeParsers(~parse=Packet.HealEffect.parse, ~toPacket=a => Packet.HealEffect(a), ~toLazyPacket=a => Packet.LazyPacket.HealEffect(a)))
+  | (Zones, true | false) => Ok(makeParsers(~parse=Packet.Zones.parse, ~toPacket=a => Packet.Zones(a), ~toLazyPacket=a => Packet.LazyPacket.Zones(a)))
   | (PasswordRequired, false) => Error(PasswordRequiredFromClient)
   | (PasswordRequired, true) =>
-    mapPacket(Packet.PasswordRequired.parse(payload), a => Packet.PasswordRequired(a))
+    Ok(makeParsers(~parse=Packet.PasswordRequired.parse, ~toPacket=a => Packet.PasswordRequired(a), ~toLazyPacket=a => Packet.LazyPacket.PasswordRequired(a)))
   | (PasswordSend, true) => Error(PasswordSendFromServer)
   | (PasswordSend, false) =>
-    mapPacket(Packet.PasswordSend.parse(payload), a => Packet.PasswordSend(a))
+    Ok(makeParsers(~parse=Packet.PasswordSend.parse, ~toPacket=a => Packet.PasswordSend(a), ~toLazyPacket=a => Packet.LazyPacket.PasswordSend(a)))
   | (ItemOwnerRemove, false) => Error(ItemOwnerRemoveFromClient)
   | (ItemOwnerRemove, true) =>
-    mapPacket(Packet.ItemOwnerRemove.parse(payload), a => Packet.ItemOwnerRemove(a))
-  | (NpcTalk, true | false) => mapPacket(Packet.NpcTalk.parse(payload), a => Packet.NpcTalk(a))
+    Ok(makeParsers(~parse=Packet.ItemOwnerRemove.parse, ~toPacket=a => Packet.ItemOwnerRemove(a), ~toLazyPacket=a => Packet.LazyPacket.ItemOwnerRemove(a)))
+  | (NpcTalk, true | false) => Ok(makeParsers(~parse=Packet.NpcTalk.parse, ~toPacket=a => Packet.NpcTalk(a), ~toLazyPacket=a => Packet.LazyPacket.NpcTalk(a)))
   | (PlayerAnimation, true | false) =>
-    mapPacket(Packet.PlayerAnimation.parse(payload), a => Packet.PlayerAnimation(a))
+    Ok(makeParsers(~parse=Packet.PlayerAnimation.parse, ~toPacket=a => Packet.PlayerAnimation(a), ~toLazyPacket=a => Packet.LazyPacket.PlayerAnimation(a)))
   | (PlayerMana, true | false) =>
-    mapPacket(Packet.PlayerMana.parse(payload), a => Packet.PlayerMana(a))
+    Ok(makeParsers(~parse=Packet.PlayerMana.parse, ~toPacket=a => Packet.PlayerMana(a), ~toLazyPacket=a => Packet.LazyPacket.PlayerMana(a)))
   | (ManaEffect, true | false) =>
-    mapPacket(Packet.ManaEffect.parse(payload), a => Packet.ManaEffect(a))
+    Ok(makeParsers(~parse=Packet.ManaEffect.parse, ~toPacket=a => Packet.ManaEffect(a), ~toLazyPacket=a => Packet.LazyPacket.ManaEffect(a)))
   | (PlayerTeam, true | false) =>
-    mapPacket(Packet.PlayerTeam.parse(payload), a => Packet.PlayerTeam(a))
+    Ok(makeParsers(~parse=Packet.PlayerTeam.parse, ~toPacket=a => Packet.PlayerTeam(a), ~toLazyPacket=a => Packet.LazyPacket.PlayerTeam(a)))
   | (SignRead, true) => Error(SignReadFromServer)
-  | (SignRead, false) => mapPacket(Packet.SignRead.parse(payload), a => Packet.SignRead(a))
-  | (SignNew, true | false) => mapPacket(Packet.SignNew.parse(payload), a => Packet.SignNew(a))
+  | (SignRead, false) => Ok(makeParsers(~parse=Packet.SignRead.parse, ~toPacket=a => Packet.SignRead(a), ~toLazyPacket=a => Packet.LazyPacket.SignRead(a)))
+  | (SignNew, true | false) => Ok(makeParsers(~parse=Packet.SignNew.parse, ~toPacket=a => Packet.SignNew(a), ~toLazyPacket=a => Packet.LazyPacket.SignNew(a)))
   | (LiquidSet, true | false) =>
-    mapPacket(Packet.LiquidSet.parse(payload), a => Packet.LiquidSet(a))
+    Ok(makeParsers(~parse=Packet.LiquidSet.parse, ~toPacket=a => Packet.LiquidSet(a), ~toLazyPacket=a => Packet.LazyPacket.LiquidSet(a)))
   | (PlayerSpawnSelf, false) => Error(PlayerSpawnSelfFromClient)
   | (PlayerSpawnSelf, true) =>
-    mapPacket(Packet.PlayerSpawnSelf.parse(payload), a => Packet.PlayerSpawnSelf(a))
+    Ok(makeParsers(~parse=Packet.PlayerSpawnSelf.parse, ~toPacket=a => Packet.PlayerSpawnSelf(a), ~toLazyPacket=a => Packet.LazyPacket.PlayerSpawnSelf(a)))
   | (PlayerBuffsSet, true | false) =>
-    mapPacket(Packet.PlayerBuffsSet.parse(payload), a => Packet.PlayerBuffsSet(a))
+    Ok(makeParsers(~parse=Packet.PlayerBuffsSet.parse, ~toPacket=a => Packet.PlayerBuffsSet(a), ~toLazyPacket=a => Packet.LazyPacket.PlayerBuffsSet(a)))
   | (NpcSpecialEffect, true | false) =>
-    mapPacket(Packet.NpcSpecialEffect.parse(payload), a => Packet.NpcSpecialEffect(a))
+    Ok(makeParsers(~parse=Packet.NpcSpecialEffect.parse, ~toPacket=a => Packet.NpcSpecialEffect(a), ~toLazyPacket=a => Packet.LazyPacket.NpcSpecialEffect(a)))
   | (ChestOrTempleUnlock, true | false) =>
-    mapPacket(Packet.ChestOrTempleUnlock.parse(payload), a => Packet.ChestOrTempleUnlock(a))
+    Ok(makeParsers(~parse=Packet.ChestOrTempleUnlock.parse, ~toPacket=a => Packet.ChestOrTempleUnlock(a), ~toLazyPacket=a => Packet.LazyPacket.ChestOrTempleUnlock(a)))
   | (NpcBuffAdd, true | false) =>
-    mapPacket(Packet.NpcBuffAdd.parse(payload), a => Packet.NpcBuffAdd(a))
+    Ok(makeParsers(~parse=Packet.NpcBuffAdd.parse, ~toPacket=a => Packet.NpcBuffAdd(a), ~toLazyPacket=a => Packet.LazyPacket.NpcBuffAdd(a)))
   | (NpcBuffUpdate, false) => Error(NpcBuffUpdateFromClient)
   | (NpcBuffUpdate, true) =>
-    mapPacket(Packet.NpcBuffUpdate.parse(payload), a => Packet.NpcBuffUpdate(a))
+    Ok(makeParsers(~parse=Packet.NpcBuffUpdate.parse, ~toPacket=a => Packet.NpcBuffUpdate(a), ~toLazyPacket=a => Packet.LazyPacket.NpcBuffUpdate(a)))
   | (PlayerBuffAdd, true | false) =>
-    mapPacket(Packet.PlayerBuffAdd.parse(payload), a => Packet.PlayerBuffAdd(a))
+    Ok(makeParsers(~parse=Packet.PlayerBuffAdd.parse, ~toPacket=a => Packet.PlayerBuffAdd(a), ~toLazyPacket=a => Packet.LazyPacket.PlayerBuffAdd(a)))
   | (NpcNameUpdate, true | false) =>
-    mapPacket(Packet.NpcNameUpdate.parse(payload), a => Packet.NpcNameUpdate(a))
+    Ok(makeParsers(~parse=Packet.NpcNameUpdate.parse, ~toPacket=a => Packet.NpcNameUpdate(a), ~toLazyPacket=a => Packet.LazyPacket.NpcNameUpdate(a)))
   | (GoodEvilUpdate, false) => Error(GoodEvilUpdateFromClient)
   | (GoodEvilUpdate, true) =>
-    mapPacket(Packet.GoodEvilUpdate.parse(payload), a => Packet.GoodEvilUpdate(a))
-  | (HarpPlay, true | false) => mapPacket(Packet.HarpPlay.parse(payload), a => Packet.HarpPlay(a))
+    Ok(makeParsers(~parse=Packet.GoodEvilUpdate.parse, ~toPacket=a => Packet.GoodEvilUpdate(a), ~toLazyPacket=a => Packet.LazyPacket.GoodEvilUpdate(a)))
+  | (HarpPlay, true | false) => Ok(makeParsers(~parse=Packet.HarpPlay.parse, ~toPacket=a => Packet.HarpPlay(a), ~toLazyPacket=a => Packet.LazyPacket.HarpPlay(a)))
   | (SwitchHit, true | false) =>
-    mapPacket(Packet.SwitchHit.parse(payload), a => Packet.SwitchHit(a))
+    Ok(makeParsers(~parse=Packet.SwitchHit.parse, ~toPacket=a => Packet.SwitchHit(a), ~toLazyPacket=a => Packet.LazyPacket.SwitchHit(a)))
   | (NpcHomeUpdate, true | false) =>
-    mapPacket(Packet.NpcHomeUpdate.parse(payload), a => Packet.NpcHomeUpdate(a))
+    Ok(makeParsers(~parse=Packet.NpcHomeUpdate.parse, ~toPacket=a => Packet.NpcHomeUpdate(a), ~toLazyPacket=a => Packet.LazyPacket.NpcHomeUpdate(a)))
   | (BossOrInvasionSpawn, true) => Error(BossOrInvasionSpawnFromServer)
   | (BossOrInvasionSpawn, false) =>
-    mapPacket(Packet.BossOrInvasionSpawn.parse(payload), a => Packet.BossOrInvasionSpawn(a))
+    Ok(makeParsers(~parse=Packet.BossOrInvasionSpawn.parse, ~toPacket=a => Packet.BossOrInvasionSpawn(a), ~toLazyPacket=a => Packet.LazyPacket.BossOrInvasionSpawn(a)))
   | (PlayerDodge, true | false) =>
-    mapPacket(Packet.PlayerDodge.parse(payload), a => Packet.PlayerDodge(a))
+    Ok(makeParsers(~parse=Packet.PlayerDodge.parse, ~toPacket=a => Packet.PlayerDodge(a), ~toLazyPacket=a => Packet.LazyPacket.PlayerDodge(a)))
   | (TilePaint, true | false) =>
-    mapPacket(Packet.TilePaint.parse(payload), a => Packet.TilePaint(a))
+    Ok(makeParsers(~parse=Packet.TilePaint.parse, ~toPacket=a => Packet.TilePaint(a), ~toLazyPacket=a => Packet.LazyPacket.TilePaint(a)))
   | (WallPaint, true | false) =>
-    mapPacket(Packet.WallPaint.parse(payload), a => Packet.WallPaint(a))
-  | (Teleport, true | false) => mapPacket(Packet.Teleport.parse(payload), a => Packet.Teleport(a))
+    Ok(makeParsers(~parse=Packet.WallPaint.parse, ~toPacket=a => Packet.WallPaint(a), ~toLazyPacket=a => Packet.LazyPacket.WallPaint(a)))
+  | (Teleport, true | false) => Ok(makeParsers(~parse=Packet.Teleport.parse, ~toPacket=a => Packet.Teleport(a), ~toLazyPacket=a => Packet.LazyPacket.Teleport(a)))
   | (PlayerHealOther, true | false) =>
-    mapPacket(Packet.PlayerHealOther.parse(payload), a => Packet.PlayerHealOther(a))
+    Ok(makeParsers(~parse=Packet.PlayerHealOther.parse, ~toPacket=a => Packet.PlayerHealOther(a), ~toLazyPacket=a => Packet.LazyPacket.PlayerHealOther(a)))
   | (DimensionsUpdate, true | false) =>
-    mapPacket(Packet.DimensionsUpdate.parse(payload), a => Packet.DimensionsUpdate(a))
+    Ok(makeParsers(~parse=Packet.DimensionsUpdate.parse, ~toPacket=a => Packet.DimensionsUpdate(a), ~toLazyPacket=a => Packet.LazyPacket.DimensionsUpdate(a)))
   | (ClientUuid, true) => Error(ClientUuidFromServer)
-  | (ClientUuid, false) => mapPacket(Packet.ClientUuid.parse(payload), a => Packet.ClientUuid(a))
+  | (ClientUuid, false) => Ok(makeParsers(~parse=Packet.ClientUuid.parse, ~toPacket=a => Packet.ClientUuid(a), ~toLazyPacket=a => Packet.LazyPacket.ClientUuid(a)))
   | (ChestName, true | false) =>
-    mapPacket(Packet.ChestName.parse(payload), a => Packet.ChestName(a))
+    Ok(makeParsers(~parse=Packet.ChestName.parse, ~toPacket=a => Packet.ChestName(a), ~toLazyPacket=a => Packet.LazyPacket.ChestName(a)))
   | (NpcCatch, true) => Error(NpcCatchFromServer)
-  | (NpcCatch, false) => mapPacket(Packet.NpcCatch.parse(payload), a => Packet.NpcCatch(a))
+  | (NpcCatch, false) => Ok(makeParsers(~parse=Packet.NpcCatch.parse, ~toPacket=a => Packet.NpcCatch(a), ~toLazyPacket=a => Packet.LazyPacket.NpcCatch(a)))
   | (NpcRelease, true) => Error(NpcReleaseFromServer)
-  | (NpcRelease, false) => mapPacket(Packet.NpcRelease.parse(payload), a => Packet.NpcRelease(a))
+  | (NpcRelease, false) => Ok(makeParsers(~parse=Packet.NpcRelease.parse, ~toPacket=a => Packet.NpcRelease(a), ~toLazyPacket=a => Packet.LazyPacket.NpcRelease(a)))
   | (TravellingMerchantInventory, false) => Error(TravellingMerchantInventoryFromClient)
   | (TravellingMerchantInventory, true) =>
-    mapPacket(
-      Packet.TravellingMerchantInventory.parse(payload),
-      a => Packet.TravellingMerchantInventory(a),
-    )
+    Ok(makeParsers(~parse=Packet.TravellingMerchantInventory.parse, ~toPacket=a => Packet.TravellingMerchantInventory(a), ~toLazyPacket=a => Packet.LazyPacket.TravellingMerchantInventory(a)))
   | (TeleportationPotion, true | false) =>
-    mapPacket(Packet.TeleportationPotion.parse(payload), a => Packet.TeleportationPotion(a))
+    Ok(makeParsers(~parse=Packet.TeleportationPotion.parse, ~toPacket=a => Packet.TeleportationPotion(a), ~toLazyPacket=a => Packet.LazyPacket.TeleportationPotion(a)))
   | (AnglerQuest, false) => Error(AnglerQuestFromClient)
-  | (AnglerQuest, true) => mapPacket(Packet.AnglerQuest.parse(payload), a => Packet.AnglerQuest(a))
+  | (AnglerQuest, true) => Ok(makeParsers(~parse=Packet.AnglerQuest.parse, ~toPacket=a => Packet.AnglerQuest(a), ~toLazyPacket=a => Packet.LazyPacket.AnglerQuest(a)))
   | (AnglerQuestComplete, true) => Error(AnglerQuestCompleteFromServer)
   | (AnglerQuestComplete, false) =>
-    mapPacket(Packet.AnglerQuestComplete.parse(payload), a => Packet.AnglerQuestComplete(a))
+    Ok(makeParsers(~parse=Packet.AnglerQuestComplete.parse, ~toPacket=a => Packet.AnglerQuestComplete(a), ~toLazyPacket=a => Packet.LazyPacket.AnglerQuestComplete(a)))
   | (AnglerQuestsCompletedAmount, true)
   | (AnglerQuestsCompletedAmount, false) =>
-    mapPacket(
-      Packet.AnglerQuestsCompletedAmount.parse(payload),
-      a => Packet.AnglerQuestsCompletedAmount(a),
-    )
+    Ok(makeParsers(~parse=Packet.AnglerQuestsCompletedAmount.parse, ~toPacket=a => Packet.AnglerQuestsCompletedAmount(a), ~toLazyPacket=a => Packet.LazyPacket.AnglerQuestsCompletedAmount(a)))
   | (TemporaryAnimationCreate, false) => Error(TemporaryAnimationCreateFromClient)
   | (TemporaryAnimationCreate, true) =>
-    mapPacket(Packet.TemporaryAnimationCreate.parse(payload), a => Packet.TemporaryAnimationCreate(
-      a,
-    ))
+    Ok(makeParsers(~parse=Packet.TemporaryAnimationCreate.parse, ~toPacket=a => Packet.TemporaryAnimationCreate(a), ~toLazyPacket=a => Packet.LazyPacket.TemporaryAnimationCreate(a)))
 
   | (InvasionProgressReport, false) => Error(InvasionProgressReportFromClient)
   | (InvasionProgressReport, true) =>
-    mapPacket(Packet.InvasionProgressReport.parse(payload), a => Packet.InvasionProgressReport(a))
+    Ok(makeParsers(~parse=Packet.InvasionProgressReport.parse, ~toPacket=a => Packet.InvasionProgressReport(a), ~toLazyPacket=a => Packet.LazyPacket.InvasionProgressReport(a)))
   | (ObjectPlace, true | false) =>
-    mapPacket(Packet.ObjectPlace.parse(payload), a => Packet.ObjectPlace(a))
+    Ok(makeParsers(~parse=Packet.ObjectPlace.parse, ~toPacket=a => Packet.ObjectPlace(a), ~toLazyPacket=a => Packet.LazyPacket.ObjectPlace(a)))
   | (PlayerChestIndexSync, false) => Error(PlayerChestIndexSyncFromClient)
   | (PlayerChestIndexSync, true) =>
-    mapPacket(Packet.PlayerChestIndexSync.parse(payload), a => Packet.PlayerChestIndexSync(a))
+    Ok(makeParsers(~parse=Packet.PlayerChestIndexSync.parse, ~toPacket=a => Packet.PlayerChestIndexSync(a), ~toLazyPacket=a => Packet.LazyPacket.PlayerChestIndexSync(a)))
   | (CombatNumberCreate, false) => Error(CombatNumberCreateFromClient)
   | (CombatNumberCreate, true) =>
-    mapPacket(Packet.CombatNumberCreate.parse(payload), a => Packet.CombatNumberCreate(a))
+    Ok(makeParsers(~parse=Packet.CombatNumberCreate.parse, ~toPacket=a => Packet.CombatNumberCreate(a), ~toLazyPacket=a => Packet.LazyPacket.CombatNumberCreate(a)))
   | (NetModuleLoad, true | false) =>
-    mapPacket(Packet.NetModuleLoad.parse(payload, ~fromServer), a => Packet.NetModuleLoad(a))
+    Ok(makeParsersWithFromServer(~parse=((payload, fromServer) => Packet.NetModuleLoad.parse(payload, ~fromServer)), ~toPacket=a => Packet.NetModuleLoad(a), ~toLazyPacket=a => Packet.LazyPacket.NetModuleLoad(a)))
   | (NpcKillCount, false) => Error(NpcKillCountFromClient)
   | (NpcKillCount, true) =>
-    mapPacket(Packet.NpcKillCount.parse(payload), a => Packet.NpcKillCount(a))
+    Ok(makeParsers(~parse=Packet.NpcKillCount.parse, ~toPacket=a => Packet.NpcKillCount(a), ~toLazyPacket=a => Packet.LazyPacket.NpcKillCount(a)))
   | (PlayerStealth, true | false) =>
-    mapPacket(Packet.PlayerStealth.parse(payload), a => Packet.PlayerStealth(a))
+    Ok(makeParsers(~parse=Packet.PlayerStealth.parse, ~toPacket=a => Packet.PlayerStealth(a), ~toLazyPacket=a => Packet.LazyPacket.PlayerStealth(a)))
   | (ItemForceIntoNearestChest, true) => Error(ItemForceIntoNearestChestFromServer)
   | (ItemForceIntoNearestChest, false) =>
-    mapPacket(
-      Packet.ItemForceIntoNearestChest.parse(payload),
-      a => Packet.ItemForceIntoNearestChest(a),
-    )
+    Ok(makeParsers(~parse=Packet.ItemForceIntoNearestChest.parse, ~toPacket=a => Packet.ItemForceIntoNearestChest(a), ~toLazyPacket=a => Packet.LazyPacket.ItemForceIntoNearestChest(a)))
   | (TileEntityUpdate, false) => Error(TileEntityUpdateFromClient)
   | (TileEntityUpdate, true) =>
-    mapPacket(Packet.TileEntityUpdate.parse(payload), a => Packet.TileEntityUpdate(a))
+    Ok(makeParsers(~parse=Packet.TileEntityUpdate.parse, ~toPacket=a => Packet.TileEntityUpdate(a), ~toLazyPacket=a => Packet.LazyPacket.TileEntityUpdate(a)))
   | (TileEntityPlace, true) => Error(TileEntityPlaceFromServer)
   | (TileEntityPlace, false) =>
-    mapPacket(Packet.TileEntityPlace.parse(payload), a => Packet.TileEntityPlace(a))
+    Ok(makeParsers(~parse=Packet.TileEntityPlace.parse, ~toPacket=a => Packet.TileEntityPlace(a), ~toLazyPacket=a => Packet.LazyPacket.TileEntityPlace(a)))
   | (ItemDropModify, false) => Error(ItemDropModifyFromClient)
   | (ItemDropModify, true) =>
-    mapPacket(Packet.ItemDropModify.parse(payload), a => Packet.ItemDropModify(a))
+    Ok(makeParsers(~parse=Packet.ItemDropModify.parse, ~toPacket=a => Packet.ItemDropModify(a), ~toLazyPacket=a => Packet.LazyPacket.ItemDropModify(a)))
   | (ItemFramePlace, true) => Error(ItemFramePlaceFromServer)
   | (ItemFramePlace, false) =>
-    mapPacket(Packet.ItemFramePlace.parse(payload), a => Packet.ItemFramePlace(a))
+    Ok(makeParsers(~parse=Packet.ItemFramePlace.parse, ~toPacket=a => Packet.ItemFramePlace(a), ~toLazyPacket=a => Packet.LazyPacket.ItemFramePlace(a)))
   | (ItemDropInstancedUpdate, true | false) =>
-    mapPacket(Packet.ItemDropInstancedUpdate.parse(payload), a => Packet.ItemDropInstancedUpdate(a))
+    Ok(makeParsers(~parse=Packet.ItemDropInstancedUpdate.parse, ~toPacket=a => Packet.ItemDropInstancedUpdate(a), ~toLazyPacket=a => Packet.LazyPacket.ItemDropInstancedUpdate(a)))
   | (EmoteBubble, false) => Error(EmoteBubbleFromClient)
-  | (EmoteBubble, true) => mapPacket(Packet.EmoteBubble.parse(payload), a => Packet.EmoteBubble(a))
+  | (EmoteBubble, true) => Ok(makeParsers(~parse=Packet.EmoteBubble.parse, ~toPacket=a => Packet.EmoteBubble(a), ~toLazyPacket=a => Packet.LazyPacket.EmoteBubble(a)))
   | (ExtraValueSync, true | false) =>
-    mapPacket(Packet.ExtraValueSync.parse(payload), a => Packet.ExtraValueSync(a))
+    Ok(makeParsers(~parse=Packet.ExtraValueSync.parse, ~toPacket=a => Packet.ExtraValueSync(a), ~toLazyPacket=a => Packet.LazyPacket.ExtraValueSync(a)))
   | (SocialHandshake, true | false) =>
-    mapPacket(Packet.SocialHandshake.parse(payload), a => Packet.SocialHandshake(a))
-  | (Unused, true | false) => mapPacket(Packet.Unused.parse(payload), a => Packet.Unused(a))
+    Ok(makeParsers(~parse=Packet.SocialHandshake.parse, ~toPacket=a => Packet.SocialHandshake(a), ~toLazyPacket=a => Packet.LazyPacket.SocialHandshake(a)))
+  | (Unused, true | false) => Ok(makeParsers(~parse=Packet.Unused.parse, ~toPacket=a => Packet.Unused(a), ~toLazyPacket=a => Packet.LazyPacket.Unused(a)))
   | (PortalKill, true) => Error(PortalKillFromServer)
-  | (PortalKill, false) => mapPacket(Packet.PortalKill.parse(payload), a => Packet.PortalKill(a))
+  | (PortalKill, false) => Ok(makeParsers(~parse=Packet.PortalKill.parse, ~toPacket=a => Packet.PortalKill(a), ~toLazyPacket=a => Packet.LazyPacket.PortalKill(a)))
   | (PlayerTeleportPortal, true | false) =>
-    mapPacket(Packet.PlayerTeleportPortal.parse(payload), a => Packet.PlayerTeleportPortal(a))
+    Ok(makeParsers(~parse=Packet.PlayerTeleportPortal.parse, ~toPacket=a => Packet.PlayerTeleportPortal(a), ~toLazyPacket=a => Packet.LazyPacket.PlayerTeleportPortal(a)))
   | (NpcKilledNotification, false) => Error(NpcKilledNotificationFromClient)
   | (NpcKilledNotification, true) =>
-    mapPacket(Packet.NpcKilledNotification.parse(payload), a => Packet.NpcKilledNotification(a))
+    Ok(makeParsers(~parse=Packet.NpcKilledNotification.parse, ~toPacket=a => Packet.NpcKilledNotification(a), ~toLazyPacket=a => Packet.LazyPacket.NpcKilledNotification(a)))
   | (EventNotification, false) => Error(EventNotificationFromClient)
   | (EventNotification, true) =>
-    mapPacket(Packet.EventNotification.parse(payload), a => Packet.EventNotification(a))
+    Ok(makeParsers(~parse=Packet.EventNotification.parse, ~toPacket=a => Packet.EventNotification(a), ~toLazyPacket=a => Packet.LazyPacket.EventNotification(a)))
   | (MinionTargetUpdate, true | false) =>
-    mapPacket(Packet.MinionTargetUpdate.parse(payload), a => Packet.MinionTargetUpdate(a))
+    Ok(makeParsers(~parse=Packet.MinionTargetUpdate.parse, ~toPacket=a => Packet.MinionTargetUpdate(a), ~toLazyPacket=a => Packet.LazyPacket.MinionTargetUpdate(a)))
   | (NpcTeleportPortal, true | false) =>
-    mapPacket(Packet.NpcTeleportPortal.parse(payload), a => Packet.NpcTeleportPortal(a))
+    Ok(makeParsers(~parse=Packet.NpcTeleportPortal.parse, ~toPacket=a => Packet.NpcTeleportPortal(a), ~toLazyPacket=a => Packet.LazyPacket.NpcTeleportPortal(a)))
   | (ShieldStrengthsUpdate, false) => Error(ShieldStrengthsUpdateFromClient)
   | (ShieldStrengthsUpdate, true) =>
-    mapPacket(Packet.ShieldStrengthsUpdate.parse(payload), a => Packet.ShieldStrengthsUpdate(a))
+    Ok(makeParsers(~parse=Packet.ShieldStrengthsUpdate.parse, ~toPacket=a => Packet.ShieldStrengthsUpdate(a), ~toLazyPacket=a => Packet.LazyPacket.ShieldStrengthsUpdate(a)))
   | (NebulaLevelUp, true | false) =>
-    mapPacket(Packet.NebulaLevelUp.parse(payload), a => Packet.NebulaLevelUp(a))
+    Ok(makeParsers(~parse=Packet.NebulaLevelUp.parse, ~toPacket=a => Packet.NebulaLevelUp(a), ~toLazyPacket=a => Packet.LazyPacket.NebulaLevelUp(a)))
   | (MoonLordCountdown, false) => Error(MoonLordCountdownFromClient)
   | (MoonLordCountdown, true) =>
-    mapPacket(Packet.MoonLordCountdown.parse(payload), a => Packet.MoonLordCountdown(a))
+    Ok(makeParsers(~parse=Packet.MoonLordCountdown.parse, ~toPacket=a => Packet.MoonLordCountdown(a), ~toLazyPacket=a => Packet.LazyPacket.MoonLordCountdown(a)))
   | (NpcShopItem, false) => Error(NpcShopItemFromClient)
-  | (NpcShopItem, true) => mapPacket(Packet.NpcShopItem.parse(payload), a => Packet.NpcShopItem(a))
+  | (NpcShopItem, true) => Ok(makeParsers(~parse=Packet.NpcShopItem.parse, ~toPacket=a => Packet.NpcShopItem(a), ~toLazyPacket=a => Packet.LazyPacket.NpcShopItem(a)))
   | (GemLockToggle, true) => Error(GemLockToggleFromServer)
   | (GemLockToggle, false) =>
-    mapPacket(Packet.GemLockToggle.parse(payload), a => Packet.GemLockToggle(a))
+    Ok(makeParsers(~parse=Packet.GemLockToggle.parse, ~toPacket=a => Packet.GemLockToggle(a), ~toLazyPacket=a => Packet.LazyPacket.GemLockToggle(a)))
   | (SmokePoof, false) => Error(SmokePoofFromClient)
-  | (SmokePoof, true) => mapPacket(Packet.SmokePoof.parse(payload), a => Packet.SmokePoof(a))
+  | (SmokePoof, true) => Ok(makeParsers(~parse=Packet.SmokePoof.parse, ~toPacket=a => Packet.SmokePoof(a), ~toLazyPacket=a => Packet.LazyPacket.SmokePoof(a)))
   | (ChatMessageSmart, false) => Error(ChatMessageSmartFromClient)
   | (ChatMessageSmart, true) =>
-    mapPacket(Packet.ChatMessageSmart.parse(payload), a => Packet.ChatMessageSmart(a))
+    Ok(makeParsers(~parse=Packet.ChatMessageSmart.parse, ~toPacket=a => Packet.ChatMessageSmart(a), ~toLazyPacket=a => Packet.LazyPacket.ChatMessageSmart(a)))
   | (WiredCannonShot, false) => Error(WiredCannonShotFromClient)
   | (WiredCannonShot, true) =>
-    mapPacket(Packet.WiredCannonShot.parse(payload), a => Packet.WiredCannonShot(a))
+    Ok(makeParsers(~parse=Packet.WiredCannonShot.parse, ~toPacket=a => Packet.WiredCannonShot(a), ~toLazyPacket=a => Packet.LazyPacket.WiredCannonShot(a)))
   | (MassWireOperation, true) => Error(MassWireOperationFromServer)
   | (MassWireOperation, false) =>
-    mapPacket(Packet.MassWireOperation.parse(payload), a => Packet.MassWireOperation(a))
+    Ok(makeParsers(~parse=Packet.MassWireOperation.parse, ~toPacket=a => Packet.MassWireOperation(a), ~toLazyPacket=a => Packet.LazyPacket.MassWireOperation(a)))
   | (MassWireOperationPay, false) => Error(MassWireOperationPayFromClient)
   | (MassWireOperationPay, true) =>
-    mapPacket(Packet.MassWireOperationPay.parse(payload), a => Packet.MassWireOperationPay(a))
+    Ok(makeParsers(~parse=Packet.MassWireOperationPay.parse, ~toPacket=a => Packet.MassWireOperationPay(a), ~toLazyPacket=a => Packet.LazyPacket.MassWireOperationPay(a)))
   | (PartyToggle, true) => Error(PartyToggleFromServer)
-  | (PartyToggle, false) => mapPacket(Packet.PartyToggle.parse(payload), a => Packet.PartyToggle(a))
+  | (PartyToggle, false) => Ok(makeParsers(~parse=Packet.PartyToggle.parse, ~toPacket=a => Packet.PartyToggle(a), ~toLazyPacket=a => Packet.LazyPacket.PartyToggle(a)))
   | (TreeGrowFx, true | false) =>
-    mapPacket(Packet.TreeGrowFx.parse(payload), a => Packet.TreeGrowFx(a))
+    Ok(makeParsers(~parse=Packet.TreeGrowFx.parse, ~toPacket=a => Packet.TreeGrowFx(a), ~toLazyPacket=a => Packet.LazyPacket.TreeGrowFx(a)))
   | (CrystalInvasionStart, true) => Error(CrystalInvasionStartFromServer)
   | (CrystalInvasionStart, false) =>
-    mapPacket(Packet.CrystalInvasionStart.parse(payload), a => Packet.CrystalInvasionStart(a))
+    Ok(makeParsers(~parse=Packet.CrystalInvasionStart.parse, ~toPacket=a => Packet.CrystalInvasionStart(a), ~toLazyPacket=a => Packet.LazyPacket.CrystalInvasionStart(a)))
   | (CrystalInvasionWipeAll, false) => Error(CrystalInvasionWipeAllFromClient)
   | (CrystalInvasionWipeAll, true) =>
-    mapPacket(Packet.CrystalInvasionWipeAll.parse(payload), a => Packet.CrystalInvasionWipeAll(a))
+    Ok(makeParsers(~parse=Packet.CrystalInvasionWipeAll.parse, ~toPacket=a => Packet.CrystalInvasionWipeAll(a), ~toLazyPacket=a => Packet.LazyPacket.CrystalInvasionWipeAll(a)))
   | (MinionAttackTargetUpdate, true | false) =>
-    mapPacket(Packet.MinionAttackTargetUpdate.parse(payload), a => Packet.MinionAttackTargetUpdate(
-      a,
-    ))
+    Ok(makeParsers(~parse=Packet.MinionAttackTargetUpdate.parse, ~toPacket=a => Packet.MinionAttackTargetUpdate(a), ~toLazyPacket=a => Packet.LazyPacket.MinionAttackTargetUpdate(a)))
   | (CrystalInvasionSendWaitTime, false) => Error(CrystalInvasionSendWaitTimeFromClient)
   | (CrystalInvasionSendWaitTime, true) =>
-    mapPacket(
-      Packet.CrystalInvasionSendWaitTime.parse(payload),
-      a => Packet.CrystalInvasionSendWaitTime(a),
-    )
+    Ok(makeParsers(~parse=Packet.CrystalInvasionSendWaitTime.parse, ~toPacket=a => Packet.CrystalInvasionSendWaitTime(a), ~toLazyPacket=a => Packet.LazyPacket.CrystalInvasionSendWaitTime(a)))
   | (PlayerDamage, true | false) =>
-    mapPacket(Packet.PlayerDamage.parse(payload), a => Packet.PlayerDamage(a))
+    Ok(makeParsers(~parse=Packet.PlayerDamage.parse, ~toPacket=a => Packet.PlayerDamage(a), ~toLazyPacket=a => Packet.LazyPacket.PlayerDamage(a)))
   | (PlayerDeath, true | false) =>
-    mapPacket(Packet.PlayerDeath.parse(payload), a => Packet.PlayerDeath(a))
+    Ok(makeParsers(~parse=Packet.PlayerDeath.parse, ~toPacket=a => Packet.PlayerDeath(a), ~toLazyPacket=a => Packet.LazyPacket.PlayerDeath(a)))
   | (CombatTextCreate, false) => Error(CombatTextCreateFromClient)
   | (CombatTextCreate, true) =>
-    mapPacket(Packet.CombatTextCreate.parse(payload), a => Packet.CombatTextCreate(a))
+    Ok(makeParsers(~parse=Packet.CombatTextCreate.parse, ~toPacket=a => Packet.CombatTextCreate(a), ~toLazyPacket=a => Packet.LazyPacket.CombatTextCreate(a)))
   | (Emoji, true) => Error(EmojiFromServer)
-  | (Emoji, false) => mapPacket(Packet.Emoji.parse(payload), a => Packet.Emoji(a))
+  | (Emoji, false) => Ok(makeParsers(~parse=Packet.Emoji.parse, ~toPacket=a => Packet.Emoji(a), ~toLazyPacket=a => Packet.LazyPacket.Emoji(a)))
   | (TileEntityDisplayDollItemSync, true | false) =>
-    mapPacket(
-      Packet.TileEntityDisplayDollItemSync.parse(payload),
-      a => Packet.TileEntityDisplayDollItemSync(a),
-    )
+    Ok(makeParsers(~parse=Packet.TileEntityDisplayDollItemSync.parse, ~toPacket=a => Packet.TileEntityDisplayDollItemSync(a), ~toLazyPacket=a => Packet.LazyPacket.TileEntityDisplayDollItemSync(a)))
   | (TileEntityInteractionRequest, true | false) =>
-    mapPacket(
-      Packet.TileEntityInteractionRequest.parse(payload),
-      a => Packet.TileEntityInteractionRequest(a),
-    )
+    Ok(makeParsers(~parse=Packet.TileEntityInteractionRequest.parse, ~toPacket=a => Packet.TileEntityInteractionRequest(a), ~toLazyPacket=a => Packet.LazyPacket.TileEntityInteractionRequest(a)))
   | (WeaponsRackTryPlacing, true) => Error(WeaponsRackTryPlacingFromServer)
   | (WeaponsRackTryPlacing, false) =>
-    mapPacket(Packet.WeaponsRackTryPlacing.parse(payload), a => Packet.WeaponsRackTryPlacing(a))
+    Ok(makeParsers(~parse=Packet.WeaponsRackTryPlacing.parse, ~toPacket=a => Packet.WeaponsRackTryPlacing(a), ~toLazyPacket=a => Packet.LazyPacket.WeaponsRackTryPlacing(a)))
   | (TileEntityHatRackItemSync, true | false) =>
-    mapPacket(
-      Packet.TileEntityHatRackItemSync.parse(payload),
-      a => Packet.TileEntityHatRackItemSync(a),
-    )
+    Ok(makeParsers(~parse=Packet.TileEntityHatRackItemSync.parse, ~toPacket=a => Packet.TileEntityHatRackItemSync(a), ~toLazyPacket=a => Packet.LazyPacket.TileEntityHatRackItemSync(a)))
   | (TilePickingSync, true | false) =>
-    mapPacket(Packet.TilePickingSync.parse(payload), a => Packet.TilePickingSync(a))
+    Ok(makeParsers(~parse=Packet.TilePickingSync.parse, ~toPacket=a => Packet.TilePickingSync(a), ~toLazyPacket=a => Packet.LazyPacket.TilePickingSync(a)))
   | (RevengeMarkerSync, false) => Error(RevengeMarkerSyncFromClient)
   | (RevengeMarkerSync, true) =>
-    mapPacket(Packet.RevengeMarkerSync.parse(payload), a => Packet.RevengeMarkerSync(a))
+    Ok(makeParsers(~parse=Packet.RevengeMarkerSync.parse, ~toPacket=a => Packet.RevengeMarkerSync(a), ~toLazyPacket=a => Packet.LazyPacket.RevengeMarkerSync(a)))
   | (RevengeMarkerRemove, false) => Error(RevengeMarkerRemoveFromClient)
   | (RevengeMarkerRemove, true) =>
-    mapPacket(Packet.RevengeMarkerRemove.parse(payload), a => Packet.RevengeMarkerRemove(a))
+    Ok(makeParsers(~parse=Packet.RevengeMarkerRemove.parse, ~toPacket=a => Packet.RevengeMarkerRemove(a), ~toLazyPacket=a => Packet.LazyPacket.RevengeMarkerRemove(a)))
   | (GolfBallLandInCup, true | false) =>
-    mapPacket(Packet.GolfBallLandInCup.parse(payload), a => Packet.GolfBallLandInCup(a))
+    Ok(makeParsers(~parse=Packet.GolfBallLandInCup.parse, ~toPacket=a => Packet.GolfBallLandInCup(a), ~toLazyPacket=a => Packet.LazyPacket.GolfBallLandInCup(a)))
   | (ClientFinishConnectingToServer, false) => Error(ClientFinishConnectingToServerFromClient)
   | (ClientFinishConnectingToServer, true) =>
-    mapPacket(
-      Packet.ClientFinishConnectingToServer.parse(payload),
-      a => Packet.ClientFinishConnectingToServer(a),
-    )
+    Ok(makeParsers(~parse=Packet.ClientFinishConnectingToServer.parse, ~toPacket=a => Packet.ClientFinishConnectingToServer(a), ~toLazyPacket=a => Packet.LazyPacket.ClientFinishConnectingToServer(a)))
   | (NpcFishOut, true) => Error(NpcFishOutFromServer)
-  | (NpcFishOut, false) => mapPacket(Packet.NpcFishOut.parse(payload), a => Packet.NpcFishOut(a))
+  | (NpcFishOut, false) => Ok(makeParsers(~parse=Packet.NpcFishOut.parse, ~toPacket=a => Packet.NpcFishOut(a), ~toLazyPacket=a => Packet.LazyPacket.NpcFishOut(a)))
   | (NpcTamper, false) => Error(NpcTamperFromClient)
-  | (NpcTamper, true) => mapPacket(Packet.NpcTamper.parse(payload), a => Packet.NpcTamper(a))
+  | (NpcTamper, true) => Ok(makeParsers(~parse=Packet.NpcTamper.parse, ~toPacket=a => Packet.NpcTamper(a), ~toLazyPacket=a => Packet.LazyPacket.NpcTamper(a)))
   | (LegacySoundPlay, false) => Error(LegacySoundPlayFromClient)
   | (LegacySoundPlay, true) =>
-    mapPacket(Packet.LegacySoundPlay.parse(payload), a => Packet.LegacySoundPlay(a))
+    Ok(makeParsers(~parse=Packet.LegacySoundPlay.parse, ~toPacket=a => Packet.LegacySoundPlay(a), ~toLazyPacket=a => Packet.LazyPacket.LegacySoundPlay(a)))
   | (FoodPlatterTryPlacing, true) => Error(FoodPlatterTryPlacingFromServer)
   | (FoodPlatterTryPlacing, false) =>
-    mapPacket(Packet.FoodPlatterTryPlacing.parse(payload), a => Packet.FoodPlatterTryPlacing(a))
+    Ok(makeParsers(~parse=Packet.FoodPlatterTryPlacing.parse, ~toPacket=a => Packet.FoodPlatterTryPlacing(a), ~toLazyPacket=a => Packet.LazyPacket.FoodPlatterTryPlacing(a)))
   | (PlayerLuckFactorsUpdate, true | false) =>
-    mapPacket(Packet.PlayerLuckFactorsUpdate.parse(payload), a => Packet.PlayerLuckFactorsUpdate(a))
+    Ok(makeParsers(~parse=Packet.PlayerLuckFactorsUpdate.parse, ~toPacket=a => Packet.PlayerLuckFactorsUpdate(a), ~toLazyPacket=a => Packet.LazyPacket.PlayerLuckFactorsUpdate(a)))
   | (PlayerDead, false) => Error(PlayerDeadFromClient)
-  | (PlayerDead, true) => mapPacket(Packet.PlayerDead.parse(payload), a => Packet.PlayerDead(a))
+  | (PlayerDead, true) => Ok(makeParsers(~parse=Packet.PlayerDead.parse, ~toPacket=a => Packet.PlayerDead(a), ~toLazyPacket=a => Packet.LazyPacket.PlayerDead(a)))
   | (CavernMonsterTypeSync, true | false) =>
-    mapPacket(Packet.CavernMonsterTypeSync.parse(payload), a => Packet.CavernMonsterTypeSync(a))
+    Ok(makeParsers(~parse=Packet.CavernMonsterTypeSync.parse, ~toPacket=a => Packet.CavernMonsterTypeSync(a), ~toLazyPacket=a => Packet.LazyPacket.CavernMonsterTypeSync(a)))
   | (NpcBuffRemovalRequest, true) => Error(NpcBuffRemovalRequestFromServer)
   | (NpcBuffRemovalRequest, false) =>
-    mapPacket(Packet.NpcBuffRemovalRequest.parse(payload), a => Packet.NpcBuffRemovalRequest(a))
+    Ok(makeParsers(~parse=Packet.NpcBuffRemovalRequest.parse, ~toPacket=a => Packet.NpcBuffRemovalRequest(a), ~toLazyPacket=a => Packet.LazyPacket.NpcBuffRemovalRequest(a)))
   | (ClientSyncedInventory, true) => Error(ClientSyncedInventoryFromServer)
   | (ClientSyncedInventory, false) =>
-    mapPacket(Packet.ClientSyncedInventory.parse(payload), a => Packet.ClientSyncedInventory(a))
+    Ok(makeParsers(~parse=Packet.ClientSyncedInventory.parse, ~toPacket=a => Packet.ClientSyncedInventory(a), ~toLazyPacket=a => Packet.LazyPacket.ClientSyncedInventory(a)))
   | (CountsAsHostForGameplaySet, _) =>
-    mapPacket(
-      Packet.CountsAsHostForGameplaySet.parse(payload),
-      a => Packet.CountsAsHostForGameplaySet(a),
-    )
+    Ok(makeParsers(~parse=Packet.CountsAsHostForGameplaySet.parse, ~toPacket=a => Packet.CountsAsHostForGameplaySet(a), ~toLazyPacket=a => Packet.LazyPacket.CountsAsHostForGameplaySet(a)))
   | (CreditsOrSlimeTransform, _) =>
-    mapPacket(Packet.CreditsOrSlimeTransform.parse(payload), a => Packet.CreditsOrSlimeTransform(a))
+    Ok(makeParsers(~parse=Packet.CreditsOrSlimeTransform.parse, ~toPacket=a => Packet.CreditsOrSlimeTransform(a), ~toLazyPacket=a => Packet.LazyPacket.CreditsOrSlimeTransform(a)))
   | (LucyAxeMessage, _) =>
-    mapPacket(Packet.LucyAxeMessage.parse(payload), a => Packet.LucyAxeMessage(a))
+    Ok(makeParsers(~parse=Packet.LucyAxeMessage.parse, ~toPacket=a => Packet.LucyAxeMessage(a), ~toLazyPacket=a => Packet.LazyPacket.LucyAxeMessage(a)))
   | (PiggyBankVoidLensUpdate, _) =>
-    mapPacket(Packet.PiggyBankVoidLensUpdate.parse(payload), a => Packet.PiggyBankVoidLensUpdate(a))
+    Ok(makeParsers(~parse=Packet.PiggyBankVoidLensUpdate.parse, ~toPacket=a => Packet.PiggyBankVoidLensUpdate(a), ~toLazyPacket=a => Packet.LazyPacket.PiggyBankVoidLensUpdate(a)))
   | (DungeonDefendersEventAttemptSkipWait, _) =>
-    mapPacket(
-      Packet.DungeonDefendersEventAttemptSkipWait.parse(payload),
-      a => Packet.DungeonDefendersEventAttemptSkipWait(a),
-    )
+    Ok(makeParsers(~parse=Packet.DungeonDefendersEventAttemptSkipWait.parse, ~toPacket=a => Packet.DungeonDefendersEventAttemptSkipWait(a), ~toLazyPacket=a => Packet.LazyPacket.DungeonDefendersEventAttemptSkipWait(a)))
   | (HaveDryadDoStardewAnimation, _) =>
-    mapPacket(
-      Packet.HaveDryadDoStardewAnimation.parse(payload),
-      a => Packet.HaveDryadDoStardewAnimation(a),
-    )
+    Ok(makeParsers(~parse=Packet.HaveDryadDoStardewAnimation.parse, ~toPacket=a => Packet.HaveDryadDoStardewAnimation(a), ~toLazyPacket=a => Packet.LazyPacket.HaveDryadDoStardewAnimation(a)))
   | (ItemDropShimmeredUpdate, _) =>
-    mapPacket(Packet.ItemDropShimmeredUpdate.parse(payload), a => Packet.ItemDropShimmeredUpdate(a))
+    Ok(makeParsers(~parse=Packet.ItemDropShimmeredUpdate.parse, ~toPacket=a => Packet.ItemDropShimmeredUpdate(a), ~toLazyPacket=a => Packet.LazyPacket.ItemDropShimmeredUpdate(a)))
   | (ShimmerEffectOrCoinLuck, _) =>
-    mapPacket(Packet.ShimmerEffectOrCoinLuck.parse(payload), a => Packet.ShimmerEffectOrCoinLuck(a))
+    Ok(makeParsers(~parse=Packet.ShimmerEffectOrCoinLuck.parse, ~toPacket=a => Packet.ShimmerEffectOrCoinLuck(a), ~toLazyPacket=a => Packet.LazyPacket.ShimmerEffectOrCoinLuck(a)))
   | (LoadoutSwitch, _) =>
-    mapPacket(Packet.LoadoutSwitch.parse(payload), a => Packet.LoadoutSwitch(a))
+    Ok(makeParsers(~parse=Packet.LoadoutSwitch.parse, ~toPacket=a => Packet.LoadoutSwitch(a), ~toLazyPacket=a => Packet.LazyPacket.LoadoutSwitch(a)))
   | (ItemDropProtectedUpdate, _) =>
-    mapPacket(Packet.ItemDropProtectedUpdate.parse(payload), a => Packet.ItemDropProtectedUpdate(a))
+    Ok(makeParsers(~parse=Packet.ItemDropProtectedUpdate.parse, ~toPacket=a => Packet.ItemDropProtectedUpdate(a), ~toLazyPacket=a => Packet.LazyPacket.ItemDropProtectedUpdate(a)))
+  }
+
+let parsePayload = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServer: bool): result<Packet.t, IParser.parseError> =>
+  switch getParsers(packetType, fromServer) {
+  | Ok(parsers) => parsers.parse(payload, fromServer)
+  | Error(err) => Error(err)
   }
 
 let parsePayloadLazy = (
@@ -382,550 +373,9 @@ let parsePayloadLazy = (
   payload: NodeJs.Buffer.t,
   fromServer: bool,
 ): result<Packet.LazyPacket.t, IParser.parseError> =>
-  switch (packetType, fromServer) {
-  | (ConnectRequest, true) => Error(ConnectRequestFromServer)
-  | (ConnectRequest, false) =>
-    Ok(Packet.LazyPacket.ConnectRequest(Lazy.make(() => Packet.ConnectRequest.parse(payload))))
-  | (Disconnect, false) => Error(DisconnectFromClient)
-  | (Disconnect, true) =>
-    Ok(Packet.LazyPacket.Disconnect(Lazy.make(() => Packet.Disconnect.parse(payload))))
-  | (PlayerSlotSet, false) => Error(PlayerSlotSetFromClient)
-  | (PlayerSlotSet, true) =>
-    Ok(Packet.LazyPacket.PlayerSlotSet(Lazy.make(() => Packet.PlayerSlotSet.parse(payload))))
-  | (PlayerInfo, true | false) =>
-    Ok(Packet.LazyPacket.PlayerInfo(Lazy.make(() => Packet.PlayerInfo.parse(payload))))
-  | (PlayerInventorySlot, true | false) =>
-    Ok(
-      Packet.LazyPacket.PlayerInventorySlot(
-        Lazy.make(() => Packet.PlayerInventorySlot.parse(payload)),
-      ),
-    )
-  | (WorldDataRequest, true) => Error(WorldDataRequestFromServer)
-  | (WorldDataRequest, false) =>
-    Ok(Packet.LazyPacket.WorldDataRequest(Lazy.make(() => Packet.WorldDataRequest.parse(payload))))
-  | (WorldInfo, false) => Error(WorldInfoFromClient)
-  | (WorldInfo, true) =>
-    Ok(Packet.LazyPacket.WorldInfo(Lazy.make(() => Packet.WorldInfo.parse(payload))))
-  | (InitialTileSectionsRequest, true) => Error(InitialTileSectionsRequestFromServer)
-  | (InitialTileSectionsRequest, false) =>
-    Ok(
-      Packet.LazyPacket.InitialTileSectionsRequest(
-        Lazy.make(() => Packet.InitialTileSectionsRequest.parse(payload)),
-      ),
-    )
-  | (Status, false) => Error(StatusFromClient)
-  | (Status, true) => Ok(Packet.LazyPacket.Status(Lazy.make(() => Packet.Status.parse(payload))))
-  | (TileSectionSend, false) => Error(TileSectionSendFromClient)
-  | (TileSectionSend, true) =>
-    Ok(Packet.LazyPacket.TileSectionSend(Lazy.make(() => Packet.TileSectionSend.parse(payload))))
-  | (TileSectionFrame, false) => Error(TileSectionFrameFromClient)
-  | (TileSectionFrame, true) =>
-    Ok(Packet.LazyPacket.TileSectionFrame(Lazy.make(() => Packet.TileSectionFrame.parse(payload))))
-  | (PlayerSpawn, true | false) =>
-    Ok(Packet.LazyPacket.PlayerSpawn(Lazy.make(() => Packet.PlayerSpawn.parse(payload))))
-  | (PlayerUpdate, true | false) =>
-    Ok(Packet.LazyPacket.PlayerUpdate(Lazy.make(() => Packet.PlayerUpdate.parse(payload))))
-  | (PlayerActive, false) => Error(PlayerActiveFromClient)
-  | (PlayerActive, true) =>
-    Ok(Packet.LazyPacket.PlayerActive(Lazy.make(() => Packet.PlayerActive.parse(payload))))
-  | (PlayerHealth, true | false) =>
-    Ok(Packet.LazyPacket.PlayerHealth(Lazy.make(() => Packet.PlayerHealth.parse(payload))))
-  | (TileModify, true | false) =>
-    Ok(Packet.LazyPacket.TileModify(Lazy.make(() => Packet.TileModify.parse(payload))))
-  | (TimeSet, false) => Error(TimeSetFromClient)
-  | (TimeSet, true) => Ok(Packet.LazyPacket.TimeSet(Lazy.make(() => Packet.TimeSet.parse(payload))))
-  | (DoorUse, true | false) =>
-    Ok(Packet.LazyPacket.DoorUse(Lazy.make(() => Packet.DoorUse.parse(payload))))
-  | (TileSquareSend, true | false) =>
-    Ok(Packet.LazyPacket.TileSquareSend(Lazy.make(() => Packet.TileSquareSend.parse(payload))))
-  | (ItemDropUpdate, true | false) =>
-    Ok(Packet.LazyPacket.ItemDropUpdate(Lazy.make(() => Packet.ItemDropUpdate.parse(payload))))
-  | (ItemOwner, true | false) =>
-    Ok(Packet.LazyPacket.ItemOwner(Lazy.make(() => Packet.ItemOwner.parse(payload))))
-  | (NpcUpdate, false) => Error(NpcUpdateFromClient)
-  | (NpcUpdate, true) =>
-    Ok(Packet.LazyPacket.NpcUpdate(Lazy.make(() => Packet.NpcUpdate.parse(payload))))
-  | (NpcItemStrike, true | false) =>
-    Ok(Packet.LazyPacket.NpcItemStrike(Lazy.make(() => Packet.NpcItemStrike.parse(payload))))
-  | (ProjectileSync, true | false) =>
-    Ok(Packet.LazyPacket.ProjectileSync(Lazy.make(() => Packet.ProjectileSync.parse(payload))))
-  | (NpcStrike, true | false) =>
-    Ok(Packet.LazyPacket.NpcStrike(Lazy.make(() => Packet.NpcStrike.parse(payload))))
-  | (ProjectileDestroy, true | false) =>
-    Ok(
-      Packet.LazyPacket.ProjectileDestroy(Lazy.make(() => Packet.ProjectileDestroy.parse(payload))),
-    )
-  | (PvpToggle, true | false) =>
-    Ok(Packet.LazyPacket.PvpToggle(Lazy.make(() => Packet.PvpToggle.parse(payload))))
-  | (ChestOpen, true) => Error(ChestOpenFromServer)
-  | (ChestOpen, false) =>
-    Ok(Packet.LazyPacket.ChestOpen(Lazy.make(() => Packet.ChestOpen.parse(payload))))
-  | (ChestItem, true | false) =>
-    Ok(Packet.LazyPacket.ChestItem(Lazy.make(() => Packet.ChestItem.parse(payload))))
-  | (ActiveContainerSync, true | false) =>
-    Ok(
-      Packet.LazyPacket.ActiveContainerSync(
-        Lazy.make(() => Packet.ActiveContainerSync.parse(payload)),
-      ),
-    )
-  | (ChestPlace, true | false) =>
-    Ok(Packet.LazyPacket.ChestPlace(Lazy.make(() => Packet.ChestPlace.parse(payload))))
-  | (HealEffect, true | false) =>
-    Ok(Packet.LazyPacket.HealEffect(Lazy.make(() => Packet.HealEffect.parse(payload))))
-  | (Zones, true | false) =>
-    Ok(Packet.LazyPacket.Zones(Lazy.make(() => Packet.Zones.parse(payload))))
-  | (PasswordRequired, false) => Error(PasswordRequiredFromClient)
-  | (PasswordRequired, true) =>
-    Ok(Packet.LazyPacket.PasswordRequired(Lazy.make(() => Packet.PasswordRequired.parse(payload))))
-  | (PasswordSend, true) => Error(PasswordSendFromServer)
-  | (PasswordSend, false) =>
-    Ok(Packet.LazyPacket.PasswordSend(Lazy.make(() => Packet.PasswordSend.parse(payload))))
-  | (ItemOwnerRemove, false) => Error(ItemOwnerRemoveFromClient)
-  | (ItemOwnerRemove, true) =>
-    Ok(Packet.LazyPacket.ItemOwnerRemove(Lazy.make(() => Packet.ItemOwnerRemove.parse(payload))))
-  | (NpcTalk, true | false) =>
-    Ok(Packet.LazyPacket.NpcTalk(Lazy.make(() => Packet.NpcTalk.parse(payload))))
-  | (PlayerAnimation, true | false) =>
-    Ok(Packet.LazyPacket.PlayerAnimation(Lazy.make(() => Packet.PlayerAnimation.parse(payload))))
-  | (PlayerMana, true | false) =>
-    Ok(Packet.LazyPacket.PlayerMana(Lazy.make(() => Packet.PlayerMana.parse(payload))))
-  | (ManaEffect, true | false) =>
-    Ok(Packet.LazyPacket.ManaEffect(Lazy.make(() => Packet.ManaEffect.parse(payload))))
-  | (PlayerTeam, true | false) =>
-    Ok(Packet.LazyPacket.PlayerTeam(Lazy.make(() => Packet.PlayerTeam.parse(payload))))
-  | (SignRead, true) => Error(SignReadFromServer)
-  | (SignRead, false) =>
-    Ok(Packet.LazyPacket.SignRead(Lazy.make(() => Packet.SignRead.parse(payload))))
-  | (SignNew, true | false) =>
-    Ok(Packet.LazyPacket.SignNew(Lazy.make(() => Packet.SignNew.parse(payload))))
-  | (LiquidSet, true | false) =>
-    Ok(Packet.LazyPacket.LiquidSet(Lazy.make(() => Packet.LiquidSet.parse(payload))))
-  | (PlayerSpawnSelf, false) => Error(PlayerSpawnSelfFromClient)
-  | (PlayerSpawnSelf, true) =>
-    Ok(Packet.LazyPacket.PlayerSpawnSelf(Lazy.make(() => Packet.PlayerSpawnSelf.parse(payload))))
-  | (PlayerBuffsSet, true | false) =>
-    Ok(Packet.LazyPacket.PlayerBuffsSet(Lazy.make(() => Packet.PlayerBuffsSet.parse(payload))))
-  | (NpcSpecialEffect, true | false) =>
-    Ok(Packet.LazyPacket.NpcSpecialEffect(Lazy.make(() => Packet.NpcSpecialEffect.parse(payload))))
-  | (ChestOrTempleUnlock, true | false) =>
-    Ok(
-      Packet.LazyPacket.ChestOrTempleUnlock(
-        Lazy.make(() => Packet.ChestOrTempleUnlock.parse(payload)),
-      ),
-    )
-  | (NpcBuffAdd, true | false) =>
-    Ok(Packet.LazyPacket.NpcBuffAdd(Lazy.make(() => Packet.NpcBuffAdd.parse(payload))))
-  | (NpcBuffUpdate, false) => Error(NpcBuffUpdateFromClient)
-  | (NpcBuffUpdate, true) =>
-    Ok(Packet.LazyPacket.NpcBuffUpdate(Lazy.make(() => Packet.NpcBuffUpdate.parse(payload))))
-  | (PlayerBuffAdd, true | false) =>
-    Ok(Packet.LazyPacket.PlayerBuffAdd(Lazy.make(() => Packet.PlayerBuffAdd.parse(payload))))
-  | (NpcNameUpdate, true | false) =>
-    Ok(Packet.LazyPacket.NpcNameUpdate(Lazy.make(() => Packet.NpcNameUpdate.parse(payload))))
-  | (GoodEvilUpdate, false) => Error(GoodEvilUpdateFromClient)
-  | (GoodEvilUpdate, true) =>
-    Ok(Packet.LazyPacket.GoodEvilUpdate(Lazy.make(() => Packet.GoodEvilUpdate.parse(payload))))
-  | (HarpPlay, true | false) =>
-    Ok(Packet.LazyPacket.HarpPlay(Lazy.make(() => Packet.HarpPlay.parse(payload))))
-  | (SwitchHit, true | false) =>
-    Ok(Packet.LazyPacket.SwitchHit(Lazy.make(() => Packet.SwitchHit.parse(payload))))
-  | (NpcHomeUpdate, true | false) =>
-    Ok(Packet.LazyPacket.NpcHomeUpdate(Lazy.make(() => Packet.NpcHomeUpdate.parse(payload))))
-  | (BossOrInvasionSpawn, true) => Error(BossOrInvasionSpawnFromServer)
-  | (BossOrInvasionSpawn, false) =>
-    Ok(
-      Packet.LazyPacket.BossOrInvasionSpawn(
-        Lazy.make(() => Packet.BossOrInvasionSpawn.parse(payload)),
-      ),
-    )
-  | (PlayerDodge, true | false) =>
-    Ok(Packet.LazyPacket.PlayerDodge(Lazy.make(() => Packet.PlayerDodge.parse(payload))))
-  | (TilePaint, true | false) =>
-    Ok(Packet.LazyPacket.TilePaint(Lazy.make(() => Packet.TilePaint.parse(payload))))
-  | (WallPaint, true | false) =>
-    Ok(Packet.LazyPacket.WallPaint(Lazy.make(() => Packet.WallPaint.parse(payload))))
-  | (Teleport, true | false) =>
-    Ok(Packet.LazyPacket.Teleport(Lazy.make(() => Packet.Teleport.parse(payload))))
-  | (PlayerHealOther, true | false) =>
-    Ok(Packet.LazyPacket.PlayerHealOther(Lazy.make(() => Packet.PlayerHealOther.parse(payload))))
-  | (DimensionsUpdate, true | false) =>
-    Ok(Packet.LazyPacket.DimensionsUpdate(Lazy.make(() => Packet.DimensionsUpdate.parse(payload))))
-  | (ClientUuid, true) => Error(ClientUuidFromServer)
-  | (ClientUuid, false) =>
-    Ok(Packet.LazyPacket.ClientUuid(Lazy.make(() => Packet.ClientUuid.parse(payload))))
-  | (ChestName, true | false) =>
-    Ok(Packet.LazyPacket.ChestName(Lazy.make(() => Packet.ChestName.parse(payload))))
-  | (NpcCatch, true) => Error(NpcCatchFromServer)
-  | (NpcCatch, false) =>
-    Ok(Packet.LazyPacket.NpcCatch(Lazy.make(() => Packet.NpcCatch.parse(payload))))
-  | (NpcRelease, true) => Error(NpcReleaseFromServer)
-  | (NpcRelease, false) =>
-    Ok(Packet.LazyPacket.NpcRelease(Lazy.make(() => Packet.NpcRelease.parse(payload))))
-  | (TravellingMerchantInventory, false) => Error(TravellingMerchantInventoryFromClient)
-  | (TravellingMerchantInventory, true) =>
-    Ok(
-      Packet.LazyPacket.TravellingMerchantInventory(
-        Lazy.make(() => Packet.TravellingMerchantInventory.parse(payload)),
-      ),
-    )
-  | (TeleportationPotion, true | false) =>
-    Ok(
-      Packet.LazyPacket.TeleportationPotion(
-        Lazy.make(() => Packet.TeleportationPotion.parse(payload)),
-      ),
-    )
-  | (AnglerQuest, false) => Error(AnglerQuestFromClient)
-  | (AnglerQuest, true) =>
-    Ok(Packet.LazyPacket.AnglerQuest(Lazy.make(() => Packet.AnglerQuest.parse(payload))))
-  | (AnglerQuestComplete, true) => Error(AnglerQuestCompleteFromServer)
-  | (AnglerQuestComplete, false) =>
-    Ok(
-      Packet.LazyPacket.AnglerQuestComplete(
-        Lazy.make(() => Packet.AnglerQuestComplete.parse(payload)),
-      ),
-    )
-  | (AnglerQuestsCompletedAmount, true)
-  | (AnglerQuestsCompletedAmount, false) =>
-    Ok(
-      Packet.LazyPacket.AnglerQuestsCompletedAmount(
-        Lazy.make(() => Packet.AnglerQuestsCompletedAmount.parse(payload)),
-      ),
-    )
-  | (TemporaryAnimationCreate, false) => Error(TemporaryAnimationCreateFromClient)
-  | (TemporaryAnimationCreate, true) =>
-    Ok(
-      Packet.LazyPacket.TemporaryAnimationCreate(
-        Lazy.make(() => Packet.TemporaryAnimationCreate.parse(payload)),
-      ),
-    )
-  | (InvasionProgressReport, false) => Error(InvasionProgressReportFromClient)
-  | (InvasionProgressReport, true) =>
-    Ok(
-      Packet.LazyPacket.InvasionProgressReport(
-        Lazy.make(() => Packet.InvasionProgressReport.parse(payload)),
-      ),
-    )
-  | (ObjectPlace, true | false) =>
-    Ok(Packet.LazyPacket.ObjectPlace(Lazy.make(() => Packet.ObjectPlace.parse(payload))))
-  | (PlayerChestIndexSync, false) => Error(PlayerChestIndexSyncFromClient)
-  | (PlayerChestIndexSync, true) =>
-    Ok(
-      Packet.LazyPacket.PlayerChestIndexSync(
-        Lazy.make(() => Packet.PlayerChestIndexSync.parse(payload)),
-      ),
-    )
-  | (CombatNumberCreate, false) => Error(CombatNumberCreateFromClient)
-  | (CombatNumberCreate, true) =>
-    Ok(
-      Packet.LazyPacket.CombatNumberCreate(
-        Lazy.make(() => Packet.CombatNumberCreate.parse(payload)),
-      ),
-    )
-  | (NetModuleLoad, true | false) =>
-    Ok(
-      Packet.LazyPacket.NetModuleLoad(
-        Lazy.make(() => Packet.NetModuleLoad.parse(payload, ~fromServer)),
-      ),
-    )
-  | (NpcKillCount, false) => Error(NpcKillCountFromClient)
-  | (NpcKillCount, true) =>
-    Ok(Packet.LazyPacket.NpcKillCount(Lazy.make(() => Packet.NpcKillCount.parse(payload))))
-  | (PlayerStealth, true | false) =>
-    Ok(Packet.LazyPacket.PlayerStealth(Lazy.make(() => Packet.PlayerStealth.parse(payload))))
-  | (ItemForceIntoNearestChest, true) => Error(ItemForceIntoNearestChestFromServer)
-  | (ItemForceIntoNearestChest, false) =>
-    Ok(
-      Packet.LazyPacket.ItemForceIntoNearestChest(
-        Lazy.make(() => Packet.ItemForceIntoNearestChest.parse(payload)),
-      ),
-    )
-  | (TileEntityUpdate, false) => Error(TileEntityUpdateFromClient)
-  | (TileEntityUpdate, true) =>
-    Ok(Packet.LazyPacket.TileEntityUpdate(Lazy.make(() => Packet.TileEntityUpdate.parse(payload))))
-  | (TileEntityPlace, true) => Error(TileEntityPlaceFromServer)
-  | (TileEntityPlace, false) =>
-    Ok(Packet.LazyPacket.TileEntityPlace(Lazy.make(() => Packet.TileEntityPlace.parse(payload))))
-  | (ItemDropModify, false) => Error(ItemDropModifyFromClient)
-  | (ItemDropModify, true) =>
-    Ok(Packet.LazyPacket.ItemDropModify(Lazy.make(() => Packet.ItemDropModify.parse(payload))))
-  | (ItemFramePlace, true) => Error(ItemFramePlaceFromServer)
-  | (ItemFramePlace, false) =>
-    Ok(Packet.LazyPacket.ItemFramePlace(Lazy.make(() => Packet.ItemFramePlace.parse(payload))))
-  | (ItemDropInstancedUpdate, true | false) =>
-    Ok(
-      Packet.LazyPacket.ItemDropInstancedUpdate(
-        Lazy.make(() => Packet.ItemDropInstancedUpdate.parse(payload)),
-      ),
-    )
-  | (EmoteBubble, false) => Error(EmoteBubbleFromClient)
-  | (EmoteBubble, true) =>
-    Ok(Packet.LazyPacket.EmoteBubble(Lazy.make(() => Packet.EmoteBubble.parse(payload))))
-  | (ExtraValueSync, true | false) =>
-    Ok(Packet.LazyPacket.ExtraValueSync(Lazy.make(() => Packet.ExtraValueSync.parse(payload))))
-  | (SocialHandshake, true | false) =>
-    Ok(Packet.LazyPacket.SocialHandshake(Lazy.make(() => Packet.SocialHandshake.parse(payload))))
-  | (Unused, true | false) =>
-    Ok(Packet.LazyPacket.Unused(Lazy.make(() => Packet.Unused.parse(payload))))
-  | (PortalKill, true) => Error(PortalKillFromServer)
-  | (PortalKill, false) =>
-    Ok(Packet.LazyPacket.PortalKill(Lazy.make(() => Packet.PortalKill.parse(payload))))
-  | (PlayerTeleportPortal, true | false) =>
-    Ok(
-      Packet.LazyPacket.PlayerTeleportPortal(
-        Lazy.make(() => Packet.PlayerTeleportPortal.parse(payload)),
-      ),
-    )
-  | (NpcKilledNotification, false) => Error(NpcKilledNotificationFromClient)
-  | (NpcKilledNotification, true) =>
-    Ok(
-      Packet.LazyPacket.NpcKilledNotification(
-        Lazy.make(() => Packet.NpcKilledNotification.parse(payload)),
-      ),
-    )
-  | (EventNotification, false) => Error(EventNotificationFromClient)
-  | (EventNotification, true) =>
-    Ok(
-      Packet.LazyPacket.EventNotification(Lazy.make(() => Packet.EventNotification.parse(payload))),
-    )
-  | (MinionTargetUpdate, true | false) =>
-    Ok(
-      Packet.LazyPacket.MinionTargetUpdate(
-        Lazy.make(() => Packet.MinionTargetUpdate.parse(payload)),
-      ),
-    )
-  | (NpcTeleportPortal, true | false) =>
-    Ok(
-      Packet.LazyPacket.NpcTeleportPortal(Lazy.make(() => Packet.NpcTeleportPortal.parse(payload))),
-    )
-  | (ShieldStrengthsUpdate, false) => Error(ShieldStrengthsUpdateFromClient)
-  | (ShieldStrengthsUpdate, true) =>
-    Ok(
-      Packet.LazyPacket.ShieldStrengthsUpdate(
-        Lazy.make(() => Packet.ShieldStrengthsUpdate.parse(payload)),
-      ),
-    )
-  | (NebulaLevelUp, true | false) =>
-    Ok(Packet.LazyPacket.NebulaLevelUp(Lazy.make(() => Packet.NebulaLevelUp.parse(payload))))
-  | (MoonLordCountdown, false) => Error(MoonLordCountdownFromClient)
-  | (MoonLordCountdown, true) =>
-    Ok(
-      Packet.LazyPacket.MoonLordCountdown(Lazy.make(() => Packet.MoonLordCountdown.parse(payload))),
-    )
-  | (NpcShopItem, false) => Error(NpcShopItemFromClient)
-  | (NpcShopItem, true) =>
-    Ok(Packet.LazyPacket.NpcShopItem(Lazy.make(() => Packet.NpcShopItem.parse(payload))))
-  | (GemLockToggle, true) => Error(GemLockToggleFromServer)
-  | (GemLockToggle, false) =>
-    Ok(Packet.LazyPacket.GemLockToggle(Lazy.make(() => Packet.GemLockToggle.parse(payload))))
-  | (SmokePoof, false) => Error(SmokePoofFromClient)
-  | (SmokePoof, true) =>
-    Ok(Packet.LazyPacket.SmokePoof(Lazy.make(() => Packet.SmokePoof.parse(payload))))
-  | (ChatMessageSmart, false) => Error(ChatMessageSmartFromClient)
-  | (ChatMessageSmart, true) =>
-    Ok(Packet.LazyPacket.ChatMessageSmart(Lazy.make(() => Packet.ChatMessageSmart.parse(payload))))
-  | (WiredCannonShot, false) => Error(WiredCannonShotFromClient)
-  | (WiredCannonShot, true) =>
-    Ok(Packet.LazyPacket.WiredCannonShot(Lazy.make(() => Packet.WiredCannonShot.parse(payload))))
-  | (MassWireOperation, true) => Error(MassWireOperationFromServer)
-  | (MassWireOperation, false) =>
-    Ok(
-      Packet.LazyPacket.MassWireOperation(Lazy.make(() => Packet.MassWireOperation.parse(payload))),
-    )
-  | (MassWireOperationPay, false) => Error(MassWireOperationPayFromClient)
-  | (MassWireOperationPay, true) =>
-    Ok(
-      Packet.LazyPacket.MassWireOperationPay(
-        Lazy.make(() => Packet.MassWireOperationPay.parse(payload)),
-      ),
-    )
-  | (PartyToggle, true) => Error(PartyToggleFromServer)
-  | (PartyToggle, false) =>
-    Ok(Packet.LazyPacket.PartyToggle(Lazy.make(() => Packet.PartyToggle.parse(payload))))
-  | (TreeGrowFx, true | false) =>
-    Ok(Packet.LazyPacket.TreeGrowFx(Lazy.make(() => Packet.TreeGrowFx.parse(payload))))
-  | (CrystalInvasionStart, true) => Error(CrystalInvasionStartFromServer)
-  | (CrystalInvasionStart, false) =>
-    Ok(
-      Packet.LazyPacket.CrystalInvasionStart(
-        Lazy.make(() => Packet.CrystalInvasionStart.parse(payload)),
-      ),
-    )
-  | (CrystalInvasionWipeAll, false) => Error(CrystalInvasionWipeAllFromClient)
-  | (CrystalInvasionWipeAll, true) =>
-    Ok(
-      Packet.LazyPacket.CrystalInvasionWipeAll(
-        Lazy.make(() => Packet.CrystalInvasionWipeAll.parse(payload)),
-      ),
-    )
-  | (MinionAttackTargetUpdate, true | false) =>
-    Ok(
-      Packet.LazyPacket.MinionAttackTargetUpdate(
-        Lazy.make(() => Packet.MinionAttackTargetUpdate.parse(payload)),
-      ),
-    )
-  | (CrystalInvasionSendWaitTime, false) => Error(CrystalInvasionSendWaitTimeFromClient)
-  | (CrystalInvasionSendWaitTime, true) =>
-    Ok(
-      Packet.LazyPacket.CrystalInvasionSendWaitTime(
-        Lazy.make(() => Packet.CrystalInvasionSendWaitTime.parse(payload)),
-      ),
-    )
-  | (PlayerDamage, true | false) =>
-    Ok(Packet.LazyPacket.PlayerDamage(Lazy.make(() => Packet.PlayerDamage.parse(payload))))
-  | (PlayerDeath, true | false) =>
-    Ok(Packet.LazyPacket.PlayerDeath(Lazy.make(() => Packet.PlayerDeath.parse(payload))))
-  | (CombatTextCreate, false) => Error(CombatTextCreateFromClient)
-  | (CombatTextCreate, true) =>
-    Ok(Packet.LazyPacket.CombatTextCreate(Lazy.make(() => Packet.CombatTextCreate.parse(payload))))
-  | (Emoji, true) => Error(EmojiFromServer)
-  | (Emoji, false) => Ok(Packet.LazyPacket.Emoji(Lazy.make(() => Packet.Emoji.parse(payload))))
-  | (TileEntityDisplayDollItemSync, true | false) =>
-    Ok(
-      Packet.LazyPacket.TileEntityDisplayDollItemSync(
-        Lazy.make(() => Packet.TileEntityDisplayDollItemSync.parse(payload)),
-      ),
-    )
-  | (TileEntityInteractionRequest, true | false) =>
-    Ok(
-      Packet.LazyPacket.TileEntityInteractionRequest(
-        Lazy.make(() => Packet.TileEntityInteractionRequest.parse(payload)),
-      ),
-    )
-  | (WeaponsRackTryPlacing, true) => Error(WeaponsRackTryPlacingFromServer)
-  | (WeaponsRackTryPlacing, false) =>
-    Ok(
-      Packet.LazyPacket.WeaponsRackTryPlacing(
-        Lazy.make(() => Packet.WeaponsRackTryPlacing.parse(payload)),
-      ),
-    )
-  | (TileEntityHatRackItemSync, true | false) =>
-    Ok(
-      Packet.LazyPacket.TileEntityHatRackItemSync(
-        Lazy.make(() => Packet.TileEntityHatRackItemSync.parse(payload)),
-      ),
-    )
-  | (TilePickingSync, true | false) =>
-    Ok(Packet.LazyPacket.TilePickingSync(Lazy.make(() => Packet.TilePickingSync.parse(payload))))
-  | (RevengeMarkerSync, false) => Error(RevengeMarkerSyncFromClient)
-  | (RevengeMarkerSync, true) =>
-    Ok(
-      Packet.LazyPacket.RevengeMarkerSync(Lazy.make(() => Packet.RevengeMarkerSync.parse(payload))),
-    )
-  | (RevengeMarkerRemove, false) => Error(RevengeMarkerRemoveFromClient)
-  | (RevengeMarkerRemove, true) =>
-    Ok(
-      Packet.LazyPacket.RevengeMarkerRemove(
-        Lazy.make(() => Packet.RevengeMarkerRemove.parse(payload)),
-      ),
-    )
-  | (GolfBallLandInCup, true | false) =>
-    Ok(
-      Packet.LazyPacket.GolfBallLandInCup(Lazy.make(() => Packet.GolfBallLandInCup.parse(payload))),
-    )
-  | (ClientFinishConnectingToServer, false) => Error(ClientFinishConnectingToServerFromClient)
-  | (ClientFinishConnectingToServer, true) =>
-    Ok(
-      Packet.LazyPacket.ClientFinishConnectingToServer(
-        Lazy.make(() => Packet.ClientFinishConnectingToServer.parse(payload)),
-      ),
-    )
-  | (NpcFishOut, true) => Error(NpcFishOutFromServer)
-  | (NpcFishOut, false) =>
-    Ok(Packet.LazyPacket.NpcFishOut(Lazy.make(() => Packet.NpcFishOut.parse(payload))))
-  | (NpcTamper, false) => Error(NpcTamperFromClient)
-  | (NpcTamper, true) =>
-    Ok(Packet.LazyPacket.NpcTamper(Lazy.make(() => Packet.NpcTamper.parse(payload))))
-  | (LegacySoundPlay, false) => Error(LegacySoundPlayFromClient)
-  | (LegacySoundPlay, true) =>
-    Ok(Packet.LazyPacket.LegacySoundPlay(Lazy.make(() => Packet.LegacySoundPlay.parse(payload))))
-  | (FoodPlatterTryPlacing, true) => Error(FoodPlatterTryPlacingFromServer)
-  | (FoodPlatterTryPlacing, false) =>
-    Ok(
-      Packet.LazyPacket.FoodPlatterTryPlacing(
-        Lazy.make(() => Packet.FoodPlatterTryPlacing.parse(payload)),
-      ),
-    )
-  | (PlayerLuckFactorsUpdate, true | false) =>
-    Ok(
-      Packet.LazyPacket.PlayerLuckFactorsUpdate(
-        Lazy.make(() => Packet.PlayerLuckFactorsUpdate.parse(payload)),
-      ),
-    )
-  | (PlayerDead, false) => Error(PlayerDeadFromClient)
-  | (PlayerDead, true) =>
-    Ok(Packet.LazyPacket.PlayerDead(Lazy.make(() => Packet.PlayerDead.parse(payload))))
-  | (CavernMonsterTypeSync, true | false) =>
-    Ok(
-      Packet.LazyPacket.CavernMonsterTypeSync(
-        Lazy.make(() => Packet.CavernMonsterTypeSync.parse(payload)),
-      ),
-    )
-  | (NpcBuffRemovalRequest, true) => Error(NpcBuffRemovalRequestFromServer)
-  | (NpcBuffRemovalRequest, false) =>
-    Ok(
-      Packet.LazyPacket.NpcBuffRemovalRequest(
-        Lazy.make(() => Packet.NpcBuffRemovalRequest.parse(payload)),
-      ),
-    )
-  | (ClientSyncedInventory, true) => Error(ClientSyncedInventoryFromServer)
-  | (ClientSyncedInventory, false) =>
-    Ok(
-      Packet.LazyPacket.ClientSyncedInventory(
-        Lazy.make(() => Packet.ClientSyncedInventory.parse(payload)),
-      ),
-    )
-  | (CountsAsHostForGameplaySet, _) =>
-    Ok(
-      Packet.LazyPacket.CountsAsHostForGameplaySet(
-        Lazy.make(() => Packet.CountsAsHostForGameplaySet.parse(payload)),
-      ),
-    )
-  | (CreditsOrSlimeTransform, _) =>
-    Ok(
-      Packet.LazyPacket.CreditsOrSlimeTransform(
-        Lazy.make(() => Packet.CreditsOrSlimeTransform.parse(payload)),
-      ),
-    )
-  | (LucyAxeMessage, _) =>
-    Ok(Packet.LazyPacket.LucyAxeMessage(Lazy.make(() => Packet.LucyAxeMessage.parse(payload))))
-  | (PiggyBankVoidLensUpdate, _) =>
-    Ok(
-      Packet.LazyPacket.PiggyBankVoidLensUpdate(
-        Lazy.make(() => Packet.PiggyBankVoidLensUpdate.parse(payload)),
-      ),
-    )
-  | (DungeonDefendersEventAttemptSkipWait, _) =>
-    Ok(
-      Packet.LazyPacket.DungeonDefendersEventAttemptSkipWait(
-        Lazy.make(() => Packet.DungeonDefendersEventAttemptSkipWait.parse(payload)),
-      ),
-    )
-  | (HaveDryadDoStardewAnimation, _) =>
-    Ok(
-      Packet.LazyPacket.HaveDryadDoStardewAnimation(
-        Lazy.make(() => Packet.HaveDryadDoStardewAnimation.parse(payload)),
-      ),
-    )
-  | (ItemDropShimmeredUpdate, _) =>
-    Ok(
-      Packet.LazyPacket.ItemDropShimmeredUpdate(
-        Lazy.make(() => Packet.ItemDropShimmeredUpdate.parse(payload)),
-      ),
-    )
-  | (ShimmerEffectOrCoinLuck, _) =>
-    Ok(
-      Packet.LazyPacket.ShimmerEffectOrCoinLuck(
-        Lazy.make(() => Packet.ShimmerEffectOrCoinLuck.parse(payload)),
-      ),
-    )
-  | (LoadoutSwitch, _) =>
-    Ok(Packet.LazyPacket.LoadoutSwitch(Lazy.make(() => Packet.LoadoutSwitch.parse(payload))))
-  | (ItemDropProtectedUpdate, _) =>
-    Ok(
-      Packet.LazyPacket.ItemDropProtectedUpdate(
-        Lazy.make(() => Packet.ItemDropProtectedUpdate.parse(payload)),
-      ),
-    )
+  switch getParsers(packetType, fromServer) {
+  | Ok(parsers) => parsers.parseLazy(payload, fromServer)
+  | Error(err) => Error(err)
   }
 
 let parse: IParser.parse<Packet.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => {

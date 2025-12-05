@@ -25,6 +25,9 @@
   "dev-dependencies": [
     "@dusty-phillips/rescript-zora"
   ],
+  "experimental-features": {
+    "LetUnwrap": true
+  },
   "warnings": {
     "number": "",
     "error": "+a"
