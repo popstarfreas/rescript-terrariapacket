@@ -1340,10 +1340,6 @@ declare const parse_8: (_1: Buffer) => (undefined | t_35);
 
 declare const parse_9: (_1: Buffer) => (undefined | t_38);
 
-declare type parsed<a> =
-    { TAG: "ShouldSerialize"; _0: a }
-| { TAG: "SerializeNotNecessary"; _0: a; _1: Buffer };
-
 declare type parseError = { TAG: "Error"; _0: readError };
 
 declare type parseError_2 = { TAG: "Error"; _0: readError };
@@ -1387,7 +1383,7 @@ export declare namespace Parser {
 }
 
 declare type parseResult<a> =
-    { TAG: "Ok"; _0: (undefined | parsed<a>) }
+    { TAG: "Ok"; _0: (undefined | a) }
 | { TAG: "Error"; _0: readError };
 
 declare type particle = {
