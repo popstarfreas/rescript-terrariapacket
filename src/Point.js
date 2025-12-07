@@ -3,7 +3,7 @@
 
 
 function toString(self) {
-  return `{ x: ` + String(self.x) + `, y: ` + String(self.y) + ` }`;
+  return `{ x: ` + self.x.toString() + `, y: ` + self.y.toString() + ` }`;
 }
 
 let Int = {
@@ -11,7 +11,7 @@ let Int = {
 };
 
 function toString$1(self) {
-  return `{ x: ` + String(self.x) + `, y: ` + String(self.y) + ` }`;
+  return `{ x: ` + self.x.toString() + `, y: ` + self.y.toString() + ` }`;
 }
 
 let Float = {

@@ -365,7 +365,7 @@ module Decode = {
 
     let rec readChanges = (idx, acc) =>
       if idx >= changesCount {
-        Ok(Belt.Array.reverse(acc))
+        Ok(Array.toReversed(acc))
       } else {
         let? Ok(y) = reader->readInt16("y")
         let? Ok(x) = reader->readInt16("x")

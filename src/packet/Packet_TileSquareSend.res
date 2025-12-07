@@ -1,5 +1,3 @@
-module Option = Belt.Option
-
 type frame = {
   x: int,
   y: int,

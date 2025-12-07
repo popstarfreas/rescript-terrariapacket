@@ -179,7 +179,7 @@ function parse(payload, fromServer) {
           if (idx >= changesCount) {
             return {
               TAG: "Ok",
-              _0: Belt_Array.reverse(acc)
+              _0: acc.toReversed()
             };
           }
           let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "y");

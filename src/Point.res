@@ -7,12 +7,11 @@ type t<'a> = {
 module Int = {
   @genType
   type t = t<int>
-  let toString = (self: t) => `{ x: ${self.x->Belt.Int.toString}, y: ${self.y->Belt.Int.toString} }`
+  let toString = (self: t) => `{ x: ${self.x->Int.toString}, y: ${self.y->Int.toString} }`
 }
 
 module Float = {
   @genType
   type t = t<float>
-  let toString = (self: t) =>
-    `{ x: ${self.x->Belt.Float.toString}, y: ${self.y->Belt.Float.toString} }`
+  let toString = (self: t) => `{ x: ${self.x->Float.toString}, y: ${self.y->Float.toString} }`
 }

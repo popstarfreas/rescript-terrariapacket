@@ -1,4 +1,4 @@
-let map = Belt.Map.Int.fromArray([
+let map = Map.fromArray([
   (379, true),
   (371, true),
   (357, true),
@@ -193,4 +193,4 @@ let map = Belt.Map.Int.fromArray([
   (388, true),
 ])
 
-let isSolid = (tileType: int) => map->Belt.Map.Int.getWithDefault(tileType, false)
+let isSolid = (tileType: int) => map->Map.get(tileType)->Option.getOr(false)

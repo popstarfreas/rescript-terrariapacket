@@ -178,10 +178,10 @@ module Encode = {
     BitFlags.fromFlags(
       ~flag1=self.directionX,
       ~flag2=self.directionY,
-      ~flag3=Belt.Option.isSome(ai0),
-      ~flag4=Belt.Option.isSome(ai1),
-      ~flag5=Belt.Option.isSome(ai2),
-      ~flag6=Belt.Option.isSome(ai3),
+      ~flag3=Option.isSome(ai0),
+      ~flag4=Option.isSome(ai1),
+      ~flag5=Option.isSome(ai2),
+      ~flag6=Option.isSome(ai3),
       ~flag7=self.spriteDirection,
       ~flag8=self.life == Max,
     )->BitFlags.toByte
@@ -189,9 +189,9 @@ module Encode = {
 
   let npcFlags2 = (self: t) => {
     BitFlags.fromFlags(
-      ~flag1=Belt.Option.isSome(self.playerCountScale),
+      ~flag1=Option.isSome(self.playerCountScale),
       ~flag2=self.spawnedFromStatue,
-      ~flag3=Belt.Option.isSome(self.strengthMultiplier),
+      ~flag3=Option.isSome(self.strengthMultiplier),
       ~flag4=false,
       ~flag5=false,
       ~flag6=false,

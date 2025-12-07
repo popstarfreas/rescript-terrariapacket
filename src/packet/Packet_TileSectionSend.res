@@ -1,6 +1,3 @@
-module Int = Belt.Int
-module Option = Belt.Option
-
 @genType
 type frame = {
   x: int,
@@ -404,7 +401,7 @@ module Entity = {
   }
 
   let hasItem = (arr, n) => {
-    arr->Belt.Array.get(n)->Option.flatMap(a => a)->Option.isSome
+    arr->Array.get(n)->Option.flatMap(a => a)->Option.isSome
   }
 
   let packDisplayDoll = (writer, displayDollKind: displayDoll): bufferWriter => {
@@ -435,14 +432,14 @@ module Entity = {
     ->ignore
 
     for i in 0 to 7 {
-      switch displayDollKind.items->Belt.Array.get(i)->Option.flatMap(a => a) {
+      switch displayDollKind.items->Array.get(i)->Option.flatMap(a => a) {
       | Some(item) => writer->packDisplayItem(item)->ignore
       | None => ()
       }
     }
 
     for i in 0 to 7 {
-      switch displayDollKind.dyes->Belt.Array.get(i)->Option.flatMap(a => a) {
+      switch displayDollKind.dyes->Array.get(i)->Option.flatMap(a => a) {
       | Some(item) => writer->packDisplayItem(item)->ignore
       | None => ()
       }
@@ -468,14 +465,14 @@ module Entity = {
     writer->packByte(flags->BitFlags.toByte, "flags")->ignore
 
     for i in 0 to 1 {
-      switch hatRackKind.items->Belt.Array.get(i)->Option.flatMap(a => a) {
+      switch hatRackKind.items->Array.get(i)->Option.flatMap(a => a) {
       | Some(item) => writer->packDisplayItem(item)->ignore
       | None => ()
       }
     }
 
     for i in 0 to 1 {
-      switch hatRackKind.dyes->Belt.Array.get(i)->Option.flatMap(a => a) {
+      switch hatRackKind.dyes->Array.get(i)->Option.flatMap(a => a) {
       | Some(item) => writer->packDisplayItem(item)->ignore
       | None => ()
       }
@@ -622,7 +619,7 @@ module Decode = {
 
         let oldActive = tileCache.activeTile
         let? Ok() = if header5->BitFlags.flag2 {
-          let oldType = tileCache.activeTile->Option.mapWithDefault(0, active => active.tileType)
+          let oldType = tileCache.activeTile->Option.mapOr(0, active => active.tileType)
           let? Ok(tileType) = if header5->BitFlags.flag6 {
             let? Ok(byte) = reader->readByte("tileType_byte1")
             let? Ok(secondByte) = reader->readByte("tileType_byte2")
@@ -703,9 +700,7 @@ module Decode = {
           let slopeBits = (header4->BitFlags.toByte &&& 112) >> 4
           if (
             slopeBits != 0 &&
-              TileSolid.isSolid(
-                tileCache.activeTile->Option.mapWithDefault(0, tile => tile.tileType),
-              )
+              TileSolid.isSolid(tileCache.activeTile->Option.mapOr(0, tile => tile.tileType))
           ) {
             if slopeBits == 1 {
               tileCache.halfBrick = true

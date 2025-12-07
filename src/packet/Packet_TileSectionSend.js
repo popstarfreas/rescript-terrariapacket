@@ -2,8 +2,7 @@
 'use strict';
 
 let Nodezlib = require("node:zlib");
-let Belt_Array = require("@rescript/runtime/lib/js/Belt_Array.js");
-let Belt_Option = require("@rescript/runtime/lib/js/Belt_Option.js");
+let Stdlib_Option = require("@rescript/runtime/lib/js/Stdlib_Option.js");
 let Stdlib_Result = require("@rescript/runtime/lib/js/Stdlib_Result.js");
 let Primitive_object = require("@rescript/runtime/lib/js/Primitive_object.js");
 let Primitive_exceptions = require("@rescript/runtime/lib/js/Primitive_exceptions.js");
@@ -265,7 +264,7 @@ function packDisplayItem(writer, displayItem) {
 }
 
 function hasItem(arr, n) {
-  return Belt_Option.isSome(Belt_Option.flatMap(Belt_Array.get(arr, n), a => a));
+  return Stdlib_Option.isSome(Stdlib_Option.flatMap(arr[n], a => a));
 }
 
 function pack$2(writer, entity) {
@@ -278,13 +277,13 @@ function pack$2(writer, entity) {
       let dyeFlags = BitFlags$TerrariaPacket.fromFlags(hasItem(displayDollKind.dyes, 0), hasItem(displayDollKind.dyes, 1), hasItem(displayDollKind.dyes, 2), hasItem(displayDollKind.dyes, 3), hasItem(displayDollKind.dyes, 4), hasItem(displayDollKind.dyes, 5), hasItem(displayDollKind.dyes, 6), hasItem(displayDollKind.dyes, 7));
       ErrorAwareBufferWriter$TerrariaPacket.packByte(ErrorAwareBufferWriter$TerrariaPacket.packByte(writer$1, BitFlags$TerrariaPacket.toByte(itemFlags), "itemFlags"), BitFlags$TerrariaPacket.toByte(dyeFlags), "dyeFlags");
       for (let i = 0; i <= 7; ++i) {
-        let item = Belt_Option.flatMap(Belt_Array.get(displayDollKind.items, i), a => a);
+        let item = Stdlib_Option.flatMap(displayDollKind.items[i], a => a);
         if (item !== undefined) {
           packDisplayItem(writer$1, item);
         }
       }
       for (let i$1 = 0; i$1 <= 7; ++i$1) {
-        let item$1 = Belt_Option.flatMap(Belt_Array.get(displayDollKind.dyes, i$1), a => a);
+        let item$1 = Stdlib_Option.flatMap(displayDollKind.dyes[i$1], a => a);
         if (item$1 !== undefined) {
           packDisplayItem(writer$1, item$1);
         }
@@ -295,13 +294,13 @@ function pack$2(writer, entity) {
       let flags = BitFlags$TerrariaPacket.fromFlags(hasItem(hatRackKind.items, 0), hasItem(hatRackKind.items, 1), hasItem(hatRackKind.dyes, 2), hasItem(hatRackKind.dyes, 3), false, false, false, false);
       ErrorAwareBufferWriter$TerrariaPacket.packByte(writer$1, BitFlags$TerrariaPacket.toByte(flags), "flags");
       for (let i$2 = 0; i$2 <= 1; ++i$2) {
-        let item$2 = Belt_Option.flatMap(Belt_Array.get(hatRackKind.items, i$2), a => a);
+        let item$2 = Stdlib_Option.flatMap(hatRackKind.items[i$2], a => a);
         if (item$2 !== undefined) {
           packDisplayItem(writer$1, item$2);
         }
       }
       for (let i$3 = 0; i$3 <= 1; ++i$3) {
-        let item$3 = Belt_Option.flatMap(Belt_Array.get(hatRackKind.dyes, i$3), a => a);
+        let item$3 = Stdlib_Option.flatMap(hatRackKind.dyes[i$3], a => a);
         if (item$3 !== undefined) {
           packDisplayItem(writer$1, item$3);
         }
@@ -520,7 +519,7 @@ function parse(payload) {
     let oldActive = tileCache.activeTile;
     let e$6;
     if (BitFlags$TerrariaPacket.flag2(header5)) {
-      let oldType = Belt_Option.mapWithDefault(tileCache.activeTile, 0, active => active.tileType);
+      let oldType = Stdlib_Option.mapOr(tileCache.activeTile, 0, active => active.tileType);
       let e$7;
       if (BitFlags$TerrariaPacket.flag6(header5)) {
         let e$8 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "tileType_byte1");
@@ -554,7 +553,7 @@ function parse(payload) {
             e$10 = e$11;
           }
         } else {
-          e$10 = Belt_Option.isSome(oldActive) && tileType === oldType ? ({
+          e$10 = Stdlib_Option.isSome(oldActive) && tileType === oldType ? ({
               TAG: "Ok",
               _0: oldActive.frame
             }) : ({
@@ -682,7 +681,7 @@ function parse(payload) {
         tileCache.wire3 = true;
       }
       let slopeBits = ((BitFlags$TerrariaPacket.toByte(header4$1) & 112) >> 4);
-      if (slopeBits !== 0 && TileSolid$TerrariaPacket.isSolid(Belt_Option.mapWithDefault(tileCache.activeTile, 0, tile => tile.tileType))) {
+      if (slopeBits !== 0 && TileSolid$TerrariaPacket.isSolid(Stdlib_Option.mapOr(tileCache.activeTile, 0, tile => tile.tileType))) {
         if (slopeBits === 1) {
           tileCache.halfBrick = true;
         } else {
@@ -956,7 +955,7 @@ function parse(payload) {
           TAG: "Error",
           _0: {
             context: "Entity.parse",
-            error: new Error("Unknown entity kind: " + String(entityType))
+            error: new Error("Unknown entity kind: " + entityType.toString())
           }
         };
     }
@@ -996,7 +995,7 @@ function parse(payload) {
 function getLiquidBitFlags(tile) {
   let liquidBits = tile.honey ? "Three" : (
       tile.lava ? "Two" : (
-          Belt_Option.isSome(tile.liquid) ? "One" : "Zero"
+          Stdlib_Option.isSome(tile.liquid) ? "One" : "Zero"
         )
     );
   switch (liquidBits) {
@@ -1119,13 +1118,13 @@ function getRepeatCountBitFlags(repeatCount) {
 function packTile(writer, tile, repeatCount) {
   let header2 = tile.coatHeader;
   let wall = tile.wall;
-  let header3 = BitFlags$TerrariaPacket.fromFlags(header2 > 0, tile.actuator, tile.inActive, Belt_Option.isSome(tile.color), Belt_Option.isSome(tile.wall) && Belt_Option.isSome(tile.wallColor), tile.wire4, wall !== undefined ? wall > 255 : false, false);
+  let header3 = BitFlags$TerrariaPacket.fromFlags(header2 > 0, tile.actuator, tile.inActive, Stdlib_Option.isSome(tile.color), Stdlib_Option.isSome(tile.wall) && Stdlib_Option.isSome(tile.wallColor), tile.wire4, wall !== undefined ? wall > 255 : false, false);
   let match = getSlopeBitFlags(tile);
   let header4 = BitFlags$TerrariaPacket.fromFlags(BitFlags$TerrariaPacket.toByte(header3) > 0, tile.wire, tile.wire2, tile.wire3, match[2], match[1], match[0], false);
   let match$1 = getLiquidBitFlags(tile);
   let match$2 = getRepeatCountBitFlags(repeatCount);
   let activeTile = tile.activeTile;
-  let tileFlags = BitFlags$TerrariaPacket.fromFlags(BitFlags$TerrariaPacket.toByte(header4) > 0, Belt_Option.isSome(tile.activeTile), Belt_Option.isSome(tile.wall), match$1[1], match$1[0], activeTile !== undefined ? activeTile.tileType > 255 : false, match$2[1], match$2[0]);
+  let tileFlags = BitFlags$TerrariaPacket.fromFlags(BitFlags$TerrariaPacket.toByte(header4) > 0, Stdlib_Option.isSome(tile.activeTile), Stdlib_Option.isSome(tile.wall), match$1[1], match$1[0], activeTile !== undefined ? activeTile.tileType > 255 : false, match$2[1], match$2[0]);
   ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(tileFlags), "tileFlags");
   if (BitFlags$TerrariaPacket.flag1(tileFlags)) {
     ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(header4), "header4");

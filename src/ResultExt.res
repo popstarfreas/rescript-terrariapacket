@@ -10,5 +10,5 @@ let allOkOrError = (results: array<result<'a, 'b>>): result<array<'a>, 'b> => {
     }
   }
 
-  processEntry(list{}, results->Belt.List.fromArray)
+  processEntry(list{}, results->List.fromArray)
 }

@@ -64,7 +64,7 @@ module Encode = {
       ~flag1=self.teleportType == Npc,
       ~flag2=self.teleportType == PlayerToPlayer,
       ~flag3=self.getPositionFromTarget,
-      ~flag4=self.extraInfo->Belt.Option.isSome,
+      ~flag4=self.extraInfo->Option.isSome,
       ~flag5=false,
       ~flag6=false,
       ~flag7=false,
@@ -81,11 +81,10 @@ module Encode = {
       ->packSingle(self.y, "y")
       ->packByte(self.style, "style")
 
-    let writer =
-      switch self.extraInfo {
-      | Some(extraInfo) => writer->packInt32(extraInfo, "extraInfo")
-      | None => writer
-      }
+    let writer = switch self.extraInfo {
+    | Some(extraInfo) => writer->packInt32(extraInfo, "extraInfo")
+    | None => writer
+    }
 
     writer->data
   }
