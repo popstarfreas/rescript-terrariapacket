@@ -1,5 +1,3 @@
-module Option = Belt.Option
-
 type other =
   | FallDamage
   | Drowning
@@ -72,75 +70,68 @@ type t = {
 module Decode = {
   let {readInt16, readByte, readString} = module(ErrorAwarePacketReader)
 
-  let readDeathReason = (
-    reader: ErrorAwarePacketReader.t,
-  ): result<t, ErrorAwarePacketReader.readError> => {
+  let readDeathReason = (reader: ErrorAwarePacketReader.t): result<
+    t,
+    ErrorAwarePacketReader.readError,
+  > => {
     let? Ok(reasonTypeRaw) = reader->readByte("reasonType")
     let reasonType = BitFlags.fromByte(reasonTypeRaw)
 
-    let? Ok(killerPlayerId) =
-      if reasonType->BitFlags.flag1 {
-        let? Ok(killerPlayerId) = reader->readInt16("killerPlayerId")
-        Ok(Some(killerPlayerId))
-      } else {
-        Ok(None)
-      }
+    let? Ok(killerPlayerId) = if reasonType->BitFlags.flag1 {
+      let? Ok(killerPlayerId) = reader->readInt16("killerPlayerId")
+      Ok(Some(killerPlayerId))
+    } else {
+      Ok(None)
+    }
 
-    let? Ok(killerNpcId) =
-      if reasonType->BitFlags.flag2 {
-        let? Ok(killerNpcId) = reader->readInt16("killerNpcId")
-        Ok(Some(killerNpcId))
-      } else {
-        Ok(None)
-      }
+    let? Ok(killerNpcId) = if reasonType->BitFlags.flag2 {
+      let? Ok(killerNpcId) = reader->readInt16("killerNpcId")
+      Ok(Some(killerNpcId))
+    } else {
+      Ok(None)
+    }
 
-    let? Ok(killerProjectileId) =
-      if reasonType->BitFlags.flag3 {
-        let? Ok(killerProjectileId) = reader->readInt16("killerProjectileId")
-        Ok(Some(killerProjectileId))
-      } else {
-        Ok(None)
-      }
+    let? Ok(killerProjectileId) = if reasonType->BitFlags.flag3 {
+      let? Ok(killerProjectileId) = reader->readInt16("killerProjectileId")
+      Ok(Some(killerProjectileId))
+    } else {
+      Ok(None)
+    }
 
-    let? Ok(typeOfDeathOther) =
-      if reasonType->BitFlags.flag4 {
-        let? Ok(typeOfDeathOther) = reader->readByte("typeOfDeathOther")
-        Ok(typeOfDeathOther->otherFromByte)
-      } else {
-        Ok(None)
-      }
+    let? Ok(typeOfDeathOther) = if reasonType->BitFlags.flag4 {
+      let? Ok(typeOfDeathOther) = reader->readByte("typeOfDeathOther")
+      Ok(typeOfDeathOther->otherFromByte)
+    } else {
+      Ok(None)
+    }
 
-    let? Ok(projectileType) =
-      if reasonType->BitFlags.flag5 {
-        let? Ok(projectileType) = reader->readInt16("projectileType")
-        Ok(Some(projectileType))
-      } else {
-        Ok(None)
-      }
+    let? Ok(projectileType) = if reasonType->BitFlags.flag5 {
+      let? Ok(projectileType) = reader->readInt16("projectileType")
+      Ok(Some(projectileType))
+    } else {
+      Ok(None)
+    }
 
-    let? Ok(itemType) =
-      if reasonType->BitFlags.flag6 {
-        let? Ok(itemType) = reader->readInt16("itemType")
-        Ok(Some(itemType))
-      } else {
-        Ok(None)
-      }
+    let? Ok(itemType) = if reasonType->BitFlags.flag6 {
+      let? Ok(itemType) = reader->readInt16("itemType")
+      Ok(Some(itemType))
+    } else {
+      Ok(None)
+    }
 
-    let? Ok(itemPrefix) =
-      if reasonType->BitFlags.flag7 {
-        let? Ok(itemPrefix) = reader->readByte("itemPrefix")
-        Ok(Some(itemPrefix))
-      } else {
-        Ok(None)
-      }
+    let? Ok(itemPrefix) = if reasonType->BitFlags.flag7 {
+      let? Ok(itemPrefix) = reader->readByte("itemPrefix")
+      Ok(Some(itemPrefix))
+    } else {
+      Ok(None)
+    }
 
-    let? Ok(deathReason) =
-      if reasonType->BitFlags.flag8 {
-        let? Ok(deathReason) = reader->readString("deathReason")
-        Ok(Some(deathReason))
-      } else {
-        Ok(None)
-      }
+    let? Ok(deathReason) = if reasonType->BitFlags.flag8 {
+      let? Ok(deathReason) = reader->readString("deathReason")
+      Ok(Some(deathReason))
+    } else {
+      Ok(None)
+    }
 
     Ok({
       killerPlayerId,
@@ -182,10 +173,7 @@ module Encode = {
     }
   }
 
-  let packKillerNpcId = (
-    writer: ErrorAwarePacketWriter.t,
-    self: t,
-  ): ErrorAwarePacketWriter.t => {
+  let packKillerNpcId = (writer: ErrorAwarePacketWriter.t, self: t): ErrorAwarePacketWriter.t => {
     switch self.killerNpcId {
     | Some(killerNpcId) => writer->packInt16(killerNpcId, "killerNpcId")
     | None => writer

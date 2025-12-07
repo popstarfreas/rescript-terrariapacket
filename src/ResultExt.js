@@ -2,6 +2,7 @@
 'use strict';
 
 let Belt_List = require("@rescript/runtime/lib/js/Belt_List.js");
+let Stdlib_List = require("@rescript/runtime/lib/js/Stdlib_List.js");
 
 function allOkOrError(results) {
   let _good = /* [] */0;
@@ -12,7 +13,7 @@ function allOkOrError(results) {
     if (entriesLeft === 0) {
       return {
         TAG: "Ok",
-        _0: Belt_List.toArray(good)
+        _0: Stdlib_List.toArray(good)
       };
     }
     let entry = entriesLeft.hd;

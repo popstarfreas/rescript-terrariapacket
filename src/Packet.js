@@ -2,7 +2,7 @@
 'use strict';
 
 let Pervasives = require("@rescript/runtime/lib/js/Pervasives.js");
-let Belt_Option = require("@rescript/runtime/lib/js/Belt_Option.js");
+let Stdlib_Option = require("@rescript/runtime/lib/js/Stdlib_Option.js");
 let ISerializer$TerrariaPacket = require("./ISerializer.js");
 let Packet_Emoji$TerrariaPacket = require("./packet/Packet_Emoji.js");
 let Packet_Zones$TerrariaPacket = require("./packet/Packet_Zones.js");
@@ -1476,17 +1476,17 @@ function toPacketName$1(packet) {
       return "ItemOwner";
     case "NpcUpdate" :
       let match = packet._0;
-      return `NpcUpdate(npcSlotId: ` + String(match.npcSlotId) + `, npcTypeId: ` + String(match.npcTypeId) + `, x: ` + String(match.x) + `, y: ` + String(match.y) + `, vx: ` + String(match.vx) + `, vy: ` + String(match.vy) + `, target: ` + String(match.target) + `, directionX: ` + Pervasives.string_of_bool(match.directionX) + `, directionY: ` + Pervasives.string_of_bool(match.directionY) + `)`;
+      return `NpcUpdate(npcSlotId: ` + match.npcSlotId.toString() + `, npcTypeId: ` + match.npcTypeId.toString() + `, x: ` + match.x.toString() + `, y: ` + match.y.toString() + `, vx: ` + match.vx.toString() + `, vy: ` + match.vy.toString() + `, target: ` + match.target.toString() + `, directionX: ` + Pervasives.string_of_bool(match.directionX) + `, directionY: ` + Pervasives.string_of_bool(match.directionY) + `)`;
     case "NpcItemStrike" :
       return "NpcItemStrike";
     case "ProjectileSync" :
       let match$1 = packet._0;
-      return `ProjectileSync(projectileId: ` + String(match$1.projectileId) + `, x: ` + String(match$1.x) + `, y: ` + String(match$1.y) + `, vx: ` + String(match$1.vx) + `, vy: ` + String(match$1.vy) + `, owner: ` + String(match$1.owner) + `, projectileType: ` + String(match$1.projectileType) + `, damage: ` + Belt_Option.mapWithDefault(match$1.damage, "None", damage => String(damage)) + `, knockback: ` + Belt_Option.mapWithDefault(match$1.knockback, "None", knockback => String(knockback)) + `)`;
+      return `ProjectileSync(projectileId: ` + match$1.projectileId.toString() + `, x: ` + match$1.x.toString() + `, y: ` + match$1.y.toString() + `, vx: ` + match$1.vx.toString() + `, vy: ` + match$1.vy.toString() + `, owner: ` + match$1.owner.toString() + `, projectileType: ` + match$1.projectileType.toString() + `, damage: ` + Stdlib_Option.mapOr(match$1.damage, "None", damage => damage.toString()) + `, knockback: ` + Stdlib_Option.mapOr(match$1.knockback, "None", knockback => knockback.toString()) + `)`;
     case "NpcStrike" :
       return "NpcStrike";
     case "ProjectileDestroy" :
       let projectileDestroy = packet._0;
-      return `ProjectileDestroy(projectileId: ` + String(projectileDestroy.projectileId) + `, owner: ` + String(projectileDestroy.owner) + `)`;
+      return `ProjectileDestroy(projectileId: ` + projectileDestroy.projectileId.toString() + `, owner: ` + projectileDestroy.owner.toString() + `)`;
     case "PvpToggle" :
       return "PvpToggle";
     case "ChestOpen" :

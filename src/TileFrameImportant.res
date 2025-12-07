@@ -1,4 +1,4 @@
-let map = Belt.Map.Int.fromArray([
+let map = Map.fromArray([
   (0, false),
   (1, false),
   (2, false),
@@ -624,4 +624,4 @@ let map = Belt.Map.Int.fromArray([
   (622, true),
 ])
 
-let isImportant = (tileType: int) => map->Belt.Map.Int.getWithDefault(tileType, false)
+let isImportant = (tileType: int) => map->Map.get(tileType)->Option.getOr(false)

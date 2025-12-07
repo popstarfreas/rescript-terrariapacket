@@ -17,7 +17,7 @@ let teleportTypeToInt = teleportType =>
 type t = {teleportType: teleportType}
 
 module Decode = {
-  let {readByte, readInt16} = module(ErrorAwarePacketReader)
+  let {readByte} = module(ErrorAwarePacketReader)
   let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
     let? Ok(rawTeleportType) = reader->readByte("teleportType")
@@ -37,7 +37,7 @@ module Decode = {
 
 module Encode = {
   module Writer = ErrorAwarePacketWriter
-  let {packByte, packInt16, setType, data} = module(Writer)
+  let {packByte, setType, data} = module(Writer)
   let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
     Writer.make()
     ->setType(PacketType.TeleportationPotion->PacketType.toInt)

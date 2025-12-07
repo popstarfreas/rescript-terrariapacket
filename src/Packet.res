@@ -1259,18 +1259,15 @@ let toPacketName = (packet: t): string => {
   | ItemDropUpdate(_itemDropUpdate) => "ItemDropUpdate"
   | ItemOwner(_itemOwner) => "ItemOwner"
   | NpcUpdate({npcSlotId, npcTypeId, x, y, vx, vy, target, directionX, directionY}) =>
-    `NpcUpdate(npcSlotId: ${npcSlotId->Belt.Int.toString}, npcTypeId: ${npcTypeId->Belt.Int.toString}, x: ${x->Belt.Float.toString}, y: ${y->Belt.Float.toString}, vx: ${vx->Belt.Float.toString}, vy: ${vy->Belt.Float.toString}, target: ${target->Belt.Int.toString}, directionX: ${directionX->string_of_bool}, directionY: ${directionY->string_of_bool})`
+    `NpcUpdate(npcSlotId: ${npcSlotId->Int.toString}, npcTypeId: ${npcTypeId->Int.toString}, x: ${x->Float.toString}, y: ${y->Float.toString}, vx: ${vx->Float.toString}, vy: ${vy->Float.toString}, target: ${target->Int.toString}, directionX: ${directionX->string_of_bool}, directionY: ${directionY->string_of_bool})`
   | NpcItemStrike(_npcItemStrike) => "NpcItemStrike"
   | ProjectileSync({projectileId, x, y, vx, vy, owner, projectileType, damage, knockback}) =>
-    `ProjectileSync(projectileId: ${projectileId->Belt.Int.toString}, x: ${x->Belt.Float.toString}, y: ${y->Belt.Float.toString}, vx: ${vx->Belt.Float.toString}, vy: ${vy->Belt.Float.toString}, owner: ${owner->Belt.Int.toString}, projectileType: ${projectileType->Belt.Int.toString}, damage: ${damage->Belt.Option.mapWithDefault(
-        "None",
-        damage => damage->Belt.Int.toString,
-      )}, knockback: ${knockback->Belt.Option.mapWithDefault("None", knockback =>
-        knockback->Belt.Float.toString
+    `ProjectileSync(projectileId: ${projectileId->Int.toString}, x: ${x->Float.toString}, y: ${y->Float.toString}, vx: ${vx->Float.toString}, vy: ${vy->Float.toString}, owner: ${owner->Int.toString}, projectileType: ${projectileType->Int.toString}, damage: ${damage->Option.mapOr("None", damage => damage->Int.toString)}, knockback: ${knockback->Option.mapOr("None", knockback =>
+        knockback->Float.toString
       )})`
   | NpcStrike(_npcStrike) => "NpcStrike"
   | ProjectileDestroy(projectileDestroy) =>
-    `ProjectileDestroy(projectileId: ${projectileDestroy.projectileId->Belt.Int.toString}, owner: ${projectileDestroy.owner->Belt.Int.toString})`
+    `ProjectileDestroy(projectileId: ${projectileDestroy.projectileId->Int.toString}, owner: ${projectileDestroy.owner->Int.toString})`
   | PvpToggle(_pvpToggle) => "PvpToggle"
   | ChestOpen(_chestOpen) => "ChestOpen"
   | ChestItem(_chestItem) => "ChestItem"
