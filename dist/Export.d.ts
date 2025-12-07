@@ -2013,14 +2013,84 @@ declare type parseError_85 = { TAG: "Error"; _0: readError };
 
 declare type parseError_86 = { TAG: "Error"; _0: readError };
 
+declare type parseError_87 =
+| { TAG: "ReaderError"; _0: readError }
+| { TAG: "ConnectRequestFromServer" }
+| { TAG: "DisconnectFromClient" }
+| { TAG: "PlayerSlotSetFromClient" }
+| { TAG: "WorldDataRequestFromServer" }
+| { TAG: "WorldInfoFromClient" }
+| { TAG: "InitialTileSectionsRequestFromServer" }
+| { TAG: "StatusFromClient" }
+| { TAG: "TileSectionSendFromClient" }
+| { TAG: "TileSectionFrameFromClient" }
+| { TAG: "PlayerActiveFromClient" }
+| { TAG: "TimeSetFromClient" }
+| { TAG: "NpcUpdateFromClient" }
+| { TAG: "ChestOpenFromServer" }
+| { TAG: "PasswordRequiredFromClient" }
+| { TAG: "PasswordSendFromServer" }
+| { TAG: "ItemOwnerRemoveFromClient" }
+| { TAG: "SignReadFromServer" }
+| { TAG: "PlayerSpawnSelfFromClient" }
+| { TAG: "NpcBuffUpdateFromClient" }
+| { TAG: "GoodEvilUpdateFromClient" }
+| { TAG: "BossOrInvasionSpawnFromServer" }
+| { TAG: "ClientUuidFromServer" }
+| { TAG: "NpcCatchFromServer" }
+| { TAG: "NpcReleaseFromServer" }
+| { TAG: "TravellingMerchantInventoryFromClient" }
+| { TAG: "AnglerQuestFromClient" }
+| { TAG: "AnglerQuestCompleteFromServer" }
+| { TAG: "TemporaryAnimationCreateFromClient" }
+| { TAG: "InvasionProgressReportFromClient" }
+| { TAG: "PlayerChestIndexSyncFromClient" }
+| { TAG: "CombatNumberCreateFromClient" }
+| { TAG: "NpcKillCountFromClient" }
+| { TAG: "ItemForceIntoNearestChestFromServer" }
+| { TAG: "TileEntityUpdateFromClient" }
+| { TAG: "TileEntityPlaceFromServer" }
+| { TAG: "ItemDropModifyFromClient" }
+| { TAG: "ItemFramePlaceFromServer" }
+| { TAG: "EmoteBubbleFromClient" }
+| { TAG: "PortalKillFromServer" }
+| { TAG: "NpcKilledNotificationFromClient" }
+| { TAG: "EventNotificationFromClient" }
+| { TAG: "ShieldStrengthsUpdateFromClient" }
+| { TAG: "MoonLordCountdownFromClient" }
+| { TAG: "NpcShopItemFromClient" }
+| { TAG: "GemLockToggleFromServer" }
+| { TAG: "SmokePoofFromClient" }
+| { TAG: "ChatMessageSmartFromClient" }
+| { TAG: "WiredCannonShotFromClient" }
+| { TAG: "MassWireOperationFromServer" }
+| { TAG: "MassWireOperationPayFromClient" }
+| { TAG: "PartyToggleFromServer" }
+| { TAG: "CrystalInvasionStartFromServer" }
+| { TAG: "CrystalInvasionWipeAllFromClient" }
+| { TAG: "CrystalInvasionSendWaitTimeFromClient" }
+| { TAG: "CombatTextCreateFromClient" }
+| { TAG: "EmojiFromServer" }
+| { TAG: "WeaponsRackTryPlacingFromServer" }
+| { TAG: "RevengeMarkerSyncFromClient" }
+| { TAG: "RevengeMarkerRemoveFromClient" }
+| { TAG: "ClientFinishConnectingToServerFromClient" }
+| { TAG: "NpcFishOutFromServer" }
+| { TAG: "NpcTamperFromClient" }
+| { TAG: "LegacySoundPlayFromClient" }
+| { TAG: "FoodPlatterTryPlacingFromServer" }
+| { TAG: "PlayerDeadFromClient" }
+| { TAG: "NpcBuffRemovalRequestFromServer" }
+| { TAG: "ClientSyncedInventoryFromServer" }
+| { TAG: "NotImplemented" }
+| { TAG: "InvalidPacketLength" }
+| { TAG: "InvalidPacketType" };
+
 declare type parseError_9 = { TAG: "Error"; _0: readError };
 
 declare const parseLazy: parseLazy_2<LazyPacket_t>;
 
-declare type parseLazy_2<a> = (buffer: Buffer, fromServer: boolean) => (
-    { TAG: "Ok"; _0: (undefined | a) }
-| { TAG: "Error"; _0: readError }
-);
+declare type parseLazy_2<a> = (buffer: Buffer, fromServer: boolean) => parseResult<a>;
 
 declare type parseOk = { TAG: "Ok"; _0: t };
 
@@ -2202,8 +2272,8 @@ export declare namespace Parser {
 }
 
 declare type parseResult<a> =
-    { TAG: "Ok"; _0: (undefined | a) }
-| { TAG: "Error"; _0: readError };
+| { TAG: "Ok"; _0: (a) }
+| { TAG: "Error"; _0: parseError_87 };
 
 declare type particle = {
     readonly particleType: number;
