@@ -3313,7 +3313,7 @@ function fromInitializer(length, f) {
 function isEmpty(arr) {
   return arr.length === 0;
 }
-function equal(a, b, eq3) {
+function equal(a, b, eq2) {
   let len = a.length;
   if (len === b.length) {
     let _i = 0;
@@ -3322,7 +3322,7 @@ function equal(a, b, eq3) {
       if (i === len) {
         return true;
       }
-      if (!eq3(a[i], b[i])) {
+      if (!eq2(a[i], b[i])) {
         return false;
       }
       _i = i + 1 | 0;
@@ -3333,7 +3333,7 @@ function equal(a, b, eq3) {
     return false;
   }
 }
-function compare(a, b, cmp3) {
+function compare(a, b, cmp2) {
   let lenA = a.length;
   let lenB = b.length;
   if (lenA < lenB) {
@@ -3347,7 +3347,7 @@ function compare(a, b, cmp3) {
       if (i === lenA) {
         return 0;
       }
-      let c = cmp3(a[i], b[i]);
+      let c = cmp2(a[i], b[i]);
       if (c !== 0) {
         return c;
       }
@@ -3558,10 +3558,10 @@ function isSome(x) {
 function isNone(x) {
   return x === void 0;
 }
-function equal2(a, b, eq3) {
+function equal2(a, b, eq2) {
   if (a !== void 0) {
     if (b !== void 0) {
-      return eq3(valFromOption(a), valFromOption(b));
+      return eq2(valFromOption(a), valFromOption(b));
     } else {
       return false;
     }
@@ -3569,10 +3569,10 @@ function equal2(a, b, eq3) {
     return b === void 0;
   }
 }
-function compare2(a, b, cmp3) {
+function compare2(a, b, cmp2) {
   if (a !== void 0) {
     if (b !== void 0) {
-      return cmp3(valFromOption(a), valFromOption(b));
+      return cmp2(valFromOption(a), valFromOption(b));
     } else {
       return 1;
     }
@@ -3756,7 +3756,7 @@ var require_BitFlags = __commonJS({
     function flag8(__x) {
       return (__x & 128) === 128;
     }
-    function forEach5(self, fn) {
+    function forEach4(self, fn) {
       fn((self & 1) === 1);
       fn((self & 2) === 2);
       fn((self & 4) === 4);
@@ -3781,7 +3781,7 @@ var require_BitFlags = __commonJS({
     exports2.flag7 = flag7;
     exports2.flag8 = flag8;
     exports2.flagN = flagN;
-    exports2.forEach = forEach5;
+    exports2.forEach = forEach4;
     exports2.toByte = toByte;
   }
 });
@@ -8748,7 +8748,7 @@ var require_TileSolid = __commonJS({
   "src/TileSolid.js"(exports2) {
     "use strict";
     var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
-    var map5 = /* @__PURE__ */ new Map([
+    var map4 = /* @__PURE__ */ new Map([
       [
         379,
         true
@@ -9519,9 +9519,9 @@ var require_TileSolid = __commonJS({
       ]
     ]);
     function isSolid(tileType) {
-      return Stdlib_Option.getOr(map5.get(tileType), false);
+      return Stdlib_Option.getOr(map4.get(tileType), false);
     }
-    exports2.map = map5;
+    exports2.map = map4;
     exports2.isSolid = isSolid;
   }
 });
@@ -9531,7 +9531,7 @@ var require_TileFrameImportant = __commonJS({
   "src/TileFrameImportant.js"(exports2) {
     "use strict";
     var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
-    var map5 = /* @__PURE__ */ new Map([
+    var map4 = /* @__PURE__ */ new Map([
       [
         0,
         false
@@ -12026,9 +12026,9 @@ var require_TileFrameImportant = __commonJS({
       ]
     ]);
     function isImportant(tileType) {
-      return Stdlib_Option.getOr(map5.get(tileType), false);
+      return Stdlib_Option.getOr(map4.get(tileType), false);
     }
-    exports2.map = map5;
+    exports2.map = map4;
     exports2.isImportant = isImportant;
   }
 });
@@ -13663,130 +13663,11 @@ var require_Packet_TileSectionSend = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Belt_Option.js
-var Belt_Option_exports = {};
-__export(Belt_Option_exports, {
-  cmp: () => cmp2,
-  cmpU: () => cmpU2,
-  eq: () => eq2,
-  eqU: () => eqU2,
-  flatMap: () => flatMap4,
-  flatMapU: () => flatMapU2,
-  forEach: () => forEach4,
-  forEachU: () => forEachU2,
-  getExn: () => getExn4,
-  getOrThrow: () => getOrThrow4,
-  getWithDefault: () => getWithDefault3,
-  isNone: () => isNone2,
-  isSome: () => isSome2,
-  keep: () => keep2,
-  keepU: () => keepU2,
-  map: () => map4,
-  mapU: () => mapU2,
-  mapWithDefault: () => mapWithDefault3,
-  mapWithDefaultU: () => mapWithDefaultU,
-  orElse: () => orElse2
-});
-function keep2(opt, p) {
-  if (opt !== void 0 && p(valFromOption(opt))) {
-    return opt;
-  }
-}
-function forEach4(opt, f) {
-  if (opt !== void 0) {
-    return f(valFromOption(opt));
-  }
-}
-function getOrThrow4(x) {
-  if (x !== void 0) {
-    return valFromOption(x);
-  }
-  throw {
-    RE_EXN_ID: "Not_found",
-    Error: new Error()
-  };
-}
-function mapWithDefault3(opt, $$default, f) {
-  if (opt !== void 0) {
-    return f(valFromOption(opt));
-  } else {
-    return $$default;
-  }
-}
-function map4(opt, f) {
-  if (opt !== void 0) {
-    return some(f(valFromOption(opt)));
-  }
-}
-function flatMap4(opt, f) {
-  if (opt !== void 0) {
-    return f(valFromOption(opt));
-  }
-}
-function getWithDefault3(opt, $$default) {
-  if (opt !== void 0) {
-    return valFromOption(opt);
-  } else {
-    return $$default;
-  }
-}
-function orElse2(opt, other) {
-  if (opt !== void 0) {
-    return opt;
-  } else {
-    return other;
-  }
-}
-function isSome2(x) {
-  return x !== void 0;
-}
-function isNone2(x) {
-  return x === void 0;
-}
-function eq2(a, b, f) {
-  if (a !== void 0) {
-    if (b !== void 0) {
-      return f(valFromOption(a), valFromOption(b));
-    } else {
-      return false;
-    }
-  } else {
-    return b === void 0;
-  }
-}
-function cmp2(a, b, f) {
-  if (a !== void 0) {
-    if (b !== void 0) {
-      return f(valFromOption(a), valFromOption(b));
-    } else {
-      return 1;
-    }
-  } else if (b !== void 0) {
-    return -1;
-  } else {
-    return 0;
-  }
-}
-var keepU2, forEachU2, getExn4, mapWithDefaultU, mapU2, flatMapU2, eqU2, cmpU2;
-var init_Belt_Option = __esm({
-  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Belt_Option.js"() {
-    init_Primitive_option();
-    keepU2 = keep2;
-    forEachU2 = forEach4;
-    getExn4 = getOrThrow4;
-    mapWithDefaultU = mapWithDefault3;
-    mapU2 = map4;
-    flatMapU2 = flatMap4;
-    eqU2 = eq2;
-    cmpU2 = cmp2;
-  }
-});
-
 // src/packet/Packet_TileSquareSend.js
 var require_Packet_TileSquareSend = __commonJS({
   "src/packet/Packet_TileSquareSend.js"(exports2) {
     "use strict";
-    var Belt_Option = (init_Belt_Option(), __toCommonJS(Belt_Option_exports));
+    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
     var BitFlags$TerrariaPacket = require_BitFlags();
     var PacketType$TerrariaPacket = require_PacketType();
     var TileFrameImportant$TerrariaPacket = require_TileFrameImportant();
@@ -14034,8 +13915,8 @@ var require_Packet_TileSquareSend = __commonJS({
       }
     }
     function packTile(writer, tile) {
-      let flags1 = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(tile.activeTile), false, Belt_Option.isSome(tile.wall), Belt_Option.isSome(tile.liquid), tile.wire, tile.halfBrick, tile.actuator, tile.inActive);
-      let flags2 = BitFlags$TerrariaPacket.fromFlags(tile.wire2, tile.wire3, Belt_Option.isSome(tile.color), Belt_Option.isSome(tile.wallColor), Belt_Option.mapWithDefault(tile.activeTile, false, (tile2) => (tile2.slope & 1) === 1), Belt_Option.mapWithDefault(tile.activeTile, false, (tile2) => (tile2.slope & 2) === 2), Belt_Option.mapWithDefault(tile.activeTile, false, (tile2) => (tile2.slope & 4) === 4), tile.wire4);
+      let flags1 = BitFlags$TerrariaPacket.fromFlags(Stdlib_Option.isSome(tile.activeTile), false, Stdlib_Option.isSome(tile.wall), Stdlib_Option.isSome(tile.liquid), tile.wire, tile.halfBrick, tile.actuator, tile.inActive);
+      let flags2 = BitFlags$TerrariaPacket.fromFlags(tile.wire2, tile.wire3, Stdlib_Option.isSome(tile.color), Stdlib_Option.isSome(tile.wallColor), Stdlib_Option.mapOr(tile.activeTile, false, (tile2) => (tile2.slope & 1) === 1), Stdlib_Option.mapOr(tile.activeTile, false, (tile2) => (tile2.slope & 2) === 2), Stdlib_Option.mapOr(tile.activeTile, false, (tile2) => (tile2.slope & 4) === 4), tile.wire4);
       ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(flags1), "flags1"), BitFlags$TerrariaPacket.toByte(flags2), "flags2"), tile.coatHeader, "coatHeader");
       let c = tile.color;
       if (c !== void 0) {
@@ -14049,7 +13930,7 @@ var require_Packet_TileSquareSend = __commonJS({
       if (at !== void 0) {
         ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, at.tileType, "tileType");
         if (TileFrameImportant$TerrariaPacket.isImportant(at.tileType)) {
-          ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, Belt_Option.mapWithDefault(at.frame, 0, (frame) => frame.x), "frameX"), Belt_Option.mapWithDefault(at.frame, 0, (frame) => frame.y), "frameY");
+          ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, Stdlib_Option.mapOr(at.frame, 0, (frame) => frame.x), "frameX"), Stdlib_Option.mapOr(at.frame, 0, (frame) => frame.y), "frameY");
         }
       }
       let w = tile.wall;
@@ -19631,28 +19512,326 @@ var require_Parser = __commonJS({
     var Packet_TileEntityDisplayDollItemSync$TerrariaPacket = require_Packet_TileEntityDisplayDollItemSync();
     var Packet_ClientFinishConnectingToServer$TerrariaPacket = require_Packet_ClientFinishConnectingToServer();
     var Packet_DungeonDefendersEventAttemptSkipWait$TerrariaPacket = require_Packet_DungeonDefendersEventAttemptSkipWait();
-    function mapPacket(buffer, fn) {
-      return Stdlib_Result.mapError(Stdlib_Result.map(buffer, fn), (e) => ({
+    function packetTypeName(packetType) {
+      switch (packetType) {
+        case "ConnectRequest":
+          return "ConnectRequest";
+        case "Disconnect":
+          return "Disconnect";
+        case "PlayerSlotSet":
+          return "PlayerSlotSet";
+        case "PlayerInfo":
+          return "PlayerInfo";
+        case "PlayerInventorySlot":
+          return "PlayerInventorySlot";
+        case "WorldDataRequest":
+          return "WorldDataRequest";
+        case "WorldInfo":
+          return "WorldInfo";
+        case "InitialTileSectionsRequest":
+          return "InitialTileSectionsRequest";
+        case "Status":
+          return "Status";
+        case "TileSectionSend":
+          return "TileSectionSend";
+        case "TileSectionFrame":
+          return "TileSectionFrame";
+        case "PlayerSpawn":
+          return "PlayerSpawn";
+        case "PlayerUpdate":
+          return "PlayerUpdate";
+        case "PlayerActive":
+          return "PlayerActive";
+        case "PlayerHealth":
+          return "PlayerHealth";
+        case "TileModify":
+          return "TileModify";
+        case "TimeSet":
+          return "TimeSet";
+        case "DoorUse":
+          return "DoorUse";
+        case "TileSquareSend":
+          return "TileSquareSend";
+        case "ItemDropUpdate":
+          return "ItemDropUpdate";
+        case "ItemOwner":
+          return "ItemOwner";
+        case "NpcUpdate":
+          return "NpcUpdate";
+        case "NpcItemStrike":
+          return "NpcItemStrike";
+        case "ProjectileSync":
+          return "ProjectileSync";
+        case "NpcStrike":
+          return "NpcStrike";
+        case "ProjectileDestroy":
+          return "ProjectileDestroy";
+        case "PvpToggle":
+          return "PvpToggle";
+        case "ChestOpen":
+          return "ChestOpen";
+        case "ChestItem":
+          return "ChestItem";
+        case "ActiveContainerSync":
+          return "ActiveContainerSync";
+        case "ChestPlace":
+          return "ChestPlace";
+        case "HealEffect":
+          return "HealEffect";
+        case "Zones":
+          return "Zones";
+        case "PasswordRequired":
+          return "PasswordRequired";
+        case "PasswordSend":
+          return "PasswordSend";
+        case "ItemOwnerRemove":
+          return "ItemOwnerRemove";
+        case "NpcTalk":
+          return "NpcTalk";
+        case "PlayerAnimation":
+          return "PlayerAnimation";
+        case "PlayerMana":
+          return "PlayerMana";
+        case "ManaEffect":
+          return "ManaEffect";
+        case "PlayerTeam":
+          return "PlayerTeam";
+        case "SignRead":
+          return "SignRead";
+        case "SignNew":
+          return "SignNew";
+        case "LiquidSet":
+          return "LiquidSet";
+        case "PlayerSpawnSelf":
+          return "PlayerSpawnSelf";
+        case "PlayerBuffsSet":
+          return "PlayerBuffsSet";
+        case "NpcSpecialEffect":
+          return "NpcSpecialEffect";
+        case "ChestOrTempleUnlock":
+          return "ChestOrTempleUnlock";
+        case "NpcBuffAdd":
+          return "NpcBuffAdd";
+        case "NpcBuffUpdate":
+          return "NpcBuffUpdate";
+        case "PlayerBuffAdd":
+          return "PlayerBuffAdd";
+        case "NpcNameUpdate":
+          return "NpcNameUpdate";
+        case "GoodEvilUpdate":
+          return "GoodEvilUpdate";
+        case "HarpPlay":
+          return "HarpPlay";
+        case "SwitchHit":
+          return "SwitchHit";
+        case "NpcHomeUpdate":
+          return "NpcHomeUpdate";
+        case "BossOrInvasionSpawn":
+          return "BossOrInvasionSpawn";
+        case "PlayerDodge":
+          return "PlayerDodge";
+        case "TilePaint":
+          return "TilePaint";
+        case "WallPaint":
+          return "WallPaint";
+        case "Teleport":
+          return "Teleport";
+        case "PlayerHealOther":
+          return "PlayerHealOther";
+        case "DimensionsUpdate":
+          return "DimensionsUpdate";
+        case "ClientUuid":
+          return "ClientUuid";
+        case "ChestName":
+          return "ChestName";
+        case "NpcCatch":
+          return "NpcCatch";
+        case "NpcRelease":
+          return "NpcRelease";
+        case "TravellingMerchantInventory":
+          return "TravellingMerchantInventory";
+        case "TeleportationPotion":
+          return "TeleportationPotion";
+        case "AnglerQuest":
+          return "AnglerQuest";
+        case "AnglerQuestComplete":
+          return "AnglerQuestComplete";
+        case "AnglerQuestsCompletedAmount":
+          return "AnglerQuestsCompletedAmount";
+        case "TemporaryAnimationCreate":
+          return "TemporaryAnimationCreate";
+        case "InvasionProgressReport":
+          return "InvasionProgressReport";
+        case "ObjectPlace":
+          return "ObjectPlace";
+        case "PlayerChestIndexSync":
+          return "PlayerChestIndexSync";
+        case "CombatNumberCreate":
+          return "CombatNumberCreate";
+        case "NetModuleLoad":
+          return "NetModuleLoad";
+        case "NpcKillCount":
+          return "NpcKillCount";
+        case "PlayerStealth":
+          return "PlayerStealth";
+        case "ItemForceIntoNearestChest":
+          return "ItemForceIntoNearestChest";
+        case "TileEntityUpdate":
+          return "TileEntityUpdate";
+        case "TileEntityPlace":
+          return "TileEntityPlace";
+        case "ItemDropModify":
+          return "ItemDropModify";
+        case "ItemFramePlace":
+          return "ItemFramePlace";
+        case "ItemDropInstancedUpdate":
+          return "ItemDropInstancedUpdate";
+        case "EmoteBubble":
+          return "EmoteBubble";
+        case "ExtraValueSync":
+          return "ExtraValueSync";
+        case "SocialHandshake":
+          return "SocialHandshake";
+        case "Unused":
+          return "Unused";
+        case "PortalKill":
+          return "PortalKill";
+        case "PlayerTeleportPortal":
+          return "PlayerTeleportPortal";
+        case "NpcKilledNotification":
+          return "NpcKilledNotification";
+        case "EventNotification":
+          return "EventNotification";
+        case "MinionTargetUpdate":
+          return "MinionTargetUpdate";
+        case "NpcTeleportPortal":
+          return "NpcTeleportPortal";
+        case "ShieldStrengthsUpdate":
+          return "ShieldStrengthsUpdate";
+        case "NebulaLevelUp":
+          return "NebulaLevelUp";
+        case "MoonLordCountdown":
+          return "MoonLordCountdown";
+        case "NpcShopItem":
+          return "NpcShopItem";
+        case "GemLockToggle":
+          return "GemLockToggle";
+        case "SmokePoof":
+          return "SmokePoof";
+        case "ChatMessageSmart":
+          return "ChatMessageSmart";
+        case "WiredCannonShot":
+          return "WiredCannonShot";
+        case "MassWireOperation":
+          return "MassWireOperation";
+        case "MassWireOperationPay":
+          return "MassWireOperationPay";
+        case "PartyToggle":
+          return "PartyToggle";
+        case "TreeGrowFx":
+          return "TreeGrowFx";
+        case "CrystalInvasionStart":
+          return "CrystalInvasionStart";
+        case "CrystalInvasionWipeAll":
+          return "CrystalInvasionWipeAll";
+        case "MinionAttackTargetUpdate":
+          return "MinionAttackTargetUpdate";
+        case "CrystalInvasionSendWaitTime":
+          return "CrystalInvasionSendWaitTime";
+        case "PlayerDamage":
+          return "PlayerDamage";
+        case "PlayerDeath":
+          return "PlayerDeath";
+        case "CombatTextCreate":
+          return "CombatTextCreate";
+        case "Emoji":
+          return "Emoji";
+        case "TileEntityDisplayDollItemSync":
+          return "TileEntityDisplayDollItemSync";
+        case "TileEntityInteractionRequest":
+          return "TileEntityInteractionRequest";
+        case "WeaponsRackTryPlacing":
+          return "WeaponsRackTryPlacing";
+        case "TileEntityHatRackItemSync":
+          return "TileEntityHatRackItemSync";
+        case "TilePickingSync":
+          return "TilePickingSync";
+        case "RevengeMarkerSync":
+          return "RevengeMarkerSync";
+        case "RevengeMarkerRemove":
+          return "RevengeMarkerRemove";
+        case "GolfBallLandInCup":
+          return "GolfBallLandInCup";
+        case "ClientFinishConnectingToServer":
+          return "ClientFinishConnectingToServer";
+        case "NpcFishOut":
+          return "NpcFishOut";
+        case "NpcTamper":
+          return "NpcTamper";
+        case "LegacySoundPlay":
+          return "LegacySoundPlay";
+        case "FoodPlatterTryPlacing":
+          return "FoodPlatterTryPlacing";
+        case "PlayerLuckFactorsUpdate":
+          return "PlayerLuckFactorsUpdate";
+        case "PlayerDead":
+          return "PlayerDead";
+        case "CavernMonsterTypeSync":
+          return "CavernMonsterTypeSync";
+        case "NpcBuffRemovalRequest":
+          return "NpcBuffRemovalRequest";
+        case "ClientSyncedInventory":
+          return "ClientSyncedInventory";
+        case "CountsAsHostForGameplaySet":
+          return "CountsAsHostForGameplaySet";
+        case "CreditsOrSlimeTransform":
+          return "CreditsOrSlimeTransform";
+        case "LucyAxeMessage":
+          return "LucyAxeMessage";
+        case "PiggyBankVoidLensUpdate":
+          return "PiggyBankVoidLensUpdate";
+        case "DungeonDefendersEventAttemptSkipWait":
+          return "DungeonDefendersEventAttemptSkipWait";
+        case "HaveDryadDoStardewAnimation":
+          return "HaveDryadDoStardewAnimation";
+        case "ItemDropShimmeredUpdate":
+          return "ItemDropShimmeredUpdate";
+        case "ShimmerEffectOrCoinLuck":
+          return "ShimmerEffectOrCoinLuck";
+        case "LoadoutSwitch":
+          return "LoadoutSwitch";
+        case "ItemDropProtectedUpdate":
+          return "ItemDropProtectedUpdate";
+      }
+    }
+    function addPacketContext(packetName, err) {
+      return {
+        context: "Packet " + packetName + ": " + err.context,
+        error: err.error
+      };
+    }
+    function mapPacket(result, packetName, fn) {
+      return Stdlib_Result.mapError(Stdlib_Result.map(result, fn), (e) => ({
         TAG: "ReaderError",
-        _0: e
+        _0: addPacketContext(packetName, e)
       }));
     }
-    function makeParsers(parse2, toPacket, toLazyPacket) {
-      let parseWrapped = (payload, _fromServer) => mapPacket(parse2(payload), toPacket);
+    function makeParsers(packetName, parse2, toPacket, toLazyPacket) {
+      let parseWrapped = (payload, _fromServer) => mapPacket(parse2(payload), packetName, toPacket);
       let parseLazyWrapped = (payload, _fromServer) => ({
         TAG: "Ok",
-        _0: toLazyPacket(Stdlib_Lazy.make(() => parse2(payload)))
+        _0: toLazyPacket(Stdlib_Lazy.make(() => Stdlib_Result.mapError(parse2(payload), (e) => addPacketContext(packetName, e))))
       });
       return {
         parse: parseWrapped,
         parseLazy: parseLazyWrapped
       };
     }
-    function makeParsersWithFromServer(parse2, toPacket, toLazyPacket) {
-      let parseWrapped = (payload, fromServer) => mapPacket(parse2(payload, fromServer), toPacket);
+    function makeParsersWithFromServer(packetName, parse2, toPacket, toLazyPacket) {
+      let parseWrapped = (payload, fromServer) => mapPacket(parse2(payload, fromServer), packetName, toPacket);
       let parseLazyWrapped = (payload, fromServer) => ({
         TAG: "Ok",
-        _0: toLazyPacket(Stdlib_Lazy.make(() => parse2(payload, fromServer)))
+        _0: toLazyPacket(Stdlib_Lazy.make(() => Stdlib_Result.mapError(parse2(payload, fromServer), (e) => addPacketContext(packetName, e))))
       });
       return {
         parse: parseWrapped,
@@ -19660,6 +19839,7 @@ var require_Parser = __commonJS({
       };
     }
     function getParsers(packetType, fromServer) {
+      let packetName = packetTypeName(packetType);
       switch (packetType) {
         case "ConnectRequest":
           if (fromServer) {
@@ -19670,7 +19850,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_ConnectRequest$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_ConnectRequest$TerrariaPacket.parse, (a) => ({
                 TAG: "ConnectRequest",
                 _0: a
               }), (a) => ({
@@ -19683,7 +19863,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_Disconnect$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_Disconnect$TerrariaPacket.parse, (a) => ({
                 TAG: "Disconnect",
                 _0: a
               }), (a) => ({
@@ -19701,7 +19881,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_PlayerSlotSet$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_PlayerSlotSet$TerrariaPacket.parse, (a) => ({
                 TAG: "PlayerSlotSet",
                 _0: a
               }), (a) => ({
@@ -19718,7 +19898,7 @@ var require_Parser = __commonJS({
         case "PlayerInfo":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_PlayerInfo$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_PlayerInfo$TerrariaPacket.parse, (a) => ({
               TAG: "PlayerInfo",
               _0: a
             }), (a) => ({
@@ -19729,7 +19909,7 @@ var require_Parser = __commonJS({
         case "PlayerInventorySlot":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_PlayerInventorySlot$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_PlayerInventorySlot$TerrariaPacket.parse, (a) => ({
               TAG: "PlayerInventorySlot",
               _0: a
             }), (a) => ({
@@ -19746,7 +19926,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_WorldDataRequest$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_WorldDataRequest$TerrariaPacket.parse, (a) => ({
                 TAG: "WorldDataRequest",
                 _0: a
               }), (a) => ({
@@ -19759,7 +19939,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_WorldInfo$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_WorldInfo$TerrariaPacket.parse, (a) => ({
                 TAG: "WorldInfo",
                 _0: a
               }), (a) => ({
@@ -19782,7 +19962,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_InitialTileSectionsRequest$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_InitialTileSectionsRequest$TerrariaPacket.parse, (a) => ({
                 TAG: "InitialTileSectionsRequest",
                 _0: a
               }), (a) => ({
@@ -19795,7 +19975,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_Status$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_Status$TerrariaPacket.parse, (a) => ({
                 TAG: "Status",
                 _0: a
               }), (a) => ({
@@ -19813,7 +19993,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_TileSectionSend$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_TileSectionSend$TerrariaPacket.parse, (a) => ({
                 TAG: "TileSectionSend",
                 _0: a
               }), (a) => ({
@@ -19831,7 +20011,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_TileSectionFrame$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_TileSectionFrame$TerrariaPacket.parse, (a) => ({
                 TAG: "TileSectionFrame",
                 _0: a
               }), (a) => ({
@@ -19848,7 +20028,7 @@ var require_Parser = __commonJS({
         case "PlayerSpawn":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_PlayerSpawn$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_PlayerSpawn$TerrariaPacket.parse, (a) => ({
               TAG: "PlayerSpawn",
               _0: a
             }), (a) => ({
@@ -19859,7 +20039,7 @@ var require_Parser = __commonJS({
         case "PlayerUpdate":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_PlayerUpdate$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_PlayerUpdate$TerrariaPacket.parse, (a) => ({
               TAG: "PlayerUpdate",
               _0: a
             }), (a) => ({
@@ -19871,7 +20051,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_PlayerActive$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_PlayerActive$TerrariaPacket.parse, (a) => ({
                 TAG: "PlayerActive",
                 _0: a
               }), (a) => ({
@@ -19888,7 +20068,7 @@ var require_Parser = __commonJS({
         case "PlayerHealth":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_PlayerHealth$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_PlayerHealth$TerrariaPacket.parse, (a) => ({
               TAG: "PlayerHealth",
               _0: a
             }), (a) => ({
@@ -19899,7 +20079,7 @@ var require_Parser = __commonJS({
         case "TileModify":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_TileModify$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_TileModify$TerrariaPacket.parse, (a) => ({
               TAG: "TileModify",
               _0: a
             }), (a) => ({
@@ -19911,7 +20091,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_TimeSet$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_TimeSet$TerrariaPacket.parse, (a) => ({
                 TAG: "TimeSet",
                 _0: a
               }), (a) => ({
@@ -19928,7 +20108,7 @@ var require_Parser = __commonJS({
         case "DoorUse":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_DoorUse$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_DoorUse$TerrariaPacket.parse, (a) => ({
               TAG: "DoorUse",
               _0: a
             }), (a) => ({
@@ -19939,7 +20119,7 @@ var require_Parser = __commonJS({
         case "TileSquareSend":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_TileSquareSend$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_TileSquareSend$TerrariaPacket.parse, (a) => ({
               TAG: "TileSquareSend",
               _0: a
             }), (a) => ({
@@ -19950,7 +20130,7 @@ var require_Parser = __commonJS({
         case "ItemDropUpdate":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_ItemDropUpdate$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_ItemDropUpdate$TerrariaPacket.parse, (a) => ({
               TAG: "ItemDropUpdate",
               _0: a
             }), (a) => ({
@@ -19961,7 +20141,7 @@ var require_Parser = __commonJS({
         case "ItemOwner":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_ItemOwner$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_ItemOwner$TerrariaPacket.parse, (a) => ({
               TAG: "ItemOwner",
               _0: a
             }), (a) => ({
@@ -19973,7 +20153,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_NpcUpdate$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_NpcUpdate$TerrariaPacket.parse, (a) => ({
                 TAG: "NpcUpdate",
                 _0: a
               }), (a) => ({
@@ -19990,7 +20170,7 @@ var require_Parser = __commonJS({
         case "NpcItemStrike":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_NpcItemStrike$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_NpcItemStrike$TerrariaPacket.parse, (a) => ({
               TAG: "NpcItemStrike",
               _0: a
             }), (a) => ({
@@ -20001,7 +20181,7 @@ var require_Parser = __commonJS({
         case "ProjectileSync":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_ProjectileSync$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_ProjectileSync$TerrariaPacket.parse, (a) => ({
               TAG: "ProjectileSync",
               _0: a
             }), (a) => ({
@@ -20012,7 +20192,7 @@ var require_Parser = __commonJS({
         case "NpcStrike":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_NpcStrike$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_NpcStrike$TerrariaPacket.parse, (a) => ({
               TAG: "NpcStrike",
               _0: a
             }), (a) => ({
@@ -20023,7 +20203,7 @@ var require_Parser = __commonJS({
         case "ProjectileDestroy":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_ProjectileDestroy$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_ProjectileDestroy$TerrariaPacket.parse, (a) => ({
               TAG: "ProjectileDestroy",
               _0: a
             }), (a) => ({
@@ -20034,7 +20214,7 @@ var require_Parser = __commonJS({
         case "PvpToggle":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_PvpToggle$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_PvpToggle$TerrariaPacket.parse, (a) => ({
               TAG: "PvpToggle",
               _0: a
             }), (a) => ({
@@ -20051,7 +20231,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_ChestOpen$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_ChestOpen$TerrariaPacket.parse, (a) => ({
                 TAG: "ChestOpen",
                 _0: a
               }), (a) => ({
@@ -20063,7 +20243,7 @@ var require_Parser = __commonJS({
         case "ChestItem":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_ChestItem$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_ChestItem$TerrariaPacket.parse, (a) => ({
               TAG: "ChestItem",
               _0: a
             }), (a) => ({
@@ -20074,7 +20254,7 @@ var require_Parser = __commonJS({
         case "ActiveContainerSync":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_ActiveContainerSync$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_ActiveContainerSync$TerrariaPacket.parse, (a) => ({
               TAG: "ActiveContainerSync",
               _0: a
             }), (a) => ({
@@ -20085,7 +20265,7 @@ var require_Parser = __commonJS({
         case "ChestPlace":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_ChestPlace$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_ChestPlace$TerrariaPacket.parse, (a) => ({
               TAG: "ChestPlace",
               _0: a
             }), (a) => ({
@@ -20096,7 +20276,7 @@ var require_Parser = __commonJS({
         case "HealEffect":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_HealEffect$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_HealEffect$TerrariaPacket.parse, (a) => ({
               TAG: "HealEffect",
               _0: a
             }), (a) => ({
@@ -20107,7 +20287,7 @@ var require_Parser = __commonJS({
         case "Zones":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_Zones$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_Zones$TerrariaPacket.parse, (a) => ({
               TAG: "Zones",
               _0: a
             }), (a) => ({
@@ -20119,7 +20299,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_PasswordRequired$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_PasswordRequired$TerrariaPacket.parse, (a) => ({
                 TAG: "PasswordRequired",
                 _0: a
               }), (a) => ({
@@ -20142,7 +20322,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_PasswordSend$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_PasswordSend$TerrariaPacket.parse, (a) => ({
                 TAG: "PasswordSend",
                 _0: a
               }), (a) => ({
@@ -20155,7 +20335,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_ItemOwnerRemove$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_ItemOwnerRemove$TerrariaPacket.parse, (a) => ({
                 TAG: "ItemOwnerRemove",
                 _0: a
               }), (a) => ({
@@ -20172,7 +20352,7 @@ var require_Parser = __commonJS({
         case "NpcTalk":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_NpcTalk$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_NpcTalk$TerrariaPacket.parse, (a) => ({
               TAG: "NpcTalk",
               _0: a
             }), (a) => ({
@@ -20183,7 +20363,7 @@ var require_Parser = __commonJS({
         case "PlayerAnimation":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_PlayerAnimation$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_PlayerAnimation$TerrariaPacket.parse, (a) => ({
               TAG: "PlayerAnimation",
               _0: a
             }), (a) => ({
@@ -20194,7 +20374,7 @@ var require_Parser = __commonJS({
         case "PlayerMana":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_PlayerMana$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_PlayerMana$TerrariaPacket.parse, (a) => ({
               TAG: "PlayerMana",
               _0: a
             }), (a) => ({
@@ -20205,7 +20385,7 @@ var require_Parser = __commonJS({
         case "ManaEffect":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_ManaEffect$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_ManaEffect$TerrariaPacket.parse, (a) => ({
               TAG: "ManaEffect",
               _0: a
             }), (a) => ({
@@ -20216,7 +20396,7 @@ var require_Parser = __commonJS({
         case "PlayerTeam":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_PlayerTeam$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_PlayerTeam$TerrariaPacket.parse, (a) => ({
               TAG: "PlayerTeam",
               _0: a
             }), (a) => ({
@@ -20233,7 +20413,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_SignRead$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_SignRead$TerrariaPacket.parse, (a) => ({
                 TAG: "SignRead",
                 _0: a
               }), (a) => ({
@@ -20245,7 +20425,7 @@ var require_Parser = __commonJS({
         case "SignNew":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_SignNew$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_SignNew$TerrariaPacket.parse, (a) => ({
               TAG: "SignNew",
               _0: a
             }), (a) => ({
@@ -20256,7 +20436,7 @@ var require_Parser = __commonJS({
         case "LiquidSet":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_LiquidSet$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_LiquidSet$TerrariaPacket.parse, (a) => ({
               TAG: "LiquidSet",
               _0: a
             }), (a) => ({
@@ -20268,7 +20448,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_PlayerSpawnSelf$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_PlayerSpawnSelf$TerrariaPacket.parse, (a) => ({
                 TAG: "PlayerSpawnSelf",
                 _0: a
               }), (a) => ({
@@ -20285,7 +20465,7 @@ var require_Parser = __commonJS({
         case "PlayerBuffsSet":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_PlayerBuffsSet$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_PlayerBuffsSet$TerrariaPacket.parse, (a) => ({
               TAG: "PlayerBuffsSet",
               _0: a
             }), (a) => ({
@@ -20296,7 +20476,7 @@ var require_Parser = __commonJS({
         case "NpcSpecialEffect":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_NpcSpecialEffect$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_NpcSpecialEffect$TerrariaPacket.parse, (a) => ({
               TAG: "NpcSpecialEffect",
               _0: a
             }), (a) => ({
@@ -20307,7 +20487,7 @@ var require_Parser = __commonJS({
         case "ChestOrTempleUnlock":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_ChestOrTempleUnlock$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_ChestOrTempleUnlock$TerrariaPacket.parse, (a) => ({
               TAG: "ChestOrTempleUnlock",
               _0: a
             }), (a) => ({
@@ -20318,7 +20498,7 @@ var require_Parser = __commonJS({
         case "NpcBuffAdd":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_NpcBuffAdd$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_NpcBuffAdd$TerrariaPacket.parse, (a) => ({
               TAG: "NpcBuffAdd",
               _0: a
             }), (a) => ({
@@ -20330,7 +20510,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_NpcBuffUpdate$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_NpcBuffUpdate$TerrariaPacket.parse, (a) => ({
                 TAG: "NpcBuffUpdate",
                 _0: a
               }), (a) => ({
@@ -20347,7 +20527,7 @@ var require_Parser = __commonJS({
         case "PlayerBuffAdd":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_PlayerBuffAdd$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_PlayerBuffAdd$TerrariaPacket.parse, (a) => ({
               TAG: "PlayerBuffAdd",
               _0: a
             }), (a) => ({
@@ -20358,7 +20538,7 @@ var require_Parser = __commonJS({
         case "NpcNameUpdate":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_NpcNameUpdate$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_NpcNameUpdate$TerrariaPacket.parse, (a) => ({
               TAG: "NpcNameUpdate",
               _0: a
             }), (a) => ({
@@ -20370,7 +20550,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_GoodEvilUpdate$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_GoodEvilUpdate$TerrariaPacket.parse, (a) => ({
                 TAG: "GoodEvilUpdate",
                 _0: a
               }), (a) => ({
@@ -20387,7 +20567,7 @@ var require_Parser = __commonJS({
         case "HarpPlay":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_HarpPlay$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_HarpPlay$TerrariaPacket.parse, (a) => ({
               TAG: "HarpPlay",
               _0: a
             }), (a) => ({
@@ -20398,7 +20578,7 @@ var require_Parser = __commonJS({
         case "SwitchHit":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_SwitchHit$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_SwitchHit$TerrariaPacket.parse, (a) => ({
               TAG: "SwitchHit",
               _0: a
             }), (a) => ({
@@ -20409,7 +20589,7 @@ var require_Parser = __commonJS({
         case "NpcHomeUpdate":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_NpcHomeUpdate$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_NpcHomeUpdate$TerrariaPacket.parse, (a) => ({
               TAG: "NpcHomeUpdate",
               _0: a
             }), (a) => ({
@@ -20426,7 +20606,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_BossOrInvasionSpawn$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_BossOrInvasionSpawn$TerrariaPacket.parse, (a) => ({
                 TAG: "BossOrInvasionSpawn",
                 _0: a
               }), (a) => ({
@@ -20438,7 +20618,7 @@ var require_Parser = __commonJS({
         case "PlayerDodge":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_PlayerDodge$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_PlayerDodge$TerrariaPacket.parse, (a) => ({
               TAG: "PlayerDodge",
               _0: a
             }), (a) => ({
@@ -20449,7 +20629,7 @@ var require_Parser = __commonJS({
         case "TilePaint":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_TilePaint$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_TilePaint$TerrariaPacket.parse, (a) => ({
               TAG: "TilePaint",
               _0: a
             }), (a) => ({
@@ -20460,7 +20640,7 @@ var require_Parser = __commonJS({
         case "WallPaint":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_WallPaint$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_WallPaint$TerrariaPacket.parse, (a) => ({
               TAG: "WallPaint",
               _0: a
             }), (a) => ({
@@ -20471,7 +20651,7 @@ var require_Parser = __commonJS({
         case "Teleport":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_Teleport$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_Teleport$TerrariaPacket.parse, (a) => ({
               TAG: "Teleport",
               _0: a
             }), (a) => ({
@@ -20482,7 +20662,7 @@ var require_Parser = __commonJS({
         case "PlayerHealOther":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_PlayerHealOther$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_PlayerHealOther$TerrariaPacket.parse, (a) => ({
               TAG: "PlayerHealOther",
               _0: a
             }), (a) => ({
@@ -20493,7 +20673,7 @@ var require_Parser = __commonJS({
         case "DimensionsUpdate":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_DimensionsUpdate$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_DimensionsUpdate$TerrariaPacket.parse, (a) => ({
               TAG: "DimensionsUpdate",
               _0: a
             }), (a) => ({
@@ -20510,7 +20690,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_ClientUuid$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_ClientUuid$TerrariaPacket.parse, (a) => ({
                 TAG: "ClientUuid",
                 _0: a
               }), (a) => ({
@@ -20522,7 +20702,7 @@ var require_Parser = __commonJS({
         case "ChestName":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_ChestName$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_ChestName$TerrariaPacket.parse, (a) => ({
               TAG: "ChestName",
               _0: a
             }), (a) => ({
@@ -20539,7 +20719,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_NpcCatch$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_NpcCatch$TerrariaPacket.parse, (a) => ({
                 TAG: "NpcCatch",
                 _0: a
               }), (a) => ({
@@ -20557,7 +20737,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_NpcRelease$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_NpcRelease$TerrariaPacket.parse, (a) => ({
                 TAG: "NpcRelease",
                 _0: a
               }), (a) => ({
@@ -20570,7 +20750,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_TravellingMerchantInventory$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_TravellingMerchantInventory$TerrariaPacket.parse, (a) => ({
                 TAG: "TravellingMerchantInventory",
                 _0: a
               }), (a) => ({
@@ -20587,7 +20767,7 @@ var require_Parser = __commonJS({
         case "TeleportationPotion":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_TeleportationPotion$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_TeleportationPotion$TerrariaPacket.parse, (a) => ({
               TAG: "TeleportationPotion",
               _0: a
             }), (a) => ({
@@ -20599,7 +20779,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_AnglerQuest$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_AnglerQuest$TerrariaPacket.parse, (a) => ({
                 TAG: "AnglerQuest",
                 _0: a
               }), (a) => ({
@@ -20622,7 +20802,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_AnglerQuestComplete$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_AnglerQuestComplete$TerrariaPacket.parse, (a) => ({
                 TAG: "AnglerQuestComplete",
                 _0: a
               }), (a) => ({
@@ -20634,7 +20814,7 @@ var require_Parser = __commonJS({
         case "AnglerQuestsCompletedAmount":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_AnglerQuestsCompletedAmount$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_AnglerQuestsCompletedAmount$TerrariaPacket.parse, (a) => ({
               TAG: "AnglerQuestsCompletedAmount",
               _0: a
             }), (a) => ({
@@ -20646,7 +20826,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_TemporaryAnimationCreate$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_TemporaryAnimationCreate$TerrariaPacket.parse, (a) => ({
                 TAG: "TemporaryAnimationCreate",
                 _0: a
               }), (a) => ({
@@ -20664,7 +20844,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_InvasionProgressReport$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_InvasionProgressReport$TerrariaPacket.parse, (a) => ({
                 TAG: "InvasionProgressReport",
                 _0: a
               }), (a) => ({
@@ -20681,7 +20861,7 @@ var require_Parser = __commonJS({
         case "ObjectPlace":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_ObjectPlace$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_ObjectPlace$TerrariaPacket.parse, (a) => ({
               TAG: "ObjectPlace",
               _0: a
             }), (a) => ({
@@ -20693,7 +20873,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_PlayerChestIndexSync$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_PlayerChestIndexSync$TerrariaPacket.parse, (a) => ({
                 TAG: "PlayerChestIndexSync",
                 _0: a
               }), (a) => ({
@@ -20711,7 +20891,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_CombatNumberCreate$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_CombatNumberCreate$TerrariaPacket.parse, (a) => ({
                 TAG: "CombatNumberCreate",
                 _0: a
               }), (a) => ({
@@ -20728,7 +20908,7 @@ var require_Parser = __commonJS({
         case "NetModuleLoad":
           return {
             TAG: "Ok",
-            _0: makeParsersWithFromServer(Packet_NetModuleLoad$TerrariaPacket.parse, (a) => ({
+            _0: makeParsersWithFromServer(packetName, Packet_NetModuleLoad$TerrariaPacket.parse, (a) => ({
               TAG: "NetModuleLoad",
               _0: a
             }), (a) => ({
@@ -20740,7 +20920,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_NpcKillCount$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_NpcKillCount$TerrariaPacket.parse, (a) => ({
                 TAG: "NpcKillCount",
                 _0: a
               }), (a) => ({
@@ -20757,7 +20937,7 @@ var require_Parser = __commonJS({
         case "PlayerStealth":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_PlayerStealth$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_PlayerStealth$TerrariaPacket.parse, (a) => ({
               TAG: "PlayerStealth",
               _0: a
             }), (a) => ({
@@ -20774,7 +20954,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_ItemForceIntoNearestChest$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_ItemForceIntoNearestChest$TerrariaPacket.parse, (a) => ({
                 TAG: "ItemForceIntoNearestChest",
                 _0: a
               }), (a) => ({
@@ -20787,7 +20967,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_TileEntityUpdate$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_TileEntityUpdate$TerrariaPacket.parse, (a) => ({
                 TAG: "TileEntityUpdate",
                 _0: a
               }), (a) => ({
@@ -20810,7 +20990,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_TileEntityPlace$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_TileEntityPlace$TerrariaPacket.parse, (a) => ({
                 TAG: "TileEntityPlace",
                 _0: a
               }), (a) => ({
@@ -20823,7 +21003,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_ItemDropModify$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_ItemDropModify$TerrariaPacket.parse, (a) => ({
                 TAG: "ItemDropModify",
                 _0: a
               }), (a) => ({
@@ -20846,7 +21026,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_ItemFramePlace$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_ItemFramePlace$TerrariaPacket.parse, (a) => ({
                 TAG: "ItemFramePlace",
                 _0: a
               }), (a) => ({
@@ -20858,7 +21038,7 @@ var require_Parser = __commonJS({
         case "ItemDropInstancedUpdate":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_ItemDropInstancedUpdate$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_ItemDropInstancedUpdate$TerrariaPacket.parse, (a) => ({
               TAG: "ItemDropInstancedUpdate",
               _0: a
             }), (a) => ({
@@ -20870,7 +21050,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_EmoteBubble$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_EmoteBubble$TerrariaPacket.parse, (a) => ({
                 TAG: "EmoteBubble",
                 _0: a
               }), (a) => ({
@@ -20887,7 +21067,7 @@ var require_Parser = __commonJS({
         case "ExtraValueSync":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_ExtraValueSync$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_ExtraValueSync$TerrariaPacket.parse, (a) => ({
               TAG: "ExtraValueSync",
               _0: a
             }), (a) => ({
@@ -20898,7 +21078,7 @@ var require_Parser = __commonJS({
         case "SocialHandshake":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_SocialHandshake$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_SocialHandshake$TerrariaPacket.parse, (a) => ({
               TAG: "SocialHandshake",
               _0: a
             }), (a) => ({
@@ -20909,7 +21089,7 @@ var require_Parser = __commonJS({
         case "Unused":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_Unused$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_Unused$TerrariaPacket.parse, (a) => ({
               TAG: "Unused",
               _0: a
             }), (a) => ({
@@ -20926,7 +21106,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_PortalKill$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_PortalKill$TerrariaPacket.parse, (a) => ({
                 TAG: "PortalKill",
                 _0: a
               }), (a) => ({
@@ -20938,7 +21118,7 @@ var require_Parser = __commonJS({
         case "PlayerTeleportPortal":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_PlayerTeleportPortal$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_PlayerTeleportPortal$TerrariaPacket.parse, (a) => ({
               TAG: "PlayerTeleportPortal",
               _0: a
             }), (a) => ({
@@ -20950,7 +21130,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_NpcKilledNotification$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_NpcKilledNotification$TerrariaPacket.parse, (a) => ({
                 TAG: "NpcKilledNotification",
                 _0: a
               }), (a) => ({
@@ -20968,7 +21148,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_EventNotification$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_EventNotification$TerrariaPacket.parse, (a) => ({
                 TAG: "EventNotification",
                 _0: a
               }), (a) => ({
@@ -20985,7 +21165,7 @@ var require_Parser = __commonJS({
         case "MinionTargetUpdate":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_MinionTargetUpdate$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_MinionTargetUpdate$TerrariaPacket.parse, (a) => ({
               TAG: "MinionTargetUpdate",
               _0: a
             }), (a) => ({
@@ -20996,7 +21176,7 @@ var require_Parser = __commonJS({
         case "NpcTeleportPortal":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_NpcTeleportPortal$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_NpcTeleportPortal$TerrariaPacket.parse, (a) => ({
               TAG: "NpcTeleportPortal",
               _0: a
             }), (a) => ({
@@ -21008,7 +21188,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_ShieldStrengthsUpdate$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_ShieldStrengthsUpdate$TerrariaPacket.parse, (a) => ({
                 TAG: "ShieldStrengthsUpdate",
                 _0: a
               }), (a) => ({
@@ -21025,7 +21205,7 @@ var require_Parser = __commonJS({
         case "NebulaLevelUp":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_NebulaLevelUp$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_NebulaLevelUp$TerrariaPacket.parse, (a) => ({
               TAG: "NebulaLevelUp",
               _0: a
             }), (a) => ({
@@ -21037,7 +21217,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_MoonLordCountdown$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_MoonLordCountdown$TerrariaPacket.parse, (a) => ({
                 TAG: "MoonLordCountdown",
                 _0: a
               }), (a) => ({
@@ -21055,7 +21235,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_NpcShopItem$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_NpcShopItem$TerrariaPacket.parse, (a) => ({
                 TAG: "NpcShopItem",
                 _0: a
               }), (a) => ({
@@ -21078,7 +21258,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_GemLockToggle$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_GemLockToggle$TerrariaPacket.parse, (a) => ({
                 TAG: "GemLockToggle",
                 _0: a
               }), (a) => ({
@@ -21091,7 +21271,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_SmokePoof$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_SmokePoof$TerrariaPacket.parse, (a) => ({
                 TAG: "SmokePoof",
                 _0: a
               }), (a) => ({
@@ -21109,7 +21289,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_ChatMessageSmart$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_ChatMessageSmart$TerrariaPacket.parse, (a) => ({
                 TAG: "ChatMessageSmart",
                 _0: a
               }), (a) => ({
@@ -21127,7 +21307,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_WiredCannonShot$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_WiredCannonShot$TerrariaPacket.parse, (a) => ({
                 TAG: "WiredCannonShot",
                 _0: a
               }), (a) => ({
@@ -21150,7 +21330,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_MassWireOperation$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_MassWireOperation$TerrariaPacket.parse, (a) => ({
                 TAG: "MassWireOperation",
                 _0: a
               }), (a) => ({
@@ -21163,7 +21343,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_MassWireOperationPay$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_MassWireOperationPay$TerrariaPacket.parse, (a) => ({
                 TAG: "MassWireOperationPay",
                 _0: a
               }), (a) => ({
@@ -21186,7 +21366,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_PartyToggle$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_PartyToggle$TerrariaPacket.parse, (a) => ({
                 TAG: "PartyToggle",
                 _0: a
               }), (a) => ({
@@ -21198,7 +21378,7 @@ var require_Parser = __commonJS({
         case "TreeGrowFx":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_TreeGrowFx$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_TreeGrowFx$TerrariaPacket.parse, (a) => ({
               TAG: "TreeGrowFx",
               _0: a
             }), (a) => ({
@@ -21215,7 +21395,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_CrystalInvasionStart$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_CrystalInvasionStart$TerrariaPacket.parse, (a) => ({
                 TAG: "CrystalInvasionStart",
                 _0: a
               }), (a) => ({
@@ -21228,7 +21408,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_CrystalInvasionWipeAll$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_CrystalInvasionWipeAll$TerrariaPacket.parse, (a) => ({
                 TAG: "CrystalInvasionWipeAll",
                 _0: a
               }), (a) => ({
@@ -21245,7 +21425,7 @@ var require_Parser = __commonJS({
         case "MinionAttackTargetUpdate":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_MinionAttackTargetUpdate$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_MinionAttackTargetUpdate$TerrariaPacket.parse, (a) => ({
               TAG: "MinionAttackTargetUpdate",
               _0: a
             }), (a) => ({
@@ -21257,7 +21437,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_CrystalInvasionSendWaitTime$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_CrystalInvasionSendWaitTime$TerrariaPacket.parse, (a) => ({
                 TAG: "CrystalInvasionSendWaitTime",
                 _0: a
               }), (a) => ({
@@ -21274,7 +21454,7 @@ var require_Parser = __commonJS({
         case "PlayerDamage":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_PlayerDamage$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_PlayerDamage$TerrariaPacket.parse, (a) => ({
               TAG: "PlayerDamage",
               _0: a
             }), (a) => ({
@@ -21285,7 +21465,7 @@ var require_Parser = __commonJS({
         case "PlayerDeath":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_PlayerDeath$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_PlayerDeath$TerrariaPacket.parse, (a) => ({
               TAG: "PlayerDeath",
               _0: a
             }), (a) => ({
@@ -21297,7 +21477,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_CombatTextCreate$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_CombatTextCreate$TerrariaPacket.parse, (a) => ({
                 TAG: "CombatTextCreate",
                 _0: a
               }), (a) => ({
@@ -21320,7 +21500,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_Emoji$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_Emoji$TerrariaPacket.parse, (a) => ({
                 TAG: "Emoji",
                 _0: a
               }), (a) => ({
@@ -21332,7 +21512,7 @@ var require_Parser = __commonJS({
         case "TileEntityDisplayDollItemSync":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_TileEntityDisplayDollItemSync$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_TileEntityDisplayDollItemSync$TerrariaPacket.parse, (a) => ({
               TAG: "TileEntityDisplayDollItemSync",
               _0: a
             }), (a) => ({
@@ -21343,7 +21523,7 @@ var require_Parser = __commonJS({
         case "TileEntityInteractionRequest":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_TileEntityInteractionRequest$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_TileEntityInteractionRequest$TerrariaPacket.parse, (a) => ({
               TAG: "TileEntityInteractionRequest",
               _0: a
             }), (a) => ({
@@ -21360,7 +21540,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_WeaponsRackTryPlacing$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_WeaponsRackTryPlacing$TerrariaPacket.parse, (a) => ({
                 TAG: "WeaponsRackTryPlacing",
                 _0: a
               }), (a) => ({
@@ -21372,7 +21552,7 @@ var require_Parser = __commonJS({
         case "TileEntityHatRackItemSync":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_TileEntityHatRackItemSync$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_TileEntityHatRackItemSync$TerrariaPacket.parse, (a) => ({
               TAG: "TileEntityHatRackItemSync",
               _0: a
             }), (a) => ({
@@ -21383,7 +21563,7 @@ var require_Parser = __commonJS({
         case "TilePickingSync":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_TilePickingSync$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_TilePickingSync$TerrariaPacket.parse, (a) => ({
               TAG: "TilePickingSync",
               _0: a
             }), (a) => ({
@@ -21395,7 +21575,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_RevengeMarkerSync$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_RevengeMarkerSync$TerrariaPacket.parse, (a) => ({
                 TAG: "RevengeMarkerSync",
                 _0: a
               }), (a) => ({
@@ -21413,7 +21593,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_RevengeMarkerRemove$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_RevengeMarkerRemove$TerrariaPacket.parse, (a) => ({
                 TAG: "RevengeMarkerRemove",
                 _0: a
               }), (a) => ({
@@ -21430,7 +21610,7 @@ var require_Parser = __commonJS({
         case "GolfBallLandInCup":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_GolfBallLandInCup$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_GolfBallLandInCup$TerrariaPacket.parse, (a) => ({
               TAG: "GolfBallLandInCup",
               _0: a
             }), (a) => ({
@@ -21442,7 +21622,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_ClientFinishConnectingToServer$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_ClientFinishConnectingToServer$TerrariaPacket.parse, (a) => ({
                 TAG: "ClientFinishConnectingToServer",
                 _0: a
               }), (a) => ({
@@ -21465,7 +21645,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_NpcFishOut$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_NpcFishOut$TerrariaPacket.parse, (a) => ({
                 TAG: "NpcFishOut",
                 _0: a
               }), (a) => ({
@@ -21478,7 +21658,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_NpcTamper$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_NpcTamper$TerrariaPacket.parse, (a) => ({
                 TAG: "NpcTamper",
                 _0: a
               }), (a) => ({
@@ -21496,7 +21676,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_LegacySoundPlay$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_LegacySoundPlay$TerrariaPacket.parse, (a) => ({
                 TAG: "LegacySoundPlay",
                 _0: a
               }), (a) => ({
@@ -21519,7 +21699,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_FoodPlatterTryPlacing$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_FoodPlatterTryPlacing$TerrariaPacket.parse, (a) => ({
                 TAG: "FoodPlatterTryPlacing",
                 _0: a
               }), (a) => ({
@@ -21531,7 +21711,7 @@ var require_Parser = __commonJS({
         case "PlayerLuckFactorsUpdate":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_PlayerLuckFactorsUpdate$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_PlayerLuckFactorsUpdate$TerrariaPacket.parse, (a) => ({
               TAG: "PlayerLuckFactorsUpdate",
               _0: a
             }), (a) => ({
@@ -21543,7 +21723,7 @@ var require_Parser = __commonJS({
           if (fromServer) {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_PlayerDead$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_PlayerDead$TerrariaPacket.parse, (a) => ({
                 TAG: "PlayerDead",
                 _0: a
               }), (a) => ({
@@ -21560,7 +21740,7 @@ var require_Parser = __commonJS({
         case "CavernMonsterTypeSync":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_CavernMonsterTypeSync$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_CavernMonsterTypeSync$TerrariaPacket.parse, (a) => ({
               TAG: "CavernMonsterTypeSync",
               _0: a
             }), (a) => ({
@@ -21577,7 +21757,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_NpcBuffRemovalRequest$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_NpcBuffRemovalRequest$TerrariaPacket.parse, (a) => ({
                 TAG: "NpcBuffRemovalRequest",
                 _0: a
               }), (a) => ({
@@ -21595,7 +21775,7 @@ var require_Parser = __commonJS({
           } else {
             return {
               TAG: "Ok",
-              _0: makeParsers(Packet_ClientSyncedInventory$TerrariaPacket.parse, (a) => ({
+              _0: makeParsers(packetName, Packet_ClientSyncedInventory$TerrariaPacket.parse, (a) => ({
                 TAG: "ClientSyncedInventory",
                 _0: a
               }), (a) => ({
@@ -21607,7 +21787,7 @@ var require_Parser = __commonJS({
         case "CountsAsHostForGameplaySet":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_CountsAsHostForGameplaySet$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_CountsAsHostForGameplaySet$TerrariaPacket.parse, (a) => ({
               TAG: "CountsAsHostForGameplaySet",
               _0: a
             }), (a) => ({
@@ -21618,7 +21798,7 @@ var require_Parser = __commonJS({
         case "CreditsOrSlimeTransform":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_CreditsOrSlimeTransform$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_CreditsOrSlimeTransform$TerrariaPacket.parse, (a) => ({
               TAG: "CreditsOrSlimeTransform",
               _0: a
             }), (a) => ({
@@ -21629,7 +21809,7 @@ var require_Parser = __commonJS({
         case "LucyAxeMessage":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_LucyAxeMessage$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_LucyAxeMessage$TerrariaPacket.parse, (a) => ({
               TAG: "LucyAxeMessage",
               _0: a
             }), (a) => ({
@@ -21640,7 +21820,7 @@ var require_Parser = __commonJS({
         case "PiggyBankVoidLensUpdate":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_PiggyBankVoidLensUpdate$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_PiggyBankVoidLensUpdate$TerrariaPacket.parse, (a) => ({
               TAG: "PiggyBankVoidLensUpdate",
               _0: a
             }), (a) => ({
@@ -21651,7 +21831,7 @@ var require_Parser = __commonJS({
         case "DungeonDefendersEventAttemptSkipWait":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_DungeonDefendersEventAttemptSkipWait$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_DungeonDefendersEventAttemptSkipWait$TerrariaPacket.parse, (a) => ({
               TAG: "DungeonDefendersEventAttemptSkipWait",
               _0: a
             }), (a) => ({
@@ -21662,7 +21842,7 @@ var require_Parser = __commonJS({
         case "HaveDryadDoStardewAnimation":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_HaveDryadDoStardewAnimation$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_HaveDryadDoStardewAnimation$TerrariaPacket.parse, (a) => ({
               TAG: "HaveDryadDoStardewAnimation",
               _0: a
             }), (a) => ({
@@ -21673,7 +21853,7 @@ var require_Parser = __commonJS({
         case "ItemDropShimmeredUpdate":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_ItemDropShimmeredUpdate$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_ItemDropShimmeredUpdate$TerrariaPacket.parse, (a) => ({
               TAG: "ItemDropShimmeredUpdate",
               _0: a
             }), (a) => ({
@@ -21684,7 +21864,7 @@ var require_Parser = __commonJS({
         case "ShimmerEffectOrCoinLuck":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_ShimmerEffectOrCoinLuck$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_ShimmerEffectOrCoinLuck$TerrariaPacket.parse, (a) => ({
               TAG: "ShimmerEffectOrCoinLuck",
               _0: a
             }), (a) => ({
@@ -21695,7 +21875,7 @@ var require_Parser = __commonJS({
         case "LoadoutSwitch":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_LoadoutSwitch$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_LoadoutSwitch$TerrariaPacket.parse, (a) => ({
               TAG: "LoadoutSwitch",
               _0: a
             }), (a) => ({
@@ -21706,7 +21886,7 @@ var require_Parser = __commonJS({
         case "ItemDropProtectedUpdate":
           return {
             TAG: "Ok",
-            _0: makeParsers(Packet_ItemDropProtectedUpdate$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, Packet_ItemDropProtectedUpdate$TerrariaPacket.parse, (a) => ({
               TAG: "ItemDropProtectedUpdate",
               _0: a
             }), (a) => ({
