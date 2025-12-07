@@ -58,9 +58,11 @@ module Encode = {
   }
 
   let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
-    if self->Array.length != 2
-       || self->Array.getUnsafe(0)->Array.length != 3
-       || self->Array.getUnsafe(1)->Array.length != 3 {
+    if (
+      self->Array.length != 2 ||
+      self->Array.getUnsafe(0)->Array.length != 3 ||
+      self->Array.getUnsafe(1)->Array.length != 3
+    ) {
       Error({
         context: "Packet_CavernMonsterTypeSync.toBuffer",
         error: JsError.make("Expected a 2x3 array of monster types")->JsError.toJsExn,

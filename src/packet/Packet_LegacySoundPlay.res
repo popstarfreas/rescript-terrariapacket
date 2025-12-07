@@ -16,24 +16,21 @@ module Decode = {
     let? Ok(soundIndex) = reader->readUInt16("soundIndex")
     let? Ok(flagsRaw) = reader->readByte("flags")
     let flags = BitFlags.fromByte(flagsRaw)
-    let? Ok(styleOverride) =
-      if flags->BitFlags.flag1 {
-        reader->readInt32("styleOverride")->Result.map(v => Some(v))
-      } else {
-        Ok(None)
-      }
-    let? Ok(volumeOverride) =
-      if flags->BitFlags.flag2 {
-        reader->readSingle("volumeOverride")->Result.map(v => Some(v))
-      } else {
-        Ok(None)
-      }
-    let? Ok(pitchOverride) =
-      if flags->BitFlags.flag3 {
-        reader->readSingle("pitchOverride")->Result.map(v => Some(v))
-      } else {
-        Ok(None)
-      }
+    let? Ok(styleOverride) = if flags->BitFlags.flag1 {
+      reader->readInt32("styleOverride")->Result.map(v => Some(v))
+    } else {
+      Ok(None)
+    }
+    let? Ok(volumeOverride) = if flags->BitFlags.flag2 {
+      reader->readSingle("volumeOverride")->Result.map(v => Some(v))
+    } else {
+      Ok(None)
+    }
+    let? Ok(pitchOverride) = if flags->BitFlags.flag3 {
+      reader->readSingle("pitchOverride")->Result.map(v => Some(v))
+    } else {
+      Ok(None)
+    }
     Ok({
       position: {x: posX, y: posY},
       soundIndex,

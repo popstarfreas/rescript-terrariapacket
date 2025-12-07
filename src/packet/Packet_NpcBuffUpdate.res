@@ -43,10 +43,7 @@ module Encode = {
         writer
       } else {
         loop(
-          writer->packUInt16(
-            buffs->Array.getUnsafe(idx),
-            `buff${(idx + 1)->Int.toString}`,
-          ),
+          writer->packUInt16(buffs->Array.getUnsafe(idx), `buff${(idx + 1)->Int.toString}`),
           idx + 1,
         )
       }
@@ -58,10 +55,7 @@ module Encode = {
         writer
       } else {
         loop(
-          writer->packInt16(
-            buffTimes->Array.getUnsafe(idx),
-            `buffTime${(idx + 1)->Int.toString}`,
-          ),
+          writer->packInt16(buffTimes->Array.getUnsafe(idx), `buffTime${(idx + 1)->Int.toString}`),
           idx + 1,
         )
       }

@@ -1262,9 +1262,10 @@ let toPacketName = (packet: t): string => {
     `NpcUpdate(npcSlotId: ${npcSlotId->Int.toString}, npcTypeId: ${npcTypeId->Int.toString}, x: ${x->Float.toString}, y: ${y->Float.toString}, vx: ${vx->Float.toString}, vy: ${vy->Float.toString}, target: ${target->Int.toString}, directionX: ${directionX->string_of_bool}, directionY: ${directionY->string_of_bool})`
   | NpcItemStrike(_npcItemStrike) => "NpcItemStrike"
   | ProjectileSync({projectileId, x, y, vx, vy, owner, projectileType, damage, knockback}) =>
-    `ProjectileSync(projectileId: ${projectileId->Int.toString}, x: ${x->Float.toString}, y: ${y->Float.toString}, vx: ${vx->Float.toString}, vy: ${vy->Float.toString}, owner: ${owner->Int.toString}, projectileType: ${projectileType->Int.toString}, damage: ${damage->Option.mapOr("None", damage => damage->Int.toString)}, knockback: ${knockback->Option.mapOr("None", knockback =>
-        knockback->Float.toString
-      )})`
+    `ProjectileSync(projectileId: ${projectileId->Int.toString}, x: ${x->Float.toString}, y: ${y->Float.toString}, vx: ${vx->Float.toString}, vy: ${vy->Float.toString}, owner: ${owner->Int.toString}, projectileType: ${projectileType->Int.toString}, damage: ${damage->Option.mapOr(
+        "None",
+        damage => damage->Int.toString,
+      )}, knockback: ${knockback->Option.mapOr("None", knockback => knockback->Float.toString)})`
   | NpcStrike(_npcStrike) => "NpcStrike"
   | ProjectileDestroy(projectileDestroy) =>
     `ProjectileDestroy(projectileId: ${projectileDestroy.projectileId->Int.toString}, owner: ${projectileDestroy.owner->Int.toString})`

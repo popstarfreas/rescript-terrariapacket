@@ -41,12 +41,11 @@ module Encode = {
       ->packInt16(self.x, "x")
       ->packInt16(self.y, "y")
       ->packByte(self.nameLength, "nameLength")
-    let writer =
-      if self.nameLength > 0 && self.nameLength <= 20 {
-        writer->packString(self.name, "name")
-      } else {
-        writer
-      }
+    let writer = if self.nameLength > 0 && self.nameLength <= 20 {
+      writer->packString(self.name, "name")
+    } else {
+      writer
+    }
     writer->data
   }
 }

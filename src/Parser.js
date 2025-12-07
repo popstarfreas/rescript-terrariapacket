@@ -150,18 +150,318 @@ let Packet_TileEntityDisplayDollItemSync$TerrariaPacket = require("./packet/Pack
 let Packet_ClientFinishConnectingToServer$TerrariaPacket = require("./packet/Packet_ClientFinishConnectingToServer.js");
 let Packet_DungeonDefendersEventAttemptSkipWait$TerrariaPacket = require("./packet/Packet_DungeonDefendersEventAttemptSkipWait.js");
 
-function mapPacket(buffer, fn) {
-  return Stdlib_Result.mapError(Stdlib_Result.map(buffer, fn), e => ({
+function packetTypeName(packetType) {
+  switch (packetType) {
+    case "ConnectRequest" :
+      return "ConnectRequest";
+    case "Disconnect" :
+      return "Disconnect";
+    case "PlayerSlotSet" :
+      return "PlayerSlotSet";
+    case "PlayerInfo" :
+      return "PlayerInfo";
+    case "PlayerInventorySlot" :
+      return "PlayerInventorySlot";
+    case "WorldDataRequest" :
+      return "WorldDataRequest";
+    case "WorldInfo" :
+      return "WorldInfo";
+    case "InitialTileSectionsRequest" :
+      return "InitialTileSectionsRequest";
+    case "Status" :
+      return "Status";
+    case "TileSectionSend" :
+      return "TileSectionSend";
+    case "TileSectionFrame" :
+      return "TileSectionFrame";
+    case "PlayerSpawn" :
+      return "PlayerSpawn";
+    case "PlayerUpdate" :
+      return "PlayerUpdate";
+    case "PlayerActive" :
+      return "PlayerActive";
+    case "PlayerHealth" :
+      return "PlayerHealth";
+    case "TileModify" :
+      return "TileModify";
+    case "TimeSet" :
+      return "TimeSet";
+    case "DoorUse" :
+      return "DoorUse";
+    case "TileSquareSend" :
+      return "TileSquareSend";
+    case "ItemDropUpdate" :
+      return "ItemDropUpdate";
+    case "ItemOwner" :
+      return "ItemOwner";
+    case "NpcUpdate" :
+      return "NpcUpdate";
+    case "NpcItemStrike" :
+      return "NpcItemStrike";
+    case "ProjectileSync" :
+      return "ProjectileSync";
+    case "NpcStrike" :
+      return "NpcStrike";
+    case "ProjectileDestroy" :
+      return "ProjectileDestroy";
+    case "PvpToggle" :
+      return "PvpToggle";
+    case "ChestOpen" :
+      return "ChestOpen";
+    case "ChestItem" :
+      return "ChestItem";
+    case "ActiveContainerSync" :
+      return "ActiveContainerSync";
+    case "ChestPlace" :
+      return "ChestPlace";
+    case "HealEffect" :
+      return "HealEffect";
+    case "Zones" :
+      return "Zones";
+    case "PasswordRequired" :
+      return "PasswordRequired";
+    case "PasswordSend" :
+      return "PasswordSend";
+    case "ItemOwnerRemove" :
+      return "ItemOwnerRemove";
+    case "NpcTalk" :
+      return "NpcTalk";
+    case "PlayerAnimation" :
+      return "PlayerAnimation";
+    case "PlayerMana" :
+      return "PlayerMana";
+    case "ManaEffect" :
+      return "ManaEffect";
+    case "PlayerTeam" :
+      return "PlayerTeam";
+    case "SignRead" :
+      return "SignRead";
+    case "SignNew" :
+      return "SignNew";
+    case "LiquidSet" :
+      return "LiquidSet";
+    case "PlayerSpawnSelf" :
+      return "PlayerSpawnSelf";
+    case "PlayerBuffsSet" :
+      return "PlayerBuffsSet";
+    case "NpcSpecialEffect" :
+      return "NpcSpecialEffect";
+    case "ChestOrTempleUnlock" :
+      return "ChestOrTempleUnlock";
+    case "NpcBuffAdd" :
+      return "NpcBuffAdd";
+    case "NpcBuffUpdate" :
+      return "NpcBuffUpdate";
+    case "PlayerBuffAdd" :
+      return "PlayerBuffAdd";
+    case "NpcNameUpdate" :
+      return "NpcNameUpdate";
+    case "GoodEvilUpdate" :
+      return "GoodEvilUpdate";
+    case "HarpPlay" :
+      return "HarpPlay";
+    case "SwitchHit" :
+      return "SwitchHit";
+    case "NpcHomeUpdate" :
+      return "NpcHomeUpdate";
+    case "BossOrInvasionSpawn" :
+      return "BossOrInvasionSpawn";
+    case "PlayerDodge" :
+      return "PlayerDodge";
+    case "TilePaint" :
+      return "TilePaint";
+    case "WallPaint" :
+      return "WallPaint";
+    case "Teleport" :
+      return "Teleport";
+    case "PlayerHealOther" :
+      return "PlayerHealOther";
+    case "DimensionsUpdate" :
+      return "DimensionsUpdate";
+    case "ClientUuid" :
+      return "ClientUuid";
+    case "ChestName" :
+      return "ChestName";
+    case "NpcCatch" :
+      return "NpcCatch";
+    case "NpcRelease" :
+      return "NpcRelease";
+    case "TravellingMerchantInventory" :
+      return "TravellingMerchantInventory";
+    case "TeleportationPotion" :
+      return "TeleportationPotion";
+    case "AnglerQuest" :
+      return "AnglerQuest";
+    case "AnglerQuestComplete" :
+      return "AnglerQuestComplete";
+    case "AnglerQuestsCompletedAmount" :
+      return "AnglerQuestsCompletedAmount";
+    case "TemporaryAnimationCreate" :
+      return "TemporaryAnimationCreate";
+    case "InvasionProgressReport" :
+      return "InvasionProgressReport";
+    case "ObjectPlace" :
+      return "ObjectPlace";
+    case "PlayerChestIndexSync" :
+      return "PlayerChestIndexSync";
+    case "CombatNumberCreate" :
+      return "CombatNumberCreate";
+    case "NetModuleLoad" :
+      return "NetModuleLoad";
+    case "NpcKillCount" :
+      return "NpcKillCount";
+    case "PlayerStealth" :
+      return "PlayerStealth";
+    case "ItemForceIntoNearestChest" :
+      return "ItemForceIntoNearestChest";
+    case "TileEntityUpdate" :
+      return "TileEntityUpdate";
+    case "TileEntityPlace" :
+      return "TileEntityPlace";
+    case "ItemDropModify" :
+      return "ItemDropModify";
+    case "ItemFramePlace" :
+      return "ItemFramePlace";
+    case "ItemDropInstancedUpdate" :
+      return "ItemDropInstancedUpdate";
+    case "EmoteBubble" :
+      return "EmoteBubble";
+    case "ExtraValueSync" :
+      return "ExtraValueSync";
+    case "SocialHandshake" :
+      return "SocialHandshake";
+    case "Unused" :
+      return "Unused";
+    case "PortalKill" :
+      return "PortalKill";
+    case "PlayerTeleportPortal" :
+      return "PlayerTeleportPortal";
+    case "NpcKilledNotification" :
+      return "NpcKilledNotification";
+    case "EventNotification" :
+      return "EventNotification";
+    case "MinionTargetUpdate" :
+      return "MinionTargetUpdate";
+    case "NpcTeleportPortal" :
+      return "NpcTeleportPortal";
+    case "ShieldStrengthsUpdate" :
+      return "ShieldStrengthsUpdate";
+    case "NebulaLevelUp" :
+      return "NebulaLevelUp";
+    case "MoonLordCountdown" :
+      return "MoonLordCountdown";
+    case "NpcShopItem" :
+      return "NpcShopItem";
+    case "GemLockToggle" :
+      return "GemLockToggle";
+    case "SmokePoof" :
+      return "SmokePoof";
+    case "ChatMessageSmart" :
+      return "ChatMessageSmart";
+    case "WiredCannonShot" :
+      return "WiredCannonShot";
+    case "MassWireOperation" :
+      return "MassWireOperation";
+    case "MassWireOperationPay" :
+      return "MassWireOperationPay";
+    case "PartyToggle" :
+      return "PartyToggle";
+    case "TreeGrowFx" :
+      return "TreeGrowFx";
+    case "CrystalInvasionStart" :
+      return "CrystalInvasionStart";
+    case "CrystalInvasionWipeAll" :
+      return "CrystalInvasionWipeAll";
+    case "MinionAttackTargetUpdate" :
+      return "MinionAttackTargetUpdate";
+    case "CrystalInvasionSendWaitTime" :
+      return "CrystalInvasionSendWaitTime";
+    case "PlayerDamage" :
+      return "PlayerDamage";
+    case "PlayerDeath" :
+      return "PlayerDeath";
+    case "CombatTextCreate" :
+      return "CombatTextCreate";
+    case "Emoji" :
+      return "Emoji";
+    case "TileEntityDisplayDollItemSync" :
+      return "TileEntityDisplayDollItemSync";
+    case "TileEntityInteractionRequest" :
+      return "TileEntityInteractionRequest";
+    case "WeaponsRackTryPlacing" :
+      return "WeaponsRackTryPlacing";
+    case "TileEntityHatRackItemSync" :
+      return "TileEntityHatRackItemSync";
+    case "TilePickingSync" :
+      return "TilePickingSync";
+    case "RevengeMarkerSync" :
+      return "RevengeMarkerSync";
+    case "RevengeMarkerRemove" :
+      return "RevengeMarkerRemove";
+    case "GolfBallLandInCup" :
+      return "GolfBallLandInCup";
+    case "ClientFinishConnectingToServer" :
+      return "ClientFinishConnectingToServer";
+    case "NpcFishOut" :
+      return "NpcFishOut";
+    case "NpcTamper" :
+      return "NpcTamper";
+    case "LegacySoundPlay" :
+      return "LegacySoundPlay";
+    case "FoodPlatterTryPlacing" :
+      return "FoodPlatterTryPlacing";
+    case "PlayerLuckFactorsUpdate" :
+      return "PlayerLuckFactorsUpdate";
+    case "PlayerDead" :
+      return "PlayerDead";
+    case "CavernMonsterTypeSync" :
+      return "CavernMonsterTypeSync";
+    case "NpcBuffRemovalRequest" :
+      return "NpcBuffRemovalRequest";
+    case "ClientSyncedInventory" :
+      return "ClientSyncedInventory";
+    case "CountsAsHostForGameplaySet" :
+      return "CountsAsHostForGameplaySet";
+    case "CreditsOrSlimeTransform" :
+      return "CreditsOrSlimeTransform";
+    case "LucyAxeMessage" :
+      return "LucyAxeMessage";
+    case "PiggyBankVoidLensUpdate" :
+      return "PiggyBankVoidLensUpdate";
+    case "DungeonDefendersEventAttemptSkipWait" :
+      return "DungeonDefendersEventAttemptSkipWait";
+    case "HaveDryadDoStardewAnimation" :
+      return "HaveDryadDoStardewAnimation";
+    case "ItemDropShimmeredUpdate" :
+      return "ItemDropShimmeredUpdate";
+    case "ShimmerEffectOrCoinLuck" :
+      return "ShimmerEffectOrCoinLuck";
+    case "LoadoutSwitch" :
+      return "LoadoutSwitch";
+    case "ItemDropProtectedUpdate" :
+      return "ItemDropProtectedUpdate";
+  }
+}
+
+function addPacketContext(packetName, err) {
+  return {
+    context: "Packet " + packetName + ": " + err.context,
+    error: err.error
+  };
+}
+
+function mapPacket(result, packetName, fn) {
+  return Stdlib_Result.mapError(Stdlib_Result.map(result, fn), e => ({
     TAG: "ReaderError",
-    _0: e
+    _0: addPacketContext(packetName, e)
   }));
 }
 
-function makeParsers(parse, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, _fromServer) => mapPacket(parse(payload), toPacket);
+function makeParsers(packetName, parse, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, _fromServer) => mapPacket(parse(payload), packetName, toPacket);
   let parseLazyWrapped = (payload, _fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(Stdlib_Lazy.make(() => parse(payload)))
+    _0: toLazyPacket(Stdlib_Lazy.make(() => Stdlib_Result.mapError(parse(payload), e => addPacketContext(packetName, e))))
   });
   return {
     parse: parseWrapped,
@@ -169,11 +469,11 @@ function makeParsers(parse, toPacket, toLazyPacket) {
   };
 }
 
-function makeParsersWithFromServer(parse, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, fromServer) => mapPacket(parse(payload, fromServer), toPacket);
+function makeParsersWithFromServer(packetName, parse, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, fromServer) => mapPacket(parse(payload, fromServer), packetName, toPacket);
   let parseLazyWrapped = (payload, fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(Stdlib_Lazy.make(() => parse(payload, fromServer)))
+    _0: toLazyPacket(Stdlib_Lazy.make(() => Stdlib_Result.mapError(parse(payload, fromServer), e => addPacketContext(packetName, e))))
   });
   return {
     parse: parseWrapped,
@@ -182,6 +482,7 @@ function makeParsersWithFromServer(parse, toPacket, toLazyPacket) {
 }
 
 function getParsers(packetType, fromServer) {
+  let packetName = packetTypeName(packetType);
   switch (packetType) {
     case "ConnectRequest" :
       if (fromServer) {
@@ -192,7 +493,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_ConnectRequest$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_ConnectRequest$TerrariaPacket.parse, a => ({
             TAG: "ConnectRequest",
             _0: a
           }), a => ({
@@ -205,7 +506,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_Disconnect$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_Disconnect$TerrariaPacket.parse, a => ({
             TAG: "Disconnect",
             _0: a
           }), a => ({
@@ -223,7 +524,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_PlayerSlotSet$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_PlayerSlotSet$TerrariaPacket.parse, a => ({
             TAG: "PlayerSlotSet",
             _0: a
           }), a => ({
@@ -240,7 +541,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerInfo" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_PlayerInfo$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_PlayerInfo$TerrariaPacket.parse, a => ({
           TAG: "PlayerInfo",
           _0: a
         }), a => ({
@@ -251,7 +552,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerInventorySlot" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_PlayerInventorySlot$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_PlayerInventorySlot$TerrariaPacket.parse, a => ({
           TAG: "PlayerInventorySlot",
           _0: a
         }), a => ({
@@ -268,7 +569,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_WorldDataRequest$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_WorldDataRequest$TerrariaPacket.parse, a => ({
             TAG: "WorldDataRequest",
             _0: a
           }), a => ({
@@ -281,7 +582,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_WorldInfo$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_WorldInfo$TerrariaPacket.parse, a => ({
             TAG: "WorldInfo",
             _0: a
           }), a => ({
@@ -304,7 +605,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_InitialTileSectionsRequest$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_InitialTileSectionsRequest$TerrariaPacket.parse, a => ({
             TAG: "InitialTileSectionsRequest",
             _0: a
           }), a => ({
@@ -317,7 +618,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_Status$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_Status$TerrariaPacket.parse, a => ({
             TAG: "Status",
             _0: a
           }), a => ({
@@ -335,7 +636,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_TileSectionSend$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_TileSectionSend$TerrariaPacket.parse, a => ({
             TAG: "TileSectionSend",
             _0: a
           }), a => ({
@@ -353,7 +654,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_TileSectionFrame$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_TileSectionFrame$TerrariaPacket.parse, a => ({
             TAG: "TileSectionFrame",
             _0: a
           }), a => ({
@@ -370,7 +671,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerSpawn" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_PlayerSpawn$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_PlayerSpawn$TerrariaPacket.parse, a => ({
           TAG: "PlayerSpawn",
           _0: a
         }), a => ({
@@ -381,7 +682,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerUpdate" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_PlayerUpdate$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_PlayerUpdate$TerrariaPacket.parse, a => ({
           TAG: "PlayerUpdate",
           _0: a
         }), a => ({
@@ -393,7 +694,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_PlayerActive$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_PlayerActive$TerrariaPacket.parse, a => ({
             TAG: "PlayerActive",
             _0: a
           }), a => ({
@@ -410,7 +711,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerHealth" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_PlayerHealth$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_PlayerHealth$TerrariaPacket.parse, a => ({
           TAG: "PlayerHealth",
           _0: a
         }), a => ({
@@ -421,7 +722,7 @@ function getParsers(packetType, fromServer) {
     case "TileModify" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_TileModify$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_TileModify$TerrariaPacket.parse, a => ({
           TAG: "TileModify",
           _0: a
         }), a => ({
@@ -433,7 +734,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_TimeSet$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_TimeSet$TerrariaPacket.parse, a => ({
             TAG: "TimeSet",
             _0: a
           }), a => ({
@@ -450,7 +751,7 @@ function getParsers(packetType, fromServer) {
     case "DoorUse" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_DoorUse$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_DoorUse$TerrariaPacket.parse, a => ({
           TAG: "DoorUse",
           _0: a
         }), a => ({
@@ -461,7 +762,7 @@ function getParsers(packetType, fromServer) {
     case "TileSquareSend" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_TileSquareSend$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_TileSquareSend$TerrariaPacket.parse, a => ({
           TAG: "TileSquareSend",
           _0: a
         }), a => ({
@@ -472,7 +773,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropUpdate" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_ItemDropUpdate$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_ItemDropUpdate$TerrariaPacket.parse, a => ({
           TAG: "ItemDropUpdate",
           _0: a
         }), a => ({
@@ -483,7 +784,7 @@ function getParsers(packetType, fromServer) {
     case "ItemOwner" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_ItemOwner$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_ItemOwner$TerrariaPacket.parse, a => ({
           TAG: "ItemOwner",
           _0: a
         }), a => ({
@@ -495,7 +796,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_NpcUpdate$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_NpcUpdate$TerrariaPacket.parse, a => ({
             TAG: "NpcUpdate",
             _0: a
           }), a => ({
@@ -512,7 +813,7 @@ function getParsers(packetType, fromServer) {
     case "NpcItemStrike" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_NpcItemStrike$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_NpcItemStrike$TerrariaPacket.parse, a => ({
           TAG: "NpcItemStrike",
           _0: a
         }), a => ({
@@ -523,7 +824,7 @@ function getParsers(packetType, fromServer) {
     case "ProjectileSync" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_ProjectileSync$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_ProjectileSync$TerrariaPacket.parse, a => ({
           TAG: "ProjectileSync",
           _0: a
         }), a => ({
@@ -534,7 +835,7 @@ function getParsers(packetType, fromServer) {
     case "NpcStrike" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_NpcStrike$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_NpcStrike$TerrariaPacket.parse, a => ({
           TAG: "NpcStrike",
           _0: a
         }), a => ({
@@ -545,7 +846,7 @@ function getParsers(packetType, fromServer) {
     case "ProjectileDestroy" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_ProjectileDestroy$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_ProjectileDestroy$TerrariaPacket.parse, a => ({
           TAG: "ProjectileDestroy",
           _0: a
         }), a => ({
@@ -556,7 +857,7 @@ function getParsers(packetType, fromServer) {
     case "PvpToggle" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_PvpToggle$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_PvpToggle$TerrariaPacket.parse, a => ({
           TAG: "PvpToggle",
           _0: a
         }), a => ({
@@ -573,7 +874,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_ChestOpen$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_ChestOpen$TerrariaPacket.parse, a => ({
             TAG: "ChestOpen",
             _0: a
           }), a => ({
@@ -585,7 +886,7 @@ function getParsers(packetType, fromServer) {
     case "ChestItem" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_ChestItem$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_ChestItem$TerrariaPacket.parse, a => ({
           TAG: "ChestItem",
           _0: a
         }), a => ({
@@ -596,7 +897,7 @@ function getParsers(packetType, fromServer) {
     case "ActiveContainerSync" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_ActiveContainerSync$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_ActiveContainerSync$TerrariaPacket.parse, a => ({
           TAG: "ActiveContainerSync",
           _0: a
         }), a => ({
@@ -607,7 +908,7 @@ function getParsers(packetType, fromServer) {
     case "ChestPlace" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_ChestPlace$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_ChestPlace$TerrariaPacket.parse, a => ({
           TAG: "ChestPlace",
           _0: a
         }), a => ({
@@ -618,7 +919,7 @@ function getParsers(packetType, fromServer) {
     case "HealEffect" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_HealEffect$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_HealEffect$TerrariaPacket.parse, a => ({
           TAG: "HealEffect",
           _0: a
         }), a => ({
@@ -629,7 +930,7 @@ function getParsers(packetType, fromServer) {
     case "Zones" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_Zones$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_Zones$TerrariaPacket.parse, a => ({
           TAG: "Zones",
           _0: a
         }), a => ({
@@ -641,7 +942,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_PasswordRequired$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_PasswordRequired$TerrariaPacket.parse, a => ({
             TAG: "PasswordRequired",
             _0: a
           }), a => ({
@@ -664,7 +965,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_PasswordSend$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_PasswordSend$TerrariaPacket.parse, a => ({
             TAG: "PasswordSend",
             _0: a
           }), a => ({
@@ -677,7 +978,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_ItemOwnerRemove$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_ItemOwnerRemove$TerrariaPacket.parse, a => ({
             TAG: "ItemOwnerRemove",
             _0: a
           }), a => ({
@@ -694,7 +995,7 @@ function getParsers(packetType, fromServer) {
     case "NpcTalk" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_NpcTalk$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_NpcTalk$TerrariaPacket.parse, a => ({
           TAG: "NpcTalk",
           _0: a
         }), a => ({
@@ -705,7 +1006,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerAnimation" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_PlayerAnimation$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_PlayerAnimation$TerrariaPacket.parse, a => ({
           TAG: "PlayerAnimation",
           _0: a
         }), a => ({
@@ -716,7 +1017,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerMana" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_PlayerMana$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_PlayerMana$TerrariaPacket.parse, a => ({
           TAG: "PlayerMana",
           _0: a
         }), a => ({
@@ -727,7 +1028,7 @@ function getParsers(packetType, fromServer) {
     case "ManaEffect" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_ManaEffect$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_ManaEffect$TerrariaPacket.parse, a => ({
           TAG: "ManaEffect",
           _0: a
         }), a => ({
@@ -738,7 +1039,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerTeam" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_PlayerTeam$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_PlayerTeam$TerrariaPacket.parse, a => ({
           TAG: "PlayerTeam",
           _0: a
         }), a => ({
@@ -755,7 +1056,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_SignRead$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_SignRead$TerrariaPacket.parse, a => ({
             TAG: "SignRead",
             _0: a
           }), a => ({
@@ -767,7 +1068,7 @@ function getParsers(packetType, fromServer) {
     case "SignNew" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_SignNew$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_SignNew$TerrariaPacket.parse, a => ({
           TAG: "SignNew",
           _0: a
         }), a => ({
@@ -778,7 +1079,7 @@ function getParsers(packetType, fromServer) {
     case "LiquidSet" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_LiquidSet$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_LiquidSet$TerrariaPacket.parse, a => ({
           TAG: "LiquidSet",
           _0: a
         }), a => ({
@@ -790,7 +1091,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_PlayerSpawnSelf$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_PlayerSpawnSelf$TerrariaPacket.parse, a => ({
             TAG: "PlayerSpawnSelf",
             _0: a
           }), a => ({
@@ -807,7 +1108,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerBuffsSet" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_PlayerBuffsSet$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_PlayerBuffsSet$TerrariaPacket.parse, a => ({
           TAG: "PlayerBuffsSet",
           _0: a
         }), a => ({
@@ -818,7 +1119,7 @@ function getParsers(packetType, fromServer) {
     case "NpcSpecialEffect" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_NpcSpecialEffect$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_NpcSpecialEffect$TerrariaPacket.parse, a => ({
           TAG: "NpcSpecialEffect",
           _0: a
         }), a => ({
@@ -829,7 +1130,7 @@ function getParsers(packetType, fromServer) {
     case "ChestOrTempleUnlock" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_ChestOrTempleUnlock$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_ChestOrTempleUnlock$TerrariaPacket.parse, a => ({
           TAG: "ChestOrTempleUnlock",
           _0: a
         }), a => ({
@@ -840,7 +1141,7 @@ function getParsers(packetType, fromServer) {
     case "NpcBuffAdd" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_NpcBuffAdd$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_NpcBuffAdd$TerrariaPacket.parse, a => ({
           TAG: "NpcBuffAdd",
           _0: a
         }), a => ({
@@ -852,7 +1153,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_NpcBuffUpdate$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_NpcBuffUpdate$TerrariaPacket.parse, a => ({
             TAG: "NpcBuffUpdate",
             _0: a
           }), a => ({
@@ -869,7 +1170,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerBuffAdd" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_PlayerBuffAdd$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_PlayerBuffAdd$TerrariaPacket.parse, a => ({
           TAG: "PlayerBuffAdd",
           _0: a
         }), a => ({
@@ -880,7 +1181,7 @@ function getParsers(packetType, fromServer) {
     case "NpcNameUpdate" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_NpcNameUpdate$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_NpcNameUpdate$TerrariaPacket.parse, a => ({
           TAG: "NpcNameUpdate",
           _0: a
         }), a => ({
@@ -892,7 +1193,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_GoodEvilUpdate$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_GoodEvilUpdate$TerrariaPacket.parse, a => ({
             TAG: "GoodEvilUpdate",
             _0: a
           }), a => ({
@@ -909,7 +1210,7 @@ function getParsers(packetType, fromServer) {
     case "HarpPlay" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_HarpPlay$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_HarpPlay$TerrariaPacket.parse, a => ({
           TAG: "HarpPlay",
           _0: a
         }), a => ({
@@ -920,7 +1221,7 @@ function getParsers(packetType, fromServer) {
     case "SwitchHit" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_SwitchHit$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_SwitchHit$TerrariaPacket.parse, a => ({
           TAG: "SwitchHit",
           _0: a
         }), a => ({
@@ -931,7 +1232,7 @@ function getParsers(packetType, fromServer) {
     case "NpcHomeUpdate" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_NpcHomeUpdate$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_NpcHomeUpdate$TerrariaPacket.parse, a => ({
           TAG: "NpcHomeUpdate",
           _0: a
         }), a => ({
@@ -948,7 +1249,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_BossOrInvasionSpawn$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_BossOrInvasionSpawn$TerrariaPacket.parse, a => ({
             TAG: "BossOrInvasionSpawn",
             _0: a
           }), a => ({
@@ -960,7 +1261,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerDodge" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_PlayerDodge$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_PlayerDodge$TerrariaPacket.parse, a => ({
           TAG: "PlayerDodge",
           _0: a
         }), a => ({
@@ -971,7 +1272,7 @@ function getParsers(packetType, fromServer) {
     case "TilePaint" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_TilePaint$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_TilePaint$TerrariaPacket.parse, a => ({
           TAG: "TilePaint",
           _0: a
         }), a => ({
@@ -982,7 +1283,7 @@ function getParsers(packetType, fromServer) {
     case "WallPaint" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_WallPaint$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_WallPaint$TerrariaPacket.parse, a => ({
           TAG: "WallPaint",
           _0: a
         }), a => ({
@@ -993,7 +1294,7 @@ function getParsers(packetType, fromServer) {
     case "Teleport" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_Teleport$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_Teleport$TerrariaPacket.parse, a => ({
           TAG: "Teleport",
           _0: a
         }), a => ({
@@ -1004,7 +1305,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerHealOther" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_PlayerHealOther$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_PlayerHealOther$TerrariaPacket.parse, a => ({
           TAG: "PlayerHealOther",
           _0: a
         }), a => ({
@@ -1015,7 +1316,7 @@ function getParsers(packetType, fromServer) {
     case "DimensionsUpdate" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_DimensionsUpdate$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_DimensionsUpdate$TerrariaPacket.parse, a => ({
           TAG: "DimensionsUpdate",
           _0: a
         }), a => ({
@@ -1032,7 +1333,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_ClientUuid$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_ClientUuid$TerrariaPacket.parse, a => ({
             TAG: "ClientUuid",
             _0: a
           }), a => ({
@@ -1044,7 +1345,7 @@ function getParsers(packetType, fromServer) {
     case "ChestName" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_ChestName$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_ChestName$TerrariaPacket.parse, a => ({
           TAG: "ChestName",
           _0: a
         }), a => ({
@@ -1061,7 +1362,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_NpcCatch$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_NpcCatch$TerrariaPacket.parse, a => ({
             TAG: "NpcCatch",
             _0: a
           }), a => ({
@@ -1079,7 +1380,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_NpcRelease$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_NpcRelease$TerrariaPacket.parse, a => ({
             TAG: "NpcRelease",
             _0: a
           }), a => ({
@@ -1092,7 +1393,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_TravellingMerchantInventory$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_TravellingMerchantInventory$TerrariaPacket.parse, a => ({
             TAG: "TravellingMerchantInventory",
             _0: a
           }), a => ({
@@ -1109,7 +1410,7 @@ function getParsers(packetType, fromServer) {
     case "TeleportationPotion" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_TeleportationPotion$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_TeleportationPotion$TerrariaPacket.parse, a => ({
           TAG: "TeleportationPotion",
           _0: a
         }), a => ({
@@ -1121,7 +1422,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_AnglerQuest$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_AnglerQuest$TerrariaPacket.parse, a => ({
             TAG: "AnglerQuest",
             _0: a
           }), a => ({
@@ -1144,7 +1445,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_AnglerQuestComplete$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_AnglerQuestComplete$TerrariaPacket.parse, a => ({
             TAG: "AnglerQuestComplete",
             _0: a
           }), a => ({
@@ -1156,7 +1457,7 @@ function getParsers(packetType, fromServer) {
     case "AnglerQuestsCompletedAmount" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_AnglerQuestsCompletedAmount$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_AnglerQuestsCompletedAmount$TerrariaPacket.parse, a => ({
           TAG: "AnglerQuestsCompletedAmount",
           _0: a
         }), a => ({
@@ -1168,7 +1469,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_TemporaryAnimationCreate$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_TemporaryAnimationCreate$TerrariaPacket.parse, a => ({
             TAG: "TemporaryAnimationCreate",
             _0: a
           }), a => ({
@@ -1186,7 +1487,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_InvasionProgressReport$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_InvasionProgressReport$TerrariaPacket.parse, a => ({
             TAG: "InvasionProgressReport",
             _0: a
           }), a => ({
@@ -1203,7 +1504,7 @@ function getParsers(packetType, fromServer) {
     case "ObjectPlace" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_ObjectPlace$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_ObjectPlace$TerrariaPacket.parse, a => ({
           TAG: "ObjectPlace",
           _0: a
         }), a => ({
@@ -1215,7 +1516,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_PlayerChestIndexSync$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_PlayerChestIndexSync$TerrariaPacket.parse, a => ({
             TAG: "PlayerChestIndexSync",
             _0: a
           }), a => ({
@@ -1233,7 +1534,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_CombatNumberCreate$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_CombatNumberCreate$TerrariaPacket.parse, a => ({
             TAG: "CombatNumberCreate",
             _0: a
           }), a => ({
@@ -1250,7 +1551,7 @@ function getParsers(packetType, fromServer) {
     case "NetModuleLoad" :
       return {
         TAG: "Ok",
-        _0: makeParsersWithFromServer(Packet_NetModuleLoad$TerrariaPacket.parse, a => ({
+        _0: makeParsersWithFromServer(packetName, Packet_NetModuleLoad$TerrariaPacket.parse, a => ({
           TAG: "NetModuleLoad",
           _0: a
         }), a => ({
@@ -1262,7 +1563,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_NpcKillCount$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_NpcKillCount$TerrariaPacket.parse, a => ({
             TAG: "NpcKillCount",
             _0: a
           }), a => ({
@@ -1279,7 +1580,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerStealth" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_PlayerStealth$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_PlayerStealth$TerrariaPacket.parse, a => ({
           TAG: "PlayerStealth",
           _0: a
         }), a => ({
@@ -1296,7 +1597,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_ItemForceIntoNearestChest$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_ItemForceIntoNearestChest$TerrariaPacket.parse, a => ({
             TAG: "ItemForceIntoNearestChest",
             _0: a
           }), a => ({
@@ -1309,7 +1610,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_TileEntityUpdate$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_TileEntityUpdate$TerrariaPacket.parse, a => ({
             TAG: "TileEntityUpdate",
             _0: a
           }), a => ({
@@ -1332,7 +1633,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_TileEntityPlace$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_TileEntityPlace$TerrariaPacket.parse, a => ({
             TAG: "TileEntityPlace",
             _0: a
           }), a => ({
@@ -1345,7 +1646,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_ItemDropModify$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_ItemDropModify$TerrariaPacket.parse, a => ({
             TAG: "ItemDropModify",
             _0: a
           }), a => ({
@@ -1368,7 +1669,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_ItemFramePlace$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_ItemFramePlace$TerrariaPacket.parse, a => ({
             TAG: "ItemFramePlace",
             _0: a
           }), a => ({
@@ -1380,7 +1681,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropInstancedUpdate" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_ItemDropInstancedUpdate$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_ItemDropInstancedUpdate$TerrariaPacket.parse, a => ({
           TAG: "ItemDropInstancedUpdate",
           _0: a
         }), a => ({
@@ -1392,7 +1693,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_EmoteBubble$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_EmoteBubble$TerrariaPacket.parse, a => ({
             TAG: "EmoteBubble",
             _0: a
           }), a => ({
@@ -1409,7 +1710,7 @@ function getParsers(packetType, fromServer) {
     case "ExtraValueSync" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_ExtraValueSync$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_ExtraValueSync$TerrariaPacket.parse, a => ({
           TAG: "ExtraValueSync",
           _0: a
         }), a => ({
@@ -1420,7 +1721,7 @@ function getParsers(packetType, fromServer) {
     case "SocialHandshake" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_SocialHandshake$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_SocialHandshake$TerrariaPacket.parse, a => ({
           TAG: "SocialHandshake",
           _0: a
         }), a => ({
@@ -1431,7 +1732,7 @@ function getParsers(packetType, fromServer) {
     case "Unused" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_Unused$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_Unused$TerrariaPacket.parse, a => ({
           TAG: "Unused",
           _0: a
         }), a => ({
@@ -1448,7 +1749,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_PortalKill$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_PortalKill$TerrariaPacket.parse, a => ({
             TAG: "PortalKill",
             _0: a
           }), a => ({
@@ -1460,7 +1761,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerTeleportPortal" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_PlayerTeleportPortal$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_PlayerTeleportPortal$TerrariaPacket.parse, a => ({
           TAG: "PlayerTeleportPortal",
           _0: a
         }), a => ({
@@ -1472,7 +1773,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_NpcKilledNotification$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_NpcKilledNotification$TerrariaPacket.parse, a => ({
             TAG: "NpcKilledNotification",
             _0: a
           }), a => ({
@@ -1490,7 +1791,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_EventNotification$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_EventNotification$TerrariaPacket.parse, a => ({
             TAG: "EventNotification",
             _0: a
           }), a => ({
@@ -1507,7 +1808,7 @@ function getParsers(packetType, fromServer) {
     case "MinionTargetUpdate" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_MinionTargetUpdate$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_MinionTargetUpdate$TerrariaPacket.parse, a => ({
           TAG: "MinionTargetUpdate",
           _0: a
         }), a => ({
@@ -1518,7 +1819,7 @@ function getParsers(packetType, fromServer) {
     case "NpcTeleportPortal" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_NpcTeleportPortal$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_NpcTeleportPortal$TerrariaPacket.parse, a => ({
           TAG: "NpcTeleportPortal",
           _0: a
         }), a => ({
@@ -1530,7 +1831,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_ShieldStrengthsUpdate$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_ShieldStrengthsUpdate$TerrariaPacket.parse, a => ({
             TAG: "ShieldStrengthsUpdate",
             _0: a
           }), a => ({
@@ -1547,7 +1848,7 @@ function getParsers(packetType, fromServer) {
     case "NebulaLevelUp" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_NebulaLevelUp$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_NebulaLevelUp$TerrariaPacket.parse, a => ({
           TAG: "NebulaLevelUp",
           _0: a
         }), a => ({
@@ -1559,7 +1860,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_MoonLordCountdown$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_MoonLordCountdown$TerrariaPacket.parse, a => ({
             TAG: "MoonLordCountdown",
             _0: a
           }), a => ({
@@ -1577,7 +1878,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_NpcShopItem$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_NpcShopItem$TerrariaPacket.parse, a => ({
             TAG: "NpcShopItem",
             _0: a
           }), a => ({
@@ -1600,7 +1901,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_GemLockToggle$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_GemLockToggle$TerrariaPacket.parse, a => ({
             TAG: "GemLockToggle",
             _0: a
           }), a => ({
@@ -1613,7 +1914,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_SmokePoof$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_SmokePoof$TerrariaPacket.parse, a => ({
             TAG: "SmokePoof",
             _0: a
           }), a => ({
@@ -1631,7 +1932,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_ChatMessageSmart$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_ChatMessageSmart$TerrariaPacket.parse, a => ({
             TAG: "ChatMessageSmart",
             _0: a
           }), a => ({
@@ -1649,7 +1950,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_WiredCannonShot$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_WiredCannonShot$TerrariaPacket.parse, a => ({
             TAG: "WiredCannonShot",
             _0: a
           }), a => ({
@@ -1672,7 +1973,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_MassWireOperation$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_MassWireOperation$TerrariaPacket.parse, a => ({
             TAG: "MassWireOperation",
             _0: a
           }), a => ({
@@ -1685,7 +1986,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_MassWireOperationPay$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_MassWireOperationPay$TerrariaPacket.parse, a => ({
             TAG: "MassWireOperationPay",
             _0: a
           }), a => ({
@@ -1708,7 +2009,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_PartyToggle$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_PartyToggle$TerrariaPacket.parse, a => ({
             TAG: "PartyToggle",
             _0: a
           }), a => ({
@@ -1720,7 +2021,7 @@ function getParsers(packetType, fromServer) {
     case "TreeGrowFx" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_TreeGrowFx$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_TreeGrowFx$TerrariaPacket.parse, a => ({
           TAG: "TreeGrowFx",
           _0: a
         }), a => ({
@@ -1737,7 +2038,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_CrystalInvasionStart$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_CrystalInvasionStart$TerrariaPacket.parse, a => ({
             TAG: "CrystalInvasionStart",
             _0: a
           }), a => ({
@@ -1750,7 +2051,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_CrystalInvasionWipeAll$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_CrystalInvasionWipeAll$TerrariaPacket.parse, a => ({
             TAG: "CrystalInvasionWipeAll",
             _0: a
           }), a => ({
@@ -1767,7 +2068,7 @@ function getParsers(packetType, fromServer) {
     case "MinionAttackTargetUpdate" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_MinionAttackTargetUpdate$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_MinionAttackTargetUpdate$TerrariaPacket.parse, a => ({
           TAG: "MinionAttackTargetUpdate",
           _0: a
         }), a => ({
@@ -1779,7 +2080,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_CrystalInvasionSendWaitTime$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_CrystalInvasionSendWaitTime$TerrariaPacket.parse, a => ({
             TAG: "CrystalInvasionSendWaitTime",
             _0: a
           }), a => ({
@@ -1796,7 +2097,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerDamage" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_PlayerDamage$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_PlayerDamage$TerrariaPacket.parse, a => ({
           TAG: "PlayerDamage",
           _0: a
         }), a => ({
@@ -1807,7 +2108,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerDeath" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_PlayerDeath$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_PlayerDeath$TerrariaPacket.parse, a => ({
           TAG: "PlayerDeath",
           _0: a
         }), a => ({
@@ -1819,7 +2120,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_CombatTextCreate$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_CombatTextCreate$TerrariaPacket.parse, a => ({
             TAG: "CombatTextCreate",
             _0: a
           }), a => ({
@@ -1842,7 +2143,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_Emoji$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_Emoji$TerrariaPacket.parse, a => ({
             TAG: "Emoji",
             _0: a
           }), a => ({
@@ -1854,7 +2155,7 @@ function getParsers(packetType, fromServer) {
     case "TileEntityDisplayDollItemSync" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_TileEntityDisplayDollItemSync$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_TileEntityDisplayDollItemSync$TerrariaPacket.parse, a => ({
           TAG: "TileEntityDisplayDollItemSync",
           _0: a
         }), a => ({
@@ -1865,7 +2166,7 @@ function getParsers(packetType, fromServer) {
     case "TileEntityInteractionRequest" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_TileEntityInteractionRequest$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_TileEntityInteractionRequest$TerrariaPacket.parse, a => ({
           TAG: "TileEntityInteractionRequest",
           _0: a
         }), a => ({
@@ -1882,7 +2183,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_WeaponsRackTryPlacing$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_WeaponsRackTryPlacing$TerrariaPacket.parse, a => ({
             TAG: "WeaponsRackTryPlacing",
             _0: a
           }), a => ({
@@ -1894,7 +2195,7 @@ function getParsers(packetType, fromServer) {
     case "TileEntityHatRackItemSync" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_TileEntityHatRackItemSync$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_TileEntityHatRackItemSync$TerrariaPacket.parse, a => ({
           TAG: "TileEntityHatRackItemSync",
           _0: a
         }), a => ({
@@ -1905,7 +2206,7 @@ function getParsers(packetType, fromServer) {
     case "TilePickingSync" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_TilePickingSync$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_TilePickingSync$TerrariaPacket.parse, a => ({
           TAG: "TilePickingSync",
           _0: a
         }), a => ({
@@ -1917,7 +2218,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_RevengeMarkerSync$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_RevengeMarkerSync$TerrariaPacket.parse, a => ({
             TAG: "RevengeMarkerSync",
             _0: a
           }), a => ({
@@ -1935,7 +2236,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_RevengeMarkerRemove$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_RevengeMarkerRemove$TerrariaPacket.parse, a => ({
             TAG: "RevengeMarkerRemove",
             _0: a
           }), a => ({
@@ -1952,7 +2253,7 @@ function getParsers(packetType, fromServer) {
     case "GolfBallLandInCup" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_GolfBallLandInCup$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_GolfBallLandInCup$TerrariaPacket.parse, a => ({
           TAG: "GolfBallLandInCup",
           _0: a
         }), a => ({
@@ -1964,7 +2265,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_ClientFinishConnectingToServer$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_ClientFinishConnectingToServer$TerrariaPacket.parse, a => ({
             TAG: "ClientFinishConnectingToServer",
             _0: a
           }), a => ({
@@ -1987,7 +2288,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_NpcFishOut$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_NpcFishOut$TerrariaPacket.parse, a => ({
             TAG: "NpcFishOut",
             _0: a
           }), a => ({
@@ -2000,7 +2301,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_NpcTamper$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_NpcTamper$TerrariaPacket.parse, a => ({
             TAG: "NpcTamper",
             _0: a
           }), a => ({
@@ -2018,7 +2319,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_LegacySoundPlay$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_LegacySoundPlay$TerrariaPacket.parse, a => ({
             TAG: "LegacySoundPlay",
             _0: a
           }), a => ({
@@ -2041,7 +2342,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_FoodPlatterTryPlacing$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_FoodPlatterTryPlacing$TerrariaPacket.parse, a => ({
             TAG: "FoodPlatterTryPlacing",
             _0: a
           }), a => ({
@@ -2053,7 +2354,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerLuckFactorsUpdate" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_PlayerLuckFactorsUpdate$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_PlayerLuckFactorsUpdate$TerrariaPacket.parse, a => ({
           TAG: "PlayerLuckFactorsUpdate",
           _0: a
         }), a => ({
@@ -2065,7 +2366,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_PlayerDead$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_PlayerDead$TerrariaPacket.parse, a => ({
             TAG: "PlayerDead",
             _0: a
           }), a => ({
@@ -2082,7 +2383,7 @@ function getParsers(packetType, fromServer) {
     case "CavernMonsterTypeSync" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_CavernMonsterTypeSync$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_CavernMonsterTypeSync$TerrariaPacket.parse, a => ({
           TAG: "CavernMonsterTypeSync",
           _0: a
         }), a => ({
@@ -2099,7 +2400,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_NpcBuffRemovalRequest$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_NpcBuffRemovalRequest$TerrariaPacket.parse, a => ({
             TAG: "NpcBuffRemovalRequest",
             _0: a
           }), a => ({
@@ -2117,7 +2418,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(Packet_ClientSyncedInventory$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_ClientSyncedInventory$TerrariaPacket.parse, a => ({
             TAG: "ClientSyncedInventory",
             _0: a
           }), a => ({
@@ -2129,7 +2430,7 @@ function getParsers(packetType, fromServer) {
     case "CountsAsHostForGameplaySet" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_CountsAsHostForGameplaySet$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_CountsAsHostForGameplaySet$TerrariaPacket.parse, a => ({
           TAG: "CountsAsHostForGameplaySet",
           _0: a
         }), a => ({
@@ -2140,7 +2441,7 @@ function getParsers(packetType, fromServer) {
     case "CreditsOrSlimeTransform" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_CreditsOrSlimeTransform$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_CreditsOrSlimeTransform$TerrariaPacket.parse, a => ({
           TAG: "CreditsOrSlimeTransform",
           _0: a
         }), a => ({
@@ -2151,7 +2452,7 @@ function getParsers(packetType, fromServer) {
     case "LucyAxeMessage" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_LucyAxeMessage$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_LucyAxeMessage$TerrariaPacket.parse, a => ({
           TAG: "LucyAxeMessage",
           _0: a
         }), a => ({
@@ -2162,7 +2463,7 @@ function getParsers(packetType, fromServer) {
     case "PiggyBankVoidLensUpdate" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_PiggyBankVoidLensUpdate$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_PiggyBankVoidLensUpdate$TerrariaPacket.parse, a => ({
           TAG: "PiggyBankVoidLensUpdate",
           _0: a
         }), a => ({
@@ -2173,7 +2474,7 @@ function getParsers(packetType, fromServer) {
     case "DungeonDefendersEventAttemptSkipWait" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_DungeonDefendersEventAttemptSkipWait$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_DungeonDefendersEventAttemptSkipWait$TerrariaPacket.parse, a => ({
           TAG: "DungeonDefendersEventAttemptSkipWait",
           _0: a
         }), a => ({
@@ -2184,7 +2485,7 @@ function getParsers(packetType, fromServer) {
     case "HaveDryadDoStardewAnimation" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_HaveDryadDoStardewAnimation$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_HaveDryadDoStardewAnimation$TerrariaPacket.parse, a => ({
           TAG: "HaveDryadDoStardewAnimation",
           _0: a
         }), a => ({
@@ -2195,7 +2496,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropShimmeredUpdate" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_ItemDropShimmeredUpdate$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_ItemDropShimmeredUpdate$TerrariaPacket.parse, a => ({
           TAG: "ItemDropShimmeredUpdate",
           _0: a
         }), a => ({
@@ -2206,7 +2507,7 @@ function getParsers(packetType, fromServer) {
     case "ShimmerEffectOrCoinLuck" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_ShimmerEffectOrCoinLuck$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_ShimmerEffectOrCoinLuck$TerrariaPacket.parse, a => ({
           TAG: "ShimmerEffectOrCoinLuck",
           _0: a
         }), a => ({
@@ -2217,7 +2518,7 @@ function getParsers(packetType, fromServer) {
     case "LoadoutSwitch" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_LoadoutSwitch$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_LoadoutSwitch$TerrariaPacket.parse, a => ({
           TAG: "LoadoutSwitch",
           _0: a
         }), a => ({
@@ -2228,7 +2529,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropProtectedUpdate" :
       return {
         TAG: "Ok",
-        _0: makeParsers(Packet_ItemDropProtectedUpdate$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_ItemDropProtectedUpdate$TerrariaPacket.parse, a => ({
           TAG: "ItemDropProtectedUpdate",
           _0: a
         }), a => ({

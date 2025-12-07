@@ -189,9 +189,9 @@ module Encode = {
       ~flag2=tile.wire3,
       ~flag3=tile.color->Option.isSome,
       ~flag4=tile.wallColor->Option.isSome,
-      ~flag5=tile.activeTile->Option.mapWithDefault(false, tile => (tile.slope &&& 1) == 1),
-      ~flag6=tile.activeTile->Option.mapWithDefault(false, tile => (tile.slope &&& 2) == 2),
-      ~flag7=tile.activeTile->Option.mapWithDefault(false, tile => (tile.slope &&& 4) == 4),
+      ~flag5=tile.activeTile->Option.mapOr(false, tile => (tile.slope &&& 1) == 1),
+      ~flag6=tile.activeTile->Option.mapOr(false, tile => (tile.slope &&& 2) == 2),
+      ~flag7=tile.activeTile->Option.mapOr(false, tile => (tile.slope &&& 4) == 4),
       ~flag8=tile.wire4,
     )
     writer
@@ -213,8 +213,8 @@ module Encode = {
         switch TileFrameImportant.isImportant(at.tileType) {
         | true =>
           writer
-          ->packInt16(at.frame->Option.mapWithDefault(0, frame => frame.x), "frameX")
-          ->packInt16(at.frame->Option.mapWithDefault(0, frame => frame.y), "frameY")
+          ->packInt16(at.frame->Option.mapOr(0, frame => frame.x), "frameX")
+          ->packInt16(at.frame->Option.mapOr(0, frame => frame.y), "frameY")
           ->ignore
         | false => ()
         }

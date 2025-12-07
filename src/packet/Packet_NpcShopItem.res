@@ -32,7 +32,16 @@ module Decode = {
 module Encode = {
   let {packByte, packInt16, packInt32, setType, data} = module(ErrorAwarePacketWriter)
   let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
-    let flags = BitFlags.fromFlags(~flag1=self.buyOnce, ~flag2=false, ~flag3=false, ~flag4=false, ~flag5=false, ~flag6=false, ~flag7=false, ~flag8=false)
+    let flags = BitFlags.fromFlags(
+      ~flag1=self.buyOnce,
+      ~flag2=false,
+      ~flag3=false,
+      ~flag4=false,
+      ~flag5=false,
+      ~flag6=false,
+      ~flag7=false,
+      ~flag8=false,
+    )
     ErrorAwarePacketWriter.make()
     ->setType(PacketType.NpcShopItem->PacketType.toInt)
     ->packByte(self.slot, "slot")

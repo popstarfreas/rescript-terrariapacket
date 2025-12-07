@@ -1,5 +1,163 @@
-let mapPacket = (buffer, fn): result<Packet.t, IParser.parseError> =>
-  buffer->Result.map(fn)->Result.mapError(e => IParser.ReaderError(e))
+let packetTypeName = (packetType: PacketType.t): string =>
+  switch packetType {
+  | ConnectRequest => "ConnectRequest"
+  | Disconnect => "Disconnect"
+  | PlayerSlotSet => "PlayerSlotSet"
+  | PlayerInfo => "PlayerInfo"
+  | PlayerInventorySlot => "PlayerInventorySlot"
+  | WorldDataRequest => "WorldDataRequest"
+  | WorldInfo => "WorldInfo"
+  | InitialTileSectionsRequest => "InitialTileSectionsRequest"
+  | Status => "Status"
+  | TileSectionSend => "TileSectionSend"
+  | TileSectionFrame => "TileSectionFrame"
+  | PlayerSpawn => "PlayerSpawn"
+  | PlayerUpdate => "PlayerUpdate"
+  | PlayerActive => "PlayerActive"
+  | PlayerHealth => "PlayerHealth"
+  | TileModify => "TileModify"
+  | TimeSet => "TimeSet"
+  | DoorUse => "DoorUse"
+  | TileSquareSend => "TileSquareSend"
+  | ItemDropUpdate => "ItemDropUpdate"
+  | ItemOwner => "ItemOwner"
+  | NpcUpdate => "NpcUpdate"
+  | NpcItemStrike => "NpcItemStrike"
+  | ProjectileSync => "ProjectileSync"
+  | NpcStrike => "NpcStrike"
+  | ProjectileDestroy => "ProjectileDestroy"
+  | PvpToggle => "PvpToggle"
+  | ChestOpen => "ChestOpen"
+  | ChestItem => "ChestItem"
+  | ActiveContainerSync => "ActiveContainerSync"
+  | ChestPlace => "ChestPlace"
+  | HealEffect => "HealEffect"
+  | Zones => "Zones"
+  | PasswordRequired => "PasswordRequired"
+  | PasswordSend => "PasswordSend"
+  | ItemOwnerRemove => "ItemOwnerRemove"
+  | NpcTalk => "NpcTalk"
+  | PlayerAnimation => "PlayerAnimation"
+  | PlayerMana => "PlayerMana"
+  | ManaEffect => "ManaEffect"
+  | PlayerTeam => "PlayerTeam"
+  | SignRead => "SignRead"
+  | SignNew => "SignNew"
+  | LiquidSet => "LiquidSet"
+  | PlayerSpawnSelf => "PlayerSpawnSelf"
+  | PlayerBuffsSet => "PlayerBuffsSet"
+  | NpcSpecialEffect => "NpcSpecialEffect"
+  | ChestOrTempleUnlock => "ChestOrTempleUnlock"
+  | NpcBuffAdd => "NpcBuffAdd"
+  | NpcBuffUpdate => "NpcBuffUpdate"
+  | PlayerBuffAdd => "PlayerBuffAdd"
+  | NpcNameUpdate => "NpcNameUpdate"
+  | GoodEvilUpdate => "GoodEvilUpdate"
+  | HarpPlay => "HarpPlay"
+  | SwitchHit => "SwitchHit"
+  | NpcHomeUpdate => "NpcHomeUpdate"
+  | BossOrInvasionSpawn => "BossOrInvasionSpawn"
+  | PlayerDodge => "PlayerDodge"
+  | TilePaint => "TilePaint"
+  | WallPaint => "WallPaint"
+  | Teleport => "Teleport"
+  | PlayerHealOther => "PlayerHealOther"
+  | DimensionsUpdate => "DimensionsUpdate"
+  | ClientUuid => "ClientUuid"
+  | ChestName => "ChestName"
+  | NpcCatch => "NpcCatch"
+  | NpcRelease => "NpcRelease"
+  | TravellingMerchantInventory => "TravellingMerchantInventory"
+  | TeleportationPotion => "TeleportationPotion"
+  | AnglerQuest => "AnglerQuest"
+  | AnglerQuestComplete => "AnglerQuestComplete"
+  | AnglerQuestsCompletedAmount => "AnglerQuestsCompletedAmount"
+  | TemporaryAnimationCreate => "TemporaryAnimationCreate"
+  | InvasionProgressReport => "InvasionProgressReport"
+  | ObjectPlace => "ObjectPlace"
+  | PlayerChestIndexSync => "PlayerChestIndexSync"
+  | CombatNumberCreate => "CombatNumberCreate"
+  | NetModuleLoad => "NetModuleLoad"
+  | NpcKillCount => "NpcKillCount"
+  | PlayerStealth => "PlayerStealth"
+  | ItemForceIntoNearestChest => "ItemForceIntoNearestChest"
+  | TileEntityUpdate => "TileEntityUpdate"
+  | TileEntityPlace => "TileEntityPlace"
+  | ItemDropModify => "ItemDropModify"
+  | ItemFramePlace => "ItemFramePlace"
+  | ItemDropInstancedUpdate => "ItemDropInstancedUpdate"
+  | EmoteBubble => "EmoteBubble"
+  | ExtraValueSync => "ExtraValueSync"
+  | SocialHandshake => "SocialHandshake"
+  | Unused => "Unused"
+  | PortalKill => "PortalKill"
+  | PlayerTeleportPortal => "PlayerTeleportPortal"
+  | NpcKilledNotification => "NpcKilledNotification"
+  | EventNotification => "EventNotification"
+  | MinionTargetUpdate => "MinionTargetUpdate"
+  | NpcTeleportPortal => "NpcTeleportPortal"
+  | ShieldStrengthsUpdate => "ShieldStrengthsUpdate"
+  | NebulaLevelUp => "NebulaLevelUp"
+  | MoonLordCountdown => "MoonLordCountdown"
+  | NpcShopItem => "NpcShopItem"
+  | GemLockToggle => "GemLockToggle"
+  | SmokePoof => "SmokePoof"
+  | ChatMessageSmart => "ChatMessageSmart"
+  | WiredCannonShot => "WiredCannonShot"
+  | MassWireOperation => "MassWireOperation"
+  | MassWireOperationPay => "MassWireOperationPay"
+  | PartyToggle => "PartyToggle"
+  | TreeGrowFx => "TreeGrowFx"
+  | CrystalInvasionStart => "CrystalInvasionStart"
+  | CrystalInvasionWipeAll => "CrystalInvasionWipeAll"
+  | MinionAttackTargetUpdate => "MinionAttackTargetUpdate"
+  | CrystalInvasionSendWaitTime => "CrystalInvasionSendWaitTime"
+  | PlayerDamage => "PlayerDamage"
+  | PlayerDeath => "PlayerDeath"
+  | CombatTextCreate => "CombatTextCreate"
+  | Emoji => "Emoji"
+  | TileEntityDisplayDollItemSync => "TileEntityDisplayDollItemSync"
+  | TileEntityInteractionRequest => "TileEntityInteractionRequest"
+  | WeaponsRackTryPlacing => "WeaponsRackTryPlacing"
+  | TileEntityHatRackItemSync => "TileEntityHatRackItemSync"
+  | TilePickingSync => "TilePickingSync"
+  | RevengeMarkerSync => "RevengeMarkerSync"
+  | RevengeMarkerRemove => "RevengeMarkerRemove"
+  | GolfBallLandInCup => "GolfBallLandInCup"
+  | ClientFinishConnectingToServer => "ClientFinishConnectingToServer"
+  | NpcFishOut => "NpcFishOut"
+  | NpcTamper => "NpcTamper"
+  | LegacySoundPlay => "LegacySoundPlay"
+  | FoodPlatterTryPlacing => "FoodPlatterTryPlacing"
+  | PlayerLuckFactorsUpdate => "PlayerLuckFactorsUpdate"
+  | PlayerDead => "PlayerDead"
+  | CavernMonsterTypeSync => "CavernMonsterTypeSync"
+  | NpcBuffRemovalRequest => "NpcBuffRemovalRequest"
+  | ClientSyncedInventory => "ClientSyncedInventory"
+  | CountsAsHostForGameplaySet => "CountsAsHostForGameplaySet"
+  | CreditsOrSlimeTransform => "CreditsOrSlimeTransform"
+  | LucyAxeMessage => "LucyAxeMessage"
+  | PiggyBankVoidLensUpdate => "PiggyBankVoidLensUpdate"
+  | DungeonDefendersEventAttemptSkipWait => "DungeonDefendersEventAttemptSkipWait"
+  | HaveDryadDoStardewAnimation => "HaveDryadDoStardewAnimation"
+  | ItemDropShimmeredUpdate => "ItemDropShimmeredUpdate"
+  | ShimmerEffectOrCoinLuck => "ShimmerEffectOrCoinLuck"
+  | LoadoutSwitch => "LoadoutSwitch"
+  | ItemDropProtectedUpdate => "ItemDropProtectedUpdate"
+  }
+
+let addPacketContext = (
+  ~packetName,
+  err: ErrorAwarePacketReader.readError,
+): ErrorAwarePacketReader.readError => {
+  context: "Packet " ++ packetName ++ ": " ++ err.context,
+  error: err.error,
+}
+
+let mapPacket = (result, ~packetName, fn): result<Packet.t, IParser.parseError> =>
+  result
+  ->Result.map(fn)
+  ->Result.mapError(e => IParser.ReaderError(addPacketContext(~packetName, e)))
 
 type parsers = {
   parse: (NodeJs.Buffer.t, bool) => result<Packet.t, IParser.parseError>,
@@ -7,23 +165,34 @@ type parsers = {
 }
 
 let makeParsers = (
+  ~packetName: string,
   ~parse: NodeJs.Buffer.t => result<'a, ErrorAwarePacketReader.readError>,
   ~toPacket: 'a => Packet.t,
   ~toLazyPacket: Packet.LazyPacket.lazyParsed<'a> => Packet.LazyPacket.t,
 ): parsers => {
-  let parseWrapped = (payload, _fromServer) => parse(payload)->mapPacket(toPacket)
-  let parseLazyWrapped = (payload, _fromServer) => Ok(toLazyPacket(Lazy.make(() => parse(payload))))
+  let parseWrapped = (payload, _fromServer) => parse(payload)->mapPacket(~packetName, toPacket)
+  let parseLazyWrapped = (payload, _fromServer) => Ok(
+    toLazyPacket(
+      Lazy.make(() => parse(payload)->Result.mapError(e => addPacketContext(~packetName, e))),
+    ),
+  )
   {parse: parseWrapped, parseLazy: parseLazyWrapped}
 }
 
 let makeParsersWithFromServer = (
+  ~packetName: string,
   ~parse: (NodeJs.Buffer.t, bool) => result<'a, ErrorAwarePacketReader.readError>,
   ~toPacket: 'a => Packet.t,
   ~toLazyPacket: Packet.LazyPacket.lazyParsed<'a> => Packet.LazyPacket.t,
 ): parsers => {
-  let parseWrapped = (payload, fromServer) => parse(payload, fromServer)->mapPacket(toPacket)
+  let parseWrapped = (payload, fromServer) =>
+    parse(payload, fromServer)->mapPacket(~packetName, toPacket)
   let parseLazyWrapped = (payload, fromServer) => Ok(
-    toLazyPacket(Lazy.make(() => parse(payload, fromServer))),
+    toLazyPacket(
+      Lazy.make(() =>
+        parse(payload, fromServer)->Result.mapError(e => addPacketContext(~packetName, e))
+      ),
+    ),
   )
   {parse: parseWrapped, parseLazy: parseLazyWrapped}
 }
@@ -31,12 +200,14 @@ let makeParsersWithFromServer = (
 let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   parsers,
   IParser.parseError,
-> =>
+> => {
+  let packetName = packetTypeName(packetType)
   switch (packetType, fromServer) {
   | (ConnectRequest, true) => Error(ConnectRequestFromServer)
   | (ConnectRequest, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ConnectRequest.parse,
         ~toPacket=a => Packet.ConnectRequest(a),
         ~toLazyPacket=a => Packet.LazyPacket.ConnectRequest(a),
@@ -46,6 +217,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (Disconnect, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.Disconnect.parse,
         ~toPacket=a => Packet.Disconnect(a),
         ~toLazyPacket=a => Packet.LazyPacket.Disconnect(a),
@@ -55,6 +227,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PlayerSlotSet, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PlayerSlotSet.parse,
         ~toPacket=a => Packet.PlayerSlotSet(a),
         ~toLazyPacket=a => Packet.LazyPacket.PlayerSlotSet(a),
@@ -63,6 +236,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PlayerInfo, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PlayerInfo.parse,
         ~toPacket=a => Packet.PlayerInfo(a),
         ~toLazyPacket=a => Packet.LazyPacket.PlayerInfo(a),
@@ -71,6 +245,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PlayerInventorySlot, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PlayerInventorySlot.parse,
         ~toPacket=a => Packet.PlayerInventorySlot(a),
         ~toLazyPacket=a => Packet.LazyPacket.PlayerInventorySlot(a),
@@ -80,6 +255,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (WorldDataRequest, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.WorldDataRequest.parse,
         ~toPacket=a => Packet.WorldDataRequest(a),
         ~toLazyPacket=a => Packet.LazyPacket.WorldDataRequest(a),
@@ -89,6 +265,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (WorldInfo, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.WorldInfo.parse,
         ~toPacket=a => Packet.WorldInfo(a),
         ~toLazyPacket=a => Packet.LazyPacket.WorldInfo(a),
@@ -98,6 +275,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (InitialTileSectionsRequest, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.InitialTileSectionsRequest.parse,
         ~toPacket=a => Packet.InitialTileSectionsRequest(a),
         ~toLazyPacket=a => Packet.LazyPacket.InitialTileSectionsRequest(a),
@@ -107,6 +285,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (Status, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.Status.parse,
         ~toPacket=a => Packet.Status(a),
         ~toLazyPacket=a => Packet.LazyPacket.Status(a),
@@ -116,6 +295,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (TileSectionSend, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.TileSectionSend.parse,
         ~toPacket=a => Packet.TileSectionSend(a),
         ~toLazyPacket=a => Packet.LazyPacket.TileSectionSend(a),
@@ -125,6 +305,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (TileSectionFrame, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.TileSectionFrame.parse,
         ~toPacket=a => Packet.TileSectionFrame(a),
         ~toLazyPacket=a => Packet.LazyPacket.TileSectionFrame(a),
@@ -133,6 +314,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PlayerSpawn, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PlayerSpawn.parse,
         ~toPacket=a => Packet.PlayerSpawn(a),
         ~toLazyPacket=a => Packet.LazyPacket.PlayerSpawn(a),
@@ -141,6 +323,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PlayerUpdate, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PlayerUpdate.parse,
         ~toPacket=a => Packet.PlayerUpdate(a),
         ~toLazyPacket=a => Packet.LazyPacket.PlayerUpdate(a),
@@ -150,6 +333,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PlayerActive, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PlayerActive.parse,
         ~toPacket=a => Packet.PlayerActive(a),
         ~toLazyPacket=a => Packet.LazyPacket.PlayerActive(a),
@@ -158,6 +342,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PlayerHealth, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PlayerHealth.parse,
         ~toPacket=a => Packet.PlayerHealth(a),
         ~toLazyPacket=a => Packet.LazyPacket.PlayerHealth(a),
@@ -166,6 +351,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (TileModify, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.TileModify.parse,
         ~toPacket=a => Packet.TileModify(a),
         ~toLazyPacket=a => Packet.LazyPacket.TileModify(a),
@@ -175,6 +361,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (TimeSet, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.TimeSet.parse,
         ~toPacket=a => Packet.TimeSet(a),
         ~toLazyPacket=a => Packet.LazyPacket.TimeSet(a),
@@ -183,6 +370,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (DoorUse, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.DoorUse.parse,
         ~toPacket=a => Packet.DoorUse(a),
         ~toLazyPacket=a => Packet.LazyPacket.DoorUse(a),
@@ -191,6 +379,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (TileSquareSend, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.TileSquareSend.parse,
         ~toPacket=a => Packet.TileSquareSend(a),
         ~toLazyPacket=a => Packet.LazyPacket.TileSquareSend(a),
@@ -199,6 +388,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ItemDropUpdate, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ItemDropUpdate.parse,
         ~toPacket=a => Packet.ItemDropUpdate(a),
         ~toLazyPacket=a => Packet.LazyPacket.ItemDropUpdate(a),
@@ -207,6 +397,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ItemOwner, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ItemOwner.parse,
         ~toPacket=a => Packet.ItemOwner(a),
         ~toLazyPacket=a => Packet.LazyPacket.ItemOwner(a),
@@ -216,6 +407,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (NpcUpdate, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.NpcUpdate.parse,
         ~toPacket=a => Packet.NpcUpdate(a),
         ~toLazyPacket=a => Packet.LazyPacket.NpcUpdate(a),
@@ -224,6 +416,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (NpcItemStrike, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.NpcItemStrike.parse,
         ~toPacket=a => Packet.NpcItemStrike(a),
         ~toLazyPacket=a => Packet.LazyPacket.NpcItemStrike(a),
@@ -232,6 +425,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ProjectileSync, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ProjectileSync.parse,
         ~toPacket=a => Packet.ProjectileSync(a),
         ~toLazyPacket=a => Packet.LazyPacket.ProjectileSync(a),
@@ -240,6 +434,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (NpcStrike, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.NpcStrike.parse,
         ~toPacket=a => Packet.NpcStrike(a),
         ~toLazyPacket=a => Packet.LazyPacket.NpcStrike(a),
@@ -248,6 +443,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ProjectileDestroy, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ProjectileDestroy.parse,
         ~toPacket=a => Packet.ProjectileDestroy(a),
         ~toLazyPacket=a => Packet.LazyPacket.ProjectileDestroy(a),
@@ -256,6 +452,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PvpToggle, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PvpToggle.parse,
         ~toPacket=a => Packet.PvpToggle(a),
         ~toLazyPacket=a => Packet.LazyPacket.PvpToggle(a),
@@ -265,6 +462,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ChestOpen, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ChestOpen.parse,
         ~toPacket=a => Packet.ChestOpen(a),
         ~toLazyPacket=a => Packet.LazyPacket.ChestOpen(a),
@@ -273,6 +471,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ChestItem, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ChestItem.parse,
         ~toPacket=a => Packet.ChestItem(a),
         ~toLazyPacket=a => Packet.LazyPacket.ChestItem(a),
@@ -281,6 +480,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ActiveContainerSync, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ActiveContainerSync.parse,
         ~toPacket=a => Packet.ActiveContainerSync(a),
         ~toLazyPacket=a => Packet.LazyPacket.ActiveContainerSync(a),
@@ -289,6 +489,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ChestPlace, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ChestPlace.parse,
         ~toPacket=a => Packet.ChestPlace(a),
         ~toLazyPacket=a => Packet.LazyPacket.ChestPlace(a),
@@ -297,6 +498,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (HealEffect, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.HealEffect.parse,
         ~toPacket=a => Packet.HealEffect(a),
         ~toLazyPacket=a => Packet.LazyPacket.HealEffect(a),
@@ -305,6 +507,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (Zones, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.Zones.parse,
         ~toPacket=a => Packet.Zones(a),
         ~toLazyPacket=a => Packet.LazyPacket.Zones(a),
@@ -314,6 +517,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PasswordRequired, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PasswordRequired.parse,
         ~toPacket=a => Packet.PasswordRequired(a),
         ~toLazyPacket=a => Packet.LazyPacket.PasswordRequired(a),
@@ -323,6 +527,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PasswordSend, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PasswordSend.parse,
         ~toPacket=a => Packet.PasswordSend(a),
         ~toLazyPacket=a => Packet.LazyPacket.PasswordSend(a),
@@ -332,6 +537,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ItemOwnerRemove, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ItemOwnerRemove.parse,
         ~toPacket=a => Packet.ItemOwnerRemove(a),
         ~toLazyPacket=a => Packet.LazyPacket.ItemOwnerRemove(a),
@@ -340,6 +546,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (NpcTalk, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.NpcTalk.parse,
         ~toPacket=a => Packet.NpcTalk(a),
         ~toLazyPacket=a => Packet.LazyPacket.NpcTalk(a),
@@ -348,6 +555,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PlayerAnimation, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PlayerAnimation.parse,
         ~toPacket=a => Packet.PlayerAnimation(a),
         ~toLazyPacket=a => Packet.LazyPacket.PlayerAnimation(a),
@@ -356,6 +564,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PlayerMana, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PlayerMana.parse,
         ~toPacket=a => Packet.PlayerMana(a),
         ~toLazyPacket=a => Packet.LazyPacket.PlayerMana(a),
@@ -364,6 +573,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ManaEffect, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ManaEffect.parse,
         ~toPacket=a => Packet.ManaEffect(a),
         ~toLazyPacket=a => Packet.LazyPacket.ManaEffect(a),
@@ -372,6 +582,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PlayerTeam, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PlayerTeam.parse,
         ~toPacket=a => Packet.PlayerTeam(a),
         ~toLazyPacket=a => Packet.LazyPacket.PlayerTeam(a),
@@ -381,6 +592,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (SignRead, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.SignRead.parse,
         ~toPacket=a => Packet.SignRead(a),
         ~toLazyPacket=a => Packet.LazyPacket.SignRead(a),
@@ -389,6 +601,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (SignNew, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.SignNew.parse,
         ~toPacket=a => Packet.SignNew(a),
         ~toLazyPacket=a => Packet.LazyPacket.SignNew(a),
@@ -397,6 +610,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (LiquidSet, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.LiquidSet.parse,
         ~toPacket=a => Packet.LiquidSet(a),
         ~toLazyPacket=a => Packet.LazyPacket.LiquidSet(a),
@@ -406,6 +620,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PlayerSpawnSelf, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PlayerSpawnSelf.parse,
         ~toPacket=a => Packet.PlayerSpawnSelf(a),
         ~toLazyPacket=a => Packet.LazyPacket.PlayerSpawnSelf(a),
@@ -414,6 +629,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PlayerBuffsSet, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PlayerBuffsSet.parse,
         ~toPacket=a => Packet.PlayerBuffsSet(a),
         ~toLazyPacket=a => Packet.LazyPacket.PlayerBuffsSet(a),
@@ -422,6 +638,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (NpcSpecialEffect, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.NpcSpecialEffect.parse,
         ~toPacket=a => Packet.NpcSpecialEffect(a),
         ~toLazyPacket=a => Packet.LazyPacket.NpcSpecialEffect(a),
@@ -430,6 +647,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ChestOrTempleUnlock, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ChestOrTempleUnlock.parse,
         ~toPacket=a => Packet.ChestOrTempleUnlock(a),
         ~toLazyPacket=a => Packet.LazyPacket.ChestOrTempleUnlock(a),
@@ -438,6 +656,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (NpcBuffAdd, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.NpcBuffAdd.parse,
         ~toPacket=a => Packet.NpcBuffAdd(a),
         ~toLazyPacket=a => Packet.LazyPacket.NpcBuffAdd(a),
@@ -447,6 +666,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (NpcBuffUpdate, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.NpcBuffUpdate.parse,
         ~toPacket=a => Packet.NpcBuffUpdate(a),
         ~toLazyPacket=a => Packet.LazyPacket.NpcBuffUpdate(a),
@@ -455,6 +675,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PlayerBuffAdd, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PlayerBuffAdd.parse,
         ~toPacket=a => Packet.PlayerBuffAdd(a),
         ~toLazyPacket=a => Packet.LazyPacket.PlayerBuffAdd(a),
@@ -463,6 +684,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (NpcNameUpdate, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.NpcNameUpdate.parse,
         ~toPacket=a => Packet.NpcNameUpdate(a),
         ~toLazyPacket=a => Packet.LazyPacket.NpcNameUpdate(a),
@@ -472,6 +694,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (GoodEvilUpdate, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.GoodEvilUpdate.parse,
         ~toPacket=a => Packet.GoodEvilUpdate(a),
         ~toLazyPacket=a => Packet.LazyPacket.GoodEvilUpdate(a),
@@ -480,6 +703,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (HarpPlay, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.HarpPlay.parse,
         ~toPacket=a => Packet.HarpPlay(a),
         ~toLazyPacket=a => Packet.LazyPacket.HarpPlay(a),
@@ -488,6 +712,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (SwitchHit, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.SwitchHit.parse,
         ~toPacket=a => Packet.SwitchHit(a),
         ~toLazyPacket=a => Packet.LazyPacket.SwitchHit(a),
@@ -496,6 +721,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (NpcHomeUpdate, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.NpcHomeUpdate.parse,
         ~toPacket=a => Packet.NpcHomeUpdate(a),
         ~toLazyPacket=a => Packet.LazyPacket.NpcHomeUpdate(a),
@@ -505,6 +731,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (BossOrInvasionSpawn, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.BossOrInvasionSpawn.parse,
         ~toPacket=a => Packet.BossOrInvasionSpawn(a),
         ~toLazyPacket=a => Packet.LazyPacket.BossOrInvasionSpawn(a),
@@ -513,6 +740,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PlayerDodge, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PlayerDodge.parse,
         ~toPacket=a => Packet.PlayerDodge(a),
         ~toLazyPacket=a => Packet.LazyPacket.PlayerDodge(a),
@@ -521,6 +749,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (TilePaint, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.TilePaint.parse,
         ~toPacket=a => Packet.TilePaint(a),
         ~toLazyPacket=a => Packet.LazyPacket.TilePaint(a),
@@ -529,6 +758,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (WallPaint, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.WallPaint.parse,
         ~toPacket=a => Packet.WallPaint(a),
         ~toLazyPacket=a => Packet.LazyPacket.WallPaint(a),
@@ -537,6 +767,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (Teleport, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.Teleport.parse,
         ~toPacket=a => Packet.Teleport(a),
         ~toLazyPacket=a => Packet.LazyPacket.Teleport(a),
@@ -545,6 +776,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PlayerHealOther, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PlayerHealOther.parse,
         ~toPacket=a => Packet.PlayerHealOther(a),
         ~toLazyPacket=a => Packet.LazyPacket.PlayerHealOther(a),
@@ -553,6 +785,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (DimensionsUpdate, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.DimensionsUpdate.parse,
         ~toPacket=a => Packet.DimensionsUpdate(a),
         ~toLazyPacket=a => Packet.LazyPacket.DimensionsUpdate(a),
@@ -562,6 +795,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ClientUuid, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ClientUuid.parse,
         ~toPacket=a => Packet.ClientUuid(a),
         ~toLazyPacket=a => Packet.LazyPacket.ClientUuid(a),
@@ -570,6 +804,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ChestName, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ChestName.parse,
         ~toPacket=a => Packet.ChestName(a),
         ~toLazyPacket=a => Packet.LazyPacket.ChestName(a),
@@ -579,6 +814,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (NpcCatch, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.NpcCatch.parse,
         ~toPacket=a => Packet.NpcCatch(a),
         ~toLazyPacket=a => Packet.LazyPacket.NpcCatch(a),
@@ -588,6 +824,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (NpcRelease, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.NpcRelease.parse,
         ~toPacket=a => Packet.NpcRelease(a),
         ~toLazyPacket=a => Packet.LazyPacket.NpcRelease(a),
@@ -597,6 +834,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (TravellingMerchantInventory, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.TravellingMerchantInventory.parse,
         ~toPacket=a => Packet.TravellingMerchantInventory(a),
         ~toLazyPacket=a => Packet.LazyPacket.TravellingMerchantInventory(a),
@@ -605,6 +843,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (TeleportationPotion, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.TeleportationPotion.parse,
         ~toPacket=a => Packet.TeleportationPotion(a),
         ~toLazyPacket=a => Packet.LazyPacket.TeleportationPotion(a),
@@ -614,6 +853,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (AnglerQuest, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.AnglerQuest.parse,
         ~toPacket=a => Packet.AnglerQuest(a),
         ~toLazyPacket=a => Packet.LazyPacket.AnglerQuest(a),
@@ -623,6 +863,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (AnglerQuestComplete, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.AnglerQuestComplete.parse,
         ~toPacket=a => Packet.AnglerQuestComplete(a),
         ~toLazyPacket=a => Packet.LazyPacket.AnglerQuestComplete(a),
@@ -632,6 +873,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (AnglerQuestsCompletedAmount, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.AnglerQuestsCompletedAmount.parse,
         ~toPacket=a => Packet.AnglerQuestsCompletedAmount(a),
         ~toLazyPacket=a => Packet.LazyPacket.AnglerQuestsCompletedAmount(a),
@@ -641,6 +883,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (TemporaryAnimationCreate, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.TemporaryAnimationCreate.parse,
         ~toPacket=a => Packet.TemporaryAnimationCreate(a),
         ~toLazyPacket=a => Packet.LazyPacket.TemporaryAnimationCreate(a),
@@ -651,6 +894,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (InvasionProgressReport, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.InvasionProgressReport.parse,
         ~toPacket=a => Packet.InvasionProgressReport(a),
         ~toLazyPacket=a => Packet.LazyPacket.InvasionProgressReport(a),
@@ -659,6 +903,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ObjectPlace, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ObjectPlace.parse,
         ~toPacket=a => Packet.ObjectPlace(a),
         ~toLazyPacket=a => Packet.LazyPacket.ObjectPlace(a),
@@ -668,6 +913,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PlayerChestIndexSync, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PlayerChestIndexSync.parse,
         ~toPacket=a => Packet.PlayerChestIndexSync(a),
         ~toLazyPacket=a => Packet.LazyPacket.PlayerChestIndexSync(a),
@@ -677,6 +923,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (CombatNumberCreate, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.CombatNumberCreate.parse,
         ~toPacket=a => Packet.CombatNumberCreate(a),
         ~toLazyPacket=a => Packet.LazyPacket.CombatNumberCreate(a),
@@ -685,6 +932,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (NetModuleLoad, true | false) =>
     Ok(
       makeParsersWithFromServer(
+        ~packetName,
         ~parse=(payload, fromServer) => Packet.NetModuleLoad.parse(payload, ~fromServer),
         ~toPacket=a => Packet.NetModuleLoad(a),
         ~toLazyPacket=a => Packet.LazyPacket.NetModuleLoad(a),
@@ -694,6 +942,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (NpcKillCount, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.NpcKillCount.parse,
         ~toPacket=a => Packet.NpcKillCount(a),
         ~toLazyPacket=a => Packet.LazyPacket.NpcKillCount(a),
@@ -702,6 +951,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PlayerStealth, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PlayerStealth.parse,
         ~toPacket=a => Packet.PlayerStealth(a),
         ~toLazyPacket=a => Packet.LazyPacket.PlayerStealth(a),
@@ -711,6 +961,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ItemForceIntoNearestChest, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ItemForceIntoNearestChest.parse,
         ~toPacket=a => Packet.ItemForceIntoNearestChest(a),
         ~toLazyPacket=a => Packet.LazyPacket.ItemForceIntoNearestChest(a),
@@ -720,6 +971,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (TileEntityUpdate, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.TileEntityUpdate.parse,
         ~toPacket=a => Packet.TileEntityUpdate(a),
         ~toLazyPacket=a => Packet.LazyPacket.TileEntityUpdate(a),
@@ -729,6 +981,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (TileEntityPlace, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.TileEntityPlace.parse,
         ~toPacket=a => Packet.TileEntityPlace(a),
         ~toLazyPacket=a => Packet.LazyPacket.TileEntityPlace(a),
@@ -738,6 +991,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ItemDropModify, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ItemDropModify.parse,
         ~toPacket=a => Packet.ItemDropModify(a),
         ~toLazyPacket=a => Packet.LazyPacket.ItemDropModify(a),
@@ -747,6 +1001,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ItemFramePlace, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ItemFramePlace.parse,
         ~toPacket=a => Packet.ItemFramePlace(a),
         ~toLazyPacket=a => Packet.LazyPacket.ItemFramePlace(a),
@@ -755,6 +1010,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ItemDropInstancedUpdate, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ItemDropInstancedUpdate.parse,
         ~toPacket=a => Packet.ItemDropInstancedUpdate(a),
         ~toLazyPacket=a => Packet.LazyPacket.ItemDropInstancedUpdate(a),
@@ -764,6 +1020,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (EmoteBubble, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.EmoteBubble.parse,
         ~toPacket=a => Packet.EmoteBubble(a),
         ~toLazyPacket=a => Packet.LazyPacket.EmoteBubble(a),
@@ -772,6 +1029,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ExtraValueSync, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ExtraValueSync.parse,
         ~toPacket=a => Packet.ExtraValueSync(a),
         ~toLazyPacket=a => Packet.LazyPacket.ExtraValueSync(a),
@@ -780,6 +1038,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (SocialHandshake, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.SocialHandshake.parse,
         ~toPacket=a => Packet.SocialHandshake(a),
         ~toLazyPacket=a => Packet.LazyPacket.SocialHandshake(a),
@@ -788,6 +1047,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (Unused, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.Unused.parse,
         ~toPacket=a => Packet.Unused(a),
         ~toLazyPacket=a => Packet.LazyPacket.Unused(a),
@@ -797,6 +1057,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PortalKill, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PortalKill.parse,
         ~toPacket=a => Packet.PortalKill(a),
         ~toLazyPacket=a => Packet.LazyPacket.PortalKill(a),
@@ -805,6 +1066,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PlayerTeleportPortal, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PlayerTeleportPortal.parse,
         ~toPacket=a => Packet.PlayerTeleportPortal(a),
         ~toLazyPacket=a => Packet.LazyPacket.PlayerTeleportPortal(a),
@@ -814,6 +1076,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (NpcKilledNotification, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.NpcKilledNotification.parse,
         ~toPacket=a => Packet.NpcKilledNotification(a),
         ~toLazyPacket=a => Packet.LazyPacket.NpcKilledNotification(a),
@@ -823,6 +1086,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (EventNotification, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.EventNotification.parse,
         ~toPacket=a => Packet.EventNotification(a),
         ~toLazyPacket=a => Packet.LazyPacket.EventNotification(a),
@@ -831,6 +1095,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (MinionTargetUpdate, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.MinionTargetUpdate.parse,
         ~toPacket=a => Packet.MinionTargetUpdate(a),
         ~toLazyPacket=a => Packet.LazyPacket.MinionTargetUpdate(a),
@@ -839,6 +1104,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (NpcTeleportPortal, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.NpcTeleportPortal.parse,
         ~toPacket=a => Packet.NpcTeleportPortal(a),
         ~toLazyPacket=a => Packet.LazyPacket.NpcTeleportPortal(a),
@@ -848,6 +1114,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ShieldStrengthsUpdate, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ShieldStrengthsUpdate.parse,
         ~toPacket=a => Packet.ShieldStrengthsUpdate(a),
         ~toLazyPacket=a => Packet.LazyPacket.ShieldStrengthsUpdate(a),
@@ -856,6 +1123,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (NebulaLevelUp, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.NebulaLevelUp.parse,
         ~toPacket=a => Packet.NebulaLevelUp(a),
         ~toLazyPacket=a => Packet.LazyPacket.NebulaLevelUp(a),
@@ -865,6 +1133,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (MoonLordCountdown, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.MoonLordCountdown.parse,
         ~toPacket=a => Packet.MoonLordCountdown(a),
         ~toLazyPacket=a => Packet.LazyPacket.MoonLordCountdown(a),
@@ -874,6 +1143,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (NpcShopItem, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.NpcShopItem.parse,
         ~toPacket=a => Packet.NpcShopItem(a),
         ~toLazyPacket=a => Packet.LazyPacket.NpcShopItem(a),
@@ -883,6 +1153,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (GemLockToggle, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.GemLockToggle.parse,
         ~toPacket=a => Packet.GemLockToggle(a),
         ~toLazyPacket=a => Packet.LazyPacket.GemLockToggle(a),
@@ -892,6 +1163,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (SmokePoof, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.SmokePoof.parse,
         ~toPacket=a => Packet.SmokePoof(a),
         ~toLazyPacket=a => Packet.LazyPacket.SmokePoof(a),
@@ -901,6 +1173,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ChatMessageSmart, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ChatMessageSmart.parse,
         ~toPacket=a => Packet.ChatMessageSmart(a),
         ~toLazyPacket=a => Packet.LazyPacket.ChatMessageSmart(a),
@@ -910,6 +1183,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (WiredCannonShot, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.WiredCannonShot.parse,
         ~toPacket=a => Packet.WiredCannonShot(a),
         ~toLazyPacket=a => Packet.LazyPacket.WiredCannonShot(a),
@@ -919,6 +1193,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (MassWireOperation, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.MassWireOperation.parse,
         ~toPacket=a => Packet.MassWireOperation(a),
         ~toLazyPacket=a => Packet.LazyPacket.MassWireOperation(a),
@@ -928,6 +1203,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (MassWireOperationPay, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.MassWireOperationPay.parse,
         ~toPacket=a => Packet.MassWireOperationPay(a),
         ~toLazyPacket=a => Packet.LazyPacket.MassWireOperationPay(a),
@@ -937,6 +1213,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PartyToggle, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PartyToggle.parse,
         ~toPacket=a => Packet.PartyToggle(a),
         ~toLazyPacket=a => Packet.LazyPacket.PartyToggle(a),
@@ -945,6 +1222,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (TreeGrowFx, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.TreeGrowFx.parse,
         ~toPacket=a => Packet.TreeGrowFx(a),
         ~toLazyPacket=a => Packet.LazyPacket.TreeGrowFx(a),
@@ -954,6 +1232,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (CrystalInvasionStart, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.CrystalInvasionStart.parse,
         ~toPacket=a => Packet.CrystalInvasionStart(a),
         ~toLazyPacket=a => Packet.LazyPacket.CrystalInvasionStart(a),
@@ -963,6 +1242,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (CrystalInvasionWipeAll, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.CrystalInvasionWipeAll.parse,
         ~toPacket=a => Packet.CrystalInvasionWipeAll(a),
         ~toLazyPacket=a => Packet.LazyPacket.CrystalInvasionWipeAll(a),
@@ -971,6 +1251,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (MinionAttackTargetUpdate, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.MinionAttackTargetUpdate.parse,
         ~toPacket=a => Packet.MinionAttackTargetUpdate(a),
         ~toLazyPacket=a => Packet.LazyPacket.MinionAttackTargetUpdate(a),
@@ -980,6 +1261,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (CrystalInvasionSendWaitTime, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.CrystalInvasionSendWaitTime.parse,
         ~toPacket=a => Packet.CrystalInvasionSendWaitTime(a),
         ~toLazyPacket=a => Packet.LazyPacket.CrystalInvasionSendWaitTime(a),
@@ -988,6 +1270,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PlayerDamage, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PlayerDamage.parse,
         ~toPacket=a => Packet.PlayerDamage(a),
         ~toLazyPacket=a => Packet.LazyPacket.PlayerDamage(a),
@@ -996,6 +1279,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PlayerDeath, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PlayerDeath.parse,
         ~toPacket=a => Packet.PlayerDeath(a),
         ~toLazyPacket=a => Packet.LazyPacket.PlayerDeath(a),
@@ -1005,6 +1289,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (CombatTextCreate, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.CombatTextCreate.parse,
         ~toPacket=a => Packet.CombatTextCreate(a),
         ~toLazyPacket=a => Packet.LazyPacket.CombatTextCreate(a),
@@ -1014,6 +1299,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (Emoji, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.Emoji.parse,
         ~toPacket=a => Packet.Emoji(a),
         ~toLazyPacket=a => Packet.LazyPacket.Emoji(a),
@@ -1022,6 +1308,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (TileEntityDisplayDollItemSync, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.TileEntityDisplayDollItemSync.parse,
         ~toPacket=a => Packet.TileEntityDisplayDollItemSync(a),
         ~toLazyPacket=a => Packet.LazyPacket.TileEntityDisplayDollItemSync(a),
@@ -1030,6 +1317,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (TileEntityInteractionRequest, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.TileEntityInteractionRequest.parse,
         ~toPacket=a => Packet.TileEntityInteractionRequest(a),
         ~toLazyPacket=a => Packet.LazyPacket.TileEntityInteractionRequest(a),
@@ -1039,6 +1327,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (WeaponsRackTryPlacing, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.WeaponsRackTryPlacing.parse,
         ~toPacket=a => Packet.WeaponsRackTryPlacing(a),
         ~toLazyPacket=a => Packet.LazyPacket.WeaponsRackTryPlacing(a),
@@ -1047,6 +1336,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (TileEntityHatRackItemSync, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.TileEntityHatRackItemSync.parse,
         ~toPacket=a => Packet.TileEntityHatRackItemSync(a),
         ~toLazyPacket=a => Packet.LazyPacket.TileEntityHatRackItemSync(a),
@@ -1055,6 +1345,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (TilePickingSync, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.TilePickingSync.parse,
         ~toPacket=a => Packet.TilePickingSync(a),
         ~toLazyPacket=a => Packet.LazyPacket.TilePickingSync(a),
@@ -1064,6 +1355,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (RevengeMarkerSync, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.RevengeMarkerSync.parse,
         ~toPacket=a => Packet.RevengeMarkerSync(a),
         ~toLazyPacket=a => Packet.LazyPacket.RevengeMarkerSync(a),
@@ -1073,6 +1365,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (RevengeMarkerRemove, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.RevengeMarkerRemove.parse,
         ~toPacket=a => Packet.RevengeMarkerRemove(a),
         ~toLazyPacket=a => Packet.LazyPacket.RevengeMarkerRemove(a),
@@ -1081,6 +1374,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (GolfBallLandInCup, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.GolfBallLandInCup.parse,
         ~toPacket=a => Packet.GolfBallLandInCup(a),
         ~toLazyPacket=a => Packet.LazyPacket.GolfBallLandInCup(a),
@@ -1090,6 +1384,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ClientFinishConnectingToServer, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ClientFinishConnectingToServer.parse,
         ~toPacket=a => Packet.ClientFinishConnectingToServer(a),
         ~toLazyPacket=a => Packet.LazyPacket.ClientFinishConnectingToServer(a),
@@ -1099,6 +1394,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (NpcFishOut, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.NpcFishOut.parse,
         ~toPacket=a => Packet.NpcFishOut(a),
         ~toLazyPacket=a => Packet.LazyPacket.NpcFishOut(a),
@@ -1108,6 +1404,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (NpcTamper, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.NpcTamper.parse,
         ~toPacket=a => Packet.NpcTamper(a),
         ~toLazyPacket=a => Packet.LazyPacket.NpcTamper(a),
@@ -1117,6 +1414,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (LegacySoundPlay, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.LegacySoundPlay.parse,
         ~toPacket=a => Packet.LegacySoundPlay(a),
         ~toLazyPacket=a => Packet.LazyPacket.LegacySoundPlay(a),
@@ -1126,6 +1424,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (FoodPlatterTryPlacing, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.FoodPlatterTryPlacing.parse,
         ~toPacket=a => Packet.FoodPlatterTryPlacing(a),
         ~toLazyPacket=a => Packet.LazyPacket.FoodPlatterTryPlacing(a),
@@ -1134,6 +1433,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PlayerLuckFactorsUpdate, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PlayerLuckFactorsUpdate.parse,
         ~toPacket=a => Packet.PlayerLuckFactorsUpdate(a),
         ~toLazyPacket=a => Packet.LazyPacket.PlayerLuckFactorsUpdate(a),
@@ -1143,6 +1443,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PlayerDead, true) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PlayerDead.parse,
         ~toPacket=a => Packet.PlayerDead(a),
         ~toLazyPacket=a => Packet.LazyPacket.PlayerDead(a),
@@ -1151,6 +1452,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (CavernMonsterTypeSync, true | false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.CavernMonsterTypeSync.parse,
         ~toPacket=a => Packet.CavernMonsterTypeSync(a),
         ~toLazyPacket=a => Packet.LazyPacket.CavernMonsterTypeSync(a),
@@ -1160,6 +1462,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (NpcBuffRemovalRequest, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.NpcBuffRemovalRequest.parse,
         ~toPacket=a => Packet.NpcBuffRemovalRequest(a),
         ~toLazyPacket=a => Packet.LazyPacket.NpcBuffRemovalRequest(a),
@@ -1169,6 +1472,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ClientSyncedInventory, false) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ClientSyncedInventory.parse,
         ~toPacket=a => Packet.ClientSyncedInventory(a),
         ~toLazyPacket=a => Packet.LazyPacket.ClientSyncedInventory(a),
@@ -1177,6 +1481,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (CountsAsHostForGameplaySet, _) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.CountsAsHostForGameplaySet.parse,
         ~toPacket=a => Packet.CountsAsHostForGameplaySet(a),
         ~toLazyPacket=a => Packet.LazyPacket.CountsAsHostForGameplaySet(a),
@@ -1185,6 +1490,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (CreditsOrSlimeTransform, _) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.CreditsOrSlimeTransform.parse,
         ~toPacket=a => Packet.CreditsOrSlimeTransform(a),
         ~toLazyPacket=a => Packet.LazyPacket.CreditsOrSlimeTransform(a),
@@ -1193,6 +1499,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (LucyAxeMessage, _) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.LucyAxeMessage.parse,
         ~toPacket=a => Packet.LucyAxeMessage(a),
         ~toLazyPacket=a => Packet.LazyPacket.LucyAxeMessage(a),
@@ -1201,6 +1508,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (PiggyBankVoidLensUpdate, _) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.PiggyBankVoidLensUpdate.parse,
         ~toPacket=a => Packet.PiggyBankVoidLensUpdate(a),
         ~toLazyPacket=a => Packet.LazyPacket.PiggyBankVoidLensUpdate(a),
@@ -1209,6 +1517,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (DungeonDefendersEventAttemptSkipWait, _) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.DungeonDefendersEventAttemptSkipWait.parse,
         ~toPacket=a => Packet.DungeonDefendersEventAttemptSkipWait(a),
         ~toLazyPacket=a => Packet.LazyPacket.DungeonDefendersEventAttemptSkipWait(a),
@@ -1217,6 +1526,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (HaveDryadDoStardewAnimation, _) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.HaveDryadDoStardewAnimation.parse,
         ~toPacket=a => Packet.HaveDryadDoStardewAnimation(a),
         ~toLazyPacket=a => Packet.LazyPacket.HaveDryadDoStardewAnimation(a),
@@ -1225,6 +1535,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ItemDropShimmeredUpdate, _) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ItemDropShimmeredUpdate.parse,
         ~toPacket=a => Packet.ItemDropShimmeredUpdate(a),
         ~toLazyPacket=a => Packet.LazyPacket.ItemDropShimmeredUpdate(a),
@@ -1233,6 +1544,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ShimmerEffectOrCoinLuck, _) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ShimmerEffectOrCoinLuck.parse,
         ~toPacket=a => Packet.ShimmerEffectOrCoinLuck(a),
         ~toLazyPacket=a => Packet.LazyPacket.ShimmerEffectOrCoinLuck(a),
@@ -1241,6 +1553,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (LoadoutSwitch, _) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.LoadoutSwitch.parse,
         ~toPacket=a => Packet.LoadoutSwitch(a),
         ~toLazyPacket=a => Packet.LazyPacket.LoadoutSwitch(a),
@@ -1249,12 +1562,14 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   | (ItemDropProtectedUpdate, _) =>
     Ok(
       makeParsers(
+        ~packetName,
         ~parse=Packet.ItemDropProtectedUpdate.parse,
         ~toPacket=a => Packet.ItemDropProtectedUpdate(a),
         ~toLazyPacket=a => Packet.LazyPacket.ItemDropProtectedUpdate(a),
       ),
     )
   }
+}
 
 let parsePayload = (packetType: PacketType.t, payload: NodeJs.Buffer.t, fromServer: bool): result<
   Packet.t,

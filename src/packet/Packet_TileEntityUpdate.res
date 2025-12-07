@@ -35,7 +35,7 @@ module Encode = {
     switch self.payload {
     | Remove => writer->packBool(false, "hasData")->data
     | Data(tileEntityData) =>
-        writer->packBool(true, "hasData")->packBuffer(tileEntityData, "tileEntityData")->data
+      writer->packBool(true, "hasData")->packBuffer(tileEntityData, "tileEntityData")->data
     }
   }
 }

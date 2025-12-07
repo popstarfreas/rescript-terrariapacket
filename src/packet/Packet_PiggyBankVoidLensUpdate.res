@@ -5,10 +5,10 @@ module TrackedProjectileReference = {
     expectedType: int,
   }
   let {readInt16} = module(ErrorAwarePacketReader)
-  let tryReading = (
-    reader: PacketFactory.PacketReader.t,
-    context: string,
-  ): result<option<t>, ErrorAwarePacketReader.readError> => {
+  let tryReading = (reader: PacketFactory.PacketReader.t, context: string): result<
+    option<t>,
+    ErrorAwarePacketReader.readError,
+  > => {
     let? Ok(marker) = reader->readInt16(context)
     if marker == -1 {
       let? Ok(expectedIdentity) = reader->readInt16(context ++ "_expectedIdentity")

@@ -1,13 +1,7 @@
 @genType
 type anchor =
   | Remove
-  | Anchor({
-      anchorType: int,
-      anchorMeta: int,
-      time: int,
-      emote: int,
-      metadata: option<int>,
-    })
+  | Anchor({anchorType: int, anchorMeta: int, time: int, emote: int, metadata: option<int>})
 
 @genType
 type t = {
@@ -27,12 +21,11 @@ module Decode = {
       let? Ok(anchorMeta) = reader->readUInt16("anchorMeta")
       let? Ok(time) = reader->readUInt16("time")
       let? Ok(emote) = reader->readSByte("emote")
-      let metadata =
-        if emote < 0 {
-          reader->readInt16("metadata")->Result.map(v => Some(v))
-        } else {
-          Ok(None)
-        }
+      let metadata = if emote < 0 {
+        reader->readInt16("metadata")->Result.map(v => Some(v))
+      } else {
+        Ok(None)
+      }
       let? Ok(metadata) = metadata
       Ok({id, anchor: Anchor({anchorType, anchorMeta, time, emote, metadata})})
     }
@@ -57,18 +50,17 @@ module Encode = {
           ->packUInt16(details.anchorMeta, "anchorMeta")
           ->packUInt16(details.time, "time")
           ->packSByte(details.emote, "emote")
-        let writer =
-          if details.emote < 0 {
-            writer->packInt16(
-              switch details.metadata {
-              | Some(v) => v
-              | None => 0
-              },
-              "metadata",
-            )
-          } else {
-            writer
-          }
+        let writer = if details.emote < 0 {
+          writer->packInt16(
+            switch details.metadata {
+            | Some(v) => v
+            | None => 0
+            },
+            "metadata",
+          )
+        } else {
+          writer
+        }
         writer->data
       }
     }

@@ -30,10 +30,7 @@ module Encode = {
         writer
       } else {
         loop(
-          writer->packInt16(
-            items->Array.getUnsafe(idx),
-            `item${(idx + 1)->Int.toString}`,
-          ),
+          writer->packInt16(items->Array.getUnsafe(idx), `item${(idx + 1)->Int.toString}`),
           idx + 1,
         )
       }
@@ -51,7 +48,6 @@ module Encode = {
 
       writer->packItems(self.items)->data
     }
-
   }
 }
 

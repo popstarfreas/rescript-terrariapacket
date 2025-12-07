@@ -109,10 +109,7 @@ module Decode = {
 
 module Encode = {
   let {packSingle, packInt16, packUInt16, packByte, setType, data} = module(ErrorAwarePacketWriter)
-  let packOptionalData = (
-    writer: ErrorAwarePacketWriter.t,
-    self: t,
-  ): ErrorAwarePacketWriter.t => {
+  let packOptionalData = (writer: ErrorAwarePacketWriter.t, self: t): ErrorAwarePacketWriter.t => {
     let (ai0, ai1, ai2) = self.ai
     let bitFlags2 = BitFlags.fromFlags(
       ~flag1=ai2->Option.isSome,

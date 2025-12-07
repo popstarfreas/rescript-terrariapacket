@@ -157,9 +157,7 @@ module Decode = {
 }
 
 module Encode = {
-  let {packInt16, packByte, packUInt16, packSingle, setType, data} = module(
-    ErrorAwarePacketWriter
-  )
+  let {packInt16, packByte, packUInt16, packSingle, setType, data} = module(ErrorAwarePacketWriter)
 
   let flags1 = (self: t) =>
     BitFlags.fromFlags(

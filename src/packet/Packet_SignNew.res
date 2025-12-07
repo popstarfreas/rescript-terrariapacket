@@ -24,7 +24,7 @@ module Decode = {
       y,
       text,
       playerId,
-      deleteSign: ((BitFlags.fromByte(flags))->BitFlags.flag1),
+      deleteSign: BitFlags.fromByte(flags)->BitFlags.flag1,
     })
   }
 }
@@ -32,7 +32,16 @@ module Decode = {
 module Encode = {
   let {packInt16, packString, packByte, setType, data} = module(ErrorAwarePacketWriter)
   let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
-    let flags = BitFlags.fromFlags(~flag1=self.deleteSign, ~flag2=false, ~flag3=false, ~flag4=false, ~flag5=false, ~flag6=false, ~flag7=false, ~flag8=false)
+    let flags = BitFlags.fromFlags(
+      ~flag1=self.deleteSign,
+      ~flag2=false,
+      ~flag3=false,
+      ~flag4=false,
+      ~flag5=false,
+      ~flag6=false,
+      ~flag7=false,
+      ~flag8=false,
+    )
     ErrorAwarePacketWriter.make()
     ->setType(PacketType.SignNew->PacketType.toInt)
     ->packInt16(self.signId, "signId")
