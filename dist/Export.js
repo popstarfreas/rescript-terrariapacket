@@ -5,12 +5,15 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __esm = (fn, res) => function __init() {
+  return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
+};
 var __commonJS = (cb, mod) => function __require() {
   return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
 };
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
+var __export = (target, all8) => {
+  for (var name in all8)
+    __defProp(target, name, { get: all8[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
@@ -625,11 +628,53 @@ var require_PacketType = __commonJS({
   }
 });
 
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Primitive_exceptions.js
+var Primitive_exceptions_exports = {};
+__export(Primitive_exceptions_exports, {
+  $$Error: () => $$Error,
+  create: () => create,
+  internalToException: () => internalToException
+});
+function isExtension(e) {
+  if (e == null) {
+    return false;
+  } else {
+    return typeof e.RE_EXN_ID === "string";
+  }
+}
+function internalToException(e) {
+  if (isExtension(e)) {
+    return e;
+  } else {
+    return {
+      RE_EXN_ID: "JsExn",
+      _1: e
+    };
+  }
+}
+function create(str) {
+  let v = idMap[str];
+  if (v !== void 0) {
+    let id = v + 1 | 0;
+    idMap[str] = id;
+    return str + ("/" + id);
+  }
+  idMap[str] = 1;
+  return str;
+}
+var idMap, $$Error;
+var init_Primitive_exceptions = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Primitive_exceptions.js"() {
+    idMap = {};
+    $$Error = "JsExn";
+  }
+});
+
 // src/ErrorAwarePacketReader.js
 var require_ErrorAwarePacketReader = __commonJS({
   "src/ErrorAwarePacketReader.js"(exports2) {
     "use strict";
-    var Primitive_exceptions = require("@rescript/runtime/lib/js/Primitive_exceptions.js");
+    var Primitive_exceptions = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
     function readByteUnsafe(prim) {
       return prim.readByte();
     }
@@ -1625,7 +1670,7 @@ var require_packetwriter = __commonJS({
 var require_ErrorAwarePacketWriter = __commonJS({
   "src/ErrorAwarePacketWriter.js"(exports2) {
     "use strict";
-    var Primitive_exceptions = require("@rescript/runtime/lib/js/Primitive_exceptions.js");
+    var Primitive_exceptions = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
     var ManagedPacketWriter$PacketFactory = require_ManagedPacketWriter();
     var Packetwriter = require_packetwriter().default;
     function packSingle(self, value, context) {
@@ -1962,7 +2007,7 @@ var require_ErrorAwarePacketWriter = __commonJS({
         };
       }
     }
-    function make() {
+    function make4() {
       return new Packetwriter();
     }
     exports2.packSingle = packSingle;
@@ -1981,7 +2026,7 @@ var require_ErrorAwarePacketWriter = __commonJS({
     exports2.packNetworkText = packNetworkText;
     exports2.setType = setType;
     exports2.data = data;
-    exports2.make = make;
+    exports2.make = make4;
   }
 });
 
@@ -3142,26 +3187,522 @@ var require_Packet_ItemOwner = __commonJS({
   }
 });
 
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Primitive_option.js
+var Primitive_option_exports = {};
+__export(Primitive_option_exports, {
+  fromNull: () => fromNull,
+  fromNullable: () => fromNullable,
+  fromUndefined: () => fromUndefined,
+  isNested: () => isNested,
+  some: () => some,
+  toUndefined: () => toUndefined,
+  unwrapPolyVar: () => unwrapPolyVar,
+  valFromOption: () => valFromOption
+});
+function isNested(x) {
+  return x.BS_PRIVATE_NESTED_SOME_NONE !== void 0;
+}
+function some(x) {
+  if (x === void 0) {
+    return {
+      BS_PRIVATE_NESTED_SOME_NONE: 0
+    };
+  } else if (x !== null && x.BS_PRIVATE_NESTED_SOME_NONE !== void 0) {
+    return {
+      BS_PRIVATE_NESTED_SOME_NONE: x.BS_PRIVATE_NESTED_SOME_NONE + 1 | 0
+    };
+  } else {
+    return x;
+  }
+}
+function fromNullable(x) {
+  if (x == null) {
+    return;
+  } else {
+    return some(x);
+  }
+}
+function fromUndefined(x) {
+  if (x === void 0) {
+    return;
+  } else {
+    return some(x);
+  }
+}
+function fromNull(x) {
+  if (x === null) {
+    return;
+  } else {
+    return some(x);
+  }
+}
+function valFromOption(x) {
+  if (x === null || x.BS_PRIVATE_NESTED_SOME_NONE === void 0) {
+    return x;
+  }
+  let depth = x.BS_PRIVATE_NESTED_SOME_NONE;
+  if (depth === 0) {
+    return;
+  } else {
+    return {
+      BS_PRIVATE_NESTED_SOME_NONE: depth - 1 | 0
+    };
+  }
+}
+function toUndefined(x) {
+  if (x === void 0) {
+    return;
+  } else {
+    return valFromOption(x);
+  }
+}
+function unwrapPolyVar(x) {
+  if (x !== void 0) {
+    return x.VAL;
+  } else {
+    return x;
+  }
+}
+var init_Primitive_option = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Primitive_option.js"() {
+  }
+});
+
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Stdlib_Array.js
+var Stdlib_Array_exports = {};
+__export(Stdlib_Array_exports, {
+  compare: () => compare,
+  equal: () => equal,
+  filterMap: () => filterMap,
+  filterMapWithIndex: () => filterMapWithIndex,
+  findIndexOpt: () => findIndexOpt,
+  findLastIndexOpt: () => findLastIndexOpt,
+  findMap: () => findMap,
+  fromInitializer: () => fromInitializer,
+  indexOfOpt: () => indexOfOpt,
+  isEmpty: () => isEmpty,
+  keepSome: () => keepSome,
+  last: () => last,
+  lastIndexOfOpt: () => lastIndexOfOpt,
+  make: () => make,
+  reduce: () => reduce,
+  reduceRight: () => reduceRight,
+  reduceRightWithIndex: () => reduceRightWithIndex,
+  reduceWithIndex: () => reduceWithIndex,
+  shuffle: () => shuffle,
+  toShuffled: () => toShuffled
+});
+function make(length, x) {
+  if (length <= 0) {
+    return [];
+  }
+  let arr = new Array(length);
+  arr.fill(x);
+  return arr;
+}
+function fromInitializer(length, f) {
+  if (length <= 0) {
+    return [];
+  }
+  let arr = new Array(length);
+  for (let i = 0; i < length; ++i) {
+    arr[i] = f(i);
+  }
+  return arr;
+}
+function isEmpty(arr) {
+  return arr.length === 0;
+}
+function equal(a, b, eq3) {
+  let len = a.length;
+  if (len === b.length) {
+    let _i = 0;
+    while (true) {
+      let i = _i;
+      if (i === len) {
+        return true;
+      }
+      if (!eq3(a[i], b[i])) {
+        return false;
+      }
+      _i = i + 1 | 0;
+      continue;
+    }
+    ;
+  } else {
+    return false;
+  }
+}
+function compare(a, b, cmp3) {
+  let lenA = a.length;
+  let lenB = b.length;
+  if (lenA < lenB) {
+    return -1;
+  } else if (lenA > lenB) {
+    return 1;
+  } else {
+    let _i = 0;
+    while (true) {
+      let i = _i;
+      if (i === lenA) {
+        return 0;
+      }
+      let c = cmp3(a[i], b[i]);
+      if (c !== 0) {
+        return c;
+      }
+      _i = i + 1 | 0;
+      continue;
+    }
+    ;
+  }
+}
+function indexOfOpt(arr, item) {
+  let index = arr.indexOf(item);
+  if (index !== -1) {
+    return index;
+  }
+}
+function lastIndexOfOpt(arr, item) {
+  let index = arr.lastIndexOf(item);
+  if (index !== -1) {
+    return index;
+  }
+}
+function reduce(arr, init2, f) {
+  return arr.reduce(f, init2);
+}
+function reduceWithIndex(arr, init2, f) {
+  return arr.reduce(f, init2);
+}
+function reduceRight(arr, init2, f) {
+  return arr.reduceRight(f, init2);
+}
+function reduceRightWithIndex(arr, init2, f) {
+  return arr.reduceRight(f, init2);
+}
+function findIndexOpt(array, finder) {
+  let index = array.findIndex(finder);
+  if (index !== -1) {
+    return index;
+  }
+}
+function findLastIndexOpt(array, finder) {
+  let index = array.findLastIndex(finder);
+  if (index !== -1) {
+    return index;
+  }
+}
+function swapUnsafe(xs, i, j) {
+  let tmp = xs[i];
+  xs[i] = xs[j];
+  xs[j] = tmp;
+}
+function random_int(min3, max3) {
+  return (Math.floor(Math.random() * (max3 - min3 | 0)) | 0) + min3 | 0;
+}
+function shuffle(xs) {
+  let len = xs.length;
+  for (let i = 0; i < len; ++i) {
+    swapUnsafe(xs, i, random_int(i, len));
+  }
+}
+function toShuffled(xs) {
+  let result = xs.slice();
+  shuffle(result);
+  return result;
+}
+function filterMap(a, f) {
+  let l = a.length;
+  let r = new Array(l);
+  let j = 0;
+  for (let i = 0; i < l; ++i) {
+    let v = a[i];
+    let v$1 = f(v);
+    if (v$1 !== void 0) {
+      r[j] = valFromOption(v$1);
+      j = j + 1 | 0;
+    }
+  }
+  r.length = j;
+  return r;
+}
+function keepSome(__x) {
+  return filterMap(__x, (x) => x);
+}
+function filterMapWithIndex(a, f) {
+  let l = a.length;
+  let r = new Array(l);
+  let j = 0;
+  for (let i = 0; i < l; ++i) {
+    let v = a[i];
+    let v$1 = f(v, i);
+    if (v$1 !== void 0) {
+      r[j] = valFromOption(v$1);
+      j = j + 1 | 0;
+    }
+  }
+  r.length = j;
+  return r;
+}
+function findMap(arr, f) {
+  let _i = 0;
+  while (true) {
+    let i = _i;
+    if (i === arr.length) {
+      return;
+    }
+    let r = f(arr[i]);
+    if (r !== void 0) {
+      return r;
+    }
+    _i = i + 1 | 0;
+    continue;
+  }
+  ;
+}
+function last(a) {
+  return a[a.length - 1 | 0];
+}
+var init_Stdlib_Array = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Stdlib_Array.js"() {
+    init_Primitive_option();
+  }
+});
+
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Stdlib_JsError.js
+function panic(msg) {
+  throw new Error(`Panic! ` + msg);
+}
+var init_Stdlib_JsError = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Stdlib_JsError.js"() {
+  }
+});
+
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Stdlib_Option.js
+var Stdlib_Option_exports = {};
+__export(Stdlib_Option_exports, {
+  all: () => all,
+  all2: () => all2,
+  all3: () => all3,
+  all4: () => all4,
+  all5: () => all5,
+  all6: () => all6,
+  compare: () => compare2,
+  equal: () => equal2,
+  filter: () => filter,
+  flatMap: () => flatMap,
+  forEach: () => forEach,
+  getExn: () => getExn,
+  getOr: () => getOr,
+  getOrThrow: () => getOrThrow,
+  getWithDefault: () => getWithDefault,
+  isNone: () => isNone,
+  isSome: () => isSome,
+  map: () => map,
+  mapOr: () => mapOr,
+  mapWithDefault: () => mapWithDefault,
+  orElse: () => orElse
+});
+function filter(opt, p) {
+  if (opt !== void 0 && p(valFromOption(opt))) {
+    return opt;
+  }
+}
+function forEach(opt, f) {
+  if (opt !== void 0) {
+    return f(valFromOption(opt));
+  }
+}
+function getOrThrow(x, message) {
+  if (x !== void 0) {
+    return valFromOption(x);
+  } else {
+    return panic(message !== void 0 ? message : "Option.getOrThrow called for None value");
+  }
+}
+function mapOr(opt, $$default, f) {
+  if (opt !== void 0) {
+    return f(valFromOption(opt));
+  } else {
+    return $$default;
+  }
+}
+function map(opt, f) {
+  if (opt !== void 0) {
+    return some(f(valFromOption(opt)));
+  }
+}
+function flatMap(opt, f) {
+  if (opt !== void 0) {
+    return f(valFromOption(opt));
+  }
+}
+function getOr(opt, $$default) {
+  if (opt !== void 0) {
+    return valFromOption(opt);
+  } else {
+    return $$default;
+  }
+}
+function orElse(opt, other) {
+  if (opt !== void 0) {
+    return opt;
+  } else {
+    return other;
+  }
+}
+function isSome(x) {
+  return x !== void 0;
+}
+function isNone(x) {
+  return x === void 0;
+}
+function equal2(a, b, eq3) {
+  if (a !== void 0) {
+    if (b !== void 0) {
+      return eq3(valFromOption(a), valFromOption(b));
+    } else {
+      return false;
+    }
+  } else {
+    return b === void 0;
+  }
+}
+function compare2(a, b, cmp3) {
+  if (a !== void 0) {
+    if (b !== void 0) {
+      return cmp3(valFromOption(a), valFromOption(b));
+    } else {
+      return 1;
+    }
+  } else if (b !== void 0) {
+    return -1;
+  } else {
+    return 0;
+  }
+}
+function all(options) {
+  let acc = [];
+  let hasNone = false;
+  let index = 0;
+  while (hasNone === false && index < options.length) {
+    let value = options[index];
+    if (value !== void 0) {
+      acc.push(valFromOption(value));
+      index = index + 1 | 0;
+    } else {
+      hasNone = true;
+    }
+  }
+  ;
+  if (hasNone) {
+    return;
+  } else {
+    return acc;
+  }
+}
+function all2(param) {
+  let b = param[1];
+  let a = param[0];
+  if (a !== void 0 && b !== void 0) {
+    return [
+      valFromOption(a),
+      valFromOption(b)
+    ];
+  }
+}
+function all3(param) {
+  let c = param[2];
+  let b = param[1];
+  let a = param[0];
+  if (a !== void 0 && b !== void 0 && c !== void 0) {
+    return [
+      valFromOption(a),
+      valFromOption(b),
+      valFromOption(c)
+    ];
+  }
+}
+function all4(param) {
+  let d = param[3];
+  let c = param[2];
+  let b = param[1];
+  let a = param[0];
+  if (a !== void 0 && b !== void 0 && c !== void 0 && d !== void 0) {
+    return [
+      valFromOption(a),
+      valFromOption(b),
+      valFromOption(c),
+      valFromOption(d)
+    ];
+  }
+}
+function all5(param) {
+  let e = param[4];
+  let d = param[3];
+  let c = param[2];
+  let b = param[1];
+  let a = param[0];
+  if (a !== void 0 && b !== void 0 && c !== void 0 && d !== void 0 && e !== void 0) {
+    return [
+      valFromOption(a),
+      valFromOption(b),
+      valFromOption(c),
+      valFromOption(d),
+      valFromOption(e)
+    ];
+  }
+}
+function all6(param) {
+  let f = param[5];
+  let e = param[4];
+  let d = param[3];
+  let c = param[2];
+  let b = param[1];
+  let a = param[0];
+  if (a !== void 0 && b !== void 0 && c !== void 0 && d !== void 0 && e !== void 0 && f !== void 0) {
+    return [
+      valFromOption(a),
+      valFromOption(b),
+      valFromOption(c),
+      valFromOption(d),
+      valFromOption(e),
+      valFromOption(f)
+    ];
+  }
+}
+var getExn, mapWithDefault, getWithDefault;
+var init_Stdlib_Option = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Stdlib_Option.js"() {
+    init_Stdlib_JsError();
+    init_Primitive_option();
+    getExn = getOrThrow;
+    mapWithDefault = mapOr;
+    getWithDefault = getOr;
+  }
+});
+
 // src/ArrayExt.js
 var require_ArrayExt = __commonJS({
   "src/ArrayExt.js"(exports2) {
     "use strict";
-    var Stdlib_Option = require("@rescript/runtime/lib/js/Stdlib_Option.js");
+    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
     function intoChunks(self, chunkSize) {
       let chunked = [];
       let len = self.length;
-      let max = (Math.ceil(len / chunkSize) | 0) - 1 | 0;
-      for (let i = 0; i <= max; ++i) {
+      let max3 = (Math.ceil(len / chunkSize) | 0) - 1 | 0;
+      for (let i = 0; i <= max3; ++i) {
         let __x = self.slice(i * chunkSize | 0, (i + 1 | 0) * chunkSize | 0);
         chunked.push(__x);
       }
       return chunked;
     }
-    function getOr(self, index, or) {
+    function getOr3(self, index, or) {
       return Stdlib_Option.getOr(self[index], or);
     }
     exports2.intoChunks = intoChunks;
-    exports2.getOr = getOr;
+    exports2.getOr = getOr3;
   }
 });
 
@@ -3215,7 +3756,7 @@ var require_BitFlags = __commonJS({
     function flag8(__x) {
       return (__x & 128) === 128;
     }
-    function forEach(self, fn) {
+    function forEach5(self, fn) {
       fn((self & 1) === 1);
       fn((self & 2) === 2);
       fn((self & 4) === 4);
@@ -3240,7 +3781,7 @@ var require_BitFlags = __commonJS({
     exports2.flag7 = flag7;
     exports2.flag8 = flag8;
     exports2.flagN = flagN;
-    exports2.forEach = forEach;
+    exports2.forEach = forEach5;
     exports2.toByte = toByte;
   }
 });
@@ -3249,7 +3790,7 @@ var require_BitFlags = __commonJS({
 var require_Array16 = __commonJS({
   "src/Array16.js"(exports2) {
     "use strict";
-    var Stdlib_Array = require("@rescript/runtime/lib/js/Stdlib_Array.js");
+    var Stdlib_Array = (init_Stdlib_Array(), __toCommonJS(Stdlib_Array_exports));
     var BitFlags$TerrariaPacket = require_BitFlags();
     function fromArray(a) {
       if (a.length === 16) {
@@ -3341,11 +3882,680 @@ var require_Packet_LoadoutSwitch = __commonJS({
   }
 });
 
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Primitive_int.js
+function min(x, y) {
+  if (x < y) {
+    return x;
+  } else {
+    return y;
+  }
+}
+function max(x, y) {
+  if (x > y) {
+    return x;
+  } else {
+    return y;
+  }
+}
+var init_Primitive_int = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Primitive_int.js"() {
+  }
+});
+
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Belt_Array.js
+var Belt_Array_exports = {};
+__export(Belt_Array_exports, {
+  blit: () => blit,
+  blitUnsafe: () => blitUnsafe,
+  cmp: () => cmp,
+  cmpU: () => cmpU,
+  concat: () => concat,
+  concatMany: () => concatMany,
+  eq: () => eq,
+  eqU: () => eqU,
+  every: () => every,
+  every2: () => every2,
+  every2U: () => every2U,
+  everyU: () => everyU,
+  fill: () => fill,
+  flatMap: () => flatMap2,
+  flatMapU: () => flatMapU,
+  forEach: () => forEach2,
+  forEachU: () => forEachU,
+  forEachWithIndex: () => forEachWithIndex,
+  forEachWithIndexU: () => forEachWithIndexU,
+  get: () => get,
+  getBy: () => getBy,
+  getByU: () => getByU,
+  getExn: () => getExn2,
+  getIndexBy: () => getIndexBy,
+  getIndexByU: () => getIndexByU,
+  getOrThrow: () => getOrThrow2,
+  init: () => init,
+  initU: () => initU,
+  joinWith: () => joinWith,
+  joinWithU: () => joinWithU,
+  keep: () => keep,
+  keepMap: () => keepMap,
+  keepMapU: () => keepMapU,
+  keepU: () => keepU,
+  keepWithIndex: () => keepWithIndex,
+  keepWithIndexU: () => keepWithIndexU,
+  make: () => make2,
+  makeBy: () => makeBy,
+  makeByAndShuffle: () => makeByAndShuffle,
+  makeByAndShuffleU: () => makeByAndShuffleU,
+  makeByU: () => makeByU,
+  map: () => map2,
+  mapU: () => mapU,
+  mapWithIndex: () => mapWithIndex,
+  mapWithIndexU: () => mapWithIndexU,
+  partition: () => partition,
+  partitionU: () => partitionU,
+  range: () => range,
+  rangeBy: () => rangeBy,
+  reduce: () => reduce2,
+  reduceReverse: () => reduceReverse,
+  reduceReverse2: () => reduceReverse2,
+  reduceReverse2U: () => reduceReverse2U,
+  reduceReverseU: () => reduceReverseU,
+  reduceU: () => reduceU,
+  reduceWithIndex: () => reduceWithIndex2,
+  reduceWithIndexU: () => reduceWithIndexU,
+  reverse: () => reverse,
+  reverseInPlace: () => reverseInPlace,
+  set: () => set,
+  setExn: () => setExn,
+  setOrThrow: () => setOrThrow,
+  shuffle: () => shuffle2,
+  shuffleInPlace: () => shuffleInPlace,
+  slice: () => slice,
+  sliceToEnd: () => sliceToEnd,
+  some: () => some2,
+  some2: () => some22,
+  some2U: () => some2U,
+  someU: () => someU,
+  unzip: () => unzip,
+  zip: () => zip,
+  zipBy: () => zipBy,
+  zipByU: () => zipByU
+});
+function get(arr, i) {
+  if (i >= 0 && i < arr.length) {
+    return some(arr[i]);
+  }
+}
+function getOrThrow2(arr, i) {
+  if (!(i >= 0 && i < arr.length)) {
+    throw {
+      RE_EXN_ID: "Assert_failure",
+      _1: [
+        "Belt_Array.res",
+        36,
+        2
+      ],
+      Error: new Error()
+    };
+  }
+  return arr[i];
+}
+function set(arr, i, v) {
+  if (i >= 0 && i < arr.length) {
+    arr[i] = v;
+    return true;
+  } else {
+    return false;
+  }
+}
+function setOrThrow(arr, i, v) {
+  if (!(i >= 0 && i < arr.length)) {
+    throw {
+      RE_EXN_ID: "Assert_failure",
+      _1: [
+        "Belt_Array.res",
+        51,
+        2
+      ],
+      Error: new Error()
+    };
+  }
+  arr[i] = v;
+}
+function swapUnsafe2(xs, i, j) {
+  let tmp = xs[i];
+  xs[i] = xs[j];
+  xs[j] = tmp;
+}
+function shuffleInPlace(xs) {
+  let len = xs.length;
+  let random_int2 = (min3, max3) => Math.floor(Math.random() * (max3 - min3 | 0)) + min3 | 0;
+  for (let i = 0; i < len; ++i) {
+    swapUnsafe2(xs, i, random_int2(i, len));
+  }
+}
+function shuffle2(xs) {
+  let result = xs.slice(0);
+  shuffleInPlace(result);
+  return result;
+}
+function reverseInPlace(xs) {
+  let len = xs.length;
+  let ofs = 0;
+  for (let i = 0, i_finish = len / 2 | 0; i < i_finish; ++i) {
+    swapUnsafe2(xs, ofs + i | 0, ((ofs + len | 0) - i | 0) - 1 | 0);
+  }
+}
+function reverse(xs) {
+  let len = xs.length;
+  let result = new Array(len);
+  for (let i = 0; i < len; ++i) {
+    result[i] = xs[(len - 1 | 0) - i | 0];
+  }
+  return result;
+}
+function make2(l, f) {
+  if (l <= 0) {
+    return [];
+  }
+  let res = new Array(l);
+  for (let i = 0; i < l; ++i) {
+    res[i] = f;
+  }
+  return res;
+}
+function makeBy(l, f) {
+  if (l <= 0) {
+    return [];
+  }
+  let res = new Array(l);
+  for (let i = 0; i < l; ++i) {
+    res[i] = f(i);
+  }
+  return res;
+}
+function makeByAndShuffle(l, f) {
+  let u = makeBy(l, f);
+  shuffleInPlace(u);
+  return u;
+}
+function range(start, finish) {
+  let cut = finish - start | 0;
+  if (cut < 0) {
+    return [];
+  }
+  let arr = new Array(cut + 1 | 0);
+  for (let i = 0; i <= cut; ++i) {
+    arr[i] = start + i | 0;
+  }
+  return arr;
+}
+function rangeBy(start, finish, step) {
+  let cut = finish - start | 0;
+  if (cut < 0 || step <= 0) {
+    return [];
+  }
+  let nb = (cut / step | 0) + 1 | 0;
+  let arr = new Array(nb);
+  let cur = start;
+  for (let i = 0; i < nb; ++i) {
+    arr[i] = cur;
+    cur = cur + step | 0;
+  }
+  return arr;
+}
+function zip(xs, ys) {
+  let lenx = xs.length;
+  let leny = ys.length;
+  let len = min(lenx, leny);
+  let s = new Array(len);
+  for (let i = 0; i < len; ++i) {
+    s[i] = [
+      xs[i],
+      ys[i]
+    ];
+  }
+  return s;
+}
+function zipBy(xs, ys, f) {
+  let lenx = xs.length;
+  let leny = ys.length;
+  let len = min(lenx, leny);
+  let s = new Array(len);
+  for (let i = 0; i < len; ++i) {
+    s[i] = f(xs[i], ys[i]);
+  }
+  return s;
+}
+function concat(a1, a2) {
+  let l1 = a1.length;
+  let l2 = a2.length;
+  let a1a2 = new Array(l1 + l2 | 0);
+  for (let i = 0; i < l1; ++i) {
+    a1a2[i] = a1[i];
+  }
+  for (let i$1 = 0; i$1 < l2; ++i$1) {
+    a1a2[l1 + i$1 | 0] = a2[i$1];
+  }
+  return a1a2;
+}
+function concatMany(arrs) {
+  let lenArrs = arrs.length;
+  let totalLen = 0;
+  for (let i = 0; i < lenArrs; ++i) {
+    totalLen = totalLen + arrs[i].length | 0;
+  }
+  let result = new Array(totalLen);
+  totalLen = 0;
+  for (let j = 0; j < lenArrs; ++j) {
+    let cur = arrs[j];
+    for (let k = 0, k_finish = cur.length; k < k_finish; ++k) {
+      result[totalLen] = cur[k];
+      totalLen = totalLen + 1 | 0;
+    }
+  }
+  return result;
+}
+function slice(a, offset, len) {
+  if (len <= 0) {
+    return [];
+  }
+  let lena = a.length;
+  let ofs = offset < 0 ? max(lena + offset | 0, 0) : offset;
+  let hasLen = lena - ofs | 0;
+  let copyLength = min(hasLen, len);
+  if (copyLength <= 0) {
+    return [];
+  }
+  let result = new Array(copyLength);
+  for (let i = 0; i < copyLength; ++i) {
+    result[i] = a[ofs + i | 0];
+  }
+  return result;
+}
+function sliceToEnd(a, offset) {
+  let lena = a.length;
+  let ofs = offset < 0 ? max(lena + offset | 0, 0) : offset;
+  let len = lena > ofs ? lena - ofs | 0 : 0;
+  let result = new Array(len);
+  for (let i = 0; i < len; ++i) {
+    result[i] = a[ofs + i | 0];
+  }
+  return result;
+}
+function fill(a, offset, len, v) {
+  if (len <= 0) {
+    return;
+  }
+  let lena = a.length;
+  let ofs = offset < 0 ? max(lena + offset | 0, 0) : offset;
+  let hasLen = lena - ofs | 0;
+  let fillLength = min(hasLen, len);
+  if (fillLength <= 0) {
+    return;
+  }
+  for (let i = ofs, i_finish = ofs + fillLength | 0; i < i_finish; ++i) {
+    a[i] = v;
+  }
+}
+function blitUnsafe(a1, srcofs1, a2, srcofs2, blitLength) {
+  if (srcofs2 <= srcofs1) {
+    for (let j = 0; j < blitLength; ++j) {
+      a2[j + srcofs2 | 0] = a1[j + srcofs1 | 0];
+    }
+    return;
+  }
+  for (let j$1 = blitLength - 1 | 0; j$1 >= 0; --j$1) {
+    a2[j$1 + srcofs2 | 0] = a1[j$1 + srcofs1 | 0];
+  }
+}
+function blit(a1, ofs1, a2, ofs2, len) {
+  let lena1 = a1.length;
+  let lena2 = a2.length;
+  let srcofs1 = ofs1 < 0 ? max(lena1 + ofs1 | 0, 0) : ofs1;
+  let srcofs2 = ofs2 < 0 ? max(lena2 + ofs2 | 0, 0) : ofs2;
+  let blitLength = min(len, min(lena1 - srcofs1 | 0, lena2 - srcofs2 | 0));
+  if (srcofs2 <= srcofs1) {
+    for (let j = 0; j < blitLength; ++j) {
+      a2[j + srcofs2 | 0] = a1[j + srcofs1 | 0];
+    }
+    return;
+  }
+  for (let j$1 = blitLength - 1 | 0; j$1 >= 0; --j$1) {
+    a2[j$1 + srcofs2 | 0] = a1[j$1 + srcofs1 | 0];
+  }
+}
+function forEach2(a, f) {
+  for (let i = 0, i_finish = a.length; i < i_finish; ++i) {
+    f(a[i]);
+  }
+}
+function map2(a, f) {
+  let l = a.length;
+  let r = new Array(l);
+  for (let i = 0; i < l; ++i) {
+    r[i] = f(a[i]);
+  }
+  return r;
+}
+function flatMap2(a, f) {
+  return concatMany(map2(a, f));
+}
+function getBy(a, p) {
+  let l = a.length;
+  let i = 0;
+  let r;
+  while (r === void 0 && i < l) {
+    let v = a[i];
+    if (p(v)) {
+      r = some(v);
+    }
+    i = i + 1 | 0;
+  }
+  ;
+  return r;
+}
+function getIndexBy(a, p) {
+  let l = a.length;
+  let i = 0;
+  let r;
+  while (r === void 0 && i < l) {
+    let v = a[i];
+    if (p(v)) {
+      r = i;
+    }
+    i = i + 1 | 0;
+  }
+  ;
+  return r;
+}
+function keep(a, f) {
+  let l = a.length;
+  let r = new Array(l);
+  let j = 0;
+  for (let i = 0; i < l; ++i) {
+    let v = a[i];
+    if (f(v)) {
+      r[j] = v;
+      j = j + 1 | 0;
+    }
+  }
+  r.length = j;
+  return r;
+}
+function keepWithIndex(a, f) {
+  let l = a.length;
+  let r = new Array(l);
+  let j = 0;
+  for (let i = 0; i < l; ++i) {
+    let v = a[i];
+    if (f(v, i)) {
+      r[j] = v;
+      j = j + 1 | 0;
+    }
+  }
+  r.length = j;
+  return r;
+}
+function keepMap(a, f) {
+  let l = a.length;
+  let r = new Array(l);
+  let j = 0;
+  for (let i = 0; i < l; ++i) {
+    let v = a[i];
+    let v$1 = f(v);
+    if (v$1 !== void 0) {
+      r[j] = valFromOption(v$1);
+      j = j + 1 | 0;
+    }
+  }
+  r.length = j;
+  return r;
+}
+function forEachWithIndex(a, f) {
+  for (let i = 0, i_finish = a.length; i < i_finish; ++i) {
+    f(i, a[i]);
+  }
+}
+function mapWithIndex(a, f) {
+  let l = a.length;
+  let r = new Array(l);
+  for (let i = 0; i < l; ++i) {
+    r[i] = f(i, a[i]);
+  }
+  return r;
+}
+function reduce2(a, x, f) {
+  let r = x;
+  for (let i = 0, i_finish = a.length; i < i_finish; ++i) {
+    r = f(r, a[i]);
+  }
+  return r;
+}
+function reduceReverse(a, x, f) {
+  let r = x;
+  for (let i = a.length - 1 | 0; i >= 0; --i) {
+    r = f(r, a[i]);
+  }
+  return r;
+}
+function reduceReverse2(a, b, x, f) {
+  let r = x;
+  let len = min(a.length, b.length);
+  for (let i = len - 1 | 0; i >= 0; --i) {
+    r = f(r, a[i], b[i]);
+  }
+  return r;
+}
+function reduceWithIndex2(a, x, f) {
+  let r = x;
+  for (let i = 0, i_finish = a.length; i < i_finish; ++i) {
+    r = f(r, a[i], i);
+  }
+  return r;
+}
+function every(arr, b) {
+  let len = arr.length;
+  let _i = 0;
+  while (true) {
+    let i = _i;
+    if (i === len) {
+      return true;
+    }
+    if (!b(arr[i])) {
+      return false;
+    }
+    _i = i + 1 | 0;
+    continue;
+  }
+  ;
+}
+function some2(arr, b) {
+  let len = arr.length;
+  let _i = 0;
+  while (true) {
+    let i = _i;
+    if (i === len) {
+      return false;
+    }
+    if (b(arr[i])) {
+      return true;
+    }
+    _i = i + 1 | 0;
+    continue;
+  }
+  ;
+}
+function everyAux2(arr1, arr2, _i, b, len) {
+  while (true) {
+    let i = _i;
+    if (i === len) {
+      return true;
+    }
+    if (!b(arr1[i], arr2[i])) {
+      return false;
+    }
+    _i = i + 1 | 0;
+    continue;
+  }
+  ;
+}
+function every2(a, b, p) {
+  return everyAux2(a, b, 0, p, min(a.length, b.length));
+}
+function some22(a, b, p) {
+  let _i = 0;
+  let len = min(a.length, b.length);
+  while (true) {
+    let i = _i;
+    if (i === len) {
+      return false;
+    }
+    if (p(a[i], b[i])) {
+      return true;
+    }
+    _i = i + 1 | 0;
+    continue;
+  }
+  ;
+}
+function eq(a, b, p) {
+  let lena = a.length;
+  let lenb = b.length;
+  if (lena === lenb) {
+    return everyAux2(a, b, 0, p, lena);
+  } else {
+    return false;
+  }
+}
+function cmp(a, b, p) {
+  let lena = a.length;
+  let lenb = b.length;
+  if (lena > lenb) {
+    return 1;
+  } else if (lena < lenb) {
+    return -1;
+  } else {
+    let _i = 0;
+    while (true) {
+      let i = _i;
+      if (i === lena) {
+        return 0;
+      }
+      let c = p(a[i], b[i]);
+      if (c !== 0) {
+        return c;
+      }
+      _i = i + 1 | 0;
+      continue;
+    }
+    ;
+  }
+}
+function partition(a, f) {
+  let l = a.length;
+  let i = 0;
+  let j = 0;
+  let a1 = new Array(l);
+  let a2 = new Array(l);
+  for (let ii = 0; ii < l; ++ii) {
+    let v = a[ii];
+    if (f(v)) {
+      a1[i] = v;
+      i = i + 1 | 0;
+    } else {
+      a2[j] = v;
+      j = j + 1 | 0;
+    }
+  }
+  a1.length = i;
+  a2.length = j;
+  return [
+    a1,
+    a2
+  ];
+}
+function unzip(a) {
+  let l = a.length;
+  let a1 = new Array(l);
+  let a2 = new Array(l);
+  for (let i = 0; i < l; ++i) {
+    let match = a[i];
+    a1[i] = match[0];
+    a2[i] = match[1];
+  }
+  return [
+    a1,
+    a2
+  ];
+}
+function joinWith(a, sep, toString) {
+  let l = a.length;
+  if (l === 0) {
+    return "";
+  }
+  let lastIndex = l - 1 | 0;
+  let _i = 0;
+  let _res = "";
+  while (true) {
+    let res = _res;
+    let i = _i;
+    if (i === lastIndex) {
+      return res + toString(a[i]);
+    }
+    _res = res + (toString(a[i]) + sep);
+    _i = i + 1 | 0;
+    continue;
+  }
+  ;
+}
+function init(n, f) {
+  let v = new Array(n);
+  for (let i = 0; i < n; ++i) {
+    v[i] = f(i);
+  }
+  return v;
+}
+var getExn2, setExn, makeByU, makeByAndShuffleU, zipByU, forEachU, mapU, flatMapU, getByU, getIndexByU, keepU, keepWithIndexU, keepMapU, forEachWithIndexU, mapWithIndexU, partitionU, reduceU, reduceReverseU, reduceReverse2U, reduceWithIndexU, joinWithU, someU, everyU, every2U, some2U, cmpU, eqU, initU;
+var init_Belt_Array = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Belt_Array.js"() {
+    init_Primitive_int();
+    init_Primitive_option();
+    getExn2 = getOrThrow2;
+    setExn = setOrThrow;
+    makeByU = makeBy;
+    makeByAndShuffleU = makeByAndShuffle;
+    zipByU = zipBy;
+    forEachU = forEach2;
+    mapU = map2;
+    flatMapU = flatMap2;
+    getByU = getBy;
+    getIndexByU = getIndexBy;
+    keepU = keep;
+    keepWithIndexU = keepWithIndex;
+    keepMapU = keepMap;
+    forEachWithIndexU = forEachWithIndex;
+    mapWithIndexU = mapWithIndex;
+    partitionU = partition;
+    reduceU = reduce2;
+    reduceReverseU = reduceReverse;
+    reduceReverse2U = reduceReverse2;
+    reduceWithIndexU = reduceWithIndex2;
+    joinWithU = joinWith;
+    someU = some2;
+    everyU = every;
+    every2U = every2;
+    some2U = some22;
+    cmpU = cmp;
+    eqU = eq;
+    initU = init;
+  }
+});
+
 // src/CreativePowers.js
 var require_CreativePowers = __commonJS({
   "src/CreativePowers.js"(exports2) {
     "use strict";
-    var Stdlib_Option = require("@rescript/runtime/lib/js/Stdlib_Option.js");
+    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
     var ArrayExt$TerrariaPacket = require_ArrayExt();
     var BitFlags$TerrariaPacket = require_BitFlags();
     var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
@@ -3701,7 +4911,7 @@ var require_CreativePowers = __commonJS({
 var require_Packet_NetModuleLoad = __commonJS({
   "src/packet/Packet_NetModuleLoad.js"(exports2) {
     "use strict";
-    var Belt_Array = require("@rescript/runtime/lib/js/Belt_Array.js");
+    var Belt_Array = (init_Belt_Array(), __toCommonJS(Belt_Array_exports));
     var PacketType$TerrariaPacket = require_PacketType();
     var CreativePowers$TerrariaPacket = require_CreativePowers();
     var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
@@ -4946,7 +6156,7 @@ var require_Packet_PlayerBuffAdd = __commonJS({
 var require_Packet_PlayerBuffsSet = __commonJS({
   "src/packet/Packet_PlayerBuffsSet.js"(exports2) {
     "use strict";
-    var Stdlib_Array = require("@rescript/runtime/lib/js/Stdlib_Array.js");
+    var Stdlib_Array = (init_Stdlib_Array(), __toCommonJS(Stdlib_Array_exports));
     var PacketType$TerrariaPacket = require_PacketType();
     var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
     var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
@@ -5086,7 +6296,7 @@ var require_Packet_PlayerDead = __commonJS({
 var require_PlayerDeathReason = __commonJS({
   "src/PlayerDeathReason.js"(exports2) {
     "use strict";
-    var Stdlib_Option = require("@rescript/runtime/lib/js/Stdlib_Option.js");
+    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
     var BitFlags$TerrariaPacket = require_BitFlags();
     var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
     var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
@@ -5954,12 +7164,424 @@ var require_Packet_SwitchHit = __commonJS({
   }
 });
 
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Stdlib_Result.js
+var Stdlib_Result_exports = {};
+__export(Stdlib_Result_exports, {
+  all: () => all7,
+  all2: () => all22,
+  all3: () => all32,
+  all4: () => all42,
+  all5: () => all52,
+  all6: () => all62,
+  compare: () => compare3,
+  equal: () => equal3,
+  flatMap: () => flatMap3,
+  flatMapErrorAsync: () => flatMapErrorAsync,
+  flatMapOkAsync: () => flatMapOkAsync,
+  forEach: () => forEach3,
+  getExn: () => getExn3,
+  getOr: () => getOr2,
+  getOrThrow: () => getOrThrow3,
+  getWithDefault: () => getWithDefault2,
+  isError: () => isError,
+  isOk: () => isOk,
+  map: () => map3,
+  mapError: () => mapError,
+  mapErrorAsync: () => mapErrorAsync,
+  mapOkAsync: () => mapOkAsync,
+  mapOr: () => mapOr2,
+  mapWithDefault: () => mapWithDefault2
+});
+function getOrThrow3(x, message) {
+  if (x.TAG === "Ok") {
+    return x._0;
+  } else {
+    return panic(message !== void 0 ? message : "Result.getOrThrow called for Error value");
+  }
+}
+function mapOr2(opt, $$default, f) {
+  if (opt.TAG === "Ok") {
+    return f(opt._0);
+  } else {
+    return $$default;
+  }
+}
+function map3(opt, f) {
+  if (opt.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: f(opt._0)
+    };
+  } else {
+    return opt;
+  }
+}
+function flatMap3(opt, f) {
+  if (opt.TAG === "Ok") {
+    return f(opt._0);
+  } else {
+    return opt;
+  }
+}
+function getOr2(opt, $$default) {
+  if (opt.TAG === "Ok") {
+    return opt._0;
+  } else {
+    return $$default;
+  }
+}
+function isOk(x) {
+  return x.TAG === "Ok";
+}
+function isError(x) {
+  return x.TAG !== "Ok";
+}
+function equal3(a, b, eqOk, eqError) {
+  if (a.TAG === "Ok") {
+    if (b.TAG === "Ok") {
+      return eqOk(a._0, b._0);
+    } else {
+      return false;
+    }
+  } else if (b.TAG === "Ok") {
+    return false;
+  } else {
+    return eqError(a._0, b._0);
+  }
+}
+function compare3(a, b, cmpOk, cmpError) {
+  if (a.TAG === "Ok") {
+    if (b.TAG === "Ok") {
+      return cmpOk(a._0, b._0);
+    } else {
+      return 1;
+    }
+  } else if (b.TAG === "Ok") {
+    return -1;
+  } else {
+    return cmpError(a._0, b._0);
+  }
+}
+function forEach3(r, f) {
+  if (r.TAG === "Ok") {
+    return f(r._0);
+  }
+}
+function mapError(r, f) {
+  if (r.TAG === "Ok") {
+    return r;
+  } else {
+    return {
+      TAG: "Error",
+      _0: f(r._0)
+    };
+  }
+}
+function all7(results) {
+  let acc = [];
+  let returnValue;
+  let index = 0;
+  while (returnValue === void 0 && index < results.length) {
+    let err = results[index];
+    if (err.TAG === "Ok") {
+      acc.push(err._0);
+      index = index + 1 | 0;
+    } else {
+      returnValue = err;
+    }
+  }
+  ;
+  let error = returnValue;
+  if (error !== void 0) {
+    return error;
+  } else {
+    return {
+      TAG: "Ok",
+      _0: acc
+    };
+  }
+}
+function all22(param) {
+  let b = param[1];
+  let a = param[0];
+  if (a.TAG === "Ok") {
+    if (b.TAG === "Ok") {
+      return {
+        TAG: "Ok",
+        _0: [
+          a._0,
+          b._0
+        ]
+      };
+    } else {
+      return {
+        TAG: "Error",
+        _0: b._0
+      };
+    }
+  } else {
+    return {
+      TAG: "Error",
+      _0: a._0
+    };
+  }
+}
+function all32(param) {
+  let c = param[2];
+  let b = param[1];
+  let a = param[0];
+  if (a.TAG === "Ok") {
+    if (b.TAG === "Ok") {
+      if (c.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: [
+            a._0,
+            b._0,
+            c._0
+          ]
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: c._0
+        };
+      }
+    } else {
+      return {
+        TAG: "Error",
+        _0: b._0
+      };
+    }
+  } else {
+    return {
+      TAG: "Error",
+      _0: a._0
+    };
+  }
+}
+function all42(param) {
+  let d = param[3];
+  let c = param[2];
+  let b = param[1];
+  let a = param[0];
+  if (a.TAG === "Ok") {
+    if (b.TAG === "Ok") {
+      if (c.TAG === "Ok") {
+        if (d.TAG === "Ok") {
+          return {
+            TAG: "Ok",
+            _0: [
+              a._0,
+              b._0,
+              c._0,
+              d._0
+            ]
+          };
+        } else {
+          return {
+            TAG: "Error",
+            _0: d._0
+          };
+        }
+      } else {
+        return {
+          TAG: "Error",
+          _0: c._0
+        };
+      }
+    } else {
+      return {
+        TAG: "Error",
+        _0: b._0
+      };
+    }
+  } else {
+    return {
+      TAG: "Error",
+      _0: a._0
+    };
+  }
+}
+function all52(param) {
+  let e = param[4];
+  let d = param[3];
+  let c = param[2];
+  let b = param[1];
+  let a = param[0];
+  if (a.TAG === "Ok") {
+    if (b.TAG === "Ok") {
+      if (c.TAG === "Ok") {
+        if (d.TAG === "Ok") {
+          if (e.TAG === "Ok") {
+            return {
+              TAG: "Ok",
+              _0: [
+                a._0,
+                b._0,
+                c._0,
+                d._0,
+                e._0
+              ]
+            };
+          } else {
+            return {
+              TAG: "Error",
+              _0: e._0
+            };
+          }
+        } else {
+          return {
+            TAG: "Error",
+            _0: d._0
+          };
+        }
+      } else {
+        return {
+          TAG: "Error",
+          _0: c._0
+        };
+      }
+    } else {
+      return {
+        TAG: "Error",
+        _0: b._0
+      };
+    }
+  } else {
+    return {
+      TAG: "Error",
+      _0: a._0
+    };
+  }
+}
+function all62(param) {
+  let f = param[5];
+  let e = param[4];
+  let d = param[3];
+  let c = param[2];
+  let b = param[1];
+  let a = param[0];
+  if (a.TAG === "Ok") {
+    if (b.TAG === "Ok") {
+      if (c.TAG === "Ok") {
+        if (d.TAG === "Ok") {
+          if (e.TAG === "Ok") {
+            if (f.TAG === "Ok") {
+              return {
+                TAG: "Ok",
+                _0: [
+                  a._0,
+                  b._0,
+                  c._0,
+                  d._0,
+                  e._0,
+                  f._0
+                ]
+              };
+            } else {
+              return {
+                TAG: "Error",
+                _0: f._0
+              };
+            }
+          } else {
+            return {
+              TAG: "Error",
+              _0: e._0
+            };
+          }
+        } else {
+          return {
+            TAG: "Error",
+            _0: d._0
+          };
+        }
+      } else {
+        return {
+          TAG: "Error",
+          _0: c._0
+        };
+      }
+    } else {
+      return {
+        TAG: "Error",
+        _0: b._0
+      };
+    }
+  } else {
+    return {
+      TAG: "Error",
+      _0: a._0
+    };
+  }
+}
+async function mapOkAsync(res, f) {
+  let value = await res;
+  if (value.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: f(value._0)
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: value._0
+    };
+  }
+}
+async function mapErrorAsync(res, f) {
+  let value = await res;
+  if (value.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: value._0
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: f(value._0)
+    };
+  }
+}
+async function flatMapOkAsync(res, f) {
+  let value = await res;
+  if (value.TAG === "Ok") {
+    return await f(value._0);
+  } else {
+    return {
+      TAG: "Error",
+      _0: value._0
+    };
+  }
+}
+async function flatMapErrorAsync(res, f) {
+  let value = await res;
+  if (value.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: value._0
+    };
+  } else {
+    return await f(value._0);
+  }
+}
+var getExn3, mapWithDefault2, getWithDefault2;
+var init_Stdlib_Result = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Stdlib_Result.js"() {
+    init_Stdlib_JsError();
+    getExn3 = getOrThrow3;
+    mapWithDefault2 = mapOr2;
+    getWithDefault2 = getOr2;
+  }
+});
+
 // src/packet/Packet_Teleport.js
 var require_Packet_Teleport = __commonJS({
   "src/packet/Packet_Teleport.js"(exports2) {
     "use strict";
-    var Stdlib_Option = require("@rescript/runtime/lib/js/Stdlib_Option.js");
-    var Stdlib_Result = require("@rescript/runtime/lib/js/Stdlib_Result.js");
+    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
+    var Stdlib_Result = (init_Stdlib_Result(), __toCommonJS(Stdlib_Result_exports));
     var BitFlags$TerrariaPacket = require_BitFlags();
     var PacketType$TerrariaPacket = require_PacketType();
     var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
@@ -6714,12 +8336,419 @@ var require_Packet_TileSectionFrame = __commonJS({
   }
 });
 
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Primitive_bool.js
+function compare4(x, y) {
+  if (x) {
+    if (y) {
+      return 0;
+    } else {
+      return 1;
+    }
+  } else if (y) {
+    return -1;
+  } else {
+    return 0;
+  }
+}
+var init_Primitive_bool = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Primitive_bool.js"() {
+  }
+});
+
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Primitive_float.js
+function compare5(x, y) {
+  if (x === y) {
+    return 0;
+  } else if (x < y) {
+    return -1;
+  } else if (x > y || x === x) {
+    return 1;
+  } else if (y === y) {
+    return -1;
+  } else {
+    return 0;
+  }
+}
+var init_Primitive_float = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Primitive_float.js"() {
+  }
+});
+
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Primitive_string.js
+function compare6(s1, s2) {
+  if (s1 === s2) {
+    return 0;
+  } else if (s1 < s2) {
+    return -1;
+  } else {
+    return 1;
+  }
+}
+var init_Primitive_string = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Primitive_string.js"() {
+  }
+});
+
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Primitive_object.js
+var Primitive_object_exports = {};
+__export(Primitive_object_exports, {
+  compare: () => compare7,
+  equal: () => equal4,
+  greaterequal: () => greaterequal,
+  greaterthan: () => greaterthan,
+  lessequal: () => lessequal,
+  lessthan: () => lessthan,
+  max: () => max2,
+  min: () => min2,
+  notequal: () => notequal,
+  updateDummy: () => updateDummy
+});
+function updateDummy(prim0, prim1) {
+  Object.assign(prim0, prim1);
+}
+function compare7(a, b) {
+  if (a === b) {
+    return 0;
+  }
+  let a_type = typeof a;
+  let b_type = typeof b;
+  switch (a_type) {
+    case "bigint":
+      if (b_type === "bigint") {
+        return compare5(a, b);
+      }
+      break;
+    case "boolean":
+      if (b_type === "boolean") {
+        return compare4(a, b);
+      }
+      break;
+    case "function":
+      if (b_type === "function") {
+        throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "compare: functional value",
+          Error: new Error()
+        };
+      }
+      break;
+    case "number":
+      if (b_type === "number") {
+        return compare5(a, b);
+      }
+      break;
+    case "string":
+      if (b_type === "string") {
+        return compare6(a, b);
+      } else {
+        return 1;
+      }
+    case "undefined":
+      return -1;
+  }
+  switch (b_type) {
+    case "string":
+      return -1;
+    case "undefined":
+      return 1;
+    default:
+      if (a_type === "boolean") {
+        return 1;
+      }
+      if (b_type === "boolean") {
+        return -1;
+      }
+      if (a_type === "function") {
+        return 1;
+      }
+      if (b_type === "function") {
+        return -1;
+      }
+      if (a_type === "number") {
+        if (b === null || b.BS_PRIVATE_NESTED_SOME_NONE !== void 0) {
+          return 1;
+        } else {
+          return -1;
+        }
+      }
+      if (b_type === "number") {
+        if (a === null || a.BS_PRIVATE_NESTED_SOME_NONE !== void 0) {
+          return -1;
+        } else {
+          return 1;
+        }
+      }
+      if (a === null) {
+        if (b.BS_PRIVATE_NESTED_SOME_NONE !== void 0) {
+          return 1;
+        } else {
+          return -1;
+        }
+      }
+      if (b === null) {
+        if (a.BS_PRIVATE_NESTED_SOME_NONE !== void 0) {
+          return -1;
+        } else {
+          return 1;
+        }
+      }
+      if (a.BS_PRIVATE_NESTED_SOME_NONE !== void 0) {
+        if (b.BS_PRIVATE_NESTED_SOME_NONE !== void 0) {
+          return aux_obj_compare(a, b);
+        } else {
+          return -1;
+        }
+      }
+      let tag_a = a.TAG;
+      let tag_b = b.TAG;
+      if (tag_a !== tag_b) {
+        if (tag_a < tag_b) {
+          return -1;
+        } else {
+          return 1;
+        }
+      }
+      let len_a = a.length | 0;
+      let len_b = b.length | 0;
+      if (len_a === len_b) {
+        if (Array.isArray(a)) {
+          let _i = 0;
+          while (true) {
+            let i = _i;
+            if (i === len_a) {
+              return 0;
+            }
+            let res = compare7(a[i], b[i]);
+            if (res !== 0) {
+              return res;
+            }
+            _i = i + 1 | 0;
+            continue;
+          }
+          ;
+        } else if (a instanceof Date && b instanceof Date) {
+          return a - b;
+        } else {
+          return aux_obj_compare(a, b);
+        }
+      } else if (len_a < len_b) {
+        let _i$1 = 0;
+        while (true) {
+          let i$1 = _i$1;
+          if (i$1 === len_a) {
+            return -1;
+          }
+          let res$1 = compare7(a[i$1], b[i$1]);
+          if (res$1 !== 0) {
+            return res$1;
+          }
+          _i$1 = i$1 + 1 | 0;
+          continue;
+        }
+        ;
+      } else {
+        let _i$2 = 0;
+        while (true) {
+          let i$2 = _i$2;
+          if (i$2 === len_b) {
+            return 1;
+          }
+          let res$2 = compare7(a[i$2], b[i$2]);
+          if (res$2 !== 0) {
+            return res$2;
+          }
+          _i$2 = i$2 + 1 | 0;
+          continue;
+        }
+        ;
+      }
+  }
+}
+function aux_obj_compare(a, b) {
+  let min_key_lhs = {
+    contents: void 0
+  };
+  let min_key_rhs = {
+    contents: void 0
+  };
+  let do_key = (param, key) => {
+    let min_key = param[2];
+    let b2 = param[1];
+    if (!(!Object.prototype.hasOwnProperty.call(b2, key) || compare7(param[0][key], b2[key]) > 0)) {
+      return;
+    }
+    let mk = min_key.contents;
+    if (mk !== void 0 && key >= mk) {
+      return;
+    } else {
+      min_key.contents = key;
+      return;
+    }
+  };
+  let do_key_a = (key) => do_key([
+    a,
+    b,
+    min_key_rhs
+  ], key);
+  let do_key_b = (key) => do_key([
+    b,
+    a,
+    min_key_lhs
+  ], key);
+  for_in(a, do_key_a);
+  for_in(b, do_key_b);
+  let match = min_key_lhs.contents;
+  let match$1 = min_key_rhs.contents;
+  if (match !== void 0) {
+    if (match$1 !== void 0) {
+      return compare6(match, match$1);
+    } else {
+      return -1;
+    }
+  } else if (match$1 !== void 0) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+function equal4(a, b) {
+  if (a === b) {
+    return true;
+  }
+  let a_type = typeof a;
+  if (a_type === "string" || a_type === "number" || a_type === "bigint" || a_type === "boolean" || a_type === "undefined" || a === null) {
+    return false;
+  }
+  let b_type = typeof b;
+  if (a_type === "function" || b_type === "function") {
+    throw {
+      RE_EXN_ID: "Invalid_argument",
+      _1: "equal: functional value",
+      Error: new Error()
+    };
+  }
+  if (b_type === "number" || b_type === "bigint" || b_type === "undefined" || b === null) {
+    return false;
+  }
+  let tag_a = a.TAG;
+  let tag_b = b.TAG;
+  if (tag_a !== tag_b) {
+    return false;
+  }
+  let len_a = a.length | 0;
+  let len_b = b.length | 0;
+  if (len_a === len_b) {
+    if (Array.isArray(a)) {
+      let _i = 0;
+      while (true) {
+        let i = _i;
+        if (i === len_a) {
+          return true;
+        }
+        if (!equal4(a[i], b[i])) {
+          return false;
+        }
+        _i = i + 1 | 0;
+        continue;
+      }
+      ;
+    } else if (a instanceof Date && b instanceof Date) {
+      return !(a > b || a < b);
+    } else {
+      let result = {
+        contents: true
+      };
+      let do_key_a = (key) => {
+        if (!Object.prototype.hasOwnProperty.call(b, key)) {
+          result.contents = false;
+          return;
+        }
+      };
+      let do_key_b = (key) => {
+        if (!Object.prototype.hasOwnProperty.call(a, key) || !equal4(b[key], a[key])) {
+          result.contents = false;
+          return;
+        }
+      };
+      for_in(a, do_key_a);
+      if (result.contents) {
+        for_in(b, do_key_b);
+      }
+      return result.contents;
+    }
+  } else {
+    return false;
+  }
+}
+function notequal(a, b) {
+  if ((typeof a === "number" || typeof a === "bigint") && (typeof b === "number" || typeof b === "bigint")) {
+    return a !== b;
+  } else {
+    return !equal4(a, b);
+  }
+}
+function greaterequal(a, b) {
+  if ((typeof a === "number" || typeof a === "bigint") && (typeof b === "number" || typeof b === "bigint")) {
+    return a >= b;
+  } else {
+    return compare7(a, b) >= 0;
+  }
+}
+function greaterthan(a, b) {
+  if ((typeof a === "number" || typeof a === "bigint") && (typeof b === "number" || typeof b === "bigint")) {
+    return a > b;
+  } else {
+    return compare7(a, b) > 0;
+  }
+}
+function lessequal(a, b) {
+  if ((typeof a === "number" || typeof a === "bigint") && (typeof b === "number" || typeof b === "bigint")) {
+    return a <= b;
+  } else {
+    return compare7(a, b) <= 0;
+  }
+}
+function lessthan(a, b) {
+  if ((typeof a === "number" || typeof a === "bigint") && (typeof b === "number" || typeof b === "bigint")) {
+    return a < b;
+  } else {
+    return compare7(a, b) < 0;
+  }
+}
+function min2(x, y) {
+  if (compare7(x, y) <= 0) {
+    return x;
+  } else {
+    return y;
+  }
+}
+function max2(x, y) {
+  if (compare7(x, y) >= 0) {
+    return x;
+  } else {
+    return y;
+  }
+}
+var for_in;
+var init_Primitive_object = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Primitive_object.js"() {
+    init_Primitive_bool();
+    init_Primitive_float();
+    init_Primitive_string();
+    for_in = function(o, foo) {
+      for (var x in o) {
+        foo(x);
+      }
+    };
+  }
+});
+
 // src/TileSolid.js
 var require_TileSolid = __commonJS({
   "src/TileSolid.js"(exports2) {
     "use strict";
-    var Stdlib_Option = require("@rescript/runtime/lib/js/Stdlib_Option.js");
-    var map = /* @__PURE__ */ new Map([
+    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
+    var map5 = /* @__PURE__ */ new Map([
       [
         379,
         true
@@ -7490,9 +9519,9 @@ var require_TileSolid = __commonJS({
       ]
     ]);
     function isSolid(tileType) {
-      return Stdlib_Option.getOr(map.get(tileType), false);
+      return Stdlib_Option.getOr(map5.get(tileType), false);
     }
-    exports2.map = map;
+    exports2.map = map5;
     exports2.isSolid = isSolid;
   }
 });
@@ -7501,8 +9530,8 @@ var require_TileSolid = __commonJS({
 var require_TileFrameImportant = __commonJS({
   "src/TileFrameImportant.js"(exports2) {
     "use strict";
-    var Stdlib_Option = require("@rescript/runtime/lib/js/Stdlib_Option.js");
-    var map = /* @__PURE__ */ new Map([
+    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
+    var map5 = /* @__PURE__ */ new Map([
       [
         0,
         false
@@ -9997,9 +12026,9 @@ var require_TileFrameImportant = __commonJS({
       ]
     ]);
     function isImportant(tileType) {
-      return Stdlib_Option.getOr(map.get(tileType), false);
+      return Stdlib_Option.getOr(map5.get(tileType), false);
     }
-    exports2.map = map;
+    exports2.map = map5;
     exports2.isImportant = isImportant;
   }
 });
@@ -10008,7 +12037,7 @@ var require_TileFrameImportant = __commonJS({
 var require_ErrorAwareBufferReader = __commonJS({
   "src/ErrorAwareBufferReader.js"(exports2) {
     "use strict";
-    var Primitive_exceptions = require("@rescript/runtime/lib/js/Primitive_exceptions.js");
+    var Primitive_exceptions = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
     function readByteUnsafe(prim) {
       return prim.readByte();
     }
@@ -10127,7 +12156,7 @@ var require_ErrorAwareBufferReader = __commonJS({
 var require_ErrorAwareBufferWriter = __commonJS({
   "src/ErrorAwareBufferWriter.js"(exports2) {
     "use strict";
-    var Primitive_exceptions = require("@rescript/runtime/lib/js/Primitive_exceptions.js");
+    var Primitive_exceptions = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
     var Bufferwriter = require_bufferwriter().default;
     function packSingle(self, value, context) {
       if (self.TAG !== "Writing") {
@@ -10382,7 +12411,7 @@ var require_ErrorAwareBufferWriter = __commonJS({
         };
       }
     }
-    function make(buffer) {
+    function make4(buffer) {
       return {
         TAG: "Writing",
         _0: new Bufferwriter(buffer)
@@ -10399,7 +12428,7 @@ var require_ErrorAwareBufferWriter = __commonJS({
     exports2.packColor = packColor;
     exports2.packBuffer = packBuffer;
     exports2.data = data;
-    exports2.make = make;
+    exports2.make = make4;
   }
 });
 
@@ -10408,10 +12437,10 @@ var require_Packet_TileSectionSend = __commonJS({
   "src/packet/Packet_TileSectionSend.js"(exports2) {
     "use strict";
     var Nodezlib = require("node:zlib");
-    var Stdlib_Option = require("@rescript/runtime/lib/js/Stdlib_Option.js");
-    var Stdlib_Result = require("@rescript/runtime/lib/js/Stdlib_Result.js");
-    var Primitive_object = require("@rescript/runtime/lib/js/Primitive_object.js");
-    var Primitive_exceptions = require("@rescript/runtime/lib/js/Primitive_exceptions.js");
+    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
+    var Stdlib_Result = (init_Stdlib_Result(), __toCommonJS(Stdlib_Result_exports));
+    var Primitive_object = (init_Primitive_object(), __toCommonJS(Primitive_object_exports));
+    var Primitive_exceptions = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
     var BitFlags$TerrariaPacket = require_BitFlags();
     var TileSolid$TerrariaPacket = require_TileSolid();
     var PacketType$TerrariaPacket = require_PacketType();
@@ -11562,12 +13591,12 @@ var require_Packet_TileSectionSend = __commonJS({
       return writer;
     }
     function decidePackTile(writer, lastTile, tile) {
-      let last = lastTile.contents;
-      if (last !== void 0) {
-        if (Primitive_object.equal(tile, last.tile)) {
-          last.count = last.count + 1 | 0;
+      let last2 = lastTile.contents;
+      if (last2 !== void 0) {
+        if (Primitive_object.equal(tile, last2.tile)) {
+          last2.count = last2.count + 1 | 0;
         } else {
-          packTile(writer, last.tile, last.count);
+          packTile(writer, last2.tile, last2.count);
           lastTile.contents = {
             tile,
             count: 0
@@ -11634,11 +13663,130 @@ var require_Packet_TileSectionSend = __commonJS({
   }
 });
 
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Belt_Option.js
+var Belt_Option_exports = {};
+__export(Belt_Option_exports, {
+  cmp: () => cmp2,
+  cmpU: () => cmpU2,
+  eq: () => eq2,
+  eqU: () => eqU2,
+  flatMap: () => flatMap4,
+  flatMapU: () => flatMapU2,
+  forEach: () => forEach4,
+  forEachU: () => forEachU2,
+  getExn: () => getExn4,
+  getOrThrow: () => getOrThrow4,
+  getWithDefault: () => getWithDefault3,
+  isNone: () => isNone2,
+  isSome: () => isSome2,
+  keep: () => keep2,
+  keepU: () => keepU2,
+  map: () => map4,
+  mapU: () => mapU2,
+  mapWithDefault: () => mapWithDefault3,
+  mapWithDefaultU: () => mapWithDefaultU,
+  orElse: () => orElse2
+});
+function keep2(opt, p) {
+  if (opt !== void 0 && p(valFromOption(opt))) {
+    return opt;
+  }
+}
+function forEach4(opt, f) {
+  if (opt !== void 0) {
+    return f(valFromOption(opt));
+  }
+}
+function getOrThrow4(x) {
+  if (x !== void 0) {
+    return valFromOption(x);
+  }
+  throw {
+    RE_EXN_ID: "Not_found",
+    Error: new Error()
+  };
+}
+function mapWithDefault3(opt, $$default, f) {
+  if (opt !== void 0) {
+    return f(valFromOption(opt));
+  } else {
+    return $$default;
+  }
+}
+function map4(opt, f) {
+  if (opt !== void 0) {
+    return some(f(valFromOption(opt)));
+  }
+}
+function flatMap4(opt, f) {
+  if (opt !== void 0) {
+    return f(valFromOption(opt));
+  }
+}
+function getWithDefault3(opt, $$default) {
+  if (opt !== void 0) {
+    return valFromOption(opt);
+  } else {
+    return $$default;
+  }
+}
+function orElse2(opt, other) {
+  if (opt !== void 0) {
+    return opt;
+  } else {
+    return other;
+  }
+}
+function isSome2(x) {
+  return x !== void 0;
+}
+function isNone2(x) {
+  return x === void 0;
+}
+function eq2(a, b, f) {
+  if (a !== void 0) {
+    if (b !== void 0) {
+      return f(valFromOption(a), valFromOption(b));
+    } else {
+      return false;
+    }
+  } else {
+    return b === void 0;
+  }
+}
+function cmp2(a, b, f) {
+  if (a !== void 0) {
+    if (b !== void 0) {
+      return f(valFromOption(a), valFromOption(b));
+    } else {
+      return 1;
+    }
+  } else if (b !== void 0) {
+    return -1;
+  } else {
+    return 0;
+  }
+}
+var keepU2, forEachU2, getExn4, mapWithDefaultU, mapU2, flatMapU2, eqU2, cmpU2;
+var init_Belt_Option = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Belt_Option.js"() {
+    init_Primitive_option();
+    keepU2 = keep2;
+    forEachU2 = forEach4;
+    getExn4 = getOrThrow4;
+    mapWithDefaultU = mapWithDefault3;
+    mapU2 = map4;
+    flatMapU2 = flatMap4;
+    eqU2 = eq2;
+    cmpU2 = cmp2;
+  }
+});
+
 // src/packet/Packet_TileSquareSend.js
 var require_Packet_TileSquareSend = __commonJS({
   "src/packet/Packet_TileSquareSend.js"(exports2) {
     "use strict";
-    var Belt_Option = require("@rescript/runtime/lib/js/Belt_Option.js");
+    var Belt_Option = (init_Belt_Option(), __toCommonJS(Belt_Option_exports));
     var BitFlags$TerrariaPacket = require_BitFlags();
     var PacketType$TerrariaPacket = require_PacketType();
     var TileFrameImportant$TerrariaPacket = require_TileFrameImportant();
@@ -13020,8 +15168,8 @@ var require_Packet_ClientUuid = __commonJS({
 var require_Packet_ProjectileSync = __commonJS({
   "src/packet/Packet_ProjectileSync.js"(exports2) {
     "use strict";
-    var Stdlib_Option = require("@rescript/runtime/lib/js/Stdlib_Option.js");
-    var Primitive_option = require("@rescript/runtime/lib/js/Primitive_option.js");
+    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
+    var Primitive_option = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     var BitFlags$TerrariaPacket = require_BitFlags();
     var PacketType$TerrariaPacket = require_PacketType();
     var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
@@ -13355,7 +15503,7 @@ var require_Packet_PlayerDamage = __commonJS({
 var require_Packet_WorldInfo = __commonJS({
   "src/packet/Packet_WorldInfo.js"(exports2) {
     "use strict";
-    var Primitive_option = require("@rescript/runtime/lib/js/Primitive_option.js");
+    var Primitive_option = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
     var Array16$TerrariaPacket = require_Array16();
     var BitFlags$TerrariaPacket = require_BitFlags();
     var PacketType$TerrariaPacket = require_PacketType();
@@ -14022,8 +16170,8 @@ var require_Packet_PlayerActive = __commonJS({
 var require_Packet_NpcUpdate = __commonJS({
   "src/packet/Packet_NpcUpdate.js"(exports2) {
     "use strict";
-    var Stdlib_Option = require("@rescript/runtime/lib/js/Stdlib_Option.js");
-    var Stdlib_Result = require("@rescript/runtime/lib/js/Stdlib_Result.js");
+    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
+    var Stdlib_Result = (init_Stdlib_Result(), __toCommonJS(Stdlib_Result_exports));
     var BitFlags$TerrariaPacket = require_BitFlags();
     var PacketType$TerrariaPacket = require_PacketType();
     var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
@@ -14373,6 +16521,82 @@ var require_Packet_Disconnect = __commonJS({
     }
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
+  }
+});
+
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Stdlib_Lazy.js
+var Stdlib_Lazy_exports = {};
+__export(Stdlib_Lazy_exports, {
+  Undefined: () => Undefined,
+  force: () => force,
+  force_val: () => force_val,
+  from_fun: () => from_fun,
+  from_val: () => from_val,
+  get: () => get2,
+  isEvaluated: () => isEvaluated,
+  is_val: () => is_val,
+  make: () => make3
+});
+function is_val(l) {
+  return l.LAZY_DONE;
+}
+function forward_with_closure(blk, closure) {
+  let result = closure();
+  blk.VAL = result;
+  blk.LAZY_DONE = true;
+  return result;
+}
+function raise_undefined() {
+  throw {
+    RE_EXN_ID: Undefined,
+    Error: new Error()
+  };
+}
+function force(lzv) {
+  if (lzv.LAZY_DONE) {
+    return lzv.VAL;
+  } else {
+    let closure = lzv.VAL;
+    lzv.VAL = raise_undefined;
+    try {
+      return forward_with_closure(lzv, closure);
+    } catch (e) {
+      lzv.VAL = () => {
+        throw e;
+      };
+      throw e;
+    }
+  }
+}
+function force_val(lzv) {
+  if (lzv.LAZY_DONE) {
+    return lzv.VAL;
+  } else {
+    let closure = lzv.VAL;
+    lzv.VAL = raise_undefined;
+    return forward_with_closure(lzv, closure);
+  }
+}
+function from_fun(closure) {
+  return {
+    LAZY_DONE: false,
+    VAL: closure
+  };
+}
+function from_val(value) {
+  return {
+    LAZY_DONE: true,
+    VAL: value
+  };
+}
+var Undefined, make3, get2, isEvaluated;
+var init_Stdlib_Lazy = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/es6/Stdlib_Lazy.js"() {
+    init_Primitive_exceptions();
+    Undefined = /* @__PURE__ */ create("Stdlib_Lazy.Undefined");
+    make3 = from_fun;
+    get2 = force;
+    isEvaluated = is_val;
   }
 });
 
@@ -15000,7 +17224,7 @@ var require_Packet_PortalKill = __commonJS({
 var require_Packet_EmoteBubble = __commonJS({
   "src/packet/Packet_EmoteBubble.js"(exports2) {
     "use strict";
-    var Stdlib_Result = require("@rescript/runtime/lib/js/Stdlib_Result.js");
+    var Stdlib_Result = (init_Stdlib_Result(), __toCommonJS(Stdlib_Result_exports));
     var PacketType$TerrariaPacket = require_PacketType();
     var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
     var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
@@ -15312,8 +17536,8 @@ var require_Packet_GoodEvilUpdate = __commonJS({
 var require_Packet_ItemDropModify = __commonJS({
   "src/packet/Packet_ItemDropModify.js"(exports2) {
     "use strict";
-    var Stdlib_Option = require("@rescript/runtime/lib/js/Stdlib_Option.js");
-    var Stdlib_Result = require("@rescript/runtime/lib/js/Stdlib_Result.js");
+    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
+    var Stdlib_Result = (init_Stdlib_Result(), __toCommonJS(Stdlib_Result_exports));
     var BitFlags$TerrariaPacket = require_BitFlags();
     var PacketType$TerrariaPacket = require_PacketType();
     var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
@@ -15726,8 +17950,8 @@ var require_Packet_ItemOwnerRemove = __commonJS({
 var require_Packet_LegacySoundPlay = __commonJS({
   "src/packet/Packet_LegacySoundPlay.js"(exports2) {
     "use strict";
-    var Stdlib_Option = require("@rescript/runtime/lib/js/Stdlib_Option.js");
-    var Stdlib_Result = require("@rescript/runtime/lib/js/Stdlib_Result.js");
+    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
+    var Stdlib_Result = (init_Stdlib_Result(), __toCommonJS(Stdlib_Result_exports));
     var BitFlags$TerrariaPacket = require_BitFlags();
     var PacketType$TerrariaPacket = require_PacketType();
     var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
@@ -16593,7 +18817,7 @@ var require_Packet_PlayerTeleportPortal = __commonJS({
 var require_Packet_CavernMonsterTypeSync = __commonJS({
   "src/packet/Packet_CavernMonsterTypeSync.js"(exports2) {
     "use strict";
-    var Stdlib_Array = require("@rescript/runtime/lib/js/Stdlib_Array.js");
+    var Stdlib_Array = (init_Stdlib_Array(), __toCommonJS(Stdlib_Array_exports));
     var PacketType$TerrariaPacket = require_PacketType();
     var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
     var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
@@ -17259,9 +19483,9 @@ var require_Packet_DungeonDefendersEventAttemptSkipWait = __commonJS({
 var require_Parser = __commonJS({
   "src/Parser.js"(exports2) {
     "use strict";
-    var Stdlib_Lazy = require("@rescript/runtime/lib/js/Stdlib_Lazy.js");
-    var Stdlib_Result = require("@rescript/runtime/lib/js/Stdlib_Result.js");
-    var Primitive_exceptions = require("@rescript/runtime/lib/js/Primitive_exceptions.js");
+    var Stdlib_Lazy = (init_Stdlib_Lazy(), __toCommonJS(Stdlib_Lazy_exports));
+    var Stdlib_Result = (init_Stdlib_Result(), __toCommonJS(Stdlib_Result_exports));
+    var Primitive_exceptions = (init_Primitive_exceptions(), __toCommonJS(Primitive_exceptions_exports));
     var PacketType$TerrariaPacket = require_PacketType();
     var Packet_Emoji$TerrariaPacket = require_Packet_Emoji();
     var Packet_Zones$TerrariaPacket = require_Packet_Zones();
