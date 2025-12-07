@@ -269,10 +269,6 @@ export declare namespace ChestOrTempleUnlockPacket {
     export {
         unlockType,
         t_6 as t,
-        unlockTypeToInt,
-        unlockTypeFromInt,
-        Decode,
-        Encode,
         parseOk_6 as parseOk,
         parseError_6 as parseError,
         parse_6 as parse,
@@ -490,19 +486,7 @@ declare type DataOk = { TAG: "Ok"; _0: Buffer };
  */
 declare type DataResult = DataOk | DataError;
 
-declare const Decode: {
-    readByte: readByte;
-    readInt16: readInt16;
-    parse: (_1: Buffer) => parse_6
-};
-
-declare const Decode_2: {
-    readByte: readByte;
-    readInt16: readInt16;
-    parse: (_1: Buffer) => parse_52
-};
-
-declare const Decode_3: { parse: (_1: Buffer) => parse_64 };
+declare const Decode: { parse: (_1: Buffer) => parse_64 };
 
 declare type difficulty = "Softcore" | "Mediumcore" | "Hardcore";
 
@@ -553,23 +537,7 @@ declare type dodge = "Ninja" | "Shadow" | "BrainOfConfusion";
 
 declare type dodge_2 = "Ninja" | "Shadow" | "BrainOfConfusion";
 
-declare const Encode: {
-    packByte: packByte;
-    packInt16: packInt16;
-    setType: setType;
-    data: data;
-    toBuffer: (_1: t_6) => toBuffer_6
-};
-
-declare const Encode_2: {
-    packByte: packByte;
-    packInt16: packInt16;
-    setType: setType;
-    data: data;
-    toBuffer: (_1: t_54) => toBuffer_52
-};
-
-declare const Encode_3: { toBuffer: (_1: t_66) => toBuffer_64 };
+declare const Encode: { toBuffer: (_1: t_66) => toBuffer_64 };
 
 declare const Entity: {};
 
@@ -650,8 +618,6 @@ declare type Entity_trainingDummy_2 = { readonly npcSlotId: number };
 declare type Entity_weaponsRack = Entity_displayItem;
 
 declare type Entity_weaponsRack_2 = Entity_displayItem_2;
-
-declare class ErrorAwarePacketReader { }
 
 export declare namespace ErrorAwarePacketWriter {
     export {
@@ -2549,13 +2515,7 @@ export declare namespace PvpTogglePacket {
 
 declare type pylonAction = "Added" | "Removed" | "RequestTeleport";
 
-declare function readByte(reader: ErrorAwarePacketReader, context: string): ReadResult<number>;
-
 declare type readError = { readonly context: string; readonly error: unknown };
-
-declare function readInt16(reader: ErrorAwarePacketReader, context: string): ReadResult<number>;
-
-declare type ReadResult<T> = { TAG: "Ok"; _0: T } | { TAG: "Error"; _0: readError };
 
 export declare namespace Result {
     export {
@@ -4181,9 +4141,6 @@ export declare namespace TeleportationPotionPacket {
     export {
         teleportType_2 as teleportType,
         t_54 as t,
-        teleportTypeToInt,
-        Decode_2 as Decode,
-        Encode_2 as Encode,
         parseOk_52 as parseOk,
         parseError_52 as parseError,
         parse_52 as parse,
@@ -4228,8 +4185,6 @@ declare type teleportType_4 =
 | "MagicConch"
 | "DemonConch"
 | "ShellphoneSpawn";
-
-declare const teleportTypeToInt: (_1: teleportType_2) => number;
 
 export declare namespace TemporaryAnimationCreatePacket {
     export {
@@ -4483,8 +4438,8 @@ export declare namespace TileSquareSendPacket {
         liquid_3 as liquid,
         tile_2 as tile,
         t_66 as t,
-        Decode_3 as Decode,
-        Encode_3 as Encode,
+        Decode,
+        Encode,
         parseOk_64 as parseOk,
         parseError_64 as parseError,
         parse_64 as parse,
@@ -5221,10 +5176,6 @@ declare type unlockReport = { readonly itemId: number; readonly researchedCount:
 declare type unlockType = "Chest" | "TempleDoor" | "ChestLock";
 
 declare type unlockType_2 = "Chest" | "TempleDoor" | "ChestLock";
-
-declare const unlockTypeFromInt: (_1: number) => unlockType | undefined;
-
-declare const unlockTypeToInt: (_1: unlockType) => number;
 
 /**
  * An opaque type representing an uninitialized packet writer.

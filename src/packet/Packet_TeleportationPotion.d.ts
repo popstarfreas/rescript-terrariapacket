@@ -13,22 +13,6 @@ export type teleportType =
 
 export type t = { readonly teleportType: teleportType };
 
-export declare const teleportTypeToInt: (_1: teleportType) => number;
-
-export declare const Decode: {
-  readByte: typeof import("../ErrorAwarePacketReader").readByte;
-  readInt16: typeof import("../ErrorAwarePacketReader").readInt16;
-  parse: (_1: Buffer) => parse
-};
-
-export declare const Encode: {
-  packByte: typeof import("../ErrorAwarePacketWriter").packByte;
-  packInt16: typeof import("../ErrorAwarePacketWriter").packInt16;
-  setType: typeof import("../ErrorAwarePacketWriter").setType;
-  data: typeof import("../ErrorAwarePacketWriter").data;
-  toBuffer: (_1: t) => toBuffer
-};
-
 export type parseOk = { TAG: "Ok"; _0: t };
 export type parseError = { TAG: "Error"; _0: readError };
 export type parse = parseOk | parseError;
