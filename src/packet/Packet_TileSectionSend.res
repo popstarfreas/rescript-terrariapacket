@@ -545,7 +545,6 @@ module Decode = {
     tile.inActive = false
   }
 
-  module PacketReader = ErrorAwarePacketReader
   let {readBuffer, getBytesLeft} = module(ErrorAwarePacketReader)
   let {readInt16, readInt32, readByte} = module(ErrorAwareBufferReader)
   let readRepeated = (

@@ -24,7 +24,7 @@ type t = {
 }
 
 module Decode = {
-  let {readInt16, readByte, readUInt32, readUInt16, readSingle} = module(ErrorAwarePacketReader)
+  let {readInt16, readByte, readUInt16, readSingle} = module(ErrorAwarePacketReader)
   let parseFlags2 = (reader, flags2) => {
     let width = if flags2->BitFlags.flag1 {
       reader->readInt16("width")->Result.map(v => Some(v))
@@ -157,7 +157,7 @@ module Decode = {
 }
 
 module Encode = {
-  let {packInt16, packByte, packUInt32, packUInt16, packSingle, setType, data} = module(
+  let {packInt16, packByte, packUInt16, packSingle, setType, data} = module(
     ErrorAwarePacketWriter
   )
 

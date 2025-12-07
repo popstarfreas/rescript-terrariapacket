@@ -13,7 +13,6 @@ module Decode = {
 
 module Encode = {
   let {packInt32, setType, data} = module(ErrorAwarePacketWriter)
-  type writer = ErrorAwarePacketWriter.t
 
   let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
     ErrorAwarePacketWriter.make()

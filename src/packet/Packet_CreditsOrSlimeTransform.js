@@ -30,11 +30,6 @@ function toInt(eventType) {
   }
 }
 
-let EventType = {
-  fromInt: fromInt,
-  toInt: toInt
-};
-
 function parse(payload) {
   let reader = new Packetreader(payload);
   let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventType");
@@ -65,31 +60,13 @@ function parse(payload) {
   }
 }
 
-let Decode = {
-  readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-  readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-  parse: parse
-};
-
 function toBuffer(self) {
   return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("CreditsOrSlimeTransform")), toInt(self.eventType), "eventType"), self.value, "value"));
 }
 
-let Encode = {
-  Writer: undefined,
-  packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-  packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-  data: ErrorAwarePacketWriter$TerrariaPacket.data,
-  toBuffer: toBuffer
-};
+let EventType = {};
 
-let Option;
-
-exports.Option = Option;
 exports.EventType = EventType;
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

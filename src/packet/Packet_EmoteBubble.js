@@ -65,15 +65,6 @@ function parse(payload) {
   }
 }
 
-let Decode = {
-  readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-  readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-  readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-  readSByte: ErrorAwarePacketReader$TerrariaPacket.readSByte,
-  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-  parse: parse
-};
-
 function toBuffer(self) {
   let writer = ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("EmoteBubble")), self.id, "id");
   let details = self.anchor;
@@ -91,19 +82,6 @@ function toBuffer(self) {
   return ErrorAwarePacketWriter$TerrariaPacket.data(tmp);
 }
 
-let Encode = {
-  packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-  packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-  packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-  packSByte: ErrorAwarePacketWriter$TerrariaPacket.packSByte,
-  packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-  data: ErrorAwarePacketWriter$TerrariaPacket.data,
-  toBuffer: toBuffer
-};
-
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

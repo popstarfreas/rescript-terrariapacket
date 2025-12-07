@@ -26,24 +26,10 @@ function parse(payload) {
   }
 }
 
-let Decode = {
-  readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-  parse: parse
-};
-
 function toBuffer(self) {
   return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("MoonLordCountdown")), self.maxMoonLordCountdown, "maxMoonLordCountdown"), self.moonLordCountdown, "moonLordCountdown"));
 }
 
-let Encode = {
-  packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-  data: ErrorAwarePacketWriter$TerrariaPacket.data,
-  toBuffer: toBuffer
-};
-
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

@@ -36,24 +36,10 @@ function parse(payload) {
   }
 }
 
-let Decode = {
-  readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-  parse: parse
-};
-
 function toBuffer(self) {
   return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ShieldStrengthsUpdate")), self.solar, "solar"), self.vortex, "vortex"), self.nebula, "nebula"), self.stardust, "stardust"));
 }
 
-let Encode = {
-  packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-  data: ErrorAwarePacketWriter$TerrariaPacket.data,
-  toBuffer: toBuffer
-};
-
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

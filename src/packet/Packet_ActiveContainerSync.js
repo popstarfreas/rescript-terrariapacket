@@ -45,29 +45,11 @@ function parse(payload) {
   }
 }
 
-let Decode = {
-  readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-  readString: ErrorAwarePacketReader$TerrariaPacket.readString,
-  parse: parse
-};
-
 function toBuffer(self) {
   let writer = ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ActiveContainerSync")), self.chestId, "chestId"), self.x, "x"), self.y, "y"), self.nameLength, "nameLength");
   return ErrorAwarePacketWriter$TerrariaPacket.data(self.nameLength > 0 && self.nameLength <= 20 ? ErrorAwarePacketWriter$TerrariaPacket.packString(writer, self.name, "name") : writer);
 }
 
-let Encode = {
-  packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-  packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-  packString: ErrorAwarePacketWriter$TerrariaPacket.packString,
-  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-  data: ErrorAwarePacketWriter$TerrariaPacket.data,
-  toBuffer: toBuffer
-};
-
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

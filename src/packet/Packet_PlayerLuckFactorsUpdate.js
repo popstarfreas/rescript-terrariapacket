@@ -52,29 +52,10 @@ function parse(payload) {
   }
 }
 
-let Decode = {
-  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-  readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-  readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-  readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-  parse: parse
-};
-
 function toBuffer(self) {
   return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerLuckFactorsUpdate")), self.playerId, "playerId"), self.ladyBugLuckTimeLeft, "ladyBugLuckTimeLeft"), self.torchLuck, "torchLuck"), self.luckPotion, "luckPotion"), self.hasGardenGnomeNearby ? 1 : 0, "hasGardenGnomeNearby"), self.equipmentBasedLuckBonus, "equipmentBasedLuckBonus"), self.coinLuck, "coinLuck"));
 }
 
-let Encode = {
-  packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-  packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-  packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-  data: ErrorAwarePacketWriter$TerrariaPacket.data,
-  toBuffer: toBuffer
-};
-
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

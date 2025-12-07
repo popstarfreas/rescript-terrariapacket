@@ -72,14 +72,6 @@ function parse(payload) {
   }
 }
 
-let Decode = {
-  readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-  readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-  readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-  parse: parse
-};
-
 function getFlags(self) {
   return BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(self.teleportType === "Npc", self.teleportType === "PlayerToPlayer", self.getPositionFromTarget, Belt_Option.isSome(self.extraInfo), false, false, false, false));
 }
@@ -90,19 +82,6 @@ function toBuffer(self) {
   return ErrorAwarePacketWriter$TerrariaPacket.data(extraInfo !== undefined ? ErrorAwarePacketWriter$TerrariaPacket.packInt32(writer, extraInfo, "extraInfo") : writer);
 }
 
-let Encode = {
-  packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-  packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-  packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-  packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-  data: ErrorAwarePacketWriter$TerrariaPacket.data,
-  getFlags: getFlags,
-  toBuffer: toBuffer
-};
-
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

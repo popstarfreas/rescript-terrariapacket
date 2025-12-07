@@ -41,7 +41,7 @@ export type t = {
   readonly tiles: Array<tile[]>
 };
 
-export type parseOk = { TAG: "Ok"; _0: (undefined | t) };
+export type parseOk = { TAG: "Ok"; _0: t };
 export type parseError = { TAG: "Error"; _0: readError };
 export type parse = parseOk | parseError;
 export declare const parse: (_1: Buffer) => parse;

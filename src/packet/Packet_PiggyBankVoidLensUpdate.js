@@ -43,13 +43,6 @@ function pack(writer, self) {
   }
 }
 
-let TrackedProjectileReference = {
-  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-  tryReading: tryReading,
-  packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-  pack: pack
-};
-
 function parse(payload) {
   let reader = new Packetreader(payload);
   let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
@@ -75,26 +68,13 @@ function parse(payload) {
   }
 }
 
-let Decode = {
-  readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-  parse: parse
-};
-
 function toBuffer(self) {
   return ErrorAwarePacketWriter$TerrariaPacket.data(pack(pack(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PiggyBankVoidLensUpdate")), self.playerId, "playerId"), self.piggyBankProj), self.voidLensChest));
 }
 
-let Encode = {
-  Writer: undefined,
-  packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-  data: ErrorAwarePacketWriter$TerrariaPacket.data,
-  toBuffer: toBuffer
-};
+let TrackedProjectileReference = {};
 
 exports.TrackedProjectileReference = TrackedProjectileReference;
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

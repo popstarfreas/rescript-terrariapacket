@@ -65,14 +65,6 @@ function parse(payload) {
   }
 }
 
-let Decode = {
-  readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-  readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-  readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-  readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-  parse: parse
-};
-
 function toBuffer(self) {
   let flags = BitFlags$TerrariaPacket.fromFlags(Stdlib_Option.isSome(self.styleOverride), Stdlib_Option.isSome(self.volumeOverride), Stdlib_Option.isSome(self.pitchOverride), false, false, false, false, false);
   let writer = ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("LegacySoundPlay")), self.position.x, "x"), self.position.y, "y"), self.soundIndex, "soundIndex"), BitFlags$TerrariaPacket.toByte(flags), "flags");
@@ -91,18 +83,6 @@ function toBuffer(self) {
   return ErrorAwarePacketWriter$TerrariaPacket.data(writer);
 }
 
-let Encode = {
-  packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-  packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-  packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-  packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-  data: ErrorAwarePacketWriter$TerrariaPacket.data,
-  toBuffer: toBuffer
-};
-
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

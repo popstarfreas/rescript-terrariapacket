@@ -47,29 +47,11 @@ function parse(payload) {
   }
 }
 
-let Decode = {
-  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-  readString: ErrorAwarePacketReader$TerrariaPacket.readString,
-  readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-  parse: parse
-};
-
 function toBuffer(self) {
   let flags = BitFlags$TerrariaPacket.fromFlags(self.deleteSign, false, false, false, false, false, false, false);
   return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("SignNew")), self.signId, "signId"), self.x, "x"), self.y, "y"), self.text, "text"), self.playerId, "playerId"), BitFlags$TerrariaPacket.toByte(flags), "flags"));
 }
 
-let Encode = {
-  packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-  packString: ErrorAwarePacketWriter$TerrariaPacket.packString,
-  packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-  data: ErrorAwarePacketWriter$TerrariaPacket.data,
-  toBuffer: toBuffer
-};
-
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

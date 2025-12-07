@@ -50,28 +50,10 @@ function parse(payload) {
   }
 }
 
-let Decode = {
-  readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-  readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-  parse: parse
-};
-
 function toBuffer(self) {
   return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcTeleportPortal")), self.npcId, "npcId"), self.portalColor, "portalColor"), self.position.x, "posX"), self.position.y, "posY"), self.velocity.x, "velX"), self.velocity.y, "velY"));
 }
 
-let Encode = {
-  packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-  packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-  packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-  data: ErrorAwarePacketWriter$TerrariaPacket.data,
-  toBuffer: toBuffer
-};
-
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

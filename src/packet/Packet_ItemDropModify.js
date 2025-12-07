@@ -197,16 +197,6 @@ function parse(payload) {
   };
 }
 
-let Decode = {
-  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-  readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-  readUInt32: ErrorAwarePacketReader$TerrariaPacket.readUInt32,
-  readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-  readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-  parseFlags2: parseFlags2,
-  parse: parse
-};
-
 function flags1(self) {
   return BitFlags$TerrariaPacket.fromFlags(Stdlib_Option.isSome(self.color), Stdlib_Option.isSome(self.damage), Stdlib_Option.isSome(self.knockback), Stdlib_Option.isSome(self.useAnimation), Stdlib_Option.isSome(self.useTime), Stdlib_Option.isSome(self.shoot), Stdlib_Option.isSome(self.shootSpeed), Stdlib_Option.isSome(self.width) || Stdlib_Option.isSome(self.height) || Stdlib_Option.isSome(self.scale) || Stdlib_Option.isSome(self.ammo) || Stdlib_Option.isSome(self.useAmmo) || Stdlib_Option.isSome(self.notAmmo));
 }
@@ -278,21 +268,6 @@ function toBuffer(self) {
   return ErrorAwarePacketWriter$TerrariaPacket.data(writer);
 }
 
-let Encode = {
-  packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-  packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-  packUInt32: ErrorAwarePacketWriter$TerrariaPacket.packUInt32,
-  packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-  packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-  data: ErrorAwarePacketWriter$TerrariaPacket.data,
-  flags1: flags1,
-  flags2: flags2,
-  toBuffer: toBuffer
-};
-
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

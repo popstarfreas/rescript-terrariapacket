@@ -5,7 +5,7 @@ type t = {
 }
 
 module Decode = {
-  let {readByte, readInt16} = module(ErrorAwarePacketReader)
+  let {readInt16} = module(ErrorAwarePacketReader)
   let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
     let? Ok(x) = reader->readInt16("x")

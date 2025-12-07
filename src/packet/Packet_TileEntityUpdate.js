@@ -47,14 +47,6 @@ function parse(payload) {
   }
 }
 
-let Decode = {
-  readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-  readBool: ErrorAwarePacketReader$TerrariaPacket.readBool,
-  getBytesLeft: ErrorAwarePacketReader$TerrariaPacket.getBytesLeft,
-  readBuffer: ErrorAwarePacketReader$TerrariaPacket.readBuffer,
-  parse: parse
-};
-
 function toBuffer(self) {
   let writer = ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TileEntityUpdate")), self.tileEntityId, "tileEntityId");
   let tileEntityData = self.payload;
@@ -65,17 +57,6 @@ function toBuffer(self) {
   }
 }
 
-let Encode = {
-  packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-  packBool: ErrorAwarePacketWriter$TerrariaPacket.packBool,
-  packBuffer: ErrorAwarePacketWriter$TerrariaPacket.packBuffer,
-  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-  data: ErrorAwarePacketWriter$TerrariaPacket.data,
-  toBuffer: toBuffer
-};
-
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

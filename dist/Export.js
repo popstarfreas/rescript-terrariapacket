@@ -2082,23 +2082,9 @@ var require_Packet_AnglerQuest = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readBool: ErrorAwarePacketReader$TerrariaPacket.readBool,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packBool(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("AnglerQuest")), self.anglerQuest, "anglerQuest"), self.anglerQuestFinished, "anglerQuestFinished"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packBool: ErrorAwarePacketWriter$TerrariaPacket.packBool,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -2116,19 +2102,9 @@ var require_Packet_AnglerQuestComplete = __commonJS({
         _0: void 0
       };
     }
-    var Decode = {
-      parse
-    };
     function toBuffer(_self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("AnglerQuestComplete")));
     }
-    var Encode = {
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -2227,10 +2203,6 @@ var require_Packet_BossOrInvasionSpawn = __commonJS({
         }
       };
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function packSpawnType(writer, spawnType) {
       if (typeof spawnType === "object") {
         if (spawnType.TAG === "Invasion") {
@@ -2279,16 +2251,6 @@ var require_Packet_BossOrInvasionSpawn = __commonJS({
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(packSpawnType(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("BossOrInvasionSpawn")), self.playerId, "playerId"), self.spawnType));
     }
-    var Encode = {
-      Writer: void 0,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      packSpawnType,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -2326,26 +2288,9 @@ var require_Packet_ChatMessageSmart = __commonJS({
         return e$2;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-      readColor: ErrorAwarePacketReader$TerrariaPacket.readColor,
-      readNetworkText: ErrorAwarePacketReader$TerrariaPacket.readNetworkText,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packNetworkText(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ChatMessageSmart")), self.color, "color"), self.message, "message"), self.widthLimit, "widthLimit"));
     }
-    var Encode = {
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      packColor: ErrorAwarePacketWriter$TerrariaPacket.packColor,
-      packNetworkText: ErrorAwarePacketWriter$TerrariaPacket.packNetworkText,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -2393,23 +2338,9 @@ var require_Packet_ChestItem = __commonJS({
         return e$4;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ChestItem")), self.chestId, "chestId"), self.slot, "slot"), self.stack, "stack"), self.prefix, "prefix"), self.itemNetId, "itemNetId"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -2667,19 +2598,9 @@ var require_Packet_ClientFinishConnectingToServer = __commonJS({
         _0: void 0
       };
     }
-    var Decode = {
-      parse
-    };
     function toBuffer(_self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ClientFinishConnectingToServer")));
     }
-    var Encode = {
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -2743,23 +2664,9 @@ var require_Packet_CountsAsHostForGameplaySet = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readBool: ErrorAwarePacketReader$TerrariaPacket.readBool,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packBool(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("CountsAsHostForGameplaySet")), self.playerId, "playerId"), self.countsAsHost, "countsAsHost"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packBool: ErrorAwarePacketWriter$TerrariaPacket.packBool,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -2795,10 +2702,6 @@ var require_Packet_CreditsOrSlimeTransform = __commonJS({
           return 2;
       }
     }
-    var EventType = {
-      fromInt,
-      toInt
-    };
     function parse(payload) {
       let reader = new Packetreader(payload);
       let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventType");
@@ -2828,27 +2731,11 @@ var require_Packet_CreditsOrSlimeTransform = __commonJS({
         };
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("CreditsOrSlimeTransform")), toInt(self.eventType), "eventType"), self.value, "value"));
     }
-    var Encode = {
-      Writer: void 0,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    var Option;
-    exports2.Option = Option;
+    var EventType = {};
     exports2.EventType = EventType;
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -2881,23 +2768,9 @@ var require_Packet_CrystalInvasionStart = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("CrystalInvasionStart")), self.x, "x"), self.y, "y"));
     }
-    var Encode = {
-      Writer: void 0,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -3072,25 +2945,9 @@ var require_Packet_ExtraValueSync = __commonJS({
         return e$3;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ExtraValueSync")), self.npcSlotId, "npcSlotId"), self.extraValue, "extraValue"), self.x, "x"), self.y, "y"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -3108,20 +2965,9 @@ var require_Packet_HaveDryadDoStardewAnimation = __commonJS({
         _0: void 0
       };
     }
-    var Decode = {
-      parse
-    };
     function toBuffer(_self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("HaveDryadDoStardewAnimation")));
     }
-    var Encode = {
-      Writer: void 0,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -3164,23 +3010,9 @@ var require_Packet_InvasionProgressReport = __commonJS({
         return e$3;
       }
     }
-    var Decode = {
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      readSByte: ErrorAwarePacketReader$TerrariaPacket.readSByte,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSByte(ErrorAwarePacketWriter$TerrariaPacket.packSByte(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("InvasionProgressReport")), self.progress, "progress"), self.progressMax, "progressMax"), self.icon, "icon"), self.wave, "wave"));
     }
-    var Encode = {
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      packSByte: ErrorAwarePacketWriter$TerrariaPacket.packSByte,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -3258,27 +3090,9 @@ var require_Packet_ItemDropShimmeredUpdate = __commonJS({
         return e$10;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ItemDropShimmeredUpdate")), self.itemDropId, "itemDropId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.stack, "stack"), self.prefix, "prefix"), self.noDelay, "noDelay"), self.itemId, "itemId"), self.shimmered ? 1 : 0, "shimmered"), self.shimmeredTime, "shimmeredTime"));
     }
-    var Encode = {
-      Writer: void 0,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -4122,26 +3936,11 @@ var require_Packet_LoadoutSwitch = __commonJS({
         }
       };
     }
-    var Decode = {
-      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function toBuffer(self) {
       let match = Array16$TerrariaPacket.toBitFlagsPair(self.hideVisibleAccessory);
       let hideVisibleAccessory = BitFlags$TerrariaPacket.toByte(match[0]) | BitFlags$TerrariaPacket.toByte(match[1]) << 8;
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("LoadoutSwitch")), self.playerId, "playerId"), self.loadout, "loadout"), hideVisibleAccessory, "hideVisibleAccessory"));
     }
-    var Encode = {
-      Writer: void 0,
-      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -5811,23 +5610,9 @@ var require_Packet_NpcBuffRemovalRequest = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcBuffRemovalRequest")), self.npcId, "npcId"), self.buffType, "buffType"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -5887,12 +5672,6 @@ var require_Packet_NpcBuffUpdate = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function packBuffs(writer, buffs) {
       let _writer = writer;
       let _idx = 0;
@@ -5936,17 +5715,6 @@ var require_Packet_NpcBuffUpdate = __commonJS({
         return ErrorAwarePacketWriter$TerrariaPacket.data(packBuffTimes(packBuffs(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcBuffUpdate")), self.npcId, "npcId"), self.buffs), self.buffTimes));
       }
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      packBuffs,
-      packBuffTimes,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -5979,23 +5747,9 @@ var require_Packet_NpcCatch = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcCatch")), self.npcId, "npcId"), self.playerId, "playerId"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -6033,23 +5787,9 @@ var require_Packet_NpcFishOut = __commonJS({
         return e$2;
       }
     }
-    var Decode = {
-      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcFishOut")), self.x, "x"), self.y, "y"), self.npcNetId, "npcNetId"));
     }
-    var Encode = {
-      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -6092,23 +5832,9 @@ var require_Packet_NpcHomeUpdate = __commonJS({
         return e$3;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcHomeUpdate")), self.npcId, "npcId"), self.homeTileX, "homeTileX"), self.homeTileY, "homeTileY"), self.state, "state"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -6141,23 +5867,9 @@ var require_Packet_NpcKillCount = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcKillCount")), self.npcId, "npcId"), self.killCount, "killCount"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -6195,25 +5907,9 @@ var require_Packet_NpcNameUpdate = __commonJS({
         return e$2;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readString: ErrorAwarePacketReader$TerrariaPacket.readString,
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcNameUpdate")), self.npcId, "npcId"), self.name, "name"), self.townNpcVariationIndex, "townNpcVariationIndex"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packString: ErrorAwarePacketWriter$TerrariaPacket.packString,
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -6267,26 +5963,10 @@ var require_Packet_NpcShopItem = __commonJS({
         return e$5;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      parse
-    };
     function toBuffer(self) {
       let flags = BitFlags$TerrariaPacket.fromFlags(self.buyOnce, false, false, false, false, false, false, false);
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcShopItem")), self.slot, "slot"), self.itemId, "itemId"), self.stack, "stack"), self.prefix, "prefix"), self.value, "value"), BitFlags$TerrariaPacket.toByte(flags), "flags"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -6319,23 +5999,9 @@ var require_Packet_NpcTalk = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcTalk")), self.playerId, "playerId"), self.npcId, "npcId"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -6392,25 +6058,9 @@ var require_Packet_NpcTeleportPortal = __commonJS({
         return e$5;
       }
     }
-    var Decode = {
-      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcTeleportPortal")), self.npcId, "npcId"), self.portalColor, "portalColor"), self.position.x, "posX"), self.position.y, "posY"), self.velocity.x, "velX"), self.velocity.y, "velY"));
     }
-    var Encode = {
-      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -6511,19 +6161,9 @@ var require_Packet_PartyToggle = __commonJS({
         _0: void 0
       };
     }
-    var Decode = {
-      parse
-    };
     function toBuffer(_self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PartyToggle")));
     }
-    var Encode = {
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -6561,25 +6201,9 @@ var require_Packet_PlayerAnimation = __commonJS({
         return e$2;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerAnimation")), self.playerId, "playerId"), self.itemRotation, "itemRotation"), self.itemAnimation, "itemAnimation"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -6727,23 +6351,9 @@ var require_Packet_PlayerChestIndexSync = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerChestIndexSync")), self.playerId, "playerId"), self.chestId, "chestId"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -6771,21 +6381,9 @@ var require_Packet_PlayerDead = __commonJS({
         return e;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerDead")), self.playerId, "playerId"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -7328,23 +6926,9 @@ var require_Packet_PlayerDodge = __commonJS({
         };
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerDodge")), self.playerId, "playerId"), dodgeToByte(self.dodge), "dodge"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.dodgeFromByte = dodgeFromByte;
-    exports2.dodgeToByte = dodgeToByte;
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -7417,21 +7001,9 @@ var require_Packet_PlayerTeam = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerTeam")), self.playerId, "playerId"), self.team, "team"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -7555,12 +7127,6 @@ var require_Packet_ShimmerEffectOrCoinLuck = __commonJS({
           };
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-      parse
-    };
     function toBuffer(self) {
       let writer = ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ShimmerEffectOrCoinLuck"));
       let tmp;
@@ -7579,17 +7145,6 @@ var require_Packet_ShimmerEffectOrCoinLuck = __commonJS({
       }
       return ErrorAwarePacketWriter$TerrariaPacket.data(tmp);
     }
-    var Encode = {
-      Writer: void 0,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -7643,26 +7198,10 @@ var require_Packet_SignNew = __commonJS({
         return e$5;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readString: ErrorAwarePacketReader$TerrariaPacket.readString,
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function toBuffer(self) {
       let flags = BitFlags$TerrariaPacket.fromFlags(self.deleteSign, false, false, false, false, false, false, false);
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("SignNew")), self.signId, "signId"), self.x, "x"), self.y, "y"), self.text, "text"), self.playerId, "playerId"), BitFlags$TerrariaPacket.toByte(flags), "flags"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packString: ErrorAwarePacketWriter$TerrariaPacket.packString,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -7695,21 +7234,9 @@ var require_Packet_SignRead = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("SignRead")), self.x, "x"), self.y, "y"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -7737,21 +7264,9 @@ var require_Packet_SmokePoof = __commonJS({
         return e;
       }
     }
-    var Decode = {
-      readUInt32: ErrorAwarePacketReader$TerrariaPacket.readUInt32,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packUInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("SmokePoof")), self.packedPosition, "packedPosition"));
     }
-    var Encode = {
-      packUInt32: ErrorAwarePacketWriter$TerrariaPacket.packUInt32,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -7769,19 +7284,9 @@ var require_Packet_SocialHandshake = __commonJS({
         _0: void 0
       };
     }
-    var Decode = {
-      parse
-    };
     function toBuffer(_self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("SocialHandshake")));
     }
-    var Encode = {
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -7866,21 +7371,9 @@ var require_Packet_SwitchHit = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("SwitchHit")), self.x, "x"), self.y, "y"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -8366,13 +7859,6 @@ var require_Packet_Teleport = __commonJS({
         return e$5;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      parse
-    };
     function getFlags(self) {
       return BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(self.teleportType === "Npc", self.teleportType === "PlayerToPlayer", self.getPositionFromTarget, Belt_Option.isSome(self.extraInfo), false, false, false, false));
     }
@@ -8381,18 +7867,6 @@ var require_Packet_Teleport = __commonJS({
       let extraInfo = self.extraInfo;
       return ErrorAwarePacketWriter$TerrariaPacket.data(extraInfo !== void 0 ? ErrorAwarePacketWriter$TerrariaPacket.packInt32(writer, extraInfo, "extraInfo") : writer);
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      getFlags,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -8524,23 +7998,9 @@ var require_Packet_TemporaryAnimationCreate = __commonJS({
         return e$3;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TemporaryAnimationCreate")), self.typeId, "typeId"), self.tileType, "tileType"), self.x, "x"), self.y, "y"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -8593,26 +8053,9 @@ var require_Packet_TileEntityDisplayDollItemSync = __commonJS({
         return e$5;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TileEntityDisplayDollItemSync")), self.playerId, "playerId"), self.tileEntityId, "tileEntityId"), self.itemIndex, "itemIndex"), self.itemId, "itemId"), self.stack, "stack"), self.prefix, "prefix"));
     }
-    var Encode = {
-      Writer: void 0,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -8665,26 +8108,9 @@ var require_Packet_TileEntityHatRackItemSync = __commonJS({
         return e$5;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TileEntityHatRackItemSync")), self.playerId, "playerId"), self.tileEntityId, "tileEntityId"), self.itemIndex, "itemIndex"), self.itemId, "itemId"), self.stack, "stack"), self.prefix, "prefix"));
     }
-    var Encode = {
-      Writer: void 0,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -8717,23 +8143,9 @@ var require_Packet_TileEntityInteractionRequest = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TileEntityInteractionRequest")), self.tileEntityId, "tileEntityId"), self.playerId, "playerId"));
     }
-    var Encode = {
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -8771,23 +8183,9 @@ var require_Packet_TileEntityPlace = __commonJS({
         return e$2;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TileEntityPlace")), self.x, "x"), self.y, "y"), self.tileEntityType, "tileEntityType"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -8841,13 +8239,6 @@ var require_Packet_TileEntityUpdate = __commonJS({
         return e$3;
       }
     }
-    var Decode = {
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      readBool: ErrorAwarePacketReader$TerrariaPacket.readBool,
-      getBytesLeft: ErrorAwarePacketReader$TerrariaPacket.getBytesLeft,
-      readBuffer: ErrorAwarePacketReader$TerrariaPacket.readBuffer,
-      parse
-    };
     function toBuffer(self) {
       let writer = ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TileEntityUpdate")), self.tileEntityId, "tileEntityId");
       let tileEntityData = self.payload;
@@ -8857,16 +8248,6 @@ var require_Packet_TileEntityUpdate = __commonJS({
         return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packBuffer(ErrorAwarePacketWriter$TerrariaPacket.packBool(writer, true, "hasData"), tileEntityData._0, "tileEntityData"));
       }
     }
-    var Encode = {
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      packBool: ErrorAwarePacketWriter$TerrariaPacket.packBool,
-      packBuffer: ErrorAwarePacketWriter$TerrariaPacket.packBuffer,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -9132,23 +8513,9 @@ var require_Packet_TilePickingSync = __commonJS({
         return e$3;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TilePickingSync")), self.playerId, "playerId"), self.x, "x"), self.y, "y"), self.pickPower, "pickPower"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -9191,21 +8558,9 @@ var require_Packet_TileSectionFrame = __commonJS({
         return e$3;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TileSectionFrame")), self.startX, "startX"), self.startY, "startY"), self.endX, "endX"), self.endY, "endY"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -15483,84 +14838,12 @@ var require_Packet_TileSectionSend = __commonJS({
         coatHeader: cache.coatHeader
       };
     }
-    function parse(reader) {
-      let e = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "id");
-      if (e.TAG !== "Ok") {
-        return e;
-      }
-      let e$1 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
-      if (e$1.TAG !== "Ok") {
-        return e$1;
-      }
-      let e$2 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
-      if (e$2.TAG !== "Ok") {
-        return e$2;
-      }
-      let e$3 = ErrorAwareBufferReader$TerrariaPacket.readString(reader, "name");
-      if (e$3.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            id: e._0,
-            x: e$1._0,
-            y: e$2._0,
-            name: e$3._0
-          }
-        };
-      } else {
-        return e$3;
-      }
-    }
     function pack(writer, chest) {
       return ErrorAwareBufferWriter$TerrariaPacket.packString(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer, chest.id, "id"), chest.x, "x"), chest.y, "y"), chest.name, "name");
-    }
-    var Chest = {
-      readString: ErrorAwareBufferReader$TerrariaPacket.readString,
-      readInt16: ErrorAwareBufferReader$TerrariaPacket.readInt16,
-      parse,
-      packInt16: ErrorAwareBufferWriter$TerrariaPacket.packInt16,
-      packString: ErrorAwareBufferWriter$TerrariaPacket.packString,
-      pack
-    };
-    function parse$1(reader) {
-      let e = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "id");
-      if (e.TAG !== "Ok") {
-        return e;
-      }
-      let e$1 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
-      if (e$1.TAG !== "Ok") {
-        return e$1;
-      }
-      let e$2 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
-      if (e$2.TAG !== "Ok") {
-        return e$2;
-      }
-      let e$3 = ErrorAwareBufferReader$TerrariaPacket.readString(reader, "name");
-      if (e$3.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            id: e._0,
-            x: e$1._0,
-            y: e$2._0,
-            name: e$3._0
-          }
-        };
-      } else {
-        return e$3;
-      }
     }
     function pack$1(writer, sign) {
       return ErrorAwareBufferWriter$TerrariaPacket.packString(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer, sign.id, "id"), sign.x, "x"), sign.y, "y"), sign.name, "name");
     }
-    var Sign = {
-      readString: ErrorAwareBufferReader$TerrariaPacket.readString,
-      readInt16: ErrorAwareBufferReader$TerrariaPacket.readInt16,
-      parse: parse$1,
-      packInt16: ErrorAwareBufferWriter$TerrariaPacket.packInt16,
-      packString: ErrorAwareBufferWriter$TerrariaPacket.packString,
-      pack: pack$1
-    };
     function parseTrainingDummyKind(reader) {
       let e = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "npcSlotId");
       if (e.TAG === "Ok") {
@@ -15748,195 +15031,65 @@ var require_Packet_TileSectionSend = __commonJS({
         };
       }
     }
-    function parse$2(reader) {
-      let e = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "entityType");
-      if (e.TAG !== "Ok") {
-        return e;
-      }
-      let entityType = e._0;
-      let e$1 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
-      if (e$1.TAG !== "Ok") {
-        return e$1;
-      }
-      let e$2 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
-      if (e$2.TAG !== "Ok") {
-        return e$2;
-      }
-      let e$3;
-      switch (entityType) {
-        case 0:
-          e$3 = Stdlib_Result.map(parseTrainingDummyKind(reader), (v) => ({
-            TAG: "TrainingDummy",
-            _0: v
-          }));
-          break;
-        case 1:
-          e$3 = Stdlib_Result.map(parseDisplayItem(reader), (v) => ({
-            TAG: "ItemFrame",
-            _0: v
-          }));
-          break;
-        case 2:
-          e$3 = Stdlib_Result.map(parseLogicSensorKind(reader), (v) => ({
-            TAG: "LogicSensor",
-            _0: v
-          }));
-          break;
-        case 3:
-          e$3 = Stdlib_Result.map(parseDisplayDollKind(reader), (v) => ({
-            TAG: "DisplayDoll",
-            _0: v
-          }));
-          break;
-        case 4:
-          e$3 = Stdlib_Result.map(parseDisplayItem(reader), (v) => ({
-            TAG: "WeaponsRack",
-            _0: v
-          }));
-          break;
-        case 5:
-          e$3 = Stdlib_Result.map(parseHatRackKind(reader), (v) => ({
-            TAG: "HatRack",
-            _0: v
-          }));
-          break;
-        case 6:
-          e$3 = Stdlib_Result.map(parseDisplayItem(reader), (v) => ({
-            TAG: "FoodPlatter",
-            _0: v
-          }));
-          break;
-        case 7:
-          e$3 = {
-            TAG: "Ok",
-            _0: {
-              TAG: "TeleportationPylon",
-              _0: void 0
-            }
-          };
-          break;
-        default:
-          e$3 = {
-            TAG: "Error",
-            _0: {
-              context: "Entity.parse",
-              error: new Error("Unknown entity kind: " + String(entityType))
-            }
-          };
-      }
-      if (e$3.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            entityType,
-            x: e$1._0,
-            y: e$2._0,
-            entityKind: e$3._0
-          }
-        };
-      } else {
-        return e$3;
-      }
-    }
-    function packTrainingDummy(writer, trainingDummy) {
-      return ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer, trainingDummy.npcSlotId, "npcSlotId");
-    }
     function packDisplayItem(writer, displayItem) {
       return ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packByte(ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer, displayItem.netId, "netId"), displayItem.prefix, "prefix"), displayItem.stack, "stack");
-    }
-    function packLogicSensor(writer, logicSensorKind) {
-      return ErrorAwareBufferWriter$TerrariaPacket.packByte(ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, logicSensorKind.checkType, "checkType"), logicSensorKind.on ? 1 : 0, "on");
     }
     function hasItem(arr, n) {
       return Belt_Option.isSome(Belt_Option.flatMap(Belt_Array2.get(arr, n), (a) => a));
     }
-    function packDisplayDoll(writer, displayDollKind) {
-      let itemFlags = BitFlags$TerrariaPacket.fromFlags(hasItem(displayDollKind.items, 0), hasItem(displayDollKind.items, 1), hasItem(displayDollKind.items, 2), hasItem(displayDollKind.items, 3), hasItem(displayDollKind.items, 4), hasItem(displayDollKind.items, 5), hasItem(displayDollKind.items, 6), hasItem(displayDollKind.items, 7));
-      let dyeFlags = BitFlags$TerrariaPacket.fromFlags(hasItem(displayDollKind.dyes, 0), hasItem(displayDollKind.dyes, 1), hasItem(displayDollKind.dyes, 2), hasItem(displayDollKind.dyes, 3), hasItem(displayDollKind.dyes, 4), hasItem(displayDollKind.dyes, 5), hasItem(displayDollKind.dyes, 6), hasItem(displayDollKind.dyes, 7));
-      ErrorAwareBufferWriter$TerrariaPacket.packByte(ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(itemFlags), "itemFlags"), BitFlags$TerrariaPacket.toByte(dyeFlags), "dyeFlags");
-      for (let i = 0; i <= 7; ++i) {
-        let item = Belt_Option.flatMap(Belt_Array2.get(displayDollKind.items, i), (a) => a);
-        if (item !== void 0) {
-          packDisplayItem(writer, item);
-        }
-      }
-      for (let i$1 = 0; i$1 <= 7; ++i$1) {
-        let item$1 = Belt_Option.flatMap(Belt_Array2.get(displayDollKind.dyes, i$1), (a) => a);
-        if (item$1 !== void 0) {
-          packDisplayItem(writer, item$1);
-        }
-      }
-      return writer;
-    }
-    function packHatRack(writer, hatRackKind) {
-      let flags = BitFlags$TerrariaPacket.fromFlags(hasItem(hatRackKind.items, 0), hasItem(hatRackKind.items, 1), hasItem(hatRackKind.dyes, 2), hasItem(hatRackKind.dyes, 3), false, false, false, false);
-      ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(flags), "flags");
-      for (let i = 0; i <= 1; ++i) {
-        let item = Belt_Option.flatMap(Belt_Array2.get(hatRackKind.items, i), (a) => a);
-        if (item !== void 0) {
-          packDisplayItem(writer, item);
-        }
-      }
-      for (let i$1 = 0; i$1 <= 1; ++i$1) {
-        let item$1 = Belt_Option.flatMap(Belt_Array2.get(hatRackKind.dyes, i$1), (a) => a);
-        if (item$1 !== void 0) {
-          packDisplayItem(writer, item$1);
-        }
-      }
-      return writer;
-    }
-    function packTeleportationPylon(writer, _teleportationPylonKind) {
-      return writer;
-    }
-    function packEntityKind(writer, entityKind) {
+    function pack$2(writer, entity) {
+      let writer$1 = ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, entity.entityType, "entityType"), entity.x, "x"), entity.y, "y");
+      let entityKind = entity.entityKind;
       switch (entityKind.TAG) {
         case "DisplayDoll":
-          return packDisplayDoll(writer, entityKind._0);
+          let displayDollKind = entityKind._0;
+          let itemFlags = BitFlags$TerrariaPacket.fromFlags(hasItem(displayDollKind.items, 0), hasItem(displayDollKind.items, 1), hasItem(displayDollKind.items, 2), hasItem(displayDollKind.items, 3), hasItem(displayDollKind.items, 4), hasItem(displayDollKind.items, 5), hasItem(displayDollKind.items, 6), hasItem(displayDollKind.items, 7));
+          let dyeFlags = BitFlags$TerrariaPacket.fromFlags(hasItem(displayDollKind.dyes, 0), hasItem(displayDollKind.dyes, 1), hasItem(displayDollKind.dyes, 2), hasItem(displayDollKind.dyes, 3), hasItem(displayDollKind.dyes, 4), hasItem(displayDollKind.dyes, 5), hasItem(displayDollKind.dyes, 6), hasItem(displayDollKind.dyes, 7));
+          ErrorAwareBufferWriter$TerrariaPacket.packByte(ErrorAwareBufferWriter$TerrariaPacket.packByte(writer$1, BitFlags$TerrariaPacket.toByte(itemFlags), "itemFlags"), BitFlags$TerrariaPacket.toByte(dyeFlags), "dyeFlags");
+          for (let i = 0; i <= 7; ++i) {
+            let item = Belt_Option.flatMap(Belt_Array2.get(displayDollKind.items, i), (a) => a);
+            if (item !== void 0) {
+              packDisplayItem(writer$1, item);
+            }
+          }
+          for (let i$1 = 0; i$1 <= 7; ++i$1) {
+            let item$1 = Belt_Option.flatMap(Belt_Array2.get(displayDollKind.dyes, i$1), (a) => a);
+            if (item$1 !== void 0) {
+              packDisplayItem(writer$1, item$1);
+            }
+          }
+          return writer$1;
         case "HatRack":
-          return packHatRack(writer, entityKind._0);
+          let hatRackKind = entityKind._0;
+          let flags = BitFlags$TerrariaPacket.fromFlags(hasItem(hatRackKind.items, 0), hasItem(hatRackKind.items, 1), hasItem(hatRackKind.dyes, 2), hasItem(hatRackKind.dyes, 3), false, false, false, false);
+          ErrorAwareBufferWriter$TerrariaPacket.packByte(writer$1, BitFlags$TerrariaPacket.toByte(flags), "flags");
+          for (let i$2 = 0; i$2 <= 1; ++i$2) {
+            let item$2 = Belt_Option.flatMap(Belt_Array2.get(hatRackKind.items, i$2), (a) => a);
+            if (item$2 !== void 0) {
+              packDisplayItem(writer$1, item$2);
+            }
+          }
+          for (let i$3 = 0; i$3 <= 1; ++i$3) {
+            let item$3 = Belt_Option.flatMap(Belt_Array2.get(hatRackKind.dyes, i$3), (a) => a);
+            if (item$3 !== void 0) {
+              packDisplayItem(writer$1, item$3);
+            }
+          }
+          return writer$1;
         case "LogicSensor":
-          return packLogicSensor(writer, entityKind._0);
+          let logicSensorKind = entityKind._0;
+          return ErrorAwareBufferWriter$TerrariaPacket.packByte(ErrorAwareBufferWriter$TerrariaPacket.packByte(writer$1, logicSensorKind.checkType, "checkType"), logicSensorKind.on ? 1 : 0, "on");
         case "TeleportationPylon":
-          return writer;
+          return writer$1;
         case "TrainingDummy":
-          return packTrainingDummy(writer, entityKind._0);
+          let trainingDummy = entityKind._0;
+          return ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer$1, trainingDummy.npcSlotId, "npcSlotId");
         case "FoodPlatter":
         case "ItemFrame":
         case "WeaponsRack":
-          return packDisplayItem(writer, entityKind._0);
+          return packDisplayItem(writer$1, entityKind._0);
       }
     }
-    function pack$2(writer, entity) {
-      return packEntityKind(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, entity.entityType, "entityType"), entity.x, "x"), entity.y, "y"), entity.entityKind);
-    }
-    var Entity = {
-      readInt16: ErrorAwareBufferReader$TerrariaPacket.readInt16,
-      readByte: ErrorAwareBufferReader$TerrariaPacket.readByte,
-      parseTrainingDummyKind,
-      parseDisplayItem,
-      parseItemFrameKind: parseDisplayItem,
-      parseLogicSensorKind,
-      parseDisplayDollKind,
-      parseWeaponsRackKind: parseDisplayItem,
-      parseHatRackKind,
-      parseFoodPlatterKind: parseDisplayItem,
-      parse: parse$2,
-      packByte: ErrorAwareBufferWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwareBufferWriter$TerrariaPacket.packInt16,
-      packTrainingDummy,
-      packDisplayItem,
-      packItemFrame: packDisplayItem,
-      packLogicSensor,
-      hasItem,
-      packDisplayDoll,
-      packWeaponsRack: packDisplayItem,
-      packHatRack,
-      packFoodPlatter: packDisplayItem,
-      packTeleportationPylon,
-      packEntityKind,
-      pack: pack$2
-    };
-    var isTheSameAs = Primitive_object.equal;
     function clearTileCache(tile) {
       tile.activeTile = void 0;
       tile.color = void 0;
@@ -15987,7 +15140,7 @@ var require_Packet_TileSectionSend = __commonJS({
         };
       }
     }
-    function parse$3(payload) {
+    function parse(payload) {
       let packetReader = new Packetreader(payload);
       let e = ErrorAwarePacketReader$TerrariaPacket.getBytesLeft(packetReader);
       if (e.TAG !== "Ok") {
@@ -16427,7 +15580,34 @@ var require_Packet_TileSectionSend = __commonJS({
       if (e$6.TAG !== "Ok") {
         return e$6;
       }
-      let e$7 = readRepeated(e$6._0, () => parse(reader));
+      let e$7 = readRepeated(e$6._0, () => {
+        let e2 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "id");
+        if (e2.TAG !== "Ok") {
+          return e2;
+        }
+        let e$12 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
+        if (e$12.TAG !== "Ok") {
+          return e$12;
+        }
+        let e$22 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
+        if (e$22.TAG !== "Ok") {
+          return e$22;
+        }
+        let e$32 = ErrorAwareBufferReader$TerrariaPacket.readString(reader, "name");
+        if (e$32.TAG === "Ok") {
+          return {
+            TAG: "Ok",
+            _0: {
+              id: e2._0,
+              x: e$12._0,
+              y: e$22._0,
+              name: e$32._0
+            }
+          };
+        } else {
+          return e$32;
+        }
+      });
       if (e$7.TAG !== "Ok") {
         return e$7;
       }
@@ -16435,7 +15615,34 @@ var require_Packet_TileSectionSend = __commonJS({
       if (e$8.TAG !== "Ok") {
         return e$8;
       }
-      let e$9 = readRepeated(e$8._0, () => parse$1(reader));
+      let e$9 = readRepeated(e$8._0, () => {
+        let e2 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "id");
+        if (e2.TAG !== "Ok") {
+          return e2;
+        }
+        let e$12 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
+        if (e$12.TAG !== "Ok") {
+          return e$12;
+        }
+        let e$22 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
+        if (e$22.TAG !== "Ok") {
+          return e$22;
+        }
+        let e$32 = ErrorAwareBufferReader$TerrariaPacket.readString(reader, "name");
+        if (e$32.TAG === "Ok") {
+          return {
+            TAG: "Ok",
+            _0: {
+              id: e2._0,
+              x: e$12._0,
+              y: e$22._0,
+              name: e$32._0
+            }
+          };
+        } else {
+          return e$32;
+        }
+      });
       if (e$9.TAG !== "Ok") {
         return e$9;
       }
@@ -16443,7 +15650,96 @@ var require_Packet_TileSectionSend = __commonJS({
       if (e$10.TAG !== "Ok") {
         return e$10;
       }
-      let e$11 = readRepeated(e$10._0, () => parse$2(reader));
+      let e$11 = readRepeated(e$10._0, () => {
+        let e2 = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "entityType");
+        if (e2.TAG !== "Ok") {
+          return e2;
+        }
+        let entityType = e2._0;
+        let e$12 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
+        if (e$12.TAG !== "Ok") {
+          return e$12;
+        }
+        let e$22 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
+        if (e$22.TAG !== "Ok") {
+          return e$22;
+        }
+        let e$32;
+        switch (entityType) {
+          case 0:
+            e$32 = Stdlib_Result.map(parseTrainingDummyKind(reader), (v) => ({
+              TAG: "TrainingDummy",
+              _0: v
+            }));
+            break;
+          case 1:
+            e$32 = Stdlib_Result.map(parseDisplayItem(reader), (v) => ({
+              TAG: "ItemFrame",
+              _0: v
+            }));
+            break;
+          case 2:
+            e$32 = Stdlib_Result.map(parseLogicSensorKind(reader), (v) => ({
+              TAG: "LogicSensor",
+              _0: v
+            }));
+            break;
+          case 3:
+            e$32 = Stdlib_Result.map(parseDisplayDollKind(reader), (v) => ({
+              TAG: "DisplayDoll",
+              _0: v
+            }));
+            break;
+          case 4:
+            e$32 = Stdlib_Result.map(parseDisplayItem(reader), (v) => ({
+              TAG: "WeaponsRack",
+              _0: v
+            }));
+            break;
+          case 5:
+            e$32 = Stdlib_Result.map(parseHatRackKind(reader), (v) => ({
+              TAG: "HatRack",
+              _0: v
+            }));
+            break;
+          case 6:
+            e$32 = Stdlib_Result.map(parseDisplayItem(reader), (v) => ({
+              TAG: "FoodPlatter",
+              _0: v
+            }));
+            break;
+          case 7:
+            e$32 = {
+              TAG: "Ok",
+              _0: {
+                TAG: "TeleportationPylon",
+                _0: void 0
+              }
+            };
+            break;
+          default:
+            e$32 = {
+              TAG: "Error",
+              _0: {
+                context: "Entity.parse",
+                error: new Error("Unknown entity kind: " + String(entityType))
+              }
+            };
+        }
+        if (e$32.TAG === "Ok") {
+          return {
+            TAG: "Ok",
+            _0: {
+              entityType,
+              x: e$12._0,
+              y: e$22._0,
+              entityKind: e$32._0
+            }
+          };
+        } else {
+          return e$32;
+        }
+      });
       if (e$11.TAG === "Ok") {
         return {
           TAG: "Ok",
@@ -16462,17 +15758,6 @@ var require_Packet_TileSectionSend = __commonJS({
         return e$11;
       }
     }
-    var Decode = {
-      clearTileCache,
-      PacketReader: void 0,
-      readBuffer: ErrorAwarePacketReader$TerrariaPacket.readBuffer,
-      getBytesLeft: ErrorAwarePacketReader$TerrariaPacket.getBytesLeft,
-      readInt16: ErrorAwareBufferReader$TerrariaPacket.readInt16,
-      readInt32: ErrorAwareBufferReader$TerrariaPacket.readInt32,
-      readByte: ErrorAwareBufferReader$TerrariaPacket.readByte,
-      readRepeated,
-      parse: parse$3
-    };
     function getLiquidBitFlags(tile) {
       let liquidBits = tile.honey ? "Three" : tile.lava ? "Two" : Belt_Option.isSome(tile.liquid) ? "One" : "Zero";
       switch (liquidBits) {
@@ -16714,34 +15999,13 @@ var require_Packet_TileSectionSend = __commonJS({
         }
       };
     }
-    var Encode = {
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      packBuffer: ErrorAwarePacketWriter$TerrariaPacket.packBuffer,
-      packByte: ErrorAwareBufferWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwareBufferWriter$TerrariaPacket.packInt16,
-      packInt32: ErrorAwareBufferWriter$TerrariaPacket.packInt32,
-      data: ErrorAwareBufferWriter$TerrariaPacket.data,
-      getLiquidBitFlags,
-      getSlopeBitFlags,
-      getRepeatCountByteLength,
-      getRepeatCountBitFlags,
-      packTile,
-      decidePackTile,
-      toBuffer
-    };
-    var Int2;
-    var Option;
-    exports2.Int = Int2;
-    exports2.Option = Option;
-    exports2.defaultTileCache = defaultTileCache;
-    exports2.cacheToTile = cacheToTile;
+    var Chest = {};
+    var Sign = {};
+    var Entity = {};
     exports2.Chest = Chest;
     exports2.Sign = Sign;
     exports2.Entity = Entity;
-    exports2.isTheSameAs = isTheSameAs;
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
-    exports2.parse = parse$3;
+    exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
 });
@@ -17087,25 +16351,9 @@ var require_Packet_TimeSet = __commonJS({
         return e$3;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TimeSet")), self.dayTime ? 1 : 0, "dayTime"), self.time, "time"), self.sunModY, "sunModY"), self.moonModY, "moonModY"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -17153,10 +16401,6 @@ var require_Packet_TravellingMerchantInventory = __commonJS({
         return e;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function packItems(writer, items) {
       let _writer = writer;
       let _idx = 0;
@@ -17185,16 +16429,6 @@ var require_Packet_TravellingMerchantInventory = __commonJS({
       let writer = ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TravellingMerchantInventory"));
       return ErrorAwarePacketWriter$TerrariaPacket.data(packItems(writer, self.items));
     }
-    var Encode = {
-      Writer: void 0,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      packItems,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -17242,25 +16476,9 @@ var require_Packet_TreeGrowFx = __commonJS({
         return e$4;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TreeGrowFx")), self.action, "action"), self.x, "x"), self.y, "y"), self.style, "style"), self.treeType, "treeType"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -17367,24 +16585,9 @@ var require_Packet_WeaponsRackTryPlacing = __commonJS({
         return e$4;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("WeaponsRackTryPlacing")), self.x, "x"), self.y, "y"), self.itemId, "itemId"), self.prefix, "prefix"), self.stack, "stack"));
     }
-    var Encode = {
-      Writer: void 0,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -17442,25 +16645,9 @@ var require_Packet_WiredCannonShot = __commonJS({
         return e$6;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("WiredCannonShot")), self.damage, "damage"), self.knockback, "knockback"), self.x, "x"), self.y, "y"), self.angle, "angle"), self.ammo, "ammo"), self.playerId, "playerId"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -17479,25 +16666,12 @@ var require_Packet_WorldDataRequest = __commonJS({
         _0: void 0
       };
     }
-    var Decode = {
-      parse
-    };
-    function data(prim) {
-      return prim.data;
-    }
     function toBuffer(_self) {
       return {
         TAG: "Ok",
         _0: ManagedPacketWriter$PacketFactory.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("WorldDataRequest")).data
       };
     }
-    var Encode = {
-      setType: ManagedPacketWriter$PacketFactory.setType,
-      data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -17550,21 +16724,9 @@ var require_Packet_Zones = __commonJS({
         return e$5;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("Zones")), self.playerId, "playerId"), self.zone1, "zone1"), self.zone2, "zone2"), self.zone3, "zone3"), self.zone4, "zone4"), self.zone5, "zone5"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -19582,21 +18744,9 @@ var require_Packet_Disconnect = __commonJS({
         return e;
       }
     }
-    var Decode = {
-      readNetworkText: ErrorAwarePacketReader$TerrariaPacket.readNetworkText,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packNetworkText(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("Disconnect")), self.reason, "reason"));
     }
-    var Encode = {
-      packNetworkText: ErrorAwarePacketWriter$TerrariaPacket.packNetworkText,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -19704,21 +18854,9 @@ var require_Packet_Emoji = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("Emoji")), self.playerId, "playerId"), self.emojiId, "emojiId"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -19863,23 +19001,9 @@ var require_Packet_HarpPlay = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("HarpPlay")), self.playerId, "playerId"), self.pitch, "pitch"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -19922,23 +19046,9 @@ var require_Packet_ChestName = __commonJS({
         return e$3;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readString: ErrorAwarePacketReader$TerrariaPacket.readString,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ChestName")), self.chestId, "chestId"), self.x, "x"), self.y, "y"), self.name, "name"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packString: ErrorAwarePacketWriter$TerrariaPacket.packString,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -19971,21 +19081,9 @@ var require_Packet_ChestOpen = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ChestOpen")), self.x, "x"), self.y, "y"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -20028,23 +19126,9 @@ var require_Packet_LiquidSet = __commonJS({
         return e$3;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("LiquidSet")), self.x, "x"), self.y, "y"), self.liquid, "liquid"), self.liquidType, "liquidType"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -20092,25 +19176,9 @@ var require_Packet_NpcStrike = __commonJS({
         return e$4;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcStrike")), self.npcId, "npcId"), self.damage, "damage"), self.knockback, "knockback"), self.direction + 1 | 0, "direction"), self.critical ? 1 : 0, "critical"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -20141,10 +19209,6 @@ var require_Packet_NpcTamper = __commonJS({
         return self._0;
       }
     }
-    var Immunity = {
-      fromInt,
-      toInt
-    };
     function parse(payload) {
       let reader = new Packetreader(payload);
       let e = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "npcId");
@@ -20192,13 +19256,6 @@ var require_Packet_NpcTamper = __commonJS({
         }
       };
     }
-    var Decode = {
-      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function packImmunity(writer, immunityTime, immunityOrigin) {
       if (immunityTime !== void 0 && immunityOrigin !== void 0) {
         return ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, 1, "setNpcImmunity"), immunityTime, "immunityTime"), toInt(immunityOrigin), "immunityFromPlayerId");
@@ -20209,21 +19266,8 @@ var require_Packet_NpcTamper = __commonJS({
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(packImmunity(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcTamper")), self.npcId, "npcId"), self.immunityTime, self.immunityFromPlayerId));
     }
-    var Encode = {
-      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      packImmunity,
-      toBuffer
-    };
-    var Option;
-    exports2.Option = Option;
+    var Immunity = {};
     exports2.Immunity = Immunity;
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -20256,23 +19300,9 @@ var require_Packet_HealEffect = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("HealEffect")), self.playerId, "playerId"), self.healAmount, "healAmount"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -20305,23 +19335,9 @@ var require_Packet_ManaEffect = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ManaEffect")), self.playerId, "playerId"), self.manaAmount, "manaAmount"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -20359,23 +19375,9 @@ var require_Packet_NpcBuffAdd = __commonJS({
         return e$2;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcBuffAdd")), self.npcId, "npcId"), self.buffType, "buffType"), self.time, "time"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -20418,25 +19420,9 @@ var require_Packet_NpcRelease = __commonJS({
         return e$3;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcRelease")), self.x, "x"), self.y, "y"), self.npcType, "npcType"), self.style, "style"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -20469,23 +19455,9 @@ var require_Packet_PortalKill = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PortalKill")), self.owner, "owner"), self.portalColor, "portalColor"));
     }
-    var Encode = {
-      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -20557,14 +19529,6 @@ var require_Packet_EmoteBubble = __commonJS({
         return metadata;
       }
     }
-    var Decode = {
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-      readSByte: ErrorAwarePacketReader$TerrariaPacket.readSByte,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       let writer = ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("EmoteBubble")), self.id, "id");
       let details = self.anchor;
@@ -20581,18 +19545,6 @@ var require_Packet_EmoteBubble = __commonJS({
       }
       return ErrorAwarePacketWriter$TerrariaPacket.data(tmp);
     }
-    var Encode = {
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-      packSByte: ErrorAwarePacketWriter$TerrariaPacket.packSByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -20620,21 +19572,9 @@ var require_Packet_PasswordSend = __commonJS({
         return e;
       }
     }
-    var Decode = {
-      readString: ErrorAwarePacketReader$TerrariaPacket.readString,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PasswordSend")), self.password, "password"));
     }
-    var Encode = {
-      packString: ErrorAwarePacketWriter$TerrariaPacket.packString,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -20672,23 +19612,9 @@ var require_Packet_GemLockToggle = __commonJS({
         return e$2;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readBool: ErrorAwarePacketReader$TerrariaPacket.readBool,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packBool(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("GemLockToggle")), self.x, "x"), self.y, "y"), self.active, "active"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packBool: ErrorAwarePacketWriter$TerrariaPacket.packBool,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -20731,25 +19657,9 @@ var require_Packet_NebulaLevelUp = __commonJS({
         return e$3;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NebulaLevelUp")), self.playerId, "playerId"), self.level, "level"), self.x, "x"), self.y, "y"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -20782,23 +19692,9 @@ var require_Packet_NpcItemStrike = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcItemStrike")), self.npcId, "npcId"), self.playerId, "playerId"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -20831,23 +19727,9 @@ var require_Packet_PlayerStealth = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerStealth")), self.playerId, "playerId"), self.stealth, "stealth"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -20885,21 +19767,9 @@ var require_Packet_GoodEvilUpdate = __commonJS({
         return e$2;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("GoodEvilUpdate")), self.good, "good"), self.evil, "evil"), self.blood, "blood"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -21102,15 +19972,6 @@ var require_Packet_ItemDropModify = __commonJS({
         }
       };
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readUInt32: ErrorAwarePacketReader$TerrariaPacket.readUInt32,
-      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-      parseFlags2,
-      parse
-    };
     function flags1(self) {
       return BitFlags$TerrariaPacket.fromFlags(Stdlib_Option.isSome(self.color), Stdlib_Option.isSome(self.damage), Stdlib_Option.isSome(self.knockback), Stdlib_Option.isSome(self.useAnimation), Stdlib_Option.isSome(self.useTime), Stdlib_Option.isSome(self.shoot), Stdlib_Option.isSome(self.shootSpeed), Stdlib_Option.isSome(self.width) || Stdlib_Option.isSome(self.height) || Stdlib_Option.isSome(self.scale) || Stdlib_Option.isSome(self.ammo) || Stdlib_Option.isSome(self.useAmmo) || Stdlib_Option.isSome(self.notAmmo));
     }
@@ -21179,20 +20040,6 @@ var require_Packet_ItemDropModify = __commonJS({
       }
       return ErrorAwarePacketWriter$TerrariaPacket.data(writer);
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packUInt32: ErrorAwarePacketWriter$TerrariaPacket.packUInt32,
-      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      flags1,
-      flags2,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -21240,24 +20087,9 @@ var require_Packet_ItemFramePlace = __commonJS({
         return e$4;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ItemFramePlace")), self.x, "x"), self.y, "y"), self.itemId, "itemId"), self.prefix, "prefix"), self.stack, "stack"));
     }
-    var Encode = {
-      Writer: void 0,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -21319,26 +20151,9 @@ var require_Packet_LucyAxeMessage = __commonJS({
         }
       };
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("LucyAxeMessage")), self.source, "source"), self.variant, "variant"), self.velocity.x, "velocityX"), self.velocity.y, "velocityY"), self.position.x, "positionX"), self.position.y, "positionY"));
     }
-    var Encode = {
-      Writer: void 0,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -21366,21 +20181,9 @@ var require_Packet_ItemOwnerRemove = __commonJS({
         return e;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ItemOwnerRemove")), self.itemDropId, "itemDropId"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -21452,13 +20255,6 @@ var require_Packet_LegacySoundPlay = __commonJS({
         return e$6;
       }
     }
-    var Decode = {
-      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-      parse
-    };
     function toBuffer(self) {
       let flags = BitFlags$TerrariaPacket.fromFlags(Stdlib_Option.isSome(self.styleOverride), Stdlib_Option.isSome(self.volumeOverride), Stdlib_Option.isSome(self.pitchOverride), false, false, false, false, false);
       let writer = ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("LegacySoundPlay")), self.position.x, "x"), self.position.y, "y"), self.soundIndex, "soundIndex"), BitFlags$TerrariaPacket.toByte(flags), "flags");
@@ -21476,17 +20272,6 @@ var require_Packet_LegacySoundPlay = __commonJS({
       }
       return ErrorAwarePacketWriter$TerrariaPacket.data(writer);
     }
-    var Encode = {
-      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -21519,23 +20304,9 @@ var require_Packet_PlayerHealOther = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerHealOther")), self.playerId, "playerId"), self.healAmount, "healAmount"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -21616,12 +20387,6 @@ var require_Packet_PlayerSpawnSelf = __commonJS({
         };
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      parse
-    };
     function contextToByte(c) {
       switch (c) {
         case "ReviveFromDeath":
@@ -21635,17 +20400,6 @@ var require_Packet_PlayerSpawnSelf = __commonJS({
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerSpawnSelf")), self.playerId, "playerId"), self.x, "x"), self.y, "y"), self.respawnTimer, "respawnTimer"), self.numberOfDeathsPve, "numberOfDeathsPve"), self.numberOfDeathsPvp, "numberOfDeathsPvp"), contextToByte(self.context), "context"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      contextToByte,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -21688,25 +20442,9 @@ var require_Packet_CombatTextCreate = __commonJS({
         return e$3;
       }
     }
-    var Decode = {
-      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-      readColor: ErrorAwarePacketReader$TerrariaPacket.readColor,
-      readNetworkText: ErrorAwarePacketReader$TerrariaPacket.readNetworkText,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packNetworkText(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("CombatTextCreate")), self.x, "x"), self.y, "y"), self.color, "color"), self.text, "text"));
     }
-    var Encode = {
-      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-      packColor: ErrorAwarePacketWriter$TerrariaPacket.packColor,
-      packNetworkText: ErrorAwarePacketWriter$TerrariaPacket.packNetworkText,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -21739,21 +20477,9 @@ var require_Packet_NpcSpecialEffect = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcSpecialEffect")), self.playerId, "playerId"), self.effectType, "effectType"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -21771,19 +20497,9 @@ var require_Packet_PasswordRequired = __commonJS({
         _0: void 0
       };
     }
-    var Decode = {
-      parse
-    };
     function toBuffer(_self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PasswordRequired")));
     }
-    var Encode = {
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -21811,21 +20527,9 @@ var require_Packet_EventNotification = __commonJS({
         return e;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("EventNotification")), self.eventId, "eventId"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -21873,23 +20577,9 @@ var require_Packet_GolfBallLandInCup = __commonJS({
         return e$4;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("GolfBallLandInCup")), self.playerId, "playerId"), self.cupX, "cupX"), self.cupY, "cupY"), self.projId, "projId"), self.projType, "projType"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -21937,23 +20627,9 @@ var require_Packet_MassWireOperation = __commonJS({
         return e$4;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("MassWireOperation")), self.startX, "startX"), self.startY, "startY"), self.endX, "endX"), self.endY, "endY"), self.toolMode, "toolMode"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -21986,21 +20662,9 @@ var require_Packet_MoonLordCountdown = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("MoonLordCountdown")), self.maxMoonLordCountdown, "maxMoonLordCountdown"), self.moonLordCountdown, "moonLordCountdown"));
     }
-    var Encode = {
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -22033,23 +20697,9 @@ var require_Packet_ProjectileDestroy = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ProjectileDestroy")), self.projectileId, "projectileId"), self.owner, "owner"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -22124,25 +20774,9 @@ var require_Packet_RevengeMarkerSync = __commonJS({
         return e$9;
       }
     }
-    var Decode = {
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-      readBool: ErrorAwarePacketReader$TerrariaPacket.readBool,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packBool(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("RevengeMarkerSync")), self.uniqueId, "uniqueId"), self.position.x, "posX"), self.position.y, "posY"), self.npcNetId, "npcNetId"), self.npcHpPercent, "npcHpPercent"), self.npcTypeAgainstDiscouragement, "npcTypeAgainstDiscouragement"), self.npcAiStyleAgainstDiscouragement, "npcAiStyleAgainstDiscouragement"), self.coinValue, "coinValue"), self.baseValue, "baseValue"), self.spawnedFromStatue, "spawnedFromStatue"));
     }
-    var Encode = {
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-      packBool: ErrorAwarePacketWriter$TerrariaPacket.packBool,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -22185,25 +20819,9 @@ var require_Packet_CombatNumberCreate = __commonJS({
         return e$3;
       }
     }
-    var Decode = {
-      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-      readColor: ErrorAwarePacketReader$TerrariaPacket.readColor,
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packColor(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("CombatNumberCreate")), self.x, "x"), self.y, "y"), self.color, "color"), self.amount, "amount"));
     }
-    var Encode = {
-      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-      packColor: ErrorAwarePacketWriter$TerrariaPacket.packColor,
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -22241,23 +20859,9 @@ var require_Packet_MinionTargetUpdate = __commonJS({
         return e$2;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("MinionTargetUpdate")), self.playerId, "playerId"), self.x, "x"), self.y, "y"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -22309,26 +20913,10 @@ var require_Packet_ActiveContainerSync = __commonJS({
         return e$4;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readString: ErrorAwarePacketReader$TerrariaPacket.readString,
-      parse
-    };
     function toBuffer(self) {
       let writer = ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ActiveContainerSync")), self.chestId, "chestId"), self.x, "x"), self.y, "y"), self.nameLength, "nameLength");
       return ErrorAwarePacketWriter$TerrariaPacket.data(self.nameLength > 0 && self.nameLength <= 20 ? ErrorAwarePacketWriter$TerrariaPacket.packString(writer, self.name, "name") : writer);
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packString: ErrorAwarePacketWriter$TerrariaPacket.packString,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -22356,21 +20944,9 @@ var require_Packet_RevengeMarkerRemove = __commonJS({
         return e;
       }
     }
-    var Decode = {
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("RevengeMarkerRemove")), self.markerId, "markerId"));
     }
-    var Encode = {
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -22408,23 +20984,9 @@ var require_Packet_MassWireOperationPay = __commonJS({
         return e$2;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("MassWireOperationPay")), self.itemType, "itemType"), self.stack, "stack"), self.playerId, "playerId"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -22486,25 +21048,9 @@ var require_Packet_PlayerTeleportPortal = __commonJS({
         }
       };
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerTeleportPortal")), self.playerId, "playerId"), self.extraInfo, "extraInfo"), self.position.x, "positionX"), self.position.y, "positionY"), self.velocity.x, "velocityX"), self.velocity.y, "velocityY"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -22552,10 +21098,6 @@ var require_Packet_CavernMonsterTypeSync = __commonJS({
         };
       }
     }
-    var Decode = {
-      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-      parse
-    };
     function packRow(writer, row, rowIdx) {
       let _writer = writer;
       let _colIdx = 0;
@@ -22599,16 +21141,6 @@ var require_Packet_CavernMonsterTypeSync = __commonJS({
         return ErrorAwarePacketWriter$TerrariaPacket.data(packRows(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("CavernMonsterTypeSync")), self));
       }
     }
-    var Encode = {
-      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      packRow,
-      packRows,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -22670,24 +21202,9 @@ var require_Packet_FoodPlatterTryPlacing = __commonJS({
         return e$4;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("FoodPlatterTryPlacing")), self.x, "x"), self.y, "y"), self.itemId, "itemId"), self.prefix, "prefix"), self.stack, "stack"));
     }
-    var Encode = {
-      Writer: void 0,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -22715,21 +21232,9 @@ var require_Packet_NpcKilledNotification = __commonJS({
         return e;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcKilledNotification")), self.npcId, "npcId"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -22772,21 +21277,9 @@ var require_Packet_ShieldStrengthsUpdate = __commonJS({
         return e$3;
       }
     }
-    var Decode = {
-      readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ShieldStrengthsUpdate")), self.solar, "solar"), self.vortex, "vortex"), self.nebula, "nebula"), self.stardust, "stardust"));
     }
-    var Encode = {
-      packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -22804,19 +21297,9 @@ var require_Packet_CrystalInvasionWipeAll = __commonJS({
         _0: void 0
       };
     }
-    var Decode = {
-      parse
-    };
     function toBuffer(_self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("CrystalInvasionWipeAll")));
     }
-    var Encode = {
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -22901,27 +21384,9 @@ var require_Packet_ItemDropProtectedUpdate = __commonJS({
         return e$9;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ItemDropProtectedUpdate")), self.itemDropId, "itemDropId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.stack, "stack"), self.prefix, "prefix"), self.noDelay, "noDelay"), self.itemId, "itemId"), self.timeLeftInWhichTheItemCannotBeTakenByEnemies, "timeLeftInWhichTheItemCannotBeTakenByEnemies"));
     }
-    var Encode = {
-      Writer: void 0,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -22970,12 +21435,6 @@ var require_Packet_PiggyBankVoidLensUpdate = __commonJS({
         return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -1, "trackedProjectileReference");
       }
     }
-    var TrackedProjectileReference = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      tryReading,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      pack
-    };
     function parse(payload) {
       let reader = new Packetreader(payload);
       let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
@@ -23000,23 +21459,11 @@ var require_Packet_PiggyBankVoidLensUpdate = __commonJS({
         return e$2;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(pack(pack(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PiggyBankVoidLensUpdate")), self.playerId, "playerId"), self.piggyBankProj), self.voidLensChest));
     }
-    var Encode = {
-      Writer: void 0,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
+    var TrackedProjectileReference = {};
     exports2.TrackedProjectileReference = TrackedProjectileReference;
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -23075,26 +21522,9 @@ var require_Packet_PlayerLuckFactorsUpdate = __commonJS({
         return e$6;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerLuckFactorsUpdate")), self.playerId, "playerId"), self.ladyBugLuckTimeLeft, "ladyBugLuckTimeLeft"), self.torchLuck, "torchLuck"), self.luckPotion, "luckPotion"), self.hasGardenGnomeNearby ? 1 : 0, "hasGardenGnomeNearby"), self.equipmentBasedLuckBonus, "equipmentBasedLuckBonus"), self.coinLuck, "coinLuck"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -23127,23 +21557,9 @@ var require_Packet_MinionAttackTargetUpdate = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("MinionAttackTargetUpdate")), self.playerId, "playerId"), self.targetNpcId, "targetNpcId"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -23171,21 +21587,9 @@ var require_Packet_ItemForceIntoNearestChest = __commonJS({
         return e;
       }
     }
-    var Decode = {
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ItemForceIntoNearestChest")), self.slot, "slot"));
     }
-    var Encode = {
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -23219,18 +21623,9 @@ var require_Packet_InitialTileSectionsRequest = __commonJS({
         return e$1;
       }
     }
-    var Decode = {
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("InitialTileSectionsRequest")), self.x, "x"), self.y, "y"));
     }
-    var Encode = {
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -23268,23 +21663,9 @@ var require_Packet_AnglerQuestsCompletedAmount = __commonJS({
         return e$2;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("AnglerQuestsCompletedAmount")), self.playerId, "playerId"), self.anglerQuestsFinished, "anglerQuestsFinished"), self.golferScoreAccumulated, "golferScoreAccumulated"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -23313,21 +21694,9 @@ var require_Packet_CrystalInvasionSendWaitTime = __commonJS({
         return e;
       }
     }
-    var Decode = {
-      readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(new Packetwriter(), PacketType$TerrariaPacket.toInt("CrystalInvasionSendWaitTime")), self.timeLeftBetweenWaves, "timeLeftBetweenWaves"));
     }
-    var Encode = {
-      packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -23345,20 +21714,9 @@ var require_Packet_DungeonDefendersEventAttemptSkipWait = __commonJS({
         _0: void 0
       };
     }
-    var Decode = {
-      parse
-    };
     function toBuffer(_self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("DungeonDefendersEventAttemptSkipWait")));
     }
-    var Encode = {
-      Writer: void 0,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }

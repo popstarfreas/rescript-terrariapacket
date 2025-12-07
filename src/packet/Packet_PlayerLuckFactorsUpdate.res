@@ -10,7 +10,7 @@ type t = {
 }
 
 module Decode = {
-  let {readInt16, readInt32, readByte, readSingle} = module(ErrorAwarePacketReader)
+  let {readInt32, readByte, readSingle} = module(ErrorAwarePacketReader)
   let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
     let? Ok(player) = reader->readByte("playerId")
@@ -36,7 +36,6 @@ module Decode = {
 
 module Encode = {
   let {packByte, packInt32, packSingle, setType, data} = module(ErrorAwarePacketWriter)
-  type writer = ErrorAwarePacketWriter.t
 
   let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
     ErrorAwarePacketWriter.make()

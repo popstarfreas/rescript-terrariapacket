@@ -1361,19 +1361,19 @@ declare type parseLazy_2<a> = (buffer: Buffer, fromServer: boolean) => (
 | { TAG: "Error"; _0: readError }
 );
 
-declare type parseOk = { TAG: "Ok"; _0: (NetModuleLoad | undefined) };
+declare type parseOk = { TAG: "Ok"; _0: NetModuleLoad };
 
-declare type parseOk_2 = { TAG: "Ok"; _0: (undefined | t_65) };
+declare type parseOk_2 = { TAG: "Ok"; _0: t_65 };
 
-declare type parseOk_3 = { TAG: "Ok"; _0: (undefined | t_78) };
+declare type parseOk_3 = { TAG: "Ok"; _0: t_78 };
 
-declare type parseOk_4 = { TAG: "Ok"; _0: (undefined | t_79) };
+declare type parseOk_4 = { TAG: "Ok"; _0: t_79 };
 
-declare type parseOk_5 = { TAG: "Ok"; _0: (undefined | t_84) };
+declare type parseOk_5 = { TAG: "Ok"; _0: t_84 };
 
-declare type parseOk_6 = { TAG: "Ok"; _0: WorldInfo | undefined };
+declare type parseOk_6 = { TAG: "Ok"; _0: WorldInfo };
 
-declare type parseOk_7 = { TAG: "Ok"; _0: (undefined | t_87) };
+declare type parseOk_7 = { TAG: "Ok"; _0: t_87 };
 
 export declare namespace Parser {
     export {

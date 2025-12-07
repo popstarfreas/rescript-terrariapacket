@@ -68,28 +68,10 @@ function parse(payload) {
   }
 }
 
-let Decode = {
-  readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-  readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
-  readBool: ErrorAwarePacketReader$TerrariaPacket.readBool,
-  parse: parse
-};
-
 function toBuffer(self) {
   return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packBool(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("RevengeMarkerSync")), self.uniqueId, "uniqueId"), self.position.x, "posX"), self.position.y, "posY"), self.npcNetId, "npcNetId"), self.npcHpPercent, "npcHpPercent"), self.npcTypeAgainstDiscouragement, "npcTypeAgainstDiscouragement"), self.npcAiStyleAgainstDiscouragement, "npcAiStyleAgainstDiscouragement"), self.coinValue, "coinValue"), self.baseValue, "baseValue"), self.spawnedFromStatue, "spawnedFromStatue"));
 }
 
-let Encode = {
-  packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-  packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
-  packBool: ErrorAwarePacketWriter$TerrariaPacket.packBool,
-  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-  data: ErrorAwarePacketWriter$TerrariaPacket.data,
-  toBuffer: toBuffer
-};
-
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

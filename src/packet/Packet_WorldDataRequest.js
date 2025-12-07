@@ -12,14 +12,6 @@ function parse(_payload) {
   };
 }
 
-let Decode = {
-  parse: parse
-};
-
-function data(prim) {
-  return prim.data;
-}
-
 function toBuffer(_self) {
   return {
     TAG: "Ok",
@@ -27,14 +19,6 @@ function toBuffer(_self) {
   };
 }
 
-let Encode = {
-  setType: ManagedPacketWriter$PacketFactory.setType,
-  data: data,
-  toBuffer: toBuffer
-};
-
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* @popstarfreas/packetfactory/packetwriter Not a pure module */

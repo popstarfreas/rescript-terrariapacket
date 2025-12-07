@@ -28,7 +28,7 @@ module Decode = {
 
 module Encode = {
   module Writer = ErrorAwarePacketWriter
-  let {packByte, packInt16, setType, data} = module(Writer)
+  let {packInt16, setType, data} = module(Writer)
   let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
     Writer.make()
     ->setType(PacketType.WeaponsRackTryPlacing->PacketType.toInt)

@@ -92,11 +92,6 @@ function parse(payload) {
   };
 }
 
-let Decode = {
-  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-  parse: parse
-};
-
 function packSpawnType(writer, spawnType) {
   if (typeof spawnType === "object") {
     if (spawnType.TAG === "Invasion") {
@@ -147,17 +142,6 @@ function toBuffer(self) {
   return ErrorAwarePacketWriter$TerrariaPacket.data(packSpawnType(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("BossOrInvasionSpawn")), self.playerId, "playerId"), self.spawnType));
 }
 
-let Encode = {
-  Writer: undefined,
-  packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-  data: ErrorAwarePacketWriter$TerrariaPacket.data,
-  packSpawnType: packSpawnType,
-  toBuffer: toBuffer
-};
-
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

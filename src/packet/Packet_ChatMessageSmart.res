@@ -5,7 +5,7 @@ type t = {
   widthLimit: int,
 }
 module Decode = {
-  let {readInt16, readSingle, readColor, readNetworkText} = module(ErrorAwarePacketReader)
+  let {readInt16, readColor, readNetworkText} = module(ErrorAwarePacketReader)
   let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
     let? Ok(color) = reader->readColor("color")
@@ -22,7 +22,6 @@ module Decode = {
 
 module Encode = {
   let {setType, data, packColor, packNetworkText, packInt16} = module(ErrorAwarePacketWriter)
-  type writer = ErrorAwarePacketWriter.t // Assuming ManagedPacketWriter.t is compatible or ErrorAwarePacketWriter.t
   let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
     ErrorAwarePacketWriter.make()
     ->setType(PacketType.ChatMessageSmart->PacketType.toInt)

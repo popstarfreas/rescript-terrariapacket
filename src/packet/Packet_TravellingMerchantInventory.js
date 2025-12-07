@@ -40,11 +40,6 @@ function parse(payload) {
   }
 }
 
-let Decode = {
-  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-  parse: parse
-};
-
 function packItems(writer, items) {
   let _writer = writer;
   let _idx = 0;
@@ -74,17 +69,6 @@ function toBuffer(self) {
   return ErrorAwarePacketWriter$TerrariaPacket.data(packItems(writer, self.items));
 }
 
-let Encode = {
-  Writer: undefined,
-  packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-  data: ErrorAwarePacketWriter$TerrariaPacket.data,
-  packItems: packItems,
-  toBuffer: toBuffer
-};
-
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

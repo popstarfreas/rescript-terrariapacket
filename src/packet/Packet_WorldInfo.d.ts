@@ -157,7 +157,7 @@ export type WorldInfo = {
   readonly sandstormSeverity: number;
 };
 
-export type parseOk = { TAG: "Ok"; _0: WorldInfo | undefined };
+export type parseOk = { TAG: "Ok"; _0: WorldInfo };
 export type parseError = { TAG: "Error"; _0: readError };
 export type parse = parseOk | parseError;
 export function parse(buffer: Buffer): parse;

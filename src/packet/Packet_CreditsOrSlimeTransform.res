@@ -1,5 +1,3 @@
-module Option = Belt.Option
-
 module EventType = {
   @genType
   type t =

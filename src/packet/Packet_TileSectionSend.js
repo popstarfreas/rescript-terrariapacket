@@ -60,89 +60,13 @@ function cacheToTile(cache) {
   };
 }
 
-function parse(reader) {
-  let e = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "id");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = ErrorAwareBufferReader$TerrariaPacket.readString(reader, "name");
-  if (e$3.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        id: e._0,
-        x: e$1._0,
-        y: e$2._0,
-        name: e$3._0
-      }
-    };
-  } else {
-    return e$3;
-  }
-}
-
 function pack(writer, chest) {
   return ErrorAwareBufferWriter$TerrariaPacket.packString(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer, chest.id, "id"), chest.x, "x"), chest.y, "y"), chest.name, "name");
-}
-
-let Chest = {
-  readString: ErrorAwareBufferReader$TerrariaPacket.readString,
-  readInt16: ErrorAwareBufferReader$TerrariaPacket.readInt16,
-  parse: parse,
-  packInt16: ErrorAwareBufferWriter$TerrariaPacket.packInt16,
-  packString: ErrorAwareBufferWriter$TerrariaPacket.packString,
-  pack: pack
-};
-
-function parse$1(reader) {
-  let e = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "id");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = ErrorAwareBufferReader$TerrariaPacket.readString(reader, "name");
-  if (e$3.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        id: e._0,
-        x: e$1._0,
-        y: e$2._0,
-        name: e$3._0
-      }
-    };
-  } else {
-    return e$3;
-  }
 }
 
 function pack$1(writer, sign) {
   return ErrorAwareBufferWriter$TerrariaPacket.packString(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer, sign.id, "id"), sign.x, "x"), sign.y, "y"), sign.name, "name");
 }
-
-let Sign = {
-  readString: ErrorAwareBufferReader$TerrariaPacket.readString,
-  readInt16: ErrorAwareBufferReader$TerrariaPacket.readInt16,
-  parse: parse$1,
-  packInt16: ErrorAwareBufferWriter$TerrariaPacket.packInt16,
-  packString: ErrorAwareBufferWriter$TerrariaPacket.packString,
-  pack: pack$1
-};
 
 function parseTrainingDummyKind(reader) {
   let e = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "npcSlotId");
@@ -336,206 +260,67 @@ function parseHatRackKind(reader) {
   }
 }
 
-function parse$2(reader) {
-  let e = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "entityType");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let entityType = e._0;
-  let e$1 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3;
-  switch (entityType) {
-    case 0 :
-      e$3 = Stdlib_Result.map(parseTrainingDummyKind(reader), v => ({
-        TAG: "TrainingDummy",
-        _0: v
-      }));
-      break;
-    case 1 :
-      e$3 = Stdlib_Result.map(parseDisplayItem(reader), v => ({
-        TAG: "ItemFrame",
-        _0: v
-      }));
-      break;
-    case 2 :
-      e$3 = Stdlib_Result.map(parseLogicSensorKind(reader), v => ({
-        TAG: "LogicSensor",
-        _0: v
-      }));
-      break;
-    case 3 :
-      e$3 = Stdlib_Result.map(parseDisplayDollKind(reader), v => ({
-        TAG: "DisplayDoll",
-        _0: v
-      }));
-      break;
-    case 4 :
-      e$3 = Stdlib_Result.map(parseDisplayItem(reader), v => ({
-        TAG: "WeaponsRack",
-        _0: v
-      }));
-      break;
-    case 5 :
-      e$3 = Stdlib_Result.map(parseHatRackKind(reader), v => ({
-        TAG: "HatRack",
-        _0: v
-      }));
-      break;
-    case 6 :
-      e$3 = Stdlib_Result.map(parseDisplayItem(reader), v => ({
-        TAG: "FoodPlatter",
-        _0: v
-      }));
-      break;
-    case 7 :
-      e$3 = {
-        TAG: "Ok",
-        _0: {
-          TAG: "TeleportationPylon",
-          _0: undefined
-        }
-      };
-      break;
-    default:
-      e$3 = {
-        TAG: "Error",
-        _0: {
-          context: "Entity.parse",
-          error: new Error("Unknown entity kind: " + String(entityType))
-        }
-      };
-  }
-  if (e$3.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        entityType: entityType,
-        x: e$1._0,
-        y: e$2._0,
-        entityKind: e$3._0
-      }
-    };
-  } else {
-    return e$3;
-  }
-}
-
-function packTrainingDummy(writer, trainingDummy) {
-  return ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer, trainingDummy.npcSlotId, "npcSlotId");
-}
-
 function packDisplayItem(writer, displayItem) {
   return ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packByte(ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer, displayItem.netId, "netId"), displayItem.prefix, "prefix"), displayItem.stack, "stack");
-}
-
-function packLogicSensor(writer, logicSensorKind) {
-  return ErrorAwareBufferWriter$TerrariaPacket.packByte(ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, logicSensorKind.checkType, "checkType"), logicSensorKind.on ? 1 : 0, "on");
 }
 
 function hasItem(arr, n) {
   return Belt_Option.isSome(Belt_Option.flatMap(Belt_Array.get(arr, n), a => a));
 }
 
-function packDisplayDoll(writer, displayDollKind) {
-  let itemFlags = BitFlags$TerrariaPacket.fromFlags(hasItem(displayDollKind.items, 0), hasItem(displayDollKind.items, 1), hasItem(displayDollKind.items, 2), hasItem(displayDollKind.items, 3), hasItem(displayDollKind.items, 4), hasItem(displayDollKind.items, 5), hasItem(displayDollKind.items, 6), hasItem(displayDollKind.items, 7));
-  let dyeFlags = BitFlags$TerrariaPacket.fromFlags(hasItem(displayDollKind.dyes, 0), hasItem(displayDollKind.dyes, 1), hasItem(displayDollKind.dyes, 2), hasItem(displayDollKind.dyes, 3), hasItem(displayDollKind.dyes, 4), hasItem(displayDollKind.dyes, 5), hasItem(displayDollKind.dyes, 6), hasItem(displayDollKind.dyes, 7));
-  ErrorAwareBufferWriter$TerrariaPacket.packByte(ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(itemFlags), "itemFlags"), BitFlags$TerrariaPacket.toByte(dyeFlags), "dyeFlags");
-  for (let i = 0; i <= 7; ++i) {
-    let item = Belt_Option.flatMap(Belt_Array.get(displayDollKind.items, i), a => a);
-    if (item !== undefined) {
-      packDisplayItem(writer, item);
-    }
-  }
-  for (let i$1 = 0; i$1 <= 7; ++i$1) {
-    let item$1 = Belt_Option.flatMap(Belt_Array.get(displayDollKind.dyes, i$1), a => a);
-    if (item$1 !== undefined) {
-      packDisplayItem(writer, item$1);
-    }
-  }
-  return writer;
-}
-
-function packHatRack(writer, hatRackKind) {
-  let flags = BitFlags$TerrariaPacket.fromFlags(hasItem(hatRackKind.items, 0), hasItem(hatRackKind.items, 1), hasItem(hatRackKind.dyes, 2), hasItem(hatRackKind.dyes, 3), false, false, false, false);
-  ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(flags), "flags");
-  for (let i = 0; i <= 1; ++i) {
-    let item = Belt_Option.flatMap(Belt_Array.get(hatRackKind.items, i), a => a);
-    if (item !== undefined) {
-      packDisplayItem(writer, item);
-    }
-  }
-  for (let i$1 = 0; i$1 <= 1; ++i$1) {
-    let item$1 = Belt_Option.flatMap(Belt_Array.get(hatRackKind.dyes, i$1), a => a);
-    if (item$1 !== undefined) {
-      packDisplayItem(writer, item$1);
-    }
-  }
-  return writer;
-}
-
-function packTeleportationPylon(writer, _teleportationPylonKind) {
-  return writer;
-}
-
-function packEntityKind(writer, entityKind) {
+function pack$2(writer, entity) {
+  let writer$1 = ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, entity.entityType, "entityType"), entity.x, "x"), entity.y, "y");
+  let entityKind = entity.entityKind;
   switch (entityKind.TAG) {
     case "DisplayDoll" :
-      return packDisplayDoll(writer, entityKind._0);
+      let displayDollKind = entityKind._0;
+      let itemFlags = BitFlags$TerrariaPacket.fromFlags(hasItem(displayDollKind.items, 0), hasItem(displayDollKind.items, 1), hasItem(displayDollKind.items, 2), hasItem(displayDollKind.items, 3), hasItem(displayDollKind.items, 4), hasItem(displayDollKind.items, 5), hasItem(displayDollKind.items, 6), hasItem(displayDollKind.items, 7));
+      let dyeFlags = BitFlags$TerrariaPacket.fromFlags(hasItem(displayDollKind.dyes, 0), hasItem(displayDollKind.dyes, 1), hasItem(displayDollKind.dyes, 2), hasItem(displayDollKind.dyes, 3), hasItem(displayDollKind.dyes, 4), hasItem(displayDollKind.dyes, 5), hasItem(displayDollKind.dyes, 6), hasItem(displayDollKind.dyes, 7));
+      ErrorAwareBufferWriter$TerrariaPacket.packByte(ErrorAwareBufferWriter$TerrariaPacket.packByte(writer$1, BitFlags$TerrariaPacket.toByte(itemFlags), "itemFlags"), BitFlags$TerrariaPacket.toByte(dyeFlags), "dyeFlags");
+      for (let i = 0; i <= 7; ++i) {
+        let item = Belt_Option.flatMap(Belt_Array.get(displayDollKind.items, i), a => a);
+        if (item !== undefined) {
+          packDisplayItem(writer$1, item);
+        }
+      }
+      for (let i$1 = 0; i$1 <= 7; ++i$1) {
+        let item$1 = Belt_Option.flatMap(Belt_Array.get(displayDollKind.dyes, i$1), a => a);
+        if (item$1 !== undefined) {
+          packDisplayItem(writer$1, item$1);
+        }
+      }
+      return writer$1;
     case "HatRack" :
-      return packHatRack(writer, entityKind._0);
+      let hatRackKind = entityKind._0;
+      let flags = BitFlags$TerrariaPacket.fromFlags(hasItem(hatRackKind.items, 0), hasItem(hatRackKind.items, 1), hasItem(hatRackKind.dyes, 2), hasItem(hatRackKind.dyes, 3), false, false, false, false);
+      ErrorAwareBufferWriter$TerrariaPacket.packByte(writer$1, BitFlags$TerrariaPacket.toByte(flags), "flags");
+      for (let i$2 = 0; i$2 <= 1; ++i$2) {
+        let item$2 = Belt_Option.flatMap(Belt_Array.get(hatRackKind.items, i$2), a => a);
+        if (item$2 !== undefined) {
+          packDisplayItem(writer$1, item$2);
+        }
+      }
+      for (let i$3 = 0; i$3 <= 1; ++i$3) {
+        let item$3 = Belt_Option.flatMap(Belt_Array.get(hatRackKind.dyes, i$3), a => a);
+        if (item$3 !== undefined) {
+          packDisplayItem(writer$1, item$3);
+        }
+      }
+      return writer$1;
     case "LogicSensor" :
-      return packLogicSensor(writer, entityKind._0);
+      let logicSensorKind = entityKind._0;
+      return ErrorAwareBufferWriter$TerrariaPacket.packByte(ErrorAwareBufferWriter$TerrariaPacket.packByte(writer$1, logicSensorKind.checkType, "checkType"), logicSensorKind.on ? 1 : 0, "on");
     case "TeleportationPylon" :
-      return writer;
+      return writer$1;
     case "TrainingDummy" :
-      return packTrainingDummy(writer, entityKind._0);
+      let trainingDummy = entityKind._0;
+      return ErrorAwareBufferWriter$TerrariaPacket.packInt16(writer$1, trainingDummy.npcSlotId, "npcSlotId");
     case "FoodPlatter" :
     case "ItemFrame" :
     case "WeaponsRack" :
-      return packDisplayItem(writer, entityKind._0);
+      return packDisplayItem(writer$1, entityKind._0);
   }
 }
-
-function pack$2(writer, entity) {
-  return packEntityKind(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packInt16(ErrorAwareBufferWriter$TerrariaPacket.packByte(writer, entity.entityType, "entityType"), entity.x, "x"), entity.y, "y"), entity.entityKind);
-}
-
-let Entity = {
-  readInt16: ErrorAwareBufferReader$TerrariaPacket.readInt16,
-  readByte: ErrorAwareBufferReader$TerrariaPacket.readByte,
-  parseTrainingDummyKind: parseTrainingDummyKind,
-  parseDisplayItem: parseDisplayItem,
-  parseItemFrameKind: parseDisplayItem,
-  parseLogicSensorKind: parseLogicSensorKind,
-  parseDisplayDollKind: parseDisplayDollKind,
-  parseWeaponsRackKind: parseDisplayItem,
-  parseHatRackKind: parseHatRackKind,
-  parseFoodPlatterKind: parseDisplayItem,
-  parse: parse$2,
-  packByte: ErrorAwareBufferWriter$TerrariaPacket.packByte,
-  packInt16: ErrorAwareBufferWriter$TerrariaPacket.packInt16,
-  packTrainingDummy: packTrainingDummy,
-  packDisplayItem: packDisplayItem,
-  packItemFrame: packDisplayItem,
-  packLogicSensor: packLogicSensor,
-  hasItem: hasItem,
-  packDisplayDoll: packDisplayDoll,
-  packWeaponsRack: packDisplayItem,
-  packHatRack: packHatRack,
-  packFoodPlatter: packDisplayItem,
-  packTeleportationPylon: packTeleportationPylon,
-  packEntityKind: packEntityKind,
-  pack: pack$2
-};
-
-let isTheSameAs = Primitive_object.equal;
 
 function clearTileCache(tile) {
   tile.activeTile = undefined;
@@ -589,7 +374,7 @@ function readRepeated(count, parseItem) {
   }
 }
 
-function parse$3(payload) {
+function parse(payload) {
   let packetReader = new Packetreader(payload);
   let e = ErrorAwarePacketReader$TerrariaPacket.getBytesLeft(packetReader);
   if (e.TAG !== "Ok") {
@@ -1029,7 +814,34 @@ function parse$3(payload) {
   if (e$6.TAG !== "Ok") {
     return e$6;
   }
-  let e$7 = readRepeated(e$6._0, () => parse(reader));
+  let e$7 = readRepeated(e$6._0, () => {
+    let e = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "id");
+    if (e.TAG !== "Ok") {
+      return e;
+    }
+    let e$1 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
+    if (e$1.TAG !== "Ok") {
+      return e$1;
+    }
+    let e$2 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
+    if (e$2.TAG !== "Ok") {
+      return e$2;
+    }
+    let e$3 = ErrorAwareBufferReader$TerrariaPacket.readString(reader, "name");
+    if (e$3.TAG === "Ok") {
+      return {
+        TAG: "Ok",
+        _0: {
+          id: e._0,
+          x: e$1._0,
+          y: e$2._0,
+          name: e$3._0
+        }
+      };
+    } else {
+      return e$3;
+    }
+  });
   if (e$7.TAG !== "Ok") {
     return e$7;
   }
@@ -1037,7 +849,34 @@ function parse$3(payload) {
   if (e$8.TAG !== "Ok") {
     return e$8;
   }
-  let e$9 = readRepeated(e$8._0, () => parse$1(reader));
+  let e$9 = readRepeated(e$8._0, () => {
+    let e = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "id");
+    if (e.TAG !== "Ok") {
+      return e;
+    }
+    let e$1 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
+    if (e$1.TAG !== "Ok") {
+      return e$1;
+    }
+    let e$2 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
+    if (e$2.TAG !== "Ok") {
+      return e$2;
+    }
+    let e$3 = ErrorAwareBufferReader$TerrariaPacket.readString(reader, "name");
+    if (e$3.TAG === "Ok") {
+      return {
+        TAG: "Ok",
+        _0: {
+          id: e._0,
+          x: e$1._0,
+          y: e$2._0,
+          name: e$3._0
+        }
+      };
+    } else {
+      return e$3;
+    }
+  });
   if (e$9.TAG !== "Ok") {
     return e$9;
   }
@@ -1045,7 +884,96 @@ function parse$3(payload) {
   if (e$10.TAG !== "Ok") {
     return e$10;
   }
-  let e$11 = readRepeated(e$10._0, () => parse$2(reader));
+  let e$11 = readRepeated(e$10._0, () => {
+    let e = ErrorAwareBufferReader$TerrariaPacket.readByte(reader, "entityType");
+    if (e.TAG !== "Ok") {
+      return e;
+    }
+    let entityType = e._0;
+    let e$1 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "x");
+    if (e$1.TAG !== "Ok") {
+      return e$1;
+    }
+    let e$2 = ErrorAwareBufferReader$TerrariaPacket.readInt16(reader, "y");
+    if (e$2.TAG !== "Ok") {
+      return e$2;
+    }
+    let e$3;
+    switch (entityType) {
+      case 0 :
+        e$3 = Stdlib_Result.map(parseTrainingDummyKind(reader), v => ({
+          TAG: "TrainingDummy",
+          _0: v
+        }));
+        break;
+      case 1 :
+        e$3 = Stdlib_Result.map(parseDisplayItem(reader), v => ({
+          TAG: "ItemFrame",
+          _0: v
+        }));
+        break;
+      case 2 :
+        e$3 = Stdlib_Result.map(parseLogicSensorKind(reader), v => ({
+          TAG: "LogicSensor",
+          _0: v
+        }));
+        break;
+      case 3 :
+        e$3 = Stdlib_Result.map(parseDisplayDollKind(reader), v => ({
+          TAG: "DisplayDoll",
+          _0: v
+        }));
+        break;
+      case 4 :
+        e$3 = Stdlib_Result.map(parseDisplayItem(reader), v => ({
+          TAG: "WeaponsRack",
+          _0: v
+        }));
+        break;
+      case 5 :
+        e$3 = Stdlib_Result.map(parseHatRackKind(reader), v => ({
+          TAG: "HatRack",
+          _0: v
+        }));
+        break;
+      case 6 :
+        e$3 = Stdlib_Result.map(parseDisplayItem(reader), v => ({
+          TAG: "FoodPlatter",
+          _0: v
+        }));
+        break;
+      case 7 :
+        e$3 = {
+          TAG: "Ok",
+          _0: {
+            TAG: "TeleportationPylon",
+            _0: undefined
+          }
+        };
+        break;
+      default:
+        e$3 = {
+          TAG: "Error",
+          _0: {
+            context: "Entity.parse",
+            error: new Error("Unknown entity kind: " + String(entityType))
+          }
+        };
+    }
+    if (e$3.TAG === "Ok") {
+      return {
+        TAG: "Ok",
+        _0: {
+          entityType: entityType,
+          x: e$1._0,
+          y: e$2._0,
+          entityKind: e$3._0
+        }
+      };
+    } else {
+      return e$3;
+    }
+  });
   if (e$11.TAG === "Ok") {
     return {
       TAG: "Ok",
@@ -1064,18 +992,6 @@ function parse$3(payload) {
     return e$11;
   }
 }
-
-let Decode = {
-  clearTileCache: clearTileCache,
-  PacketReader: undefined,
-  readBuffer: ErrorAwarePacketReader$TerrariaPacket.readBuffer,
-  getBytesLeft: ErrorAwarePacketReader$TerrariaPacket.getBytesLeft,
-  readInt16: ErrorAwareBufferReader$TerrariaPacket.readInt16,
-  readInt32: ErrorAwareBufferReader$TerrariaPacket.readInt32,
-  readByte: ErrorAwareBufferReader$TerrariaPacket.readByte,
-  readRepeated: readRepeated,
-  parse: parse$3
-};
 
 function getLiquidBitFlags(tile) {
   let liquidBits = tile.honey ? "Three" : (
@@ -1329,36 +1245,15 @@ function toBuffer(self) {
   };
 }
 
-let Encode = {
-  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-  packBuffer: ErrorAwarePacketWriter$TerrariaPacket.packBuffer,
-  packByte: ErrorAwareBufferWriter$TerrariaPacket.packByte,
-  packInt16: ErrorAwareBufferWriter$TerrariaPacket.packInt16,
-  packInt32: ErrorAwareBufferWriter$TerrariaPacket.packInt32,
-  data: ErrorAwareBufferWriter$TerrariaPacket.data,
-  getLiquidBitFlags: getLiquidBitFlags,
-  getSlopeBitFlags: getSlopeBitFlags,
-  getRepeatCountByteLength: getRepeatCountByteLength,
-  getRepeatCountBitFlags: getRepeatCountBitFlags,
-  packTile: packTile,
-  decidePackTile: decidePackTile,
-  toBuffer: toBuffer
-};
+let Chest = {};
 
-let Int;
+let Sign = {};
 
-let Option;
+let Entity = {};
 
-exports.Int = Int;
-exports.Option = Option;
-exports.defaultTileCache = defaultTileCache;
-exports.cacheToTile = cacheToTile;
 exports.Chest = Chest;
 exports.Sign = Sign;
 exports.Entity = Entity;
-exports.isTheSameAs = isTheSameAs;
-exports.Decode = Decode;
-exports.Encode = Encode;
-exports.parse = parse$3;
+exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* node:zlib Not a pure module */

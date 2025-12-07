@@ -21,24 +21,10 @@ function parse(payload) {
   }
 }
 
-let Decode = {
-  readNetworkText: ErrorAwarePacketReader$TerrariaPacket.readNetworkText,
-  parse: parse
-};
-
 function toBuffer(self) {
   return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packNetworkText(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("Disconnect")), self.reason, "reason"));
 }
 
-let Encode = {
-  packNetworkText: ErrorAwarePacketWriter$TerrariaPacket.packNetworkText,
-  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-  data: ErrorAwarePacketWriter$TerrariaPacket.data,
-  toBuffer: toBuffer
-};
-
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

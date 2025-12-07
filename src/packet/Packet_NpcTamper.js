@@ -25,11 +25,6 @@ function toInt(self) {
   }
 }
 
-let Immunity = {
-  fromInt: fromInt,
-  toInt: toInt
-};
-
 function parse(payload) {
   let reader = new Packetreader(payload);
   let e = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "npcId");
@@ -78,14 +73,6 @@ function parse(payload) {
   };
 }
 
-let Decode = {
-  readUInt16: ErrorAwarePacketReader$TerrariaPacket.readUInt16,
-  readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-  readInt32: ErrorAwarePacketReader$TerrariaPacket.readInt32,
-  readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-  parse: parse
-};
-
 function packImmunity(writer, immunityTime, immunityOrigin) {
   if (immunityTime !== undefined && immunityOrigin !== undefined) {
     return ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, 1, "setNpcImmunity"), immunityTime, "immunityTime"), toInt(immunityOrigin), "immunityFromPlayerId");
@@ -98,23 +85,9 @@ function toBuffer(self) {
   return ErrorAwarePacketWriter$TerrariaPacket.data(packImmunity(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcTamper")), self.npcId, "npcId"), self.immunityTime, self.immunityFromPlayerId));
 }
 
-let Encode = {
-  packUInt16: ErrorAwarePacketWriter$TerrariaPacket.packUInt16,
-  packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-  packInt32: ErrorAwarePacketWriter$TerrariaPacket.packInt32,
-  packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-  setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-  data: ErrorAwarePacketWriter$TerrariaPacket.data,
-  packImmunity: packImmunity,
-  toBuffer: toBuffer
-};
+let Immunity = {};
 
-let Option;
-
-exports.Option = Option;
 exports.Immunity = Immunity;
-exports.Decode = Decode;
-exports.Encode = Encode;
 exports.parse = parse;
 exports.toBuffer = toBuffer;
 /* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

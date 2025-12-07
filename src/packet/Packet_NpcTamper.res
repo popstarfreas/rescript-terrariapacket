@@ -1,5 +1,3 @@
-module Option = Belt.Option
-
 module Immunity = {
   @genType
   type t =
