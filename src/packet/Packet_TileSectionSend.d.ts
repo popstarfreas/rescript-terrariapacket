@@ -1,3 +1,5 @@
+import type { readError } from "../ErrorAwarePacketReader";
+import type { PackError } from "../ErrorAwarePacketWriter";
 /* TypeScript file generated from Packet_TileSectionSend.res by genType. */
 
 /* eslint-disable */
@@ -110,3 +112,18 @@ export type t = {
   readonly signs: Sign_t[]; 
   readonly entities: Entity_t[]
 };
+
+export declare const Chest: {};
+
+export declare const Sign: {};
+
+export declare const Entity: {};
+
+export type parseOk = { TAG: "Ok"; _0: t };
+export type parseError = { TAG: "Error"; _0: readError };
+export type parse = parseOk | parseError;
+export declare const parse: (_1: Buffer) => parse;
+export type toBufferOk = { TAG: "Ok"; _0: Buffer };
+export type toBufferError = { TAG: "Error"; _0: PackError };
+export type toBuffer = toBufferOk | toBufferError;
+export declare const toBuffer: (_1: t) => toBuffer;

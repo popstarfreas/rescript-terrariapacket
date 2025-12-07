@@ -160,10 +160,8 @@ export type WorldInfo = {
 export type parseOk = { TAG: "Ok"; _0: WorldInfo };
 export type parseError = { TAG: "Error"; _0: readError };
 export type parse = parseOk | parseError;
-export function parse(buffer: Buffer): parse;
-
+export declare const parse: (_1: Buffer) => parse;
 export type toBufferOk = { TAG: "Ok"; _0: Buffer };
 export type toBufferError = { TAG: "Error"; _0: PackError };
 export type toBuffer = toBufferOk | toBufferError;
-
-export function toBuffer(data: WorldInfo): toBuffer;
+export declare const toBuffer: (_1: WorldInfo) => toBuffer;

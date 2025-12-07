@@ -94,13 +94,18 @@ export type NetModuleType_t =
   | "Particles"
   | "CreativePowerPermissions";
 
+export type t = NetModuleLoad;
+
+export declare const NetModuleType: {
+  toInt: (_1: NetModuleType_t) => number;
+  fromInt: (_1: number) => NetModuleType_t | undefined
+};
+
 export type parseOk = { TAG: "Ok"; _0: NetModuleLoad };
 export type parseError = { TAG: "Error"; _0: readError };
 export type parse = parseOk | parseError;
-export function parse(buffer: Buffer, fromServer: boolean): parse;
-
+export declare const parse: (_1: Buffer, _2: boolean) => parse;
 export type toBufferOk = { TAG: "Ok"; _0: Buffer };
 export type toBufferError = { TAG: "Error"; _0: PackError };
 export type toBuffer = toBufferOk | toBufferError;
-
-export function toBuffer(data: NetModuleLoad): toBuffer;
+export declare const toBuffer: (_1: NetModuleLoad) => toBuffer;

@@ -41,11 +41,14 @@ export type t = {
   readonly tiles: Array<tile[]>
 };
 
+export declare const Decode: { parse: (_1: Buffer) => parse };
+
+export declare const Encode: { toBuffer: (_1: t) => toBuffer };
+
 export type parseOk = { TAG: "Ok"; _0: t };
 export type parseError = { TAG: "Error"; _0: readError };
 export type parse = parseOk | parseError;
 export declare const parse: (_1: Buffer) => parse;
-
 export type toBufferOk = { TAG: "Ok"; _0: Buffer };
 export type toBufferError = { TAG: "Error"; _0: PackError };
 export type toBuffer = toBufferOk | toBufferError;
