@@ -4,6 +4,8 @@
 /* tslint:disable */
 
 import type { t as Lazy_t } from '../src/shims/Lazy';
+import type { Result } from '../src/shims/Result';
+import type { readError } from "./ErrorAwarePacketReader";
 
 import type { t as Packet_ActiveContainerSync_t } from '../src/packet/Packet_ActiveContainerSync';
 
@@ -439,148 +441,150 @@ export type t =
   | { TAG: "LoadoutSwitch"; _0: Packet_LoadoutSwitch_t }
   | { TAG: "ItemDropProtectedUpdate"; _0: Packet_ItemDropProtectedUpdate_t };
 
+export type LazyPacket_lazyParsed<a> = Lazy_t<Result<a, readError>>;
+
 export type LazyPacket_t =
-  { TAG: "ConnectRequest"; _0: Lazy_t<(undefined | Packet_ConnectRequest_t)> }
-  | { TAG: "Disconnect"; _0: Lazy_t<(undefined | Packet_Disconnect_t)> }
-  | { TAG: "PlayerSlotSet"; _0: Lazy_t<(undefined | Packet_PlayerSlotSet_t)> }
-  | { TAG: "PlayerInfo"; _0: Lazy_t<(undefined | Packet_PlayerInfo_t)> }
-  | { TAG: "PlayerInventorySlot"; _0: Lazy_t<(undefined | Packet_PlayerInventorySlot_t)> }
-  | { TAG: "WorldDataRequest"; _0: Lazy_t<(undefined | Packet_WorldDataRequest_t)> }
-  | { TAG: "WorldInfo"; _0: Lazy_t<(undefined | Packet_WorldInfo_t)> }
-  | { TAG: "InitialTileSectionsRequest"; _0: Lazy_t<(undefined | Packet_InitialTileSectionsRequest_t)> }
-  | { TAG: "Status"; _0: Lazy_t<(undefined | Packet_Status_t)> }
-  | { TAG: "TileSectionSend"; _0: Lazy_t<(undefined | Packet_TileSectionSend_t)> }
-  | { TAG: "TileSectionFrame"; _0: Lazy_t<(undefined | Packet_TileSectionFrame_t)> }
-  | { TAG: "PlayerSpawn"; _0: Lazy_t<(undefined | Packet_PlayerSpawn_t)> }
-  | { TAG: "PlayerUpdate"; _0: Lazy_t<(undefined | Packet_PlayerUpdate_t)> }
-  | { TAG: "PlayerActive"; _0: Lazy_t<(undefined | Packet_PlayerActive_t)> }
-  | { TAG: "PlayerHealth"; _0: Lazy_t<(undefined | Packet_PlayerHealth_t)> }
-  | { TAG: "TileModify"; _0: Lazy_t<(undefined | Packet_TileModify_t)> }
-  | { TAG: "TimeSet"; _0: Lazy_t<(undefined | Packet_TimeSet_t)> }
-  | { TAG: "DoorUse"; _0: Lazy_t<(undefined | Packet_DoorUse_t)> }
-  | { TAG: "TileSquareSend"; _0: Lazy_t<(undefined | Packet_TileSquareSend_t)> }
-  | { TAG: "ItemDropUpdate"; _0: Lazy_t<(undefined | Packet_ItemDropUpdate_t)> }
-  | { TAG: "ItemOwner"; _0: Lazy_t<(undefined | Packet_ItemOwner_t)> }
-  | { TAG: "NpcUpdate"; _0: Lazy_t<(undefined | Packet_NpcUpdate_t)> }
-  | { TAG: "NpcItemStrike"; _0: Lazy_t<(undefined | Packet_NpcItemStrike_t)> }
-  | { TAG: "ProjectileSync"; _0: Lazy_t<(undefined | Packet_ProjectileSync_t)> }
-  | { TAG: "NpcStrike"; _0: Lazy_t<(undefined | Packet_NpcStrike_t)> }
-  | { TAG: "ProjectileDestroy"; _0: Lazy_t<(undefined | Packet_ProjectileDestroy_t)> }
-  | { TAG: "PvpToggle"; _0: Lazy_t<(undefined | Packet_PvpToggle_t)> }
-  | { TAG: "ChestOpen"; _0: Lazy_t<(undefined | Packet_ChestOpen_t)> }
-  | { TAG: "ChestItem"; _0: Lazy_t<(undefined | Packet_ChestItem_t)> }
-  | { TAG: "ActiveContainerSync"; _0: Lazy_t<(undefined | Packet_ActiveContainerSync_t)> }
-  | { TAG: "ChestPlace"; _0: Lazy_t<(undefined | Packet_ChestPlace_t)> }
-  | { TAG: "HealEffect"; _0: Lazy_t<(undefined | Packet_HealEffect_t)> }
-  | { TAG: "Zones"; _0: Lazy_t<(undefined | Packet_Zones_t)> }
-  | { TAG: "PasswordRequired"; _0: Lazy_t<(undefined | Packet_PasswordRequired_t)> }
-  | { TAG: "PasswordSend"; _0: Lazy_t<(undefined | Packet_PasswordSend_t)> }
-  | { TAG: "ItemOwnerRemove"; _0: Lazy_t<(undefined | Packet_ItemOwnerRemove_t)> }
-  | { TAG: "NpcTalk"; _0: Lazy_t<(undefined | Packet_NpcTalk_t)> }
-  | { TAG: "PlayerAnimation"; _0: Lazy_t<(undefined | Packet_PlayerAnimation_t)> }
-  | { TAG: "PlayerMana"; _0: Lazy_t<(undefined | Packet_PlayerMana_t)> }
-  | { TAG: "ManaEffect"; _0: Lazy_t<(undefined | Packet_ManaEffect_t)> }
-  | { TAG: "PlayerTeam"; _0: Lazy_t<(undefined | Packet_PlayerTeam_t)> }
-  | { TAG: "SignRead"; _0: Lazy_t<(undefined | Packet_SignRead_t)> }
-  | { TAG: "SignNew"; _0: Lazy_t<(undefined | Packet_SignNew_t)> }
-  | { TAG: "LiquidSet"; _0: Lazy_t<(undefined | Packet_LiquidSet_t)> }
-  | { TAG: "PlayerSpawnSelf"; _0: Lazy_t<(undefined | Packet_PlayerSpawnSelf_t)> }
-  | { TAG: "PlayerBuffsSet"; _0: Lazy_t<(undefined | Packet_PlayerBuffsSet_t)> }
-  | { TAG: "NpcSpecialEffect"; _0: Lazy_t<(undefined | Packet_NpcSpecialEffect_t)> }
-  | { TAG: "ChestOrTempleUnlock"; _0: Lazy_t<(undefined | Packet_ChestOrTempleUnlock_t)> }
-  | { TAG: "NpcBuffAdd"; _0: Lazy_t<(undefined | Packet_NpcBuffAdd_t)> }
-  | { TAG: "NpcBuffUpdate"; _0: Lazy_t<(undefined | Packet_NpcBuffUpdate_t)> }
-  | { TAG: "PlayerBuffAdd"; _0: Lazy_t<(undefined | Packet_PlayerBuffAdd_t)> }
-  | { TAG: "NpcNameUpdate"; _0: Lazy_t<(undefined | Packet_NpcNameUpdate_t)> }
-  | { TAG: "GoodEvilUpdate"; _0: Lazy_t<(undefined | Packet_GoodEvilUpdate_t)> }
-  | { TAG: "HarpPlay"; _0: Lazy_t<(undefined | Packet_HarpPlay_t)> }
-  | { TAG: "SwitchHit"; _0: Lazy_t<(undefined | Packet_SwitchHit_t)> }
-  | { TAG: "NpcHomeUpdate"; _0: Lazy_t<(undefined | Packet_NpcHomeUpdate_t)> }
-  | { TAG: "BossOrInvasionSpawn"; _0: Lazy_t<(undefined | Packet_BossOrInvasionSpawn_t)> }
-  | { TAG: "PlayerDodge"; _0: Lazy_t<(undefined | Packet_PlayerDodge_t)> }
-  | { TAG: "TilePaint"; _0: Lazy_t<(undefined | Packet_TilePaint_t)> }
-  | { TAG: "WallPaint"; _0: Lazy_t<(undefined | Packet_WallPaint_t)> }
-  | { TAG: "Teleport"; _0: Lazy_t<(undefined | Packet_Teleport_t)> }
-  | { TAG: "PlayerHealOther"; _0: Lazy_t<(undefined | Packet_PlayerHealOther_t)> }
-  | { TAG: "DimensionsUpdate"; _0: Lazy_t<(undefined | Packet_DimensionsUpdate_t)> }
-  | { TAG: "ClientUuid"; _0: Lazy_t<(undefined | Packet_ClientUuid_t)> }
-  | { TAG: "ChestName"; _0: Lazy_t<(undefined | Packet_ChestName_t)> }
-  | { TAG: "NpcCatch"; _0: Lazy_t<(undefined | Packet_NpcCatch_t)> }
-  | { TAG: "NpcRelease"; _0: Lazy_t<(undefined | Packet_NpcRelease_t)> }
-  | { TAG: "TravellingMerchantInventory"; _0: Lazy_t<(undefined | Packet_TravellingMerchantInventory_t)> }
-  | { TAG: "TeleportationPotion"; _0: Lazy_t<(undefined | Packet_TeleportationPotion_t)> }
-  | { TAG: "AnglerQuest"; _0: Lazy_t<(undefined | Packet_AnglerQuest_t)> }
-  | { TAG: "AnglerQuestComplete"; _0: Lazy_t<(undefined | Packet_AnglerQuestComplete_t)> }
-  | { TAG: "AnglerQuestsCompletedAmount"; _0: Lazy_t<(undefined | Packet_AnglerQuestsCompletedAmount_t)> }
-  | { TAG: "TemporaryAnimationCreate"; _0: Lazy_t<(undefined | Packet_TemporaryAnimationCreate_t)> }
-  | { TAG: "InvasionProgressReport"; _0: Lazy_t<(undefined | Packet_InvasionProgressReport_t)> }
-  | { TAG: "ObjectPlace"; _0: Lazy_t<(undefined | Packet_ObjectPlace_t)> }
-  | { TAG: "PlayerChestIndexSync"; _0: Lazy_t<(undefined | Packet_PlayerChestIndexSync_t)> }
-  | { TAG: "CombatNumberCreate"; _0: Lazy_t<(undefined | Packet_CombatNumberCreate_t)> }
-  | { TAG: "NetModuleLoad"; _0: Lazy_t<(undefined | NetModuleLoad)> }
-  | { TAG: "NpcKillCount"; _0: Lazy_t<(undefined | Packet_NpcKillCount_t)> }
-  | { TAG: "PlayerStealth"; _0: Lazy_t<(undefined | Packet_PlayerStealth_t)> }
-  | { TAG: "ItemForceIntoNearestChest"; _0: Lazy_t<(undefined | Packet_ItemForceIntoNearestChest_t)> }
-  | { TAG: "TileEntityUpdate"; _0: Lazy_t<(undefined | Packet_TileEntityUpdate_t)> }
-  | { TAG: "TileEntityPlace"; _0: Lazy_t<(undefined | Packet_TileEntityPlace_t)> }
-  | { TAG: "ItemDropModify"; _0: Lazy_t<(undefined | Packet_ItemDropModify_t)> }
-  | { TAG: "ItemFramePlace"; _0: Lazy_t<(undefined | Packet_ItemFramePlace_t)> }
-  | { TAG: "ItemDropInstancedUpdate"; _0: Lazy_t<(undefined | Packet_ItemDropInstancedUpdate_t)> }
-  | { TAG: "EmoteBubble"; _0: Lazy_t<(undefined | Packet_EmoteBubble_t)> }
-  | { TAG: "ExtraValueSync"; _0: Lazy_t<(undefined | Packet_ExtraValueSync_t)> }
-  | { TAG: "SocialHandshake"; _0: Lazy_t<(undefined | Packet_SocialHandshake_t)> }
-  | { TAG: "Unused"; _0: Lazy_t<(undefined | Packet_Unused_t)> }
-  | { TAG: "PortalKill"; _0: Lazy_t<(undefined | Packet_PortalKill_t)> }
-  | { TAG: "PlayerTeleportPortal"; _0: Lazy_t<(undefined | Packet_PlayerTeleportPortal_t)> }
-  | { TAG: "NpcKilledNotification"; _0: Lazy_t<(undefined | Packet_NpcKilledNotification_t)> }
-  | { TAG: "EventNotification"; _0: Lazy_t<(undefined | Packet_EventNotification_t)> }
-  | { TAG: "MinionTargetUpdate"; _0: Lazy_t<(undefined | Packet_MinionTargetUpdate_t)> }
-  | { TAG: "NpcTeleportPortal"; _0: Lazy_t<(undefined | Packet_NpcTeleportPortal_t)> }
-  | { TAG: "ShieldStrengthsUpdate"; _0: Lazy_t<(undefined | Packet_ShieldStrengthsUpdate_t)> }
-  | { TAG: "NebulaLevelUp"; _0: Lazy_t<(undefined | Packet_NebulaLevelUp_t)> }
-  | { TAG: "MoonLordCountdown"; _0: Lazy_t<(undefined | Packet_MoonLordCountdown_t)> }
-  | { TAG: "NpcShopItem"; _0: Lazy_t<(undefined | Packet_NpcShopItem_t)> }
-  | { TAG: "GemLockToggle"; _0: Lazy_t<(undefined | Packet_GemLockToggle_t)> }
-  | { TAG: "SmokePoof"; _0: Lazy_t<(undefined | Packet_SmokePoof_t)> }
-  | { TAG: "ChatMessageSmart"; _0: Lazy_t<(undefined | Packet_ChatMessageSmart_t)> }
-  | { TAG: "WiredCannonShot"; _0: Lazy_t<(undefined | Packet_WiredCannonShot_t)> }
-  | { TAG: "MassWireOperation"; _0: Lazy_t<(undefined | Packet_MassWireOperation_t)> }
-  | { TAG: "MassWireOperationPay"; _0: Lazy_t<(undefined | Packet_MassWireOperationPay_t)> }
-  | { TAG: "PartyToggle"; _0: Lazy_t<(undefined | Packet_PartyToggle_t)> }
-  | { TAG: "TreeGrowFx"; _0: Lazy_t<(undefined | Packet_TreeGrowFx_t)> }
-  | { TAG: "CrystalInvasionStart"; _0: Lazy_t<(undefined | Packet_CrystalInvasionStart_t)> }
-  | { TAG: "CrystalInvasionWipeAll"; _0: Lazy_t<(undefined | Packet_CrystalInvasionWipeAll_t)> }
-  | { TAG: "MinionAttackTargetUpdate"; _0: Lazy_t<(undefined | Packet_MinionAttackTargetUpdate_t)> }
-  | { TAG: "CrystalInvasionSendWaitTime"; _0: Lazy_t<(undefined | Packet_CrystalInvasionSendWaitTime_t)> }
-  | { TAG: "PlayerDamage"; _0: Lazy_t<(undefined | Packet_PlayerDamage_t)> }
-  | { TAG: "PlayerDeath"; _0: Lazy_t<(undefined | Packet_PlayerDeath_t)> }
-  | { TAG: "CombatTextCreate"; _0: Lazy_t<(undefined | Packet_CombatTextCreate_t)> }
-  | { TAG: "Emoji"; _0: Lazy_t<(undefined | Packet_Emoji_t)> }
-  | { TAG: "TileEntityDisplayDollItemSync"; _0: Lazy_t<(undefined | Packet_TileEntityDisplayDollItemSync_t)> }
-  | { TAG: "TileEntityInteractionRequest"; _0: Lazy_t<(undefined | Packet_TileEntityInteractionRequest_t)> }
-  | { TAG: "WeaponsRackTryPlacing"; _0: Lazy_t<(undefined | Packet_WeaponsRackTryPlacing_t)> }
-  | { TAG: "TileEntityHatRackItemSync"; _0: Lazy_t<(undefined | Packet_TileEntityHatRackItemSync_t)> }
-  | { TAG: "TilePickingSync"; _0: Lazy_t<(undefined | Packet_TilePickingSync_t)> }
-  | { TAG: "RevengeMarkerSync"; _0: Lazy_t<(undefined | Packet_RevengeMarkerSync_t)> }
-  | { TAG: "RevengeMarkerRemove"; _0: Lazy_t<(undefined | Packet_RevengeMarkerRemove_t)> }
-  | { TAG: "GolfBallLandInCup"; _0: Lazy_t<(undefined | Packet_GolfBallLandInCup_t)> }
-  | { TAG: "ClientFinishConnectingToServer"; _0: Lazy_t<(undefined | Packet_ClientFinishConnectingToServer_t)> }
-  | { TAG: "NpcFishOut"; _0: Lazy_t<(undefined | Packet_NpcFishOut_t)> }
-  | { TAG: "NpcTamper"; _0: Lazy_t<(undefined | Packet_NpcTamper_t)> }
-  | { TAG: "LegacySoundPlay"; _0: Lazy_t<(undefined | Packet_LegacySoundPlay_t)> }
-  | { TAG: "FoodPlatterTryPlacing"; _0: Lazy_t<(undefined | Packet_FoodPlatterTryPlacing_t)> }
-  | { TAG: "PlayerLuckFactorsUpdate"; _0: Lazy_t<(undefined | Packet_PlayerLuckFactorsUpdate_t)> }
-  | { TAG: "PlayerDead"; _0: Lazy_t<(undefined | Packet_PlayerDead_t)> }
-  | { TAG: "CavernMonsterTypeSync"; _0: Lazy_t<(undefined | Packet_CavernMonsterTypeSync_t)> }
-  | { TAG: "NpcBuffRemovalRequest"; _0: Lazy_t<(undefined | Packet_NpcBuffRemovalRequest_t)> }
-  | { TAG: "ClientSyncedInventory"; _0: Lazy_t<(undefined | Packet_ClientSyncedInventory_t)> }
-  | { TAG: "CountsAsHostForGameplaySet"; _0: Lazy_t<(undefined | Packet_CountsAsHostForGameplaySet_t)> }
-  | { TAG: "CreditsOrSlimeTransform"; _0: Lazy_t<(undefined | Packet_CreditsOrSlimeTransform_t)> }
-  | { TAG: "LucyAxeMessage"; _0: Lazy_t<(undefined | Packet_LucyAxeMessage_t)> }
-  | { TAG: "PiggyBankVoidLensUpdate"; _0: Lazy_t<(undefined | Packet_PiggyBankVoidLensUpdate_t)> }
-  | { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: Lazy_t<(undefined | Packet_DungeonDefendersEventAttemptSkipWait_t)> }
-  | { TAG: "HaveDryadDoStardewAnimation"; _0: Lazy_t<(undefined | Packet_HaveDryadDoStardewAnimation_t)> }
-  | { TAG: "ItemDropShimmeredUpdate"; _0: Lazy_t<(undefined | Packet_ItemDropShimmeredUpdate_t)> }
-  | { TAG: "ShimmerEffectOrCoinLuck"; _0: Lazy_t<(undefined | Packet_ShimmerEffectOrCoinLuck_t)> }
-  | { TAG: "LoadoutSwitch"; _0: Lazy_t<(undefined | Packet_LoadoutSwitch_t)> }
-  | { TAG: "ItemDropProtectedUpdate"; _0: Lazy_t<(undefined | Packet_ItemDropProtectedUpdate_t)> };
+  { TAG: "ConnectRequest"; _0: LazyPacket_lazyParsed<Packet_ConnectRequest_t> }
+  | { TAG: "Disconnect"; _0: LazyPacket_lazyParsed<Packet_Disconnect_t> }
+  | { TAG: "PlayerSlotSet"; _0: LazyPacket_lazyParsed<Packet_PlayerSlotSet_t> }
+  | { TAG: "PlayerInfo"; _0: LazyPacket_lazyParsed<Packet_PlayerInfo_t> }
+  | { TAG: "PlayerInventorySlot"; _0: LazyPacket_lazyParsed<Packet_PlayerInventorySlot_t> }
+  | { TAG: "WorldDataRequest"; _0: LazyPacket_lazyParsed<Packet_WorldDataRequest_t> }
+  | { TAG: "WorldInfo"; _0: LazyPacket_lazyParsed<Packet_WorldInfo_t> }
+  | { TAG: "InitialTileSectionsRequest"; _0: LazyPacket_lazyParsed<Packet_InitialTileSectionsRequest_t> }
+  | { TAG: "Status"; _0: LazyPacket_lazyParsed<Packet_Status_t> }
+  | { TAG: "TileSectionSend"; _0: LazyPacket_lazyParsed<Packet_TileSectionSend_t> }
+  | { TAG: "TileSectionFrame"; _0: LazyPacket_lazyParsed<Packet_TileSectionFrame_t> }
+  | { TAG: "PlayerSpawn"; _0: LazyPacket_lazyParsed<Packet_PlayerSpawn_t> }
+  | { TAG: "PlayerUpdate"; _0: LazyPacket_lazyParsed<Packet_PlayerUpdate_t> }
+  | { TAG: "PlayerActive"; _0: LazyPacket_lazyParsed<Packet_PlayerActive_t> }
+  | { TAG: "PlayerHealth"; _0: LazyPacket_lazyParsed<Packet_PlayerHealth_t> }
+  | { TAG: "TileModify"; _0: LazyPacket_lazyParsed<Packet_TileModify_t> }
+  | { TAG: "TimeSet"; _0: LazyPacket_lazyParsed<Packet_TimeSet_t> }
+  | { TAG: "DoorUse"; _0: LazyPacket_lazyParsed<Packet_DoorUse_t> }
+  | { TAG: "TileSquareSend"; _0: LazyPacket_lazyParsed<Packet_TileSquareSend_t> }
+  | { TAG: "ItemDropUpdate"; _0: LazyPacket_lazyParsed<Packet_ItemDropUpdate_t> }
+  | { TAG: "ItemOwner"; _0: LazyPacket_lazyParsed<Packet_ItemOwner_t> }
+  | { TAG: "NpcUpdate"; _0: LazyPacket_lazyParsed<Packet_NpcUpdate_t> }
+  | { TAG: "NpcItemStrike"; _0: LazyPacket_lazyParsed<Packet_NpcItemStrike_t> }
+  | { TAG: "ProjectileSync"; _0: LazyPacket_lazyParsed<Packet_ProjectileSync_t> }
+  | { TAG: "NpcStrike"; _0: LazyPacket_lazyParsed<Packet_NpcStrike_t> }
+  | { TAG: "ProjectileDestroy"; _0: LazyPacket_lazyParsed<Packet_ProjectileDestroy_t> }
+  | { TAG: "PvpToggle"; _0: LazyPacket_lazyParsed<Packet_PvpToggle_t> }
+  | { TAG: "ChestOpen"; _0: LazyPacket_lazyParsed<Packet_ChestOpen_t> }
+  | { TAG: "ChestItem"; _0: LazyPacket_lazyParsed<Packet_ChestItem_t> }
+  | { TAG: "ActiveContainerSync"; _0: LazyPacket_lazyParsed<Packet_ActiveContainerSync_t> }
+  | { TAG: "ChestPlace"; _0: LazyPacket_lazyParsed<Packet_ChestPlace_t> }
+  | { TAG: "HealEffect"; _0: LazyPacket_lazyParsed<Packet_HealEffect_t> }
+  | { TAG: "Zones"; _0: LazyPacket_lazyParsed<Packet_Zones_t> }
+  | { TAG: "PasswordRequired"; _0: LazyPacket_lazyParsed<Packet_PasswordRequired_t> }
+  | { TAG: "PasswordSend"; _0: LazyPacket_lazyParsed<Packet_PasswordSend_t> }
+  | { TAG: "ItemOwnerRemove"; _0: LazyPacket_lazyParsed<Packet_ItemOwnerRemove_t> }
+  | { TAG: "NpcTalk"; _0: LazyPacket_lazyParsed<Packet_NpcTalk_t> }
+  | { TAG: "PlayerAnimation"; _0: LazyPacket_lazyParsed<Packet_PlayerAnimation_t> }
+  | { TAG: "PlayerMana"; _0: LazyPacket_lazyParsed<Packet_PlayerMana_t> }
+  | { TAG: "ManaEffect"; _0: LazyPacket_lazyParsed<Packet_ManaEffect_t> }
+  | { TAG: "PlayerTeam"; _0: LazyPacket_lazyParsed<Packet_PlayerTeam_t> }
+  | { TAG: "SignRead"; _0: LazyPacket_lazyParsed<Packet_SignRead_t> }
+  | { TAG: "SignNew"; _0: LazyPacket_lazyParsed<Packet_SignNew_t> }
+  | { TAG: "LiquidSet"; _0: LazyPacket_lazyParsed<Packet_LiquidSet_t> }
+  | { TAG: "PlayerSpawnSelf"; _0: LazyPacket_lazyParsed<Packet_PlayerSpawnSelf_t> }
+  | { TAG: "PlayerBuffsSet"; _0: LazyPacket_lazyParsed<Packet_PlayerBuffsSet_t> }
+  | { TAG: "NpcSpecialEffect"; _0: LazyPacket_lazyParsed<Packet_NpcSpecialEffect_t> }
+  | { TAG: "ChestOrTempleUnlock"; _0: LazyPacket_lazyParsed<Packet_ChestOrTempleUnlock_t> }
+  | { TAG: "NpcBuffAdd"; _0: LazyPacket_lazyParsed<Packet_NpcBuffAdd_t> }
+  | { TAG: "NpcBuffUpdate"; _0: LazyPacket_lazyParsed<Packet_NpcBuffUpdate_t> }
+  | { TAG: "PlayerBuffAdd"; _0: LazyPacket_lazyParsed<Packet_PlayerBuffAdd_t> }
+  | { TAG: "NpcNameUpdate"; _0: LazyPacket_lazyParsed<Packet_NpcNameUpdate_t> }
+  | { TAG: "GoodEvilUpdate"; _0: LazyPacket_lazyParsed<Packet_GoodEvilUpdate_t> }
+  | { TAG: "HarpPlay"; _0: LazyPacket_lazyParsed<Packet_HarpPlay_t> }
+  | { TAG: "SwitchHit"; _0: LazyPacket_lazyParsed<Packet_SwitchHit_t> }
+  | { TAG: "NpcHomeUpdate"; _0: LazyPacket_lazyParsed<Packet_NpcHomeUpdate_t> }
+  | { TAG: "BossOrInvasionSpawn"; _0: LazyPacket_lazyParsed<Packet_BossOrInvasionSpawn_t> }
+  | { TAG: "PlayerDodge"; _0: LazyPacket_lazyParsed<Packet_PlayerDodge_t> }
+  | { TAG: "TilePaint"; _0: LazyPacket_lazyParsed<Packet_TilePaint_t> }
+  | { TAG: "WallPaint"; _0: LazyPacket_lazyParsed<Packet_WallPaint_t> }
+  | { TAG: "Teleport"; _0: LazyPacket_lazyParsed<Packet_Teleport_t> }
+  | { TAG: "PlayerHealOther"; _0: LazyPacket_lazyParsed<Packet_PlayerHealOther_t> }
+  | { TAG: "DimensionsUpdate"; _0: LazyPacket_lazyParsed<Packet_DimensionsUpdate_t> }
+  | { TAG: "ClientUuid"; _0: LazyPacket_lazyParsed<Packet_ClientUuid_t> }
+  | { TAG: "ChestName"; _0: LazyPacket_lazyParsed<Packet_ChestName_t> }
+  | { TAG: "NpcCatch"; _0: LazyPacket_lazyParsed<Packet_NpcCatch_t> }
+  | { TAG: "NpcRelease"; _0: LazyPacket_lazyParsed<Packet_NpcRelease_t> }
+  | { TAG: "TravellingMerchantInventory"; _0: LazyPacket_lazyParsed<Packet_TravellingMerchantInventory_t> }
+  | { TAG: "TeleportationPotion"; _0: LazyPacket_lazyParsed<Packet_TeleportationPotion_t> }
+  | { TAG: "AnglerQuest"; _0: LazyPacket_lazyParsed<Packet_AnglerQuest_t> }
+  | { TAG: "AnglerQuestComplete"; _0: LazyPacket_lazyParsed<Packet_AnglerQuestComplete_t> }
+  | { TAG: "AnglerQuestsCompletedAmount"; _0: LazyPacket_lazyParsed<Packet_AnglerQuestsCompletedAmount_t> }
+  | { TAG: "TemporaryAnimationCreate"; _0: LazyPacket_lazyParsed<Packet_TemporaryAnimationCreate_t> }
+  | { TAG: "InvasionProgressReport"; _0: LazyPacket_lazyParsed<Packet_InvasionProgressReport_t> }
+  | { TAG: "ObjectPlace"; _0: LazyPacket_lazyParsed<Packet_ObjectPlace_t> }
+  | { TAG: "PlayerChestIndexSync"; _0: LazyPacket_lazyParsed<Packet_PlayerChestIndexSync_t> }
+  | { TAG: "CombatNumberCreate"; _0: LazyPacket_lazyParsed<Packet_CombatNumberCreate_t> }
+  | { TAG: "NetModuleLoad"; _0: LazyPacket_lazyParsed<NetModuleLoad> }
+  | { TAG: "NpcKillCount"; _0: LazyPacket_lazyParsed<Packet_NpcKillCount_t> }
+  | { TAG: "PlayerStealth"; _0: LazyPacket_lazyParsed<Packet_PlayerStealth_t> }
+  | { TAG: "ItemForceIntoNearestChest"; _0: LazyPacket_lazyParsed<Packet_ItemForceIntoNearestChest_t> }
+  | { TAG: "TileEntityUpdate"; _0: LazyPacket_lazyParsed<Packet_TileEntityUpdate_t> }
+  | { TAG: "TileEntityPlace"; _0: LazyPacket_lazyParsed<Packet_TileEntityPlace_t> }
+  | { TAG: "ItemDropModify"; _0: LazyPacket_lazyParsed<Packet_ItemDropModify_t> }
+  | { TAG: "ItemFramePlace"; _0: LazyPacket_lazyParsed<Packet_ItemFramePlace_t> }
+  | { TAG: "ItemDropInstancedUpdate"; _0: LazyPacket_lazyParsed<Packet_ItemDropInstancedUpdate_t> }
+  | { TAG: "EmoteBubble"; _0: LazyPacket_lazyParsed<Packet_EmoteBubble_t> }
+  | { TAG: "ExtraValueSync"; _0: LazyPacket_lazyParsed<Packet_ExtraValueSync_t> }
+  | { TAG: "SocialHandshake"; _0: LazyPacket_lazyParsed<Packet_SocialHandshake_t> }
+  | { TAG: "Unused"; _0: LazyPacket_lazyParsed<Packet_Unused_t> }
+  | { TAG: "PortalKill"; _0: LazyPacket_lazyParsed<Packet_PortalKill_t> }
+  | { TAG: "PlayerTeleportPortal"; _0: LazyPacket_lazyParsed<Packet_PlayerTeleportPortal_t> }
+  | { TAG: "NpcKilledNotification"; _0: LazyPacket_lazyParsed<Packet_NpcKilledNotification_t> }
+  | { TAG: "EventNotification"; _0: LazyPacket_lazyParsed<Packet_EventNotification_t> }
+  | { TAG: "MinionTargetUpdate"; _0: LazyPacket_lazyParsed<Packet_MinionTargetUpdate_t> }
+  | { TAG: "NpcTeleportPortal"; _0: LazyPacket_lazyParsed<Packet_NpcTeleportPortal_t> }
+  | { TAG: "ShieldStrengthsUpdate"; _0: LazyPacket_lazyParsed<Packet_ShieldStrengthsUpdate_t> }
+  | { TAG: "NebulaLevelUp"; _0: LazyPacket_lazyParsed<Packet_NebulaLevelUp_t> }
+  | { TAG: "MoonLordCountdown"; _0: LazyPacket_lazyParsed<Packet_MoonLordCountdown_t> }
+  | { TAG: "NpcShopItem"; _0: LazyPacket_lazyParsed<Packet_NpcShopItem_t> }
+  | { TAG: "GemLockToggle"; _0: LazyPacket_lazyParsed<Packet_GemLockToggle_t> }
+  | { TAG: "SmokePoof"; _0: LazyPacket_lazyParsed<Packet_SmokePoof_t> }
+  | { TAG: "ChatMessageSmart"; _0: LazyPacket_lazyParsed<Packet_ChatMessageSmart_t> }
+  | { TAG: "WiredCannonShot"; _0: LazyPacket_lazyParsed<Packet_WiredCannonShot_t> }
+  | { TAG: "MassWireOperation"; _0: LazyPacket_lazyParsed<Packet_MassWireOperation_t> }
+  | { TAG: "MassWireOperationPay"; _0: LazyPacket_lazyParsed<Packet_MassWireOperationPay_t> }
+  | { TAG: "PartyToggle"; _0: LazyPacket_lazyParsed<Packet_PartyToggle_t> }
+  | { TAG: "TreeGrowFx"; _0: LazyPacket_lazyParsed<Packet_TreeGrowFx_t> }
+  | { TAG: "CrystalInvasionStart"; _0: LazyPacket_lazyParsed<Packet_CrystalInvasionStart_t> }
+  | { TAG: "CrystalInvasionWipeAll"; _0: LazyPacket_lazyParsed<Packet_CrystalInvasionWipeAll_t> }
+  | { TAG: "MinionAttackTargetUpdate"; _0: LazyPacket_lazyParsed<Packet_MinionAttackTargetUpdate_t> }
+  | { TAG: "CrystalInvasionSendWaitTime"; _0: LazyPacket_lazyParsed<Packet_CrystalInvasionSendWaitTime_t> }
+  | { TAG: "PlayerDamage"; _0: LazyPacket_lazyParsed<Packet_PlayerDamage_t> }
+  | { TAG: "PlayerDeath"; _0: LazyPacket_lazyParsed<Packet_PlayerDeath_t> }
+  | { TAG: "CombatTextCreate"; _0: LazyPacket_lazyParsed<Packet_CombatTextCreate_t> }
+  | { TAG: "Emoji"; _0: LazyPacket_lazyParsed<Packet_Emoji_t> }
+  | { TAG: "TileEntityDisplayDollItemSync"; _0: LazyPacket_lazyParsed<Packet_TileEntityDisplayDollItemSync_t> }
+  | { TAG: "TileEntityInteractionRequest"; _0: LazyPacket_lazyParsed<Packet_TileEntityInteractionRequest_t> }
+  | { TAG: "WeaponsRackTryPlacing"; _0: LazyPacket_lazyParsed<Packet_WeaponsRackTryPlacing_t> }
+  | { TAG: "TileEntityHatRackItemSync"; _0: LazyPacket_lazyParsed<Packet_TileEntityHatRackItemSync_t> }
+  | { TAG: "TilePickingSync"; _0: LazyPacket_lazyParsed<Packet_TilePickingSync_t> }
+  | { TAG: "RevengeMarkerSync"; _0: LazyPacket_lazyParsed<Packet_RevengeMarkerSync_t> }
+  | { TAG: "RevengeMarkerRemove"; _0: LazyPacket_lazyParsed<Packet_RevengeMarkerRemove_t> }
+  | { TAG: "GolfBallLandInCup"; _0: LazyPacket_lazyParsed<Packet_GolfBallLandInCup_t> }
+  | { TAG: "ClientFinishConnectingToServer"; _0: LazyPacket_lazyParsed<Packet_ClientFinishConnectingToServer_t> }
+  | { TAG: "NpcFishOut"; _0: LazyPacket_lazyParsed<Packet_NpcFishOut_t> }
+  | { TAG: "NpcTamper"; _0: LazyPacket_lazyParsed<Packet_NpcTamper_t> }
+  | { TAG: "LegacySoundPlay"; _0: LazyPacket_lazyParsed<Packet_LegacySoundPlay_t> }
+  | { TAG: "FoodPlatterTryPlacing"; _0: LazyPacket_lazyParsed<Packet_FoodPlatterTryPlacing_t> }
+  | { TAG: "PlayerLuckFactorsUpdate"; _0: LazyPacket_lazyParsed<Packet_PlayerLuckFactorsUpdate_t> }
+  | { TAG: "PlayerDead"; _0: LazyPacket_lazyParsed<Packet_PlayerDead_t> }
+  | { TAG: "CavernMonsterTypeSync"; _0: LazyPacket_lazyParsed<Packet_CavernMonsterTypeSync_t> }
+  | { TAG: "NpcBuffRemovalRequest"; _0: LazyPacket_lazyParsed<Packet_NpcBuffRemovalRequest_t> }
+  | { TAG: "ClientSyncedInventory"; _0: LazyPacket_lazyParsed<Packet_ClientSyncedInventory_t> }
+  | { TAG: "CountsAsHostForGameplaySet"; _0: LazyPacket_lazyParsed<Packet_CountsAsHostForGameplaySet_t> }
+  | { TAG: "CreditsOrSlimeTransform"; _0: LazyPacket_lazyParsed<Packet_CreditsOrSlimeTransform_t> }
+  | { TAG: "LucyAxeMessage"; _0: LazyPacket_lazyParsed<Packet_LucyAxeMessage_t> }
+  | { TAG: "PiggyBankVoidLensUpdate"; _0: LazyPacket_lazyParsed<Packet_PiggyBankVoidLensUpdate_t> }
+  | { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: LazyPacket_lazyParsed<Packet_DungeonDefendersEventAttemptSkipWait_t> }
+  | { TAG: "HaveDryadDoStardewAnimation"; _0: LazyPacket_lazyParsed<Packet_HaveDryadDoStardewAnimation_t> }
+  | { TAG: "ItemDropShimmeredUpdate"; _0: LazyPacket_lazyParsed<Packet_ItemDropShimmeredUpdate_t> }
+  | { TAG: "ShimmerEffectOrCoinLuck"; _0: LazyPacket_lazyParsed<Packet_ShimmerEffectOrCoinLuck_t> }
+  | { TAG: "LoadoutSwitch"; _0: LazyPacket_lazyParsed<Packet_LoadoutSwitch_t> }
+  | { TAG: "ItemDropProtectedUpdate"; _0: LazyPacket_lazyParsed<Packet_ItemDropProtectedUpdate_t> };

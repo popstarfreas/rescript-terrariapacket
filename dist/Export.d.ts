@@ -964,151 +964,153 @@ export declare namespace ItemOwnerPacket {
 
 declare type killCount = number;
 
+declare type LazyPacket_lazyParsed<a> = t_233<Result_2<a, readError>>;
+
 declare type LazyPacket_t =
-    { TAG: "ConnectRequest"; _0: t_233<(undefined | t_91)> }
-| { TAG: "Disconnect"; _0: t_233<(undefined | t_92)> }
-| { TAG: "PlayerSlotSet"; _0: t_233<(undefined | t_93)> }
-| { TAG: "PlayerInfo"; _0: t_233<(undefined | t_94)> }
-| { TAG: "PlayerInventorySlot"; _0: t_233<(undefined | t_95)> }
-| { TAG: "WorldDataRequest"; _0: t_233<(undefined | t_96)> }
-| { TAG: "WorldInfo"; _0: t_233<(undefined | WorldInfo_2)> }
-| { TAG: "InitialTileSectionsRequest"; _0: t_233<(undefined | t_97)> }
-| { TAG: "Status"; _0: t_233<(undefined | t_98)> }
-| { TAG: "TileSectionSend"; _0: t_233<(undefined | t_99)> }
-| { TAG: "TileSectionFrame"; _0: t_233<(undefined | t_100)> }
-| { TAG: "PlayerSpawn"; _0: t_233<(undefined | t_101)> }
-| { TAG: "PlayerUpdate"; _0: t_233<(undefined | t_102)> }
-| { TAG: "PlayerActive"; _0: t_233<(undefined | t_103)> }
-| { TAG: "PlayerHealth"; _0: t_233<(undefined | t_104)> }
-| { TAG: "TileModify"; _0: t_233<(undefined | t_105)> }
-| { TAG: "TimeSet"; _0: t_233<(undefined | t_106)> }
-| { TAG: "DoorUse"; _0: t_233<(undefined | t_107)> }
-| { TAG: "TileSquareSend"; _0: t_233<(undefined | t_108)> }
-| { TAG: "ItemDropUpdate"; _0: t_233<(undefined | t_109)> }
-| { TAG: "ItemOwner"; _0: t_233<(undefined | t_110)> }
-| { TAG: "NpcUpdate"; _0: t_233<(undefined | t_111)> }
-| { TAG: "NpcItemStrike"; _0: t_233<(undefined | t_112)> }
-| { TAG: "ProjectileSync"; _0: t_233<(undefined | t_113)> }
-| { TAG: "NpcStrike"; _0: t_233<(undefined | t_114)> }
-| { TAG: "ProjectileDestroy"; _0: t_233<(undefined | t_115)> }
-| { TAG: "PvpToggle"; _0: t_233<(undefined | t_116)> }
-| { TAG: "ChestOpen"; _0: t_233<(undefined | t_117)> }
-| { TAG: "ChestItem"; _0: t_233<(undefined | t_118)> }
-| { TAG: "ActiveContainerSync"; _0: t_233<(undefined | t_119)> }
-| { TAG: "ChestPlace"; _0: t_233<(undefined | t_120)> }
-| { TAG: "HealEffect"; _0: t_233<(undefined | t_121)> }
-| { TAG: "Zones"; _0: t_233<(undefined | t_122)> }
-| { TAG: "PasswordRequired"; _0: t_233<(undefined | t_123)> }
-| { TAG: "PasswordSend"; _0: t_233<(undefined | t_124)> }
-| { TAG: "ItemOwnerRemove"; _0: t_233<(undefined | t_125)> }
-| { TAG: "NpcTalk"; _0: t_233<(undefined | t_126)> }
-| { TAG: "PlayerAnimation"; _0: t_233<(undefined | t_127)> }
-| { TAG: "PlayerMana"; _0: t_233<(undefined | t_128)> }
-| { TAG: "ManaEffect"; _0: t_233<(undefined | t_129)> }
-| { TAG: "PlayerTeam"; _0: t_233<(undefined | t_130)> }
-| { TAG: "SignRead"; _0: t_233<(undefined | t_131)> }
-| { TAG: "SignNew"; _0: t_233<(undefined | t_132)> }
-| { TAG: "LiquidSet"; _0: t_233<(undefined | t_133)> }
-| { TAG: "PlayerSpawnSelf"; _0: t_233<(undefined | t_134)> }
-| { TAG: "PlayerBuffsSet"; _0: t_233<(undefined | t_135)> }
-| { TAG: "NpcSpecialEffect"; _0: t_233<(undefined | t_136)> }
-| { TAG: "ChestOrTempleUnlock"; _0: t_233<(undefined | t_137)> }
-| { TAG: "NpcBuffAdd"; _0: t_233<(undefined | t_138)> }
-| { TAG: "NpcBuffUpdate"; _0: t_233<(undefined | t_139)> }
-| { TAG: "PlayerBuffAdd"; _0: t_233<(undefined | t_140)> }
-| { TAG: "NpcNameUpdate"; _0: t_233<(undefined | t_141)> }
-| { TAG: "GoodEvilUpdate"; _0: t_233<(undefined | t_142)> }
-| { TAG: "HarpPlay"; _0: t_233<(undefined | t_143)> }
-| { TAG: "SwitchHit"; _0: t_233<(undefined | t_144)> }
-| { TAG: "NpcHomeUpdate"; _0: t_233<(undefined | t_145)> }
-| { TAG: "BossOrInvasionSpawn"; _0: t_233<(undefined | t_146)> }
-| { TAG: "PlayerDodge"; _0: t_233<(undefined | t_147)> }
-| { TAG: "TilePaint"; _0: t_233<(undefined | t_148)> }
-| { TAG: "WallPaint"; _0: t_233<(undefined | t_149)> }
-| { TAG: "Teleport"; _0: t_233<(undefined | t_150)> }
-| { TAG: "PlayerHealOther"; _0: t_233<(undefined | t_151)> }
-| { TAG: "DimensionsUpdate"; _0: t_233<(undefined | t_152)> }
-| { TAG: "ClientUuid"; _0: t_233<(undefined | t_153)> }
-| { TAG: "ChestName"; _0: t_233<(undefined | t_154)> }
-| { TAG: "NpcCatch"; _0: t_233<(undefined | t_155)> }
-| { TAG: "NpcRelease"; _0: t_233<(undefined | t_156)> }
-| { TAG: "TravellingMerchantInventory"; _0: t_233<(undefined | t_157)> }
-| { TAG: "TeleportationPotion"; _0: t_233<(undefined | t_158)> }
-| { TAG: "AnglerQuest"; _0: t_233<(undefined | t_159)> }
-| { TAG: "AnglerQuestComplete"; _0: t_233<(undefined | t_160)> }
-| { TAG: "AnglerQuestsCompletedAmount"; _0: t_233<(undefined | t_161)> }
-| { TAG: "TemporaryAnimationCreate"; _0: t_233<(undefined | t_162)> }
-| { TAG: "InvasionProgressReport"; _0: t_233<(undefined | t_163)> }
-| { TAG: "ObjectPlace"; _0: t_233<(undefined | t_164)> }
-| { TAG: "PlayerChestIndexSync"; _0: t_233<(undefined | t_165)> }
-| { TAG: "CombatNumberCreate"; _0: t_233<(undefined | t_166)> }
-| { TAG: "NetModuleLoad"; _0: t_233<(undefined | NetModuleLoad)> }
-| { TAG: "NpcKillCount"; _0: t_233<(undefined | t_167)> }
-| { TAG: "PlayerStealth"; _0: t_233<(undefined | t_168)> }
-| { TAG: "ItemForceIntoNearestChest"; _0: t_233<(undefined | t_169)> }
-| { TAG: "TileEntityUpdate"; _0: t_233<(undefined | t_170)> }
-| { TAG: "TileEntityPlace"; _0: t_233<(undefined | t_171)> }
-| { TAG: "ItemDropModify"; _0: t_233<(undefined | t_172)> }
-| { TAG: "ItemFramePlace"; _0: t_233<(undefined | t_173)> }
-| { TAG: "ItemDropInstancedUpdate"; _0: t_233<(undefined | t_174)> }
-| { TAG: "EmoteBubble"; _0: t_233<(undefined | t_175)> }
-| { TAG: "ExtraValueSync"; _0: t_233<(undefined | t_176)> }
-| { TAG: "SocialHandshake"; _0: t_233<(undefined | t_177)> }
-| { TAG: "Unused"; _0: t_233<(undefined | t_178)> }
-| { TAG: "PortalKill"; _0: t_233<(undefined | t_179)> }
-| { TAG: "PlayerTeleportPortal"; _0: t_233<(undefined | t_180)> }
-| { TAG: "NpcKilledNotification"; _0: t_233<(undefined | t_181)> }
-| { TAG: "EventNotification"; _0: t_233<(undefined | t_182)> }
-| { TAG: "MinionTargetUpdate"; _0: t_233<(undefined | t_183)> }
-| { TAG: "NpcTeleportPortal"; _0: t_233<(undefined | t_184)> }
-| { TAG: "ShieldStrengthsUpdate"; _0: t_233<(undefined | t_185)> }
-| { TAG: "NebulaLevelUp"; _0: t_233<(undefined | t_186)> }
-| { TAG: "MoonLordCountdown"; _0: t_233<(undefined | t_187)> }
-| { TAG: "NpcShopItem"; _0: t_233<(undefined | t_188)> }
-| { TAG: "GemLockToggle"; _0: t_233<(undefined | t_189)> }
-| { TAG: "SmokePoof"; _0: t_233<(undefined | t_190)> }
-| { TAG: "ChatMessageSmart"; _0: t_233<(undefined | t_191)> }
-| { TAG: "WiredCannonShot"; _0: t_233<(undefined | t_192)> }
-| { TAG: "MassWireOperation"; _0: t_233<(undefined | t_193)> }
-| { TAG: "MassWireOperationPay"; _0: t_233<(undefined | t_194)> }
-| { TAG: "PartyToggle"; _0: t_233<(undefined | t_195)> }
-| { TAG: "TreeGrowFx"; _0: t_233<(undefined | t_196)> }
-| { TAG: "CrystalInvasionStart"; _0: t_233<(undefined | t_197)> }
-| { TAG: "CrystalInvasionWipeAll"; _0: t_233<(undefined | t_198)> }
-| { TAG: "MinionAttackTargetUpdate"; _0: t_233<(undefined | t_199)> }
-| { TAG: "CrystalInvasionSendWaitTime"; _0: t_233<(undefined | t_200)> }
-| { TAG: "PlayerDamage"; _0: t_233<(undefined | t_201)> }
-| { TAG: "PlayerDeath"; _0: t_233<(undefined | t_202)> }
-| { TAG: "CombatTextCreate"; _0: t_233<(undefined | t_203)> }
-| { TAG: "Emoji"; _0: t_233<(undefined | t_204)> }
-| { TAG: "TileEntityDisplayDollItemSync"; _0: t_233<(undefined | t_205)> }
-| { TAG: "TileEntityInteractionRequest"; _0: t_233<(undefined | t_206)> }
-| { TAG: "WeaponsRackTryPlacing"; _0: t_233<(undefined | t_207)> }
-| { TAG: "TileEntityHatRackItemSync"; _0: t_233<(undefined | t_208)> }
-| { TAG: "TilePickingSync"; _0: t_233<(undefined | t_209)> }
-| { TAG: "RevengeMarkerSync"; _0: t_233<(undefined | t_210)> }
-| { TAG: "RevengeMarkerRemove"; _0: t_233<(undefined | t_211)> }
-| { TAG: "GolfBallLandInCup"; _0: t_233<(undefined | t_212)> }
-| { TAG: "ClientFinishConnectingToServer"; _0: t_233<(undefined | t_213)> }
-| { TAG: "NpcFishOut"; _0: t_233<(undefined | t_214)> }
-| { TAG: "NpcTamper"; _0: t_233<(undefined | t_215)> }
-| { TAG: "LegacySoundPlay"; _0: t_233<(undefined | t_216)> }
-| { TAG: "FoodPlatterTryPlacing"; _0: t_233<(undefined | t_217)> }
-| { TAG: "PlayerLuckFactorsUpdate"; _0: t_233<(undefined | t_218)> }
-| { TAG: "PlayerDead"; _0: t_233<(undefined | t_219)> }
-| { TAG: "CavernMonsterTypeSync"; _0: t_233<(undefined | t_220)> }
-| { TAG: "NpcBuffRemovalRequest"; _0: t_233<(undefined | t_221)> }
-| { TAG: "ClientSyncedInventory"; _0: t_233<(undefined | t_222)> }
-| { TAG: "CountsAsHostForGameplaySet"; _0: t_233<(undefined | t_223)> }
-| { TAG: "CreditsOrSlimeTransform"; _0: t_233<(undefined | t_224)> }
-| { TAG: "LucyAxeMessage"; _0: t_233<(undefined | t_225)> }
-| { TAG: "PiggyBankVoidLensUpdate"; _0: t_233<(undefined | t_226)> }
-| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: t_233<(undefined | t_227)> }
-| { TAG: "HaveDryadDoStardewAnimation"; _0: t_233<(undefined | t_228)> }
-| { TAG: "ItemDropShimmeredUpdate"; _0: t_233<(undefined | t_229)> }
-| { TAG: "ShimmerEffectOrCoinLuck"; _0: t_233<(undefined | t_230)> }
-| { TAG: "LoadoutSwitch"; _0: t_233<(undefined | t_231)> }
-| { TAG: "ItemDropProtectedUpdate"; _0: t_233<(undefined | t_232)> };
+    { TAG: "ConnectRequest"; _0: LazyPacket_lazyParsed<t_91> }
+| { TAG: "Disconnect"; _0: LazyPacket_lazyParsed<t_92> }
+| { TAG: "PlayerSlotSet"; _0: LazyPacket_lazyParsed<t_93> }
+| { TAG: "PlayerInfo"; _0: LazyPacket_lazyParsed<t_94> }
+| { TAG: "PlayerInventorySlot"; _0: LazyPacket_lazyParsed<t_95> }
+| { TAG: "WorldDataRequest"; _0: LazyPacket_lazyParsed<t_96> }
+| { TAG: "WorldInfo"; _0: LazyPacket_lazyParsed<WorldInfo_2> }
+| { TAG: "InitialTileSectionsRequest"; _0: LazyPacket_lazyParsed<t_97> }
+| { TAG: "Status"; _0: LazyPacket_lazyParsed<t_98> }
+| { TAG: "TileSectionSend"; _0: LazyPacket_lazyParsed<t_99> }
+| { TAG: "TileSectionFrame"; _0: LazyPacket_lazyParsed<t_100> }
+| { TAG: "PlayerSpawn"; _0: LazyPacket_lazyParsed<t_101> }
+| { TAG: "PlayerUpdate"; _0: LazyPacket_lazyParsed<t_102> }
+| { TAG: "PlayerActive"; _0: LazyPacket_lazyParsed<t_103> }
+| { TAG: "PlayerHealth"; _0: LazyPacket_lazyParsed<t_104> }
+| { TAG: "TileModify"; _0: LazyPacket_lazyParsed<t_105> }
+| { TAG: "TimeSet"; _0: LazyPacket_lazyParsed<t_106> }
+| { TAG: "DoorUse"; _0: LazyPacket_lazyParsed<t_107> }
+| { TAG: "TileSquareSend"; _0: LazyPacket_lazyParsed<t_108> }
+| { TAG: "ItemDropUpdate"; _0: LazyPacket_lazyParsed<t_109> }
+| { TAG: "ItemOwner"; _0: LazyPacket_lazyParsed<t_110> }
+| { TAG: "NpcUpdate"; _0: LazyPacket_lazyParsed<t_111> }
+| { TAG: "NpcItemStrike"; _0: LazyPacket_lazyParsed<t_112> }
+| { TAG: "ProjectileSync"; _0: LazyPacket_lazyParsed<t_113> }
+| { TAG: "NpcStrike"; _0: LazyPacket_lazyParsed<t_114> }
+| { TAG: "ProjectileDestroy"; _0: LazyPacket_lazyParsed<t_115> }
+| { TAG: "PvpToggle"; _0: LazyPacket_lazyParsed<t_116> }
+| { TAG: "ChestOpen"; _0: LazyPacket_lazyParsed<t_117> }
+| { TAG: "ChestItem"; _0: LazyPacket_lazyParsed<t_118> }
+| { TAG: "ActiveContainerSync"; _0: LazyPacket_lazyParsed<t_119> }
+| { TAG: "ChestPlace"; _0: LazyPacket_lazyParsed<t_120> }
+| { TAG: "HealEffect"; _0: LazyPacket_lazyParsed<t_121> }
+| { TAG: "Zones"; _0: LazyPacket_lazyParsed<t_122> }
+| { TAG: "PasswordRequired"; _0: LazyPacket_lazyParsed<t_123> }
+| { TAG: "PasswordSend"; _0: LazyPacket_lazyParsed<t_124> }
+| { TAG: "ItemOwnerRemove"; _0: LazyPacket_lazyParsed<t_125> }
+| { TAG: "NpcTalk"; _0: LazyPacket_lazyParsed<t_126> }
+| { TAG: "PlayerAnimation"; _0: LazyPacket_lazyParsed<t_127> }
+| { TAG: "PlayerMana"; _0: LazyPacket_lazyParsed<t_128> }
+| { TAG: "ManaEffect"; _0: LazyPacket_lazyParsed<t_129> }
+| { TAG: "PlayerTeam"; _0: LazyPacket_lazyParsed<t_130> }
+| { TAG: "SignRead"; _0: LazyPacket_lazyParsed<t_131> }
+| { TAG: "SignNew"; _0: LazyPacket_lazyParsed<t_132> }
+| { TAG: "LiquidSet"; _0: LazyPacket_lazyParsed<t_133> }
+| { TAG: "PlayerSpawnSelf"; _0: LazyPacket_lazyParsed<t_134> }
+| { TAG: "PlayerBuffsSet"; _0: LazyPacket_lazyParsed<t_135> }
+| { TAG: "NpcSpecialEffect"; _0: LazyPacket_lazyParsed<t_136> }
+| { TAG: "ChestOrTempleUnlock"; _0: LazyPacket_lazyParsed<t_137> }
+| { TAG: "NpcBuffAdd"; _0: LazyPacket_lazyParsed<t_138> }
+| { TAG: "NpcBuffUpdate"; _0: LazyPacket_lazyParsed<t_139> }
+| { TAG: "PlayerBuffAdd"; _0: LazyPacket_lazyParsed<t_140> }
+| { TAG: "NpcNameUpdate"; _0: LazyPacket_lazyParsed<t_141> }
+| { TAG: "GoodEvilUpdate"; _0: LazyPacket_lazyParsed<t_142> }
+| { TAG: "HarpPlay"; _0: LazyPacket_lazyParsed<t_143> }
+| { TAG: "SwitchHit"; _0: LazyPacket_lazyParsed<t_144> }
+| { TAG: "NpcHomeUpdate"; _0: LazyPacket_lazyParsed<t_145> }
+| { TAG: "BossOrInvasionSpawn"; _0: LazyPacket_lazyParsed<t_146> }
+| { TAG: "PlayerDodge"; _0: LazyPacket_lazyParsed<t_147> }
+| { TAG: "TilePaint"; _0: LazyPacket_lazyParsed<t_148> }
+| { TAG: "WallPaint"; _0: LazyPacket_lazyParsed<t_149> }
+| { TAG: "Teleport"; _0: LazyPacket_lazyParsed<t_150> }
+| { TAG: "PlayerHealOther"; _0: LazyPacket_lazyParsed<t_151> }
+| { TAG: "DimensionsUpdate"; _0: LazyPacket_lazyParsed<t_152> }
+| { TAG: "ClientUuid"; _0: LazyPacket_lazyParsed<t_153> }
+| { TAG: "ChestName"; _0: LazyPacket_lazyParsed<t_154> }
+| { TAG: "NpcCatch"; _0: LazyPacket_lazyParsed<t_155> }
+| { TAG: "NpcRelease"; _0: LazyPacket_lazyParsed<t_156> }
+| { TAG: "TravellingMerchantInventory"; _0: LazyPacket_lazyParsed<t_157> }
+| { TAG: "TeleportationPotion"; _0: LazyPacket_lazyParsed<t_158> }
+| { TAG: "AnglerQuest"; _0: LazyPacket_lazyParsed<t_159> }
+| { TAG: "AnglerQuestComplete"; _0: LazyPacket_lazyParsed<t_160> }
+| { TAG: "AnglerQuestsCompletedAmount"; _0: LazyPacket_lazyParsed<t_161> }
+| { TAG: "TemporaryAnimationCreate"; _0: LazyPacket_lazyParsed<t_162> }
+| { TAG: "InvasionProgressReport"; _0: LazyPacket_lazyParsed<t_163> }
+| { TAG: "ObjectPlace"; _0: LazyPacket_lazyParsed<t_164> }
+| { TAG: "PlayerChestIndexSync"; _0: LazyPacket_lazyParsed<t_165> }
+| { TAG: "CombatNumberCreate"; _0: LazyPacket_lazyParsed<t_166> }
+| { TAG: "NetModuleLoad"; _0: LazyPacket_lazyParsed<NetModuleLoad> }
+| { TAG: "NpcKillCount"; _0: LazyPacket_lazyParsed<t_167> }
+| { TAG: "PlayerStealth"; _0: LazyPacket_lazyParsed<t_168> }
+| { TAG: "ItemForceIntoNearestChest"; _0: LazyPacket_lazyParsed<t_169> }
+| { TAG: "TileEntityUpdate"; _0: LazyPacket_lazyParsed<t_170> }
+| { TAG: "TileEntityPlace"; _0: LazyPacket_lazyParsed<t_171> }
+| { TAG: "ItemDropModify"; _0: LazyPacket_lazyParsed<t_172> }
+| { TAG: "ItemFramePlace"; _0: LazyPacket_lazyParsed<t_173> }
+| { TAG: "ItemDropInstancedUpdate"; _0: LazyPacket_lazyParsed<t_174> }
+| { TAG: "EmoteBubble"; _0: LazyPacket_lazyParsed<t_175> }
+| { TAG: "ExtraValueSync"; _0: LazyPacket_lazyParsed<t_176> }
+| { TAG: "SocialHandshake"; _0: LazyPacket_lazyParsed<t_177> }
+| { TAG: "Unused"; _0: LazyPacket_lazyParsed<t_178> }
+| { TAG: "PortalKill"; _0: LazyPacket_lazyParsed<t_179> }
+| { TAG: "PlayerTeleportPortal"; _0: LazyPacket_lazyParsed<t_180> }
+| { TAG: "NpcKilledNotification"; _0: LazyPacket_lazyParsed<t_181> }
+| { TAG: "EventNotification"; _0: LazyPacket_lazyParsed<t_182> }
+| { TAG: "MinionTargetUpdate"; _0: LazyPacket_lazyParsed<t_183> }
+| { TAG: "NpcTeleportPortal"; _0: LazyPacket_lazyParsed<t_184> }
+| { TAG: "ShieldStrengthsUpdate"; _0: LazyPacket_lazyParsed<t_185> }
+| { TAG: "NebulaLevelUp"; _0: LazyPacket_lazyParsed<t_186> }
+| { TAG: "MoonLordCountdown"; _0: LazyPacket_lazyParsed<t_187> }
+| { TAG: "NpcShopItem"; _0: LazyPacket_lazyParsed<t_188> }
+| { TAG: "GemLockToggle"; _0: LazyPacket_lazyParsed<t_189> }
+| { TAG: "SmokePoof"; _0: LazyPacket_lazyParsed<t_190> }
+| { TAG: "ChatMessageSmart"; _0: LazyPacket_lazyParsed<t_191> }
+| { TAG: "WiredCannonShot"; _0: LazyPacket_lazyParsed<t_192> }
+| { TAG: "MassWireOperation"; _0: LazyPacket_lazyParsed<t_193> }
+| { TAG: "MassWireOperationPay"; _0: LazyPacket_lazyParsed<t_194> }
+| { TAG: "PartyToggle"; _0: LazyPacket_lazyParsed<t_195> }
+| { TAG: "TreeGrowFx"; _0: LazyPacket_lazyParsed<t_196> }
+| { TAG: "CrystalInvasionStart"; _0: LazyPacket_lazyParsed<t_197> }
+| { TAG: "CrystalInvasionWipeAll"; _0: LazyPacket_lazyParsed<t_198> }
+| { TAG: "MinionAttackTargetUpdate"; _0: LazyPacket_lazyParsed<t_199> }
+| { TAG: "CrystalInvasionSendWaitTime"; _0: LazyPacket_lazyParsed<t_200> }
+| { TAG: "PlayerDamage"; _0: LazyPacket_lazyParsed<t_201> }
+| { TAG: "PlayerDeath"; _0: LazyPacket_lazyParsed<t_202> }
+| { TAG: "CombatTextCreate"; _0: LazyPacket_lazyParsed<t_203> }
+| { TAG: "Emoji"; _0: LazyPacket_lazyParsed<t_204> }
+| { TAG: "TileEntityDisplayDollItemSync"; _0: LazyPacket_lazyParsed<t_205> }
+| { TAG: "TileEntityInteractionRequest"; _0: LazyPacket_lazyParsed<t_206> }
+| { TAG: "WeaponsRackTryPlacing"; _0: LazyPacket_lazyParsed<t_207> }
+| { TAG: "TileEntityHatRackItemSync"; _0: LazyPacket_lazyParsed<t_208> }
+| { TAG: "TilePickingSync"; _0: LazyPacket_lazyParsed<t_209> }
+| { TAG: "RevengeMarkerSync"; _0: LazyPacket_lazyParsed<t_210> }
+| { TAG: "RevengeMarkerRemove"; _0: LazyPacket_lazyParsed<t_211> }
+| { TAG: "GolfBallLandInCup"; _0: LazyPacket_lazyParsed<t_212> }
+| { TAG: "ClientFinishConnectingToServer"; _0: LazyPacket_lazyParsed<t_213> }
+| { TAG: "NpcFishOut"; _0: LazyPacket_lazyParsed<t_214> }
+| { TAG: "NpcTamper"; _0: LazyPacket_lazyParsed<t_215> }
+| { TAG: "LegacySoundPlay"; _0: LazyPacket_lazyParsed<t_216> }
+| { TAG: "FoodPlatterTryPlacing"; _0: LazyPacket_lazyParsed<t_217> }
+| { TAG: "PlayerLuckFactorsUpdate"; _0: LazyPacket_lazyParsed<t_218> }
+| { TAG: "PlayerDead"; _0: LazyPacket_lazyParsed<t_219> }
+| { TAG: "CavernMonsterTypeSync"; _0: LazyPacket_lazyParsed<t_220> }
+| { TAG: "NpcBuffRemovalRequest"; _0: LazyPacket_lazyParsed<t_221> }
+| { TAG: "ClientSyncedInventory"; _0: LazyPacket_lazyParsed<t_222> }
+| { TAG: "CountsAsHostForGameplaySet"; _0: LazyPacket_lazyParsed<t_223> }
+| { TAG: "CreditsOrSlimeTransform"; _0: LazyPacket_lazyParsed<t_224> }
+| { TAG: "LucyAxeMessage"; _0: LazyPacket_lazyParsed<t_225> }
+| { TAG: "PiggyBankVoidLensUpdate"; _0: LazyPacket_lazyParsed<t_226> }
+| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: LazyPacket_lazyParsed<t_227> }
+| { TAG: "HaveDryadDoStardewAnimation"; _0: LazyPacket_lazyParsed<t_228> }
+| { TAG: "ItemDropShimmeredUpdate"; _0: LazyPacket_lazyParsed<t_229> }
+| { TAG: "ShimmerEffectOrCoinLuck"; _0: LazyPacket_lazyParsed<t_230> }
+| { TAG: "LoadoutSwitch"; _0: LazyPacket_lazyParsed<t_231> }
+| { TAG: "ItemDropProtectedUpdate"; _0: LazyPacket_lazyParsed<t_232> };
 
 declare type life =
 "Max"
@@ -2589,11 +2591,19 @@ declare type readError = { readonly context: string; readonly error: unknown };
 
 export declare namespace Result {
     export {
-        Result_2 as Result
+        Result_3 as Result
     }
 }
 
 declare type Result_2<T, E> = {
+    TAG: "Ok",
+    _0: T,
+} | {
+    TAG: "Error",
+    _0: E,
+}
+
+declare type Result_3<T, E> = {
     TAG: "Ok",
     _0: T,
 } | {
