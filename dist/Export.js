@@ -2414,26 +2414,9 @@ var require_Packet_ChestOrTempleUnlock = __commonJS({
         return e$3;
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ChestOrTempleUnlock")), unlockTypeToInt(self.unlockType), "unlockType"), self.x, "x"), self.y, "y"));
     }
-    var Encode = {
-      Writer: void 0,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.unlockTypeToInt = unlockTypeToInt;
-    exports2.unlockTypeFromInt = unlockTypeFromInt;
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -6389,129 +6372,11 @@ var require_Packet_PlayerDead = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_Option.js
-var Belt_Option_exports = {};
-function keep2(opt, p) {
-  if (opt !== void 0 && p(Primitive_option4.valFromOption(opt))) {
-    return opt;
-  }
-}
-function forEach3(opt, f) {
-  if (opt !== void 0) {
-    return f(Primitive_option4.valFromOption(opt));
-  }
-}
-function getOrThrow3(x) {
-  if (x !== void 0) {
-    return Primitive_option4.valFromOption(x);
-  }
-  throw {
-    RE_EXN_ID: "Not_found",
-    Error: new Error()
-  };
-}
-function mapWithDefault2(opt, $$default, f) {
-  if (opt !== void 0) {
-    return f(Primitive_option4.valFromOption(opt));
-  } else {
-    return $$default;
-  }
-}
-function map3(opt, f) {
-  if (opt !== void 0) {
-    return Primitive_option4.some(f(Primitive_option4.valFromOption(opt)));
-  }
-}
-function flatMap3(opt, f) {
-  if (opt !== void 0) {
-    return f(Primitive_option4.valFromOption(opt));
-  }
-}
-function getWithDefault2(opt, $$default) {
-  if (opt !== void 0) {
-    return Primitive_option4.valFromOption(opt);
-  } else {
-    return $$default;
-  }
-}
-function orElse2(opt, other) {
-  if (opt !== void 0) {
-    return opt;
-  } else {
-    return other;
-  }
-}
-function isSome2(x) {
-  return x !== void 0;
-}
-function isNone2(x) {
-  return x === void 0;
-}
-function eq2(a, b, f) {
-  if (a !== void 0) {
-    if (b !== void 0) {
-      return f(Primitive_option4.valFromOption(a), Primitive_option4.valFromOption(b));
-    } else {
-      return false;
-    }
-  } else {
-    return b === void 0;
-  }
-}
-function cmp2(a, b, f) {
-  if (a !== void 0) {
-    if (b !== void 0) {
-      return f(Primitive_option4.valFromOption(a), Primitive_option4.valFromOption(b));
-    } else {
-      return 1;
-    }
-  } else if (b !== void 0) {
-    return -1;
-  } else {
-    return 0;
-  }
-}
-var Primitive_option4, keepU2, forEachU2, getExn3, mapWithDefaultU, mapU2, flatMapU2, eqU2, cmpU2;
-var init_Belt_Option = __esm({
-  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_Option.js"() {
-    "use strict";
-    Primitive_option4 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
-    keepU2 = keep2;
-    forEachU2 = forEach3;
-    getExn3 = getOrThrow3;
-    mapWithDefaultU = mapWithDefault2;
-    mapU2 = map3;
-    flatMapU2 = flatMap3;
-    eqU2 = eq2;
-    cmpU2 = cmp2;
-    exports.keepU = keepU2;
-    exports.keep = keep2;
-    exports.forEachU = forEachU2;
-    exports.forEach = forEach3;
-    exports.getExn = getExn3;
-    exports.getOrThrow = getOrThrow3;
-    exports.mapWithDefaultU = mapWithDefaultU;
-    exports.mapWithDefault = mapWithDefault2;
-    exports.mapU = mapU2;
-    exports.map = map3;
-    exports.flatMapU = flatMapU2;
-    exports.flatMap = flatMap3;
-    exports.getWithDefault = getWithDefault2;
-    exports.orElse = orElse2;
-    exports.isSome = isSome2;
-    exports.isNone = isNone2;
-    exports.eqU = eqU2;
-    exports.eq = eq2;
-    exports.cmpU = cmpU2;
-    exports.cmp = cmp2;
-  }
-});
-
 // src/PlayerDeathReason.js
 var require_PlayerDeathReason = __commonJS({
   "src/PlayerDeathReason.js"(exports2) {
     "use strict";
-    var Belt_Option = (init_Belt_Option(), __toCommonJS(Belt_Option_exports));
+    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
     var BitFlags$TerrariaPacket = require_BitFlags();
     var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
     var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
@@ -6735,7 +6600,7 @@ var require_PlayerDeathReason = __commonJS({
       }
     }
     function packFlags(writer, self) {
-      let flags = BitFlags$TerrariaPacket.fromFlags(Belt_Option.isSome(self.killerPlayerId), Belt_Option.isSome(self.killerNpcId), Belt_Option.isSome(self.killerProjectileId), Belt_Option.isSome(self.typeOfDeathOther), Belt_Option.isSome(self.projectileType), Belt_Option.isSome(self.itemType), Belt_Option.isSome(self.itemPrefix), Belt_Option.isSome(self.deathReason));
+      let flags = BitFlags$TerrariaPacket.fromFlags(Stdlib_Option.isSome(self.killerPlayerId), Stdlib_Option.isSome(self.killerNpcId), Stdlib_Option.isSome(self.killerProjectileId), Stdlib_Option.isSome(self.typeOfDeathOther), Stdlib_Option.isSome(self.projectileType), Stdlib_Option.isSome(self.itemType), Stdlib_Option.isSome(self.itemPrefix), Stdlib_Option.isSome(self.deathReason));
       return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(flags), "reasonType");
     }
     function packKillerPlayerId(writer, self) {
@@ -7379,6 +7244,124 @@ var require_Packet_SwitchHit = __commonJS({
   }
 });
 
+// node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_Option.js
+var Belt_Option_exports = {};
+function keep2(opt, p) {
+  if (opt !== void 0 && p(Primitive_option4.valFromOption(opt))) {
+    return opt;
+  }
+}
+function forEach3(opt, f) {
+  if (opt !== void 0) {
+    return f(Primitive_option4.valFromOption(opt));
+  }
+}
+function getOrThrow3(x) {
+  if (x !== void 0) {
+    return Primitive_option4.valFromOption(x);
+  }
+  throw {
+    RE_EXN_ID: "Not_found",
+    Error: new Error()
+  };
+}
+function mapWithDefault2(opt, $$default, f) {
+  if (opt !== void 0) {
+    return f(Primitive_option4.valFromOption(opt));
+  } else {
+    return $$default;
+  }
+}
+function map3(opt, f) {
+  if (opt !== void 0) {
+    return Primitive_option4.some(f(Primitive_option4.valFromOption(opt)));
+  }
+}
+function flatMap3(opt, f) {
+  if (opt !== void 0) {
+    return f(Primitive_option4.valFromOption(opt));
+  }
+}
+function getWithDefault2(opt, $$default) {
+  if (opt !== void 0) {
+    return Primitive_option4.valFromOption(opt);
+  } else {
+    return $$default;
+  }
+}
+function orElse2(opt, other) {
+  if (opt !== void 0) {
+    return opt;
+  } else {
+    return other;
+  }
+}
+function isSome2(x) {
+  return x !== void 0;
+}
+function isNone2(x) {
+  return x === void 0;
+}
+function eq2(a, b, f) {
+  if (a !== void 0) {
+    if (b !== void 0) {
+      return f(Primitive_option4.valFromOption(a), Primitive_option4.valFromOption(b));
+    } else {
+      return false;
+    }
+  } else {
+    return b === void 0;
+  }
+}
+function cmp2(a, b, f) {
+  if (a !== void 0) {
+    if (b !== void 0) {
+      return f(Primitive_option4.valFromOption(a), Primitive_option4.valFromOption(b));
+    } else {
+      return 1;
+    }
+  } else if (b !== void 0) {
+    return -1;
+  } else {
+    return 0;
+  }
+}
+var Primitive_option4, keepU2, forEachU2, getExn3, mapWithDefaultU, mapU2, flatMapU2, eqU2, cmpU2;
+var init_Belt_Option = __esm({
+  "node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Belt_Option.js"() {
+    "use strict";
+    Primitive_option4 = (init_Primitive_option(), __toCommonJS(Primitive_option_exports));
+    keepU2 = keep2;
+    forEachU2 = forEach3;
+    getExn3 = getOrThrow3;
+    mapWithDefaultU = mapWithDefault2;
+    mapU2 = map3;
+    flatMapU2 = flatMap3;
+    eqU2 = eq2;
+    cmpU2 = cmp2;
+    exports.keepU = keepU2;
+    exports.keep = keep2;
+    exports.forEachU = forEachU2;
+    exports.forEach = forEach3;
+    exports.getExn = getExn3;
+    exports.getOrThrow = getOrThrow3;
+    exports.mapWithDefaultU = mapWithDefaultU;
+    exports.mapWithDefault = mapWithDefault2;
+    exports.mapU = mapU2;
+    exports.map = map3;
+    exports.flatMapU = flatMapU2;
+    exports.flatMap = flatMap3;
+    exports.getWithDefault = getWithDefault2;
+    exports.orElse = orElse2;
+    exports.isSome = isSome2;
+    exports.isNone = isNone2;
+    exports.eqU = eqU2;
+    exports.eq = eq2;
+    exports.cmpU = cmpU2;
+    exports.cmp = cmp2;
+  }
+});
+
 // node_modules/.pnpm/@rescript+runtime@12.0.0/node_modules/@rescript/runtime/lib/js/Stdlib_Result.js
 var Stdlib_Result_exports = {};
 function getOrThrow4(x, message) {
@@ -7937,25 +7920,9 @@ var require_Packet_TeleportationPotion = __commonJS({
           };
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("TeleportationPotion")), teleportTypeToInt(self.teleportType), "teleportType"));
     }
-    var Encode = {
-      Writer: void 0,
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.teleportTypeToInt = teleportTypeToInt;
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
@@ -11876,8 +11843,8 @@ var require_TileSolid = __commonJS({
 var require_TileFrameImportant = __commonJS({
   "src/TileFrameImportant.js"(exports2) {
     "use strict";
-    var Belt_MapInt = (init_Belt_MapInt(), __toCommonJS(Belt_MapInt_exports));
-    var map7 = Belt_MapInt.fromArray([
+    var Stdlib_Option = (init_Stdlib_Option(), __toCommonJS(Stdlib_Option_exports));
+    var map7 = /* @__PURE__ */ new Map([
       [
         0,
         false
@@ -14372,7 +14339,7 @@ var require_TileFrameImportant = __commonJS({
       ]
     ]);
     function isImportant(tileType) {
-      return Belt_MapInt.getWithDefault(map7, tileType, false);
+      return Stdlib_Option.getOr(map7.get(tileType), false);
     }
     exports2.map = map7;
     exports2.isImportant = isImportant;
@@ -18950,25 +18917,9 @@ var require_Packet_DoorUse = __commonJS({
         };
       }
     }
-    var Decode = {
-      readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
-      readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
-      parse
-    };
     function toBuffer(self) {
       return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("DoorUse")), actionToInt(self.action), "action"), self.x, "x"), self.y, "y"), self.direction >= 0 ? 1 : 0, "direction"));
     }
-    var Encode = {
-      packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
-      packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
-      setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
-      data: ErrorAwarePacketWriter$TerrariaPacket.data,
-      toBuffer
-    };
-    exports2.actionToInt = actionToInt;
-    exports2.actionFromInt = actionFromInt;
-    exports2.Decode = Decode;
-    exports2.Encode = Encode;
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
   }
