@@ -5786,32 +5786,53 @@ var require_Packet_NpcNameUpdate = __commonJS({
     var ErrorAwarePacketReader$TerrariaPacket = require_ErrorAwarePacketReader();
     var ErrorAwarePacketWriter$TerrariaPacket = require_ErrorAwarePacketWriter();
     var Packetreader = require_packetreader().default;
-    function parse(payload) {
+    function parse(payload, fromServer) {
       let reader = new Packetreader(payload);
       let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcId");
       if (e.TAG !== "Ok") {
         return e;
       }
-      let e$1 = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "name");
-      if (e$1.TAG !== "Ok") {
-        return e$1;
+      let e$1;
+      if (fromServer) {
+        let e$2 = ErrorAwarePacketReader$TerrariaPacket.readString(reader, "name");
+        if (e$2.TAG === "Ok") {
+          let e$3 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "townNpcVariationIndex");
+          e$1 = e$3.TAG === "Ok" ? {
+            TAG: "Ok",
+            _0: {
+              name: e$2._0,
+              townNpcVariationIndex: e$3._0
+            }
+          } : e$3;
+        } else {
+          e$1 = e$2;
+        }
+      } else {
+        e$1 = {
+          TAG: "Ok",
+          _0: void 0
+        };
       }
-      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "townNpcVariationIndex");
-      if (e$2.TAG === "Ok") {
+      if (e$1.TAG === "Ok") {
         return {
           TAG: "Ok",
           _0: {
             npcId: e._0,
-            name: e$1._0,
-            townNpcVariationIndex: e$2._0
+            extraInfo: e$1._0
           }
         };
       } else {
-        return e$2;
+        return e$1;
       }
     }
     function toBuffer(self) {
-      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packString(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcNameUpdate")), self.npcId, "npcId"), self.name, "name"), self.townNpcVariationIndex, "townNpcVariationIndex"));
+      let writer = ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcNameUpdate")), self.npcId, "npcId");
+      let extraInfo = self.extraInfo;
+      if (extraInfo !== void 0) {
+        return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packString(writer, extraInfo.name, "name"), extraInfo.townNpcVariationIndex, "townNpcVariationIndex"));
+      } else {
+        return ErrorAwarePacketWriter$TerrariaPacket.data(writer);
+      }
     }
     exports2.parse = parse;
     exports2.toBuffer = toBuffer;
@@ -20538,7 +20559,7 @@ var require_Parser = __commonJS({
         case "NpcNameUpdate":
           return {
             TAG: "Ok",
-            _0: makeParsers(packetName, Packet_NpcNameUpdate$TerrariaPacket.parse, (a) => ({
+            _0: makeParsers(packetName, (__x) => Packet_NpcNameUpdate$TerrariaPacket.parse(__x, fromServer), (a) => ({
               TAG: "NpcNameUpdate",
               _0: a
             }), (a) => ({

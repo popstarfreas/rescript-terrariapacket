@@ -681,11 +681,11 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
         ~toLazyPacket=a => Packet.LazyPacket.PlayerBuffAdd(a),
       ),
     )
-  | (NpcNameUpdate, true | false) =>
+  | (NpcNameUpdate, fromServer) =>
     Ok(
       makeParsers(
         ~packetName,
-        ~parse=Packet.NpcNameUpdate.parse,
+        ~parse=Packet.NpcNameUpdate.parse(_, ~fromServer),
         ~toPacket=a => Packet.NpcNameUpdate(a),
         ~toLazyPacket=a => Packet.LazyPacket.NpcNameUpdate(a),
       ),

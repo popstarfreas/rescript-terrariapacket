@@ -1181,7 +1181,7 @@ function getParsers(packetType, fromServer) {
     case "NpcNameUpdate" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_NpcNameUpdate$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, __x => Packet_NpcNameUpdate$TerrariaPacket.parse(__x, fromServer), a => ({
           TAG: "NpcNameUpdate",
           _0: a
         }), a => ({
