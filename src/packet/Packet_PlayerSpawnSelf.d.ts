@@ -1,20 +1,10 @@
 import type { PackError } from "../ErrorAwarePacketWriter";
 import type { readError } from "../ErrorAwarePacketReader";
-import type { context } from "./Packet_PlayerSpawn";
-/* TypeScript file generated from Packet_PlayerSpawnSelf.res by genType. */
 
 /* eslint-disable */
 /* tslint:disable */
 
-export type t = {
-  readonly playerId: number;
-  readonly x: number;
-  readonly y: number;
-  readonly respawnTimer: number;
-  readonly numberOfDeathsPve: number;
-  readonly numberOfDeathsPvp: number;
-  readonly context: context
-};
+export type t = undefined
 
 export type parseOk = { TAG: "Ok"; _0: t };
 export type parseError = { TAG: "Error"; _0: readError };

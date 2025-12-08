@@ -3001,15 +3001,7 @@ declare type t_133 = {
     readonly liquidType: number
 };
 
-declare type t_134 = {
-    readonly playerId: number;
-    readonly x: number;
-    readonly y: number;
-    readonly respawnTimer: number;
-    readonly numberOfDeathsPve: number;
-    readonly numberOfDeathsPvp: number;
-    readonly context: context_2
-};
+declare type t_134 = undefined
 
 declare type t_135 = { readonly playerId: number; readonly buffs: number[] };
 
