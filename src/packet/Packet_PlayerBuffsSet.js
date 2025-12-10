@@ -2,12 +2,12 @@
 
 import * as Stdlib_Array from "@rescript/runtime/lib/es6/Stdlib_Array.js";
 import * as PacketType$TerrariaPacket from "../PacketType.js";
+import * as PacketReader$PacketFactory from "@popstarfreas/packetfactory/src/PacketReader.js";
 import * as ErrorAwarePacketReader$TerrariaPacket from "../ErrorAwarePacketReader.js";
 import * as ErrorAwarePacketWriter$TerrariaPacket from "../ErrorAwarePacketWriter.js";
-import PacketreaderJs from "@popstarfreas/packetfactory/packetreader.js";
 
 function parse(payload) {
-  let reader = new PacketreaderJs(payload);
+  let reader = PacketReader$PacketFactory.make(payload);
   let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -74,4 +74,4 @@ export {
   parse,
   toBuffer,
 }
-/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */
+/* PacketReader-PacketFactory Not a pure module */

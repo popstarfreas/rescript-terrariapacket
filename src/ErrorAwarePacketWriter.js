@@ -2,7 +2,6 @@
 
 import * as Primitive_exceptions from "@rescript/runtime/lib/es6/Primitive_exceptions.js";
 import * as ManagedPacketWriter$PacketFactory from "@popstarfreas/packetfactory/src/ManagedPacketWriter.js";
-import PacketwriterJs from "@popstarfreas/packetfactory/packetwriter.js";
 
 function packSingle(self, value, context) {
   if (self.TAG !== "Writing") {
@@ -355,7 +354,7 @@ function data(self) {
 }
 
 function make() {
-  return new PacketwriterJs();
+  return ManagedPacketWriter$PacketFactory.make();
 }
 
 export {
@@ -377,4 +376,4 @@ export {
   data,
   make,
 }
-/* @popstarfreas/packetfactory/packetwriter.js Not a pure module */
+/* ManagedPacketWriter-PacketFactory Not a pure module */

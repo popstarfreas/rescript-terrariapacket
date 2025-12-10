@@ -2,7 +2,6 @@
 
 import * as PacketType$TerrariaPacket from "../PacketType.js";
 import * as ManagedPacketWriter$PacketFactory from "@popstarfreas/packetfactory/src/ManagedPacketWriter.js";
-import PacketwriterJs from "@popstarfreas/packetfactory/packetwriter.js";
 
 function parse(_payload) {
   return {
@@ -14,7 +13,7 @@ function parse(_payload) {
 function toBuffer(_self) {
   return {
     TAG: "Ok",
-    _0: ManagedPacketWriter$PacketFactory.setType(new PacketwriterJs(), PacketType$TerrariaPacket.toInt("WorldDataRequest")).data
+    _0: ManagedPacketWriter$PacketFactory.setType(ManagedPacketWriter$PacketFactory.make(), PacketType$TerrariaPacket.toInt("WorldDataRequest")).data
   };
 }
 
@@ -22,4 +21,4 @@ export {
   parse,
   toBuffer,
 }
-/* @popstarfreas/packetfactory/packetwriter.js Not a pure module */
+/* ManagedPacketWriter-PacketFactory Not a pure module */

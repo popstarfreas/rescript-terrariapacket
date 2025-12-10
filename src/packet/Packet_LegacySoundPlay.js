@@ -4,12 +4,12 @@ import * as Stdlib_Option from "@rescript/runtime/lib/es6/Stdlib_Option.js";
 import * as Stdlib_Result from "@rescript/runtime/lib/es6/Stdlib_Result.js";
 import * as BitFlags$TerrariaPacket from "../BitFlags.js";
 import * as PacketType$TerrariaPacket from "../PacketType.js";
+import * as PacketReader$PacketFactory from "@popstarfreas/packetfactory/src/PacketReader.js";
 import * as ErrorAwarePacketReader$TerrariaPacket from "../ErrorAwarePacketReader.js";
 import * as ErrorAwarePacketWriter$TerrariaPacket from "../ErrorAwarePacketWriter.js";
-import PacketreaderJs from "@popstarfreas/packetfactory/packetreader.js";
 
 function parse(payload) {
-  let reader = new PacketreaderJs(payload);
+  let reader = PacketReader$PacketFactory.make(payload);
   let e = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
   if (e.TAG !== "Ok") {
     return e;
@@ -86,4 +86,4 @@ export {
   parse,
   toBuffer,
 }
-/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */
+/* PacketReader-PacketFactory Not a pure module */
