@@ -1,7 +1,7 @@
-import { PackError } from "../ErrorAwarePacketWriter";
-import type { readError } from "../ErrorAwarePacketReader";
+import { PackError } from "../ErrorAwarePacketWriter.js";
+import type { readError } from "../ErrorAwarePacketReader.js";
 
-import type { CreativePower } from '../CreativePowers';
+import type { CreativePower } from '../CreativePowers.js';
 import NetworkText from "@popstarfreas/packetfactory/networktext";
 import Color from "@popstarfreas/packetfactory/color";
 

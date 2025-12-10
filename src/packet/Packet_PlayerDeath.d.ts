@@ -3,9 +3,9 @@
 /* eslint-disable */
 /* tslint:disable */
 
-import type { t as PlayerDeathReason_t } from '../../src/PlayerDeathReason';
-import type { readError } from "../ErrorAwarePacketReader";
-import type { PackError } from "../ErrorAwarePacketWriter";
+import type { t as PlayerDeathReason_t } from '../../src/PlayerDeathReason.js';
+import type { readError } from "../ErrorAwarePacketReader.js";
+import type { PackError } from "../ErrorAwarePacketWriter.js";
 
 export type t = {
   readonly playerId: number;

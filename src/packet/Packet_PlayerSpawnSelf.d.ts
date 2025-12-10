@@ -1,5 +1,5 @@
-import type { PackError } from "../ErrorAwarePacketWriter";
-import type { readError } from "../ErrorAwarePacketReader";
+import type { PackError } from "../ErrorAwarePacketWriter.js";
+import type { readError } from "../ErrorAwarePacketReader.js";
 
 /* eslint-disable */
 /* tslint:disable */

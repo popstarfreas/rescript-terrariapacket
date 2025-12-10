@@ -1,6 +1,6 @@
 import type NetworkText from "@popstarfreas/packetfactory/networktext";
-import type { readError } from "../ErrorAwarePacketReader";
-import type { PackError } from "../ErrorAwarePacketWriter";
+import type { readError } from "../ErrorAwarePacketReader.js";
+import type { PackError } from "../ErrorAwarePacketWriter.js";
 
 export type t = {
   readonly reason: NetworkText;

@@ -6,14 +6,14 @@
   "exports": {
     ".": {
       "import": "./dist/Export.js",
-      "require": "./dist/Export.js",
+      "require": "./dist/Export.cjs",
       "types": "./dist/Export.d.ts"
     },
     "./*": "./*"
   },
   "scripts": {
     "build:watch": "rescript watch",
-    "build:bundle": "rsync -a --include='*/' --include='*.d.ts' --exclude='*' src/ lib/ && esbuild src/Export.ts --bundle --outfile=dist/Export.js --format=cjs --platform=node --alias:@rescript/runtime/lib/js=@rescript/runtime/lib/es6 && tsc -p . && api-extractor run --local",
+    "build:bundle": "rsync -a --include='*/' --include='*.d.ts' --exclude='*' src/ lib/ && esbuild src/Export.ts --bundle --outfile=dist/Export.js --format=esm --platform=node --alias:@rescript/runtime/lib/js=@rescript/runtime/lib/es6 && esbuild src/Export.ts --bundle --outfile=dist/Export.cjs --format=cjs --platform=node --alias:@rescript/runtime/lib/js=@rescript/runtime/lib/es6 && tsc -p . && api-extractor run --local",
     "build": "rescript",
     "build:tsc": "tsc -p .",
     "test": "pta  'tests/*.test.js'"

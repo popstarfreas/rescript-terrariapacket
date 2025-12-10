@@ -1,4 +1,4 @@
-import type { readError } from "../ErrorAwarePacketReader";
+import type { readError } from "../ErrorAwarePacketReader.js";
 /* Minimal types for unused packet */
 
 export type t = undefined;

@@ -1,5 +1,5 @@
-import type { PackError } from "../ErrorAwarePacketWriter";
-import type { readError } from "../ErrorAwarePacketReader";
+import type { PackError } from "../ErrorAwarePacketWriter.js";
+import type { readError } from "../ErrorAwarePacketReader.js";
 import Color from "@popstarfreas/packetfactory/color";
 import type NetworkText from "@popstarfreas/packetfactory/networktext";
 /* TypeScript file generated from Packet_ChatMessageSmart.res by genType. */

@@ -1,6 +1,6 @@
-import type { readError } from "../ErrorAwarePacketReader";
-import type { PackError } from "../ErrorAwarePacketWriter";
-import type {t as Point_t} from '../../src/Point';
+import type { readError } from "../ErrorAwarePacketReader.js";
+import type { PackError } from "../ErrorAwarePacketWriter.js";
+import type {t as Point_t} from '../../src/Point.js';
 /* TypeScript file generated from Packet_LegacySoundPlay.res by genType. */
 
 /* eslint-disable */

@@ -3,9 +3,9 @@
 /* eslint-disable */
 /* tslint:disable */
 
-import type {t as Point_t} from '../../src/Point';
-import type { readError } from "../ErrorAwarePacketReader";
-import type { PackError } from "../ErrorAwarePacketWriter";
+import type {t as Point_t} from '../../src/Point.js';
+import type { readError } from "../ErrorAwarePacketReader.js";
+import type { PackError } from "../ErrorAwarePacketWriter.js";
 
 export type coinLuck = { readonly position: Point_t<number>; readonly amount: number };
 

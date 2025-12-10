@@ -1,6 +1,6 @@
-import { Array16 } from "../Array16";
-import { PackError } from "../ErrorAwarePacketWriter";
-import type { readError } from "../ErrorAwarePacketReader";
+import { Array16 } from "../Array16.js";
+import { PackError } from "../ErrorAwarePacketWriter.js";
+import type { readError } from "../ErrorAwarePacketReader.js";
 
 export type eventInfo = {
   readonly shadowOrbSmashed: boolean;

@@ -1,6 +1,6 @@
 import type Color from "@popstarfreas/packetfactory/color";
-import type { ReadResult } from "./ErrorAwarePacketReader";
-export type { readError, ReadResult } from "./ErrorAwarePacketReader";
+import type { ReadResult } from "./ErrorAwarePacketReader.js";
+export type { readError, ReadResult } from "./ErrorAwarePacketReader.js";
 
 export declare class ErrorAwareBufferReader { }
 

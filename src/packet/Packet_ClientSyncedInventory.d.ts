@@ -1,4 +1,4 @@
-import type { readError } from "../ErrorAwarePacketReader";
+import type { readError } from "../ErrorAwarePacketReader.js";
 /* TypeScript file generated from Packet_ClientSyncedInventory.res by genType. */
 
 /* eslint-disable */

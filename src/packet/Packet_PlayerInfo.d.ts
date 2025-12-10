@@ -1,7 +1,7 @@
 /* TypeScript file generated from Packet_PlayerInfo.resi by genType. */
 
-import type { readError } from "../ErrorAwarePacketReader";
-import type { PackError } from "../ErrorAwarePacketWriter";
+import type { readError } from "../ErrorAwarePacketReader.js";
+import type { PackError } from "../ErrorAwarePacketWriter.js";
 import Color from "@popstarfreas/packetfactory/color";
 
 /* eslint-disable */

@@ -3,8 +3,8 @@
 /* eslint-disable */
 /* tslint:disable */
 
-import type { PackError } from "../ErrorAwarePacketWriter";
-import type { readError } from "../ErrorAwarePacketReader";
+import type { PackError } from "../ErrorAwarePacketWriter.js";
+import type { readError } from "../ErrorAwarePacketReader.js";
 
 export type t = {
   readonly projectileId: number;

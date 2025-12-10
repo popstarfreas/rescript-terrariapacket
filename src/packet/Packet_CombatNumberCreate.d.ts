@@ -1,7 +1,7 @@
 /* TypeScript file generated from Packet_CombatNumberCreate.res by genType. */
 
-import type { PackError } from "../ErrorAwarePacketWriter";
-import type { readError } from "../ErrorAwarePacketReader";
+import type { PackError } from "../ErrorAwarePacketWriter.js";
+import type { readError } from "../ErrorAwarePacketReader.js";
 import Color from "@popstarfreas/packetfactory/color";
 
 /* eslint-disable */

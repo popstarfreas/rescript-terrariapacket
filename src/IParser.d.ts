@@ -3,7 +3,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-import type { readError } from "./ErrorAwarePacketReader";
+import type { readError } from "./ErrorAwarePacketReader.js";
 
 export type parseError =
   | { TAG: "ReaderError"; _0: readError }
