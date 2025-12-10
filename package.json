@@ -1,6 +1,6 @@
 {
   "name": "terraria-packet",
-  "version": "1.2.0",
+  "type": "module",
   "main": "dist/Export.js",
   "types": "dist/Export.d.ts",
   "exports": {
@@ -19,9 +19,9 @@
     "test": "pta  'tests/*.test.js'"
   },
   "dependencies": {
-    "@popstarfreas/packetfactory": "^6.3.0",
+    "@popstarfreas/packetfactory": "git+https://github.com/popstarfreas/packetfactory-ts.git#897df8562a841a824a15c38ef8357b8c11fab706",
     "@rescript/core": "^1.6.1",
-    "rescript": "^12.0.0"
+    "@rescript/runtime": "^12.0.1"
   },
   "devDependencies": {
     "@dusty-phillips/rescript-zora": "^5.0.1",
@@ -30,6 +30,8 @@
     "@types/node": "^20.5.9",
     "esbuild": "^0.25.6",
     "pta": "^1.2.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "zora": "^6.0.0",
+    "rescript": "^12.0.0"
   }
 }

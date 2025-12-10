@@ -9,14 +9,14 @@ importers:
   .:
     dependencies:
       '@popstarfreas/packetfactory':
-        specifier: ^6.3.0
-        version: 6.3.0
+        specifier: git+https://github.com/popstarfreas/packetfactory-ts.git#897df8562a841a824a15c38ef8357b8c11fab706
+        version: https://codeload.github.com/popstarfreas/packetfactory-ts/tar.gz/897df8562a841a824a15c38ef8357b8c11fab706
       '@rescript/core':
         specifier: ^1.6.1
         version: 1.6.1(rescript@12.0.0)
-      rescript:
-        specifier: ^12.0.0
-        version: 12.0.0
+      '@rescript/runtime':
+        specifier: ^12.0.1
+        version: 12.0.1
     devDependencies:
       '@dusty-phillips/rescript-zora':
         specifier: ^5.0.1
@@ -35,10 +35,16 @@ importers:
         version: 0.25.6
       pta:
         specifier: ^1.2.0
-        version: 1.3.0(zora@5.2.0)
+        version: 1.3.0(zora@6.0.0)
+      rescript:
+        specifier: ^12.0.0
+        version: 12.0.0
       typescript:
         specifier: ^5.2.2
         version: 5.8.3
+      zora:
+        specifier: ^6.0.0
+        version: 6.0.0
 
 packages:
 
@@ -226,8 +232,9 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@popstarfreas/packetfactory@6.3.0':
-    resolution: {integrity: sha512-1Ch07cpHeT4TYSVfqWRkAEuBo51XoEx7CyFKJs/Unj+LvJA5UnJ0P4YB3h4L9gqvOQRg4iCA+NvhmHXKxYHsRg==}
+  '@popstarfreas/packetfactory@https://codeload.github.com/popstarfreas/packetfactory-ts/tar.gz/897df8562a841a824a15c38ef8357b8c11fab706':
+    resolution: {tarball: https://codeload.github.com/popstarfreas/packetfactory-ts/tar.gz/897df8562a841a824a15c38ef8357b8c11fab706}
+    version: 7.0.0
 
   '@popstarfreas/rescript-nodejs@https://codeload.github.com/popstarfreas/rescript-nodejs/tar.gz/f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7':
     resolution: {tarball: https://codeload.github.com/popstarfreas/rescript-nodejs/tar.gz/f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7}
@@ -264,6 +271,9 @@ packages:
 
   '@rescript/runtime@12.0.0':
     resolution: {integrity: sha512-STRbYHT5rnW61vWn2+Bdtj620XaprnoBSbPbkvOYZ+Zs8nfqtpBjhNw+JNpGQLXf73crk6MhxFGPxL2o5vb8TQ==}
+
+  '@rescript/runtime@12.0.1':
+    resolution: {integrity: sha512-pMoWvllPFK0cl87vMYBVvll+DaAdPAsRuLIIJa+Q8LMhcS7cqpaZVflU3LbH+U/kv3vWaUYIfLBObwGnXw/CDg==}
 
   '@rescript/win32-x64@12.0.0':
     resolution: {integrity: sha512-kkqj4kQGbni5YglWoPm76M6hUuzKJHDEiLce5EZxW2Q4FrkS9dNRgm02c2Ck1cz/uKCS3m+ZoKQGIMMXTvo5Jw==}
@@ -552,9 +562,6 @@ packages:
   uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
 
-  utf8@2.1.2:
-    resolution: {integrity: sha512-QXo+O/QkLP/x1nyi54uQiG0XrODxdysuQvE5dtVqv7F5K2Qb6FsN+qbr6KhF5wQ20tfcV3VQp0/2x1e1MRSPWg==}
-
   yallist@4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
 
@@ -564,6 +571,9 @@ packages:
 
   zora@5.2.0:
     resolution: {integrity: sha512-FSZOvfJVfMWhk/poictNsDBCXq/Z+2Zu2peWs6d8OhWWb9nY++czw95D47hdw06L/kfjasLevwrbUtnXyWLAJw==}
+
+  zora@6.0.0:
+    resolution: {integrity: sha512-uDOZ5VwwURiU9B+5BY5z/ByM9WWC1A5SJpEBg0HL9Qy2zsKnzfizsa+ABWZFJ8onGN1MU2evzAGAuAxybjoYEQ==}
 
 snapshots:
 
@@ -697,10 +707,9 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.19.1
 
-  '@popstarfreas/packetfactory@6.3.0':
+  '@popstarfreas/packetfactory@https://codeload.github.com/popstarfreas/packetfactory-ts/tar.gz/897df8562a841a824a15c38ef8357b8c11fab706':
     dependencies:
       '@popstarfreas/rescript-nodejs': https://codeload.github.com/popstarfreas/rescript-nodejs/tar.gz/f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7
-      utf8: 2.1.2
     optionalDependencies:
       rescript: 12.0.0
 
@@ -723,6 +732,8 @@ snapshots:
     optional: true
 
   '@rescript/runtime@12.0.0': {}
+
+  '@rescript/runtime@12.0.1': {}
 
   '@rescript/win32-x64@12.0.0':
     optional: true
@@ -946,6 +957,13 @@ snapshots:
       zora: 5.2.0
       zora-reporters: 2.0.0
 
+  pta@1.3.0(zora@6.0.0):
+    dependencies:
+      arg: 5.0.2
+      globby: 14.1.0
+      zora: 6.0.0
+      zora-reporters: 2.0.0
+
   punycode@2.3.1: {}
 
   queue-microtask@1.2.3: {}
@@ -1012,8 +1030,6 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  utf8@2.1.2: {}
-
   yallist@4.0.0: {}
 
   zora-reporters@2.0.0:
@@ -1023,3 +1039,5 @@ snapshots:
       diff: 5.2.0
 
   zora@5.2.0: {}
+
+  zora@6.0.0: {}
