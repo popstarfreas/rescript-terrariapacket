@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@popstarfreas/packetfactory':
-        specifier: ^7.1.1
-        version: 7.1.1
+        specifier: ^7.1.2
+        version: 7.1.2
       '@rescript/core':
         specifier: ^1.6.1
         version: 1.6.1(rescript@12.0.0)
@@ -232,8 +232,8 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@popstarfreas/packetfactory@7.1.1':
-    resolution: {integrity: sha512-4xPPyxW92O7kLunP0MO/yud03XLhzS3sKDE/c+YHJoHZBKuGq9QV/SCAyViShBTM8RhDlPrUzroFAltimWkt8w==}
+  '@popstarfreas/packetfactory@7.1.2':
+    resolution: {integrity: sha512-lburfAYzQQs2chZPQmgfpb99bWtN1s7OV3X8ocrHIkbBykbCXBhZFjfUhyXDyf4Et95Dfejy2evtlRPhF1UobQ==}
 
   '@popstarfreas/rescript-nodejs@https://codeload.github.com/popstarfreas/rescript-nodejs/tar.gz/f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7':
     resolution: {tarball: https://codeload.github.com/popstarfreas/rescript-nodejs/tar.gz/f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7}
@@ -706,7 +706,7 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.19.1
 
-  '@popstarfreas/packetfactory@7.1.1':
+  '@popstarfreas/packetfactory@7.1.2':
     dependencies:
       '@popstarfreas/rescript-nodejs': https://codeload.github.com/popstarfreas/rescript-nodejs/tar.gz/f3bd284a3ef17a3fc7cc81ccb7c362b278ea66c7
     optionalDependencies:
