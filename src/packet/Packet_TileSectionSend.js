@@ -8,13 +8,13 @@ import * as Primitive_exceptions from "@rescript/runtime/lib/es6/Primitive_excep
 import * as BitFlags$TerrariaPacket from "../BitFlags.js";
 import * as TileSolid$TerrariaPacket from "../TileSolid.js";
 import * as PacketType$TerrariaPacket from "../PacketType.js";
-import * as BufferReader$PacketFactory from "@popstarfreas/packetfactory/src/BufferReader.js";
-import * as PacketReader$PacketFactory from "@popstarfreas/packetfactory/src/PacketReader.js";
 import * as TileFrameImportant$TerrariaPacket from "../TileFrameImportant.js";
 import * as ErrorAwareBufferReader$TerrariaPacket from "../ErrorAwareBufferReader.js";
 import * as ErrorAwareBufferWriter$TerrariaPacket from "../ErrorAwareBufferWriter.js";
 import * as ErrorAwarePacketReader$TerrariaPacket from "../ErrorAwarePacketReader.js";
 import * as ErrorAwarePacketWriter$TerrariaPacket from "../ErrorAwarePacketWriter.js";
+import Bufferreader from "@popstarfreas/packetfactory/bufferreader";
+import Packetreader from "@popstarfreas/packetfactory/packetreader";
 
 function defaultTileCache() {
   return {
@@ -373,7 +373,7 @@ function readRepeated(count, parseItem) {
 }
 
 function parse(payload) {
-  let packetReader = PacketReader$PacketFactory.make(payload);
+  let packetReader = new Packetreader(payload);
   let e = ErrorAwarePacketReader$TerrariaPacket.getBytesLeft(packetReader);
   if (e.TAG !== "Ok") {
     return e;
@@ -405,7 +405,7 @@ function parse(payload) {
   if (inflated.TAG !== "Ok") {
     return inflated;
   }
-  let reader = BufferReader$PacketFactory.make(inflated._0);
+  let reader = new Bufferreader(inflated._0);
   let e$2 = ErrorAwareBufferReader$TerrariaPacket.readInt32(reader, "tileX");
   if (e$2.TAG !== "Ok") {
     return e$2;

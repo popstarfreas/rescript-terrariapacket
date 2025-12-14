@@ -4,9 +4,9 @@ import * as Primitive_option from "@rescript/runtime/lib/es6/Primitive_option.js
 import * as Array16$TerrariaPacket from "../Array16.js";
 import * as BitFlags$TerrariaPacket from "../BitFlags.js";
 import * as PacketType$TerrariaPacket from "../PacketType.js";
-import * as PacketReader$PacketFactory from "@popstarfreas/packetfactory/src/PacketReader.js";
 import * as ErrorAwarePacketReader$TerrariaPacket from "../ErrorAwarePacketReader.js";
 import * as ErrorAwarePacketWriter$TerrariaPacket from "../ErrorAwarePacketWriter.js";
+import Packetreader from "@popstarfreas/packetfactory/packetreader";
 
 function readEventInfo(reader) {
   let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "eventInfo1");
@@ -217,7 +217,7 @@ function readEventInfo(reader) {
 }
 
 function parse(payload) {
-  let reader = PacketReader$PacketFactory.make(payload);
+  let reader = new Packetreader(payload);
   let e = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "time");
   if (e.TAG !== "Ok") {
     return e;
@@ -632,4 +632,4 @@ export {
   parse,
   toBuffer,
 }
-/* PacketReader-PacketFactory Not a pure module */
+/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */

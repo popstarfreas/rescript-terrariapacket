@@ -599,11 +599,346 @@ function toInt(self) {
   }
 }
 
-// node_modules/.pnpm/@popstarfreas+packetfactory@7.1.1/node_modules/@popstarfreas/packetfactory/networktext.js
+// node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Primitive_exceptions.js
+function isExtension(e) {
+  if (e == null) {
+    return false;
+  } else {
+    return typeof e.RE_EXN_ID === "string";
+  }
+}
+function internalToException(e) {
+  if (isExtension(e)) {
+    return e;
+  } else {
+    return {
+      RE_EXN_ID: "JsExn",
+      _1: e
+    };
+  }
+}
+
+// src/ErrorAwarePacketReader.js
+function readByteUnsafe(prim) {
+  return prim.readByte();
+}
+function readUInt16Unsafe(prim) {
+  return prim.readUInt16();
+}
+function readInt16Unsafe(prim) {
+  return prim.readInt16();
+}
+function readUInt32Unsafe(prim) {
+  return prim.readUInt32();
+}
+function readInt32Unsafe(prim) {
+  return prim.readInt32();
+}
+function readUInt64Unsafe(prim) {
+  return prim.readUInt64();
+}
+function readStringUnsafe(prim) {
+  return prim.readString();
+}
+function readSingleUnsafe(prim) {
+  return prim.readSingle();
+}
+function readSByteUnsafe(prim) {
+  return prim.readSByte();
+}
+function readColorUnsafe(prim) {
+  return prim.readColor();
+}
+function readNetworkTextUnsafe(prim) {
+  return prim.readNetworkText();
+}
+function getBytesLeftUnsafe(prim) {
+  return prim.bytesLeft;
+}
+function withContext(fn, reader, context) {
+  try {
+    return {
+      TAG: "Ok",
+      _0: fn(reader)
+    };
+  } catch (raw_obj) {
+    let obj = internalToException(raw_obj);
+    if (obj.RE_EXN_ID === "JsExn") {
+      return {
+        TAG: "Error",
+        _0: {
+          context,
+          error: obj._1
+        }
+      };
+    }
+    throw obj;
+  }
+}
+function readByte(reader, context) {
+  return withContext(readByteUnsafe, reader, context);
+}
+function readBool(reader, context) {
+  return withContext((reader2) => reader2.readByte() === 1, reader, context);
+}
+function readUInt16(reader, context) {
+  return withContext(readUInt16Unsafe, reader, context);
+}
+function readInt16(reader, context) {
+  return withContext(readInt16Unsafe, reader, context);
+}
+function readUInt32(reader, context) {
+  return withContext(readUInt32Unsafe, reader, context);
+}
+function readInt32(reader, context) {
+  return withContext(readInt32Unsafe, reader, context);
+}
+function readUInt64(reader, context) {
+  return withContext(readUInt64Unsafe, reader, context);
+}
+function readString(reader, context) {
+  return withContext(readStringUnsafe, reader, context);
+}
+function readBytes(reader, count, context) {
+  return withContext((reader2) => reader2.readBytes(count), reader, context);
+}
+function readSingle(reader, context) {
+  return withContext(readSingleUnsafe, reader, context);
+}
+function readSByte(reader, context) {
+  return withContext(readSByteUnsafe, reader, context);
+}
+function readColor(reader, context) {
+  return withContext(readColorUnsafe, reader, context);
+}
+function readBuffer(reader, bytes, context) {
+  return withContext((reader2) => reader2.readBuffer(bytes), reader, context);
+}
+function readNetworkText(reader, context) {
+  return withContext(readNetworkTextUnsafe, reader, context);
+}
+function getBytesLeft(reader) {
+  return withContext(getBytesLeftUnsafe, reader, "getBytesLeft");
+}
+
+// src/ErrorAwarePacketWriter.js
+var ErrorAwarePacketWriter_exports = {};
+__export(ErrorAwarePacketWriter_exports, {
+  data: () => data,
+  make: () => make,
+  packBool: () => packBool,
+  packBuffer: () => packBuffer,
+  packByte: () => packByte,
+  packBytes: () => packBytes,
+  packColor: () => packColor,
+  packInt16: () => packInt16,
+  packInt32: () => packInt32,
+  packNetworkText: () => packNetworkText,
+  packSByte: () => packSByte,
+  packSingle: () => packSingle,
+  packString: () => packString,
+  packUInt16: () => packUInt16,
+  packUInt32: () => packUInt32,
+  packUInt64: () => packUInt64,
+  setType: () => setType
+});
+
+// ../packetfactory/app/bufferwriter.js
+var BufferWriter = class {
+  constructor(buffer) {
+    this._offset = 0;
+    this._buffer = buffer;
+  }
+  changeOffset(offset) {
+    this._offset = offset;
+  }
+  packInt16(int16) {
+    this._buffer.writeInt16LE(int16, this._offset);
+    this._offset += 2;
+    return this;
+  }
+  packUInt16(uint16) {
+    this._buffer.writeUInt16LE(uint16, this._offset);
+    this._offset += 2;
+    return this;
+  }
+  packInt32(int32) {
+    this._buffer.writeInt32LE(int32, this._offset);
+    this._offset += 4;
+    return this;
+  }
+  packUInt32(uint32) {
+    this._buffer.writeUInt32LE(uint32, this._offset);
+    this._offset += 4;
+    return this;
+  }
+  packInt64(int64) {
+    this._buffer.writeBigInt64LE(int64, this._offset);
+    this._offset += 8;
+    return this;
+  }
+  packUInt64(uint64) {
+    this._buffer.writeBigUInt64LE(uint64, this._offset);
+    this._offset += 8;
+    return this;
+  }
+  packSingle(single) {
+    this._buffer.writeFloatLE(single, this._offset);
+    this._offset += 4;
+    return this;
+  }
+  packDouble(double) {
+    this._buffer.writeDoubleLE(double, this._offset);
+    this._offset += 8;
+    return this;
+  }
+  packByte(byte) {
+    if (byte < 0)
+      byte = -byte;
+    this._buffer.writeUInt8(byte, this._offset);
+    this._offset += 1;
+    return this;
+  }
+  packSByte(byte) {
+    this._buffer.writeInt8(byte, this._offset);
+    this._offset += 1;
+    return this;
+  }
+  packBytes(bytes) {
+    for (const byte of bytes) {
+      this.packByte(byte);
+    }
+    return this;
+  }
+  packHex(hex) {
+    const buf = Buffer.from(hex, "hex");
+    buf.copy(this._buffer, this._offset, 0);
+    this._offset += buf.length;
+    return this;
+  }
+  packBuffer(buffer) {
+    buffer.copy(this._buffer, this._offset, 0);
+    this._offset += buffer.length;
+    return this;
+  }
+  packString(str) {
+    const packedStr = Buffer.from(str, "utf8");
+    const strLen = packedStr.length;
+    if (strLen >= 128) {
+      this.packByte(strLen % 128 + 128);
+      this.packByte(Math.floor(strLen / 128));
+    } else {
+      this.packByte(strLen);
+    }
+    this.packBuffer(packedStr);
+    return this;
+  }
+  packColor(color) {
+    this.packByte(color.R);
+    this.packByte(color.G);
+    this.packByte(color.B);
+    return this;
+  }
+  packNetworkText(networkText) {
+    this.packByte(networkText.mode);
+    this.packString(networkText.text);
+    return this;
+  }
+  get data() {
+    return this._buffer;
+  }
+  get packedLength() {
+    return this._offset;
+  }
+  get slicedData() {
+    return this._buffer.slice(0, this._offset);
+  }
+};
+var bufferwriter_default = BufferWriter;
+
+// ../packetfactory/app/dumbpacketwriter.js
+var PacketWriter = class extends bufferwriter_default {
+  updateSize() {
+    const offset = this._offset;
+    this._offset = 0;
+    super.packUInt16(offset);
+    this._offset = offset;
+  }
+  setType(type) {
+    this.packUInt16(3);
+    this.packByte(type);
+    return this;
+  }
+  packInt16(int16) {
+    super.packInt16(int16);
+    this.updateSize();
+    return this;
+  }
+  packUInt16(uint16) {
+    super.packUInt16(uint16);
+    this.updateSize();
+    return this;
+  }
+  packInt32(int32) {
+    super.packInt32(int32);
+    this.updateSize();
+    return this;
+  }
+  packUInt32(uint32) {
+    super.packUInt32(uint32);
+    this.updateSize();
+    return this;
+  }
+  packSingle(single) {
+    super.packSingle(single);
+    this.updateSize();
+    return this;
+  }
+  packByte(byte) {
+    super.packByte(byte);
+    this.updateSize();
+    return this;
+  }
+  packSByte(byte) {
+    super.packSByte(byte);
+    this.updateSize();
+    return this;
+  }
+  packHex(hex) {
+    super.packHex(hex);
+    this.updateSize();
+    return this;
+  }
+  packBuffer(buffer) {
+    super.packBuffer(buffer);
+    this.updateSize();
+    return this;
+  }
+  packString(str) {
+    super.packString(str);
+    this.updateSize();
+    return this;
+  }
+  packNetworkText(networkText) {
+    this.packByte(networkText.mode);
+    this.packString(networkText.text);
+    return this;
+  }
+  packColor(color) {
+    this.packByte(color.R);
+    this.packByte(color.G);
+    this.packByte(color.B);
+    return this;
+  }
+};
+var dumbpacketwriter_default = PacketWriter;
+
+// ../packetfactory/app/networktext.js
 var NetworkText = class {
-  constructor(mode, text) {
+  constructor(mode, text, substitutionList = void 0) {
     this._mode = mode;
     this._text = text;
+    this._substitutionList = substitutionList;
   }
   get mode() {
     return this._mode;
@@ -611,13 +946,16 @@ var NetworkText = class {
   get text() {
     return this._text;
   }
+  get substitutionList() {
+    return this._substitutionList;
+  }
   toString() {
     return this._text;
   }
 };
 var networktext_default = NetworkText;
 
-// node_modules/.pnpm/@popstarfreas+packetfactory@7.1.1/node_modules/@popstarfreas/packetfactory/bufferreader.js
+// ../packetfactory/app/bufferreader.js
 var BufferReader = class {
   constructor(data3) {
     this.head = 0;
@@ -805,220 +1143,7 @@ var BufferReader = class {
 };
 var bufferreader_default = BufferReader;
 
-// node_modules/.pnpm/@popstarfreas+packetfactory@7.1.1/node_modules/@popstarfreas/packetfactory/packetreader.js
-var PacketReader = class extends bufferreader_default {
-  constructor(data3) {
-    super(data3);
-    this.readUInt16();
-    this._type = this.readByte();
-  }
-  /**
-   * Gets the packet type
-   *
-   * @return The packet type of the packet
-   */
-  get type() {
-    return this._type;
-  }
-};
-var packetreader_default = PacketReader;
-
-// node_modules/.pnpm/@popstarfreas+packetfactory@7.1.1/node_modules/@popstarfreas/packetfactory/src/PacketReader.js
-function make(prim) {
-  return new packetreader_default(prim);
-}
-
-// node_modules/.pnpm/@popstarfreas+packetfactory@7.1.1/node_modules/@popstarfreas/packetfactory/bufferwriter.js
-var BufferWriter = class {
-  constructor(buffer) {
-    this._offset = 0;
-    this._buffer = buffer;
-  }
-  changeOffset(offset) {
-    this._offset = offset;
-  }
-  packInt16(int16) {
-    this._buffer.writeInt16LE(int16, this._offset);
-    this._offset += 2;
-    return this;
-  }
-  packUInt16(uint16) {
-    this._buffer.writeUInt16LE(uint16, this._offset);
-    this._offset += 2;
-    return this;
-  }
-  packInt32(int32) {
-    this._buffer.writeInt32LE(int32, this._offset);
-    this._offset += 4;
-    return this;
-  }
-  packUInt32(uint32) {
-    this._buffer.writeUInt32LE(uint32, this._offset);
-    this._offset += 4;
-    return this;
-  }
-  packInt64(int64) {
-    this._buffer.writeBigInt64LE(int64, this._offset);
-    this._offset += 8;
-    return this;
-  }
-  packUInt64(uint64) {
-    this._buffer.writeBigUInt64LE(uint64, this._offset);
-    this._offset += 8;
-    return this;
-  }
-  packSingle(single) {
-    this._buffer.writeFloatLE(single, this._offset);
-    this._offset += 4;
-    return this;
-  }
-  packDouble(double) {
-    this._buffer.writeDoubleLE(double, this._offset);
-    this._offset += 8;
-    return this;
-  }
-  packByte(byte) {
-    if (byte < 0)
-      byte = -byte;
-    this._buffer.writeUInt8(byte, this._offset);
-    this._offset += 1;
-    return this;
-  }
-  packSByte(byte) {
-    this._buffer.writeInt8(byte, this._offset);
-    this._offset += 1;
-    return this;
-  }
-  packBytes(bytes) {
-    for (const byte of bytes) {
-      this.packByte(byte);
-    }
-    return this;
-  }
-  packHex(hex) {
-    const buf = Buffer.from(hex, "hex");
-    buf.copy(this._buffer, this._offset, 0);
-    this._offset += buf.length;
-    return this;
-  }
-  packBuffer(buffer) {
-    buffer.copy(this._buffer, this._offset, 0);
-    this._offset += buffer.length;
-    return this;
-  }
-  packString(str) {
-    const packedStr = Buffer.from(str, "utf8");
-    const strLen = packedStr.length;
-    if (strLen >= 128) {
-      this.packByte(strLen % 128 + 128);
-      this.packByte(Math.floor(strLen / 128));
-    } else {
-      this.packByte(strLen);
-    }
-    this.packBuffer(packedStr);
-    return this;
-  }
-  packColor(color) {
-    this.packByte(color.R);
-    this.packByte(color.G);
-    this.packByte(color.B);
-    return this;
-  }
-  packNetworkText(networkText) {
-    this.packByte(networkText.mode);
-    this.packString(networkText.text);
-    return this;
-  }
-  get data() {
-    return this._buffer;
-  }
-  get packedLength() {
-    return this._offset;
-  }
-  get slicedData() {
-    return this._buffer.slice(0, this._offset);
-  }
-};
-var bufferwriter_default = BufferWriter;
-
-// node_modules/.pnpm/@popstarfreas+packetfactory@7.1.1/node_modules/@popstarfreas/packetfactory/dumbpacketwriter.js
-var PacketWriter = class extends bufferwriter_default {
-  updateSize() {
-    const offset = this._offset;
-    this._offset = 0;
-    super.packUInt16(offset);
-    this._offset = offset;
-  }
-  setType(type) {
-    this.packUInt16(3);
-    this.packByte(type);
-    return this;
-  }
-  packInt16(int16) {
-    super.packInt16(int16);
-    this.updateSize();
-    return this;
-  }
-  packUInt16(uint16) {
-    super.packUInt16(uint16);
-    this.updateSize();
-    return this;
-  }
-  packInt32(int32) {
-    super.packInt32(int32);
-    this.updateSize();
-    return this;
-  }
-  packUInt32(uint32) {
-    super.packUInt32(uint32);
-    this.updateSize();
-    return this;
-  }
-  packSingle(single) {
-    super.packSingle(single);
-    this.updateSize();
-    return this;
-  }
-  packByte(byte) {
-    super.packByte(byte);
-    this.updateSize();
-    return this;
-  }
-  packSByte(byte) {
-    super.packSByte(byte);
-    this.updateSize();
-    return this;
-  }
-  packHex(hex) {
-    super.packHex(hex);
-    this.updateSize();
-    return this;
-  }
-  packBuffer(buffer) {
-    super.packBuffer(buffer);
-    this.updateSize();
-    return this;
-  }
-  packString(str) {
-    super.packString(str);
-    this.updateSize();
-    return this;
-  }
-  packNetworkText(networkText) {
-    this.packByte(networkText.mode);
-    this.packString(networkText.text);
-    return this;
-  }
-  packColor(color) {
-    this.packByte(color.R);
-    this.packByte(color.G);
-    this.packByte(color.B);
-    return this;
-  }
-};
-var dumbpacketwriter_default = PacketWriter;
-
-// node_modules/.pnpm/@popstarfreas+packetfactory@7.1.1/node_modules/@popstarfreas/packetfactory/utils.js
+// ../packetfactory/app/utils.js
 function getPackedStringByteLen(str) {
   const strLen = Buffer.from(str, "utf8").length;
   if (strLen >= 128) {
@@ -1027,7 +1152,7 @@ function getPackedStringByteLen(str) {
   return 1 + strLen;
 }
 
-// node_modules/.pnpm/@popstarfreas+packetfactory@7.1.1/node_modules/@popstarfreas/packetfactory/packetwriter.js
+// ../packetfactory/app/packetwriter.js
 var PacketWriter2 = class {
   constructor(writerCls = dumbpacketwriter_default) {
     this._queue = [];
@@ -1141,157 +1266,7 @@ var PacketWriter2 = class {
 };
 var packetwriter_default = PacketWriter2;
 
-// node_modules/.pnpm/@popstarfreas+packetfactory@7.1.1/node_modules/@popstarfreas/packetfactory/src/ManagedPacketWriter.js
-function make2(prim) {
-  return new packetwriter_default();
-}
-function setType(untypedT, packetType) {
-  return untypedT.setType(packetType);
-}
-
-// node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Primitive_exceptions.js
-function isExtension(e) {
-  if (e == null) {
-    return false;
-  } else {
-    return typeof e.RE_EXN_ID === "string";
-  }
-}
-function internalToException(e) {
-  if (isExtension(e)) {
-    return e;
-  } else {
-    return {
-      RE_EXN_ID: "JsExn",
-      _1: e
-    };
-  }
-}
-
-// src/ErrorAwarePacketReader.js
-function readByteUnsafe(prim) {
-  return prim.readByte();
-}
-function readUInt16Unsafe(prim) {
-  return prim.readUInt16();
-}
-function readInt16Unsafe(prim) {
-  return prim.readInt16();
-}
-function readUInt32Unsafe(prim) {
-  return prim.readUInt32();
-}
-function readInt32Unsafe(prim) {
-  return prim.readInt32();
-}
-function readUInt64Unsafe(prim) {
-  return prim.readUInt64();
-}
-function readStringUnsafe(prim) {
-  return prim.readString();
-}
-function readSingleUnsafe(prim) {
-  return prim.readSingle();
-}
-function readSByteUnsafe(prim) {
-  return prim.readSByte();
-}
-function readColorUnsafe(prim) {
-  return prim.readColor();
-}
-function readNetworkTextUnsafe(prim) {
-  return prim.readNetworkText();
-}
-function getBytesLeftUnsafe(prim) {
-  return prim.bytesLeft;
-}
-function withContext(fn, reader, context) {
-  try {
-    return {
-      TAG: "Ok",
-      _0: fn(reader)
-    };
-  } catch (raw_obj) {
-    let obj = internalToException(raw_obj);
-    if (obj.RE_EXN_ID === "JsExn") {
-      return {
-        TAG: "Error",
-        _0: {
-          context,
-          error: obj._1
-        }
-      };
-    }
-    throw obj;
-  }
-}
-function readByte(reader, context) {
-  return withContext(readByteUnsafe, reader, context);
-}
-function readBool(reader, context) {
-  return withContext((reader2) => reader2.readByte() === 1, reader, context);
-}
-function readUInt16(reader, context) {
-  return withContext(readUInt16Unsafe, reader, context);
-}
-function readInt16(reader, context) {
-  return withContext(readInt16Unsafe, reader, context);
-}
-function readUInt32(reader, context) {
-  return withContext(readUInt32Unsafe, reader, context);
-}
-function readInt32(reader, context) {
-  return withContext(readInt32Unsafe, reader, context);
-}
-function readUInt64(reader, context) {
-  return withContext(readUInt64Unsafe, reader, context);
-}
-function readString(reader, context) {
-  return withContext(readStringUnsafe, reader, context);
-}
-function readBytes(reader, count, context) {
-  return withContext((reader2) => reader2.readBytes(count), reader, context);
-}
-function readSingle(reader, context) {
-  return withContext(readSingleUnsafe, reader, context);
-}
-function readSByte(reader, context) {
-  return withContext(readSByteUnsafe, reader, context);
-}
-function readColor(reader, context) {
-  return withContext(readColorUnsafe, reader, context);
-}
-function readBuffer(reader, bytes, context) {
-  return withContext((reader2) => reader2.readBuffer(bytes), reader, context);
-}
-function readNetworkText(reader, context) {
-  return withContext(readNetworkTextUnsafe, reader, context);
-}
-function getBytesLeft(reader) {
-  return withContext(getBytesLeftUnsafe, reader, "getBytesLeft");
-}
-
 // src/ErrorAwarePacketWriter.js
-var ErrorAwarePacketWriter_exports = {};
-__export(ErrorAwarePacketWriter_exports, {
-  data: () => data,
-  make: () => make3,
-  packBool: () => packBool,
-  packBuffer: () => packBuffer,
-  packByte: () => packByte,
-  packBytes: () => packBytes,
-  packColor: () => packColor,
-  packInt16: () => packInt16,
-  packInt32: () => packInt32,
-  packNetworkText: () => packNetworkText,
-  packSByte: () => packSByte,
-  packSingle: () => packSingle,
-  packString: () => packString,
-  packUInt16: () => packUInt16,
-  packUInt32: () => packUInt32,
-  packUInt64: () => packUInt64,
-  setType: () => setType2
-});
 function packSingle(self, value, context) {
   if (self.TAG !== "Writing") {
     return self;
@@ -1607,10 +1582,10 @@ function packNetworkText(self, value, context) {
     throw obj;
   }
 }
-function setType2(self, value) {
+function setType(self, value) {
   return {
     TAG: "Writing",
-    _0: setType(self, value)
+    _0: self.setType(value)
   };
 }
 function data(self) {
@@ -1626,13 +1601,31 @@ function data(self) {
     };
   }
 }
-function make3() {
-  return make2();
+function make() {
+  return new packetwriter_default();
 }
+
+// ../packetfactory/app/packetreader.js
+var PacketReader = class extends bufferreader_default {
+  constructor(data3) {
+    super(data3);
+    this.readUInt16();
+    this._type = this.readByte();
+  }
+  /**
+   * Gets the packet type
+   *
+   * @return The packet type of the packet
+   */
+  get type() {
+    return this._type;
+  }
+};
+var packetreader_default = PacketReader;
 
 // src/packet/Packet_AnglerQuest.js
 function parse(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "anglerQuest");
   if (e.TAG !== "Ok") {
     return e;
@@ -1651,7 +1644,7 @@ function parse(payload) {
   }
 }
 function toBuffer(self) {
-  return data(packBool(packByte(setType2(make2(), toInt("AnglerQuest")), self.anglerQuest, "anglerQuest"), self.anglerQuestFinished, "anglerQuestFinished"));
+  return data(packBool(packByte(setType(new packetwriter_default(), toInt("AnglerQuest")), self.anglerQuest, "anglerQuest"), self.anglerQuestFinished, "anglerQuestFinished"));
 }
 
 // src/packet/Packet_AnglerQuestComplete.js
@@ -1667,7 +1660,7 @@ function parse2(_payload) {
   };
 }
 function toBuffer2(_self) {
-  return data(setType2(make3(), toInt("AnglerQuestComplete")));
+  return data(setType(make(), toInt("AnglerQuestComplete")));
 }
 
 // src/packet/Packet_BossOrInvasionSpawn.js
@@ -1677,7 +1670,7 @@ __export(Packet_BossOrInvasionSpawn_exports, {
   toBuffer: () => toBuffer3
 });
 function parse3(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -1807,7 +1800,7 @@ function packSpawnType(writer, spawnType) {
   }
 }
 function toBuffer3(self) {
-  return data(packSpawnType(packInt16(setType2(make3(), toInt("BossOrInvasionSpawn")), self.playerId, "playerId"), self.spawnType));
+  return data(packSpawnType(packInt16(setType(make(), toInt("BossOrInvasionSpawn")), self.playerId, "playerId"), self.spawnType));
 }
 
 // src/packet/Packet_ChatMessageSmart.js
@@ -1817,7 +1810,7 @@ __export(Packet_ChatMessageSmart_exports, {
   toBuffer: () => toBuffer4
 });
 function parse4(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readColor(reader, "color");
   if (e.TAG !== "Ok") {
     return e;
@@ -1841,7 +1834,7 @@ function parse4(payload) {
   }
 }
 function toBuffer4(self) {
-  return data(packInt16(packNetworkText(packColor(setType2(make3(), toInt("ChatMessageSmart")), self.color, "color"), self.message, "message"), self.widthLimit, "widthLimit"));
+  return data(packInt16(packNetworkText(packColor(setType(make(), toInt("ChatMessageSmart")), self.color, "color"), self.message, "message"), self.widthLimit, "widthLimit"));
 }
 
 // src/packet/Packet_ChestItem.js
@@ -1851,7 +1844,7 @@ __export(Packet_ChestItem_exports, {
   toBuffer: () => toBuffer5
 });
 function parse5(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "chestId");
   if (e.TAG !== "Ok") {
     return e;
@@ -1885,7 +1878,7 @@ function parse5(payload) {
   }
 }
 function toBuffer5(self) {
-  return data(packInt16(packByte(packInt16(packByte(packInt16(setType2(make3(), toInt("ChestItem")), self.chestId, "chestId"), self.slot, "slot"), self.stack, "stack"), self.prefix, "prefix"), self.itemNetId, "itemNetId"));
+  return data(packInt16(packByte(packInt16(packByte(packInt16(setType(make(), toInt("ChestItem")), self.chestId, "chestId"), self.slot, "slot"), self.stack, "stack"), self.prefix, "prefix"), self.itemNetId, "itemNetId"));
 }
 
 // src/packet/Packet_ChestOrTempleUnlock.js
@@ -1917,7 +1910,7 @@ function unlockTypeFromInt(self) {
   }
 }
 function parse6(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "unlockType");
   if (e.TAG !== "Ok") {
     return e;
@@ -1955,7 +1948,7 @@ function parse6(payload) {
   }
 }
 function toBuffer6(self) {
-  return data(packInt16(packInt16(packByte(setType2(make3(), toInt("ChestOrTempleUnlock")), unlockTypeToInt(self.unlockType), "unlockType"), self.x, "x"), self.y, "y"));
+  return data(packInt16(packInt16(packByte(setType(make(), toInt("ChestOrTempleUnlock")), unlockTypeToInt(self.unlockType), "unlockType"), self.x, "x"), self.y, "y"));
 }
 
 // src/packet/Packet_ChestPlace.js
@@ -2021,7 +2014,7 @@ var Action = {
   toString
 };
 function parse7(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "action");
   if (e.TAG !== "Ok") {
     return e;
@@ -2096,7 +2089,7 @@ function packAction(writer, action) {
   return packByte(writer, byte, "action");
 }
 function toBuffer7(self) {
-  return data(packInt16(packInt16(packInt16(packInt16(packAction(setType2(make3(), toInt("ChestPlace")), self.action), self.x, "x"), self.y, "y"), self.style, "style"), self.id, "id"));
+  return data(packInt16(packInt16(packInt16(packInt16(packAction(setType(make(), toInt("ChestPlace")), self.action), self.x, "x"), self.y, "y"), self.style, "style"), self.id, "id"));
 }
 
 // src/packet/Packet_ClientFinishConnectingToServer.js
@@ -2112,7 +2105,7 @@ function parse8(_payload) {
   };
 }
 function toBuffer8(_self) {
-  return data(setType2(make3(), toInt("ClientFinishConnectingToServer")));
+  return data(setType(make(), toInt("ClientFinishConnectingToServer")));
 }
 
 // src/packet/Packet_ConnectRequest.js
@@ -2122,7 +2115,7 @@ __export(Packet_ConnectRequest_exports, {
   toBuffer: () => toBuffer9
 });
 function parse9(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readString(reader, "version");
   if (e.TAG === "Ok") {
     return {
@@ -2136,7 +2129,7 @@ function parse9(payload) {
   }
 }
 function toBuffer9(self) {
-  return data(packString(setType2(make3(), toInt("ConnectRequest")), self.version, "version"));
+  return data(packString(setType(make(), toInt("ConnectRequest")), self.version, "version"));
 }
 
 // src/packet/Packet_CountsAsHostForGameplaySet.js
@@ -2146,7 +2139,7 @@ __export(Packet_CountsAsHostForGameplaySet_exports, {
   toBuffer: () => toBuffer10
 });
 function parse10(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -2165,7 +2158,7 @@ function parse10(payload) {
   }
 }
 function toBuffer10(self) {
-  return data(packBool(packByte(setType2(make2(), toInt("CountsAsHostForGameplaySet")), self.playerId, "playerId"), self.countsAsHost, "countsAsHost"));
+  return data(packBool(packByte(setType(new packetwriter_default(), toInt("CountsAsHostForGameplaySet")), self.playerId, "playerId"), self.countsAsHost, "countsAsHost"));
 }
 
 // src/packet/Packet_CreditsOrSlimeTransform.js
@@ -2198,7 +2191,7 @@ function toInt3(eventType) {
   }
 }
 function parse11(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "eventType");
   if (e.TAG !== "Ok") {
     return e;
@@ -2227,7 +2220,7 @@ function parse11(payload) {
   }
 }
 function toBuffer11(self) {
-  return data(packInt32(packByte(setType2(make3(), toInt("CreditsOrSlimeTransform")), toInt3(self.eventType), "eventType"), self.value, "value"));
+  return data(packInt32(packByte(setType(make(), toInt("CreditsOrSlimeTransform")), toInt3(self.eventType), "eventType"), self.value, "value"));
 }
 var EventType = {};
 
@@ -2238,7 +2231,7 @@ __export(Packet_CrystalInvasionStart_exports, {
   toBuffer: () => toBuffer12
 });
 function parse12(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
     return e;
@@ -2257,7 +2250,7 @@ function parse12(payload) {
   }
 }
 function toBuffer12(self) {
-  return data(packInt16(packInt16(setType2(make3(), toInt("CrystalInvasionStart")), self.x, "x"), self.y, "y"));
+  return data(packInt16(packInt16(setType(make(), toInt("CrystalInvasionStart")), self.x, "x"), self.y, "y"));
 }
 
 // src/packet/Packet_DimensionsUpdate.js
@@ -2298,7 +2291,7 @@ var UpdateType = {
   fromInt: fromInt4
 };
 function parse13(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "updateType");
   if (e.TAG !== "Ok") {
     return e;
@@ -2366,7 +2359,7 @@ function parse13(payload) {
   }
 }
 function gamemodesJoinModeToBuffer() {
-  return data(packInt16(setType2(make3(), toInt("DimensionsUpdate")), 1, "updateType"));
+  return data(packInt16(setType(make(), toInt("DimensionsUpdate")), 1, "updateType"));
 }
 function toBuffer13(self) {
   if (typeof self !== "object") {
@@ -2375,14 +2368,14 @@ function toBuffer13(self) {
   switch (self.TAG) {
     case "RealIpAddress":
       let ip = self._0;
-      return data(packString(packInt16(setType2(make3(), toInt("DimensionsUpdate")), 0, "updateType"), ip, "ip"));
+      return data(packString(packInt16(setType(make(), toInt("DimensionsUpdate")), 0, "updateType"), ip, "ip"));
     case "SwitchServer":
       let dimensionName = self._0;
-      return data(packString(packInt16(setType2(make3(), toInt("DimensionsUpdate")), 2, "updateType"), dimensionName, "dimensionName"));
+      return data(packString(packInt16(setType(make(), toInt("DimensionsUpdate")), 2, "updateType"), dimensionName, "dimensionName"));
     case "SwitchServerManual":
       let ip$1 = self._0;
       let port = self._1;
-      return data(packUInt16(packString(packInt16(setType2(make3(), toInt("DimensionsUpdate")), 3, "updateType"), ip$1, "ip"), port, "port"));
+      return data(packUInt16(packString(packInt16(setType(make(), toInt("DimensionsUpdate")), 3, "updateType"), ip$1, "ip"), port, "port"));
   }
 }
 
@@ -2393,7 +2386,7 @@ __export(Packet_ExtraValueSync_exports, {
   toBuffer: () => toBuffer14
 });
 function parse14(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcSlotId");
   if (e.TAG !== "Ok") {
     return e;
@@ -2422,7 +2415,7 @@ function parse14(payload) {
   }
 }
 function toBuffer14(self) {
-  return data(packSingle(packSingle(packInt32(packInt16(setType2(make3(), toInt("ExtraValueSync")), self.npcSlotId, "npcSlotId"), self.extraValue, "extraValue"), self.x, "x"), self.y, "y"));
+  return data(packSingle(packSingle(packInt32(packInt16(setType(make(), toInt("ExtraValueSync")), self.npcSlotId, "npcSlotId"), self.extraValue, "extraValue"), self.x, "x"), self.y, "y"));
 }
 
 // src/packet/Packet_HaveDryadDoStardewAnimation.js
@@ -2438,7 +2431,7 @@ function parse15(_payload) {
   };
 }
 function toBuffer15(_self) {
-  return data(setType2(make3(), toInt("HaveDryadDoStardewAnimation")));
+  return data(setType(make(), toInt("HaveDryadDoStardewAnimation")));
 }
 
 // src/packet/Packet_InvasionProgressReport.js
@@ -2448,7 +2441,7 @@ __export(Packet_InvasionProgressReport_exports, {
   toBuffer: () => toBuffer16
 });
 function parse16(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt32(reader, "progress");
   if (e.TAG !== "Ok") {
     return e;
@@ -2477,7 +2470,7 @@ function parse16(payload) {
   }
 }
 function toBuffer16(self) {
-  return data(packSByte(packSByte(packInt32(packInt32(setType2(make3(), toInt("InvasionProgressReport")), self.progress, "progress"), self.progressMax, "progressMax"), self.icon, "icon"), self.wave, "wave"));
+  return data(packSByte(packSByte(packInt32(packInt32(setType(make(), toInt("InvasionProgressReport")), self.progress, "progress"), self.progressMax, "progressMax"), self.icon, "icon"), self.wave, "wave"));
 }
 
 // src/packet/Packet_ItemDropShimmeredUpdate.js
@@ -2487,7 +2480,7 @@ __export(Packet_ItemDropShimmeredUpdate_exports, {
   toBuffer: () => toBuffer17
 });
 function parse17(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemDropId");
   if (e.TAG !== "Ok") {
     return e;
@@ -2551,7 +2544,7 @@ function parse17(payload) {
   }
 }
 function toBuffer17(self) {
-  return data(packSingle(packByte(packInt16(packByte(packByte(packInt16(packSingle(packSingle(packSingle(packSingle(packInt16(setType2(make3(), toInt("ItemDropShimmeredUpdate")), self.itemDropId, "itemDropId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.stack, "stack"), self.prefix, "prefix"), self.noDelay, "noDelay"), self.itemId, "itemId"), self.shimmered ? 1 : 0, "shimmered"), self.shimmeredTime, "shimmeredTime"));
+  return data(packSingle(packByte(packInt16(packByte(packByte(packInt16(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt("ItemDropShimmeredUpdate")), self.itemDropId, "itemDropId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.stack, "stack"), self.prefix, "prefix"), self.noDelay, "noDelay"), self.itemId, "itemId"), self.shimmered ? 1 : 0, "shimmered"), self.shimmeredTime, "shimmeredTime"));
 }
 
 // src/packet/Packet_ItemDropUpdate.js
@@ -2561,7 +2554,7 @@ __export(Packet_ItemDropUpdate_exports, {
   toBuffer: () => toBuffer18
 });
 function parse18(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemDropId");
   if (e.TAG !== "Ok") {
     return e;
@@ -2615,7 +2608,7 @@ function parse18(payload) {
   }
 }
 function toBuffer18(self) {
-  return data(packInt16(packByte(packByte(packInt16(packSingle(packSingle(packSingle(packSingle(packInt16(setType2(make3(), toInt("ItemDropUpdate")), self.itemDropId, "itemDropId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.stack, "stack"), self.prefix, "prefix"), self.noDelay, "noDelay"), self.itemId, "itemId"));
+  return data(packInt16(packByte(packByte(packInt16(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt("ItemDropUpdate")), self.itemDropId, "itemDropId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.stack, "stack"), self.prefix, "prefix"), self.noDelay, "noDelay"), self.itemId, "itemId"));
 }
 
 // src/packet/Packet_ItemOwner.js
@@ -2625,7 +2618,7 @@ __export(Packet_ItemOwner_exports, {
   toBuffer: () => toBuffer19
 });
 function parse19(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemDropId");
   if (e.TAG !== "Ok") {
     return e;
@@ -2644,7 +2637,7 @@ function parse19(payload) {
   }
 }
 function toBuffer19(self) {
-  return data(packByte(packInt16(setType2(make3(), toInt("ItemOwner")), self.itemDropId, "itemDropId"), self.owner, "owner"));
+  return data(packByte(packInt16(setType(make(), toInt("ItemOwner")), self.itemDropId, "itemDropId"), self.owner, "owner"));
 }
 
 // src/packet/Packet_LoadoutSwitch.js
@@ -2692,7 +2685,7 @@ function valFromOption(x) {
 }
 
 // node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Stdlib_Array.js
-function make4(length, x) {
+function make2(length, x) {
   if (length <= 0) {
     return [];
   }
@@ -2838,7 +2831,7 @@ function fromArray2(a) {
   }
 }
 function fromBitFlagsPair(a, b) {
-  let array = make4(16, false);
+  let array = make2(16, false);
   array[0] = flag1(a);
   array[1] = flag2(a);
   array[2] = flag3(a);
@@ -2871,7 +2864,7 @@ function asArray(self) {
 
 // src/packet/Packet_LoadoutSwitch.js
 function parse20(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -2900,7 +2893,7 @@ function parse20(payload) {
 function toBuffer20(self) {
   let match = toBitFlagsPair(self.hideVisibleAccessory);
   let hideVisibleAccessory = toByte(match[0]) | toByte(match[1]) << 8;
-  return data(packUInt16(packByte(packByte(setType2(make3(), toInt("LoadoutSwitch")), self.playerId, "playerId"), self.loadout, "loadout"), hideVisibleAccessory, "hideVisibleAccessory"));
+  return data(packUInt16(packByte(packByte(setType(make(), toInt("LoadoutSwitch")), self.playerId, "playerId"), self.loadout, "loadout"), hideVisibleAccessory, "hideVisibleAccessory"));
 }
 
 // src/packet/Packet_NetModuleLoad.js
@@ -3363,7 +3356,7 @@ function toBuffer21(self) {
   switch (self.TAG) {
     case "Liquid":
       let liquid = self._0;
-      let writer = packUInt16(packUInt16(setType2(make3(), toInt("NetModuleLoad")), 0, "moduleType"), liquid.changes.length, "changesCount");
+      let writer = packUInt16(packUInt16(setType(make(), toInt("NetModuleLoad")), 0, "moduleType"), liquid.changes.length, "changesCount");
       liquid.changes.forEach((change) => {
         packByte(packByte(packInt16(packInt16(writer, change.y, "y"), change.x, "x"), change.amount, "amount"), change.liquidType, "liquidType");
       });
@@ -3371,21 +3364,21 @@ function toBuffer21(self) {
     case "ClientText":
       let commandId = self._0;
       let message = self._1;
-      return data(packString(packString(packUInt16(setType2(make3(), toInt("NetModuleLoad")), 1, "moduleType"), commandId, "commandId"), message, "message"));
+      return data(packString(packString(packUInt16(setType(make(), toInt("NetModuleLoad")), 1, "moduleType"), commandId, "commandId"), message, "message"));
     case "ServerText":
       let playerId = self._0;
       let networkText = self._1;
       let color = self._2;
-      return data(packColor(packNetworkText(packByte(packUInt16(setType2(make3(), toInt("NetModuleLoad")), 1, "moduleType"), playerId, "playerId"), networkText, "networkText"), color, "color"));
+      return data(packColor(packNetworkText(packByte(packUInt16(setType(make(), toInt("NetModuleLoad")), 1, "moduleType"), playerId, "playerId"), networkText, "networkText"), color, "color"));
     case "Ping":
       let ping = self._0;
-      return data(packSingle(packSingle(packUInt16(setType2(make3(), toInt("NetModuleLoad")), 2, "moduleType"), ping.x, "x"), ping.y, "y"));
+      return data(packSingle(packSingle(packUInt16(setType(make(), toInt("NetModuleLoad")), 2, "moduleType"), ping.x, "x"), ping.y, "y"));
     case "Ambience":
       let ambience = self._0;
-      return data(packByte(packInt32(packByte(packUInt16(setType2(make3(), toInt("NetModuleLoad")), 3, "moduleType"), ambience.playerId, "playerId"), ambience.seed, "seed"), ambience.skyEntityType, "skyEntityType"));
+      return data(packByte(packInt32(packByte(packUInt16(setType(make(), toInt("NetModuleLoad")), 3, "moduleType"), ambience.playerId, "playerId"), ambience.seed, "seed"), ambience.skyEntityType, "skyEntityType"));
     case "Bestiary":
       let bestiary = self._0;
-      let writer$1 = packUInt16(setType2(make3(), toInt("NetModuleLoad")), 4, "moduleType");
+      let writer$1 = packUInt16(setType(make(), toInt("NetModuleLoad")), 4, "moduleType");
       let _count = bestiary.unlockType;
       let tmp;
       tmp = typeof _count !== "object" ? _count === "Sight" ? packByte(writer$1, 1, "unlockTypeByte") : packByte(writer$1, 2, "unlockTypeByte") : packByte(writer$1, 0, "unlockTypeByte");
@@ -3396,26 +3389,26 @@ function toBuffer21(self) {
       return data(tmp$1);
     case "CreativeUnlocks":
       let creativeUnlock = self._0;
-      return data(packUInt16(packInt16(packUInt16(setType2(make3(), toInt("NetModuleLoad")), 5, "moduleType"), creativeUnlock.itemId, "itemId"), creativeUnlock.researchedCount, "researchedCount"));
+      return data(packUInt16(packInt16(packUInt16(setType(make(), toInt("NetModuleLoad")), 5, "moduleType"), creativeUnlock.itemId, "itemId"), creativeUnlock.researchedCount, "researchedCount"));
     case "CreativePower":
       let creativePower = self._0;
-      return data(pack$2(packUInt16(setType2(make3(), toInt("NetModuleLoad")), 6, "moduleType"), creativePower));
+      return data(pack$2(packUInt16(setType(make(), toInt("NetModuleLoad")), 6, "moduleType"), creativePower));
     case "CreativeUnlocksPlayerReport":
       let unlockReport = self._0;
-      return data(packUInt16(packUInt16(packUInt16(setType2(make3(), toInt("NetModuleLoad")), 7, "moduleType"), unlockReport.itemId, "itemId"), unlockReport.researchedCount, "researchedCount"));
+      return data(packUInt16(packUInt16(packUInt16(setType(make(), toInt("NetModuleLoad")), 7, "moduleType"), unlockReport.itemId, "itemId"), unlockReport.researchedCount, "researchedCount"));
     case "TeleportPylon":
       let teleportPylon = self._0;
-      return data(packByte(packInt16(packInt16(packByte(packUInt16(setType2(make3(), toInt("NetModuleLoad")), 8, "moduleType"), pylonActionToInt(teleportPylon.pylonAction), "pylonAction"), teleportPylon.x, "x"), teleportPylon.y, "y"), teleportPylon.pylonType, "pylonType"));
+      return data(packByte(packInt16(packInt16(packByte(packUInt16(setType(make(), toInt("NetModuleLoad")), 8, "moduleType"), pylonActionToInt(teleportPylon.pylonAction), "pylonAction"), teleportPylon.x, "x"), teleportPylon.y, "y"), teleportPylon.pylonType, "pylonType"));
     case "Particles":
       let particle = self._0;
-      return data(packByte(packInt32(packSingle(packSingle(packSingle(packSingle(packByte(packUInt16(setType2(make3(), toInt("NetModuleLoad")), 9, "moduleType"), particle.particleType, "particleType"), particle.x, "x"), particle.y, "y"), particle.vx, "vx"), particle.vy, "vy"), particle.shaderIndex, "shaderIndex"), particle.invokedByPlayer, "invokedByPlayer"));
+      return data(packByte(packInt32(packSingle(packSingle(packSingle(packSingle(packByte(packUInt16(setType(make(), toInt("NetModuleLoad")), 9, "moduleType"), particle.particleType, "particleType"), particle.x, "x"), particle.y, "y"), particle.vx, "vx"), particle.vy, "vy"), particle.shaderIndex, "shaderIndex"), particle.invokedByPlayer, "invokedByPlayer"));
     case "CreativePowerPermissions":
       let creativePowerPermission = self._0;
-      return data(packByte(packByte(packUInt16(setType2(make3(), toInt("NetModuleLoad")), 10, "moduleType"), creativePowerPermission.powerType, "powerType"), powerLevelToInt(creativePowerPermission.powerLevel), "powerLevel"));
+      return data(packByte(packByte(packUInt16(setType(make(), toInt("NetModuleLoad")), 10, "moduleType"), creativePowerPermission.powerType, "powerType"), powerLevelToInt(creativePowerPermission.powerLevel), "powerLevel"));
   }
 }
 function parse22(payload, fromServer) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "moduleType");
   if (e.TAG !== "Ok") {
     return e;
@@ -3852,7 +3845,7 @@ __export(Packet_NpcBuffRemovalRequest_exports, {
   toBuffer: () => toBuffer22
 });
 function parse23(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
     return e;
@@ -3871,7 +3864,7 @@ function parse23(payload) {
   }
 }
 function toBuffer22(self) {
-  return data(packUInt16(packInt16(setType2(make3(), toInt("NpcBuffRemovalRequest")), self.npcId, "npcId"), self.buffType, "buffType"));
+  return data(packUInt16(packInt16(setType(make(), toInt("NpcBuffRemovalRequest")), self.npcId, "npcId"), self.buffType, "buffType"));
 }
 
 // src/packet/Packet_NpcBuffUpdate.js
@@ -3881,7 +3874,7 @@ __export(Packet_NpcBuffUpdate_exports, {
   toBuffer: () => toBuffer23
 });
 function parse24(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
     return e;
@@ -3966,7 +3959,7 @@ function toBuffer23(self) {
       }
     };
   } else {
-    return data(packBuffTimes(packBuffs(packInt16(setType2(make3(), toInt("NpcBuffUpdate")), self.npcId, "npcId"), self.buffs), self.buffTimes));
+    return data(packBuffTimes(packBuffs(packInt16(setType(make(), toInt("NpcBuffUpdate")), self.npcId, "npcId"), self.buffs), self.buffTimes));
   }
 }
 
@@ -3977,7 +3970,7 @@ __export(Packet_NpcCatch_exports, {
   toBuffer: () => toBuffer24
 });
 function parse25(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
     return e;
@@ -3996,7 +3989,7 @@ function parse25(payload) {
   }
 }
 function toBuffer24(self) {
-  return data(packByte(packInt16(setType2(make3(), toInt("NpcCatch")), self.npcId, "npcId"), self.playerId, "playerId"));
+  return data(packByte(packInt16(setType(make(), toInt("NpcCatch")), self.npcId, "npcId"), self.playerId, "playerId"));
 }
 
 // src/packet/Packet_NpcFishOut.js
@@ -4006,7 +3999,7 @@ __export(Packet_NpcFishOut_exports, {
   toBuffer: () => toBuffer25
 });
 function parse26(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "x");
   if (e.TAG !== "Ok") {
     return e;
@@ -4030,7 +4023,7 @@ function parse26(payload) {
   }
 }
 function toBuffer25(self) {
-  return data(packInt16(packUInt16(packUInt16(setType2(make3(), toInt("NpcFishOut")), self.x, "x"), self.y, "y"), self.npcNetId, "npcNetId"));
+  return data(packInt16(packUInt16(packUInt16(setType(make(), toInt("NpcFishOut")), self.x, "x"), self.y, "y"), self.npcNetId, "npcNetId"));
 }
 
 // src/packet/Packet_NpcHomeUpdate.js
@@ -4040,7 +4033,7 @@ __export(Packet_NpcHomeUpdate_exports, {
   toBuffer: () => toBuffer26
 });
 function parse27(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
     return e;
@@ -4069,7 +4062,7 @@ function parse27(payload) {
   }
 }
 function toBuffer26(self) {
-  return data(packByte(packInt16(packInt16(packInt16(setType2(make3(), toInt("NpcHomeUpdate")), self.npcId, "npcId"), self.homeTileX, "homeTileX"), self.homeTileY, "homeTileY"), self.state, "state"));
+  return data(packByte(packInt16(packInt16(packInt16(setType(make(), toInt("NpcHomeUpdate")), self.npcId, "npcId"), self.homeTileX, "homeTileX"), self.homeTileY, "homeTileY"), self.state, "state"));
 }
 
 // src/packet/Packet_NpcKillCount.js
@@ -4079,7 +4072,7 @@ __export(Packet_NpcKillCount_exports, {
   toBuffer: () => toBuffer27
 });
 function parse28(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
     return e;
@@ -4098,7 +4091,7 @@ function parse28(payload) {
   }
 }
 function toBuffer27(self) {
-  return data(packInt32(packInt16(setType2(make3(), toInt("NpcKillCount")), self.npcId, "npcId"), self.killCount, "killCount"));
+  return data(packInt32(packInt16(setType(make(), toInt("NpcKillCount")), self.npcId, "npcId"), self.killCount, "killCount"));
 }
 
 // src/packet/Packet_NpcNameUpdate.js
@@ -4108,7 +4101,7 @@ __export(Packet_NpcNameUpdate_exports, {
   toBuffer: () => toBuffer28
 });
 function parse29(payload, fromServer) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
     return e;
@@ -4147,7 +4140,7 @@ function parse29(payload, fromServer) {
   }
 }
 function toBuffer28(self) {
-  let writer = packInt16(setType2(make3(), toInt("NpcNameUpdate")), self.npcId, "npcId");
+  let writer = packInt16(setType(make(), toInt("NpcNameUpdate")), self.npcId, "npcId");
   let extraInfo = self.extraInfo;
   if (extraInfo !== void 0) {
     return data(packInt32(packString(writer, extraInfo.name, "name"), extraInfo.townNpcVariationIndex, "townNpcVariationIndex"));
@@ -4163,7 +4156,7 @@ __export(Packet_NpcShopItem_exports, {
   toBuffer: () => toBuffer29
 });
 function parse30(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "slot");
   if (e.TAG !== "Ok") {
     return e;
@@ -4203,7 +4196,7 @@ function parse30(payload) {
 }
 function toBuffer29(self) {
   let flags = fromFlags(self.buyOnce, false, false, false, false, false, false, false);
-  return data(packByte(packInt32(packByte(packInt16(packInt16(packByte(setType2(make3(), toInt("NpcShopItem")), self.slot, "slot"), self.itemId, "itemId"), self.stack, "stack"), self.prefix, "prefix"), self.value, "value"), toByte(flags), "flags"));
+  return data(packByte(packInt32(packByte(packInt16(packInt16(packByte(setType(make(), toInt("NpcShopItem")), self.slot, "slot"), self.itemId, "itemId"), self.stack, "stack"), self.prefix, "prefix"), self.value, "value"), toByte(flags), "flags"));
 }
 
 // src/packet/Packet_NpcTalk.js
@@ -4213,7 +4206,7 @@ __export(Packet_NpcTalk_exports, {
   toBuffer: () => toBuffer30
 });
 function parse31(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -4232,7 +4225,7 @@ function parse31(payload) {
   }
 }
 function toBuffer30(self) {
-  return data(packInt16(packByte(setType2(make3(), toInt("NpcTalk")), self.playerId, "playerId"), self.npcId, "npcId"));
+  return data(packInt16(packByte(setType(make(), toInt("NpcTalk")), self.playerId, "playerId"), self.npcId, "npcId"));
 }
 
 // src/packet/Packet_NpcTeleportPortal.js
@@ -4242,7 +4235,7 @@ __export(Packet_NpcTeleportPortal_exports, {
   toBuffer: () => toBuffer31
 });
 function parse32(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
     return e;
@@ -4285,7 +4278,7 @@ function parse32(payload) {
   }
 }
 function toBuffer31(self) {
-  return data(packSingle(packSingle(packSingle(packSingle(packInt16(packUInt16(setType2(make3(), toInt("NpcTeleportPortal")), self.npcId, "npcId"), self.portalColor, "portalColor"), self.position.x, "posX"), self.position.y, "posY"), self.velocity.x, "velX"), self.velocity.y, "velY"));
+  return data(packSingle(packSingle(packSingle(packSingle(packInt16(packUInt16(setType(make(), toInt("NpcTeleportPortal")), self.npcId, "npcId"), self.portalColor, "portalColor"), self.position.x, "posX"), self.position.y, "posY"), self.velocity.x, "velX"), self.velocity.y, "velY"));
 }
 
 // src/packet/Packet_ObjectPlace.js
@@ -4295,7 +4288,7 @@ __export(Packet_ObjectPlace_exports, {
   toBuffer: () => toBuffer32
 });
 function parse33(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
     return e;
@@ -4362,7 +4355,7 @@ function toBuffer32(self) {
   let match = self.direction;
   let tmp;
   tmp = match === "Left" ? 0 : 1;
-  return data(packByte(packSByte(packByte(packInt16(packInt16(packInt16(packInt16(setType2(make3(), toInt("ObjectPlace")), self.x, "x"), self.y, "y"), self.objectType, "objectType"), self.style, "style"), self.alternate, "alternate"), self.random, "random"), tmp, "direction"));
+  return data(packByte(packSByte(packByte(packInt16(packInt16(packInt16(packInt16(setType(make(), toInt("ObjectPlace")), self.x, "x"), self.y, "y"), self.objectType, "objectType"), self.style, "style"), self.alternate, "alternate"), self.random, "random"), tmp, "direction"));
 }
 
 // src/packet/Packet_PartyToggle.js
@@ -4378,7 +4371,7 @@ function parse34(_payload) {
   };
 }
 function toBuffer33(_self) {
-  return data(setType2(make3(), toInt("PartyToggle")));
+  return data(setType(make(), toInt("PartyToggle")));
 }
 
 // src/packet/Packet_PlayerAnimation.js
@@ -4388,7 +4381,7 @@ __export(Packet_PlayerAnimation_exports, {
   toBuffer: () => toBuffer34
 });
 function parse35(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -4412,7 +4405,7 @@ function parse35(payload) {
   }
 }
 function toBuffer34(self) {
-  return data(packInt16(packSingle(packByte(setType2(make3(), toInt("PlayerAnimation")), self.playerId, "playerId"), self.itemRotation, "itemRotation"), self.itemAnimation, "itemAnimation"));
+  return data(packInt16(packSingle(packByte(setType(make(), toInt("PlayerAnimation")), self.playerId, "playerId"), self.itemRotation, "itemRotation"), self.itemAnimation, "itemAnimation"));
 }
 
 // src/packet/Packet_PlayerBuffAdd.js
@@ -4422,7 +4415,7 @@ __export(Packet_PlayerBuffAdd_exports, {
   toBuffer: () => toBuffer35
 });
 function parse36(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -4446,7 +4439,7 @@ function parse36(payload) {
   }
 }
 function toBuffer35(self) {
-  return data(packInt32(packUInt16(packByte(setType2(make3(), toInt("PlayerBuffAdd")), self.playerId, "playerId"), self.buff, "buff"), self.time, "time"));
+  return data(packInt32(packUInt16(packByte(setType(make(), toInt("PlayerBuffAdd")), self.playerId, "playerId"), self.buff, "buff"), self.time, "time"));
 }
 
 // src/packet/Packet_PlayerBuffsSet.js
@@ -4456,12 +4449,12 @@ __export(Packet_PlayerBuffsSet_exports, {
   toBuffer: () => toBuffer36
 });
 function parse37(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
   }
-  let buffs = make4(44, 0);
+  let buffs = make2(44, 0);
   let buffsParseResult = {
     TAG: "Ok",
     _0: void 0
@@ -4513,7 +4506,7 @@ function toBuffer36(self) {
       }
     };
   } else {
-    return data(packBuffs2(packByte(setType2(make3(), toInt("PlayerBuffsSet")), self.playerId, "playerId"), self.buffs));
+    return data(packBuffs2(packByte(setType(make(), toInt("PlayerBuffsSet")), self.playerId, "playerId"), self.buffs));
   }
 }
 
@@ -4524,7 +4517,7 @@ __export(Packet_PlayerChestIndexSync_exports, {
   toBuffer: () => toBuffer37
 });
 function parse38(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -4543,7 +4536,7 @@ function parse38(payload) {
   }
 }
 function toBuffer37(self) {
-  return data(packInt16(packByte(setType2(make3(), toInt("PlayerChestIndexSync")), self.playerId, "playerId"), self.chestId, "chestId"));
+  return data(packInt16(packByte(setType(make(), toInt("PlayerChestIndexSync")), self.playerId, "playerId"), self.chestId, "chestId"));
 }
 
 // src/packet/Packet_PlayerDead.js
@@ -4553,7 +4546,7 @@ __export(Packet_PlayerDead_exports, {
   toBuffer: () => toBuffer38
 });
 function parse39(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG === "Ok") {
     return {
@@ -4567,7 +4560,7 @@ function parse39(payload) {
   }
 }
 function toBuffer38(self) {
-  return data(packByte(setType2(make3(), toInt("PlayerDead")), self.playerId, "playerId"));
+  return data(packByte(setType(make(), toInt("PlayerDead")), self.playerId, "playerId"));
 }
 
 // src/packet/Packet_PlayerDeath.js
@@ -4875,7 +4868,7 @@ var packDeathReason = pack2;
 
 // src/packet/Packet_PlayerDeath.js
 function parse40(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -4909,7 +4902,7 @@ function parse40(payload) {
   }
 }
 function toBuffer39(self) {
-  return data(packByte(packByte(packInt16(packDeathReason(packByte(setType2(make3(), toInt("PlayerDeath")), self.playerId, "playerId"), self.deathReason), self.damage, "damage"), self.hitDirection, "hitDirection"), self.pvp ? 1 : 0, "pvp"));
+  return data(packByte(packByte(packInt16(packDeathReason(packByte(setType(make(), toInt("PlayerDeath")), self.playerId, "playerId"), self.deathReason), self.damage, "damage"), self.hitDirection, "hitDirection"), self.pvp ? 1 : 0, "pvp"));
 }
 
 // src/packet/Packet_PlayerDodge.js
@@ -4941,7 +4934,7 @@ function dodgeToByte(d) {
   }
 }
 function parse41(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -4977,7 +4970,7 @@ function parse41(payload) {
   }
 }
 function toBuffer40(self) {
-  return data(packByte(packByte(setType2(make3(), toInt("PlayerDodge")), self.playerId, "playerId"), dodgeToByte(self.dodge), "dodge"));
+  return data(packByte(packByte(setType(make(), toInt("PlayerDodge")), self.playerId, "playerId"), dodgeToByte(self.dodge), "dodge"));
 }
 
 // src/packet/Packet_PlayerMana.js
@@ -4987,7 +4980,7 @@ __export(Packet_PlayerMana_exports, {
   toBuffer: () => toBuffer41
 });
 function parse42(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -5011,7 +5004,7 @@ function parse42(payload) {
   }
 }
 function toBuffer41(self) {
-  return data(packInt16(packInt16(packByte(setType2(make3(), toInt("PlayerMana")), self.playerId, "playerId"), self.mana, "mana"), self.maxMana, "maxMana"));
+  return data(packInt16(packInt16(packByte(setType(make(), toInt("PlayerMana")), self.playerId, "playerId"), self.mana, "mana"), self.maxMana, "maxMana"));
 }
 
 // src/packet/Packet_PlayerTeam.js
@@ -5021,7 +5014,7 @@ __export(Packet_PlayerTeam_exports, {
   toBuffer: () => toBuffer42
 });
 function parse43(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -5040,7 +5033,7 @@ function parse43(payload) {
   }
 }
 function toBuffer42(self) {
-  return data(packByte(packByte(setType2(make3(), toInt("PlayerTeam")), self.playerId, "playerId"), self.team, "team"));
+  return data(packByte(packByte(setType(make(), toInt("PlayerTeam")), self.playerId, "playerId"), self.team, "team"));
 }
 
 // src/packet/Packet_PvpToggle.js
@@ -5050,7 +5043,7 @@ __export(Packet_PvpToggle_exports, {
   toBuffer: () => toBuffer43
 });
 function parse44(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -5069,7 +5062,7 @@ function parse44(payload) {
   }
 }
 function toBuffer43(self) {
-  return data(packByte(packByte(setType2(make3(), toInt("PvpToggle")), self.playerId, "playerId"), self.pvpEnabled ? 1 : 0, "pvpEnabled"));
+  return data(packByte(packByte(setType(make(), toInt("PvpToggle")), self.playerId, "playerId"), self.pvpEnabled ? 1 : 0, "pvpEnabled"));
 }
 
 // src/packet/Packet_ShimmerEffectOrCoinLuck.js
@@ -5079,7 +5072,7 @@ __export(Packet_ShimmerEffectOrCoinLuck_exports, {
   toBuffer: () => toBuffer44
 });
 function parse45(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "kind");
   if (e.TAG !== "Ok") {
     return e;
@@ -5154,7 +5147,7 @@ function parse45(payload) {
   }
 }
 function toBuffer44(self) {
-  let writer = setType2(make3(), toInt("ShimmerEffectOrCoinLuck"));
+  let writer = setType(make(), toInt("ShimmerEffectOrCoinLuck"));
   let tmp;
   switch (self.TAG) {
     case "ShimmerEffect":
@@ -5179,7 +5172,7 @@ __export(Packet_SignNew_exports, {
   toBuffer: () => toBuffer45
 });
 function parse46(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "signId");
   if (e.TAG !== "Ok") {
     return e;
@@ -5219,7 +5212,7 @@ function parse46(payload) {
 }
 function toBuffer45(self) {
   let flags = fromFlags(self.deleteSign, false, false, false, false, false, false, false);
-  return data(packByte(packByte(packString(packInt16(packInt16(packInt16(setType2(make3(), toInt("SignNew")), self.signId, "signId"), self.x, "x"), self.y, "y"), self.text, "text"), self.playerId, "playerId"), toByte(flags), "flags"));
+  return data(packByte(packByte(packString(packInt16(packInt16(packInt16(setType(make(), toInt("SignNew")), self.signId, "signId"), self.x, "x"), self.y, "y"), self.text, "text"), self.playerId, "playerId"), toByte(flags), "flags"));
 }
 
 // src/packet/Packet_SignRead.js
@@ -5229,7 +5222,7 @@ __export(Packet_SignRead_exports, {
   toBuffer: () => toBuffer46
 });
 function parse47(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
     return e;
@@ -5248,7 +5241,7 @@ function parse47(payload) {
   }
 }
 function toBuffer46(self) {
-  return data(packInt16(packInt16(setType2(make3(), toInt("SignRead")), self.x, "x"), self.y, "y"));
+  return data(packInt16(packInt16(setType(make(), toInt("SignRead")), self.x, "x"), self.y, "y"));
 }
 
 // src/packet/Packet_SmokePoof.js
@@ -5258,7 +5251,7 @@ __export(Packet_SmokePoof_exports, {
   toBuffer: () => toBuffer47
 });
 function parse48(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readUInt32(reader, "packedPosition");
   if (e.TAG === "Ok") {
     return {
@@ -5272,7 +5265,7 @@ function parse48(payload) {
   }
 }
 function toBuffer47(self) {
-  return data(packUInt32(setType2(make3(), toInt("SmokePoof")), self.packedPosition, "packedPosition"));
+  return data(packUInt32(setType(make(), toInt("SmokePoof")), self.packedPosition, "packedPosition"));
 }
 
 // src/packet/Packet_SocialHandshake.js
@@ -5288,7 +5281,7 @@ function parse49(_payload) {
   };
 }
 function toBuffer48(_self) {
-  return data(setType2(make3(), toInt("SocialHandshake")));
+  return data(setType(make(), toInt("SocialHandshake")));
 }
 
 // src/packet/Packet_Status.js
@@ -5298,7 +5291,7 @@ __export(Packet_Status_exports, {
   toBuffer: () => toBuffer49
 });
 function parse50(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt32(reader, "max");
   if (e.TAG !== "Ok") {
     return e;
@@ -5333,7 +5326,7 @@ function flagsToByte(flags) {
   return byte;
 }
 function toBuffer49(self) {
-  return data(packByte(packNetworkText(packInt32(setType2(make3(), toInt("Status")), self.max, "max"), self.text, "text"), flagsToByte(self.flags), "flags"));
+  return data(packByte(packNetworkText(packInt32(setType(make(), toInt("Status")), self.max, "max"), self.text, "text"), flagsToByte(self.flags), "flags"));
 }
 
 // src/packet/Packet_SwitchHit.js
@@ -5343,7 +5336,7 @@ __export(Packet_SwitchHit_exports, {
   toBuffer: () => toBuffer50
 });
 function parse51(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
     return e;
@@ -5362,7 +5355,7 @@ function parse51(payload) {
   }
 }
 function toBuffer50(self) {
-  return data(packInt16(packInt16(setType2(make3(), toInt("SwitchHit")), self.x, "x"), self.y, "y"));
+  return data(packInt16(packInt16(setType(make(), toInt("SwitchHit")), self.x, "x"), self.y, "y"));
 }
 
 // src/packet/Packet_Teleport.js
@@ -5439,7 +5432,7 @@ function all4(param) {
 
 // src/packet/Packet_Teleport.js
 function parse52(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "flags");
   if (e.TAG !== "Ok") {
     return e;
@@ -5500,7 +5493,7 @@ function getFlags(self) {
   return toByte(fromFlags(self.teleportType === "Npc", self.teleportType === "PlayerToPlayer", self.getPositionFromTarget, isSome(self.extraInfo), false, false, false, false));
 }
 function toBuffer51(self) {
-  let writer = packByte(packSingle(packSingle(packInt16(packByte(setType2(make3(), toInt("Teleport")), getFlags(self), "flags"), self.targetId, "targetId"), self.x, "x"), self.y, "y"), self.style, "style");
+  let writer = packByte(packSingle(packSingle(packInt16(packByte(setType(make(), toInt("Teleport")), getFlags(self), "flags"), self.targetId, "targetId"), self.x, "x"), self.y, "y"), self.style, "style");
   let extraInfo = self.extraInfo;
   return data(extraInfo !== void 0 ? packInt32(writer, extraInfo, "extraInfo") : writer);
 }
@@ -5524,7 +5517,7 @@ function teleportTypeToInt(teleportType) {
   }
 }
 function parse53(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "teleportType");
   if (e.TAG !== "Ok") {
     return e;
@@ -5569,7 +5562,7 @@ function parse53(payload) {
   }
 }
 function toBuffer52(self) {
-  return data(packByte(setType2(make3(), toInt("TeleportationPotion")), teleportTypeToInt(self.teleportType), "teleportType"));
+  return data(packByte(setType(make(), toInt("TeleportationPotion")), teleportTypeToInt(self.teleportType), "teleportType"));
 }
 
 // src/packet/Packet_TemporaryAnimationCreate.js
@@ -5579,7 +5572,7 @@ __export(Packet_TemporaryAnimationCreate_exports, {
   toBuffer: () => toBuffer53
 });
 function parse54(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "typeId");
   if (e.TAG !== "Ok") {
     return e;
@@ -5608,7 +5601,7 @@ function parse54(payload) {
   }
 }
 function toBuffer53(self) {
-  return data(packInt16(packInt16(packUInt16(packInt16(setType2(make3(), toInt("TemporaryAnimationCreate")), self.typeId, "typeId"), self.tileType, "tileType"), self.x, "x"), self.y, "y"));
+  return data(packInt16(packInt16(packUInt16(packInt16(setType(make(), toInt("TemporaryAnimationCreate")), self.typeId, "typeId"), self.tileType, "tileType"), self.x, "x"), self.y, "y"));
 }
 
 // src/packet/Packet_TileEntityDisplayDollItemSync.js
@@ -5618,7 +5611,7 @@ __export(Packet_TileEntityDisplayDollItemSync_exports, {
   toBuffer: () => toBuffer54
 });
 function parse55(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -5657,7 +5650,7 @@ function parse55(payload) {
   }
 }
 function toBuffer54(self) {
-  return data(packByte(packUInt16(packUInt16(packByte(packInt32(packByte(setType2(make3(), toInt("TileEntityDisplayDollItemSync")), self.playerId, "playerId"), self.tileEntityId, "tileEntityId"), self.itemIndex, "itemIndex"), self.itemId, "itemId"), self.stack, "stack"), self.prefix, "prefix"));
+  return data(packByte(packUInt16(packUInt16(packByte(packInt32(packByte(setType(make(), toInt("TileEntityDisplayDollItemSync")), self.playerId, "playerId"), self.tileEntityId, "tileEntityId"), self.itemIndex, "itemIndex"), self.itemId, "itemId"), self.stack, "stack"), self.prefix, "prefix"));
 }
 
 // src/packet/Packet_TileEntityHatRackItemSync.js
@@ -5667,7 +5660,7 @@ __export(Packet_TileEntityHatRackItemSync_exports, {
   toBuffer: () => toBuffer55
 });
 function parse56(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -5706,7 +5699,7 @@ function parse56(payload) {
   }
 }
 function toBuffer55(self) {
-  return data(packByte(packUInt16(packUInt16(packByte(packInt32(packByte(setType2(make3(), toInt("TileEntityHatRackItemSync")), self.playerId, "playerId"), self.tileEntityId, "tileEntityId"), self.itemIndex, "itemIndex"), self.itemId, "itemId"), self.stack, "stack"), self.prefix, "prefix"));
+  return data(packByte(packUInt16(packUInt16(packByte(packInt32(packByte(setType(make(), toInt("TileEntityHatRackItemSync")), self.playerId, "playerId"), self.tileEntityId, "tileEntityId"), self.itemIndex, "itemIndex"), self.itemId, "itemId"), self.stack, "stack"), self.prefix, "prefix"));
 }
 
 // src/packet/Packet_TileEntityInteractionRequest.js
@@ -5716,7 +5709,7 @@ __export(Packet_TileEntityInteractionRequest_exports, {
   toBuffer: () => toBuffer56
 });
 function parse57(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt32(reader, "tileEntityId");
   if (e.TAG !== "Ok") {
     return e;
@@ -5735,7 +5728,7 @@ function parse57(payload) {
   }
 }
 function toBuffer56(self) {
-  return data(packByte(packInt32(setType2(make3(), toInt("TileEntityInteractionRequest")), self.tileEntityId, "tileEntityId"), self.playerId, "playerId"));
+  return data(packByte(packInt32(setType(make(), toInt("TileEntityInteractionRequest")), self.tileEntityId, "tileEntityId"), self.playerId, "playerId"));
 }
 
 // src/packet/Packet_TileEntityPlace.js
@@ -5745,7 +5738,7 @@ __export(Packet_TileEntityPlace_exports, {
   toBuffer: () => toBuffer57
 });
 function parse58(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
     return e;
@@ -5769,7 +5762,7 @@ function parse58(payload) {
   }
 }
 function toBuffer57(self) {
-  return data(packByte(packInt16(packInt16(setType2(make3(), toInt("TileEntityPlace")), self.x, "x"), self.y, "y"), self.tileEntityType, "tileEntityType"));
+  return data(packByte(packInt16(packInt16(setType(make(), toInt("TileEntityPlace")), self.x, "x"), self.y, "y"), self.tileEntityType, "tileEntityType"));
 }
 
 // src/packet/Packet_TileEntityUpdate.js
@@ -5779,7 +5772,7 @@ __export(Packet_TileEntityUpdate_exports, {
   toBuffer: () => toBuffer58
 });
 function parse59(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt32(reader, "tileEntityId");
   if (e.TAG !== "Ok") {
     return e;
@@ -5819,7 +5812,7 @@ function parse59(payload) {
   }
 }
 function toBuffer58(self) {
-  let writer = packInt32(setType2(make3(), toInt("TileEntityUpdate")), self.tileEntityId, "tileEntityId");
+  let writer = packInt32(setType(make(), toInt("TileEntityUpdate")), self.tileEntityId, "tileEntityId");
   let tileEntityData = self.payload;
   if (typeof tileEntityData !== "object") {
     return data(packBool(writer, false, "hasData"));
@@ -5946,7 +5939,7 @@ var Action2 = {
   toInt: toInt7
 };
 function parse60(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "action");
   if (e.TAG !== "Ok") {
     return e;
@@ -5997,7 +5990,7 @@ function parse60(payload) {
   }
 }
 function toBuffer59(self) {
-  return data(packByte(packInt16(packInt16(packInt16(packByte(setType2(make3(), toInt("TileModify")), toInt7(self.action), "action"), self.tileX, "tileX"), self.tileY, "tileY"), self.value1, "value1"), self.value2, "value2"));
+  return data(packByte(packInt16(packInt16(packInt16(packByte(setType(make(), toInt("TileModify")), toInt7(self.action), "action"), self.tileX, "tileX"), self.tileY, "tileY"), self.value1, "value1"), self.value2, "value2"));
 }
 
 // src/packet/Packet_TilePaint.js
@@ -6007,7 +6000,7 @@ __export(Packet_TilePaint_exports, {
   toBuffer: () => toBuffer60
 });
 function parse61(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
     return e;
@@ -6036,7 +6029,7 @@ function parse61(payload) {
   }
 }
 function toBuffer60(self) {
-  return data(packByte(packByte(packInt16(packInt16(setType2(make3(), toInt("TilePaint")), self.x, "x"), self.y, "y"), self.color, "color"), self.coat, "coat"));
+  return data(packByte(packByte(packInt16(packInt16(setType(make(), toInt("TilePaint")), self.x, "x"), self.y, "y"), self.color, "color"), self.coat, "coat"));
 }
 
 // src/packet/Packet_TilePickingSync.js
@@ -6046,7 +6039,7 @@ __export(Packet_TilePickingSync_exports, {
   toBuffer: () => toBuffer61
 });
 function parse62(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -6075,7 +6068,7 @@ function parse62(payload) {
   }
 }
 function toBuffer61(self) {
-  return data(packByte(packInt16(packInt16(packByte(setType2(make3(), toInt("TilePickingSync")), self.playerId, "playerId"), self.x, "x"), self.y, "y"), self.pickPower, "pickPower"));
+  return data(packByte(packInt16(packInt16(packByte(setType(make(), toInt("TilePickingSync")), self.playerId, "playerId"), self.x, "x"), self.y, "y"), self.pickPower, "pickPower"));
 }
 
 // src/packet/Packet_TileSectionFrame.js
@@ -6085,7 +6078,7 @@ __export(Packet_TileSectionFrame_exports, {
   toBuffer: () => toBuffer62
 });
 function parse63(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "startX");
   if (e.TAG !== "Ok") {
     return e;
@@ -6114,7 +6107,7 @@ function parse63(payload) {
   }
 }
 function toBuffer62(self) {
-  return data(packInt16(packInt16(packInt16(packInt16(setType2(make3(), toInt("TileSectionFrame")), self.startX, "startX"), self.startY, "startY"), self.endX, "endX"), self.endY, "endY"));
+  return data(packInt16(packInt16(packInt16(packInt16(setType(make(), toInt("TileSectionFrame")), self.startX, "startX"), self.startY, "startY"), self.endX, "endX"), self.endY, "endY"));
 }
 
 // src/packet/Packet_TileSectionSend.js
@@ -6977,11 +6970,6 @@ var map3 = /* @__PURE__ */ new Map([
 ]);
 function isSolid(tileType) {
   return getOr(map3.get(tileType), false);
-}
-
-// node_modules/.pnpm/@popstarfreas+packetfactory@7.1.1/node_modules/@popstarfreas/packetfactory/src/BufferReader.js
-function make5(prim) {
-  return new bufferreader_default(prim);
 }
 
 // src/TileFrameImportant.js
@@ -9529,11 +9517,6 @@ function readString2(reader, context) {
   return withContext2(readStringUnsafe2, reader, context);
 }
 
-// node_modules/.pnpm/@popstarfreas+packetfactory@7.1.1/node_modules/@popstarfreas/packetfactory/src/BufferWriter.js
-function make6(prim) {
-  return new bufferwriter_default(prim);
-}
-
 // src/ErrorAwareBufferWriter.js
 function packInt322(self, value, context) {
   if (self.TAG !== "Writing") {
@@ -9644,10 +9627,10 @@ function data2(self) {
     };
   }
 }
-function make7(buffer) {
+function make3(buffer) {
   return {
     TAG: "Writing",
-    _0: make6(buffer)
+    _0: new bufferwriter_default(buffer)
   };
 }
 
@@ -9995,7 +9978,7 @@ function readRepeated(count, parseItem) {
   }
 }
 function parse64(payload) {
-  let packetReader = make(payload);
+  let packetReader = new packetreader_default(payload);
   let e = getBytesLeft(packetReader);
   if (e.TAG !== "Ok") {
     return e;
@@ -10027,7 +10010,7 @@ function parse64(payload) {
   if (inflated.TAG !== "Ok") {
     return inflated;
   }
-  let reader = make5(inflated._0);
+  let reader = new bufferreader_default(inflated._0);
   let e$2 = readInt322(reader, "tileX");
   if (e$2.TAG !== "Ok") {
     return e$2;
@@ -10811,8 +10794,8 @@ function decidePackTile(writer, lastTile, tile) {
   }
 }
 function toBuffer63(self) {
-  let outerPacketWriter = setType2(make3(), toInt("TileSectionSend"));
-  let innerWriter = make7(Buffer.allocUnsafe(64e3));
+  let outerPacketWriter = setType(make(), toInt("TileSectionSend"));
+  let innerWriter = make3(Buffer.allocUnsafe(64e3));
   packInt162(packInt162(packInt322(packInt322(innerWriter, self.tileX, "tileX"), self.tileY, "tileY"), self.width, "width"), self.height, "height");
   let lastTile = {
     contents: void 0
@@ -10866,7 +10849,7 @@ __export(Packet_TileSquareSend_exports, {
   toBuffer: () => toBuffer64
 });
 function parse65(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "tileX");
   if (e.TAG !== "Ok") {
     return e;
@@ -11143,7 +11126,7 @@ function packTiles(writer, tiles) {
   return writer;
 }
 function toBuffer64(self) {
-  return data(packTiles(packByte(packByte(packByte(packInt16(packInt16(setType2(make3(), toInt("TileSquareSend")), self.tileX, "tileX"), self.tileY, "tileY"), self.width, "width"), self.height, "height"), self.changeType, "changeType"), self.tiles));
+  return data(packTiles(packByte(packByte(packByte(packInt16(packInt16(setType(make(), toInt("TileSquareSend")), self.tileX, "tileX"), self.tileY, "tileY"), self.width, "width"), self.height, "height"), self.changeType, "changeType"), self.tiles));
 }
 var Decode = {
   parse: parse65
@@ -11159,7 +11142,7 @@ __export(Packet_TimeSet_exports, {
   toBuffer: () => toBuffer65
 });
 function parse66(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "dayTime");
   if (e.TAG !== "Ok") {
     return e;
@@ -11188,7 +11171,7 @@ function parse66(payload) {
   }
 }
 function toBuffer65(self) {
-  return data(packInt16(packInt16(packInt32(packByte(setType2(make3(), toInt("TimeSet")), self.dayTime ? 1 : 0, "dayTime"), self.time, "time"), self.sunModY, "sunModY"), self.moonModY, "moonModY"));
+  return data(packInt16(packInt16(packInt32(packByte(setType(make(), toInt("TimeSet")), self.dayTime ? 1 : 0, "dayTime"), self.time, "time"), self.sunModY, "sunModY"), self.moonModY, "moonModY"));
 }
 
 // src/packet/Packet_TravellingMerchantInventory.js
@@ -11198,7 +11181,7 @@ __export(Packet_TravellingMerchantInventory_exports, {
   toBuffer: () => toBuffer66
 });
 function parse67(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let items = [];
   let readItems = (_idx) => {
     while (true) {
@@ -11256,7 +11239,7 @@ function toBuffer66(self) {
       }
     };
   }
-  let writer = setType2(make3(), toInt("TravellingMerchantInventory"));
+  let writer = setType(make(), toInt("TravellingMerchantInventory"));
   return data(packItems(writer, self.items));
 }
 
@@ -11267,7 +11250,7 @@ __export(Packet_TreeGrowFx_exports, {
   toBuffer: () => toBuffer67
 });
 function parse68(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "action");
   if (e.TAG !== "Ok") {
     return e;
@@ -11301,7 +11284,7 @@ function parse68(payload) {
   }
 }
 function toBuffer67(self) {
-  return data(packInt16(packByte(packInt32(packInt32(packByte(setType2(make3(), toInt("TreeGrowFx")), self.action, "action"), self.x, "x"), self.y, "y"), self.style, "style"), self.treeType, "treeType"));
+  return data(packInt16(packByte(packInt32(packInt32(packByte(setType(make(), toInt("TreeGrowFx")), self.action, "action"), self.x, "x"), self.y, "y"), self.style, "style"), self.treeType, "treeType"));
 }
 
 // src/packet/Packet_Unused.js
@@ -11323,7 +11306,7 @@ __export(Packet_WallPaint_exports, {
   toBuffer: () => toBuffer68
 });
 function parse70(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
     return e;
@@ -11352,7 +11335,7 @@ function parse70(payload) {
   }
 }
 function toBuffer68(self) {
-  return data(packByte(packByte(packInt16(packInt16(setType2(make3(), toInt("WallPaint")), self.x, "x"), self.y, "y"), self.color, "color"), self.coat, "coat"));
+  return data(packByte(packByte(packInt16(packInt16(setType(make(), toInt("WallPaint")), self.x, "x"), self.y, "y"), self.color, "color"), self.coat, "coat"));
 }
 
 // src/packet/Packet_WeaponsRackTryPlacing.js
@@ -11362,7 +11345,7 @@ __export(Packet_WeaponsRackTryPlacing_exports, {
   toBuffer: () => toBuffer69
 });
 function parse71(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
     return e;
@@ -11396,7 +11379,7 @@ function parse71(payload) {
   }
 }
 function toBuffer69(self) {
-  return data(packInt16(packInt16(packInt16(packInt16(packInt16(setType2(make3(), toInt("WeaponsRackTryPlacing")), self.x, "x"), self.y, "y"), self.itemId, "itemId"), self.prefix, "prefix"), self.stack, "stack"));
+  return data(packInt16(packInt16(packInt16(packInt16(packInt16(setType(make(), toInt("WeaponsRackTryPlacing")), self.x, "x"), self.y, "y"), self.itemId, "itemId"), self.prefix, "prefix"), self.stack, "stack"));
 }
 
 // src/packet/Packet_WiredCannonShot.js
@@ -11406,7 +11389,7 @@ __export(Packet_WiredCannonShot_exports, {
   toBuffer: () => toBuffer70
 });
 function parse72(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "damage");
   if (e.TAG !== "Ok") {
     return e;
@@ -11450,7 +11433,7 @@ function parse72(payload) {
   }
 }
 function toBuffer70(self) {
-  return data(packByte(packInt16(packInt16(packInt16(packInt16(packSingle(packInt16(setType2(make3(), toInt("WiredCannonShot")), self.damage, "damage"), self.knockback, "knockback"), self.x, "x"), self.y, "y"), self.angle, "angle"), self.ammo, "ammo"), self.playerId, "playerId"));
+  return data(packByte(packInt16(packInt16(packInt16(packInt16(packSingle(packInt16(setType(make(), toInt("WiredCannonShot")), self.damage, "damage"), self.knockback, "knockback"), self.x, "x"), self.y, "y"), self.angle, "angle"), self.ammo, "ammo"), self.playerId, "playerId"));
 }
 
 // src/packet/Packet_WorldDataRequest.js
@@ -11468,7 +11451,7 @@ function parse73(_payload) {
 function toBuffer71(_self) {
   return {
     TAG: "Ok",
-    _0: setType(make2(), toInt("WorldDataRequest")).data
+    _0: new packetwriter_default().setType(toInt("WorldDataRequest")).data
   };
 }
 
@@ -11479,7 +11462,7 @@ __export(Packet_Zones_exports, {
   toBuffer: () => toBuffer72
 });
 function parse74(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -11518,7 +11501,7 @@ function parse74(payload) {
   }
 }
 function toBuffer72(self) {
-  return data(packByte(packByte(packByte(packByte(packByte(packByte(setType2(make3(), toInt("Zones")), self.playerId, "playerId"), self.zone1, "zone1"), self.zone2, "zone2"), self.zone3, "zone3"), self.zone4, "zone4"), self.zone5, "zone5"));
+  return data(packByte(packByte(packByte(packByte(packByte(packByte(setType(make(), toInt("Zones")), self.playerId, "playerId"), self.zone1, "zone1"), self.zone2, "zone2"), self.zone3, "zone3"), self.zone4, "zone4"), self.zone5, "zone5"));
 }
 
 // src/packet/Packet_PlayerSlotSet.js
@@ -11528,7 +11511,7 @@ __export(Packet_PlayerSlotSet_exports, {
   toBuffer: () => toBuffer73
 });
 function parse75(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerSlotId");
   if (e.TAG !== "Ok") {
     return e;
@@ -11547,7 +11530,7 @@ function parse75(payload) {
   }
 }
 function toBuffer73(self) {
-  return data(packByte(packByte(setType2(make3(), toInt("PlayerSlotSet")), self.playerSlotId, "playerSlotId"), self.serverWantsToRunCheckBytesInClientLoopThread ? 1 : 0, "serverWantsToRunCheckBytesInClientLoopThread"));
+  return data(packByte(packByte(setType(make(), toInt("PlayerSlotSet")), self.playerSlotId, "playerSlotId"), self.serverWantsToRunCheckBytesInClientLoopThread ? 1 : 0, "serverWantsToRunCheckBytesInClientLoopThread"));
 }
 
 // src/packet/Packet_PlayerUpdate.js
@@ -11557,7 +11540,7 @@ __export(Packet_PlayerUpdate_exports, {
   toBuffer: () => toBuffer74
 });
 function parse76(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -11751,7 +11734,7 @@ function packPotionOfReturn(writer, potionOfReturn) {
   }
 }
 function toBuffer74(self) {
-  return data(packPotionOfReturn(packVelocity(packSingle(packSingle(packByte(packMiscFlags3(packMiscFlags2(packMiscFlags1(packControlFlags(packByte(setType2(make3(), toInt("PlayerUpdate")), self.playerId, "playerId"), self.control, self.direction), self.pulleyDirection, self.velocity, self.vortexStealthActive, self.gravityDirection, self.shouldGuard, self.ghost), self.tryKeepingHoveringUp, self.isVoidVaultEnabled, self.isSitting, self.hasFinishedAnyDd2Event, self.isPettingAnimal, self.isTheAnimalBeingPetSmall, self.potionOfReturn, self.tryKeepingHoveringDown), self.isSleeping), self.selectedItem, "selectedItem"), self.position.x, "positionX"), self.position.y, "positionY"), self.velocity), self.potionOfReturn));
+  return data(packPotionOfReturn(packVelocity(packSingle(packSingle(packByte(packMiscFlags3(packMiscFlags2(packMiscFlags1(packControlFlags(packByte(setType(make(), toInt("PlayerUpdate")), self.playerId, "playerId"), self.control, self.direction), self.pulleyDirection, self.velocity, self.vortexStealthActive, self.gravityDirection, self.shouldGuard, self.ghost), self.tryKeepingHoveringUp, self.isVoidVaultEnabled, self.isSitting, self.hasFinishedAnyDd2Event, self.isPettingAnimal, self.isTheAnimalBeingPetSmall, self.potionOfReturn, self.tryKeepingHoveringDown), self.isSleeping), self.selectedItem, "selectedItem"), self.position.x, "positionX"), self.position.y, "positionY"), self.velocity), self.potionOfReturn));
 }
 
 // src/packet/Packet_PlayerInfo.js
@@ -11770,7 +11753,7 @@ function getDifficulty(difficultyFlags) {
   }
 }
 function parse77(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -11942,7 +11925,7 @@ function packUsedFlags(writer, usedAegisCrystal, usedAegisFruit, usedArcaneCryst
   return packByte(writer, byte, "usedFlags");
 }
 function toBuffer75(self) {
-  return data(packUsedFlags(packTorchFlags(packDifficultyFlags(packColor(packColor(packColor(packColor(packColor(packColor(packColor(packByte(packByte(packByte(packByte(packString(packByte(packByte(packByte(setType2(make3(), toInt("PlayerInfo")), self.playerId, "playerId"), self.skinVariant, "skinVariant"), self.hair, "hair"), self.name, "name"), self.hairDye, "hairDye"), self.hideVisuals, "hideVisuals"), self.hideVisuals2, "hideVisuals2"), self.hideMisc, "hideMisc"), self.hairColor, "hairColor"), self.skinColor, "skinColor"), self.eyeColor, "eyeColor"), self.shirtColor, "shirtColor"), self.underShirtColor, "underShirtColor"), self.pantsColor, "pantsColor"), self.shoeColor, "shoeColor"), self.difficulty, self.extraAccessory, self.mode), self.usingBiomeTorches, self.happyFunTorchTime, self.unlockedBiomeTorches, self.unlockedSuperCart, self.enabledSuperCart), self.usedAegisCrystal, self.usedAegisFruit, self.usedArcaneCrystal, self.usedGalaxyPearl, self.usedGummyWorm, self.usedAmbrosia, self.ateArtisanBread));
+  return data(packUsedFlags(packTorchFlags(packDifficultyFlags(packColor(packColor(packColor(packColor(packColor(packColor(packColor(packByte(packByte(packByte(packByte(packString(packByte(packByte(packByte(setType(make(), toInt("PlayerInfo")), self.playerId, "playerId"), self.skinVariant, "skinVariant"), self.hair, "hair"), self.name, "name"), self.hairDye, "hairDye"), self.hideVisuals, "hideVisuals"), self.hideVisuals2, "hideVisuals2"), self.hideMisc, "hideMisc"), self.hairColor, "hairColor"), self.skinColor, "skinColor"), self.eyeColor, "eyeColor"), self.shirtColor, "shirtColor"), self.underShirtColor, "underShirtColor"), self.pantsColor, "pantsColor"), self.shoeColor, "shoeColor"), self.difficulty, self.extraAccessory, self.mode), self.usingBiomeTorches, self.happyFunTorchTime, self.unlockedBiomeTorches, self.unlockedSuperCart, self.enabledSuperCart), self.usedAegisCrystal, self.usedAegisFruit, self.usedArcaneCrystal, self.usedGalaxyPearl, self.usedGummyWorm, self.usedAmbrosia, self.ateArtisanBread));
 }
 
 // src/packet/Packet_PlayerSpawn.js
@@ -11952,7 +11935,7 @@ __export(Packet_PlayerSpawn_exports, {
   toBuffer: () => toBuffer76
 });
 function parse78(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -12032,7 +12015,7 @@ function toBuffer76(self) {
       tmp = 2;
       break;
   }
-  return data(packByte(packInt16(packInt16(packInt32(packInt16(packInt16(packByte(setType2(make3(), toInt("PlayerSpawn")), self.playerId, "playerId"), self.x, "x"), self.y, "y"), self.timeRemaining, "timeRemaining"), self.numberOfDeathsPve, "numberOfDeathsPve"), self.numberOfDeathsPvp, "numberOfDeathsPvp"), tmp, "context"));
+  return data(packByte(packInt16(packInt16(packInt32(packInt16(packInt16(packByte(setType(make(), toInt("PlayerSpawn")), self.playerId, "playerId"), self.x, "x"), self.y, "y"), self.timeRemaining, "timeRemaining"), self.numberOfDeathsPve, "numberOfDeathsPve"), self.numberOfDeathsPvp, "numberOfDeathsPvp"), tmp, "context"));
 }
 
 // src/packet/Packet_PlayerInventorySlot.js
@@ -12042,7 +12025,7 @@ __export(Packet_PlayerInventorySlot_exports, {
   toBuffer: () => toBuffer77
 });
 function parse79(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -12076,7 +12059,7 @@ function parse79(payload) {
   }
 }
 function toBuffer77(self) {
-  return data(packInt16(packByte(packInt16(packInt16(packByte(setType2(make3(), toInt("PlayerInventorySlot")), self.playerId, "playerId"), self.slot, "slot"), self.stack, "stack"), self.prefix, "prefix"), self.itemId, "itemId"));
+  return data(packInt16(packByte(packInt16(packInt16(packByte(setType(make(), toInt("PlayerInventorySlot")), self.playerId, "playerId"), self.slot, "slot"), self.stack, "stack"), self.prefix, "prefix"), self.itemId, "itemId"));
 }
 
 // src/packet/Packet_PlayerHealth.js
@@ -12086,7 +12069,7 @@ __export(Packet_PlayerHealth_exports, {
   toBuffer: () => toBuffer78
 });
 function parse80(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -12110,7 +12093,7 @@ function parse80(payload) {
   }
 }
 function toBuffer78(self) {
-  return data(packInt16(packInt16(packByte(setType2(make3(), toInt("PlayerHealth")), self.playerId, "playerId"), self.health, "health"), self.maxHealth, "maxHealth"));
+  return data(packInt16(packInt16(packByte(setType(make(), toInt("PlayerHealth")), self.playerId, "playerId"), self.health, "health"), self.maxHealth, "maxHealth"));
 }
 
 // src/packet/Packet_ClientUuid.js
@@ -12120,7 +12103,7 @@ __export(Packet_ClientUuid_exports, {
   toBuffer: () => toBuffer79
 });
 function parse81(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readString(reader, "uuid");
   if (e.TAG === "Ok") {
     return {
@@ -12134,7 +12117,7 @@ function parse81(payload) {
   }
 }
 function toBuffer79(self) {
-  return data(packString(setType2(make3(), toInt("ClientUuid")), self.uuid, "uuid"));
+  return data(packString(setType(make(), toInt("ClientUuid")), self.uuid, "uuid"));
 }
 
 // src/packet/Packet_ProjectileSync.js
@@ -12144,7 +12127,7 @@ __export(Packet_ProjectileSync_exports, {
   toBuffer: () => toBuffer80
 });
 function parse82(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "projectileId");
   if (e.TAG !== "Ok") {
     return e;
@@ -12386,7 +12369,7 @@ function packOptionalData(writer, self) {
   return writer;
 }
 function toBuffer80(self) {
-  return data(packOptionalData(packInt16(packByte(packSingle(packSingle(packSingle(packSingle(packInt16(setType2(make3(), toInt("ProjectileSync")), self.projectileId, "projectileId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.owner, "owner"), self.projectileType, "projectileType"), self));
+  return data(packOptionalData(packInt16(packByte(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt("ProjectileSync")), self.projectileId, "projectileId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.owner, "owner"), self.projectileType, "projectileType"), self));
 }
 
 // src/packet/Packet_PlayerDamage.js
@@ -12410,7 +12393,7 @@ function readDamageFlags(reader) {
   };
 }
 function parse83(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "target");
   if (e.TAG !== "Ok") {
     return e;
@@ -12452,7 +12435,7 @@ function parse83(payload) {
 }
 function toBuffer81(self) {
   let damageFlags = (self2) => toByte(fromFlags(self2.critical, self2.pvp, false, false, false, false, false, false));
-  return data(packSByte(packByte(packByte(packInt16(packDeathReason(packByte(setType2(make3(), toInt("PlayerDamage")), self.target, "target"), self.deathReason), self.damage, "damage"), self.hitDirection, "hitDirection"), damageFlags(self), "damageFlags"), self.cooldownCounter, "cooldownCounter"));
+  return data(packSByte(packByte(packByte(packInt16(packDeathReason(packByte(setType(make(), toInt("PlayerDamage")), self.target, "target"), self.deathReason), self.damage, "damage"), self.hitDirection, "hitDirection"), damageFlags(self), "damageFlags"), self.cooldownCounter, "cooldownCounter"));
 }
 
 // src/packet/Packet_WorldInfo.js
@@ -12669,7 +12652,7 @@ function readEventInfo(reader) {
   };
 }
 function parse84(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt32(reader, "time");
   if (e.TAG !== "Ok") {
     return e;
@@ -13075,7 +13058,7 @@ function packEventInfo(writer, eventInfo) {
   return packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(writer, toByte(eventInfo1), "eventInfo1"), toByte(eventInfo2), "eventInfo2"), toByte(eventInfo3), "eventInfo3"), toByte(eventInfo4), "eventInfo4"), toByte(eventInfo5), "eventInfo5"), toByte(eventInfo6), "eventInfo6"), toByte(eventInfo7), "eventInfo7"), toByte(eventInfo8), "eventInfo8"), toByte(eventInfo9), "eventInfo9"), toByte(eventInfo10), "eventInfo10");
 }
 function toBuffer82(self) {
-  return data(packSingle(packUInt64(packSByte(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packEventInfo(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packUInt64(packBytes(packByte(packString(packInt32(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packInt32(setType2(make3(), toInt("WorldInfo")), self.time, "time"), self.dayAndMoonInfo, "dayAndMoonInfo"), self.moonPhase, "moonPhase"), self.maxTilesX, "maxTilesX"), self.maxTilesY, "maxTilesY"), self.spawnX, "spawnX"), self.spawnY, "spawnY"), self.worldSurface, "worldSurface"), self.rockLayer, "rockLayer"), self.worldId, "worldId"), self.worldName, "worldName"), self.gameMode, "gameMode"), asArray(self.worldUniqueId), "worldUniqueId"), self.worldGeneratorVersion, "worldGeneratorVersion"), self.moonType, "moonType"), self.treeBackground, "treeBackground"), self.treeBackground2, "treeBackground2"), self.treeBackground3, "treeBackground3"), self.treeBackground4, "treeBackground4"), self.corruptionBackground, "corruptionBackground"), self.jungleBackground, "jungleBackground"), self.snowBackground, "snowBackground"), self.hallowBackground, "hallowBackground"), self.crimsonBackground, "crimsonBackground"), self.desertBackground, "desertBackground"), self.oceanBackground, "oceanBackground"), self.mushroomBackground, "mushroomBackground"), self.underworldBackground, "underworldBackground"), self.iceBackStyle, "iceBackStyle"), self.jungleBackStyle, "jungleBackStyle"), self.hellBackStyle, "hellBackStyle"), self.windSpeedSet, "windSpeedSet"), self.cloudNumber, "cloudNumber"), self.tree1, "tree1"), self.tree2, "tree2"), self.tree3, "tree3"), self.treeStyle1, "treeStyle1"), self.treeStyle2, "treeStyle2"), self.treeStyle3, "treeStyle3"), self.treeStyle4, "treeStyle4"), self.caveBack1, "caveBack1"), self.caveBack2, "caveBack2"), self.caveBack3, "caveBack3"), self.caveBackStyle1, "caveBackStyle1"), self.caveBackStyle2, "caveBackStyle2"), self.caveBackStyle3, "caveBackStyle3"), self.caveBackStyle4, "caveBackStyle4"), self.forest1TreeTopStyle, "forest1TreeTopStyle"), self.forest2TreeTopStyle, "forest2TreeTopStyle"), self.forest3TreeTopStyle, "forest3TreeTopStyle"), self.forest4TreeTopStyle, "forest4TreeTopStyle"), self.corruptionTreeTopStyle, "corruptionTreeTopStyle"), self.jungleTreeTopStyle, "jungleTreeTopStyle"), self.snowTreeTopStyle, "snowTreeTopStyle"), self.hallowTreeTopStyle, "hallowTreeTopStyle"), self.crimsonTreeTopStyle, "crimsonTreeTopStyle"), self.desertTreeTopStyle, "desertTreeTopStyle"), self.oceanTreeTopStyle, "oceanTreeTopStyle"), self.glowingMushroomTreeTopStyle, "glowingMushroomTreeTopStyle"), self.underworldTreeTopStyle, "underworldTreeTopStyle"), self.rain, "rain"), self.eventInfo), self.sundialCooldown, "sundialCooldown"), self.moondialCooldown, "moondialCooldown"), self.copperOreTier, "copperOreTier"), self.ironOreTier, "ironOreTier"), self.silverOreTier, "silverOreTier"), self.goldOreTier, "goldOreTier"), self.cobaltOreTier, "cobaltOreTier"), self.mythrilOreTier, "mythrilOreTier"), self.adamantiteOreTier, "adamantiteOreTier"), self.invasionType, "invasionType"), self.lobbyId, "lobbyId"), self.sandstormSeverity, "sandstormSeverity"));
+  return data(packSingle(packUInt64(packSByte(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packEventInfo(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packUInt64(packBytes(packByte(packString(packInt32(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packInt32(setType(make(), toInt("WorldInfo")), self.time, "time"), self.dayAndMoonInfo, "dayAndMoonInfo"), self.moonPhase, "moonPhase"), self.maxTilesX, "maxTilesX"), self.maxTilesY, "maxTilesY"), self.spawnX, "spawnX"), self.spawnY, "spawnY"), self.worldSurface, "worldSurface"), self.rockLayer, "rockLayer"), self.worldId, "worldId"), self.worldName, "worldName"), self.gameMode, "gameMode"), asArray(self.worldUniqueId), "worldUniqueId"), self.worldGeneratorVersion, "worldGeneratorVersion"), self.moonType, "moonType"), self.treeBackground, "treeBackground"), self.treeBackground2, "treeBackground2"), self.treeBackground3, "treeBackground3"), self.treeBackground4, "treeBackground4"), self.corruptionBackground, "corruptionBackground"), self.jungleBackground, "jungleBackground"), self.snowBackground, "snowBackground"), self.hallowBackground, "hallowBackground"), self.crimsonBackground, "crimsonBackground"), self.desertBackground, "desertBackground"), self.oceanBackground, "oceanBackground"), self.mushroomBackground, "mushroomBackground"), self.underworldBackground, "underworldBackground"), self.iceBackStyle, "iceBackStyle"), self.jungleBackStyle, "jungleBackStyle"), self.hellBackStyle, "hellBackStyle"), self.windSpeedSet, "windSpeedSet"), self.cloudNumber, "cloudNumber"), self.tree1, "tree1"), self.tree2, "tree2"), self.tree3, "tree3"), self.treeStyle1, "treeStyle1"), self.treeStyle2, "treeStyle2"), self.treeStyle3, "treeStyle3"), self.treeStyle4, "treeStyle4"), self.caveBack1, "caveBack1"), self.caveBack2, "caveBack2"), self.caveBack3, "caveBack3"), self.caveBackStyle1, "caveBackStyle1"), self.caveBackStyle2, "caveBackStyle2"), self.caveBackStyle3, "caveBackStyle3"), self.caveBackStyle4, "caveBackStyle4"), self.forest1TreeTopStyle, "forest1TreeTopStyle"), self.forest2TreeTopStyle, "forest2TreeTopStyle"), self.forest3TreeTopStyle, "forest3TreeTopStyle"), self.forest4TreeTopStyle, "forest4TreeTopStyle"), self.corruptionTreeTopStyle, "corruptionTreeTopStyle"), self.jungleTreeTopStyle, "jungleTreeTopStyle"), self.snowTreeTopStyle, "snowTreeTopStyle"), self.hallowTreeTopStyle, "hallowTreeTopStyle"), self.crimsonTreeTopStyle, "crimsonTreeTopStyle"), self.desertTreeTopStyle, "desertTreeTopStyle"), self.oceanTreeTopStyle, "oceanTreeTopStyle"), self.glowingMushroomTreeTopStyle, "glowingMushroomTreeTopStyle"), self.underworldTreeTopStyle, "underworldTreeTopStyle"), self.rain, "rain"), self.eventInfo), self.sundialCooldown, "sundialCooldown"), self.moondialCooldown, "moondialCooldown"), self.copperOreTier, "copperOreTier"), self.ironOreTier, "ironOreTier"), self.silverOreTier, "silverOreTier"), self.goldOreTier, "goldOreTier"), self.cobaltOreTier, "cobaltOreTier"), self.mythrilOreTier, "mythrilOreTier"), self.adamantiteOreTier, "adamantiteOreTier"), self.invasionType, "invasionType"), self.lobbyId, "lobbyId"), self.sandstormSeverity, "sandstormSeverity"));
 }
 
 // src/packet/Packet_PlayerActive.js
@@ -13085,7 +13068,7 @@ __export(Packet_PlayerActive_exports, {
   toBuffer: () => toBuffer83
 });
 function parse85(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -13104,7 +13087,7 @@ function parse85(payload) {
   }
 }
 function toBuffer83(self) {
-  return data(packByte(packByte(setType2(make3(), toInt("PlayerActive")), self.playerId, "playerId"), self.active ? 1 : 0, "active"));
+  return data(packByte(packByte(setType(make(), toInt("PlayerActive")), self.playerId, "playerId"), self.active ? 1 : 0, "active"));
 }
 
 // src/packet/Packet_NpcUpdate.js
@@ -13149,7 +13132,7 @@ function readNpcFlags2(reader, fieldName) {
   };
 }
 function parse86(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcSlotId");
   if (e.TAG !== "Ok") {
     return e;
@@ -13423,7 +13406,7 @@ function packReleaseOwner(writer, releaseOwner) {
   }
 }
 function toBuffer84(self) {
-  return data(packReleaseOwner(packLife(packStrengthMultiplier(packPlayerCountScale(packInt16(packAi(packByte(packByte(packUInt16(packSingle(packSingle(packSingle(packSingle(packInt16(setType2(make3(), toInt("NpcUpdate")), self.npcSlotId, "npcSlotId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.target, "target"), npcFlags1(self), "npcFlags1"), npcFlags2(self), "npcFlags2"), self.ai), self.npcTypeId, "npcTypeId"), self.playerCountScale), self.strengthMultiplier), self.life), self.releaseOwner));
+  return data(packReleaseOwner(packLife(packStrengthMultiplier(packPlayerCountScale(packInt16(packAi(packByte(packByte(packUInt16(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt("NpcUpdate")), self.npcSlotId, "npcSlotId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.target, "target"), npcFlags1(self), "npcFlags1"), npcFlags2(self), "npcFlags2"), self.ai), self.npcTypeId, "npcTypeId"), self.playerCountScale), self.strengthMultiplier), self.life), self.releaseOwner));
 }
 
 // src/packet/Packet_Disconnect.js
@@ -13433,7 +13416,7 @@ __export(Packet_Disconnect_exports, {
   toBuffer: () => toBuffer85
 });
 function parse87(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readNetworkText(reader, "reason");
   if (e.TAG === "Ok") {
     return {
@@ -13447,7 +13430,7 @@ function parse87(payload) {
   }
 }
 function toBuffer85(self) {
-  return data(packNetworkText(setType2(make3(), toInt("Disconnect")), self.reason, "reason"));
+  return data(packNetworkText(setType(make(), toInt("Disconnect")), self.reason, "reason"));
 }
 
 // src/Parser.js
@@ -13464,11 +13447,11 @@ function from_fun(closure) {
     VAL: closure
   };
 }
-var make8 = from_fun;
+var make4 = from_fun;
 
 // src/packet/Packet_Emoji.js
 function parse88(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -13507,7 +13490,7 @@ function actionFromInt(self) {
   }
 }
 function parse89(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "action");
   if (e.TAG !== "Ok") {
     return e;
@@ -13555,7 +13538,7 @@ function parse89(payload) {
 
 // src/packet/Packet_HarpPlay.js
 function parse90(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -13576,7 +13559,7 @@ function parse90(payload) {
 
 // src/packet/Packet_ChestName.js
 function parse91(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "chestId");
   if (e.TAG !== "Ok") {
     return e;
@@ -13607,7 +13590,7 @@ function parse91(payload) {
 
 // src/packet/Packet_ChestOpen.js
 function parse92(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
     return e;
@@ -13628,7 +13611,7 @@ function parse92(payload) {
 
 // src/packet/Packet_LiquidSet.js
 function parse93(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
     return e;
@@ -13659,7 +13642,7 @@ function parse93(payload) {
 
 // src/packet/Packet_NpcStrike.js
 function parse94(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
     return e;
@@ -13705,7 +13688,7 @@ function fromInt8(playerId) {
   }
 }
 function parse95(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
     return e;
@@ -13754,7 +13737,7 @@ function parse95(payload) {
 
 // src/packet/Packet_HealEffect.js
 function parse96(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -13775,7 +13758,7 @@ function parse96(payload) {
 
 // src/packet/Packet_ManaEffect.js
 function parse97(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -13796,7 +13779,7 @@ function parse97(payload) {
 
 // src/packet/Packet_NpcBuffAdd.js
 function parse98(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
     return e;
@@ -13822,7 +13805,7 @@ function parse98(payload) {
 
 // src/packet/Packet_NpcRelease.js
 function parse99(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt32(reader, "x");
   if (e.TAG !== "Ok") {
     return e;
@@ -13853,7 +13836,7 @@ function parse99(payload) {
 
 // src/packet/Packet_PortalKill.js
 function parse100(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "owner");
   if (e.TAG !== "Ok") {
     return e;
@@ -13874,7 +13857,7 @@ function parse100(payload) {
 
 // src/packet/Packet_EmoteBubble.js
 function parse101(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt32(reader, "id");
   if (e.TAG !== "Ok") {
     return e;
@@ -13933,7 +13916,7 @@ function parse101(payload) {
 
 // src/packet/Packet_PasswordSend.js
 function parse102(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readString(reader, "password");
   if (e.TAG === "Ok") {
     return {
@@ -13949,7 +13932,7 @@ function parse102(payload) {
 
 // src/packet/Packet_GemLockToggle.js
 function parse103(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
     return e;
@@ -13975,7 +13958,7 @@ function parse103(payload) {
 
 // src/packet/Packet_NebulaLevelUp.js
 function parse104(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -14006,7 +13989,7 @@ function parse104(payload) {
 
 // src/packet/Packet_NpcItemStrike.js
 function parse105(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
     return e;
@@ -14027,7 +14010,7 @@ function parse105(payload) {
 
 // src/packet/Packet_PlayerStealth.js
 function parse106(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -14048,7 +14031,7 @@ function parse106(payload) {
 
 // src/packet/Packet_GoodEvilUpdate.js
 function parse107(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "good");
   if (e.TAG !== "Ok") {
     return e;
@@ -14130,7 +14113,7 @@ function parseFlags2(reader, flags2) {
   }
 }
 function parse108(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemId");
   if (e.TAG !== "Ok") {
     return e;
@@ -14262,7 +14245,7 @@ function parse108(payload) {
 
 // src/packet/Packet_ItemFramePlace.js
 function parse109(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
     return e;
@@ -14298,7 +14281,7 @@ function parse109(payload) {
 
 // src/packet/Packet_LucyAxeMessage.js
 function parse110(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "source");
   if (e.TAG !== "Ok") {
     return e;
@@ -14348,7 +14331,7 @@ function parse110(payload) {
 
 // src/packet/Packet_ItemOwnerRemove.js
 function parse111(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemDropId");
   if (e.TAG === "Ok") {
     return {
@@ -14364,7 +14347,7 @@ function parse111(payload) {
 
 // src/packet/Packet_LegacySoundPlay.js
 function parse112(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readSingle(reader, "x");
   if (e.TAG !== "Ok") {
     return e;
@@ -14421,7 +14404,7 @@ function parse112(payload) {
 
 // src/packet/Packet_PlayerHealOther.js
 function parse113(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -14450,7 +14433,7 @@ function parse114(_payload) {
 
 // src/packet/Packet_CombatTextCreate.js
 function parse115(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readSingle(reader, "x");
   if (e.TAG !== "Ok") {
     return e;
@@ -14481,7 +14464,7 @@ function parse115(payload) {
 
 // src/packet/Packet_NpcSpecialEffect.js
 function parse116(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -14510,7 +14493,7 @@ function parse117(_payload) {
 
 // src/packet/Packet_EventNotification.js
 function parse118(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "eventId");
   if (e.TAG === "Ok") {
     return {
@@ -14526,7 +14509,7 @@ function parse118(payload) {
 
 // src/packet/Packet_GolfBallLandInCup.js
 function parse119(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -14562,7 +14545,7 @@ function parse119(payload) {
 
 // src/packet/Packet_MassWireOperation.js
 function parse120(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "startX");
   if (e.TAG !== "Ok") {
     return e;
@@ -14598,7 +14581,7 @@ function parse120(payload) {
 
 // src/packet/Packet_MoonLordCountdown.js
 function parse121(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt32(reader, "maxMoonLordCountdown");
   if (e.TAG !== "Ok") {
     return e;
@@ -14619,7 +14602,7 @@ function parse121(payload) {
 
 // src/packet/Packet_ProjectileDestroy.js
 function parse122(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "projectileId");
   if (e.TAG !== "Ok") {
     return e;
@@ -14640,7 +14623,7 @@ function parse122(payload) {
 
 // src/packet/Packet_RevengeMarkerSync.js
 function parse123(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt32(reader, "uniqueId");
   if (e.TAG !== "Ok") {
     return e;
@@ -14703,7 +14686,7 @@ function parse123(payload) {
 
 // src/packet/Packet_CombatNumberCreate.js
 function parse124(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readSingle(reader, "x");
   if (e.TAG !== "Ok") {
     return e;
@@ -14734,7 +14717,7 @@ function parse124(payload) {
 
 // src/packet/Packet_MinionTargetUpdate.js
 function parse125(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -14760,7 +14743,7 @@ function parse125(payload) {
 
 // src/packet/Packet_ActiveContainerSync.js
 function parse126(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "chestId");
   if (e.TAG !== "Ok") {
     return e;
@@ -14800,7 +14783,7 @@ function parse126(payload) {
 
 // src/packet/Packet_RevengeMarkerRemove.js
 function parse127(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt32(reader, "markerId");
   if (e.TAG === "Ok") {
     return {
@@ -14816,7 +14799,7 @@ function parse127(payload) {
 
 // src/packet/Packet_MassWireOperationPay.js
 function parse128(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemType");
   if (e.TAG !== "Ok") {
     return e;
@@ -14842,7 +14825,7 @@ function parse128(payload) {
 
 // src/packet/Packet_PlayerTeleportPortal.js
 function parse129(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -14892,12 +14875,12 @@ function parse129(payload) {
 
 // src/packet/Packet_CavernMonsterTypeSync.js
 function parse130(payload) {
-  let reader = make(payload);
-  let rows = make4(2, []);
+  let reader = new packetreader_default(payload);
+  let rows = make2(2, []);
   let error;
   for (let i = 0; i <= 1; ++i) {
     if (error !== void 0) {
-      let row = make4(3, 0);
+      let row = make2(3, 0);
       for (let j = 0; j <= 2; ++j) {
         if (error !== void 0) {
           let value = readUInt16(reader, `monster_` + i.toString() + `_` + j.toString());
@@ -14935,7 +14918,7 @@ function parse131(_payload) {
 
 // src/packet/Packet_FoodPlatterTryPlacing.js
 function parse132(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
     return e;
@@ -14971,7 +14954,7 @@ function parse132(payload) {
 
 // src/packet/Packet_NpcKilledNotification.js
 function parse133(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG === "Ok") {
     return {
@@ -14987,7 +14970,7 @@ function parse133(payload) {
 
 // src/packet/Packet_ShieldStrengthsUpdate.js
 function parse134(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "solar");
   if (e.TAG !== "Ok") {
     return e;
@@ -15029,7 +15012,7 @@ var parse136 = parse18;
 
 // src/packet/Packet_ItemDropProtectedUpdate.js
 function parse137(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemDropId");
   if (e.TAG !== "Ok") {
     return e;
@@ -15118,7 +15101,7 @@ function tryReading(reader, context) {
   }
 }
 function parse138(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -15144,7 +15127,7 @@ function parse138(payload) {
 
 // src/packet/Packet_PlayerLuckFactorsUpdate.js
 function parse139(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -15191,7 +15174,7 @@ function parse139(payload) {
 
 // src/packet/Packet_MinionAttackTargetUpdate.js
 function parse140(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -15212,7 +15195,7 @@ function parse140(payload) {
 
 // src/packet/Packet_ItemForceIntoNearestChest.js
 function parse141(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt16(reader, "slot");
   if (e.TAG === "Ok") {
     return {
@@ -15228,7 +15211,7 @@ function parse141(payload) {
 
 // src/packet/Packet_InitialTileSectionsRequest.js
 function parse142(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt32(reader, "x");
   if (e.TAG !== "Ok") {
     return e;
@@ -15249,7 +15232,7 @@ function parse142(payload) {
 
 // src/packet/Packet_AnglerQuestsCompletedAmount.js
 function parse143(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
@@ -15275,7 +15258,7 @@ function parse143(payload) {
 
 // src/packet/Packet_CrystalInvasionSendWaitTime.js
 function parse144(payload) {
-  let reader = make(payload);
+  let reader = new packetreader_default(payload);
   let e = readInt32(reader, "timeLeftBetweenWaves");
   if (e.TAG === "Ok") {
     return {
@@ -15606,7 +15589,7 @@ function makeParsers(packetName, parse147, toPacket, toLazyPacket) {
   let parseWrapped = (payload, _fromServer) => mapPacket(parse147(payload), packetName, toPacket);
   let parseLazyWrapped = (payload, _fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make8(() => mapError(parse147(payload), (e) => addPacketContext(packetName, e))))
+    _0: toLazyPacket(make4(() => mapError(parse147(payload), (e) => addPacketContext(packetName, e))))
   });
   return {
     parse: parseWrapped,
@@ -15617,7 +15600,7 @@ function makeParsersWithFromServer(packetName, parse147, toPacket, toLazyPacket)
   let parseWrapped = (payload, fromServer) => mapPacket(parse147(payload, fromServer), packetName, toPacket);
   let parseLazyWrapped = (payload, fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make8(() => mapError(parse147(payload, fromServer), (e) => addPacketContext(packetName, e))))
+    _0: toLazyPacket(make4(() => mapError(parse147(payload, fromServer), (e) => addPacketContext(packetName, e))))
   });
   return {
     parse: parseWrapped,

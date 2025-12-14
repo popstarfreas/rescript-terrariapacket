@@ -3,13 +3,13 @@
 import * as Stdlib_Option from "@rescript/runtime/lib/es6/Stdlib_Option.js";
 import * as BitFlags$TerrariaPacket from "../BitFlags.js";
 import * as PacketType$TerrariaPacket from "../PacketType.js";
-import * as PacketReader$PacketFactory from "@popstarfreas/packetfactory/src/PacketReader.js";
 import * as TileFrameImportant$TerrariaPacket from "../TileFrameImportant.js";
 import * as ErrorAwarePacketReader$TerrariaPacket from "../ErrorAwarePacketReader.js";
 import * as ErrorAwarePacketWriter$TerrariaPacket from "../ErrorAwarePacketWriter.js";
+import Packetreader from "@popstarfreas/packetfactory/packetreader";
 
 function parse(payload) {
-  let reader = PacketReader$PacketFactory.make(payload);
+  let reader = new Packetreader(payload);
   let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "tileX");
   if (e.TAG !== "Ok") {
     return e;
@@ -312,4 +312,4 @@ export {
   parse,
   toBuffer,
 }
-/* PacketReader-PacketFactory Not a pure module */
+/* TileFrameImportant-TerrariaPacket Not a pure module */

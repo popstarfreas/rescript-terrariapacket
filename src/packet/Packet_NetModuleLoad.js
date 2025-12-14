@@ -2,10 +2,10 @@
 
 import * as Belt_Array from "@rescript/runtime/lib/es6/Belt_Array.js";
 import * as PacketType$TerrariaPacket from "../PacketType.js";
-import * as PacketReader$PacketFactory from "@popstarfreas/packetfactory/src/PacketReader.js";
 import * as CreativePowers$TerrariaPacket from "../CreativePowers.js";
 import * as ErrorAwarePacketReader$TerrariaPacket from "../ErrorAwarePacketReader.js";
 import * as ErrorAwarePacketWriter$TerrariaPacket from "../ErrorAwarePacketWriter.js";
+import Packetreader from "@popstarfreas/packetfactory/packetreader";
 
 function pylonActionToInt(pylonAction) {
   switch (pylonAction) {
@@ -149,7 +149,7 @@ function toBuffer(self) {
 }
 
 function parse(payload, fromServer) {
-  let reader = PacketReader$PacketFactory.make(payload);
+  let reader = new Packetreader(payload);
   let e = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "moduleType");
   if (e.TAG !== "Ok") {
     return e;
@@ -583,4 +583,4 @@ export {
   toBuffer,
   parse,
 }
-/* PacketReader-PacketFactory Not a pure module */
+/* CreativePowers-TerrariaPacket Not a pure module */
