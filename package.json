@@ -1,5 +1,6 @@
 {
   "name": "terraria-packet",
+  "version": "1.0.0",
   "type": "module",
   "main": "dist/Export.js",
   "types": "dist/Export.d.ts",
