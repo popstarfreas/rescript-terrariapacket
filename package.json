@@ -17,6 +17,7 @@
     "build:bundle": "rsync -a --include='*/' --include='*.d.ts' --exclude='*' src/ lib/ && esbuild src/Export.ts --bundle --outfile=dist/Export.js --format=esm --platform=node --alias:@rescript/runtime/lib/js=@rescript/runtime/lib/es6 && esbuild src/Export.ts --bundle --outfile=dist/Export.cjs --format=cjs --platform=node --alias:@rescript/runtime/lib/js=@rescript/runtime/lib/es6 && tsc -p . && api-extractor run --local",
     "build": "rescript",
     "build:tsc": "tsc -p .",
+    "check:dts": "tsc -p tsconfig.dts.json",
     "test": "pta  'tests/*.test.js'"
   },
   "dependencies": {

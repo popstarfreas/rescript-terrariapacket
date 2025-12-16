@@ -17,6 +17,7 @@ export * as InvasionProgressReportPacket from "./packet/Packet_InvasionProgressR
 export * as ItemDropShimmeredUpdatePacket from "./packet/Packet_ItemDropShimmeredUpdate.js";
 export * as ItemDropUpdatePacket from "./packet/Packet_ItemDropUpdate.js";
 export * as ItemOwnerPacket from "./packet/Packet_ItemOwner.js";
+export * as ItemOwnerRemovePacket from "./packet/Packet_ItemOwnerRemove.js";
 export * as LoadoutSwitchPacket from "./packet/Packet_LoadoutSwitch.js";
 export * as NetModuleLoadPacket from "./packet/Packet_NetModuleLoad.js";
 export * as NpcBuffRemovalRequestPacket from "./packet/Packet_NpcBuffRemovalRequest.js";

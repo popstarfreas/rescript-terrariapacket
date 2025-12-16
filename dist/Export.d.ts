@@ -208,7 +208,7 @@ export declare namespace BitFlags {
         flagN,
         forEach,
         toByte,
-        t_76 as t
+        t_77 as t
     }
 }
 
@@ -309,19 +309,19 @@ export declare namespace ClientFinishConnectingToServerPacket {
 
 export declare namespace ClientUuidPacket {
     export {
-        t_84 as t,
-        parseOk_80 as parseOk,
-        parseError_80 as parseError,
-        parse_80 as parse,
-        toBufferOk_79 as toBufferOk,
-        toBufferError_79 as toBufferError,
-        toBuffer_79 as toBuffer
+        t_85 as t,
+        parseOk_81 as parseOk,
+        parseError_81 as parseError,
+        parse_81 as parse,
+        toBufferOk_80 as toBufferOk,
+        toBufferError_80 as toBufferError,
+        toBuffer_80 as toBuffer
     }
 }
 
-declare type coinLuck = { readonly position: t_32<number>; readonly amount: number };
+declare type coinLuck = { readonly position: t_33<number>; readonly amount: number };
 
-declare type coinLuck_2 = { readonly position: t_32<number>; readonly amount: number };
+declare type coinLuck_2 = { readonly position: t_33<number>; readonly amount: number };
 
 declare type color = {
     readonly r: number;
@@ -486,7 +486,7 @@ declare type DataOk = { TAG: "Ok"; _0: Buffer };
  */
 declare type DataResult = DataOk | DataError;
 
-declare const Decode: { parse: (_1: Buffer) => parse_64 };
+declare const Decode: { parse: (_1: Buffer) => parse_65 };
 
 declare type difficulty = "Softcore" | "Mediumcore" | "Hardcore";
 
@@ -523,13 +523,13 @@ declare type direction_4 = "Left" | "Right";
 
 export declare namespace DisconnectPacket {
     export {
-        t_89 as t,
-        parseOk_86 as parseOk,
-        parseError_86 as parseError,
-        parse_86 as parse,
-        toBufferOk_85 as toBufferOk,
-        toBufferError_85 as toBufferError,
-        toBuffer_85 as toBuffer
+        t_90 as t,
+        parseOk_87 as parseOk,
+        parseError_87 as parseError,
+        parse_87 as parse,
+        toBufferOk_86 as toBufferOk,
+        toBufferError_86 as toBufferError,
+        toBuffer_86 as toBuffer
     }
 }
 
@@ -537,7 +537,7 @@ declare type dodge = "Ninja" | "Shadow" | "BrainOfConfusion";
 
 declare type dodge_2 = "Ninja" | "Shadow" | "BrainOfConfusion";
 
-declare const Encode: { toBuffer: (_1: t_66) => toBuffer_64 };
+declare const Encode: { toBuffer: (_1: t_67) => toBuffer_65 };
 
 declare const Entity: {};
 
@@ -827,23 +827,23 @@ export declare namespace ExtraValueSyncPacket {
     }
 }
 
-declare function flag1(t: t_76): boolean;
+declare function flag1(t: t_77): boolean;
 
-declare function flag2(t: t_76): boolean;
+declare function flag2(t: t_77): boolean;
 
-declare function flag3(t: t_76): boolean;
+declare function flag3(t: t_77): boolean;
 
-declare function flag4(t: t_76): boolean;
+declare function flag4(t: t_77): boolean;
 
-declare function flag5(t: t_76): boolean;
+declare function flag5(t: t_77): boolean;
 
-declare function flag6(t: t_76): boolean;
+declare function flag6(t: t_77): boolean;
 
-declare function flag7(t: t_76): boolean;
+declare function flag7(t: t_77): boolean;
 
-declare function flag8(t: t_76): boolean;
+declare function flag8(t: t_77): boolean;
 
-declare function flagN(t: t_76, n: number): boolean;
+declare function flagN(t: t_77, n: number): boolean;
 
 declare type flags = {
     readonly hideStatusTextPercent: boolean;
@@ -857,9 +857,9 @@ declare type flags_2 = {
     readonly runCheckBytes: boolean
 };
 
-declare type Float_t = t_234<number>;
+declare type Float_t = t_235<number>;
 
-declare function forEach(t: t_76, callback: (flag: boolean) => void): void;
+declare function forEach(t: t_77, callback: (flag: boolean) => void): void;
 
 declare type frame = { readonly x: number; readonly y: number };
 
@@ -871,9 +871,9 @@ declare type frame_4 = { readonly x: number; readonly y: number };
 
 declare function fromArray<A>(a: A[]): Array16_2<A> | undefined;
 
-declare function fromArray_2(flags: boolean[]): t_76;
+declare function fromArray_2(flags: boolean[]): t_77;
 
-declare function fromByte(byte: number): t_76;
+declare function fromByte(byte: number): t_77;
 
 declare function fromFlags(
 flag1: boolean,
@@ -884,7 +884,7 @@ flag5: boolean,
 flag6: boolean,
 flag7: boolean,
 flag8: boolean
-): t_76;
+): t_77;
 
 declare function getOr<A>(a: A[], index: number, or: A): A;
 
@@ -906,7 +906,7 @@ export declare namespace HaveDryadDoStardewAnimationPacket {
 
 declare type Immunity_t = "All" | { TAG: "PlayerId"; _0: number };
 
-declare type Int_t = t_234<number>;
+declare type Int_t = t_235<number>;
 
 declare function intoChunks<A>(a: A[], chunkSize: number): A[][];
 
@@ -962,155 +962,167 @@ export declare namespace ItemOwnerPacket {
     }
 }
 
+export declare namespace ItemOwnerRemovePacket {
+    export {
+        t_20 as t,
+        parseOk_20 as parseOk,
+        parseError_20 as parseError,
+        parse_20 as parse,
+        toBufferOk_20 as toBufferOk,
+        toBufferError_20 as toBufferError,
+        toBuffer_20 as toBuffer
+    }
+}
+
 declare type killCount = number;
 
-declare type LazyPacket_lazyParsed<a> = t_233<Result_2<a, readError>>;
+declare type LazyPacket_lazyParsed<a> = t_234<Result_2<a, readError>>;
 
 declare type LazyPacket_t =
-    { TAG: "ConnectRequest"; _0: LazyPacket_lazyParsed<t_91> }
-| { TAG: "Disconnect"; _0: LazyPacket_lazyParsed<t_92> }
-| { TAG: "PlayerSlotSet"; _0: LazyPacket_lazyParsed<t_93> }
-| { TAG: "PlayerInfo"; _0: LazyPacket_lazyParsed<t_94> }
-| { TAG: "PlayerInventorySlot"; _0: LazyPacket_lazyParsed<t_95> }
-| { TAG: "WorldDataRequest"; _0: LazyPacket_lazyParsed<t_96> }
+    { TAG: "ConnectRequest"; _0: LazyPacket_lazyParsed<t_92> }
+| { TAG: "Disconnect"; _0: LazyPacket_lazyParsed<t_93> }
+| { TAG: "PlayerSlotSet"; _0: LazyPacket_lazyParsed<t_94> }
+| { TAG: "PlayerInfo"; _0: LazyPacket_lazyParsed<t_95> }
+| { TAG: "PlayerInventorySlot"; _0: LazyPacket_lazyParsed<t_96> }
+| { TAG: "WorldDataRequest"; _0: LazyPacket_lazyParsed<t_97> }
 | { TAG: "WorldInfo"; _0: LazyPacket_lazyParsed<WorldInfo_2> }
-| { TAG: "InitialTileSectionsRequest"; _0: LazyPacket_lazyParsed<t_97> }
-| { TAG: "Status"; _0: LazyPacket_lazyParsed<t_98> }
-| { TAG: "TileSectionSend"; _0: LazyPacket_lazyParsed<t_99> }
-| { TAG: "TileSectionFrame"; _0: LazyPacket_lazyParsed<t_100> }
-| { TAG: "PlayerSpawn"; _0: LazyPacket_lazyParsed<t_101> }
-| { TAG: "PlayerUpdate"; _0: LazyPacket_lazyParsed<t_102> }
-| { TAG: "PlayerActive"; _0: LazyPacket_lazyParsed<t_103> }
-| { TAG: "PlayerHealth"; _0: LazyPacket_lazyParsed<t_104> }
-| { TAG: "TileModify"; _0: LazyPacket_lazyParsed<t_105> }
-| { TAG: "TimeSet"; _0: LazyPacket_lazyParsed<t_106> }
-| { TAG: "DoorUse"; _0: LazyPacket_lazyParsed<t_107> }
-| { TAG: "TileSquareSend"; _0: LazyPacket_lazyParsed<t_108> }
-| { TAG: "ItemDropUpdate"; _0: LazyPacket_lazyParsed<t_109> }
-| { TAG: "ItemOwner"; _0: LazyPacket_lazyParsed<t_110> }
-| { TAG: "NpcUpdate"; _0: LazyPacket_lazyParsed<t_111> }
-| { TAG: "NpcItemStrike"; _0: LazyPacket_lazyParsed<t_112> }
-| { TAG: "ProjectileSync"; _0: LazyPacket_lazyParsed<t_113> }
-| { TAG: "NpcStrike"; _0: LazyPacket_lazyParsed<t_114> }
-| { TAG: "ProjectileDestroy"; _0: LazyPacket_lazyParsed<t_115> }
-| { TAG: "PvpToggle"; _0: LazyPacket_lazyParsed<t_116> }
-| { TAG: "ChestOpen"; _0: LazyPacket_lazyParsed<t_117> }
-| { TAG: "ChestItem"; _0: LazyPacket_lazyParsed<t_118> }
-| { TAG: "ActiveContainerSync"; _0: LazyPacket_lazyParsed<t_119> }
-| { TAG: "ChestPlace"; _0: LazyPacket_lazyParsed<t_120> }
-| { TAG: "HealEffect"; _0: LazyPacket_lazyParsed<t_121> }
-| { TAG: "Zones"; _0: LazyPacket_lazyParsed<t_122> }
-| { TAG: "PasswordRequired"; _0: LazyPacket_lazyParsed<t_123> }
-| { TAG: "PasswordSend"; _0: LazyPacket_lazyParsed<t_124> }
-| { TAG: "ItemOwnerRemove"; _0: LazyPacket_lazyParsed<t_125> }
-| { TAG: "NpcTalk"; _0: LazyPacket_lazyParsed<t_126> }
-| { TAG: "PlayerAnimation"; _0: LazyPacket_lazyParsed<t_127> }
-| { TAG: "PlayerMana"; _0: LazyPacket_lazyParsed<t_128> }
-| { TAG: "ManaEffect"; _0: LazyPacket_lazyParsed<t_129> }
-| { TAG: "PlayerTeam"; _0: LazyPacket_lazyParsed<t_130> }
-| { TAG: "SignRead"; _0: LazyPacket_lazyParsed<t_131> }
-| { TAG: "SignNew"; _0: LazyPacket_lazyParsed<t_132> }
-| { TAG: "LiquidSet"; _0: LazyPacket_lazyParsed<t_133> }
-| { TAG: "PlayerSpawnSelf"; _0: LazyPacket_lazyParsed<t_134> }
-| { TAG: "PlayerBuffsSet"; _0: LazyPacket_lazyParsed<t_135> }
-| { TAG: "NpcSpecialEffect"; _0: LazyPacket_lazyParsed<t_136> }
-| { TAG: "ChestOrTempleUnlock"; _0: LazyPacket_lazyParsed<t_137> }
-| { TAG: "NpcBuffAdd"; _0: LazyPacket_lazyParsed<t_138> }
-| { TAG: "NpcBuffUpdate"; _0: LazyPacket_lazyParsed<t_139> }
-| { TAG: "PlayerBuffAdd"; _0: LazyPacket_lazyParsed<t_140> }
-| { TAG: "NpcNameUpdate"; _0: LazyPacket_lazyParsed<t_141> }
-| { TAG: "GoodEvilUpdate"; _0: LazyPacket_lazyParsed<t_142> }
-| { TAG: "HarpPlay"; _0: LazyPacket_lazyParsed<t_143> }
-| { TAG: "SwitchHit"; _0: LazyPacket_lazyParsed<t_144> }
-| { TAG: "NpcHomeUpdate"; _0: LazyPacket_lazyParsed<t_145> }
-| { TAG: "BossOrInvasionSpawn"; _0: LazyPacket_lazyParsed<t_146> }
-| { TAG: "PlayerDodge"; _0: LazyPacket_lazyParsed<t_147> }
-| { TAG: "TilePaint"; _0: LazyPacket_lazyParsed<t_148> }
-| { TAG: "WallPaint"; _0: LazyPacket_lazyParsed<t_149> }
-| { TAG: "Teleport"; _0: LazyPacket_lazyParsed<t_150> }
-| { TAG: "PlayerHealOther"; _0: LazyPacket_lazyParsed<t_151> }
-| { TAG: "DimensionsUpdate"; _0: LazyPacket_lazyParsed<t_152> }
-| { TAG: "ClientUuid"; _0: LazyPacket_lazyParsed<t_153> }
-| { TAG: "ChestName"; _0: LazyPacket_lazyParsed<t_154> }
-| { TAG: "NpcCatch"; _0: LazyPacket_lazyParsed<t_155> }
-| { TAG: "NpcRelease"; _0: LazyPacket_lazyParsed<t_156> }
-| { TAG: "TravellingMerchantInventory"; _0: LazyPacket_lazyParsed<t_157> }
-| { TAG: "TeleportationPotion"; _0: LazyPacket_lazyParsed<t_158> }
-| { TAG: "AnglerQuest"; _0: LazyPacket_lazyParsed<t_159> }
-| { TAG: "AnglerQuestComplete"; _0: LazyPacket_lazyParsed<t_160> }
-| { TAG: "AnglerQuestsCompletedAmount"; _0: LazyPacket_lazyParsed<t_161> }
-| { TAG: "TemporaryAnimationCreate"; _0: LazyPacket_lazyParsed<t_162> }
-| { TAG: "InvasionProgressReport"; _0: LazyPacket_lazyParsed<t_163> }
-| { TAG: "ObjectPlace"; _0: LazyPacket_lazyParsed<t_164> }
-| { TAG: "PlayerChestIndexSync"; _0: LazyPacket_lazyParsed<t_165> }
-| { TAG: "CombatNumberCreate"; _0: LazyPacket_lazyParsed<t_166> }
+| { TAG: "InitialTileSectionsRequest"; _0: LazyPacket_lazyParsed<t_98> }
+| { TAG: "Status"; _0: LazyPacket_lazyParsed<t_99> }
+| { TAG: "TileSectionSend"; _0: LazyPacket_lazyParsed<t_100> }
+| { TAG: "TileSectionFrame"; _0: LazyPacket_lazyParsed<t_101> }
+| { TAG: "PlayerSpawn"; _0: LazyPacket_lazyParsed<t_102> }
+| { TAG: "PlayerUpdate"; _0: LazyPacket_lazyParsed<t_103> }
+| { TAG: "PlayerActive"; _0: LazyPacket_lazyParsed<t_104> }
+| { TAG: "PlayerHealth"; _0: LazyPacket_lazyParsed<t_105> }
+| { TAG: "TileModify"; _0: LazyPacket_lazyParsed<t_106> }
+| { TAG: "TimeSet"; _0: LazyPacket_lazyParsed<t_107> }
+| { TAG: "DoorUse"; _0: LazyPacket_lazyParsed<t_108> }
+| { TAG: "TileSquareSend"; _0: LazyPacket_lazyParsed<t_109> }
+| { TAG: "ItemDropUpdate"; _0: LazyPacket_lazyParsed<t_110> }
+| { TAG: "ItemOwner"; _0: LazyPacket_lazyParsed<t_111> }
+| { TAG: "NpcUpdate"; _0: LazyPacket_lazyParsed<t_112> }
+| { TAG: "NpcItemStrike"; _0: LazyPacket_lazyParsed<t_113> }
+| { TAG: "ProjectileSync"; _0: LazyPacket_lazyParsed<t_114> }
+| { TAG: "NpcStrike"; _0: LazyPacket_lazyParsed<t_115> }
+| { TAG: "ProjectileDestroy"; _0: LazyPacket_lazyParsed<t_116> }
+| { TAG: "PvpToggle"; _0: LazyPacket_lazyParsed<t_117> }
+| { TAG: "ChestOpen"; _0: LazyPacket_lazyParsed<t_118> }
+| { TAG: "ChestItem"; _0: LazyPacket_lazyParsed<t_119> }
+| { TAG: "ActiveContainerSync"; _0: LazyPacket_lazyParsed<t_120> }
+| { TAG: "ChestPlace"; _0: LazyPacket_lazyParsed<t_121> }
+| { TAG: "HealEffect"; _0: LazyPacket_lazyParsed<t_122> }
+| { TAG: "Zones"; _0: LazyPacket_lazyParsed<t_123> }
+| { TAG: "PasswordRequired"; _0: LazyPacket_lazyParsed<t_124> }
+| { TAG: "PasswordSend"; _0: LazyPacket_lazyParsed<t_125> }
+| { TAG: "ItemOwnerRemove"; _0: LazyPacket_lazyParsed<t_126> }
+| { TAG: "NpcTalk"; _0: LazyPacket_lazyParsed<t_127> }
+| { TAG: "PlayerAnimation"; _0: LazyPacket_lazyParsed<t_128> }
+| { TAG: "PlayerMana"; _0: LazyPacket_lazyParsed<t_129> }
+| { TAG: "ManaEffect"; _0: LazyPacket_lazyParsed<t_130> }
+| { TAG: "PlayerTeam"; _0: LazyPacket_lazyParsed<t_131> }
+| { TAG: "SignRead"; _0: LazyPacket_lazyParsed<t_132> }
+| { TAG: "SignNew"; _0: LazyPacket_lazyParsed<t_133> }
+| { TAG: "LiquidSet"; _0: LazyPacket_lazyParsed<t_134> }
+| { TAG: "PlayerSpawnSelf"; _0: LazyPacket_lazyParsed<t_135> }
+| { TAG: "PlayerBuffsSet"; _0: LazyPacket_lazyParsed<t_136> }
+| { TAG: "NpcSpecialEffect"; _0: LazyPacket_lazyParsed<t_137> }
+| { TAG: "ChestOrTempleUnlock"; _0: LazyPacket_lazyParsed<t_138> }
+| { TAG: "NpcBuffAdd"; _0: LazyPacket_lazyParsed<t_139> }
+| { TAG: "NpcBuffUpdate"; _0: LazyPacket_lazyParsed<t_140> }
+| { TAG: "PlayerBuffAdd"; _0: LazyPacket_lazyParsed<t_141> }
+| { TAG: "NpcNameUpdate"; _0: LazyPacket_lazyParsed<t_142> }
+| { TAG: "GoodEvilUpdate"; _0: LazyPacket_lazyParsed<t_143> }
+| { TAG: "HarpPlay"; _0: LazyPacket_lazyParsed<t_144> }
+| { TAG: "SwitchHit"; _0: LazyPacket_lazyParsed<t_145> }
+| { TAG: "NpcHomeUpdate"; _0: LazyPacket_lazyParsed<t_146> }
+| { TAG: "BossOrInvasionSpawn"; _0: LazyPacket_lazyParsed<t_147> }
+| { TAG: "PlayerDodge"; _0: LazyPacket_lazyParsed<t_148> }
+| { TAG: "TilePaint"; _0: LazyPacket_lazyParsed<t_149> }
+| { TAG: "WallPaint"; _0: LazyPacket_lazyParsed<t_150> }
+| { TAG: "Teleport"; _0: LazyPacket_lazyParsed<t_151> }
+| { TAG: "PlayerHealOther"; _0: LazyPacket_lazyParsed<t_152> }
+| { TAG: "DimensionsUpdate"; _0: LazyPacket_lazyParsed<t_153> }
+| { TAG: "ClientUuid"; _0: LazyPacket_lazyParsed<t_154> }
+| { TAG: "ChestName"; _0: LazyPacket_lazyParsed<t_155> }
+| { TAG: "NpcCatch"; _0: LazyPacket_lazyParsed<t_156> }
+| { TAG: "NpcRelease"; _0: LazyPacket_lazyParsed<t_157> }
+| { TAG: "TravellingMerchantInventory"; _0: LazyPacket_lazyParsed<t_158> }
+| { TAG: "TeleportationPotion"; _0: LazyPacket_lazyParsed<t_159> }
+| { TAG: "AnglerQuest"; _0: LazyPacket_lazyParsed<t_160> }
+| { TAG: "AnglerQuestComplete"; _0: LazyPacket_lazyParsed<t_161> }
+| { TAG: "AnglerQuestsCompletedAmount"; _0: LazyPacket_lazyParsed<t_162> }
+| { TAG: "TemporaryAnimationCreate"; _0: LazyPacket_lazyParsed<t_163> }
+| { TAG: "InvasionProgressReport"; _0: LazyPacket_lazyParsed<t_164> }
+| { TAG: "ObjectPlace"; _0: LazyPacket_lazyParsed<t_165> }
+| { TAG: "PlayerChestIndexSync"; _0: LazyPacket_lazyParsed<t_166> }
+| { TAG: "CombatNumberCreate"; _0: LazyPacket_lazyParsed<t_167> }
 | { TAG: "NetModuleLoad"; _0: LazyPacket_lazyParsed<NetModuleLoad> }
-| { TAG: "NpcKillCount"; _0: LazyPacket_lazyParsed<t_167> }
-| { TAG: "PlayerStealth"; _0: LazyPacket_lazyParsed<t_168> }
-| { TAG: "ItemForceIntoNearestChest"; _0: LazyPacket_lazyParsed<t_169> }
-| { TAG: "TileEntityUpdate"; _0: LazyPacket_lazyParsed<t_170> }
-| { TAG: "TileEntityPlace"; _0: LazyPacket_lazyParsed<t_171> }
-| { TAG: "ItemDropModify"; _0: LazyPacket_lazyParsed<t_172> }
-| { TAG: "ItemFramePlace"; _0: LazyPacket_lazyParsed<t_173> }
-| { TAG: "ItemDropInstancedUpdate"; _0: LazyPacket_lazyParsed<t_174> }
-| { TAG: "EmoteBubble"; _0: LazyPacket_lazyParsed<t_175> }
-| { TAG: "ExtraValueSync"; _0: LazyPacket_lazyParsed<t_176> }
-| { TAG: "SocialHandshake"; _0: LazyPacket_lazyParsed<t_177> }
-| { TAG: "Unused"; _0: LazyPacket_lazyParsed<t_178> }
-| { TAG: "PortalKill"; _0: LazyPacket_lazyParsed<t_179> }
-| { TAG: "PlayerTeleportPortal"; _0: LazyPacket_lazyParsed<t_180> }
-| { TAG: "NpcKilledNotification"; _0: LazyPacket_lazyParsed<t_181> }
-| { TAG: "EventNotification"; _0: LazyPacket_lazyParsed<t_182> }
-| { TAG: "MinionTargetUpdate"; _0: LazyPacket_lazyParsed<t_183> }
-| { TAG: "NpcTeleportPortal"; _0: LazyPacket_lazyParsed<t_184> }
-| { TAG: "ShieldStrengthsUpdate"; _0: LazyPacket_lazyParsed<t_185> }
-| { TAG: "NebulaLevelUp"; _0: LazyPacket_lazyParsed<t_186> }
-| { TAG: "MoonLordCountdown"; _0: LazyPacket_lazyParsed<t_187> }
-| { TAG: "NpcShopItem"; _0: LazyPacket_lazyParsed<t_188> }
-| { TAG: "GemLockToggle"; _0: LazyPacket_lazyParsed<t_189> }
-| { TAG: "SmokePoof"; _0: LazyPacket_lazyParsed<t_190> }
-| { TAG: "ChatMessageSmart"; _0: LazyPacket_lazyParsed<t_191> }
-| { TAG: "WiredCannonShot"; _0: LazyPacket_lazyParsed<t_192> }
-| { TAG: "MassWireOperation"; _0: LazyPacket_lazyParsed<t_193> }
-| { TAG: "MassWireOperationPay"; _0: LazyPacket_lazyParsed<t_194> }
-| { TAG: "PartyToggle"; _0: LazyPacket_lazyParsed<t_195> }
-| { TAG: "TreeGrowFx"; _0: LazyPacket_lazyParsed<t_196> }
-| { TAG: "CrystalInvasionStart"; _0: LazyPacket_lazyParsed<t_197> }
-| { TAG: "CrystalInvasionWipeAll"; _0: LazyPacket_lazyParsed<t_198> }
-| { TAG: "MinionAttackTargetUpdate"; _0: LazyPacket_lazyParsed<t_199> }
-| { TAG: "CrystalInvasionSendWaitTime"; _0: LazyPacket_lazyParsed<t_200> }
-| { TAG: "PlayerDamage"; _0: LazyPacket_lazyParsed<t_201> }
-| { TAG: "PlayerDeath"; _0: LazyPacket_lazyParsed<t_202> }
-| { TAG: "CombatTextCreate"; _0: LazyPacket_lazyParsed<t_203> }
-| { TAG: "Emoji"; _0: LazyPacket_lazyParsed<t_204> }
-| { TAG: "TileEntityDisplayDollItemSync"; _0: LazyPacket_lazyParsed<t_205> }
-| { TAG: "TileEntityInteractionRequest"; _0: LazyPacket_lazyParsed<t_206> }
-| { TAG: "WeaponsRackTryPlacing"; _0: LazyPacket_lazyParsed<t_207> }
-| { TAG: "TileEntityHatRackItemSync"; _0: LazyPacket_lazyParsed<t_208> }
-| { TAG: "TilePickingSync"; _0: LazyPacket_lazyParsed<t_209> }
-| { TAG: "RevengeMarkerSync"; _0: LazyPacket_lazyParsed<t_210> }
-| { TAG: "RevengeMarkerRemove"; _0: LazyPacket_lazyParsed<t_211> }
-| { TAG: "GolfBallLandInCup"; _0: LazyPacket_lazyParsed<t_212> }
-| { TAG: "ClientFinishConnectingToServer"; _0: LazyPacket_lazyParsed<t_213> }
-| { TAG: "NpcFishOut"; _0: LazyPacket_lazyParsed<t_214> }
-| { TAG: "NpcTamper"; _0: LazyPacket_lazyParsed<t_215> }
-| { TAG: "LegacySoundPlay"; _0: LazyPacket_lazyParsed<t_216> }
-| { TAG: "FoodPlatterTryPlacing"; _0: LazyPacket_lazyParsed<t_217> }
-| { TAG: "PlayerLuckFactorsUpdate"; _0: LazyPacket_lazyParsed<t_218> }
-| { TAG: "PlayerDead"; _0: LazyPacket_lazyParsed<t_219> }
-| { TAG: "CavernMonsterTypeSync"; _0: LazyPacket_lazyParsed<t_220> }
-| { TAG: "NpcBuffRemovalRequest"; _0: LazyPacket_lazyParsed<t_221> }
-| { TAG: "ClientSyncedInventory"; _0: LazyPacket_lazyParsed<t_222> }
-| { TAG: "CountsAsHostForGameplaySet"; _0: LazyPacket_lazyParsed<t_223> }
-| { TAG: "CreditsOrSlimeTransform"; _0: LazyPacket_lazyParsed<t_224> }
-| { TAG: "LucyAxeMessage"; _0: LazyPacket_lazyParsed<t_225> }
-| { TAG: "PiggyBankVoidLensUpdate"; _0: LazyPacket_lazyParsed<t_226> }
-| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: LazyPacket_lazyParsed<t_227> }
-| { TAG: "HaveDryadDoStardewAnimation"; _0: LazyPacket_lazyParsed<t_228> }
-| { TAG: "ItemDropShimmeredUpdate"; _0: LazyPacket_lazyParsed<t_229> }
-| { TAG: "ShimmerEffectOrCoinLuck"; _0: LazyPacket_lazyParsed<t_230> }
-| { TAG: "LoadoutSwitch"; _0: LazyPacket_lazyParsed<t_231> }
-| { TAG: "ItemDropProtectedUpdate"; _0: LazyPacket_lazyParsed<t_232> };
+| { TAG: "NpcKillCount"; _0: LazyPacket_lazyParsed<t_168> }
+| { TAG: "PlayerStealth"; _0: LazyPacket_lazyParsed<t_169> }
+| { TAG: "ItemForceIntoNearestChest"; _0: LazyPacket_lazyParsed<t_170> }
+| { TAG: "TileEntityUpdate"; _0: LazyPacket_lazyParsed<t_171> }
+| { TAG: "TileEntityPlace"; _0: LazyPacket_lazyParsed<t_172> }
+| { TAG: "ItemDropModify"; _0: LazyPacket_lazyParsed<t_173> }
+| { TAG: "ItemFramePlace"; _0: LazyPacket_lazyParsed<t_174> }
+| { TAG: "ItemDropInstancedUpdate"; _0: LazyPacket_lazyParsed<t_175> }
+| { TAG: "EmoteBubble"; _0: LazyPacket_lazyParsed<t_176> }
+| { TAG: "ExtraValueSync"; _0: LazyPacket_lazyParsed<t_177> }
+| { TAG: "SocialHandshake"; _0: LazyPacket_lazyParsed<t_178> }
+| { TAG: "Unused"; _0: LazyPacket_lazyParsed<t_179> }
+| { TAG: "PortalKill"; _0: LazyPacket_lazyParsed<t_180> }
+| { TAG: "PlayerTeleportPortal"; _0: LazyPacket_lazyParsed<t_181> }
+| { TAG: "NpcKilledNotification"; _0: LazyPacket_lazyParsed<t_182> }
+| { TAG: "EventNotification"; _0: LazyPacket_lazyParsed<t_183> }
+| { TAG: "MinionTargetUpdate"; _0: LazyPacket_lazyParsed<t_184> }
+| { TAG: "NpcTeleportPortal"; _0: LazyPacket_lazyParsed<t_185> }
+| { TAG: "ShieldStrengthsUpdate"; _0: LazyPacket_lazyParsed<t_186> }
+| { TAG: "NebulaLevelUp"; _0: LazyPacket_lazyParsed<t_187> }
+| { TAG: "MoonLordCountdown"; _0: LazyPacket_lazyParsed<t_188> }
+| { TAG: "NpcShopItem"; _0: LazyPacket_lazyParsed<t_189> }
+| { TAG: "GemLockToggle"; _0: LazyPacket_lazyParsed<t_190> }
+| { TAG: "SmokePoof"; _0: LazyPacket_lazyParsed<t_191> }
+| { TAG: "ChatMessageSmart"; _0: LazyPacket_lazyParsed<t_192> }
+| { TAG: "WiredCannonShot"; _0: LazyPacket_lazyParsed<t_193> }
+| { TAG: "MassWireOperation"; _0: LazyPacket_lazyParsed<t_194> }
+| { TAG: "MassWireOperationPay"; _0: LazyPacket_lazyParsed<t_195> }
+| { TAG: "PartyToggle"; _0: LazyPacket_lazyParsed<t_196> }
+| { TAG: "TreeGrowFx"; _0: LazyPacket_lazyParsed<t_197> }
+| { TAG: "CrystalInvasionStart"; _0: LazyPacket_lazyParsed<t_198> }
+| { TAG: "CrystalInvasionWipeAll"; _0: LazyPacket_lazyParsed<t_199> }
+| { TAG: "MinionAttackTargetUpdate"; _0: LazyPacket_lazyParsed<t_200> }
+| { TAG: "CrystalInvasionSendWaitTime"; _0: LazyPacket_lazyParsed<t_201> }
+| { TAG: "PlayerDamage"; _0: LazyPacket_lazyParsed<t_202> }
+| { TAG: "PlayerDeath"; _0: LazyPacket_lazyParsed<t_203> }
+| { TAG: "CombatTextCreate"; _0: LazyPacket_lazyParsed<t_204> }
+| { TAG: "Emoji"; _0: LazyPacket_lazyParsed<t_205> }
+| { TAG: "TileEntityDisplayDollItemSync"; _0: LazyPacket_lazyParsed<t_206> }
+| { TAG: "TileEntityInteractionRequest"; _0: LazyPacket_lazyParsed<t_207> }
+| { TAG: "WeaponsRackTryPlacing"; _0: LazyPacket_lazyParsed<t_208> }
+| { TAG: "TileEntityHatRackItemSync"; _0: LazyPacket_lazyParsed<t_209> }
+| { TAG: "TilePickingSync"; _0: LazyPacket_lazyParsed<t_210> }
+| { TAG: "RevengeMarkerSync"; _0: LazyPacket_lazyParsed<t_211> }
+| { TAG: "RevengeMarkerRemove"; _0: LazyPacket_lazyParsed<t_212> }
+| { TAG: "GolfBallLandInCup"; _0: LazyPacket_lazyParsed<t_213> }
+| { TAG: "ClientFinishConnectingToServer"; _0: LazyPacket_lazyParsed<t_214> }
+| { TAG: "NpcFishOut"; _0: LazyPacket_lazyParsed<t_215> }
+| { TAG: "NpcTamper"; _0: LazyPacket_lazyParsed<t_216> }
+| { TAG: "LegacySoundPlay"; _0: LazyPacket_lazyParsed<t_217> }
+| { TAG: "FoodPlatterTryPlacing"; _0: LazyPacket_lazyParsed<t_218> }
+| { TAG: "PlayerLuckFactorsUpdate"; _0: LazyPacket_lazyParsed<t_219> }
+| { TAG: "PlayerDead"; _0: LazyPacket_lazyParsed<t_220> }
+| { TAG: "CavernMonsterTypeSync"; _0: LazyPacket_lazyParsed<t_221> }
+| { TAG: "NpcBuffRemovalRequest"; _0: LazyPacket_lazyParsed<t_222> }
+| { TAG: "ClientSyncedInventory"; _0: LazyPacket_lazyParsed<t_223> }
+| { TAG: "CountsAsHostForGameplaySet"; _0: LazyPacket_lazyParsed<t_224> }
+| { TAG: "CreditsOrSlimeTransform"; _0: LazyPacket_lazyParsed<t_225> }
+| { TAG: "LucyAxeMessage"; _0: LazyPacket_lazyParsed<t_226> }
+| { TAG: "PiggyBankVoidLensUpdate"; _0: LazyPacket_lazyParsed<t_227> }
+| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: LazyPacket_lazyParsed<t_228> }
+| { TAG: "HaveDryadDoStardewAnimation"; _0: LazyPacket_lazyParsed<t_229> }
+| { TAG: "ItemDropShimmeredUpdate"; _0: LazyPacket_lazyParsed<t_230> }
+| { TAG: "ShimmerEffectOrCoinLuck"; _0: LazyPacket_lazyParsed<t_231> }
+| { TAG: "LoadoutSwitch"; _0: LazyPacket_lazyParsed<t_232> }
+| { TAG: "ItemDropProtectedUpdate"; _0: LazyPacket_lazyParsed<t_233> };
 
 declare type life =
 "Max"
@@ -1141,13 +1153,13 @@ declare type liquidChange = {
 
 export declare namespace LoadoutSwitchPacket {
     export {
-        t_20 as t,
-        parseOk_20 as parseOk,
-        parseError_20 as parseError,
-        parse_20 as parse,
-        toBufferOk_20 as toBufferOk,
-        toBufferError_20 as toBufferError,
-        toBuffer_20 as toBuffer
+        t_21 as t,
+        parseOk_21 as parseOk,
+        parseError_21 as parseError,
+        parse_21 as parse,
+        toBufferOk_21 as toBufferOk,
+        toBufferError_21 as toBufferError,
+        toBuffer_21 as toBuffer
     }
 }
 
@@ -1198,14 +1210,14 @@ export declare namespace NetModuleLoadPacket {
         creativePowerPermission,
         NetModuleLoad,
         NetModuleType_t,
-        t_21 as t,
+        t_22 as t,
         NetModuleType,
-        parseOk_21 as parseOk,
-        parseError_21 as parseError,
-        parse_21 as parse,
-        toBufferOk_21 as toBufferOk,
-        toBufferError_21 as toBufferError,
-        toBuffer_21 as toBuffer
+        parseOk_22 as parseOk,
+        parseError_22 as parseError,
+        parse_22 as parse,
+        toBufferOk_22 as toBufferOk,
+        toBufferError_22 as toBufferError,
+        toBuffer_22 as toBuffer
     }
 }
 
@@ -1229,18 +1241,6 @@ declare type NetModuleType_t =
 
 export declare namespace NpcBuffRemovalRequestPacket {
     export {
-        t_22 as t,
-        parseOk_22 as parseOk,
-        parseError_22 as parseError,
-        parse_22 as parse,
-        toBufferOk_22 as toBufferOk,
-        toBufferError_22 as toBufferError,
-        toBuffer_22 as toBuffer
-    }
-}
-
-export declare namespace NpcBuffUpdatePacket {
-    export {
         t_23 as t,
         parseOk_23 as parseOk,
         parseError_23 as parseError,
@@ -1251,7 +1251,7 @@ export declare namespace NpcBuffUpdatePacket {
     }
 }
 
-export declare namespace NpcCatchPacket {
+export declare namespace NpcBuffUpdatePacket {
     export {
         t_24 as t,
         parseOk_24 as parseOk,
@@ -1263,7 +1263,7 @@ export declare namespace NpcCatchPacket {
     }
 }
 
-export declare namespace NpcFishOutPacket {
+export declare namespace NpcCatchPacket {
     export {
         t_25 as t,
         parseOk_25 as parseOk,
@@ -1275,7 +1275,7 @@ export declare namespace NpcFishOutPacket {
     }
 }
 
-export declare namespace NpcHomeUpdatePacket {
+export declare namespace NpcFishOutPacket {
     export {
         t_26 as t,
         parseOk_26 as parseOk,
@@ -1287,7 +1287,7 @@ export declare namespace NpcHomeUpdatePacket {
     }
 }
 
-export declare namespace NpcKillCountPacket {
+export declare namespace NpcHomeUpdatePacket {
     export {
         t_27 as t,
         parseOk_27 as parseOk,
@@ -1299,7 +1299,7 @@ export declare namespace NpcKillCountPacket {
     }
 }
 
-export declare namespace NpcNameUpdatePacket {
+export declare namespace NpcKillCountPacket {
     export {
         t_28 as t,
         parseOk_28 as parseOk,
@@ -1311,7 +1311,7 @@ export declare namespace NpcNameUpdatePacket {
     }
 }
 
-export declare namespace NpcShopItemPacket {
+export declare namespace NpcNameUpdatePacket {
     export {
         t_29 as t,
         parseOk_29 as parseOk,
@@ -1323,7 +1323,7 @@ export declare namespace NpcShopItemPacket {
     }
 }
 
-export declare namespace NpcTalkPacket {
+export declare namespace NpcShopItemPacket {
     export {
         t_30 as t,
         parseOk_30 as parseOk,
@@ -1335,7 +1335,7 @@ export declare namespace NpcTalkPacket {
     }
 }
 
-export declare namespace NpcTeleportPortalPacket {
+export declare namespace NpcTalkPacket {
     export {
         t_31 as t,
         parseOk_31 as parseOk,
@@ -1347,30 +1347,42 @@ export declare namespace NpcTeleportPortalPacket {
     }
 }
 
-export declare namespace NpcUpdatePacket {
+export declare namespace NpcTeleportPortalPacket {
     export {
-        ai,
-        life,
-        t_88 as t,
-        parseOk_85 as parseOk,
-        parseError_85 as parseError,
-        parse_85 as parse,
-        toBufferOk_84 as toBufferOk,
-        toBufferError_84 as toBufferError,
-        toBuffer_84 as toBuffer
-    }
-}
-
-export declare namespace ObjectPlacePacket {
-    export {
-        direction,
-        t_33 as t,
+        t_32 as t,
         parseOk_32 as parseOk,
         parseError_32 as parseError,
         parse_32 as parse,
         toBufferOk_32 as toBufferOk,
         toBufferError_32 as toBufferError,
         toBuffer_32 as toBuffer
+    }
+}
+
+export declare namespace NpcUpdatePacket {
+    export {
+        ai,
+        life,
+        t_89 as t,
+        parseOk_86 as parseOk,
+        parseError_86 as parseError,
+        parse_86 as parse,
+        toBufferOk_85 as toBufferOk,
+        toBufferError_85 as toBufferError,
+        toBuffer_85 as toBuffer
+    }
+}
+
+export declare namespace ObjectPlacePacket {
+    export {
+        direction,
+        t_34 as t,
+        parseOk_33 as parseOk,
+        parseError_33 as parseError,
+        parse_33 as parse,
+        toBufferOk_33 as toBufferOk,
+        toBufferError_33 as toBufferError,
+        toBuffer_33 as toBuffer
     }
 }
 
@@ -1551,11 +1563,11 @@ declare const parse_20: (_1: Buffer) => parse_20;
 
 declare type parse_21 = parseOk_21 | parseError_21;
 
-declare const parse_21: (_1: Buffer, _2: boolean) => parse_21;
+declare const parse_21: (_1: Buffer) => parse_21;
 
 declare type parse_22 = parseOk_22 | parseError_22;
 
-declare const parse_22: (_1: Buffer) => parse_22;
+declare const parse_22: (_1: Buffer, _2: boolean) => parse_22;
 
 declare type parse_23 = parseOk_23 | parseError_23;
 
@@ -1837,9 +1849,13 @@ declare type parse_86 = parseOk_86 | parseError_86;
 
 declare const parse_86: (_1: Buffer) => parse_86;
 
-declare const parse_87: parse_88<t_90>;
+declare type parse_87 = parseOk_87 | parseError_87;
 
-declare type parse_88<a> = (buffer: Buffer, fromServer: boolean) => parseResult<a>;
+declare const parse_87: (_1: Buffer) => parse_87;
+
+declare const parse_88: parse_89<t_91>;
+
+declare type parse_89<a> = (buffer: Buffer, fromServer: boolean) => parseResult<a>;
 
 declare type parse_9 = parseOk_9 | parseError_9;
 
@@ -2015,7 +2031,9 @@ declare type parseError_85 = { TAG: "Error"; _0: readError };
 
 declare type parseError_86 = { TAG: "Error"; _0: readError };
 
-declare type parseError_87 =
+declare type parseError_87 = { TAG: "Error"; _0: readError };
+
+declare type parseError_88 =
 | { TAG: "ReaderError"; _0: readError }
 | { TAG: "ConnectRequestFromServer" }
 | { TAG: "DisconnectFromClient" }
@@ -2120,9 +2138,9 @@ declare type parseOk_2 = { TAG: "Ok"; _0: t_2 };
 
 declare type parseOk_20 = { TAG: "Ok"; _0: t_20 };
 
-declare type parseOk_21 = { TAG: "Ok"; _0: NetModuleLoad };
+declare type parseOk_21 = { TAG: "Ok"; _0: t_21 };
 
-declare type parseOk_22 = { TAG: "Ok"; _0: t_22 };
+declare type parseOk_22 = { TAG: "Ok"; _0: NetModuleLoad };
 
 declare type parseOk_23 = { TAG: "Ok"; _0: t_23 };
 
@@ -2144,7 +2162,7 @@ declare type parseOk_30 = { TAG: "Ok"; _0: t_30 };
 
 declare type parseOk_31 = { TAG: "Ok"; _0: t_31 };
 
-declare type parseOk_32 = { TAG: "Ok"; _0: t_33 };
+declare type parseOk_32 = { TAG: "Ok"; _0: t_32 };
 
 declare type parseOk_33 = { TAG: "Ok"; _0: t_34 };
 
@@ -2162,7 +2180,7 @@ declare type parseOk_39 = { TAG: "Ok"; _0: t_40 };
 
 declare type parseOk_4 = { TAG: "Ok"; _0: t_4 };
 
-declare type parseOk_40 = { TAG: "Ok"; _0: t_42 };
+declare type parseOk_40 = { TAG: "Ok"; _0: t_41 };
 
 declare type parseOk_41 = { TAG: "Ok"; _0: t_43 };
 
@@ -2236,7 +2254,7 @@ declare type parseOk_72 = { TAG: "Ok"; _0: t_74 };
 
 declare type parseOk_73 = { TAG: "Ok"; _0: t_75 };
 
-declare type parseOk_74 = { TAG: "Ok"; _0: t_78 };
+declare type parseOk_74 = { TAG: "Ok"; _0: t_76 };
 
 declare type parseOk_75 = { TAG: "Ok"; _0: t_79 };
 
@@ -2256,26 +2274,28 @@ declare type parseOk_81 = { TAG: "Ok"; _0: t_85 };
 
 declare type parseOk_82 = { TAG: "Ok"; _0: t_86 };
 
-declare type parseOk_83 = { TAG: "Ok"; _0: WorldInfo };
+declare type parseOk_83 = { TAG: "Ok"; _0: t_87 };
 
-declare type parseOk_84 = { TAG: "Ok"; _0: t_87 };
+declare type parseOk_84 = { TAG: "Ok"; _0: WorldInfo };
 
 declare type parseOk_85 = { TAG: "Ok"; _0: t_88 };
 
 declare type parseOk_86 = { TAG: "Ok"; _0: t_89 };
 
+declare type parseOk_87 = { TAG: "Ok"; _0: t_90 };
+
 declare type parseOk_9 = { TAG: "Ok"; _0: t_9 };
 
 export declare namespace Parser {
     export {
-        parse_87 as parse,
+        parse_88 as parse,
         parseLazy
     }
 }
 
 declare type parseResult<a> =
 | { TAG: "Ok"; _0: (a) }
-| { TAG: "Error"; _0: parseError_87 };
+| { TAG: "Error"; _0: parseError_88 };
 
 declare type particle = {
     readonly particleType: number;
@@ -2289,13 +2309,13 @@ declare type particle = {
 
 export declare namespace PartyTogglePacket {
     export {
-        t_34 as t,
-        parseOk_33 as parseOk,
-        parseError_33 as parseError,
-        parse_33 as parse,
-        toBufferOk_33 as toBufferOk,
-        toBufferError_33 as toBufferError,
-        toBuffer_33 as toBuffer
+        t_35 as t,
+        parseOk_34 as parseOk,
+        parseError_34 as parseError,
+        parse_34 as parse,
+        toBufferOk_34 as toBufferOk,
+        toBufferError_34 as toBufferError,
+        toBuffer_34 as toBuffer
     }
 }
 
@@ -2314,29 +2334,17 @@ declare type PerPlayerTogglePower =
 
 export declare namespace PlayerActivePacket {
     export {
-        t_87 as t,
-        parseOk_84 as parseOk,
-        parseError_84 as parseError,
-        parse_84 as parse,
-        toBufferOk_83 as toBufferOk,
-        toBufferError_83 as toBufferError,
-        toBuffer_83 as toBuffer
+        t_88 as t,
+        parseOk_85 as parseOk,
+        parseError_85 as parseError,
+        parse_85 as parse,
+        toBufferOk_84 as toBufferOk,
+        toBufferError_84 as toBufferError,
+        toBuffer_84 as toBuffer
     }
 }
 
 export declare namespace PlayerAnimationPacket {
-    export {
-        t_35 as t,
-        parseOk_34 as parseOk,
-        parseError_34 as parseError,
-        parse_34 as parse,
-        toBufferOk_34 as toBufferOk,
-        toBufferError_34 as toBufferError,
-        toBuffer_34 as toBuffer
-    }
-}
-
-export declare namespace PlayerBuffAddPacket {
     export {
         t_36 as t,
         parseOk_35 as parseOk,
@@ -2348,7 +2356,7 @@ export declare namespace PlayerBuffAddPacket {
     }
 }
 
-export declare namespace PlayerBuffsSetPacket {
+export declare namespace PlayerBuffAddPacket {
     export {
         t_37 as t,
         parseOk_36 as parseOk,
@@ -2360,7 +2368,7 @@ export declare namespace PlayerBuffsSetPacket {
     }
 }
 
-export declare namespace PlayerChestIndexSyncPacket {
+export declare namespace PlayerBuffsSetPacket {
     export {
         t_38 as t,
         parseOk_37 as parseOk,
@@ -2372,19 +2380,7 @@ export declare namespace PlayerChestIndexSyncPacket {
     }
 }
 
-export declare namespace PlayerDamagePacket {
-    export {
-        t_86 as t,
-        parseOk_82 as parseOk,
-        parseError_82 as parseError,
-        parse_82 as parse,
-        toBufferOk_81 as toBufferOk,
-        toBufferError_81 as toBufferError,
-        toBuffer_81 as toBuffer
-    }
-}
-
-export declare namespace PlayerDeadPacket {
+export declare namespace PlayerChestIndexSyncPacket {
     export {
         t_39 as t,
         parseOk_38 as parseOk,
@@ -2396,7 +2392,19 @@ export declare namespace PlayerDeadPacket {
     }
 }
 
-export declare namespace PlayerDeathPacket {
+export declare namespace PlayerDamagePacket {
+    export {
+        t_87 as t,
+        parseOk_83 as parseOk,
+        parseError_83 as parseError,
+        parse_83 as parse,
+        toBufferOk_82 as toBufferOk,
+        toBufferError_82 as toBufferError,
+        toBuffer_82 as toBuffer
+    }
+}
+
+export declare namespace PlayerDeadPacket {
     export {
         t_40 as t,
         parseOk_39 as parseOk,
@@ -2408,17 +2416,9 @@ export declare namespace PlayerDeathPacket {
     }
 }
 
-export declare namespace PlayerDeathReason {
+export declare namespace PlayerDeathPacket {
     export {
-        other_2 as other,
-        t_77 as t
-    }
-}
-
-export declare namespace PlayerDodgePacket {
-    export {
-        dodge,
-        t_42 as t,
+        t_41 as t,
         parseOk_40 as parseOk,
         parseError_40 as parseError,
         parse_40 as parse,
@@ -2428,7 +2428,55 @@ export declare namespace PlayerDodgePacket {
     }
 }
 
+export declare namespace PlayerDeathReason {
+    export {
+        other_2 as other,
+        t_78 as t
+    }
+}
+
+export declare namespace PlayerDodgePacket {
+    export {
+        dodge,
+        t_43 as t,
+        parseOk_41 as parseOk,
+        parseError_41 as parseError,
+        parse_41 as parse,
+        toBufferOk_41 as toBufferOk,
+        toBufferError_41 as toBufferError,
+        toBuffer_41 as toBuffer
+    }
+}
+
 export declare namespace PlayerHealthPacket {
+    export {
+        t_84 as t,
+        parseOk_80 as parseOk,
+        parseError_80 as parseError,
+        parse_80 as parse,
+        toBufferOk_79 as toBufferOk,
+        toBufferError_79 as toBufferError,
+        toBuffer_79 as toBuffer
+    }
+}
+
+declare type playerId = number;
+
+export declare namespace PlayerInfoPacket {
+    export {
+        difficulty,
+        mode,
+        t_81 as t,
+        parseOk_77 as parseOk,
+        parseError_77 as parseError,
+        parse_77 as parse,
+        toBufferOk_76 as toBufferOk,
+        toBufferError_76 as toBufferError,
+        toBuffer_76 as toBuffer
+    }
+}
+
+export declare namespace PlayerInventorySlotPacket {
     export {
         t_83 as t,
         parseOk_79 as parseOk,
@@ -2440,72 +2488,7 @@ export declare namespace PlayerHealthPacket {
     }
 }
 
-declare type playerId = number;
-
-export declare namespace PlayerInfoPacket {
-    export {
-        difficulty,
-        mode,
-        t_80 as t,
-        parseOk_76 as parseOk,
-        parseError_76 as parseError,
-        parse_76 as parse,
-        toBufferOk_75 as toBufferOk,
-        toBufferError_75 as toBufferError,
-        toBuffer_75 as toBuffer
-    }
-}
-
-export declare namespace PlayerInventorySlotPacket {
-    export {
-        t_82 as t,
-        parseOk_78 as parseOk,
-        parseError_78 as parseError,
-        parse_78 as parse,
-        toBufferOk_77 as toBufferOk,
-        toBufferError_77 as toBufferError,
-        toBuffer_77 as toBuffer
-    }
-}
-
 export declare namespace PlayerManaPacket {
-    export {
-        t_43 as t,
-        parseOk_41 as parseOk,
-        parseError_41 as parseError,
-        parse_41 as parse,
-        toBufferOk_41 as toBufferOk,
-        toBufferError_41 as toBufferError,
-        toBuffer_41 as toBuffer
-    }
-}
-
-export declare namespace PlayerSlotSetPacket {
-    export {
-        t_78 as t,
-        parseOk_74 as parseOk,
-        parseError_74 as parseError,
-        parse_74 as parse,
-        toBufferOk_73 as toBufferOk,
-        toBufferError_73 as toBufferError,
-        toBuffer_73 as toBuffer
-    }
-}
-
-export declare namespace PlayerSpawnPacket {
-    export {
-        context,
-        t_81 as t,
-        parseOk_77 as parseOk,
-        parseError_77 as parseError,
-        parse_77 as parse,
-        toBufferOk_76 as toBufferOk,
-        toBufferError_76 as toBufferError,
-        toBuffer_76 as toBuffer
-    }
-}
-
-export declare namespace PlayerTeamPacket {
     export {
         t_44 as t,
         parseOk_42 as parseOk,
@@ -2517,13 +2500,8 @@ export declare namespace PlayerTeamPacket {
     }
 }
 
-export declare namespace PlayerUpdatePacket {
+export declare namespace PlayerSlotSetPacket {
     export {
-        direction_2 as direction,
-        potionOfReturn,
-        control,
-        pulleyDirection,
-        gravityDirection,
         t_79 as t,
         parseOk_75 as parseOk,
         parseError_75 as parseError,
@@ -2534,9 +2512,51 @@ export declare namespace PlayerUpdatePacket {
     }
 }
 
+export declare namespace PlayerSpawnPacket {
+    export {
+        context,
+        t_82 as t,
+        parseOk_78 as parseOk,
+        parseError_78 as parseError,
+        parse_78 as parse,
+        toBufferOk_77 as toBufferOk,
+        toBufferError_77 as toBufferError,
+        toBuffer_77 as toBuffer
+    }
+}
+
+export declare namespace PlayerTeamPacket {
+    export {
+        t_45 as t,
+        parseOk_43 as parseOk,
+        parseError_43 as parseError,
+        parse_43 as parse,
+        toBufferOk_43 as toBufferOk,
+        toBufferError_43 as toBufferError,
+        toBuffer_43 as toBuffer
+    }
+}
+
+export declare namespace PlayerUpdatePacket {
+    export {
+        direction_2 as direction,
+        potionOfReturn,
+        control,
+        pulleyDirection,
+        gravityDirection,
+        t_80 as t,
+        parseOk_76 as parseOk,
+        parseError_76 as parseError,
+        parse_76 as parse,
+        toBufferOk_75 as toBufferOk,
+        toBufferError_75 as toBufferError,
+        toBuffer_75 as toBuffer
+    }
+}
+
 export declare namespace Point {
     export {
-        t_234 as t,
+        t_235 as t,
         Int_t,
         Float_t
     }
@@ -2548,9 +2568,9 @@ declare type port_2 = number;
 
 declare type position = { readonly x: number; readonly y: number };
 
-declare type potionOfReturn = { readonly originalUsePosition: t_32<number>; readonly homePosition: t_32<number> };
+declare type potionOfReturn = { readonly originalUsePosition: t_33<number>; readonly homePosition: t_33<number> };
 
-declare type potionOfReturn_2 = { readonly originalUsePosition: t_32<number>; readonly homePosition: t_32<number> };
+declare type potionOfReturn_2 = { readonly originalUsePosition: t_33<number>; readonly homePosition: t_33<number> };
 
 declare type powerLevel =
 "LockedForEveryone"
@@ -2559,13 +2579,13 @@ declare type powerLevel =
 
 export declare namespace ProjectileSyncPacket {
     export {
-        t_85 as t,
-        parseOk_81 as parseOk,
-        parseError_81 as parseError,
-        parse_81 as parse,
-        toBufferOk_80 as toBufferOk,
-        toBufferError_80 as toBufferError,
-        toBuffer_80 as toBuffer
+        t_86 as t,
+        parseOk_82 as parseOk,
+        parseError_82 as parseError,
+        parse_82 as parse,
+        toBufferOk_81 as toBufferOk,
+        toBufferError_81 as toBufferError,
+        toBuffer_81 as toBuffer
     }
 }
 
@@ -2575,13 +2595,13 @@ declare type pulleyDirection_2 = "One" | "Two";
 
 export declare namespace PvpTogglePacket {
     export {
-        t_45 as t,
-        parseOk_43 as parseOk,
-        parseError_43 as parseError,
-        parse_43 as parse,
-        toBufferOk_43 as toBufferOk,
-        toBufferError_43 as toBufferError,
-        toBuffer_43 as toBuffer
+        t_46 as t,
+        parseOk_44 as parseOk,
+        parseError_44 as parseError,
+        parse_44 as parse,
+        toBufferOk_44 as toBufferOk,
+        toBufferError_44 as toBufferError,
+        toBuffer_44 as toBuffer
     }
 }
 
@@ -2622,13 +2642,13 @@ declare function setType(untypedWriter: untypedT, packetTypeId: number): ErrorAw
 export declare namespace ShimmerEffectOrCoinLuckPacket {
     export {
         coinLuck,
-        t_46 as t,
-        parseOk_44 as parseOk,
-        parseError_44 as parseError,
-        parse_44 as parse,
-        toBufferOk_44 as toBufferOk,
-        toBufferError_44 as toBufferError,
-        toBuffer_44 as toBuffer
+        t_47 as t,
+        parseOk_45 as parseOk,
+        parseError_45 as parseError,
+        parse_45 as parse,
+        toBufferOk_45 as toBufferOk,
+        toBufferError_45 as toBufferError,
+        toBuffer_45 as toBuffer
     }
 }
 
@@ -2650,18 +2670,6 @@ declare type Sign_t_2 = {
 
 export declare namespace SignNewPacket {
     export {
-        t_47 as t,
-        parseOk_45 as parseOk,
-        parseError_45 as parseError,
-        parse_45 as parse,
-        toBufferOk_45 as toBufferOk,
-        toBufferError_45 as toBufferError,
-        toBuffer_45 as toBuffer
-    }
-}
-
-export declare namespace SignReadPacket {
-    export {
         t_48 as t,
         parseOk_46 as parseOk,
         parseError_46 as parseError,
@@ -2672,7 +2680,7 @@ export declare namespace SignReadPacket {
     }
 }
 
-export declare namespace SmokePoofPacket {
+export declare namespace SignReadPacket {
     export {
         t_49 as t,
         parseOk_47 as parseOk,
@@ -2684,7 +2692,7 @@ export declare namespace SmokePoofPacket {
     }
 }
 
-export declare namespace SocialHandshakePacket {
+export declare namespace SmokePoofPacket {
     export {
         t_50 as t,
         parseOk_48 as parseOk,
@@ -2693,6 +2701,18 @@ export declare namespace SocialHandshakePacket {
         toBufferOk_48 as toBufferOk,
         toBufferError_48 as toBufferError,
         toBuffer_48 as toBuffer
+    }
+}
+
+export declare namespace SocialHandshakePacket {
+    export {
+        t_51 as t,
+        parseOk_49 as parseOk,
+        parseError_49 as parseError,
+        parse_49 as parse,
+        toBufferOk_49 as toBufferOk,
+        toBufferError_49 as toBufferError,
+        toBuffer_49 as toBuffer
     }
 }
 
@@ -2741,18 +2761,6 @@ declare type spawnType_2 =
 export declare namespace StatusPacket {
     export {
         flags,
-        t_51 as t,
-        parseOk_49 as parseOk,
-        parseError_49 as parseError,
-        parse_49 as parse,
-        toBufferOk_49 as toBufferOk,
-        toBufferError_49 as toBufferError,
-        toBuffer_49 as toBuffer
-    }
-}
-
-export declare namespace SwitchHitPacket {
-    export {
         t_52 as t,
         parseOk_50 as parseOk,
         parseError_50 as parseError,
@@ -2763,18 +2771,41 @@ export declare namespace SwitchHitPacket {
     }
 }
 
+export declare namespace SwitchHitPacket {
+    export {
+        t_53 as t,
+        parseOk_51 as parseOk,
+        parseError_51 as parseError,
+        parse_51 as parse,
+        toBufferOk_51 as toBufferOk,
+        toBufferError_51 as toBufferError,
+        toBuffer_51 as toBuffer
+    }
+}
+
 declare type t = { readonly anglerQuest: number; readonly anglerQuestFinished: boolean };
 
 declare type t_10 = { readonly playerId: number; readonly countsAsHost: boolean };
 
 declare type t_100 = {
+    readonly height: number; 
+    readonly width: number; 
+    readonly tileX: number; 
+    readonly tileY: number; 
+    readonly tiles: Array<tile_3[]>; 
+    readonly chests: Chest_t_2[]; 
+    readonly signs: Sign_t_2[]; 
+    readonly entities: Entity_t_2[]
+};
+
+declare type t_101 = {
     readonly startX: number; 
     readonly startY: number; 
     readonly endX: number; 
     readonly endY: number
 };
 
-declare type t_101 = {
+declare type t_102 = {
     readonly playerId: number;
     readonly x: number;
     readonly y: number;
@@ -2784,7 +2815,7 @@ declare type t_101 = {
     readonly context: context_2
 };
 
-declare type t_102 = {
+declare type t_103 = {
     readonly playerId: number;
     readonly control: control_2;
     readonly direction: direction_3;
@@ -2794,8 +2825,8 @@ declare type t_102 = {
     readonly shouldGuard: boolean;
     readonly ghost: boolean;
     readonly selectedItem: number;
-    readonly position: t_32<number>;
-    readonly velocity: (undefined | t_32<number>);
+    readonly position: t_33<number>;
+    readonly velocity: (undefined | t_33<number>);
     readonly potionOfReturn: (undefined | potionOfReturn_2);
     readonly tryKeepingHoveringUp: boolean;
     readonly isVoidVaultEnabled: boolean;
@@ -2807,18 +2838,18 @@ declare type t_102 = {
     readonly isSleeping: boolean
 };
 
-declare type t_103 = {
+declare type t_104 = {
     readonly playerId: number;
     readonly active: boolean;
 };
 
-declare type t_104 = {
+declare type t_105 = {
     readonly playerId: number;
     readonly health: number;
     readonly maxHealth: number
 };
 
-declare type t_105 = {
+declare type t_106 = {
     readonly action: Action_t_3;
     readonly tileX: number;
     readonly tileY: number;
@@ -2826,21 +2857,21 @@ declare type t_105 = {
     readonly value2: number
 };
 
-declare type t_106 = {
+declare type t_107 = {
     readonly dayTime: boolean;
     readonly time: number;
     readonly sunModY: number;
     readonly moonModY: number
 };
 
-declare type t_107 = {
+declare type t_108 = {
     readonly action: action;
     readonly x: number;
     readonly y: number;
     readonly direction: number
 };
 
-declare type t_108 = {
+declare type t_109 = {
     readonly width: number;
     readonly height: number;
     readonly changeType: number;
@@ -2849,7 +2880,9 @@ declare type t_108 = {
     readonly tiles: Array<tile_4[]>
 };
 
-declare type t_109 = {
+declare type t_11 = { readonly eventType: EventType_t; readonly value: number };
+
+declare type t_110 = {
     readonly itemDropId: number;
     readonly x: number;
     readonly y: number;
@@ -2861,11 +2894,9 @@ declare type t_109 = {
     readonly itemId: number
 };
 
-declare type t_11 = { readonly eventType: EventType_t; readonly value: number };
+declare type t_111 = { readonly itemDropId: number; readonly owner: number };
 
-declare type t_110 = { readonly itemDropId: number; readonly owner: number };
-
-declare type t_111 = {
+declare type t_112 = {
     readonly npcSlotId: number;
     readonly npcTypeId: number;
     readonly x: number;
@@ -2884,9 +2915,9 @@ declare type t_111 = {
     readonly spawnedFromStatue: boolean
 };
 
-declare type t_112 = { readonly npcId: number; readonly playerId: number };
+declare type t_113 = { readonly npcId: number; readonly playerId: number };
 
-declare type t_113 = {
+declare type t_114 = {
     readonly projectileId: number;
     readonly x: number;
     readonly y: number;
@@ -2902,7 +2933,7 @@ declare type t_113 = {
     readonly projectileUuid: (undefined | number)
 };
 
-declare type t_114 = {
+declare type t_115 = {
     readonly npcId: number;
     readonly damage: number;
     readonly knockback: number;
@@ -2910,13 +2941,13 @@ declare type t_114 = {
     readonly critical: boolean
 };
 
-declare type t_115 = { readonly projectileId: number; readonly owner: number };
+declare type t_116 = { readonly projectileId: number; readonly owner: number };
 
-declare type t_116 = { readonly playerId: number; readonly pvpEnabled: boolean };
+declare type t_117 = { readonly playerId: number; readonly pvpEnabled: boolean };
 
-declare type t_117 = { readonly x: number; readonly y: number };
+declare type t_118 = { readonly x: number; readonly y: number };
 
-declare type t_118 = {
+declare type t_119 = {
     readonly chestId: number; 
     readonly slot: number; 
     readonly stack: number; 
@@ -2924,7 +2955,9 @@ declare type t_118 = {
     readonly itemNetId: number
 };
 
-declare type t_119 = {
+declare type t_12 = { readonly x: number; readonly y: number };
+
+declare type t_120 = {
     readonly chestId: number; 
     readonly x: number; 
     readonly y: number; 
@@ -2932,9 +2965,7 @@ declare type t_119 = {
     readonly name: string
 };
 
-declare type t_12 = { readonly x: number; readonly y: number };
-
-declare type t_120 = {
+declare type t_121 = {
     readonly action: Action_t_4;
     readonly x: number;
     readonly y: number;
@@ -2942,9 +2973,9 @@ declare type t_120 = {
     readonly id: number
 };
 
-declare type t_121 = { readonly playerId: number; readonly healAmount: number };
+declare type t_122 = { readonly playerId: number; readonly healAmount: number };
 
-declare type t_122 = {
+declare type t_123 = {
     readonly playerId: number;
     readonly zone1: number;
     readonly zone2: number;
@@ -2953,27 +2984,25 @@ declare type t_122 = {
     readonly zone5: number
 };
 
-declare type t_123 = void;
+declare type t_124 = void;
 
-declare type t_124 = { readonly password: string };
+declare type t_125 = { readonly password: string };
 
-declare type t_125 = { readonly itemDropId: number };
+declare type t_126 = { readonly itemDropId: number };
 
-declare type t_126 = { readonly playerId: number; readonly npcId: number };
+declare type t_127 = { readonly playerId: number; readonly npcId: number };
 
-declare type t_127 = {
+declare type t_128 = {
     readonly playerId: number;
     readonly itemRotation: number;
     readonly itemAnimation: number
 };
 
-declare type t_128 = {
+declare type t_129 = {
     readonly playerId: number;
     readonly mana: number;
     readonly maxMana: number
 };
-
-declare type t_129 = { readonly playerId: number; readonly manaAmount: number };
 
 declare type t_13 =
 | "GamemodesJoinMode"
@@ -2981,11 +3010,13 @@ declare type t_13 =
 | { TAG: "SwitchServer"; _0: dimensionName }
 | { TAG: "SwitchServerManual"; _0: ip; _1: port };
 
-declare type t_130 = { readonly playerId: number; readonly team: number };
+declare type t_130 = { readonly playerId: number; readonly manaAmount: number };
 
-declare type t_131 = { readonly x: number; readonly y: number };
+declare type t_131 = { readonly playerId: number; readonly team: number };
 
-declare type t_132 = {
+declare type t_132 = { readonly x: number; readonly y: number };
+
+declare type t_133 = {
     readonly signId: number;
     readonly x: number;
     readonly y: number;
@@ -2994,32 +3025,26 @@ declare type t_132 = {
     readonly deleteSign: boolean
 };
 
-declare type t_133 = {
+declare type t_134 = {
     readonly x: number;
     readonly y: number;
     readonly liquid: number;
     readonly liquidType: number
 };
 
-declare type t_134 = undefined
+declare type t_135 = undefined
 
-declare type t_135 = { readonly playerId: number; readonly buffs: number[] };
+declare type t_136 = { readonly playerId: number; readonly buffs: number[] };
 
-declare type t_136 = { readonly playerId: number; readonly effectType: number };
+declare type t_137 = { readonly playerId: number; readonly effectType: number };
 
-declare type t_137 = {
+declare type t_138 = {
     readonly unlockType: unlockType_2; 
     readonly x: number; 
     readonly y: number
 };
 
-declare type t_138 = { readonly npcId: number; readonly buffType: number; readonly time: number };
-
-declare type t_139 = {
-    readonly npcId: number; 
-    readonly buffs: number[]; 
-    readonly buffTimes: number[]
-};
+declare type t_139 = { readonly npcId: number; readonly buffType: number; readonly time: number };
 
 declare type t_14 = {
     readonly npcSlotId: number; 
@@ -3029,40 +3054,39 @@ declare type t_14 = {
 };
 
 declare type t_140 = {
+    readonly npcId: number; 
+    readonly buffs: number[]; 
+    readonly buffTimes: number[]
+};
+
+declare type t_141 = {
     readonly playerId: number;
     readonly buff: number;
     readonly time: number
 };
 
-declare type t_141 = {
+declare type t_142 = {
     readonly npcId: number;
     readonly name: string;
     readonly townNpcVariationIndex: number
 };
 
-declare type t_142 = { readonly good: number; readonly evil: number; readonly blood: number };
+declare type t_143 = { readonly good: number; readonly evil: number; readonly blood: number };
 
-declare type t_143 = { readonly playerId: number; readonly pitch: number };
+declare type t_144 = { readonly playerId: number; readonly pitch: number };
 
-declare type t_144 = { readonly x: number; readonly y: number };
+declare type t_145 = { readonly x: number; readonly y: number };
 
-declare type t_145 = {
+declare type t_146 = {
     readonly npcId: number;
     readonly homeTileX: number;
     readonly homeTileY: number;
     readonly state: number
 };
 
-declare type t_146 = { readonly playerId: number; readonly spawnType: spawnType_2 };
+declare type t_147 = { readonly playerId: number; readonly spawnType: spawnType_2 };
 
-declare type t_147 = { readonly playerId: number; readonly dodge: dodge_2 };
-
-declare type t_148 = {
-    readonly x: number;
-    readonly y: number;
-    readonly color: number;
-    readonly coat: number
-};
+declare type t_148 = { readonly playerId: number; readonly dodge: dodge_2 };
 
 declare type t_149 = {
     readonly x: number;
@@ -3074,6 +3098,13 @@ declare type t_149 = {
 declare type t_15 = void;
 
 declare type t_150 = {
+    readonly x: number;
+    readonly y: number;
+    readonly color: number;
+    readonly coat: number
+};
+
+declare type t_151 = {
     readonly teleportType: teleportType_3; 
     readonly getPositionFromTarget: boolean; 
     readonly targetId: number; 
@@ -3083,37 +3114,35 @@ declare type t_150 = {
     readonly extraInfo: (undefined | number)
 };
 
-declare type t_151 = { readonly playerId: number; readonly healAmount: number };
+declare type t_152 = { readonly playerId: number; readonly healAmount: number };
 
-declare type t_152 =
+declare type t_153 =
 | "GamemodesJoinMode"
 | { TAG: "RealIpAddress"; _0: ip_2 }
 | { TAG: "SwitchServer"; _0: dimensionName_2 }
 | { TAG: "SwitchServerManual"; _0: ip_2; _1: port_2 };
 
-declare type t_153 = { readonly uuid: string };
+declare type t_154 = { readonly uuid: string };
 
-declare type t_154 = {
+declare type t_155 = {
     readonly chestId: number;
     readonly x: number;
     readonly y: number;
     readonly name: string
 };
 
-declare type t_155 = { readonly npcId: number; readonly playerId: number };
+declare type t_156 = { readonly npcId: number; readonly playerId: number };
 
-declare type t_156 = {
+declare type t_157 = {
     readonly x: number; 
     readonly y: number; 
     readonly npcType: number; 
     readonly style: number
 };
 
-declare type t_157 = { readonly items: number[] };
+declare type t_158 = { readonly items: number[] };
 
-declare type t_158 = { readonly teleportType: teleportType_4 };
-
-declare type t_159 = { readonly anglerQuest: number; readonly anglerQuestFinished: boolean };
+declare type t_159 = { readonly teleportType: teleportType_4 };
 
 declare type t_16 = {
     readonly progress: number;
@@ -3122,24 +3151,26 @@ declare type t_16 = {
     readonly wave: number
 };
 
-declare type t_160 = void;
+declare type t_160 = { readonly anglerQuest: number; readonly anglerQuestFinished: boolean };
 
-declare type t_161 = {
+declare type t_161 = void;
+
+declare type t_162 = {
     readonly playerId: number;
     readonly anglerQuestsFinished: number;
     readonly golferScoreAccumulated: number
 };
 
-declare type t_162 = { readonly typeId: number; readonly tileType: number; readonly x: number; readonly y: number };
+declare type t_163 = { readonly typeId: number; readonly tileType: number; readonly x: number; readonly y: number };
 
-declare type t_163 = {
+declare type t_164 = {
     readonly progress: number;
     readonly progressMax: number;
     readonly icon: number;
     readonly wave: number
 };
 
-declare type t_164 = {
+declare type t_165 = {
     readonly x: number;
     readonly y: number;
     readonly objectType: number;
@@ -3149,15 +3180,13 @@ declare type t_164 = {
     readonly direction: direction_4
 };
 
-declare type t_165 = { readonly playerId: number; readonly chestId: number };
+declare type t_166 = { readonly playerId: number; readonly chestId: number };
 
-declare type t_166 = { readonly x: number; readonly y: number; readonly color: Color; readonly amount: number };
+declare type t_167 = { readonly x: number; readonly y: number; readonly color: Color; readonly amount: number };
 
-declare type t_167 = { readonly npcId: number; readonly killCount: number };
+declare type t_168 = { readonly npcId: number; readonly killCount: number };
 
-declare type t_168 = { readonly playerId: number; readonly stealth: number };
-
-declare type t_169 = { readonly slot: number };
+declare type t_169 = { readonly playerId: number; readonly stealth: number };
 
 declare type t_17 = {
     readonly itemDropId: number; 
@@ -3173,15 +3202,17 @@ declare type t_17 = {
     readonly shimmeredTime: number
 };
 
-declare type t_170 = { readonly tileEntityId: number; readonly payload: payload_2 };
+declare type t_170 = { readonly slot: number };
 
-declare type t_171 = {
+declare type t_171 = { readonly tileEntityId: number; readonly payload: payload_2 };
+
+declare type t_172 = {
     readonly x: number;
     readonly y: number;
     readonly tileEntityType: number
 };
 
-declare type t_172 = {
+declare type t_173 = {
     readonly itemId: number;
     readonly color: color | undefined;
     readonly damage: number | undefined;
@@ -3198,7 +3229,7 @@ declare type t_172 = {
     readonly notAmmo: boolean | undefined
 };
 
-declare type t_173 = {
+declare type t_174 = {
     readonly x: number; 
     readonly y: number; 
     readonly itemId: number; 
@@ -3206,22 +3237,20 @@ declare type t_173 = {
     readonly stack: number
 };
 
-declare type t_174 = t_109;
+declare type t_175 = t_110;
 
-declare type t_175 = { readonly id: number; readonly anchor: anchor };
+declare type t_176 = { readonly id: number; readonly anchor: anchor };
 
-declare type t_176 = {
+declare type t_177 = {
     readonly npcSlotId: number; 
     readonly extraValue: number; 
     readonly x: number; 
     readonly y: number
 };
 
-declare type t_177 = void;
+declare type t_178 = void;
 
-declare type t_178 = undefined;
-
-declare type t_179 = { readonly owner: number; readonly portalColor: number };
+declare type t_179 = undefined;
 
 declare type t_18 = {
     readonly itemDropId: number;
@@ -3235,43 +3264,45 @@ declare type t_18 = {
     readonly itemId: number
 };
 
-declare type t_180 = {
+declare type t_180 = { readonly owner: number; readonly portalColor: number };
+
+declare type t_181 = {
     readonly playerId: number;
     readonly extraInfo: number;
-    readonly position: t_32<number>;
-    readonly velocity: t_32<number>
+    readonly position: t_33<number>;
+    readonly velocity: t_33<number>
 };
 
-declare type t_181 = { readonly npcId: number };
+declare type t_182 = { readonly npcId: number };
 
-declare type t_182 = { readonly eventId: number };
+declare type t_183 = { readonly eventId: number };
 
-declare type t_183 = { readonly playerId: number; readonly x: number; readonly y: number };
-
-declare type t_184 = {
-    readonly npcId: number;
-    readonly portalColor: number;
-    readonly position: t_32<number>;
-    readonly velocity: t_32<number>
-};
+declare type t_184 = { readonly playerId: number; readonly x: number; readonly y: number };
 
 declare type t_185 = {
+    readonly npcId: number;
+    readonly portalColor: number;
+    readonly position: t_33<number>;
+    readonly velocity: t_33<number>
+};
+
+declare type t_186 = {
     readonly solar: number;
     readonly vortex: number;
     readonly nebula: number;
     readonly stardust: number
 };
 
-declare type t_186 = {
+declare type t_187 = {
     readonly playerId: number;
     readonly level: number;
     readonly x: number;
     readonly y: number
 };
 
-declare type t_187 = { readonly maxMoonLordCountdown: number; readonly moonLordCountdown: number };
+declare type t_188 = { readonly maxMoonLordCountdown: number; readonly moonLordCountdown: number };
 
-declare type t_188 = {
+declare type t_189 = {
     readonly slot: number;
     readonly itemId: number;
     readonly stack: number;
@@ -3280,19 +3311,19 @@ declare type t_188 = {
     readonly buyOnce: boolean
 };
 
-declare type t_189 = { readonly x: number; readonly y: number; readonly active: boolean };
-
 declare type t_19 = { readonly itemDropId: number; readonly owner: number };
 
-declare type t_190 = { readonly packedPosition: number };
+declare type t_190 = { readonly x: number; readonly y: number; readonly active: boolean };
 
-declare type t_191 = {
+declare type t_191 = { readonly packedPosition: number };
+
+declare type t_192 = {
     readonly color: Color;
     readonly message: NetworkText;
     readonly widthLimit: number
 };
 
-declare type t_192 = {
+declare type t_193 = {
     readonly damage: number;
     readonly knockback: number;
     readonly x: number;
@@ -3302,7 +3333,7 @@ declare type t_192 = {
     readonly playerId: number
 };
 
-declare type t_193 = {
+declare type t_194 = {
     readonly startX: number;
     readonly startY: number;
     readonly endX: number;
@@ -3310,11 +3341,11 @@ declare type t_193 = {
     readonly toolMode: number
 };
 
-declare type t_194 = { readonly itemType: number; readonly stack: number; readonly playerId: number };
+declare type t_195 = { readonly itemType: number; readonly stack: number; readonly playerId: number };
 
-declare type t_195 = void;
+declare type t_196 = void;
 
-declare type t_196 = {
+declare type t_197 = {
     readonly action: number;
     readonly x: number;
     readonly y: number;
@@ -3322,21 +3353,21 @@ declare type t_196 = {
     readonly treeType: number
 };
 
-declare type t_197 = { readonly x: number; readonly y: number };
+declare type t_198 = { readonly x: number; readonly y: number };
 
-declare type t_198 = void;
-
-declare type t_199 = { readonly playerId: number; readonly targetNpcId: number };
+declare type t_199 = void;
 
 declare type t_2 = void;
 
-declare type t_20 = { readonly playerId: number; readonly loadout: number };
+declare type t_20 = { readonly itemDropId: number };
 
-declare type t_200 = { readonly timeLeftBetweenWaves: number };
+declare type t_200 = { readonly playerId: number; readonly targetNpcId: number };
 
-declare type t_201 = {
+declare type t_201 = { readonly timeLeftBetweenWaves: number };
+
+declare type t_202 = {
     readonly target: number;
-    readonly deathReason: t_41;
+    readonly deathReason: t_42;
     readonly damage: number;
     readonly hitDirection: number;
     readonly critical: boolean;
@@ -3344,24 +3375,24 @@ declare type t_201 = {
     readonly cooldownCounter: number
 };
 
-declare type t_202 = {
+declare type t_203 = {
     readonly playerId: number;
-    readonly deathReason: t_41;
+    readonly deathReason: t_42;
     readonly damage: number;
     readonly hitDirection: number;
     readonly pvp: boolean
 };
 
-declare type t_203 = {
+declare type t_204 = {
     readonly x: number;
     readonly y: number;
     readonly color: Color;
     readonly text: NetworkText
 };
 
-declare type t_204 = { readonly playerId: number; readonly emojiId: number };
+declare type t_205 = { readonly playerId: number; readonly emojiId: number };
 
-declare type t_205 = {
+declare type t_206 = {
     readonly playerId: number; 
     readonly tileEntityId: number; 
     readonly itemIndex: number; 
@@ -3370,9 +3401,9 @@ declare type t_205 = {
     readonly prefix: number
 };
 
-declare type t_206 = { readonly tileEntityId: number; readonly playerId: number };
+declare type t_207 = { readonly tileEntityId: number; readonly playerId: number };
 
-declare type t_207 = {
+declare type t_208 = {
     readonly x: number; 
     readonly y: number; 
     readonly itemId: number; 
@@ -3380,7 +3411,7 @@ declare type t_207 = {
     readonly stack: number
 };
 
-declare type t_208 = {
+declare type t_209 = {
     readonly playerId: number; 
     readonly tileEntityId: number; 
     readonly itemIndex: number; 
@@ -3389,18 +3420,18 @@ declare type t_208 = {
     readonly prefix: number
 };
 
-declare type t_209 = {
+declare type t_21 = { readonly playerId: number; readonly loadout: number };
+
+declare type t_210 = {
     readonly playerId: number;
     readonly x: number;
     readonly y: number;
     readonly pickPower: number
 };
 
-declare type t_21 = NetModuleLoad;
-
-declare type t_210 = {
+declare type t_211 = {
     readonly uniqueId: number;
-    readonly position: t_32<number>;
+    readonly position: t_33<number>;
     readonly npcNetId: number;
     readonly npcHpPercent: number;
     readonly npcTypeAgainstDiscouragement: number;
@@ -3410,9 +3441,9 @@ declare type t_210 = {
     readonly spawnedFromStatue: boolean
 };
 
-declare type t_211 = { readonly markerId: number };
+declare type t_212 = { readonly markerId: number };
 
-declare type t_212 = {
+declare type t_213 = {
     readonly playerId: number;
     readonly cupX: number;
     readonly cupY: number;
@@ -3420,25 +3451,25 @@ declare type t_212 = {
     readonly projType: number
 };
 
-declare type t_213 = void;
+declare type t_214 = void;
 
-declare type t_214 = { readonly x: number; readonly y: number; readonly npcNetId: number };
+declare type t_215 = { readonly x: number; readonly y: number; readonly npcNetId: number };
 
-declare type t_215 = {
+declare type t_216 = {
     readonly npcId: number; 
     readonly immunityTime: (undefined | number); 
     readonly immunityFromPlayerId: (undefined | Immunity_t)
 };
 
-declare type t_216 = {
-    readonly position: t_32<number>;
+declare type t_217 = {
+    readonly position: t_33<number>;
     readonly soundIndex: number;
     readonly styleOverride: number | undefined;
     readonly volumeOverride: number | undefined;
     readonly pitchOverride: number | undefined
 };
 
-declare type t_217 = {
+declare type t_218 = {
     readonly x: number; 
     readonly y: number; 
     readonly itemId: number; 
@@ -3446,7 +3477,7 @@ declare type t_217 = {
     readonly stack: number
 };
 
-declare type t_218 = {
+declare type t_219 = {
     readonly playerId: number; 
     readonly ladyBugLuckTimeLeft: number; 
     readonly torchLuck: number; 
@@ -3456,38 +3487,40 @@ declare type t_218 = {
     readonly coinLuck: number
 };
 
-declare type t_219 = { readonly playerId: number };
+declare type t_22 = NetModuleLoad;
 
-declare type t_22 = { readonly npcId: number; readonly buffType: number };
+declare type t_220 = { readonly playerId: number };
 
-declare type t_220 = number[][];
+declare type t_221 = number[][];
 
-declare type t_221 = { readonly npcId: number; readonly buffType: number };
+declare type t_222 = { readonly npcId: number; readonly buffType: number };
 
-declare type t_222 = void;
+declare type t_223 = void;
 
-declare type t_223 = { readonly playerId: number; readonly countsAsHost: boolean };
+declare type t_224 = { readonly playerId: number; readonly countsAsHost: boolean };
 
-declare type t_224 = { readonly eventType: EventType_t_2; readonly value: number };
-
-declare type t_225 = {
-    readonly source: number; 
-    readonly variant: number; 
-    readonly velocity: t_32<number>; 
-    readonly position: t_32<number>
-};
+declare type t_225 = { readonly eventType: EventType_t_2; readonly value: number };
 
 declare type t_226 = {
+    readonly source: number; 
+    readonly variant: number; 
+    readonly velocity: t_33<number>; 
+    readonly position: t_33<number>
+};
+
+declare type t_227 = {
     readonly playerId: number; 
     readonly piggyBankProj: (undefined | TrackedProjectileReference_t); 
     readonly voidLensChest: (undefined | TrackedProjectileReference_t)
 };
 
-declare type t_227 = void;
-
 declare type t_228 = void;
 
-declare type t_229 = {
+declare type t_229 = void;
+
+declare type t_23 = { readonly npcId: number; readonly buffType: number };
+
+declare type t_230 = {
     readonly itemDropId: number; 
     readonly x: number; 
     readonly y: number; 
@@ -3501,20 +3534,14 @@ declare type t_229 = {
     readonly shimmeredTime: number
 };
 
-declare type t_23 = {
-    readonly npcId: number; 
-    readonly buffs: number[]; 
-    readonly buffTimes: number[]
-};
-
-declare type t_230 = 
+declare type t_231 = 
     { TAG: "ShimmerEffect"; _0: number; _1: number }
 | { TAG: "CoinLuck"; _0: coinLuck_2 }
 | { TAG: "NewShimmerEffect"; _0: number };
 
-declare type t_231 = { readonly playerId: number; readonly loadout: number };
+declare type t_232 = { readonly playerId: number; readonly loadout: number };
 
-declare type t_232 = {
+declare type t_233 = {
     readonly itemDropId: number; 
     readonly x: number; 
     readonly y: number; 
@@ -3527,33 +3554,41 @@ declare type t_232 = {
     readonly timeLeftInWhichTheItemCannotBeTakenByEnemies: number
 };
 
-declare type t_233<T> = {
+declare type t_234<T> = {
     LAZY_DONE: boolean,
     VAL: () => T
 }
 
-declare type t_234<a> = { readonly x: a; readonly y: a };
+declare type t_235<a> = { readonly x: a; readonly y: a };
 
-declare type t_24 = { readonly npcId: number; readonly playerId: number };
+declare type t_24 = {
+    readonly npcId: number; 
+    readonly buffs: number[]; 
+    readonly buffTimes: number[]
+};
 
-declare type t_25 = { readonly x: number; readonly y: number; readonly npcNetId: number };
+declare type t_25 = { readonly npcId: number; readonly playerId: number };
 
-declare type t_26 = {
+declare type t_26 = { readonly x: number; readonly y: number; readonly npcNetId: number };
+
+declare type t_27 = {
     readonly npcId: number;
     readonly homeTileX: number;
     readonly homeTileY: number;
     readonly state: number
 };
 
-declare type t_27 = { readonly npcId: number; readonly killCount: number };
+declare type t_28 = { readonly npcId: number; readonly killCount: number };
 
-declare type t_28 = {
+declare type t_29 = {
     readonly npcId: number;
     readonly name: string;
     readonly townNpcVariationIndex: number
 };
 
-declare type t_29 = {
+declare type t_3 = { readonly playerId: number; readonly spawnType: spawnType };
+
+declare type t_30 = {
     readonly slot: number;
     readonly itemId: number;
     readonly stack: number;
@@ -3562,20 +3597,18 @@ declare type t_29 = {
     readonly buyOnce: boolean
 };
 
-declare type t_3 = { readonly playerId: number; readonly spawnType: spawnType };
+declare type t_31 = { readonly playerId: number; readonly npcId: number };
 
-declare type t_30 = { readonly playerId: number; readonly npcId: number };
-
-declare type t_31 = {
+declare type t_32 = {
     readonly npcId: number;
     readonly portalColor: number;
-    readonly position: t_32<number>;
-    readonly velocity: t_32<number>
+    readonly position: t_33<number>;
+    readonly velocity: t_33<number>
 };
 
-declare type t_32<a> = { readonly x: a; readonly y: a };
+declare type t_33<a> = { readonly x: a; readonly y: a };
 
-declare type t_33 = {
+declare type t_34 = {
     readonly x: number;
     readonly y: number;
     readonly objectType: number;
@@ -3585,25 +3618,23 @@ declare type t_33 = {
     readonly direction: direction
 };
 
-declare type t_34 = void;
+declare type t_35 = void;
 
-declare type t_35 = {
+declare type t_36 = {
     readonly playerId: number;
     readonly itemRotation: number;
     readonly itemAnimation: number
 };
 
-declare type t_36 = {
+declare type t_37 = {
     readonly playerId: number;
     readonly buff: number;
     readonly time: number
 };
 
-declare type t_37 = { readonly playerId: number; readonly buffs: number[] };
+declare type t_38 = { readonly playerId: number; readonly buffs: number[] };
 
-declare type t_38 = { readonly playerId: number; readonly chestId: number };
-
-declare type t_39 = { readonly playerId: number };
+declare type t_39 = { readonly playerId: number; readonly chestId: number };
 
 declare type t_4 = {
     readonly color: Color;
@@ -3611,15 +3642,17 @@ declare type t_4 = {
     readonly widthLimit: number
 };
 
-declare type t_40 = {
+declare type t_40 = { readonly playerId: number };
+
+declare type t_41 = {
     readonly playerId: number;
-    readonly deathReason: t_41;
+    readonly deathReason: t_42;
     readonly damage: number;
     readonly hitDirection: number;
     readonly pvp: boolean
 };
 
-declare type t_41 = {
+declare type t_42 = {
     readonly killerPlayerId: (undefined | number); 
     readonly killerNpcId: (undefined | number); 
     readonly killerProjectileId: (undefined | number); 
@@ -3630,24 +3663,24 @@ declare type t_41 = {
     readonly deathReason: (undefined | string)
 };
 
-declare type t_42 = { readonly playerId: number; readonly dodge: dodge };
+declare type t_43 = { readonly playerId: number; readonly dodge: dodge };
 
-declare type t_43 = {
+declare type t_44 = {
     readonly playerId: number;
     readonly mana: number;
     readonly maxMana: number
 };
 
-declare type t_44 = { readonly playerId: number; readonly team: number };
+declare type t_45 = { readonly playerId: number; readonly team: number };
 
-declare type t_45 = { readonly playerId: number; readonly pvpEnabled: boolean };
+declare type t_46 = { readonly playerId: number; readonly pvpEnabled: boolean };
 
-declare type t_46 = 
+declare type t_47 = 
     { TAG: "ShimmerEffect"; _0: number; _1: number }
 | { TAG: "CoinLuck"; _0: coinLuck }
 | { TAG: "NewShimmerEffect"; _0: number };
 
-declare type t_47 = {
+declare type t_48 = {
     readonly signId: number;
     readonly x: number;
     readonly y: number;
@@ -3656,9 +3689,7 @@ declare type t_47 = {
     readonly deleteSign: boolean
 };
 
-declare type t_48 = { readonly x: number; readonly y: number };
-
-declare type t_49 = { readonly packedPosition: number };
+declare type t_49 = { readonly x: number; readonly y: number };
 
 declare type t_5 = {
     readonly chestId: number; 
@@ -3668,17 +3699,19 @@ declare type t_5 = {
     readonly itemNetId: number
 };
 
-declare type t_50 = void;
+declare type t_50 = { readonly packedPosition: number };
 
-declare type t_51 = {
+declare type t_51 = void;
+
+declare type t_52 = {
     readonly max: number;
     readonly text: NetworkText;
     readonly flags: flags
 };
 
-declare type t_52 = { readonly x: number; readonly y: number };
+declare type t_53 = { readonly x: number; readonly y: number };
 
-declare type t_53 = {
+declare type t_54 = {
     readonly teleportType: teleportType; 
     readonly getPositionFromTarget: boolean; 
     readonly targetId: number; 
@@ -3688,18 +3721,9 @@ declare type t_53 = {
     readonly extraInfo: (undefined | number)
 };
 
-declare type t_54 = { readonly teleportType: teleportType_2 };
+declare type t_55 = { readonly teleportType: teleportType_2 };
 
-declare type t_55 = { readonly typeId: number; readonly tileType: number; readonly x: number; readonly y: number };
-
-declare type t_56 = {
-    readonly playerId: number; 
-    readonly tileEntityId: number; 
-    readonly itemIndex: number; 
-    readonly itemId: number; 
-    readonly stack: number; 
-    readonly prefix: number
-};
+declare type t_56 = { readonly typeId: number; readonly tileType: number; readonly x: number; readonly y: number };
 
 declare type t_57 = {
     readonly playerId: number; 
@@ -3710,13 +3734,16 @@ declare type t_57 = {
     readonly prefix: number
 };
 
-declare type t_58 = { readonly tileEntityId: number; readonly playerId: number };
-
-declare type t_59 = {
-    readonly x: number;
-    readonly y: number;
-    readonly tileEntityType: number
+declare type t_58 = {
+    readonly playerId: number; 
+    readonly tileEntityId: number; 
+    readonly itemIndex: number; 
+    readonly itemId: number; 
+    readonly stack: number; 
+    readonly prefix: number
 };
+
+declare type t_59 = { readonly tileEntityId: number; readonly playerId: number };
 
 declare type t_6 = {
     readonly unlockType: unlockType; 
@@ -3724,9 +3751,15 @@ declare type t_6 = {
     readonly y: number
 };
 
-declare type t_60 = { readonly tileEntityId: number; readonly payload: payload };
+declare type t_60 = {
+    readonly x: number;
+    readonly y: number;
+    readonly tileEntityType: number
+};
 
-declare type t_61 = {
+declare type t_61 = { readonly tileEntityId: number; readonly payload: payload };
+
+declare type t_62 = {
     readonly action: Action_t_2;
     readonly tileX: number;
     readonly tileY: number;
@@ -3734,28 +3767,28 @@ declare type t_61 = {
     readonly value2: number
 };
 
-declare type t_62 = {
+declare type t_63 = {
     readonly x: number;
     readonly y: number;
     readonly color: number;
     readonly coat: number
 };
 
-declare type t_63 = {
+declare type t_64 = {
     readonly playerId: number;
     readonly x: number;
     readonly y: number;
     readonly pickPower: number
 };
 
-declare type t_64 = {
+declare type t_65 = {
     readonly startX: number; 
     readonly startY: number; 
     readonly endX: number; 
     readonly endY: number
 };
 
-declare type t_65 = {
+declare type t_66 = {
     readonly height: number; 
     readonly width: number; 
     readonly tileX: number; 
@@ -3766,7 +3799,7 @@ declare type t_65 = {
     readonly entities: Entity_t[]
 };
 
-declare type t_66 = {
+declare type t_67 = {
     readonly width: number;
     readonly height: number;
     readonly changeType: number;
@@ -3775,22 +3808,14 @@ declare type t_66 = {
     readonly tiles: Array<tile_2[]>
 };
 
-declare type t_67 = {
+declare type t_68 = {
     readonly dayTime: boolean;
     readonly time: number;
     readonly sunModY: number;
     readonly moonModY: number
 };
 
-declare type t_68 = { readonly items: number[] };
-
-declare type t_69 = {
-    readonly action: number;
-    readonly x: number;
-    readonly y: number;
-    readonly style: number;
-    readonly treeType: number
-};
+declare type t_69 = { readonly items: number[] };
 
 declare type t_7 = {
     readonly action: Action_t;
@@ -3800,16 +3825,24 @@ declare type t_7 = {
     readonly id: number
 };
 
-declare type t_70 = undefined;
+declare type t_70 = {
+    readonly action: number;
+    readonly x: number;
+    readonly y: number;
+    readonly style: number;
+    readonly treeType: number
+};
 
-declare type t_71 = {
+declare type t_71 = undefined;
+
+declare type t_72 = {
     readonly x: number;
     readonly y: number;
     readonly color: number;
     readonly coat: number
 };
 
-declare type t_72 = {
+declare type t_73 = {
     readonly x: number; 
     readonly y: number; 
     readonly itemId: number; 
@@ -3817,7 +3850,7 @@ declare type t_72 = {
     readonly stack: number
 };
 
-declare type t_73 = {
+declare type t_74 = {
     readonly damage: number;
     readonly knockback: number;
     readonly x: number;
@@ -3827,9 +3860,9 @@ declare type t_73 = {
     readonly playerId: number
 };
 
-declare type t_74 = void;
+declare type t_75 = void;
 
-declare type t_75 = {
+declare type t_76 = {
     readonly playerId: number;
     readonly zone1: number;
     readonly zone2: number;
@@ -3838,9 +3871,9 @@ declare type t_75 = {
     readonly zone5: number
 };
 
-declare type t_76 = number;
+declare type t_77 = number;
 
-declare type t_77 = {
+declare type t_78 = {
     readonly killerPlayerId: (undefined | number); 
     readonly killerNpcId: (undefined | number); 
     readonly killerProjectileId: (undefined | number); 
@@ -3851,9 +3884,11 @@ declare type t_77 = {
     readonly deathReason: (undefined | string)
 };
 
-declare type t_78 = number;
+declare type t_79 = number;
 
-declare type t_79 = {
+declare type t_8 = void;
+
+declare type t_80 = {
     readonly playerId: number;
     readonly control: control;
     readonly direction: direction_2;
@@ -3863,8 +3898,8 @@ declare type t_79 = {
     readonly shouldGuard: boolean;
     readonly ghost: boolean;
     readonly selectedItem: number;
-    readonly position: t_32<number>;
-    readonly velocity: (undefined | t_32<number>);
+    readonly position: t_33<number>;
+    readonly velocity: (undefined | t_33<number>);
     readonly potionOfReturn: (undefined | potionOfReturn);
     readonly tryKeepingHoveringUp: boolean;
     readonly isVoidVaultEnabled: boolean;
@@ -3876,9 +3911,7 @@ declare type t_79 = {
     readonly isSleeping: boolean
 };
 
-declare type t_8 = void;
-
-declare type t_80 = {
+declare type t_81 = {
     readonly playerId: number;
     readonly skinVariant: number;
     readonly hair: number;
@@ -3911,7 +3944,7 @@ declare type t_80 = {
     readonly ateArtisanBread: boolean
 };
 
-declare type t_81 = {
+declare type t_82 = {
     readonly playerId: number;
     readonly x: number;
     readonly y: number;
@@ -3921,7 +3954,7 @@ declare type t_81 = {
     readonly context: context
 };
 
-declare type t_82 = {
+declare type t_83 = {
     readonly playerId: number;
     readonly slot: number;
     readonly stack: number;
@@ -3929,15 +3962,15 @@ declare type t_82 = {
     readonly itemId: number;
 };
 
-declare type t_83 = {
+declare type t_84 = {
     readonly playerId: number;
     readonly health: number;
     readonly maxHealth: number
 };
 
-declare type t_84 = { readonly uuid: string };
+declare type t_85 = { readonly uuid: string };
 
-declare type t_85 = {
+declare type t_86 = {
     readonly projectileId: number;
     readonly x: number;
     readonly y: number;
@@ -3953,9 +3986,9 @@ declare type t_85 = {
     readonly projectileUuid: (undefined | number)
 };
 
-declare type t_86 = {
+declare type t_87 = {
     readonly target: number;
-    readonly deathReason: t_41;
+    readonly deathReason: t_42;
     readonly damage: number;
     readonly hitDirection: number;
     readonly critical: boolean;
@@ -3963,12 +3996,12 @@ declare type t_86 = {
     readonly cooldownCounter: number
 };
 
-declare type t_87 = {
+declare type t_88 = {
     readonly playerId: number;
     readonly active: boolean;
 };
 
-declare type t_88 = {
+declare type t_89 = {
     readonly npcSlotId: number;
     readonly npcTypeId: number;
     readonly x: number;
@@ -3987,167 +4020,167 @@ declare type t_88 = {
     readonly spawnedFromStatue: boolean
 };
 
-declare type t_89 = {
-    readonly reason: NetworkText;
-};
-
 declare type t_9 = { readonly version: string };
 
-declare type t_90 =
-    { TAG: "ConnectRequest"; _0: t_91 }
-| { TAG: "Disconnect"; _0: t_92 }
-| { TAG: "PlayerSlotSet"; _0: t_93 }
-| { TAG: "PlayerInfo"; _0: t_94 }
-| { TAG: "PlayerInventorySlot"; _0: t_95 }
-| { TAG: "WorldDataRequest"; _0: t_96 }
-| { TAG: "WorldInfo"; _0: WorldInfo_2 }
-| { TAG: "InitialTileSectionsRequest"; _0: t_97 }
-| { TAG: "Status"; _0: t_98 }
-| { TAG: "TileSectionSend"; _0: t_99 }
-| { TAG: "TileSectionFrame"; _0: t_100 }
-| { TAG: "PlayerSpawn"; _0: t_101 }
-| { TAG: "PlayerUpdate"; _0: t_102 }
-| { TAG: "PlayerActive"; _0: t_103 }
-| { TAG: "PlayerHealth"; _0: t_104 }
-| { TAG: "TileModify"; _0: t_105 }
-| { TAG: "TimeSet"; _0: t_106 }
-| { TAG: "DoorUse"; _0: t_107 }
-| { TAG: "TileSquareSend"; _0: t_108 }
-| { TAG: "ItemDropUpdate"; _0: t_109 }
-| { TAG: "ItemOwner"; _0: t_110 }
-| { TAG: "NpcUpdate"; _0: t_111 }
-| { TAG: "NpcItemStrike"; _0: t_112 }
-| { TAG: "ProjectileSync"; _0: t_113 }
-| { TAG: "NpcStrike"; _0: t_114 }
-| { TAG: "ProjectileDestroy"; _0: t_115 }
-| { TAG: "PvpToggle"; _0: t_116 }
-| { TAG: "ChestOpen"; _0: t_117 }
-| { TAG: "ChestItem"; _0: t_118 }
-| { TAG: "ActiveContainerSync"; _0: t_119 }
-| { TAG: "ChestPlace"; _0: t_120 }
-| { TAG: "HealEffect"; _0: t_121 }
-| { TAG: "Zones"; _0: t_122 }
-| { TAG: "PasswordRequired"; _0: t_123 }
-| { TAG: "PasswordSend"; _0: t_124 }
-| { TAG: "ItemOwnerRemove"; _0: t_125 }
-| { TAG: "NpcTalk"; _0: t_126 }
-| { TAG: "PlayerAnimation"; _0: t_127 }
-| { TAG: "PlayerMana"; _0: t_128 }
-| { TAG: "ManaEffect"; _0: t_129 }
-| { TAG: "PlayerTeam"; _0: t_130 }
-| { TAG: "SignRead"; _0: t_131 }
-| { TAG: "SignNew"; _0: t_132 }
-| { TAG: "LiquidSet"; _0: t_133 }
-| { TAG: "PlayerSpawnSelf"; _0: t_134 }
-| { TAG: "PlayerBuffsSet"; _0: t_135 }
-| { TAG: "NpcSpecialEffect"; _0: t_136 }
-| { TAG: "ChestOrTempleUnlock"; _0: t_137 }
-| { TAG: "NpcBuffAdd"; _0: t_138 }
-| { TAG: "NpcBuffUpdate"; _0: t_139 }
-| { TAG: "PlayerBuffAdd"; _0: t_140 }
-| { TAG: "NpcNameUpdate"; _0: t_141 }
-| { TAG: "GoodEvilUpdate"; _0: t_142 }
-| { TAG: "HarpPlay"; _0: t_143 }
-| { TAG: "SwitchHit"; _0: t_144 }
-| { TAG: "NpcHomeUpdate"; _0: t_145 }
-| { TAG: "BossOrInvasionSpawn"; _0: t_146 }
-| { TAG: "PlayerDodge"; _0: t_147 }
-| { TAG: "TilePaint"; _0: t_148 }
-| { TAG: "WallPaint"; _0: t_149 }
-| { TAG: "Teleport"; _0: t_150 }
-| { TAG: "PlayerHealOther"; _0: t_151 }
-| { TAG: "DimensionsUpdate"; _0: t_152 }
-| { TAG: "ClientUuid"; _0: t_153 }
-| { TAG: "ChestName"; _0: t_154 }
-| { TAG: "NpcCatch"; _0: t_155 }
-| { TAG: "NpcRelease"; _0: t_156 }
-| { TAG: "TravellingMerchantInventory"; _0: t_157 }
-| { TAG: "TeleportationPotion"; _0: t_158 }
-| { TAG: "AnglerQuest"; _0: t_159 }
-| { TAG: "AnglerQuestComplete"; _0: t_160 }
-| { TAG: "AnglerQuestsCompletedAmount"; _0: t_161 }
-| { TAG: "TemporaryAnimationCreate"; _0: t_162 }
-| { TAG: "InvasionProgressReport"; _0: t_163 }
-| { TAG: "ObjectPlace"; _0: t_164 }
-| { TAG: "PlayerChestIndexSync"; _0: t_165 }
-| { TAG: "CombatNumberCreate"; _0: t_166 }
-| { TAG: "NetModuleLoad"; _0: NetModuleLoad }
-| { TAG: "NpcKillCount"; _0: t_167 }
-| { TAG: "PlayerStealth"; _0: t_168 }
-| { TAG: "ItemForceIntoNearestChest"; _0: t_169 }
-| { TAG: "TileEntityUpdate"; _0: t_170 }
-| { TAG: "TileEntityPlace"; _0: t_171 }
-| { TAG: "ItemDropModify"; _0: t_172 }
-| { TAG: "ItemFramePlace"; _0: t_173 }
-| { TAG: "ItemDropInstancedUpdate"; _0: t_174 }
-| { TAG: "EmoteBubble"; _0: t_175 }
-| { TAG: "ExtraValueSync"; _0: t_176 }
-| { TAG: "SocialHandshake"; _0: t_177 }
-| { TAG: "Unused"; _0: t_178 }
-| { TAG: "PortalKill"; _0: t_179 }
-| { TAG: "PlayerTeleportPortal"; _0: t_180 }
-| { TAG: "NpcKilledNotification"; _0: t_181 }
-| { TAG: "EventNotification"; _0: t_182 }
-| { TAG: "MinionTargetUpdate"; _0: t_183 }
-| { TAG: "NpcTeleportPortal"; _0: t_184 }
-| { TAG: "ShieldStrengthsUpdate"; _0: t_185 }
-| { TAG: "NebulaLevelUp"; _0: t_186 }
-| { TAG: "MoonLordCountdown"; _0: t_187 }
-| { TAG: "NpcShopItem"; _0: t_188 }
-| { TAG: "GemLockToggle"; _0: t_189 }
-| { TAG: "SmokePoof"; _0: t_190 }
-| { TAG: "ChatMessageSmart"; _0: t_191 }
-| { TAG: "WiredCannonShot"; _0: t_192 }
-| { TAG: "MassWireOperation"; _0: t_193 }
-| { TAG: "MassWireOperationPay"; _0: t_194 }
-| { TAG: "PartyToggle"; _0: t_195 }
-| { TAG: "TreeGrowFx"; _0: t_196 }
-| { TAG: "CrystalInvasionStart"; _0: t_197 }
-| { TAG: "CrystalInvasionWipeAll"; _0: t_198 }
-| { TAG: "MinionAttackTargetUpdate"; _0: t_199 }
-| { TAG: "CrystalInvasionSendWaitTime"; _0: t_200 }
-| { TAG: "PlayerDamage"; _0: t_201 }
-| { TAG: "PlayerDeath"; _0: t_202 }
-| { TAG: "CombatTextCreate"; _0: t_203 }
-| { TAG: "Emoji"; _0: t_204 }
-| { TAG: "TileEntityDisplayDollItemSync"; _0: t_205 }
-| { TAG: "TileEntityInteractionRequest"; _0: t_206 }
-| { TAG: "WeaponsRackTryPlacing"; _0: t_207 }
-| { TAG: "TileEntityHatRackItemSync"; _0: t_208 }
-| { TAG: "TilePickingSync"; _0: t_209 }
-| { TAG: "RevengeMarkerSync"; _0: t_210 }
-| { TAG: "RevengeMarkerRemove"; _0: t_211 }
-| { TAG: "GolfBallLandInCup"; _0: t_212 }
-| { TAG: "ClientFinishConnectingToServer"; _0: t_213 }
-| { TAG: "NpcFishOut"; _0: t_214 }
-| { TAG: "NpcTamper"; _0: t_215 }
-| { TAG: "LegacySoundPlay"; _0: t_216 }
-| { TAG: "FoodPlatterTryPlacing"; _0: t_217 }
-| { TAG: "PlayerLuckFactorsUpdate"; _0: t_218 }
-| { TAG: "PlayerDead"; _0: t_219 }
-| { TAG: "CavernMonsterTypeSync"; _0: t_220 }
-| { TAG: "NpcBuffRemovalRequest"; _0: t_221 }
-| { TAG: "ClientSyncedInventory"; _0: t_222 }
-| { TAG: "CountsAsHostForGameplaySet"; _0: t_223 }
-| { TAG: "CreditsOrSlimeTransform"; _0: t_224 }
-| { TAG: "LucyAxeMessage"; _0: t_225 }
-| { TAG: "PiggyBankVoidLensUpdate"; _0: t_226 }
-| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: t_227 }
-| { TAG: "HaveDryadDoStardewAnimation"; _0: t_228 }
-| { TAG: "ItemDropShimmeredUpdate"; _0: t_229 }
-| { TAG: "ShimmerEffectOrCoinLuck"; _0: t_230 }
-| { TAG: "LoadoutSwitch"; _0: t_231 }
-| { TAG: "ItemDropProtectedUpdate"; _0: t_232 };
-
-declare type t_91 = { readonly version: string };
-
-declare type t_92 = {
+declare type t_90 = {
     readonly reason: NetworkText;
 };
 
-declare type t_93 = number;
+declare type t_91 =
+    { TAG: "ConnectRequest"; _0: t_92 }
+| { TAG: "Disconnect"; _0: t_93 }
+| { TAG: "PlayerSlotSet"; _0: t_94 }
+| { TAG: "PlayerInfo"; _0: t_95 }
+| { TAG: "PlayerInventorySlot"; _0: t_96 }
+| { TAG: "WorldDataRequest"; _0: t_97 }
+| { TAG: "WorldInfo"; _0: WorldInfo_2 }
+| { TAG: "InitialTileSectionsRequest"; _0: t_98 }
+| { TAG: "Status"; _0: t_99 }
+| { TAG: "TileSectionSend"; _0: t_100 }
+| { TAG: "TileSectionFrame"; _0: t_101 }
+| { TAG: "PlayerSpawn"; _0: t_102 }
+| { TAG: "PlayerUpdate"; _0: t_103 }
+| { TAG: "PlayerActive"; _0: t_104 }
+| { TAG: "PlayerHealth"; _0: t_105 }
+| { TAG: "TileModify"; _0: t_106 }
+| { TAG: "TimeSet"; _0: t_107 }
+| { TAG: "DoorUse"; _0: t_108 }
+| { TAG: "TileSquareSend"; _0: t_109 }
+| { TAG: "ItemDropUpdate"; _0: t_110 }
+| { TAG: "ItemOwner"; _0: t_111 }
+| { TAG: "NpcUpdate"; _0: t_112 }
+| { TAG: "NpcItemStrike"; _0: t_113 }
+| { TAG: "ProjectileSync"; _0: t_114 }
+| { TAG: "NpcStrike"; _0: t_115 }
+| { TAG: "ProjectileDestroy"; _0: t_116 }
+| { TAG: "PvpToggle"; _0: t_117 }
+| { TAG: "ChestOpen"; _0: t_118 }
+| { TAG: "ChestItem"; _0: t_119 }
+| { TAG: "ActiveContainerSync"; _0: t_120 }
+| { TAG: "ChestPlace"; _0: t_121 }
+| { TAG: "HealEffect"; _0: t_122 }
+| { TAG: "Zones"; _0: t_123 }
+| { TAG: "PasswordRequired"; _0: t_124 }
+| { TAG: "PasswordSend"; _0: t_125 }
+| { TAG: "ItemOwnerRemove"; _0: t_126 }
+| { TAG: "NpcTalk"; _0: t_127 }
+| { TAG: "PlayerAnimation"; _0: t_128 }
+| { TAG: "PlayerMana"; _0: t_129 }
+| { TAG: "ManaEffect"; _0: t_130 }
+| { TAG: "PlayerTeam"; _0: t_131 }
+| { TAG: "SignRead"; _0: t_132 }
+| { TAG: "SignNew"; _0: t_133 }
+| { TAG: "LiquidSet"; _0: t_134 }
+| { TAG: "PlayerSpawnSelf"; _0: t_135 }
+| { TAG: "PlayerBuffsSet"; _0: t_136 }
+| { TAG: "NpcSpecialEffect"; _0: t_137 }
+| { TAG: "ChestOrTempleUnlock"; _0: t_138 }
+| { TAG: "NpcBuffAdd"; _0: t_139 }
+| { TAG: "NpcBuffUpdate"; _0: t_140 }
+| { TAG: "PlayerBuffAdd"; _0: t_141 }
+| { TAG: "NpcNameUpdate"; _0: t_142 }
+| { TAG: "GoodEvilUpdate"; _0: t_143 }
+| { TAG: "HarpPlay"; _0: t_144 }
+| { TAG: "SwitchHit"; _0: t_145 }
+| { TAG: "NpcHomeUpdate"; _0: t_146 }
+| { TAG: "BossOrInvasionSpawn"; _0: t_147 }
+| { TAG: "PlayerDodge"; _0: t_148 }
+| { TAG: "TilePaint"; _0: t_149 }
+| { TAG: "WallPaint"; _0: t_150 }
+| { TAG: "Teleport"; _0: t_151 }
+| { TAG: "PlayerHealOther"; _0: t_152 }
+| { TAG: "DimensionsUpdate"; _0: t_153 }
+| { TAG: "ClientUuid"; _0: t_154 }
+| { TAG: "ChestName"; _0: t_155 }
+| { TAG: "NpcCatch"; _0: t_156 }
+| { TAG: "NpcRelease"; _0: t_157 }
+| { TAG: "TravellingMerchantInventory"; _0: t_158 }
+| { TAG: "TeleportationPotion"; _0: t_159 }
+| { TAG: "AnglerQuest"; _0: t_160 }
+| { TAG: "AnglerQuestComplete"; _0: t_161 }
+| { TAG: "AnglerQuestsCompletedAmount"; _0: t_162 }
+| { TAG: "TemporaryAnimationCreate"; _0: t_163 }
+| { TAG: "InvasionProgressReport"; _0: t_164 }
+| { TAG: "ObjectPlace"; _0: t_165 }
+| { TAG: "PlayerChestIndexSync"; _0: t_166 }
+| { TAG: "CombatNumberCreate"; _0: t_167 }
+| { TAG: "NetModuleLoad"; _0: NetModuleLoad }
+| { TAG: "NpcKillCount"; _0: t_168 }
+| { TAG: "PlayerStealth"; _0: t_169 }
+| { TAG: "ItemForceIntoNearestChest"; _0: t_170 }
+| { TAG: "TileEntityUpdate"; _0: t_171 }
+| { TAG: "TileEntityPlace"; _0: t_172 }
+| { TAG: "ItemDropModify"; _0: t_173 }
+| { TAG: "ItemFramePlace"; _0: t_174 }
+| { TAG: "ItemDropInstancedUpdate"; _0: t_175 }
+| { TAG: "EmoteBubble"; _0: t_176 }
+| { TAG: "ExtraValueSync"; _0: t_177 }
+| { TAG: "SocialHandshake"; _0: t_178 }
+| { TAG: "Unused"; _0: t_179 }
+| { TAG: "PortalKill"; _0: t_180 }
+| { TAG: "PlayerTeleportPortal"; _0: t_181 }
+| { TAG: "NpcKilledNotification"; _0: t_182 }
+| { TAG: "EventNotification"; _0: t_183 }
+| { TAG: "MinionTargetUpdate"; _0: t_184 }
+| { TAG: "NpcTeleportPortal"; _0: t_185 }
+| { TAG: "ShieldStrengthsUpdate"; _0: t_186 }
+| { TAG: "NebulaLevelUp"; _0: t_187 }
+| { TAG: "MoonLordCountdown"; _0: t_188 }
+| { TAG: "NpcShopItem"; _0: t_189 }
+| { TAG: "GemLockToggle"; _0: t_190 }
+| { TAG: "SmokePoof"; _0: t_191 }
+| { TAG: "ChatMessageSmart"; _0: t_192 }
+| { TAG: "WiredCannonShot"; _0: t_193 }
+| { TAG: "MassWireOperation"; _0: t_194 }
+| { TAG: "MassWireOperationPay"; _0: t_195 }
+| { TAG: "PartyToggle"; _0: t_196 }
+| { TAG: "TreeGrowFx"; _0: t_197 }
+| { TAG: "CrystalInvasionStart"; _0: t_198 }
+| { TAG: "CrystalInvasionWipeAll"; _0: t_199 }
+| { TAG: "MinionAttackTargetUpdate"; _0: t_200 }
+| { TAG: "CrystalInvasionSendWaitTime"; _0: t_201 }
+| { TAG: "PlayerDamage"; _0: t_202 }
+| { TAG: "PlayerDeath"; _0: t_203 }
+| { TAG: "CombatTextCreate"; _0: t_204 }
+| { TAG: "Emoji"; _0: t_205 }
+| { TAG: "TileEntityDisplayDollItemSync"; _0: t_206 }
+| { TAG: "TileEntityInteractionRequest"; _0: t_207 }
+| { TAG: "WeaponsRackTryPlacing"; _0: t_208 }
+| { TAG: "TileEntityHatRackItemSync"; _0: t_209 }
+| { TAG: "TilePickingSync"; _0: t_210 }
+| { TAG: "RevengeMarkerSync"; _0: t_211 }
+| { TAG: "RevengeMarkerRemove"; _0: t_212 }
+| { TAG: "GolfBallLandInCup"; _0: t_213 }
+| { TAG: "ClientFinishConnectingToServer"; _0: t_214 }
+| { TAG: "NpcFishOut"; _0: t_215 }
+| { TAG: "NpcTamper"; _0: t_216 }
+| { TAG: "LegacySoundPlay"; _0: t_217 }
+| { TAG: "FoodPlatterTryPlacing"; _0: t_218 }
+| { TAG: "PlayerLuckFactorsUpdate"; _0: t_219 }
+| { TAG: "PlayerDead"; _0: t_220 }
+| { TAG: "CavernMonsterTypeSync"; _0: t_221 }
+| { TAG: "NpcBuffRemovalRequest"; _0: t_222 }
+| { TAG: "ClientSyncedInventory"; _0: t_223 }
+| { TAG: "CountsAsHostForGameplaySet"; _0: t_224 }
+| { TAG: "CreditsOrSlimeTransform"; _0: t_225 }
+| { TAG: "LucyAxeMessage"; _0: t_226 }
+| { TAG: "PiggyBankVoidLensUpdate"; _0: t_227 }
+| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: t_228 }
+| { TAG: "HaveDryadDoStardewAnimation"; _0: t_229 }
+| { TAG: "ItemDropShimmeredUpdate"; _0: t_230 }
+| { TAG: "ShimmerEffectOrCoinLuck"; _0: t_231 }
+| { TAG: "LoadoutSwitch"; _0: t_232 }
+| { TAG: "ItemDropProtectedUpdate"; _0: t_233 };
 
-declare type t_94 = {
+declare type t_92 = { readonly version: string };
+
+declare type t_93 = {
+    readonly reason: NetworkText;
+};
+
+declare type t_94 = number;
+
+declare type t_95 = {
     readonly playerId: number;
     readonly skinVariant: number;
     readonly hair: number;
@@ -4180,7 +4213,7 @@ declare type t_94 = {
     readonly ateArtisanBread: boolean
 };
 
-declare type t_95 = {
+declare type t_96 = {
     readonly playerId: number;
     readonly slot: number;
     readonly stack: number;
@@ -4188,30 +4221,32 @@ declare type t_95 = {
     readonly itemId: number;
 };
 
-declare type t_96 = void;
+declare type t_97 = void;
 
-declare type t_97 = { readonly x: number; readonly y: number };
+declare type t_98 = { readonly x: number; readonly y: number };
 
-declare type t_98 = {
+declare type t_99 = {
     readonly max: number;
     readonly text: NetworkText;
     readonly flags: flags_2
 };
 
-declare type t_99 = {
-    readonly height: number; 
-    readonly width: number; 
-    readonly tileX: number; 
-    readonly tileY: number; 
-    readonly tiles: Array<tile_3[]>; 
-    readonly chests: Chest_t_2[]; 
-    readonly signs: Sign_t_2[]; 
-    readonly entities: Entity_t_2[]
-};
-
 export declare namespace TeleportationPotionPacket {
     export {
         teleportType_2 as teleportType,
+        t_55 as t,
+        parseOk_53 as parseOk,
+        parseError_53 as parseError,
+        parse_53 as parse,
+        toBufferOk_53 as toBufferOk,
+        toBufferError_53 as toBufferError,
+        toBuffer_53 as toBuffer
+    }
+}
+
+export declare namespace TeleportPacket {
+    export {
+        teleportType,
         t_54 as t,
         parseOk_52 as parseOk,
         parseError_52 as parseError,
@@ -4219,19 +4254,6 @@ export declare namespace TeleportationPotionPacket {
         toBufferOk_52 as toBufferOk,
         toBufferError_52 as toBufferError,
         toBuffer_52 as toBuffer
-    }
-}
-
-export declare namespace TeleportPacket {
-    export {
-        teleportType,
-        t_53 as t,
-        parseOk_51 as parseOk,
-        parseError_51 as parseError,
-        parse_51 as parse,
-        toBufferOk_51 as toBufferOk,
-        toBufferError_51 as toBufferError,
-        toBuffer_51 as toBuffer
     }
 }
 
@@ -4260,13 +4282,13 @@ declare type teleportType_4 =
 
 export declare namespace TemporaryAnimationCreatePacket {
     export {
-        t_55 as t,
-        parseOk_53 as parseOk,
-        parseError_53 as parseError,
-        parse_53 as parse,
-        toBufferOk_53 as toBufferOk,
-        toBufferError_53 as toBufferError,
-        toBuffer_53 as toBuffer
+        t_56 as t,
+        parseOk_54 as parseOk,
+        parseError_54 as parseError,
+        parse_54 as parse,
+        toBufferOk_54 as toBufferOk,
+        toBufferError_54 as toBufferError,
+        toBuffer_54 as toBuffer
     }
 }
 
@@ -4361,18 +4383,6 @@ declare type tileCache = {
 
 export declare namespace TileEntityDisplayDollItemSyncPacket {
     export {
-        t_56 as t,
-        parseOk_54 as parseOk,
-        parseError_54 as parseError,
-        parse_54 as parse,
-        toBufferOk_54 as toBufferOk,
-        toBufferError_54 as toBufferError,
-        toBuffer_54 as toBuffer
-    }
-}
-
-export declare namespace TileEntityHatRackItemSyncPacket {
-    export {
         t_57 as t,
         parseOk_55 as parseOk,
         parseError_55 as parseError,
@@ -4383,7 +4393,7 @@ export declare namespace TileEntityHatRackItemSyncPacket {
     }
 }
 
-export declare namespace TileEntityInteractionRequestPacket {
+export declare namespace TileEntityHatRackItemSyncPacket {
     export {
         t_58 as t,
         parseOk_56 as parseOk,
@@ -4395,7 +4405,7 @@ export declare namespace TileEntityInteractionRequestPacket {
     }
 }
 
-export declare namespace TileEntityPlacePacket {
+export declare namespace TileEntityInteractionRequestPacket {
     export {
         t_59 as t,
         parseOk_57 as parseOk,
@@ -4407,9 +4417,8 @@ export declare namespace TileEntityPlacePacket {
     }
 }
 
-export declare namespace TileEntityUpdatePacket {
+export declare namespace TileEntityPlacePacket {
     export {
-        payload,
         t_60 as t,
         parseOk_58 as parseOk,
         parseError_58 as parseError,
@@ -4420,11 +4429,10 @@ export declare namespace TileEntityUpdatePacket {
     }
 }
 
-export declare namespace TileModifyPacket {
+export declare namespace TileEntityUpdatePacket {
     export {
-        Action_t_2 as Action_t,
+        payload,
         t_61 as t,
-        Action_2 as Action,
         parseOk_59 as parseOk,
         parseError_59 as parseError,
         parse_59 as parse,
@@ -4434,9 +4442,11 @@ export declare namespace TileModifyPacket {
     }
 }
 
-export declare namespace TilePaintPacket {
+export declare namespace TileModifyPacket {
     export {
+        Action_t_2 as Action_t,
         t_62 as t,
+        Action_2 as Action,
         parseOk_60 as parseOk,
         parseError_60 as parseError,
         parse_60 as parse,
@@ -4446,7 +4456,7 @@ export declare namespace TilePaintPacket {
     }
 }
 
-export declare namespace TilePickingSyncPacket {
+export declare namespace TilePaintPacket {
     export {
         t_63 as t,
         parseOk_61 as parseOk,
@@ -4458,7 +4468,7 @@ export declare namespace TilePickingSyncPacket {
     }
 }
 
-export declare namespace TileSectionFramePacket {
+export declare namespace TilePickingSyncPacket {
     export {
         t_64 as t,
         parseOk_62 as parseOk,
@@ -4467,6 +4477,18 @@ export declare namespace TileSectionFramePacket {
         toBufferOk_62 as toBufferOk,
         toBufferError_62 as toBufferError,
         toBuffer_62 as toBuffer
+    }
+}
+
+export declare namespace TileSectionFramePacket {
+    export {
+        t_65 as t,
+        parseOk_63 as parseOk,
+        parseError_63 as parseError,
+        parse_63 as parse,
+        toBufferOk_63 as toBufferOk,
+        toBufferError_63 as toBufferError,
+        toBuffer_63 as toBuffer
     }
 }
 
@@ -4490,28 +4512,10 @@ export declare namespace TileSectionSendPacket {
         Entity_weaponsRack,
         Entity_kind,
         Entity_t,
-        t_65 as t,
+        t_66 as t,
         Chest,
         Sign,
         Entity,
-        parseOk_63 as parseOk,
-        parseError_63 as parseError,
-        parse_63 as parse,
-        toBufferOk_63 as toBufferOk,
-        toBufferError_63 as toBufferError,
-        toBuffer_63 as toBuffer
-    }
-}
-
-export declare namespace TileSquareSendPacket {
-    export {
-        frame_2 as frame,
-        activeTile_2 as activeTile,
-        liquid_3 as liquid,
-        tile_2 as tile,
-        t_66 as t,
-        Decode,
-        Encode,
         parseOk_64 as parseOk,
         parseError_64 as parseError,
         parse_64 as parse,
@@ -4521,15 +4525,33 @@ export declare namespace TileSquareSendPacket {
     }
 }
 
-export declare namespace TimeSetPacket {
+export declare namespace TileSquareSendPacket {
     export {
+        frame_2 as frame,
+        activeTile_2 as activeTile,
+        liquid_3 as liquid,
+        tile_2 as tile,
         t_67 as t,
+        Decode,
+        Encode,
         parseOk_65 as parseOk,
         parseError_65 as parseError,
         parse_65 as parse,
         toBufferOk_65 as toBufferOk,
         toBufferError_65 as toBufferError,
         toBuffer_65 as toBuffer
+    }
+}
+
+export declare namespace TimeSetPacket {
+    export {
+        t_68 as t,
+        parseOk_66 as parseOk,
+        parseError_66 as parseError,
+        parse_66 as parse,
+        toBufferOk_66 as toBufferOk,
+        toBufferError_66 as toBufferError,
+        toBuffer_66 as toBuffer
     }
 }
 
@@ -4587,11 +4609,11 @@ declare const toBuffer_20: (_1: t_20) => toBuffer_20;
 
 declare type toBuffer_21 = toBufferOk_21 | toBufferError_21;
 
-declare const toBuffer_21: (_1: NetModuleLoad) => toBuffer_21;
+declare const toBuffer_21: (_1: t_21) => toBuffer_21;
 
 declare type toBuffer_22 = toBufferOk_22 | toBufferError_22;
 
-declare const toBuffer_22: (_1: t_22) => toBuffer_22;
+declare const toBuffer_22: (_1: NetModuleLoad) => toBuffer_22;
 
 declare type toBuffer_23 = toBufferOk_23 | toBufferError_23;
 
@@ -4635,7 +4657,7 @@ declare const toBuffer_31: (_1: t_31) => toBuffer_31;
 
 declare type toBuffer_32 = toBufferOk_32 | toBufferError_32;
 
-declare const toBuffer_32: (_1: t_33) => toBuffer_32;
+declare const toBuffer_32: (_1: t_32) => toBuffer_32;
 
 declare type toBuffer_33 = toBufferOk_33 | toBufferError_33;
 
@@ -4671,7 +4693,7 @@ declare const toBuffer_4: (_1: t_4) => toBuffer_4;
 
 declare type toBuffer_40 = toBufferOk_40 | toBufferError_40;
 
-declare const toBuffer_40: (_1: t_42) => toBuffer_40;
+declare const toBuffer_40: (_1: t_41) => toBuffer_40;
 
 declare type toBuffer_41 = toBufferOk_41 | toBufferError_41;
 
@@ -4791,7 +4813,7 @@ declare const toBuffer_67: (_1: t_69) => toBuffer_67;
 
 declare type toBuffer_68 = toBufferOk_68 | toBufferError_68;
 
-declare const toBuffer_68: (_1: t_71) => toBuffer_68;
+declare const toBuffer_68: (_1: t_70) => toBuffer_68;
 
 declare type toBuffer_69 = toBufferOk_69 | toBufferError_69;
 
@@ -4815,7 +4837,7 @@ declare const toBuffer_72: (_1: t_75) => toBuffer_72;
 
 declare type toBuffer_73 = toBufferOk_73 | toBufferError_73;
 
-declare const toBuffer_73: (_1: t_78) => toBuffer_73;
+declare const toBuffer_73: (_1: t_76) => toBuffer_73;
 
 declare type toBuffer_74 = toBufferOk_74 | toBufferError_74;
 
@@ -4855,11 +4877,11 @@ declare const toBuffer_81: (_1: t_86) => toBuffer_81;
 
 declare type toBuffer_82 = toBufferOk_82 | toBufferError_82;
 
-declare const toBuffer_82: (_1: WorldInfo) => toBuffer_82;
+declare const toBuffer_82: (_1: t_87) => toBuffer_82;
 
 declare type toBuffer_83 = toBufferOk_83 | toBufferError_83;
 
-declare const toBuffer_83: (_1: t_87) => toBuffer_83;
+declare const toBuffer_83: (_1: WorldInfo) => toBuffer_83;
 
 declare type toBuffer_84 = toBufferOk_84 | toBufferError_84;
 
@@ -4868,6 +4890,10 @@ declare const toBuffer_84: (_1: t_88) => toBuffer_84;
 declare type toBuffer_85 = toBufferOk_85 | toBufferError_85;
 
 declare const toBuffer_85: (_1: t_89) => toBuffer_85;
+
+declare type toBuffer_86 = toBufferOk_86 | toBufferError_86;
+
+declare const toBuffer_86: (_1: t_90) => toBuffer_86;
 
 declare type toBuffer_9 = toBufferOk_9 | toBufferError_9;
 
@@ -5041,6 +5067,8 @@ declare type toBufferError_84 = { TAG: "Error"; _0: PackError };
 
 declare type toBufferError_85 = { TAG: "Error"; _0: PackError };
 
+declare type toBufferError_86 = { TAG: "Error"; _0: PackError };
+
 declare type toBufferError_9 = { TAG: "Error"; _0: PackError };
 
 declare type toBufferOk = { TAG: "Ok"; _0: Buffer };
@@ -5211,27 +5239,17 @@ declare type toBufferOk_84 = { TAG: "Ok"; _0: Buffer };
 
 declare type toBufferOk_85 = { TAG: "Ok"; _0: Buffer };
 
+declare type toBufferOk_86 = { TAG: "Ok"; _0: Buffer };
+
 declare type toBufferOk_9 = { TAG: "Ok"; _0: Buffer };
 
-declare function toByte(t: t_76): number;
+declare function toByte(t: t_77): number;
 
 declare function toString_2(data: CreativePower): string;
 
 declare type TrackedProjectileReference_t = { readonly expectedIdentity: number; readonly expectedType: number };
 
 export declare namespace TravellingMerchantInventoryPacket {
-    export {
-        t_68 as t,
-        parseOk_66 as parseOk,
-        parseError_66 as parseError,
-        parse_66 as parse,
-        toBufferOk_66 as toBufferOk,
-        toBufferError_66 as toBufferError,
-        toBuffer_66 as toBuffer
-    }
-}
-
-export declare namespace TreeGrowFxPacket {
     export {
         t_69 as t,
         parseOk_67 as parseOk,
@@ -5240,6 +5258,18 @@ export declare namespace TreeGrowFxPacket {
         toBufferOk_67 as toBufferOk,
         toBufferError_67 as toBufferError,
         toBuffer_67 as toBuffer
+    }
+}
+
+export declare namespace TreeGrowFxPacket {
+    export {
+        t_70 as t,
+        parseOk_68 as parseOk,
+        parseError_68 as parseError,
+        parse_68 as parse,
+        toBufferOk_68 as toBufferOk,
+        toBufferError_68 as toBufferError,
+        toBuffer_68 as toBuffer
     }
 }
 
@@ -5256,10 +5286,10 @@ declare class untypedT { }
 
 export declare namespace UnusedPacket {
     export {
-        t_70 as t,
-        parseOk_68 as parseOk,
-        parseError_68 as parseError,
-        parse_68 as parse
+        t_71 as t,
+        parseOk_69 as parseOk,
+        parseError_69 as parseError,
+        parse_69 as parse
     }
 }
 
@@ -5276,18 +5306,6 @@ declare type UpdateType_t =
 
 export declare namespace WallPaintPacket {
     export {
-        t_71 as t,
-        parseOk_69 as parseOk,
-        parseError_69 as parseError,
-        parse_69 as parse,
-        toBufferOk_68 as toBufferOk,
-        toBufferError_68 as toBufferError,
-        toBuffer_68 as toBuffer
-    }
-}
-
-export declare namespace WeaponsRackTryPlacingPacket {
-    export {
         t_72 as t,
         parseOk_70 as parseOk,
         parseError_70 as parseError,
@@ -5298,7 +5316,7 @@ export declare namespace WeaponsRackTryPlacingPacket {
     }
 }
 
-export declare namespace WiredCannonShotPacket {
+export declare namespace WeaponsRackTryPlacingPacket {
     export {
         t_73 as t,
         parseOk_71 as parseOk,
@@ -5310,7 +5328,7 @@ export declare namespace WiredCannonShotPacket {
     }
 }
 
-export declare namespace WorldDataRequestPacket {
+export declare namespace WiredCannonShotPacket {
     export {
         t_74 as t,
         parseOk_72 as parseOk,
@@ -5319,6 +5337,18 @@ export declare namespace WorldDataRequestPacket {
         toBufferOk_71 as toBufferOk,
         toBufferError_71 as toBufferError,
         toBuffer_71 as toBuffer
+    }
+}
+
+export declare namespace WorldDataRequestPacket {
+    export {
+        t_75 as t,
+        parseOk_73 as parseOk,
+        parseError_73 as parseError,
+        parse_73 as parse,
+        toBufferOk_72 as toBufferOk,
+        toBufferError_72 as toBufferError,
+        toBuffer_72 as toBuffer
     }
 }
 
@@ -5480,24 +5510,24 @@ export declare namespace WorldInfoPacket {
     export {
         eventInfo,
         WorldInfo,
-        parseOk_83 as parseOk,
-        parseError_83 as parseError,
-        parse_83 as parse,
-        toBufferOk_82 as toBufferOk,
-        toBufferError_82 as toBufferError,
-        toBuffer_82 as toBuffer
+        parseOk_84 as parseOk,
+        parseError_84 as parseError,
+        parse_84 as parse,
+        toBufferOk_83 as toBufferOk,
+        toBufferError_83 as toBufferError,
+        toBuffer_83 as toBuffer
     }
 }
 
 export declare namespace ZonesPacket {
     export {
-        t_75 as t,
-        parseOk_73 as parseOk,
-        parseError_73 as parseError,
-        parse_73 as parse,
-        toBufferOk_72 as toBufferOk,
-        toBufferError_72 as toBufferError,
-        toBuffer_72 as toBuffer
+        t_76 as t,
+        parseOk_74 as parseOk,
+        parseError_74 as parseError,
+        parse_74 as parse,
+        toBufferOk_73 as toBufferOk,
+        toBufferError_73 as toBufferError,
+        toBuffer_73 as toBuffer
     }
 }
 
