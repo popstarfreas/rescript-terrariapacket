@@ -157,7 +157,7 @@ let addPacketContext = (
 let mapPacket = (result, ~packetName, fn): result<Packet.t, IParser.parseError> =>
   result
   ->Result.map(fn)
-  ->Result.mapError(e => IParser.ReaderError(addPacketContext(~packetName, e)))
+  ->Result.mapError(e => IParser.ParseError.ReaderError(addPacketContext(~packetName, e)))
 
 type parsers = {
   parse: (NodeJs.Buffer.t, bool) => result<Packet.t, IParser.parseError>,
