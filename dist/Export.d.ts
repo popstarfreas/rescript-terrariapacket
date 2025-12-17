@@ -3884,7 +3884,10 @@ declare type t_78 = {
     readonly deathReason: (undefined | string)
 };
 
-declare type t_79 = number;
+declare type t_79 = {
+    playerSlotId: number;
+    serverWantsToRunCheckBytesInClientLoopThread: boolean;
+}
 
 declare type t_8 = void;
 
@@ -4178,7 +4181,10 @@ declare type t_93 = {
     readonly reason: NetworkText;
 };
 
-declare type t_94 = number;
+declare type t_94 = {
+    playerSlotId: number;
+    serverWantsToRunCheckBytesInClientLoopThread: boolean;
+}
 
 declare type t_95 = {
     readonly playerId: number;

@@ -1,7 +1,10 @@
 import type { readError } from "../ErrorAwarePacketReader.js";
 import type { PackError } from "../ErrorAwarePacketWriter.js";
 /// <reference types="node" />
-export type t = number;
+export type t = {
+  playerSlotId: number;
+  serverWantsToRunCheckBytesInClientLoopThread: boolean;
+}
 
 export type parseOk = { TAG: "Ok"; _0: t };
 export type parseError = { TAG: "Error"; _0: readError };
