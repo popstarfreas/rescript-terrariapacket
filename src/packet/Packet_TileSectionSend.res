@@ -277,7 +277,7 @@ module Entity = {
       switch parseResult.contents {
       | Error(_) => ()
       | Ok(_) =>
-        if itemsFlags->BitFlags.flagN(i) {
+        if itemsFlags->BitFlags.flagN(1 << i) {
           switch parseDisplayItem(reader) {
           | Ok(item) => items->Array.push(Some(item))->ignore
           | Error(err) => parseResult := Error(err)
@@ -292,7 +292,7 @@ module Entity = {
       switch parseResult.contents {
       | Error(_) => ()
       | Ok(_) =>
-        if dyeFlags->BitFlags.flagN(i) {
+        if dyeFlags->BitFlags.flagN(1 << i) {
           switch parseDisplayItem(reader) {
           | Ok(item) => dyes->Array.push(Some(item))->ignore
           | Error(err) => parseResult := Error(err)
@@ -326,7 +326,7 @@ module Entity = {
       switch parseResult.contents {
       | Error(_) => ()
       | Ok(_) =>
-        if flags->BitFlags.flagN(i) {
+        if flags->BitFlags.flagN(1 << i) {
           switch parseDisplayItem(reader) {
           | Ok(item) => items->Array.push(Some(item))->ignore
           | Error(err) => parseResult := Error(err)
@@ -341,7 +341,7 @@ module Entity = {
       switch parseResult.contents {
       | Error(_) => ()
       | Ok(_) =>
-        if flags->BitFlags.flagN(i + 2) {
+        if flags->BitFlags.flagN(1 << (i + 2)) {
           switch parseDisplayItem(reader) {
           | Ok(item) => dyes->Array.push(Some(item))->ignore
           | Error(err) => parseResult := Error(err)
@@ -364,12 +364,8 @@ module Entity = {
 
   let parseFoodPlatterKind = parseDisplayItem
 
-  let parse = (reader): result<t, ErrorAwarePacketReader.readError> => {
-    let? Ok(entityType) = reader->readByte("entityType")
-    let? Ok(id) = reader->readInt32("id")
-    let? Ok(x) = reader->readInt16("x")
-    let? Ok(y) = reader->readInt16("y")
-    let? Ok(entityKind) = switch entityType {
+  let parseEntityKind = (entityType, reader) =>
+    switch entityType {
     | 0 => parseTrainingDummyKind(reader)->Result.map(v => TrainingDummy(v))
     | 1 => parseItemFrameKind(reader)->Result.map(v => ItemFrame(v))
     | 2 => parseLogicSensorKind(reader)->Result.map(v => LogicSensor(v))
@@ -385,6 +381,13 @@ module Entity = {
       })
     }
 
+  let parse = (reader): result<t, ErrorAwarePacketReader.readError> => {
+    let? Ok(entityType) = reader->readByte("entityType")
+    let? Ok(id) = reader->readInt32("id")
+    let? Ok(x) = reader->readInt16("x")
+    let? Ok(y) = reader->readInt16("y")
+    let? Ok(entityKind) = parseEntityKind(entityType, reader)
+
     Ok({
       entityType,
       id,
@@ -393,6 +396,7 @@ module Entity = {
       entityKind,
     })
   }
+
 
   let {packByte, packInt16, packInt32} = module(ErrorAwareBufferWriter)
   type bufferWriter = ErrorAwareBufferWriter.t
@@ -626,6 +630,7 @@ module Decode = {
 
   let {readBuffer, getBytesLeft} = module(ErrorAwarePacketReader)
   let {readInt16, readInt32, readByte} = module(ErrorAwareBufferReader)
+  let getBufferBytesLeft = ErrorAwareBufferReader.getBytesLeft
   let readRepeated = (
     count: int,
     parseItem: unit => result<'a, ErrorAwarePacketReader.readError>,
@@ -874,7 +879,21 @@ module Decode = {
         let? Ok(signCount) = reader->readInt16("signCount")
         let? Ok(signs) = readRepeated(signCount, () => reader->Sign.parse)
         let? Ok(entityCount) = reader->readInt16("entityCount")
-        let? Ok(entities) = readRepeated(entityCount, () => reader->Entity.parse)
+        let? Ok(entitiesBytesLeft) = reader->getBufferBytesLeft
+        let? Ok(entitiesBuffer) =
+          ErrorAwareBufferReader.readBuffer(reader, entitiesBytesLeft, "entitiesBuffer")
+
+        let entityReader = PacketFactory.BufferReader.make(entitiesBuffer)
+        let? Ok(entities) = readRepeated(entityCount, () => Entity.parse(entityReader))
+        let? Ok(bytesLeft) = entityReader->getBufferBytesLeft
+        let? Ok() = if bytesLeft == 0 {
+          Ok()
+        } else {
+          Error({
+            ErrorAwarePacketReader.context: "Packet_TileSectionSend.entities",
+            error: JsError.make("Unexpected trailing entity bytes")->JsError.toJsExn,
+          })
+        }
 
         Ok({
           height,
