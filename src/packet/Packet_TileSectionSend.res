@@ -25,6 +25,7 @@ type tile = {
   liquid: option<int>,
   lava: bool,
   honey: bool,
+  shimmer: bool,
   wire: bool,
   wire2: bool,
   wire3: bool,
@@ -33,6 +34,10 @@ type tile = {
   slope: option<int>,
   actuator: bool,
   inActive: bool,
+  invisibleBlock: bool,
+  invisibleWall: bool,
+  fullbrightBlock: bool,
+  fullbrightWall: bool,
   coatHeader: int,
 }
 
@@ -45,6 +50,7 @@ type tileCache = {
   mutable liquid: option<int>,
   mutable lava: bool,
   mutable honey: bool,
+  mutable shimmer: bool,
   mutable wire: bool,
   mutable wire2: bool,
   mutable wire3: bool,
@@ -53,6 +59,10 @@ type tileCache = {
   mutable slope: option<int>,
   mutable actuator: bool,
   mutable inActive: bool,
+  mutable invisibleBlock: bool,
+  mutable invisibleWall: bool,
+  mutable fullbrightBlock: bool,
+  mutable fullbrightWall: bool,
   mutable coatHeader: int,
 }
 
@@ -64,6 +74,7 @@ let defaultTileCache = () => {
   liquid: None,
   lava: false,
   honey: false,
+  shimmer: false,
   wire: false,
   wire2: false,
   wire3: false,
@@ -72,6 +83,10 @@ let defaultTileCache = () => {
   slope: None,
   actuator: false,
   inActive: false,
+  invisibleBlock: false,
+  invisibleWall: false,
+  fullbrightBlock: false,
+  fullbrightWall: false,
   coatHeader: 0,
 }
 
@@ -83,6 +98,7 @@ let cacheToTile = (cache: tileCache): tile => {
   liquid: cache.liquid,
   lava: cache.lava,
   honey: cache.honey,
+  shimmer: cache.shimmer,
   wire: cache.wire,
   wire2: cache.wire2,
   wire3: cache.wire3,
@@ -91,6 +107,10 @@ let cacheToTile = (cache: tileCache): tile => {
   slope: cache.slope,
   actuator: cache.actuator,
   inActive: cache.inActive,
+  invisibleBlock: cache.invisibleBlock,
+  invisibleWall: cache.invisibleWall,
+  fullbrightBlock: cache.fullbrightBlock,
+  fullbrightWall: cache.fullbrightWall,
   coatHeader: cache.coatHeader,
 }
 
@@ -156,7 +176,7 @@ module Sign = {
 }
 
 module Entity = {
-  let {readInt16, readByte} = module(ErrorAwareBufferReader)
+  let {readInt16, readInt32, readByte} = module(ErrorAwareBufferReader)
   @genType
   type displayItem = {
     netId: int,
@@ -206,6 +226,7 @@ module Entity = {
   @genType
   type t = {
     entityType: int,
+    id: int,
     x: int,
     y: int,
     entityKind: kind,
@@ -345,6 +366,7 @@ module Entity = {
 
   let parse = (reader): result<t, ErrorAwarePacketReader.readError> => {
     let? Ok(entityType) = reader->readByte("entityType")
+    let? Ok(id) = reader->readInt32("id")
     let? Ok(x) = reader->readInt16("x")
     let? Ok(y) = reader->readInt16("y")
     let? Ok(entityKind) = switch entityType {
@@ -365,13 +387,14 @@ module Entity = {
 
     Ok({
       entityType,
+      id,
       x,
       y,
       entityKind,
     })
   }
 
-  let {packByte, packInt16} = module(ErrorAwareBufferWriter)
+  let {packByte, packInt16, packInt32} = module(ErrorAwareBufferWriter)
   type bufferWriter = ErrorAwareBufferWriter.t
 
   let packTrainingDummy = (writer: bufferWriter, trainingDummy): bufferWriter => {
@@ -454,8 +477,8 @@ module Entity = {
     let flags = BitFlags.fromFlags(
       ~flag1=hatRackKind.items->hasItem(0),
       ~flag2=hatRackKind.items->hasItem(1),
-      ~flag3=hatRackKind.dyes->hasItem(2),
-      ~flag4=hatRackKind.dyes->hasItem(3),
+      ~flag3=hatRackKind.dyes->hasItem(0),
+      ~flag4=hatRackKind.dyes->hasItem(1),
       ~flag5=false,
       ~flag6=false,
       ~flag7=false,
@@ -501,6 +524,7 @@ module Entity = {
   let pack = (writer: bufferWriter, entity: t): bufferWriter => {
     writer
     ->packByte(entity.entityType, "entityType")
+    ->packInt32(entity.id, "id")
     ->packInt16(entity.x, "x")
     ->packInt16(entity.y, "y")
     ->packEntityKind(entity.entityKind)
@@ -520,7 +544,59 @@ type t = {
 }
 
 let isTheSameAs = (self: tile, compTile: tile) => {
-  self == compTile
+  let sameHeaders =
+    self.activeTile->Option.isSome == compTile.activeTile->Option.isSome &&
+      self.inActive == compTile.inActive &&
+      self.wire == compTile.wire &&
+      self.wire2 == compTile.wire2 &&
+      self.wire3 == compTile.wire3 &&
+      self.halfBrick == compTile.halfBrick &&
+      self.slope == compTile.slope &&
+      self.actuator == compTile.actuator && self.color == compTile.color
+
+  if !sameHeaders {
+    false
+  } else {
+    let activeMatches = switch (self.activeTile, compTile.activeTile) {
+    | (None, None) => true
+    | (Some(activeTile), Some(compActive)) =>
+      if activeTile.tileType != compActive.tileType {
+        false
+      } else if TileFrameImportant.isImportant(activeTile.tileType) {
+        activeTile.frame == compActive.frame
+      } else {
+        true
+      }
+    | _ => false
+    }
+
+    if !activeMatches {
+      false
+    } else if self.wall != compTile.wall || self.liquid != compTile.liquid {
+      false
+    } else {
+      let sameWallColor = self.wallColor == compTile.wallColor
+      let sameWire4 = self.wire4 == compTile.wire4
+      let liquidMatches = switch compTile.liquid {
+      | None => sameWallColor && sameWire4
+      | Some(_) =>
+        sameWallColor &&
+          sameWire4 &&
+          self.lava == compTile.lava &&
+          self.honey == compTile.honey &&
+          self.shimmer == compTile.shimmer
+      }
+
+      if !liquidMatches {
+        false
+      } else {
+        self.invisibleBlock == compTile.invisibleBlock &&
+        self.invisibleWall == compTile.invisibleWall &&
+        self.fullbrightBlock == compTile.fullbrightBlock &&
+        self.fullbrightWall == compTile.fullbrightWall
+      }
+    }
+  }
 }
 
 module Decode = {
@@ -532,6 +608,7 @@ module Decode = {
     tile.liquid = None
     tile.lava = false
     tile.honey = false
+    tile.shimmer = false
     tile.wire = false
     tile.wire2 = false
     tile.wire3 = false
@@ -540,6 +617,11 @@ module Decode = {
     tile.slope = None
     tile.actuator = false
     tile.inActive = false
+    tile.invisibleBlock = false
+    tile.invisibleWall = false
+    tile.fullbrightBlock = false
+    tile.fullbrightWall = false
+    tile.coatHeader = 0
   }
 
   let {readBuffer, getBytesLeft} = module(ErrorAwarePacketReader)
@@ -616,6 +698,10 @@ module Decode = {
           Ok((BitFlags.fromByte(0), BitFlags.fromByte(0), 0))
         }
         tileCache.coatHeader = header2
+        tileCache.invisibleBlock = (header2 &&& 2) != 0
+        tileCache.invisibleWall = (header2 &&& 4) != 0
+        tileCache.fullbrightBlock = (header2 &&& 8) != 0
+        tileCache.fullbrightWall = (header2 &&& 16) != 0
 
         let oldActive = tileCache.activeTile
         let? Ok() = if header5->BitFlags.flag2 {
@@ -674,7 +760,9 @@ module Decode = {
         let? Ok() = if liquidBits != 0 {
           let? Ok(liquidValue) = reader->readByte("liquidValue")
           tileCache.liquid = Some(liquidValue)
-          if liquidBits > 1 {
+          if header3->BitFlags.flag8 {
+            tileCache.shimmer = true
+          } else if liquidBits > 1 {
             if liquidBits == 2 {
               tileCache.lava = true
             } else {
@@ -815,14 +903,17 @@ module Encode = {
   type liquidBits = Zero | One | Two | Three
 
   let getLiquidBitFlags = (tile: tile): (bool, bool) => {
-    let liquidBits: liquidBits = if tile.honey {
+    let hasLiquid = tile.liquid->Option.isSome
+    let liquidBits: liquidBits = if !hasLiquid {
+      Zero
+    } else if tile.shimmer {
+      One
+    } else if tile.honey {
       Three
     } else if tile.lava {
       Two
-    } else if tile.liquid->Option.isSome {
-      One
     } else {
-      Zero
+      One
     }
     switch liquidBits {
     | Zero => (false, false)
@@ -872,8 +963,20 @@ module Encode = {
 
   type bufferWriter = ErrorAwareBufferWriter.t
 
+  let allowsSaveCompressionBatching = (tile: tile): bool =>
+    switch tile.activeTile {
+    | Some(activeTile) => activeTile.tileType != 520 && activeTile.tileType != 423
+    | None => true
+    }
+
   let packTile = (writer: bufferWriter, tile: tile, repeatCount: int): bufferWriter => {
-    let header2 = tile.coatHeader
+    let coatFlags =
+      (tile.invisibleBlock ? 2 : 0) +
+      (tile.invisibleWall ? 4 : 0) +
+      (tile.fullbrightBlock ? 8 : 0) +
+      (tile.fullbrightWall ? 16 : 0)
+    let header2 = tile.coatHeader ||| coatFlags
+    let hasLiquid = tile.liquid->Option.isSome
     let header3 = BitFlags.fromFlags(
       ~flag1=header2 > 0,
       ~flag2=tile.actuator,
@@ -885,7 +988,7 @@ module Encode = {
       | Some(wall) => wall > 255
       | None => false
       },
-      ~flag8=false /* nothing? */,
+      ~flag8=tile.shimmer && hasLiquid,
     )
     let (slopeBitFlag3, slopeBitFlag2, slopeBitFlag1) = getSlopeBitFlags(tile)
     let header4 = BitFlags.fromFlags(
@@ -986,7 +1089,7 @@ module Encode = {
   ): unit => {
     switch lastTile.contents {
     | Some(last) =>
-      if tile->isTheSameAs(last.tile) {
+      if tile->isTheSameAs(last.tile) && allowsSaveCompressionBatching(tile) {
         last.count = last.count + 1
       } else {
         writer->packTile(last.tile, last.count)->ignore

@@ -25,6 +25,7 @@ type tile = {
   liquid: option<int>,
   lava: bool,
   honey: bool,
+  shimmer: bool,
   wire: bool,
   wire2: bool,
   wire3: bool,
@@ -33,6 +34,10 @@ type tile = {
   slope: option<int>,
   actuator: bool,
   inActive: bool,
+  invisibleBlock: bool,
+  invisibleWall: bool,
+  fullbrightBlock: bool,
+  fullbrightWall: bool,
   coatHeader: int,
 }
 
@@ -45,6 +50,7 @@ type tileCache = {
   mutable liquid: option<int>,
   mutable lava: bool,
   mutable honey: bool,
+  mutable shimmer: bool,
   mutable wire: bool,
   mutable wire2: bool,
   mutable wire3: bool,
@@ -53,6 +59,10 @@ type tileCache = {
   mutable slope: option<int>,
   mutable actuator: bool,
   mutable inActive: bool,
+  mutable invisibleBlock: bool,
+  mutable invisibleWall: bool,
+  mutable fullbrightBlock: bool,
+  mutable fullbrightWall: bool,
   mutable coatHeader: int,
 }
 
@@ -126,6 +136,7 @@ module Entity: {
   @genType
   type t = {
     entityType: int,
+    id: int,
     x: int,
     y: int,
     entityKind: kind,
