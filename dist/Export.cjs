@@ -6344,6 +6344,13 @@ function equal(a, b) {
     return false;
   }
 }
+function notequal(a, b) {
+  if ((typeof a === "number" || typeof a === "bigint") && (typeof b === "number" || typeof b === "bigint")) {
+    return a !== b;
+  } else {
+    return !equal(a, b);
+  }
+}
 
 // src/TileSolid.js
 var map3 = /* @__PURE__ */ new Map([
@@ -9632,6 +9639,9 @@ function readInt32Unsafe2(prim) {
 function readStringUnsafe2(prim) {
   return prim.readString();
 }
+function getBytesLeftUnsafe2(prim) {
+  return prim.bytesLeft;
+}
 function withContext2(fn, reader, context) {
   try {
     return {
@@ -9663,6 +9673,12 @@ function readInt322(reader, context) {
 }
 function readString2(reader, context) {
   return withContext2(readStringUnsafe2, reader, context);
+}
+function readBuffer2(reader, bytes, context) {
+  return withContext2((reader2) => reader2.readBuffer(bytes), reader, context);
+}
+function getBytesLeft2(reader) {
+  return withContext2(getBytesLeftUnsafe2, reader, "getBytesLeft");
 }
 
 // src/ErrorAwareBufferWriter.js
@@ -9792,6 +9808,7 @@ function defaultTileCache() {
     liquid: void 0,
     lava: false,
     honey: false,
+    shimmer: false,
     wire: false,
     wire2: false,
     wire3: false,
@@ -9800,6 +9817,10 @@ function defaultTileCache() {
     slope: void 0,
     actuator: false,
     inActive: false,
+    invisibleBlock: false,
+    invisibleWall: false,
+    fullbrightBlock: false,
+    fullbrightWall: false,
     coatHeader: 0
   };
 }
@@ -9812,6 +9833,7 @@ function cacheToTile(cache) {
     liquid: cache.liquid,
     lava: cache.lava,
     honey: cache.honey,
+    shimmer: cache.shimmer,
     wire: cache.wire,
     wire2: cache.wire2,
     wire3: cache.wire3,
@@ -9820,6 +9842,10 @@ function cacheToTile(cache) {
     slope: cache.slope,
     actuator: cache.actuator,
     inActive: cache.inActive,
+    invisibleBlock: cache.invisibleBlock,
+    invisibleWall: cache.invisibleWall,
+    fullbrightBlock: cache.fullbrightBlock,
+    fullbrightWall: cache.fullbrightWall,
     coatHeader: cache.coatHeader
   };
 }
@@ -9903,7 +9929,7 @@ function parseDisplayDollKind(reader) {
   for (let i = 0; i <= 7; ++i) {
     let match = parseResult;
     if (match.TAG === "Ok") {
-      if (flagN(itemsFlags, i)) {
+      if (flagN(itemsFlags, 1 << i)) {
         let item = parseDisplayItem(reader);
         if (item.TAG === "Ok") {
           items.push(item._0);
@@ -9921,7 +9947,7 @@ function parseDisplayDollKind(reader) {
   for (let i$1 = 0; i$1 <= 7; ++i$1) {
     let match$1 = parseResult;
     if (match$1.TAG === "Ok") {
-      if (flagN(dyeFlags, i$1)) {
+      if (flagN(dyeFlags, 1 << i$1)) {
         let item$1 = parseDisplayItem(reader);
         if (item$1.TAG === "Ok") {
           dyes.push(item$1._0);
@@ -9967,7 +9993,7 @@ function parseHatRackKind(reader) {
   for (let i = 0; i <= 1; ++i) {
     let match = parseResult;
     if (match.TAG === "Ok") {
-      if (flagN(flags, i)) {
+      if (flagN(flags, 1 << i)) {
         let item = parseDisplayItem(reader);
         if (item.TAG === "Ok") {
           items.push(item._0);
@@ -9985,7 +10011,7 @@ function parseHatRackKind(reader) {
   for (let i$1 = 0; i$1 <= 1; ++i$1) {
     let match$1 = parseResult;
     if (match$1.TAG === "Ok") {
-      if (flagN(flags, i$1 + 2 | 0)) {
+      if (flagN(flags, 1 << (i$1 + 2 | 0))) {
         let item$1 = parseDisplayItem(reader);
         if (item$1.TAG === "Ok") {
           dyes.push(item$1._0);
@@ -10016,6 +10042,61 @@ function parseHatRackKind(reader) {
     };
   }
 }
+function parseEntityKind(entityType, reader) {
+  switch (entityType) {
+    case 0:
+      return map2(parseTrainingDummyKind(reader), (v) => ({
+        TAG: "TrainingDummy",
+        _0: v
+      }));
+    case 1:
+      return map2(parseDisplayItem(reader), (v) => ({
+        TAG: "ItemFrame",
+        _0: v
+      }));
+    case 2:
+      return map2(parseLogicSensorKind(reader), (v) => ({
+        TAG: "LogicSensor",
+        _0: v
+      }));
+    case 3:
+      return map2(parseDisplayDollKind(reader), (v) => ({
+        TAG: "DisplayDoll",
+        _0: v
+      }));
+    case 4:
+      return map2(parseDisplayItem(reader), (v) => ({
+        TAG: "WeaponsRack",
+        _0: v
+      }));
+    case 5:
+      return map2(parseHatRackKind(reader), (v) => ({
+        TAG: "HatRack",
+        _0: v
+      }));
+    case 6:
+      return map2(parseDisplayItem(reader), (v) => ({
+        TAG: "FoodPlatter",
+        _0: v
+      }));
+    case 7:
+      return {
+        TAG: "Ok",
+        _0: {
+          TAG: "TeleportationPylon",
+          _0: void 0
+        }
+      };
+    default:
+      return {
+        TAG: "Error",
+        _0: {
+          context: "Entity.parse",
+          error: new Error("Unknown entity kind: " + entityType.toString())
+        }
+      };
+  }
+}
 function packDisplayItem(writer, displayItem) {
   return packInt162(packByte2(packInt162(writer, displayItem.netId, "netId"), displayItem.prefix, "prefix"), displayItem.stack, "stack");
 }
@@ -10023,7 +10104,7 @@ function hasItem(arr, n) {
   return isSome(flatMap(arr[n], (a) => a));
 }
 function pack$22(writer, entity) {
-  let writer$1 = packInt162(packInt162(packByte2(writer, entity.entityType, "entityType"), entity.x, "x"), entity.y, "y");
+  let writer$1 = packInt162(packInt162(packInt322(packByte2(writer, entity.entityType, "entityType"), entity.id, "id"), entity.x, "x"), entity.y, "y");
   let entityKind = entity.entityKind;
   switch (entityKind.TAG) {
     case "DisplayDoll":
@@ -10046,7 +10127,7 @@ function pack$22(writer, entity) {
       return writer$1;
     case "HatRack":
       let hatRackKind = entityKind._0;
-      let flags = fromFlags(hasItem(hatRackKind.items, 0), hasItem(hatRackKind.items, 1), hasItem(hatRackKind.dyes, 2), hasItem(hatRackKind.dyes, 3), false, false, false, false);
+      let flags = fromFlags(hasItem(hatRackKind.items, 0), hasItem(hatRackKind.items, 1), hasItem(hatRackKind.dyes, 0), hasItem(hatRackKind.dyes, 1), false, false, false, false);
       packByte2(writer$1, toByte(flags), "flags");
       for (let i$2 = 0; i$2 <= 1; ++i$2) {
         let item$2 = flatMap(hatRackKind.items[i$2], (a) => a);
@@ -10075,6 +10156,30 @@ function pack$22(writer, entity) {
       return packDisplayItem(writer$1, entityKind._0);
   }
 }
+function isTheSameAs(self, compTile) {
+  let sameHeaders = isSome(self.activeTile) === isSome(compTile.activeTile) && self.inActive === compTile.inActive && self.wire === compTile.wire && self.wire2 === compTile.wire2 && self.wire3 === compTile.wire3 && self.halfBrick === compTile.halfBrick && equal(self.slope, compTile.slope) && self.actuator === compTile.actuator && equal(self.color, compTile.color);
+  if (!sameHeaders) {
+    return false;
+  }
+  let match = self.activeTile;
+  let match$1 = compTile.activeTile;
+  let activeMatches = match !== void 0 ? match$1 !== void 0 && match.tileType === match$1.tileType ? isImportant(match.tileType) ? equal(match.frame, match$1.frame) : true : false : match$1 === void 0;
+  if (!activeMatches) {
+    return false;
+  }
+  if (notequal(self.wall, compTile.wall) || notequal(self.liquid, compTile.liquid)) {
+    return false;
+  }
+  let sameWallColor = equal(self.wallColor, compTile.wallColor);
+  let sameWire4 = self.wire4 === compTile.wire4;
+  let match$2 = compTile.liquid;
+  let liquidMatches = match$2 !== void 0 ? sameWallColor && sameWire4 && self.lava === compTile.lava && self.honey === compTile.honey && self.shimmer === compTile.shimmer : sameWallColor && sameWire4;
+  if (!liquidMatches || self.invisibleBlock !== compTile.invisibleBlock || self.invisibleWall !== compTile.invisibleWall || self.fullbrightBlock !== compTile.fullbrightBlock) {
+    return false;
+  } else {
+    return self.fullbrightWall === compTile.fullbrightWall;
+  }
+}
 function clearTileCache(tile) {
   tile.activeTile = void 0;
   tile.color = void 0;
@@ -10083,6 +10188,7 @@ function clearTileCache(tile) {
   tile.liquid = void 0;
   tile.lava = false;
   tile.honey = false;
+  tile.shimmer = false;
   tile.wire = false;
   tile.wire2 = false;
   tile.wire3 = false;
@@ -10091,6 +10197,11 @@ function clearTileCache(tile) {
   tile.slope = void 0;
   tile.actuator = false;
   tile.inActive = false;
+  tile.invisibleBlock = false;
+  tile.invisibleWall = false;
+  tile.fullbrightBlock = false;
+  tile.fullbrightWall = false;
+  tile.coatHeader = 0;
 }
 function readRepeated(count, parseItem) {
   let items = [];
@@ -10202,7 +10313,7 @@ function parse65(payload) {
       return e2;
     }
     let header5 = fromByte(e2._0);
-    let e$12;
+    let e$16;
     if (flag1(header5)) {
       let e$22 = readByte2(reader, "header4_conditional");
       if (e$22.TAG === "Ok") {
@@ -10237,7 +10348,7 @@ function parse65(payload) {
         }
         if (e$32.TAG === "Ok") {
           let match = e$32._0;
-          e$12 = {
+          e$16 = {
             TAG: "Ok",
             _0: [
               header4,
@@ -10246,13 +10357,13 @@ function parse65(payload) {
             ]
           };
         } else {
-          e$12 = e$32;
+          e$16 = e$32;
         }
       } else {
-        e$12 = e$22;
+        e$16 = e$22;
       }
     } else {
-      e$12 = {
+      e$16 = {
         TAG: "Ok",
         _0: [
           fromByte(0),
@@ -10261,13 +10372,18 @@ function parse65(payload) {
         ]
       };
     }
-    if (e$12.TAG !== "Ok") {
-      return e$12;
+    if (e$16.TAG !== "Ok") {
+      return e$16;
     }
-    let match$1 = e$12._0;
+    let match$1 = e$16._0;
+    let header2 = match$1[2];
     let header3$1 = match$1[1];
     let header4$1 = match$1[0];
-    tileCache.coatHeader = match$1[2];
+    tileCache.coatHeader = header2;
+    tileCache.invisibleBlock = (header2 & 2) !== 0;
+    tileCache.invisibleWall = (header2 & 4) !== 0;
+    tileCache.fullbrightBlock = (header2 & 8) !== 0;
+    tileCache.fullbrightWall = (header2 & 16) !== 0;
     let oldActive = tileCache.activeTile;
     let e$62;
     if (flag2(header5)) {
@@ -10314,25 +10430,25 @@ function parse65(payload) {
           };
         }
         if (e$102.TAG === "Ok") {
-          let e$13;
+          let e$132;
           if (flag4(header3$1)) {
-            let e$14 = readByte2(reader, "color");
-            if (e$14.TAG === "Ok") {
-              tileCache.color = e$14._0;
-              e$13 = {
+            let e$142 = readByte2(reader, "color");
+            if (e$142.TAG === "Ok") {
+              tileCache.color = e$142._0;
+              e$132 = {
                 TAG: "Ok",
                 _0: void 0
               };
             } else {
-              e$13 = e$14;
+              e$132 = e$142;
             }
           } else {
-            e$13 = {
+            e$132 = {
               TAG: "Ok",
               _0: void 0
             };
           }
-          if (e$13.TAG === "Ok") {
+          if (e$132.TAG === "Ok") {
             tileCache.activeTile = {
               tileType,
               frame: e$102._0
@@ -10342,7 +10458,7 @@ function parse65(payload) {
               _0: void 0
             };
           } else {
-            e$62 = e$13;
+            e$62 = e$132;
           }
         } else {
           e$62 = e$102;
@@ -10359,39 +10475,39 @@ function parse65(payload) {
     if (e$62.TAG !== "Ok") {
       return e$62;
     }
-    let e$15;
+    let e$152;
     if (flag3(header5)) {
-      let e$16 = readByte2(reader, "wall");
-      if (e$16.TAG === "Ok") {
-        tileCache.wall = e$16._0;
+      let e$162 = readByte2(reader, "wall");
+      if (e$162.TAG === "Ok") {
+        tileCache.wall = e$162._0;
         if (flag5(header3$1)) {
           let e$17 = readByte2(reader, "wallColor");
           if (e$17.TAG === "Ok") {
             tileCache.wallColor = e$17._0;
-            e$15 = {
+            e$152 = {
               TAG: "Ok",
               _0: void 0
             };
           } else {
-            e$15 = e$17;
+            e$152 = e$17;
           }
         } else {
-          e$15 = {
+          e$152 = {
             TAG: "Ok",
             _0: void 0
           };
         }
       } else {
-        e$15 = e$16;
+        e$152 = e$162;
       }
     } else {
-      e$15 = {
+      e$152 = {
         TAG: "Ok",
         _0: void 0
       };
     }
-    if (e$15.TAG !== "Ok") {
-      return e$15;
+    if (e$152.TAG !== "Ok") {
+      return e$152;
     }
     let liquidBits = (toByte(header5) & 24) >> 3;
     let e$18;
@@ -10399,7 +10515,9 @@ function parse65(payload) {
       let e$19 = readByte2(reader, "liquidValue");
       if (e$19.TAG === "Ok") {
         tileCache.liquid = e$19._0;
-        if (liquidBits > 1) {
+        if (flag8(header3$1)) {
+          tileCache.shimmer = true;
+        } else if (liquidBits > 1) {
           if (liquidBits === 2) {
             tileCache.lava = true;
           } else {
@@ -10570,9 +10688,9 @@ function parse65(payload) {
     if (e2.TAG !== "Ok") {
       return e2;
     }
-    let e$12 = readInt162(reader, "x");
-    if (e$12.TAG !== "Ok") {
-      return e$12;
+    let e$16 = readInt162(reader, "x");
+    if (e$16.TAG !== "Ok") {
+      return e$16;
     }
     let e$22 = readInt162(reader, "y");
     if (e$22.TAG !== "Ok") {
@@ -10584,7 +10702,7 @@ function parse65(payload) {
         TAG: "Ok",
         _0: {
           id: e2._0,
-          x: e$12._0,
+          x: e$16._0,
           y: e$22._0,
           name: e$32._0
         }
@@ -10605,9 +10723,9 @@ function parse65(payload) {
     if (e2.TAG !== "Ok") {
       return e2;
     }
-    let e$12 = readInt162(reader, "x");
-    if (e$12.TAG !== "Ok") {
-      return e$12;
+    let e$16 = readInt162(reader, "x");
+    if (e$16.TAG !== "Ok") {
+      return e$16;
     }
     let e$22 = readInt162(reader, "y");
     if (e$22.TAG !== "Ok") {
@@ -10619,7 +10737,7 @@ function parse65(payload) {
         TAG: "Ok",
         _0: {
           id: e2._0,
-          x: e$12._0,
+          x: e$16._0,
           y: e$22._0,
           name: e$32._0
         }
@@ -10635,97 +10753,67 @@ function parse65(payload) {
   if (e$10.TAG !== "Ok") {
     return e$10;
   }
-  let e$11 = readRepeated(e$10._0, () => {
-    let e2 = readByte2(reader, "entityType");
+  let e$11 = getBytesLeft2(reader);
+  if (e$11.TAG !== "Ok") {
+    return e$11;
+  }
+  let e$12 = readBuffer2(reader, e$11._0, "entitiesBuffer");
+  if (e$12.TAG !== "Ok") {
+    return e$12;
+  }
+  let entityReader = new bufferreader_default(e$12._0);
+  let e$13 = readRepeated(e$10._0, () => {
+    let e2 = readByte2(entityReader, "entityType");
     if (e2.TAG !== "Ok") {
       return e2;
     }
     let entityType = e2._0;
-    let e$12 = readInt162(reader, "x");
-    if (e$12.TAG !== "Ok") {
-      return e$12;
+    let e$16 = readInt322(entityReader, "id");
+    if (e$16.TAG !== "Ok") {
+      return e$16;
     }
-    let e$22 = readInt162(reader, "y");
+    let e$22 = readInt162(entityReader, "x");
     if (e$22.TAG !== "Ok") {
       return e$22;
     }
-    let e$32;
-    switch (entityType) {
-      case 0:
-        e$32 = map2(parseTrainingDummyKind(reader), (v) => ({
-          TAG: "TrainingDummy",
-          _0: v
-        }));
-        break;
-      case 1:
-        e$32 = map2(parseDisplayItem(reader), (v) => ({
-          TAG: "ItemFrame",
-          _0: v
-        }));
-        break;
-      case 2:
-        e$32 = map2(parseLogicSensorKind(reader), (v) => ({
-          TAG: "LogicSensor",
-          _0: v
-        }));
-        break;
-      case 3:
-        e$32 = map2(parseDisplayDollKind(reader), (v) => ({
-          TAG: "DisplayDoll",
-          _0: v
-        }));
-        break;
-      case 4:
-        e$32 = map2(parseDisplayItem(reader), (v) => ({
-          TAG: "WeaponsRack",
-          _0: v
-        }));
-        break;
-      case 5:
-        e$32 = map2(parseHatRackKind(reader), (v) => ({
-          TAG: "HatRack",
-          _0: v
-        }));
-        break;
-      case 6:
-        e$32 = map2(parseDisplayItem(reader), (v) => ({
-          TAG: "FoodPlatter",
-          _0: v
-        }));
-        break;
-      case 7:
-        e$32 = {
-          TAG: "Ok",
-          _0: {
-            TAG: "TeleportationPylon",
-            _0: void 0
-          }
-        };
-        break;
-      default:
-        e$32 = {
-          TAG: "Error",
-          _0: {
-            context: "Entity.parse",
-            error: new Error("Unknown entity kind: " + entityType.toString())
-          }
-        };
+    let e$32 = readInt162(entityReader, "y");
+    if (e$32.TAG !== "Ok") {
+      return e$32;
     }
-    if (e$32.TAG === "Ok") {
+    let e$42 = parseEntityKind(entityType, entityReader);
+    if (e$42.TAG === "Ok") {
       return {
         TAG: "Ok",
         _0: {
           entityType,
-          x: e$12._0,
-          y: e$22._0,
-          entityKind: e$32._0
+          id: e$16._0,
+          x: e$22._0,
+          y: e$32._0,
+          entityKind: e$42._0
         }
       };
     } else {
-      return e$32;
+      return e$42;
     }
   });
-  if (e$11.TAG === "Ok") {
+  if (e$13.TAG !== "Ok") {
+    return e$13;
+  }
+  let e$14 = getBytesLeft2(entityReader);
+  if (e$14.TAG !== "Ok") {
+    return e$14;
+  }
+  let e$15 = e$14._0 === 0 ? {
+    TAG: "Ok",
+    _0: void 0
+  } : {
+    TAG: "Error",
+    _0: {
+      context: "Packet_TileSectionSend.entities",
+      error: new Error("Unexpected trailing entity bytes")
+    }
+  };
+  if (e$15.TAG === "Ok") {
     return {
       TAG: "Ok",
       _0: {
@@ -10736,15 +10824,16 @@ function parse65(payload) {
         tiles,
         chests: e$7._0,
         signs: e$9._0,
-        entities: e$11._0
+        entities: e$13._0
       }
     };
   } else {
-    return e$11;
+    return e$15;
   }
 }
 function getLiquidBitFlags(tile) {
-  let liquidBits = tile.honey ? "Three" : tile.lava ? "Two" : isSome(tile.liquid) ? "One" : "Zero";
+  let hasLiquid = isSome(tile.liquid);
+  let liquidBits = hasLiquid ? tile.shimmer ? "One" : tile.honey ? "Three" : tile.lava ? "Two" : "One" : "Zero";
   switch (liquidBits) {
     case "Zero":
       return [
@@ -10858,10 +10947,24 @@ function getRepeatCountBitFlags(repeatCount) {
       ];
   }
 }
+function allowsSaveCompressionBatching(tile) {
+  let activeTile = tile.activeTile;
+  if (activeTile !== void 0) {
+    if (activeTile.tileType !== 520) {
+      return activeTile.tileType !== 423;
+    } else {
+      return false;
+    }
+  } else {
+    return true;
+  }
+}
 function packTile(writer, tile, repeatCount) {
-  let header2 = tile.coatHeader;
+  let coatFlags = (((tile.invisibleBlock ? 2 : 0) + (tile.invisibleWall ? 4 : 0) | 0) + (tile.fullbrightBlock ? 8 : 0) | 0) + (tile.fullbrightWall ? 16 : 0) | 0;
+  let header2 = tile.coatHeader | coatFlags;
+  let hasLiquid = isSome(tile.liquid);
   let wall = tile.wall;
-  let header3 = fromFlags(header2 > 0, tile.actuator, tile.inActive, isSome(tile.color), isSome(tile.wall) && isSome(tile.wallColor), tile.wire4, wall !== void 0 ? wall > 255 : false, false);
+  let header3 = fromFlags(header2 > 0, tile.actuator, tile.inActive, isSome(tile.color), isSome(tile.wall) && isSome(tile.wallColor), tile.wire4, wall !== void 0 ? wall > 255 : false, tile.shimmer && hasLiquid);
   let match = getSlopeBitFlags(tile);
   let header4 = fromFlags(toByte(header3) > 0, tile.wire, tile.wire2, tile.wire3, match[2], match[1], match[0], false);
   let match$1 = getLiquidBitFlags(tile);
@@ -10925,7 +11028,7 @@ function packTile(writer, tile, repeatCount) {
 function decidePackTile(writer, lastTile, tile) {
   let last = lastTile.contents;
   if (last !== void 0) {
-    if (equal(tile, last.tile)) {
+    if (isTheSameAs(tile, last.tile) && allowsSaveCompressionBatching(tile)) {
       last.count = last.count + 1 | 0;
     } else {
       packTile(writer, last.tile, last.count);
