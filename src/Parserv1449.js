@@ -4,7 +4,6 @@ import * as Stdlib_Lazy from "@rescript/runtime/lib/es6/Stdlib_Lazy.js";
 import * as Stdlib_Result from "@rescript/runtime/lib/es6/Stdlib_Result.js";
 import * as Primitive_exceptions from "@rescript/runtime/lib/es6/Primitive_exceptions.js";
 import * as PacketType$TerrariaPacket from "./PacketType.js";
-import * as Parserv1449$TerrariaPacket from "./Parserv1449.js";
 import * as Packet_Emoji$TerrariaPacket from "./packet/Packet_Emoji.js";
 import * as Packet_Zones$TerrariaPacket from "./packet/Packet_Zones.js";
 import * as Packet_Status$TerrariaPacket from "./packet/Packet_Status.js";
@@ -2626,72 +2625,8 @@ function parseLazy(buffer, fromServer) {
   }
 }
 
-function convertv1449IfNeeded(buffer, fromServer) {
-  let match = buffer.length;
-  if (!(match > 2 || match < 0)) {
-    return {
-      TAG: "Error",
-      _0: "InvalidPacketLength"
-    };
-  }
-  let match$1 = PacketType$TerrariaPacket.fromInt(buffer[2]);
-  if (match$1 === undefined) {
-    return {
-      TAG: "Error",
-      _0: "InvalidPacketType"
-    };
-  }
-  switch (match$1) {
-    case "PlayerInfo" :
-    case "WorldInfo" :
-      break;
-    default:
-      return {
-        TAG: "Ok",
-        _0: "PacketStructureIsSame"
-      };
-  }
-  try {
-    return Stdlib_Result.map(Stdlib_Result.map(Parserv1449$TerrariaPacket.parse(buffer, fromServer), oldPacket => {
-      switch (oldPacket.TAG) {
-        case "PlayerInfo" :
-          return {
-            TAG: "PlayerInfo",
-            _0: Packet_PlayerInfo$TerrariaPacket.fromv1449(oldPacket._0)
-          };
-        case "WorldInfo" :
-          return {
-            TAG: "WorldInfo",
-            _0: Packet_WorldInfo$TerrariaPacket.fromv1449(oldPacket._0)
-          };
-        default:
-          return oldPacket;
-      }
-    }), p => ({
-      TAG: "ConvertedToLatestVersion",
-      _0: p
-    }));
-  } catch (raw_obj) {
-    let obj = Primitive_exceptions.internalToException(raw_obj);
-    if (obj.RE_EXN_ID === "JsExn") {
-      return {
-        TAG: "Error",
-        _0: {
-          TAG: "ReaderError",
-          _0: {
-            context: "Parser.parseLazy",
-            error: obj._1
-          }
-        }
-      };
-    }
-    throw obj;
-  }
-}
-
 export {
   parse,
   parseLazy,
-  convertv1449IfNeeded,
 }
-/* Parserv1449-TerrariaPacket Not a pure module */
+/* Packet_Emoji-TerrariaPacket Not a pure module */

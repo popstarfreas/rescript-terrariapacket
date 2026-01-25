@@ -1,15 +1,12 @@
-@genType
 type difficulty =
   | Softcore
   | Mediumcore
   | Hardcore
 
-@genType
 type mode =
   | Classic
   | Journey
 
-@genType
 type t = {
   playerId: int,
   skinVariant: int,
@@ -43,7 +40,6 @@ type t = {
   ateArtisanBread: bool,
 }
 
-@genType
 let parse: NodeJs.Buffer.t => result<t, ErrorAwarePacketReader.readError>
-@genType
 let toBuffer: t => result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError>
+let fromv1449: t => t

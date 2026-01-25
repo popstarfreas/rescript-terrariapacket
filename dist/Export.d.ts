@@ -372,6 +372,16 @@ declare type control_2 = {
     readonly isHoldingItemUse: boolean
 };
 
+declare type convertIfNeeded =
+| { TAG: "PacketStructureIsSame" }
+| { TAG: "ConvertedToLatestVersion"; _0: t_91 };
+
+declare type convertIfNeededResult =
+| { TAG: "Ok"; _0: convertIfNeeded }
+| { TAG: "Error"; _0: parseError_88 };
+
+declare const convertv1449IfNeeded: (buffer: Buffer, fromServer: boolean) => convertIfNeededResult;
+
 export declare namespace CountsAsHostForGameplaySetPacket {
     export {
         t_10 as t,
@@ -2288,8 +2298,11 @@ declare type parseOk_9 = { TAG: "Ok"; _0: t_9 };
 
 export declare namespace Parser {
     export {
+        convertIfNeeded,
+        convertIfNeededResult,
         parse_88 as parse,
-        parseLazy
+        parseLazy,
+        convertv1449IfNeeded
     }
 }
 
