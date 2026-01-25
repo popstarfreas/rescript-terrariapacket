@@ -1,4 +1,2 @@
-@genType
-let parse: IParser.parse<Packet.t>
-@genType
-let parseLazy: IParser.parseLazy<Packet.LazyPacket.t>
+let parse: IParser.parse<PacketV1449.t>
+let parseLazy: IParser.parseLazy<PacketV1449.LazyPacket.t>

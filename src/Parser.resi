@@ -3,7 +3,14 @@ let parseLazy: IParser.parseLazy<Packet.LazyPacket.t>
 type convertIfNeeded =
   | PacketStructureIsSame
   | ConvertedToLatestVersion(Packet.t)
-let convertv1449IfNeeded: (
+let convertFromV1449IfNeeded: (
   ~buffer: NodeJs.Buffer.t,
   ~fromServer: bool,
 ) => result<convertIfNeeded, IParser.parseError>
+type convertToV1449IfNeeded =
+  | PacketStructureIsSame
+  | ConvertedToV1449(PacketV1449.t)
+let convertToV1449IfNeeded: (
+  ~buffer: NodeJs.Buffer.t,
+  ~fromServer: bool,
+) => result<convertToV1449IfNeeded, IParser.parseError>

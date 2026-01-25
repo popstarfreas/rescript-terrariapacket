@@ -708,8 +708,3 @@ module Encode = {
 
 let parse = Decode.parse
 let toBuffer = Encode.toBuffer
-
-let fromv1449 = (worldInfo: t): t => {
-  // todo
-  worldInfo
-}

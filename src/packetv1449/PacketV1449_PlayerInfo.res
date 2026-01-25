@@ -231,7 +231,3 @@ module Encode = {
 
 let parse = Decode.parse
 let toBuffer = Encode.toBuffer
-let fromv1449 = (playerInfo: t): t => {
-  // todo
-  playerInfo
-}

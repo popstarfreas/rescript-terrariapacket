@@ -1,6 +1,7 @@
-@genType
-type t = {version: string}
-@genType
+type t = {
+  ...PacketV1449_ItemDropUpdate.t,
+  timeLeftInWhichTheItemCannotBeTakenByEnemies: int,
+}
+
 let parse: NodeJs.Buffer.t => result<t, ErrorAwarePacketReader.readError>
-@genType
 let toBuffer: t => result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError>

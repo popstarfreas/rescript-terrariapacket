@@ -1,6 +1,5 @@
-@genType
 type t = {
-  ...Packet_ItemDropUpdate.t,
+  ...PacketV1449_ItemDropUpdate.t,
   timeLeftInWhichTheItemCannotBeTakenByEnemies: int,
 }
 

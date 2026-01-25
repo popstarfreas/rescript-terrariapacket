@@ -1629,10 +1629,21 @@ let parseLazy: IParser.parseLazy<Packet.LazyPacket.t> = (
   }
 }
 
+let fromV1449 = (packet: PacketV1449.t): Packet.t => {
+  switch packet {
+  | packet => (packet :> Packet.t)
+  }
+}
+let v1449ToLatest = (packet: Packet.t): PacketV1449.t => {
+  switch packet {
+  | packet => (packet :> PacketV1449.t)
+  }
+}
+
 type convertIfNeeded =
   | PacketStructureIsSame
   | ConvertedToLatestVersion(Packet.t)
-let convertv1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): result<
+let convertFromV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): result<
   convertIfNeeded,
   IParser.parseError,
 > => {
@@ -1641,19 +1652,41 @@ let convertv1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): result
   | _ =>
     switch buffer->NodeJs.Buffer.unsafeGet(2)->PacketType.fromInt {
     // Update when we know changed packets list
+    | Some(ConnectRequest)
     | Some(PlayerInfo)
     | Some(WorldInfo) =>
       try {
         Parserv1449.parse(~buffer, ~fromServer)
-        ->Result.map(oldPacket => {
-          switch oldPacket {
-          | PlayerInfo(p) => Packet.PlayerInfo(Packet.PlayerInfo.fromv1449(p))
-          | WorldInfo(p) => Packet.WorldInfo(Packet.WorldInfo.fromv1449(p))
-          // Not possible
-          | _ => oldPacket
-          }
-        })
+        ->Result.map(fromV1449)
         ->Result.map(p => ConvertedToLatestVersion(p))
+      } catch {
+      | JsExn(obj) => Error(ReaderError({context: "Parser.parseLazy", error: obj}))
+      }
+    | Some(_) => Ok(PacketStructureIsSame)
+    | None => Error(InvalidPacketType)
+    }
+  }
+}
+
+type convertToV1449IfNeeded =
+  | PacketStructureIsSame
+  | ConvertedToV1449(PacketV1449.t)
+let convertToV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): result<
+  convertToV1449IfNeeded,
+  IParser.parseError,
+> => {
+  switch buffer->NodeJs.Buffer.length {
+  | 0 | 1 | 2 => Error(InvalidPacketLength)
+  | _ =>
+    switch buffer->NodeJs.Buffer.unsafeGet(2)->PacketType.fromInt {
+    // Update when we know changed packets list
+    | Some(ConnectRequest)
+    | Some(PlayerInfo)
+    | Some(WorldInfo) =>
+      try {
+        parse(~buffer, ~fromServer)
+        ->Result.map(v1449ToLatest)
+        ->Result.map(p => ConvertedToV1449(p))
       } catch {
       | JsExn(obj) => Error(ReaderError({context: "Parser.parseLazy", error: obj}))
       }
