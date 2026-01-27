@@ -295,6 +295,32 @@ import type { WorldInfo as Packet_WorldInfo_t } from '../src/packetv1449/PacketV
 
 import type { t as Packet_Zones_t } from '../src/packetv1449/PacketV1449_Zones.js';
 
+import type { t as Packet_DeadCellsDisplayJarTryPlacing_t } from './packet/Packet_DeadCellsDisplayJarTryPlacing.js';
+
+import type { t as Packet_PlayerSpectate_t } from './packet/Packet_PlayerSpectate.js';
+
+import type { t as Packet_ItemDropClear_t } from './packet/Packet_ItemDropClear.js';
+
+import type { t as Packet_PlayerItemUseSound_t } from './packet/Packet_PlayerItemUseSound.js';
+
+import type { t as Packet_NpcHurtByDebuff_t } from './packet/Packet_NpcHurtByDebuff.js';
+
+import type { t as Packet_Ping_t } from './packet/Packet_Ping.js';
+
+import type { t as Packet_ChestResize_t } from './packet/Packet_ChestResize.js';
+
+import type { t as Packet_LeashedEntityAnchorInsertItem_t } from './packet/Packet_LeashedEntityAnchorInsertItem.js';
+
+import type { t as Packet_PlayerTeamUpdate_t } from './packet/Packet_PlayerTeamUpdate.js';
+
+import type { t as Packet_PlayerTeamSwapSpawn_t } from './packet/Packet_PlayerTeamSwapSpawn.js';
+
+import type { t as Packet_SectionRequest_t } from './packet/Packet_SectionRequest.js';
+
+import type { t as Packet_ItemDropPosition_t } from './packet/Packet_ItemDropPosition.js';
+
+import type { t as Packet_HostToken_t } from './packet/Packet_HostToken.js';
+
 export type t =
   { TAG: "ConnectRequest"; _0: Packet_ConnectRequest_t }
   | { TAG: "Disconnect"; _0: Packet_Disconnect_t }
@@ -439,7 +465,20 @@ export type t =
   | { TAG: "ItemDropShimmeredUpdate"; _0: Packet_ItemDropShimmeredUpdate_t }
   | { TAG: "ShimmerEffectOrCoinLuck"; _0: Packet_ShimmerEffectOrCoinLuck_t }
   | { TAG: "LoadoutSwitch"; _0: Packet_LoadoutSwitch_t }
-  | { TAG: "ItemDropProtectedUpdate"; _0: Packet_ItemDropProtectedUpdate_t };
+  | { TAG: "ItemDropProtectedUpdate"; _0: Packet_ItemDropProtectedUpdate_t }
+  | { TAG: "DeadCellsDisplayJarTryPlacing"; _0: Packet_DeadCellsDisplayJarTryPlacing_t }
+  | { TAG: "PlayerSpectate"; _0: Packet_PlayerSpectate_t }
+  | { TAG: "ItemDropClear"; _0: Packet_ItemDropClear_t }
+  | { TAG: "PlayerItemUseSound"; _0: Packet_PlayerItemUseSound_t }
+  | { TAG: "NpcHurtByDebuff"; _0: Packet_NpcHurtByDebuff_t }
+  | { TAG: "Ping"; _0: Packet_Ping_t }
+  | { TAG: "ChestResize"; _0: Packet_ChestResize_t }
+  | { TAG: "LeashedEntityAnchorInsertItem"; _0: Packet_LeashedEntityAnchorInsertItem_t }
+  | { TAG: "PlayerTeamUpdate"; _0: Packet_PlayerTeamUpdate_t }
+  | { TAG: "PlayerTeamSwapSpawn"; _0: Packet_PlayerTeamSwapSpawn_t }
+  | { TAG: "SectionRequest"; _0: Packet_SectionRequest_t }
+  | { TAG: "ItemDropPosition"; _0: Packet_ItemDropPosition_t }
+  | { TAG: "HostToken"; _0: Packet_HostToken_t };
 
 export type LazyPacket_lazyParsed<a> = Lazy_t<Result<a, readError>>;
 
@@ -587,4 +626,17 @@ export type LazyPacket_t =
   | { TAG: "ItemDropShimmeredUpdate"; _0: LazyPacket_lazyParsed<Packet_ItemDropShimmeredUpdate_t> }
   | { TAG: "ShimmerEffectOrCoinLuck"; _0: LazyPacket_lazyParsed<Packet_ShimmerEffectOrCoinLuck_t> }
   | { TAG: "LoadoutSwitch"; _0: LazyPacket_lazyParsed<Packet_LoadoutSwitch_t> }
-  | { TAG: "ItemDropProtectedUpdate"; _0: LazyPacket_lazyParsed<Packet_ItemDropProtectedUpdate_t> };
+  | { TAG: "ItemDropProtectedUpdate"; _0: LazyPacket_lazyParsed<Packet_ItemDropProtectedUpdate_t> }
+  | { TAG: "DeadCellsDisplayJarTryPlacing"; _0: LazyPacket_lazyParsed<Packet_DeadCellsDisplayJarTryPlacing_t> }
+  | { TAG: "PlayerSpectate"; _0: LazyPacket_lazyParsed<Packet_PlayerSpectate_t> }
+  | { TAG: "ItemDropClear"; _0: LazyPacket_lazyParsed<Packet_ItemDropClear_t> }
+  | { TAG: "PlayerItemUseSound"; _0: LazyPacket_lazyParsed<Packet_PlayerItemUseSound_t> }
+  | { TAG: "NpcHurtByDebuff"; _0: LazyPacket_lazyParsed<Packet_NpcHurtByDebuff_t> }
+  | { TAG: "Ping"; _0: LazyPacket_lazyParsed<Packet_Ping_t> }
+  | { TAG: "ChestResize"; _0: LazyPacket_lazyParsed<Packet_ChestResize_t> }
+  | { TAG: "LeashedEntityAnchorInsertItem"; _0: LazyPacket_lazyParsed<Packet_LeashedEntityAnchorInsertItem_t> }
+  | { TAG: "PlayerTeamUpdate"; _0: LazyPacket_lazyParsed<Packet_PlayerTeamUpdate_t> }
+  | { TAG: "PlayerTeamSwapSpawn"; _0: LazyPacket_lazyParsed<Packet_PlayerTeamSwapSpawn_t> }
+  | { TAG: "SectionRequest"; _0: LazyPacket_lazyParsed<Packet_SectionRequest_t> }
+  | { TAG: "ItemDropPosition"; _0: LazyPacket_lazyParsed<Packet_ItemDropPosition_t> }
+  | { TAG: "HostToken"; _0: LazyPacket_lazyParsed<Packet_HostToken_t> };

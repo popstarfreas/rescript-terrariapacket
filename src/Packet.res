@@ -75,7 +75,7 @@ module InvasionProgressReport = PacketV1449_InvasionProgressReport
 module ObjectPlace = PacketV1449_ObjectPlace
 module PlayerChestIndexSync = PacketV1449_PlayerChestIndexSync
 module CombatNumberCreate = PacketV1449_CombatNumberCreate
-module NetModuleLoad = PacketV1449_NetModuleLoad
+module NetModuleLoad = Packet_NetModuleLoad
 module NpcKillCount = PacketV1449_NpcKillCount
 module PlayerStealth = PacketV1449_PlayerStealth
 module ItemForceIntoNearestChest = Packet_ItemForceIntoNearestChest
@@ -1274,12 +1274,16 @@ let toPacketName = (packet: t): string => {
     | Ping(_position) => "Ping"
     | Ambience(_ambience) => "Ambience"
     | Bestiary(_bestiary) => "Bestiary"
-    | CreativeUnlocks(_creativeUnlock) => "CreativeUnlocks"
     | CreativePower(creativePower) => `CreativePower { ${creativePower->CreativePowers.toString} }`
     | CreativeUnlocksPlayerReport(_unlockReport) => "CreativeUnlocksPlayerReport"
     | TeleportPylon(_teleportPylon) => "TeleportPylon"
     | Particles(_particle) => "Particles"
     | CreativePowerPermissions(_creativePowerPermission) => "CreativePowerPermissions"
+    | Banners(_banners) => "Banners"
+    | CraftingRequests(_craftingRequests) => "CraftingRequests"
+    | TagEffectState(_tagEffectState) => "TagEffectState"
+    | LeashedEntity(_leashedEntity) => "LeashedEntity"
+    | UnbreakableWallScan(_unbreakableWallScan) => "UnbreakableWallScan"
     } ++ ")"
   | NpcKillCount(_npcKillCount) => "NpcKillCount"
   | PlayerStealth(_playerStealth) => "PlayerStealth"

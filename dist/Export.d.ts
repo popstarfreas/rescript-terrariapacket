@@ -867,7 +867,7 @@ declare type flags_2 = {
     readonly runCheckBytes: boolean
 };
 
-declare type Float_t = t_235<number>;
+declare type Float_t = t_246<number>;
 
 declare function forEach(t: t_77, callback: (flag: boolean) => void): void;
 
@@ -916,7 +916,7 @@ export declare namespace HaveDryadDoStardewAnimationPacket {
 
 declare type Immunity_t = "All" | { TAG: "PlayerId"; _0: number };
 
-declare type Int_t = t_235<number>;
+declare type Int_t = t_246<number>;
 
 declare function intoChunks<A>(a: A[], chunkSize: number): A[][];
 
@@ -986,7 +986,7 @@ export declare namespace ItemOwnerRemovePacket {
 
 declare type killCount = number;
 
-declare type LazyPacket_lazyParsed<a> = t_234<Result_2<a, readError>>;
+declare type LazyPacket_lazyParsed<a> = t_248<Result_2<a, readError>>;
 
 declare type LazyPacket_t =
     { TAG: "ConnectRequest"; _0: LazyPacket_lazyParsed<t_92> }
@@ -1132,7 +1132,20 @@ declare type LazyPacket_t =
 | { TAG: "ItemDropShimmeredUpdate"; _0: LazyPacket_lazyParsed<t_230> }
 | { TAG: "ShimmerEffectOrCoinLuck"; _0: LazyPacket_lazyParsed<t_231> }
 | { TAG: "LoadoutSwitch"; _0: LazyPacket_lazyParsed<t_232> }
-| { TAG: "ItemDropProtectedUpdate"; _0: LazyPacket_lazyParsed<t_233> };
+| { TAG: "ItemDropProtectedUpdate"; _0: LazyPacket_lazyParsed<t_233> }
+| { TAG: "DeadCellsDisplayJarTryPlacing"; _0: LazyPacket_lazyParsed<t_234> }
+| { TAG: "PlayerSpectate"; _0: LazyPacket_lazyParsed<t_235> }
+| { TAG: "ItemDropClear"; _0: LazyPacket_lazyParsed<t_236> }
+| { TAG: "PlayerItemUseSound"; _0: LazyPacket_lazyParsed<t_237> }
+| { TAG: "NpcHurtByDebuff"; _0: LazyPacket_lazyParsed<t_238> }
+| { TAG: "Ping"; _0: LazyPacket_lazyParsed<t_239> }
+| { TAG: "ChestResize"; _0: LazyPacket_lazyParsed<t_240> }
+| { TAG: "LeashedEntityAnchorInsertItem"; _0: LazyPacket_lazyParsed<t_241> }
+| { TAG: "PlayerTeamUpdate"; _0: LazyPacket_lazyParsed<t_242> }
+| { TAG: "PlayerTeamSwapSpawn"; _0: LazyPacket_lazyParsed<t_243> }
+| { TAG: "SectionRequest"; _0: LazyPacket_lazyParsed<t_244> }
+| { TAG: "ItemDropPosition"; _0: LazyPacket_lazyParsed<t_245> }
+| { TAG: "HostToken"; _0: LazyPacket_lazyParsed<t_247> };
 
 declare type life =
 "Max"
@@ -2569,7 +2582,7 @@ export declare namespace PlayerUpdatePacket {
 
 export declare namespace Point {
     export {
-        t_235 as t,
+        t_246 as t,
         Int_t,
         Float_t
     }
@@ -3567,18 +3580,72 @@ declare type t_233 = {
     readonly timeLeftInWhichTheItemCannotBeTakenByEnemies: number
 };
 
-declare type t_234<T> = {
-    LAZY_DONE: boolean,
-    VAL: () => T
-}
+declare type t_234 = {
+    readonly x: number;
+    readonly y: number;
+    readonly itemType: number;
+    readonly prefix: number;
+    readonly stack: number;
+};
 
-declare type t_235<a> = { readonly x: a; readonly y: a };
+declare type t_235 = {
+    readonly playerId: number;
+    readonly targetPlayerId: number;
+};
+
+declare type t_236 = { readonly itemDropId: number };
+
+declare type t_237 = { readonly playerId: number };
+
+declare type t_238 = {
+    readonly npcId: number;
+    readonly debuffId: number;
+};
+
+declare type t_239 = void;
 
 declare type t_24 = {
     readonly npcId: number; 
     readonly buffs: number[]; 
     readonly buffTimes: number[]
 };
+
+declare type t_240 = {
+    readonly chestId: number;
+    readonly newSize: number;
+};
+
+declare type t_241 = {
+    readonly x: number;
+    readonly y: number;
+    readonly itemType: number;
+};
+
+declare type t_242 = {
+    readonly playerId: number;
+    readonly team: number;
+};
+
+declare type t_243 = { readonly playerId: number };
+
+declare type t_244 = {
+    readonly sectionX: number;
+    readonly sectionY: number;
+};
+
+declare type t_245 = {
+    readonly itemDropId: number;
+    readonly position: t_246<number>;
+};
+
+declare type t_246<a> = { readonly x: a; readonly y: a };
+
+declare type t_247 = { readonly token: string };
+
+declare type t_248<T> = {
+    LAZY_DONE: boolean,
+    VAL: () => T
+}
 
 declare type t_25 = { readonly npcId: number; readonly playerId: number };
 
@@ -4186,7 +4253,20 @@ declare type t_91 =
 | { TAG: "ItemDropShimmeredUpdate"; _0: t_230 }
 | { TAG: "ShimmerEffectOrCoinLuck"; _0: t_231 }
 | { TAG: "LoadoutSwitch"; _0: t_232 }
-| { TAG: "ItemDropProtectedUpdate"; _0: t_233 };
+| { TAG: "ItemDropProtectedUpdate"; _0: t_233 }
+| { TAG: "DeadCellsDisplayJarTryPlacing"; _0: t_234 }
+| { TAG: "PlayerSpectate"; _0: t_235 }
+| { TAG: "ItemDropClear"; _0: t_236 }
+| { TAG: "PlayerItemUseSound"; _0: t_237 }
+| { TAG: "NpcHurtByDebuff"; _0: t_238 }
+| { TAG: "Ping"; _0: t_239 }
+| { TAG: "ChestResize"; _0: t_240 }
+| { TAG: "LeashedEntityAnchorInsertItem"; _0: t_241 }
+| { TAG: "PlayerTeamUpdate"; _0: t_242 }
+| { TAG: "PlayerTeamSwapSpawn"; _0: t_243 }
+| { TAG: "SectionRequest"; _0: t_244 }
+| { TAG: "ItemDropPosition"; _0: t_245 }
+| { TAG: "HostToken"; _0: t_247 };
 
 declare type t_92 = { readonly version: string };
 

@@ -54,6 +54,33 @@ let readString = (reader: t, context: string): result<string, readError> =>
 let readBytes = (reader: t, count: int, context: string): result<array<int>, readError> =>
   withContext(reader => readBytesUnsafe(reader, count), reader, context)
 
+let read7BitEncodedInt = (reader: t, context: string): result<int, readError> =>
+  withContext(
+    reader => {
+      let result = ref(0)
+      let shift = ref(0)
+      let continue = ref(true)
+      while continue.contents {
+        if shift.contents >= 35 {
+          JsError.throwWithMessage("Invalid 7-bit encoded int")
+        }
+        let byte = readByteUnsafe(reader)
+        result := Int.bitwiseOr(
+          result.contents,
+          Int.shiftLeft(Int.bitwiseAnd(byte, 0x7f), shift.contents),
+        )
+        if Int.bitwiseAnd(byte, 0x80) == 0 {
+          continue := false
+        } else {
+          shift := shift.contents + 7
+        }
+      }
+      result.contents
+    },
+    reader,
+    context,
+  )
+
 let readSingle = (reader: t, context: string): result<float, readError> =>
   withContext(readSingleUnsafe, reader, context)
 

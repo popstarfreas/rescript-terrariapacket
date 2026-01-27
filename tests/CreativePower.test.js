@@ -4,12 +4,12 @@ import * as Zora from "zora";
 import * as Stdlib_JsExn from "@rescript/runtime/lib/es6/Stdlib_JsExn.js";
 import * as Stdlib_Option from "@rescript/runtime/lib/es6/Stdlib_Option.js";
 import * as Stdlib_Result from "@rescript/runtime/lib/es6/Stdlib_Result.js";
-import * as PacketV1449_NetModuleLoad$TerrariaPacket from "../src/packetv1449/PacketV1449_NetModuleLoad.js";
+import * as Packet_NetModuleLoad$TerrariaPacket from "../src/packet/Packet_NetModuleLoad.js";
 
 Zora.test("should correctly parse and serialise FarPlacementRangePower", t => {
   let hex = "28005206000b0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f";
   let buffer = Buffer.from(hex, "hex");
-  let p = PacketV1449_NetModuleLoad$TerrariaPacket.parse(buffer, true);
+  let p = Packet_NetModuleLoad$TerrariaPacket.parse(buffer, true);
   if (p.TAG === "Ok") {
     let netModuleLoad = p._0;
     if (netModuleLoad.TAG === "CreativePower") {
@@ -27,7 +27,7 @@ Zora.test("should correctly parse and serialise FarPlacementRangePower", t => {
     } else {
       t.fail("Failed to parse packet");
     }
-    let buffer$1 = PacketV1449_NetModuleLoad$TerrariaPacket.toBuffer(netModuleLoad);
+    let buffer$1 = Packet_NetModuleLoad$TerrariaPacket.toBuffer(netModuleLoad);
     let hexOutput = Stdlib_Result.map(buffer$1, v => v.toString("hex"));
     t.equal({
       TAG: "Ok",
@@ -41,7 +41,7 @@ Zora.test("should correctly parse and serialise FarPlacementRangePower", t => {
 Zora.test("should correctly parse and serialise GodmodePower", t => {
   let hex = "28005206000500000100000000000000000000000000000000000000000000000000000000000000";
   let buffer = Buffer.from(hex, "hex");
-  let p = PacketV1449_NetModuleLoad$TerrariaPacket.parse(buffer, true);
+  let p = Packet_NetModuleLoad$TerrariaPacket.parse(buffer, true);
   if (p.TAG === "Ok") {
     let netModuleLoad = p._0;
     if (netModuleLoad.TAG === "CreativePower") {
@@ -61,7 +61,7 @@ Zora.test("should correctly parse and serialise GodmodePower", t => {
     } else {
       t.fail("Failed to parse packet");
     }
-    let buffer$1 = PacketV1449_NetModuleLoad$TerrariaPacket.toBuffer(netModuleLoad);
+    let buffer$1 = Packet_NetModuleLoad$TerrariaPacket.toBuffer(netModuleLoad);
     let hexOutput = Stdlib_Result.map(buffer$1, v => v.toString("hex"));
     t.equal({
       TAG: "Ok",

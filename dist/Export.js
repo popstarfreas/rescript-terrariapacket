@@ -651,6 +651,11 @@ function toInt(self) {
   }
 }
 
+// node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Stdlib_JsError.js
+function throwWithMessage(str) {
+  throw new Error(str);
+}
+
 // node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Primitive_exceptions.js
 function isExtension(e) {
   if (e == null) {
@@ -753,6 +758,27 @@ function readString(reader, context) {
 }
 function readBytes(reader, count, context) {
   return withContext((reader2) => reader2.readBytes(count), reader, context);
+}
+function read7BitEncodedInt(reader, context) {
+  return withContext((reader2) => {
+    let result = 0;
+    let shift = 0;
+    let $$continue = true;
+    while ($$continue) {
+      if (shift >= 35) {
+        throwWithMessage("Invalid 7-bit encoded int");
+      }
+      let byte = reader2.readByte();
+      result = result | (byte & 127) << shift;
+      if ((byte & 128) === 0) {
+        $$continue = false;
+      } else {
+        shift = shift + 7 | 0;
+      }
+    }
+    ;
+    return result;
+  }, reader, context);
 }
 function readSingle(reader, context) {
   return withContext(readSingleUnsafe, reader, context);
@@ -14146,7 +14172,7 @@ var Parser_exports = {};
 __export(Parser_exports, {
   convertFromV1449IfNeeded: () => convertFromV1449IfNeeded,
   convertToV1449IfNeeded: () => convertToV1449IfNeeded,
-  parse: () => parse179,
+  parse: () => parse180,
   parseLazy: () => parseLazy
 });
 
@@ -16313,22 +16339,22 @@ function mapPacket(result, packetName, fn) {
     _0: addPacketContext(packetName, e)
   }));
 }
-function makeParsers(packetName, parse180, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, _fromServer) => mapPacket(parse180(payload), packetName, toPacket);
+function makeParsers(packetName, parse181, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, _fromServer) => mapPacket(parse181(payload), packetName, toPacket);
   let parseLazyWrapped = (payload, _fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse180(payload), (e) => addPacketContext(packetName, e))))
+    _0: toLazyPacket(make4(() => mapError(parse181(payload), (e) => addPacketContext(packetName, e))))
   });
   return {
     parse: parseWrapped,
     parseLazy: parseLazyWrapped
   };
 }
-function makeParsersWithFromServer(packetName, parse180, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, fromServer) => mapPacket(parse180(payload, fromServer), packetName, toPacket);
+function makeParsersWithFromServer(packetName, parse181, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, fromServer) => mapPacket(parse181(payload, fromServer), packetName, toPacket);
   let parseLazyWrapped = (payload, fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse180(payload, fromServer), (e) => addPacketContext(packetName, e))))
+    _0: toLazyPacket(make4(() => mapError(parse181(payload, fromServer), (e) => addPacketContext(packetName, e))))
   });
   return {
     parse: parseWrapped,
@@ -20011,8 +20037,1103 @@ function parse159(payload) {
   }
 }
 
+// src/packet/Packet_NetModuleLoad.js
+function fromInt9(n) {
+  switch (n) {
+    case 0:
+      return "Liquid";
+    case 1:
+      return "Text";
+    case 2:
+      return "Ping";
+    case 3:
+      return "Ambience";
+    case 4:
+      return "Bestiary";
+    case 5:
+      return "CreativePower";
+    case 6:
+      return "CreativeUnlocksPlayerReport";
+    case 7:
+      return "TeleportPylon";
+    case 8:
+      return "Particles";
+    case 9:
+      return "CreativePowerPermissions";
+    case 10:
+      return "Banners";
+    case 11:
+      return "CraftingRequests";
+    case 12:
+      return "TagEffectState";
+    case 13:
+      return "LeashedEntity";
+    case 14:
+      return "UnbreakableWallScan";
+    default:
+      return;
+  }
+}
+function parseLiquid(reader) {
+  let e = readUInt16(reader, "changesCount");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let changesCount = e._0;
+  let readChanges = (_idx, _acc) => {
+    while (true) {
+      let acc = _acc;
+      let idx = _idx;
+      if (idx >= changesCount) {
+        return {
+          TAG: "Ok",
+          _0: acc.toReversed()
+        };
+      }
+      let e2 = readInt16(reader, "y");
+      if (e2.TAG !== "Ok") {
+        return e2;
+      }
+      let e$12 = readInt16(reader, "x");
+      if (e$12.TAG !== "Ok") {
+        return e$12;
+      }
+      let e$2 = readByte(reader, "amount");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = readByte(reader, "liquidType");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      _acc = concatMany([
+        [{
+          x: e$12._0,
+          y: e2._0,
+          amount: e$2._0,
+          liquidType: e$3._0
+        }],
+        acc
+      ]);
+      _idx = idx + 1 | 0;
+      continue;
+    }
+    ;
+  };
+  let e$1 = readChanges(0, []);
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "Liquid",
+        _0: {
+          changes: e$1._0
+        }
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+function parseText(reader, fromServer) {
+  if (fromServer) {
+    let e = readByte(reader, "playerId");
+    if (e.TAG !== "Ok") {
+      return e;
+    }
+    let e$1 = readNetworkText(reader, "message");
+    if (e$1.TAG !== "Ok") {
+      return e$1;
+    }
+    let e$2 = readColor(reader, "color");
+    if (e$2.TAG === "Ok") {
+      return {
+        TAG: "Ok",
+        _0: {
+          TAG: "ServerText",
+          _0: e._0,
+          _1: e$1._0,
+          _2: e$2._0
+        }
+      };
+    } else {
+      return e$2;
+    }
+  }
+  let e$3 = readString(reader, "commandId");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readString(reader, "message");
+  if (e$4.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "ClientText",
+        _0: e$3._0,
+        _1: e$4._0
+      }
+    };
+  } else {
+    return e$4;
+  }
+}
+function parsePing(reader) {
+  let e = readSingle(reader, "x");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readSingle(reader, "y");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "Ping",
+        _0: {
+          x: e._0,
+          y: e$1._0
+        }
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+function parseAmbience(reader) {
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt32(reader, "seed");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readByte(reader, "skyEntityType");
+  if (e$2.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "Ambience",
+        _0: {
+          playerId: e._0,
+          seed: e$1._0,
+          skyEntityType: e$2._0
+        }
+      }
+    };
+  } else {
+    return e$2;
+  }
+}
+function parseBestiary(reader) {
+  let e = readByte(reader, "rawBestiaryUnlockType");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "npcId");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2;
+  switch (e._0) {
+    case 0:
+      let e$3 = read7BitEncodedInt(reader, "killCount");
+      e$2 = e$3.TAG === "Ok" ? {
+        TAG: "Ok",
+        _0: {
+          TAG: "Kill",
+          _0: e$3._0
+        }
+      } : e$3;
+      break;
+    case 1:
+      e$2 = {
+        TAG: "Ok",
+        _0: "Sight"
+      };
+      break;
+    case 2:
+      e$2 = {
+        TAG: "Ok",
+        _0: "Chat"
+      };
+      break;
+    default:
+      e$2 = {
+        TAG: "Error",
+        _0: {
+          context: "Packet_NetModuleLoad.parseBestiary",
+          error: new Error("Unknown bestiary unlock type")
+        }
+      };
+  }
+  if (e$2.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "Bestiary",
+        _0: {
+          unlockType: e$2._0,
+          npcId: e$1._0
+        }
+      }
+    };
+  } else {
+    return e$2;
+  }
+}
+function parseCreativePower(reader) {
+  let p = parse$2(reader);
+  if (p !== void 0) {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "CreativePower",
+        _0: p
+      }
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: {
+        context: "Packet_NetModuleLoad.parseCreativePower",
+        error: new Error("Failed to parse creative power")
+      }
+    };
+  }
+}
+function parseCreativeUnlocksPlayerReport(reader) {
+  let e = readByte(reader, "userId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readUInt16(reader, "itemId");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readUInt16(reader, "researchedCount");
+  if (e$2.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "CreativeUnlocksPlayerReport",
+        _0: {
+          userId: e._0,
+          itemId: e$1._0,
+          researchedCount: e$2._0
+        }
+      }
+    };
+  } else {
+    return e$2;
+  }
+}
+function parseTeleportPylon(reader) {
+  let e = readByte(reader, "rawPylonAction");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "x");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readInt16(reader, "y");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readByte(reader, "pylonType");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let pylonAction;
+  switch (e._0) {
+    case 0:
+      pylonAction = "Added";
+      break;
+    case 1:
+      pylonAction = "Removed";
+      break;
+    case 2:
+      pylonAction = "RequestTeleport";
+      break;
+    default:
+      pylonAction = void 0;
+  }
+  if (pylonAction !== void 0) {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "TeleportPylon",
+        _0: {
+          pylonAction,
+          x: e$1._0,
+          y: e$2._0,
+          pylonType: e$3._0
+        }
+      }
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: {
+        context: "Packet_NetModuleLoad.parseTeleportPylon",
+        error: new Error("Unknown pylon action")
+      }
+    };
+  }
+}
+function parseParticle(reader) {
+  let e = readByte(reader, "particleType");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readSingle(reader, "x");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readSingle(reader, "y");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readSingle(reader, "vx");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readSingle(reader, "vy");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = readInt32(reader, "shaderIndex");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = readByte(reader, "invokedByPlayer");
+  if (e$6.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "Particles",
+        _0: {
+          particleType: e._0,
+          x: e$1._0,
+          y: e$2._0,
+          vx: e$3._0,
+          vy: e$4._0,
+          shaderIndex: e$5._0,
+          invokedByPlayer: e$6._0
+        }
+      }
+    };
+  } else {
+    return e$6;
+  }
+}
+function parseCreativePowerPermission(reader) {
+  let e = readByte(reader, "messageType");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readUInt16(reader, "powerType");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readByte(reader, "rawPowerLevel");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let powerLevel;
+  switch (e$2._0) {
+    case 0:
+      powerLevel = "LockedForEveryone";
+      break;
+    case 1:
+      powerLevel = "CanBeChangedByHostAlone";
+      break;
+    case 2:
+      powerLevel = "CanBeChangedByEveryone";
+      break;
+    default:
+      powerLevel = void 0;
+  }
+  if (powerLevel !== void 0) {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "CreativePowerPermissions",
+        _0: {
+          powerType: e$1._0,
+          powerLevel
+        }
+      }
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: {
+        context: "Packet_NetModuleLoad.parseCreativePowerPermission",
+        error: new Error("Unknown creative power permission level")
+      }
+    };
+  }
+}
+function parseBanners(reader) {
+  let e = readByte(reader, "messageType");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  switch (e._0) {
+    case 0:
+      let e$1 = readInt16(reader, "killCountLength");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let killCountLength = e$1._0;
+      let readKillCounts = (_idx, _acc) => {
+        while (true) {
+          let acc = _acc;
+          let idx = _idx;
+          if (idx >= killCountLength) {
+            return {
+              TAG: "Ok",
+              _0: acc.toReversed()
+            };
+          }
+          let e2 = readInt32(reader, "killCount");
+          if (e2.TAG !== "Ok") {
+            return e2;
+          }
+          _acc = concatMany([
+            [e2._0],
+            acc
+          ]);
+          _idx = idx + 1 | 0;
+          continue;
+        }
+        ;
+      };
+      let e$2 = readKillCounts(0, []);
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = readInt16(reader, "claimableCountLength");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let claimableCountLength = e$3._0;
+      let readClaimableCounts = (_idx, _acc) => {
+        while (true) {
+          let acc = _acc;
+          let idx = _idx;
+          if (idx >= claimableCountLength) {
+            return {
+              TAG: "Ok",
+              _0: acc.toReversed()
+            };
+          }
+          let e2 = readUInt16(reader, "claimableCount");
+          if (e2.TAG !== "Ok") {
+            return e2;
+          }
+          _acc = concatMany([
+            [e2._0],
+            acc
+          ]);
+          _idx = idx + 1 | 0;
+          continue;
+        }
+        ;
+      };
+      let e$4 = readClaimableCounts(0, []);
+      if (e$4.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "Banners",
+            _0: {
+              TAG: "BannerFullState",
+              _0: {
+                killCounts: e$2._0,
+                claimableCounts: e$4._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$4;
+      }
+    case 1:
+      let e$5 = readInt16(reader, "bannerId");
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let e$6 = readInt32(reader, "killCount");
+      if (e$6.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "Banners",
+            _0: {
+              TAG: "BannerKillCountUpdate",
+              _0: {
+                bannerId: e$5._0,
+                killCount: e$6._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$6;
+      }
+    case 2:
+      let e$7 = readInt16(reader, "bannerId");
+      if (e$7.TAG !== "Ok") {
+        return e$7;
+      }
+      let e$8 = readUInt16(reader, "claimCount");
+      if (e$8.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "Banners",
+            _0: {
+              TAG: "BannerClaimCountUpdate",
+              _0: {
+                bannerId: e$7._0,
+                claimCount: e$8._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$8;
+      }
+    case 3:
+      let e$9 = readInt16(reader, "bannerId");
+      if (e$9.TAG !== "Ok") {
+        return e$9;
+      }
+      let e$10 = readUInt16(reader, "amount");
+      if (e$10.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "Banners",
+            _0: {
+              TAG: "BannerClaimRequest",
+              _0: {
+                bannerId: e$9._0,
+                amount: e$10._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$10;
+      }
+    case 4:
+      let e$11 = readInt16(reader, "bannerId");
+      if (e$11.TAG !== "Ok") {
+        return e$11;
+      }
+      let e$12 = readUInt16(reader, "amount");
+      if (e$12.TAG !== "Ok") {
+        return e$12;
+      }
+      let e$13 = readBool(reader, "granted");
+      if (e$13.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "Banners",
+            _0: {
+              TAG: "BannerClaimResponse",
+              _0: {
+                bannerId: e$11._0,
+                amount: e$12._0,
+                granted: e$13._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$13;
+      }
+    default:
+      return {
+        TAG: "Error",
+        _0: {
+          context: "Packet_NetModuleLoad.parseBanners",
+          error: new Error("Unknown banner message type")
+        }
+      };
+  }
+}
+function parseCraftingRequests(reader, fromServer) {
+  if (fromServer) {
+    let e = readBool(reader, "approved");
+    if (e.TAG === "Ok") {
+      return {
+        TAG: "Ok",
+        _0: {
+          TAG: "CraftingRequests",
+          _0: {
+            TAG: "CraftingResponse",
+            _0: {
+              approved: e._0
+            }
+          }
+        }
+      };
+    } else {
+      return e;
+    }
+  }
+  let e$1 = read7BitEncodedInt(reader, "itemsCount");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let itemsCount = e$1._0;
+  let readItems = (_idx, _acc) => {
+    while (true) {
+      let acc = _acc;
+      let idx = _idx;
+      if (idx >= itemsCount) {
+        return {
+          TAG: "Ok",
+          _0: acc.toReversed()
+        };
+      }
+      let e = readInt32(reader, "itemIdOrRecipeGroup");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$12 = read7BitEncodedInt(reader, "stack");
+      if (e$12.TAG !== "Ok") {
+        return e$12;
+      }
+      _acc = concatMany([
+        [{
+          itemIdOrRecipeGroup: e._0,
+          stack: e$12._0
+        }],
+        acc
+      ]);
+      _idx = idx + 1 | 0;
+      continue;
+    }
+    ;
+  };
+  let e$2 = readItems(0, []);
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = read7BitEncodedInt(reader, "chestCount");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let chestCount = e$3._0;
+  let readChests = (_idx, _acc) => {
+    while (true) {
+      let acc = _acc;
+      let idx = _idx;
+      if (idx >= chestCount) {
+        return {
+          TAG: "Ok",
+          _0: acc.toReversed()
+        };
+      }
+      let e = read7BitEncodedInt(reader, "chestIndex");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      _acc = concatMany([
+        [e._0],
+        acc
+      ]);
+      _idx = idx + 1 | 0;
+      continue;
+    }
+    ;
+  };
+  let e$4 = readChests(0, []);
+  if (e$4.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "CraftingRequests",
+        _0: {
+          TAG: "CraftingRequest",
+          _0: {
+            items: e$2._0,
+            chestIndexes: e$4._0
+          }
+        }
+      }
+    };
+  } else {
+    return e$4;
+  }
+}
+function readSparseNpcTimes(reader) {
+  let _acc = [];
+  while (true) {
+    let acc = _acc;
+    let e = readByte(reader, "npcIndex");
+    if (e.TAG !== "Ok") {
+      return e;
+    }
+    let npcIndex = e._0;
+    if (npcIndex >= 200) {
+      return {
+        TAG: "Ok",
+        _0: acc.toReversed()
+      };
+    }
+    let e$1 = readInt32(reader, "npcTime");
+    if (e$1.TAG !== "Ok") {
+      return e$1;
+    }
+    _acc = concatMany([
+      [{
+        npcIndex,
+        time: e$1._0
+      }],
+      acc
+    ]);
+    continue;
+  }
+  ;
+}
+function parseTagEffectState(reader) {
+  let e = readByte(reader, "ownerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let ownerId = e._0;
+  let e$1 = readByte(reader, "messageType");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  switch (e$1._0) {
+    case 0:
+      let e$2 = readInt16(reader, "effectType");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let effectType = e$2._0;
+      let e$3 = readSparseNpcTimes(reader);
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let timeLeft = e$3._0;
+      let e$4 = getBytesLeft(reader);
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      if (e$4._0 <= 0) {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "TagEffectState",
+            _0: {
+              TAG: "TagFullState",
+              _0: {
+                ownerId,
+                effectType,
+                timeLeft,
+                procTimeLeft: void 0
+              }
+            }
+          }
+        };
+      }
+      let e$5 = readSparseNpcTimes(reader);
+      if (e$5.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "TagEffectState",
+            _0: {
+              TAG: "TagFullState",
+              _0: {
+                ownerId,
+                effectType,
+                timeLeft,
+                procTimeLeft: e$5._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$5;
+      }
+    case 1:
+      let e$6 = readInt16(reader, "effectType");
+      if (e$6.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "TagEffectState",
+            _0: {
+              TAG: "TagChangeActiveEffect",
+              _0: {
+                ownerId,
+                effectType: e$6._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$6;
+      }
+    case 2:
+      let e$7 = readByte(reader, "npcIndex");
+      if (e$7.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "TagEffectState",
+            _0: {
+              TAG: "TagApplyTagToNpc",
+              _0: {
+                ownerId,
+                npcIndex: e$7._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$7;
+      }
+    case 3:
+      let e$8 = readByte(reader, "npcIndex");
+      if (e$8.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "TagEffectState",
+            _0: {
+              TAG: "TagEnableProcOnNpc",
+              _0: {
+                ownerId,
+                npcIndex: e$8._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$8;
+      }
+    case 4:
+      let e$9 = readByte(reader, "npcIndex");
+      if (e$9.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "TagEffectState",
+            _0: {
+              TAG: "TagClearProcOnNpc",
+              _0: {
+                ownerId,
+                npcIndex: e$9._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$9;
+      }
+    default:
+      return {
+        TAG: "Error",
+        _0: {
+          context: "Packet_NetModuleLoad.parseTagEffectState",
+          error: new Error("Unknown tag effect state message type")
+        }
+      };
+  }
+}
+function parseLeashedEntity(reader) {
+  let e = readByte(reader, "messageType");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  switch (e._0) {
+    case 0:
+      let e$1 = read7BitEncodedInt(reader, "slot");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "LeashedEntity",
+            _0: {
+              TAG: "LeashedRemove",
+              _0: {
+                slot: e$1._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$1;
+      }
+    case 1:
+      let e$2 = read7BitEncodedInt(reader, "slot");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = read7BitEncodedInt(reader, "entityType");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = readInt16(reader, "anchorX");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = readInt16(reader, "anchorY");
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let e$6 = getBytesLeft(reader);
+      if (e$6.TAG !== "Ok") {
+        return e$6;
+      }
+      let e$7 = readBuffer(reader, e$6._0, "payload");
+      if (e$7.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "LeashedEntity",
+            _0: {
+              TAG: "LeashedFullSync",
+              _0: {
+                slot: e$2._0,
+                entityType: e$3._0,
+                anchorX: e$4._0,
+                anchorY: e$5._0,
+                payload: e$7._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$7;
+      }
+    case 2:
+      let e$8 = read7BitEncodedInt(reader, "slot");
+      if (e$8.TAG !== "Ok") {
+        return e$8;
+      }
+      let e$9 = read7BitEncodedInt(reader, "entityType");
+      if (e$9.TAG !== "Ok") {
+        return e$9;
+      }
+      let e$10 = getBytesLeft(reader);
+      if (e$10.TAG !== "Ok") {
+        return e$10;
+      }
+      let e$11 = readBuffer(reader, e$10._0, "payload");
+      if (e$11.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "LeashedEntity",
+            _0: {
+              TAG: "LeashedPartialSync",
+              _0: {
+                slot: e$8._0,
+                entityType: e$9._0,
+                payload: e$11._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$11;
+      }
+    default:
+      return {
+        TAG: "Error",
+        _0: {
+          context: "Packet_NetModuleLoad.parseLeashedEntity",
+          error: new Error("Unknown leashed entity message type")
+        }
+      };
+  }
+}
+function parseUnbreakableWallScan(reader) {
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readBool(reader, "insideUnbreakableWalls");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "UnbreakableWallScan",
+        _0: {
+          playerId: e._0,
+          insideUnbreakableWalls: e$1._0
+        }
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+function parse160(payload, fromServer) {
+  let reader = new packetreader_default(payload);
+  let e = readUInt16(reader, "moduleType");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let match = fromInt9(e._0);
+  if (match === void 0) {
+    return {
+      TAG: "Error",
+      _0: {
+        context: "Packet_NetModuleLoad.parse",
+        error: new Error("Unknown net module type")
+      }
+    };
+  }
+  switch (match) {
+    case "Liquid":
+      return parseLiquid(reader);
+    case "Text":
+      return parseText(reader, fromServer);
+    case "Ping":
+      return parsePing(reader);
+    case "Ambience":
+      return parseAmbience(reader);
+    case "Bestiary":
+      return parseBestiary(reader);
+    case "CreativePower":
+      return parseCreativePower(reader);
+    case "CreativeUnlocksPlayerReport":
+      return parseCreativeUnlocksPlayerReport(reader);
+    case "TeleportPylon":
+      return parseTeleportPylon(reader);
+    case "Particles":
+      return parseParticle(reader);
+    case "CreativePowerPermissions":
+      return parseCreativePowerPermission(reader);
+    case "Banners":
+      return parseBanners(reader);
+    case "CraftingRequests":
+      return parseCraftingRequests(reader, fromServer);
+    case "TagEffectState":
+      return parseTagEffectState(reader);
+    case "LeashedEntity":
+      return parseLeashedEntity(reader);
+    case "UnbreakableWallScan":
+      return parseUnbreakableWallScan(reader);
+  }
+}
+
 // src/packet/Packet_NpcBuffUpdate.js
-function parse160(payload) {
+function parse161(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -20059,7 +21180,7 @@ function parse160(payload) {
 }
 
 // src/packet/Packet_PlayerBuffsSet.js
-function parse161(payload) {
+function parse162(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -20099,7 +21220,7 @@ function parse161(payload) {
 }
 
 // src/packet/Packet_PlayerSpectate.js
-function parse162(payload) {
+function parse163(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -20120,7 +21241,7 @@ function parse162(payload) {
 }
 
 // src/packet/Packet_SectionRequest.js
-function parse163(payload) {
+function parse164(payload) {
   let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "sectionX");
   if (e.TAG !== "Ok") {
@@ -20141,7 +21262,7 @@ function parse163(payload) {
 }
 
 // src/packet/Packet_NpcHurtByDebuff.js
-function parse164(payload) {
+function parse165(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -20162,7 +21283,7 @@ function parse164(payload) {
 }
 
 // src/packet/Packet_ItemDropPosition.js
-function parse165(payload) {
+function parse166(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemDropId");
   if (e.TAG !== "Ok") {
@@ -20190,7 +21311,7 @@ function parse165(payload) {
 }
 
 // src/packet/Packet_PlayerTeamUpdate.js
-function parse166(payload) {
+function parse167(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -20211,7 +21332,7 @@ function parse166(payload) {
 }
 
 // src/packet/Packet_PlayerItemUseSound.js
-function parse167(payload) {
+function parse168(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG === "Ok") {
@@ -20227,7 +21348,7 @@ function parse167(payload) {
 }
 
 // src/packet/Packet_PlayerInventorySlot.js
-function parse168(payload) {
+function parse169(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -20269,7 +21390,7 @@ function parse168(payload) {
 }
 
 // src/packet/Packet_PlayerTeamSwapSpawn.js
-function parse169(payload) {
+function parse170(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG === "Ok") {
@@ -20285,7 +21406,7 @@ function parse169(payload) {
 }
 
 // src/packet/Packet_TeleportationPotion.js
-function parse170(payload) {
+function parse171(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "teleportType");
   if (e.TAG !== "Ok") {
@@ -20339,7 +21460,7 @@ function parse170(payload) {
 }
 
 // src/packet/Packet_PlayerLuckFactorsUpdate.js
-function parse171(payload) {
+function parse172(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -20397,7 +21518,7 @@ function parse171(payload) {
 }
 
 // src/packet/Packet_ShimmerEffectOrCoinLuck.js
-function parse172(payload) {
+function parse173(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "kind");
   if (e.TAG !== "Ok") {
@@ -20461,7 +21582,7 @@ function parse172(payload) {
 }
 
 // src/packet/Packet_ItemForceIntoNearestChest.js
-function parse173(payload, fromServer) {
+function parse174(payload, fromServer) {
   let reader = new packetreader_default(payload);
   if (fromServer) {
     let e = readInt32(reader, "blockedChestCount");
@@ -20551,7 +21672,7 @@ function parse173(payload, fromServer) {
 }
 
 // src/packet/Packet_InitialTileSectionsRequest.js
-function parse174(payload) {
+function parse175(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "x");
   if (e.TAG !== "Ok") {
@@ -20577,7 +21698,7 @@ function parse174(payload) {
 }
 
 // src/packet/Packet_TravellingMerchantInventory.js
-function parse175(payload) {
+function parse176(payload) {
   let reader = new packetreader_default(payload);
   let items = [];
   let totalItems = payload.length / 2 | 0;
@@ -20614,7 +21735,7 @@ function parse175(payload) {
 }
 
 // src/packet/Packet_DeadCellsDisplayJarTryPlacing.js
-function parse176(payload) {
+function parse177(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -20650,7 +21771,7 @@ function parse176(payload) {
 }
 
 // src/packet/Packet_LeashedEntityAnchorInsertItem.js
-function parse177(payload) {
+function parse178(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -20690,7 +21811,7 @@ function commandFromInt(value) {
       return;
   }
 }
-function parse178(payload) {
+function parse179(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -21104,22 +22225,22 @@ function mapPacket2(result, packetName, fn) {
     _0: addPacketContext2(packetName, e)
   }));
 }
-function makeParsers2(packetName, parse180, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, _fromServer) => mapPacket2(parse180(payload), packetName, toPacket);
+function makeParsers2(packetName, parse181, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, _fromServer) => mapPacket2(parse181(payload), packetName, toPacket);
   let parseLazyWrapped = (payload, _fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse180(payload), (e) => addPacketContext2(packetName, e))))
+    _0: toLazyPacket(make4(() => mapError(parse181(payload), (e) => addPacketContext2(packetName, e))))
   });
   return {
     parse: parseWrapped,
     parseLazy: parseLazyWrapped
   };
 }
-function makeParsersWithFromServer2(packetName, parse180, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, fromServer) => mapPacket2(parse180(payload, fromServer), packetName, toPacket);
+function makeParsersWithFromServer2(packetName, parse181, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, fromServer) => mapPacket2(parse181(payload, fromServer), packetName, toPacket);
   let parseLazyWrapped = (payload, fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse180(payload, fromServer), (e) => addPacketContext2(packetName, e))))
+    _0: toLazyPacket(make4(() => mapError(parse181(payload, fromServer), (e) => addPacketContext2(packetName, e))))
   });
   return {
     parse: parseWrapped,
@@ -21197,7 +22318,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerInventorySlot":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse168, (a) => ({
+        _0: makeParsers2(packetName, parse169, (a) => ({
           TAG: "PlayerInventorySlot",
           _0: a
         }), (a) => ({
@@ -21250,7 +22371,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse174, (a) => ({
+          _0: makeParsers2(packetName, parse175, (a) => ({
             TAG: "InitialTileSectionsRequest",
             _0: a
           }), (a) => ({
@@ -21753,7 +22874,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerBuffsSet":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse161, (a) => ({
+        _0: makeParsers2(packetName, parse162, (a) => ({
           TAG: "PlayerBuffsSet",
           _0: a
         }), (a) => ({
@@ -21798,7 +22919,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse160, (a) => ({
+          _0: makeParsers2(packetName, parse161, (a) => ({
             TAG: "NpcBuffUpdate",
             _0: a
           }), (a) => ({
@@ -22038,7 +23159,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse175, (a) => ({
+          _0: makeParsers2(packetName, parse176, (a) => ({
             TAG: "TravellingMerchantInventory",
             _0: a
           }), (a) => ({
@@ -22055,7 +23176,7 @@ function getParsers2(packetType, fromServer) {
     case "TeleportationPotion":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse170, (a) => ({
+        _0: makeParsers2(packetName, parse171, (a) => ({
           TAG: "TeleportationPotion",
           _0: a
         }), (a) => ({
@@ -22196,7 +23317,7 @@ function getParsers2(packetType, fromServer) {
     case "NetModuleLoad":
       return {
         TAG: "Ok",
-        _0: makeParsersWithFromServer2(packetName, parse23, (a) => ({
+        _0: makeParsersWithFromServer2(packetName, parse160, (a) => ({
           TAG: "NetModuleLoad",
           _0: a
         }), (a) => ({
@@ -22236,7 +23357,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemForceIntoNearestChest":
       return {
         TAG: "Ok",
-        _0: makeParsersWithFromServer2(packetName, parse173, (a) => ({
+        _0: makeParsersWithFromServer2(packetName, parse174, (a) => ({
           TAG: "ItemForceIntoNearestChest",
           _0: a
         }), (a) => ({
@@ -22793,7 +23914,7 @@ function getParsers2(packetType, fromServer) {
     case "TileEntityDisplayDollItemSync":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse178, (a) => ({
+        _0: makeParsers2(packetName, parse179, (a) => ({
           TAG: "TileEntityDisplayDollItemSync",
           _0: a
         }), (a) => ({
@@ -22992,7 +24113,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerLuckFactorsUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse171, (a) => ({
+        _0: makeParsers2(packetName, parse172, (a) => ({
           TAG: "PlayerLuckFactorsUpdate",
           _0: a
         }), (a) => ({
@@ -23145,7 +24266,7 @@ function getParsers2(packetType, fromServer) {
     case "ShimmerEffectOrCoinLuck":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse172, (a) => ({
+        _0: makeParsers2(packetName, parse173, (a) => ({
           TAG: "ShimmerEffectOrCoinLuck",
           _0: a
         }), (a) => ({
@@ -23178,7 +24299,7 @@ function getParsers2(packetType, fromServer) {
     case "DeadCellsDisplayJarTryPlacing":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse176, (a) => ({
+        _0: makeParsers2(packetName, parse177, (a) => ({
           TAG: "DeadCellsDisplayJarTryPlacing",
           _0: a
         }), (a) => ({
@@ -23189,7 +24310,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerSpectate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse162, (a) => ({
+        _0: makeParsers2(packetName, parse163, (a) => ({
           TAG: "PlayerSpectate",
           _0: a
         }), (a) => ({
@@ -23211,7 +24332,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerItemUseSound":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse167, (a) => ({
+        _0: makeParsers2(packetName, parse168, (a) => ({
           TAG: "PlayerItemUseSound",
           _0: a
         }), (a) => ({
@@ -23222,7 +24343,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcHurtByDebuff":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse164, (a) => ({
+        _0: makeParsers2(packetName, parse165, (a) => ({
           TAG: "NpcHurtByDebuff",
           _0: a
         }), (a) => ({
@@ -23255,7 +24376,7 @@ function getParsers2(packetType, fromServer) {
     case "LeashedEntityAnchorInsertItem":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse177, (a) => ({
+        _0: makeParsers2(packetName, parse178, (a) => ({
           TAG: "LeashedEntityAnchorInsertItem",
           _0: a
         }), (a) => ({
@@ -23266,7 +24387,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerTeamUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse166, (a) => ({
+        _0: makeParsers2(packetName, parse167, (a) => ({
           TAG: "PlayerTeamUpdate",
           _0: a
         }), (a) => ({
@@ -23277,7 +24398,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerTeamSwapSpawn":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse169, (a) => ({
+        _0: makeParsers2(packetName, parse170, (a) => ({
           TAG: "PlayerTeamSwapSpawn",
           _0: a
         }), (a) => ({
@@ -23288,7 +24409,7 @@ function getParsers2(packetType, fromServer) {
     case "SectionRequest":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse163, (a) => ({
+        _0: makeParsers2(packetName, parse164, (a) => ({
           TAG: "SectionRequest",
           _0: a
         }), (a) => ({
@@ -23299,7 +24420,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemDropPosition":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse165, (a) => ({
+        _0: makeParsers2(packetName, parse166, (a) => ({
           TAG: "ItemDropPosition",
           _0: a
         }), (a) => ({
@@ -23320,7 +24441,7 @@ function getParsers2(packetType, fromServer) {
       };
   }
 }
-function parse179(buffer, fromServer) {
+function parse180(buffer, fromServer) {
   let match = buffer.length;
   if (!(match > 2 || match < 0)) {
     return {
@@ -23894,6 +25015,325 @@ function shimmerCoinLuckToV1449(coinLuck) {
     amount: coinLuck.amount
   };
 }
+function netModuleLoadLiquidChangeFromV1449(change) {
+  return {
+    x: change.x,
+    y: change.y,
+    amount: change.amount,
+    liquidType: change.liquidType
+  };
+}
+function netModuleLoadLiquidFromV1449(liquid) {
+  return {
+    changes: liquid.changes.map(netModuleLoadLiquidChangeFromV1449)
+  };
+}
+function netModuleLoadPositionFromV1449(position) {
+  return {
+    x: position.x,
+    y: position.y
+  };
+}
+function netModuleLoadAmbienceFromV1449(ambience) {
+  return {
+    playerId: ambience.playerId,
+    seed: ambience.seed,
+    skyEntityType: ambience.skyEntityType
+  };
+}
+function netModuleLoadBestiaryUnlockTypeFromV1449(unlockType) {
+  if (typeof unlockType !== "object") {
+    if (unlockType === "Sight") {
+      return "Sight";
+    } else {
+      return "Chat";
+    }
+  } else {
+    return {
+      TAG: "Kill",
+      _0: unlockType._0
+    };
+  }
+}
+function netModuleLoadBestiaryFromV1449(bestiary) {
+  return {
+    unlockType: netModuleLoadBestiaryUnlockTypeFromV1449(bestiary.unlockType),
+    npcId: bestiary.npcId
+  };
+}
+function netModuleLoadPylonActionFromV1449(action) {
+  switch (action) {
+    case "Added":
+      return "Added";
+    case "Removed":
+      return "Removed";
+    case "RequestTeleport":
+      return "RequestTeleport";
+  }
+}
+function netModuleLoadTeleportPylonFromV1449(teleportPylon) {
+  return {
+    pylonAction: netModuleLoadPylonActionFromV1449(teleportPylon.pylonAction),
+    x: teleportPylon.x,
+    y: teleportPylon.y,
+    pylonType: teleportPylon.pylonType
+  };
+}
+function netModuleLoadParticleFromV1449(particle) {
+  return {
+    particleType: particle.particleType,
+    x: particle.x,
+    y: particle.y,
+    vx: particle.vx,
+    vy: particle.vy,
+    shaderIndex: particle.shaderIndex,
+    invokedByPlayer: particle.invokedByPlayer
+  };
+}
+function netModuleLoadPowerLevelFromV1449(powerLevel) {
+  switch (powerLevel) {
+    case "LockedForEveryone":
+      return "LockedForEveryone";
+    case "CanBeChangedByHostAlone":
+      return "CanBeChangedByHostAlone";
+    case "CanBeChangedByEveryone":
+      return "CanBeChangedByEveryone";
+  }
+}
+function netModuleLoadCreativePowerPermissionFromV1449(permission) {
+  return {
+    powerType: permission.powerType,
+    powerLevel: netModuleLoadPowerLevelFromV1449(permission.powerLevel)
+  };
+}
+function netModuleLoadLiquidChangeToV1449(change) {
+  return {
+    x: change.x,
+    y: change.y,
+    amount: change.amount,
+    liquidType: change.liquidType
+  };
+}
+function netModuleLoadLiquidToV1449(liquid) {
+  return {
+    changes: liquid.changes.map(netModuleLoadLiquidChangeToV1449)
+  };
+}
+function netModuleLoadPositionToV1449(position) {
+  return {
+    x: position.x,
+    y: position.y
+  };
+}
+function netModuleLoadAmbienceToV1449(ambience) {
+  return {
+    playerId: ambience.playerId,
+    seed: ambience.seed,
+    skyEntityType: ambience.skyEntityType
+  };
+}
+function netModuleLoadBestiaryUnlockTypeToV1449(unlockType) {
+  if (typeof unlockType !== "object") {
+    if (unlockType === "Sight") {
+      return "Sight";
+    } else {
+      return "Chat";
+    }
+  } else {
+    return {
+      TAG: "Kill",
+      _0: unlockType._0
+    };
+  }
+}
+function netModuleLoadBestiaryToV1449(bestiary) {
+  return {
+    unlockType: netModuleLoadBestiaryUnlockTypeToV1449(bestiary.unlockType),
+    npcId: bestiary.npcId
+  };
+}
+function netModuleLoadPylonActionToV1449(action) {
+  switch (action) {
+    case "Added":
+      return "Added";
+    case "Removed":
+      return "Removed";
+    case "RequestTeleport":
+      return "RequestTeleport";
+  }
+}
+function netModuleLoadTeleportPylonToV1449(teleportPylon) {
+  return {
+    pylonAction: netModuleLoadPylonActionToV1449(teleportPylon.pylonAction),
+    x: teleportPylon.x,
+    y: teleportPylon.y,
+    pylonType: teleportPylon.pylonType
+  };
+}
+function netModuleLoadParticleToV1449(particle) {
+  return {
+    particleType: particle.particleType,
+    x: particle.x,
+    y: particle.y,
+    vx: particle.vx,
+    vy: particle.vy,
+    shaderIndex: particle.shaderIndex,
+    invokedByPlayer: particle.invokedByPlayer
+  };
+}
+function netModuleLoadPowerLevelToV1449(powerLevel) {
+  switch (powerLevel) {
+    case "LockedForEveryone":
+      return "LockedForEveryone";
+    case "CanBeChangedByHostAlone":
+      return "CanBeChangedByHostAlone";
+    case "CanBeChangedByEveryone":
+      return "CanBeChangedByEveryone";
+  }
+}
+function netModuleLoadCreativePowerPermissionToV1449(permission) {
+  return {
+    powerType: permission.powerType,
+    powerLevel: netModuleLoadPowerLevelToV1449(permission.powerLevel)
+  };
+}
+function netModuleLoadFromV1449(netModuleLoad) {
+  switch (netModuleLoad.TAG) {
+    case "Liquid":
+      return {
+        TAG: "Liquid",
+        _0: netModuleLoadLiquidFromV1449(netModuleLoad._0)
+      };
+    case "ClientText":
+      return {
+        TAG: "ClientText",
+        _0: netModuleLoad._0,
+        _1: netModuleLoad._1
+      };
+    case "ServerText":
+      return {
+        TAG: "ServerText",
+        _0: netModuleLoad._0,
+        _1: netModuleLoad._1,
+        _2: netModuleLoad._2
+      };
+    case "Ping":
+      return {
+        TAG: "Ping",
+        _0: netModuleLoadPositionFromV1449(netModuleLoad._0)
+      };
+    case "Ambience":
+      return {
+        TAG: "Ambience",
+        _0: netModuleLoadAmbienceFromV1449(netModuleLoad._0)
+      };
+    case "Bestiary":
+      return {
+        TAG: "Bestiary",
+        _0: netModuleLoadBestiaryFromV1449(netModuleLoad._0)
+      };
+    case "CreativePower":
+      return {
+        TAG: "CreativePower",
+        _0: netModuleLoad._0
+      };
+    case "CreativeUnlocks":
+    case "CreativeUnlocksPlayerReport":
+      break;
+    case "TeleportPylon":
+      return {
+        TAG: "TeleportPylon",
+        _0: netModuleLoadTeleportPylonFromV1449(netModuleLoad._0)
+      };
+    case "Particles":
+      return {
+        TAG: "Particles",
+        _0: netModuleLoadParticleFromV1449(netModuleLoad._0)
+      };
+    case "CreativePowerPermissions":
+      return {
+        TAG: "CreativePowerPermissions",
+        _0: netModuleLoadCreativePowerPermissionFromV1449(netModuleLoad._0)
+      };
+  }
+  let creativeUnlock = netModuleLoad._0;
+  return {
+    TAG: "CreativeUnlocksPlayerReport",
+    _0: {
+      userId: 0,
+      itemId: creativeUnlock.itemId,
+      researchedCount: creativeUnlock.researchedCount
+    }
+  };
+}
+function netModuleLoadToV1449(netModuleLoad) {
+  switch (netModuleLoad.TAG) {
+    case "Liquid":
+      return {
+        TAG: "Liquid",
+        _0: netModuleLoadLiquidToV1449(netModuleLoad._0)
+      };
+    case "ClientText":
+      return {
+        TAG: "ClientText",
+        _0: netModuleLoad._0,
+        _1: netModuleLoad._1
+      };
+    case "ServerText":
+      return {
+        TAG: "ServerText",
+        _0: netModuleLoad._0,
+        _1: netModuleLoad._1,
+        _2: netModuleLoad._2
+      };
+    case "Ping":
+      return {
+        TAG: "Ping",
+        _0: netModuleLoadPositionToV1449(netModuleLoad._0)
+      };
+    case "Ambience":
+      return {
+        TAG: "Ambience",
+        _0: netModuleLoadAmbienceToV1449(netModuleLoad._0)
+      };
+    case "Bestiary":
+      return {
+        TAG: "Bestiary",
+        _0: netModuleLoadBestiaryToV1449(netModuleLoad._0)
+      };
+    case "CreativePower":
+      return {
+        TAG: "CreativePower",
+        _0: netModuleLoad._0
+      };
+    case "CreativeUnlocksPlayerReport":
+      let unlockReport = netModuleLoad._0;
+      return {
+        TAG: "CreativeUnlocksPlayerReport",
+        _0: {
+          itemId: unlockReport.itemId,
+          researchedCount: unlockReport.researchedCount
+        }
+      };
+    case "TeleportPylon":
+      return {
+        TAG: "TeleportPylon",
+        _0: netModuleLoadTeleportPylonToV1449(netModuleLoad._0)
+      };
+    case "Particles":
+      return {
+        TAG: "Particles",
+        _0: netModuleLoadParticleToV1449(netModuleLoad._0)
+      };
+    case "CreativePowerPermissions":
+      return {
+        TAG: "CreativePowerPermissions",
+        _0: netModuleLoadCreativePowerPermissionToV1449(netModuleLoad._0)
+      };
+    default:
+      return;
+  }
+}
 function fromV1449(packet) {
   switch (packet.TAG) {
     case "PlayerInfo":
@@ -24150,6 +25590,11 @@ function fromV1449(packet) {
         _0: {
           teleportType: tmp$1
         }
+      };
+    case "NetModuleLoad":
+      return {
+        TAG: "NetModuleLoad",
+        _0: netModuleLoadFromV1449(packet._0)
       };
     case "ItemForceIntoNearestChest":
       return {
@@ -24478,6 +25923,25 @@ function v1449ToLatest(packet) {
           teleportType: tmp$1
         }
       };
+    case "NetModuleLoad":
+      let converted = netModuleLoadToV1449(packet._0);
+      if (converted !== void 0) {
+        return {
+          TAG: "NetModuleLoad",
+          _0: converted
+        };
+      } else {
+        return {
+          TAG: "NetModuleLoad",
+          _0: {
+            TAG: "Ping",
+            _0: {
+              x: 0,
+              y: 0
+            }
+          }
+        };
+      }
     case "ItemForceIntoNearestChest":
       let itemForce = packet._0;
       if (itemForce.TAG === "ClientRequest") {
@@ -24597,6 +26061,7 @@ function convertFromV1449IfNeeded(buffer, fromServer) {
     case "Teleport":
     case "TravellingMerchantInventory":
     case "TeleportationPotion":
+    case "NetModuleLoad":
     case "ItemForceIntoNearestChest":
     case "TileEntityDisplayDollItemSync":
     case "PlayerLuckFactorsUpdate":
@@ -24666,11 +26131,29 @@ function convertToV1449IfNeeded(buffer, fromServer) {
     case "Teleport":
     case "TravellingMerchantInventory":
     case "TeleportationPotion":
+    case "NetModuleLoad":
     case "ItemForceIntoNearestChest":
     case "TileEntityDisplayDollItemSync":
     case "PlayerLuckFactorsUpdate":
     case "ShimmerEffectOrCoinLuck":
       break;
+    case "DeadCellsDisplayJarTryPlacing":
+    case "PlayerSpectate":
+    case "ItemDropClear":
+    case "PlayerItemUseSound":
+    case "NpcHurtByDebuff":
+    case "Ping":
+    case "ChestResize":
+    case "LeashedEntityAnchorInsertItem":
+    case "PlayerTeamUpdate":
+    case "PlayerTeamSwapSpawn":
+    case "SectionRequest":
+    case "ItemDropPosition":
+    case "HostToken":
+      return {
+        TAG: "Ok",
+        _0: "DiscardAsNotExists"
+      };
     default:
       return {
         TAG: "Ok",
@@ -24678,10 +26161,26 @@ function convertToV1449IfNeeded(buffer, fromServer) {
       };
   }
   try {
-    return map2(map2(parse179(buffer, fromServer), v1449ToLatest), (p) => ({
-      TAG: "ConvertedToV1449",
-      _0: p
-    }));
+    return map2(parse180(buffer, fromServer), (packet) => {
+      if (packet.TAG !== "NetModuleLoad") {
+        return {
+          TAG: "ConvertedToV1449",
+          _0: v1449ToLatest(packet)
+        };
+      }
+      let converted = netModuleLoadToV1449(packet._0);
+      if (converted !== void 0) {
+        return {
+          TAG: "ConvertedToV1449",
+          _0: {
+            TAG: "NetModuleLoad",
+            _0: converted
+          }
+        };
+      } else {
+        return "DiscardAsNotExists";
+      }
+    });
   } catch (raw_obj) {
     let obj = internalToException(raw_obj);
     if (obj.RE_EXN_ID === "JsExn") {

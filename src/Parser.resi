@@ -10,6 +10,7 @@ let convertFromV1449IfNeeded: (
 type convertToV1449IfNeeded =
   | PacketStructureIsSame
   | ConvertedToV1449(PacketV1449.t)
+  | DiscardAsNotExists
 let convertToV1449IfNeeded: (
   ~buffer: NodeJs.Buffer.t,
   ~fromServer: bool,

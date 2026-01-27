@@ -26,6 +26,7 @@ import * as PacketV1449_HarpPlay$TerrariaPacket from "./packetv1449/PacketV1449_
 import * as PacketV1449_NpcCatch$TerrariaPacket from "./packetv1449/PacketV1449_NpcCatch.js";
 import * as PacketV1449_SignRead$TerrariaPacket from "./packetv1449/PacketV1449_SignRead.js";
 import * as Packet_ItemDropClear$TerrariaPacket from "./packet/Packet_ItemDropClear.js";
+import * as Packet_NetModuleLoad$TerrariaPacket from "./packet/Packet_NetModuleLoad.js";
 import * as Packet_NpcBuffUpdate$TerrariaPacket from "./packet/Packet_NpcBuffUpdate.js";
 import * as PacketV1449_ChestItem$TerrariaPacket from "./packetv1449/PacketV1449_ChestItem.js";
 import * as PacketV1449_ChestName$TerrariaPacket from "./packetv1449/PacketV1449_ChestName.js";
@@ -73,7 +74,6 @@ import * as PacketV1449_PlayerHealth$TerrariaPacket from "./packetv1449/PacketV1
 import * as PacketV1449_GemLockToggle$TerrariaPacket from "./packetv1449/PacketV1449_GemLockToggle.js";
 import * as PacketV1449_LoadoutSwitch$TerrariaPacket from "./packetv1449/PacketV1449_LoadoutSwitch.js";
 import * as PacketV1449_NebulaLevelUp$TerrariaPacket from "./packetv1449/PacketV1449_NebulaLevelUp.js";
-import * as PacketV1449_NetModuleLoad$TerrariaPacket from "./packetv1449/PacketV1449_NetModuleLoad.js";
 import * as PacketV1449_NpcHomeUpdate$TerrariaPacket from "./packetv1449/PacketV1449_NpcHomeUpdate.js";
 import * as PacketV1449_NpcItemStrike$TerrariaPacket from "./packetv1449/PacketV1449_NpcItemStrike.js";
 import * as PacketV1449_NpcNameUpdate$TerrariaPacket from "./packetv1449/PacketV1449_NpcNameUpdate.js";
@@ -1069,7 +1069,7 @@ function toBuffer(packet, fromServer) {
     case "CombatNumberCreate" :
       return ISerializer$TerrariaPacket.toBufferResult(PacketV1449_CombatNumberCreate$TerrariaPacket.toBuffer(packet._0));
     case "NetModuleLoad" :
-      return ISerializer$TerrariaPacket.toBufferResult(PacketV1449_NetModuleLoad$TerrariaPacket.toBuffer(packet._0));
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_NetModuleLoad$TerrariaPacket.toBuffer(packet._0));
     case "NpcKillCount" :
       return ISerializer$TerrariaPacket.toBufferResult(PacketV1449_NpcKillCount$TerrariaPacket.toBuffer(packet._0));
     case "PlayerStealth" :
@@ -1411,9 +1411,6 @@ function toPacketName$1(packet) {
         case "Bestiary" :
           tmp = "Bestiary";
           break;
-        case "CreativeUnlocks" :
-          tmp = "CreativeUnlocks";
-          break;
         case "CreativePower" :
           tmp = `CreativePower { ` + CreativePowers$TerrariaPacket.toString(netModuleLoad._0) + ` }`;
           break;
@@ -1428,6 +1425,21 @@ function toPacketName$1(packet) {
           break;
         case "CreativePowerPermissions" :
           tmp = "CreativePowerPermissions";
+          break;
+        case "Banners" :
+          tmp = "Banners";
+          break;
+        case "CraftingRequests" :
+          tmp = "CraftingRequests";
+          break;
+        case "TagEffectState" :
+          tmp = "TagEffectState";
+          break;
+        case "LeashedEntity" :
+          tmp = "LeashedEntity";
+          break;
+        case "UnbreakableWallScan" :
+          tmp = "UnbreakableWallScan";
           break;
       }
       return "NetModuleLoad(" + tmp + ")";

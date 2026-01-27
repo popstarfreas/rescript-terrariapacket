@@ -30,6 +30,7 @@ import * as PacketV1449_HarpPlay$TerrariaPacket from "./packetv1449/PacketV1449_
 import * as PacketV1449_NpcCatch$TerrariaPacket from "./packetv1449/PacketV1449_NpcCatch.js";
 import * as PacketV1449_SignRead$TerrariaPacket from "./packetv1449/PacketV1449_SignRead.js";
 import * as Packet_ItemDropClear$TerrariaPacket from "./packet/Packet_ItemDropClear.js";
+import * as Packet_NetModuleLoad$TerrariaPacket from "./packet/Packet_NetModuleLoad.js";
 import * as Packet_NpcBuffUpdate$TerrariaPacket from "./packet/Packet_NpcBuffUpdate.js";
 import * as PacketV1449_ChestItem$TerrariaPacket from "./packetv1449/PacketV1449_ChestItem.js";
 import * as PacketV1449_ChestName$TerrariaPacket from "./packetv1449/PacketV1449_ChestName.js";
@@ -77,7 +78,6 @@ import * as PacketV1449_PlayerHealth$TerrariaPacket from "./packetv1449/PacketV1
 import * as PacketV1449_GemLockToggle$TerrariaPacket from "./packetv1449/PacketV1449_GemLockToggle.js";
 import * as PacketV1449_LoadoutSwitch$TerrariaPacket from "./packetv1449/PacketV1449_LoadoutSwitch.js";
 import * as PacketV1449_NebulaLevelUp$TerrariaPacket from "./packetv1449/PacketV1449_NebulaLevelUp.js";
-import * as PacketV1449_NetModuleLoad$TerrariaPacket from "./packetv1449/PacketV1449_NetModuleLoad.js";
 import * as PacketV1449_NpcHomeUpdate$TerrariaPacket from "./packetv1449/PacketV1449_NpcHomeUpdate.js";
 import * as PacketV1449_NpcItemStrike$TerrariaPacket from "./packetv1449/PacketV1449_NpcItemStrike.js";
 import * as PacketV1449_NpcNameUpdate$TerrariaPacket from "./packetv1449/PacketV1449_NpcNameUpdate.js";
@@ -1593,7 +1593,7 @@ function getParsers(packetType, fromServer) {
     case "NetModuleLoad" :
       return {
         TAG: "Ok",
-        _0: makeParsersWithFromServer(packetName, PacketV1449_NetModuleLoad$TerrariaPacket.parse, a => ({
+        _0: makeParsersWithFromServer(packetName, Packet_NetModuleLoad$TerrariaPacket.parse, a => ({
           TAG: "NetModuleLoad",
           _0: a
         }), a => ({
@@ -3314,6 +3314,349 @@ function shimmerCoinLuckToV1449(coinLuck) {
   };
 }
 
+function netModuleLoadLiquidChangeFromV1449(change) {
+  return {
+    x: change.x,
+    y: change.y,
+    amount: change.amount,
+    liquidType: change.liquidType
+  };
+}
+
+function netModuleLoadLiquidFromV1449(liquid) {
+  return {
+    changes: liquid.changes.map(netModuleLoadLiquidChangeFromV1449)
+  };
+}
+
+function netModuleLoadPositionFromV1449(position) {
+  return {
+    x: position.x,
+    y: position.y
+  };
+}
+
+function netModuleLoadAmbienceFromV1449(ambience) {
+  return {
+    playerId: ambience.playerId,
+    seed: ambience.seed,
+    skyEntityType: ambience.skyEntityType
+  };
+}
+
+function netModuleLoadBestiaryUnlockTypeFromV1449(unlockType) {
+  if (typeof unlockType !== "object") {
+    if (unlockType === "Sight") {
+      return "Sight";
+    } else {
+      return "Chat";
+    }
+  } else {
+    return {
+      TAG: "Kill",
+      _0: unlockType._0
+    };
+  }
+}
+
+function netModuleLoadBestiaryFromV1449(bestiary) {
+  return {
+    unlockType: netModuleLoadBestiaryUnlockTypeFromV1449(bestiary.unlockType),
+    npcId: bestiary.npcId
+  };
+}
+
+function netModuleLoadPylonActionFromV1449(action) {
+  switch (action) {
+    case "Added" :
+      return "Added";
+    case "Removed" :
+      return "Removed";
+    case "RequestTeleport" :
+      return "RequestTeleport";
+  }
+}
+
+function netModuleLoadTeleportPylonFromV1449(teleportPylon) {
+  return {
+    pylonAction: netModuleLoadPylonActionFromV1449(teleportPylon.pylonAction),
+    x: teleportPylon.x,
+    y: teleportPylon.y,
+    pylonType: teleportPylon.pylonType
+  };
+}
+
+function netModuleLoadParticleFromV1449(particle) {
+  return {
+    particleType: particle.particleType,
+    x: particle.x,
+    y: particle.y,
+    vx: particle.vx,
+    vy: particle.vy,
+    shaderIndex: particle.shaderIndex,
+    invokedByPlayer: particle.invokedByPlayer
+  };
+}
+
+function netModuleLoadPowerLevelFromV1449(powerLevel) {
+  switch (powerLevel) {
+    case "LockedForEveryone" :
+      return "LockedForEveryone";
+    case "CanBeChangedByHostAlone" :
+      return "CanBeChangedByHostAlone";
+    case "CanBeChangedByEveryone" :
+      return "CanBeChangedByEveryone";
+  }
+}
+
+function netModuleLoadCreativePowerPermissionFromV1449(permission) {
+  return {
+    powerType: permission.powerType,
+    powerLevel: netModuleLoadPowerLevelFromV1449(permission.powerLevel)
+  };
+}
+
+function netModuleLoadLiquidChangeToV1449(change) {
+  return {
+    x: change.x,
+    y: change.y,
+    amount: change.amount,
+    liquidType: change.liquidType
+  };
+}
+
+function netModuleLoadLiquidToV1449(liquid) {
+  return {
+    changes: liquid.changes.map(netModuleLoadLiquidChangeToV1449)
+  };
+}
+
+function netModuleLoadPositionToV1449(position) {
+  return {
+    x: position.x,
+    y: position.y
+  };
+}
+
+function netModuleLoadAmbienceToV1449(ambience) {
+  return {
+    playerId: ambience.playerId,
+    seed: ambience.seed,
+    skyEntityType: ambience.skyEntityType
+  };
+}
+
+function netModuleLoadBestiaryUnlockTypeToV1449(unlockType) {
+  if (typeof unlockType !== "object") {
+    if (unlockType === "Sight") {
+      return "Sight";
+    } else {
+      return "Chat";
+    }
+  } else {
+    return {
+      TAG: "Kill",
+      _0: unlockType._0
+    };
+  }
+}
+
+function netModuleLoadBestiaryToV1449(bestiary) {
+  return {
+    unlockType: netModuleLoadBestiaryUnlockTypeToV1449(bestiary.unlockType),
+    npcId: bestiary.npcId
+  };
+}
+
+function netModuleLoadPylonActionToV1449(action) {
+  switch (action) {
+    case "Added" :
+      return "Added";
+    case "Removed" :
+      return "Removed";
+    case "RequestTeleport" :
+      return "RequestTeleport";
+  }
+}
+
+function netModuleLoadTeleportPylonToV1449(teleportPylon) {
+  return {
+    pylonAction: netModuleLoadPylonActionToV1449(teleportPylon.pylonAction),
+    x: teleportPylon.x,
+    y: teleportPylon.y,
+    pylonType: teleportPylon.pylonType
+  };
+}
+
+function netModuleLoadParticleToV1449(particle) {
+  return {
+    particleType: particle.particleType,
+    x: particle.x,
+    y: particle.y,
+    vx: particle.vx,
+    vy: particle.vy,
+    shaderIndex: particle.shaderIndex,
+    invokedByPlayer: particle.invokedByPlayer
+  };
+}
+
+function netModuleLoadPowerLevelToV1449(powerLevel) {
+  switch (powerLevel) {
+    case "LockedForEveryone" :
+      return "LockedForEveryone";
+    case "CanBeChangedByHostAlone" :
+      return "CanBeChangedByHostAlone";
+    case "CanBeChangedByEveryone" :
+      return "CanBeChangedByEveryone";
+  }
+}
+
+function netModuleLoadCreativePowerPermissionToV1449(permission) {
+  return {
+    powerType: permission.powerType,
+    powerLevel: netModuleLoadPowerLevelToV1449(permission.powerLevel)
+  };
+}
+
+function netModuleLoadFromV1449(netModuleLoad) {
+  switch (netModuleLoad.TAG) {
+    case "Liquid" :
+      return {
+        TAG: "Liquid",
+        _0: netModuleLoadLiquidFromV1449(netModuleLoad._0)
+      };
+    case "ClientText" :
+      return {
+        TAG: "ClientText",
+        _0: netModuleLoad._0,
+        _1: netModuleLoad._1
+      };
+    case "ServerText" :
+      return {
+        TAG: "ServerText",
+        _0: netModuleLoad._0,
+        _1: netModuleLoad._1,
+        _2: netModuleLoad._2
+      };
+    case "Ping" :
+      return {
+        TAG: "Ping",
+        _0: netModuleLoadPositionFromV1449(netModuleLoad._0)
+      };
+    case "Ambience" :
+      return {
+        TAG: "Ambience",
+        _0: netModuleLoadAmbienceFromV1449(netModuleLoad._0)
+      };
+    case "Bestiary" :
+      return {
+        TAG: "Bestiary",
+        _0: netModuleLoadBestiaryFromV1449(netModuleLoad._0)
+      };
+    case "CreativePower" :
+      return {
+        TAG: "CreativePower",
+        _0: netModuleLoad._0
+      };
+    case "CreativeUnlocks" :
+    case "CreativeUnlocksPlayerReport" :
+      break;
+    case "TeleportPylon" :
+      return {
+        TAG: "TeleportPylon",
+        _0: netModuleLoadTeleportPylonFromV1449(netModuleLoad._0)
+      };
+    case "Particles" :
+      return {
+        TAG: "Particles",
+        _0: netModuleLoadParticleFromV1449(netModuleLoad._0)
+      };
+    case "CreativePowerPermissions" :
+      return {
+        TAG: "CreativePowerPermissions",
+        _0: netModuleLoadCreativePowerPermissionFromV1449(netModuleLoad._0)
+      };
+  }
+  let creativeUnlock = netModuleLoad._0;
+  return {
+    TAG: "CreativeUnlocksPlayerReport",
+    _0: {
+      userId: 0,
+      itemId: creativeUnlock.itemId,
+      researchedCount: creativeUnlock.researchedCount
+    }
+  };
+}
+
+function netModuleLoadToV1449(netModuleLoad) {
+  switch (netModuleLoad.TAG) {
+    case "Liquid" :
+      return {
+        TAG: "Liquid",
+        _0: netModuleLoadLiquidToV1449(netModuleLoad._0)
+      };
+    case "ClientText" :
+      return {
+        TAG: "ClientText",
+        _0: netModuleLoad._0,
+        _1: netModuleLoad._1
+      };
+    case "ServerText" :
+      return {
+        TAG: "ServerText",
+        _0: netModuleLoad._0,
+        _1: netModuleLoad._1,
+        _2: netModuleLoad._2
+      };
+    case "Ping" :
+      return {
+        TAG: "Ping",
+        _0: netModuleLoadPositionToV1449(netModuleLoad._0)
+      };
+    case "Ambience" :
+      return {
+        TAG: "Ambience",
+        _0: netModuleLoadAmbienceToV1449(netModuleLoad._0)
+      };
+    case "Bestiary" :
+      return {
+        TAG: "Bestiary",
+        _0: netModuleLoadBestiaryToV1449(netModuleLoad._0)
+      };
+    case "CreativePower" :
+      return {
+        TAG: "CreativePower",
+        _0: netModuleLoad._0
+      };
+    case "CreativeUnlocksPlayerReport" :
+      let unlockReport = netModuleLoad._0;
+      return {
+        TAG: "CreativeUnlocksPlayerReport",
+        _0: {
+          itemId: unlockReport.itemId,
+          researchedCount: unlockReport.researchedCount
+        }
+      };
+    case "TeleportPylon" :
+      return {
+        TAG: "TeleportPylon",
+        _0: netModuleLoadTeleportPylonToV1449(netModuleLoad._0)
+      };
+    case "Particles" :
+      return {
+        TAG: "Particles",
+        _0: netModuleLoadParticleToV1449(netModuleLoad._0)
+      };
+    case "CreativePowerPermissions" :
+      return {
+        TAG: "CreativePowerPermissions",
+        _0: netModuleLoadCreativePowerPermissionToV1449(netModuleLoad._0)
+      };
+    default:
+      return;
+  }
+}
+
 function fromV1449(packet) {
   switch (packet.TAG) {
     case "PlayerInfo" :
@@ -3570,6 +3913,11 @@ function fromV1449(packet) {
         _0: {
           teleportType: tmp$1
         }
+      };
+    case "NetModuleLoad" :
+      return {
+        TAG: "NetModuleLoad",
+        _0: netModuleLoadFromV1449(packet._0)
       };
     case "ItemForceIntoNearestChest" :
       return {
@@ -3899,6 +4247,25 @@ function v1449ToLatest(packet) {
           teleportType: tmp$1
         }
       };
+    case "NetModuleLoad" :
+      let converted = netModuleLoadToV1449(packet._0);
+      if (converted !== undefined) {
+        return {
+          TAG: "NetModuleLoad",
+          _0: converted
+        };
+      } else {
+        return {
+          TAG: "NetModuleLoad",
+          _0: {
+            TAG: "Ping",
+            _0: {
+              x: 0.0,
+              y: 0.0
+            }
+          }
+        };
+      }
     case "ItemForceIntoNearestChest" :
       let itemForce = packet._0;
       if (itemForce.TAG === "ClientRequest") {
@@ -4019,6 +4386,7 @@ function convertFromV1449IfNeeded(buffer, fromServer) {
     case "Teleport" :
     case "TravellingMerchantInventory" :
     case "TeleportationPotion" :
+    case "NetModuleLoad" :
     case "ItemForceIntoNearestChest" :
     case "TileEntityDisplayDollItemSync" :
     case "PlayerLuckFactorsUpdate" :
@@ -4089,11 +4457,29 @@ function convertToV1449IfNeeded(buffer, fromServer) {
     case "Teleport" :
     case "TravellingMerchantInventory" :
     case "TeleportationPotion" :
+    case "NetModuleLoad" :
     case "ItemForceIntoNearestChest" :
     case "TileEntityDisplayDollItemSync" :
     case "PlayerLuckFactorsUpdate" :
     case "ShimmerEffectOrCoinLuck" :
       break;
+    case "DeadCellsDisplayJarTryPlacing" :
+    case "PlayerSpectate" :
+    case "ItemDropClear" :
+    case "PlayerItemUseSound" :
+    case "NpcHurtByDebuff" :
+    case "Ping" :
+    case "ChestResize" :
+    case "LeashedEntityAnchorInsertItem" :
+    case "PlayerTeamUpdate" :
+    case "PlayerTeamSwapSpawn" :
+    case "SectionRequest" :
+    case "ItemDropPosition" :
+    case "HostToken" :
+      return {
+        TAG: "Ok",
+        _0: "DiscardAsNotExists"
+      };
     default:
       return {
         TAG: "Ok",
@@ -4101,10 +4487,26 @@ function convertToV1449IfNeeded(buffer, fromServer) {
       };
   }
   try {
-    return Stdlib_Result.map(Stdlib_Result.map(parse(buffer, fromServer), v1449ToLatest), p => ({
-      TAG: "ConvertedToV1449",
-      _0: p
-    }));
+    return Stdlib_Result.map(parse(buffer, fromServer), packet => {
+      if (packet.TAG !== "NetModuleLoad") {
+        return {
+          TAG: "ConvertedToV1449",
+          _0: v1449ToLatest(packet)
+        };
+      }
+      let converted = netModuleLoadToV1449(packet._0);
+      if (converted !== undefined) {
+        return {
+          TAG: "ConvertedToV1449",
+          _0: {
+            TAG: "NetModuleLoad",
+            _0: converted
+          }
+        };
+      } else {
+        return "DiscardAsNotExists";
+      }
+    });
   } catch (raw_obj) {
     let obj = Primitive_exceptions.internalToException(raw_obj);
     if (obj.RE_EXN_ID === "JsExn") {

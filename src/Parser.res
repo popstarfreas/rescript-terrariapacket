@@ -2232,6 +2232,282 @@ let shimmerCoinLuckToV1449 = (
   {position: coinLuck.position, amount: coinLuck.amount}
 }
 
+let netModuleLoadLiquidChangeFromV1449 = (
+  change: PacketV1449.NetModuleLoad.liquidChange,
+): Packet.NetModuleLoad.liquidChange => {
+  {
+    x: change.x,
+    y: change.y,
+    amount: change.amount,
+    liquidType: change.liquidType,
+  }
+}
+
+let netModuleLoadLiquidFromV1449 = (
+  liquid: PacketV1449.NetModuleLoad.liquid,
+): Packet.NetModuleLoad.liquid => {
+  {changes: liquid.changes->Array.map(netModuleLoadLiquidChangeFromV1449)}
+}
+
+let netModuleLoadPositionFromV1449 = (
+  position: PacketV1449.NetModuleLoad.position,
+): Packet.NetModuleLoad.position => {
+  {x: position.x, y: position.y}
+}
+
+let netModuleLoadAmbienceFromV1449 = (
+  ambience: PacketV1449.NetModuleLoad.ambience,
+): Packet.NetModuleLoad.ambience => {
+  {playerId: ambience.playerId, seed: ambience.seed, skyEntityType: ambience.skyEntityType}
+}
+
+let netModuleLoadBestiaryUnlockTypeFromV1449 = (
+  unlockType: PacketV1449.NetModuleLoad.bestiaryUnlockType,
+): Packet.NetModuleLoad.bestiaryUnlockType => {
+  switch unlockType {
+  | Kill(count) => Packet.NetModuleLoad.Kill(count)
+  | Sight => Packet.NetModuleLoad.Sight
+  | Chat => Packet.NetModuleLoad.Chat
+  }
+}
+
+let netModuleLoadBestiaryFromV1449 = (
+  bestiary: PacketV1449.NetModuleLoad.bestiary,
+): Packet.NetModuleLoad.bestiary => {
+  {
+    unlockType: netModuleLoadBestiaryUnlockTypeFromV1449(bestiary.unlockType),
+    npcId: bestiary.npcId,
+  }
+}
+
+let netModuleLoadPylonActionFromV1449 = (
+  action: PacketV1449.NetModuleLoad.pylonAction,
+): Packet.NetModuleLoad.pylonAction => {
+  switch action {
+  | Added => Packet.NetModuleLoad.Added
+  | Removed => Packet.NetModuleLoad.Removed
+  | RequestTeleport => Packet.NetModuleLoad.RequestTeleport
+  }
+}
+
+let netModuleLoadTeleportPylonFromV1449 = (
+  teleportPylon: PacketV1449.NetModuleLoad.teleportPylon,
+): Packet.NetModuleLoad.teleportPylon => {
+  {
+    pylonAction: netModuleLoadPylonActionFromV1449(teleportPylon.pylonAction),
+    x: teleportPylon.x,
+    y: teleportPylon.y,
+    pylonType: teleportPylon.pylonType,
+  }
+}
+
+let netModuleLoadParticleFromV1449 = (
+  particle: PacketV1449.NetModuleLoad.particle,
+): Packet.NetModuleLoad.particle => {
+  {
+    particleType: particle.particleType,
+    x: particle.x,
+    y: particle.y,
+    vx: particle.vx,
+    vy: particle.vy,
+    shaderIndex: particle.shaderIndex,
+    invokedByPlayer: particle.invokedByPlayer,
+  }
+}
+
+let netModuleLoadPowerLevelFromV1449 = (
+  powerLevel: PacketV1449.NetModuleLoad.powerLevel,
+): Packet.NetModuleLoad.powerLevel => {
+  switch powerLevel {
+  | LockedForEveryone => Packet.NetModuleLoad.LockedForEveryone
+  | CanBeChangedByHostAlone => Packet.NetModuleLoad.CanBeChangedByHostAlone
+  | CanBeChangedByEveryone => Packet.NetModuleLoad.CanBeChangedByEveryone
+  }
+}
+
+let netModuleLoadCreativePowerPermissionFromV1449 = (
+  permission: PacketV1449.NetModuleLoad.creativePowerPermission,
+): Packet.NetModuleLoad.creativePowerPermission => {
+  {
+    powerType: permission.powerType,
+    powerLevel: netModuleLoadPowerLevelFromV1449(permission.powerLevel),
+  }
+}
+
+let netModuleLoadLiquidChangeToV1449 = (
+  change: Packet.NetModuleLoad.liquidChange,
+): PacketV1449.NetModuleLoad.liquidChange => {
+  {
+    x: change.x,
+    y: change.y,
+    amount: change.amount,
+    liquidType: change.liquidType,
+  }
+}
+
+let netModuleLoadLiquidToV1449 = (
+  liquid: Packet.NetModuleLoad.liquid,
+): PacketV1449.NetModuleLoad.liquid => {
+  {changes: liquid.changes->Array.map(netModuleLoadLiquidChangeToV1449)}
+}
+
+let netModuleLoadPositionToV1449 = (
+  position: Packet.NetModuleLoad.position,
+): PacketV1449.NetModuleLoad.position => {
+  {x: position.x, y: position.y}
+}
+
+let netModuleLoadAmbienceToV1449 = (
+  ambience: Packet.NetModuleLoad.ambience,
+): PacketV1449.NetModuleLoad.ambience => {
+  {playerId: ambience.playerId, seed: ambience.seed, skyEntityType: ambience.skyEntityType}
+}
+
+let netModuleLoadBestiaryUnlockTypeToV1449 = (
+  unlockType: Packet.NetModuleLoad.bestiaryUnlockType,
+): PacketV1449.NetModuleLoad.bestiaryUnlockType => {
+  switch unlockType {
+  | Kill(count) => PacketV1449.NetModuleLoad.Kill(count)
+  | Sight => PacketV1449.NetModuleLoad.Sight
+  | Chat => PacketV1449.NetModuleLoad.Chat
+  }
+}
+
+let netModuleLoadBestiaryToV1449 = (
+  bestiary: Packet.NetModuleLoad.bestiary,
+): PacketV1449.NetModuleLoad.bestiary => {
+  {
+    unlockType: netModuleLoadBestiaryUnlockTypeToV1449(bestiary.unlockType),
+    npcId: bestiary.npcId,
+  }
+}
+
+let netModuleLoadPylonActionToV1449 = (
+  action: Packet.NetModuleLoad.pylonAction,
+): PacketV1449.NetModuleLoad.pylonAction => {
+  switch action {
+  | Added => PacketV1449.NetModuleLoad.Added
+  | Removed => PacketV1449.NetModuleLoad.Removed
+  | RequestTeleport => PacketV1449.NetModuleLoad.RequestTeleport
+  }
+}
+
+let netModuleLoadTeleportPylonToV1449 = (
+  teleportPylon: Packet.NetModuleLoad.teleportPylon,
+): PacketV1449.NetModuleLoad.teleportPylon => {
+  {
+    pylonAction: netModuleLoadPylonActionToV1449(teleportPylon.pylonAction),
+    x: teleportPylon.x,
+    y: teleportPylon.y,
+    pylonType: teleportPylon.pylonType,
+  }
+}
+
+let netModuleLoadParticleToV1449 = (
+  particle: Packet.NetModuleLoad.particle,
+): PacketV1449.NetModuleLoad.particle => {
+  {
+    particleType: particle.particleType,
+    x: particle.x,
+    y: particle.y,
+    vx: particle.vx,
+    vy: particle.vy,
+    shaderIndex: particle.shaderIndex,
+    invokedByPlayer: particle.invokedByPlayer,
+  }
+}
+
+let netModuleLoadPowerLevelToV1449 = (
+  powerLevel: Packet.NetModuleLoad.powerLevel,
+): PacketV1449.NetModuleLoad.powerLevel => {
+  switch powerLevel {
+  | LockedForEveryone => PacketV1449.NetModuleLoad.LockedForEveryone
+  | CanBeChangedByHostAlone => PacketV1449.NetModuleLoad.CanBeChangedByHostAlone
+  | CanBeChangedByEveryone => PacketV1449.NetModuleLoad.CanBeChangedByEveryone
+  }
+}
+
+let netModuleLoadCreativePowerPermissionToV1449 = (
+  permission: Packet.NetModuleLoad.creativePowerPermission,
+): PacketV1449.NetModuleLoad.creativePowerPermission => {
+  {
+    powerType: permission.powerType,
+    powerLevel: netModuleLoadPowerLevelToV1449(permission.powerLevel),
+  }
+}
+
+let netModuleLoadFromV1449 = (
+  netModuleLoad: PacketV1449.NetModuleLoad.t,
+): Packet.NetModuleLoad.t => {
+  switch netModuleLoad {
+  | Liquid(liquid) => Packet.NetModuleLoad.Liquid(netModuleLoadLiquidFromV1449(liquid))
+  | ClientText(commandId, message) => Packet.NetModuleLoad.ClientText(commandId, message)
+  | ServerText(playerId, text, color) => Packet.NetModuleLoad.ServerText(playerId, text, color)
+  | Ping(position) => Packet.NetModuleLoad.Ping(netModuleLoadPositionFromV1449(position))
+  | Ambience(ambience) => Packet.NetModuleLoad.Ambience(netModuleLoadAmbienceFromV1449(ambience))
+  | Bestiary(bestiary) => Packet.NetModuleLoad.Bestiary(netModuleLoadBestiaryFromV1449(bestiary))
+  | CreativeUnlocks(creativeUnlock) =>
+    Packet.NetModuleLoad.CreativeUnlocksPlayerReport({
+      userId: 0,
+      itemId: creativeUnlock.itemId,
+      researchedCount: creativeUnlock.researchedCount,
+    })
+  | CreativePower(creativePower) => Packet.NetModuleLoad.CreativePower(creativePower)
+  | CreativeUnlocksPlayerReport(unlockReport) =>
+    Packet.NetModuleLoad.CreativeUnlocksPlayerReport({
+      userId: 0,
+      itemId: unlockReport.itemId,
+      researchedCount: unlockReport.researchedCount,
+    })
+  | TeleportPylon(teleportPylon) =>
+    Packet.NetModuleLoad.TeleportPylon(netModuleLoadTeleportPylonFromV1449(teleportPylon))
+  | Particles(particle) => Packet.NetModuleLoad.Particles(netModuleLoadParticleFromV1449(particle))
+  | CreativePowerPermissions(creativePowerPermission) =>
+    Packet.NetModuleLoad.CreativePowerPermissions(
+      netModuleLoadCreativePowerPermissionFromV1449(creativePowerPermission),
+    )
+  }
+}
+
+let netModuleLoadToV1449 = (
+  netModuleLoad: Packet.NetModuleLoad.t,
+): option<PacketV1449.NetModuleLoad.t> => {
+  switch netModuleLoad {
+  | Liquid(liquid) => Some(PacketV1449.NetModuleLoad.Liquid(netModuleLoadLiquidToV1449(liquid)))
+  | ClientText(commandId, message) =>
+    Some(PacketV1449.NetModuleLoad.ClientText(commandId, message))
+  | ServerText(playerId, text, color) =>
+    Some(PacketV1449.NetModuleLoad.ServerText(playerId, text, color))
+  | Ping(position) => Some(PacketV1449.NetModuleLoad.Ping(netModuleLoadPositionToV1449(position)))
+  | Ambience(ambience) =>
+    Some(PacketV1449.NetModuleLoad.Ambience(netModuleLoadAmbienceToV1449(ambience)))
+  | Bestiary(bestiary) =>
+    Some(PacketV1449.NetModuleLoad.Bestiary(netModuleLoadBestiaryToV1449(bestiary)))
+  | CreativePower(creativePower) =>
+    Some(PacketV1449.NetModuleLoad.CreativePower(creativePower))
+  | CreativeUnlocksPlayerReport(unlockReport) =>
+    Some(PacketV1449.NetModuleLoad.CreativeUnlocksPlayerReport({
+      itemId: unlockReport.itemId,
+      researchedCount: unlockReport.researchedCount,
+    }))
+  | TeleportPylon(teleportPylon) =>
+    Some(PacketV1449.NetModuleLoad.TeleportPylon(
+      netModuleLoadTeleportPylonToV1449(teleportPylon),
+    ))
+  | Particles(particle) =>
+    Some(PacketV1449.NetModuleLoad.Particles(netModuleLoadParticleToV1449(particle)))
+  | CreativePowerPermissions(creativePowerPermission) =>
+    Some(PacketV1449.NetModuleLoad.CreativePowerPermissions(
+      netModuleLoadCreativePowerPermissionToV1449(creativePowerPermission),
+    ))
+  | Banners(_)
+  | CraftingRequests(_)
+  | TagEffectState(_)
+  | LeashedEntity(_)
+  | UnbreakableWallScan(_) => None
+  }
+}
+
 let fromV1449 = (packet: PacketV1449.t): Packet.t => {
   switch packet {
   | PlayerInfo(playerInfo) =>
@@ -2446,6 +2722,7 @@ let fromV1449 = (packet: PacketV1449.t): Packet.t => {
     | PacketV1449.ShimmerEffectOrCoinLuck.NewShimmerEffect(_) =>
       Packet.ShimmerEffectOrCoinLuck(Packet.ShimmerEffectOrCoinLuck.ShimmerEffect(0.0, 0.0))
     }
+  | NetModuleLoad(netModuleLoad) => Packet.NetModuleLoad(netModuleLoadFromV1449(netModuleLoad))
   | packet => Obj.magic(packet)
   }
 }
@@ -2663,6 +2940,11 @@ let v1449ToLatest = (packet: Packet.t): PacketV1449.t => {
         PacketV1449.ShimmerEffectOrCoinLuck.CoinLuck(shimmerCoinLuckToV1449(coinLuck)),
       )
     }
+  | NetModuleLoad(netModuleLoad) =>
+    switch netModuleLoadToV1449(netModuleLoad) {
+    | Some(converted) => PacketV1449.NetModuleLoad(converted)
+    | None => PacketV1449.NetModuleLoad(PacketV1449.NetModuleLoad.Ping({x: 0.0, y: 0.0}))
+    }
   | packet => Obj.magic(packet)
   }
 }
@@ -2696,7 +2978,8 @@ let convertFromV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): re
     | Some(ItemForceIntoNearestChest)
     | Some(TileEntityDisplayDollItemSync)
     | Some(PlayerLuckFactorsUpdate)
-    | Some(ShimmerEffectOrCoinLuck) =>
+    | Some(ShimmerEffectOrCoinLuck)
+    | Some(NetModuleLoad) =>
       try {
         Parserv1449.parse(~buffer, ~fromServer)
         ->Result.map(fromV1449)
@@ -2713,6 +2996,7 @@ let convertFromV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): re
 type convertToV1449IfNeeded =
   | PacketStructureIsSame
   | ConvertedToV1449(PacketV1449.t)
+  | DiscardAsNotExists
 let convertToV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): result<
   convertToV1449IfNeeded,
   IParser.parseError,
@@ -2721,6 +3005,19 @@ let convertToV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): resu
   | 0 | 1 | 2 => Error(InvalidPacketLength(buffer->NodeJs.Buffer.length))
   | _ =>
     switch buffer->NodeJs.Buffer.unsafeGet(2)->PacketType.fromInt {
+    | Some(ChestResize)
+    | Some(DeadCellsDisplayJarTryPlacing)
+    | Some(HostToken)
+    | Some(ItemDropClear)
+    | Some(ItemDropPosition)
+    | Some(LeashedEntityAnchorInsertItem)
+    | Some(NpcHurtByDebuff)
+    | Some(Ping)
+    | Some(PlayerItemUseSound)
+    | Some(PlayerSpectate)
+    | Some(PlayerTeamSwapSpawn)
+    | Some(PlayerTeamUpdate)
+    | Some(SectionRequest) => Ok(DiscardAsNotExists)
     // Packets with structural changes between v1449 and v145
     | Some(PlayerInfo)
     | Some(PlayerInventorySlot)
@@ -2739,11 +3036,20 @@ let convertToV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): resu
     | Some(ItemForceIntoNearestChest)
     | Some(TileEntityDisplayDollItemSync)
     | Some(PlayerLuckFactorsUpdate)
-    | Some(ShimmerEffectOrCoinLuck) =>
+    | Some(ShimmerEffectOrCoinLuck)
+    | Some(NetModuleLoad) =>
       try {
         parse(~buffer, ~fromServer)
-        ->Result.map(v1449ToLatest)
-        ->Result.map(p => ConvertedToV1449(p))
+        ->Result.map(packet =>
+          switch packet {
+          | NetModuleLoad(netModuleLoad) =>
+            switch netModuleLoadToV1449(netModuleLoad) {
+            | Some(converted) => ConvertedToV1449(PacketV1449.NetModuleLoad(converted))
+            | None => DiscardAsNotExists
+            }
+          | _ => ConvertedToV1449(v1449ToLatest(packet))
+          }
+        )
       } catch {
       | JsExn(obj) => Error(ReaderError({context: "Parser.parseLazy", error: obj}))
       }
