@@ -30,8 +30,10 @@ Zora.test("should correctly parse and serialise NpcUpdate", t => {
     },
     releaseOwner: undefined,
     playerCountScale: undefined,
-    strengthMultiplier: undefined,
-    spawnedFromStatue: false
+    difficulty: undefined,
+    spawnedFromStatue: false,
+    spawnNeedsSyncing: false,
+    shimmerTransparency: false
   };
   let result = Packet_NpcUpdate$TerrariaPacket.toBuffer(data);
   if (Stdlib_Result.isError(result)) {

@@ -143,6 +143,19 @@ type t =
   | ShimmerEffectOrCoinLuck
   | LoadoutSwitch
   | ItemDropProtectedUpdate
+  | DeadCellsDisplayJarTryPlacing
+  | PlayerSpectate
+  | ItemDropClear
+  | PlayerItemUseSound
+  | NpcHurtByDebuff
+  | Ping
+  | ChestResize
+  | LeashedEntityAnchorInsertItem
+  | PlayerTeamUpdate
+  | PlayerTeamSwapSpawn
+  | SectionRequest
+  | ItemDropPosition
+  | HostToken
 
 let fromInt = n =>
   switch n {
@@ -290,6 +303,19 @@ let fromInt = n =>
   | 146 => Some(ShimmerEffectOrCoinLuck)
   | 147 => Some(LoadoutSwitch)
   | 148 => Some(ItemDropProtectedUpdate)
+  | 149 => Some(DeadCellsDisplayJarTryPlacing)
+  | 150 => Some(PlayerSpectate)
+  | 151 => Some(ItemDropClear)
+  | 152 => Some(PlayerItemUseSound)
+  | 153 => Some(NpcHurtByDebuff)
+  | 154 => Some(Ping)
+  | 155 => Some(ChestResize)
+  | 156 => Some(LeashedEntityAnchorInsertItem)
+  | 157 => Some(PlayerTeamUpdate)
+  | 158 => Some(PlayerTeamSwapSpawn)
+  | 159 => Some(SectionRequest)
+  | 160 => Some(ItemDropPosition)
+  | 161 => Some(HostToken)
   | _ => None
   }
 
@@ -439,6 +465,19 @@ let toInt = self =>
   | ShimmerEffectOrCoinLuck => 146
   | LoadoutSwitch => 147
   | ItemDropProtectedUpdate => 148
+  | DeadCellsDisplayJarTryPlacing => 149
+  | PlayerSpectate => 150
+  | ItemDropClear => 151
+  | PlayerItemUseSound => 152
+  | NpcHurtByDebuff => 153
+  | Ping => 154
+  | ChestResize => 155
+  | LeashedEntityAnchorInsertItem => 156
+  | PlayerTeamUpdate => 157
+  | PlayerTeamSwapSpawn => 158
+  | SectionRequest => 159
+  | ItemDropPosition => 160
+  | HostToken => 161
   }
 
 let packetName = (packetType: t): string =>
@@ -587,4 +626,17 @@ let packetName = (packetType: t): string =>
   | ShimmerEffectOrCoinLuck => "ShimmerEffectOrCoinLuck"
   | LoadoutSwitch => "LoadoutSwitch"
   | ItemDropProtectedUpdate => "ItemDropProtectedUpdate"
+  | DeadCellsDisplayJarTryPlacing => "DeadCellsDisplayJarTryPlacing"
+  | PlayerSpectate => "PlayerSpectate"
+  | ItemDropClear => "ItemDropClear"
+  | PlayerItemUseSound => "PlayerItemUseSound"
+  | NpcHurtByDebuff => "NpcHurtByDebuff"
+  | Ping => "Ping"
+  | ChestResize => "ChestResize"
+  | LeashedEntityAnchorInsertItem => "LeashedEntityAnchorInsertItem"
+  | PlayerTeamUpdate => "PlayerTeamUpdate"
+  | PlayerTeamSwapSpawn => "PlayerTeamSwapSpawn"
+  | SectionRequest => "SectionRequest"
+  | ItemDropPosition => "ItemDropPosition"
+  | HostToken => "HostToken"
   }

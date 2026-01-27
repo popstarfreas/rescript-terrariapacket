@@ -439,6 +439,32 @@ function packetTypeName(packetType) {
       return "LoadoutSwitch";
     case "ItemDropProtectedUpdate" :
       return "ItemDropProtectedUpdate";
+    case "DeadCellsDisplayJarTryPlacing" :
+      return "DeadCellsDisplayJarTryPlacing";
+    case "PlayerSpectate" :
+      return "PlayerSpectate";
+    case "ItemDropClear" :
+      return "ItemDropClear";
+    case "PlayerItemUseSound" :
+      return "PlayerItemUseSound";
+    case "NpcHurtByDebuff" :
+      return "NpcHurtByDebuff";
+    case "Ping" :
+      return "Ping";
+    case "ChestResize" :
+      return "ChestResize";
+    case "LeashedEntityAnchorInsertItem" :
+      return "LeashedEntityAnchorInsertItem";
+    case "PlayerTeamUpdate" :
+      return "PlayerTeamUpdate";
+    case "PlayerTeamSwapSpawn" :
+      return "PlayerTeamSwapSpawn";
+    case "SectionRequest" :
+      return "SectionRequest";
+    case "ItemDropPosition" :
+      return "ItemDropPosition";
+    case "HostToken" :
+      return "HostToken";
   }
 }
 
@@ -2535,6 +2561,11 @@ function getParsers(packetType, fromServer) {
           TAG: "ItemDropProtectedUpdate",
           _0: a
         }))
+      };
+    default:
+      return {
+        TAG: "Error",
+        _0: "InvalidPacketType"
       };
   }
 }

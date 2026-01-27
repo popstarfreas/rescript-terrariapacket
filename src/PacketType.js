@@ -291,6 +291,32 @@ function fromInt(n) {
       return "LoadoutSwitch";
     case 148 :
       return "ItemDropProtectedUpdate";
+    case 149 :
+      return "DeadCellsDisplayJarTryPlacing";
+    case 150 :
+      return "PlayerSpectate";
+    case 151 :
+      return "ItemDropClear";
+    case 152 :
+      return "PlayerItemUseSound";
+    case 153 :
+      return "NpcHurtByDebuff";
+    case 154 :
+      return "Ping";
+    case 155 :
+      return "ChestResize";
+    case 156 :
+      return "LeashedEntityAnchorInsertItem";
+    case 157 :
+      return "PlayerTeamUpdate";
+    case 158 :
+      return "PlayerTeamSwapSpawn";
+    case 159 :
+      return "SectionRequest";
+    case 160 :
+      return "ItemDropPosition";
+    case 161 :
+      return "HostToken";
     default:
       return;
   }
@@ -586,6 +612,32 @@ function toInt(self) {
       return 147;
     case "ItemDropProtectedUpdate" :
       return 148;
+    case "DeadCellsDisplayJarTryPlacing" :
+      return 149;
+    case "PlayerSpectate" :
+      return 150;
+    case "ItemDropClear" :
+      return 151;
+    case "PlayerItemUseSound" :
+      return 152;
+    case "NpcHurtByDebuff" :
+      return 153;
+    case "Ping" :
+      return 154;
+    case "ChestResize" :
+      return 155;
+    case "LeashedEntityAnchorInsertItem" :
+      return 156;
+    case "PlayerTeamUpdate" :
+      return 157;
+    case "PlayerTeamSwapSpawn" :
+      return 158;
+    case "SectionRequest" :
+      return 159;
+    case "ItemDropPosition" :
+      return 160;
+    case "HostToken" :
+      return 161;
   }
 }
 
@@ -879,6 +931,32 @@ function packetName(packetType) {
       return "LoadoutSwitch";
     case "ItemDropProtectedUpdate" :
       return "ItemDropProtectedUpdate";
+    case "DeadCellsDisplayJarTryPlacing" :
+      return "DeadCellsDisplayJarTryPlacing";
+    case "PlayerSpectate" :
+      return "PlayerSpectate";
+    case "ItemDropClear" :
+      return "ItemDropClear";
+    case "PlayerItemUseSound" :
+      return "PlayerItemUseSound";
+    case "NpcHurtByDebuff" :
+      return "NpcHurtByDebuff";
+    case "Ping" :
+      return "Ping";
+    case "ChestResize" :
+      return "ChestResize";
+    case "LeashedEntityAnchorInsertItem" :
+      return "LeashedEntityAnchorInsertItem";
+    case "PlayerTeamUpdate" :
+      return "PlayerTeamUpdate";
+    case "PlayerTeamSwapSpawn" :
+      return "PlayerTeamSwapSpawn";
+    case "SectionRequest" :
+      return "SectionRequest";
+    case "ItemDropPosition" :
+      return "ItemDropPosition";
+    case "HostToken" :
+      return "HostToken";
   }
 }
 

@@ -4,9 +4,9 @@ var __export = (target, all) => {
     __defProp(target, name, { get: all[name], enumerable: true });
 };
 
-// src/packet/Packet_AnglerQuest.js
-var Packet_AnglerQuest_exports = {};
-__export(Packet_AnglerQuest_exports, {
+// src/packetv1449/PacketV1449_AnglerQuest.js
+var PacketV1449_AnglerQuest_exports = {};
+__export(PacketV1449_AnglerQuest_exports, {
   parse: () => parse,
   toBuffer: () => toBuffer
 });
@@ -302,6 +302,32 @@ function fromInt(n) {
       return "LoadoutSwitch";
     case 148:
       return "ItemDropProtectedUpdate";
+    case 149:
+      return "DeadCellsDisplayJarTryPlacing";
+    case 150:
+      return "PlayerSpectate";
+    case 151:
+      return "ItemDropClear";
+    case 152:
+      return "PlayerItemUseSound";
+    case 153:
+      return "NpcHurtByDebuff";
+    case 154:
+      return "Ping";
+    case 155:
+      return "ChestResize";
+    case 156:
+      return "LeashedEntityAnchorInsertItem";
+    case 157:
+      return "PlayerTeamUpdate";
+    case 158:
+      return "PlayerTeamSwapSpawn";
+    case 159:
+      return "SectionRequest";
+    case 160:
+      return "ItemDropPosition";
+    case 161:
+      return "HostToken";
     default:
       return;
   }
@@ -596,6 +622,32 @@ function toInt(self) {
       return 147;
     case "ItemDropProtectedUpdate":
       return 148;
+    case "DeadCellsDisplayJarTryPlacing":
+      return 149;
+    case "PlayerSpectate":
+      return 150;
+    case "ItemDropClear":
+      return 151;
+    case "PlayerItemUseSound":
+      return 152;
+    case "NpcHurtByDebuff":
+      return 153;
+    case "Ping":
+      return 154;
+    case "ChestResize":
+      return 155;
+    case "LeashedEntityAnchorInsertItem":
+      return 156;
+    case "PlayerTeamUpdate":
+      return 157;
+    case "PlayerTeamSwapSpawn":
+      return 158;
+    case "SectionRequest":
+      return 159;
+    case "ItemDropPosition":
+      return 160;
+    case "HostToken":
+      return 161;
   }
 }
 
@@ -1623,7 +1675,7 @@ var PacketReader = class extends bufferreader_default {
 };
 var packetreader_default = PacketReader;
 
-// src/packet/Packet_AnglerQuest.js
+// src/packetv1449/PacketV1449_AnglerQuest.js
 function parse(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "anglerQuest");
@@ -1647,9 +1699,9 @@ function toBuffer(self) {
   return data(packBool(packByte(setType(new packetwriter_default(), toInt("AnglerQuest")), self.anglerQuest, "anglerQuest"), self.anglerQuestFinished, "anglerQuestFinished"));
 }
 
-// src/packet/Packet_AnglerQuestComplete.js
-var Packet_AnglerQuestComplete_exports = {};
-__export(Packet_AnglerQuestComplete_exports, {
+// src/packetv1449/PacketV1449_AnglerQuestComplete.js
+var PacketV1449_AnglerQuestComplete_exports = {};
+__export(PacketV1449_AnglerQuestComplete_exports, {
   parse: () => parse2,
   toBuffer: () => toBuffer2
 });
@@ -1663,9 +1715,9 @@ function toBuffer2(_self) {
   return data(setType(make(), toInt("AnglerQuestComplete")));
 }
 
-// src/packet/Packet_BossOrInvasionSpawn.js
-var Packet_BossOrInvasionSpawn_exports = {};
-__export(Packet_BossOrInvasionSpawn_exports, {
+// src/packetv1449/PacketV1449_BossOrInvasionSpawn.js
+var PacketV1449_BossOrInvasionSpawn_exports = {};
+__export(PacketV1449_BossOrInvasionSpawn_exports, {
   parse: () => parse3,
   toBuffer: () => toBuffer3
 });
@@ -1803,9 +1855,9 @@ function toBuffer3(self) {
   return data(packSpawnType(packInt16(setType(make(), toInt("BossOrInvasionSpawn")), self.playerId, "playerId"), self.spawnType));
 }
 
-// src/packet/Packet_ChatMessageSmart.js
-var Packet_ChatMessageSmart_exports = {};
-__export(Packet_ChatMessageSmart_exports, {
+// src/packetv1449/PacketV1449_ChatMessageSmart.js
+var PacketV1449_ChatMessageSmart_exports = {};
+__export(PacketV1449_ChatMessageSmart_exports, {
   parse: () => parse4,
   toBuffer: () => toBuffer4
 });
@@ -1837,9 +1889,9 @@ function toBuffer4(self) {
   return data(packInt16(packNetworkText(packColor(setType(make(), toInt("ChatMessageSmart")), self.color, "color"), self.message, "message"), self.widthLimit, "widthLimit"));
 }
 
-// src/packet/Packet_ChestItem.js
-var Packet_ChestItem_exports = {};
-__export(Packet_ChestItem_exports, {
+// src/packetv1449/PacketV1449_ChestItem.js
+var PacketV1449_ChestItem_exports = {};
+__export(PacketV1449_ChestItem_exports, {
   parse: () => parse5,
   toBuffer: () => toBuffer5
 });
@@ -1881,9 +1933,9 @@ function toBuffer5(self) {
   return data(packInt16(packByte(packInt16(packByte(packInt16(setType(make(), toInt("ChestItem")), self.chestId, "chestId"), self.slot, "slot"), self.stack, "stack"), self.prefix, "prefix"), self.itemNetId, "itemNetId"));
 }
 
-// src/packet/Packet_ChestOrTempleUnlock.js
-var Packet_ChestOrTempleUnlock_exports = {};
-__export(Packet_ChestOrTempleUnlock_exports, {
+// src/packetv1449/PacketV1449_ChestOrTempleUnlock.js
+var PacketV1449_ChestOrTempleUnlock_exports = {};
+__export(PacketV1449_ChestOrTempleUnlock_exports, {
   parse: () => parse6,
   toBuffer: () => toBuffer6
 });
@@ -1951,9 +2003,9 @@ function toBuffer6(self) {
   return data(packInt16(packInt16(packByte(setType(make(), toInt("ChestOrTempleUnlock")), unlockTypeToInt(self.unlockType), "unlockType"), self.x, "x"), self.y, "y"));
 }
 
-// src/packet/Packet_ChestPlace.js
-var Packet_ChestPlace_exports = {};
-__export(Packet_ChestPlace_exports, {
+// src/packetv1449/PacketV1449_ChestPlace.js
+var PacketV1449_ChestPlace_exports = {};
+__export(PacketV1449_ChestPlace_exports, {
   Action: () => Action,
   parse: () => parse7,
   toBuffer: () => toBuffer7
@@ -2092,9 +2144,9 @@ function toBuffer7(self) {
   return data(packInt16(packInt16(packInt16(packInt16(packAction(setType(make(), toInt("ChestPlace")), self.action), self.x, "x"), self.y, "y"), self.style, "style"), self.id, "id"));
 }
 
-// src/packet/Packet_ClientFinishConnectingToServer.js
-var Packet_ClientFinishConnectingToServer_exports = {};
-__export(Packet_ClientFinishConnectingToServer_exports, {
+// src/packetv1449/PacketV1449_ClientFinishConnectingToServer.js
+var PacketV1449_ClientFinishConnectingToServer_exports = {};
+__export(PacketV1449_ClientFinishConnectingToServer_exports, {
   parse: () => parse8,
   toBuffer: () => toBuffer8
 });
@@ -2108,9 +2160,9 @@ function toBuffer8(_self) {
   return data(setType(make(), toInt("ClientFinishConnectingToServer")));
 }
 
-// src/packet/Packet_ConnectRequest.js
-var Packet_ConnectRequest_exports = {};
-__export(Packet_ConnectRequest_exports, {
+// src/packetv1449/PacketV1449_ConnectRequest.js
+var PacketV1449_ConnectRequest_exports = {};
+__export(PacketV1449_ConnectRequest_exports, {
   parse: () => parse9,
   toBuffer: () => toBuffer9
 });
@@ -2132,9 +2184,9 @@ function toBuffer9(self) {
   return data(packString(setType(make(), toInt("ConnectRequest")), self.version, "version"));
 }
 
-// src/packet/Packet_CountsAsHostForGameplaySet.js
-var Packet_CountsAsHostForGameplaySet_exports = {};
-__export(Packet_CountsAsHostForGameplaySet_exports, {
+// src/packetv1449/PacketV1449_CountsAsHostForGameplaySet.js
+var PacketV1449_CountsAsHostForGameplaySet_exports = {};
+__export(PacketV1449_CountsAsHostForGameplaySet_exports, {
   parse: () => parse10,
   toBuffer: () => toBuffer10
 });
@@ -2161,9 +2213,9 @@ function toBuffer10(self) {
   return data(packBool(packByte(setType(new packetwriter_default(), toInt("CountsAsHostForGameplaySet")), self.playerId, "playerId"), self.countsAsHost, "countsAsHost"));
 }
 
-// src/packet/Packet_CreditsOrSlimeTransform.js
-var Packet_CreditsOrSlimeTransform_exports = {};
-__export(Packet_CreditsOrSlimeTransform_exports, {
+// src/packetv1449/PacketV1449_CreditsOrSlimeTransform.js
+var PacketV1449_CreditsOrSlimeTransform_exports = {};
+__export(PacketV1449_CreditsOrSlimeTransform_exports, {
   EventType: () => EventType,
   parse: () => parse11,
   toBuffer: () => toBuffer11
@@ -2224,9 +2276,9 @@ function toBuffer11(self) {
 }
 var EventType = {};
 
-// src/packet/Packet_CrystalInvasionStart.js
-var Packet_CrystalInvasionStart_exports = {};
-__export(Packet_CrystalInvasionStart_exports, {
+// src/packetv1449/PacketV1449_CrystalInvasionStart.js
+var PacketV1449_CrystalInvasionStart_exports = {};
+__export(PacketV1449_CrystalInvasionStart_exports, {
   parse: () => parse12,
   toBuffer: () => toBuffer12
 });
@@ -2253,9 +2305,9 @@ function toBuffer12(self) {
   return data(packInt16(packInt16(setType(make(), toInt("CrystalInvasionStart")), self.x, "x"), self.y, "y"));
 }
 
-// src/packet/Packet_DimensionsUpdate.js
-var Packet_DimensionsUpdate_exports = {};
-__export(Packet_DimensionsUpdate_exports, {
+// src/packetv1449/PacketV1449_DimensionsUpdate.js
+var PacketV1449_DimensionsUpdate_exports = {};
+__export(PacketV1449_DimensionsUpdate_exports, {
   UpdateType: () => UpdateType,
   parse: () => parse13,
   toBuffer: () => toBuffer13
@@ -2379,9 +2431,9 @@ function toBuffer13(self) {
   }
 }
 
-// src/packet/Packet_ExtraValueSync.js
-var Packet_ExtraValueSync_exports = {};
-__export(Packet_ExtraValueSync_exports, {
+// src/packetv1449/PacketV1449_ExtraValueSync.js
+var PacketV1449_ExtraValueSync_exports = {};
+__export(PacketV1449_ExtraValueSync_exports, {
   parse: () => parse14,
   toBuffer: () => toBuffer14
 });
@@ -2418,9 +2470,9 @@ function toBuffer14(self) {
   return data(packSingle(packSingle(packInt32(packInt16(setType(make(), toInt("ExtraValueSync")), self.npcSlotId, "npcSlotId"), self.extraValue, "extraValue"), self.x, "x"), self.y, "y"));
 }
 
-// src/packet/Packet_HaveDryadDoStardewAnimation.js
-var Packet_HaveDryadDoStardewAnimation_exports = {};
-__export(Packet_HaveDryadDoStardewAnimation_exports, {
+// src/packetv1449/PacketV1449_HaveDryadDoStardewAnimation.js
+var PacketV1449_HaveDryadDoStardewAnimation_exports = {};
+__export(PacketV1449_HaveDryadDoStardewAnimation_exports, {
   parse: () => parse15,
   toBuffer: () => toBuffer15
 });
@@ -2434,9 +2486,9 @@ function toBuffer15(_self) {
   return data(setType(make(), toInt("HaveDryadDoStardewAnimation")));
 }
 
-// src/packet/Packet_InvasionProgressReport.js
-var Packet_InvasionProgressReport_exports = {};
-__export(Packet_InvasionProgressReport_exports, {
+// src/packetv1449/PacketV1449_InvasionProgressReport.js
+var PacketV1449_InvasionProgressReport_exports = {};
+__export(PacketV1449_InvasionProgressReport_exports, {
   parse: () => parse16,
   toBuffer: () => toBuffer16
 });
@@ -2473,9 +2525,9 @@ function toBuffer16(self) {
   return data(packSByte(packSByte(packInt32(packInt32(setType(make(), toInt("InvasionProgressReport")), self.progress, "progress"), self.progressMax, "progressMax"), self.icon, "icon"), self.wave, "wave"));
 }
 
-// src/packet/Packet_ItemDropShimmeredUpdate.js
-var Packet_ItemDropShimmeredUpdate_exports = {};
-__export(Packet_ItemDropShimmeredUpdate_exports, {
+// src/packetv1449/PacketV1449_ItemDropShimmeredUpdate.js
+var PacketV1449_ItemDropShimmeredUpdate_exports = {};
+__export(PacketV1449_ItemDropShimmeredUpdate_exports, {
   parse: () => parse17,
   toBuffer: () => toBuffer17
 });
@@ -2547,9 +2599,9 @@ function toBuffer17(self) {
   return data(packSingle(packByte(packInt16(packByte(packByte(packInt16(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt("ItemDropShimmeredUpdate")), self.itemDropId, "itemDropId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.stack, "stack"), self.prefix, "prefix"), self.noDelay, "noDelay"), self.itemId, "itemId"), self.shimmered ? 1 : 0, "shimmered"), self.shimmeredTime, "shimmeredTime"));
 }
 
-// src/packet/Packet_ItemDropUpdate.js
-var Packet_ItemDropUpdate_exports = {};
-__export(Packet_ItemDropUpdate_exports, {
+// src/packetv1449/PacketV1449_ItemDropUpdate.js
+var PacketV1449_ItemDropUpdate_exports = {};
+__export(PacketV1449_ItemDropUpdate_exports, {
   parse: () => parse18,
   toBuffer: () => toBuffer18
 });
@@ -2611,9 +2663,9 @@ function toBuffer18(self) {
   return data(packInt16(packByte(packByte(packInt16(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt("ItemDropUpdate")), self.itemDropId, "itemDropId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.stack, "stack"), self.prefix, "prefix"), self.noDelay, "noDelay"), self.itemId, "itemId"));
 }
 
-// src/packet/Packet_ItemOwner.js
-var Packet_ItemOwner_exports = {};
-__export(Packet_ItemOwner_exports, {
+// src/packetv1449/PacketV1449_ItemOwner.js
+var PacketV1449_ItemOwner_exports = {};
+__export(PacketV1449_ItemOwner_exports, {
   parse: () => parse19,
   toBuffer: () => toBuffer19
 });
@@ -2640,9 +2692,9 @@ function toBuffer19(self) {
   return data(packByte(packInt16(setType(make(), toInt("ItemOwner")), self.itemDropId, "itemDropId"), self.owner, "owner"));
 }
 
-// src/packet/Packet_ItemOwnerRemove.js
-var Packet_ItemOwnerRemove_exports = {};
-__export(Packet_ItemOwnerRemove_exports, {
+// src/packetv1449/PacketV1449_ItemOwnerRemove.js
+var PacketV1449_ItemOwnerRemove_exports = {};
+__export(PacketV1449_ItemOwnerRemove_exports, {
   parse: () => parse20,
   toBuffer: () => toBuffer20
 });
@@ -2664,9 +2716,9 @@ function toBuffer20(self) {
   return data(packInt16(setType(make(), toInt("ItemOwnerRemove")), self.itemDropId, "itemDropId"));
 }
 
-// src/packet/Packet_LoadoutSwitch.js
-var Packet_LoadoutSwitch_exports = {};
-__export(Packet_LoadoutSwitch_exports, {
+// src/packetv1449/PacketV1449_LoadoutSwitch.js
+var PacketV1449_LoadoutSwitch_exports = {};
+__export(PacketV1449_LoadoutSwitch_exports, {
   parse: () => parse21,
   toBuffer: () => toBuffer21
 });
@@ -2886,7 +2938,7 @@ function asArray(self) {
   return self;
 }
 
-// src/packet/Packet_LoadoutSwitch.js
+// src/packetv1449/PacketV1449_LoadoutSwitch.js
 function parse21(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
@@ -2920,13 +2972,22 @@ function toBuffer21(self) {
   return data(packUInt16(packByte(packByte(setType(make(), toInt("LoadoutSwitch")), self.playerId, "playerId"), self.loadout, "loadout"), hideVisibleAccessory, "hideVisibleAccessory"));
 }
 
-// src/packet/Packet_NetModuleLoad.js
-var Packet_NetModuleLoad_exports = {};
-__export(Packet_NetModuleLoad_exports, {
+// src/packetv1449/PacketV1449_NetModuleLoad.js
+var PacketV1449_NetModuleLoad_exports = {};
+__export(PacketV1449_NetModuleLoad_exports, {
   NetModuleType: () => NetModuleType,
   parse: () => parse23,
   toBuffer: () => toBuffer22
 });
+
+// node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Primitive_int.js
+function min(x, y) {
+  if (x < y) {
+    return x;
+  } else {
+    return y;
+  }
+}
 
 // node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Belt_Array.js
 function concatMany(arrs) {
@@ -3297,7 +3358,7 @@ var PerPlayerTogglePower = {
   parse: parse$1
 };
 
-// src/packet/Packet_NetModuleLoad.js
+// src/packetv1449/PacketV1449_NetModuleLoad.js
 function pylonActionToInt(pylonAction) {
   switch (pylonAction) {
     case "Added":
@@ -3862,9 +3923,9 @@ function parse23(payload, fromServer) {
   }
 }
 
-// src/packet/Packet_NpcBuffRemovalRequest.js
-var Packet_NpcBuffRemovalRequest_exports = {};
-__export(Packet_NpcBuffRemovalRequest_exports, {
+// src/packetv1449/PacketV1449_NpcBuffRemovalRequest.js
+var PacketV1449_NpcBuffRemovalRequest_exports = {};
+__export(PacketV1449_NpcBuffRemovalRequest_exports, {
   parse: () => parse24,
   toBuffer: () => toBuffer23
 });
@@ -3891,9 +3952,9 @@ function toBuffer23(self) {
   return data(packUInt16(packInt16(setType(make(), toInt("NpcBuffRemovalRequest")), self.npcId, "npcId"), self.buffType, "buffType"));
 }
 
-// src/packet/Packet_NpcBuffUpdate.js
-var Packet_NpcBuffUpdate_exports = {};
-__export(Packet_NpcBuffUpdate_exports, {
+// src/packetv1449/PacketV1449_NpcBuffUpdate.js
+var PacketV1449_NpcBuffUpdate_exports = {};
+__export(PacketV1449_NpcBuffUpdate_exports, {
   parse: () => parse25,
   toBuffer: () => toBuffer24
 });
@@ -3987,9 +4048,9 @@ function toBuffer24(self) {
   }
 }
 
-// src/packet/Packet_NpcCatch.js
-var Packet_NpcCatch_exports = {};
-__export(Packet_NpcCatch_exports, {
+// src/packetv1449/PacketV1449_NpcCatch.js
+var PacketV1449_NpcCatch_exports = {};
+__export(PacketV1449_NpcCatch_exports, {
   parse: () => parse26,
   toBuffer: () => toBuffer25
 });
@@ -4016,9 +4077,9 @@ function toBuffer25(self) {
   return data(packByte(packInt16(setType(make(), toInt("NpcCatch")), self.npcId, "npcId"), self.playerId, "playerId"));
 }
 
-// src/packet/Packet_NpcFishOut.js
-var Packet_NpcFishOut_exports = {};
-__export(Packet_NpcFishOut_exports, {
+// src/packetv1449/PacketV1449_NpcFishOut.js
+var PacketV1449_NpcFishOut_exports = {};
+__export(PacketV1449_NpcFishOut_exports, {
   parse: () => parse27,
   toBuffer: () => toBuffer26
 });
@@ -4050,9 +4111,9 @@ function toBuffer26(self) {
   return data(packInt16(packUInt16(packUInt16(setType(make(), toInt("NpcFishOut")), self.x, "x"), self.y, "y"), self.npcNetId, "npcNetId"));
 }
 
-// src/packet/Packet_NpcHomeUpdate.js
-var Packet_NpcHomeUpdate_exports = {};
-__export(Packet_NpcHomeUpdate_exports, {
+// src/packetv1449/PacketV1449_NpcHomeUpdate.js
+var PacketV1449_NpcHomeUpdate_exports = {};
+__export(PacketV1449_NpcHomeUpdate_exports, {
   parse: () => parse28,
   toBuffer: () => toBuffer27
 });
@@ -4089,9 +4150,9 @@ function toBuffer27(self) {
   return data(packByte(packInt16(packInt16(packInt16(setType(make(), toInt("NpcHomeUpdate")), self.npcId, "npcId"), self.homeTileX, "homeTileX"), self.homeTileY, "homeTileY"), self.state, "state"));
 }
 
-// src/packet/Packet_NpcKillCount.js
-var Packet_NpcKillCount_exports = {};
-__export(Packet_NpcKillCount_exports, {
+// src/packetv1449/PacketV1449_NpcKillCount.js
+var PacketV1449_NpcKillCount_exports = {};
+__export(PacketV1449_NpcKillCount_exports, {
   parse: () => parse29,
   toBuffer: () => toBuffer28
 });
@@ -4118,9 +4179,9 @@ function toBuffer28(self) {
   return data(packInt32(packInt16(setType(make(), toInt("NpcKillCount")), self.npcId, "npcId"), self.killCount, "killCount"));
 }
 
-// src/packet/Packet_NpcNameUpdate.js
-var Packet_NpcNameUpdate_exports = {};
-__export(Packet_NpcNameUpdate_exports, {
+// src/packetv1449/PacketV1449_NpcNameUpdate.js
+var PacketV1449_NpcNameUpdate_exports = {};
+__export(PacketV1449_NpcNameUpdate_exports, {
   parse: () => parse30,
   toBuffer: () => toBuffer29
 });
@@ -4173,9 +4234,9 @@ function toBuffer29(self) {
   }
 }
 
-// src/packet/Packet_NpcShopItem.js
-var Packet_NpcShopItem_exports = {};
-__export(Packet_NpcShopItem_exports, {
+// src/packetv1449/PacketV1449_NpcShopItem.js
+var PacketV1449_NpcShopItem_exports = {};
+__export(PacketV1449_NpcShopItem_exports, {
   parse: () => parse31,
   toBuffer: () => toBuffer30
 });
@@ -4223,9 +4284,9 @@ function toBuffer30(self) {
   return data(packByte(packInt32(packByte(packInt16(packInt16(packByte(setType(make(), toInt("NpcShopItem")), self.slot, "slot"), self.itemId, "itemId"), self.stack, "stack"), self.prefix, "prefix"), self.value, "value"), toByte(flags), "flags"));
 }
 
-// src/packet/Packet_NpcTalk.js
-var Packet_NpcTalk_exports = {};
-__export(Packet_NpcTalk_exports, {
+// src/packetv1449/PacketV1449_NpcTalk.js
+var PacketV1449_NpcTalk_exports = {};
+__export(PacketV1449_NpcTalk_exports, {
   parse: () => parse32,
   toBuffer: () => toBuffer31
 });
@@ -4252,9 +4313,9 @@ function toBuffer31(self) {
   return data(packInt16(packByte(setType(make(), toInt("NpcTalk")), self.playerId, "playerId"), self.npcId, "npcId"));
 }
 
-// src/packet/Packet_NpcTeleportPortal.js
-var Packet_NpcTeleportPortal_exports = {};
-__export(Packet_NpcTeleportPortal_exports, {
+// src/packetv1449/PacketV1449_NpcTeleportPortal.js
+var PacketV1449_NpcTeleportPortal_exports = {};
+__export(PacketV1449_NpcTeleportPortal_exports, {
   parse: () => parse33,
   toBuffer: () => toBuffer32
 });
@@ -4305,9 +4366,9 @@ function toBuffer32(self) {
   return data(packSingle(packSingle(packSingle(packSingle(packInt16(packUInt16(setType(make(), toInt("NpcTeleportPortal")), self.npcId, "npcId"), self.portalColor, "portalColor"), self.position.x, "posX"), self.position.y, "posY"), self.velocity.x, "velX"), self.velocity.y, "velY"));
 }
 
-// src/packet/Packet_ObjectPlace.js
-var Packet_ObjectPlace_exports = {};
-__export(Packet_ObjectPlace_exports, {
+// src/packetv1449/PacketV1449_ObjectPlace.js
+var PacketV1449_ObjectPlace_exports = {};
+__export(PacketV1449_ObjectPlace_exports, {
   parse: () => parse34,
   toBuffer: () => toBuffer33
 });
@@ -4382,9 +4443,9 @@ function toBuffer33(self) {
   return data(packByte(packSByte(packByte(packInt16(packInt16(packInt16(packInt16(setType(make(), toInt("ObjectPlace")), self.x, "x"), self.y, "y"), self.objectType, "objectType"), self.style, "style"), self.alternate, "alternate"), self.random, "random"), tmp, "direction"));
 }
 
-// src/packet/Packet_PartyToggle.js
-var Packet_PartyToggle_exports = {};
-__export(Packet_PartyToggle_exports, {
+// src/packetv1449/PacketV1449_PartyToggle.js
+var PacketV1449_PartyToggle_exports = {};
+__export(PacketV1449_PartyToggle_exports, {
   parse: () => parse35,
   toBuffer: () => toBuffer34
 });
@@ -4398,9 +4459,9 @@ function toBuffer34(_self) {
   return data(setType(make(), toInt("PartyToggle")));
 }
 
-// src/packet/Packet_PlayerAnimation.js
-var Packet_PlayerAnimation_exports = {};
-__export(Packet_PlayerAnimation_exports, {
+// src/packetv1449/PacketV1449_PlayerAnimation.js
+var PacketV1449_PlayerAnimation_exports = {};
+__export(PacketV1449_PlayerAnimation_exports, {
   parse: () => parse36,
   toBuffer: () => toBuffer35
 });
@@ -4432,9 +4493,9 @@ function toBuffer35(self) {
   return data(packInt16(packSingle(packByte(setType(make(), toInt("PlayerAnimation")), self.playerId, "playerId"), self.itemRotation, "itemRotation"), self.itemAnimation, "itemAnimation"));
 }
 
-// src/packet/Packet_PlayerBuffAdd.js
-var Packet_PlayerBuffAdd_exports = {};
-__export(Packet_PlayerBuffAdd_exports, {
+// src/packetv1449/PacketV1449_PlayerBuffAdd.js
+var PacketV1449_PlayerBuffAdd_exports = {};
+__export(PacketV1449_PlayerBuffAdd_exports, {
   parse: () => parse37,
   toBuffer: () => toBuffer36
 });
@@ -4466,9 +4527,9 @@ function toBuffer36(self) {
   return data(packInt32(packUInt16(packByte(setType(make(), toInt("PlayerBuffAdd")), self.playerId, "playerId"), self.buff, "buff"), self.time, "time"));
 }
 
-// src/packet/Packet_PlayerBuffsSet.js
-var Packet_PlayerBuffsSet_exports = {};
-__export(Packet_PlayerBuffsSet_exports, {
+// src/packetv1449/PacketV1449_PlayerBuffsSet.js
+var PacketV1449_PlayerBuffsSet_exports = {};
+__export(PacketV1449_PlayerBuffsSet_exports, {
   parse: () => parse38,
   toBuffer: () => toBuffer37
 });
@@ -4534,9 +4595,9 @@ function toBuffer37(self) {
   }
 }
 
-// src/packet/Packet_PlayerChestIndexSync.js
-var Packet_PlayerChestIndexSync_exports = {};
-__export(Packet_PlayerChestIndexSync_exports, {
+// src/packetv1449/PacketV1449_PlayerChestIndexSync.js
+var PacketV1449_PlayerChestIndexSync_exports = {};
+__export(PacketV1449_PlayerChestIndexSync_exports, {
   parse: () => parse39,
   toBuffer: () => toBuffer38
 });
@@ -4563,9 +4624,9 @@ function toBuffer38(self) {
   return data(packInt16(packByte(setType(make(), toInt("PlayerChestIndexSync")), self.playerId, "playerId"), self.chestId, "chestId"));
 }
 
-// src/packet/Packet_PlayerDead.js
-var Packet_PlayerDead_exports = {};
-__export(Packet_PlayerDead_exports, {
+// src/packetv1449/PacketV1449_PlayerDead.js
+var PacketV1449_PlayerDead_exports = {};
+__export(PacketV1449_PlayerDead_exports, {
   parse: () => parse40,
   toBuffer: () => toBuffer39
 });
@@ -4587,9 +4648,9 @@ function toBuffer39(self) {
   return data(packByte(setType(make(), toInt("PlayerDead")), self.playerId, "playerId"));
 }
 
-// src/packet/Packet_PlayerDeath.js
-var Packet_PlayerDeath_exports = {};
-__export(Packet_PlayerDeath_exports, {
+// src/packetv1449/PacketV1449_PlayerDeath.js
+var PacketV1449_PlayerDeath_exports = {};
+__export(PacketV1449_PlayerDeath_exports, {
   parse: () => parse41,
   toBuffer: () => toBuffer40
 });
@@ -4890,7 +4951,7 @@ function pack2(writer, self) {
 }
 var packDeathReason = pack2;
 
-// src/packet/Packet_PlayerDeath.js
+// src/packetv1449/PacketV1449_PlayerDeath.js
 function parse41(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
@@ -4929,9 +4990,9 @@ function toBuffer40(self) {
   return data(packByte(packByte(packInt16(packDeathReason(packByte(setType(make(), toInt("PlayerDeath")), self.playerId, "playerId"), self.deathReason), self.damage, "damage"), self.hitDirection, "hitDirection"), self.pvp ? 1 : 0, "pvp"));
 }
 
-// src/packet/Packet_PlayerDodge.js
-var Packet_PlayerDodge_exports = {};
-__export(Packet_PlayerDodge_exports, {
+// src/packetv1449/PacketV1449_PlayerDodge.js
+var PacketV1449_PlayerDodge_exports = {};
+__export(PacketV1449_PlayerDodge_exports, {
   parse: () => parse42,
   toBuffer: () => toBuffer41
 });
@@ -4997,9 +5058,9 @@ function toBuffer41(self) {
   return data(packByte(packByte(setType(make(), toInt("PlayerDodge")), self.playerId, "playerId"), dodgeToByte(self.dodge), "dodge"));
 }
 
-// src/packet/Packet_PlayerMana.js
-var Packet_PlayerMana_exports = {};
-__export(Packet_PlayerMana_exports, {
+// src/packetv1449/PacketV1449_PlayerMana.js
+var PacketV1449_PlayerMana_exports = {};
+__export(PacketV1449_PlayerMana_exports, {
   parse: () => parse43,
   toBuffer: () => toBuffer42
 });
@@ -5031,9 +5092,9 @@ function toBuffer42(self) {
   return data(packInt16(packInt16(packByte(setType(make(), toInt("PlayerMana")), self.playerId, "playerId"), self.mana, "mana"), self.maxMana, "maxMana"));
 }
 
-// src/packet/Packet_PlayerTeam.js
-var Packet_PlayerTeam_exports = {};
-__export(Packet_PlayerTeam_exports, {
+// src/packetv1449/PacketV1449_PlayerTeam.js
+var PacketV1449_PlayerTeam_exports = {};
+__export(PacketV1449_PlayerTeam_exports, {
   parse: () => parse44,
   toBuffer: () => toBuffer43
 });
@@ -5060,9 +5121,9 @@ function toBuffer43(self) {
   return data(packByte(packByte(setType(make(), toInt("PlayerTeam")), self.playerId, "playerId"), self.team, "team"));
 }
 
-// src/packet/Packet_PvpToggle.js
-var Packet_PvpToggle_exports = {};
-__export(Packet_PvpToggle_exports, {
+// src/packetv1449/PacketV1449_PvpToggle.js
+var PacketV1449_PvpToggle_exports = {};
+__export(PacketV1449_PvpToggle_exports, {
   parse: () => parse45,
   toBuffer: () => toBuffer44
 });
@@ -5089,9 +5150,9 @@ function toBuffer44(self) {
   return data(packByte(packByte(setType(make(), toInt("PvpToggle")), self.playerId, "playerId"), self.pvpEnabled ? 1 : 0, "pvpEnabled"));
 }
 
-// src/packet/Packet_ShimmerEffectOrCoinLuck.js
-var Packet_ShimmerEffectOrCoinLuck_exports = {};
-__export(Packet_ShimmerEffectOrCoinLuck_exports, {
+// src/packetv1449/PacketV1449_ShimmerEffectOrCoinLuck.js
+var PacketV1449_ShimmerEffectOrCoinLuck_exports = {};
+__export(PacketV1449_ShimmerEffectOrCoinLuck_exports, {
   parse: () => parse46,
   toBuffer: () => toBuffer45
 });
@@ -5189,9 +5250,9 @@ function toBuffer45(self) {
   return data(tmp);
 }
 
-// src/packet/Packet_SignNew.js
-var Packet_SignNew_exports = {};
-__export(Packet_SignNew_exports, {
+// src/packetv1449/PacketV1449_SignNew.js
+var PacketV1449_SignNew_exports = {};
+__export(PacketV1449_SignNew_exports, {
   parse: () => parse47,
   toBuffer: () => toBuffer46
 });
@@ -5239,9 +5300,9 @@ function toBuffer46(self) {
   return data(packByte(packByte(packString(packInt16(packInt16(packInt16(setType(make(), toInt("SignNew")), self.signId, "signId"), self.x, "x"), self.y, "y"), self.text, "text"), self.playerId, "playerId"), toByte(flags), "flags"));
 }
 
-// src/packet/Packet_SignRead.js
-var Packet_SignRead_exports = {};
-__export(Packet_SignRead_exports, {
+// src/packetv1449/PacketV1449_SignRead.js
+var PacketV1449_SignRead_exports = {};
+__export(PacketV1449_SignRead_exports, {
   parse: () => parse48,
   toBuffer: () => toBuffer47
 });
@@ -5268,9 +5329,9 @@ function toBuffer47(self) {
   return data(packInt16(packInt16(setType(make(), toInt("SignRead")), self.x, "x"), self.y, "y"));
 }
 
-// src/packet/Packet_SmokePoof.js
-var Packet_SmokePoof_exports = {};
-__export(Packet_SmokePoof_exports, {
+// src/packetv1449/PacketV1449_SmokePoof.js
+var PacketV1449_SmokePoof_exports = {};
+__export(PacketV1449_SmokePoof_exports, {
   parse: () => parse49,
   toBuffer: () => toBuffer48
 });
@@ -5292,9 +5353,9 @@ function toBuffer48(self) {
   return data(packUInt32(setType(make(), toInt("SmokePoof")), self.packedPosition, "packedPosition"));
 }
 
-// src/packet/Packet_SocialHandshake.js
-var Packet_SocialHandshake_exports = {};
-__export(Packet_SocialHandshake_exports, {
+// src/packetv1449/PacketV1449_SocialHandshake.js
+var PacketV1449_SocialHandshake_exports = {};
+__export(PacketV1449_SocialHandshake_exports, {
   parse: () => parse50,
   toBuffer: () => toBuffer49
 });
@@ -5308,9 +5369,9 @@ function toBuffer49(_self) {
   return data(setType(make(), toInt("SocialHandshake")));
 }
 
-// src/packet/Packet_Status.js
-var Packet_Status_exports = {};
-__export(Packet_Status_exports, {
+// src/packetv1449/PacketV1449_Status.js
+var PacketV1449_Status_exports = {};
+__export(PacketV1449_Status_exports, {
   parse: () => parse51,
   toBuffer: () => toBuffer50
 });
@@ -5353,9 +5414,9 @@ function toBuffer50(self) {
   return data(packByte(packNetworkText(packInt32(setType(make(), toInt("Status")), self.max, "max"), self.text, "text"), flagsToByte(self.flags), "flags"));
 }
 
-// src/packet/Packet_SwitchHit.js
-var Packet_SwitchHit_exports = {};
-__export(Packet_SwitchHit_exports, {
+// src/packetv1449/PacketV1449_SwitchHit.js
+var PacketV1449_SwitchHit_exports = {};
+__export(PacketV1449_SwitchHit_exports, {
   parse: () => parse52,
   toBuffer: () => toBuffer51
 });
@@ -5382,9 +5443,9 @@ function toBuffer51(self) {
   return data(packInt16(packInt16(setType(make(), toInt("SwitchHit")), self.x, "x"), self.y, "y"));
 }
 
-// src/packet/Packet_Teleport.js
-var Packet_Teleport_exports = {};
-__export(Packet_Teleport_exports, {
+// src/packetv1449/PacketV1449_Teleport.js
+var PacketV1449_Teleport_exports = {};
+__export(PacketV1449_Teleport_exports, {
   parse: () => parse53,
   toBuffer: () => toBuffer52
 });
@@ -5454,7 +5515,7 @@ function all4(param) {
   }
 }
 
-// src/packet/Packet_Teleport.js
+// src/packetv1449/PacketV1449_Teleport.js
 function parse53(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "flags");
@@ -5522,9 +5583,9 @@ function toBuffer52(self) {
   return data(extraInfo !== void 0 ? packInt32(writer, extraInfo, "extraInfo") : writer);
 }
 
-// src/packet/Packet_TeleportationPotion.js
-var Packet_TeleportationPotion_exports = {};
-__export(Packet_TeleportationPotion_exports, {
+// src/packetv1449/PacketV1449_TeleportationPotion.js
+var PacketV1449_TeleportationPotion_exports = {};
+__export(PacketV1449_TeleportationPotion_exports, {
   parse: () => parse54,
   toBuffer: () => toBuffer53
 });
@@ -5589,9 +5650,9 @@ function toBuffer53(self) {
   return data(packByte(setType(make(), toInt("TeleportationPotion")), teleportTypeToInt(self.teleportType), "teleportType"));
 }
 
-// src/packet/Packet_TemporaryAnimationCreate.js
-var Packet_TemporaryAnimationCreate_exports = {};
-__export(Packet_TemporaryAnimationCreate_exports, {
+// src/packetv1449/PacketV1449_TemporaryAnimationCreate.js
+var PacketV1449_TemporaryAnimationCreate_exports = {};
+__export(PacketV1449_TemporaryAnimationCreate_exports, {
   parse: () => parse55,
   toBuffer: () => toBuffer54
 });
@@ -5628,9 +5689,9 @@ function toBuffer54(self) {
   return data(packInt16(packInt16(packUInt16(packInt16(setType(make(), toInt("TemporaryAnimationCreate")), self.typeId, "typeId"), self.tileType, "tileType"), self.x, "x"), self.y, "y"));
 }
 
-// src/packet/Packet_TileEntityDisplayDollItemSync.js
-var Packet_TileEntityDisplayDollItemSync_exports = {};
-__export(Packet_TileEntityDisplayDollItemSync_exports, {
+// src/packetv1449/PacketV1449_TileEntityDisplayDollItemSync.js
+var PacketV1449_TileEntityDisplayDollItemSync_exports = {};
+__export(PacketV1449_TileEntityDisplayDollItemSync_exports, {
   parse: () => parse56,
   toBuffer: () => toBuffer55
 });
@@ -5677,9 +5738,9 @@ function toBuffer55(self) {
   return data(packByte(packUInt16(packUInt16(packByte(packInt32(packByte(setType(make(), toInt("TileEntityDisplayDollItemSync")), self.playerId, "playerId"), self.tileEntityId, "tileEntityId"), self.itemIndex, "itemIndex"), self.itemId, "itemId"), self.stack, "stack"), self.prefix, "prefix"));
 }
 
-// src/packet/Packet_TileEntityHatRackItemSync.js
-var Packet_TileEntityHatRackItemSync_exports = {};
-__export(Packet_TileEntityHatRackItemSync_exports, {
+// src/packetv1449/PacketV1449_TileEntityHatRackItemSync.js
+var PacketV1449_TileEntityHatRackItemSync_exports = {};
+__export(PacketV1449_TileEntityHatRackItemSync_exports, {
   parse: () => parse57,
   toBuffer: () => toBuffer56
 });
@@ -5726,9 +5787,9 @@ function toBuffer56(self) {
   return data(packByte(packUInt16(packUInt16(packByte(packInt32(packByte(setType(make(), toInt("TileEntityHatRackItemSync")), self.playerId, "playerId"), self.tileEntityId, "tileEntityId"), self.itemIndex, "itemIndex"), self.itemId, "itemId"), self.stack, "stack"), self.prefix, "prefix"));
 }
 
-// src/packet/Packet_TileEntityInteractionRequest.js
-var Packet_TileEntityInteractionRequest_exports = {};
-__export(Packet_TileEntityInteractionRequest_exports, {
+// src/packetv1449/PacketV1449_TileEntityInteractionRequest.js
+var PacketV1449_TileEntityInteractionRequest_exports = {};
+__export(PacketV1449_TileEntityInteractionRequest_exports, {
   parse: () => parse58,
   toBuffer: () => toBuffer57
 });
@@ -5755,9 +5816,9 @@ function toBuffer57(self) {
   return data(packByte(packInt32(setType(make(), toInt("TileEntityInteractionRequest")), self.tileEntityId, "tileEntityId"), self.playerId, "playerId"));
 }
 
-// src/packet/Packet_TileEntityPlace.js
-var Packet_TileEntityPlace_exports = {};
-__export(Packet_TileEntityPlace_exports, {
+// src/packetv1449/PacketV1449_TileEntityPlace.js
+var PacketV1449_TileEntityPlace_exports = {};
+__export(PacketV1449_TileEntityPlace_exports, {
   parse: () => parse59,
   toBuffer: () => toBuffer58
 });
@@ -5789,9 +5850,9 @@ function toBuffer58(self) {
   return data(packByte(packInt16(packInt16(setType(make(), toInt("TileEntityPlace")), self.x, "x"), self.y, "y"), self.tileEntityType, "tileEntityType"));
 }
 
-// src/packet/Packet_TileEntityUpdate.js
-var Packet_TileEntityUpdate_exports = {};
-__export(Packet_TileEntityUpdate_exports, {
+// src/packetv1449/PacketV1449_TileEntityUpdate.js
+var PacketV1449_TileEntityUpdate_exports = {};
+__export(PacketV1449_TileEntityUpdate_exports, {
   parse: () => parse60,
   toBuffer: () => toBuffer59
 });
@@ -5845,9 +5906,9 @@ function toBuffer59(self) {
   }
 }
 
-// src/packet/Packet_TileModify.js
-var Packet_TileModify_exports = {};
-__export(Packet_TileModify_exports, {
+// src/packetv1449/PacketV1449_TileModify.js
+var PacketV1449_TileModify_exports = {};
+__export(PacketV1449_TileModify_exports, {
   Action: () => Action2,
   parse: () => parse61,
   toBuffer: () => toBuffer60
@@ -6017,9 +6078,9 @@ function toBuffer60(self) {
   return data(packByte(packInt16(packInt16(packInt16(packByte(setType(make(), toInt("TileModify")), toInt7(self.action), "action"), self.tileX, "tileX"), self.tileY, "tileY"), self.value1, "value1"), self.value2, "value2"));
 }
 
-// src/packet/Packet_TilePaint.js
-var Packet_TilePaint_exports = {};
-__export(Packet_TilePaint_exports, {
+// src/packetv1449/PacketV1449_TilePaint.js
+var PacketV1449_TilePaint_exports = {};
+__export(PacketV1449_TilePaint_exports, {
   parse: () => parse62,
   toBuffer: () => toBuffer61
 });
@@ -6056,9 +6117,9 @@ function toBuffer61(self) {
   return data(packByte(packByte(packInt16(packInt16(setType(make(), toInt("TilePaint")), self.x, "x"), self.y, "y"), self.color, "color"), self.coat, "coat"));
 }
 
-// src/packet/Packet_TilePickingSync.js
-var Packet_TilePickingSync_exports = {};
-__export(Packet_TilePickingSync_exports, {
+// src/packetv1449/PacketV1449_TilePickingSync.js
+var PacketV1449_TilePickingSync_exports = {};
+__export(PacketV1449_TilePickingSync_exports, {
   parse: () => parse63,
   toBuffer: () => toBuffer62
 });
@@ -6095,9 +6156,9 @@ function toBuffer62(self) {
   return data(packByte(packInt16(packInt16(packByte(setType(make(), toInt("TilePickingSync")), self.playerId, "playerId"), self.x, "x"), self.y, "y"), self.pickPower, "pickPower"));
 }
 
-// src/packet/Packet_TileSectionFrame.js
-var Packet_TileSectionFrame_exports = {};
-__export(Packet_TileSectionFrame_exports, {
+// src/packetv1449/PacketV1449_TileSectionFrame.js
+var PacketV1449_TileSectionFrame_exports = {};
+__export(PacketV1449_TileSectionFrame_exports, {
   parse: () => parse64,
   toBuffer: () => toBuffer63
 });
@@ -6134,9 +6195,9 @@ function toBuffer63(self) {
   return data(packInt16(packInt16(packInt16(packInt16(setType(make(), toInt("TileSectionFrame")), self.startX, "startX"), self.startY, "startY"), self.endX, "endX"), self.endY, "endY"));
 }
 
-// src/packet/Packet_TileSectionSend.js
-var Packet_TileSectionSend_exports = {};
-__export(Packet_TileSectionSend_exports, {
+// src/packetv1449/PacketV1449_TileSectionSend.js
+var PacketV1449_TileSectionSend_exports = {};
+__export(PacketV1449_TileSectionSend_exports, {
   Chest: () => Chest,
   Entity: () => Entity,
   Sign: () => Sign,
@@ -9674,7 +9735,7 @@ function make3(buffer) {
   };
 }
 
-// src/packet/Packet_TileSectionSend.js
+// src/packetv1449/PacketV1449_TileSectionSend.js
 function defaultTileCache() {
   return {
     activeTile: void 0,
@@ -10967,9 +11028,9 @@ var Chest = {};
 var Sign = {};
 var Entity = {};
 
-// src/packet/Packet_TileSquareSend.js
-var Packet_TileSquareSend_exports = {};
-__export(Packet_TileSquareSend_exports, {
+// src/packetv1449/PacketV1449_TileSquareSend.js
+var PacketV1449_TileSquareSend_exports = {};
+__export(PacketV1449_TileSquareSend_exports, {
   Decode: () => Decode,
   Encode: () => Encode,
   parse: () => parse66,
@@ -11262,9 +11323,9 @@ var Encode = {
   toBuffer: toBuffer65
 };
 
-// src/packet/Packet_TimeSet.js
-var Packet_TimeSet_exports = {};
-__export(Packet_TimeSet_exports, {
+// src/packetv1449/PacketV1449_TimeSet.js
+var PacketV1449_TimeSet_exports = {};
+__export(PacketV1449_TimeSet_exports, {
   parse: () => parse67,
   toBuffer: () => toBuffer66
 });
@@ -11301,9 +11362,9 @@ function toBuffer66(self) {
   return data(packInt16(packInt16(packInt32(packByte(setType(make(), toInt("TimeSet")), self.dayTime ? 1 : 0, "dayTime"), self.time, "time"), self.sunModY, "sunModY"), self.moonModY, "moonModY"));
 }
 
-// src/packet/Packet_TravellingMerchantInventory.js
-var Packet_TravellingMerchantInventory_exports = {};
-__export(Packet_TravellingMerchantInventory_exports, {
+// src/packetv1449/PacketV1449_TravellingMerchantInventory.js
+var PacketV1449_TravellingMerchantInventory_exports = {};
+__export(PacketV1449_TravellingMerchantInventory_exports, {
   parse: () => parse68,
   toBuffer: () => toBuffer67
 });
@@ -11370,9 +11431,9 @@ function toBuffer67(self) {
   return data(packItems(writer, self.items));
 }
 
-// src/packet/Packet_TreeGrowFx.js
-var Packet_TreeGrowFx_exports = {};
-__export(Packet_TreeGrowFx_exports, {
+// src/packetv1449/PacketV1449_TreeGrowFx.js
+var PacketV1449_TreeGrowFx_exports = {};
+__export(PacketV1449_TreeGrowFx_exports, {
   parse: () => parse69,
   toBuffer: () => toBuffer68
 });
@@ -11414,9 +11475,9 @@ function toBuffer68(self) {
   return data(packInt16(packByte(packInt32(packInt32(packByte(setType(make(), toInt("TreeGrowFx")), self.action, "action"), self.x, "x"), self.y, "y"), self.style, "style"), self.treeType, "treeType"));
 }
 
-// src/packet/Packet_Unused.js
-var Packet_Unused_exports = {};
-__export(Packet_Unused_exports, {
+// src/packetv1449/PacketV1449_Unused.js
+var PacketV1449_Unused_exports = {};
+__export(PacketV1449_Unused_exports, {
   parse: () => parse70
 });
 function parse70(_payload) {
@@ -11426,9 +11487,9 @@ function parse70(_payload) {
   };
 }
 
-// src/packet/Packet_WallPaint.js
-var Packet_WallPaint_exports = {};
-__export(Packet_WallPaint_exports, {
+// src/packetv1449/PacketV1449_WallPaint.js
+var PacketV1449_WallPaint_exports = {};
+__export(PacketV1449_WallPaint_exports, {
   parse: () => parse71,
   toBuffer: () => toBuffer69
 });
@@ -11465,9 +11526,9 @@ function toBuffer69(self) {
   return data(packByte(packByte(packInt16(packInt16(setType(make(), toInt("WallPaint")), self.x, "x"), self.y, "y"), self.color, "color"), self.coat, "coat"));
 }
 
-// src/packet/Packet_WeaponsRackTryPlacing.js
-var Packet_WeaponsRackTryPlacing_exports = {};
-__export(Packet_WeaponsRackTryPlacing_exports, {
+// src/packetv1449/PacketV1449_WeaponsRackTryPlacing.js
+var PacketV1449_WeaponsRackTryPlacing_exports = {};
+__export(PacketV1449_WeaponsRackTryPlacing_exports, {
   parse: () => parse72,
   toBuffer: () => toBuffer70
 });
@@ -11509,9 +11570,9 @@ function toBuffer70(self) {
   return data(packInt16(packInt16(packInt16(packInt16(packInt16(setType(make(), toInt("WeaponsRackTryPlacing")), self.x, "x"), self.y, "y"), self.itemId, "itemId"), self.prefix, "prefix"), self.stack, "stack"));
 }
 
-// src/packet/Packet_WiredCannonShot.js
-var Packet_WiredCannonShot_exports = {};
-__export(Packet_WiredCannonShot_exports, {
+// src/packetv1449/PacketV1449_WiredCannonShot.js
+var PacketV1449_WiredCannonShot_exports = {};
+__export(PacketV1449_WiredCannonShot_exports, {
   parse: () => parse73,
   toBuffer: () => toBuffer71
 });
@@ -11563,9 +11624,9 @@ function toBuffer71(self) {
   return data(packByte(packInt16(packInt16(packInt16(packInt16(packSingle(packInt16(setType(make(), toInt("WiredCannonShot")), self.damage, "damage"), self.knockback, "knockback"), self.x, "x"), self.y, "y"), self.angle, "angle"), self.ammo, "ammo"), self.playerId, "playerId"));
 }
 
-// src/packet/Packet_WorldDataRequest.js
-var Packet_WorldDataRequest_exports = {};
-__export(Packet_WorldDataRequest_exports, {
+// src/packetv1449/PacketV1449_WorldDataRequest.js
+var PacketV1449_WorldDataRequest_exports = {};
+__export(PacketV1449_WorldDataRequest_exports, {
   parse: () => parse74,
   toBuffer: () => toBuffer72
 });
@@ -11582,9 +11643,9 @@ function toBuffer72(_self) {
   };
 }
 
-// src/packet/Packet_Zones.js
-var Packet_Zones_exports = {};
-__export(Packet_Zones_exports, {
+// src/packetv1449/PacketV1449_Zones.js
+var PacketV1449_Zones_exports = {};
+__export(PacketV1449_Zones_exports, {
   parse: () => parse75,
   toBuffer: () => toBuffer73
 });
@@ -11631,9 +11692,9 @@ function toBuffer73(self) {
   return data(packByte(packByte(packByte(packByte(packByte(packByte(setType(make(), toInt("Zones")), self.playerId, "playerId"), self.zone1, "zone1"), self.zone2, "zone2"), self.zone3, "zone3"), self.zone4, "zone4"), self.zone5, "zone5"));
 }
 
-// src/packet/Packet_PlayerSlotSet.js
-var Packet_PlayerSlotSet_exports = {};
-__export(Packet_PlayerSlotSet_exports, {
+// src/packetv1449/PacketV1449_PlayerSlotSet.js
+var PacketV1449_PlayerSlotSet_exports = {};
+__export(PacketV1449_PlayerSlotSet_exports, {
   parse: () => parse76,
   toBuffer: () => toBuffer74
 });
@@ -11660,9 +11721,9 @@ function toBuffer74(self) {
   return data(packByte(packByte(setType(make(), toInt("PlayerSlotSet")), self.playerSlotId, "playerSlotId"), self.serverWantsToRunCheckBytesInClientLoopThread ? 1 : 0, "serverWantsToRunCheckBytesInClientLoopThread"));
 }
 
-// src/packet/Packet_PlayerUpdate.js
-var Packet_PlayerUpdate_exports = {};
-__export(Packet_PlayerUpdate_exports, {
+// src/packetv1449/PacketV1449_PlayerUpdate.js
+var PacketV1449_PlayerUpdate_exports = {};
+__export(PacketV1449_PlayerUpdate_exports, {
   parse: () => parse77,
   toBuffer: () => toBuffer75
 });
@@ -11864,10 +11925,9 @@ function toBuffer75(self) {
   return data(packPotionOfReturn(packVelocity(packSingle(packSingle(packByte(packMiscFlags3(packMiscFlags2(packMiscFlags1(packControlFlags(packByte(setType(make(), toInt("PlayerUpdate")), self.playerId, "playerId"), self.control, self.direction), self.pulleyDirection, self.velocity, self.vortexStealthActive, self.gravityDirection, self.shouldGuard, self.ghost), self.tryKeepingHoveringUp, self.isVoidVaultEnabled, self.isSitting, self.hasFinishedAnyDd2Event, self.isPettingAnimal, self.isTheAnimalBeingPetSmall, self.potionOfReturn, self.tryKeepingHoveringDown), self.isSleeping), self.selectedItem, "selectedItem"), self.position.x, "positionX"), self.position.y, "positionY"), self.velocity), self.potionOfReturn));
 }
 
-// src/packet/Packet_PlayerInfo.js
-var Packet_PlayerInfo_exports = {};
-__export(Packet_PlayerInfo_exports, {
-  fromv1449: () => fromv1449,
+// src/packetv1449/PacketV1449_PlayerInfo.js
+var PacketV1449_PlayerInfo_exports = {};
+__export(PacketV1449_PlayerInfo_exports, {
   parse: () => parse78,
   toBuffer: () => toBuffer76
 });
@@ -12055,13 +12115,10 @@ function packUsedFlags(writer, usedAegisCrystal, usedAegisFruit, usedArcaneCryst
 function toBuffer76(self) {
   return data(packUsedFlags(packTorchFlags(packDifficultyFlags(packColor(packColor(packColor(packColor(packColor(packColor(packColor(packByte(packByte(packByte(packByte(packString(packByte(packByte(packByte(setType(make(), toInt("PlayerInfo")), self.playerId, "playerId"), self.skinVariant, "skinVariant"), self.hair, "hair"), self.name, "name"), self.hairDye, "hairDye"), self.hideVisuals, "hideVisuals"), self.hideVisuals2, "hideVisuals2"), self.hideMisc, "hideMisc"), self.hairColor, "hairColor"), self.skinColor, "skinColor"), self.eyeColor, "eyeColor"), self.shirtColor, "shirtColor"), self.underShirtColor, "underShirtColor"), self.pantsColor, "pantsColor"), self.shoeColor, "shoeColor"), self.difficulty, self.extraAccessory, self.mode), self.usingBiomeTorches, self.happyFunTorchTime, self.unlockedBiomeTorches, self.unlockedSuperCart, self.enabledSuperCart), self.usedAegisCrystal, self.usedAegisFruit, self.usedArcaneCrystal, self.usedGalaxyPearl, self.usedGummyWorm, self.usedAmbrosia, self.ateArtisanBread));
 }
-function fromv1449(playerInfo) {
-  return playerInfo;
-}
 
-// src/packet/Packet_PlayerSpawn.js
-var Packet_PlayerSpawn_exports = {};
-__export(Packet_PlayerSpawn_exports, {
+// src/packetv1449/PacketV1449_PlayerSpawn.js
+var PacketV1449_PlayerSpawn_exports = {};
+__export(PacketV1449_PlayerSpawn_exports, {
   parse: () => parse79,
   toBuffer: () => toBuffer77
 });
@@ -12149,9 +12206,9 @@ function toBuffer77(self) {
   return data(packByte(packInt16(packInt16(packInt32(packInt16(packInt16(packByte(setType(make(), toInt("PlayerSpawn")), self.playerId, "playerId"), self.x, "x"), self.y, "y"), self.timeRemaining, "timeRemaining"), self.numberOfDeathsPve, "numberOfDeathsPve"), self.numberOfDeathsPvp, "numberOfDeathsPvp"), tmp, "context"));
 }
 
-// src/packet/Packet_PlayerInventorySlot.js
-var Packet_PlayerInventorySlot_exports = {};
-__export(Packet_PlayerInventorySlot_exports, {
+// src/packetv1449/PacketV1449_PlayerInventorySlot.js
+var PacketV1449_PlayerInventorySlot_exports = {};
+__export(PacketV1449_PlayerInventorySlot_exports, {
   parse: () => parse80,
   toBuffer: () => toBuffer78
 });
@@ -12193,9 +12250,9 @@ function toBuffer78(self) {
   return data(packInt16(packByte(packInt16(packInt16(packByte(setType(make(), toInt("PlayerInventorySlot")), self.playerId, "playerId"), self.slot, "slot"), self.stack, "stack"), self.prefix, "prefix"), self.itemId, "itemId"));
 }
 
-// src/packet/Packet_PlayerHealth.js
-var Packet_PlayerHealth_exports = {};
-__export(Packet_PlayerHealth_exports, {
+// src/packetv1449/PacketV1449_PlayerHealth.js
+var PacketV1449_PlayerHealth_exports = {};
+__export(PacketV1449_PlayerHealth_exports, {
   parse: () => parse81,
   toBuffer: () => toBuffer79
 });
@@ -12227,9 +12284,9 @@ function toBuffer79(self) {
   return data(packInt16(packInt16(packByte(setType(make(), toInt("PlayerHealth")), self.playerId, "playerId"), self.health, "health"), self.maxHealth, "maxHealth"));
 }
 
-// src/packet/Packet_ClientUuid.js
-var Packet_ClientUuid_exports = {};
-__export(Packet_ClientUuid_exports, {
+// src/packetv1449/PacketV1449_ClientUuid.js
+var PacketV1449_ClientUuid_exports = {};
+__export(PacketV1449_ClientUuid_exports, {
   parse: () => parse82,
   toBuffer: () => toBuffer80
 });
@@ -12251,9 +12308,9 @@ function toBuffer80(self) {
   return data(packString(setType(make(), toInt("ClientUuid")), self.uuid, "uuid"));
 }
 
-// src/packet/Packet_ProjectileSync.js
-var Packet_ProjectileSync_exports = {};
-__export(Packet_ProjectileSync_exports, {
+// src/packetv1449/PacketV1449_ProjectileSync.js
+var PacketV1449_ProjectileSync_exports = {};
+__export(PacketV1449_ProjectileSync_exports, {
   parse: () => parse83,
   toBuffer: () => toBuffer81
 });
@@ -12503,9 +12560,9 @@ function toBuffer81(self) {
   return data(packOptionalData(packInt16(packByte(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt("ProjectileSync")), self.projectileId, "projectileId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.owner, "owner"), self.projectileType, "projectileType"), self));
 }
 
-// src/packet/Packet_PlayerDamage.js
-var Packet_PlayerDamage_exports = {};
-__export(Packet_PlayerDamage_exports, {
+// src/packetv1449/PacketV1449_PlayerDamage.js
+var PacketV1449_PlayerDamage_exports = {};
+__export(PacketV1449_PlayerDamage_exports, {
   parse: () => parse84,
   toBuffer: () => toBuffer82
 });
@@ -12569,10 +12626,9 @@ function toBuffer82(self) {
   return data(packSByte(packByte(packByte(packInt16(packDeathReason(packByte(setType(make(), toInt("PlayerDamage")), self.target, "target"), self.deathReason), self.damage, "damage"), self.hitDirection, "hitDirection"), damageFlags(self), "damageFlags"), self.cooldownCounter, "cooldownCounter"));
 }
 
-// src/packet/Packet_WorldInfo.js
-var Packet_WorldInfo_exports = {};
-__export(Packet_WorldInfo_exports, {
-  fromv1449: () => fromv14492,
+// src/packetv1449/PacketV1449_WorldInfo.js
+var PacketV1449_WorldInfo_exports = {};
+__export(PacketV1449_WorldInfo_exports, {
   parse: () => parse85,
   toBuffer: () => toBuffer83
 });
@@ -13192,13 +13248,10 @@ function packEventInfo(writer, eventInfo) {
 function toBuffer83(self) {
   return data(packSingle(packUInt64(packSByte(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packEventInfo(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packUInt64(packBytes(packByte(packString(packInt32(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packInt32(setType(make(), toInt("WorldInfo")), self.time, "time"), self.dayAndMoonInfo, "dayAndMoonInfo"), self.moonPhase, "moonPhase"), self.maxTilesX, "maxTilesX"), self.maxTilesY, "maxTilesY"), self.spawnX, "spawnX"), self.spawnY, "spawnY"), self.worldSurface, "worldSurface"), self.rockLayer, "rockLayer"), self.worldId, "worldId"), self.worldName, "worldName"), self.gameMode, "gameMode"), asArray(self.worldUniqueId), "worldUniqueId"), self.worldGeneratorVersion, "worldGeneratorVersion"), self.moonType, "moonType"), self.treeBackground, "treeBackground"), self.treeBackground2, "treeBackground2"), self.treeBackground3, "treeBackground3"), self.treeBackground4, "treeBackground4"), self.corruptionBackground, "corruptionBackground"), self.jungleBackground, "jungleBackground"), self.snowBackground, "snowBackground"), self.hallowBackground, "hallowBackground"), self.crimsonBackground, "crimsonBackground"), self.desertBackground, "desertBackground"), self.oceanBackground, "oceanBackground"), self.mushroomBackground, "mushroomBackground"), self.underworldBackground, "underworldBackground"), self.iceBackStyle, "iceBackStyle"), self.jungleBackStyle, "jungleBackStyle"), self.hellBackStyle, "hellBackStyle"), self.windSpeedSet, "windSpeedSet"), self.cloudNumber, "cloudNumber"), self.tree1, "tree1"), self.tree2, "tree2"), self.tree3, "tree3"), self.treeStyle1, "treeStyle1"), self.treeStyle2, "treeStyle2"), self.treeStyle3, "treeStyle3"), self.treeStyle4, "treeStyle4"), self.caveBack1, "caveBack1"), self.caveBack2, "caveBack2"), self.caveBack3, "caveBack3"), self.caveBackStyle1, "caveBackStyle1"), self.caveBackStyle2, "caveBackStyle2"), self.caveBackStyle3, "caveBackStyle3"), self.caveBackStyle4, "caveBackStyle4"), self.forest1TreeTopStyle, "forest1TreeTopStyle"), self.forest2TreeTopStyle, "forest2TreeTopStyle"), self.forest3TreeTopStyle, "forest3TreeTopStyle"), self.forest4TreeTopStyle, "forest4TreeTopStyle"), self.corruptionTreeTopStyle, "corruptionTreeTopStyle"), self.jungleTreeTopStyle, "jungleTreeTopStyle"), self.snowTreeTopStyle, "snowTreeTopStyle"), self.hallowTreeTopStyle, "hallowTreeTopStyle"), self.crimsonTreeTopStyle, "crimsonTreeTopStyle"), self.desertTreeTopStyle, "desertTreeTopStyle"), self.oceanTreeTopStyle, "oceanTreeTopStyle"), self.glowingMushroomTreeTopStyle, "glowingMushroomTreeTopStyle"), self.underworldTreeTopStyle, "underworldTreeTopStyle"), self.rain, "rain"), self.eventInfo), self.sundialCooldown, "sundialCooldown"), self.moondialCooldown, "moondialCooldown"), self.copperOreTier, "copperOreTier"), self.ironOreTier, "ironOreTier"), self.silverOreTier, "silverOreTier"), self.goldOreTier, "goldOreTier"), self.cobaltOreTier, "cobaltOreTier"), self.mythrilOreTier, "mythrilOreTier"), self.adamantiteOreTier, "adamantiteOreTier"), self.invasionType, "invasionType"), self.lobbyId, "lobbyId"), self.sandstormSeverity, "sandstormSeverity"));
 }
-function fromv14492(worldInfo) {
-  return worldInfo;
-}
 
-// src/packet/Packet_PlayerActive.js
-var Packet_PlayerActive_exports = {};
-__export(Packet_PlayerActive_exports, {
+// src/packetv1449/PacketV1449_PlayerActive.js
+var PacketV1449_PlayerActive_exports = {};
+__export(PacketV1449_PlayerActive_exports, {
   parse: () => parse86,
   toBuffer: () => toBuffer84
 });
@@ -13225,9 +13278,9 @@ function toBuffer84(self) {
   return data(packByte(packByte(setType(make(), toInt("PlayerActive")), self.playerId, "playerId"), self.active ? 1 : 0, "active"));
 }
 
-// src/packet/Packet_NpcUpdate.js
-var Packet_NpcUpdate_exports = {};
-__export(Packet_NpcUpdate_exports, {
+// src/packetv1449/PacketV1449_NpcUpdate.js
+var PacketV1449_NpcUpdate_exports = {};
+__export(PacketV1449_NpcUpdate_exports, {
   parse: () => parse87,
   toBuffer: () => toBuffer85
 });
@@ -13544,9 +13597,9 @@ function toBuffer85(self) {
   return data(packReleaseOwner(packLife(packStrengthMultiplier(packPlayerCountScale(packInt16(packAi(packByte(packByte(packUInt16(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt("NpcUpdate")), self.npcSlotId, "npcSlotId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.target, "target"), npcFlags1(self), "npcFlags1"), npcFlags2(self), "npcFlags2"), self.ai), self.npcTypeId, "npcTypeId"), self.playerCountScale), self.strengthMultiplier), self.life), self.releaseOwner));
 }
 
-// src/packet/Packet_Disconnect.js
-var Packet_Disconnect_exports = {};
-__export(Packet_Disconnect_exports, {
+// src/packetv1449/PacketV1449_Disconnect.js
+var PacketV1449_Disconnect_exports = {};
+__export(PacketV1449_Disconnect_exports, {
   parse: () => parse88,
   toBuffer: () => toBuffer86
 });
@@ -13571,8 +13624,9 @@ function toBuffer86(self) {
 // src/Parser.js
 var Parser_exports = {};
 __export(Parser_exports, {
-  convertv1449IfNeeded: () => convertv1449IfNeeded,
-  parse: () => parse147,
+  convertFromV1449IfNeeded: () => convertFromV1449IfNeeded,
+  convertToV1449IfNeeded: () => convertToV1449IfNeeded,
+  parse: () => parse179,
   parseLazy: () => parseLazy
 });
 
@@ -13585,8 +13639,16 @@ function from_fun(closure) {
 }
 var make4 = from_fun;
 
-// src/packet/Packet_Emoji.js
-function parse89(payload) {
+// src/packet/Packet_Ping.js
+function parse89(_payload) {
+  return {
+    TAG: "Ok",
+    _0: void 0
+  };
+}
+
+// src/packetv1449/PacketV1449_Emoji.js
+function parse90(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -13606,7 +13668,7 @@ function parse89(payload) {
   }
 }
 
-// src/packet/Packet_DoorUse.js
+// src/packetv1449/PacketV1449_DoorUse.js
 function actionFromInt(self) {
   switch (self) {
     case 0:
@@ -13625,7 +13687,7 @@ function actionFromInt(self) {
       return;
   }
 }
-function parse90(payload) {
+function parse91(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "action");
   if (e.TAG !== "Ok") {
@@ -13672,8 +13734,8 @@ function parse90(payload) {
   }
 }
 
-// src/packet/Packet_HarpPlay.js
-function parse91(payload) {
+// src/packetv1449/PacketV1449_HarpPlay.js
+function parse92(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -13693,8 +13755,8 @@ function parse91(payload) {
   }
 }
 
-// src/packet/Packet_ChestName.js
-function parse92(payload) {
+// src/packetv1449/PacketV1449_ChestName.js
+function parse93(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "chestId");
   if (e.TAG !== "Ok") {
@@ -13724,8 +13786,8 @@ function parse92(payload) {
   }
 }
 
-// src/packet/Packet_ChestOpen.js
-function parse93(payload) {
+// src/packetv1449/PacketV1449_ChestOpen.js
+function parse94(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -13745,8 +13807,8 @@ function parse93(payload) {
   }
 }
 
-// src/packet/Packet_LiquidSet.js
-function parse94(payload) {
+// src/packetv1449/PacketV1449_LiquidSet.js
+function parse95(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -13776,8 +13838,8 @@ function parse94(payload) {
   }
 }
 
-// src/packet/Packet_NpcStrike.js
-function parse95(payload) {
+// src/packetv1449/PacketV1449_NpcStrike.js
+function parse96(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -13812,7 +13874,7 @@ function parse95(payload) {
   }
 }
 
-// src/packet/Packet_NpcTamper.js
+// src/packetv1449/PacketV1449_NpcTamper.js
 function fromInt8(playerId) {
   if (playerId !== -1) {
     return {
@@ -13823,7 +13885,7 @@ function fromInt8(playerId) {
     return "All";
   }
 }
-function parse96(payload) {
+function parse97(payload) {
   let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -13871,8 +13933,8 @@ function parse96(payload) {
   };
 }
 
-// src/packet/Packet_HealEffect.js
-function parse97(payload) {
+// src/packetv1449/PacketV1449_HealEffect.js
+function parse98(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -13892,8 +13954,8 @@ function parse97(payload) {
   }
 }
 
-// src/packet/Packet_ManaEffect.js
-function parse98(payload) {
+// src/packetv1449/PacketV1449_ManaEffect.js
+function parse99(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -13913,8 +13975,8 @@ function parse98(payload) {
   }
 }
 
-// src/packet/Packet_NpcBuffAdd.js
-function parse99(payload) {
+// src/packetv1449/PacketV1449_NpcBuffAdd.js
+function parse100(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -13939,8 +14001,8 @@ function parse99(payload) {
   }
 }
 
-// src/packet/Packet_NpcRelease.js
-function parse100(payload) {
+// src/packetv1449/PacketV1449_NpcRelease.js
+function parse101(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "x");
   if (e.TAG !== "Ok") {
@@ -13970,8 +14032,8 @@ function parse100(payload) {
   }
 }
 
-// src/packet/Packet_PortalKill.js
-function parse101(payload) {
+// src/packetv1449/PacketV1449_PortalKill.js
+function parse102(payload) {
   let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "owner");
   if (e.TAG !== "Ok") {
@@ -13991,8 +14053,8 @@ function parse101(payload) {
   }
 }
 
-// src/packet/Packet_EmoteBubble.js
-function parse102(payload) {
+// src/packetv1449/PacketV1449_EmoteBubble.js
+function parse103(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "id");
   if (e.TAG !== "Ok") {
@@ -14050,8 +14112,8 @@ function parse102(payload) {
   }
 }
 
-// src/packet/Packet_PasswordSend.js
-function parse103(payload) {
+// src/packetv1449/PacketV1449_PasswordSend.js
+function parse104(payload) {
   let reader = new packetreader_default(payload);
   let e = readString(reader, "password");
   if (e.TAG === "Ok") {
@@ -14066,8 +14128,8 @@ function parse103(payload) {
   }
 }
 
-// src/packet/Packet_GemLockToggle.js
-function parse104(payload) {
+// src/packetv1449/PacketV1449_GemLockToggle.js
+function parse105(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -14092,8 +14154,8 @@ function parse104(payload) {
   }
 }
 
-// src/packet/Packet_NebulaLevelUp.js
-function parse105(payload) {
+// src/packetv1449/PacketV1449_NebulaLevelUp.js
+function parse106(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -14123,8 +14185,8 @@ function parse105(payload) {
   }
 }
 
-// src/packet/Packet_NpcItemStrike.js
-function parse106(payload) {
+// src/packetv1449/PacketV1449_NpcItemStrike.js
+function parse107(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -14144,8 +14206,8 @@ function parse106(payload) {
   }
 }
 
-// src/packet/Packet_PlayerStealth.js
-function parse107(payload) {
+// src/packetv1449/PacketV1449_PlayerStealth.js
+function parse108(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -14165,8 +14227,8 @@ function parse107(payload) {
   }
 }
 
-// src/packet/Packet_GoodEvilUpdate.js
-function parse108(payload) {
+// src/packetv1449/PacketV1449_GoodEvilUpdate.js
+function parse109(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "good");
   if (e.TAG !== "Ok") {
@@ -14191,7 +14253,7 @@ function parse108(payload) {
   }
 }
 
-// src/packet/Packet_ItemDropModify.js
+// src/packetv1449/PacketV1449_ItemDropModify.js
 function parseFlags2(reader, flags2) {
   let width = flag1(flags2) ? map2(readInt16(reader, "width"), (v) => v) : {
     TAG: "Ok",
@@ -14248,7 +14310,7 @@ function parseFlags2(reader, flags2) {
     return notAmmo;
   }
 }
-function parse109(payload) {
+function parse110(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemId");
   if (e.TAG !== "Ok") {
@@ -14379,8 +14441,8 @@ function parse109(payload) {
   };
 }
 
-// src/packet/Packet_ItemFramePlace.js
-function parse110(payload) {
+// src/packetv1449/PacketV1449_ItemFramePlace.js
+function parse111(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -14415,8 +14477,8 @@ function parse110(payload) {
   }
 }
 
-// src/packet/Packet_LucyAxeMessage.js
-function parse111(payload) {
+// src/packetv1449/PacketV1449_LucyAxeMessage.js
+function parse112(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "source");
   if (e.TAG !== "Ok") {
@@ -14465,8 +14527,8 @@ function parse111(payload) {
   };
 }
 
-// src/packet/Packet_LegacySoundPlay.js
-function parse112(payload) {
+// src/packetv1449/PacketV1449_LegacySoundPlay.js
+function parse113(payload) {
   let reader = new packetreader_default(payload);
   let e = readSingle(reader, "x");
   if (e.TAG !== "Ok") {
@@ -14522,8 +14584,8 @@ function parse112(payload) {
   }
 }
 
-// src/packet/Packet_PlayerHealOther.js
-function parse113(payload) {
+// src/packetv1449/PacketV1449_PlayerHealOther.js
+function parse114(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -14543,16 +14605,16 @@ function parse113(payload) {
   }
 }
 
-// src/packet/Packet_PlayerSpawnSelf.js
-function parse114(_payload) {
+// src/packetv1449/PacketV1449_PlayerSpawnSelf.js
+function parse115(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
   };
 }
 
-// src/packet/Packet_CombatTextCreate.js
-function parse115(payload) {
+// src/packetv1449/PacketV1449_CombatTextCreate.js
+function parse116(payload) {
   let reader = new packetreader_default(payload);
   let e = readSingle(reader, "x");
   if (e.TAG !== "Ok") {
@@ -14582,8 +14644,8 @@ function parse115(payload) {
   }
 }
 
-// src/packet/Packet_NpcSpecialEffect.js
-function parse116(payload) {
+// src/packetv1449/PacketV1449_NpcSpecialEffect.js
+function parse117(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -14603,16 +14665,16 @@ function parse116(payload) {
   }
 }
 
-// src/packet/Packet_PasswordRequired.js
-function parse117(_payload) {
+// src/packetv1449/PacketV1449_PasswordRequired.js
+function parse118(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
   };
 }
 
-// src/packet/Packet_EventNotification.js
-function parse118(payload) {
+// src/packetv1449/PacketV1449_EventNotification.js
+function parse119(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "eventId");
   if (e.TAG === "Ok") {
@@ -14627,8 +14689,8 @@ function parse118(payload) {
   }
 }
 
-// src/packet/Packet_GolfBallLandInCup.js
-function parse119(payload) {
+// src/packetv1449/PacketV1449_GolfBallLandInCup.js
+function parse120(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -14663,8 +14725,8 @@ function parse119(payload) {
   }
 }
 
-// src/packet/Packet_MassWireOperation.js
-function parse120(payload) {
+// src/packetv1449/PacketV1449_MassWireOperation.js
+function parse121(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "startX");
   if (e.TAG !== "Ok") {
@@ -14699,8 +14761,8 @@ function parse120(payload) {
   }
 }
 
-// src/packet/Packet_MoonLordCountdown.js
-function parse121(payload) {
+// src/packetv1449/PacketV1449_MoonLordCountdown.js
+function parse122(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "maxMoonLordCountdown");
   if (e.TAG !== "Ok") {
@@ -14720,8 +14782,8 @@ function parse121(payload) {
   }
 }
 
-// src/packet/Packet_ProjectileDestroy.js
-function parse122(payload) {
+// src/packetv1449/PacketV1449_ProjectileDestroy.js
+function parse123(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "projectileId");
   if (e.TAG !== "Ok") {
@@ -14741,8 +14803,8 @@ function parse122(payload) {
   }
 }
 
-// src/packet/Packet_RevengeMarkerSync.js
-function parse123(payload) {
+// src/packetv1449/PacketV1449_RevengeMarkerSync.js
+function parse124(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "uniqueId");
   if (e.TAG !== "Ok") {
@@ -14804,8 +14866,8 @@ function parse123(payload) {
   }
 }
 
-// src/packet/Packet_CombatNumberCreate.js
-function parse124(payload) {
+// src/packetv1449/PacketV1449_CombatNumberCreate.js
+function parse125(payload) {
   let reader = new packetreader_default(payload);
   let e = readSingle(reader, "x");
   if (e.TAG !== "Ok") {
@@ -14835,8 +14897,8 @@ function parse124(payload) {
   }
 }
 
-// src/packet/Packet_MinionTargetUpdate.js
-function parse125(payload) {
+// src/packetv1449/PacketV1449_MinionTargetUpdate.js
+function parse126(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -14861,8 +14923,8 @@ function parse125(payload) {
   }
 }
 
-// src/packet/Packet_ActiveContainerSync.js
-function parse126(payload) {
+// src/packetv1449/PacketV1449_ActiveContainerSync.js
+function parse127(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "chestId");
   if (e.TAG !== "Ok") {
@@ -14901,8 +14963,8 @@ function parse126(payload) {
   }
 }
 
-// src/packet/Packet_RevengeMarkerRemove.js
-function parse127(payload) {
+// src/packetv1449/PacketV1449_RevengeMarkerRemove.js
+function parse128(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "markerId");
   if (e.TAG === "Ok") {
@@ -14917,8 +14979,8 @@ function parse127(payload) {
   }
 }
 
-// src/packet/Packet_MassWireOperationPay.js
-function parse128(payload) {
+// src/packetv1449/PacketV1449_MassWireOperationPay.js
+function parse129(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemType");
   if (e.TAG !== "Ok") {
@@ -14943,8 +15005,8 @@ function parse128(payload) {
   }
 }
 
-// src/packet/Packet_PlayerTeleportPortal.js
-function parse129(payload) {
+// src/packetv1449/PacketV1449_PlayerTeleportPortal.js
+function parse130(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -14993,8 +15055,8 @@ function parse129(payload) {
   };
 }
 
-// src/packet/Packet_CavernMonsterTypeSync.js
-function parse130(payload) {
+// src/packetv1449/PacketV1449_CavernMonsterTypeSync.js
+function parse131(payload) {
   let reader = new packetreader_default(payload);
   let rows = make2(2, []);
   let error;
@@ -15028,16 +15090,16 @@ function parse130(payload) {
   }
 }
 
-// src/packet/Packet_ClientSyncedInventory.js
-function parse131(_payload) {
+// src/packetv1449/PacketV1449_ClientSyncedInventory.js
+function parse132(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
   };
 }
 
-// src/packet/Packet_FoodPlatterTryPlacing.js
-function parse132(payload) {
+// src/packetv1449/PacketV1449_FoodPlatterTryPlacing.js
+function parse133(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -15072,8 +15134,8 @@ function parse132(payload) {
   }
 }
 
-// src/packet/Packet_NpcKilledNotification.js
-function parse133(payload) {
+// src/packetv1449/PacketV1449_NpcKilledNotification.js
+function parse134(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG === "Ok") {
@@ -15088,8 +15150,8 @@ function parse133(payload) {
   }
 }
 
-// src/packet/Packet_ShieldStrengthsUpdate.js
-function parse134(payload) {
+// src/packetv1449/PacketV1449_ShieldStrengthsUpdate.js
+function parse135(payload) {
   let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "solar");
   if (e.TAG !== "Ok") {
@@ -15119,19 +15181,19 @@ function parse134(payload) {
   }
 }
 
-// src/packet/Packet_CrystalInvasionWipeAll.js
-function parse135(_payload) {
+// src/packetv1449/PacketV1449_CrystalInvasionWipeAll.js
+function parse136(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
   };
 }
 
-// src/packet/Packet_ItemDropInstancedUpdate.js
-var parse136 = parse18;
+// src/packetv1449/PacketV1449_ItemDropInstancedUpdate.js
+var parse137 = parse18;
 
-// src/packet/Packet_ItemDropProtectedUpdate.js
-function parse137(payload) {
+// src/packetv1449/PacketV1449_ItemDropProtectedUpdate.js
+function parse138(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemDropId");
   if (e.TAG !== "Ok") {
@@ -15191,7 +15253,7 @@ function parse137(payload) {
   }
 }
 
-// src/packet/Packet_PiggyBankVoidLensUpdate.js
+// src/packetv1449/PacketV1449_PiggyBankVoidLensUpdate.js
 function tryReading(reader, context) {
   let e = readInt16(reader, context);
   if (e.TAG !== "Ok") {
@@ -15220,7 +15282,7 @@ function tryReading(reader, context) {
     return e$2;
   }
 }
-function parse138(payload) {
+function parse139(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -15245,8 +15307,8 @@ function parse138(payload) {
   }
 }
 
-// src/packet/Packet_PlayerLuckFactorsUpdate.js
-function parse139(payload) {
+// src/packetv1449/PacketV1449_PlayerLuckFactorsUpdate.js
+function parse140(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -15292,8 +15354,8 @@ function parse139(payload) {
   }
 }
 
-// src/packet/Packet_MinionAttackTargetUpdate.js
-function parse140(payload) {
+// src/packetv1449/PacketV1449_MinionAttackTargetUpdate.js
+function parse141(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -15313,8 +15375,8 @@ function parse140(payload) {
   }
 }
 
-// src/packet/Packet_ItemForceIntoNearestChest.js
-function parse141(payload) {
+// src/packetv1449/PacketV1449_ItemForceIntoNearestChest.js
+function parse142(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "slot");
   if (e.TAG === "Ok") {
@@ -15329,8 +15391,8 @@ function parse141(payload) {
   }
 }
 
-// src/packet/Packet_InitialTileSectionsRequest.js
-function parse142(payload) {
+// src/packetv1449/PacketV1449_InitialTileSectionsRequest.js
+function parse143(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "x");
   if (e.TAG !== "Ok") {
@@ -15350,8 +15412,8 @@ function parse142(payload) {
   }
 }
 
-// src/packet/Packet_AnglerQuestsCompletedAmount.js
-function parse143(payload) {
+// src/packetv1449/PacketV1449_AnglerQuestsCompletedAmount.js
+function parse144(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -15376,8 +15438,8 @@ function parse143(payload) {
   }
 }
 
-// src/packet/Packet_CrystalInvasionSendWaitTime.js
-function parse144(payload) {
+// src/packetv1449/PacketV1449_CrystalInvasionSendWaitTime.js
+function parse145(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "timeLeftBetweenWaves");
   if (e.TAG === "Ok") {
@@ -15392,8 +15454,8 @@ function parse144(payload) {
   }
 }
 
-// src/packet/Packet_DungeonDefendersEventAttemptSkipWait.js
-function parse145(_payload) {
+// src/packetv1449/PacketV1449_DungeonDefendersEventAttemptSkipWait.js
+function parse146(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
@@ -15691,6 +15753,32 @@ function packetTypeName(packetType) {
       return "LoadoutSwitch";
     case "ItemDropProtectedUpdate":
       return "ItemDropProtectedUpdate";
+    case "DeadCellsDisplayJarTryPlacing":
+      return "DeadCellsDisplayJarTryPlacing";
+    case "PlayerSpectate":
+      return "PlayerSpectate";
+    case "ItemDropClear":
+      return "ItemDropClear";
+    case "PlayerItemUseSound":
+      return "PlayerItemUseSound";
+    case "NpcHurtByDebuff":
+      return "NpcHurtByDebuff";
+    case "Ping":
+      return "Ping";
+    case "ChestResize":
+      return "ChestResize";
+    case "LeashedEntityAnchorInsertItem":
+      return "LeashedEntityAnchorInsertItem";
+    case "PlayerTeamUpdate":
+      return "PlayerTeamUpdate";
+    case "PlayerTeamSwapSpawn":
+      return "PlayerTeamSwapSpawn";
+    case "SectionRequest":
+      return "SectionRequest";
+    case "ItemDropPosition":
+      return "ItemDropPosition";
+    case "HostToken":
+      return "HostToken";
   }
 }
 function addPacketContext(packetName, err) {
@@ -15705,22 +15793,22 @@ function mapPacket(result, packetName, fn) {
     _0: addPacketContext(packetName, e)
   }));
 }
-function makeParsers(packetName, parse148, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, _fromServer) => mapPacket(parse148(payload), packetName, toPacket);
+function makeParsers(packetName, parse180, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, _fromServer) => mapPacket(parse180(payload), packetName, toPacket);
   let parseLazyWrapped = (payload, _fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse148(payload), (e) => addPacketContext(packetName, e))))
+    _0: toLazyPacket(make4(() => mapError(parse180(payload), (e) => addPacketContext(packetName, e))))
   });
   return {
     parse: parseWrapped,
     parseLazy: parseLazyWrapped
   };
 }
-function makeParsersWithFromServer(packetName, parse148, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, fromServer) => mapPacket(parse148(payload, fromServer), packetName, toPacket);
+function makeParsersWithFromServer(packetName, parse180, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, fromServer) => mapPacket(parse180(payload, fromServer), packetName, toPacket);
   let parseLazyWrapped = (payload, fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse148(payload, fromServer), (e) => addPacketContext(packetName, e))))
+    _0: toLazyPacket(make4(() => mapError(parse180(payload, fromServer), (e) => addPacketContext(packetName, e))))
   });
   return {
     parse: parseWrapped,
@@ -15851,7 +15939,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse142, (a) => ({
+          _0: makeParsers(packetName, parse143, (a) => ({
             TAG: "InitialTileSectionsRequest",
             _0: a
           }), (a) => ({
@@ -15997,7 +16085,7 @@ function getParsers(packetType, fromServer) {
     case "DoorUse":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse90, (a) => ({
+        _0: makeParsers(packetName, parse91, (a) => ({
           TAG: "DoorUse",
           _0: a
         }), (a) => ({
@@ -16059,7 +16147,7 @@ function getParsers(packetType, fromServer) {
     case "NpcItemStrike":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse106, (a) => ({
+        _0: makeParsers(packetName, parse107, (a) => ({
           TAG: "NpcItemStrike",
           _0: a
         }), (a) => ({
@@ -16081,7 +16169,7 @@ function getParsers(packetType, fromServer) {
     case "NpcStrike":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse95, (a) => ({
+        _0: makeParsers(packetName, parse96, (a) => ({
           TAG: "NpcStrike",
           _0: a
         }), (a) => ({
@@ -16092,7 +16180,7 @@ function getParsers(packetType, fromServer) {
     case "ProjectileDestroy":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse122, (a) => ({
+        _0: makeParsers(packetName, parse123, (a) => ({
           TAG: "ProjectileDestroy",
           _0: a
         }), (a) => ({
@@ -16120,7 +16208,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse93, (a) => ({
+          _0: makeParsers(packetName, parse94, (a) => ({
             TAG: "ChestOpen",
             _0: a
           }), (a) => ({
@@ -16143,7 +16231,7 @@ function getParsers(packetType, fromServer) {
     case "ActiveContainerSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse126, (a) => ({
+        _0: makeParsers(packetName, parse127, (a) => ({
           TAG: "ActiveContainerSync",
           _0: a
         }), (a) => ({
@@ -16165,7 +16253,7 @@ function getParsers(packetType, fromServer) {
     case "HealEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse97, (a) => ({
+        _0: makeParsers(packetName, parse98, (a) => ({
           TAG: "HealEffect",
           _0: a
         }), (a) => ({
@@ -16188,7 +16276,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse117, (a) => ({
+          _0: makeParsers(packetName, parse118, (a) => ({
             TAG: "PasswordRequired",
             _0: a
           }), (a) => ({
@@ -16211,7 +16299,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse103, (a) => ({
+          _0: makeParsers(packetName, parse104, (a) => ({
             TAG: "PasswordSend",
             _0: a
           }), (a) => ({
@@ -16274,7 +16362,7 @@ function getParsers(packetType, fromServer) {
     case "ManaEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse98, (a) => ({
+        _0: makeParsers(packetName, parse99, (a) => ({
           TAG: "ManaEffect",
           _0: a
         }), (a) => ({
@@ -16325,7 +16413,7 @@ function getParsers(packetType, fromServer) {
     case "LiquidSet":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse94, (a) => ({
+        _0: makeParsers(packetName, parse95, (a) => ({
           TAG: "LiquidSet",
           _0: a
         }), (a) => ({
@@ -16337,7 +16425,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse114, (a) => ({
+          _0: makeParsers(packetName, parse115, (a) => ({
             TAG: "PlayerSpawnSelf",
             _0: a
           }), (a) => ({
@@ -16365,7 +16453,7 @@ function getParsers(packetType, fromServer) {
     case "NpcSpecialEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse116, (a) => ({
+        _0: makeParsers(packetName, parse117, (a) => ({
           TAG: "NpcSpecialEffect",
           _0: a
         }), (a) => ({
@@ -16387,7 +16475,7 @@ function getParsers(packetType, fromServer) {
     case "NpcBuffAdd":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse99, (a) => ({
+        _0: makeParsers(packetName, parse100, (a) => ({
           TAG: "NpcBuffAdd",
           _0: a
         }), (a) => ({
@@ -16439,7 +16527,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse108, (a) => ({
+          _0: makeParsers(packetName, parse109, (a) => ({
             TAG: "GoodEvilUpdate",
             _0: a
           }), (a) => ({
@@ -16456,7 +16544,7 @@ function getParsers(packetType, fromServer) {
     case "HarpPlay":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse91, (a) => ({
+        _0: makeParsers(packetName, parse92, (a) => ({
           TAG: "HarpPlay",
           _0: a
         }), (a) => ({
@@ -16551,7 +16639,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerHealOther":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse113, (a) => ({
+        _0: makeParsers(packetName, parse114, (a) => ({
           TAG: "PlayerHealOther",
           _0: a
         }), (a) => ({
@@ -16591,7 +16679,7 @@ function getParsers(packetType, fromServer) {
     case "ChestName":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse92, (a) => ({
+        _0: makeParsers(packetName, parse93, (a) => ({
           TAG: "ChestName",
           _0: a
         }), (a) => ({
@@ -16626,7 +16714,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse100, (a) => ({
+          _0: makeParsers(packetName, parse101, (a) => ({
             TAG: "NpcRelease",
             _0: a
           }), (a) => ({
@@ -16703,7 +16791,7 @@ function getParsers(packetType, fromServer) {
     case "AnglerQuestsCompletedAmount":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse143, (a) => ({
+        _0: makeParsers(packetName, parse144, (a) => ({
           TAG: "AnglerQuestsCompletedAmount",
           _0: a
         }), (a) => ({
@@ -16780,7 +16868,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse124, (a) => ({
+          _0: makeParsers(packetName, parse125, (a) => ({
             TAG: "CombatNumberCreate",
             _0: a
           }), (a) => ({
@@ -16826,7 +16914,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerStealth":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse107, (a) => ({
+        _0: makeParsers(packetName, parse108, (a) => ({
           TAG: "PlayerStealth",
           _0: a
         }), (a) => ({
@@ -16843,7 +16931,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse141, (a) => ({
+          _0: makeParsers(packetName, parse142, (a) => ({
             TAG: "ItemForceIntoNearestChest",
             _0: a
           }), (a) => ({
@@ -16892,7 +16980,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse109, (a) => ({
+          _0: makeParsers(packetName, parse110, (a) => ({
             TAG: "ItemDropModify",
             _0: a
           }), (a) => ({
@@ -16915,7 +17003,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse110, (a) => ({
+          _0: makeParsers(packetName, parse111, (a) => ({
             TAG: "ItemFramePlace",
             _0: a
           }), (a) => ({
@@ -16927,7 +17015,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropInstancedUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse136, (a) => ({
+        _0: makeParsers(packetName, parse137, (a) => ({
           TAG: "ItemDropInstancedUpdate",
           _0: a
         }), (a) => ({
@@ -16939,7 +17027,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse102, (a) => ({
+          _0: makeParsers(packetName, parse103, (a) => ({
             TAG: "EmoteBubble",
             _0: a
           }), (a) => ({
@@ -16995,7 +17083,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse101, (a) => ({
+          _0: makeParsers(packetName, parse102, (a) => ({
             TAG: "PortalKill",
             _0: a
           }), (a) => ({
@@ -17007,7 +17095,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerTeleportPortal":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse129, (a) => ({
+        _0: makeParsers(packetName, parse130, (a) => ({
           TAG: "PlayerTeleportPortal",
           _0: a
         }), (a) => ({
@@ -17019,7 +17107,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse133, (a) => ({
+          _0: makeParsers(packetName, parse134, (a) => ({
             TAG: "NpcKilledNotification",
             _0: a
           }), (a) => ({
@@ -17037,7 +17125,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse118, (a) => ({
+          _0: makeParsers(packetName, parse119, (a) => ({
             TAG: "EventNotification",
             _0: a
           }), (a) => ({
@@ -17054,7 +17142,7 @@ function getParsers(packetType, fromServer) {
     case "MinionTargetUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse125, (a) => ({
+        _0: makeParsers(packetName, parse126, (a) => ({
           TAG: "MinionTargetUpdate",
           _0: a
         }), (a) => ({
@@ -17077,7 +17165,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse134, (a) => ({
+          _0: makeParsers(packetName, parse135, (a) => ({
             TAG: "ShieldStrengthsUpdate",
             _0: a
           }), (a) => ({
@@ -17094,7 +17182,7 @@ function getParsers(packetType, fromServer) {
     case "NebulaLevelUp":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse105, (a) => ({
+        _0: makeParsers(packetName, parse106, (a) => ({
           TAG: "NebulaLevelUp",
           _0: a
         }), (a) => ({
@@ -17106,7 +17194,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse121, (a) => ({
+          _0: makeParsers(packetName, parse122, (a) => ({
             TAG: "MoonLordCountdown",
             _0: a
           }), (a) => ({
@@ -17147,7 +17235,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse104, (a) => ({
+          _0: makeParsers(packetName, parse105, (a) => ({
             TAG: "GemLockToggle",
             _0: a
           }), (a) => ({
@@ -17219,7 +17307,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse120, (a) => ({
+          _0: makeParsers(packetName, parse121, (a) => ({
             TAG: "MassWireOperation",
             _0: a
           }), (a) => ({
@@ -17232,7 +17320,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse128, (a) => ({
+          _0: makeParsers(packetName, parse129, (a) => ({
             TAG: "MassWireOperationPay",
             _0: a
           }), (a) => ({
@@ -17297,7 +17385,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse135, (a) => ({
+          _0: makeParsers(packetName, parse136, (a) => ({
             TAG: "CrystalInvasionWipeAll",
             _0: a
           }), (a) => ({
@@ -17314,7 +17402,7 @@ function getParsers(packetType, fromServer) {
     case "MinionAttackTargetUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse140, (a) => ({
+        _0: makeParsers(packetName, parse141, (a) => ({
           TAG: "MinionAttackTargetUpdate",
           _0: a
         }), (a) => ({
@@ -17326,7 +17414,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse144, (a) => ({
+          _0: makeParsers(packetName, parse145, (a) => ({
             TAG: "CrystalInvasionSendWaitTime",
             _0: a
           }), (a) => ({
@@ -17366,7 +17454,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse115, (a) => ({
+          _0: makeParsers(packetName, parse116, (a) => ({
             TAG: "CombatTextCreate",
             _0: a
           }), (a) => ({
@@ -17389,7 +17477,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse89, (a) => ({
+          _0: makeParsers(packetName, parse90, (a) => ({
             TAG: "Emoji",
             _0: a
           }), (a) => ({
@@ -17464,7 +17552,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse123, (a) => ({
+          _0: makeParsers(packetName, parse124, (a) => ({
             TAG: "RevengeMarkerSync",
             _0: a
           }), (a) => ({
@@ -17482,7 +17570,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse127, (a) => ({
+          _0: makeParsers(packetName, parse128, (a) => ({
             TAG: "RevengeMarkerRemove",
             _0: a
           }), (a) => ({
@@ -17499,7 +17587,7 @@ function getParsers(packetType, fromServer) {
     case "GolfBallLandInCup":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse119, (a) => ({
+        _0: makeParsers(packetName, parse120, (a) => ({
           TAG: "GolfBallLandInCup",
           _0: a
         }), (a) => ({
@@ -17547,7 +17635,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse96, (a) => ({
+          _0: makeParsers(packetName, parse97, (a) => ({
             TAG: "NpcTamper",
             _0: a
           }), (a) => ({
@@ -17565,7 +17653,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse112, (a) => ({
+          _0: makeParsers(packetName, parse113, (a) => ({
             TAG: "LegacySoundPlay",
             _0: a
           }), (a) => ({
@@ -17588,7 +17676,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse132, (a) => ({
+          _0: makeParsers(packetName, parse133, (a) => ({
             TAG: "FoodPlatterTryPlacing",
             _0: a
           }), (a) => ({
@@ -17600,7 +17688,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerLuckFactorsUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse139, (a) => ({
+        _0: makeParsers(packetName, parse140, (a) => ({
           TAG: "PlayerLuckFactorsUpdate",
           _0: a
         }), (a) => ({
@@ -17629,7 +17717,7 @@ function getParsers(packetType, fromServer) {
     case "CavernMonsterTypeSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse130, (a) => ({
+        _0: makeParsers(packetName, parse131, (a) => ({
           TAG: "CavernMonsterTypeSync",
           _0: a
         }), (a) => ({
@@ -17664,7 +17752,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse131, (a) => ({
+          _0: makeParsers(packetName, parse132, (a) => ({
             TAG: "ClientSyncedInventory",
             _0: a
           }), (a) => ({
@@ -17698,7 +17786,7 @@ function getParsers(packetType, fromServer) {
     case "LucyAxeMessage":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse111, (a) => ({
+        _0: makeParsers(packetName, parse112, (a) => ({
           TAG: "LucyAxeMessage",
           _0: a
         }), (a) => ({
@@ -17709,7 +17797,7 @@ function getParsers(packetType, fromServer) {
     case "PiggyBankVoidLensUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse138, (a) => ({
+        _0: makeParsers(packetName, parse139, (a) => ({
           TAG: "PiggyBankVoidLensUpdate",
           _0: a
         }), (a) => ({
@@ -17720,7 +17808,7 @@ function getParsers(packetType, fromServer) {
     case "DungeonDefendersEventAttemptSkipWait":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse145, (a) => ({
+        _0: makeParsers(packetName, parse146, (a) => ({
           TAG: "DungeonDefendersEventAttemptSkipWait",
           _0: a
         }), (a) => ({
@@ -17775,7 +17863,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropProtectedUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse137, (a) => ({
+        _0: makeParsers(packetName, parse138, (a) => ({
           TAG: "ItemDropProtectedUpdate",
           _0: a
         }), (a) => ({
@@ -17783,9 +17871,14 @@ function getParsers(packetType, fromServer) {
           _0: a
         }))
       };
+    default:
+      return {
+        TAG: "Error",
+        _0: "InvalidPacketType"
+      };
   }
 }
-function parse146(buffer, fromServer) {
+function parse147(buffer, fromServer) {
   let match = buffer.length;
   if (!(match > 2 || match < 0)) {
     return {
@@ -17825,6 +17918,2329 @@ function parse146(buffer, fromServer) {
       };
     }
     throw obj;
+  }
+}
+
+// src/packet/Packet_Zones.js
+function parse148(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readByte(reader, "zone1");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readByte(reader, "zone2");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readByte(reader, "zone3");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readByte(reader, "zone4");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = readByte(reader, "zone5");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = readByte(reader, "townNPCs");
+  if (e$6.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        zone1: e$1._0,
+        zone2: e$2._0,
+        zone3: e$3._0,
+        zone4: e$4._0,
+        zone5: e$5._0,
+        townNPCs: e$6._0
+      }
+    };
+  } else {
+    return e$6;
+  }
+}
+
+// src/packet/Packet_Teleport.js
+function parse149(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "flags");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let flags = fromByte(e._0);
+  let getPositionFromTarget = flag3(flags);
+  let match = flag1(flags);
+  let match$1 = flag2(flags);
+  let teleportType = match ? match$1 ? "TeleportAck" : "Npc" : match$1 ? "PlayerToPlayer" : "Player";
+  let e$1 = readInt16(reader, "targetId");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readSingle(reader, "x");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readSingle(reader, "y");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readByte(reader, "style");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = flag4(flags) ? map2(readInt32(reader, "extraInfo"), (v) => v) : {
+    TAG: "Ok",
+    _0: void 0
+  };
+  if (e$5.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        teleportType,
+        getPositionFromTarget,
+        targetId: e$1._0,
+        x: e$2._0,
+        y: e$3._0,
+        style: e$4._0,
+        extraInfo: e$5._0
+      }
+    };
+  } else {
+    return e$5;
+  }
+}
+
+// src/packet/Packet_HostToken.js
+function parse150(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readString(reader, "token");
+  if (e.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        token: e._0
+      }
+    };
+  } else {
+    return e;
+  }
+}
+
+// src/packet/Packet_ItemOwner.js
+function parse151(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "itemDropId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readByte(reader, "owner");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readSingle(reader, "positionX");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readSingle(reader, "positionY");
+  if (e$3.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        itemDropId: e._0,
+        owner: e$1._0,
+        position: {
+          x: e$2._0,
+          y: e$3._0
+        }
+      }
+    };
+  } else {
+    return e$3;
+  }
+}
+
+// src/packet/Packet_NpcUpdate.js
+function readNpcFlags12(reader, fieldName) {
+  let e = readByte(reader, fieldName);
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let flags = fromByte(e._0);
+  return {
+    TAG: "Ok",
+    _0: {
+      directionX: flag1(flags),
+      directionY: flag2(flags),
+      ai0: flag3(flags),
+      ai1: flag4(flags),
+      ai2: flag5(flags),
+      ai3: flag6(flags),
+      spriteDirection: flag7(flags),
+      lifeMax: flag8(flags)
+    }
+  };
+}
+function readNpcFlags22(reader, fieldName) {
+  let e = readByte(reader, fieldName);
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let flags = fromByte(e._0);
+  return {
+    TAG: "Ok",
+    _0: {
+      statsScaled: flag1(flags),
+      spawnedFromStatue: flag2(flags),
+      difficulty: flag3(flags),
+      spawnNeedsSyncing: flag4(flags),
+      shimmerTransparency: flag5(flags)
+    }
+  };
+}
+function parse152(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "npcSlotId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readSingle(reader, "x");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readSingle(reader, "y");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readSingle(reader, "vx");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readSingle(reader, "vy");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = readUInt16(reader, "target");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = readNpcFlags12(reader, "npcFlags1");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let npcFlags12 = e$6._0;
+  let e$7 = readNpcFlags22(reader, "npcFlags2");
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let npcFlags22 = e$7._0;
+  let tmp;
+  if (npcFlags12.ai0) {
+    let e$8 = readSingle(reader, "ai0");
+    tmp = e$8.TAG === "Ok" ? {
+      TAG: "Ok",
+      _0: e$8._0
+    } : e$8;
+  } else {
+    tmp = {
+      TAG: "Ok",
+      _0: void 0
+    };
+  }
+  let tmp$1;
+  if (npcFlags12.ai1) {
+    let e$9 = readSingle(reader, "ai1");
+    tmp$1 = e$9.TAG === "Ok" ? {
+      TAG: "Ok",
+      _0: e$9._0
+    } : e$9;
+  } else {
+    tmp$1 = {
+      TAG: "Ok",
+      _0: void 0
+    };
+  }
+  let tmp$2;
+  if (npcFlags12.ai2) {
+    let e$10 = readSingle(reader, "ai2");
+    tmp$2 = e$10.TAG === "Ok" ? {
+      TAG: "Ok",
+      _0: e$10._0
+    } : e$10;
+  } else {
+    tmp$2 = {
+      TAG: "Ok",
+      _0: void 0
+    };
+  }
+  let tmp$3;
+  if (npcFlags12.ai3) {
+    let e$11 = readSingle(reader, "ai3");
+    tmp$3 = e$11.TAG === "Ok" ? {
+      TAG: "Ok",
+      _0: e$11._0
+    } : e$11;
+  } else {
+    tmp$3 = {
+      TAG: "Ok",
+      _0: void 0
+    };
+  }
+  let e$12 = all4([
+    tmp,
+    tmp$1,
+    tmp$2,
+    tmp$3
+  ]);
+  if (e$12.TAG !== "Ok") {
+    return e$12;
+  }
+  let e$13 = readInt16(reader, "npcTypeId");
+  if (e$13.TAG !== "Ok") {
+    return e$13;
+  }
+  let e$14;
+  if (npcFlags22.statsScaled) {
+    let e$15 = readByte(reader, "playerCountScale");
+    e$14 = e$15.TAG === "Ok" ? {
+      TAG: "Ok",
+      _0: e$15._0
+    } : e$15;
+  } else {
+    e$14 = {
+      TAG: "Ok",
+      _0: void 0
+    };
+  }
+  if (e$14.TAG !== "Ok") {
+    return e$14;
+  }
+  let e$16;
+  if (npcFlags22.difficulty) {
+    let e$17 = readSingle(reader, "difficulty");
+    e$16 = e$17.TAG === "Ok" ? {
+      TAG: "Ok",
+      _0: e$17._0
+    } : e$17;
+  } else {
+    e$16 = {
+      TAG: "Ok",
+      _0: void 0
+    };
+  }
+  if (e$16.TAG !== "Ok") {
+    return e$16;
+  }
+  let e$18;
+  if (npcFlags12.lifeMax) {
+    e$18 = {
+      TAG: "Ok",
+      _0: "Max"
+    };
+  } else {
+    let e$19 = readByte(reader, "lifeBytes");
+    if (e$19.TAG === "Ok") {
+      switch (e$19._0) {
+        case 1:
+          let e$20 = readSByte(reader, "life_sbyte");
+          e$18 = e$20.TAG === "Ok" ? {
+            TAG: "Ok",
+            _0: {
+              TAG: "Byte",
+              _0: e$20._0
+            }
+          } : e$20;
+          break;
+        case 2:
+          let e$21 = readInt16(reader, "life_int16");
+          e$18 = e$21.TAG === "Ok" ? {
+            TAG: "Ok",
+            _0: {
+              TAG: "Int16",
+              _0: e$21._0
+            }
+          } : e$21;
+          break;
+        case 4:
+          let e$22 = readInt32(reader, "life_int32");
+          e$18 = e$22.TAG === "Ok" ? {
+            TAG: "Ok",
+            _0: {
+              TAG: "Int32",
+              _0: e$22._0
+            }
+          } : e$22;
+          break;
+        default:
+          e$18 = {
+            TAG: "Error",
+            _0: {
+              context: "Packet_NpcUpdate.parse",
+              error: new Error("Invalid life byte count")
+            }
+          };
+      }
+    } else {
+      e$18 = e$19;
+    }
+  }
+  if (e$18.TAG !== "Ok") {
+    return e$18;
+  }
+  let releaseOwner = readByte(reader, "releaseOwner");
+  let releaseOwner$1;
+  releaseOwner$1 = releaseOwner.TAG === "Ok" ? releaseOwner._0 : void 0;
+  return {
+    TAG: "Ok",
+    _0: {
+      npcSlotId: e._0,
+      npcTypeId: e$13._0,
+      x: e$1._0,
+      y: e$2._0,
+      vx: e$3._0,
+      vy: e$4._0,
+      target: e$5._0,
+      directionX: npcFlags12.directionX,
+      directionY: npcFlags12.directionY,
+      ai: e$12._0,
+      spriteDirection: npcFlags12.spriteDirection,
+      life: e$18._0,
+      releaseOwner: releaseOwner$1,
+      playerCountScale: e$14._0,
+      difficulty: e$16._0,
+      spawnedFromStatue: npcFlags22.spawnedFromStatue,
+      spawnNeedsSyncing: npcFlags22.spawnNeedsSyncing,
+      shimmerTransparency: npcFlags22.shimmerTransparency
+    }
+  };
+}
+
+// src/packet/Packet_WorldInfo.js
+function readEventInfo2(reader) {
+  let e = readByte(reader, "eventInfo1");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readByte(reader, "eventInfo2");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readByte(reader, "eventInfo3");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readByte(reader, "eventInfo4");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readByte(reader, "eventInfo5");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = readByte(reader, "eventInfo6");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = readByte(reader, "eventInfo7");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let e$7 = readByte(reader, "eventInfo8");
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let e$8 = readByte(reader, "eventInfo9");
+  if (e$8.TAG !== "Ok") {
+    return e$8;
+  }
+  let e$9 = readByte(reader, "eventInfo10");
+  if (e$9.TAG !== "Ok") {
+    return e$9;
+  }
+  let eventInfo1 = fromByte(e._0);
+  let eventInfo2 = fromByte(e$1._0);
+  let eventInfo3 = fromByte(e$2._0);
+  let eventInfo4 = fromByte(e$3._0);
+  let eventInfo5 = fromByte(e$4._0);
+  let eventInfo6 = fromByte(e$5._0);
+  let eventInfo7 = fromByte(e$6._0);
+  let eventInfo8 = fromByte(e$7._0);
+  let eventInfo9 = fromByte(e$8._0);
+  let eventInfo10 = fromByte(e$9._0);
+  let shadowOrbSmashed = flag1(eventInfo1);
+  let killedBoss1 = flag2(eventInfo1);
+  let killedBoss2 = flag3(eventInfo1);
+  let killedBoss3 = flag4(eventInfo1);
+  let hardMode = flag5(eventInfo1);
+  let killedClown = flag6(eventInfo1);
+  let serverSidedCharacters = flag7(eventInfo1);
+  let killedPlantBoss = flag8(eventInfo1);
+  let killedMechBoss = flag1(eventInfo2);
+  let killedMechBoss2 = flag2(eventInfo2);
+  let killedMechBoss3 = flag3(eventInfo2);
+  let killedAnyMechBoss = flag4(eventInfo2);
+  let cloudBg = flag5(eventInfo2);
+  let crimson = flag6(eventInfo2);
+  let pumpkinMoon = flag7(eventInfo2);
+  let snowMoon = flag8(eventInfo2);
+  let expertMode = flag1(eventInfo3);
+  let fastForwardTime = flag2(eventInfo3);
+  let slimeRain = flag3(eventInfo3);
+  let killedKingSlime = flag4(eventInfo3);
+  let killedQueenBee = flag5(eventInfo3);
+  let killedFishron = flag6(eventInfo3);
+  let killedMartians = flag7(eventInfo3);
+  let killedAncientCultist = flag8(eventInfo3);
+  let killedMoonLord = flag1(eventInfo4);
+  let killedPumpking = flag2(eventInfo4);
+  let killedMourningWood = flag3(eventInfo4);
+  let killedIceQueen = flag4(eventInfo4);
+  let killedSantank = flag5(eventInfo4);
+  let killedEverscream = flag6(eventInfo4);
+  let killedGolem = flag7(eventInfo4);
+  let birthdayParty = flag8(eventInfo4);
+  let killedPirates = flag1(eventInfo5);
+  let killedFrostLegion = flag2(eventInfo5);
+  let killedGoblins = flag3(eventInfo5);
+  let sandstorm = flag4(eventInfo5);
+  let dungeonDefendersEvent = flag5(eventInfo5);
+  let killedDungeonDefendersTier1 = flag6(eventInfo5);
+  let killedDungeonDefendersTier2 = flag7(eventInfo5);
+  let killedDungeonDefendersTier3 = flag8(eventInfo5);
+  let combatBookUsed = flag1(eventInfo6);
+  let manualLanterns = flag2(eventInfo6);
+  let killedSolarTower = flag3(eventInfo6);
+  let killedVortexTower = flag4(eventInfo6);
+  let killedNebulaTower = flag5(eventInfo6);
+  let killedStardustTower = flag6(eventInfo6);
+  let forceHalloween = flag7(eventInfo6);
+  let forceChristmas = flag8(eventInfo6);
+  let boughtCat = flag1(eventInfo7);
+  let boughtDog = flag2(eventInfo7);
+  let boughtBunny = flag3(eventInfo7);
+  let freeCake = flag4(eventInfo7);
+  let drunkWorld = flag5(eventInfo7);
+  let killedEmpressOfLight = flag6(eventInfo7);
+  let killedQueenSlime = flag7(eventInfo7);
+  let getGoodWorld = flag8(eventInfo7);
+  let tenthAnniversaryWorld = flag1(eventInfo8);
+  let dontStarveWorld = flag2(eventInfo8);
+  let downedDeerClops = flag3(eventInfo8);
+  let notTheBeesWorld = flag4(eventInfo8);
+  let remixWorld = flag5(eventInfo8);
+  let unlockedSlimeBlueSpawn = flag6(eventInfo8);
+  let combatBookVolumeTwoWasUsed = flag7(eventInfo8);
+  let peddlersSatchelWasUsed = flag8(eventInfo8);
+  let unlockedSlimeGreenSpawn = flag1(eventInfo9);
+  let unlockedSlimeOldSpawn = flag2(eventInfo9);
+  let unlockedSlimePurpleSpawn = flag3(eventInfo9);
+  let unlockedSlimeRainbowSpawn = flag4(eventInfo9);
+  let unlockedSlimeRedSpawn = flag5(eventInfo9);
+  let unlockedSlimeYellowSpawn = flag6(eventInfo9);
+  let unlockedSlimeCopperSpawn = flag7(eventInfo9);
+  let fastForwardTimeToDusk = flag8(eventInfo9);
+  let noTrapsWorld = flag1(eventInfo10);
+  let zenithWorld = flag2(eventInfo10);
+  let unlockedTruffleSpawn = flag3(eventInfo10);
+  let vampireSeed = flag4(eventInfo10);
+  let infectedSeed = flag5(eventInfo10);
+  let teamBasedSpawnsSeed = flag6(eventInfo10);
+  let skyblockWorld = flag7(eventInfo10);
+  let dualDungeonsSeed = flag8(eventInfo10);
+  return {
+    TAG: "Ok",
+    _0: {
+      shadowOrbSmashed,
+      killedBoss1,
+      killedBoss2,
+      killedBoss3,
+      hardMode,
+      killedClown,
+      serverSidedCharacters,
+      killedPlantBoss,
+      killedMechBoss,
+      killedMechBoss2,
+      killedMechBoss3,
+      killedAnyMechBoss,
+      cloudBg,
+      crimson,
+      pumpkinMoon,
+      snowMoon,
+      expertMode,
+      fastForwardTime,
+      slimeRain,
+      killedKingSlime,
+      killedQueenBee,
+      killedFishron,
+      killedMartians,
+      killedAncientCultist,
+      killedMoonLord,
+      killedPumpking,
+      killedMourningWood,
+      killedIceQueen,
+      killedSantank,
+      killedEverscream,
+      killedGolem,
+      birthdayParty,
+      killedPirates,
+      killedFrostLegion,
+      killedGoblins,
+      sandstorm,
+      dungeonDefendersEvent,
+      killedDungeonDefendersTier1,
+      killedDungeonDefendersTier2,
+      killedDungeonDefendersTier3,
+      combatBookUsed,
+      manualLanterns,
+      killedSolarTower,
+      killedVortexTower,
+      killedNebulaTower,
+      killedStardustTower,
+      forceHalloween,
+      forceChristmas,
+      boughtCat,
+      boughtDog,
+      boughtBunny,
+      freeCake,
+      drunkWorld,
+      killedEmpressOfLight,
+      killedQueenSlime,
+      getGoodWorld,
+      tenthAnniversaryWorld,
+      dontStarveWorld,
+      downedDeerClops,
+      notTheBeesWorld,
+      remixWorld,
+      unlockedSlimeBlueSpawn,
+      combatBookVolumeTwoWasUsed,
+      peddlersSatchelWasUsed,
+      unlockedSlimeGreenSpawn,
+      unlockedSlimeOldSpawn,
+      unlockedSlimePurpleSpawn,
+      unlockedSlimeRainbowSpawn,
+      unlockedSlimeRedSpawn,
+      unlockedSlimeYellowSpawn,
+      unlockedSlimeCopperSpawn,
+      fastForwardTimeToDusk,
+      noTrapsWorld,
+      zenithWorld,
+      unlockedTruffleSpawn,
+      vampireSeed,
+      infectedSeed,
+      teamBasedSpawnsSeed,
+      skyblockWorld,
+      dualDungeonsSeed
+    }
+  };
+}
+function parse153(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt32(reader, "time");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readByte(reader, "dayAndMoonInfo");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readByte(reader, "moonPhase");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readInt16(reader, "maxTilesX");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readInt16(reader, "maxTilesY");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = readInt16(reader, "spawnX");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = readInt16(reader, "spawnY");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let e$7 = readInt16(reader, "worldSurface");
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let e$8 = readInt16(reader, "rockLayer");
+  if (e$8.TAG !== "Ok") {
+    return e$8;
+  }
+  let e$9 = readInt32(reader, "worldId");
+  if (e$9.TAG !== "Ok") {
+    return e$9;
+  }
+  let e$10 = readString(reader, "worldName");
+  if (e$10.TAG !== "Ok") {
+    return e$10;
+  }
+  let e$11 = readByte(reader, "gameMode");
+  if (e$11.TAG !== "Ok") {
+    return e$11;
+  }
+  let e$12 = readBytes(reader, 16, "worldUniqueId");
+  if (e$12.TAG !== "Ok") {
+    return e$12;
+  }
+  let worldUniqueId = fromArray2(e$12._0);
+  let e$13 = worldUniqueId !== void 0 ? {
+    TAG: "Ok",
+    _0: valFromOption(worldUniqueId)
+  } : {
+    TAG: "Error",
+    _0: {
+      context: "WorldInfo.parse.worldUniqueId",
+      error: new Error("Invalid worldUniqueId")
+    }
+  };
+  if (e$13.TAG !== "Ok") {
+    return e$13;
+  }
+  let e$14 = readUInt64(reader, "worldGeneratorVersion");
+  if (e$14.TAG !== "Ok") {
+    return e$14;
+  }
+  let e$15 = readByte(reader, "moonType");
+  if (e$15.TAG !== "Ok") {
+    return e$15;
+  }
+  let e$16 = readByte(reader, "treeBackground");
+  if (e$16.TAG !== "Ok") {
+    return e$16;
+  }
+  let e$17 = readByte(reader, "treeBackground2");
+  if (e$17.TAG !== "Ok") {
+    return e$17;
+  }
+  let e$18 = readByte(reader, "treeBackground3");
+  if (e$18.TAG !== "Ok") {
+    return e$18;
+  }
+  let e$19 = readByte(reader, "treeBackground4");
+  if (e$19.TAG !== "Ok") {
+    return e$19;
+  }
+  let e$20 = readByte(reader, "corruptionBackground");
+  if (e$20.TAG !== "Ok") {
+    return e$20;
+  }
+  let e$21 = readByte(reader, "jungleBackground");
+  if (e$21.TAG !== "Ok") {
+    return e$21;
+  }
+  let e$22 = readByte(reader, "snowBackground");
+  if (e$22.TAG !== "Ok") {
+    return e$22;
+  }
+  let e$23 = readByte(reader, "hallowBackground");
+  if (e$23.TAG !== "Ok") {
+    return e$23;
+  }
+  let e$24 = readByte(reader, "crimsonBackground");
+  if (e$24.TAG !== "Ok") {
+    return e$24;
+  }
+  let e$25 = readByte(reader, "desertBackground");
+  if (e$25.TAG !== "Ok") {
+    return e$25;
+  }
+  let e$26 = readByte(reader, "oceanBackground");
+  if (e$26.TAG !== "Ok") {
+    return e$26;
+  }
+  let e$27 = readByte(reader, "mushroomBackground");
+  if (e$27.TAG !== "Ok") {
+    return e$27;
+  }
+  let e$28 = readByte(reader, "underworldBackground");
+  if (e$28.TAG !== "Ok") {
+    return e$28;
+  }
+  let e$29 = readByte(reader, "iceBackStyle");
+  if (e$29.TAG !== "Ok") {
+    return e$29;
+  }
+  let e$30 = readByte(reader, "jungleBackStyle");
+  if (e$30.TAG !== "Ok") {
+    return e$30;
+  }
+  let e$31 = readByte(reader, "hellBackStyle");
+  if (e$31.TAG !== "Ok") {
+    return e$31;
+  }
+  let e$32 = readSingle(reader, "windSpeedSet");
+  if (e$32.TAG !== "Ok") {
+    return e$32;
+  }
+  let e$33 = readByte(reader, "cloudNumber");
+  if (e$33.TAG !== "Ok") {
+    return e$33;
+  }
+  let e$34 = readInt32(reader, "tree1");
+  if (e$34.TAG !== "Ok") {
+    return e$34;
+  }
+  let e$35 = readInt32(reader, "tree2");
+  if (e$35.TAG !== "Ok") {
+    return e$35;
+  }
+  let e$36 = readInt32(reader, "tree3");
+  if (e$36.TAG !== "Ok") {
+    return e$36;
+  }
+  let e$37 = readByte(reader, "treeStyle1");
+  if (e$37.TAG !== "Ok") {
+    return e$37;
+  }
+  let e$38 = readByte(reader, "treeStyle2");
+  if (e$38.TAG !== "Ok") {
+    return e$38;
+  }
+  let e$39 = readByte(reader, "treeStyle3");
+  if (e$39.TAG !== "Ok") {
+    return e$39;
+  }
+  let e$40 = readByte(reader, "treeStyle4");
+  if (e$40.TAG !== "Ok") {
+    return e$40;
+  }
+  let e$41 = readInt32(reader, "caveBack1");
+  if (e$41.TAG !== "Ok") {
+    return e$41;
+  }
+  let e$42 = readInt32(reader, "caveBack2");
+  if (e$42.TAG !== "Ok") {
+    return e$42;
+  }
+  let e$43 = readInt32(reader, "caveBack3");
+  if (e$43.TAG !== "Ok") {
+    return e$43;
+  }
+  let e$44 = readByte(reader, "caveBackStyle1");
+  if (e$44.TAG !== "Ok") {
+    return e$44;
+  }
+  let e$45 = readByte(reader, "caveBackStyle2");
+  if (e$45.TAG !== "Ok") {
+    return e$45;
+  }
+  let e$46 = readByte(reader, "caveBackStyle3");
+  if (e$46.TAG !== "Ok") {
+    return e$46;
+  }
+  let e$47 = readByte(reader, "caveBackStyle4");
+  if (e$47.TAG !== "Ok") {
+    return e$47;
+  }
+  let e$48 = readByte(reader, "forest1TreeTopStyle");
+  if (e$48.TAG !== "Ok") {
+    return e$48;
+  }
+  let e$49 = readByte(reader, "forest2TreeTopStyle");
+  if (e$49.TAG !== "Ok") {
+    return e$49;
+  }
+  let e$50 = readByte(reader, "forest3TreeTopStyle");
+  if (e$50.TAG !== "Ok") {
+    return e$50;
+  }
+  let e$51 = readByte(reader, "forest4TreeTopStyle");
+  if (e$51.TAG !== "Ok") {
+    return e$51;
+  }
+  let e$52 = readByte(reader, "corruptionTreeTopStyle");
+  if (e$52.TAG !== "Ok") {
+    return e$52;
+  }
+  let e$53 = readByte(reader, "jungleTreeTopStyle");
+  if (e$53.TAG !== "Ok") {
+    return e$53;
+  }
+  let e$54 = readByte(reader, "snowTreeTopStyle");
+  if (e$54.TAG !== "Ok") {
+    return e$54;
+  }
+  let e$55 = readByte(reader, "hallowTreeTopStyle");
+  if (e$55.TAG !== "Ok") {
+    return e$55;
+  }
+  let e$56 = readByte(reader, "crimsonTreeTopStyle");
+  if (e$56.TAG !== "Ok") {
+    return e$56;
+  }
+  let e$57 = readByte(reader, "desertTreeTopStyle");
+  if (e$57.TAG !== "Ok") {
+    return e$57;
+  }
+  let e$58 = readByte(reader, "oceanTreeTopStyle");
+  if (e$58.TAG !== "Ok") {
+    return e$58;
+  }
+  let e$59 = readByte(reader, "glowingMushroomTreeTopStyle");
+  if (e$59.TAG !== "Ok") {
+    return e$59;
+  }
+  let e$60 = readByte(reader, "underworldTreeTopStyle");
+  if (e$60.TAG !== "Ok") {
+    return e$60;
+  }
+  let e$61 = readSingle(reader, "rain");
+  if (e$61.TAG !== "Ok") {
+    return e$61;
+  }
+  let e$62 = readEventInfo2(reader);
+  if (e$62.TAG !== "Ok") {
+    return e$62;
+  }
+  let e$63 = readByte(reader, "sundialCooldown");
+  if (e$63.TAG !== "Ok") {
+    return e$63;
+  }
+  let e$64 = readByte(reader, "moondialCooldown");
+  if (e$64.TAG !== "Ok") {
+    return e$64;
+  }
+  let e$65 = readInt16(reader, "copperOreTier");
+  if (e$65.TAG !== "Ok") {
+    return e$65;
+  }
+  let e$66 = readInt16(reader, "ironOreTier");
+  if (e$66.TAG !== "Ok") {
+    return e$66;
+  }
+  let e$67 = readInt16(reader, "silverOreTier");
+  if (e$67.TAG !== "Ok") {
+    return e$67;
+  }
+  let e$68 = readInt16(reader, "goldOreTier");
+  if (e$68.TAG !== "Ok") {
+    return e$68;
+  }
+  let e$69 = readInt16(reader, "cobaltOreTier");
+  if (e$69.TAG !== "Ok") {
+    return e$69;
+  }
+  let e$70 = readInt16(reader, "mythrilOreTier");
+  if (e$70.TAG !== "Ok") {
+    return e$70;
+  }
+  let e$71 = readInt16(reader, "adamantiteOreTier");
+  if (e$71.TAG !== "Ok") {
+    return e$71;
+  }
+  let e$72 = readSByte(reader, "invasionType");
+  if (e$72.TAG !== "Ok") {
+    return e$72;
+  }
+  let e$73 = readUInt64(reader, "lobbyId");
+  if (e$73.TAG !== "Ok") {
+    return e$73;
+  }
+  let e$74 = readSingle(reader, "sandstormSeverity");
+  if (e$74.TAG !== "Ok") {
+    return e$74;
+  }
+  let e$75 = readByte(reader, "extraSpawnPointCount");
+  if (e$75.TAG !== "Ok") {
+    return e$75;
+  }
+  let extraSpawnPointCount = e$75._0;
+  let extraSpawnPoints = [];
+  let readExtraSpawnPoints = (_idx) => {
+    while (true) {
+      let idx = _idx;
+      if (idx >= extraSpawnPointCount) {
+        return {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      let e2 = readInt16(reader, `extraSpawnPointX_` + idx.toString());
+      if (e2.TAG !== "Ok") {
+        return e2;
+      }
+      let e$110 = readInt16(reader, `extraSpawnPointY_` + idx.toString());
+      if (e$110.TAG !== "Ok") {
+        return e$110;
+      }
+      extraSpawnPoints.push({
+        x: e2._0,
+        y: e$110._0
+      });
+      _idx = idx + 1 | 0;
+      continue;
+    }
+    ;
+  };
+  let e$76 = readExtraSpawnPoints(0);
+  if (e$76.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        time: e._0,
+        dayAndMoonInfo: e$1._0,
+        moonPhase: e$2._0,
+        maxTilesX: e$3._0,
+        maxTilesY: e$4._0,
+        spawnX: e$5._0,
+        spawnY: e$6._0,
+        worldSurface: e$7._0,
+        rockLayer: e$8._0,
+        worldId: e$9._0,
+        worldName: e$10._0,
+        gameMode: e$11._0,
+        worldUniqueId: e$13._0,
+        worldGeneratorVersion: e$14._0,
+        moonType: e$15._0,
+        treeBackground: e$16._0,
+        treeBackground2: e$17._0,
+        treeBackground3: e$18._0,
+        treeBackground4: e$19._0,
+        corruptionBackground: e$20._0,
+        jungleBackground: e$21._0,
+        snowBackground: e$22._0,
+        hallowBackground: e$23._0,
+        crimsonBackground: e$24._0,
+        desertBackground: e$25._0,
+        oceanBackground: e$26._0,
+        mushroomBackground: e$27._0,
+        underworldBackground: e$28._0,
+        iceBackStyle: e$29._0,
+        jungleBackStyle: e$30._0,
+        hellBackStyle: e$31._0,
+        windSpeedSet: e$32._0,
+        cloudNumber: e$33._0,
+        tree1: e$34._0,
+        tree2: e$35._0,
+        tree3: e$36._0,
+        treeStyle1: e$37._0,
+        treeStyle2: e$38._0,
+        treeStyle3: e$39._0,
+        treeStyle4: e$40._0,
+        caveBack1: e$41._0,
+        caveBack2: e$42._0,
+        caveBack3: e$43._0,
+        caveBackStyle1: e$44._0,
+        caveBackStyle2: e$45._0,
+        caveBackStyle3: e$46._0,
+        caveBackStyle4: e$47._0,
+        forest1TreeTopStyle: e$48._0,
+        forest2TreeTopStyle: e$49._0,
+        forest3TreeTopStyle: e$50._0,
+        forest4TreeTopStyle: e$51._0,
+        corruptionTreeTopStyle: e$52._0,
+        jungleTreeTopStyle: e$53._0,
+        snowTreeTopStyle: e$54._0,
+        hallowTreeTopStyle: e$55._0,
+        crimsonTreeTopStyle: e$56._0,
+        desertTreeTopStyle: e$57._0,
+        oceanTreeTopStyle: e$58._0,
+        glowingMushroomTreeTopStyle: e$59._0,
+        underworldTreeTopStyle: e$60._0,
+        rain: e$61._0,
+        eventInfo: e$62._0,
+        sundialCooldown: e$63._0,
+        moondialCooldown: e$64._0,
+        copperOreTier: e$65._0,
+        ironOreTier: e$66._0,
+        silverOreTier: e$67._0,
+        goldOreTier: e$68._0,
+        cobaltOreTier: e$69._0,
+        mythrilOreTier: e$70._0,
+        adamantiteOreTier: e$71._0,
+        invasionType: e$72._0,
+        lobbyId: e$73._0,
+        sandstormSeverity: e$74._0,
+        extraSpawnPoints
+      }
+    };
+  } else {
+    return e$76;
+  }
+}
+
+// src/packet/Packet_PlayerInfo.js
+function getDifficulty2(difficultyFlags) {
+  if (flag2(difficultyFlags)) {
+    return "Hardcore";
+  } else if (flag1(difficultyFlags)) {
+    return "Mediumcore";
+  } else {
+    return "Softcore";
+  }
+}
+function parse154(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readByte(reader, "skinVariant");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readByte(reader, "voiceVariant");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readSingle(reader, "voicePitchOffset");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readByte(reader, "hair");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = readString(reader, "name");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = readByte(reader, "hairDye");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let e$7 = readByte(reader, "hideVisuals");
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let e$8 = readByte(reader, "hideVisuals2");
+  if (e$8.TAG !== "Ok") {
+    return e$8;
+  }
+  let e$9 = readByte(reader, "hideMisc");
+  if (e$9.TAG !== "Ok") {
+    return e$9;
+  }
+  let e$10 = readColor(reader, "hairColor");
+  if (e$10.TAG !== "Ok") {
+    return e$10;
+  }
+  let e$11 = readColor(reader, "skinColor");
+  if (e$11.TAG !== "Ok") {
+    return e$11;
+  }
+  let e$12 = readColor(reader, "eyeColor");
+  if (e$12.TAG !== "Ok") {
+    return e$12;
+  }
+  let e$13 = readColor(reader, "shirtColor");
+  if (e$13.TAG !== "Ok") {
+    return e$13;
+  }
+  let e$14 = readColor(reader, "underShirtColor");
+  if (e$14.TAG !== "Ok") {
+    return e$14;
+  }
+  let e$15 = readColor(reader, "pantsColor");
+  if (e$15.TAG !== "Ok") {
+    return e$15;
+  }
+  let e$16 = readColor(reader, "shoeColor");
+  if (e$16.TAG !== "Ok") {
+    return e$16;
+  }
+  let e$17 = readByte(reader, "difficultyFlags");
+  if (e$17.TAG !== "Ok") {
+    return e$17;
+  }
+  let difficultyFlags = fromByte(e$17._0);
+  let e$18 = readByte(reader, "torchFlags");
+  if (e$18.TAG !== "Ok") {
+    return e$18;
+  }
+  let torchFlags = fromByte(e$18._0);
+  let difficulty = getDifficulty2(difficultyFlags);
+  let extraAccessory = flag3(difficultyFlags);
+  let mode = flag4(difficultyFlags) ? "Journey" : "Classic";
+  let usingBiomeTorches = flag1(torchFlags);
+  let happyFunTorchTime = flag2(torchFlags);
+  let unlockedBiomeTorches = flag3(torchFlags);
+  let unlockedSuperCart = flag4(torchFlags);
+  let enabledSuperCart = flag5(torchFlags);
+  let e$19 = readByte(reader, "usedFlags");
+  let e$20;
+  e$20 = e$19.TAG === "Ok" ? {
+    TAG: "Ok",
+    _0: fromByte(e$19._0)
+  } : e$19;
+  if (e$20.TAG !== "Ok") {
+    return e$20;
+  }
+  let usedFlags = e$20._0;
+  let usedAegisCrystal = flag1(usedFlags);
+  let usedAegisFruit = flag2(usedFlags);
+  let usedArcaneCrystal = flag3(usedFlags);
+  let usedGalaxyPearl = flag4(usedFlags);
+  let usedGummyWorm = flag5(usedFlags);
+  let usedAmbrosia = flag6(usedFlags);
+  let ateArtisanBread = flag7(usedFlags);
+  return {
+    TAG: "Ok",
+    _0: {
+      playerId: e._0,
+      skinVariant: e$1._0,
+      voiceVariant: e$2._0,
+      voicePitchOffset: e$3._0,
+      hair: e$4._0,
+      name: e$5._0,
+      hairDye: e$6._0,
+      hideVisuals: e$7._0,
+      hideVisuals2: e$8._0,
+      hideMisc: e$9._0,
+      hairColor: e$10._0,
+      skinColor: e$11._0,
+      eyeColor: e$12._0,
+      shirtColor: e$13._0,
+      underShirtColor: e$14._0,
+      pantsColor: e$15._0,
+      shoeColor: e$16._0,
+      difficulty,
+      mode,
+      extraAccessory,
+      usingBiomeTorches,
+      unlockedBiomeTorches,
+      happyFunTorchTime,
+      unlockedSuperCart,
+      enabledSuperCart,
+      usedAegisCrystal,
+      usedAegisFruit,
+      usedArcaneCrystal,
+      usedGalaxyPearl,
+      usedGummyWorm,
+      usedAmbrosia,
+      ateArtisanBread
+    }
+  };
+}
+
+// src/packet/Packet_ChestResize.js
+function parse155(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "chestId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "newSize");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        chestId: e._0,
+        newSize: e$1._0
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+
+// src/packet/Packet_PlayerSpawn.js
+function parse156(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "x");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readInt16(reader, "y");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readInt32(reader, "timeRemaining");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readInt16(reader, "numberOfDeathsPve");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = readInt16(reader, "numberOfDeathsPvp");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = readByte(reader, "team");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let e$7 = readByte(reader, "context");
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let context;
+  switch (e$7._0) {
+    case 0:
+      context = "ReviveFromDeath";
+      break;
+    case 1:
+      context = "SpawningIntoWorld";
+      break;
+    case 2:
+      context = "RecallFromItem";
+      break;
+    default:
+      context = void 0;
+  }
+  if (context !== void 0) {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        x: e$1._0,
+        y: e$2._0,
+        timeRemaining: e$3._0,
+        numberOfDeathsPve: e$4._0,
+        numberOfDeathsPvp: e$5._0,
+        team: e$6._0,
+        context
+      }
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: {
+        context: "PlayerSpawn.parse.context",
+        error: new Error("Unknown context")
+      }
+    };
+  }
+}
+
+// src/packet/Packet_DebugCommand.js
+function parse157(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readString(reader, "command");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt32(reader, "argInt");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readSingle(reader, "argFloat");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readSingle(reader, "argFloat2");
+  if (e$3.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        command: e._0,
+        argInt: e$1._0,
+        argFloat: e$2._0,
+        argFloat2: e$3._0
+      }
+    };
+  } else {
+    return e$3;
+  }
+}
+
+// src/packet/Packet_PlayerUpdate.js
+function parse158(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readByte(reader, "controlFlags");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let controlFlags = fromByte(e$1._0);
+  let e$2 = readByte(reader, "miscFlags1");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let miscFlags1 = fromByte(e$2._0);
+  let e$3 = readByte(reader, "miscFlags2");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let miscFlags2 = fromByte(e$3._0);
+  let e$4 = readByte(reader, "miscFlags3");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let miscFlags3 = fromByte(e$4._0);
+  let control_isHoldingUp = flag1(controlFlags);
+  let control_isHoldingDown = flag2(controlFlags);
+  let control_isHoldingLeft = flag3(controlFlags);
+  let control_isHoldingRight = flag4(controlFlags);
+  let control_isHoldingJump = flag5(controlFlags);
+  let control_isHoldingItemUse = flag6(controlFlags);
+  let control = {
+    isHoldingUp: control_isHoldingUp,
+    isHoldingDown: control_isHoldingDown,
+    isHoldingLeft: control_isHoldingLeft,
+    isHoldingRight: control_isHoldingRight,
+    isHoldingJump: control_isHoldingJump,
+    isHoldingItemUse: control_isHoldingItemUse
+  };
+  let direction = flag7(controlFlags) ? "Right" : "Left";
+  let pulleyDirection = flag1(miscFlags1) ? flag2(miscFlags1) ? "Two" : "One" : void 0;
+  let vortexStealthActive = flag4(miscFlags1);
+  let gravityDirection = flag5(miscFlags1) ? "Normal" : "Inverted";
+  let shieldRaised = flag6(miscFlags1);
+  let ghost = flag7(miscFlags1);
+  let e$5 = readByte(reader, "selectedItem");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = readSingle(reader, "positionX");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let e$7 = readSingle(reader, "positionY");
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let position_x = e$6._0;
+  let position_y = e$7._0;
+  let position = {
+    x: position_x,
+    y: position_y
+  };
+  let e$8;
+  if (flag3(miscFlags1)) {
+    let e$9 = readSingle(reader, "velocityX");
+    if (e$9.TAG === "Ok") {
+      let e$10 = readSingle(reader, "velocityY");
+      e$8 = e$10.TAG === "Ok" ? {
+        TAG: "Ok",
+        _0: {
+          x: e$9._0,
+          y: e$10._0
+        }
+      } : e$10;
+    } else {
+      e$8 = e$9;
+    }
+  } else {
+    e$8 = {
+      TAG: "Ok",
+      _0: void 0
+    };
+  }
+  if (e$8.TAG !== "Ok") {
+    return e$8;
+  }
+  let e$11;
+  if (flag8(miscFlags1)) {
+    let e$12 = readUInt16(reader, "mountType");
+    e$11 = e$12.TAG === "Ok" ? {
+      TAG: "Ok",
+      _0: e$12._0
+    } : e$12;
+  } else {
+    e$11 = {
+      TAG: "Ok",
+      _0: void 0
+    };
+  }
+  if (e$11.TAG !== "Ok") {
+    return e$11;
+  }
+  let e$13;
+  if (flag7(miscFlags2)) {
+    let e$14 = readSingle(reader, "potionOfReturnOrigX");
+    if (e$14.TAG === "Ok") {
+      let e$15 = readSingle(reader, "potionOfReturnOrigY");
+      if (e$15.TAG === "Ok") {
+        let e$16 = readSingle(reader, "potionOfReturnHomeX");
+        if (e$16.TAG === "Ok") {
+          let e$17 = readSingle(reader, "potionOfReturnHomeY");
+          e$13 = e$17.TAG === "Ok" ? {
+            TAG: "Ok",
+            _0: {
+              originalUsePosition: {
+                x: e$14._0,
+                y: e$15._0
+              },
+              homePosition: {
+                x: e$16._0,
+                y: e$17._0
+              }
+            }
+          } : e$17;
+        } else {
+          e$13 = e$16;
+        }
+      } else {
+        e$13 = e$15;
+      }
+    } else {
+      e$13 = e$14;
+    }
+  } else {
+    e$13 = {
+      TAG: "Ok",
+      _0: void 0
+    };
+  }
+  if (e$13.TAG !== "Ok") {
+    return e$13;
+  }
+  let tryKeepingHoveringUp = flag1(miscFlags2);
+  let isVoidVaultEnabled = flag2(miscFlags2);
+  let isSitting = flag3(miscFlags2);
+  let hasFinishedAnyDd2Event = flag4(miscFlags2);
+  let isPettingAnimal = flag5(miscFlags2);
+  let isTheAnimalBeingPetSmall = flag6(miscFlags2);
+  let tryKeepingHoveringDown = flag8(miscFlags2);
+  let isSleeping = flag1(miscFlags3);
+  let autoReuseAllWeapons = flag2(miscFlags3);
+  let controlDownHold = flag3(miscFlags3);
+  let isOperatingAnotherEntity = flag4(miscFlags3);
+  let controlUseTile = flag5(miscFlags3);
+  let e$18;
+  if (flag6(miscFlags3)) {
+    let e$19 = readSingle(reader, "netCameraTargetX");
+    if (e$19.TAG === "Ok") {
+      let e$20 = readSingle(reader, "netCameraTargetY");
+      e$18 = e$20.TAG === "Ok" ? {
+        TAG: "Ok",
+        _0: {
+          x: e$19._0,
+          y: e$20._0
+        }
+      } : e$20;
+    } else {
+      e$18 = e$19;
+    }
+  } else {
+    e$18 = {
+      TAG: "Ok",
+      _0: void 0
+    };
+  }
+  if (e$18.TAG !== "Ok") {
+    return e$18;
+  }
+  let lastItemUseAttemptSuccess = flag7(miscFlags3);
+  return {
+    TAG: "Ok",
+    _0: {
+      playerId: e._0,
+      control,
+      direction,
+      pulleyDirection,
+      vortexStealthActive,
+      gravityDirection,
+      shieldRaised,
+      ghost,
+      selectedItem: e$5._0,
+      position,
+      velocity: e$8._0,
+      mountType: e$11._0,
+      potionOfReturn: e$13._0,
+      tryKeepingHoveringUp,
+      isVoidVaultEnabled,
+      isSitting,
+      hasFinishedAnyDd2Event,
+      isPettingAnimal,
+      isTheAnimalBeingPetSmall,
+      tryKeepingHoveringDown,
+      isSleeping,
+      autoReuseAllWeapons,
+      controlDownHold,
+      isOperatingAnotherEntity,
+      controlUseTile,
+      netCameraTarget: e$18._0,
+      lastItemUseAttemptSuccess
+    }
+  };
+}
+
+// src/packet/Packet_ItemDropClear.js
+function parse159(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "itemDropId");
+  if (e.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        itemDropId: e._0
+      }
+    };
+  } else {
+    return e;
+  }
+}
+
+// src/packet/Packet_NpcBuffUpdate.js
+function parse160(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "npcId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let buffs = [];
+  let buffTimes = [];
+  let readBuffs = () => {
+    while (true) {
+      let e2 = readUInt16(reader, "buff");
+      if (e2.TAG !== "Ok") {
+        return e2;
+      }
+      let buff = e2._0;
+      if (buff === 0) {
+        return {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      let e$12 = readUInt16(reader, "buffTime");
+      if (e$12.TAG !== "Ok") {
+        return e$12;
+      }
+      buffs.push(buff);
+      buffTimes.push(e$12._0);
+      continue;
+    }
+    ;
+  };
+  let e$1 = readBuffs();
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        npcId: e._0,
+        buffs,
+        buffTimes
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+
+// src/packet/Packet_PlayerBuffsSet.js
+function parse161(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let buffs = [];
+  let readBuffs = () => {
+    while (true) {
+      let e2 = readUInt16(reader, "buff");
+      if (e2.TAG !== "Ok") {
+        return e2;
+      }
+      let buff = e2._0;
+      if (buff === 0) {
+        return {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      buffs.push(buff);
+      continue;
+    }
+    ;
+  };
+  let e$1 = readBuffs();
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        buffs
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+
+// src/packet/Packet_PlayerSpectate.js
+function parse162(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "targetPlayerId");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        targetPlayerId: e$1._0
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+
+// src/packet/Packet_SectionRequest.js
+function parse163(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readUInt16(reader, "sectionX");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readUInt16(reader, "sectionY");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        sectionX: e._0,
+        sectionY: e$1._0
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+
+// src/packet/Packet_NpcHurtByDebuff.js
+function parse164(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "npcId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "debuffId");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        npcId: e._0,
+        debuffId: e$1._0
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+
+// src/packet/Packet_ItemDropPosition.js
+function parse165(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "itemDropId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readSingle(reader, "positionX");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readSingle(reader, "positionY");
+  if (e$2.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        itemDropId: e._0,
+        position: {
+          x: e$1._0,
+          y: e$2._0
+        }
+      }
+    };
+  } else {
+    return e$2;
+  }
+}
+
+// src/packet/Packet_PlayerTeamUpdate.js
+function parse166(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readByte(reader, "team");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        team: e$1._0
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+
+// src/packet/Packet_PlayerItemUseSound.js
+function parse167(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0
+      }
+    };
+  } else {
+    return e;
+  }
+}
+
+// src/packet/Packet_PlayerInventorySlot.js
+function parse168(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "slot");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readInt16(reader, "stack");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readByte(reader, "prefix");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readInt16(reader, "itemType");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = readByte(reader, "flags");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let flags = fromByte(e$5._0);
+  return {
+    TAG: "Ok",
+    _0: {
+      playerId: e._0,
+      slot: e$1._0,
+      stack: e$2._0,
+      prefix: e$3._0,
+      itemType: e$4._0,
+      favorited: flag1(flags),
+      blocked: flag2(flags)
+    }
+  };
+}
+
+// src/packet/Packet_PlayerTeamSwapSpawn.js
+function parse169(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0
+      }
+    };
+  } else {
+    return e;
+  }
+}
+
+// src/packet/Packet_TeleportationPotion.js
+function parse170(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "teleportType");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  switch (e._0) {
+    case 0:
+      return {
+        TAG: "Ok",
+        _0: {
+          teleportType: "TeleportationPotion"
+        }
+      };
+    case 1:
+      return {
+        TAG: "Ok",
+        _0: {
+          teleportType: "MagicConch"
+        }
+      };
+    case 2:
+      return {
+        TAG: "Ok",
+        _0: {
+          teleportType: "DemonConch"
+        }
+      };
+    case 3:
+      return {
+        TAG: "Ok",
+        _0: {
+          teleportType: "ShellphoneSpawn"
+        }
+      };
+    case 4:
+      return {
+        TAG: "Ok",
+        _0: {
+          teleportType: "PlayerNoSpaceTeleport"
+        }
+      };
+    default:
+      return {
+        TAG: "Error",
+        _0: {
+          context: "Packet_TeleportationPotion.parse",
+          error: new Error("Unknown teleport type")
+        }
+      };
+  }
+}
+
+// src/packet/Packet_PlayerLuckFactorsUpdate.js
+function parse171(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt32(reader, "ladyBugLuckTimeLeft");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readSingle(reader, "torchLuck");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readByte(reader, "luckPotion");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readByte(reader, "hasGardenGnomeNearby");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let hasGardenGnomeNearby = e$4._0 === 1;
+  let e$5 = readByte(reader, "brokenMirrorBadLuck");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let brokenMirrorBadLuck = e$5._0 === 1;
+  let e$6 = readSingle(reader, "equipmentBasedLuckBonus");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let e$7 = readSingle(reader, "coinLuck");
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let e$8 = readByte(reader, "kiteLuckLevel");
+  if (e$8.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        ladyBugLuckTimeLeft: e$1._0,
+        torchLuck: e$2._0,
+        luckPotion: e$3._0,
+        hasGardenGnomeNearby,
+        brokenMirrorBadLuck,
+        equipmentBasedLuckBonus: e$6._0,
+        coinLuck: e$7._0,
+        kiteLuckLevel: e$8._0
+      }
+    };
+  } else {
+    return e$8;
+  }
+}
+
+// src/packet/Packet_ShimmerEffectOrCoinLuck.js
+function parse172(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "kind");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let kind = e._0;
+  if (kind !== 0) {
+    if (kind !== 1) {
+      return {
+        TAG: "Error",
+        _0: {
+          context: "Packet_ShimmerEffectOrCoinLuck.parse",
+          error: new Error("Unknown shimmer effect kind")
+        }
+      };
+    }
+    let e$1 = readSingle(reader, "coinLuckX");
+    if (e$1.TAG !== "Ok") {
+      return e$1;
+    }
+    let e$2 = readSingle(reader, "coinLuckY");
+    if (e$2.TAG !== "Ok") {
+      return e$2;
+    }
+    let e$3 = readInt32(reader, "coinLuckAmount");
+    if (e$3.TAG === "Ok") {
+      return {
+        TAG: "Ok",
+        _0: {
+          TAG: "CoinLuck",
+          _0: {
+            position: {
+              x: e$1._0,
+              y: e$2._0
+            },
+            amount: e$3._0
+          }
+        }
+      };
+    } else {
+      return e$3;
+    }
+  }
+  let e$4 = readSingle(reader, "shimmerX");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = readSingle(reader, "shimmerY");
+  if (e$5.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "ShimmerEffect",
+        _0: e$4._0,
+        _1: e$5._0
+      }
+    };
+  } else {
+    return e$5;
+  }
+}
+
+// src/packet/Packet_ItemForceIntoNearestChest.js
+function parse173(payload, fromServer) {
+  let reader = new packetreader_default(payload);
+  if (fromServer) {
+    let e = readInt32(reader, "blockedChestCount");
+    if (e.TAG !== "Ok") {
+      return e;
+    }
+    let count = e._0;
+    let chestIds = [];
+    let readChests = (_idx) => {
+      while (true) {
+        let idx = _idx;
+        if (idx >= count) {
+          return {
+            TAG: "Ok",
+            _0: void 0
+          };
+        }
+        let e2 = readUInt16(reader, `blockedChest` + idx.toString());
+        if (e2.TAG !== "Ok") {
+          return e2;
+        }
+        chestIds.push(e2._0);
+        _idx = idx + 1 | 0;
+        continue;
+      }
+      ;
+    };
+    let e$1 = readChests(0);
+    if (e$1.TAG === "Ok") {
+      return {
+        TAG: "Ok",
+        _0: {
+          TAG: "ServerBlockedChests",
+          _0: {
+            chestIds
+          }
+        }
+      };
+    } else {
+      return e$1;
+    }
+  }
+  let e$2 = readInt32(reader, "slotCount");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let count$1 = e$2._0;
+  let slotIds = [];
+  let readSlots = (_idx) => {
+    while (true) {
+      let idx = _idx;
+      if (idx >= count$1) {
+        return {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      let e = readInt16(reader, `slot` + idx.toString());
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      slotIds.push(e._0);
+      _idx = idx + 1 | 0;
+      continue;
+    }
+    ;
+  };
+  let e$3 = readSlots(0);
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readByte(reader, "smartStack");
+  if (e$4.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "ClientRequest",
+        _0: {
+          slotIds,
+          smartStack: e$4._0 !== 0
+        }
+      }
+    };
+  } else {
+    return e$4;
+  }
+}
+
+// src/packet/Packet_InitialTileSectionsRequest.js
+function parse174(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt32(reader, "x");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt32(reader, "y");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readByte(reader, "team");
+  if (e$2.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        x: e._0,
+        y: e$1._0,
+        team: e$2._0
+      }
+    };
+  } else {
+    return e$2;
+  }
+}
+
+// src/packet/Packet_TravellingMerchantInventory.js
+function parse175(payload) {
+  let reader = new packetreader_default(payload);
+  let items = [];
+  let totalItems = payload.length / 2 | 0;
+  let readItems = (_idx) => {
+    while (true) {
+      let idx = _idx;
+      if (idx >= totalItems) {
+        return {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      let e2 = readInt16(reader, `item` + (idx + 1 | 0).toString());
+      if (e2.TAG !== "Ok") {
+        return e2;
+      }
+      items.push(e2._0);
+      _idx = idx + 1 | 0;
+      continue;
+    }
+    ;
+  };
+  let e = readItems(0);
+  if (e.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        items
+      }
+    };
+  } else {
+    return e;
+  }
+}
+
+// src/packet/Packet_DeadCellsDisplayJarTryPlacing.js
+function parse176(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "x");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "y");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readInt16(reader, "itemType");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readByte(reader, "prefix");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readInt16(reader, "stack");
+  if (e$4.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        x: e._0,
+        y: e$1._0,
+        itemType: e$2._0,
+        prefix: e$3._0,
+        stack: e$4._0
+      }
+    };
+  } else {
+    return e$4;
+  }
+}
+
+// src/packet/Packet_LeashedEntityAnchorInsertItem.js
+function parse177(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "x");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "y");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readInt16(reader, "itemType");
+  if (e$2.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        x: e._0,
+        y: e$1._0,
+        itemType: e$2._0
+      }
+    };
+  } else {
+    return e$2;
+  }
+}
+
+// src/packet/Packet_TileEntityDisplayDollItemSync.js
+function commandFromInt(value) {
+  switch (value) {
+    case 0:
+      return "Equip";
+    case 1:
+      return "Dye";
+    case 2:
+      return "Pose";
+    case 3:
+      return "Misc";
+    default:
+      return;
+  }
+}
+function parse178(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let playerId = e._0;
+  let e$1 = readInt32(reader, "tileEntityId");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let tileEntityId = e$1._0;
+  let e$2 = readByte(reader, "itemIndex");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let itemIndex = e$2._0;
+  let e$3 = readByte(reader, "command");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let command = commandFromInt(e$3._0);
+  if (command === void 0) {
+    return {
+      TAG: "Error",
+      _0: {
+        context: "Packet_TileEntityDisplayDollItemSync.parse",
+        error: new Error("Unknown display doll command")
+      }
+    };
+  }
+  if (command === "Pose") {
+    let e$4 = readByte(reader, "pose");
+    if (e$4.TAG === "Ok") {
+      return {
+        TAG: "Ok",
+        _0: {
+          playerId,
+          tileEntityId,
+          itemIndex,
+          command,
+          data: {
+            TAG: "PoseValue",
+            _0: e$4._0
+          }
+        }
+      };
+    } else {
+      return e$4;
+    }
+  }
+  let e$5 = readUInt16(reader, "itemId");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = readUInt16(reader, "stack");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let e$7 = readByte(reader, "prefix");
+  if (e$7.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId,
+        tileEntityId,
+        itemIndex,
+        command,
+        data: {
+          TAG: "Item",
+          _0: {
+            itemId: e$5._0,
+            stack: e$6._0,
+            prefix: e$7._0
+          }
+        }
+      }
+    };
+  } else {
+    return e$7;
   }
 }
 
@@ -18119,6 +20535,32 @@ function packetTypeName2(packetType) {
       return "LoadoutSwitch";
     case "ItemDropProtectedUpdate":
       return "ItemDropProtectedUpdate";
+    case "DeadCellsDisplayJarTryPlacing":
+      return "DeadCellsDisplayJarTryPlacing";
+    case "PlayerSpectate":
+      return "PlayerSpectate";
+    case "ItemDropClear":
+      return "ItemDropClear";
+    case "PlayerItemUseSound":
+      return "PlayerItemUseSound";
+    case "NpcHurtByDebuff":
+      return "NpcHurtByDebuff";
+    case "Ping":
+      return "Ping";
+    case "ChestResize":
+      return "ChestResize";
+    case "LeashedEntityAnchorInsertItem":
+      return "LeashedEntityAnchorInsertItem";
+    case "PlayerTeamUpdate":
+      return "PlayerTeamUpdate";
+    case "PlayerTeamSwapSpawn":
+      return "PlayerTeamSwapSpawn";
+    case "SectionRequest":
+      return "SectionRequest";
+    case "ItemDropPosition":
+      return "ItemDropPosition";
+    case "HostToken":
+      return "HostToken";
   }
 }
 function addPacketContext2(packetName, err) {
@@ -18133,22 +20575,22 @@ function mapPacket2(result, packetName, fn) {
     _0: addPacketContext2(packetName, e)
   }));
 }
-function makeParsers2(packetName, parse148, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, _fromServer) => mapPacket2(parse148(payload), packetName, toPacket);
+function makeParsers2(packetName, parse180, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, _fromServer) => mapPacket2(parse180(payload), packetName, toPacket);
   let parseLazyWrapped = (payload, _fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse148(payload), (e) => addPacketContext2(packetName, e))))
+    _0: toLazyPacket(make4(() => mapError(parse180(payload), (e) => addPacketContext2(packetName, e))))
   });
   return {
     parse: parseWrapped,
     parseLazy: parseLazyWrapped
   };
 }
-function makeParsersWithFromServer2(packetName, parse148, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, fromServer) => mapPacket2(parse148(payload, fromServer), packetName, toPacket);
+function makeParsersWithFromServer2(packetName, parse180, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, fromServer) => mapPacket2(parse180(payload, fromServer), packetName, toPacket);
   let parseLazyWrapped = (payload, fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse148(payload, fromServer), (e) => addPacketContext2(packetName, e))))
+    _0: toLazyPacket(make4(() => mapError(parse180(payload, fromServer), (e) => addPacketContext2(packetName, e))))
   });
   return {
     parse: parseWrapped,
@@ -18215,7 +20657,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerInfo":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse78, (a) => ({
+        _0: makeParsers2(packetName, parse154, (a) => ({
           TAG: "PlayerInfo",
           _0: a
         }), (a) => ({
@@ -18226,7 +20668,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerInventorySlot":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse80, (a) => ({
+        _0: makeParsers2(packetName, parse168, (a) => ({
           TAG: "PlayerInventorySlot",
           _0: a
         }), (a) => ({
@@ -18256,7 +20698,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse85, (a) => ({
+          _0: makeParsers2(packetName, parse153, (a) => ({
             TAG: "WorldInfo",
             _0: a
           }), (a) => ({
@@ -18279,7 +20721,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse142, (a) => ({
+          _0: makeParsers2(packetName, parse174, (a) => ({
             TAG: "InitialTileSectionsRequest",
             _0: a
           }), (a) => ({
@@ -18345,7 +20787,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerSpawn":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse79, (a) => ({
+        _0: makeParsers2(packetName, parse156, (a) => ({
           TAG: "PlayerSpawn",
           _0: a
         }), (a) => ({
@@ -18356,7 +20798,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse77, (a) => ({
+        _0: makeParsers2(packetName, parse158, (a) => ({
           TAG: "PlayerUpdate",
           _0: a
         }), (a) => ({
@@ -18425,7 +20867,7 @@ function getParsers2(packetType, fromServer) {
     case "DoorUse":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse90, (a) => ({
+        _0: makeParsers2(packetName, parse91, (a) => ({
           TAG: "DoorUse",
           _0: a
         }), (a) => ({
@@ -18458,7 +20900,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemOwner":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse19, (a) => ({
+        _0: makeParsers2(packetName, parse151, (a) => ({
           TAG: "ItemOwner",
           _0: a
         }), (a) => ({
@@ -18470,7 +20912,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse87, (a) => ({
+          _0: makeParsers2(packetName, parse152, (a) => ({
             TAG: "NpcUpdate",
             _0: a
           }), (a) => ({
@@ -18487,7 +20929,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcItemStrike":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse106, (a) => ({
+        _0: makeParsers2(packetName, parse107, (a) => ({
           TAG: "NpcItemStrike",
           _0: a
         }), (a) => ({
@@ -18509,7 +20951,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcStrike":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse95, (a) => ({
+        _0: makeParsers2(packetName, parse96, (a) => ({
           TAG: "NpcStrike",
           _0: a
         }), (a) => ({
@@ -18520,7 +20962,7 @@ function getParsers2(packetType, fromServer) {
     case "ProjectileDestroy":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse122, (a) => ({
+        _0: makeParsers2(packetName, parse123, (a) => ({
           TAG: "ProjectileDestroy",
           _0: a
         }), (a) => ({
@@ -18548,7 +20990,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse93, (a) => ({
+          _0: makeParsers2(packetName, parse94, (a) => ({
             TAG: "ChestOpen",
             _0: a
           }), (a) => ({
@@ -18571,7 +21013,7 @@ function getParsers2(packetType, fromServer) {
     case "ActiveContainerSync":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse126, (a) => ({
+        _0: makeParsers2(packetName, parse127, (a) => ({
           TAG: "ActiveContainerSync",
           _0: a
         }), (a) => ({
@@ -18593,7 +21035,7 @@ function getParsers2(packetType, fromServer) {
     case "HealEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse97, (a) => ({
+        _0: makeParsers2(packetName, parse98, (a) => ({
           TAG: "HealEffect",
           _0: a
         }), (a) => ({
@@ -18604,7 +21046,7 @@ function getParsers2(packetType, fromServer) {
     case "Zones":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse75, (a) => ({
+        _0: makeParsers2(packetName, parse148, (a) => ({
           TAG: "Zones",
           _0: a
         }), (a) => ({
@@ -18616,7 +21058,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse117, (a) => ({
+          _0: makeParsers2(packetName, parse118, (a) => ({
             TAG: "PasswordRequired",
             _0: a
           }), (a) => ({
@@ -18639,7 +21081,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse103, (a) => ({
+          _0: makeParsers2(packetName, parse104, (a) => ({
             TAG: "PasswordSend",
             _0: a
           }), (a) => ({
@@ -18702,7 +21144,7 @@ function getParsers2(packetType, fromServer) {
     case "ManaEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse98, (a) => ({
+        _0: makeParsers2(packetName, parse99, (a) => ({
           TAG: "ManaEffect",
           _0: a
         }), (a) => ({
@@ -18753,7 +21195,7 @@ function getParsers2(packetType, fromServer) {
     case "LiquidSet":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse94, (a) => ({
+        _0: makeParsers2(packetName, parse95, (a) => ({
           TAG: "LiquidSet",
           _0: a
         }), (a) => ({
@@ -18765,7 +21207,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse114, (a) => ({
+          _0: makeParsers2(packetName, parse115, (a) => ({
             TAG: "PlayerSpawnSelf",
             _0: a
           }), (a) => ({
@@ -18782,7 +21224,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerBuffsSet":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse38, (a) => ({
+        _0: makeParsers2(packetName, parse161, (a) => ({
           TAG: "PlayerBuffsSet",
           _0: a
         }), (a) => ({
@@ -18793,7 +21235,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcSpecialEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse116, (a) => ({
+        _0: makeParsers2(packetName, parse117, (a) => ({
           TAG: "NpcSpecialEffect",
           _0: a
         }), (a) => ({
@@ -18815,7 +21257,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcBuffAdd":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse99, (a) => ({
+        _0: makeParsers2(packetName, parse100, (a) => ({
           TAG: "NpcBuffAdd",
           _0: a
         }), (a) => ({
@@ -18827,7 +21269,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse25, (a) => ({
+          _0: makeParsers2(packetName, parse160, (a) => ({
             TAG: "NpcBuffUpdate",
             _0: a
           }), (a) => ({
@@ -18867,7 +21309,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse108, (a) => ({
+          _0: makeParsers2(packetName, parse109, (a) => ({
             TAG: "GoodEvilUpdate",
             _0: a
           }), (a) => ({
@@ -18884,7 +21326,7 @@ function getParsers2(packetType, fromServer) {
     case "HarpPlay":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse91, (a) => ({
+        _0: makeParsers2(packetName, parse92, (a) => ({
           TAG: "HarpPlay",
           _0: a
         }), (a) => ({
@@ -18968,7 +21410,7 @@ function getParsers2(packetType, fromServer) {
     case "Teleport":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse53, (a) => ({
+        _0: makeParsers2(packetName, parse149, (a) => ({
           TAG: "Teleport",
           _0: a
         }), (a) => ({
@@ -18979,7 +21421,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerHealOther":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse113, (a) => ({
+        _0: makeParsers2(packetName, parse114, (a) => ({
           TAG: "PlayerHealOther",
           _0: a
         }), (a) => ({
@@ -19019,7 +21461,7 @@ function getParsers2(packetType, fromServer) {
     case "ChestName":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse92, (a) => ({
+        _0: makeParsers2(packetName, parse93, (a) => ({
           TAG: "ChestName",
           _0: a
         }), (a) => ({
@@ -19054,7 +21496,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse100, (a) => ({
+          _0: makeParsers2(packetName, parse101, (a) => ({
             TAG: "NpcRelease",
             _0: a
           }), (a) => ({
@@ -19067,7 +21509,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse68, (a) => ({
+          _0: makeParsers2(packetName, parse175, (a) => ({
             TAG: "TravellingMerchantInventory",
             _0: a
           }), (a) => ({
@@ -19084,7 +21526,7 @@ function getParsers2(packetType, fromServer) {
     case "TeleportationPotion":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse54, (a) => ({
+        _0: makeParsers2(packetName, parse170, (a) => ({
           TAG: "TeleportationPotion",
           _0: a
         }), (a) => ({
@@ -19131,7 +21573,7 @@ function getParsers2(packetType, fromServer) {
     case "AnglerQuestsCompletedAmount":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse143, (a) => ({
+        _0: makeParsers2(packetName, parse144, (a) => ({
           TAG: "AnglerQuestsCompletedAmount",
           _0: a
         }), (a) => ({
@@ -19208,7 +21650,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse124, (a) => ({
+          _0: makeParsers2(packetName, parse125, (a) => ({
             TAG: "CombatNumberCreate",
             _0: a
           }), (a) => ({
@@ -19254,7 +21696,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerStealth":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse107, (a) => ({
+        _0: makeParsers2(packetName, parse108, (a) => ({
           TAG: "PlayerStealth",
           _0: a
         }), (a) => ({
@@ -19263,23 +21705,16 @@ function getParsers2(packetType, fromServer) {
         }))
       };
     case "ItemForceIntoNearestChest":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "ItemForceIntoNearestChestFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName, parse141, (a) => ({
-            TAG: "ItemForceIntoNearestChest",
-            _0: a
-          }), (a) => ({
-            TAG: "ItemForceIntoNearestChest",
-            _0: a
-          }))
-        };
-      }
+      return {
+        TAG: "Ok",
+        _0: makeParsersWithFromServer2(packetName, parse173, (a) => ({
+          TAG: "ItemForceIntoNearestChest",
+          _0: a
+        }), (a) => ({
+          TAG: "ItemForceIntoNearestChest",
+          _0: a
+        }))
+      };
     case "TileEntityUpdate":
       if (fromServer) {
         return {
@@ -19320,7 +21755,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse109, (a) => ({
+          _0: makeParsers2(packetName, parse110, (a) => ({
             TAG: "ItemDropModify",
             _0: a
           }), (a) => ({
@@ -19343,7 +21778,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse110, (a) => ({
+          _0: makeParsers2(packetName, parse111, (a) => ({
             TAG: "ItemFramePlace",
             _0: a
           }), (a) => ({
@@ -19355,7 +21790,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemDropInstancedUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse136, (a) => ({
+        _0: makeParsers2(packetName, parse137, (a) => ({
           TAG: "ItemDropInstancedUpdate",
           _0: a
         }), (a) => ({
@@ -19367,7 +21802,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse102, (a) => ({
+          _0: makeParsers2(packetName, parse103, (a) => ({
             TAG: "EmoteBubble",
             _0: a
           }), (a) => ({
@@ -19406,7 +21841,7 @@ function getParsers2(packetType, fromServer) {
     case "Unused":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse70, (a) => ({
+        _0: makeParsers2(packetName, parse157, (a) => ({
           TAG: "Unused",
           _0: a
         }), (a) => ({
@@ -19423,7 +21858,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse101, (a) => ({
+          _0: makeParsers2(packetName, parse102, (a) => ({
             TAG: "PortalKill",
             _0: a
           }), (a) => ({
@@ -19435,7 +21870,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerTeleportPortal":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse129, (a) => ({
+        _0: makeParsers2(packetName, parse130, (a) => ({
           TAG: "PlayerTeleportPortal",
           _0: a
         }), (a) => ({
@@ -19447,7 +21882,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse133, (a) => ({
+          _0: makeParsers2(packetName, parse134, (a) => ({
             TAG: "NpcKilledNotification",
             _0: a
           }), (a) => ({
@@ -19465,7 +21900,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse118, (a) => ({
+          _0: makeParsers2(packetName, parse119, (a) => ({
             TAG: "EventNotification",
             _0: a
           }), (a) => ({
@@ -19482,7 +21917,7 @@ function getParsers2(packetType, fromServer) {
     case "MinionTargetUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse125, (a) => ({
+        _0: makeParsers2(packetName, parse126, (a) => ({
           TAG: "MinionTargetUpdate",
           _0: a
         }), (a) => ({
@@ -19505,7 +21940,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse134, (a) => ({
+          _0: makeParsers2(packetName, parse135, (a) => ({
             TAG: "ShieldStrengthsUpdate",
             _0: a
           }), (a) => ({
@@ -19522,7 +21957,7 @@ function getParsers2(packetType, fromServer) {
     case "NebulaLevelUp":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse105, (a) => ({
+        _0: makeParsers2(packetName, parse106, (a) => ({
           TAG: "NebulaLevelUp",
           _0: a
         }), (a) => ({
@@ -19534,7 +21969,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse121, (a) => ({
+          _0: makeParsers2(packetName, parse122, (a) => ({
             TAG: "MoonLordCountdown",
             _0: a
           }), (a) => ({
@@ -19575,7 +22010,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse104, (a) => ({
+          _0: makeParsers2(packetName, parse105, (a) => ({
             TAG: "GemLockToggle",
             _0: a
           }), (a) => ({
@@ -19647,7 +22082,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse120, (a) => ({
+          _0: makeParsers2(packetName, parse121, (a) => ({
             TAG: "MassWireOperation",
             _0: a
           }), (a) => ({
@@ -19660,7 +22095,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse128, (a) => ({
+          _0: makeParsers2(packetName, parse129, (a) => ({
             TAG: "MassWireOperationPay",
             _0: a
           }), (a) => ({
@@ -19725,7 +22160,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse135, (a) => ({
+          _0: makeParsers2(packetName, parse136, (a) => ({
             TAG: "CrystalInvasionWipeAll",
             _0: a
           }), (a) => ({
@@ -19742,7 +22177,7 @@ function getParsers2(packetType, fromServer) {
     case "MinionAttackTargetUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse140, (a) => ({
+        _0: makeParsers2(packetName, parse141, (a) => ({
           TAG: "MinionAttackTargetUpdate",
           _0: a
         }), (a) => ({
@@ -19754,7 +22189,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse144, (a) => ({
+          _0: makeParsers2(packetName, parse145, (a) => ({
             TAG: "CrystalInvasionSendWaitTime",
             _0: a
           }), (a) => ({
@@ -19794,7 +22229,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse115, (a) => ({
+          _0: makeParsers2(packetName, parse116, (a) => ({
             TAG: "CombatTextCreate",
             _0: a
           }), (a) => ({
@@ -19817,7 +22252,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse89, (a) => ({
+          _0: makeParsers2(packetName, parse90, (a) => ({
             TAG: "Emoji",
             _0: a
           }), (a) => ({
@@ -19829,7 +22264,7 @@ function getParsers2(packetType, fromServer) {
     case "TileEntityDisplayDollItemSync":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse56, (a) => ({
+        _0: makeParsers2(packetName, parse178, (a) => ({
           TAG: "TileEntityDisplayDollItemSync",
           _0: a
         }), (a) => ({
@@ -19892,7 +22327,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse123, (a) => ({
+          _0: makeParsers2(packetName, parse124, (a) => ({
             TAG: "RevengeMarkerSync",
             _0: a
           }), (a) => ({
@@ -19910,7 +22345,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse127, (a) => ({
+          _0: makeParsers2(packetName, parse128, (a) => ({
             TAG: "RevengeMarkerRemove",
             _0: a
           }), (a) => ({
@@ -19927,7 +22362,7 @@ function getParsers2(packetType, fromServer) {
     case "GolfBallLandInCup":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse119, (a) => ({
+        _0: makeParsers2(packetName, parse120, (a) => ({
           TAG: "GolfBallLandInCup",
           _0: a
         }), (a) => ({
@@ -19975,7 +22410,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse96, (a) => ({
+          _0: makeParsers2(packetName, parse97, (a) => ({
             TAG: "NpcTamper",
             _0: a
           }), (a) => ({
@@ -19993,7 +22428,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse112, (a) => ({
+          _0: makeParsers2(packetName, parse113, (a) => ({
             TAG: "LegacySoundPlay",
             _0: a
           }), (a) => ({
@@ -20016,7 +22451,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse132, (a) => ({
+          _0: makeParsers2(packetName, parse133, (a) => ({
             TAG: "FoodPlatterTryPlacing",
             _0: a
           }), (a) => ({
@@ -20028,7 +22463,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerLuckFactorsUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse139, (a) => ({
+        _0: makeParsers2(packetName, parse171, (a) => ({
           TAG: "PlayerLuckFactorsUpdate",
           _0: a
         }), (a) => ({
@@ -20057,7 +22492,7 @@ function getParsers2(packetType, fromServer) {
     case "CavernMonsterTypeSync":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse130, (a) => ({
+        _0: makeParsers2(packetName, parse131, (a) => ({
           TAG: "CavernMonsterTypeSync",
           _0: a
         }), (a) => ({
@@ -20092,7 +22527,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse131, (a) => ({
+          _0: makeParsers2(packetName, parse132, (a) => ({
             TAG: "ClientSyncedInventory",
             _0: a
           }), (a) => ({
@@ -20126,7 +22561,7 @@ function getParsers2(packetType, fromServer) {
     case "LucyAxeMessage":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse111, (a) => ({
+        _0: makeParsers2(packetName, parse112, (a) => ({
           TAG: "LucyAxeMessage",
           _0: a
         }), (a) => ({
@@ -20137,7 +22572,7 @@ function getParsers2(packetType, fromServer) {
     case "PiggyBankVoidLensUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse138, (a) => ({
+        _0: makeParsers2(packetName, parse139, (a) => ({
           TAG: "PiggyBankVoidLensUpdate",
           _0: a
         }), (a) => ({
@@ -20148,7 +22583,7 @@ function getParsers2(packetType, fromServer) {
     case "DungeonDefendersEventAttemptSkipWait":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse145, (a) => ({
+        _0: makeParsers2(packetName, parse146, (a) => ({
           TAG: "DungeonDefendersEventAttemptSkipWait",
           _0: a
         }), (a) => ({
@@ -20181,7 +22616,7 @@ function getParsers2(packetType, fromServer) {
     case "ShimmerEffectOrCoinLuck":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse46, (a) => ({
+        _0: makeParsers2(packetName, parse172, (a) => ({
           TAG: "ShimmerEffectOrCoinLuck",
           _0: a
         }), (a) => ({
@@ -20203,7 +22638,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemDropProtectedUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse137, (a) => ({
+        _0: makeParsers2(packetName, parse138, (a) => ({
           TAG: "ItemDropProtectedUpdate",
           _0: a
         }), (a) => ({
@@ -20211,9 +22646,152 @@ function getParsers2(packetType, fromServer) {
           _0: a
         }))
       };
+    case "DeadCellsDisplayJarTryPlacing":
+      return {
+        TAG: "Ok",
+        _0: makeParsers2(packetName, parse176, (a) => ({
+          TAG: "DeadCellsDisplayJarTryPlacing",
+          _0: a
+        }), (a) => ({
+          TAG: "DeadCellsDisplayJarTryPlacing",
+          _0: a
+        }))
+      };
+    case "PlayerSpectate":
+      return {
+        TAG: "Ok",
+        _0: makeParsers2(packetName, parse162, (a) => ({
+          TAG: "PlayerSpectate",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerSpectate",
+          _0: a
+        }))
+      };
+    case "ItemDropClear":
+      return {
+        TAG: "Ok",
+        _0: makeParsers2(packetName, parse159, (a) => ({
+          TAG: "ItemDropClear",
+          _0: a
+        }), (a) => ({
+          TAG: "ItemDropClear",
+          _0: a
+        }))
+      };
+    case "PlayerItemUseSound":
+      return {
+        TAG: "Ok",
+        _0: makeParsers2(packetName, parse167, (a) => ({
+          TAG: "PlayerItemUseSound",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerItemUseSound",
+          _0: a
+        }))
+      };
+    case "NpcHurtByDebuff":
+      return {
+        TAG: "Ok",
+        _0: makeParsers2(packetName, parse164, (a) => ({
+          TAG: "NpcHurtByDebuff",
+          _0: a
+        }), (a) => ({
+          TAG: "NpcHurtByDebuff",
+          _0: a
+        }))
+      };
+    case "Ping":
+      return {
+        TAG: "Ok",
+        _0: makeParsers2(packetName, parse89, (a) => ({
+          TAG: "Ping",
+          _0: a
+        }), (a) => ({
+          TAG: "Ping",
+          _0: a
+        }))
+      };
+    case "ChestResize":
+      return {
+        TAG: "Ok",
+        _0: makeParsers2(packetName, parse155, (a) => ({
+          TAG: "ChestResize",
+          _0: a
+        }), (a) => ({
+          TAG: "ChestResize",
+          _0: a
+        }))
+      };
+    case "LeashedEntityAnchorInsertItem":
+      return {
+        TAG: "Ok",
+        _0: makeParsers2(packetName, parse177, (a) => ({
+          TAG: "LeashedEntityAnchorInsertItem",
+          _0: a
+        }), (a) => ({
+          TAG: "LeashedEntityAnchorInsertItem",
+          _0: a
+        }))
+      };
+    case "PlayerTeamUpdate":
+      return {
+        TAG: "Ok",
+        _0: makeParsers2(packetName, parse166, (a) => ({
+          TAG: "PlayerTeamUpdate",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerTeamUpdate",
+          _0: a
+        }))
+      };
+    case "PlayerTeamSwapSpawn":
+      return {
+        TAG: "Ok",
+        _0: makeParsers2(packetName, parse169, (a) => ({
+          TAG: "PlayerTeamSwapSpawn",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerTeamSwapSpawn",
+          _0: a
+        }))
+      };
+    case "SectionRequest":
+      return {
+        TAG: "Ok",
+        _0: makeParsers2(packetName, parse163, (a) => ({
+          TAG: "SectionRequest",
+          _0: a
+        }), (a) => ({
+          TAG: "SectionRequest",
+          _0: a
+        }))
+      };
+    case "ItemDropPosition":
+      return {
+        TAG: "Ok",
+        _0: makeParsers2(packetName, parse165, (a) => ({
+          TAG: "ItemDropPosition",
+          _0: a
+        }), (a) => ({
+          TAG: "ItemDropPosition",
+          _0: a
+        }))
+      };
+    case "HostToken":
+      return {
+        TAG: "Ok",
+        _0: makeParsers2(packetName, parse150, (a) => ({
+          TAG: "HostToken",
+          _0: a
+        }), (a) => ({
+          TAG: "HostToken",
+          _0: a
+        }))
+      };
   }
 }
-function parse147(buffer, fromServer) {
+function parse179(buffer, fromServer) {
   let match = buffer.length;
   if (!(match > 2 || match < 0)) {
     return {
@@ -20297,7 +22875,1152 @@ function parseLazy(buffer, fromServer) {
     throw obj;
   }
 }
-function convertv1449IfNeeded(buffer, fromServer) {
+function worldEventInfoFromV1449(eventInfo) {
+  return {
+    shadowOrbSmashed: eventInfo.shadowOrbSmashed,
+    killedBoss1: eventInfo.killedBoss1,
+    killedBoss2: eventInfo.killedBoss2,
+    killedBoss3: eventInfo.killedBoss3,
+    hardMode: eventInfo.hardMode,
+    killedClown: eventInfo.killedClown,
+    serverSidedCharacters: eventInfo.serverSidedCharacters,
+    killedPlantBoss: eventInfo.killedPlantBoss,
+    killedMechBoss: eventInfo.killedMechBoss,
+    killedMechBoss2: eventInfo.killedMechBoss2,
+    killedMechBoss3: eventInfo.killedMechBoss3,
+    killedAnyMechBoss: eventInfo.killedAnyMechBoss,
+    cloudBg: eventInfo.cloudBg,
+    crimson: eventInfo.crimson,
+    pumpkinMoon: eventInfo.pumpkinMoon,
+    snowMoon: eventInfo.snowMoon,
+    expertMode: eventInfo.expertMode,
+    fastForwardTime: eventInfo.fastForwardTime,
+    slimeRain: eventInfo.slimeRain,
+    killedKingSlime: eventInfo.killedKingSlime,
+    killedQueenBee: eventInfo.killedQueenBee,
+    killedFishron: eventInfo.killedFishron,
+    killedMartians: eventInfo.killedMartians,
+    killedAncientCultist: eventInfo.killedAncientCultist,
+    killedMoonLord: eventInfo.killedMoonLord,
+    killedPumpking: eventInfo.killedPumpking,
+    killedMourningWood: eventInfo.killedMourningWood,
+    killedIceQueen: eventInfo.killedIceQueen,
+    killedSantank: eventInfo.killedSantank,
+    killedEverscream: eventInfo.killedEverscream,
+    killedGolem: eventInfo.killedGolem,
+    birthdayParty: eventInfo.birthdayParty,
+    killedPirates: eventInfo.killedPirates,
+    killedFrostLegion: eventInfo.killedFrostLegion,
+    killedGoblins: eventInfo.killedGoblins,
+    sandstorm: eventInfo.sandstorm,
+    dungeonDefendersEvent: eventInfo.dungeonDefendersEvent,
+    killedDungeonDefendersTier1: eventInfo.killedDungeonDefendersTier1,
+    killedDungeonDefendersTier2: eventInfo.killedDungeonDefendersTier2,
+    killedDungeonDefendersTier3: eventInfo.killedDungeonDefendersTier3,
+    combatBookUsed: eventInfo.combatBookUsed,
+    manualLanterns: eventInfo.manualLanterns,
+    killedSolarTower: eventInfo.killedSolarTower,
+    killedVortexTower: eventInfo.killedVortexTower,
+    killedNebulaTower: eventInfo.killedNebulaTower,
+    killedStardustTower: eventInfo.killedStardustTower,
+    forceHalloween: eventInfo.forceHalloween,
+    forceChristmas: eventInfo.forceChristmas,
+    boughtCat: eventInfo.boughtCat,
+    boughtDog: eventInfo.boughtDog,
+    boughtBunny: eventInfo.boughtBunny,
+    freeCake: eventInfo.freeCake,
+    drunkWorld: eventInfo.drunkWorld,
+    killedEmpressOfLight: eventInfo.killedEmpressOfLight,
+    killedQueenSlime: eventInfo.killedQueenSlime,
+    getGoodWorld: eventInfo.getGoodWorld,
+    tenthAnniversaryWorld: eventInfo.tenthAnniversaryWorld,
+    dontStarveWorld: eventInfo.dontStarveWorld,
+    downedDeerClops: eventInfo.downedDeerClops,
+    notTheBeesWorld: eventInfo.notTheBeesWorld,
+    remixWorld: eventInfo.remixWorld,
+    unlockedSlimeBlueSpawn: eventInfo.unlockedSlimeBlueSpawn,
+    combatBookVolumeTwoWasUsed: eventInfo.combatBookVolumeTwoWasUsed,
+    peddlersSatchelWasUsed: eventInfo.peddlersSatchelWasUsed,
+    unlockedSlimeGreenSpawn: eventInfo.unlockedSlimeGreenSpawn,
+    unlockedSlimeOldSpawn: eventInfo.unlockedSlimeOldSpawn,
+    unlockedSlimePurpleSpawn: eventInfo.unlockedSlimePurpleSpawn,
+    unlockedSlimeRainbowSpawn: eventInfo.unlockedSlimeRainbowSpawn,
+    unlockedSlimeRedSpawn: eventInfo.unlockedSlimeRedSpawn,
+    unlockedSlimeYellowSpawn: eventInfo.unlockedSlimeYellowSpawn,
+    unlockedSlimeCopperSpawn: eventInfo.unlockedSlimeCopperSpawn,
+    fastForwardTimeToDusk: eventInfo.fastForwardTimeToDusk,
+    noTrapsWorld: eventInfo.noTrapsWorld,
+    zenithWorld: eventInfo.zenithWorld,
+    unlockedTruffleSpawn: eventInfo.unlockedTruffleSpawn,
+    vampireSeed: false,
+    infectedSeed: false,
+    teamBasedSpawnsSeed: false,
+    skyblockWorld: false,
+    dualDungeonsSeed: false
+  };
+}
+function worldEventInfoToV1449(eventInfo) {
+  return {
+    shadowOrbSmashed: eventInfo.shadowOrbSmashed,
+    killedBoss1: eventInfo.killedBoss1,
+    killedBoss2: eventInfo.killedBoss2,
+    killedBoss3: eventInfo.killedBoss3,
+    hardMode: eventInfo.hardMode,
+    killedClown: eventInfo.killedClown,
+    serverSidedCharacters: eventInfo.serverSidedCharacters,
+    killedPlantBoss: eventInfo.killedPlantBoss,
+    killedMechBoss: eventInfo.killedMechBoss,
+    killedMechBoss2: eventInfo.killedMechBoss2,
+    killedMechBoss3: eventInfo.killedMechBoss3,
+    killedAnyMechBoss: eventInfo.killedAnyMechBoss,
+    cloudBg: eventInfo.cloudBg,
+    crimson: eventInfo.crimson,
+    pumpkinMoon: eventInfo.pumpkinMoon,
+    snowMoon: eventInfo.snowMoon,
+    expertMode: eventInfo.expertMode,
+    fastForwardTime: eventInfo.fastForwardTime,
+    slimeRain: eventInfo.slimeRain,
+    killedKingSlime: eventInfo.killedKingSlime,
+    killedQueenBee: eventInfo.killedQueenBee,
+    killedFishron: eventInfo.killedFishron,
+    killedMartians: eventInfo.killedMartians,
+    killedAncientCultist: eventInfo.killedAncientCultist,
+    killedMoonLord: eventInfo.killedMoonLord,
+    killedPumpking: eventInfo.killedPumpking,
+    killedMourningWood: eventInfo.killedMourningWood,
+    killedIceQueen: eventInfo.killedIceQueen,
+    killedSantank: eventInfo.killedSantank,
+    killedEverscream: eventInfo.killedEverscream,
+    killedGolem: eventInfo.killedGolem,
+    birthdayParty: eventInfo.birthdayParty,
+    killedPirates: eventInfo.killedPirates,
+    killedFrostLegion: eventInfo.killedFrostLegion,
+    killedGoblins: eventInfo.killedGoblins,
+    sandstorm: eventInfo.sandstorm,
+    dungeonDefendersEvent: eventInfo.dungeonDefendersEvent,
+    killedDungeonDefendersTier1: eventInfo.killedDungeonDefendersTier1,
+    killedDungeonDefendersTier2: eventInfo.killedDungeonDefendersTier2,
+    killedDungeonDefendersTier3: eventInfo.killedDungeonDefendersTier3,
+    combatBookUsed: eventInfo.combatBookUsed,
+    manualLanterns: eventInfo.manualLanterns,
+    killedSolarTower: eventInfo.killedSolarTower,
+    killedVortexTower: eventInfo.killedVortexTower,
+    killedNebulaTower: eventInfo.killedNebulaTower,
+    killedStardustTower: eventInfo.killedStardustTower,
+    forceHalloween: eventInfo.forceHalloween,
+    forceChristmas: eventInfo.forceChristmas,
+    boughtCat: eventInfo.boughtCat,
+    boughtDog: eventInfo.boughtDog,
+    boughtBunny: eventInfo.boughtBunny,
+    freeCake: eventInfo.freeCake,
+    drunkWorld: eventInfo.drunkWorld,
+    killedEmpressOfLight: eventInfo.killedEmpressOfLight,
+    killedQueenSlime: eventInfo.killedQueenSlime,
+    getGoodWorld: eventInfo.getGoodWorld,
+    tenthAnniversaryWorld: eventInfo.tenthAnniversaryWorld,
+    dontStarveWorld: eventInfo.dontStarveWorld,
+    downedDeerClops: eventInfo.downedDeerClops,
+    notTheBeesWorld: eventInfo.notTheBeesWorld,
+    remixWorld: eventInfo.remixWorld,
+    unlockedSlimeBlueSpawn: eventInfo.unlockedSlimeBlueSpawn,
+    combatBookVolumeTwoWasUsed: eventInfo.combatBookVolumeTwoWasUsed,
+    peddlersSatchelWasUsed: eventInfo.peddlersSatchelWasUsed,
+    unlockedSlimeGreenSpawn: eventInfo.unlockedSlimeGreenSpawn,
+    unlockedSlimeOldSpawn: eventInfo.unlockedSlimeOldSpawn,
+    unlockedSlimePurpleSpawn: eventInfo.unlockedSlimePurpleSpawn,
+    unlockedSlimeRainbowSpawn: eventInfo.unlockedSlimeRainbowSpawn,
+    unlockedSlimeRedSpawn: eventInfo.unlockedSlimeRedSpawn,
+    unlockedSlimeYellowSpawn: eventInfo.unlockedSlimeYellowSpawn,
+    unlockedSlimeCopperSpawn: eventInfo.unlockedSlimeCopperSpawn,
+    fastForwardTimeToDusk: eventInfo.fastForwardTimeToDusk,
+    noTrapsWorld: eventInfo.noTrapsWorld,
+    zenithWorld: eventInfo.zenithWorld,
+    unlockedTruffleSpawn: eventInfo.unlockedTruffleSpawn
+  };
+}
+function worldInfoFromV1449(worldInfo) {
+  return {
+    time: worldInfo.time,
+    dayAndMoonInfo: worldInfo.dayAndMoonInfo,
+    moonPhase: worldInfo.moonPhase,
+    maxTilesX: worldInfo.maxTilesX,
+    maxTilesY: worldInfo.maxTilesY,
+    spawnX: worldInfo.spawnX,
+    spawnY: worldInfo.spawnY,
+    worldSurface: worldInfo.worldSurface,
+    rockLayer: worldInfo.rockLayer,
+    worldId: worldInfo.worldId,
+    worldName: worldInfo.worldName,
+    gameMode: worldInfo.gameMode,
+    worldUniqueId: worldInfo.worldUniqueId,
+    worldGeneratorVersion: worldInfo.worldGeneratorVersion,
+    moonType: worldInfo.moonType,
+    treeBackground: worldInfo.treeBackground,
+    treeBackground2: worldInfo.treeBackground2,
+    treeBackground3: worldInfo.treeBackground3,
+    treeBackground4: worldInfo.treeBackground4,
+    corruptionBackground: worldInfo.corruptionBackground,
+    jungleBackground: worldInfo.jungleBackground,
+    snowBackground: worldInfo.snowBackground,
+    hallowBackground: worldInfo.hallowBackground,
+    crimsonBackground: worldInfo.crimsonBackground,
+    desertBackground: worldInfo.desertBackground,
+    oceanBackground: worldInfo.oceanBackground,
+    mushroomBackground: worldInfo.mushroomBackground,
+    underworldBackground: worldInfo.underworldBackground,
+    iceBackStyle: worldInfo.iceBackStyle,
+    jungleBackStyle: worldInfo.jungleBackStyle,
+    hellBackStyle: worldInfo.hellBackStyle,
+    windSpeedSet: worldInfo.windSpeedSet,
+    cloudNumber: worldInfo.cloudNumber,
+    tree1: worldInfo.tree1,
+    tree2: worldInfo.tree2,
+    tree3: worldInfo.tree3,
+    treeStyle1: worldInfo.treeStyle1,
+    treeStyle2: worldInfo.treeStyle2,
+    treeStyle3: worldInfo.treeStyle3,
+    treeStyle4: worldInfo.treeStyle4,
+    caveBack1: worldInfo.caveBack1,
+    caveBack2: worldInfo.caveBack2,
+    caveBack3: worldInfo.caveBack3,
+    caveBackStyle1: worldInfo.caveBackStyle1,
+    caveBackStyle2: worldInfo.caveBackStyle2,
+    caveBackStyle3: worldInfo.caveBackStyle3,
+    caveBackStyle4: worldInfo.caveBackStyle4,
+    forest1TreeTopStyle: worldInfo.forest1TreeTopStyle,
+    forest2TreeTopStyle: worldInfo.forest2TreeTopStyle,
+    forest3TreeTopStyle: worldInfo.forest3TreeTopStyle,
+    forest4TreeTopStyle: worldInfo.forest4TreeTopStyle,
+    corruptionTreeTopStyle: worldInfo.corruptionTreeTopStyle,
+    jungleTreeTopStyle: worldInfo.jungleTreeTopStyle,
+    snowTreeTopStyle: worldInfo.snowTreeTopStyle,
+    hallowTreeTopStyle: worldInfo.hallowTreeTopStyle,
+    crimsonTreeTopStyle: worldInfo.crimsonTreeTopStyle,
+    desertTreeTopStyle: worldInfo.desertTreeTopStyle,
+    oceanTreeTopStyle: worldInfo.oceanTreeTopStyle,
+    glowingMushroomTreeTopStyle: worldInfo.glowingMushroomTreeTopStyle,
+    underworldTreeTopStyle: worldInfo.underworldTreeTopStyle,
+    rain: worldInfo.rain,
+    eventInfo: worldEventInfoFromV1449(worldInfo.eventInfo),
+    sundialCooldown: worldInfo.sundialCooldown,
+    moondialCooldown: worldInfo.moondialCooldown,
+    copperOreTier: worldInfo.copperOreTier,
+    ironOreTier: worldInfo.ironOreTier,
+    silverOreTier: worldInfo.silverOreTier,
+    goldOreTier: worldInfo.goldOreTier,
+    cobaltOreTier: worldInfo.cobaltOreTier,
+    mythrilOreTier: worldInfo.mythrilOreTier,
+    adamantiteOreTier: worldInfo.adamantiteOreTier,
+    invasionType: worldInfo.invasionType,
+    lobbyId: worldInfo.lobbyId,
+    sandstormSeverity: worldInfo.sandstormSeverity,
+    extraSpawnPoints: []
+  };
+}
+function worldInfoToV1449(worldInfo) {
+  return {
+    time: worldInfo.time,
+    dayAndMoonInfo: worldInfo.dayAndMoonInfo,
+    moonPhase: worldInfo.moonPhase,
+    maxTilesX: worldInfo.maxTilesX,
+    maxTilesY: worldInfo.maxTilesY,
+    spawnX: worldInfo.spawnX,
+    spawnY: worldInfo.spawnY,
+    worldSurface: worldInfo.worldSurface,
+    rockLayer: worldInfo.rockLayer,
+    worldId: worldInfo.worldId,
+    worldName: worldInfo.worldName,
+    gameMode: worldInfo.gameMode,
+    worldUniqueId: worldInfo.worldUniqueId,
+    worldGeneratorVersion: worldInfo.worldGeneratorVersion,
+    moonType: worldInfo.moonType,
+    treeBackground: worldInfo.treeBackground,
+    treeBackground2: worldInfo.treeBackground2,
+    treeBackground3: worldInfo.treeBackground3,
+    treeBackground4: worldInfo.treeBackground4,
+    corruptionBackground: worldInfo.corruptionBackground,
+    jungleBackground: worldInfo.jungleBackground,
+    snowBackground: worldInfo.snowBackground,
+    hallowBackground: worldInfo.hallowBackground,
+    crimsonBackground: worldInfo.crimsonBackground,
+    desertBackground: worldInfo.desertBackground,
+    oceanBackground: worldInfo.oceanBackground,
+    mushroomBackground: worldInfo.mushroomBackground,
+    underworldBackground: worldInfo.underworldBackground,
+    iceBackStyle: worldInfo.iceBackStyle,
+    jungleBackStyle: worldInfo.jungleBackStyle,
+    hellBackStyle: worldInfo.hellBackStyle,
+    windSpeedSet: worldInfo.windSpeedSet,
+    cloudNumber: worldInfo.cloudNumber,
+    tree1: worldInfo.tree1,
+    tree2: worldInfo.tree2,
+    tree3: worldInfo.tree3,
+    treeStyle1: worldInfo.treeStyle1,
+    treeStyle2: worldInfo.treeStyle2,
+    treeStyle3: worldInfo.treeStyle3,
+    treeStyle4: worldInfo.treeStyle4,
+    caveBack1: worldInfo.caveBack1,
+    caveBack2: worldInfo.caveBack2,
+    caveBack3: worldInfo.caveBack3,
+    caveBackStyle1: worldInfo.caveBackStyle1,
+    caveBackStyle2: worldInfo.caveBackStyle2,
+    caveBackStyle3: worldInfo.caveBackStyle3,
+    caveBackStyle4: worldInfo.caveBackStyle4,
+    forest1TreeTopStyle: worldInfo.forest1TreeTopStyle,
+    forest2TreeTopStyle: worldInfo.forest2TreeTopStyle,
+    forest3TreeTopStyle: worldInfo.forest3TreeTopStyle,
+    forest4TreeTopStyle: worldInfo.forest4TreeTopStyle,
+    corruptionTreeTopStyle: worldInfo.corruptionTreeTopStyle,
+    jungleTreeTopStyle: worldInfo.jungleTreeTopStyle,
+    snowTreeTopStyle: worldInfo.snowTreeTopStyle,
+    hallowTreeTopStyle: worldInfo.hallowTreeTopStyle,
+    crimsonTreeTopStyle: worldInfo.crimsonTreeTopStyle,
+    desertTreeTopStyle: worldInfo.desertTreeTopStyle,
+    oceanTreeTopStyle: worldInfo.oceanTreeTopStyle,
+    glowingMushroomTreeTopStyle: worldInfo.glowingMushroomTreeTopStyle,
+    underworldTreeTopStyle: worldInfo.underworldTreeTopStyle,
+    rain: worldInfo.rain,
+    eventInfo: worldEventInfoToV1449(worldInfo.eventInfo),
+    sundialCooldown: worldInfo.sundialCooldown,
+    moondialCooldown: worldInfo.moondialCooldown,
+    copperOreTier: worldInfo.copperOreTier,
+    ironOreTier: worldInfo.ironOreTier,
+    silverOreTier: worldInfo.silverOreTier,
+    goldOreTier: worldInfo.goldOreTier,
+    cobaltOreTier: worldInfo.cobaltOreTier,
+    mythrilOreTier: worldInfo.mythrilOreTier,
+    adamantiteOreTier: worldInfo.adamantiteOreTier,
+    invasionType: worldInfo.invasionType,
+    lobbyId: worldInfo.lobbyId,
+    sandstormSeverity: worldInfo.sandstormSeverity
+  };
+}
+function playerSpawnContextFromV1449(context) {
+  switch (context) {
+    case "ReviveFromDeath":
+      return "ReviveFromDeath";
+    case "SpawningIntoWorld":
+      return "SpawningIntoWorld";
+    case "RecallFromItem":
+      return "RecallFromItem";
+  }
+}
+function playerSpawnContextToV1449(context) {
+  switch (context) {
+    case "ReviveFromDeath":
+      return "ReviveFromDeath";
+    case "SpawningIntoWorld":
+      return "SpawningIntoWorld";
+    case "RecallFromItem":
+      return "RecallFromItem";
+  }
+}
+function playerUpdateControlFromV1449(control) {
+  return {
+    isHoldingUp: control.isHoldingUp,
+    isHoldingDown: control.isHoldingDown,
+    isHoldingLeft: control.isHoldingLeft,
+    isHoldingRight: control.isHoldingRight,
+    isHoldingJump: control.isHoldingJump,
+    isHoldingItemUse: control.isHoldingItemUse
+  };
+}
+function playerUpdateControlToV1449(control) {
+  return {
+    isHoldingUp: control.isHoldingUp,
+    isHoldingDown: control.isHoldingDown,
+    isHoldingLeft: control.isHoldingLeft,
+    isHoldingRight: control.isHoldingRight,
+    isHoldingJump: control.isHoldingJump,
+    isHoldingItemUse: control.isHoldingItemUse
+  };
+}
+function playerUpdateDirectionFromV1449(direction) {
+  if (direction === "Left") {
+    return "Left";
+  } else {
+    return "Right";
+  }
+}
+function playerUpdateDirectionToV1449(direction) {
+  if (direction === "Left") {
+    return "Left";
+  } else {
+    return "Right";
+  }
+}
+function playerUpdatePulleyDirectionFromV1449(pulleyDirection) {
+  if (pulleyDirection !== void 0) {
+    if (pulleyDirection === "One") {
+      return "One";
+    } else {
+      return "Two";
+    }
+  }
+}
+function playerUpdatePulleyDirectionToV1449(pulleyDirection) {
+  if (pulleyDirection !== void 0) {
+    if (pulleyDirection === "One") {
+      return "One";
+    } else {
+      return "Two";
+    }
+  }
+}
+function playerUpdateGravityDirectionFromV1449(gravityDirection) {
+  if (gravityDirection === "Normal") {
+    return "Normal";
+  } else {
+    return "Inverted";
+  }
+}
+function playerUpdateGravityDirectionToV1449(gravityDirection) {
+  if (gravityDirection === "Normal") {
+    return "Normal";
+  } else {
+    return "Inverted";
+  }
+}
+function playerUpdatePotionOfReturnFromV1449(potionOfReturn) {
+  if (potionOfReturn !== void 0) {
+    return {
+      originalUsePosition: potionOfReturn.originalUsePosition,
+      homePosition: potionOfReturn.homePosition
+    };
+  }
+}
+function playerUpdatePotionOfReturnToV1449(potionOfReturn) {
+  if (potionOfReturn !== void 0) {
+    return {
+      originalUsePosition: potionOfReturn.originalUsePosition,
+      homePosition: potionOfReturn.homePosition
+    };
+  }
+}
+function npcUpdateLifeFromV1449(life) {
+  if (typeof life !== "object") {
+    return "Max";
+  }
+  switch (life.TAG) {
+    case "Byte":
+      return {
+        TAG: "Byte",
+        _0: life._0
+      };
+    case "Int16":
+      return {
+        TAG: "Int16",
+        _0: life._0
+      };
+    case "Int32":
+      return {
+        TAG: "Int32",
+        _0: life._0
+      };
+  }
+}
+function npcUpdateLifeToV1449(life) {
+  if (typeof life !== "object") {
+    return "Max";
+  }
+  switch (life.TAG) {
+    case "Byte":
+      return {
+        TAG: "Byte",
+        _0: life._0
+      };
+    case "Int16":
+      return {
+        TAG: "Int16",
+        _0: life._0
+      };
+    case "Int32":
+      return {
+        TAG: "Int32",
+        _0: life._0
+      };
+  }
+}
+function shimmerCoinLuckFromV1449(coinLuck) {
+  return {
+    position: coinLuck.position,
+    amount: coinLuck.amount
+  };
+}
+function shimmerCoinLuckToV1449(coinLuck) {
+  return {
+    position: coinLuck.position,
+    amount: coinLuck.amount
+  };
+}
+function fromV1449(packet) {
+  switch (packet.TAG) {
+    case "PlayerInfo":
+      let playerInfo = packet._0;
+      return {
+        TAG: "PlayerInfo",
+        _0: {
+          playerId: playerInfo.playerId,
+          skinVariant: playerInfo.skinVariant,
+          voiceVariant: 1,
+          voicePitchOffset: 0,
+          hair: playerInfo.hair,
+          name: playerInfo.name,
+          hairDye: playerInfo.hairDye,
+          hideVisuals: playerInfo.hideVisuals,
+          hideVisuals2: playerInfo.hideVisuals2,
+          hideMisc: playerInfo.hideMisc,
+          hairColor: playerInfo.hairColor,
+          skinColor: playerInfo.skinColor,
+          eyeColor: playerInfo.eyeColor,
+          shirtColor: playerInfo.shirtColor,
+          underShirtColor: playerInfo.underShirtColor,
+          pantsColor: playerInfo.pantsColor,
+          shoeColor: playerInfo.shoeColor,
+          difficulty: playerInfo.difficulty,
+          mode: playerInfo.mode,
+          extraAccessory: playerInfo.extraAccessory,
+          usingBiomeTorches: playerInfo.usingBiomeTorches,
+          unlockedBiomeTorches: playerInfo.unlockedBiomeTorches,
+          happyFunTorchTime: playerInfo.happyFunTorchTime,
+          unlockedSuperCart: playerInfo.unlockedSuperCart,
+          enabledSuperCart: playerInfo.enabledSuperCart,
+          usedAegisCrystal: playerInfo.usedAegisCrystal,
+          usedAegisFruit: playerInfo.usedAegisFruit,
+          usedArcaneCrystal: playerInfo.usedArcaneCrystal,
+          usedGalaxyPearl: playerInfo.usedGalaxyPearl,
+          usedGummyWorm: playerInfo.usedGummyWorm,
+          usedAmbrosia: playerInfo.usedAmbrosia,
+          ateArtisanBread: playerInfo.ateArtisanBread
+        }
+      };
+    case "PlayerInventorySlot":
+      let playerInventorySlot = packet._0;
+      return {
+        TAG: "PlayerInventorySlot",
+        _0: {
+          playerId: playerInventorySlot.playerId,
+          slot: playerInventorySlot.slot,
+          stack: playerInventorySlot.stack,
+          prefix: playerInventorySlot.prefix,
+          itemType: playerInventorySlot.itemId,
+          favorited: false,
+          blocked: false
+        }
+      };
+    case "WorldInfo":
+      return {
+        TAG: "WorldInfo",
+        _0: worldInfoFromV1449(packet._0)
+      };
+    case "InitialTileSectionsRequest":
+      let req = packet._0;
+      return {
+        TAG: "InitialTileSectionsRequest",
+        _0: {
+          x: req.x,
+          y: req.y,
+          team: 0
+        }
+      };
+    case "PlayerSpawn":
+      let playerSpawn = packet._0;
+      return {
+        TAG: "PlayerSpawn",
+        _0: {
+          playerId: playerSpawn.playerId,
+          x: playerSpawn.x,
+          y: playerSpawn.y,
+          timeRemaining: playerSpawn.timeRemaining,
+          numberOfDeathsPve: playerSpawn.numberOfDeathsPve,
+          numberOfDeathsPvp: playerSpawn.numberOfDeathsPvp,
+          team: 0,
+          context: playerSpawnContextFromV1449(playerSpawn.context)
+        }
+      };
+    case "PlayerUpdate":
+      let playerUpdate = packet._0;
+      return {
+        TAG: "PlayerUpdate",
+        _0: {
+          playerId: playerUpdate.playerId,
+          control: playerUpdateControlFromV1449(playerUpdate.control),
+          direction: playerUpdateDirectionFromV1449(playerUpdate.direction),
+          pulleyDirection: playerUpdatePulleyDirectionFromV1449(playerUpdate.pulleyDirection),
+          vortexStealthActive: playerUpdate.vortexStealthActive,
+          gravityDirection: playerUpdateGravityDirectionFromV1449(playerUpdate.gravityDirection),
+          shieldRaised: playerUpdate.shouldGuard,
+          ghost: playerUpdate.ghost,
+          selectedItem: playerUpdate.selectedItem,
+          position: playerUpdate.position,
+          velocity: playerUpdate.velocity,
+          mountType: void 0,
+          potionOfReturn: playerUpdatePotionOfReturnFromV1449(playerUpdate.potionOfReturn),
+          tryKeepingHoveringUp: playerUpdate.tryKeepingHoveringUp,
+          isVoidVaultEnabled: playerUpdate.isVoidVaultEnabled,
+          isSitting: playerUpdate.isSitting,
+          hasFinishedAnyDd2Event: playerUpdate.hasFinishedAnyDd2Event,
+          isPettingAnimal: playerUpdate.isPettingAnimal,
+          isTheAnimalBeingPetSmall: playerUpdate.isTheAnimalBeingPetSmall,
+          tryKeepingHoveringDown: playerUpdate.tryKeepingHoveringDown,
+          isSleeping: playerUpdate.isSleeping,
+          autoReuseAllWeapons: false,
+          controlDownHold: false,
+          isOperatingAnotherEntity: false,
+          controlUseTile: false,
+          netCameraTarget: void 0,
+          lastItemUseAttemptSuccess: false
+        }
+      };
+    case "ItemOwner":
+      let itemOwner = packet._0;
+      return {
+        TAG: "ItemOwner",
+        _0: {
+          itemDropId: itemOwner.itemDropId,
+          owner: itemOwner.owner,
+          position: {
+            x: 0,
+            y: 0
+          }
+        }
+      };
+    case "NpcUpdate":
+      let npcUpdate = packet._0;
+      return {
+        TAG: "NpcUpdate",
+        _0: {
+          npcSlotId: npcUpdate.npcSlotId,
+          npcTypeId: npcUpdate.npcTypeId,
+          x: npcUpdate.x,
+          y: npcUpdate.y,
+          vx: npcUpdate.vx,
+          vy: npcUpdate.vy,
+          target: npcUpdate.target,
+          directionX: npcUpdate.directionX,
+          directionY: npcUpdate.directionY,
+          ai: npcUpdate.ai,
+          spriteDirection: npcUpdate.spriteDirection,
+          life: npcUpdateLifeFromV1449(npcUpdate.life),
+          releaseOwner: npcUpdate.releaseOwner,
+          playerCountScale: npcUpdate.playerCountScale,
+          difficulty: npcUpdate.strengthMultiplier,
+          spawnedFromStatue: npcUpdate.spawnedFromStatue,
+          spawnNeedsSyncing: false,
+          shimmerTransparency: false
+        }
+      };
+    case "Zones":
+      let zones = packet._0;
+      return {
+        TAG: "Zones",
+        _0: {
+          playerId: zones.playerId,
+          zone1: zones.zone1,
+          zone2: zones.zone2,
+          zone3: zones.zone3,
+          zone4: zones.zone4,
+          zone5: zones.zone5,
+          townNPCs: 0
+        }
+      };
+    case "PlayerBuffsSet":
+      let playerBuffsSet = packet._0;
+      return {
+        TAG: "PlayerBuffsSet",
+        _0: {
+          playerId: playerBuffsSet.playerId,
+          buffs: playerBuffsSet.buffs.filter((buff) => buff !== 0)
+        }
+      };
+    case "NpcBuffUpdate":
+      let npcBuffUpdate = packet._0;
+      let buffs = [];
+      let buffTimes = [];
+      for (let i = 0, i_finish = npcBuffUpdate.buffs.length; i < i_finish; ++i) {
+        let buff = npcBuffUpdate.buffs[i];
+        let buffTime = npcBuffUpdate.buffTimes[i];
+        if (buff > 0 && buffTime > 0) {
+          buffs.push(buff);
+          buffTimes.push(buffTime);
+        }
+      }
+      return {
+        TAG: "NpcBuffUpdate",
+        _0: {
+          npcId: npcBuffUpdate.npcId,
+          buffs,
+          buffTimes
+        }
+      };
+    case "Teleport":
+      let teleport = packet._0;
+      let match = teleport.teleportType;
+      let tmp;
+      switch (match) {
+        case "Player":
+          tmp = "Player";
+          break;
+        case "Npc":
+          tmp = "Npc";
+          break;
+        case "PlayerToPlayer":
+          tmp = "PlayerToPlayer";
+          break;
+      }
+      return {
+        TAG: "Teleport",
+        _0: {
+          teleportType: tmp,
+          getPositionFromTarget: teleport.getPositionFromTarget,
+          targetId: teleport.targetId,
+          x: teleport.x,
+          y: teleport.y,
+          style: teleport.style,
+          extraInfo: teleport.extraInfo
+        }
+      };
+    case "TravellingMerchantInventory":
+      return {
+        TAG: "TravellingMerchantInventory",
+        _0: {
+          items: packet._0.items
+        }
+      };
+    case "TeleportationPotion":
+      let match$1 = packet._0.teleportType;
+      let tmp$1;
+      switch (match$1) {
+        case "TeleportationPotion":
+          tmp$1 = "TeleportationPotion";
+          break;
+        case "MagicConch":
+          tmp$1 = "MagicConch";
+          break;
+        case "DemonConch":
+          tmp$1 = "DemonConch";
+          break;
+        case "ShellphoneSpawn":
+          tmp$1 = "ShellphoneSpawn";
+          break;
+      }
+      return {
+        TAG: "TeleportationPotion",
+        _0: {
+          teleportType: tmp$1
+        }
+      };
+    case "ItemForceIntoNearestChest":
+      return {
+        TAG: "ItemForceIntoNearestChest",
+        _0: {
+          TAG: "ClientRequest",
+          _0: {
+            slotIds: [packet._0.slot],
+            smartStack: false
+          }
+        }
+      };
+    case "TileEntityDisplayDollItemSync":
+      let tileEntityDisplayDollItemSync = packet._0;
+      return {
+        TAG: "TileEntityDisplayDollItemSync",
+        _0: {
+          playerId: tileEntityDisplayDollItemSync.playerId,
+          tileEntityId: tileEntityDisplayDollItemSync.tileEntityId,
+          itemIndex: tileEntityDisplayDollItemSync.itemIndex,
+          command: "Equip",
+          data: {
+            TAG: "Item",
+            _0: {
+              itemId: tileEntityDisplayDollItemSync.itemId,
+              stack: tileEntityDisplayDollItemSync.stack,
+              prefix: tileEntityDisplayDollItemSync.prefix
+            }
+          }
+        }
+      };
+    case "PlayerLuckFactorsUpdate":
+      let playerLuckFactorsUpdate = packet._0;
+      return {
+        TAG: "PlayerLuckFactorsUpdate",
+        _0: {
+          playerId: playerLuckFactorsUpdate.playerId,
+          ladyBugLuckTimeLeft: playerLuckFactorsUpdate.ladyBugLuckTimeLeft,
+          torchLuck: playerLuckFactorsUpdate.torchLuck,
+          luckPotion: playerLuckFactorsUpdate.luckPotion,
+          hasGardenGnomeNearby: playerLuckFactorsUpdate.hasGardenGnomeNearby,
+          brokenMirrorBadLuck: false,
+          equipmentBasedLuckBonus: playerLuckFactorsUpdate.equipmentBasedLuckBonus,
+          coinLuck: playerLuckFactorsUpdate.coinLuck,
+          kiteLuckLevel: 0
+        }
+      };
+    case "ShimmerEffectOrCoinLuck":
+      let shimmerEffectOrCoinLuck = packet._0;
+      switch (shimmerEffectOrCoinLuck.TAG) {
+        case "ShimmerEffect":
+          return {
+            TAG: "ShimmerEffectOrCoinLuck",
+            _0: {
+              TAG: "ShimmerEffect",
+              _0: shimmerEffectOrCoinLuck._0,
+              _1: shimmerEffectOrCoinLuck._1
+            }
+          };
+        case "CoinLuck":
+          return {
+            TAG: "ShimmerEffectOrCoinLuck",
+            _0: {
+              TAG: "CoinLuck",
+              _0: shimmerCoinLuckFromV1449(shimmerEffectOrCoinLuck._0)
+            }
+          };
+        case "NewShimmerEffect":
+          return {
+            TAG: "ShimmerEffectOrCoinLuck",
+            _0: {
+              TAG: "ShimmerEffect",
+              _0: 0,
+              _1: 0
+            }
+          };
+      }
+    default:
+      return packet;
+  }
+}
+function v1449ToLatest(packet) {
+  switch (packet.TAG) {
+    case "PlayerInfo":
+      let playerInfo = packet._0;
+      return {
+        TAG: "PlayerInfo",
+        _0: {
+          playerId: playerInfo.playerId,
+          skinVariant: playerInfo.skinVariant,
+          hair: playerInfo.hair,
+          name: playerInfo.name,
+          hairDye: playerInfo.hairDye,
+          hideVisuals: playerInfo.hideVisuals,
+          hideVisuals2: playerInfo.hideVisuals2,
+          hideMisc: playerInfo.hideMisc,
+          hairColor: playerInfo.hairColor,
+          skinColor: playerInfo.skinColor,
+          eyeColor: playerInfo.eyeColor,
+          shirtColor: playerInfo.shirtColor,
+          underShirtColor: playerInfo.underShirtColor,
+          pantsColor: playerInfo.pantsColor,
+          shoeColor: playerInfo.shoeColor,
+          difficulty: playerInfo.difficulty,
+          mode: playerInfo.mode,
+          extraAccessory: playerInfo.extraAccessory,
+          usingBiomeTorches: playerInfo.usingBiomeTorches,
+          unlockedBiomeTorches: playerInfo.unlockedBiomeTorches,
+          happyFunTorchTime: playerInfo.happyFunTorchTime,
+          unlockedSuperCart: playerInfo.unlockedSuperCart,
+          enabledSuperCart: playerInfo.enabledSuperCart,
+          usedAegisCrystal: playerInfo.usedAegisCrystal,
+          usedAegisFruit: playerInfo.usedAegisFruit,
+          usedArcaneCrystal: playerInfo.usedArcaneCrystal,
+          usedGalaxyPearl: playerInfo.usedGalaxyPearl,
+          usedGummyWorm: playerInfo.usedGummyWorm,
+          usedAmbrosia: playerInfo.usedAmbrosia,
+          ateArtisanBread: playerInfo.ateArtisanBread
+        }
+      };
+    case "PlayerInventorySlot":
+      let playerInventorySlot = packet._0;
+      return {
+        TAG: "PlayerInventorySlot",
+        _0: {
+          playerId: playerInventorySlot.playerId,
+          slot: playerInventorySlot.slot,
+          stack: playerInventorySlot.stack,
+          prefix: playerInventorySlot.prefix,
+          itemId: playerInventorySlot.itemType
+        }
+      };
+    case "WorldInfo":
+      return {
+        TAG: "WorldInfo",
+        _0: worldInfoToV1449(packet._0)
+      };
+    case "InitialTileSectionsRequest":
+      let req = packet._0;
+      return {
+        TAG: "InitialTileSectionsRequest",
+        _0: {
+          x: req.x,
+          y: req.y
+        }
+      };
+    case "PlayerSpawn":
+      let playerSpawn = packet._0;
+      return {
+        TAG: "PlayerSpawn",
+        _0: {
+          playerId: playerSpawn.playerId,
+          x: playerSpawn.x,
+          y: playerSpawn.y,
+          timeRemaining: playerSpawn.timeRemaining,
+          numberOfDeathsPve: playerSpawn.numberOfDeathsPve,
+          numberOfDeathsPvp: playerSpawn.numberOfDeathsPvp,
+          context: playerSpawnContextToV1449(playerSpawn.context)
+        }
+      };
+    case "PlayerUpdate":
+      let playerUpdate = packet._0;
+      return {
+        TAG: "PlayerUpdate",
+        _0: {
+          playerId: playerUpdate.playerId,
+          control: playerUpdateControlToV1449(playerUpdate.control),
+          direction: playerUpdateDirectionToV1449(playerUpdate.direction),
+          pulleyDirection: playerUpdatePulleyDirectionToV1449(playerUpdate.pulleyDirection),
+          vortexStealthActive: playerUpdate.vortexStealthActive,
+          gravityDirection: playerUpdateGravityDirectionToV1449(playerUpdate.gravityDirection),
+          shouldGuard: playerUpdate.shieldRaised,
+          ghost: playerUpdate.ghost,
+          selectedItem: playerUpdate.selectedItem,
+          position: playerUpdate.position,
+          velocity: playerUpdate.velocity,
+          potionOfReturn: playerUpdatePotionOfReturnToV1449(playerUpdate.potionOfReturn),
+          tryKeepingHoveringUp: playerUpdate.tryKeepingHoveringUp,
+          isVoidVaultEnabled: playerUpdate.isVoidVaultEnabled,
+          isSitting: playerUpdate.isSitting,
+          hasFinishedAnyDd2Event: playerUpdate.hasFinishedAnyDd2Event,
+          isPettingAnimal: playerUpdate.isPettingAnimal,
+          isTheAnimalBeingPetSmall: playerUpdate.isTheAnimalBeingPetSmall,
+          tryKeepingHoveringDown: playerUpdate.tryKeepingHoveringDown,
+          isSleeping: playerUpdate.isSleeping
+        }
+      };
+    case "ItemOwner":
+      let itemOwner = packet._0;
+      return {
+        TAG: "ItemOwner",
+        _0: {
+          itemDropId: itemOwner.itemDropId,
+          owner: itemOwner.owner
+        }
+      };
+    case "NpcUpdate":
+      let npcUpdate = packet._0;
+      return {
+        TAG: "NpcUpdate",
+        _0: {
+          npcSlotId: npcUpdate.npcSlotId,
+          npcTypeId: npcUpdate.npcTypeId,
+          x: npcUpdate.x,
+          y: npcUpdate.y,
+          vx: npcUpdate.vx,
+          vy: npcUpdate.vy,
+          target: npcUpdate.target,
+          directionX: npcUpdate.directionX,
+          directionY: npcUpdate.directionY,
+          ai: npcUpdate.ai,
+          spriteDirection: npcUpdate.spriteDirection,
+          life: npcUpdateLifeToV1449(npcUpdate.life),
+          releaseOwner: npcUpdate.releaseOwner,
+          playerCountScale: npcUpdate.playerCountScale,
+          strengthMultiplier: npcUpdate.difficulty,
+          spawnedFromStatue: npcUpdate.spawnedFromStatue
+        }
+      };
+    case "Zones":
+      let zones = packet._0;
+      return {
+        TAG: "Zones",
+        _0: {
+          playerId: zones.playerId,
+          zone1: zones.zone1,
+          zone2: zones.zone2,
+          zone3: zones.zone3,
+          zone4: zones.zone4,
+          zone5: zones.zone5
+        }
+      };
+    case "PlayerBuffsSet":
+      let playerBuffsSet = packet._0;
+      let buffs = make2(44, 0);
+      let max2 = min(44, playerBuffsSet.buffs.length);
+      for (let i = 0; i < max2; ++i) {
+        buffs[i] = playerBuffsSet.buffs[i];
+      }
+      return {
+        TAG: "PlayerBuffsSet",
+        _0: {
+          playerId: playerBuffsSet.playerId,
+          buffs
+        }
+      };
+    case "NpcBuffUpdate":
+      let npcBuffUpdate = packet._0;
+      let buffs$1 = make2(20, 0);
+      let buffTimes = make2(20, 0);
+      let max$1 = min(20, npcBuffUpdate.buffs.length);
+      for (let i$1 = 0; i$1 < max$1; ++i$1) {
+        buffs$1[i$1] = npcBuffUpdate.buffs[i$1];
+        buffTimes[i$1] = npcBuffUpdate.buffTimes[i$1];
+      }
+      return {
+        TAG: "NpcBuffUpdate",
+        _0: {
+          npcId: npcBuffUpdate.npcId,
+          buffs: buffs$1,
+          buffTimes
+        }
+      };
+    case "Teleport":
+      let teleport = packet._0;
+      let match = teleport.teleportType;
+      let tmp;
+      switch (match) {
+        case "Npc":
+          tmp = "Npc";
+          break;
+        case "PlayerToPlayer":
+          tmp = "PlayerToPlayer";
+          break;
+        case "Player":
+        case "TeleportAck":
+          tmp = "Player";
+          break;
+      }
+      return {
+        TAG: "Teleport",
+        _0: {
+          teleportType: tmp,
+          getPositionFromTarget: teleport.getPositionFromTarget,
+          targetId: teleport.targetId,
+          x: teleport.x,
+          y: teleport.y,
+          style: teleport.style,
+          extraInfo: teleport.extraInfo
+        }
+      };
+    case "TravellingMerchantInventory":
+      let inv = packet._0;
+      let items = make2(40, 0);
+      let max$2 = min(40, inv.items.length);
+      for (let i$2 = 0; i$2 < max$2; ++i$2) {
+        items[i$2] = inv.items[i$2];
+      }
+      return {
+        TAG: "TravellingMerchantInventory",
+        _0: {
+          items
+        }
+      };
+    case "TeleportationPotion":
+      let match$1 = packet._0.teleportType;
+      let tmp$1;
+      switch (match$1) {
+        case "MagicConch":
+          tmp$1 = "MagicConch";
+          break;
+        case "DemonConch":
+          tmp$1 = "DemonConch";
+          break;
+        case "ShellphoneSpawn":
+          tmp$1 = "ShellphoneSpawn";
+          break;
+        case "TeleportationPotion":
+        case "PlayerNoSpaceTeleport":
+          tmp$1 = "TeleportationPotion";
+          break;
+      }
+      return {
+        TAG: "TeleportationPotion",
+        _0: {
+          teleportType: tmp$1
+        }
+      };
+    case "ItemForceIntoNearestChest":
+      let itemForce = packet._0;
+      if (itemForce.TAG === "ClientRequest") {
+        return {
+          TAG: "ItemForceIntoNearestChest",
+          _0: {
+            slot: getOr(itemForce._0.slotIds[0], 0)
+          }
+        };
+      } else {
+        return {
+          TAG: "ItemForceIntoNearestChest",
+          _0: {
+            slot: 0
+          }
+        };
+      }
+    case "TileEntityDisplayDollItemSync":
+      let tileEntityDisplayDollItemSync = packet._0;
+      let item = tileEntityDisplayDollItemSync.data;
+      if (item.TAG !== "Item") {
+        return {
+          TAG: "TileEntityDisplayDollItemSync",
+          _0: {
+            playerId: tileEntityDisplayDollItemSync.playerId,
+            tileEntityId: tileEntityDisplayDollItemSync.tileEntityId,
+            itemIndex: tileEntityDisplayDollItemSync.itemIndex,
+            itemId: 0,
+            stack: 0,
+            prefix: 0
+          }
+        };
+      }
+      let item$1 = item._0;
+      return {
+        TAG: "TileEntityDisplayDollItemSync",
+        _0: {
+          playerId: tileEntityDisplayDollItemSync.playerId,
+          tileEntityId: tileEntityDisplayDollItemSync.tileEntityId,
+          itemIndex: tileEntityDisplayDollItemSync.itemIndex,
+          itemId: item$1.itemId,
+          stack: item$1.stack,
+          prefix: item$1.prefix
+        }
+      };
+    case "PlayerLuckFactorsUpdate":
+      let playerLuckFactorsUpdate = packet._0;
+      return {
+        TAG: "PlayerLuckFactorsUpdate",
+        _0: {
+          playerId: playerLuckFactorsUpdate.playerId,
+          ladyBugLuckTimeLeft: playerLuckFactorsUpdate.ladyBugLuckTimeLeft,
+          torchLuck: playerLuckFactorsUpdate.torchLuck,
+          luckPotion: playerLuckFactorsUpdate.luckPotion,
+          hasGardenGnomeNearby: playerLuckFactorsUpdate.hasGardenGnomeNearby,
+          equipmentBasedLuckBonus: playerLuckFactorsUpdate.equipmentBasedLuckBonus,
+          coinLuck: playerLuckFactorsUpdate.coinLuck
+        }
+      };
+    case "ShimmerEffectOrCoinLuck":
+      let shimmerEffectOrCoinLuck = packet._0;
+      if (shimmerEffectOrCoinLuck.TAG === "ShimmerEffect") {
+        return {
+          TAG: "ShimmerEffectOrCoinLuck",
+          _0: {
+            TAG: "ShimmerEffect",
+            _0: shimmerEffectOrCoinLuck._0,
+            _1: shimmerEffectOrCoinLuck._1
+          }
+        };
+      } else {
+        return {
+          TAG: "ShimmerEffectOrCoinLuck",
+          _0: {
+            TAG: "CoinLuck",
+            _0: shimmerCoinLuckToV1449(shimmerEffectOrCoinLuck._0)
+          }
+        };
+      }
+    default:
+      return packet;
+  }
+}
+function convertFromV1449IfNeeded(buffer, fromServer) {
   let match = buffer.length;
   if (!(match > 2 || match < 0)) {
     return {
@@ -20314,7 +24037,23 @@ function convertv1449IfNeeded(buffer, fromServer) {
   }
   switch (match$1) {
     case "PlayerInfo":
+    case "PlayerInventorySlot":
     case "WorldInfo":
+    case "InitialTileSectionsRequest":
+    case "PlayerSpawn":
+    case "PlayerUpdate":
+    case "ItemOwner":
+    case "NpcUpdate":
+    case "Zones":
+    case "PlayerBuffsSet":
+    case "NpcBuffUpdate":
+    case "Teleport":
+    case "TravellingMerchantInventory":
+    case "TeleportationPotion":
+    case "ItemForceIntoNearestChest":
+    case "TileEntityDisplayDollItemSync":
+    case "PlayerLuckFactorsUpdate":
+    case "ShimmerEffectOrCoinLuck":
       break;
     default:
       return {
@@ -20323,23 +24062,71 @@ function convertv1449IfNeeded(buffer, fromServer) {
       };
   }
   try {
-    return map2(map2(parse146(buffer, fromServer), (oldPacket) => {
-      switch (oldPacket.TAG) {
-        case "PlayerInfo":
-          return {
-            TAG: "PlayerInfo",
-            _0: fromv1449(oldPacket._0)
-          };
-        case "WorldInfo":
-          return {
-            TAG: "WorldInfo",
-            _0: fromv14492(oldPacket._0)
-          };
-        default:
-          return oldPacket;
-      }
-    }), (p) => ({
+    return map2(map2(parse147(buffer, fromServer), fromV1449), (p) => ({
       TAG: "ConvertedToLatestVersion",
+      _0: p
+    }));
+  } catch (raw_obj) {
+    let obj = internalToException(raw_obj);
+    if (obj.RE_EXN_ID === "JsExn") {
+      return {
+        TAG: "Error",
+        _0: {
+          TAG: "ReaderError",
+          _0: {
+            context: "Parser.parseLazy",
+            error: obj._1
+          }
+        }
+      };
+    }
+    throw obj;
+  }
+}
+function convertToV1449IfNeeded(buffer, fromServer) {
+  let match = buffer.length;
+  if (!(match > 2 || match < 0)) {
+    return {
+      TAG: "Error",
+      _0: "InvalidPacketLength"
+    };
+  }
+  let match$1 = fromInt(buffer[2]);
+  if (match$1 === void 0) {
+    return {
+      TAG: "Error",
+      _0: "InvalidPacketType"
+    };
+  }
+  switch (match$1) {
+    case "PlayerInfo":
+    case "PlayerInventorySlot":
+    case "WorldInfo":
+    case "InitialTileSectionsRequest":
+    case "PlayerSpawn":
+    case "PlayerUpdate":
+    case "ItemOwner":
+    case "NpcUpdate":
+    case "Zones":
+    case "PlayerBuffsSet":
+    case "NpcBuffUpdate":
+    case "Teleport":
+    case "TravellingMerchantInventory":
+    case "TeleportationPotion":
+    case "ItemForceIntoNearestChest":
+    case "TileEntityDisplayDollItemSync":
+    case "PlayerLuckFactorsUpdate":
+    case "ShimmerEffectOrCoinLuck":
+      break;
+    default:
+      return {
+        TAG: "Ok",
+        _0: "PacketStructureIsSame"
+      };
+  }
+  try {
+    return map2(map2(parse179(buffer, fromServer), v1449ToLatest), (p) => ({
+      TAG: "ConvertedToV1449",
       _0: p
     }));
   } catch (raw_obj) {
@@ -20379,99 +24166,99 @@ var Float = {
   toString: toString$12
 };
 export {
-  Packet_AnglerQuestComplete_exports as AnglerQuestCompletePacket,
-  Packet_AnglerQuest_exports as AnglerQuestPacket,
+  PacketV1449_AnglerQuestComplete_exports as AnglerQuestCompletePacket,
+  PacketV1449_AnglerQuest_exports as AnglerQuestPacket,
   Array16_exports as Array16,
   ArrayExt_exports as ArrayExt,
   BitFlags_exports as BitFlags,
-  Packet_BossOrInvasionSpawn_exports as BossOrInvasionSpawnPacket,
-  Packet_ChatMessageSmart_exports as ChatMessageSmartPacket,
-  Packet_ChestItem_exports as ChestItemPacket,
-  Packet_ChestOrTempleUnlock_exports as ChestOrTempleUnlockPacket,
-  Packet_ChestPlace_exports as ChestPlacePacket,
-  Packet_ClientFinishConnectingToServer_exports as ClientFinishConnectingToServerPacket,
-  Packet_ClientUuid_exports as ClientUuidPacket,
-  Packet_ConnectRequest_exports as ConnectRequestPacket,
-  Packet_CountsAsHostForGameplaySet_exports as CountsAsHostForGameplaySetPacket,
+  PacketV1449_BossOrInvasionSpawn_exports as BossOrInvasionSpawnPacket,
+  PacketV1449_ChatMessageSmart_exports as ChatMessageSmartPacket,
+  PacketV1449_ChestItem_exports as ChestItemPacket,
+  PacketV1449_ChestOrTempleUnlock_exports as ChestOrTempleUnlockPacket,
+  PacketV1449_ChestPlace_exports as ChestPlacePacket,
+  PacketV1449_ClientFinishConnectingToServer_exports as ClientFinishConnectingToServerPacket,
+  PacketV1449_ClientUuid_exports as ClientUuidPacket,
+  PacketV1449_ConnectRequest_exports as ConnectRequestPacket,
+  PacketV1449_CountsAsHostForGameplaySet_exports as CountsAsHostForGameplaySetPacket,
   CreativePowers_exports as CreativePowers,
-  Packet_CreditsOrSlimeTransform_exports as CreditsOrSlimeTransformPacket,
-  Packet_CrystalInvasionStart_exports as CrystalInvasionStartPacket,
-  Packet_DimensionsUpdate_exports as DimensionsUpdatePacket,
-  Packet_Disconnect_exports as DisconnectPacket,
+  PacketV1449_CreditsOrSlimeTransform_exports as CreditsOrSlimeTransformPacket,
+  PacketV1449_CrystalInvasionStart_exports as CrystalInvasionStartPacket,
+  PacketV1449_DimensionsUpdate_exports as DimensionsUpdatePacket,
+  PacketV1449_Disconnect_exports as DisconnectPacket,
   ErrorAwarePacketWriter_exports as ErrorAwarePacketWriter,
-  Packet_ExtraValueSync_exports as ExtraValueSyncPacket,
-  Packet_HaveDryadDoStardewAnimation_exports as HaveDryadDoStardewAnimationPacket,
-  Packet_InvasionProgressReport_exports as InvasionProgressReportPacket,
-  Packet_ItemDropShimmeredUpdate_exports as ItemDropShimmeredUpdatePacket,
-  Packet_ItemDropUpdate_exports as ItemDropUpdatePacket,
-  Packet_ItemOwner_exports as ItemOwnerPacket,
-  Packet_ItemOwnerRemove_exports as ItemOwnerRemovePacket,
-  Packet_LoadoutSwitch_exports as LoadoutSwitchPacket,
-  Packet_NetModuleLoad_exports as NetModuleLoadPacket,
-  Packet_NpcBuffRemovalRequest_exports as NpcBuffRemovalRequestPacket,
-  Packet_NpcBuffUpdate_exports as NpcBuffUpdatePacket,
-  Packet_NpcCatch_exports as NpcCatchPacket,
-  Packet_NpcFishOut_exports as NpcFishOutPacket,
-  Packet_NpcHomeUpdate_exports as NpcHomeUpdatePacket,
-  Packet_NpcKillCount_exports as NpcKillCountPacket,
-  Packet_NpcNameUpdate_exports as NpcNameUpdatePacket,
-  Packet_NpcShopItem_exports as NpcShopItemPacket,
-  Packet_NpcTalk_exports as NpcTalkPacket,
-  Packet_NpcTeleportPortal_exports as NpcTeleportPortalPacket,
-  Packet_NpcUpdate_exports as NpcUpdatePacket,
-  Packet_ObjectPlace_exports as ObjectPlacePacket,
+  PacketV1449_ExtraValueSync_exports as ExtraValueSyncPacket,
+  PacketV1449_HaveDryadDoStardewAnimation_exports as HaveDryadDoStardewAnimationPacket,
+  PacketV1449_InvasionProgressReport_exports as InvasionProgressReportPacket,
+  PacketV1449_ItemDropShimmeredUpdate_exports as ItemDropShimmeredUpdatePacket,
+  PacketV1449_ItemDropUpdate_exports as ItemDropUpdatePacket,
+  PacketV1449_ItemOwner_exports as ItemOwnerPacket,
+  PacketV1449_ItemOwnerRemove_exports as ItemOwnerRemovePacket,
+  PacketV1449_LoadoutSwitch_exports as LoadoutSwitchPacket,
+  PacketV1449_NetModuleLoad_exports as NetModuleLoadPacket,
+  PacketV1449_NpcBuffRemovalRequest_exports as NpcBuffRemovalRequestPacket,
+  PacketV1449_NpcBuffUpdate_exports as NpcBuffUpdatePacket,
+  PacketV1449_NpcCatch_exports as NpcCatchPacket,
+  PacketV1449_NpcFishOut_exports as NpcFishOutPacket,
+  PacketV1449_NpcHomeUpdate_exports as NpcHomeUpdatePacket,
+  PacketV1449_NpcKillCount_exports as NpcKillCountPacket,
+  PacketV1449_NpcNameUpdate_exports as NpcNameUpdatePacket,
+  PacketV1449_NpcShopItem_exports as NpcShopItemPacket,
+  PacketV1449_NpcTalk_exports as NpcTalkPacket,
+  PacketV1449_NpcTeleportPortal_exports as NpcTeleportPortalPacket,
+  PacketV1449_NpcUpdate_exports as NpcUpdatePacket,
+  PacketV1449_ObjectPlace_exports as ObjectPlacePacket,
   Parser_exports as Parser,
-  Packet_PartyToggle_exports as PartyTogglePacket,
-  Packet_PlayerActive_exports as PlayerActivePacket,
-  Packet_PlayerAnimation_exports as PlayerAnimationPacket,
-  Packet_PlayerBuffAdd_exports as PlayerBuffAddPacket,
-  Packet_PlayerBuffsSet_exports as PlayerBuffsSetPacket,
-  Packet_PlayerChestIndexSync_exports as PlayerChestIndexSyncPacket,
-  Packet_PlayerDamage_exports as PlayerDamagePacket,
-  Packet_PlayerDead_exports as PlayerDeadPacket,
-  Packet_PlayerDeath_exports as PlayerDeathPacket,
+  PacketV1449_PartyToggle_exports as PartyTogglePacket,
+  PacketV1449_PlayerActive_exports as PlayerActivePacket,
+  PacketV1449_PlayerAnimation_exports as PlayerAnimationPacket,
+  PacketV1449_PlayerBuffAdd_exports as PlayerBuffAddPacket,
+  PacketV1449_PlayerBuffsSet_exports as PlayerBuffsSetPacket,
+  PacketV1449_PlayerChestIndexSync_exports as PlayerChestIndexSyncPacket,
+  PacketV1449_PlayerDamage_exports as PlayerDamagePacket,
+  PacketV1449_PlayerDead_exports as PlayerDeadPacket,
+  PacketV1449_PlayerDeath_exports as PlayerDeathPacket,
   PlayerDeathReason_exports as PlayerDeathReason,
-  Packet_PlayerDodge_exports as PlayerDodgePacket,
-  Packet_PlayerHealth_exports as PlayerHealthPacket,
-  Packet_PlayerInfo_exports as PlayerInfoPacket,
-  Packet_PlayerInventorySlot_exports as PlayerInventorySlotPacket,
-  Packet_PlayerMana_exports as PlayerManaPacket,
-  Packet_PlayerSlotSet_exports as PlayerSlotSetPacket,
-  Packet_PlayerSpawn_exports as PlayerSpawnPacket,
-  Packet_PlayerTeam_exports as PlayerTeamPacket,
-  Packet_PlayerUpdate_exports as PlayerUpdatePacket,
+  PacketV1449_PlayerDodge_exports as PlayerDodgePacket,
+  PacketV1449_PlayerHealth_exports as PlayerHealthPacket,
+  PacketV1449_PlayerInfo_exports as PlayerInfoPacket,
+  PacketV1449_PlayerInventorySlot_exports as PlayerInventorySlotPacket,
+  PacketV1449_PlayerMana_exports as PlayerManaPacket,
+  PacketV1449_PlayerSlotSet_exports as PlayerSlotSetPacket,
+  PacketV1449_PlayerSpawn_exports as PlayerSpawnPacket,
+  PacketV1449_PlayerTeam_exports as PlayerTeamPacket,
+  PacketV1449_PlayerUpdate_exports as PlayerUpdatePacket,
   Point_exports as Point,
-  Packet_ProjectileSync_exports as ProjectileSyncPacket,
-  Packet_PvpToggle_exports as PvpTogglePacket,
-  Packet_ShimmerEffectOrCoinLuck_exports as ShimmerEffectOrCoinLuckPacket,
-  Packet_SignNew_exports as SignNewPacket,
-  Packet_SignRead_exports as SignReadPacket,
-  Packet_SmokePoof_exports as SmokePoofPacket,
-  Packet_SocialHandshake_exports as SocialHandshakePacket,
-  Packet_Status_exports as StatusPacket,
-  Packet_SwitchHit_exports as SwitchHitPacket,
-  Packet_Teleport_exports as TeleportPacket,
-  Packet_TeleportationPotion_exports as TeleportationPotionPacket,
-  Packet_TemporaryAnimationCreate_exports as TemporaryAnimationCreatePacket,
-  Packet_TileEntityDisplayDollItemSync_exports as TileEntityDisplayDollItemSyncPacket,
-  Packet_TileEntityHatRackItemSync_exports as TileEntityHatRackItemSyncPacket,
-  Packet_TileEntityInteractionRequest_exports as TileEntityInteractionRequestPacket,
-  Packet_TileEntityPlace_exports as TileEntityPlacePacket,
-  Packet_TileEntityUpdate_exports as TileEntityUpdatePacket,
-  Packet_TileModify_exports as TileModifyPacket,
-  Packet_TilePaint_exports as TilePaintPacket,
-  Packet_TilePickingSync_exports as TilePickingSyncPacket,
-  Packet_TileSectionFrame_exports as TileSectionFramePacket,
-  Packet_TileSectionSend_exports as TileSectionSendPacket,
-  Packet_TileSquareSend_exports as TileSquareSendPacket,
-  Packet_TimeSet_exports as TimeSetPacket,
-  Packet_TravellingMerchantInventory_exports as TravellingMerchantInventoryPacket,
-  Packet_TreeGrowFx_exports as TreeGrowFxPacket,
-  Packet_Unused_exports as UnusedPacket,
-  Packet_WallPaint_exports as WallPaintPacket,
-  Packet_WeaponsRackTryPlacing_exports as WeaponsRackTryPlacingPacket,
-  Packet_WiredCannonShot_exports as WiredCannonShotPacket,
-  Packet_WorldDataRequest_exports as WorldDataRequestPacket,
-  Packet_WorldInfo_exports as WorldInfoPacket,
-  Packet_Zones_exports as ZonesPacket
+  PacketV1449_ProjectileSync_exports as ProjectileSyncPacket,
+  PacketV1449_PvpToggle_exports as PvpTogglePacket,
+  PacketV1449_ShimmerEffectOrCoinLuck_exports as ShimmerEffectOrCoinLuckPacket,
+  PacketV1449_SignNew_exports as SignNewPacket,
+  PacketV1449_SignRead_exports as SignReadPacket,
+  PacketV1449_SmokePoof_exports as SmokePoofPacket,
+  PacketV1449_SocialHandshake_exports as SocialHandshakePacket,
+  PacketV1449_Status_exports as StatusPacket,
+  PacketV1449_SwitchHit_exports as SwitchHitPacket,
+  PacketV1449_Teleport_exports as TeleportPacket,
+  PacketV1449_TeleportationPotion_exports as TeleportationPotionPacket,
+  PacketV1449_TemporaryAnimationCreate_exports as TemporaryAnimationCreatePacket,
+  PacketV1449_TileEntityDisplayDollItemSync_exports as TileEntityDisplayDollItemSyncPacket,
+  PacketV1449_TileEntityHatRackItemSync_exports as TileEntityHatRackItemSyncPacket,
+  PacketV1449_TileEntityInteractionRequest_exports as TileEntityInteractionRequestPacket,
+  PacketV1449_TileEntityPlace_exports as TileEntityPlacePacket,
+  PacketV1449_TileEntityUpdate_exports as TileEntityUpdatePacket,
+  PacketV1449_TileModify_exports as TileModifyPacket,
+  PacketV1449_TilePaint_exports as TilePaintPacket,
+  PacketV1449_TilePickingSync_exports as TilePickingSyncPacket,
+  PacketV1449_TileSectionFrame_exports as TileSectionFramePacket,
+  PacketV1449_TileSectionSend_exports as TileSectionSendPacket,
+  PacketV1449_TileSquareSend_exports as TileSquareSendPacket,
+  PacketV1449_TimeSet_exports as TimeSetPacket,
+  PacketV1449_TravellingMerchantInventory_exports as TravellingMerchantInventoryPacket,
+  PacketV1449_TreeGrowFx_exports as TreeGrowFxPacket,
+  PacketV1449_Unused_exports as UnusedPacket,
+  PacketV1449_WallPaint_exports as WallPaintPacket,
+  PacketV1449_WeaponsRackTryPlacing_exports as WeaponsRackTryPlacingPacket,
+  PacketV1449_WiredCannonShot_exports as WiredCannonShotPacket,
+  PacketV1449_WorldDataRequest_exports as WorldDataRequestPacket,
+  PacketV1449_WorldInfo_exports as WorldInfoPacket,
+  PacketV1449_Zones_exports as ZonesPacket
 };

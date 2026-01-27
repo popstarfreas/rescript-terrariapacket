@@ -1,16 +1,16 @@
 module ConnectRequest = PacketV1449_ConnectRequest
 module Disconnect = PacketV1449_Disconnect
 module PlayerSlotSet = PacketV1449_PlayerSlotSet
-module PlayerInfo = PacketV1449_PlayerInfo
-module PlayerInventorySlot = PacketV1449_PlayerInventorySlot
+module PlayerInfo = Packet_PlayerInfo
+module PlayerInventorySlot = Packet_PlayerInventorySlot
 module WorldDataRequest = PacketV1449_WorldDataRequest
-module WorldInfo = PacketV1449_WorldInfo
-module InitialTileSectionsRequest = PacketV1449_InitialTileSectionsRequest
+module WorldInfo = Packet_WorldInfo
+module InitialTileSectionsRequest = Packet_InitialTileSectionsRequest
 module Status = PacketV1449_Status
 module TileSectionSend = PacketV1449_TileSectionSend
 module TileSectionFrame = PacketV1449_TileSectionFrame
-module PlayerSpawn = PacketV1449_PlayerSpawn
-module PlayerUpdate = PacketV1449_PlayerUpdate
+module PlayerSpawn = Packet_PlayerSpawn
+module PlayerUpdate = Packet_PlayerUpdate
 module PlayerActive = PacketV1449_PlayerActive
 module PlayerHealth = PacketV1449_PlayerHealth
 module TileModify = PacketV1449_TileModify
@@ -18,8 +18,8 @@ module TimeSet = PacketV1449_TimeSet
 module DoorUse = PacketV1449_DoorUse
 module TileSquareSend = PacketV1449_TileSquareSend
 module ItemDropUpdate = PacketV1449_ItemDropUpdate
-module ItemOwner = PacketV1449_ItemOwner
-module NpcUpdate = PacketV1449_NpcUpdate
+module ItemOwner = Packet_ItemOwner
+module NpcUpdate = Packet_NpcUpdate
 module NpcItemStrike = PacketV1449_NpcItemStrike
 module ProjectileSync = PacketV1449_ProjectileSync
 module NpcStrike = PacketV1449_NpcStrike
@@ -30,7 +30,7 @@ module ChestItem = PacketV1449_ChestItem
 module ActiveContainerSync = PacketV1449_ActiveContainerSync
 module ChestPlace = PacketV1449_ChestPlace
 module HealEffect = PacketV1449_HealEffect
-module Zones = PacketV1449_Zones
+module Zones = Packet_Zones
 module PasswordRequired = PacketV1449_PasswordRequired
 module PasswordSend = PacketV1449_PasswordSend
 module ItemOwnerRemove = PacketV1449_ItemOwnerRemove
@@ -43,11 +43,11 @@ module SignRead = PacketV1449_SignRead
 module SignNew = PacketV1449_SignNew
 module LiquidSet = PacketV1449_LiquidSet
 module PlayerSpawnSelf = PacketV1449_PlayerSpawnSelf
-module PlayerBuffsSet = PacketV1449_PlayerBuffsSet
+module PlayerBuffsSet = Packet_PlayerBuffsSet
 module NpcSpecialEffect = PacketV1449_NpcSpecialEffect
 module ChestOrTempleUnlock = PacketV1449_ChestOrTempleUnlock
 module NpcBuffAdd = PacketV1449_NpcBuffAdd
-module NpcBuffUpdate = PacketV1449_NpcBuffUpdate
+module NpcBuffUpdate = Packet_NpcBuffUpdate
 module PlayerBuffAdd = PacketV1449_PlayerBuffAdd
 module NpcNameUpdate = PacketV1449_NpcNameUpdate
 module GoodEvilUpdate = PacketV1449_GoodEvilUpdate
@@ -58,15 +58,15 @@ module BossOrInvasionSpawn = PacketV1449_BossOrInvasionSpawn
 module PlayerDodge = PacketV1449_PlayerDodge
 module TilePaint = PacketV1449_TilePaint
 module WallPaint = PacketV1449_WallPaint
-module Teleport = PacketV1449_Teleport
+module Teleport = Packet_Teleport
 module PlayerHealOther = PacketV1449_PlayerHealOther
 module DimensionsUpdate = PacketV1449_DimensionsUpdate
 module ClientUuid = PacketV1449_ClientUuid
 module ChestName = PacketV1449_ChestName
 module NpcCatch = PacketV1449_NpcCatch
 module NpcRelease = PacketV1449_NpcRelease
-module TravellingMerchantInventory = PacketV1449_TravellingMerchantInventory
-module TeleportationPotion = PacketV1449_TeleportationPotion
+module TravellingMerchantInventory = Packet_TravellingMerchantInventory
+module TeleportationPotion = Packet_TeleportationPotion
 module AnglerQuest = PacketV1449_AnglerQuest
 module AnglerQuestComplete = PacketV1449_AnglerQuestComplete
 module AnglerQuestsCompletedAmount = PacketV1449_AnglerQuestsCompletedAmount
@@ -78,7 +78,7 @@ module CombatNumberCreate = PacketV1449_CombatNumberCreate
 module NetModuleLoad = PacketV1449_NetModuleLoad
 module NpcKillCount = PacketV1449_NpcKillCount
 module PlayerStealth = PacketV1449_PlayerStealth
-module ItemForceIntoNearestChest = PacketV1449_ItemForceIntoNearestChest
+module ItemForceIntoNearestChest = Packet_ItemForceIntoNearestChest
 module TileEntityUpdate = PacketV1449_TileEntityUpdate
 module TileEntityPlace = PacketV1449_TileEntityPlace
 module ItemDropModify = PacketV1449_ItemDropModify
@@ -87,7 +87,7 @@ module ItemDropInstancedUpdate = PacketV1449_ItemDropInstancedUpdate
 module EmoteBubble = PacketV1449_EmoteBubble
 module ExtraValueSync = PacketV1449_ExtraValueSync
 module SocialHandshake = PacketV1449_SocialHandshake
-module Unused = PacketV1449_Unused
+module Unused = Packet_DebugCommand
 module PortalKill = PacketV1449_PortalKill
 module PlayerTeleportPortal = PacketV1449_PlayerTeleportPortal
 module NpcKilledNotification = PacketV1449_NpcKilledNotification
@@ -114,7 +114,7 @@ module PlayerDamage = PacketV1449_PlayerDamage
 module PlayerDeath = PacketV1449_PlayerDeath
 module CombatTextCreate = PacketV1449_CombatTextCreate
 module Emoji = PacketV1449_Emoji
-module TileEntityDisplayDollItemSync = PacketV1449_TileEntityDisplayDollItemSync
+module TileEntityDisplayDollItemSync = Packet_TileEntityDisplayDollItemSync
 module TileEntityInteractionRequest = PacketV1449_TileEntityInteractionRequest
 module WeaponsRackTryPlacing = PacketV1449_WeaponsRackTryPlacing
 module TileEntityHatRackItemSync = PacketV1449_TileEntityHatRackItemSync
@@ -127,7 +127,7 @@ module NpcFishOut = PacketV1449_NpcFishOut
 module NpcTamper = PacketV1449_NpcTamper
 module LegacySoundPlay = PacketV1449_LegacySoundPlay
 module FoodPlatterTryPlacing = PacketV1449_FoodPlatterTryPlacing
-module PlayerLuckFactorsUpdate = PacketV1449_PlayerLuckFactorsUpdate
+module PlayerLuckFactorsUpdate = Packet_PlayerLuckFactorsUpdate
 module PlayerDead = PacketV1449_PlayerDead
 module CavernMonsterTypeSync = PacketV1449_CavernMonsterTypeSync
 module NpcBuffRemovalRequest = PacketV1449_NpcBuffRemovalRequest
@@ -139,9 +139,22 @@ module PiggyBankVoidLensUpdate = PacketV1449_PiggyBankVoidLensUpdate
 module DungeonDefendersEventAttemptSkipWait = PacketV1449_DungeonDefendersEventAttemptSkipWait
 module HaveDryadDoStardewAnimation = PacketV1449_HaveDryadDoStardewAnimation
 module ItemDropShimmeredUpdate = PacketV1449_ItemDropShimmeredUpdate
-module ShimmerEffectOrCoinLuck = PacketV1449_ShimmerEffectOrCoinLuck
+module ShimmerEffectOrCoinLuck = Packet_ShimmerEffectOrCoinLuck
 module LoadoutSwitch = PacketV1449_LoadoutSwitch
 module ItemDropProtectedUpdate = PacketV1449_ItemDropProtectedUpdate
+module DeadCellsDisplayJarTryPlacing = Packet_DeadCellsDisplayJarTryPlacing
+module PlayerSpectate = Packet_PlayerSpectate
+module ItemDropClear = Packet_ItemDropClear
+module PlayerItemUseSound = Packet_PlayerItemUseSound
+module NpcHurtByDebuff = Packet_NpcHurtByDebuff
+module Ping = Packet_Ping
+module ChestResize = Packet_ChestResize
+module LeashedEntityAnchorInsertItem = Packet_LeashedEntityAnchorInsertItem
+module PlayerTeamUpdate = Packet_PlayerTeamUpdate
+module PlayerTeamSwapSpawn = Packet_PlayerTeamSwapSpawn
+module SectionRequest = Packet_SectionRequest
+module ItemDropPosition = Packet_ItemDropPosition
+module HostToken = Packet_HostToken
 type t =
   | ConnectRequest(ConnectRequest.t)
   | Disconnect(Disconnect.t)
@@ -287,6 +300,19 @@ type t =
   | ShimmerEffectOrCoinLuck(ShimmerEffectOrCoinLuck.t)
   | LoadoutSwitch(LoadoutSwitch.t)
   | ItemDropProtectedUpdate(ItemDropProtectedUpdate.t)
+  | DeadCellsDisplayJarTryPlacing(DeadCellsDisplayJarTryPlacing.t)
+  | PlayerSpectate(PlayerSpectate.t)
+  | ItemDropClear(ItemDropClear.t)
+  | PlayerItemUseSound(PlayerItemUseSound.t)
+  | NpcHurtByDebuff(NpcHurtByDebuff.t)
+  | Ping(Ping.t)
+  | ChestResize(ChestResize.t)
+  | LeashedEntityAnchorInsertItem(LeashedEntityAnchorInsertItem.t)
+  | PlayerTeamUpdate(PlayerTeamUpdate.t)
+  | PlayerTeamSwapSpawn(PlayerTeamSwapSpawn.t)
+  | SectionRequest(SectionRequest.t)
+  | ItemDropPosition(ItemDropPosition.t)
+  | HostToken(HostToken.t)
 module LazyPacket: {
   type lazyParsed<'a> = Lazy.t<result<'a, ErrorAwarePacketReader.readError>>
   type t =
@@ -434,6 +460,19 @@ module LazyPacket: {
     | ShimmerEffectOrCoinLuck(lazyParsed<ShimmerEffectOrCoinLuck.t>)
     | LoadoutSwitch(lazyParsed<LoadoutSwitch.t>)
     | ItemDropProtectedUpdate(lazyParsed<ItemDropProtectedUpdate.t>)
+    | DeadCellsDisplayJarTryPlacing(lazyParsed<DeadCellsDisplayJarTryPlacing.t>)
+    | PlayerSpectate(lazyParsed<PlayerSpectate.t>)
+    | ItemDropClear(lazyParsed<ItemDropClear.t>)
+    | PlayerItemUseSound(lazyParsed<PlayerItemUseSound.t>)
+    | NpcHurtByDebuff(lazyParsed<NpcHurtByDebuff.t>)
+    | Ping(lazyParsed<Ping.t>)
+    | ChestResize(lazyParsed<ChestResize.t>)
+    | LeashedEntityAnchorInsertItem(lazyParsed<LeashedEntityAnchorInsertItem.t>)
+    | PlayerTeamUpdate(lazyParsed<PlayerTeamUpdate.t>)
+    | PlayerTeamSwapSpawn(lazyParsed<PlayerTeamSwapSpawn.t>)
+    | SectionRequest(lazyParsed<SectionRequest.t>)
+    | ItemDropPosition(lazyParsed<ItemDropPosition.t>)
+    | HostToken(lazyParsed<HostToken.t>)
   let toPacketName: t => string
 }
 let toBuffer: (t, bool) => ISerializer.toBufferResult

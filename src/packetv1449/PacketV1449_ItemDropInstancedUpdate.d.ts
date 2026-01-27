@@ -1,4 +1,4 @@
-import type { t as Packet_ItemDropUpdate } from "./Packet_ItemDropUpdate.js"
+import type { t as Packet_ItemDropUpdate } from "./PacketV1449_ItemDropUpdate.js"
 import type { readError } from "../ErrorAwarePacketReader.js";
 import type { PackError } from "../ErrorAwarePacketWriter.js";
 

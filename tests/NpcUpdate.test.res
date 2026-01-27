@@ -16,8 +16,10 @@ zoraBlock("should correctly parse and serialise NpcUpdate", t => {
     life: Byte(0),
     releaseOwner: None,
     playerCountScale: None,
-    strengthMultiplier: None,
+    difficulty: None,
     spawnedFromStatue: false,
+    spawnNeedsSyncing: false,
+    shimmerTransparency: false,
   }
 
   let result = Packet_NpcUpdate.toBuffer(data)
