@@ -18518,7 +18518,10 @@ function getParsers(packetType, fromServer) {
     default:
       return {
         TAG: "Error",
-        _0: "InvalidPacketType"
+        _0: {
+          TAG: "InvalidPacketType",
+          _0: toInt(packetType)
+        }
       };
   }
 }
@@ -18527,14 +18530,20 @@ function parse147(buffer, fromServer) {
   if (!(match > 2 || match < 0)) {
     return {
       TAG: "Error",
-      _0: "InvalidPacketLength"
+      _0: {
+        TAG: "InvalidPacketLength",
+        _0: buffer.length
+      }
     };
   }
   let packetType = fromInt(buffer[2]);
   if (packetType === void 0) {
     return {
       TAG: "Error",
-      _0: "InvalidPacketType"
+      _0: {
+        TAG: "InvalidPacketType",
+        _0: buffer[2]
+      }
     };
   }
   try {
@@ -23440,14 +23449,20 @@ function parse179(buffer, fromServer) {
   if (!(match > 2 || match < 0)) {
     return {
       TAG: "Error",
-      _0: "InvalidPacketLength"
+      _0: {
+        TAG: "InvalidPacketLength",
+        _0: buffer.length
+      }
     };
   }
   let packetType = fromInt(buffer[2]);
   if (packetType === void 0) {
     return {
       TAG: "Error",
-      _0: "InvalidPacketType"
+      _0: {
+        TAG: "InvalidPacketType",
+        _0: buffer[2]
+      }
     };
   }
   try {
@@ -23482,14 +23497,20 @@ function parseLazy(buffer, fromServer) {
   if (!(match > 2 || match < 0)) {
     return {
       TAG: "Error",
-      _0: "InvalidPacketLength"
+      _0: {
+        TAG: "InvalidPacketLength",
+        _0: buffer.length
+      }
     };
   }
   let packetType = fromInt(buffer[2]);
   if (packetType === void 0) {
     return {
       TAG: "Error",
-      _0: "InvalidPacketType"
+      _0: {
+        TAG: "InvalidPacketType",
+        _0: buffer[2]
+      }
     };
   }
   try {
@@ -24669,14 +24690,20 @@ function convertFromV1449IfNeeded(buffer, fromServer) {
   if (!(match > 2 || match < 0)) {
     return {
       TAG: "Error",
-      _0: "InvalidPacketLength"
+      _0: {
+        TAG: "InvalidPacketLength",
+        _0: buffer.length
+      }
     };
   }
   let match$1 = fromInt(buffer[2]);
   if (match$1 === void 0) {
     return {
       TAG: "Error",
-      _0: "InvalidPacketType"
+      _0: {
+        TAG: "InvalidPacketType",
+        _0: buffer[2]
+      }
     };
   }
   switch (match$1) {
@@ -24732,14 +24759,20 @@ function convertToV1449IfNeeded(buffer, fromServer) {
   if (!(match > 2 || match < 0)) {
     return {
       TAG: "Error",
-      _0: "InvalidPacketLength"
+      _0: {
+        TAG: "InvalidPacketLength",
+        _0: buffer.length
+      }
     };
   }
   let match$1 = fromInt(buffer[2]);
   if (match$1 === void 0) {
     return {
       TAG: "Error",
-      _0: "InvalidPacketType"
+      _0: {
+        TAG: "InvalidPacketType",
+        _0: buffer[2]
+      }
     };
   }
   switch (match$1) {
