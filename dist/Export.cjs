@@ -19859,8 +19859,9 @@ function parse156(payload) {
   if (e$7.TAG !== "Ok") {
     return e$7;
   }
+  let rawContext = e$7._0;
   let context;
-  switch (e$7._0) {
+  switch (rawContext) {
     case 0:
       context = "ReviveFromDeath";
       break;
@@ -19870,32 +19871,28 @@ function parse156(payload) {
     case 2:
       context = "RecallFromItem";
       break;
+    case 3:
+      context = "TeamSwap";
+      break;
     default:
-      context = void 0;
+      context = {
+        TAG: "Unknown",
+        _0: rawContext
+      };
   }
-  if (context !== void 0) {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0,
-        x: e$1._0,
-        y: e$2._0,
-        timeRemaining: e$3._0,
-        numberOfDeathsPve: e$4._0,
-        numberOfDeathsPvp: e$5._0,
-        team: e$6._0,
-        context
-      }
-    };
-  } else {
-    return {
-      TAG: "Error",
-      _0: {
-        context: "PlayerSpawn.parse.context",
-        error: new Error("Unknown context")
-      }
-    };
-  }
+  return {
+    TAG: "Ok",
+    _0: {
+      playerId: e._0,
+      x: e$1._0,
+      y: e$2._0,
+      timeRemaining: e$3._0,
+      numberOfDeathsPve: e$4._0,
+      numberOfDeathsPvp: e$5._0,
+      team: e$6._0,
+      context
+    }
+  };
 }
 
 // src/packet/Packet_DebugCommand.js
@@ -24992,13 +24989,16 @@ function playerSpawnContextFromV1449(context) {
   }
 }
 function playerSpawnContextToV1449(context) {
+  if (typeof context === "object") {
+    return "SpawningIntoWorld";
+  }
   switch (context) {
     case "ReviveFromDeath":
       return "ReviveFromDeath";
-    case "SpawningIntoWorld":
-      return "SpawningIntoWorld";
     case "RecallFromItem":
       return "RecallFromItem";
+    default:
+      return "SpawningIntoWorld";
   }
 }
 function playerUpdateControlFromV1449(control) {
