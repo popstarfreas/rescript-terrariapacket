@@ -3152,13 +3152,16 @@ function playerSpawnContextFromV1449(context) {
 }
 
 function playerSpawnContextToV1449(context) {
+  if (typeof context === "object") {
+    return "SpawningIntoWorld";
+  }
   switch (context) {
     case "ReviveFromDeath" :
       return "ReviveFromDeath";
-    case "SpawningIntoWorld" :
-      return "SpawningIntoWorld";
     case "RecallFromItem" :
       return "RecallFromItem";
+    default:
+      return "SpawningIntoWorld";
   }
 }
 

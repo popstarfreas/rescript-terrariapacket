@@ -39,8 +39,9 @@ function parse(payload) {
   if (e$7.TAG !== "Ok") {
     return e$7;
   }
+  let rawContext = e$7._0;
   let context;
-  switch (e$7._0) {
+  switch (rawContext) {
     case 0 :
       context = "ReviveFromDeath";
       break;
@@ -50,32 +51,28 @@ function parse(payload) {
     case 2 :
       context = "RecallFromItem";
       break;
+    case 3 :
+      context = "TeamSwap";
+      break;
     default:
-      context = undefined;
+      context = {
+        TAG: "Unknown",
+        _0: rawContext
+      };
   }
-  if (context !== undefined) {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0,
-        x: e$1._0,
-        y: e$2._0,
-        timeRemaining: e$3._0,
-        numberOfDeathsPve: e$4._0,
-        numberOfDeathsPvp: e$5._0,
-        team: e$6._0,
-        context: context
-      }
-    };
-  } else {
-    return {
-      TAG: "Error",
-      _0: {
-        context: "PlayerSpawn.parse.context",
-        error: new Error("Unknown context")
-      }
-    };
-  }
+  return {
+    TAG: "Ok",
+    _0: {
+      playerId: e._0,
+      x: e$1._0,
+      y: e$2._0,
+      timeRemaining: e$3._0,
+      numberOfDeathsPve: e$4._0,
+      numberOfDeathsPvp: e$5._0,
+      team: e$6._0,
+      context: context
+    }
+  };
 }
 
 let Decode = {
@@ -86,18 +83,25 @@ let Decode = {
 };
 
 function toBuffer(self) {
-  let match = self.context;
+  let n = self.context;
   let tmp;
-  switch (match) {
-    case "ReviveFromDeath" :
-      tmp = 0;
-      break;
-    case "SpawningIntoWorld" :
-      tmp = 1;
-      break;
-    case "RecallFromItem" :
-      tmp = 2;
-      break;
+  if (typeof n !== "object") {
+    switch (n) {
+      case "ReviveFromDeath" :
+        tmp = 0;
+        break;
+      case "SpawningIntoWorld" :
+        tmp = 1;
+        break;
+      case "RecallFromItem" :
+        tmp = 2;
+        break;
+      case "TeamSwap" :
+        tmp = 3;
+        break;
+    }
+  } else {
+    tmp = n._0;
   }
   return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerSpawn")), self.playerId, "playerId"), self.x, "x"), self.y, "y"), self.timeRemaining, "timeRemaining"), self.numberOfDeathsPve, "numberOfDeathsPve"), self.numberOfDeathsPvp, "numberOfDeathsPvp"), self.team, "team"), tmp, "context"));
 }

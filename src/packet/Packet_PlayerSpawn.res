@@ -2,6 +2,8 @@ type context =
   | ReviveFromDeath
   | SpawningIntoWorld
   | RecallFromItem
+  | TeamSwap
+  | Unknown(int)
 
 type t = {
   playerId: int,
@@ -28,30 +30,23 @@ module Decode = {
     let? Ok(team) = reader->readByte("team")
     let? Ok(rawContext) = reader->readByte("context")
     let context = switch rawContext {
-    | 0 => Some(ReviveFromDeath)
-    | 1 => Some(SpawningIntoWorld)
-    | 2 => Some(RecallFromItem)
-    | _ => None
+    | 0 => ReviveFromDeath
+    | 1 => SpawningIntoWorld
+    | 2 => RecallFromItem
+    | 3 => TeamSwap
+    | n => Unknown(n)
     }
 
-    switch context {
-    | Some(context) =>
-      Ok({
-        playerId,
-        x,
-        y,
-        timeRemaining,
-        numberOfDeathsPve,
-        numberOfDeathsPvp,
-        team,
-        context,
-      })
-    | None =>
-      Error({
-        ErrorAwarePacketReader.context: "PlayerSpawn.parse.context",
-        error: JsError.make("Unknown context")->JsError.toJsExn,
-      })
-    }
+    Ok({
+      playerId,
+      x,
+      y,
+      timeRemaining,
+      numberOfDeathsPve,
+      numberOfDeathsPvp,
+      team,
+      context,
+    })
   }
 }
 
@@ -72,6 +67,8 @@ module Encode = {
       | ReviveFromDeath => 0
       | SpawningIntoWorld => 1
       | RecallFromItem => 2
+      | TeamSwap => 3
+      | Unknown(n) => n
       },
       "context",
     )

@@ -2102,6 +2102,8 @@ let playerSpawnContextToV1449 = (
   | Packet.PlayerSpawn.ReviveFromDeath => PacketV1449.PlayerSpawn.ReviveFromDeath
   | Packet.PlayerSpawn.SpawningIntoWorld => PacketV1449.PlayerSpawn.SpawningIntoWorld
   | Packet.PlayerSpawn.RecallFromItem => PacketV1449.PlayerSpawn.RecallFromItem
+  | Packet.PlayerSpawn.TeamSwap => PacketV1449.PlayerSpawn.SpawningIntoWorld
+  | Unknown(_n) => PacketV1449.PlayerSpawn.SpawningIntoWorld
   }
 
 let playerUpdateControlFromV1449 = (
@@ -2469,13 +2471,12 @@ let netModuleLoadFromV1449 = (
   }
 }
 
-let netModuleLoadToV1449 = (
-  netModuleLoad: Packet.NetModuleLoad.t,
-): option<PacketV1449.NetModuleLoad.t> => {
+let netModuleLoadToV1449 = (netModuleLoad: Packet.NetModuleLoad.t): option<
+  PacketV1449.NetModuleLoad.t,
+> => {
   switch netModuleLoad {
   | Liquid(liquid) => Some(PacketV1449.NetModuleLoad.Liquid(netModuleLoadLiquidToV1449(liquid)))
-  | ClientText(commandId, message) =>
-    Some(PacketV1449.NetModuleLoad.ClientText(commandId, message))
+  | ClientText(commandId, message) => Some(PacketV1449.NetModuleLoad.ClientText(commandId, message))
   | ServerText(playerId, text, color) =>
     Some(PacketV1449.NetModuleLoad.ServerText(playerId, text, color))
   | Ping(position) => Some(PacketV1449.NetModuleLoad.Ping(netModuleLoadPositionToV1449(position)))
@@ -2483,28 +2484,30 @@ let netModuleLoadToV1449 = (
     Some(PacketV1449.NetModuleLoad.Ambience(netModuleLoadAmbienceToV1449(ambience)))
   | Bestiary(bestiary) =>
     Some(PacketV1449.NetModuleLoad.Bestiary(netModuleLoadBestiaryToV1449(bestiary)))
-  | CreativePower(creativePower) =>
-    Some(PacketV1449.NetModuleLoad.CreativePower(creativePower))
+  | CreativePower(creativePower) => Some(PacketV1449.NetModuleLoad.CreativePower(creativePower))
   | CreativeUnlocksPlayerReport(unlockReport) =>
-    Some(PacketV1449.NetModuleLoad.CreativeUnlocksPlayerReport({
-      itemId: unlockReport.itemId,
-      researchedCount: unlockReport.researchedCount,
-    }))
+    Some(
+      PacketV1449.NetModuleLoad.CreativeUnlocksPlayerReport({
+        itemId: unlockReport.itemId,
+        researchedCount: unlockReport.researchedCount,
+      }),
+    )
   | TeleportPylon(teleportPylon) =>
-    Some(PacketV1449.NetModuleLoad.TeleportPylon(
-      netModuleLoadTeleportPylonToV1449(teleportPylon),
-    ))
+    Some(PacketV1449.NetModuleLoad.TeleportPylon(netModuleLoadTeleportPylonToV1449(teleportPylon)))
   | Particles(particle) =>
     Some(PacketV1449.NetModuleLoad.Particles(netModuleLoadParticleToV1449(particle)))
   | CreativePowerPermissions(creativePowerPermission) =>
-    Some(PacketV1449.NetModuleLoad.CreativePowerPermissions(
-      netModuleLoadCreativePowerPermissionToV1449(creativePowerPermission),
-    ))
+    Some(
+      PacketV1449.NetModuleLoad.CreativePowerPermissions(
+        netModuleLoadCreativePowerPermissionToV1449(creativePowerPermission),
+      ),
+    )
   | Banners(_)
   | CraftingRequests(_)
   | TagEffectState(_)
   | LeashedEntity(_)
-  | UnbreakableWallScan(_) => None
+  | UnbreakableWallScan(_) =>
+    None
   }
 }
 
@@ -3017,7 +3020,8 @@ let convertToV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): resu
     | Some(PlayerSpectate)
     | Some(PlayerTeamSwapSpawn)
     | Some(PlayerTeamUpdate)
-    | Some(SectionRequest) => Ok(DiscardAsNotExists)
+    | Some(SectionRequest) =>
+      Ok(DiscardAsNotExists)
     // Packets with structural changes between v1449 and v145
     | Some(PlayerInfo)
     | Some(PlayerInventorySlot)
@@ -3039,8 +3043,7 @@ let convertToV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): resu
     | Some(ShimmerEffectOrCoinLuck)
     | Some(NetModuleLoad) =>
       try {
-        parse(~buffer, ~fromServer)
-        ->Result.map(packet =>
+        parse(~buffer, ~fromServer)->Result.map(packet =>
           switch packet {
           | NetModuleLoad(netModuleLoad) =>
             switch netModuleLoadToV1449(netModuleLoad) {
