@@ -1581,7 +1581,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
         ~toLazyPacket=a => PacketV1449.LazyPacket.ItemDropProtectedUpdate(a),
       ),
     )
-  | _ => Error(InvalidPacketType)
+  | _ => Error(InvalidPacketType(PacketType.toInt(packetType)))
   }
 }
 
@@ -1606,7 +1606,7 @@ let parsePayloadLazy = (
 
 let parse: IParser.parse<PacketV1449.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => {
   switch buffer->NodeJs.Buffer.length {
-  | 0 | 1 | 2 => Error(InvalidPacketLength)
+  | 0 | 1 | 2 => Error(InvalidPacketLength(buffer->NodeJs.Buffer.length))
   | _ =>
     switch buffer->NodeJs.Buffer.unsafeGet(2)->PacketType.fromInt {
     | Some(packetType) =>
@@ -1617,7 +1617,7 @@ let parse: IParser.parse<PacketV1449.t> = (~buffer: NodeJs.Buffer.t, ~fromServer
       } catch {
       | JsExn(obj) => Error(ReaderError({context: "Parser.parse", error: obj}))
       }
-    | None => Error(InvalidPacketType)
+    | None => Error(InvalidPacketType(buffer->NodeJs.Buffer.unsafeGet(2)))
     }
   }
 }
@@ -1627,7 +1627,7 @@ let parseLazy: IParser.parseLazy<PacketV1449.LazyPacket.t> = (
   ~fromServer: bool,
 ) => {
   switch buffer->NodeJs.Buffer.length {
-  | 0 | 1 | 2 => Error(InvalidPacketLength)
+  | 0 | 1 | 2 => Error(InvalidPacketLength(buffer->NodeJs.Buffer.length))
   | _ =>
     switch buffer->NodeJs.Buffer.unsafeGet(2)->PacketType.fromInt {
     | Some(packetType) =>
@@ -1638,7 +1638,7 @@ let parseLazy: IParser.parseLazy<PacketV1449.LazyPacket.t> = (
       } catch {
       | JsExn(obj) => Error(ReaderError({context: "Parser.parseLazy", error: obj}))
       }
-    | None => Error(InvalidPacketType)
+    | None => Error(InvalidPacketType(buffer->NodeJs.Buffer.unsafeGet(2)))
     }
   }
 }

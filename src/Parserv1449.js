@@ -2565,7 +2565,10 @@ function getParsers(packetType, fromServer) {
     default:
       return {
         TAG: "Error",
-        _0: "InvalidPacketType"
+        _0: {
+          TAG: "InvalidPacketType",
+          _0: PacketType$TerrariaPacket.toInt(packetType)
+        }
       };
   }
 }
@@ -2575,14 +2578,20 @@ function parse(buffer, fromServer) {
   if (!(match > 2 || match < 0)) {
     return {
       TAG: "Error",
-      _0: "InvalidPacketLength"
+      _0: {
+        TAG: "InvalidPacketLength",
+        _0: buffer.length
+      }
     };
   }
   let packetType = PacketType$TerrariaPacket.fromInt(buffer[2]);
   if (packetType === undefined) {
     return {
       TAG: "Error",
-      _0: "InvalidPacketType"
+      _0: {
+        TAG: "InvalidPacketType",
+        _0: buffer[2]
+      }
     };
   }
   try {
@@ -2618,14 +2627,20 @@ function parseLazy(buffer, fromServer) {
   if (!(match > 2 || match < 0)) {
     return {
       TAG: "Error",
-      _0: "InvalidPacketLength"
+      _0: {
+        TAG: "InvalidPacketLength",
+        _0: buffer.length
+      }
     };
   }
   let packetType = PacketType$TerrariaPacket.fromInt(buffer[2]);
   if (packetType === undefined) {
     return {
       TAG: "Error",
-      _0: "InvalidPacketType"
+      _0: {
+        TAG: "InvalidPacketType",
+        _0: buffer[2]
+      }
     };
   }
   try {

@@ -148,14 +148,17 @@ function toDisplayString(self) {
         return "Cannot parse a client-only packet from the server side: ClientSyncedInventory";
       case "NotImplemented" :
         return "NotImplemented: parser for this packet is not implemented";
-      case "InvalidPacketLength" :
-        return "InvalidPacketLength: buffer is too short to contain a packet header";
-      case "InvalidPacketType" :
-        return "InvalidPacketType: unknown packet type id";
     }
   } else {
-    let match = self._0;
-    return "ReaderError(" + match.context + "): " + String(match.error);
+    switch (self.TAG) {
+      case "ReaderError" :
+        let match = self._0;
+        return "ReaderError(" + match.context + "): " + String(match.error);
+      case "InvalidPacketLength" :
+        return "InvalidPacketLength: buffer is too short to contain a packet header. Length: " + self._0.toString();
+      case "InvalidPacketType" :
+        return "InvalidPacketType: unknown packet type id: " + self._0.toString();
+    }
   }
 }
 

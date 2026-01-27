@@ -69,8 +69,8 @@ module ParseError = {
     | NpcBuffRemovalRequestFromServer
     | ClientSyncedInventoryFromServer
     | NotImplemented
-    | InvalidPacketLength
-    | InvalidPacketType
+    | InvalidPacketLength(int)
+    | InvalidPacketType(int)
 
   @val external stringOfUnknown: 'a => string = "String"
 
@@ -84,8 +84,11 @@ module ParseError = {
     switch self {
     | ReaderError({context, error}) => "ReaderError(" ++ context ++ "): " ++ stringOfUnknown(error)
     | NotImplemented => "NotImplemented: parser for this packet is not implemented"
-    | InvalidPacketLength => "InvalidPacketLength: buffer is too short to contain a packet header"
-    | InvalidPacketType => "InvalidPacketType: unknown packet type id"
+    | InvalidPacketLength(len) =>
+      "InvalidPacketLength: buffer is too short to contain a packet header. Length: " ++
+      Int.toString(len)
+    | InvalidPacketType(packetType) =>
+      "InvalidPacketType: unknown packet type id: " ++ Int.toString(packetType)
 
     | ConnectRequestFromServer => clientOnlyFromServerError("ConnectRequest")
     | WorldDataRequestFromServer => clientOnlyFromServerError("WorldDataRequest")

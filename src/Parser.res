@@ -1721,7 +1721,7 @@ let parsePayloadLazy = (
 
 let parse: IParser.parse<Packet.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => {
   switch buffer->NodeJs.Buffer.length {
-  | 0 | 1 | 2 => Error(InvalidPacketLength)
+  | 0 | 1 | 2 => Error(InvalidPacketLength(buffer->NodeJs.Buffer.length))
   | _ =>
     switch buffer->NodeJs.Buffer.unsafeGet(2)->PacketType.fromInt {
     | Some(packetType) =>
@@ -1732,7 +1732,7 @@ let parse: IParser.parse<Packet.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: boo
       } catch {
       | JsExn(obj) => Error(ReaderError({context: "Parser.parse", error: obj}))
       }
-    | None => Error(InvalidPacketType)
+    | None => Error(InvalidPacketType(buffer->NodeJs.Buffer.unsafeGet(2)))
     }
   }
 }
@@ -1742,7 +1742,7 @@ let parseLazy: IParser.parseLazy<Packet.LazyPacket.t> = (
   ~fromServer: bool,
 ) => {
   switch buffer->NodeJs.Buffer.length {
-  | 0 | 1 | 2 => Error(InvalidPacketLength)
+  | 0 | 1 | 2 => Error(InvalidPacketLength(buffer->NodeJs.Buffer.length))
   | _ =>
     switch buffer->NodeJs.Buffer.unsafeGet(2)->PacketType.fromInt {
     | Some(packetType) =>
@@ -1753,7 +1753,7 @@ let parseLazy: IParser.parseLazy<Packet.LazyPacket.t> = (
       } catch {
       | JsExn(obj) => Error(ReaderError({context: "Parser.parseLazy", error: obj}))
       }
-    | None => Error(InvalidPacketType)
+    | None => Error(InvalidPacketType(buffer->NodeJs.Buffer.unsafeGet(2)))
     }
   }
 }
@@ -2204,9 +2204,7 @@ let playerUpdatePotionOfReturnToV1449 = (
     })
   }
 
-let npcUpdateLifeFromV1449 = (
-  life: PacketV1449.NpcUpdate.life,
-): Packet.NpcUpdate.life =>
+let npcUpdateLifeFromV1449 = (life: PacketV1449.NpcUpdate.life): Packet.NpcUpdate.life =>
   switch life {
   | PacketV1449.NpcUpdate.Max => Packet.NpcUpdate.Max
   | PacketV1449.NpcUpdate.Byte(value) => Packet.NpcUpdate.Byte(value)
@@ -2214,9 +2212,7 @@ let npcUpdateLifeFromV1449 = (
   | PacketV1449.NpcUpdate.Int32(value) => Packet.NpcUpdate.Int32(value)
   }
 
-let npcUpdateLifeToV1449 = (
-  life: Packet.NpcUpdate.life,
-): PacketV1449.NpcUpdate.life =>
+let npcUpdateLifeToV1449 = (life: Packet.NpcUpdate.life): PacketV1449.NpcUpdate.life =>
   switch life {
   | Packet.NpcUpdate.Max => PacketV1449.NpcUpdate.Max
   | Packet.NpcUpdate.Byte(value) => PacketV1449.NpcUpdate.Byte(value)
@@ -2283,8 +2279,7 @@ let fromV1449 = (packet: PacketV1449.t): Packet.t => {
       favorited: false,
       blocked: false,
     })
-  | WorldInfo(worldInfo) =>
-    Packet.WorldInfo(worldInfoFromV1449(worldInfo))
+  | WorldInfo(worldInfo) => Packet.WorldInfo(worldInfoFromV1449(worldInfo))
   | InitialTileSectionsRequest(req) =>
     Packet.InitialTileSectionsRequest({x: req.x, y: req.y, team: 0})
   | PlayerSpawn(playerSpawn) =>
@@ -2497,8 +2492,7 @@ let v1449ToLatest = (packet: Packet.t): PacketV1449.t => {
       prefix: playerInventorySlot.prefix,
       itemId: playerInventorySlot.itemType,
     })
-  | WorldInfo(worldInfo) =>
-    PacketV1449.WorldInfo(worldInfoToV1449(worldInfo))
+  | WorldInfo(worldInfo) => PacketV1449.WorldInfo(worldInfoToV1449(worldInfo))
   | InitialTileSectionsRequest(req) => PacketV1449.InitialTileSectionsRequest({x: req.x, y: req.y})
   | PlayerSpawn(playerSpawn) =>
     PacketV1449.PlayerSpawn({
@@ -2681,7 +2675,7 @@ let convertFromV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): re
   IParser.parseError,
 > => {
   switch buffer->NodeJs.Buffer.length {
-  | 0 | 1 | 2 => Error(InvalidPacketLength)
+  | 0 | 1 | 2 => Error(InvalidPacketLength(buffer->NodeJs.Buffer.length))
   | _ =>
     switch buffer->NodeJs.Buffer.unsafeGet(2)->PacketType.fromInt {
     // Packets with structural changes between v1449 and v145
@@ -2711,7 +2705,7 @@ let convertFromV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): re
       | JsExn(obj) => Error(ReaderError({context: "Parser.parseLazy", error: obj}))
       }
     | Some(_) => Ok(PacketStructureIsSame)
-    | None => Error(InvalidPacketType)
+    | None => Error(InvalidPacketType(buffer->NodeJs.Buffer.unsafeGet(2)))
     }
   }
 }
@@ -2724,7 +2718,7 @@ let convertToV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): resu
   IParser.parseError,
 > => {
   switch buffer->NodeJs.Buffer.length {
-  | 0 | 1 | 2 => Error(InvalidPacketLength)
+  | 0 | 1 | 2 => Error(InvalidPacketLength(buffer->NodeJs.Buffer.length))
   | _ =>
     switch buffer->NodeJs.Buffer.unsafeGet(2)->PacketType.fromInt {
     // Packets with structural changes between v1449 and v145
@@ -2754,7 +2748,7 @@ let convertToV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): resu
       | JsExn(obj) => Error(ReaderError({context: "Parser.parseLazy", error: obj}))
       }
     | Some(_) => Ok(PacketStructureIsSame)
-    | None => Error(InvalidPacketType)
+    | None => Error(InvalidPacketType(buffer->NodeJs.Buffer.unsafeGet(2)))
     }
   }
 }
