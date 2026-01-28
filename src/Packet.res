@@ -7,7 +7,7 @@ module WorldDataRequest = PacketV1449_WorldDataRequest
 module WorldInfo = Packet_WorldInfo
 module InitialTileSectionsRequest = Packet_InitialTileSectionsRequest
 module Status = PacketV1449_Status
-module TileSectionSend = PacketV1449_TileSectionSend
+module TileSectionSend = Packet_TileSectionSend
 module TileSectionFrame = PacketV1449_TileSectionFrame
 module PlayerSpawn = Packet_PlayerSpawn
 module PlayerUpdate = Packet_PlayerUpdate
@@ -1159,8 +1159,7 @@ let toBuffer = (packet: t, fromServer: bool): ISerializer.toBufferResult => {
     | NpcHurtByDebuff(npcHurtByDebuff) =>
       NpcHurtByDebuff.toBuffer(npcHurtByDebuff)->ISerializer.toBufferResult
     | Ping(ping) => Ping.toBuffer(ping)->ISerializer.toBufferResult
-    | ChestResize(chestResize) =>
-      ChestResize.toBuffer(chestResize)->ISerializer.toBufferResult
+    | ChestResize(chestResize) => ChestResize.toBuffer(chestResize)->ISerializer.toBufferResult
     | LeashedEntityAnchorInsertItem(leashedEntityAnchorInsertItem) =>
       LeashedEntityAnchorInsertItem.toBuffer(
         leashedEntityAnchorInsertItem,
@@ -1355,16 +1354,14 @@ let toPacketName = (packet: t): string => {
   | ShimmerEffectOrCoinLuck(_shimmerEffectOrCoinLuck) => "ShimmerEffectOrCoinLuck"
   | LoadoutSwitch(_loadoutSwitch) => "LoadoutSwitch"
   | ItemDropProtectedUpdate(_itemDropProtectedUpdate) => "ItemDropProtectedUpdate"
-  | DeadCellsDisplayJarTryPlacing(_deadCellsDisplayJarTryPlacing) =>
-    "DeadCellsDisplayJarTryPlacing"
+  | DeadCellsDisplayJarTryPlacing(_deadCellsDisplayJarTryPlacing) => "DeadCellsDisplayJarTryPlacing"
   | PlayerSpectate(_playerSpectate) => "PlayerSpectate"
   | ItemDropClear(_itemDropClear) => "ItemDropClear"
   | PlayerItemUseSound(_playerItemUseSound) => "PlayerItemUseSound"
   | NpcHurtByDebuff(_npcHurtByDebuff) => "NpcHurtByDebuff"
   | Ping(_ping) => "Ping"
   | ChestResize(_chestResize) => "ChestResize"
-  | LeashedEntityAnchorInsertItem(_leashedEntityAnchorInsertItem) =>
-    "LeashedEntityAnchorInsertItem"
+  | LeashedEntityAnchorInsertItem(_leashedEntityAnchorInsertItem) => "LeashedEntityAnchorInsertItem"
   | PlayerTeamUpdate(_playerTeamUpdate) => "PlayerTeamUpdate"
   | PlayerTeamSwapSpawn(_playerTeamSwapSpawn) => "PlayerTeamSwapSpawn"
   | SectionRequest(_sectionRequest) => "SectionRequest"

@@ -119,6 +119,14 @@ module Entity: {
   type trainingDummy = {npcSlotId: int}
   @genType
   type weaponsRack = displayItem
+  @genType
+  type deadCellsDisplayJar = displayItem
+  @genType
+  type leashedEntityAnchor = {itemType: int}
+  @genType
+  type kiteAnchor = leashedEntityAnchor
+  @genType
+  type critterAnchor = leashedEntityAnchor
 
   @genType
   type kind =
@@ -130,6 +138,9 @@ module Entity: {
     | TeleportationPylon(teleportationPylon)
     | TrainingDummy(trainingDummy)
     | WeaponsRack(weaponsRack)
+    | DeadCellsDisplayJar(deadCellsDisplayJar)
+    | KiteAnchor(kiteAnchor)
+    | CritterAnchor(critterAnchor)
 
   @genType
   type t = {

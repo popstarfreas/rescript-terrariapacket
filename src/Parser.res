@@ -2576,6 +2576,134 @@ let playerInventorySlotIdToV1449 = (slot: int): option<int> => {
   }
 }
 
+let displayItemFromV1449 = (
+  item: PacketV1449.TileSectionSend.Entity.displayItem,
+): Packet.TileSectionSend.Entity.displayItem => {
+  netId: item.netId,
+  prefix: item.prefix,
+  stack: item.stack,
+}
+
+let displayItemOptionFromV1449 = (
+  item: option<PacketV1449.TileSectionSend.Entity.displayItem>,
+): option<Packet.TileSectionSend.Entity.displayItem> => {
+  item->Option.map(displayItemFromV1449)
+}
+
+let displayDollFromV1449 = (
+  displayDoll: PacketV1449.TileSectionSend.Entity.displayDoll,
+): Packet.TileSectionSend.Entity.displayDoll => {
+  // V1449 has 8 slots, V145 has 9 slots + misc + pose
+  // Add a 9th None slot for mount, empty misc array, and pose 0
+  items: displayDoll.items->Array.map(displayItemOptionFromV1449)->Array.concat([None]),
+  dyes: displayDoll.dyes->Array.map(displayItemOptionFromV1449)->Array.concat([None]),
+  misc: [None],
+  pose: 0,
+}
+
+let hatRackFromV1449 = (
+  hatRack: PacketV1449.TileSectionSend.Entity.hatRack,
+): Packet.TileSectionSend.Entity.hatRack => {
+  items: hatRack.items->Array.map(displayItemOptionFromV1449),
+  dyes: hatRack.dyes->Array.map(displayItemOptionFromV1449),
+}
+
+let entityKindFromV1449 = (
+  _entityType: int,
+  entityKind: PacketV1449.TileSectionSend.Entity.kind,
+): Packet.TileSectionSend.Entity.kind => {
+  switch entityKind {
+  | DisplayDoll(displayDoll) => DisplayDoll(displayDollFromV1449(displayDoll))
+  | FoodPlatter(item) => FoodPlatter(displayItemFromV1449(item))
+  | HatRack(hatRack) => HatRack(hatRackFromV1449(hatRack))
+  | ItemFrame(item) => ItemFrame(displayItemFromV1449(item))
+  | LogicSensor(sensor) => LogicSensor({checkType: sensor.checkType, on: sensor.on})
+  | TeleportationPylon() => TeleportationPylon()
+  | TrainingDummy(dummy) => TrainingDummy({npcSlotId: dummy.npcSlotId})
+  | WeaponsRack(item) => WeaponsRack(displayItemFromV1449(item))
+  | DeadCellsDisplayJar(item) => DeadCellsDisplayJar(displayItemFromV1449(item))
+  | KiteAnchor(anchor) => KiteAnchor({itemType: anchor.itemType})
+  | CritterAnchor(anchor) => CritterAnchor({itemType: anchor.itemType})
+  }
+}
+
+let entitiesFromV1449 = (entities: array<PacketV1449.TileSectionSend.Entity.t>): array<
+  Packet.TileSectionSend.Entity.t,
+> => {
+  entities->Array.map((
+    entity: PacketV1449.TileSectionSend.Entity.t,
+  ): Packet.TileSectionSend.Entity.t => {
+    entityType: entity.entityType,
+    id: entity.id,
+    x: entity.x,
+    y: entity.y,
+    entityKind: entityKindFromV1449(entity.entityType, entity.entityKind),
+  })
+}
+
+let displayItemToV1449 = (
+  item: Packet.TileSectionSend.Entity.displayItem,
+): PacketV1449.TileSectionSend.Entity.displayItem => {
+  netId: item.netId,
+  prefix: item.prefix,
+  stack: item.stack,
+}
+
+let displayItemOptionToV1449 = (
+  item: option<Packet.TileSectionSend.Entity.displayItem>,
+): option<PacketV1449.TileSectionSend.Entity.displayItem> => {
+  item->Option.map(displayItemToV1449)
+}
+
+let displayDollToV1449 = (
+  displayDoll: Packet.TileSectionSend.Entity.displayDoll,
+): PacketV1449.TileSectionSend.Entity.displayDoll => {
+  // V145 has 9 slots + misc + pose, V1449 has 8 slots
+  // Take only the first 8 slots, discard mount slot, misc, and pose
+  items: displayDoll.items->Array.slice(~start=0, ~end=8)->Array.map(displayItemOptionToV1449),
+  dyes: displayDoll.dyes->Array.slice(~start=0, ~end=8)->Array.map(displayItemOptionToV1449),
+}
+
+let hatRackToV1449 = (
+  hatRack: Packet.TileSectionSend.Entity.hatRack,
+): PacketV1449.TileSectionSend.Entity.hatRack => {
+  items: hatRack.items->Array.map(displayItemOptionToV1449),
+  dyes: hatRack.dyes->Array.map(displayItemOptionToV1449),
+}
+
+let entityKindToV1449 = (
+  _entityType: int,
+  entityKind: Packet.TileSectionSend.Entity.kind,
+): PacketV1449.TileSectionSend.Entity.kind => {
+  switch entityKind {
+  | DisplayDoll(displayDoll) => DisplayDoll(displayDollToV1449(displayDoll))
+  | FoodPlatter(item) => FoodPlatter(displayItemToV1449(item))
+  | HatRack(hatRack) => HatRack(hatRackToV1449(hatRack))
+  | ItemFrame(item) => ItemFrame(displayItemToV1449(item))
+  | LogicSensor(sensor) => LogicSensor({checkType: sensor.checkType, on: sensor.on})
+  | TeleportationPylon() => TeleportationPylon()
+  | TrainingDummy(dummy) => TrainingDummy({npcSlotId: dummy.npcSlotId})
+  | WeaponsRack(item) => WeaponsRack(displayItemToV1449(item))
+  | DeadCellsDisplayJar(item) => DeadCellsDisplayJar(displayItemToV1449(item))
+  | KiteAnchor(anchor) => KiteAnchor({itemType: anchor.itemType})
+  | CritterAnchor(anchor) => CritterAnchor({itemType: anchor.itemType})
+  }
+}
+
+let entitiesToV1449 = (entities: array<Packet.TileSectionSend.Entity.t>): array<
+  PacketV1449.TileSectionSend.Entity.t,
+> => {
+  entities->Array.map((
+    entity: Packet.TileSectionSend.Entity.t,
+  ): PacketV1449.TileSectionSend.Entity.t => {
+    entityType: entity.entityType,
+    id: entity.id,
+    x: entity.x,
+    y: entity.y,
+    entityKind: entityKindToV1449(entity.entityType, entity.entityKind),
+  })
+}
+
 let fromV1449 = (packet: PacketV1449.t): Packet.t => {
   switch packet {
   | PlayerInfo(playerInfo) =>
@@ -2623,7 +2751,17 @@ let fromV1449 = (packet: PacketV1449.t): Packet.t => {
       favorited: false,
       blocked: false,
     })
-  | TileSectionSend(tileSectionSend) => Packet.TileSectionSend(tileSectionSend)
+  | TileSectionSend(tileSectionSend) =>
+    Packet.TileSectionSend({
+      height: tileSectionSend.height,
+      width: tileSectionSend.width,
+      tileX: tileSectionSend.tileX,
+      tileY: tileSectionSend.tileY,
+      tiles: tileSectionSend.tiles,
+      chests: tileSectionSend.chests,
+      signs: tileSectionSend.signs,
+      entities: entitiesFromV1449(tileSectionSend.entities),
+    })
   | TileSquareSend(tileSquareSend) => Packet.TileSquareSend(tileSquareSend)
   | WorldInfo(worldInfo) => Packet.WorldInfo(worldInfoFromV1449(worldInfo))
   | InitialTileSectionsRequest(req) =>
@@ -3015,6 +3153,17 @@ let v1449ToLatest = (packet: Packet.t): PacketV1449.t => {
     | Some(converted) => PacketV1449.NetModuleLoad(converted)
     | None => PacketV1449.NetModuleLoad(PacketV1449.NetModuleLoad.Ping({x: 0.0, y: 0.0}))
     }
+  | TileSectionSend(tileSectionSend) =>
+    PacketV1449.TileSectionSend({
+      height: tileSectionSend.height,
+      width: tileSectionSend.width,
+      tileX: tileSectionSend.tileX,
+      tileY: tileSectionSend.tileY,
+      tiles: tileSectionSend.tiles,
+      chests: tileSectionSend.chests,
+      signs: tileSectionSend.signs,
+      entities: entitiesToV1449(tileSectionSend.entities),
+    })
   | packet => Obj.magic(packet)
   }
 }

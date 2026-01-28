@@ -57,6 +57,7 @@ import * as PacketV1449_PortalKill$TerrariaPacket from "./packetv1449/PacketV144
 import * as PacketV1449_TileModify$TerrariaPacket from "./packetv1449/PacketV1449_TileModify.js";
 import * as PacketV1449_TreeGrowFx$TerrariaPacket from "./packetv1449/PacketV1449_TreeGrowFx.js";
 import * as Packet_NpcHurtByDebuff$TerrariaPacket from "./packet/Packet_NpcHurtByDebuff.js";
+import * as Packet_TileSectionSend$TerrariaPacket from "./packet/Packet_TileSectionSend.js";
 import * as PacketV1449_AnglerQuest$TerrariaPacket from "./packetv1449/PacketV1449_AnglerQuest.js";
 import * as PacketV1449_EmoteBubble$TerrariaPacket from "./packetv1449/PacketV1449_EmoteBubble.js";
 import * as PacketV1449_NpcShopItem$TerrariaPacket from "./packetv1449/PacketV1449_NpcShopItem.js";
@@ -101,7 +102,6 @@ import * as PacketV1449_PlayerSpawnSelf$TerrariaPacket from "./packetv1449/Packe
 import * as PacketV1449_SocialHandshake$TerrariaPacket from "./packetv1449/PacketV1449_SocialHandshake.js";
 import * as PacketV1449_TileEntityPlace$TerrariaPacket from "./packetv1449/PacketV1449_TileEntityPlace.js";
 import * as PacketV1449_TilePickingSync$TerrariaPacket from "./packetv1449/PacketV1449_TilePickingSync.js";
-import * as PacketV1449_TileSectionSend$TerrariaPacket from "./packetv1449/PacketV1449_TileSectionSend.js";
 import * as PacketV1449_WiredCannonShot$TerrariaPacket from "./packetv1449/PacketV1449_WiredCannonShot.js";
 import * as PacketV1449_ChatMessageSmart$TerrariaPacket from "./packetv1449/PacketV1449_ChatMessageSmart.js";
 import * as PacketV1449_CombatTextCreate$TerrariaPacket from "./packetv1449/PacketV1449_CombatTextCreate.js";
@@ -933,7 +933,7 @@ function toBuffer(packet, fromServer) {
     case "Status" :
       return ISerializer$TerrariaPacket.toBufferResult(PacketV1449_Status$TerrariaPacket.toBuffer(packet._0));
     case "TileSectionSend" :
-      return ISerializer$TerrariaPacket.toBufferResult(PacketV1449_TileSectionSend$TerrariaPacket.toBuffer(packet._0));
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_TileSectionSend$TerrariaPacket.toBuffer(packet._0));
     case "TileSectionFrame" :
       return ISerializer$TerrariaPacket.toBufferResult(PacketV1449_TileSectionFrame$TerrariaPacket.toBuffer(packet._0));
     case "PlayerSpawn" :

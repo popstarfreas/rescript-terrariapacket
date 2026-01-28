@@ -61,6 +61,7 @@ import * as PacketV1449_PortalKill$TerrariaPacket from "./packetv1449/PacketV144
 import * as PacketV1449_TileModify$TerrariaPacket from "./packetv1449/PacketV1449_TileModify.js";
 import * as PacketV1449_TreeGrowFx$TerrariaPacket from "./packetv1449/PacketV1449_TreeGrowFx.js";
 import * as Packet_NpcHurtByDebuff$TerrariaPacket from "./packet/Packet_NpcHurtByDebuff.js";
+import * as Packet_TileSectionSend$TerrariaPacket from "./packet/Packet_TileSectionSend.js";
 import * as PacketV1449_AnglerQuest$TerrariaPacket from "./packetv1449/PacketV1449_AnglerQuest.js";
 import * as PacketV1449_EmoteBubble$TerrariaPacket from "./packetv1449/PacketV1449_EmoteBubble.js";
 import * as PacketV1449_NpcShopItem$TerrariaPacket from "./packetv1449/PacketV1449_NpcShopItem.js";
@@ -105,7 +106,6 @@ import * as PacketV1449_PlayerSpawnSelf$TerrariaPacket from "./packetv1449/Packe
 import * as PacketV1449_SocialHandshake$TerrariaPacket from "./packetv1449/PacketV1449_SocialHandshake.js";
 import * as PacketV1449_TileEntityPlace$TerrariaPacket from "./packetv1449/PacketV1449_TileEntityPlace.js";
 import * as PacketV1449_TilePickingSync$TerrariaPacket from "./packetv1449/PacketV1449_TilePickingSync.js";
-import * as PacketV1449_TileSectionSend$TerrariaPacket from "./packetv1449/PacketV1449_TileSectionSend.js";
 import * as PacketV1449_WiredCannonShot$TerrariaPacket from "./packetv1449/PacketV1449_WiredCannonShot.js";
 import * as PacketV1449_ChatMessageSmart$TerrariaPacket from "./packetv1449/PacketV1449_ChatMessageSmart.js";
 import * as PacketV1449_CombatTextCreate$TerrariaPacket from "./packetv1449/PacketV1449_CombatTextCreate.js";
@@ -678,7 +678,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, PacketV1449_TileSectionSend$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_TileSectionSend$TerrariaPacket.parse, a => ({
             TAG: "TileSectionSend",
             _0: a
           }), a => ({
@@ -3727,6 +3727,220 @@ function playerInventorySlotIdToV1449(slot) {
   }
 }
 
+function displayItemFromV1449(item) {
+  return {
+    netId: item.netId,
+    prefix: item.prefix,
+    stack: item.stack
+  };
+}
+
+function displayItemOptionFromV1449(item) {
+  return Stdlib_Option.map(item, displayItemFromV1449);
+}
+
+function displayDollFromV1449(displayDoll) {
+  return {
+    items: displayDoll.items.map(displayItemOptionFromV1449).concat([undefined]),
+    dyes: displayDoll.dyes.map(displayItemOptionFromV1449).concat([undefined]),
+    misc: [undefined],
+    pose: 0
+  };
+}
+
+function hatRackFromV1449(hatRack) {
+  return {
+    items: hatRack.items.map(displayItemOptionFromV1449),
+    dyes: hatRack.dyes.map(displayItemOptionFromV1449)
+  };
+}
+
+function entityKindFromV1449(_entityType, entityKind) {
+  switch (entityKind.TAG) {
+    case "DisplayDoll" :
+      return {
+        TAG: "DisplayDoll",
+        _0: displayDollFromV1449(entityKind._0)
+      };
+    case "FoodPlatter" :
+      return {
+        TAG: "FoodPlatter",
+        _0: displayItemFromV1449(entityKind._0)
+      };
+    case "HatRack" :
+      return {
+        TAG: "HatRack",
+        _0: hatRackFromV1449(entityKind._0)
+      };
+    case "ItemFrame" :
+      return {
+        TAG: "ItemFrame",
+        _0: displayItemFromV1449(entityKind._0)
+      };
+    case "LogicSensor" :
+      let sensor = entityKind._0;
+      return {
+        TAG: "LogicSensor",
+        _0: {
+          checkType: sensor.checkType,
+          on: sensor.on
+        }
+      };
+    case "TeleportationPylon" :
+      return {
+        TAG: "TeleportationPylon",
+        _0: undefined
+      };
+    case "TrainingDummy" :
+      return {
+        TAG: "TrainingDummy",
+        _0: {
+          npcSlotId: entityKind._0.npcSlotId
+        }
+      };
+    case "WeaponsRack" :
+      return {
+        TAG: "WeaponsRack",
+        _0: displayItemFromV1449(entityKind._0)
+      };
+    case "DeadCellsDisplayJar" :
+      return {
+        TAG: "DeadCellsDisplayJar",
+        _0: displayItemFromV1449(entityKind._0)
+      };
+    case "KiteAnchor" :
+      return {
+        TAG: "KiteAnchor",
+        _0: {
+          itemType: entityKind._0.itemType
+        }
+      };
+    case "CritterAnchor" :
+      return {
+        TAG: "CritterAnchor",
+        _0: {
+          itemType: entityKind._0.itemType
+        }
+      };
+  }
+}
+
+function entitiesFromV1449(entities) {
+  return entities.map(entity => ({
+    entityType: entity.entityType,
+    id: entity.id,
+    x: entity.x,
+    y: entity.y,
+    entityKind: entityKindFromV1449(entity.entityType, entity.entityKind)
+  }));
+}
+
+function displayItemToV1449(item) {
+  return {
+    netId: item.netId,
+    prefix: item.prefix,
+    stack: item.stack
+  };
+}
+
+function displayItemOptionToV1449(item) {
+  return Stdlib_Option.map(item, displayItemToV1449);
+}
+
+function displayDollToV1449(displayDoll) {
+  return {
+    items: displayDoll.items.slice(0, 8).map(displayItemOptionToV1449),
+    dyes: displayDoll.dyes.slice(0, 8).map(displayItemOptionToV1449)
+  };
+}
+
+function hatRackToV1449(hatRack) {
+  return {
+    items: hatRack.items.map(displayItemOptionToV1449),
+    dyes: hatRack.dyes.map(displayItemOptionToV1449)
+  };
+}
+
+function entityKindToV1449(_entityType, entityKind) {
+  switch (entityKind.TAG) {
+    case "DisplayDoll" :
+      return {
+        TAG: "DisplayDoll",
+        _0: displayDollToV1449(entityKind._0)
+      };
+    case "FoodPlatter" :
+      return {
+        TAG: "FoodPlatter",
+        _0: displayItemToV1449(entityKind._0)
+      };
+    case "HatRack" :
+      return {
+        TAG: "HatRack",
+        _0: hatRackToV1449(entityKind._0)
+      };
+    case "ItemFrame" :
+      return {
+        TAG: "ItemFrame",
+        _0: displayItemToV1449(entityKind._0)
+      };
+    case "LogicSensor" :
+      let sensor = entityKind._0;
+      return {
+        TAG: "LogicSensor",
+        _0: {
+          checkType: sensor.checkType,
+          on: sensor.on
+        }
+      };
+    case "TeleportationPylon" :
+      return {
+        TAG: "TeleportationPylon",
+        _0: undefined
+      };
+    case "TrainingDummy" :
+      return {
+        TAG: "TrainingDummy",
+        _0: {
+          npcSlotId: entityKind._0.npcSlotId
+        }
+      };
+    case "WeaponsRack" :
+      return {
+        TAG: "WeaponsRack",
+        _0: displayItemToV1449(entityKind._0)
+      };
+    case "DeadCellsDisplayJar" :
+      return {
+        TAG: "DeadCellsDisplayJar",
+        _0: displayItemToV1449(entityKind._0)
+      };
+    case "KiteAnchor" :
+      return {
+        TAG: "KiteAnchor",
+        _0: {
+          itemType: entityKind._0.itemType
+        }
+      };
+    case "CritterAnchor" :
+      return {
+        TAG: "CritterAnchor",
+        _0: {
+          itemType: entityKind._0.itemType
+        }
+      };
+  }
+}
+
+function entitiesToV1449(entities) {
+  return entities.map(entity => ({
+    entityType: entity.entityType,
+    id: entity.id,
+    x: entity.x,
+    y: entity.y,
+    entityKind: entityKindToV1449(entity.entityType, entity.entityKind)
+  }));
+}
+
 function fromV1449(packet) {
   switch (packet.TAG) {
     case "PlayerInfo" :
@@ -3798,9 +4012,19 @@ function fromV1449(packet) {
         }
       };
     case "TileSectionSend" :
+      let tileSectionSend = packet._0;
       return {
         TAG: "TileSectionSend",
-        _0: packet._0
+        _0: {
+          height: tileSectionSend.height,
+          width: tileSectionSend.width,
+          tileX: tileSectionSend.tileX,
+          tileY: tileSectionSend.tileY,
+          tiles: tileSectionSend.tiles,
+          chests: tileSectionSend.chests,
+          signs: tileSectionSend.signs,
+          entities: entitiesFromV1449(tileSectionSend.entities)
+        }
       };
     case "PlayerSpawn" :
       let playerSpawn = packet._0;
@@ -4143,6 +4367,21 @@ function v1449ToLatest(packet) {
         _0: {
           x: req.x,
           y: req.y
+        }
+      };
+    case "TileSectionSend" :
+      let tileSectionSend = packet._0;
+      return {
+        TAG: "TileSectionSend",
+        _0: {
+          height: tileSectionSend.height,
+          width: tileSectionSend.width,
+          tileX: tileSectionSend.tileX,
+          tileY: tileSectionSend.tileY,
+          tiles: tileSectionSend.tiles,
+          chests: tileSectionSend.chests,
+          signs: tileSectionSend.signs,
+          entities: entitiesToV1449(tileSectionSend.entities)
         }
       };
     case "PlayerSpawn" :

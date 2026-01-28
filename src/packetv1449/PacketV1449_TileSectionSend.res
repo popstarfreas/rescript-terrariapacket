@@ -195,6 +195,10 @@ module Entity = {
   type teleportationPylon = unit
   type trainingDummy = {npcSlotId: int}
   type weaponsRack = displayItem
+  type deadCellsDisplayJar = displayItem
+  type leashedEntityAnchor = {itemType: int}
+  type kiteAnchor = leashedEntityAnchor
+  type critterAnchor = leashedEntityAnchor
 
   type kind =
     | DisplayDoll(displayDoll)
@@ -205,6 +209,9 @@ module Entity = {
     | TeleportationPylon(teleportationPylon)
     | TrainingDummy(trainingDummy)
     | WeaponsRack(weaponsRack)
+    | DeadCellsDisplayJar(deadCellsDisplayJar)
+    | KiteAnchor(kiteAnchor)
+    | CritterAnchor(critterAnchor)
 
   type t = {
     entityType: int,
@@ -345,6 +352,18 @@ module Entity = {
   }
 
   let parseFoodPlatterKind = parseDisplayItem
+  let parseDeadCellsDisplayJarKind = parseDisplayItem
+
+  let parseLeashedEntityAnchorKind = (reader): result<
+    leashedEntityAnchor,
+    ErrorAwarePacketReader.readError,
+  > => {
+    let? Ok(itemType) = reader->readInt16("itemType")
+    Ok({itemType: itemType})
+  }
+
+  let parseKiteAnchorKind = parseLeashedEntityAnchorKind
+  let parseCritterAnchorKind = parseLeashedEntityAnchorKind
 
   let parseEntityKind = (entityType, reader) =>
     switch entityType {
@@ -356,6 +375,9 @@ module Entity = {
     | 5 => parseHatRackKind(reader)->Result.map(v => HatRack(v))
     | 6 => parseFoodPlatterKind(reader)->Result.map(v => FoodPlatter(v))
     | 7 => Ok(TeleportationPylon())
+    | 8 => parseDeadCellsDisplayJarKind(reader)->Result.map(v => DeadCellsDisplayJar(v))
+    | 9 => parseKiteAnchorKind(reader)->Result.map(v => KiteAnchor(v))
+    | 10 => parseCritterAnchorKind(reader)->Result.map(v => CritterAnchor(v))
     | _ =>
       Error({
         context: "Entity.parse",
@@ -370,13 +392,15 @@ module Entity = {
     let? Ok(y) = reader->readInt16("y")
     let? Ok(entityKind) = parseEntityKind(entityType, reader)
 
-    Ok({
+    let entity = {
       entityType,
       id,
       x,
       y,
       entityKind,
-    })
+    }
+    Console.log(NodeJs.Util.inspect(entity, {depth: 10}))
+    Ok(entity)
   }
 
   let {packByte, packInt16, packInt32} = module(ErrorAwareBufferWriter)
@@ -490,6 +514,17 @@ module Entity = {
   }
 
   let packFoodPlatter = packDisplayItem
+  let packDeadCellsDisplayJar = packDisplayItem
+
+  let packLeashedEntityAnchor = (
+    writer: bufferWriter,
+    leashedEntityAnchor: leashedEntityAnchor,
+  ): bufferWriter => {
+    writer->packInt16(leashedEntityAnchor.itemType, "itemType")
+  }
+
+  let packKiteAnchor = packLeashedEntityAnchor
+  let packCritterAnchor = packLeashedEntityAnchor
 
   let packTeleportationPylon = (writer, _teleportationPylonKind): bufferWriter => writer
 
@@ -503,6 +538,10 @@ module Entity = {
     | HatRack(hatRack) => writer->packHatRack(hatRack)
     | FoodPlatter(foodPlatter) => writer->packFoodPlatter(foodPlatter)
     | TeleportationPylon(teleportationPylon) => writer->packTeleportationPylon(teleportationPylon)
+    | DeadCellsDisplayJar(deadCellsDisplayJar) =>
+      writer->packDeadCellsDisplayJar(deadCellsDisplayJar)
+    | KiteAnchor(kiteAnchor) => writer->packKiteAnchor(kiteAnchor)
+    | CritterAnchor(critterAnchor) => writer->packCritterAnchor(critterAnchor)
     }
   }
 

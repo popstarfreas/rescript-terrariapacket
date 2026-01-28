@@ -3,12 +3,459 @@ type tileCache = PacketV1449_TileSectionSend.tileCache
 type frame = PacketV1449_TileSectionSend.frame
 type activeTile = PacketV1449_TileSectionSend.activeTile
 type liquid = PacketV1449_TileSectionSend.liquid
-type t = PacketV1449_TileSectionSend.t
 
 let {defaultTileCache, cacheToTile} = module(PacketV1449_TileSectionSend)
 module Chest = PacketV1449_TileSectionSend.Chest
 module Sign = PacketV1449_TileSectionSend.Sign
-module Entity = PacketV1449_TileSectionSend.Entity
+
+module Entity = {
+  let {readInt16, readInt32, readByte} = module(ErrorAwareBufferReader)
+
+  type displayItem = {
+    netId: int,
+    prefix: int,
+    stack: int,
+  }
+
+  type displayDoll = {
+    items: array<option<displayItem>>,
+    dyes: array<option<displayItem>>,
+    misc: array<option<displayItem>>,
+    pose: int,
+  }
+
+  type foodPlatter = displayItem
+  type hatRack = {
+    items: array<option<displayItem>>,
+    dyes: array<option<displayItem>>,
+  }
+
+  type itemFrame = displayItem
+  type logicSensor = {
+    checkType: int,
+    on: bool,
+  }
+  type teleportationPylon = unit
+  type trainingDummy = {npcSlotId: int}
+  type weaponsRack = displayItem
+  type deadCellsDisplayJar = displayItem
+  type leashedEntityAnchor = {itemType: int}
+  type kiteAnchor = leashedEntityAnchor
+  type critterAnchor = leashedEntityAnchor
+
+  type kind =
+    | DisplayDoll(displayDoll)
+    | FoodPlatter(foodPlatter)
+    | HatRack(hatRack)
+    | ItemFrame(itemFrame)
+    | LogicSensor(logicSensor)
+    | TeleportationPylon(teleportationPylon)
+    | TrainingDummy(trainingDummy)
+    | WeaponsRack(weaponsRack)
+    | DeadCellsDisplayJar(deadCellsDisplayJar)
+    | KiteAnchor(kiteAnchor)
+    | CritterAnchor(critterAnchor)
+
+  type t = {
+    entityType: int,
+    id: int,
+    x: int,
+    y: int,
+    entityKind: kind,
+  }
+
+  let parseTrainingDummyKind = (reader): result<trainingDummy, ErrorAwarePacketReader.readError> => {
+    let? Ok(npcSlotId) = reader->readInt16("npcSlotId")
+    Ok({npcSlotId: npcSlotId})
+  }
+
+  let parseDisplayItem = (reader): result<displayItem, ErrorAwarePacketReader.readError> => {
+    let? Ok(netId) = reader->readInt16("netId")
+    let? Ok(prefix) = reader->readByte("prefix")
+    let? Ok(stack) = reader->readInt16("stack")
+    Ok({netId, prefix, stack})
+  }
+
+  let parseItemFrameKind = parseDisplayItem
+
+  let parseLogicSensorKind = (reader): result<logicSensor, ErrorAwarePacketReader.readError> => {
+    let? Ok(checkType) = reader->readByte("checkType")
+    let? Ok(onRaw) = reader->readByte("on")
+    Ok({checkType, on: onRaw == 1})
+  }
+
+  let parseDisplayDollKind = (reader): result<displayDoll, ErrorAwarePacketReader.readError> => {
+    let? Ok(itemsFlagsRaw) = reader->readByte("itemsFlags")
+    let itemsFlags = BitFlags.fromByte(itemsFlagsRaw)
+    let? Ok(dyeFlagsRaw) = reader->readByte("dyeFlags")
+    let dyeFlags = BitFlags.fromByte(dyeFlagsRaw)
+    let? Ok(pose) = reader->readByte("pose")
+    let? Ok(extraFlagsRaw) = reader->readByte("extraFlags")
+    let extraFlags = BitFlags.fromByte(extraFlagsRaw)
+
+    let items = []
+    let dyes = []
+    let misc = []
+    let parseResult = ref(Ok())
+
+    // Parse items[0-7] based on itemsFlags
+    for i in 0 to 7 {
+      switch parseResult.contents {
+      | Error(_) => ()
+      | Ok(_) =>
+        if itemsFlags->BitFlags.flagN(1 << i) {
+          switch parseDisplayItem(reader) {
+          | Ok(item) => items->Array.push(Some(item))->ignore
+          | Error(err) => parseResult := Error(err)
+          }
+        } else {
+          items->Array.push(None)->ignore
+        }
+      }
+    }
+
+    // Parse items[8] (mount slot) based on extraFlags[1]
+    switch parseResult.contents {
+    | Error(_) => ()
+    | Ok(_) =>
+      if extraFlags->BitFlags.flag2 {
+        switch parseDisplayItem(reader) {
+        | Ok(item) => items->Array.push(Some(item))->ignore
+        | Error(err) => parseResult := Error(err)
+        }
+      } else {
+        items->Array.push(None)->ignore
+      }
+    }
+
+    // Parse dyes[0-7] based on dyeFlags
+    for i in 0 to 7 {
+      switch parseResult.contents {
+      | Error(_) => ()
+      | Ok(_) =>
+        if dyeFlags->BitFlags.flagN(1 << i) {
+          switch parseDisplayItem(reader) {
+          | Ok(item) => dyes->Array.push(Some(item))->ignore
+          | Error(err) => parseResult := Error(err)
+          }
+        } else {
+          dyes->Array.push(None)->ignore
+        }
+      }
+    }
+
+    // Parse dyes[8] (mount dye slot) based on extraFlags[2]
+    switch parseResult.contents {
+    | Error(_) => ()
+    | Ok(_) =>
+      if extraFlags->BitFlags.flag3 {
+        switch parseDisplayItem(reader) {
+        | Ok(item) => dyes->Array.push(Some(item))->ignore
+        | Error(err) => parseResult := Error(err)
+        }
+      } else {
+        dyes->Array.push(None)->ignore
+      }
+    }
+
+    // Parse misc[0] (weapon/held item) based on extraFlags[0]
+    switch parseResult.contents {
+    | Error(_) => ()
+    | Ok(_) =>
+      if extraFlags->BitFlags.flag1 {
+        switch parseDisplayItem(reader) {
+        | Ok(item) => misc->Array.push(Some(item))->ignore
+        | Error(err) => parseResult := Error(err)
+        }
+      } else {
+        misc->Array.push(None)->ignore
+      }
+    }
+
+    switch parseResult.contents {
+    | Ok(_) => Ok({items, dyes, misc, pose})
+    | Error(err) => Error(err)
+    }
+  }
+
+  let parseWeaponsRackKind = parseDisplayItem
+
+  let parseHatRackKind = (reader): result<hatRack, ErrorAwarePacketReader.readError> => {
+    let? Ok(flagsRaw) = reader->readByte("flags")
+    let flags = BitFlags.fromByte(flagsRaw)
+    let items = []
+    let dyes = []
+    let parseResult = ref(Ok())
+
+    for i in 0 to 1 {
+      switch parseResult.contents {
+      | Error(_) => ()
+      | Ok(_) =>
+        if flags->BitFlags.flagN(1 << i) {
+          switch parseDisplayItem(reader) {
+          | Ok(item) => items->Array.push(Some(item))->ignore
+          | Error(err) => parseResult := Error(err)
+          }
+        } else {
+          items->Array.push(None)->ignore
+        }
+      }
+    }
+
+    for i in 0 to 1 {
+      switch parseResult.contents {
+      | Error(_) => ()
+      | Ok(_) =>
+        if flags->BitFlags.flagN(1 << i + 2) {
+          switch parseDisplayItem(reader) {
+          | Ok(item) => dyes->Array.push(Some(item))->ignore
+          | Error(err) => parseResult := Error(err)
+          }
+        } else {
+          dyes->Array.push(None)->ignore
+        }
+      }
+    }
+
+    switch parseResult.contents {
+    | Ok(_) => Ok({items, dyes})
+    | Error(err) => Error(err)
+    }
+  }
+
+  let parseFoodPlatterKind = parseDisplayItem
+  let parseDeadCellsDisplayJarKind = parseDisplayItem
+
+  let parseLeashedEntityAnchorKind = (reader): result<leashedEntityAnchor, ErrorAwarePacketReader.readError> => {
+    let? Ok(itemType) = reader->readInt16("itemType")
+    Ok({itemType: itemType})
+  }
+
+  let parseKiteAnchorKind = parseLeashedEntityAnchorKind
+  let parseCritterAnchorKind = parseLeashedEntityAnchorKind
+
+  let parseEntityKind = (entityType, reader) =>
+    switch entityType {
+    | 0 => parseTrainingDummyKind(reader)->Result.map(v => TrainingDummy(v))
+    | 1 => parseItemFrameKind(reader)->Result.map(v => ItemFrame(v))
+    | 2 => parseLogicSensorKind(reader)->Result.map(v => LogicSensor(v))
+    | 3 => parseDisplayDollKind(reader)->Result.map(v => DisplayDoll(v))
+    | 4 => parseWeaponsRackKind(reader)->Result.map(v => WeaponsRack(v))
+    | 5 => parseHatRackKind(reader)->Result.map(v => HatRack(v))
+    | 6 => parseFoodPlatterKind(reader)->Result.map(v => FoodPlatter(v))
+    | 7 => Ok(TeleportationPylon())
+    | 8 => parseDeadCellsDisplayJarKind(reader)->Result.map(v => DeadCellsDisplayJar(v))
+    | 9 => parseKiteAnchorKind(reader)->Result.map(v => KiteAnchor(v))
+    | 10 => parseCritterAnchorKind(reader)->Result.map(v => CritterAnchor(v))
+    | _ =>
+      Error({
+        ErrorAwarePacketReader.context: "Entity.parse",
+        error: JsError.make("Unknown entity kind: " ++ Int.toString(entityType))->JsError.toJsExn,
+      })
+    }
+
+  let parse = (reader): result<t, ErrorAwarePacketReader.readError> => {
+    let? Ok(entityType) = reader->readByte("entityType")
+    let? Ok(id) = reader->readInt32("id")
+    let? Ok(x) = reader->readInt16("x")
+    let? Ok(y) = reader->readInt16("y")
+    let? Ok(entityKind) = parseEntityKind(entityType, reader)
+
+    let entity = {
+      entityType,
+      id,
+      x,
+      y,
+      entityKind,
+    }
+    Console.log(NodeJs.Util.inspect(entity, {depth: 10}))
+    Ok(entity)
+  }
+
+  let {packByte, packInt16, packInt32} = module(ErrorAwareBufferWriter)
+  type bufferWriter = ErrorAwareBufferWriter.t
+
+  let packTrainingDummy = (writer: bufferWriter, trainingDummy): bufferWriter => {
+    writer->packInt16(trainingDummy.npcSlotId, "npcSlotId")
+  }
+
+  let packDisplayItem = (writer, displayItem): bufferWriter => {
+    writer
+    ->packInt16(displayItem.netId, "netId")
+    ->packByte(displayItem.prefix, "prefix")
+    ->packInt16(displayItem.stack, "stack")
+  }
+
+  let packItemFrame = packDisplayItem
+
+  let packLogicSensor = (writer, logicSensorKind): bufferWriter => {
+    writer
+    ->packByte(logicSensorKind.checkType, "checkType")
+    ->packByte(if logicSensorKind.on { 1 } else { 0 }, "on")
+  }
+
+  let hasItem = (arr, n) => {
+    arr->Array.get(n)->Option.flatMap(a => a)->Option.isSome
+  }
+
+  let packDisplayDoll = (writer, displayDollKind: displayDoll): bufferWriter => {
+    let itemFlags = BitFlags.fromFlags(
+      ~flag1=displayDollKind.items->hasItem(0),
+      ~flag2=displayDollKind.items->hasItem(1),
+      ~flag3=displayDollKind.items->hasItem(2),
+      ~flag4=displayDollKind.items->hasItem(3),
+      ~flag5=displayDollKind.items->hasItem(4),
+      ~flag6=displayDollKind.items->hasItem(5),
+      ~flag7=displayDollKind.items->hasItem(6),
+      ~flag8=displayDollKind.items->hasItem(7),
+    )
+    let dyeFlags = BitFlags.fromFlags(
+      ~flag1=displayDollKind.dyes->hasItem(0),
+      ~flag2=displayDollKind.dyes->hasItem(1),
+      ~flag3=displayDollKind.dyes->hasItem(2),
+      ~flag4=displayDollKind.dyes->hasItem(3),
+      ~flag5=displayDollKind.dyes->hasItem(4),
+      ~flag6=displayDollKind.dyes->hasItem(5),
+      ~flag7=displayDollKind.dyes->hasItem(6),
+      ~flag8=displayDollKind.dyes->hasItem(7),
+    )
+    let extraFlags = BitFlags.fromFlags(
+      ~flag1=displayDollKind.misc->hasItem(0),
+      ~flag2=displayDollKind.items->hasItem(8),
+      ~flag3=displayDollKind.dyes->hasItem(8),
+      ~flag4=false,
+      ~flag5=false,
+      ~flag6=false,
+      ~flag7=false,
+      ~flag8=false,
+    )
+
+    writer
+    ->packByte(itemFlags->BitFlags.toByte, "itemFlags")
+    ->packByte(dyeFlags->BitFlags.toByte, "dyeFlags")
+    ->packByte(displayDollKind.pose, "pose")
+    ->packByte(extraFlags->BitFlags.toByte, "extraFlags")
+    ->ignore
+
+    // Pack items[0-7]
+    for i in 0 to 7 {
+      switch displayDollKind.items->Array.get(i)->Option.flatMap(a => a) {
+      | Some(item) => writer->packDisplayItem(item)->ignore
+      | None => ()
+      }
+    }
+
+    // Pack items[8] (mount slot)
+    switch displayDollKind.items->Array.get(8)->Option.flatMap(a => a) {
+    | Some(item) => writer->packDisplayItem(item)->ignore
+    | None => ()
+    }
+
+    // Pack dyes[0-7]
+    for i in 0 to 7 {
+      switch displayDollKind.dyes->Array.get(i)->Option.flatMap(a => a) {
+      | Some(item) => writer->packDisplayItem(item)->ignore
+      | None => ()
+      }
+    }
+
+    // Pack dyes[8] (mount dye slot)
+    switch displayDollKind.dyes->Array.get(8)->Option.flatMap(a => a) {
+    | Some(item) => writer->packDisplayItem(item)->ignore
+    | None => ()
+    }
+
+    // Pack misc[0] (weapon/held item)
+    switch displayDollKind.misc->Array.get(0)->Option.flatMap(a => a) {
+    | Some(item) => writer->packDisplayItem(item)->ignore
+    | None => ()
+    }
+
+    writer
+  }
+
+  let packWeaponsRack = packDisplayItem
+
+  let packHatRack = (writer, hatRackKind): bufferWriter => {
+    let flags = BitFlags.fromFlags(
+      ~flag1=hatRackKind.items->hasItem(0),
+      ~flag2=hatRackKind.items->hasItem(1),
+      ~flag3=hatRackKind.dyes->hasItem(0),
+      ~flag4=hatRackKind.dyes->hasItem(1),
+      ~flag5=false,
+      ~flag6=false,
+      ~flag7=false,
+      ~flag8=false,
+    )
+
+    writer->packByte(flags->BitFlags.toByte, "flags")->ignore
+
+    for i in 0 to 1 {
+      switch hatRackKind.items->Array.get(i)->Option.flatMap(a => a) {
+      | Some(item) => writer->packDisplayItem(item)->ignore
+      | None => ()
+      }
+    }
+
+    for i in 0 to 1 {
+      switch hatRackKind.dyes->Array.get(i)->Option.flatMap(a => a) {
+      | Some(item) => writer->packDisplayItem(item)->ignore
+      | None => ()
+      }
+    }
+
+    writer
+  }
+
+  let packFoodPlatter = packDisplayItem
+  let packDeadCellsDisplayJar = packDisplayItem
+
+  let packLeashedEntityAnchor = (writer: bufferWriter, leashedEntityAnchor: leashedEntityAnchor): bufferWriter => {
+    writer->packInt16(leashedEntityAnchor.itemType, "itemType")
+  }
+
+  let packKiteAnchor = packLeashedEntityAnchor
+  let packCritterAnchor = packLeashedEntityAnchor
+
+  let packTeleportationPylon = (writer, _teleportationPylonKind): bufferWriter => writer
+
+  let packEntityKind = (writer, entityKind): bufferWriter => {
+    switch entityKind {
+    | TrainingDummy(trainingDummy) => writer->packTrainingDummy(trainingDummy)
+    | ItemFrame(itemFrame) => writer->packItemFrame(itemFrame)
+    | LogicSensor(logicSensor) => writer->packLogicSensor(logicSensor)
+    | DisplayDoll(displayDoll) => writer->packDisplayDoll(displayDoll)
+    | WeaponsRack(weaponsRack) => writer->packWeaponsRack(weaponsRack)
+    | HatRack(hatRack) => writer->packHatRack(hatRack)
+    | FoodPlatter(foodPlatter) => writer->packFoodPlatter(foodPlatter)
+    | TeleportationPylon(teleportationPylon) => writer->packTeleportationPylon(teleportationPylon)
+    | DeadCellsDisplayJar(deadCellsDisplayJar) =>
+      writer->packDeadCellsDisplayJar(deadCellsDisplayJar)
+    | KiteAnchor(kiteAnchor) => writer->packKiteAnchor(kiteAnchor)
+    | CritterAnchor(critterAnchor) => writer->packCritterAnchor(critterAnchor)
+    }
+  }
+
+  let pack = (writer: bufferWriter, entity: t): bufferWriter => {
+    writer
+    ->packByte(entity.entityType, "entityType")
+    ->packInt32(entity.id, "id")
+    ->packInt16(entity.x, "x")
+    ->packInt16(entity.y, "y")
+    ->packEntityKind(entity.entityKind)
+  }
+}
+
+type t = {
+  height: int,
+  width: int,
+  tileX: int,
+  tileY: int,
+  tiles: array<array<tile>>,
+  chests: array<Chest.t>,
+  signs: array<Sign.t>,
+  entities: array<Entity.t>,
+}
 
 let isTheSameAs = (self: tile, compTile: tile) => {
   let sameHeaders =
