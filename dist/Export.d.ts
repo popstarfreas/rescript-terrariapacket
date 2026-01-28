@@ -102,28 +102,12 @@ declare type activeTile_2 = {
     readonly frame: (undefined | frame_2)
 };
 
-declare type activeTile_3 = { readonly tileType: number; readonly frame: (undefined | frame_3) };
-
-declare type activeTile_4 = {
-    readonly tileType: number;
-    readonly slope: number;
-    readonly frame: (undefined | frame_4)
-};
-
 declare type ai = [(undefined | number), (undefined | number), (undefined | number), (undefined | number)];
-
-declare type ai_2 = [(undefined | number), (undefined | number), (undefined | number), (undefined | number)];
 
 declare type ambience = {
     readonly playerId: number;
     readonly seed: number;
     readonly skyEntityType: number;
-};
-
-declare type ambience_2 = {
-    readonly playerId: number;
-    readonly seed: number;
-    readonly skyEntityType: number
 };
 
 declare type anchor =
@@ -178,13 +162,6 @@ A, A, A, A,
 A, A, A, A
 ];
 
-declare type Array16_3<A> = [
-A, A, A, A,
-A, A, A, A,
-A, A, A, A,
-A, A, A, A
-];
-
 export declare namespace ArrayExt {
     export {
         intoChunks,
@@ -219,17 +196,10 @@ declare type bestiary = {
     readonly npcId: number;
 };
 
-declare type bestiary_2 = { readonly unlockType: bestiaryUnlockType_2; readonly npcId: number };
-
 declare type bestiaryUnlockType =
 | { TAG: "Kill"; _0: killCount }
 | "Sight"
 | "Chat";
-
-declare type bestiaryUnlockType_2 =
-"Sight"
-| "Chat"
-| { TAG: "Kill"; _0: killCount_2 };
 
 export declare namespace BitFlags {
     export {
@@ -281,13 +251,6 @@ declare type Chest_t = {
     readonly x: number;
     readonly y: number;
     readonly name: string;
-};
-
-declare type Chest_t_2 = {
-    readonly id: number; 
-    readonly x: number; 
-    readonly y: number; 
-    readonly name: string
 };
 
 export declare namespace ChestItemPacket {
@@ -378,8 +341,6 @@ declare type coinLuck = {
     readonly amount: number;
 };
 
-declare type coinLuck_2 = { readonly position: t_34<number>; readonly amount: number };
-
 declare type color = {
     readonly r: number;
     readonly g: number;
@@ -394,8 +355,6 @@ declare type command =
 | "Misc";
 
 declare type commandId = string;
-
-declare type commandId_2 = string;
 
 export declare namespace ConnectRequestPacket {
     export {
@@ -416,11 +375,6 @@ declare type context =
 | "TeamSwap"
 | { TAG: "Unknown"; _0: number };
 
-declare type context_2 =
-"ReviveFromDeath"
-| "SpawningIntoWorld"
-| "RecallFromItem";
-
 declare type control = {
     readonly isHoldingUp: boolean;
     readonly isHoldingDown: boolean;
@@ -428,15 +382,6 @@ declare type control = {
     readonly isHoldingRight: boolean;
     readonly isHoldingJump: boolean;
     readonly isHoldingItemUse: boolean;
-};
-
-declare type control_2 = {
-    readonly isHoldingUp: boolean;
-    readonly isHoldingDown: boolean;
-    readonly isHoldingLeft: boolean;
-    readonly isHoldingRight: boolean;
-    readonly isHoldingJump: boolean;
-    readonly isHoldingItemUse: boolean
 };
 
 declare type convertIfNeeded =
@@ -499,8 +444,6 @@ declare type creativePowerPermission = {
     readonly powerLevel: powerLevel;
 };
 
-declare type creativePowerPermission_2 = { readonly powerType: number; readonly powerLevel: powerLevel_2 };
-
 export declare namespace CreativePowers {
     export {
         toString_2 as toString,
@@ -533,8 +476,6 @@ declare const CreativePowerType: {
     fromInt: (value: number) => CreativePowerType | undefined;
     toInt: (data: CreativePowerType) => number;
 };
-
-declare type creativeUnlock = { readonly itemId: number; readonly researchedCount: number };
 
 export declare namespace CreditsOrSlimeTransformPacket {
     export {
@@ -616,8 +557,6 @@ declare const Decode: { parse: (_1: Buffer) => parse_65 };
 
 declare type difficulty = "Softcore" | "Mediumcore" | "Hardcore";
 
-declare type difficulty_2 = "Softcore" | "Mediumcore" | "Hardcore";
-
 declare type dimensionName = string;
 
 declare type dimensionName_2 = string;
@@ -645,8 +584,6 @@ declare type direction_2 = "Left" | "Right";
 
 declare type direction_3 = "Left" | "Right";
 
-declare type direction_4 = "Left" | "Right";
-
 export declare namespace DisconnectPacket {
     export {
         t_109 as t,
@@ -670,34 +607,20 @@ declare type Entity_displayDoll = {
     readonly dyes: (undefined | Entity_displayItem)[];
 };
 
-declare type Entity_displayDoll_2 = { readonly items: Array<(undefined | Entity_displayItem_2)>; readonly dyes: Array<(undefined | Entity_displayItem_2)> };
-
 declare type Entity_displayItem = {
     readonly netId: number;
     readonly prefix: number;
     readonly stack: number;
 };
 
-declare type Entity_displayItem_2 = {
-    readonly netId: number; 
-    readonly prefix: number; 
-    readonly stack: number
-};
-
 declare type Entity_foodPlatter = Entity_displayItem;
-
-declare type Entity_foodPlatter_2 = Entity_displayItem_2;
 
 declare type Entity_hatRack = {
     readonly items: (undefined | Entity_displayItem)[];
     readonly dyes: (undefined | Entity_displayItem)[];
 };
 
-declare type Entity_hatRack_2 = { readonly items: Array<(undefined | Entity_displayItem_2)>; readonly dyes: Array<(undefined | Entity_displayItem_2)> };
-
 declare type Entity_itemFrame = Entity_displayItem;
-
-declare type Entity_itemFrame_2 = Entity_displayItem_2;
 
 declare type Entity_kind =
 | { TAG: "DisplayDoll"; _0: Entity_displayDoll }
@@ -709,22 +632,10 @@ declare type Entity_kind =
 | { TAG: "TrainingDummy"; _0: Entity_trainingDummy }
 | { TAG: "WeaponsRack"; _0: Entity_weaponsRack };
 
-declare type Entity_kind_2 = 
-    { TAG: "DisplayDoll"; _0: Entity_displayDoll_2 }
-| { TAG: "FoodPlatter"; _0: Entity_foodPlatter_2 }
-| { TAG: "HatRack"; _0: Entity_hatRack_2 }
-| { TAG: "ItemFrame"; _0: Entity_itemFrame_2 }
-| { TAG: "LogicSensor"; _0: Entity_logicSensor_2 }
-| { TAG: "TeleportationPylon"; _0: Entity_teleportationPylon_2 }
-| { TAG: "TrainingDummy"; _0: Entity_trainingDummy_2 }
-| { TAG: "WeaponsRack"; _0: Entity_weaponsRack_2 };
-
 declare type Entity_logicSensor = {
     readonly checkType: number;
     readonly on: boolean;
 };
-
-declare type Entity_logicSensor_2 = { readonly checkType: number; readonly on: boolean };
 
 declare type Entity_t = {
     readonly entityType: number;
@@ -734,24 +645,11 @@ declare type Entity_t = {
     readonly entityKind: Entity_kind;
 };
 
-declare type Entity_t_2 = {
-    readonly entityType: number; 
-    readonly x: number; 
-    readonly y: number; 
-    readonly entityKind: Entity_kind_2
-};
-
 declare type Entity_teleportationPylon = void;
-
-declare type Entity_teleportationPylon_2 = void;
 
 declare type Entity_trainingDummy = { readonly npcSlotId: number };
 
-declare type Entity_trainingDummy_2 = { readonly npcSlotId: number };
-
 declare type Entity_weaponsRack = Entity_displayItem;
-
-declare type Entity_weaponsRack_2 = Entity_displayItem_2;
 
 export declare namespace ErrorAwarePacketWriter {
     export {
@@ -864,84 +762,6 @@ declare type eventInfo = {
     readonly dualDungeonsSeed: boolean;
 };
 
-declare type eventInfo_2 = {
-    readonly shadowOrbSmashed: boolean;
-    readonly killedBoss1: boolean;
-    readonly killedBoss2: boolean;
-    readonly killedBoss3: boolean;
-    readonly hardMode: boolean;
-    readonly killedClown: boolean;
-    readonly serverSidedCharacters: boolean;
-    readonly killedPlantBoss: boolean;
-    readonly killedMechBoss: boolean;
-    readonly killedMechBoss2: boolean;
-    readonly killedMechBoss3: boolean;
-    readonly killedAnyMechBoss: boolean;
-    readonly cloudBg: boolean;
-    readonly crimson: boolean;
-    readonly pumpkinMoon: boolean;
-    readonly snowMoon: boolean;
-    readonly expertMode: boolean;
-    readonly fastForwardTime: boolean;
-    readonly slimeRain: boolean;
-    readonly killedKingSlime: boolean;
-    readonly killedQueenBee: boolean;
-    readonly killedFishron: boolean;
-    readonly killedMartians: boolean;
-    readonly killedAncientCultist: boolean;
-    readonly killedMoonLord: boolean;
-    readonly killedPumpking: boolean;
-    readonly killedMourningWood: boolean;
-    readonly killedIceQueen: boolean;
-    readonly killedSantank: boolean;
-    readonly killedEverscream: boolean;
-    readonly killedGolem: boolean;
-    readonly birthdayParty: boolean;
-    readonly killedPirates: boolean;
-    readonly killedFrostLegion: boolean;
-    readonly killedGoblins: boolean;
-    readonly sandstorm: boolean;
-    readonly dungeonDefendersEvent: boolean;
-    readonly killedDungeonDefendersTier1: boolean;
-    readonly killedDungeonDefendersTier2: boolean;
-    readonly killedDungeonDefendersTier3: boolean;
-    readonly combatBookUsed: boolean;
-    readonly manualLanterns: boolean;
-    readonly killedSolarTower: boolean;
-    readonly killedVortexTower: boolean;
-    readonly killedNebulaTower: boolean;
-    readonly killedStardustTower: boolean;
-    readonly forceHalloween: boolean;
-    readonly forceChristmas: boolean;
-    readonly boughtCat: boolean;
-    readonly boughtDog: boolean;
-    readonly boughtBunny: boolean;
-    readonly freeCake: boolean;
-    readonly drunkWorld: boolean;
-    readonly killedEmpressOfLight: boolean;
-    readonly killedQueenSlime: boolean;
-    readonly getGoodWorld: boolean;
-    readonly tenthAnniversaryWorld: boolean;
-    readonly dontStarveWorld: boolean;
-    readonly downedDeerClops: boolean;
-    readonly notTheBeesWorld: boolean;
-    readonly remixWorld: boolean;
-    readonly unlockedSlimeBlueSpawn: boolean;
-    readonly combatBookVolumeTwoWasUsed: boolean;
-    readonly peddlersSatchelWasUsed: boolean;
-    readonly unlockedSlimeGreenSpawn: boolean;
-    readonly unlockedSlimeOldSpawn: boolean;
-    readonly unlockedSlimePurpleSpawn: boolean;
-    readonly unlockedSlimeRainbowSpawn: boolean;
-    readonly unlockedSlimeRedSpawn: boolean;
-    readonly unlockedSlimeYellowSpawn: boolean;
-    readonly unlockedSlimeCopperSpawn: boolean;
-    readonly fastForwardTimeToDusk: boolean;
-    readonly noTrapsWorld: boolean;
-    readonly zenithWorld: boolean;
-    readonly unlockedTruffleSpawn: boolean;
-};
-
 declare const EventType: {};
 
 declare type EventType_t = 
@@ -1004,10 +824,6 @@ declare type frame = { readonly x: number; readonly y: number };
 
 declare type frame_2 = { readonly x: number; readonly y: number };
 
-declare type frame_3 = { readonly x: number; readonly y: number };
-
-declare type frame_4 = { readonly x: number; readonly y: number };
-
 declare function fromArray<A>(a: A[]): Array16_2<A> | undefined;
 
 declare function fromArray_2(flags: boolean[]): t_95;
@@ -1025,13 +841,11 @@ flag7: boolean,
 flag8: boolean
 ): t_95;
 
-declare function fromInt(n: number): t_253 | undefined;
+declare function fromInt(n: number): t_234 | undefined;
 
 declare function getOr<A>(a: A[], index: number, or: A): A;
 
 declare type gravityDirection = "Normal" | "Inverted";
-
-declare type gravityDirection_2 = "Normal" | "Inverted";
 
 export declare namespace HaveDryadDoStardewAnimationPacket {
     export {
@@ -1185,155 +999,153 @@ export declare namespace ItemOwnerRemovePacket {
 
 declare type killCount = number;
 
-declare type killCount_2 = number;
-
-declare type LazyPacket_lazyParsed<a> = t_254<Result_2<a, readError>>;
+declare type LazyPacket_lazyParsed<a> = t_235<Result_2<a, readError>>;
 
 declare type LazyPacket_t =
     { TAG: "ConnectRequest"; _0: LazyPacket_lazyParsed<t_111> }
 | { TAG: "Disconnect"; _0: LazyPacket_lazyParsed<t_112> }
 | { TAG: "PlayerSlotSet"; _0: LazyPacket_lazyParsed<t_113> }
-| { TAG: "PlayerInfo"; _0: LazyPacket_lazyParsed<t_114> }
-| { TAG: "PlayerInventorySlot"; _0: LazyPacket_lazyParsed<t_115> }
-| { TAG: "WorldDataRequest"; _0: LazyPacket_lazyParsed<t_116> }
-| { TAG: "WorldInfo"; _0: LazyPacket_lazyParsed<WorldInfo> }
-| { TAG: "InitialTileSectionsRequest"; _0: LazyPacket_lazyParsed<t_117> }
-| { TAG: "Status"; _0: LazyPacket_lazyParsed<t_118> }
-| { TAG: "TileSectionSend"; _0: LazyPacket_lazyParsed<t_119> }
-| { TAG: "TileSectionFrame"; _0: LazyPacket_lazyParsed<t_120> }
-| { TAG: "PlayerSpawn"; _0: LazyPacket_lazyParsed<t_121> }
-| { TAG: "PlayerUpdate"; _0: LazyPacket_lazyParsed<t_122> }
-| { TAG: "PlayerActive"; _0: LazyPacket_lazyParsed<t_123> }
-| { TAG: "PlayerHealth"; _0: LazyPacket_lazyParsed<t_124> }
-| { TAG: "TileModify"; _0: LazyPacket_lazyParsed<t_125> }
-| { TAG: "TimeSet"; _0: LazyPacket_lazyParsed<t_126> }
-| { TAG: "DoorUse"; _0: LazyPacket_lazyParsed<t_127> }
-| { TAG: "TileSquareSend"; _0: LazyPacket_lazyParsed<t_128> }
-| { TAG: "ItemDropUpdate"; _0: LazyPacket_lazyParsed<t_129> }
-| { TAG: "ItemOwner"; _0: LazyPacket_lazyParsed<t_130> }
-| { TAG: "NpcUpdate"; _0: LazyPacket_lazyParsed<t_131> }
-| { TAG: "NpcItemStrike"; _0: LazyPacket_lazyParsed<t_132> }
-| { TAG: "ProjectileSync"; _0: LazyPacket_lazyParsed<t_133> }
-| { TAG: "NpcStrike"; _0: LazyPacket_lazyParsed<t_134> }
-| { TAG: "ProjectileDestroy"; _0: LazyPacket_lazyParsed<t_135> }
-| { TAG: "PvpToggle"; _0: LazyPacket_lazyParsed<t_136> }
-| { TAG: "ChestOpen"; _0: LazyPacket_lazyParsed<t_137> }
-| { TAG: "ChestItem"; _0: LazyPacket_lazyParsed<t_138> }
-| { TAG: "ActiveContainerSync"; _0: LazyPacket_lazyParsed<t_139> }
-| { TAG: "ChestPlace"; _0: LazyPacket_lazyParsed<t_140> }
-| { TAG: "HealEffect"; _0: LazyPacket_lazyParsed<t_141> }
-| { TAG: "Zones"; _0: LazyPacket_lazyParsed<t_142> }
-| { TAG: "PasswordRequired"; _0: LazyPacket_lazyParsed<t_143> }
-| { TAG: "PasswordSend"; _0: LazyPacket_lazyParsed<t_144> }
-| { TAG: "ItemOwnerRemove"; _0: LazyPacket_lazyParsed<t_145> }
-| { TAG: "NpcTalk"; _0: LazyPacket_lazyParsed<t_146> }
-| { TAG: "PlayerAnimation"; _0: LazyPacket_lazyParsed<t_147> }
-| { TAG: "PlayerMana"; _0: LazyPacket_lazyParsed<t_148> }
-| { TAG: "ManaEffect"; _0: LazyPacket_lazyParsed<t_149> }
-| { TAG: "PlayerTeam"; _0: LazyPacket_lazyParsed<t_150> }
-| { TAG: "SignRead"; _0: LazyPacket_lazyParsed<t_151> }
-| { TAG: "SignNew"; _0: LazyPacket_lazyParsed<t_152> }
-| { TAG: "LiquidSet"; _0: LazyPacket_lazyParsed<t_153> }
-| { TAG: "PlayerSpawnSelf"; _0: LazyPacket_lazyParsed<t_154> }
-| { TAG: "PlayerBuffsSet"; _0: LazyPacket_lazyParsed<t_155> }
-| { TAG: "NpcSpecialEffect"; _0: LazyPacket_lazyParsed<t_156> }
-| { TAG: "ChestOrTempleUnlock"; _0: LazyPacket_lazyParsed<t_157> }
-| { TAG: "NpcBuffAdd"; _0: LazyPacket_lazyParsed<t_158> }
-| { TAG: "NpcBuffUpdate"; _0: LazyPacket_lazyParsed<t_159> }
-| { TAG: "PlayerBuffAdd"; _0: LazyPacket_lazyParsed<t_160> }
-| { TAG: "NpcNameUpdate"; _0: LazyPacket_lazyParsed<t_161> }
-| { TAG: "GoodEvilUpdate"; _0: LazyPacket_lazyParsed<t_162> }
-| { TAG: "HarpPlay"; _0: LazyPacket_lazyParsed<t_163> }
-| { TAG: "SwitchHit"; _0: LazyPacket_lazyParsed<t_164> }
-| { TAG: "NpcHomeUpdate"; _0: LazyPacket_lazyParsed<t_165> }
-| { TAG: "BossOrInvasionSpawn"; _0: LazyPacket_lazyParsed<t_166> }
-| { TAG: "PlayerDodge"; _0: LazyPacket_lazyParsed<t_167> }
-| { TAG: "TilePaint"; _0: LazyPacket_lazyParsed<t_168> }
-| { TAG: "WallPaint"; _0: LazyPacket_lazyParsed<t_169> }
-| { TAG: "Teleport"; _0: LazyPacket_lazyParsed<t_170> }
-| { TAG: "PlayerHealOther"; _0: LazyPacket_lazyParsed<t_171> }
-| { TAG: "DimensionsUpdate"; _0: LazyPacket_lazyParsed<t_172> }
-| { TAG: "ClientUuid"; _0: LazyPacket_lazyParsed<t_173> }
-| { TAG: "ChestName"; _0: LazyPacket_lazyParsed<t_174> }
-| { TAG: "NpcCatch"; _0: LazyPacket_lazyParsed<t_175> }
-| { TAG: "NpcRelease"; _0: LazyPacket_lazyParsed<t_176> }
-| { TAG: "TravellingMerchantInventory"; _0: LazyPacket_lazyParsed<t_177> }
-| { TAG: "TeleportationPotion"; _0: LazyPacket_lazyParsed<t_178> }
-| { TAG: "AnglerQuest"; _0: LazyPacket_lazyParsed<t_179> }
-| { TAG: "AnglerQuestComplete"; _0: LazyPacket_lazyParsed<t_180> }
-| { TAG: "AnglerQuestsCompletedAmount"; _0: LazyPacket_lazyParsed<t_181> }
-| { TAG: "TemporaryAnimationCreate"; _0: LazyPacket_lazyParsed<t_182> }
-| { TAG: "InvasionProgressReport"; _0: LazyPacket_lazyParsed<t_183> }
-| { TAG: "ObjectPlace"; _0: LazyPacket_lazyParsed<t_184> }
-| { TAG: "PlayerChestIndexSync"; _0: LazyPacket_lazyParsed<t_185> }
-| { TAG: "CombatNumberCreate"; _0: LazyPacket_lazyParsed<t_186> }
-| { TAG: "NetModuleLoad"; _0: LazyPacket_lazyParsed<NetModuleLoad> }
-| { TAG: "NpcKillCount"; _0: LazyPacket_lazyParsed<t_187> }
-| { TAG: "PlayerStealth"; _0: LazyPacket_lazyParsed<t_188> }
-| { TAG: "ItemForceIntoNearestChest"; _0: LazyPacket_lazyParsed<t_189> }
-| { TAG: "TileEntityUpdate"; _0: LazyPacket_lazyParsed<t_190> }
-| { TAG: "TileEntityPlace"; _0: LazyPacket_lazyParsed<t_191> }
-| { TAG: "ItemDropModify"; _0: LazyPacket_lazyParsed<t_192> }
-| { TAG: "ItemFramePlace"; _0: LazyPacket_lazyParsed<t_193> }
-| { TAG: "ItemDropInstancedUpdate"; _0: LazyPacket_lazyParsed<t_194> }
-| { TAG: "EmoteBubble"; _0: LazyPacket_lazyParsed<t_195> }
-| { TAG: "ExtraValueSync"; _0: LazyPacket_lazyParsed<t_196> }
-| { TAG: "SocialHandshake"; _0: LazyPacket_lazyParsed<t_197> }
-| { TAG: "Unused"; _0: LazyPacket_lazyParsed<t_198> }
-| { TAG: "PortalKill"; _0: LazyPacket_lazyParsed<t_199> }
-| { TAG: "PlayerTeleportPortal"; _0: LazyPacket_lazyParsed<t_200> }
-| { TAG: "NpcKilledNotification"; _0: LazyPacket_lazyParsed<t_201> }
-| { TAG: "EventNotification"; _0: LazyPacket_lazyParsed<t_202> }
-| { TAG: "MinionTargetUpdate"; _0: LazyPacket_lazyParsed<t_203> }
-| { TAG: "NpcTeleportPortal"; _0: LazyPacket_lazyParsed<t_204> }
-| { TAG: "ShieldStrengthsUpdate"; _0: LazyPacket_lazyParsed<t_205> }
-| { TAG: "NebulaLevelUp"; _0: LazyPacket_lazyParsed<t_206> }
-| { TAG: "MoonLordCountdown"; _0: LazyPacket_lazyParsed<t_207> }
-| { TAG: "NpcShopItem"; _0: LazyPacket_lazyParsed<t_208> }
-| { TAG: "GemLockToggle"; _0: LazyPacket_lazyParsed<t_209> }
-| { TAG: "SmokePoof"; _0: LazyPacket_lazyParsed<t_210> }
-| { TAG: "ChatMessageSmart"; _0: LazyPacket_lazyParsed<t_211> }
-| { TAG: "WiredCannonShot"; _0: LazyPacket_lazyParsed<t_212> }
-| { TAG: "MassWireOperation"; _0: LazyPacket_lazyParsed<t_213> }
-| { TAG: "MassWireOperationPay"; _0: LazyPacket_lazyParsed<t_214> }
-| { TAG: "PartyToggle"; _0: LazyPacket_lazyParsed<t_215> }
-| { TAG: "TreeGrowFx"; _0: LazyPacket_lazyParsed<t_216> }
-| { TAG: "CrystalInvasionStart"; _0: LazyPacket_lazyParsed<t_217> }
-| { TAG: "CrystalInvasionWipeAll"; _0: LazyPacket_lazyParsed<t_218> }
-| { TAG: "MinionAttackTargetUpdate"; _0: LazyPacket_lazyParsed<t_219> }
-| { TAG: "CrystalInvasionSendWaitTime"; _0: LazyPacket_lazyParsed<t_220> }
-| { TAG: "PlayerDamage"; _0: LazyPacket_lazyParsed<t_221> }
-| { TAG: "PlayerDeath"; _0: LazyPacket_lazyParsed<t_222> }
-| { TAG: "CombatTextCreate"; _0: LazyPacket_lazyParsed<t_223> }
-| { TAG: "Emoji"; _0: LazyPacket_lazyParsed<t_224> }
-| { TAG: "TileEntityDisplayDollItemSync"; _0: LazyPacket_lazyParsed<t_225> }
-| { TAG: "TileEntityInteractionRequest"; _0: LazyPacket_lazyParsed<t_226> }
-| { TAG: "WeaponsRackTryPlacing"; _0: LazyPacket_lazyParsed<t_227> }
-| { TAG: "TileEntityHatRackItemSync"; _0: LazyPacket_lazyParsed<t_228> }
-| { TAG: "TilePickingSync"; _0: LazyPacket_lazyParsed<t_229> }
-| { TAG: "RevengeMarkerSync"; _0: LazyPacket_lazyParsed<t_230> }
-| { TAG: "RevengeMarkerRemove"; _0: LazyPacket_lazyParsed<t_231> }
-| { TAG: "GolfBallLandInCup"; _0: LazyPacket_lazyParsed<t_232> }
-| { TAG: "ClientFinishConnectingToServer"; _0: LazyPacket_lazyParsed<t_233> }
-| { TAG: "NpcFishOut"; _0: LazyPacket_lazyParsed<t_234> }
-| { TAG: "NpcTamper"; _0: LazyPacket_lazyParsed<t_235> }
-| { TAG: "LegacySoundPlay"; _0: LazyPacket_lazyParsed<t_236> }
-| { TAG: "FoodPlatterTryPlacing"; _0: LazyPacket_lazyParsed<t_237> }
-| { TAG: "PlayerLuckFactorsUpdate"; _0: LazyPacket_lazyParsed<t_238> }
-| { TAG: "PlayerDead"; _0: LazyPacket_lazyParsed<t_239> }
-| { TAG: "CavernMonsterTypeSync"; _0: LazyPacket_lazyParsed<t_240> }
-| { TAG: "NpcBuffRemovalRequest"; _0: LazyPacket_lazyParsed<t_241> }
-| { TAG: "ClientSyncedInventory"; _0: LazyPacket_lazyParsed<t_242> }
-| { TAG: "CountsAsHostForGameplaySet"; _0: LazyPacket_lazyParsed<t_243> }
-| { TAG: "CreditsOrSlimeTransform"; _0: LazyPacket_lazyParsed<t_244> }
-| { TAG: "LucyAxeMessage"; _0: LazyPacket_lazyParsed<t_245> }
-| { TAG: "PiggyBankVoidLensUpdate"; _0: LazyPacket_lazyParsed<t_246> }
-| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: LazyPacket_lazyParsed<t_247> }
-| { TAG: "HaveDryadDoStardewAnimation"; _0: LazyPacket_lazyParsed<t_248> }
-| { TAG: "ItemDropShimmeredUpdate"; _0: LazyPacket_lazyParsed<t_249> }
-| { TAG: "ShimmerEffectOrCoinLuck"; _0: LazyPacket_lazyParsed<t_250> }
-| { TAG: "LoadoutSwitch"; _0: LazyPacket_lazyParsed<t_251> }
-| { TAG: "ItemDropProtectedUpdate"; _0: LazyPacket_lazyParsed<t_252> }
+| { TAG: "PlayerInfo"; _0: LazyPacket_lazyParsed<t_99> }
+| { TAG: "PlayerInventorySlot"; _0: LazyPacket_lazyParsed<t_101> }
+| { TAG: "WorldDataRequest"; _0: LazyPacket_lazyParsed<t_114> }
+| { TAG: "WorldInfo"; _0: LazyPacket_lazyParsed<t_106> }
+| { TAG: "InitialTileSectionsRequest"; _0: LazyPacket_lazyParsed<t_82> }
+| { TAG: "Status"; _0: LazyPacket_lazyParsed<t_115> }
+| { TAG: "TileSectionSend"; _0: LazyPacket_lazyParsed<t_67> }
+| { TAG: "TileSectionFrame"; _0: LazyPacket_lazyParsed<t_116> }
+| { TAG: "PlayerSpawn"; _0: LazyPacket_lazyParsed<t_100> }
+| { TAG: "PlayerUpdate"; _0: LazyPacket_lazyParsed<t_98> }
+| { TAG: "PlayerActive"; _0: LazyPacket_lazyParsed<t_117> }
+| { TAG: "PlayerHealth"; _0: LazyPacket_lazyParsed<t_118> }
+| { TAG: "TileModify"; _0: LazyPacket_lazyParsed<t_119> }
+| { TAG: "TimeSet"; _0: LazyPacket_lazyParsed<t_120> }
+| { TAG: "DoorUse"; _0: LazyPacket_lazyParsed<t_121> }
+| { TAG: "TileSquareSend"; _0: LazyPacket_lazyParsed<t_68> }
+| { TAG: "ItemDropUpdate"; _0: LazyPacket_lazyParsed<t_122> }
+| { TAG: "ItemOwner"; _0: LazyPacket_lazyParsed<t_19> }
+| { TAG: "NpcUpdate"; _0: LazyPacket_lazyParsed<t_108> }
+| { TAG: "NpcItemStrike"; _0: LazyPacket_lazyParsed<t_123> }
+| { TAG: "ProjectileSync"; _0: LazyPacket_lazyParsed<t_124> }
+| { TAG: "NpcStrike"; _0: LazyPacket_lazyParsed<t_125> }
+| { TAG: "ProjectileDestroy"; _0: LazyPacket_lazyParsed<t_126> }
+| { TAG: "PvpToggle"; _0: LazyPacket_lazyParsed<t_127> }
+| { TAG: "ChestOpen"; _0: LazyPacket_lazyParsed<t_128> }
+| { TAG: "ChestItem"; _0: LazyPacket_lazyParsed<t_129> }
+| { TAG: "ActiveContainerSync"; _0: LazyPacket_lazyParsed<t_130> }
+| { TAG: "ChestPlace"; _0: LazyPacket_lazyParsed<t_131> }
+| { TAG: "HealEffect"; _0: LazyPacket_lazyParsed<t_132> }
+| { TAG: "Zones"; _0: LazyPacket_lazyParsed<t_77> }
+| { TAG: "PasswordRequired"; _0: LazyPacket_lazyParsed<t_133> }
+| { TAG: "PasswordSend"; _0: LazyPacket_lazyParsed<t_134> }
+| { TAG: "ItemOwnerRemove"; _0: LazyPacket_lazyParsed<t_135> }
+| { TAG: "NpcTalk"; _0: LazyPacket_lazyParsed<t_136> }
+| { TAG: "PlayerAnimation"; _0: LazyPacket_lazyParsed<t_137> }
+| { TAG: "PlayerMana"; _0: LazyPacket_lazyParsed<t_138> }
+| { TAG: "ManaEffect"; _0: LazyPacket_lazyParsed<t_139> }
+| { TAG: "PlayerTeam"; _0: LazyPacket_lazyParsed<t_140> }
+| { TAG: "SignRead"; _0: LazyPacket_lazyParsed<t_141> }
+| { TAG: "SignNew"; _0: LazyPacket_lazyParsed<t_142> }
+| { TAG: "LiquidSet"; _0: LazyPacket_lazyParsed<t_143> }
+| { TAG: "PlayerSpawnSelf"; _0: LazyPacket_lazyParsed<t_144> }
+| { TAG: "PlayerBuffsSet"; _0: LazyPacket_lazyParsed<t_39> }
+| { TAG: "NpcSpecialEffect"; _0: LazyPacket_lazyParsed<t_145> }
+| { TAG: "ChestOrTempleUnlock"; _0: LazyPacket_lazyParsed<t_146> }
+| { TAG: "NpcBuffAdd"; _0: LazyPacket_lazyParsed<t_147> }
+| { TAG: "NpcBuffUpdate"; _0: LazyPacket_lazyParsed<t_25> }
+| { TAG: "PlayerBuffAdd"; _0: LazyPacket_lazyParsed<t_148> }
+| { TAG: "NpcNameUpdate"; _0: LazyPacket_lazyParsed<t_149> }
+| { TAG: "GoodEvilUpdate"; _0: LazyPacket_lazyParsed<t_150> }
+| { TAG: "HarpPlay"; _0: LazyPacket_lazyParsed<t_151> }
+| { TAG: "SwitchHit"; _0: LazyPacket_lazyParsed<t_152> }
+| { TAG: "NpcHomeUpdate"; _0: LazyPacket_lazyParsed<t_153> }
+| { TAG: "BossOrInvasionSpawn"; _0: LazyPacket_lazyParsed<t_154> }
+| { TAG: "PlayerDodge"; _0: LazyPacket_lazyParsed<t_155> }
+| { TAG: "TilePaint"; _0: LazyPacket_lazyParsed<t_156> }
+| { TAG: "WallPaint"; _0: LazyPacket_lazyParsed<t_157> }
+| { TAG: "Teleport"; _0: LazyPacket_lazyParsed<t_55> }
+| { TAG: "PlayerHealOther"; _0: LazyPacket_lazyParsed<t_158> }
+| { TAG: "DimensionsUpdate"; _0: LazyPacket_lazyParsed<t_159> }
+| { TAG: "ClientUuid"; _0: LazyPacket_lazyParsed<t_160> }
+| { TAG: "ChestName"; _0: LazyPacket_lazyParsed<t_161> }
+| { TAG: "NpcCatch"; _0: LazyPacket_lazyParsed<t_162> }
+| { TAG: "NpcRelease"; _0: LazyPacket_lazyParsed<t_163> }
+| { TAG: "TravellingMerchantInventory"; _0: LazyPacket_lazyParsed<t_70> }
+| { TAG: "TeleportationPotion"; _0: LazyPacket_lazyParsed<t_56> }
+| { TAG: "AnglerQuest"; _0: LazyPacket_lazyParsed<t_164> }
+| { TAG: "AnglerQuestComplete"; _0: LazyPacket_lazyParsed<t_165> }
+| { TAG: "AnglerQuestsCompletedAmount"; _0: LazyPacket_lazyParsed<t_166> }
+| { TAG: "TemporaryAnimationCreate"; _0: LazyPacket_lazyParsed<t_167> }
+| { TAG: "InvasionProgressReport"; _0: LazyPacket_lazyParsed<t_168> }
+| { TAG: "ObjectPlace"; _0: LazyPacket_lazyParsed<t_169> }
+| { TAG: "PlayerChestIndexSync"; _0: LazyPacket_lazyParsed<t_170> }
+| { TAG: "CombatNumberCreate"; _0: LazyPacket_lazyParsed<t_171> }
+| { TAG: "NetModuleLoad"; _0: LazyPacket_lazyParsed<t_23> }
+| { TAG: "NpcKillCount"; _0: LazyPacket_lazyParsed<t_172> }
+| { TAG: "PlayerStealth"; _0: LazyPacket_lazyParsed<t_173> }
+| { TAG: "ItemForceIntoNearestChest"; _0: LazyPacket_lazyParsed<t_85> }
+| { TAG: "TileEntityUpdate"; _0: LazyPacket_lazyParsed<t_174> }
+| { TAG: "TileEntityPlace"; _0: LazyPacket_lazyParsed<t_175> }
+| { TAG: "ItemDropModify"; _0: LazyPacket_lazyParsed<t_176> }
+| { TAG: "ItemFramePlace"; _0: LazyPacket_lazyParsed<t_177> }
+| { TAG: "ItemDropInstancedUpdate"; _0: LazyPacket_lazyParsed<t_178> }
+| { TAG: "EmoteBubble"; _0: LazyPacket_lazyParsed<t_179> }
+| { TAG: "ExtraValueSync"; _0: LazyPacket_lazyParsed<t_180> }
+| { TAG: "SocialHandshake"; _0: LazyPacket_lazyParsed<t_181> }
+| { TAG: "Unused"; _0: LazyPacket_lazyParsed<t_182> }
+| { TAG: "PortalKill"; _0: LazyPacket_lazyParsed<t_183> }
+| { TAG: "PlayerTeleportPortal"; _0: LazyPacket_lazyParsed<t_184> }
+| { TAG: "NpcKilledNotification"; _0: LazyPacket_lazyParsed<t_185> }
+| { TAG: "EventNotification"; _0: LazyPacket_lazyParsed<t_186> }
+| { TAG: "MinionTargetUpdate"; _0: LazyPacket_lazyParsed<t_187> }
+| { TAG: "NpcTeleportPortal"; _0: LazyPacket_lazyParsed<t_188> }
+| { TAG: "ShieldStrengthsUpdate"; _0: LazyPacket_lazyParsed<t_189> }
+| { TAG: "NebulaLevelUp"; _0: LazyPacket_lazyParsed<t_190> }
+| { TAG: "MoonLordCountdown"; _0: LazyPacket_lazyParsed<t_191> }
+| { TAG: "NpcShopItem"; _0: LazyPacket_lazyParsed<t_192> }
+| { TAG: "GemLockToggle"; _0: LazyPacket_lazyParsed<t_193> }
+| { TAG: "SmokePoof"; _0: LazyPacket_lazyParsed<t_194> }
+| { TAG: "ChatMessageSmart"; _0: LazyPacket_lazyParsed<t_195> }
+| { TAG: "WiredCannonShot"; _0: LazyPacket_lazyParsed<t_196> }
+| { TAG: "MassWireOperation"; _0: LazyPacket_lazyParsed<t_197> }
+| { TAG: "MassWireOperationPay"; _0: LazyPacket_lazyParsed<t_198> }
+| { TAG: "PartyToggle"; _0: LazyPacket_lazyParsed<t_199> }
+| { TAG: "TreeGrowFx"; _0: LazyPacket_lazyParsed<t_200> }
+| { TAG: "CrystalInvasionStart"; _0: LazyPacket_lazyParsed<t_201> }
+| { TAG: "CrystalInvasionWipeAll"; _0: LazyPacket_lazyParsed<t_202> }
+| { TAG: "MinionAttackTargetUpdate"; _0: LazyPacket_lazyParsed<t_203> }
+| { TAG: "CrystalInvasionSendWaitTime"; _0: LazyPacket_lazyParsed<t_204> }
+| { TAG: "PlayerDamage"; _0: LazyPacket_lazyParsed<t_205> }
+| { TAG: "PlayerDeath"; _0: LazyPacket_lazyParsed<t_206> }
+| { TAG: "CombatTextCreate"; _0: LazyPacket_lazyParsed<t_207> }
+| { TAG: "Emoji"; _0: LazyPacket_lazyParsed<t_208> }
+| { TAG: "TileEntityDisplayDollItemSync"; _0: LazyPacket_lazyParsed<t_58> }
+| { TAG: "TileEntityInteractionRequest"; _0: LazyPacket_lazyParsed<t_209> }
+| { TAG: "WeaponsRackTryPlacing"; _0: LazyPacket_lazyParsed<t_210> }
+| { TAG: "TileEntityHatRackItemSync"; _0: LazyPacket_lazyParsed<t_211> }
+| { TAG: "TilePickingSync"; _0: LazyPacket_lazyParsed<t_212> }
+| { TAG: "RevengeMarkerSync"; _0: LazyPacket_lazyParsed<t_213> }
+| { TAG: "RevengeMarkerRemove"; _0: LazyPacket_lazyParsed<t_214> }
+| { TAG: "GolfBallLandInCup"; _0: LazyPacket_lazyParsed<t_215> }
+| { TAG: "ClientFinishConnectingToServer"; _0: LazyPacket_lazyParsed<t_216> }
+| { TAG: "NpcFishOut"; _0: LazyPacket_lazyParsed<t_217> }
+| { TAG: "NpcTamper"; _0: LazyPacket_lazyParsed<t_218> }
+| { TAG: "LegacySoundPlay"; _0: LazyPacket_lazyParsed<t_219> }
+| { TAG: "FoodPlatterTryPlacing"; _0: LazyPacket_lazyParsed<t_220> }
+| { TAG: "PlayerLuckFactorsUpdate"; _0: LazyPacket_lazyParsed<t_90> }
+| { TAG: "PlayerDead"; _0: LazyPacket_lazyParsed<t_221> }
+| { TAG: "CavernMonsterTypeSync"; _0: LazyPacket_lazyParsed<t_222> }
+| { TAG: "NpcBuffRemovalRequest"; _0: LazyPacket_lazyParsed<t_223> }
+| { TAG: "ClientSyncedInventory"; _0: LazyPacket_lazyParsed<t_224> }
+| { TAG: "CountsAsHostForGameplaySet"; _0: LazyPacket_lazyParsed<t_225> }
+| { TAG: "CreditsOrSlimeTransform"; _0: LazyPacket_lazyParsed<t_226> }
+| { TAG: "LucyAxeMessage"; _0: LazyPacket_lazyParsed<t_227> }
+| { TAG: "PiggyBankVoidLensUpdate"; _0: LazyPacket_lazyParsed<t_228> }
+| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: LazyPacket_lazyParsed<t_229> }
+| { TAG: "HaveDryadDoStardewAnimation"; _0: LazyPacket_lazyParsed<t_230> }
+| { TAG: "ItemDropShimmeredUpdate"; _0: LazyPacket_lazyParsed<t_231> }
+| { TAG: "ShimmerEffectOrCoinLuck"; _0: LazyPacket_lazyParsed<t_48> }
+| { TAG: "LoadoutSwitch"; _0: LazyPacket_lazyParsed<t_232> }
+| { TAG: "ItemDropProtectedUpdate"; _0: LazyPacket_lazyParsed<t_233> }
 | { TAG: "DeadCellsDisplayJarTryPlacing"; _0: LazyPacket_lazyParsed<t_79> }
 | { TAG: "PlayerSpectate"; _0: LazyPacket_lazyParsed<t_91> }
 | { TAG: "ItemDropClear"; _0: LazyPacket_lazyParsed<t_83> }
@@ -1383,34 +1195,17 @@ declare type life =
 | { TAG: "Int16"; _0: number }
 | { TAG: "Int32"; _0: number };
 
-declare type life_2 =
-"Max"
-| { TAG: "Byte"; _0: number }
-| { TAG: "Int16"; _0: number }
-| { TAG: "Int32"; _0: number };
-
 declare type liquid = { readonly changes: liquidChange[] };
 
 declare type liquid_2 = { readonly liquidValue: number; readonly liquidType: number };
 
 declare type liquid_3 = { readonly liquidValue: number; readonly liquidType: number };
 
-declare type liquid_4 = { readonly liquidValue: number; readonly liquidType: number };
-
-declare type liquid_5 = { readonly changes: liquidChange_2[] };
-
 declare type liquidChange = {
     readonly x: number;
     readonly y: number;
     readonly amount: number;
     readonly liquidType: number;
-};
-
-declare type liquidChange_2 = {
-    readonly x: number;
-    readonly y: number;
-    readonly amount: number;
-    readonly liquidType: number
 };
 
 export declare namespace LoadoutSwitchPacket {
@@ -1433,25 +1228,7 @@ declare function make(): untypedT;
 
 declare type message = string;
 
-declare type message_2 = string;
-
 declare type mode = "Classic" | "Journey";
-
-declare type mode_2 = "Classic" | "Journey";
-
-declare type NetModuleLoad =
-    { TAG: "Liquid"; _0: liquid_5 }
-| { TAG: "ClientText"; _0: commandId_2; _1: message_2 }
-| { TAG: "ServerText"; _0: playerId_2; _1: NetworkText; _2: Color }
-| { TAG: "Ping"; _0: position_2 }
-| { TAG: "Ambience"; _0: ambience_2 }
-| { TAG: "Bestiary"; _0: bestiary_2 }
-| { TAG: "CreativeUnlocks"; _0: creativeUnlock }
-| { TAG: "CreativePower"; _0: CreativePower }
-| { TAG: "CreativeUnlocksPlayerReport"; _0: unlockReport_2 }
-| { TAG: "TeleportPylon"; _0: teleportPylon_2 }
-| { TAG: "Particles"; _0: particle_2 }
-| { TAG: "CreativePowerPermissions"; _0: creativePowerPermission_2 };
 
 export declare namespace NetModuleLoadPacket {
     export {
@@ -1729,14 +1506,14 @@ declare type PackError = {
     readonly error: Error;
 };
 
-declare function packetName(packetType: t_253): string;
+declare function packetName(packetType: t_234): string;
 
 export declare namespace PacketType {
     export {
         fromInt,
         toInt,
         packetName,
-        t_253 as t
+        t_234 as t
     }
 }
 
@@ -1824,7 +1601,7 @@ declare const parse_104: (_1: Buffer) => parse_104;
 
 declare const parse_105: parse_106<t_110>;
 
-declare type parse_106<a> = (buffer: Buffer, fromServer: boolean, ignore?: t_253[]) => parseResult<a>;
+declare type parse_106<a> = (buffer: Buffer, fromServer: boolean, ignore?: t_234[]) => parseResult<a>;
 
 declare type parse_11 = parseOk_11 | parseError_11;
 
@@ -2732,16 +2509,6 @@ declare type particle = {
     readonly invokedByPlayer: number;
 };
 
-declare type particle_2 = {
-    readonly particleType: number;
-    readonly x: number;
-    readonly y: number;
-    readonly vx: number;
-    readonly vy: number;
-    readonly shaderIndex: number;
-    readonly invokedByPlayer: number
-};
-
 export declare namespace PartyTogglePacket {
     export {
         t_36 as t,
@@ -2908,8 +2675,6 @@ export declare namespace PlayerHealthPacket {
 }
 
 declare type playerId = number;
-
-declare type playerId_2 = number;
 
 export declare namespace PlayerInfoPacket {
     export {
@@ -3080,22 +2845,13 @@ declare type position = {
     readonly y: number;
 };
 
-declare type position_2 = { readonly x: number; readonly y: number };
-
 declare type potionOfReturn = {
     readonly originalUsePosition: Float_t;
     readonly homePosition: Float_t;
 };
 
-declare type potionOfReturn_2 = { readonly originalUsePosition: t_34<number>; readonly homePosition: t_34<number> };
-
 declare type powerLevel =
 | "LockedForEveryone"
-| "CanBeChangedByHostAlone"
-| "CanBeChangedByEveryone";
-
-declare type powerLevel_2 =
-"LockedForEveryone"
 | "CanBeChangedByHostAlone"
 | "CanBeChangedByEveryone";
 
@@ -3113,8 +2869,6 @@ export declare namespace ProjectileSyncPacket {
 
 declare type pulleyDirection = "One" | "Two";
 
-declare type pulleyDirection_2 = "One" | "Two";
-
 export declare namespace PvpTogglePacket {
     export {
         t_47 as t,
@@ -3128,8 +2882,6 @@ export declare namespace PvpTogglePacket {
 }
 
 declare type pylonAction = "Added" | "Removed" | "RequestTeleport";
-
-declare type pylonAction_2 = "Added" | "Removed" | "RequestTeleport";
 
 declare type readError = { readonly context: string; readonly error: unknown };
 
@@ -3195,13 +2947,6 @@ declare type Sign_t = {
     readonly x: number;
     readonly y: number;
     readonly name: string;
-};
-
-declare type Sign_t_2 = {
-    readonly id: number; 
-    readonly x: number; 
-    readonly y: number; 
-    readonly name: string
 };
 
 export declare namespace SignNewPacket {
@@ -3497,147 +3242,147 @@ declare type t_110 =
     { TAG: "ConnectRequest"; _0: t_111 }
 | { TAG: "Disconnect"; _0: t_112 }
 | { TAG: "PlayerSlotSet"; _0: t_113 }
-| { TAG: "PlayerInfo"; _0: t_114 }
-| { TAG: "PlayerInventorySlot"; _0: t_115 }
-| { TAG: "WorldDataRequest"; _0: t_116 }
-| { TAG: "WorldInfo"; _0: WorldInfo }
-| { TAG: "InitialTileSectionsRequest"; _0: t_117 }
-| { TAG: "Status"; _0: t_118 }
-| { TAG: "TileSectionSend"; _0: t_119 }
-| { TAG: "TileSectionFrame"; _0: t_120 }
-| { TAG: "PlayerSpawn"; _0: t_121 }
-| { TAG: "PlayerUpdate"; _0: t_122 }
-| { TAG: "PlayerActive"; _0: t_123 }
-| { TAG: "PlayerHealth"; _0: t_124 }
-| { TAG: "TileModify"; _0: t_125 }
-| { TAG: "TimeSet"; _0: t_126 }
-| { TAG: "DoorUse"; _0: t_127 }
-| { TAG: "TileSquareSend"; _0: t_128 }
-| { TAG: "ItemDropUpdate"; _0: t_129 }
-| { TAG: "ItemOwner"; _0: t_130 }
-| { TAG: "NpcUpdate"; _0: t_131 }
-| { TAG: "NpcItemStrike"; _0: t_132 }
-| { TAG: "ProjectileSync"; _0: t_133 }
-| { TAG: "NpcStrike"; _0: t_134 }
-| { TAG: "ProjectileDestroy"; _0: t_135 }
-| { TAG: "PvpToggle"; _0: t_136 }
-| { TAG: "ChestOpen"; _0: t_137 }
-| { TAG: "ChestItem"; _0: t_138 }
-| { TAG: "ActiveContainerSync"; _0: t_139 }
-| { TAG: "ChestPlace"; _0: t_140 }
-| { TAG: "HealEffect"; _0: t_141 }
-| { TAG: "Zones"; _0: t_142 }
-| { TAG: "PasswordRequired"; _0: t_143 }
-| { TAG: "PasswordSend"; _0: t_144 }
-| { TAG: "ItemOwnerRemove"; _0: t_145 }
-| { TAG: "NpcTalk"; _0: t_146 }
-| { TAG: "PlayerAnimation"; _0: t_147 }
-| { TAG: "PlayerMana"; _0: t_148 }
-| { TAG: "ManaEffect"; _0: t_149 }
-| { TAG: "PlayerTeam"; _0: t_150 }
-| { TAG: "SignRead"; _0: t_151 }
-| { TAG: "SignNew"; _0: t_152 }
-| { TAG: "LiquidSet"; _0: t_153 }
-| { TAG: "PlayerSpawnSelf"; _0: t_154 }
-| { TAG: "PlayerBuffsSet"; _0: t_155 }
-| { TAG: "NpcSpecialEffect"; _0: t_156 }
-| { TAG: "ChestOrTempleUnlock"; _0: t_157 }
-| { TAG: "NpcBuffAdd"; _0: t_158 }
-| { TAG: "NpcBuffUpdate"; _0: t_159 }
-| { TAG: "PlayerBuffAdd"; _0: t_160 }
-| { TAG: "NpcNameUpdate"; _0: t_161 }
-| { TAG: "GoodEvilUpdate"; _0: t_162 }
-| { TAG: "HarpPlay"; _0: t_163 }
-| { TAG: "SwitchHit"; _0: t_164 }
-| { TAG: "NpcHomeUpdate"; _0: t_165 }
-| { TAG: "BossOrInvasionSpawn"; _0: t_166 }
-| { TAG: "PlayerDodge"; _0: t_167 }
-| { TAG: "TilePaint"; _0: t_168 }
-| { TAG: "WallPaint"; _0: t_169 }
-| { TAG: "Teleport"; _0: t_170 }
-| { TAG: "PlayerHealOther"; _0: t_171 }
-| { TAG: "DimensionsUpdate"; _0: t_172 }
-| { TAG: "ClientUuid"; _0: t_173 }
-| { TAG: "ChestName"; _0: t_174 }
-| { TAG: "NpcCatch"; _0: t_175 }
-| { TAG: "NpcRelease"; _0: t_176 }
-| { TAG: "TravellingMerchantInventory"; _0: t_177 }
-| { TAG: "TeleportationPotion"; _0: t_178 }
-| { TAG: "AnglerQuest"; _0: t_179 }
-| { TAG: "AnglerQuestComplete"; _0: t_180 }
-| { TAG: "AnglerQuestsCompletedAmount"; _0: t_181 }
-| { TAG: "TemporaryAnimationCreate"; _0: t_182 }
-| { TAG: "InvasionProgressReport"; _0: t_183 }
-| { TAG: "ObjectPlace"; _0: t_184 }
-| { TAG: "PlayerChestIndexSync"; _0: t_185 }
-| { TAG: "CombatNumberCreate"; _0: t_186 }
-| { TAG: "NetModuleLoad"; _0: NetModuleLoad }
-| { TAG: "NpcKillCount"; _0: t_187 }
-| { TAG: "PlayerStealth"; _0: t_188 }
-| { TAG: "ItemForceIntoNearestChest"; _0: t_189 }
-| { TAG: "TileEntityUpdate"; _0: t_190 }
-| { TAG: "TileEntityPlace"; _0: t_191 }
-| { TAG: "ItemDropModify"; _0: t_192 }
-| { TAG: "ItemFramePlace"; _0: t_193 }
-| { TAG: "ItemDropInstancedUpdate"; _0: t_194 }
-| { TAG: "EmoteBubble"; _0: t_195 }
-| { TAG: "ExtraValueSync"; _0: t_196 }
-| { TAG: "SocialHandshake"; _0: t_197 }
-| { TAG: "Unused"; _0: t_198 }
-| { TAG: "PortalKill"; _0: t_199 }
-| { TAG: "PlayerTeleportPortal"; _0: t_200 }
-| { TAG: "NpcKilledNotification"; _0: t_201 }
-| { TAG: "EventNotification"; _0: t_202 }
-| { TAG: "MinionTargetUpdate"; _0: t_203 }
-| { TAG: "NpcTeleportPortal"; _0: t_204 }
-| { TAG: "ShieldStrengthsUpdate"; _0: t_205 }
-| { TAG: "NebulaLevelUp"; _0: t_206 }
-| { TAG: "MoonLordCountdown"; _0: t_207 }
-| { TAG: "NpcShopItem"; _0: t_208 }
-| { TAG: "GemLockToggle"; _0: t_209 }
-| { TAG: "SmokePoof"; _0: t_210 }
-| { TAG: "ChatMessageSmart"; _0: t_211 }
-| { TAG: "WiredCannonShot"; _0: t_212 }
-| { TAG: "MassWireOperation"; _0: t_213 }
-| { TAG: "MassWireOperationPay"; _0: t_214 }
-| { TAG: "PartyToggle"; _0: t_215 }
-| { TAG: "TreeGrowFx"; _0: t_216 }
-| { TAG: "CrystalInvasionStart"; _0: t_217 }
-| { TAG: "CrystalInvasionWipeAll"; _0: t_218 }
-| { TAG: "MinionAttackTargetUpdate"; _0: t_219 }
-| { TAG: "CrystalInvasionSendWaitTime"; _0: t_220 }
-| { TAG: "PlayerDamage"; _0: t_221 }
-| { TAG: "PlayerDeath"; _0: t_222 }
-| { TAG: "CombatTextCreate"; _0: t_223 }
-| { TAG: "Emoji"; _0: t_224 }
-| { TAG: "TileEntityDisplayDollItemSync"; _0: t_225 }
-| { TAG: "TileEntityInteractionRequest"; _0: t_226 }
-| { TAG: "WeaponsRackTryPlacing"; _0: t_227 }
-| { TAG: "TileEntityHatRackItemSync"; _0: t_228 }
-| { TAG: "TilePickingSync"; _0: t_229 }
-| { TAG: "RevengeMarkerSync"; _0: t_230 }
-| { TAG: "RevengeMarkerRemove"; _0: t_231 }
-| { TAG: "GolfBallLandInCup"; _0: t_232 }
-| { TAG: "ClientFinishConnectingToServer"; _0: t_233 }
-| { TAG: "NpcFishOut"; _0: t_234 }
-| { TAG: "NpcTamper"; _0: t_235 }
-| { TAG: "LegacySoundPlay"; _0: t_236 }
-| { TAG: "FoodPlatterTryPlacing"; _0: t_237 }
-| { TAG: "PlayerLuckFactorsUpdate"; _0: t_238 }
-| { TAG: "PlayerDead"; _0: t_239 }
-| { TAG: "CavernMonsterTypeSync"; _0: t_240 }
-| { TAG: "NpcBuffRemovalRequest"; _0: t_241 }
-| { TAG: "ClientSyncedInventory"; _0: t_242 }
-| { TAG: "CountsAsHostForGameplaySet"; _0: t_243 }
-| { TAG: "CreditsOrSlimeTransform"; _0: t_244 }
-| { TAG: "LucyAxeMessage"; _0: t_245 }
-| { TAG: "PiggyBankVoidLensUpdate"; _0: t_246 }
-| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: t_247 }
-| { TAG: "HaveDryadDoStardewAnimation"; _0: t_248 }
-| { TAG: "ItemDropShimmeredUpdate"; _0: t_249 }
-| { TAG: "ShimmerEffectOrCoinLuck"; _0: t_250 }
-| { TAG: "LoadoutSwitch"; _0: t_251 }
-| { TAG: "ItemDropProtectedUpdate"; _0: t_252 }
+| { TAG: "PlayerInfo"; _0: t_99 }
+| { TAG: "PlayerInventorySlot"; _0: t_101 }
+| { TAG: "WorldDataRequest"; _0: t_114 }
+| { TAG: "WorldInfo"; _0: t_106 }
+| { TAG: "InitialTileSectionsRequest"; _0: t_82 }
+| { TAG: "Status"; _0: t_115 }
+| { TAG: "TileSectionSend"; _0: t_67 }
+| { TAG: "TileSectionFrame"; _0: t_116 }
+| { TAG: "PlayerSpawn"; _0: t_100 }
+| { TAG: "PlayerUpdate"; _0: t_98 }
+| { TAG: "PlayerActive"; _0: t_117 }
+| { TAG: "PlayerHealth"; _0: t_118 }
+| { TAG: "TileModify"; _0: t_119 }
+| { TAG: "TimeSet"; _0: t_120 }
+| { TAG: "DoorUse"; _0: t_121 }
+| { TAG: "TileSquareSend"; _0: t_68 }
+| { TAG: "ItemDropUpdate"; _0: t_122 }
+| { TAG: "ItemOwner"; _0: t_19 }
+| { TAG: "NpcUpdate"; _0: t_108 }
+| { TAG: "NpcItemStrike"; _0: t_123 }
+| { TAG: "ProjectileSync"; _0: t_124 }
+| { TAG: "NpcStrike"; _0: t_125 }
+| { TAG: "ProjectileDestroy"; _0: t_126 }
+| { TAG: "PvpToggle"; _0: t_127 }
+| { TAG: "ChestOpen"; _0: t_128 }
+| { TAG: "ChestItem"; _0: t_129 }
+| { TAG: "ActiveContainerSync"; _0: t_130 }
+| { TAG: "ChestPlace"; _0: t_131 }
+| { TAG: "HealEffect"; _0: t_132 }
+| { TAG: "Zones"; _0: t_77 }
+| { TAG: "PasswordRequired"; _0: t_133 }
+| { TAG: "PasswordSend"; _0: t_134 }
+| { TAG: "ItemOwnerRemove"; _0: t_135 }
+| { TAG: "NpcTalk"; _0: t_136 }
+| { TAG: "PlayerAnimation"; _0: t_137 }
+| { TAG: "PlayerMana"; _0: t_138 }
+| { TAG: "ManaEffect"; _0: t_139 }
+| { TAG: "PlayerTeam"; _0: t_140 }
+| { TAG: "SignRead"; _0: t_141 }
+| { TAG: "SignNew"; _0: t_142 }
+| { TAG: "LiquidSet"; _0: t_143 }
+| { TAG: "PlayerSpawnSelf"; _0: t_144 }
+| { TAG: "PlayerBuffsSet"; _0: t_39 }
+| { TAG: "NpcSpecialEffect"; _0: t_145 }
+| { TAG: "ChestOrTempleUnlock"; _0: t_146 }
+| { TAG: "NpcBuffAdd"; _0: t_147 }
+| { TAG: "NpcBuffUpdate"; _0: t_25 }
+| { TAG: "PlayerBuffAdd"; _0: t_148 }
+| { TAG: "NpcNameUpdate"; _0: t_149 }
+| { TAG: "GoodEvilUpdate"; _0: t_150 }
+| { TAG: "HarpPlay"; _0: t_151 }
+| { TAG: "SwitchHit"; _0: t_152 }
+| { TAG: "NpcHomeUpdate"; _0: t_153 }
+| { TAG: "BossOrInvasionSpawn"; _0: t_154 }
+| { TAG: "PlayerDodge"; _0: t_155 }
+| { TAG: "TilePaint"; _0: t_156 }
+| { TAG: "WallPaint"; _0: t_157 }
+| { TAG: "Teleport"; _0: t_55 }
+| { TAG: "PlayerHealOther"; _0: t_158 }
+| { TAG: "DimensionsUpdate"; _0: t_159 }
+| { TAG: "ClientUuid"; _0: t_160 }
+| { TAG: "ChestName"; _0: t_161 }
+| { TAG: "NpcCatch"; _0: t_162 }
+| { TAG: "NpcRelease"; _0: t_163 }
+| { TAG: "TravellingMerchantInventory"; _0: t_70 }
+| { TAG: "TeleportationPotion"; _0: t_56 }
+| { TAG: "AnglerQuest"; _0: t_164 }
+| { TAG: "AnglerQuestComplete"; _0: t_165 }
+| { TAG: "AnglerQuestsCompletedAmount"; _0: t_166 }
+| { TAG: "TemporaryAnimationCreate"; _0: t_167 }
+| { TAG: "InvasionProgressReport"; _0: t_168 }
+| { TAG: "ObjectPlace"; _0: t_169 }
+| { TAG: "PlayerChestIndexSync"; _0: t_170 }
+| { TAG: "CombatNumberCreate"; _0: t_171 }
+| { TAG: "NetModuleLoad"; _0: t_23 }
+| { TAG: "NpcKillCount"; _0: t_172 }
+| { TAG: "PlayerStealth"; _0: t_173 }
+| { TAG: "ItemForceIntoNearestChest"; _0: t_85 }
+| { TAG: "TileEntityUpdate"; _0: t_174 }
+| { TAG: "TileEntityPlace"; _0: t_175 }
+| { TAG: "ItemDropModify"; _0: t_176 }
+| { TAG: "ItemFramePlace"; _0: t_177 }
+| { TAG: "ItemDropInstancedUpdate"; _0: t_178 }
+| { TAG: "EmoteBubble"; _0: t_179 }
+| { TAG: "ExtraValueSync"; _0: t_180 }
+| { TAG: "SocialHandshake"; _0: t_181 }
+| { TAG: "Unused"; _0: t_182 }
+| { TAG: "PortalKill"; _0: t_183 }
+| { TAG: "PlayerTeleportPortal"; _0: t_184 }
+| { TAG: "NpcKilledNotification"; _0: t_185 }
+| { TAG: "EventNotification"; _0: t_186 }
+| { TAG: "MinionTargetUpdate"; _0: t_187 }
+| { TAG: "NpcTeleportPortal"; _0: t_188 }
+| { TAG: "ShieldStrengthsUpdate"; _0: t_189 }
+| { TAG: "NebulaLevelUp"; _0: t_190 }
+| { TAG: "MoonLordCountdown"; _0: t_191 }
+| { TAG: "NpcShopItem"; _0: t_192 }
+| { TAG: "GemLockToggle"; _0: t_193 }
+| { TAG: "SmokePoof"; _0: t_194 }
+| { TAG: "ChatMessageSmart"; _0: t_195 }
+| { TAG: "WiredCannonShot"; _0: t_196 }
+| { TAG: "MassWireOperation"; _0: t_197 }
+| { TAG: "MassWireOperationPay"; _0: t_198 }
+| { TAG: "PartyToggle"; _0: t_199 }
+| { TAG: "TreeGrowFx"; _0: t_200 }
+| { TAG: "CrystalInvasionStart"; _0: t_201 }
+| { TAG: "CrystalInvasionWipeAll"; _0: t_202 }
+| { TAG: "MinionAttackTargetUpdate"; _0: t_203 }
+| { TAG: "CrystalInvasionSendWaitTime"; _0: t_204 }
+| { TAG: "PlayerDamage"; _0: t_205 }
+| { TAG: "PlayerDeath"; _0: t_206 }
+| { TAG: "CombatTextCreate"; _0: t_207 }
+| { TAG: "Emoji"; _0: t_208 }
+| { TAG: "TileEntityDisplayDollItemSync"; _0: t_58 }
+| { TAG: "TileEntityInteractionRequest"; _0: t_209 }
+| { TAG: "WeaponsRackTryPlacing"; _0: t_210 }
+| { TAG: "TileEntityHatRackItemSync"; _0: t_211 }
+| { TAG: "TilePickingSync"; _0: t_212 }
+| { TAG: "RevengeMarkerSync"; _0: t_213 }
+| { TAG: "RevengeMarkerRemove"; _0: t_214 }
+| { TAG: "GolfBallLandInCup"; _0: t_215 }
+| { TAG: "ClientFinishConnectingToServer"; _0: t_216 }
+| { TAG: "NpcFishOut"; _0: t_217 }
+| { TAG: "NpcTamper"; _0: t_218 }
+| { TAG: "LegacySoundPlay"; _0: t_219 }
+| { TAG: "FoodPlatterTryPlacing"; _0: t_220 }
+| { TAG: "PlayerLuckFactorsUpdate"; _0: t_90 }
+| { TAG: "PlayerDead"; _0: t_221 }
+| { TAG: "CavernMonsterTypeSync"; _0: t_222 }
+| { TAG: "NpcBuffRemovalRequest"; _0: t_223 }
+| { TAG: "ClientSyncedInventory"; _0: t_224 }
+| { TAG: "CountsAsHostForGameplaySet"; _0: t_225 }
+| { TAG: "CreditsOrSlimeTransform"; _0: t_226 }
+| { TAG: "LucyAxeMessage"; _0: t_227 }
+| { TAG: "PiggyBankVoidLensUpdate"; _0: t_228 }
+| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: t_229 }
+| { TAG: "HaveDryadDoStardewAnimation"; _0: t_230 }
+| { TAG: "ItemDropShimmeredUpdate"; _0: t_231 }
+| { TAG: "ShimmerEffectOrCoinLuck"; _0: t_48 }
+| { TAG: "LoadoutSwitch"; _0: t_232 }
+| { TAG: "ItemDropProtectedUpdate"; _0: t_233 }
 | { TAG: "DeadCellsDisplayJarTryPlacing"; _0: t_79 }
 | { TAG: "PlayerSpectate"; _0: t_91 }
 | { TAG: "ItemDropClear"; _0: t_83 }
@@ -3663,122 +3408,33 @@ declare type t_113 = {
     serverWantsToRunCheckBytesInClientLoopThread: boolean;
 }
 
-declare type t_114 = {
-    readonly playerId: number;
-    readonly skinVariant: number;
-    readonly hair: number;
-    readonly name: string;
-    readonly hairDye: number;
-    readonly hideVisuals: number;
-    readonly hideVisuals2: number;
-    readonly hideMisc: number;
-    readonly hairColor: Color;
-    readonly skinColor: Color;
-    readonly eyeColor: Color;
-    readonly shirtColor: Color;
-    readonly underShirtColor: Color;
-    readonly pantsColor: Color;
-    readonly shoeColor: Color;
-    readonly difficulty: difficulty_2;
-    readonly mode: mode_2;
-    readonly extraAccessory: boolean;
-    readonly usingBiomeTorches: boolean;
-    readonly unlockedBiomeTorches: boolean;
-    readonly happyFunTorchTime: boolean;
-    readonly unlockedSuperCart: boolean;
-    readonly enabledSuperCart: boolean;
-    readonly usedAegisCrystal: boolean;
-    readonly usedAegisFruit: boolean;
-    readonly usedArcaneCrystal: boolean;
-    readonly usedGalaxyPearl: boolean;
-    readonly usedGummyWorm: boolean;
-    readonly usedAmbrosia: boolean;
-    readonly ateArtisanBread: boolean
-};
+declare type t_114 = void;
 
 declare type t_115 = {
-    readonly playerId: number;
-    readonly slot: number;
-    readonly stack: number;
-    readonly prefix: number;
-    readonly itemId: number;
-};
-
-declare type t_116 = void;
-
-declare type t_117 = { readonly x: number; readonly y: number };
-
-declare type t_118 = {
     readonly max: number;
     readonly text: NetworkText;
     readonly flags: flags_2
 };
 
-declare type t_119 = {
-    readonly height: number; 
-    readonly width: number; 
-    readonly tileX: number; 
-    readonly tileY: number; 
-    readonly tiles: Array<tile_3[]>; 
-    readonly chests: Chest_t_2[]; 
-    readonly signs: Sign_t_2[]; 
-    readonly entities: Entity_t_2[]
-};
-
-declare type t_12 = { readonly x: number; readonly y: number };
-
-declare type t_120 = {
+declare type t_116 = {
     readonly startX: number; 
     readonly startY: number; 
     readonly endX: number; 
     readonly endY: number
 };
 
-declare type t_121 = {
-    readonly playerId: number;
-    readonly x: number;
-    readonly y: number;
-    readonly timeRemaining: number;
-    readonly numberOfDeathsPve: number;
-    readonly numberOfDeathsPvp: number;
-    readonly context: context_2
-};
-
-declare type t_122 = {
-    readonly playerId: number;
-    readonly control: control_2;
-    readonly direction: direction_3;
-    readonly pulleyDirection: (undefined | pulleyDirection_2);
-    readonly vortexStealthActive: boolean;
-    readonly gravityDirection: gravityDirection_2;
-    readonly shouldGuard: boolean;
-    readonly ghost: boolean;
-    readonly selectedItem: number;
-    readonly position: t_34<number>;
-    readonly velocity: (undefined | t_34<number>);
-    readonly potionOfReturn: (undefined | potionOfReturn_2);
-    readonly tryKeepingHoveringUp: boolean;
-    readonly isVoidVaultEnabled: boolean;
-    readonly isSitting: boolean;
-    readonly hasFinishedAnyDd2Event: boolean;
-    readonly isPettingAnimal: boolean;
-    readonly isTheAnimalBeingPetSmall: boolean;
-    readonly tryKeepingHoveringDown: boolean;
-    readonly isSleeping: boolean
-};
-
-declare type t_123 = {
+declare type t_117 = {
     readonly playerId: number;
     readonly active: boolean;
 };
 
-declare type t_124 = {
+declare type t_118 = {
     readonly playerId: number;
     readonly health: number;
     readonly maxHealth: number
 };
 
-declare type t_125 = {
+declare type t_119 = {
     readonly action: Action_t_3;
     readonly tileX: number;
     readonly tileY: number;
@@ -3786,30 +3442,23 @@ declare type t_125 = {
     readonly value2: number
 };
 
-declare type t_126 = {
+declare type t_12 = { readonly x: number; readonly y: number };
+
+declare type t_120 = {
     readonly dayTime: boolean;
     readonly time: number;
     readonly sunModY: number;
     readonly moonModY: number
 };
 
-declare type t_127 = {
+declare type t_121 = {
     readonly action: action;
     readonly x: number;
     readonly y: number;
     readonly direction: number
 };
 
-declare type t_128 = {
-    readonly width: number;
-    readonly height: number;
-    readonly changeType: number;
-    readonly tileX: number;
-    readonly tileY: number;
-    readonly tiles: Array<tile_4[]>
-};
-
-declare type t_129 = {
+declare type t_122 = {
     readonly itemDropId: number;
     readonly x: number;
     readonly y: number;
@@ -3821,36 +3470,9 @@ declare type t_129 = {
     readonly itemId: number
 };
 
-declare type t_13 =
-| "GamemodesJoinMode"
-| { TAG: "RealIpAddress"; _0: ip }
-| { TAG: "SwitchServer"; _0: dimensionName }
-| { TAG: "SwitchServerManual"; _0: ip; _1: port };
+declare type t_123 = { readonly npcId: number; readonly playerId: number };
 
-declare type t_130 = { readonly itemDropId: number; readonly owner: number };
-
-declare type t_131 = {
-    readonly npcSlotId: number;
-    readonly npcTypeId: number;
-    readonly x: number;
-    readonly y: number;
-    readonly vx: number;
-    readonly vy: number;
-    readonly target: number;
-    readonly directionX: boolean;
-    readonly directionY: boolean;
-    readonly ai: ai_2;
-    readonly spriteDirection: boolean;
-    readonly life: life_2;
-    readonly releaseOwner: (undefined | number);
-    readonly playerCountScale: (undefined | number);
-    readonly strengthMultiplier: (undefined | number);
-    readonly spawnedFromStatue: boolean
-};
-
-declare type t_132 = { readonly npcId: number; readonly playerId: number };
-
-declare type t_133 = {
+declare type t_124 = {
     readonly projectileId: number;
     readonly x: number;
     readonly y: number;
@@ -3866,7 +3488,7 @@ declare type t_133 = {
     readonly projectileUuid: (undefined | number)
 };
 
-declare type t_134 = {
+declare type t_125 = {
     readonly npcId: number;
     readonly damage: number;
     readonly knockback: number;
@@ -3874,13 +3496,13 @@ declare type t_134 = {
     readonly critical: boolean
 };
 
-declare type t_135 = { readonly projectileId: number; readonly owner: number };
+declare type t_126 = { readonly projectileId: number; readonly owner: number };
 
-declare type t_136 = { readonly playerId: number; readonly pvpEnabled: boolean };
+declare type t_127 = { readonly playerId: number; readonly pvpEnabled: boolean };
 
-declare type t_137 = { readonly x: number; readonly y: number };
+declare type t_128 = { readonly x: number; readonly y: number };
 
-declare type t_138 = {
+declare type t_129 = {
     readonly chestId: number; 
     readonly slot: number; 
     readonly stack: number; 
@@ -3888,13 +3510,51 @@ declare type t_138 = {
     readonly itemNetId: number
 };
 
-declare type t_139 = {
+declare type t_13 =
+| "GamemodesJoinMode"
+| { TAG: "RealIpAddress"; _0: ip }
+| { TAG: "SwitchServer"; _0: dimensionName }
+| { TAG: "SwitchServerManual"; _0: ip; _1: port };
+
+declare type t_130 = {
     readonly chestId: number; 
     readonly x: number; 
     readonly y: number; 
     readonly nameLength: number; 
     readonly name: string
 };
+
+declare type t_131 = {
+    readonly action: Action_t_4;
+    readonly x: number;
+    readonly y: number;
+    readonly style: number;
+    readonly id: number
+};
+
+declare type t_132 = { readonly playerId: number; readonly healAmount: number };
+
+declare type t_133 = void;
+
+declare type t_134 = { readonly password: string };
+
+declare type t_135 = { readonly itemDropId: number };
+
+declare type t_136 = { readonly playerId: number; readonly npcId: number };
+
+declare type t_137 = {
+    readonly playerId: number;
+    readonly itemRotation: number;
+    readonly itemAnimation: number
+};
+
+declare type t_138 = {
+    readonly playerId: number;
+    readonly mana: number;
+    readonly maxMana: number
+};
+
+declare type t_139 = { readonly playerId: number; readonly manaAmount: number };
 
 declare type t_14 = {
     readonly npcSlotId: number; 
@@ -3903,54 +3563,11 @@ declare type t_14 = {
     readonly y: number
 };
 
-declare type t_140 = {
-    readonly action: Action_t_4;
-    readonly x: number;
-    readonly y: number;
-    readonly style: number;
-    readonly id: number
-};
+declare type t_140 = { readonly playerId: number; readonly team: number };
 
-declare type t_141 = { readonly playerId: number; readonly healAmount: number };
+declare type t_141 = { readonly x: number; readonly y: number };
 
 declare type t_142 = {
-    readonly playerId: number;
-    readonly zone1: number;
-    readonly zone2: number;
-    readonly zone3: number;
-    readonly zone4: number;
-    readonly zone5: number
-};
-
-declare type t_143 = void;
-
-declare type t_144 = { readonly password: string };
-
-declare type t_145 = { readonly itemDropId: number };
-
-declare type t_146 = { readonly playerId: number; readonly npcId: number };
-
-declare type t_147 = {
-    readonly playerId: number;
-    readonly itemRotation: number;
-    readonly itemAnimation: number
-};
-
-declare type t_148 = {
-    readonly playerId: number;
-    readonly mana: number;
-    readonly maxMana: number
-};
-
-declare type t_149 = { readonly playerId: number; readonly manaAmount: number };
-
-declare type t_15 = void;
-
-declare type t_150 = { readonly playerId: number; readonly team: number };
-
-declare type t_151 = { readonly x: number; readonly y: number };
-
-declare type t_152 = {
     readonly signId: number;
     readonly x: number;
     readonly y: number;
@@ -3959,32 +3576,77 @@ declare type t_152 = {
     readonly deleteSign: boolean
 };
 
-declare type t_153 = {
+declare type t_143 = {
     readonly x: number;
     readonly y: number;
     readonly liquid: number;
     readonly liquidType: number
 };
 
-declare type t_154 = undefined
+declare type t_144 = undefined
 
-declare type t_155 = { readonly playerId: number; readonly buffs: number[] };
+declare type t_145 = { readonly playerId: number; readonly effectType: number };
 
-declare type t_156 = { readonly playerId: number; readonly effectType: number };
-
-declare type t_157 = {
+declare type t_146 = {
     readonly unlockType: unlockType_2; 
     readonly x: number; 
     readonly y: number
 };
 
-declare type t_158 = { readonly npcId: number; readonly buffType: number; readonly time: number };
+declare type t_147 = { readonly npcId: number; readonly buffType: number; readonly time: number };
 
-declare type t_159 = {
-    readonly npcId: number; 
-    readonly buffs: number[]; 
-    readonly buffTimes: number[]
+declare type t_148 = {
+    readonly playerId: number;
+    readonly buff: number;
+    readonly time: number
 };
+
+declare type t_149 = {
+    readonly npcId: number;
+    readonly name: string;
+    readonly townNpcVariationIndex: number
+};
+
+declare type t_15 = void;
+
+declare type t_150 = { readonly good: number; readonly evil: number; readonly blood: number };
+
+declare type t_151 = { readonly playerId: number; readonly pitch: number };
+
+declare type t_152 = { readonly x: number; readonly y: number };
+
+declare type t_153 = {
+    readonly npcId: number;
+    readonly homeTileX: number;
+    readonly homeTileY: number;
+    readonly state: number
+};
+
+declare type t_154 = { readonly playerId: number; readonly spawnType: spawnType_2 };
+
+declare type t_155 = { readonly playerId: number; readonly dodge: dodge_2 };
+
+declare type t_156 = {
+    readonly x: number;
+    readonly y: number;
+    readonly color: number;
+    readonly coat: number
+};
+
+declare type t_157 = {
+    readonly x: number;
+    readonly y: number;
+    readonly color: number;
+    readonly coat: number
+};
+
+declare type t_158 = { readonly playerId: number; readonly healAmount: number };
+
+declare type t_159 =
+| "GamemodesJoinMode"
+| { TAG: "RealIpAddress"; _0: ip_2 }
+| { TAG: "SwitchServer"; _0: dimensionName_2 }
+| { TAG: "SwitchServerManual"; _0: ip_2; _1: port_2 };
 
 declare type t_16 = {
     readonly progress: number;
@@ -3993,47 +3655,51 @@ declare type t_16 = {
     readonly wave: number
 };
 
-declare type t_160 = {
-    readonly playerId: number;
-    readonly buff: number;
-    readonly time: number
-};
+declare type t_160 = { readonly uuid: string };
 
 declare type t_161 = {
-    readonly npcId: number;
-    readonly name: string;
-    readonly townNpcVariationIndex: number
-};
-
-declare type t_162 = { readonly good: number; readonly evil: number; readonly blood: number };
-
-declare type t_163 = { readonly playerId: number; readonly pitch: number };
-
-declare type t_164 = { readonly x: number; readonly y: number };
-
-declare type t_165 = {
-    readonly npcId: number;
-    readonly homeTileX: number;
-    readonly homeTileY: number;
-    readonly state: number
-};
-
-declare type t_166 = { readonly playerId: number; readonly spawnType: spawnType_2 };
-
-declare type t_167 = { readonly playerId: number; readonly dodge: dodge_2 };
-
-declare type t_168 = {
+    readonly chestId: number;
     readonly x: number;
     readonly y: number;
-    readonly color: number;
-    readonly coat: number
+    readonly name: string
+};
+
+declare type t_162 = { readonly npcId: number; readonly playerId: number };
+
+declare type t_163 = {
+    readonly x: number; 
+    readonly y: number; 
+    readonly npcType: number; 
+    readonly style: number
+};
+
+declare type t_164 = { readonly anglerQuest: number; readonly anglerQuestFinished: boolean };
+
+declare type t_165 = void;
+
+declare type t_166 = {
+    readonly playerId: number;
+    readonly anglerQuestsFinished: number;
+    readonly golferScoreAccumulated: number
+};
+
+declare type t_167 = { readonly typeId: number; readonly tileType: number; readonly x: number; readonly y: number };
+
+declare type t_168 = {
+    readonly progress: number;
+    readonly progressMax: number;
+    readonly icon: number;
+    readonly wave: number
 };
 
 declare type t_169 = {
     readonly x: number;
     readonly y: number;
-    readonly color: number;
-    readonly coat: number
+    readonly objectType: number;
+    readonly style: number;
+    readonly alternate: number;
+    readonly random: number;
+    readonly direction: direction_3
 };
 
 declare type t_17 = {
@@ -4050,112 +3716,23 @@ declare type t_17 = {
     readonly shimmeredTime: number
 };
 
-declare type t_170 = {
-    readonly teleportType: teleportType_3; 
-    readonly getPositionFromTarget: boolean; 
-    readonly targetId: number; 
-    readonly x: number; 
-    readonly y: number; 
-    readonly style: number; 
-    readonly extraInfo: (undefined | number)
-};
+declare type t_170 = { readonly playerId: number; readonly chestId: number };
 
-declare type t_171 = { readonly playerId: number; readonly healAmount: number };
+declare type t_171 = { readonly x: number; readonly y: number; readonly color: Color; readonly amount: number };
 
-declare type t_172 =
-| "GamemodesJoinMode"
-| { TAG: "RealIpAddress"; _0: ip_2 }
-| { TAG: "SwitchServer"; _0: dimensionName_2 }
-| { TAG: "SwitchServerManual"; _0: ip_2; _1: port_2 };
+declare type t_172 = { readonly npcId: number; readonly killCount: number };
 
-declare type t_173 = { readonly uuid: string };
+declare type t_173 = { readonly playerId: number; readonly stealth: number };
 
-declare type t_174 = {
-    readonly chestId: number;
-    readonly x: number;
-    readonly y: number;
-    readonly name: string
-};
+declare type t_174 = { readonly tileEntityId: number; readonly payload: payload_2 };
 
-declare type t_175 = { readonly npcId: number; readonly playerId: number };
-
-declare type t_176 = {
-    readonly x: number; 
-    readonly y: number; 
-    readonly npcType: number; 
-    readonly style: number
-};
-
-declare type t_177 = { readonly items: number[] };
-
-declare type t_178 = { readonly teleportType: teleportType_4 };
-
-declare type t_179 = { readonly anglerQuest: number; readonly anglerQuestFinished: boolean };
-
-declare type t_18 = {
-    readonly itemDropId: number;
-    readonly x: number;
-    readonly y: number;
-    readonly vx: number;
-    readonly vy: number;
-    readonly stack: number;
-    readonly prefix: number;
-    readonly noDelay: number;
-    readonly itemId: number
-};
-
-declare type t_180 = void;
-
-declare type t_181 = {
-    readonly playerId: number;
-    readonly anglerQuestsFinished: number;
-    readonly golferScoreAccumulated: number
-};
-
-declare type t_182 = { readonly typeId: number; readonly tileType: number; readonly x: number; readonly y: number };
-
-declare type t_183 = {
-    readonly progress: number;
-    readonly progressMax: number;
-    readonly icon: number;
-    readonly wave: number
-};
-
-declare type t_184 = {
-    readonly x: number;
-    readonly y: number;
-    readonly objectType: number;
-    readonly style: number;
-    readonly alternate: number;
-    readonly random: number;
-    readonly direction: direction_4
-};
-
-declare type t_185 = { readonly playerId: number; readonly chestId: number };
-
-declare type t_186 = { readonly x: number; readonly y: number; readonly color: Color; readonly amount: number };
-
-declare type t_187 = { readonly npcId: number; readonly killCount: number };
-
-declare type t_188 = { readonly playerId: number; readonly stealth: number };
-
-declare type t_189 = { readonly slot: number };
-
-declare type t_19 = {
-    readonly itemDropId: number;
-    readonly owner: number;
-    readonly position: Float_t;
-};
-
-declare type t_190 = { readonly tileEntityId: number; readonly payload: payload_2 };
-
-declare type t_191 = {
+declare type t_175 = {
     readonly x: number;
     readonly y: number;
     readonly tileEntityType: number
 };
 
-declare type t_192 = {
+declare type t_176 = {
     readonly itemId: number;
     readonly color: color | undefined;
     readonly damage: number | undefined;
@@ -4172,7 +3749,7 @@ declare type t_192 = {
     readonly notAmmo: boolean | undefined
 };
 
-declare type t_193 = {
+declare type t_177 = {
     readonly x: number; 
     readonly y: number; 
     readonly itemId: number; 
@@ -4180,64 +3757,78 @@ declare type t_193 = {
     readonly stack: number
 };
 
-declare type t_194 = t_129;
+declare type t_178 = t_122;
 
-declare type t_195 = { readonly id: number; readonly anchor: anchor };
+declare type t_179 = { readonly id: number; readonly anchor: anchor };
 
-declare type t_196 = {
+declare type t_18 = {
+    readonly itemDropId: number;
+    readonly x: number;
+    readonly y: number;
+    readonly vx: number;
+    readonly vy: number;
+    readonly stack: number;
+    readonly prefix: number;
+    readonly noDelay: number;
+    readonly itemId: number
+};
+
+declare type t_180 = {
     readonly npcSlotId: number; 
     readonly extraValue: number; 
     readonly x: number; 
     readonly y: number
 };
 
-declare type t_197 = void;
+declare type t_181 = void;
 
-declare type t_198 = undefined;
+declare type t_182 = undefined;
 
-declare type t_199 = { readonly owner: number; readonly portalColor: number };
+declare type t_183 = { readonly owner: number; readonly portalColor: number };
 
-declare type t_2 = void;
-
-declare type t_20<a> = { readonly x: a; readonly y: a };
-
-declare type t_200 = {
+declare type t_184 = {
     readonly playerId: number;
     readonly extraInfo: number;
     readonly position: t_34<number>;
     readonly velocity: t_34<number>
 };
 
-declare type t_201 = { readonly npcId: number };
+declare type t_185 = { readonly npcId: number };
 
-declare type t_202 = { readonly eventId: number };
+declare type t_186 = { readonly eventId: number };
 
-declare type t_203 = { readonly playerId: number; readonly x: number; readonly y: number };
+declare type t_187 = { readonly playerId: number; readonly x: number; readonly y: number };
 
-declare type t_204 = {
+declare type t_188 = {
     readonly npcId: number;
     readonly portalColor: number;
     readonly position: t_34<number>;
     readonly velocity: t_34<number>
 };
 
-declare type t_205 = {
+declare type t_189 = {
     readonly solar: number;
     readonly vortex: number;
     readonly nebula: number;
     readonly stardust: number
 };
 
-declare type t_206 = {
+declare type t_19 = {
+    readonly itemDropId: number;
+    readonly owner: number;
+    readonly position: Float_t;
+};
+
+declare type t_190 = {
     readonly playerId: number;
     readonly level: number;
     readonly x: number;
     readonly y: number
 };
 
-declare type t_207 = { readonly maxMoonLordCountdown: number; readonly moonLordCountdown: number };
+declare type t_191 = { readonly maxMoonLordCountdown: number; readonly moonLordCountdown: number };
 
-declare type t_208 = {
+declare type t_192 = {
     readonly slot: number;
     readonly itemId: number;
     readonly stack: number;
@@ -4246,19 +3837,17 @@ declare type t_208 = {
     readonly buyOnce: boolean
 };
 
-declare type t_209 = { readonly x: number; readonly y: number; readonly active: boolean };
+declare type t_193 = { readonly x: number; readonly y: number; readonly active: boolean };
 
-declare type t_21 = { readonly itemDropId: number };
+declare type t_194 = { readonly packedPosition: number };
 
-declare type t_210 = { readonly packedPosition: number };
-
-declare type t_211 = {
+declare type t_195 = {
     readonly color: Color;
     readonly message: NetworkText;
     readonly widthLimit: number
 };
 
-declare type t_212 = {
+declare type t_196 = {
     readonly damage: number;
     readonly knockback: number;
     readonly x: number;
@@ -4268,7 +3857,7 @@ declare type t_212 = {
     readonly playerId: number
 };
 
-declare type t_213 = {
+declare type t_197 = {
     readonly startX: number;
     readonly startY: number;
     readonly endX: number;
@@ -4276,11 +3865,15 @@ declare type t_213 = {
     readonly toolMode: number
 };
 
-declare type t_214 = { readonly itemType: number; readonly stack: number; readonly playerId: number };
+declare type t_198 = { readonly itemType: number; readonly stack: number; readonly playerId: number };
 
-declare type t_215 = void;
+declare type t_199 = void;
 
-declare type t_216 = {
+declare type t_2 = void;
+
+declare type t_20<a> = { readonly x: a; readonly y: a };
+
+declare type t_200 = {
     readonly action: number;
     readonly x: number;
     readonly y: number;
@@ -4288,17 +3881,15 @@ declare type t_216 = {
     readonly treeType: number
 };
 
-declare type t_217 = { readonly x: number; readonly y: number };
+declare type t_201 = { readonly x: number; readonly y: number };
 
-declare type t_218 = void;
+declare type t_202 = void;
 
-declare type t_219 = { readonly playerId: number; readonly targetNpcId: number };
+declare type t_203 = { readonly playerId: number; readonly targetNpcId: number };
 
-declare type t_22 = { readonly playerId: number; readonly loadout: number };
+declare type t_204 = { readonly timeLeftBetweenWaves: number };
 
-declare type t_220 = { readonly timeLeftBetweenWaves: number };
-
-declare type t_221 = {
+declare type t_205 = {
     readonly target: number;
     readonly deathReason: t_43;
     readonly damage: number;
@@ -4308,7 +3899,7 @@ declare type t_221 = {
     readonly cooldownCounter: number
 };
 
-declare type t_222 = {
+declare type t_206 = {
     readonly playerId: number;
     readonly deathReason: t_43;
     readonly damage: number;
@@ -4316,27 +3907,20 @@ declare type t_222 = {
     readonly pvp: boolean
 };
 
-declare type t_223 = {
+declare type t_207 = {
     readonly x: number;
     readonly y: number;
     readonly color: Color;
     readonly text: NetworkText
 };
 
-declare type t_224 = { readonly playerId: number; readonly emojiId: number };
+declare type t_208 = { readonly playerId: number; readonly emojiId: number };
 
-declare type t_225 = {
-    readonly playerId: number; 
-    readonly tileEntityId: number; 
-    readonly itemIndex: number; 
-    readonly itemId: number; 
-    readonly stack: number; 
-    readonly prefix: number
-};
+declare type t_209 = { readonly tileEntityId: number; readonly playerId: number };
 
-declare type t_226 = { readonly tileEntityId: number; readonly playerId: number };
+declare type t_21 = { readonly itemDropId: number };
 
-declare type t_227 = {
+declare type t_210 = {
     readonly x: number; 
     readonly y: number; 
     readonly itemId: number; 
@@ -4344,7 +3928,7 @@ declare type t_227 = {
     readonly stack: number
 };
 
-declare type t_228 = {
+declare type t_211 = {
     readonly playerId: number; 
     readonly tileEntityId: number; 
     readonly itemIndex: number; 
@@ -4353,12 +3937,89 @@ declare type t_228 = {
     readonly prefix: number
 };
 
-declare type t_229 = {
+declare type t_212 = {
     readonly playerId: number;
     readonly x: number;
     readonly y: number;
     readonly pickPower: number
 };
+
+declare type t_213 = {
+    readonly uniqueId: number;
+    readonly position: t_34<number>;
+    readonly npcNetId: number;
+    readonly npcHpPercent: number;
+    readonly npcTypeAgainstDiscouragement: number;
+    readonly npcAiStyleAgainstDiscouragement: number;
+    readonly coinValue: number;
+    readonly baseValue: number;
+    readonly spawnedFromStatue: boolean
+};
+
+declare type t_214 = { readonly markerId: number };
+
+declare type t_215 = {
+    readonly playerId: number;
+    readonly cupX: number;
+    readonly cupY: number;
+    readonly projId: number;
+    readonly projType: number
+};
+
+declare type t_216 = void;
+
+declare type t_217 = { readonly x: number; readonly y: number; readonly npcNetId: number };
+
+declare type t_218 = {
+    readonly npcId: number; 
+    readonly immunityTime: (undefined | number); 
+    readonly immunityFromPlayerId: (undefined | Immunity_t)
+};
+
+declare type t_219 = {
+    readonly position: t_34<number>;
+    readonly soundIndex: number;
+    readonly styleOverride: number | undefined;
+    readonly volumeOverride: number | undefined;
+    readonly pitchOverride: number | undefined
+};
+
+declare type t_22 = { readonly playerId: number; readonly loadout: number };
+
+declare type t_220 = {
+    readonly x: number; 
+    readonly y: number; 
+    readonly itemId: number; 
+    readonly prefix: number; 
+    readonly stack: number
+};
+
+declare type t_221 = { readonly playerId: number };
+
+declare type t_222 = number[][];
+
+declare type t_223 = { readonly npcId: number; readonly buffType: number };
+
+declare type t_224 = void;
+
+declare type t_225 = { readonly playerId: number; readonly countsAsHost: boolean };
+
+declare type t_226 = { readonly eventType: EventType_t_2; readonly value: number };
+
+declare type t_227 = {
+    readonly source: number; 
+    readonly variant: number; 
+    readonly velocity: t_34<number>; 
+    readonly position: t_34<number>
+};
+
+declare type t_228 = {
+    readonly playerId: number; 
+    readonly piggyBankProj: (undefined | TrackedProjectileReference_t); 
+    readonly voidLensChest: (undefined | TrackedProjectileReference_t)
+};
+
+declare type t_229 = void;
 
 declare type t_23 =
 | { TAG: "Liquid"; _0: liquid }
@@ -4378,96 +4039,9 @@ declare type t_23 =
 | { TAG: "LeashedEntity"; _0: leashedEntityMessage }
 | { TAG: "UnbreakableWallScan"; _0: unbreakableWallScan };
 
-declare type t_230 = {
-    readonly uniqueId: number;
-    readonly position: t_34<number>;
-    readonly npcNetId: number;
-    readonly npcHpPercent: number;
-    readonly npcTypeAgainstDiscouragement: number;
-    readonly npcAiStyleAgainstDiscouragement: number;
-    readonly coinValue: number;
-    readonly baseValue: number;
-    readonly spawnedFromStatue: boolean
-};
+declare type t_230 = void;
 
-declare type t_231 = { readonly markerId: number };
-
-declare type t_232 = {
-    readonly playerId: number;
-    readonly cupX: number;
-    readonly cupY: number;
-    readonly projId: number;
-    readonly projType: number
-};
-
-declare type t_233 = void;
-
-declare type t_234 = { readonly x: number; readonly y: number; readonly npcNetId: number };
-
-declare type t_235 = {
-    readonly npcId: number; 
-    readonly immunityTime: (undefined | number); 
-    readonly immunityFromPlayerId: (undefined | Immunity_t)
-};
-
-declare type t_236 = {
-    readonly position: t_34<number>;
-    readonly soundIndex: number;
-    readonly styleOverride: number | undefined;
-    readonly volumeOverride: number | undefined;
-    readonly pitchOverride: number | undefined
-};
-
-declare type t_237 = {
-    readonly x: number; 
-    readonly y: number; 
-    readonly itemId: number; 
-    readonly prefix: number; 
-    readonly stack: number
-};
-
-declare type t_238 = {
-    readonly playerId: number; 
-    readonly ladyBugLuckTimeLeft: number; 
-    readonly torchLuck: number; 
-    readonly luckPotion: number; 
-    readonly hasGardenGnomeNearby: boolean; 
-    readonly equipmentBasedLuckBonus: number; 
-    readonly coinLuck: number
-};
-
-declare type t_239 = { readonly playerId: number };
-
-declare type t_24 = { readonly npcId: number; readonly buffType: number };
-
-declare type t_240 = number[][];
-
-declare type t_241 = { readonly npcId: number; readonly buffType: number };
-
-declare type t_242 = void;
-
-declare type t_243 = { readonly playerId: number; readonly countsAsHost: boolean };
-
-declare type t_244 = { readonly eventType: EventType_t_2; readonly value: number };
-
-declare type t_245 = {
-    readonly source: number; 
-    readonly variant: number; 
-    readonly velocity: t_34<number>; 
-    readonly position: t_34<number>
-};
-
-declare type t_246 = {
-    readonly playerId: number; 
-    readonly piggyBankProj: (undefined | TrackedProjectileReference_t); 
-    readonly voidLensChest: (undefined | TrackedProjectileReference_t)
-};
-
-declare type t_247 = void;
-
-declare type t_248 = void;
-
-declare type t_249 = {
+declare type t_231 = {
     readonly itemDropId: number; 
     readonly x: number; 
     readonly y: number; 
@@ -4481,20 +4055,9 @@ declare type t_249 = {
     readonly shimmeredTime: number
 };
 
-declare type t_25 = {
-    readonly npcId: number;
-    readonly buffs: number[];
-    readonly buffTimes: number[];
-};
+declare type t_232 = { readonly playerId: number; readonly loadout: number };
 
-declare type t_250 = 
-    { TAG: "ShimmerEffect"; _0: number; _1: number }
-| { TAG: "CoinLuck"; _0: coinLuck_2 }
-| { TAG: "NewShimmerEffect"; _0: number };
-
-declare type t_251 = { readonly playerId: number; readonly loadout: number };
-
-declare type t_252 = {
+declare type t_233 = {
     readonly itemDropId: number; 
     readonly x: number; 
     readonly y: number; 
@@ -4507,7 +4070,7 @@ declare type t_252 = {
     readonly timeLeftInWhichTheItemCannotBeTakenByEnemies: number
 };
 
-declare type t_253 =
+declare type t_234 =
 | "ConnectRequest"
 | "Disconnect"
 | "PlayerSlotSet"
@@ -4666,10 +4229,18 @@ declare type t_253 =
 | "ItemDropPosition"
 | "HostToken";
 
-declare type t_254<T> = {
+declare type t_235<T> = {
     LAZY_DONE: boolean,
     VAL: () => T
 }
+
+declare type t_24 = { readonly npcId: number; readonly buffType: number };
+
+declare type t_25 = {
+    readonly npcId: number;
+    readonly buffs: number[];
+    readonly buffTimes: number[];
+};
 
 declare type t_26 = { readonly npcId: number; readonly playerId: number };
 
@@ -5198,13 +4769,6 @@ declare type teleportPylon = {
     readonly pylonType: number;
 };
 
-declare type teleportPylon_2 = {
-    readonly pylonAction: pylonAction_2;
-    readonly x: number;
-    readonly y: number;
-    readonly pylonType: number
-};
-
 declare type teleportType =
 | "Player"
 | "Npc"
@@ -5217,14 +4781,6 @@ declare type teleportType_2 =
 | "DemonConch"
 | "ShellphoneSpawn"
 | "PlayerNoSpaceTeleport";
-
-declare type teleportType_3 = "Player" | "Npc" | "PlayerToPlayer";
-
-declare type teleportType_4 = 
-"TeleportationPotion"
-| "MagicConch"
-| "DemonConch"
-| "ShellphoneSpawn";
 
 export declare namespace TemporaryAnimationCreatePacket {
     export {
@@ -5275,41 +4831,6 @@ declare type tile_2 = {
     readonly activeTile: (undefined | activeTile_2);
     readonly wall: (undefined | number);
     readonly liquid: (undefined | liquid_3);
-    readonly coatHeader: number
-};
-
-declare type tile_3 = {
-    readonly activeTile: (undefined | activeTile_3); 
-    readonly color: (undefined | number); 
-    readonly wallColor: (undefined | number); 
-    readonly wall: (undefined | number); 
-    readonly liquid: (undefined | number); 
-    readonly lava: boolean; 
-    readonly honey: boolean; 
-    readonly wire: boolean; 
-    readonly wire2: boolean; 
-    readonly wire3: boolean; 
-    readonly wire4: boolean; 
-    readonly halfBrick: boolean; 
-    readonly slope: (undefined | number); 
-    readonly actuator: boolean; 
-    readonly inActive: boolean; 
-    readonly coatHeader: number
-};
-
-declare type tile_4 = {
-    readonly wire: boolean;
-    readonly halfBrick: boolean;
-    readonly actuator: boolean;
-    readonly inActive: boolean;
-    readonly wire2: boolean;
-    readonly wire3: boolean;
-    readonly wire4: boolean;
-    readonly color: (undefined | number);
-    readonly wallColor: (undefined | number);
-    readonly activeTile: (undefined | activeTile_4);
-    readonly wall: (undefined | number);
-    readonly liquid: (undefined | liquid_4);
     readonly coatHeader: number
 };
 
@@ -6337,7 +5858,7 @@ declare type toBufferOk_99 = { TAG: "Ok"; _0: Buffer };
 
 declare function toByte(t: t_95): number;
 
-declare function toInt(packetType: t_253): number;
+declare function toInt(packetType: t_234): number;
 
 declare function toString_2(data: CreativePower): string;
 
@@ -6377,8 +5898,6 @@ declare type unlockReport = {
     readonly itemId: number;
     readonly researchedCount: number;
 };
-
-declare type unlockReport_2 = { readonly itemId: number; readonly researchedCount: number };
 
 declare type unlockType = "Chest" | "TempleDoor" | "ChestLock";
 
@@ -6456,83 +5975,6 @@ export declare namespace WorldDataRequestPacket {
         toBuffer_72 as toBuffer
     }
 }
-
-declare type WorldInfo = {
-    readonly time: number;
-    readonly dayAndMoonInfo: number;
-    readonly moonPhase: number;
-    readonly maxTilesX: number;
-    readonly maxTilesY: number;
-    readonly spawnX: number;
-    readonly spawnY: number;
-    readonly worldSurface: number;
-    readonly rockLayer: number;
-    readonly worldId: number;
-    readonly worldName: string;
-    readonly gameMode: number;
-    readonly worldUniqueId: Array16_3<number>;
-    readonly worldGeneratorVersion: bigint;
-    readonly moonType: number;
-    readonly treeBackground: number;
-    readonly treeBackground2: number;
-    readonly treeBackground3: number;
-    readonly treeBackground4: number;
-    readonly corruptionBackground: number;
-    readonly jungleBackground: number;
-    readonly snowBackground: number;
-    readonly hallowBackground: number;
-    readonly crimsonBackground: number;
-    readonly desertBackground: number;
-    readonly oceanBackground: number;
-    readonly mushroomBackground: number;
-    readonly underworldBackground: number;
-    readonly iceBackStyle: number;
-    readonly jungleBackStyle: number;
-    readonly hellBackStyle: number;
-    readonly windSpeedSet: number;
-    readonly cloudNumber: number;
-    readonly tree1: number;
-    readonly tree2: number;
-    readonly tree3: number;
-    readonly treeStyle1: number;
-    readonly treeStyle2: number;
-    readonly treeStyle3: number;
-    readonly treeStyle4: number;
-    readonly caveBack1: number;
-    readonly caveBack2: number;
-    readonly caveBack3: number;
-    readonly caveBackStyle1: number;
-    readonly caveBackStyle2: number;
-    readonly caveBackStyle3: number;
-    readonly caveBackStyle4: number;
-    readonly forest1TreeTopStyle: number;
-    readonly forest2TreeTopStyle: number;
-    readonly forest3TreeTopStyle: number;
-    readonly forest4TreeTopStyle: number;
-    readonly corruptionTreeTopStyle: number;
-    readonly jungleTreeTopStyle: number;
-    readonly snowTreeTopStyle: number;
-    readonly hallowTreeTopStyle: number;
-    readonly crimsonTreeTopStyle: number;
-    readonly desertTreeTopStyle: number;
-    readonly oceanTreeTopStyle: number;
-    readonly glowingMushroomTreeTopStyle: number;
-    readonly underworldTreeTopStyle: number;
-    readonly rain: number;
-    readonly eventInfo: eventInfo_2;
-    readonly sundialCooldown: number;
-    readonly moondialCooldown: number;
-    readonly copperOreTier: number;
-    readonly ironOreTier: number;
-    readonly silverOreTier: number;
-    readonly goldOreTier: number;
-    readonly cobaltOreTier: number;
-    readonly mythrilOreTier: number;
-    readonly adamantiteOreTier: number;
-    readonly invasionType: number;
-    readonly lobbyId: bigint;
-    readonly sandstormSeverity: number;
-};
 
 export declare namespace WorldInfoPacket {
     export {

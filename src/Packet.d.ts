@@ -83,7 +83,7 @@ import type { t as Packet_HaveDryadDoStardewAnimation_t } from '../src/packetv14
 
 import type { t as Packet_HealEffect_t } from '../src/packetv1449/PacketV1449_HealEffect.js';
 
-import type { t as Packet_InitialTileSectionsRequest_t } from '../src/packetv1449/PacketV1449_InitialTileSectionsRequest.js';
+import type { t as Packet_InitialTileSectionsRequest_t } from './packet/Packet_InitialTileSectionsRequest.js';
 
 import type { t as Packet_InvasionProgressReport_t } from '../src/packetv1449/PacketV1449_InvasionProgressReport.js';
 
@@ -97,13 +97,13 @@ import type { t as Packet_ItemDropShimmeredUpdate_t } from '../src/packetv1449/P
 
 import type { t as Packet_ItemDropUpdate_t } from '../src/packetv1449/PacketV1449_ItemDropUpdate.js';
 
-import type { t as Packet_ItemForceIntoNearestChest_t } from '../src/packetv1449/PacketV1449_ItemForceIntoNearestChest.js';
+import type { t as Packet_ItemForceIntoNearestChest_t } from './packet/Packet_ItemForceIntoNearestChest.js';
 
 import type { t as Packet_ItemFramePlace_t } from '../src/packetv1449/PacketV1449_ItemFramePlace.js';
 
 import type { t as Packet_ItemOwnerRemove_t } from '../src/packetv1449/PacketV1449_ItemOwnerRemove.js';
 
-import type { t as Packet_ItemOwner_t } from '../src/packetv1449/PacketV1449_ItemOwner.js';
+import type { t as Packet_ItemOwner_t } from './packet/Packet_ItemOwner.js';
 
 import type { t as Packet_LegacySoundPlay_t } from '../src/packetv1449/PacketV1449_LegacySoundPlay.js';
 
@@ -127,13 +127,13 @@ import type { t as Packet_MoonLordCountdown_t } from '../src/packetv1449/PacketV
 
 import type { t as Packet_NebulaLevelUp_t } from '../src/packetv1449/PacketV1449_NebulaLevelUp.js';
 
-import type { NetModuleLoad } from './packetv1449/PacketV1449_NetModuleLoad.js';
+import type { t as NetModuleLoad } from './packet/Packet_NetModuleLoad.js';
 
 import type { t as Packet_NpcBuffAdd_t } from '../src/packetv1449/PacketV1449_NpcBuffAdd.js';
 
 import type { t as Packet_NpcBuffRemovalRequest_t } from '../src/packetv1449/PacketV1449_NpcBuffRemovalRequest.js';
 
-import type { t as Packet_NpcBuffUpdate_t } from '../src/packetv1449/PacketV1449_NpcBuffUpdate.js';
+import type { t as Packet_NpcBuffUpdate_t } from './packet/Packet_NpcBuffUpdate.js';
 
 import type { t as Packet_NpcCatch_t } from '../src/packetv1449/PacketV1449_NpcCatch.js';
 
@@ -163,7 +163,7 @@ import type { t as Packet_NpcTamper_t } from '../src/packetv1449/PacketV1449_Npc
 
 import type { t as Packet_NpcTeleportPortal_t } from '../src/packetv1449/PacketV1449_NpcTeleportPortal.js';
 
-import type { t as Packet_NpcUpdate_t } from '../src/packetv1449/PacketV1449_NpcUpdate.js';
+import type { t as Packet_NpcUpdate_t } from './packet/Packet_NpcUpdate.js';
 
 import type { t as Packet_ObjectPlace_t } from '../src/packetv1449/PacketV1449_ObjectPlace.js';
 
@@ -181,7 +181,7 @@ import type { t as Packet_PlayerAnimation_t } from '../src/packetv1449/PacketV14
 
 import type { t as Packet_PlayerBuffAdd_t } from '../src/packetv1449/PacketV1449_PlayerBuffAdd.js';
 
-import type { t as Packet_PlayerBuffsSet_t } from '../src/packetv1449/PacketV1449_PlayerBuffsSet.js';
+import type { t as Packet_PlayerBuffsSet_t } from './packet/Packet_PlayerBuffsSet.js';
 
 import type { t as Packet_PlayerChestIndexSync_t } from '../src/packetv1449/PacketV1449_PlayerChestIndexSync.js';
 
@@ -197,11 +197,11 @@ import type { t as Packet_PlayerHealOther_t } from '../src/packetv1449/PacketV14
 
 import type { t as Packet_PlayerHealth_t } from '../src/packetv1449/PacketV1449_PlayerHealth.js';
 
-import type { t as Packet_PlayerInfo_t } from '../src/packetv1449/PacketV1449_PlayerInfo.js';
+import type { t as Packet_PlayerInfo_t } from './packet/Packet_PlayerInfo.js';
 
-import type { t as Packet_PlayerInventorySlot_t } from '../src/packetv1449/PacketV1449_PlayerInventorySlot.js';
+import type { t as Packet_PlayerInventorySlot_t } from './packet/Packet_PlayerInventorySlot.js';
 
-import type { t as Packet_PlayerLuckFactorsUpdate_t } from '../src/packetv1449/PacketV1449_PlayerLuckFactorsUpdate.js';
+import type { t as Packet_PlayerLuckFactorsUpdate_t } from './packet/Packet_PlayerLuckFactorsUpdate.js';
 
 import type { t as Packet_PlayerMana_t } from '../src/packetv1449/PacketV1449_PlayerMana.js';
 
@@ -209,7 +209,7 @@ import type { t as Packet_PlayerSlotSet_t } from '../src/packetv1449/PacketV1449
 
 import type { t as Packet_PlayerSpawnSelf_t } from '../src/packetv1449/PacketV1449_PlayerSpawnSelf.js';
 
-import type { t as Packet_PlayerSpawn_t } from '../src/packetv1449/PacketV1449_PlayerSpawn.js';
+import type { t as Packet_PlayerSpawn_t } from './packet/Packet_PlayerSpawn.js';
 
 import type { t as Packet_PlayerStealth_t } from '../src/packetv1449/PacketV1449_PlayerStealth.js';
 
@@ -217,7 +217,7 @@ import type { t as Packet_PlayerTeam_t } from '../src/packetv1449/PacketV1449_Pl
 
 import type { t as Packet_PlayerTeleportPortal_t } from '../src/packetv1449/PacketV1449_PlayerTeleportPortal.js';
 
-import type { t as Packet_PlayerUpdate_t } from '../src/packetv1449/PacketV1449_PlayerUpdate.js';
+import type { t as Packet_PlayerUpdate_t } from './packet/Packet_PlayerUpdate.js';
 
 import type { t as Packet_PortalKill_t } from '../src/packetv1449/PacketV1449_PortalKill.js';
 
@@ -233,7 +233,7 @@ import type { t as Packet_RevengeMarkerSync_t } from '../src/packetv1449/PacketV
 
 import type { t as Packet_ShieldStrengthsUpdate_t } from '../src/packetv1449/PacketV1449_ShieldStrengthsUpdate.js';
 
-import type { t as Packet_ShimmerEffectOrCoinLuck_t } from '../src/packetv1449/PacketV1449_ShimmerEffectOrCoinLuck.js';
+import type { t as Packet_ShimmerEffectOrCoinLuck_t } from './packet/Packet_ShimmerEffectOrCoinLuck.js';
 
 import type { t as Packet_SignNew_t } from '../src/packetv1449/PacketV1449_SignNew.js';
 
@@ -247,13 +247,13 @@ import type { t as Packet_Status_t } from '../src/packetv1449/PacketV1449_Status
 
 import type { t as Packet_SwitchHit_t } from '../src/packetv1449/PacketV1449_SwitchHit.js';
 
-import type { t as Packet_Teleport_t } from '../src/packetv1449/PacketV1449_Teleport.js';
+import type { t as Packet_Teleport_t } from './packet/Packet_Teleport.js';
 
-import type { t as Packet_TeleportationPotion_t } from '../src/packetv1449/PacketV1449_TeleportationPotion.js';
+import type { t as Packet_TeleportationPotion_t } from './packet/Packet_TeleportationPotion.js';
 
 import type { t as Packet_TemporaryAnimationCreate_t } from '../src/packetv1449/PacketV1449_TemporaryAnimationCreate.js';
 
-import type { t as Packet_TileEntityDisplayDollItemSync_t } from '../src/packetv1449/PacketV1449_TileEntityDisplayDollItemSync.js';
+import type { t as Packet_TileEntityDisplayDollItemSync_t } from './packet/Packet_TileEntityDisplayDollItemSync.js';
 
 import type { t as Packet_TileEntityHatRackItemSync_t } from '../src/packetv1449/PacketV1449_TileEntityHatRackItemSync.js';
 
@@ -271,13 +271,13 @@ import type { t as Packet_TilePickingSync_t } from '../src/packetv1449/PacketV14
 
 import type { t as Packet_TileSectionFrame_t } from '../src/packetv1449/PacketV1449_TileSectionFrame.js';
 
-import type { t as Packet_TileSectionSend_t } from '../src/packetv1449/PacketV1449_TileSectionSend.js';
+import type { t as Packet_TileSectionSend_t } from './packet/Packet_TileSectionSend.js';
 
-import type { t as Packet_TileSquareSend_t } from '../src/packetv1449/PacketV1449_TileSquareSend.js';
+import type { t as Packet_TileSquareSend_t } from './packet/Packet_TileSquareSend.js';
 
 import type { t as Packet_TimeSet_t } from '../src/packetv1449/PacketV1449_TimeSet.js';
 
-import type { t as Packet_TravellingMerchantInventory_t } from '../src/packetv1449/PacketV1449_TravellingMerchantInventory.js';
+import type { t as Packet_TravellingMerchantInventory_t } from './packet/Packet_TravellingMerchantInventory.js';
 
 import type { t as Packet_TreeGrowFx_t } from '../src/packetv1449/PacketV1449_TreeGrowFx.js';
 
@@ -291,9 +291,9 @@ import type { t as Packet_WiredCannonShot_t } from '../src/packetv1449/PacketV14
 
 import type { t as Packet_WorldDataRequest_t } from '../src/packetv1449/PacketV1449_WorldDataRequest.js';
 
-import type { WorldInfo as Packet_WorldInfo_t } from '../src/packetv1449/PacketV1449_WorldInfo.js';
+import type { t as Packet_WorldInfo_t } from './packet/Packet_WorldInfo.js';
 
-import type { t as Packet_Zones_t } from '../src/packetv1449/PacketV1449_Zones.js';
+import type { t as Packet_Zones_t } from './packet/Packet_Zones.js';
 
 import type { t as Packet_DeadCellsDisplayJarTryPlacing_t } from './packet/Packet_DeadCellsDisplayJarTryPlacing.js';
 
