@@ -2573,7 +2573,8 @@ function getParsers(packetType, fromServer) {
   }
 }
 
-function parse(buffer, fromServer) {
+function parse(buffer, fromServer, ignoreOpt) {
+  let ignore = ignoreOpt !== undefined ? ignoreOpt : [];
   let match = buffer.length;
   if (!(match > 2 || match < 0)) {
     return {
@@ -2592,6 +2593,12 @@ function parse(buffer, fromServer) {
         TAG: "InvalidPacketType",
         _0: buffer[2]
       }
+    };
+  }
+  if (ignore.includes(packetType)) {
+    return {
+      TAG: "Error",
+      _0: "IgnoredPacket"
     };
   }
   try {

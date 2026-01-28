@@ -75,8 +75,9 @@ export type parseError =
   | { TAG: "NpcBuffRemovalRequestFromServer" }
   | { TAG: "ClientSyncedInventoryFromServer" }
   | { TAG: "NotImplemented" }
-  | { TAG: "InvalidPacketLength" }
-  | { TAG: "InvalidPacketType" };
+  | { TAG: "InvalidPacketLength"; _0: number }
+  | { TAG: "InvalidPacketType"; _0: number }
+  | { TAG: "IgnoredPacket" };
 
 export type parseResult<a> =
   | { TAG: "Ok"; _0: (a) }

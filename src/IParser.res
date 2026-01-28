@@ -71,6 +71,7 @@ module ParseError = {
     | NotImplemented
     | InvalidPacketLength(int)
     | InvalidPacketType(int)
+    | IgnoredPacket
 
   @val external stringOfUnknown: 'a => string = "String"
 
@@ -162,10 +163,15 @@ module ParseError = {
     | NpcTamperFromClient => serverOnlyFromClientError("NpcTamper")
     | LegacySoundPlayFromClient => serverOnlyFromClientError("LegacySoundPlay")
     | PlayerDeadFromClient => serverOnlyFromClientError("PlayerDead")
+    | IgnoredPacket => "Packet was ignored"
     }
 }
 
 type parseError = ParseError.t
-type parse<'a> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => result<'a, parseError>
+type parse<'a> = (
+  ~buffer: NodeJs.Buffer.t,
+  ~fromServer: bool,
+  ~ignore: array<PacketType.t>=?,
+) => result<'a, parseError>
 // Serializtion is not considered for now for simplicity
 type parseLazy<'a> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => result<'a, parseError>

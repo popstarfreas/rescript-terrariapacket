@@ -2718,7 +2718,8 @@ function getParsers(packetType, fromServer) {
   }
 }
 
-function parse(buffer, fromServer) {
+function parse(buffer, fromServer, ignoreOpt) {
+  let ignore = ignoreOpt !== undefined ? ignoreOpt : [];
   let match = buffer.length;
   if (!(match > 2 || match < 0)) {
     return {
@@ -2737,6 +2738,12 @@ function parse(buffer, fromServer) {
         TAG: "InvalidPacketType",
         _0: buffer[2]
       }
+    };
+  }
+  if (ignore.includes(packetType)) {
+    return {
+      TAG: "Error",
+      _0: "IgnoredPacket"
     };
   }
   try {
@@ -4414,7 +4421,7 @@ function convertFromV1449IfNeeded(buffer, fromServer) {
       };
   }
   try {
-    return Stdlib_Result.map(Stdlib_Result.map(Parserv1449$TerrariaPacket.parse(buffer, fromServer), fromV1449), p => ({
+    return Stdlib_Result.map(Stdlib_Result.map(Parserv1449$TerrariaPacket.parse(buffer, fromServer, undefined), fromV1449), p => ({
       TAG: "ConvertedToLatestVersion",
       _0: p
     }));
@@ -4502,7 +4509,7 @@ function convertToV1449IfNeeded(buffer, fromServer) {
       };
   }
   try {
-    return Stdlib_Result.map(parse(buffer, fromServer), packet => {
+    return Stdlib_Result.map(parse(buffer, fromServer, undefined), packet => {
       if (packet.TAG !== "NetModuleLoad") {
         return {
           TAG: "ConvertedToV1449",

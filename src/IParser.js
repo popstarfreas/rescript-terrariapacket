@@ -148,6 +148,8 @@ function toDisplayString(self) {
         return "Cannot parse a client-only packet from the server side: ClientSyncedInventory";
       case "NotImplemented" :
         return "NotImplemented: parser for this packet is not implemented";
+      case "IgnoredPacket" :
+        return "Packet was ignored";
     }
   } else {
     switch (self.TAG) {

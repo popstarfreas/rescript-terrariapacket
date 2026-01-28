@@ -1719,11 +1719,16 @@ let parsePayloadLazy = (
   | Error(err) => Error(err)
   }
 
-let parse: IParser.parse<Packet.t> = (~buffer: NodeJs.Buffer.t, ~fromServer: bool) => {
+let parse: IParser.parse<Packet.t> = (
+  ~buffer: NodeJs.Buffer.t,
+  ~fromServer: bool,
+  ~ignore: array<PacketType.t>=[],
+) => {
   switch buffer->NodeJs.Buffer.length {
   | 0 | 1 | 2 => Error(InvalidPacketLength(buffer->NodeJs.Buffer.length))
   | _ =>
     switch buffer->NodeJs.Buffer.unsafeGet(2)->PacketType.fromInt {
+    | Some(packetType) if Array.includes(ignore, packetType) => Error(IgnoredPacket)
     | Some(packetType) =>
       try {
         // As this module is parsing packets from the latest version to the equivalent packet data structures
