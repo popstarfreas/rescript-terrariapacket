@@ -3667,6 +3667,66 @@ function netModuleLoadToV1449(netModuleLoad) {
   }
 }
 
+function playerInventorySlotIdFromV1449(slot) {
+  if (slot <= 98 || slot <= 138) {
+    return slot;
+  } else if (slot <= 178) {
+    return slot + 160 | 0;
+  } else if (slot === 179 || slot <= 219) {
+    return slot + 320 | 0;
+  } else if (slot <= 259) {
+    return slot + 480 | 0;
+  } else if (slot <= 349) {
+    return slot + 640 | 0;
+  } else {
+    return slot;
+  }
+}
+
+function playerInventorySlotIdToV1449(slot) {
+  if (slot <= 98) {
+    return slot;
+  }
+  if (slot <= 298) {
+    let index = slot - 99 | 0;
+    if (index < 40) {
+      return slot;
+    } else {
+      return;
+    }
+  }
+  if (slot <= 498) {
+    let index$1 = slot - 299 | 0;
+    if (index$1 < 40) {
+      return 139 + index$1 | 0;
+    } else {
+      return;
+    }
+  }
+  if (slot === 499) {
+    return 179;
+  }
+  if (slot <= 699) {
+    let index$2 = slot - 500 | 0;
+    if (index$2 < 40) {
+      return 180 + index$2 | 0;
+    } else {
+      return;
+    }
+  }
+  if (slot > 899) {
+    if (slot <= 989) {
+      return slot - 640 | 0;
+    } else {
+      return;
+    }
+  }
+  let index$3 = slot - 700 | 0;
+  if (index$3 < 40) {
+    return 220 + index$3 | 0;
+  }
+}
+
 function fromV1449(packet) {
   switch (packet.TAG) {
     case "PlayerInfo" :
@@ -3714,7 +3774,7 @@ function fromV1449(packet) {
         TAG: "PlayerInventorySlot",
         _0: {
           playerId: playerInventorySlot.playerId,
-          slot: playerInventorySlot.slot,
+          slot: playerInventorySlotIdFromV1449(playerInventorySlot.slot),
           stack: playerInventorySlot.stack,
           prefix: playerInventorySlot.prefix,
           itemType: playerInventorySlot.itemId,
@@ -4510,23 +4570,45 @@ function convertToV1449IfNeeded(buffer, fromServer) {
   }
   try {
     return Stdlib_Result.map(parse(buffer, fromServer, undefined), packet => {
-      if (packet.TAG !== "NetModuleLoad") {
-        return {
-          TAG: "ConvertedToV1449",
-          _0: v1449ToLatest(packet)
-        };
-      }
-      let converted = netModuleLoadToV1449(packet._0);
-      if (converted !== undefined) {
-        return {
-          TAG: "ConvertedToV1449",
-          _0: {
-            TAG: "NetModuleLoad",
-            _0: converted
+      switch (packet.TAG) {
+        case "PlayerInventorySlot" :
+          let playerInventorySlot = packet._0;
+          let slot = playerInventorySlotIdToV1449(playerInventorySlot.slot);
+          if (slot !== undefined) {
+            return {
+              TAG: "ConvertedToV1449",
+              _0: {
+                TAG: "PlayerInventorySlot",
+                _0: {
+                  playerId: playerInventorySlot.playerId,
+                  slot: slot,
+                  stack: playerInventorySlot.stack,
+                  prefix: playerInventorySlot.prefix,
+                  itemId: playerInventorySlot.itemType
+                }
+              }
+            };
+          } else {
+            return "DiscardAsNotExists";
           }
-        };
-      } else {
-        return "DiscardAsNotExists";
+        case "NetModuleLoad" :
+          let converted = netModuleLoadToV1449(packet._0);
+          if (converted !== undefined) {
+            return {
+              TAG: "ConvertedToV1449",
+              _0: {
+                TAG: "NetModuleLoad",
+                _0: converted
+              }
+            };
+          } else {
+            return "DiscardAsNotExists";
+          }
+        default:
+          return {
+            TAG: "ConvertedToV1449",
+            _0: v1449ToLatest(packet)
+          };
       }
     });
   } catch (raw_obj) {

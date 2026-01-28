@@ -5,7 +5,7 @@ import * as Parser$TerrariaPacket from "../src/Parser.js";
 
 Zora.test("should correctly parse PlayerSpawn (2)", t => {
   let data = Buffer.from("12000c00ffffffff00000000000000000109", "hex");
-  let result = Parser$TerrariaPacket.parse(data, false);
+  let result = Parser$TerrariaPacket.parse(data, false, undefined);
   if (result.TAG === "Ok") {
     t.ok(true);
     return;

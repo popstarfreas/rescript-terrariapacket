@@ -2516,6 +2516,66 @@ let netModuleLoadToV1449 = (netModuleLoad: Packet.NetModuleLoad.t): option<
   }
 }
 
+let playerInventorySlotIdFromV1449 = (slot: int): int => {
+  if slot <= 98 {
+    slot
+  } else if slot <= 138 {
+    slot
+  } else if slot <= 178 {
+    slot + 160
+  } else if slot == 179 {
+    slot + 320
+  } else if slot <= 219 {
+    slot + 320
+  } else if slot <= 259 {
+    slot + 480
+  } else if slot <= 349 {
+    slot + 640
+  } else {
+    slot
+  }
+}
+
+let playerInventorySlotIdToV1449 = (slot: int): option<int> => {
+  if slot <= 98 {
+    Some(slot)
+  } else if slot <= 298 {
+    let index = slot - 99
+    if index < 40 {
+      Some(slot)
+    } else {
+      None
+    }
+  } else if slot <= 498 {
+    let index = slot - 299
+    if index < 40 {
+      Some(139 + index)
+    } else {
+      None
+    }
+  } else if slot == 499 {
+    Some(179)
+  } else if slot <= 699 {
+    let index = slot - 500
+    if index < 40 {
+      Some(180 + index)
+    } else {
+      None
+    }
+  } else if slot <= 899 {
+    let index = slot - 700
+    if index < 40 {
+      Some(220 + index)
+    } else {
+      None
+    }
+  } else if slot <= 989 {
+    Some(slot - 640)
+  } else {
+    None
+  }
+}
+
 let fromV1449 = (packet: PacketV1449.t): Packet.t => {
   switch packet {
   | PlayerInfo(playerInfo) =>
@@ -2556,7 +2616,7 @@ let fromV1449 = (packet: PacketV1449.t): Packet.t => {
   | PlayerInventorySlot(playerInventorySlot) =>
     Packet.PlayerInventorySlot({
       playerId: playerInventorySlot.playerId,
-      slot: playerInventorySlot.slot,
+      slot: playerInventorySlotIdFromV1449(playerInventorySlot.slot),
       stack: playerInventorySlot.stack,
       prefix: playerInventorySlot.prefix,
       itemType: playerInventorySlot.itemId,
@@ -3054,6 +3114,20 @@ let convertToV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): resu
       try {
         parse(~buffer, ~fromServer)->Result.map(packet =>
           switch packet {
+          | PlayerInventorySlot(playerInventorySlot) =>
+            switch playerInventorySlotIdToV1449(playerInventorySlot.slot) {
+            | Some(slot) =>
+              ConvertedToV1449(
+                PacketV1449.PlayerInventorySlot({
+                  playerId: playerInventorySlot.playerId,
+                  slot,
+                  stack: playerInventorySlot.stack,
+                  prefix: playerInventorySlot.prefix,
+                  itemId: playerInventorySlot.itemType,
+                }),
+              )
+            | None => DiscardAsNotExists
+            }
           | NetModuleLoad(netModuleLoad) =>
             switch netModuleLoadToV1449(netModuleLoad) {
             | Some(converted) => ConvertedToV1449(PacketV1449.NetModuleLoad(converted))
