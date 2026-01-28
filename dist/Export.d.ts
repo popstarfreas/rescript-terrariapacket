@@ -2126,8 +2126,9 @@ declare type parseError_88 =
 | { TAG: "NpcBuffRemovalRequestFromServer" }
 | { TAG: "ClientSyncedInventoryFromServer" }
 | { TAG: "NotImplemented" }
-| { TAG: "InvalidPacketLength" }
-| { TAG: "InvalidPacketType" };
+| { TAG: "InvalidPacketLength"; _0: number }
+| { TAG: "InvalidPacketType"; _0: number }
+| { TAG: "IgnoredPacket" };
 
 declare type parseError_9 = { TAG: "Error"; _0: readError };
 

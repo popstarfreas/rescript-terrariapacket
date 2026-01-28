@@ -17146,7 +17146,8 @@ function getParsers(packetType, fromServer) {
       };
   }
 }
-function parse147(buffer, fromServer) {
+function parse147(buffer, fromServer, ignoreOpt) {
+  let ignore = ignoreOpt !== void 0 ? ignoreOpt : [];
   let match = buffer.length;
   if (!(match > 2 || match < 0)) {
     return {
@@ -17165,6 +17166,12 @@ function parse147(buffer, fromServer) {
         TAG: "InvalidPacketType",
         _0: buffer[2]
       }
+    };
+  }
+  if (ignore.includes(packetType)) {
+    return {
+      TAG: "Error",
+      _0: "IgnoredPacket"
     };
   }
   try {
@@ -23157,7 +23164,8 @@ function getParsers2(packetType, fromServer) {
       };
   }
 }
-function parse180(buffer, fromServer) {
+function parse180(buffer, fromServer, ignoreOpt) {
+  let ignore = ignoreOpt !== void 0 ? ignoreOpt : [];
   let match = buffer.length;
   if (!(match > 2 || match < 0)) {
     return {
@@ -23176,6 +23184,12 @@ function parse180(buffer, fromServer) {
         TAG: "InvalidPacketType",
         _0: buffer[2]
       }
+    };
+  }
+  if (ignore.includes(packetType)) {
+    return {
+      TAG: "Error",
+      _0: "IgnoredPacket"
     };
   }
   try {
@@ -24805,7 +24819,7 @@ function convertFromV1449IfNeeded(buffer, fromServer) {
       };
   }
   try {
-    return map2(map2(parse147(buffer, fromServer), fromV1449), (p) => ({
+    return map2(map2(parse147(buffer, fromServer, void 0), fromV1449), (p) => ({
       TAG: "ConvertedToLatestVersion",
       _0: p
     }));
@@ -24892,7 +24906,7 @@ function convertToV1449IfNeeded(buffer, fromServer) {
       };
   }
   try {
-    return map2(parse180(buffer, fromServer), (packet) => {
+    return map2(parse180(buffer, fromServer, void 0), (packet) => {
       if (packet.TAG !== "NetModuleLoad") {
         return {
           TAG: "ConvertedToV1449",
