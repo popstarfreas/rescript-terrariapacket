@@ -3,9 +3,9 @@
 import * as Stdlib_Option from "@rescript/runtime/lib/es6/Stdlib_Option.js";
 import * as BitFlags$TerrariaPacket from "../BitFlags.js";
 import * as PacketType$TerrariaPacket from "../PacketType.js";
+import * as TileFrameImportant$TerrariaPacket from "../TileFrameImportant.js";
 import * as ErrorAwarePacketReader$TerrariaPacket from "../ErrorAwarePacketReader.js";
 import * as ErrorAwarePacketWriter$TerrariaPacket from "../ErrorAwarePacketWriter.js";
-import * as TileFrameImportantV1449$TerrariaPacket from "../TileFrameImportantV1449.js";
 import Packetreader from "@popstarfreas/packetfactory/packetreader";
 
 function parse(payload) {
@@ -94,7 +94,7 @@ function parse(payload) {
       if (e$8.TAG === "Ok") {
         let tileType = e$8._0;
         let e$9;
-        if (TileFrameImportantV1449$TerrariaPacket.isImportant(tileType)) {
+        if (TileFrameImportant$TerrariaPacket.isImportant(tileType)) {
           let e$10 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "frameX");
           if (e$10.TAG === "Ok") {
             let e$11 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "frameY");
@@ -270,7 +270,7 @@ function packTile(writer, tile) {
   let at = tile.activeTile;
   if (at !== undefined) {
     ErrorAwarePacketWriter$TerrariaPacket.packUInt16(writer, at.tileType, "tileType");
-    if (TileFrameImportantV1449$TerrariaPacket.isImportant(at.tileType)) {
+    if (TileFrameImportant$TerrariaPacket.isImportant(at.tileType)) {
       ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, Stdlib_Option.mapOr(at.frame, 0, frame => frame.x), "frameX"), Stdlib_Option.mapOr(at.frame, 0, frame => frame.y), "frameY");
     }
   }
@@ -312,4 +312,4 @@ export {
   parse,
   toBuffer,
 }
-/* ErrorAwarePacketWriter-TerrariaPacket Not a pure module */
+/* TileFrameImportant-TerrariaPacket Not a pure module */

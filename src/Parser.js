@@ -3784,6 +3784,11 @@ function fromV1449(packet) {
           lastItemUseAttemptSuccess: false
         }
       };
+    case "TileSquareSend" :
+      return {
+        TAG: "TileSquareSend",
+        _0: packet._0
+      };
     case "ItemOwner" :
       let itemOwner = packet._0;
       return {
@@ -4387,6 +4392,7 @@ function convertFromV1449IfNeeded(buffer, fromServer) {
     case "TileSectionSend" :
     case "PlayerSpawn" :
     case "PlayerUpdate" :
+    case "TileSquareSend" :
     case "ItemOwner" :
     case "NpcUpdate" :
     case "Zones" :

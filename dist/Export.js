@@ -1035,9 +1035,9 @@ var networktext_default = NetworkText;
 
 // node_modules/.pnpm/@popstarfreas+packetfactory@7.1.3/node_modules/@popstarfreas/packetfactory/app/bufferreader.js
 var BufferReader = class {
-  constructor(data3) {
+  constructor(data2) {
     this.head = 0;
-    this._data = data3;
+    this._data = data2;
   }
   get bytesLeft() {
     return this._data.length - this.head;
@@ -1050,8 +1050,8 @@ var BufferReader = class {
   get data() {
     return this._data;
   }
-  set buffer(data3) {
-    this._data = data3;
+  set buffer(data2) {
+    this._data = data2;
     this.head = 0;
   }
   /**
@@ -1685,8 +1685,8 @@ function make() {
 
 // node_modules/.pnpm/@popstarfreas+packetfactory@7.1.3/node_modules/@popstarfreas/packetfactory/app/packetreader.js
 var PacketReader = class extends bufferreader_default {
-  constructor(data3) {
-    super(data3);
+  constructor(data2) {
+    super(data2);
     this.readUInt16();
     this._type = this.readByte();
   }
@@ -6227,7 +6227,9 @@ __export(PacketV1449_TileSectionSend_exports, {
   Chest: () => Chest,
   Entity: () => Entity,
   Sign: () => Sign,
-  parse: () => parse65,
+  cacheToTile: () => cacheToTile,
+  defaultTileCache: () => defaultTileCache,
+  parse: () => parse$3,
   toBuffer: () => toBuffer64
 });
 import * as Nodezlib from "node:zlib";
@@ -6315,783 +6317,180 @@ function notequal(a, b) {
   }
 }
 
-// src/TileSolid.js
-var map3 = /* @__PURE__ */ new Map([
-  [
-    379,
-    true
-  ],
-  [
-    371,
-    true
-  ],
-  [
-    357,
-    true
-  ],
-  [
-    408,
-    true
-  ],
-  [
-    409,
-    true
-  ],
-  [
-    415,
-    true
-  ],
-  [
-    416,
-    true
-  ],
-  [
-    417,
-    true
-  ],
-  [
-    418,
-    true
-  ],
-  [
-    232,
-    true
-  ],
-  [
-    311,
-    true
-  ],
-  [
-    312,
-    true
-  ],
-  [
-    313,
-    true
-  ],
-  [
-    315,
-    true
-  ],
-  [
-    321,
-    true
-  ],
-  [
-    322,
-    true
-  ],
-  [
-    239,
-    true
-  ],
-  [
-    380,
-    true
-  ],
-  [
-    367,
-    true
-  ],
-  [
-    357,
-    true
-  ],
-  [
-    368,
-    true
-  ],
-  [
-    369,
-    true
-  ],
-  [
-    325,
-    true
-  ],
-  [
-    460,
-    true
-  ],
-  [
-    326,
-    true
-  ],
-  [
-    458,
-    true
-  ],
-  [
-    459,
-    true
-  ],
-  [
-    327,
-    true
-  ],
-  [
-    345,
-    true
-  ],
-  [
-    328,
-    true
-  ],
-  [
-    329,
-    true
-  ],
-  [
-    421,
-    true
-  ],
-  [
-    422,
-    true
-  ],
-  [
-    426,
-    true
-  ],
-  [
-    430,
-    true
-  ],
-  [
-    431,
-    true
-  ],
-  [
-    432,
-    true
-  ],
-  [
-    433,
-    true
-  ],
-  [
-    434,
-    true
-  ],
-  [
-    446,
-    true
-  ],
-  [
-    447,
-    true
-  ],
-  [
-    448,
-    true
-  ],
-  [
-    427,
-    true
-  ],
-  [
-    284,
-    true
-  ],
-  [
-    346,
-    true
-  ],
-  [
-    347,
-    true
-  ],
-  [
-    348,
-    true
-  ],
-  [
-    350,
-    true
-  ],
-  [
-    370,
-    true
-  ],
-  [
-    383,
-    true
-  ],
-  [
-    385,
-    true
-  ],
-  [
-    396,
-    true
-  ],
-  [
-    397,
-    true
-  ],
-  [
-    399,
-    true
-  ],
-  [
-    401,
-    true
-  ],
-  [
-    398,
-    true
-  ],
-  [
-    400,
-    true
-  ],
-  [
-    402,
-    true
-  ],
-  [
-    403,
-    true
-  ],
-  [
-    404,
-    true
-  ],
-  [
-    407,
-    true
-  ],
-  [
-    170,
-    true
-  ],
-  [
-    221,
-    true
-  ],
-  [
-    272,
-    true
-  ],
-  [
-    229,
-    true
-  ],
-  [
-    230,
-    true
-  ],
-  [
-    222,
-    true
-  ],
-  [
-    223,
-    true
-  ],
-  [
-    224,
-    true
-  ],
-  [
-    225,
-    true
-  ],
-  [
-    226,
-    true
-  ],
-  [
-    235,
-    true
-  ],
-  [
-    191,
-    true
-  ],
-  [
-    211,
-    true
-  ],
-  [
-    208,
-    true
-  ],
-  [
-    192,
-    true
-  ],
-  [
-    193,
-    true
-  ],
-  [
-    194,
-    true
-  ],
-  [
-    195,
-    true
-  ],
-  [
-    200,
-    true
-  ],
-  [
-    203,
-    true
-  ],
-  [
-    204,
-    true
-  ],
-  [
-    189,
-    true
-  ],
-  [
-    190,
-    true
-  ],
-  [
-    198,
-    true
-  ],
-  [
-    206,
-    true
-  ],
-  [
-    248,
-    true
-  ],
-  [
-    249,
-    true
-  ],
-  [
-    250,
-    true
-  ],
-  [
-    251,
-    true
-  ],
-  [
-    252,
-    true
-  ],
-  [
-    253,
-    true
-  ],
-  [
-    273,
-    true
-  ],
-  [
-    274,
-    true
-  ],
-  [
-    202,
-    true
-  ],
-  [
-    188,
-    true
-  ],
-  [
-    179,
-    true
-  ],
-  [
-    381,
-    true
-  ],
-  [
-    180,
-    true
-  ],
-  [
-    181,
-    true
-  ],
-  [
-    182,
-    true
-  ],
-  [
-    183,
-    true
-  ],
-  [
-    196,
-    true
-  ],
-  [
-    197,
-    true
-  ],
-  [
-    175,
-    true
-  ],
-  [
-    176,
-    true
-  ],
-  [
-    177,
-    true
-  ],
-  [
-    162,
-    true
-  ],
-  [
-    163,
-    true
-  ],
-  [
-    164,
-    true
-  ],
-  [
-    234,
-    true
-  ],
-  [
-    137,
-    true
-  ],
-  [
-    160,
-    true
-  ],
-  [
-    161,
-    true
-  ],
-  [
-    145,
-    true
-  ],
-  [
-    146,
-    true
-  ],
-  [
-    147,
-    true
-  ],
-  [
-    148,
-    true
-  ],
-  [
-    138,
-    true
-  ],
-  [
-    140,
-    true
-  ],
-  [
-    151,
-    true
-  ],
-  [
-    152,
-    true
-  ],
-  [
-    153,
-    true
-  ],
-  [
-    154,
-    true
-  ],
-  [
-    155,
-    true
-  ],
-  [
-    156,
-    true
-  ],
-  [
-    157,
-    true
-  ],
-  [
-    158,
-    true
-  ],
-  [
-    159,
-    true
-  ],
-  [
-    130,
-    true
-  ],
-  [
-    107,
-    true
-  ],
-  [
-    108,
-    true
-  ],
-  [
-    111,
-    true
-  ],
-  [
-    109,
-    true
-  ],
-  [
-    112,
-    true
-  ],
-  [
-    116,
-    true
-  ],
-  [
-    117,
-    true
-  ],
-  [
-    123,
-    true
-  ],
-  [
-    118,
-    true
-  ],
-  [
-    119,
-    true
-  ],
-  [
-    120,
-    true
-  ],
-  [
-    121,
-    true
-  ],
-  [
-    122,
-    true
-  ],
-  [
-    150,
-    true
-  ],
-  [
-    199,
-    true
-  ],
-  [
-    0,
-    true
-  ],
-  [
-    1,
-    true
-  ],
-  [
-    2,
-    true
-  ],
-  [
-    6,
-    true
-  ],
-  [
-    7,
-    true
-  ],
-  [
-    8,
-    true
-  ],
-  [
-    9,
-    true
-  ],
-  [
-    166,
-    true
-  ],
-  [
-    167,
-    true
-  ],
-  [
-    168,
-    true
-  ],
-  [
-    169,
-    true
-  ],
-  [
-    10,
-    true
-  ],
-  [
-    19,
-    true
-  ],
-  [
-    22,
-    true
-  ],
-  [
-    23,
-    true
-  ],
-  [
-    25,
-    true
-  ],
-  [
-    30,
-    true
-  ],
-  [
-    37,
-    true
-  ],
-  [
-    38,
-    true
-  ],
-  [
-    39,
-    true
-  ],
-  [
-    40,
-    true
-  ],
-  [
-    41,
-    true
-  ],
-  [
-    43,
-    true
-  ],
-  [
-    44,
-    true
-  ],
-  [
-    45,
-    true
-  ],
-  [
-    46,
-    true
-  ],
-  [
-    47,
-    true
-  ],
-  [
-    48,
-    true
-  ],
-  [
-    53,
-    true
-  ],
-  [
-    54,
-    true
-  ],
-  [
-    56,
-    true
-  ],
-  [
-    57,
-    true
-  ],
-  [
-    58,
-    true
-  ],
-  [
-    59,
-    true
-  ],
-  [
-    60,
-    true
-  ],
-  [
-    63,
-    true
-  ],
-  [
-    64,
-    true
-  ],
-  [
-    65,
-    true
-  ],
-  [
-    66,
-    true
-  ],
-  [
-    67,
-    true
-  ],
-  [
-    68,
-    true
-  ],
-  [
-    75,
-    true
-  ],
-  [
-    76,
-    true
-  ],
-  [
-    70,
-    true
-  ],
-  [
-    384,
-    true
-  ],
-  [
-    387,
-    true
-  ],
-  [
-    388,
-    true
-  ]
-]);
-function isSolid(tileType) {
-  return getOr(map3.get(tileType), false);
+// src/ErrorAwareBufferReader.js
+function readByteUnsafe2(prim) {
+  return prim.readByte();
+}
+function readInt16Unsafe2(prim) {
+  return prim.readInt16();
+}
+function readInt32Unsafe2(prim) {
+  return prim.readInt32();
+}
+function readStringUnsafe2(prim) {
+  return prim.readString();
+}
+function getBytesLeftUnsafe2(prim) {
+  return prim.bytesLeft;
+}
+function withContext2(fn, reader, context) {
+  try {
+    return {
+      TAG: "Ok",
+      _0: fn(reader)
+    };
+  } catch (raw_obj) {
+    let obj = internalToException(raw_obj);
+    if (obj.RE_EXN_ID === "JsExn") {
+      return {
+        TAG: "Error",
+        _0: {
+          context,
+          error: obj._1
+        }
+      };
+    }
+    throw obj;
+  }
+}
+function readByte2(reader, context) {
+  return withContext2(readByteUnsafe2, reader, context);
+}
+function readInt162(reader, context) {
+  return withContext2(readInt16Unsafe2, reader, context);
+}
+function readInt322(reader, context) {
+  return withContext2(readInt32Unsafe2, reader, context);
+}
+function readString2(reader, context) {
+  return withContext2(readStringUnsafe2, reader, context);
+}
+function readBuffer2(reader, bytes, context) {
+  return withContext2((reader2) => reader2.readBuffer(bytes), reader, context);
+}
+function getBytesLeft2(reader) {
+  return withContext2(getBytesLeftUnsafe2, reader, "getBytesLeft");
 }
 
-// src/TileFrameImportant.js
-var map4 = /* @__PURE__ */ new Map([
+// src/ErrorAwareBufferWriter.js
+function packInt322(self, value, context) {
+  if (self.TAG !== "Writing") {
+    return self;
+  }
+  try {
+    let writer = self._0.packInt32(value);
+    return {
+      TAG: "Writing",
+      _0: writer
+    };
+  } catch (raw_obj) {
+    let obj = internalToException(raw_obj);
+    if (obj.RE_EXN_ID === "JsExn") {
+      return {
+        TAG: "Error",
+        _0: {
+          context,
+          error: obj._1
+        }
+      };
+    }
+    throw obj;
+  }
+}
+function packByte2(self, value, context) {
+  if (self.TAG !== "Writing") {
+    return self;
+  }
+  try {
+    let writer = self._0.packByte(value);
+    return {
+      TAG: "Writing",
+      _0: writer
+    };
+  } catch (raw_obj) {
+    let obj = internalToException(raw_obj);
+    if (obj.RE_EXN_ID === "JsExn") {
+      return {
+        TAG: "Error",
+        _0: {
+          context,
+          error: obj._1
+        }
+      };
+    }
+    throw obj;
+  }
+}
+function packInt162(self, value, context) {
+  if (self.TAG !== "Writing") {
+    return self;
+  }
+  try {
+    let writer = self._0.packInt16(value);
+    return {
+      TAG: "Writing",
+      _0: writer
+    };
+  } catch (raw_obj) {
+    let obj = internalToException(raw_obj);
+    if (obj.RE_EXN_ID === "JsExn") {
+      return {
+        TAG: "Error",
+        _0: {
+          context,
+          error: obj._1
+        }
+      };
+    }
+    throw obj;
+  }
+}
+function packString2(self, value, context) {
+  if (self.TAG !== "Writing") {
+    return self;
+  }
+  try {
+    let writer = self._0.packString(value);
+    return {
+      TAG: "Writing",
+      _0: writer
+    };
+  } catch (raw_obj) {
+    let obj = internalToException(raw_obj);
+    if (obj.RE_EXN_ID === "JsExn") {
+      return {
+        TAG: "Error",
+        _0: {
+          context,
+          error: obj._1
+        }
+      };
+    }
+    throw obj;
+  }
+}
+function slicedData(self) {
+  if (self.TAG === "Writing") {
+    return {
+      TAG: "Ok",
+      _0: self._0.slicedData
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: self._0
+    };
+  }
+}
+function make3(buffer) {
+  return {
+    TAG: "Writing",
+    _0: new bufferwriter_default(buffer)
+  };
+}
+
+// src/TileFrameImportantV1449.js
+var map3 = /* @__PURE__ */ new Map([
   [
     0,
     false
@@ -7290,7 +6689,7 @@ var map4 = /* @__PURE__ */ new Map([
   ],
   [
     49,
-    true
+    false
   ],
   [
     50,
@@ -8834,23 +8233,23 @@ var map4 = /* @__PURE__ */ new Map([
   ],
   [
     435,
-    false
+    true
   ],
   [
     436,
-    false
+    true
   ],
   [
     437,
-    false
+    true
   ],
   [
     438,
-    false
+    true
   ],
   [
     439,
-    false
+    true
   ],
   [
     440,
@@ -9369,7 +8768,7 @@ var map4 = /* @__PURE__ */ new Map([
     true
   ],
   [
-    569,
+    559,
     true
   ],
   [
@@ -9583,702 +8982,10 @@ var map4 = /* @__PURE__ */ new Map([
   [
     622,
     true
-  ],
-  [
-    623,
-    true
-  ],
-  [
-    624,
-    true
-  ],
-  [
-    625,
-    false
-  ],
-  [
-    626,
-    false
-  ],
-  [
-    627,
-    false
-  ],
-  [
-    628,
-    false
-  ],
-  [
-    629,
-    true
-  ],
-  [
-    630,
-    true
-  ],
-  [
-    631,
-    true
-  ],
-  [
-    632,
-    true
-  ],
-  [
-    633,
-    false
-  ],
-  [
-    634,
-    true
-  ],
-  [
-    635,
-    false
-  ],
-  [
-    636,
-    false
-  ],
-  [
-    637,
-    true
-  ],
-  [
-    638,
-    false
-  ],
-  [
-    639,
-    true
-  ],
-  [
-    640,
-    true
-  ],
-  [
-    641,
-    false
-  ],
-  [
-    642,
-    true
-  ],
-  [
-    643,
-    true
-  ],
-  [
-    644,
-    true
-  ],
-  [
-    645,
-    true
-  ],
-  [
-    646,
-    true
-  ],
-  [
-    647,
-    false
-  ],
-  [
-    648,
-    false
-  ],
-  [
-    649,
-    false
-  ],
-  [
-    650,
-    false
-  ],
-  [
-    651,
-    false
-  ],
-  [
-    652,
-    false
-  ],
-  [
-    653,
-    true
-  ],
-  [
-    654,
-    true
-  ],
-  [
-    655,
-    false
-  ],
-  [
-    656,
-    true
-  ],
-  [
-    657,
-    true
-  ],
-  [
-    658,
-    true
-  ],
-  [
-    659,
-    false
-  ],
-  [
-    660,
-    true
-  ],
-  [
-    661,
-    false
-  ],
-  [
-    662,
-    false
-  ],
-  [
-    663,
-    true
-  ],
-  [
-    664,
-    true
-  ],
-  [
-    665,
-    true
-  ],
-  [
-    666,
-    false
-  ],
-  [
-    667,
-    false
-  ],
-  [
-    668,
-    false
-  ],
-  [
-    669,
-    false
-  ],
-  [
-    670,
-    false
-  ],
-  [
-    671,
-    false
-  ],
-  [
-    672,
-    false
-  ],
-  [
-    673,
-    false
-  ],
-  [
-    674,
-    false
-  ],
-  [
-    675,
-    false
-  ],
-  [
-    676,
-    false
-  ],
-  [
-    677,
-    false
-  ],
-  [
-    678,
-    false
-  ],
-  [
-    679,
-    false
-  ],
-  [
-    680,
-    false
-  ],
-  [
-    681,
-    false
-  ],
-  [
-    682,
-    false
-  ],
-  [
-    683,
-    false
-  ],
-  [
-    684,
-    false
-  ],
-  [
-    685,
-    false
-  ],
-  [
-    686,
-    false
-  ],
-  [
-    687,
-    false
-  ],
-  [
-    688,
-    false
-  ],
-  [
-    689,
-    false
-  ],
-  [
-    690,
-    false
-  ],
-  [
-    691,
-    false
-  ],
-  [
-    692,
-    false
-  ],
-  [
-    693,
-    false
-  ],
-  [
-    694,
-    false
-  ],
-  [
-    695,
-    true
-  ],
-  [
-    696,
-    true
-  ],
-  [
-    697,
-    false
-  ],
-  [
-    698,
-    true
-  ],
-  [
-    699,
-    true
-  ],
-  [
-    700,
-    true
-  ],
-  [
-    701,
-    true
-  ],
-  [
-    702,
-    true
-  ],
-  [
-    703,
-    true
-  ],
-  [
-    704,
-    true
-  ],
-  [
-    705,
-    true
-  ],
-  [
-    706,
-    false
-  ],
-  [
-    707,
-    true
-  ],
-  [
-    708,
-    false
-  ],
-  [
-    709,
-    true
-  ],
-  [
-    710,
-    true
-  ],
-  [
-    711,
-    true
-  ],
-  [
-    712,
-    true
-  ],
-  [
-    713,
-    true
-  ],
-  [
-    714,
-    true
-  ],
-  [
-    715,
-    true
-  ],
-  [
-    716,
-    true
-  ],
-  [
-    717,
-    false
-  ],
-  [
-    718,
-    false
-  ],
-  [
-    719,
-    false
-  ],
-  [
-    720,
-    true
-  ],
-  [
-    721,
-    true
-  ],
-  [
-    722,
-    false
-  ],
-  [
-    723,
-    true
-  ],
-  [
-    724,
-    true
-  ],
-  [
-    725,
-    true
-  ],
-  [
-    726,
-    true
-  ],
-  [
-    727,
-    false
-  ],
-  [
-    728,
-    false
-  ],
-  [
-    729,
-    false
-  ],
-  [
-    730,
-    false
-  ],
-  [
-    731,
-    false
-  ],
-  [
-    732,
-    false
-  ],
-  [
-    733,
-    true
-  ],
-  [
-    734,
-    false
-  ],
-  [
-    735,
-    false
-  ],
-  [
-    736,
-    false
-  ],
-  [
-    737,
-    false
-  ],
-  [
-    738,
-    false
-  ],
-  [
-    739,
-    false
-  ],
-  [
-    740,
-    false
-  ],
-  [
-    741,
-    false
-  ],
-  [
-    742,
-    false
-  ],
-  [
-    743,
-    false
-  ],
-  [
-    744,
-    false
-  ],
-  [
-    745,
-    false
-  ],
-  [
-    746,
-    false
-  ],
-  [
-    747,
-    false
-  ],
-  [
-    748,
-    false
-  ],
-  [
-    749,
-    false
-  ],
-  [
-    750,
-    false
-  ],
-  [
-    751,
-    true
-  ],
-  [
-    752,
-    true
   ]
 ]);
 function isImportant(tileType) {
-  return getOr(map4.get(tileType), false);
-}
-
-// src/ErrorAwareBufferReader.js
-function readByteUnsafe2(prim) {
-  return prim.readByte();
-}
-function readInt16Unsafe2(prim) {
-  return prim.readInt16();
-}
-function readInt32Unsafe2(prim) {
-  return prim.readInt32();
-}
-function readStringUnsafe2(prim) {
-  return prim.readString();
-}
-function getBytesLeftUnsafe2(prim) {
-  return prim.bytesLeft;
-}
-function withContext2(fn, reader, context) {
-  try {
-    return {
-      TAG: "Ok",
-      _0: fn(reader)
-    };
-  } catch (raw_obj) {
-    let obj = internalToException(raw_obj);
-    if (obj.RE_EXN_ID === "JsExn") {
-      return {
-        TAG: "Error",
-        _0: {
-          context,
-          error: obj._1
-        }
-      };
-    }
-    throw obj;
-  }
-}
-function readByte2(reader, context) {
-  return withContext2(readByteUnsafe2, reader, context);
-}
-function readInt162(reader, context) {
-  return withContext2(readInt16Unsafe2, reader, context);
-}
-function readInt322(reader, context) {
-  return withContext2(readInt32Unsafe2, reader, context);
-}
-function readString2(reader, context) {
-  return withContext2(readStringUnsafe2, reader, context);
-}
-function readBuffer2(reader, bytes, context) {
-  return withContext2((reader2) => reader2.readBuffer(bytes), reader, context);
-}
-function getBytesLeft2(reader) {
-  return withContext2(getBytesLeftUnsafe2, reader, "getBytesLeft");
-}
-
-// src/ErrorAwareBufferWriter.js
-function packInt322(self, value, context) {
-  if (self.TAG !== "Writing") {
-    return self;
-  }
-  try {
-    let writer = self._0.packInt32(value);
-    return {
-      TAG: "Writing",
-      _0: writer
-    };
-  } catch (raw_obj) {
-    let obj = internalToException(raw_obj);
-    if (obj.RE_EXN_ID === "JsExn") {
-      return {
-        TAG: "Error",
-        _0: {
-          context,
-          error: obj._1
-        }
-      };
-    }
-    throw obj;
-  }
-}
-function packByte2(self, value, context) {
-  if (self.TAG !== "Writing") {
-    return self;
-  }
-  try {
-    let writer = self._0.packByte(value);
-    return {
-      TAG: "Writing",
-      _0: writer
-    };
-  } catch (raw_obj) {
-    let obj = internalToException(raw_obj);
-    if (obj.RE_EXN_ID === "JsExn") {
-      return {
-        TAG: "Error",
-        _0: {
-          context,
-          error: obj._1
-        }
-      };
-    }
-    throw obj;
-  }
-}
-function packInt162(self, value, context) {
-  if (self.TAG !== "Writing") {
-    return self;
-  }
-  try {
-    let writer = self._0.packInt16(value);
-    return {
-      TAG: "Writing",
-      _0: writer
-    };
-  } catch (raw_obj) {
-    let obj = internalToException(raw_obj);
-    if (obj.RE_EXN_ID === "JsExn") {
-      return {
-        TAG: "Error",
-        _0: {
-          context,
-          error: obj._1
-        }
-      };
-    }
-    throw obj;
-  }
-}
-function packString2(self, value, context) {
-  if (self.TAG !== "Writing") {
-    return self;
-  }
-  try {
-    let writer = self._0.packString(value);
-    return {
-      TAG: "Writing",
-      _0: writer
-    };
-  } catch (raw_obj) {
-    let obj = internalToException(raw_obj);
-    if (obj.RE_EXN_ID === "JsExn") {
-      return {
-        TAG: "Error",
-        _0: {
-          context,
-          error: obj._1
-        }
-      };
-    }
-    throw obj;
-  }
-}
-function data2(self) {
-  if (self.TAG === "Writing") {
-    return {
-      TAG: "Ok",
-      _0: self._0.data
-    };
-  } else {
-    return {
-      TAG: "Error",
-      _0: self._0
-    };
-  }
-}
-function make3(buffer) {
-  return {
-    TAG: "Writing",
-    _0: new bufferwriter_default(buffer)
-  };
+  return getOr(map3.get(tileType), false);
 }
 
 // src/packetv1449/PacketV1449_TileSectionSend.js
@@ -10332,8 +9039,64 @@ function cacheToTile(cache) {
     coatHeader: cache.coatHeader
   };
 }
+function parse65(reader) {
+  let e = readInt162(reader, "id");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt162(reader, "x");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readInt162(reader, "y");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readString2(reader, "name");
+  if (e$3.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        id: e._0,
+        x: e$1._0,
+        y: e$2._0,
+        name: e$3._0
+      }
+    };
+  } else {
+    return e$3;
+  }
+}
 function pack3(writer, chest) {
   return packString2(packInt162(packInt162(packInt162(writer, chest.id, "id"), chest.x, "x"), chest.y, "y"), chest.name, "name");
+}
+function parse$12(reader) {
+  let e = readInt162(reader, "id");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt162(reader, "x");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readInt162(reader, "y");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readString2(reader, "name");
+  if (e$3.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        id: e._0,
+        x: e$1._0,
+        y: e$2._0,
+        name: e$3._0
+      }
+    };
+  } else {
+    return e$3;
+  }
 }
 function pack$12(writer, sign) {
   return packString2(packInt162(packInt162(packInt162(writer, sign.id, "id"), sign.x, "x"), sign.y, "y"), sign.name, "name");
@@ -10580,6 +9343,40 @@ function parseEntityKind(entityType, reader) {
       };
   }
 }
+function parse$22(reader) {
+  let e = readByte2(reader, "entityType");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let entityType = e._0;
+  let e$1 = readInt322(reader, "id");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readInt162(reader, "x");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readInt162(reader, "y");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = parseEntityKind(entityType, reader);
+  if (e$4.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        entityType,
+        id: e$1._0,
+        x: e$2._0,
+        y: e$3._0,
+        entityKind: e$4._0
+      }
+    };
+  } else {
+    return e$4;
+  }
+}
 function packDisplayItem(writer, displayItem) {
   return packInt162(packByte2(packInt162(writer, displayItem.netId, "netId"), displayItem.prefix, "prefix"), displayItem.stack, "stack");
 }
@@ -10719,7 +9516,7 @@ function readRepeated(count, parseItem) {
     };
   }
 }
-function parse65(payload) {
+function parse$3(payload) {
   let packetReader = new packetreader_default(payload);
   let e = getBytesLeft(packetReader);
   if (e.TAG !== "Ok") {
@@ -11034,7 +9831,7 @@ function parse65(payload) {
         tileCache.wire3 = true;
       }
       let slopeBits = (toByte(header4$1) & 112) >> 4;
-      if (slopeBits !== 0 && isSolid(mapOr(tileCache.activeTile, 0, (tile) => tile.tileType))) {
+      if (slopeBits !== 0) {
         if (slopeBits === 1) {
           tileCache.halfBrick = true;
         } else {
@@ -11166,34 +9963,7 @@ function parse65(payload) {
   if (e$6.TAG !== "Ok") {
     return e$6;
   }
-  let e$7 = readRepeated(e$6._0, () => {
-    let e2 = readInt162(reader, "id");
-    if (e2.TAG !== "Ok") {
-      return e2;
-    }
-    let e$16 = readInt162(reader, "x");
-    if (e$16.TAG !== "Ok") {
-      return e$16;
-    }
-    let e$22 = readInt162(reader, "y");
-    if (e$22.TAG !== "Ok") {
-      return e$22;
-    }
-    let e$32 = readString2(reader, "name");
-    if (e$32.TAG === "Ok") {
-      return {
-        TAG: "Ok",
-        _0: {
-          id: e2._0,
-          x: e$16._0,
-          y: e$22._0,
-          name: e$32._0
-        }
-      };
-    } else {
-      return e$32;
-    }
-  });
+  let e$7 = readRepeated(e$6._0, () => parse65(reader));
   if (e$7.TAG !== "Ok") {
     return e$7;
   }
@@ -11201,34 +9971,7 @@ function parse65(payload) {
   if (e$8.TAG !== "Ok") {
     return e$8;
   }
-  let e$9 = readRepeated(e$8._0, () => {
-    let e2 = readInt162(reader, "id");
-    if (e2.TAG !== "Ok") {
-      return e2;
-    }
-    let e$16 = readInt162(reader, "x");
-    if (e$16.TAG !== "Ok") {
-      return e$16;
-    }
-    let e$22 = readInt162(reader, "y");
-    if (e$22.TAG !== "Ok") {
-      return e$22;
-    }
-    let e$32 = readString2(reader, "name");
-    if (e$32.TAG === "Ok") {
-      return {
-        TAG: "Ok",
-        _0: {
-          id: e2._0,
-          x: e$16._0,
-          y: e$22._0,
-          name: e$32._0
-        }
-      };
-    } else {
-      return e$32;
-    }
-  });
+  let e$9 = readRepeated(e$8._0, () => parse$12(reader));
   if (e$9.TAG !== "Ok") {
     return e$9;
   }
@@ -11245,40 +9988,7 @@ function parse65(payload) {
     return e$12;
   }
   let entityReader = new bufferreader_default(e$12._0);
-  let e$13 = readRepeated(e$10._0, () => {
-    let e2 = readByte2(entityReader, "entityType");
-    if (e2.TAG !== "Ok") {
-      return e2;
-    }
-    let entityType = e2._0;
-    let e$16 = readInt322(entityReader, "id");
-    if (e$16.TAG !== "Ok") {
-      return e$16;
-    }
-    let e$22 = readInt162(entityReader, "x");
-    if (e$22.TAG !== "Ok") {
-      return e$22;
-    }
-    let e$32 = readInt162(entityReader, "y");
-    if (e$32.TAG !== "Ok") {
-      return e$32;
-    }
-    let e$42 = parseEntityKind(entityType, entityReader);
-    if (e$42.TAG === "Ok") {
-      return {
-        TAG: "Ok",
-        _0: {
-          entityType,
-          id: e$16._0,
-          x: e$22._0,
-          y: e$32._0,
-          entityKind: e$42._0
-        }
-      };
-    } else {
-      return e$42;
-    }
-  });
+  let e$13 = readRepeated(e$10._0, () => parse$22(entityReader));
   if (e$13.TAG !== "Ok") {
     return e$13;
   }
@@ -11556,7 +10266,7 @@ function toBuffer64(self) {
   self.entities.forEach((entity) => {
     pack$22(innerWriter, entity);
   });
-  let innerBuffer = data2(innerWriter);
+  let innerBuffer = slicedData(innerWriter);
   if (innerBuffer.TAG === "Ok") {
     let deflatedPayload = Nodezlib.deflateRawSync(innerBuffer._0);
     return data(packBuffer(outerPacketWriter, deflatedPayload, "deflatedPayload"));
@@ -11570,9 +10280,18 @@ function toBuffer64(self) {
     }
   };
 }
-var Chest = {};
-var Sign = {};
-var Entity = {};
+var Chest = {
+  parse: parse65,
+  pack: pack3
+};
+var Sign = {
+  parse: parse$12,
+  pack: pack$12
+};
+var Entity = {
+  parse: parse$22,
+  pack: pack$22
+};
 
 // src/packetv1449/PacketV1449_TileSquareSend.js
 var PacketV1449_TileSquareSend_exports = {};
@@ -16516,7 +15235,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse65, (a) => ({
+          _0: makeParsers(packetName, parse$3, (a) => ({
             TAG: "TileSectionSend",
             _0: a
           }), (a) => ({
@@ -22399,7 +21118,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse65, (a) => ({
+          _0: makeParsers2(packetName, parse$3, (a) => ({
             TAG: "TileSectionSend",
             _0: a
           }), (a) => ({
@@ -25404,6 +24123,11 @@ function fromV1449(packet) {
           team: 0
         }
       };
+    case "TileSectionSend":
+      return {
+        TAG: "TileSectionSend",
+        _0: packet._0
+      };
     case "PlayerSpawn":
       let playerSpawn = packet._0;
       return {
@@ -25452,6 +24176,11 @@ function fromV1449(packet) {
           netCameraTarget: void 0,
           lastItemUseAttemptSuccess: false
         }
+      };
+    case "TileSquareSend":
+      return {
+        TAG: "TileSquareSend",
+        _0: packet._0
       };
     case "ItemOwner":
       let itemOwner = packet._0;
@@ -26051,8 +24780,10 @@ function convertFromV1449IfNeeded(buffer, fromServer) {
     case "PlayerInventorySlot":
     case "WorldInfo":
     case "InitialTileSectionsRequest":
+    case "TileSectionSend":
     case "PlayerSpawn":
     case "PlayerUpdate":
+    case "TileSquareSend":
     case "ItemOwner":
     case "NpcUpdate":
     case "Zones":

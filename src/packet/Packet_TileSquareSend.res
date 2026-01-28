@@ -1,43 +1,8 @@
-type frame = {
-  x: int,
-  y: int,
-}
-
-type activeTile = {
-  tileType: int,
-  slope: int,
-  frame: option<frame>,
-}
-
-type liquid = {
-  liquidValue: int,
-  liquidType: int,
-}
-
-type tile = {
-  wire: bool,
-  halfBrick: bool,
-  actuator: bool,
-  inActive: bool,
-  wire2: bool,
-  wire3: bool,
-  wire4: bool,
-  color: option<int>,
-  wallColor: option<int>,
-  activeTile: option<activeTile>,
-  wall: option<int>,
-  liquid: option<liquid>,
-  coatHeader: int,
-}
-
-type t = {
-  width: int,
-  height: int,
-  changeType: int,
-  tileX: int,
-  tileY: int,
-  tiles: array<array<tile>>,
-}
+type frame = PacketV1449_TileSquareSend.frame
+type activeTile = PacketV1449_TileSquareSend.activeTile
+type liquid = PacketV1449_TileSquareSend.liquid
+type tile = PacketV1449_TileSquareSend.tile
+type t = PacketV1449_TileSquareSend.t
 
 module Decode = {
   let {readInt16, readUInt16, readByte} = module(ErrorAwarePacketReader)
@@ -79,11 +44,11 @@ module Decode = {
       let? Ok(activeTile) = switch active {
       | true =>
         let? Ok(tileType) = reader->readUInt16("tileType")
-        let? Ok(frame) = switch TileFrameImportantV1449.isImportant(tileType) {
+        let? Ok(frame) = switch TileFrameImportant.isImportant(tileType) {
         | true =>
           let? Ok(frameX) = reader->readInt16("frameX")
           let? Ok(frameY) = reader->readInt16("frameY")
-          Ok(Some({x: frameX, y: frameY}))
+          Ok(Some(({x: frameX, y: frameY}: frame)))
         | false => Ok(None)
         }
         let slope =
@@ -91,11 +56,15 @@ module Decode = {
           (flags2->BitFlags.flag5 ? 1 : 0) +
           (flags2->BitFlags.flag6 ? 2 : 0) + (flags2->BitFlags.flag7 ? 4 : 0)
         Ok(
-          Some({
-            tileType,
-            slope,
-            frame,
-          }),
+          Some(
+            (
+              {
+                tileType,
+                slope,
+                frame,
+              }: activeTile
+            ),
+          ),
         )
       | false => Ok(None)
       }
@@ -109,26 +78,30 @@ module Decode = {
       | true =>
         let? Ok(liquidValue) = reader->readByte("liquidValue")
         let? Ok(liquidType) = reader->readByte("liquidType")
-        Ok(Some({liquidValue, liquidType}))
+        Ok(Some(({liquidValue, liquidType}: liquid)))
       | false => Ok(None)
       }
       let wire4 = flags2->BitFlags.flag8
 
-      Ok({
-        wire,
-        halfBrick,
-        actuator,
-        inActive,
-        wire2,
-        wire3,
-        wire4,
-        color,
-        wallColor,
-        activeTile,
-        wall,
-        liquid,
-        coatHeader: flags3,
-      })
+      Ok(
+        (
+          {
+            wire,
+            halfBrick,
+            actuator,
+            inActive,
+            wire2,
+            wire3,
+            wire4,
+            color,
+            wallColor,
+            activeTile,
+            wall,
+            liquid,
+            coatHeader: flags3,
+          }: tile
+        ),
+      )
     }
 
     let tiles: array<array<tile>> = []
@@ -157,14 +130,18 @@ module Decode = {
 
     switch parseResult.contents {
     | Ok(_) =>
-      Ok({
-        width,
-        height,
-        changeType,
-        tileX,
-        tileY,
-        tiles,
-      })
+      Ok(
+        (
+          {
+            width,
+            height,
+            changeType,
+            tileX,
+            tileY,
+            tiles,
+          }: t
+        ),
+      )
     | Error(err) => Error(err)
     }
   }
@@ -210,7 +187,7 @@ module Encode = {
     switch tile.activeTile {
     | Some(at) => {
         writer->packUInt16(at.tileType, "tileType")->ignore
-        switch TileFrameImportantV1449.isImportant(at.tileType) {
+        switch TileFrameImportant.isImportant(at.tileType) {
         | true =>
           writer
           ->packInt16(at.frame->Option.mapOr(0, frame => frame.x), "frameX")
