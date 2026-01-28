@@ -3013,9 +3013,11 @@ function toBuffer18(self) {
   return data(packInt16(packByte(packByte(packInt16(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt("ItemDropUpdate")), self.itemDropId, "itemDropId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.stack, "stack"), self.prefix, "prefix"), self.noDelay, "noDelay"), self.itemId, "itemId"));
 }
 
-// src/packetv1449/PacketV1449_ItemOwner.js
-var PacketV1449_ItemOwner_exports = {};
-__export(PacketV1449_ItemOwner_exports, {
+// src/packet/Packet_ItemOwner.js
+var Packet_ItemOwner_exports = {};
+__export(Packet_ItemOwner_exports, {
+  Decode: () => Decode,
+  Encode: () => Encode,
   parse: () => parse19,
   toBuffer: () => toBuffer19
 });
@@ -3026,21 +3028,47 @@ function parse19(payload) {
     return e;
   }
   let e$1 = readByte(reader, "owner");
-  if (e$1.TAG === "Ok") {
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readSingle(reader, "positionX");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readSingle(reader, "positionY");
+  if (e$3.TAG === "Ok") {
     return {
       TAG: "Ok",
       _0: {
         itemDropId: e._0,
-        owner: e$1._0
+        owner: e$1._0,
+        position: {
+          x: e$2._0,
+          y: e$3._0
+        }
       }
     };
   } else {
-    return e$1;
+    return e$3;
   }
 }
+var Decode = {
+  readInt16,
+  readByte,
+  readSingle,
+  parse: parse19
+};
 function toBuffer19(self) {
-  return data(packByte(packInt16(setType(make(), toInt("ItemOwner")), self.itemDropId, "itemDropId"), self.owner, "owner"));
+  return data(packSingle(packSingle(packByte(packInt16(setType(make(), toInt("ItemOwner")), self.itemDropId, "itemDropId"), self.owner, "owner"), self.position.x, "positionX"), self.position.y, "positionY"));
 }
+var Encode = {
+  packInt16,
+  packByte,
+  packSingle,
+  setType,
+  data,
+  toBuffer: toBuffer19
+};
 
 // src/packetv1449/PacketV1449_ItemOwnerRemove.js
 var PacketV1449_ItemOwnerRemove_exports = {};
@@ -3322,11 +3350,17 @@ function toBuffer21(self) {
   return data(packUInt16(packByte(packByte(setType(make(), toInt("LoadoutSwitch")), self.playerId, "playerId"), self.loadout, "loadout"), hideVisibleAccessory, "hideVisibleAccessory"));
 }
 
-// src/packetv1449/PacketV1449_NetModuleLoad.js
-var PacketV1449_NetModuleLoad_exports = {};
-__export(PacketV1449_NetModuleLoad_exports, {
+// src/packet/Packet_NetModuleLoad.js
+var Packet_NetModuleLoad_exports = {};
+__export(Packet_NetModuleLoad_exports, {
+  Buffer: () => Buffer2,
+  Decode: () => Decode2,
+  Encode: () => Encode2,
   NetModuleType: () => NetModuleType,
+  maxNpcIndexSentinel: () => maxNpcIndexSentinel,
   parse: () => parse23,
+  powerLevelToInt: () => powerLevelToInt,
+  pylonActionToInt: () => pylonActionToInt,
   toBuffer: () => toBuffer22
 });
 
@@ -3708,7 +3742,7 @@ var PerPlayerTogglePower = {
   parse: parse$1
 };
 
-// src/packetv1449/PacketV1449_NetModuleLoad.js
+// src/packet/Packet_NetModuleLoad.js
 function pylonActionToInt(pylonAction) {
   switch (pylonAction) {
     case "Added":
@@ -3742,17 +3776,25 @@ function fromInt6(n) {
     case 4:
       return "Bestiary";
     case 5:
-      return "CreativeUnlocks";
-    case 6:
       return "CreativePower";
-    case 7:
+    case 6:
       return "CreativeUnlocksPlayerReport";
-    case 8:
+    case 7:
       return "TeleportPylon";
-    case 9:
+    case 8:
       return "Particles";
-    case 10:
+    case 9:
       return "CreativePowerPermissions";
+    case 10:
+      return "Banners";
+    case 11:
+      return "CraftingRequests";
+    case 12:
+      return "TagEffectState";
+    case 13:
+      return "LeashedEntity";
+    case 14:
+      return "UnbreakableWallScan";
     default:
       return;
   }
@@ -3769,77 +3811,1265 @@ function toInt6(self) {
       return 3;
     case "Bestiary":
       return 4;
-    case "CreativeUnlocks":
-      return 5;
     case "CreativePower":
-      return 6;
+      return 5;
     case "CreativeUnlocksPlayerReport":
-      return 7;
+      return 6;
     case "TeleportPylon":
-      return 8;
+      return 7;
     case "Particles":
-      return 9;
+      return 8;
     case "CreativePowerPermissions":
+      return 9;
+    case "Banners":
       return 10;
+    case "CraftingRequests":
+      return 11;
+    case "TagEffectState":
+      return 12;
+    case "LeashedEntity":
+      return 13;
+    case "UnbreakableWallScan":
+      return 14;
   }
 }
 var NetModuleType = {
   fromInt: fromInt6,
   toInt: toInt6
 };
+function pack7BitEncodedInt(writer, value, context) {
+  let writer$1 = writer;
+  let remaining = value;
+  let $$continue = true;
+  while ($$continue) {
+    let byte = remaining & 127;
+    remaining = remaining >>> 7;
+    if (remaining !== 0) {
+      byte = byte | 128;
+    }
+    writer$1 = packByte(writer$1, byte, context);
+    if (remaining === 0) {
+      $$continue = false;
+    }
+  }
+  ;
+  return writer$1;
+}
+function liquidToBuffer(liquid) {
+  let writer = packUInt16(packUInt16(setType(make(), toInt("NetModuleLoad")), 0, "moduleType"), liquid.changes.length, "changesCount");
+  liquid.changes.forEach((change) => {
+    packByte(packByte(packInt16(packInt16(writer, change.y, "y"), change.x, "x"), change.amount, "amount"), change.liquidType, "liquidType");
+  });
+  return data(writer);
+}
+function clientTextToBuffer(commandId, message) {
+  return data(packString(packString(packUInt16(setType(make(), toInt("NetModuleLoad")), 1, "moduleType"), commandId, "commandId"), message, "message"));
+}
+function serverTextToBuffer(playerId, networkText, color) {
+  return data(packColor(packNetworkText(packByte(packUInt16(setType(make(), toInt("NetModuleLoad")), 1, "moduleType"), playerId, "playerId"), networkText, "networkText"), color, "color"));
+}
+function pingToBuffer(ping) {
+  return data(packSingle(packSingle(packUInt16(setType(make(), toInt("NetModuleLoad")), 2, "moduleType"), ping.x, "x"), ping.y, "y"));
+}
+function ambienceToBuffer(ambience) {
+  return data(packByte(packInt32(packByte(packUInt16(setType(make(), toInt("NetModuleLoad")), 3, "moduleType"), ambience.playerId, "playerId"), ambience.seed, "seed"), ambience.skyEntityType, "skyEntityType"));
+}
+function bestiaryToBuffer(bestiary) {
+  let writer = packUInt16(setType(make(), toInt("NetModuleLoad")), 4, "moduleType");
+  let _count = bestiary.unlockType;
+  let tmp;
+  tmp = typeof _count !== "object" ? _count === "Sight" ? packByte(writer, 1, "unlockTypeByte") : packByte(writer, 2, "unlockTypeByte") : packByte(writer, 0, "unlockTypeByte");
+  packInt16(tmp, bestiary.npcId, "npcId");
+  let count = bestiary.unlockType;
+  let tmp$1;
+  tmp$1 = typeof count !== "object" ? writer : pack7BitEncodedInt(writer, count._0, "killCount");
+  return data(tmp$1);
+}
+function creativePowerToBuffer(creativePower) {
+  return data(pack$2(packUInt16(setType(make(), toInt("NetModuleLoad")), 5, "moduleType"), creativePower));
+}
+function creativeUnlocksPlayerReportToBuffer(unlockReport) {
+  return data(packUInt16(packUInt16(packByte(packUInt16(setType(make(), toInt("NetModuleLoad")), 6, "moduleType"), unlockReport.userId, "userId"), unlockReport.itemId, "itemId"), unlockReport.researchedCount, "researchedCount"));
+}
+function teleportPylonToBuffer(teleportPylon) {
+  return data(packByte(packInt16(packInt16(packByte(packUInt16(setType(make(), toInt("NetModuleLoad")), 7, "moduleType"), pylonActionToInt(teleportPylon.pylonAction), "pylonAction"), teleportPylon.x, "x"), teleportPylon.y, "y"), teleportPylon.pylonType, "pylonType"));
+}
+function particlesToBuffer(particle) {
+  return data(packByte(packInt32(packSingle(packSingle(packSingle(packSingle(packByte(packUInt16(setType(make(), toInt("NetModuleLoad")), 8, "moduleType"), particle.particleType, "particleType"), particle.x, "x"), particle.y, "y"), particle.vx, "vx"), particle.vy, "vy"), particle.shaderIndex, "shaderIndex"), particle.invokedByPlayer, "invokedByPlayer"));
+}
+function creativePowerPermissionsToBuffer(creativePowerPermission) {
+  return data(packByte(packUInt16(packByte(packUInt16(setType(make(), toInt("NetModuleLoad")), 9, "moduleType"), 0, "messageType"), creativePowerPermission.powerType, "powerType"), powerLevelToInt(creativePowerPermission.powerLevel), "powerLevel"));
+}
+function bannersToBuffer(message) {
+  let writer = packUInt16(setType(make(), toInt("NetModuleLoad")), 10, "moduleType");
+  switch (message.TAG) {
+    case "BannerFullState":
+      let state = message._0;
+      let writer$1 = packInt16(packByte(writer, 0, "messageType"), state.killCounts.length, "killCountLength");
+      state.killCounts.forEach((count) => {
+        packInt32(writer$1, count, "killCount");
+      });
+      let writer$2 = packInt16(writer$1, state.claimableCounts.length, "claimableCountLength");
+      state.claimableCounts.forEach((count) => {
+        packUInt16(writer$2, count, "claimableCount");
+      });
+      return data(writer$2);
+    case "BannerKillCountUpdate":
+      let match = message._0;
+      return data(packInt32(packInt16(packByte(writer, 1, "messageType"), match.bannerId, "bannerId"), match.killCount, "killCount"));
+    case "BannerClaimCountUpdate":
+      let match$1 = message._0;
+      return data(packUInt16(packInt16(packByte(writer, 2, "messageType"), match$1.bannerId, "bannerId"), match$1.claimCount, "claimCount"));
+    case "BannerClaimRequest":
+      let match$2 = message._0;
+      return data(packUInt16(packInt16(packByte(writer, 3, "messageType"), match$2.bannerId, "bannerId"), match$2.amount, "amount"));
+    case "BannerClaimResponse":
+      let match$3 = message._0;
+      return data(packBool(packUInt16(packInt16(packByte(writer, 4, "messageType"), match$3.bannerId, "bannerId"), match$3.amount, "amount"), match$3.granted, "granted"));
+  }
+}
+function craftingRequestsToBuffer(message) {
+  let writer = packUInt16(setType(make(), toInt("NetModuleLoad")), 11, "moduleType");
+  if (message.TAG !== "CraftingRequest") {
+    return data(packBool(writer, message._0.approved, "approved"));
+  }
+  let request = message._0;
+  let writer$1 = pack7BitEncodedInt(writer, request.items.length, "itemsCount");
+  request.items.forEach((item) => {
+    pack7BitEncodedInt(packInt32(writer$1, item.itemIdOrRecipeGroup, "itemIdOrRecipeGroup"), item.stack, "stack");
+  });
+  let writer$2 = pack7BitEncodedInt(writer$1, request.chestIndexes.length, "chestCount");
+  request.chestIndexes.forEach((chestIndex) => {
+    pack7BitEncodedInt(writer$2, chestIndex, "chestIndex");
+  });
+  return data(writer$2);
+}
+function packSparseNpcTimes(writer, entries) {
+  let writer$1 = {
+    contents: writer
+  };
+  entries.forEach((entry) => {
+    writer$1.contents = packInt32(packByte(writer$1.contents, entry.npcIndex, "npcIndex"), entry.time, "npcTime");
+  });
+  return packByte(writer$1.contents, 200, "npcIndexSentinel");
+}
+function tagEffectStateToBuffer(message) {
+  let writer = packUInt16(setType(make(), toInt("NetModuleLoad")), 12, "moduleType");
+  switch (message.TAG) {
+    case "TagFullState":
+      let match = message._0;
+      let procTimeLeft = match.procTimeLeft;
+      let writer$1 = packSparseNpcTimes(packInt16(packByte(packByte(writer, match.ownerId, "ownerId"), 0, "messageType"), match.effectType, "effectType"), match.timeLeft);
+      if (procTimeLeft !== void 0) {
+        return data(packSparseNpcTimes(writer$1, procTimeLeft));
+      } else {
+        return data(writer$1);
+      }
+    case "TagChangeActiveEffect":
+      let match$1 = message._0;
+      return data(packInt16(packByte(packByte(writer, match$1.ownerId, "ownerId"), 1, "messageType"), match$1.effectType, "effectType"));
+    case "TagApplyTagToNpc":
+      let match$2 = message._0;
+      return data(packByte(packByte(packByte(writer, match$2.ownerId, "ownerId"), 2, "messageType"), match$2.npcIndex, "npcIndex"));
+    case "TagEnableProcOnNpc":
+      let match$3 = message._0;
+      return data(packByte(packByte(packByte(writer, match$3.ownerId, "ownerId"), 3, "messageType"), match$3.npcIndex, "npcIndex"));
+    case "TagClearProcOnNpc":
+      let match$4 = message._0;
+      return data(packByte(packByte(packByte(writer, match$4.ownerId, "ownerId"), 4, "messageType"), match$4.npcIndex, "npcIndex"));
+  }
+}
+function leashedEntityToBuffer(message) {
+  let writer = packUInt16(setType(make(), toInt("NetModuleLoad")), 13, "moduleType");
+  switch (message.TAG) {
+    case "LeashedRemove":
+      return data(pack7BitEncodedInt(packByte(writer, 0, "messageType"), message._0.slot, "slot"));
+    case "LeashedFullSync":
+      let match = message._0;
+      return data(packBuffer(packInt16(packInt16(pack7BitEncodedInt(pack7BitEncodedInt(packByte(writer, 1, "messageType"), match.slot, "slot"), match.entityType, "entityType"), match.anchorX, "anchorX"), match.anchorY, "anchorY"), match.payload, "payload"));
+    case "LeashedPartialSync":
+      let match$1 = message._0;
+      return data(packBuffer(pack7BitEncodedInt(pack7BitEncodedInt(packByte(writer, 2, "messageType"), match$1.slot, "slot"), match$1.entityType, "entityType"), match$1.payload, "payload"));
+  }
+}
+function unbreakableWallScanToBuffer(payload) {
+  return data(packBool(packByte(packUInt16(setType(make(), toInt("NetModuleLoad")), 14, "moduleType"), payload.playerId, "playerId"), payload.insideUnbreakableWalls, "insideUnbreakableWalls"));
+}
 function toBuffer22(self) {
   switch (self.TAG) {
     case "Liquid":
-      let liquid = self._0;
-      let writer = packUInt16(packUInt16(setType(make(), toInt("NetModuleLoad")), 0, "moduleType"), liquid.changes.length, "changesCount");
-      liquid.changes.forEach((change) => {
-        packByte(packByte(packInt16(packInt16(writer, change.y, "y"), change.x, "x"), change.amount, "amount"), change.liquidType, "liquidType");
-      });
-      return data(writer);
+      return liquidToBuffer(self._0);
     case "ClientText":
-      let commandId = self._0;
-      let message = self._1;
-      return data(packString(packString(packUInt16(setType(make(), toInt("NetModuleLoad")), 1, "moduleType"), commandId, "commandId"), message, "message"));
+      return clientTextToBuffer(self._0, self._1);
     case "ServerText":
-      let playerId = self._0;
-      let networkText = self._1;
-      let color = self._2;
-      return data(packColor(packNetworkText(packByte(packUInt16(setType(make(), toInt("NetModuleLoad")), 1, "moduleType"), playerId, "playerId"), networkText, "networkText"), color, "color"));
+      return serverTextToBuffer(self._0, self._1, self._2);
     case "Ping":
-      let ping = self._0;
-      return data(packSingle(packSingle(packUInt16(setType(make(), toInt("NetModuleLoad")), 2, "moduleType"), ping.x, "x"), ping.y, "y"));
+      return pingToBuffer(self._0);
     case "Ambience":
-      let ambience = self._0;
-      return data(packByte(packInt32(packByte(packUInt16(setType(make(), toInt("NetModuleLoad")), 3, "moduleType"), ambience.playerId, "playerId"), ambience.seed, "seed"), ambience.skyEntityType, "skyEntityType"));
+      return ambienceToBuffer(self._0);
     case "Bestiary":
-      let bestiary = self._0;
-      let writer$1 = packUInt16(setType(make(), toInt("NetModuleLoad")), 4, "moduleType");
-      let _count = bestiary.unlockType;
-      let tmp;
-      tmp = typeof _count !== "object" ? _count === "Sight" ? packByte(writer$1, 1, "unlockTypeByte") : packByte(writer$1, 2, "unlockTypeByte") : packByte(writer$1, 0, "unlockTypeByte");
-      packInt16(tmp, bestiary.npcId, "npcId");
-      let count = bestiary.unlockType;
-      let tmp$1;
-      tmp$1 = typeof count !== "object" ? writer$1 : packUInt16(writer$1, count._0, "killCount");
-      return data(tmp$1);
-    case "CreativeUnlocks":
-      let creativeUnlock = self._0;
-      return data(packUInt16(packInt16(packUInt16(setType(make(), toInt("NetModuleLoad")), 5, "moduleType"), creativeUnlock.itemId, "itemId"), creativeUnlock.researchedCount, "researchedCount"));
+      return bestiaryToBuffer(self._0);
     case "CreativePower":
-      let creativePower = self._0;
-      return data(pack$2(packUInt16(setType(make(), toInt("NetModuleLoad")), 6, "moduleType"), creativePower));
+      return creativePowerToBuffer(self._0);
     case "CreativeUnlocksPlayerReport":
-      let unlockReport = self._0;
-      return data(packUInt16(packUInt16(packUInt16(setType(make(), toInt("NetModuleLoad")), 7, "moduleType"), unlockReport.itemId, "itemId"), unlockReport.researchedCount, "researchedCount"));
+      return creativeUnlocksPlayerReportToBuffer(self._0);
     case "TeleportPylon":
-      let teleportPylon = self._0;
-      return data(packByte(packInt16(packInt16(packByte(packUInt16(setType(make(), toInt("NetModuleLoad")), 8, "moduleType"), pylonActionToInt(teleportPylon.pylonAction), "pylonAction"), teleportPylon.x, "x"), teleportPylon.y, "y"), teleportPylon.pylonType, "pylonType"));
+      return teleportPylonToBuffer(self._0);
     case "Particles":
-      let particle = self._0;
-      return data(packByte(packInt32(packSingle(packSingle(packSingle(packSingle(packByte(packUInt16(setType(make(), toInt("NetModuleLoad")), 9, "moduleType"), particle.particleType, "particleType"), particle.x, "x"), particle.y, "y"), particle.vx, "vx"), particle.vy, "vy"), particle.shaderIndex, "shaderIndex"), particle.invokedByPlayer, "invokedByPlayer"));
+      return particlesToBuffer(self._0);
     case "CreativePowerPermissions":
-      let creativePowerPermission = self._0;
-      return data(packByte(packByte(packUInt16(setType(make(), toInt("NetModuleLoad")), 10, "moduleType"), creativePowerPermission.powerType, "powerType"), powerLevelToInt(creativePowerPermission.powerLevel), "powerLevel"));
+      return creativePowerPermissionsToBuffer(self._0);
+    case "Banners":
+      return bannersToBuffer(self._0);
+    case "CraftingRequests":
+      return craftingRequestsToBuffer(self._0);
+    case "TagEffectState":
+      return tagEffectStateToBuffer(self._0);
+    case "LeashedEntity":
+      return leashedEntityToBuffer(self._0);
+    case "UnbreakableWallScan":
+      return unbreakableWallScanToBuffer(self._0);
+  }
+}
+var Encode2 = {
+  packInt32,
+  packInt16,
+  packNetworkText,
+  packColor,
+  packString,
+  packUInt16,
+  packByte,
+  packSingle,
+  packBool,
+  packBuffer,
+  setType,
+  data,
+  pack7BitEncodedInt,
+  liquidToBuffer,
+  clientTextToBuffer,
+  serverTextToBuffer,
+  pingToBuffer,
+  ambienceToBuffer,
+  bestiaryToBuffer,
+  creativePowerToBuffer,
+  creativeUnlocksPlayerReportToBuffer,
+  teleportPylonToBuffer,
+  particlesToBuffer,
+  creativePowerPermissionsToBuffer,
+  bannersToBuffer,
+  craftingRequestsToBuffer,
+  packSparseNpcTimes,
+  tagEffectStateToBuffer,
+  leashedEntityToBuffer,
+  unbreakableWallScanToBuffer,
+  toBuffer: toBuffer22
+};
+function parseLiquid(reader) {
+  let e = readUInt16(reader, "changesCount");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let changesCount = e._0;
+  let readChanges = (_idx, _acc) => {
+    while (true) {
+      let acc = _acc;
+      let idx = _idx;
+      if (idx >= changesCount) {
+        return {
+          TAG: "Ok",
+          _0: acc.toReversed()
+        };
+      }
+      let e2 = readInt16(reader, "y");
+      if (e2.TAG !== "Ok") {
+        return e2;
+      }
+      let e$12 = readInt16(reader, "x");
+      if (e$12.TAG !== "Ok") {
+        return e$12;
+      }
+      let e$2 = readByte(reader, "amount");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = readByte(reader, "liquidType");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      _acc = concatMany([
+        [{
+          x: e$12._0,
+          y: e2._0,
+          amount: e$2._0,
+          liquidType: e$3._0
+        }],
+        acc
+      ]);
+      _idx = idx + 1 | 0;
+      continue;
+    }
+    ;
+  };
+  let e$1 = readChanges(0, []);
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "Liquid",
+        _0: {
+          changes: e$1._0
+        }
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+function parseText(reader, fromServer) {
+  if (fromServer) {
+    let e = readByte(reader, "playerId");
+    if (e.TAG !== "Ok") {
+      return e;
+    }
+    let e$1 = readNetworkText(reader, "message");
+    if (e$1.TAG !== "Ok") {
+      return e$1;
+    }
+    let e$2 = readColor(reader, "color");
+    if (e$2.TAG === "Ok") {
+      return {
+        TAG: "Ok",
+        _0: {
+          TAG: "ServerText",
+          _0: e._0,
+          _1: e$1._0,
+          _2: e$2._0
+        }
+      };
+    } else {
+      return e$2;
+    }
+  }
+  let e$3 = readString(reader, "commandId");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readString(reader, "message");
+  if (e$4.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "ClientText",
+        _0: e$3._0,
+        _1: e$4._0
+      }
+    };
+  } else {
+    return e$4;
+  }
+}
+function parsePing(reader) {
+  let e = readSingle(reader, "x");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readSingle(reader, "y");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "Ping",
+        _0: {
+          x: e._0,
+          y: e$1._0
+        }
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+function parseAmbience(reader) {
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt32(reader, "seed");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readByte(reader, "skyEntityType");
+  if (e$2.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "Ambience",
+        _0: {
+          playerId: e._0,
+          seed: e$1._0,
+          skyEntityType: e$2._0
+        }
+      }
+    };
+  } else {
+    return e$2;
+  }
+}
+function parseBestiary(reader) {
+  let e = readByte(reader, "rawBestiaryUnlockType");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "npcId");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2;
+  switch (e._0) {
+    case 0:
+      let e$3 = read7BitEncodedInt(reader, "killCount");
+      e$2 = e$3.TAG === "Ok" ? {
+        TAG: "Ok",
+        _0: {
+          TAG: "Kill",
+          _0: e$3._0
+        }
+      } : e$3;
+      break;
+    case 1:
+      e$2 = {
+        TAG: "Ok",
+        _0: "Sight"
+      };
+      break;
+    case 2:
+      e$2 = {
+        TAG: "Ok",
+        _0: "Chat"
+      };
+      break;
+    default:
+      e$2 = {
+        TAG: "Error",
+        _0: {
+          context: "Packet_NetModuleLoad.parseBestiary",
+          error: new Error("Unknown bestiary unlock type")
+        }
+      };
+  }
+  if (e$2.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "Bestiary",
+        _0: {
+          unlockType: e$2._0,
+          npcId: e$1._0
+        }
+      }
+    };
+  } else {
+    return e$2;
+  }
+}
+function parseCreativePower(reader) {
+  let p = parse$2(reader);
+  if (p !== void 0) {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "CreativePower",
+        _0: p
+      }
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: {
+        context: "Packet_NetModuleLoad.parseCreativePower",
+        error: new Error("Failed to parse creative power")
+      }
+    };
+  }
+}
+function parseCreativeUnlocksPlayerReport(reader) {
+  let e = readByte(reader, "userId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readUInt16(reader, "itemId");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readUInt16(reader, "researchedCount");
+  if (e$2.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "CreativeUnlocksPlayerReport",
+        _0: {
+          userId: e._0,
+          itemId: e$1._0,
+          researchedCount: e$2._0
+        }
+      }
+    };
+  } else {
+    return e$2;
+  }
+}
+function parseTeleportPylon(reader) {
+  let e = readByte(reader, "rawPylonAction");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "x");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readInt16(reader, "y");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readByte(reader, "pylonType");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let pylonAction;
+  switch (e._0) {
+    case 0:
+      pylonAction = "Added";
+      break;
+    case 1:
+      pylonAction = "Removed";
+      break;
+    case 2:
+      pylonAction = "RequestTeleport";
+      break;
+    default:
+      pylonAction = void 0;
+  }
+  if (pylonAction !== void 0) {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "TeleportPylon",
+        _0: {
+          pylonAction,
+          x: e$1._0,
+          y: e$2._0,
+          pylonType: e$3._0
+        }
+      }
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: {
+        context: "Packet_NetModuleLoad.parseTeleportPylon",
+        error: new Error("Unknown pylon action")
+      }
+    };
+  }
+}
+function parseParticle(reader) {
+  let e = readByte(reader, "particleType");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readSingle(reader, "x");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readSingle(reader, "y");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readSingle(reader, "vx");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readSingle(reader, "vy");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = readInt32(reader, "shaderIndex");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = readByte(reader, "invokedByPlayer");
+  if (e$6.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "Particles",
+        _0: {
+          particleType: e._0,
+          x: e$1._0,
+          y: e$2._0,
+          vx: e$3._0,
+          vy: e$4._0,
+          shaderIndex: e$5._0,
+          invokedByPlayer: e$6._0
+        }
+      }
+    };
+  } else {
+    return e$6;
+  }
+}
+function parseCreativePowerPermission(reader) {
+  let e = readByte(reader, "messageType");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readUInt16(reader, "powerType");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readByte(reader, "rawPowerLevel");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let powerLevel;
+  switch (e$2._0) {
+    case 0:
+      powerLevel = "LockedForEveryone";
+      break;
+    case 1:
+      powerLevel = "CanBeChangedByHostAlone";
+      break;
+    case 2:
+      powerLevel = "CanBeChangedByEveryone";
+      break;
+    default:
+      powerLevel = void 0;
+  }
+  if (powerLevel !== void 0) {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "CreativePowerPermissions",
+        _0: {
+          powerType: e$1._0,
+          powerLevel
+        }
+      }
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: {
+        context: "Packet_NetModuleLoad.parseCreativePowerPermission",
+        error: new Error("Unknown creative power permission level")
+      }
+    };
+  }
+}
+function parseBanners(reader) {
+  let e = readByte(reader, "messageType");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  switch (e._0) {
+    case 0:
+      let e$1 = readInt16(reader, "killCountLength");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let killCountLength = e$1._0;
+      let readKillCounts = (_idx, _acc) => {
+        while (true) {
+          let acc = _acc;
+          let idx = _idx;
+          if (idx >= killCountLength) {
+            return {
+              TAG: "Ok",
+              _0: acc.toReversed()
+            };
+          }
+          let e2 = readInt32(reader, "killCount");
+          if (e2.TAG !== "Ok") {
+            return e2;
+          }
+          _acc = concatMany([
+            [e2._0],
+            acc
+          ]);
+          _idx = idx + 1 | 0;
+          continue;
+        }
+        ;
+      };
+      let e$2 = readKillCounts(0, []);
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = readInt16(reader, "claimableCountLength");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let claimableCountLength = e$3._0;
+      let readClaimableCounts = (_idx, _acc) => {
+        while (true) {
+          let acc = _acc;
+          let idx = _idx;
+          if (idx >= claimableCountLength) {
+            return {
+              TAG: "Ok",
+              _0: acc.toReversed()
+            };
+          }
+          let e2 = readUInt16(reader, "claimableCount");
+          if (e2.TAG !== "Ok") {
+            return e2;
+          }
+          _acc = concatMany([
+            [e2._0],
+            acc
+          ]);
+          _idx = idx + 1 | 0;
+          continue;
+        }
+        ;
+      };
+      let e$4 = readClaimableCounts(0, []);
+      if (e$4.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "Banners",
+            _0: {
+              TAG: "BannerFullState",
+              _0: {
+                killCounts: e$2._0,
+                claimableCounts: e$4._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$4;
+      }
+    case 1:
+      let e$5 = readInt16(reader, "bannerId");
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let e$6 = readInt32(reader, "killCount");
+      if (e$6.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "Banners",
+            _0: {
+              TAG: "BannerKillCountUpdate",
+              _0: {
+                bannerId: e$5._0,
+                killCount: e$6._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$6;
+      }
+    case 2:
+      let e$7 = readInt16(reader, "bannerId");
+      if (e$7.TAG !== "Ok") {
+        return e$7;
+      }
+      let e$8 = readUInt16(reader, "claimCount");
+      if (e$8.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "Banners",
+            _0: {
+              TAG: "BannerClaimCountUpdate",
+              _0: {
+                bannerId: e$7._0,
+                claimCount: e$8._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$8;
+      }
+    case 3:
+      let e$9 = readInt16(reader, "bannerId");
+      if (e$9.TAG !== "Ok") {
+        return e$9;
+      }
+      let e$10 = readUInt16(reader, "amount");
+      if (e$10.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "Banners",
+            _0: {
+              TAG: "BannerClaimRequest",
+              _0: {
+                bannerId: e$9._0,
+                amount: e$10._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$10;
+      }
+    case 4:
+      let e$11 = readInt16(reader, "bannerId");
+      if (e$11.TAG !== "Ok") {
+        return e$11;
+      }
+      let e$12 = readUInt16(reader, "amount");
+      if (e$12.TAG !== "Ok") {
+        return e$12;
+      }
+      let e$13 = readBool(reader, "granted");
+      if (e$13.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "Banners",
+            _0: {
+              TAG: "BannerClaimResponse",
+              _0: {
+                bannerId: e$11._0,
+                amount: e$12._0,
+                granted: e$13._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$13;
+      }
+    default:
+      return {
+        TAG: "Error",
+        _0: {
+          context: "Packet_NetModuleLoad.parseBanners",
+          error: new Error("Unknown banner message type")
+        }
+      };
+  }
+}
+function parseCraftingRequests(reader, fromServer) {
+  if (fromServer) {
+    let e = readBool(reader, "approved");
+    if (e.TAG === "Ok") {
+      return {
+        TAG: "Ok",
+        _0: {
+          TAG: "CraftingRequests",
+          _0: {
+            TAG: "CraftingResponse",
+            _0: {
+              approved: e._0
+            }
+          }
+        }
+      };
+    } else {
+      return e;
+    }
+  }
+  let e$1 = read7BitEncodedInt(reader, "itemsCount");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let itemsCount = e$1._0;
+  let readItems = (_idx, _acc) => {
+    while (true) {
+      let acc = _acc;
+      let idx = _idx;
+      if (idx >= itemsCount) {
+        return {
+          TAG: "Ok",
+          _0: acc.toReversed()
+        };
+      }
+      let e = readInt32(reader, "itemIdOrRecipeGroup");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      let e$12 = read7BitEncodedInt(reader, "stack");
+      if (e$12.TAG !== "Ok") {
+        return e$12;
+      }
+      _acc = concatMany([
+        [{
+          itemIdOrRecipeGroup: e._0,
+          stack: e$12._0
+        }],
+        acc
+      ]);
+      _idx = idx + 1 | 0;
+      continue;
+    }
+    ;
+  };
+  let e$2 = readItems(0, []);
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = read7BitEncodedInt(reader, "chestCount");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let chestCount = e$3._0;
+  let readChests = (_idx, _acc) => {
+    while (true) {
+      let acc = _acc;
+      let idx = _idx;
+      if (idx >= chestCount) {
+        return {
+          TAG: "Ok",
+          _0: acc.toReversed()
+        };
+      }
+      let e = read7BitEncodedInt(reader, "chestIndex");
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      _acc = concatMany([
+        [e._0],
+        acc
+      ]);
+      _idx = idx + 1 | 0;
+      continue;
+    }
+    ;
+  };
+  let e$4 = readChests(0, []);
+  if (e$4.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "CraftingRequests",
+        _0: {
+          TAG: "CraftingRequest",
+          _0: {
+            items: e$2._0,
+            chestIndexes: e$4._0
+          }
+        }
+      }
+    };
+  } else {
+    return e$4;
+  }
+}
+function readSparseNpcTimes(reader) {
+  let _acc = [];
+  while (true) {
+    let acc = _acc;
+    let e = readByte(reader, "npcIndex");
+    if (e.TAG !== "Ok") {
+      return e;
+    }
+    let npcIndex = e._0;
+    if (npcIndex >= 200) {
+      return {
+        TAG: "Ok",
+        _0: acc.toReversed()
+      };
+    }
+    let e$1 = readInt32(reader, "npcTime");
+    if (e$1.TAG !== "Ok") {
+      return e$1;
+    }
+    _acc = concatMany([
+      [{
+        npcIndex,
+        time: e$1._0
+      }],
+      acc
+    ]);
+    continue;
+  }
+  ;
+}
+function parseTagEffectState(reader) {
+  let e = readByte(reader, "ownerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let ownerId = e._0;
+  let e$1 = readByte(reader, "messageType");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  switch (e$1._0) {
+    case 0:
+      let e$2 = readInt16(reader, "effectType");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let effectType = e$2._0;
+      let e$3 = readSparseNpcTimes(reader);
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let timeLeft = e$3._0;
+      let e$4 = getBytesLeft(reader);
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      if (e$4._0 <= 0) {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "TagEffectState",
+            _0: {
+              TAG: "TagFullState",
+              _0: {
+                ownerId,
+                effectType,
+                timeLeft,
+                procTimeLeft: void 0
+              }
+            }
+          }
+        };
+      }
+      let e$5 = readSparseNpcTimes(reader);
+      if (e$5.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "TagEffectState",
+            _0: {
+              TAG: "TagFullState",
+              _0: {
+                ownerId,
+                effectType,
+                timeLeft,
+                procTimeLeft: e$5._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$5;
+      }
+    case 1:
+      let e$6 = readInt16(reader, "effectType");
+      if (e$6.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "TagEffectState",
+            _0: {
+              TAG: "TagChangeActiveEffect",
+              _0: {
+                ownerId,
+                effectType: e$6._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$6;
+      }
+    case 2:
+      let e$7 = readByte(reader, "npcIndex");
+      if (e$7.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "TagEffectState",
+            _0: {
+              TAG: "TagApplyTagToNpc",
+              _0: {
+                ownerId,
+                npcIndex: e$7._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$7;
+      }
+    case 3:
+      let e$8 = readByte(reader, "npcIndex");
+      if (e$8.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "TagEffectState",
+            _0: {
+              TAG: "TagEnableProcOnNpc",
+              _0: {
+                ownerId,
+                npcIndex: e$8._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$8;
+      }
+    case 4:
+      let e$9 = readByte(reader, "npcIndex");
+      if (e$9.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "TagEffectState",
+            _0: {
+              TAG: "TagClearProcOnNpc",
+              _0: {
+                ownerId,
+                npcIndex: e$9._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$9;
+      }
+    default:
+      return {
+        TAG: "Error",
+        _0: {
+          context: "Packet_NetModuleLoad.parseTagEffectState",
+          error: new Error("Unknown tag effect state message type")
+        }
+      };
+  }
+}
+function parseLeashedEntity(reader) {
+  let e = readByte(reader, "messageType");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  switch (e._0) {
+    case 0:
+      let e$1 = read7BitEncodedInt(reader, "slot");
+      if (e$1.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "LeashedEntity",
+            _0: {
+              TAG: "LeashedRemove",
+              _0: {
+                slot: e$1._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$1;
+      }
+    case 1:
+      let e$2 = read7BitEncodedInt(reader, "slot");
+      if (e$2.TAG !== "Ok") {
+        return e$2;
+      }
+      let e$3 = read7BitEncodedInt(reader, "entityType");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = readInt16(reader, "anchorX");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = readInt16(reader, "anchorY");
+      if (e$5.TAG !== "Ok") {
+        return e$5;
+      }
+      let e$6 = getBytesLeft(reader);
+      if (e$6.TAG !== "Ok") {
+        return e$6;
+      }
+      let e$7 = readBuffer(reader, e$6._0, "payload");
+      if (e$7.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "LeashedEntity",
+            _0: {
+              TAG: "LeashedFullSync",
+              _0: {
+                slot: e$2._0,
+                entityType: e$3._0,
+                anchorX: e$4._0,
+                anchorY: e$5._0,
+                payload: e$7._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$7;
+      }
+    case 2:
+      let e$8 = read7BitEncodedInt(reader, "slot");
+      if (e$8.TAG !== "Ok") {
+        return e$8;
+      }
+      let e$9 = read7BitEncodedInt(reader, "entityType");
+      if (e$9.TAG !== "Ok") {
+        return e$9;
+      }
+      let e$10 = getBytesLeft(reader);
+      if (e$10.TAG !== "Ok") {
+        return e$10;
+      }
+      let e$11 = readBuffer(reader, e$10._0, "payload");
+      if (e$11.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "LeashedEntity",
+            _0: {
+              TAG: "LeashedPartialSync",
+              _0: {
+                slot: e$8._0,
+                entityType: e$9._0,
+                payload: e$11._0
+              }
+            }
+          }
+        };
+      } else {
+        return e$11;
+      }
+    default:
+      return {
+        TAG: "Error",
+        _0: {
+          context: "Packet_NetModuleLoad.parseLeashedEntity",
+          error: new Error("Unknown leashed entity message type")
+        }
+      };
+  }
+}
+function parseUnbreakableWallScan(reader) {
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readBool(reader, "insideUnbreakableWalls");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "UnbreakableWallScan",
+        _0: {
+          playerId: e._0,
+          insideUnbreakableWalls: e$1._0
+        }
+      }
+    };
+  } else {
+    return e$1;
   }
 }
 function parse23(payload, fromServer) {
@@ -3860,418 +5090,70 @@ function parse23(payload, fromServer) {
   }
   switch (match) {
     case "Liquid":
-      let e$1 = readUInt16(reader, "changesCount");
-      if (e$1.TAG !== "Ok") {
-        return e$1;
-      }
-      let changesCount = e$1._0;
-      let readChanges = (_idx, _acc) => {
-        while (true) {
-          let acc = _acc;
-          let idx = _idx;
-          if (idx >= changesCount) {
-            return {
-              TAG: "Ok",
-              _0: acc.toReversed()
-            };
-          }
-          let e2 = readInt16(reader, "y");
-          if (e2.TAG !== "Ok") {
-            return e2;
-          }
-          let e$16 = readInt16(reader, "x");
-          if (e$16.TAG !== "Ok") {
-            return e$16;
-          }
-          let e$210 = readByte(reader, "amount");
-          if (e$210.TAG !== "Ok") {
-            return e$210;
-          }
-          let e$3 = readByte(reader, "liquidType");
-          if (e$3.TAG !== "Ok") {
-            return e$3;
-          }
-          _acc = concatMany([
-            [{
-              x: e$16._0,
-              y: e2._0,
-              amount: e$210._0,
-              liquidType: e$3._0
-            }],
-            acc
-          ]);
-          _idx = idx + 1 | 0;
-          continue;
-        }
-        ;
-      };
-      let e$2 = readChanges(0, []);
-      if (e$2.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "Liquid",
-            _0: {
-              changes: e$2._0
-            }
-          }
-        };
-      } else {
-        return e$2;
-      }
+      return parseLiquid(reader);
     case "Text":
-      if (fromServer) {
-        let e$3 = readByte(reader, "playerId");
-        if (e$3.TAG !== "Ok") {
-          return e$3;
-        }
-        let e$4 = readNetworkText(reader, "message");
-        if (e$4.TAG !== "Ok") {
-          return e$4;
-        }
-        let e$5 = readColor(reader, "color");
-        if (e$5.TAG === "Ok") {
-          return {
-            TAG: "Ok",
-            _0: {
-              TAG: "ServerText",
-              _0: e$3._0,
-              _1: e$4._0,
-              _2: e$5._0
-            }
-          };
-        } else {
-          return e$5;
-        }
-      }
-      let e$6 = readString(reader, "commandId");
-      if (e$6.TAG !== "Ok") {
-        return e$6;
-      }
-      let e$7 = readString(reader, "message");
-      if (e$7.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "ClientText",
-            _0: e$6._0,
-            _1: e$7._0
-          }
-        };
-      } else {
-        return e$7;
-      }
+      return parseText(reader, fromServer);
     case "Ping":
-      let e$8 = readSingle(reader, "x");
-      if (e$8.TAG !== "Ok") {
-        return e$8;
-      }
-      let e$9 = readSingle(reader, "y");
-      if (e$9.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "Ping",
-            _0: {
-              x: e$8._0,
-              y: e$9._0
-            }
-          }
-        };
-      } else {
-        return e$9;
-      }
+      return parsePing(reader);
     case "Ambience":
-      let e$10 = readByte(reader, "playerId");
-      if (e$10.TAG !== "Ok") {
-        return e$10;
-      }
-      let e$11 = readInt32(reader, "seed");
-      if (e$11.TAG !== "Ok") {
-        return e$11;
-      }
-      let e$12 = readByte(reader, "skyEntityType");
-      if (e$12.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "Ambience",
-            _0: {
-              playerId: e$10._0,
-              seed: e$11._0,
-              skyEntityType: e$12._0
-            }
-          }
-        };
-      } else {
-        return e$12;
-      }
+      return parseAmbience(reader);
     case "Bestiary":
-      let e$13 = readByte(reader, "rawBestiaryUnlockType");
-      if (e$13.TAG !== "Ok") {
-        return e$13;
-      }
-      let e$14 = readInt16(reader, "npcId");
-      if (e$14.TAG !== "Ok") {
-        return e$14;
-      }
-      let e$15;
-      switch (e$13._0) {
-        case 0:
-          let e$16 = readUInt16(reader, "killCount");
-          e$15 = e$16.TAG === "Ok" ? {
-            TAG: "Ok",
-            _0: {
-              TAG: "Kill",
-              _0: e$16._0
-            }
-          } : e$16;
-          break;
-        case 1:
-          e$15 = {
-            TAG: "Ok",
-            _0: "Sight"
-          };
-          break;
-        case 2:
-          e$15 = {
-            TAG: "Ok",
-            _0: "Chat"
-          };
-          break;
-        default:
-          e$15 = {
-            TAG: "Error",
-            _0: {
-              context: "Packet_NetModuleLoad.parseBestiary",
-              error: new Error("Unknown bestiary unlock type")
-            }
-          };
-      }
-      if (e$15.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "Bestiary",
-            _0: {
-              unlockType: e$15._0,
-              npcId: e$14._0
-            }
-          }
-        };
-      } else {
-        return e$15;
-      }
-    case "CreativeUnlocks":
-      let e$17 = readInt16(reader, "itemId");
-      if (e$17.TAG !== "Ok") {
-        return e$17;
-      }
-      let e$18 = readUInt16(reader, "researchedCount");
-      if (e$18.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "CreativeUnlocks",
-            _0: {
-              itemId: e$17._0,
-              researchedCount: e$18._0
-            }
-          }
-        };
-      } else {
-        return e$18;
-      }
+      return parseBestiary(reader);
     case "CreativePower":
-      let p = parse$2(reader);
-      if (p !== void 0) {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "CreativePower",
-            _0: p
-          }
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: {
-            context: "Packet_NetModuleLoad.parseCreativePower",
-            error: new Error("Failed to parse creative power")
-          }
-        };
-      }
+      return parseCreativePower(reader);
     case "CreativeUnlocksPlayerReport":
-      let e$19 = readByte(reader, "unknownByte");
-      if (e$19.TAG !== "Ok") {
-        return e$19;
-      }
-      let e$20 = readUInt16(reader, "itemId");
-      if (e$20.TAG !== "Ok") {
-        return e$20;
-      }
-      let e$21 = readUInt16(reader, "researchedCount");
-      if (e$21.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "CreativeUnlocksPlayerReport",
-            _0: {
-              itemId: e$20._0,
-              researchedCount: e$21._0
-            }
-          }
-        };
-      } else {
-        return e$21;
-      }
+      return parseCreativeUnlocksPlayerReport(reader);
     case "TeleportPylon":
-      let e$22 = readByte(reader, "rawPylonAction");
-      if (e$22.TAG !== "Ok") {
-        return e$22;
-      }
-      let e$23 = readInt16(reader, "x");
-      if (e$23.TAG !== "Ok") {
-        return e$23;
-      }
-      let e$24 = readInt16(reader, "y");
-      if (e$24.TAG !== "Ok") {
-        return e$24;
-      }
-      let e$25 = readByte(reader, "pylonType");
-      if (e$25.TAG !== "Ok") {
-        return e$25;
-      }
-      let pylonAction;
-      switch (e$22._0) {
-        case 0:
-          pylonAction = "Added";
-          break;
-        case 1:
-          pylonAction = "Removed";
-          break;
-        case 2:
-          pylonAction = "RequestTeleport";
-          break;
-        default:
-          pylonAction = void 0;
-      }
-      if (pylonAction !== void 0) {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "TeleportPylon",
-            _0: {
-              pylonAction,
-              x: e$23._0,
-              y: e$24._0,
-              pylonType: e$25._0
-            }
-          }
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: {
-            context: "Packet_NetModuleLoad.parseTeleportPylon",
-            error: new Error("Unknown pylon action")
-          }
-        };
-      }
+      return parseTeleportPylon(reader);
     case "Particles":
-      let e$26 = readByte(reader, "particleType");
-      if (e$26.TAG !== "Ok") {
-        return e$26;
-      }
-      let e$27 = readSingle(reader, "x");
-      if (e$27.TAG !== "Ok") {
-        return e$27;
-      }
-      let e$28 = readSingle(reader, "y");
-      if (e$28.TAG !== "Ok") {
-        return e$28;
-      }
-      let e$29 = readSingle(reader, "vx");
-      if (e$29.TAG !== "Ok") {
-        return e$29;
-      }
-      let e$30 = readSingle(reader, "vy");
-      if (e$30.TAG !== "Ok") {
-        return e$30;
-      }
-      let e$31 = readInt32(reader, "shaderIndex");
-      if (e$31.TAG !== "Ok") {
-        return e$31;
-      }
-      let e$32 = readByte(reader, "invokedByPlayer");
-      if (e$32.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "Particles",
-            _0: {
-              particleType: e$26._0,
-              x: e$27._0,
-              y: e$28._0,
-              vx: e$29._0,
-              vy: e$30._0,
-              shaderIndex: e$31._0,
-              invokedByPlayer: e$32._0
-            }
-          }
-        };
-      } else {
-        return e$32;
-      }
+      return parseParticle(reader);
     case "CreativePowerPermissions":
-      let e$33 = readByte(reader, "unknownByte");
-      if (e$33.TAG !== "Ok") {
-        return e$33;
-      }
-      let e$34 = readUInt16(reader, "powerType");
-      if (e$34.TAG !== "Ok") {
-        return e$34;
-      }
-      let e$35 = readByte(reader, "rawPowerLevel");
-      if (e$35.TAG !== "Ok") {
-        return e$35;
-      }
-      let powerLevel;
-      switch (e$35._0) {
-        case 0:
-          powerLevel = "LockedForEveryone";
-          break;
-        case 1:
-          powerLevel = "CanBeChangedByHostAlone";
-          break;
-        case 2:
-          powerLevel = "CanBeChangedByEveryone";
-          break;
-        default:
-          powerLevel = void 0;
-      }
-      if (powerLevel !== void 0) {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "CreativePowerPermissions",
-            _0: {
-              powerType: e$34._0,
-              powerLevel
-            }
-          }
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: {
-            context: "Packet_NetModuleLoad.parseCreativePowerPermission",
-            error: new Error("Unknown creative power permission level")
-          }
-        };
-      }
+      return parseCreativePowerPermission(reader);
+    case "Banners":
+      return parseBanners(reader);
+    case "CraftingRequests":
+      return parseCraftingRequests(reader, fromServer);
+    case "TagEffectState":
+      return parseTagEffectState(reader);
+    case "LeashedEntity":
+      return parseLeashedEntity(reader);
+    case "UnbreakableWallScan":
+      return parseUnbreakableWallScan(reader);
   }
 }
+var Decode2 = {
+  readInt32,
+  readSingle,
+  readUInt16,
+  readInt16,
+  readString,
+  readByte,
+  readBool,
+  readColor,
+  readNetworkText,
+  readBuffer,
+  getBytesLeft,
+  read7BitEncodedInt,
+  parseLiquid,
+  parseText,
+  parsePing,
+  parseAmbience,
+  parseBestiary,
+  parseCreativePower,
+  parseCreativeUnlocksPlayerReport,
+  parseTeleportPylon,
+  parseParticle,
+  parseCreativePowerPermission,
+  parseBanners,
+  parseCraftingRequests,
+  readSparseNpcTimes,
+  parseTagEffectState,
+  parseLeashedEntity,
+  parseUnbreakableWallScan,
+  parse: parse23
+};
+var Buffer2;
+var maxNpcIndexSentinel = 200;
 
 // src/packetv1449/PacketV1449_NpcBuffRemovalRequest.js
 var PacketV1449_NpcBuffRemovalRequest_exports = {};
@@ -4302,9 +5184,11 @@ function toBuffer23(self) {
   return data(packUInt16(packInt16(setType(make(), toInt("NpcBuffRemovalRequest")), self.npcId, "npcId"), self.buffType, "buffType"));
 }
 
-// src/packetv1449/PacketV1449_NpcBuffUpdate.js
-var PacketV1449_NpcBuffUpdate_exports = {};
-__export(PacketV1449_NpcBuffUpdate_exports, {
+// src/packet/Packet_NpcBuffUpdate.js
+var Packet_NpcBuffUpdate_exports = {};
+__export(Packet_NpcBuffUpdate_exports, {
+  Decode: () => Decode3,
+  Encode: () => Encode3,
   parse: () => parse25,
   toBuffer: () => toBuffer24
 });
@@ -4316,31 +5200,30 @@ function parse25(payload) {
   }
   let buffs = [];
   let buffTimes = [];
-  let readBuffs = (_idx) => {
+  let readBuffs = () => {
     while (true) {
-      let idx = _idx;
-      if (idx >= 20) {
+      let e2 = readUInt16(reader, "buff");
+      if (e2.TAG !== "Ok") {
+        return e2;
+      }
+      let buff = e2._0;
+      if (buff === 0) {
         return {
           TAG: "Ok",
           _0: void 0
         };
       }
-      let e2 = readUInt16(reader, `buff` + (idx + 1 | 0).toString());
-      if (e2.TAG !== "Ok") {
-        return e2;
-      }
-      let e$12 = readInt16(reader, `buffTime` + (idx + 1 | 0).toString());
+      let e$12 = readUInt16(reader, "buffTime");
       if (e$12.TAG !== "Ok") {
         return e$12;
       }
-      buffs.push(e2._0);
+      buffs.push(buff);
       buffTimes.push(e$12._0);
-      _idx = idx + 1 | 0;
       continue;
     }
     ;
   };
-  let e$1 = readBuffs(0);
+  let e$1 = readBuffs();
   if (e$1.TAG === "Ok") {
     return {
       TAG: "Ok",
@@ -4354,49 +5237,40 @@ function parse25(payload) {
     return e$1;
   }
 }
-function packBuffs(writer, buffs) {
-  let _writer = writer;
-  let _idx = 0;
-  while (true) {
-    let idx = _idx;
-    let writer$1 = _writer;
-    if (idx >= buffs.length) {
-      return writer$1;
-    }
-    _idx = idx + 1 | 0;
-    _writer = packUInt16(writer$1, buffs[idx], `buff` + (idx + 1 | 0).toString());
-    continue;
+var Decode3 = {
+  readUInt16,
+  readInt16,
+  parse: parse25
+};
+function packBuffs(writer, buffs, buffTimes) {
+  let len = min(buffs.length, buffTimes.length);
+  for (let i = 0; i < len; ++i) {
+    packUInt16(writer, buffs[i], `buff` + i.toString());
+    packUInt16(writer, buffTimes[i], `buffTime` + i.toString());
   }
-  ;
-}
-function packBuffTimes(writer, buffTimes) {
-  let _writer = writer;
-  let _idx = 0;
-  while (true) {
-    let idx = _idx;
-    let writer$1 = _writer;
-    if (idx >= buffTimes.length) {
-      return writer$1;
-    }
-    _idx = idx + 1 | 0;
-    _writer = packInt16(writer$1, buffTimes[idx], `buffTime` + (idx + 1 | 0).toString());
-    continue;
-  }
-  ;
+  return packUInt16(writer, 0, "buff_terminator");
 }
 function toBuffer24(self) {
-  if (self.buffs.length !== 20 || self.buffTimes.length !== 20) {
+  if (self.buffs.length !== self.buffTimes.length) {
     return {
       TAG: "Error",
       _0: {
         context: "Packet_NpcBuffUpdate.toBuffer",
-        error: new Error("Expected 20 buffs and 20 buffTimes")
+        error: new Error("Expected buffs and buffTimes to be same length")
       }
     };
   } else {
-    return data(packBuffTimes(packBuffs(packInt16(setType(make(), toInt("NpcBuffUpdate")), self.npcId, "npcId"), self.buffs), self.buffTimes));
+    return data(packBuffs(packInt16(setType(make(), toInt("NpcBuffUpdate")), self.npcId, "npcId"), self.buffs, self.buffTimes));
   }
 }
+var Encode3 = {
+  packInt16,
+  packUInt16,
+  setType,
+  data,
+  packBuffs,
+  toBuffer: toBuffer24
+};
 
 // src/packetv1449/PacketV1449_NpcCatch.js
 var PacketV1449_NpcCatch_exports = {};
@@ -4877,9 +5751,11 @@ function toBuffer36(self) {
   return data(packInt32(packUInt16(packByte(setType(make(), toInt("PlayerBuffAdd")), self.playerId, "playerId"), self.buff, "buff"), self.time, "time"));
 }
 
-// src/packetv1449/PacketV1449_PlayerBuffsSet.js
-var PacketV1449_PlayerBuffsSet_exports = {};
-__export(PacketV1449_PlayerBuffsSet_exports, {
+// src/packet/Packet_PlayerBuffsSet.js
+var Packet_PlayerBuffsSet_exports = {};
+__export(Packet_PlayerBuffsSet_exports, {
+  Decode: () => Decode4,
+  Encode: () => Encode4,
   parse: () => parse38,
   toBuffer: () => toBuffer37
 });
@@ -4889,28 +5765,27 @@ function parse38(payload) {
   if (e.TAG !== "Ok") {
     return e;
   }
-  let buffs = make2(44, 0);
-  let buffsParseResult = {
-    TAG: "Ok",
-    _0: void 0
-  };
-  for (let i = 0; i <= 43; ++i) {
-    let match = buffsParseResult;
-    if (match.TAG === "Ok") {
-      let label = "buff_" + i.toString();
-      let buff = readUInt16(reader, label);
-      if (buff.TAG === "Ok") {
-        buffs[i] = buff._0;
-      } else {
-        buffsParseResult = {
-          TAG: "Error",
-          _0: buff._0
+  let buffs = [];
+  let readBuffs = () => {
+    while (true) {
+      let e2 = readUInt16(reader, "buff");
+      if (e2.TAG !== "Ok") {
+        return e2;
+      }
+      let buff = e2._0;
+      if (buff === 0) {
+        return {
+          TAG: "Ok",
+          _0: void 0
         };
       }
+      buffs.push(buff);
+      continue;
     }
-  }
-  let err = buffsParseResult;
-  if (err.TAG === "Ok") {
+    ;
+  };
+  let e$1 = readBuffs();
+  if (e$1.TAG === "Ok") {
     return {
       TAG: "Ok",
       _0: {
@@ -4919,31 +5794,31 @@ function parse38(payload) {
       }
     };
   } else {
-    return {
-      TAG: "Error",
-      _0: err._0
-    };
+    return e$1;
   }
 }
+var Decode4 = {
+  readUInt16,
+  readByte,
+  parse: parse38
+};
 function packBuffs2(writer, buffs) {
   buffs.forEach((buff, idx) => {
     packUInt16(writer, buff, `buff_` + idx.toString());
   });
-  return writer;
+  return packUInt16(writer, 0, "buff_terminator");
 }
 function toBuffer37(self) {
-  if (self.buffs.length !== 44) {
-    return {
-      TAG: "Error",
-      _0: {
-        context: "PlayerBuffsSet.toBuffer",
-        error: new Error(`Expected 44 buffs, got ` + self.buffs.length.toString())
-      }
-    };
-  } else {
-    return data(packBuffs2(packByte(setType(make(), toInt("PlayerBuffsSet")), self.playerId, "playerId"), self.buffs));
-  }
+  return data(packBuffs2(packByte(setType(make(), toInt("PlayerBuffsSet")), self.playerId, "playerId"), self.buffs));
 }
+var Encode4 = {
+  packByte,
+  packUInt16,
+  setType,
+  data,
+  packBuffs: packBuffs2,
+  toBuffer: toBuffer37
+};
 
 // src/packetv1449/PacketV1449_PlayerChestIndexSync.js
 var PacketV1449_PlayerChestIndexSync_exports = {};
@@ -5500,9 +6375,11 @@ function toBuffer44(self) {
   return data(packByte(packByte(setType(make(), toInt("PvpToggle")), self.playerId, "playerId"), self.pvpEnabled ? 1 : 0, "pvpEnabled"));
 }
 
-// src/packetv1449/PacketV1449_ShimmerEffectOrCoinLuck.js
-var PacketV1449_ShimmerEffectOrCoinLuck_exports = {};
-__export(PacketV1449_ShimmerEffectOrCoinLuck_exports, {
+// src/packet/Packet_ShimmerEffectOrCoinLuck.js
+var Packet_ShimmerEffectOrCoinLuck_exports = {};
+__export(Packet_ShimmerEffectOrCoinLuck_exports, {
+  Decode: () => Decode5,
+  Encode: () => Encode5,
   parse: () => parse46,
   toBuffer: () => toBuffer45
 });
@@ -5512,66 +6389,9 @@ function parse46(payload) {
   if (e.TAG !== "Ok") {
     return e;
   }
-  switch (e._0) {
-    case 0:
-      let e$1 = readSingle(reader, "shimmerX");
-      if (e$1.TAG !== "Ok") {
-        return e$1;
-      }
-      let e$2 = readSingle(reader, "shimmerY");
-      if (e$2.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "ShimmerEffect",
-            _0: e$1._0,
-            _1: e$2._0
-          }
-        };
-      } else {
-        return e$2;
-      }
-    case 1:
-      let e$3 = readSingle(reader, "coinLuckX");
-      if (e$3.TAG !== "Ok") {
-        return e$3;
-      }
-      let e$4 = readSingle(reader, "coinLuckY");
-      if (e$4.TAG !== "Ok") {
-        return e$4;
-      }
-      let e$5 = readInt32(reader, "coinLuckAmount");
-      if (e$5.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "CoinLuck",
-            _0: {
-              position: {
-                x: e$3._0,
-                y: e$4._0
-              },
-              amount: e$5._0
-            }
-          }
-        };
-      } else {
-        return e$5;
-      }
-    case 2:
-      let e$6 = readInt32(reader, "newShimmerEffectId");
-      if (e$6.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "NewShimmerEffect",
-            _0: e$6._0
-          }
-        };
-      } else {
-        return e$6;
-      }
-    default:
+  let kind = e._0;
+  if (kind !== 0) {
+    if (kind !== 1) {
       return {
         TAG: "Error",
         _0: {
@@ -5579,26 +6399,79 @@ function parse46(payload) {
           error: new Error("Unknown shimmer effect kind")
         }
       };
+    }
+    let e$1 = readSingle(reader, "coinLuckX");
+    if (e$1.TAG !== "Ok") {
+      return e$1;
+    }
+    let e$2 = readSingle(reader, "coinLuckY");
+    if (e$2.TAG !== "Ok") {
+      return e$2;
+    }
+    let e$3 = readInt32(reader, "coinLuckAmount");
+    if (e$3.TAG === "Ok") {
+      return {
+        TAG: "Ok",
+        _0: {
+          TAG: "CoinLuck",
+          _0: {
+            position: {
+              x: e$1._0,
+              y: e$2._0
+            },
+            amount: e$3._0
+          }
+        }
+      };
+    } else {
+      return e$3;
+    }
+  }
+  let e$4 = readSingle(reader, "shimmerX");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = readSingle(reader, "shimmerY");
+  if (e$5.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "ShimmerEffect",
+        _0: e$4._0,
+        _1: e$5._0
+      }
+    };
+  } else {
+    return e$5;
   }
 }
+var Decode5 = {
+  readByte,
+  readInt32,
+  readSingle,
+  parse: parse46
+};
 function toBuffer45(self) {
   let writer = setType(make(), toInt("ShimmerEffectOrCoinLuck"));
   let tmp;
-  switch (self.TAG) {
-    case "ShimmerEffect":
-      tmp = packSingle(packSingle(packByte(writer, 0, "kind"), self._0, "shimmerX"), self._1, "shimmerY");
-      break;
-    case "CoinLuck":
-      let match = self._0;
-      let position = match.position;
-      tmp = packInt32(packSingle(packSingle(packByte(writer, 1, "kind"), position.x, "coinLuckX"), position.y, "coinLuckY"), match.amount, "coinLuckAmount");
-      break;
-    case "NewShimmerEffect":
-      tmp = packInt32(packByte(writer, 2, "kind"), self._0, "newShimmerEffectId");
-      break;
+  if (self.TAG === "ShimmerEffect") {
+    tmp = packSingle(packSingle(packByte(writer, 0, "kind"), self._0, "shimmerX"), self._1, "shimmerY");
+  } else {
+    let match = self._0;
+    let position = match.position;
+    tmp = packInt32(packSingle(packSingle(packByte(writer, 1, "kind"), position.x, "coinLuckX"), position.y, "coinLuckY"), match.amount, "coinLuckAmount");
   }
   return data(tmp);
 }
+var Encode5 = {
+  Writer: void 0,
+  packByte,
+  packInt32,
+  packSingle,
+  setType,
+  data,
+  toBuffer: toBuffer45
+};
 
 // src/packetv1449/PacketV1449_SignNew.js
 var PacketV1449_SignNew_exports = {};
@@ -5793,9 +6666,11 @@ function toBuffer51(self) {
   return data(packInt16(packInt16(setType(make(), toInt("SwitchHit")), self.x, "x"), self.y, "y"));
 }
 
-// src/packetv1449/PacketV1449_Teleport.js
-var PacketV1449_Teleport_exports = {};
-__export(PacketV1449_Teleport_exports, {
+// src/packet/Packet_Teleport.js
+var Packet_Teleport_exports = {};
+__export(Packet_Teleport_exports, {
+  Decode: () => Decode6,
+  Encode: () => Encode6,
   parse: () => parse53,
   toBuffer: () => toBuffer52
 });
@@ -5865,7 +6740,7 @@ function all4(param) {
   }
 }
 
-// src/packetv1449/PacketV1449_Teleport.js
+// src/packet/Packet_Teleport.js
 function parse53(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "flags");
@@ -5876,7 +6751,7 @@ function parse53(payload) {
   let getPositionFromTarget = flag3(flags);
   let match = flag1(flags);
   let match$1 = flag2(flags);
-  let teleportType = match ? match$1 ? void 0 : "Npc" : match$1 ? "PlayerToPlayer" : "Player";
+  let teleportType = match ? match$1 ? "TeleportAck" : "Npc" : match$1 ? "PlayerToPlayer" : "Player";
   let e$1 = readInt16(reader, "targetId");
   if (e$1.TAG !== "Ok") {
     return e$1;
@@ -5898,45 +6773,55 @@ function parse53(payload) {
     _0: void 0
   };
   if (e$5.TAG === "Ok") {
-    if (teleportType !== void 0) {
-      return {
-        TAG: "Ok",
-        _0: {
-          teleportType,
-          getPositionFromTarget,
-          targetId: e$1._0,
-          x: e$2._0,
-          y: e$3._0,
-          style: e$4._0,
-          extraInfo: e$5._0
-        }
-      };
-    } else {
-      return {
-        TAG: "Error",
-        _0: {
-          context: "Packet_Teleport.parse",
-          error: new Error("Invalid teleport type flags")
-        }
-      };
-    }
+    return {
+      TAG: "Ok",
+      _0: {
+        teleportType,
+        getPositionFromTarget,
+        targetId: e$1._0,
+        x: e$2._0,
+        y: e$3._0,
+        style: e$4._0,
+        extraInfo: e$5._0
+      }
+    };
   } else {
     return e$5;
   }
 }
+var Decode6 = {
+  readByte,
+  readInt16,
+  readSingle,
+  readInt32,
+  parse: parse53
+};
 function getFlags(self) {
-  return toByte(fromFlags(self.teleportType === "Npc", self.teleportType === "PlayerToPlayer", self.getPositionFromTarget, isSome(self.extraInfo), false, false, false, false));
+  return toByte(fromFlags(self.teleportType === "Npc" || self.teleportType === "TeleportAck", self.teleportType === "PlayerToPlayer" || self.teleportType === "TeleportAck", self.getPositionFromTarget, isSome(self.extraInfo), false, false, false, false));
 }
 function toBuffer52(self) {
   let writer = packByte(packSingle(packSingle(packInt16(packByte(setType(make(), toInt("Teleport")), getFlags(self), "flags"), self.targetId, "targetId"), self.x, "x"), self.y, "y"), self.style, "style");
   let extraInfo = self.extraInfo;
   return data(extraInfo !== void 0 ? packInt32(writer, extraInfo, "extraInfo") : writer);
 }
+var Encode6 = {
+  packByte,
+  packInt16,
+  packSingle,
+  packInt32,
+  setType,
+  data,
+  getFlags,
+  toBuffer: toBuffer52
+};
 
-// src/packetv1449/PacketV1449_TeleportationPotion.js
-var PacketV1449_TeleportationPotion_exports = {};
-__export(PacketV1449_TeleportationPotion_exports, {
+// src/packet/Packet_TeleportationPotion.js
+var Packet_TeleportationPotion_exports = {};
+__export(Packet_TeleportationPotion_exports, {
+  Decode: () => Decode7,
+  Encode: () => Encode7,
   parse: () => parse54,
+  teleportTypeToInt: () => teleportTypeToInt,
   toBuffer: () => toBuffer53
 });
 function teleportTypeToInt(teleportType) {
@@ -5949,6 +6834,8 @@ function teleportTypeToInt(teleportType) {
       return 2;
     case "ShellphoneSpawn":
       return 3;
+    case "PlayerNoSpaceTeleport":
+      return 4;
   }
 }
 function parse54(payload) {
@@ -5986,6 +6873,13 @@ function parse54(payload) {
           teleportType: "ShellphoneSpawn"
         }
       };
+    case 4:
+      return {
+        TAG: "Ok",
+        _0: {
+          teleportType: "PlayerNoSpaceTeleport"
+        }
+      };
     default:
       return {
         TAG: "Error",
@@ -5996,9 +6890,20 @@ function parse54(payload) {
       };
   }
 }
+var Decode7 = {
+  readByte,
+  parse: parse54
+};
 function toBuffer53(self) {
   return data(packByte(setType(make(), toInt("TeleportationPotion")), teleportTypeToInt(self.teleportType), "teleportType"));
 }
+var Encode7 = {
+  Writer: void 0,
+  packByte,
+  setType,
+  data,
+  toBuffer: toBuffer53
+};
 
 // src/packetv1449/PacketV1449_TemporaryAnimationCreate.js
 var PacketV1449_TemporaryAnimationCreate_exports = {};
@@ -6039,54 +6944,151 @@ function toBuffer54(self) {
   return data(packInt16(packInt16(packUInt16(packInt16(setType(make(), toInt("TemporaryAnimationCreate")), self.typeId, "typeId"), self.tileType, "tileType"), self.x, "x"), self.y, "y"));
 }
 
-// src/packetv1449/PacketV1449_TileEntityDisplayDollItemSync.js
-var PacketV1449_TileEntityDisplayDollItemSync_exports = {};
-__export(PacketV1449_TileEntityDisplayDollItemSync_exports, {
+// src/packet/Packet_TileEntityDisplayDollItemSync.js
+var Packet_TileEntityDisplayDollItemSync_exports = {};
+__export(Packet_TileEntityDisplayDollItemSync_exports, {
+  Decode: () => Decode8,
+  Encode: () => Encode8,
+  commandFromInt: () => commandFromInt,
+  commandToInt: () => commandToInt,
   parse: () => parse56,
   toBuffer: () => toBuffer55
 });
+function commandToInt(command) {
+  switch (command) {
+    case "Equip":
+      return 0;
+    case "Dye":
+      return 1;
+    case "Pose":
+      return 2;
+    case "Misc":
+      return 3;
+  }
+}
+function commandFromInt(value) {
+  switch (value) {
+    case 0:
+      return "Equip";
+    case 1:
+      return "Dye";
+    case 2:
+      return "Pose";
+    case 3:
+      return "Misc";
+    default:
+      return;
+  }
+}
 function parse56(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
   }
+  let playerId = e._0;
   let e$1 = readInt32(reader, "tileEntityId");
   if (e$1.TAG !== "Ok") {
     return e$1;
   }
+  let tileEntityId = e$1._0;
   let e$2 = readByte(reader, "itemIndex");
   if (e$2.TAG !== "Ok") {
     return e$2;
   }
-  let e$3 = readUInt16(reader, "itemId");
+  let itemIndex = e$2._0;
+  let e$3 = readByte(reader, "command");
   if (e$3.TAG !== "Ok") {
     return e$3;
   }
-  let e$4 = readUInt16(reader, "stack");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
+  let command = commandFromInt(e$3._0);
+  if (command === void 0) {
+    return {
+      TAG: "Error",
+      _0: {
+        context: "Packet_TileEntityDisplayDollItemSync.parse",
+        error: new Error("Unknown display doll command")
+      }
+    };
   }
-  let e$5 = readByte(reader, "prefix");
-  if (e$5.TAG === "Ok") {
+  if (command === "Pose") {
+    let e$4 = readByte(reader, "pose");
+    if (e$4.TAG === "Ok") {
+      return {
+        TAG: "Ok",
+        _0: {
+          playerId,
+          tileEntityId,
+          itemIndex,
+          command,
+          data: {
+            TAG: "PoseValue",
+            _0: e$4._0
+          }
+        }
+      };
+    } else {
+      return e$4;
+    }
+  }
+  let e$5 = readUInt16(reader, "itemId");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = readUInt16(reader, "stack");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let e$7 = readByte(reader, "prefix");
+  if (e$7.TAG === "Ok") {
     return {
       TAG: "Ok",
       _0: {
-        playerId: e._0,
-        tileEntityId: e$1._0,
-        itemIndex: e$2._0,
-        itemId: e$3._0,
-        stack: e$4._0,
-        prefix: e$5._0
+        playerId,
+        tileEntityId,
+        itemIndex,
+        command,
+        data: {
+          TAG: "Item",
+          _0: {
+            itemId: e$5._0,
+            stack: e$6._0,
+            prefix: e$7._0
+          }
+        }
       }
     };
   } else {
-    return e$5;
+    return e$7;
   }
 }
+var Decode8 = {
+  readByte,
+  readInt32,
+  readUInt16,
+  parse: parse56
+};
 function toBuffer55(self) {
-  return data(packByte(packUInt16(packUInt16(packByte(packInt32(packByte(setType(make(), toInt("TileEntityDisplayDollItemSync")), self.playerId, "playerId"), self.tileEntityId, "tileEntityId"), self.itemIndex, "itemIndex"), self.itemId, "itemId"), self.stack, "stack"), self.prefix, "prefix"));
+  let writer = packByte(packByte(packInt32(packByte(setType(make(), toInt("TileEntityDisplayDollItemSync")), self.playerId, "playerId"), self.tileEntityId, "tileEntityId"), self.itemIndex, "itemIndex"), commandToInt(self.command), "command");
+  let pose = self.data;
+  let tmp;
+  if (pose.TAG === "Item") {
+    let match = pose._0;
+    tmp = packByte(packUInt16(packUInt16(writer, match.itemId, "itemId"), match.stack, "stack"), match.prefix, "prefix");
+  } else {
+    tmp = packByte(writer, pose._0, "pose");
+  }
+  return data(tmp);
 }
+var Encode8 = {
+  Writer: void 0,
+  packByte,
+  packInt32,
+  packUInt16,
+  setType,
+  data,
+  toBuffer: toBuffer55
+};
 
 // src/packetv1449/PacketV1449_TileEntityHatRackItemSync.js
 var PacketV1449_TileEntityHatRackItemSync_exports = {};
@@ -6545,18 +7547,16 @@ function toBuffer63(self) {
   return data(packInt16(packInt16(packInt16(packInt16(setType(make(), toInt("TileSectionFrame")), self.startX, "startX"), self.startY, "startY"), self.endX, "endX"), self.endY, "endY"));
 }
 
-// src/packetv1449/PacketV1449_TileSectionSend.js
-var PacketV1449_TileSectionSend_exports = {};
-__export(PacketV1449_TileSectionSend_exports, {
-  Chest: () => Chest,
-  Entity: () => Entity,
-  Sign: () => Sign,
-  cacheToTile: () => cacheToTile,
-  defaultTileCache: () => defaultTileCache,
-  parse: () => parse$3,
+// src/packet/Packet_TileSectionSend.js
+var Packet_TileSectionSend_exports = {};
+__export(Packet_TileSectionSend_exports, {
+  Chest: () => Chest2,
+  Entity: () => Entity2,
+  Sign: () => Sign2,
+  parse: () => parse66,
   toBuffer: () => toBuffer64
 });
-import * as Nodezlib from "node:zlib";
+import * as Nodezlib2 from "node:zlib";
 
 // node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Primitive_object.js
 var for_in = function(o, foo) {
@@ -6639,6 +7639,3800 @@ function notequal(a, b) {
   } else {
     return !equal(a, b);
   }
+}
+
+// src/TileSolid.js
+var map3 = /* @__PURE__ */ new Map([
+  [
+    379,
+    true
+  ],
+  [
+    371,
+    true
+  ],
+  [
+    357,
+    true
+  ],
+  [
+    408,
+    true
+  ],
+  [
+    409,
+    true
+  ],
+  [
+    415,
+    true
+  ],
+  [
+    416,
+    true
+  ],
+  [
+    417,
+    true
+  ],
+  [
+    418,
+    true
+  ],
+  [
+    232,
+    true
+  ],
+  [
+    311,
+    true
+  ],
+  [
+    312,
+    true
+  ],
+  [
+    313,
+    true
+  ],
+  [
+    315,
+    true
+  ],
+  [
+    321,
+    true
+  ],
+  [
+    322,
+    true
+  ],
+  [
+    239,
+    true
+  ],
+  [
+    380,
+    true
+  ],
+  [
+    367,
+    true
+  ],
+  [
+    357,
+    true
+  ],
+  [
+    368,
+    true
+  ],
+  [
+    369,
+    true
+  ],
+  [
+    325,
+    true
+  ],
+  [
+    460,
+    true
+  ],
+  [
+    326,
+    true
+  ],
+  [
+    458,
+    true
+  ],
+  [
+    459,
+    true
+  ],
+  [
+    327,
+    true
+  ],
+  [
+    345,
+    true
+  ],
+  [
+    328,
+    true
+  ],
+  [
+    329,
+    true
+  ],
+  [
+    421,
+    true
+  ],
+  [
+    422,
+    true
+  ],
+  [
+    426,
+    true
+  ],
+  [
+    430,
+    true
+  ],
+  [
+    431,
+    true
+  ],
+  [
+    432,
+    true
+  ],
+  [
+    433,
+    true
+  ],
+  [
+    434,
+    true
+  ],
+  [
+    446,
+    true
+  ],
+  [
+    447,
+    true
+  ],
+  [
+    448,
+    true
+  ],
+  [
+    427,
+    true
+  ],
+  [
+    284,
+    true
+  ],
+  [
+    346,
+    true
+  ],
+  [
+    347,
+    true
+  ],
+  [
+    348,
+    true
+  ],
+  [
+    350,
+    true
+  ],
+  [
+    370,
+    true
+  ],
+  [
+    383,
+    true
+  ],
+  [
+    385,
+    true
+  ],
+  [
+    396,
+    true
+  ],
+  [
+    397,
+    true
+  ],
+  [
+    399,
+    true
+  ],
+  [
+    401,
+    true
+  ],
+  [
+    398,
+    true
+  ],
+  [
+    400,
+    true
+  ],
+  [
+    402,
+    true
+  ],
+  [
+    403,
+    true
+  ],
+  [
+    404,
+    true
+  ],
+  [
+    407,
+    true
+  ],
+  [
+    170,
+    true
+  ],
+  [
+    221,
+    true
+  ],
+  [
+    272,
+    true
+  ],
+  [
+    229,
+    true
+  ],
+  [
+    230,
+    true
+  ],
+  [
+    222,
+    true
+  ],
+  [
+    223,
+    true
+  ],
+  [
+    224,
+    true
+  ],
+  [
+    225,
+    true
+  ],
+  [
+    226,
+    true
+  ],
+  [
+    235,
+    true
+  ],
+  [
+    191,
+    true
+  ],
+  [
+    211,
+    true
+  ],
+  [
+    208,
+    true
+  ],
+  [
+    192,
+    true
+  ],
+  [
+    193,
+    true
+  ],
+  [
+    194,
+    true
+  ],
+  [
+    195,
+    true
+  ],
+  [
+    200,
+    true
+  ],
+  [
+    203,
+    true
+  ],
+  [
+    204,
+    true
+  ],
+  [
+    189,
+    true
+  ],
+  [
+    190,
+    true
+  ],
+  [
+    198,
+    true
+  ],
+  [
+    206,
+    true
+  ],
+  [
+    248,
+    true
+  ],
+  [
+    249,
+    true
+  ],
+  [
+    250,
+    true
+  ],
+  [
+    251,
+    true
+  ],
+  [
+    252,
+    true
+  ],
+  [
+    253,
+    true
+  ],
+  [
+    273,
+    true
+  ],
+  [
+    274,
+    true
+  ],
+  [
+    202,
+    true
+  ],
+  [
+    188,
+    true
+  ],
+  [
+    179,
+    true
+  ],
+  [
+    381,
+    true
+  ],
+  [
+    180,
+    true
+  ],
+  [
+    181,
+    true
+  ],
+  [
+    182,
+    true
+  ],
+  [
+    183,
+    true
+  ],
+  [
+    196,
+    true
+  ],
+  [
+    197,
+    true
+  ],
+  [
+    175,
+    true
+  ],
+  [
+    176,
+    true
+  ],
+  [
+    177,
+    true
+  ],
+  [
+    162,
+    true
+  ],
+  [
+    163,
+    true
+  ],
+  [
+    164,
+    true
+  ],
+  [
+    234,
+    true
+  ],
+  [
+    137,
+    true
+  ],
+  [
+    160,
+    true
+  ],
+  [
+    161,
+    true
+  ],
+  [
+    145,
+    true
+  ],
+  [
+    146,
+    true
+  ],
+  [
+    147,
+    true
+  ],
+  [
+    148,
+    true
+  ],
+  [
+    138,
+    true
+  ],
+  [
+    140,
+    true
+  ],
+  [
+    151,
+    true
+  ],
+  [
+    152,
+    true
+  ],
+  [
+    153,
+    true
+  ],
+  [
+    154,
+    true
+  ],
+  [
+    155,
+    true
+  ],
+  [
+    156,
+    true
+  ],
+  [
+    157,
+    true
+  ],
+  [
+    158,
+    true
+  ],
+  [
+    159,
+    true
+  ],
+  [
+    130,
+    true
+  ],
+  [
+    107,
+    true
+  ],
+  [
+    108,
+    true
+  ],
+  [
+    111,
+    true
+  ],
+  [
+    109,
+    true
+  ],
+  [
+    112,
+    true
+  ],
+  [
+    116,
+    true
+  ],
+  [
+    117,
+    true
+  ],
+  [
+    123,
+    true
+  ],
+  [
+    118,
+    true
+  ],
+  [
+    119,
+    true
+  ],
+  [
+    120,
+    true
+  ],
+  [
+    121,
+    true
+  ],
+  [
+    122,
+    true
+  ],
+  [
+    150,
+    true
+  ],
+  [
+    199,
+    true
+  ],
+  [
+    0,
+    true
+  ],
+  [
+    1,
+    true
+  ],
+  [
+    2,
+    true
+  ],
+  [
+    6,
+    true
+  ],
+  [
+    7,
+    true
+  ],
+  [
+    8,
+    true
+  ],
+  [
+    9,
+    true
+  ],
+  [
+    166,
+    true
+  ],
+  [
+    167,
+    true
+  ],
+  [
+    168,
+    true
+  ],
+  [
+    169,
+    true
+  ],
+  [
+    10,
+    true
+  ],
+  [
+    19,
+    true
+  ],
+  [
+    22,
+    true
+  ],
+  [
+    23,
+    true
+  ],
+  [
+    25,
+    true
+  ],
+  [
+    30,
+    true
+  ],
+  [
+    37,
+    true
+  ],
+  [
+    38,
+    true
+  ],
+  [
+    39,
+    true
+  ],
+  [
+    40,
+    true
+  ],
+  [
+    41,
+    true
+  ],
+  [
+    43,
+    true
+  ],
+  [
+    44,
+    true
+  ],
+  [
+    45,
+    true
+  ],
+  [
+    46,
+    true
+  ],
+  [
+    47,
+    true
+  ],
+  [
+    48,
+    true
+  ],
+  [
+    53,
+    true
+  ],
+  [
+    54,
+    true
+  ],
+  [
+    56,
+    true
+  ],
+  [
+    57,
+    true
+  ],
+  [
+    58,
+    true
+  ],
+  [
+    59,
+    true
+  ],
+  [
+    60,
+    true
+  ],
+  [
+    63,
+    true
+  ],
+  [
+    64,
+    true
+  ],
+  [
+    65,
+    true
+  ],
+  [
+    66,
+    true
+  ],
+  [
+    67,
+    true
+  ],
+  [
+    68,
+    true
+  ],
+  [
+    75,
+    true
+  ],
+  [
+    76,
+    true
+  ],
+  [
+    70,
+    true
+  ],
+  [
+    384,
+    true
+  ],
+  [
+    387,
+    true
+  ],
+  [
+    388,
+    true
+  ]
+]);
+function isSolid(tileType) {
+  return getOr(map3.get(tileType), false);
+}
+
+// src/TileFrameImportant.js
+var map4 = /* @__PURE__ */ new Map([
+  [
+    0,
+    false
+  ],
+  [
+    1,
+    false
+  ],
+  [
+    2,
+    false
+  ],
+  [
+    3,
+    true
+  ],
+  [
+    4,
+    true
+  ],
+  [
+    5,
+    true
+  ],
+  [
+    6,
+    false
+  ],
+  [
+    7,
+    false
+  ],
+  [
+    8,
+    false
+  ],
+  [
+    9,
+    false
+  ],
+  [
+    10,
+    true
+  ],
+  [
+    11,
+    true
+  ],
+  [
+    12,
+    true
+  ],
+  [
+    13,
+    true
+  ],
+  [
+    14,
+    true
+  ],
+  [
+    15,
+    true
+  ],
+  [
+    16,
+    true
+  ],
+  [
+    17,
+    true
+  ],
+  [
+    18,
+    true
+  ],
+  [
+    19,
+    true
+  ],
+  [
+    20,
+    true
+  ],
+  [
+    21,
+    true
+  ],
+  [
+    22,
+    false
+  ],
+  [
+    23,
+    false
+  ],
+  [
+    24,
+    true
+  ],
+  [
+    25,
+    false
+  ],
+  [
+    26,
+    true
+  ],
+  [
+    27,
+    true
+  ],
+  [
+    28,
+    true
+  ],
+  [
+    29,
+    true
+  ],
+  [
+    30,
+    false
+  ],
+  [
+    31,
+    true
+  ],
+  [
+    32,
+    false
+  ],
+  [
+    33,
+    true
+  ],
+  [
+    34,
+    true
+  ],
+  [
+    35,
+    true
+  ],
+  [
+    36,
+    true
+  ],
+  [
+    37,
+    false
+  ],
+  [
+    38,
+    false
+  ],
+  [
+    39,
+    false
+  ],
+  [
+    40,
+    false
+  ],
+  [
+    41,
+    false
+  ],
+  [
+    42,
+    true
+  ],
+  [
+    43,
+    false
+  ],
+  [
+    44,
+    false
+  ],
+  [
+    45,
+    false
+  ],
+  [
+    46,
+    false
+  ],
+  [
+    47,
+    false
+  ],
+  [
+    48,
+    false
+  ],
+  [
+    49,
+    true
+  ],
+  [
+    50,
+    true
+  ],
+  [
+    51,
+    false
+  ],
+  [
+    52,
+    false
+  ],
+  [
+    53,
+    false
+  ],
+  [
+    54,
+    false
+  ],
+  [
+    55,
+    true
+  ],
+  [
+    56,
+    false
+  ],
+  [
+    57,
+    false
+  ],
+  [
+    58,
+    false
+  ],
+  [
+    59,
+    false
+  ],
+  [
+    60,
+    false
+  ],
+  [
+    61,
+    true
+  ],
+  [
+    62,
+    false
+  ],
+  [
+    63,
+    false
+  ],
+  [
+    64,
+    false
+  ],
+  [
+    65,
+    false
+  ],
+  [
+    66,
+    false
+  ],
+  [
+    67,
+    false
+  ],
+  [
+    68,
+    false
+  ],
+  [
+    69,
+    false
+  ],
+  [
+    70,
+    false
+  ],
+  [
+    71,
+    true
+  ],
+  [
+    72,
+    true
+  ],
+  [
+    73,
+    true
+  ],
+  [
+    74,
+    true
+  ],
+  [
+    75,
+    false
+  ],
+  [
+    76,
+    false
+  ],
+  [
+    77,
+    true
+  ],
+  [
+    78,
+    true
+  ],
+  [
+    79,
+    true
+  ],
+  [
+    80,
+    false
+  ],
+  [
+    81,
+    true
+  ],
+  [
+    82,
+    true
+  ],
+  [
+    83,
+    true
+  ],
+  [
+    84,
+    true
+  ],
+  [
+    85,
+    true
+  ],
+  [
+    86,
+    true
+  ],
+  [
+    87,
+    true
+  ],
+  [
+    88,
+    true
+  ],
+  [
+    89,
+    true
+  ],
+  [
+    90,
+    true
+  ],
+  [
+    91,
+    true
+  ],
+  [
+    92,
+    true
+  ],
+  [
+    93,
+    true
+  ],
+  [
+    94,
+    true
+  ],
+  [
+    95,
+    true
+  ],
+  [
+    96,
+    true
+  ],
+  [
+    97,
+    true
+  ],
+  [
+    98,
+    true
+  ],
+  [
+    99,
+    true
+  ],
+  [
+    100,
+    true
+  ],
+  [
+    101,
+    true
+  ],
+  [
+    102,
+    true
+  ],
+  [
+    103,
+    true
+  ],
+  [
+    104,
+    true
+  ],
+  [
+    105,
+    true
+  ],
+  [
+    106,
+    true
+  ],
+  [
+    107,
+    false
+  ],
+  [
+    108,
+    false
+  ],
+  [
+    109,
+    false
+  ],
+  [
+    110,
+    true
+  ],
+  [
+    111,
+    false
+  ],
+  [
+    112,
+    false
+  ],
+  [
+    113,
+    true
+  ],
+  [
+    114,
+    true
+  ],
+  [
+    115,
+    false
+  ],
+  [
+    116,
+    false
+  ],
+  [
+    117,
+    false
+  ],
+  [
+    118,
+    false
+  ],
+  [
+    119,
+    false
+  ],
+  [
+    120,
+    false
+  ],
+  [
+    121,
+    false
+  ],
+  [
+    122,
+    false
+  ],
+  [
+    123,
+    false
+  ],
+  [
+    124,
+    false
+  ],
+  [
+    125,
+    true
+  ],
+  [
+    126,
+    true
+  ],
+  [
+    127,
+    false
+  ],
+  [
+    128,
+    true
+  ],
+  [
+    129,
+    true
+  ],
+  [
+    130,
+    false
+  ],
+  [
+    131,
+    false
+  ],
+  [
+    132,
+    true
+  ],
+  [
+    133,
+    true
+  ],
+  [
+    134,
+    true
+  ],
+  [
+    135,
+    true
+  ],
+  [
+    136,
+    true
+  ],
+  [
+    137,
+    true
+  ],
+  [
+    138,
+    true
+  ],
+  [
+    139,
+    true
+  ],
+  [
+    140,
+    false
+  ],
+  [
+    141,
+    true
+  ],
+  [
+    142,
+    true
+  ],
+  [
+    143,
+    true
+  ],
+  [
+    144,
+    true
+  ],
+  [
+    145,
+    false
+  ],
+  [
+    146,
+    false
+  ],
+  [
+    147,
+    false
+  ],
+  [
+    148,
+    false
+  ],
+  [
+    149,
+    true
+  ],
+  [
+    150,
+    false
+  ],
+  [
+    151,
+    false
+  ],
+  [
+    152,
+    false
+  ],
+  [
+    153,
+    false
+  ],
+  [
+    154,
+    false
+  ],
+  [
+    155,
+    false
+  ],
+  [
+    156,
+    false
+  ],
+  [
+    157,
+    false
+  ],
+  [
+    158,
+    false
+  ],
+  [
+    159,
+    false
+  ],
+  [
+    160,
+    false
+  ],
+  [
+    161,
+    false
+  ],
+  [
+    162,
+    false
+  ],
+  [
+    163,
+    false
+  ],
+  [
+    164,
+    false
+  ],
+  [
+    165,
+    true
+  ],
+  [
+    166,
+    false
+  ],
+  [
+    167,
+    false
+  ],
+  [
+    168,
+    false
+  ],
+  [
+    169,
+    false
+  ],
+  [
+    170,
+    false
+  ],
+  [
+    171,
+    true
+  ],
+  [
+    172,
+    true
+  ],
+  [
+    173,
+    true
+  ],
+  [
+    174,
+    true
+  ],
+  [
+    175,
+    false
+  ],
+  [
+    176,
+    false
+  ],
+  [
+    177,
+    false
+  ],
+  [
+    178,
+    true
+  ],
+  [
+    179,
+    false
+  ],
+  [
+    180,
+    false
+  ],
+  [
+    181,
+    false
+  ],
+  [
+    182,
+    false
+  ],
+  [
+    183,
+    false
+  ],
+  [
+    184,
+    true
+  ],
+  [
+    185,
+    true
+  ],
+  [
+    186,
+    true
+  ],
+  [
+    187,
+    true
+  ],
+  [
+    188,
+    false
+  ],
+  [
+    189,
+    false
+  ],
+  [
+    190,
+    false
+  ],
+  [
+    191,
+    false
+  ],
+  [
+    192,
+    false
+  ],
+  [
+    193,
+    false
+  ],
+  [
+    194,
+    false
+  ],
+  [
+    195,
+    false
+  ],
+  [
+    196,
+    false
+  ],
+  [
+    197,
+    false
+  ],
+  [
+    198,
+    false
+  ],
+  [
+    199,
+    false
+  ],
+  [
+    200,
+    false
+  ],
+  [
+    201,
+    true
+  ],
+  [
+    202,
+    false
+  ],
+  [
+    203,
+    false
+  ],
+  [
+    204,
+    false
+  ],
+  [
+    205,
+    false
+  ],
+  [
+    206,
+    false
+  ],
+  [
+    207,
+    true
+  ],
+  [
+    208,
+    false
+  ],
+  [
+    209,
+    true
+  ],
+  [
+    210,
+    true
+  ],
+  [
+    211,
+    false
+  ],
+  [
+    212,
+    true
+  ],
+  [
+    213,
+    false
+  ],
+  [
+    214,
+    false
+  ],
+  [
+    215,
+    true
+  ],
+  [
+    216,
+    true
+  ],
+  [
+    217,
+    true
+  ],
+  [
+    218,
+    true
+  ],
+  [
+    219,
+    true
+  ],
+  [
+    220,
+    true
+  ],
+  [
+    221,
+    false
+  ],
+  [
+    222,
+    false
+  ],
+  [
+    223,
+    false
+  ],
+  [
+    224,
+    false
+  ],
+  [
+    225,
+    false
+  ],
+  [
+    226,
+    false
+  ],
+  [
+    227,
+    true
+  ],
+  [
+    228,
+    true
+  ],
+  [
+    229,
+    false
+  ],
+  [
+    230,
+    false
+  ],
+  [
+    231,
+    true
+  ],
+  [
+    232,
+    false
+  ],
+  [
+    233,
+    true
+  ],
+  [
+    234,
+    false
+  ],
+  [
+    235,
+    true
+  ],
+  [
+    236,
+    true
+  ],
+  [
+    237,
+    true
+  ],
+  [
+    238,
+    true
+  ],
+  [
+    239,
+    true
+  ],
+  [
+    240,
+    true
+  ],
+  [
+    241,
+    true
+  ],
+  [
+    242,
+    true
+  ],
+  [
+    243,
+    true
+  ],
+  [
+    244,
+    true
+  ],
+  [
+    245,
+    true
+  ],
+  [
+    246,
+    true
+  ],
+  [
+    247,
+    true
+  ],
+  [
+    248,
+    false
+  ],
+  [
+    249,
+    false
+  ],
+  [
+    250,
+    false
+  ],
+  [
+    251,
+    false
+  ],
+  [
+    252,
+    false
+  ],
+  [
+    253,
+    false
+  ],
+  [
+    254,
+    true
+  ],
+  [
+    255,
+    false
+  ],
+  [
+    256,
+    false
+  ],
+  [
+    257,
+    false
+  ],
+  [
+    258,
+    false
+  ],
+  [
+    259,
+    false
+  ],
+  [
+    260,
+    false
+  ],
+  [
+    261,
+    false
+  ],
+  [
+    262,
+    false
+  ],
+  [
+    263,
+    false
+  ],
+  [
+    264,
+    false
+  ],
+  [
+    265,
+    false
+  ],
+  [
+    266,
+    false
+  ],
+  [
+    267,
+    false
+  ],
+  [
+    268,
+    false
+  ],
+  [
+    269,
+    true
+  ],
+  [
+    270,
+    true
+  ],
+  [
+    271,
+    true
+  ],
+  [
+    272,
+    false
+  ],
+  [
+    273,
+    false
+  ],
+  [
+    274,
+    false
+  ],
+  [
+    275,
+    true
+  ],
+  [
+    276,
+    true
+  ],
+  [
+    277,
+    true
+  ],
+  [
+    278,
+    true
+  ],
+  [
+    279,
+    true
+  ],
+  [
+    280,
+    true
+  ],
+  [
+    281,
+    true
+  ],
+  [
+    282,
+    true
+  ],
+  [
+    283,
+    true
+  ],
+  [
+    284,
+    false
+  ],
+  [
+    285,
+    true
+  ],
+  [
+    286,
+    true
+  ],
+  [
+    287,
+    true
+  ],
+  [
+    288,
+    true
+  ],
+  [
+    289,
+    true
+  ],
+  [
+    290,
+    true
+  ],
+  [
+    291,
+    true
+  ],
+  [
+    292,
+    true
+  ],
+  [
+    293,
+    true
+  ],
+  [
+    294,
+    true
+  ],
+  [
+    295,
+    true
+  ],
+  [
+    296,
+    true
+  ],
+  [
+    297,
+    true
+  ],
+  [
+    298,
+    true
+  ],
+  [
+    299,
+    true
+  ],
+  [
+    300,
+    true
+  ],
+  [
+    301,
+    true
+  ],
+  [
+    302,
+    true
+  ],
+  [
+    303,
+    true
+  ],
+  [
+    304,
+    true
+  ],
+  [
+    305,
+    true
+  ],
+  [
+    306,
+    true
+  ],
+  [
+    307,
+    true
+  ],
+  [
+    308,
+    true
+  ],
+  [
+    309,
+    true
+  ],
+  [
+    310,
+    true
+  ],
+  [
+    311,
+    false
+  ],
+  [
+    312,
+    false
+  ],
+  [
+    313,
+    false
+  ],
+  [
+    314,
+    true
+  ],
+  [
+    315,
+    false
+  ],
+  [
+    316,
+    true
+  ],
+  [
+    317,
+    true
+  ],
+  [
+    318,
+    true
+  ],
+  [
+    319,
+    true
+  ],
+  [
+    320,
+    true
+  ],
+  [
+    321,
+    false
+  ],
+  [
+    322,
+    false
+  ],
+  [
+    323,
+    true
+  ],
+  [
+    324,
+    true
+  ],
+  [
+    325,
+    false
+  ],
+  [
+    326,
+    false
+  ],
+  [
+    327,
+    false
+  ],
+  [
+    328,
+    false
+  ],
+  [
+    329,
+    false
+  ],
+  [
+    330,
+    false
+  ],
+  [
+    331,
+    false
+  ],
+  [
+    332,
+    false
+  ],
+  [
+    333,
+    false
+  ],
+  [
+    334,
+    true
+  ],
+  [
+    335,
+    true
+  ],
+  [
+    336,
+    false
+  ],
+  [
+    337,
+    true
+  ],
+  [
+    338,
+    true
+  ],
+  [
+    339,
+    true
+  ],
+  [
+    340,
+    false
+  ],
+  [
+    341,
+    false
+  ],
+  [
+    342,
+    false
+  ],
+  [
+    343,
+    false
+  ],
+  [
+    344,
+    false
+  ],
+  [
+    345,
+    false
+  ],
+  [
+    346,
+    false
+  ],
+  [
+    347,
+    false
+  ],
+  [
+    348,
+    false
+  ],
+  [
+    349,
+    true
+  ],
+  [
+    350,
+    false
+  ],
+  [
+    351,
+    false
+  ],
+  [
+    352,
+    false
+  ],
+  [
+    353,
+    false
+  ],
+  [
+    354,
+    true
+  ],
+  [
+    355,
+    true
+  ],
+  [
+    356,
+    true
+  ],
+  [
+    357,
+    false
+  ],
+  [
+    358,
+    true
+  ],
+  [
+    359,
+    true
+  ],
+  [
+    360,
+    true
+  ],
+  [
+    361,
+    true
+  ],
+  [
+    362,
+    true
+  ],
+  [
+    363,
+    true
+  ],
+  [
+    364,
+    true
+  ],
+  [
+    365,
+    false
+  ],
+  [
+    366,
+    false
+  ],
+  [
+    367,
+    false
+  ],
+  [
+    368,
+    false
+  ],
+  [
+    369,
+    false
+  ],
+  [
+    370,
+    false
+  ],
+  [
+    371,
+    false
+  ],
+  [
+    372,
+    true
+  ],
+  [
+    373,
+    true
+  ],
+  [
+    374,
+    true
+  ],
+  [
+    375,
+    true
+  ],
+  [
+    376,
+    true
+  ],
+  [
+    377,
+    true
+  ],
+  [
+    378,
+    true
+  ],
+  [
+    379,
+    false
+  ],
+  [
+    380,
+    true
+  ],
+  [
+    381,
+    false
+  ],
+  [
+    382,
+    false
+  ],
+  [
+    383,
+    false
+  ],
+  [
+    384,
+    false
+  ],
+  [
+    385,
+    false
+  ],
+  [
+    386,
+    true
+  ],
+  [
+    387,
+    true
+  ],
+  [
+    388,
+    true
+  ],
+  [
+    389,
+    true
+  ],
+  [
+    390,
+    true
+  ],
+  [
+    391,
+    true
+  ],
+  [
+    392,
+    true
+  ],
+  [
+    393,
+    true
+  ],
+  [
+    394,
+    true
+  ],
+  [
+    395,
+    true
+  ],
+  [
+    396,
+    false
+  ],
+  [
+    397,
+    false
+  ],
+  [
+    398,
+    false
+  ],
+  [
+    399,
+    false
+  ],
+  [
+    400,
+    false
+  ],
+  [
+    401,
+    false
+  ],
+  [
+    402,
+    false
+  ],
+  [
+    403,
+    false
+  ],
+  [
+    404,
+    false
+  ],
+  [
+    405,
+    true
+  ],
+  [
+    406,
+    true
+  ],
+  [
+    407,
+    false
+  ],
+  [
+    408,
+    false
+  ],
+  [
+    409,
+    false
+  ],
+  [
+    410,
+    true
+  ],
+  [
+    411,
+    true
+  ],
+  [
+    412,
+    true
+  ],
+  [
+    413,
+    true
+  ],
+  [
+    414,
+    true
+  ],
+  [
+    415,
+    false
+  ],
+  [
+    416,
+    false
+  ],
+  [
+    417,
+    false
+  ],
+  [
+    418,
+    false
+  ],
+  [
+    419,
+    true
+  ],
+  [
+    420,
+    true
+  ],
+  [
+    421,
+    false
+  ],
+  [
+    422,
+    false
+  ],
+  [
+    423,
+    true
+  ],
+  [
+    424,
+    true
+  ],
+  [
+    425,
+    true
+  ],
+  [
+    426,
+    false
+  ],
+  [
+    427,
+    true
+  ],
+  [
+    428,
+    true
+  ],
+  [
+    429,
+    true
+  ],
+  [
+    430,
+    false
+  ],
+  [
+    431,
+    false
+  ],
+  [
+    432,
+    false
+  ],
+  [
+    433,
+    false
+  ],
+  [
+    434,
+    false
+  ],
+  [
+    435,
+    false
+  ],
+  [
+    436,
+    false
+  ],
+  [
+    437,
+    false
+  ],
+  [
+    438,
+    false
+  ],
+  [
+    439,
+    false
+  ],
+  [
+    440,
+    true
+  ],
+  [
+    441,
+    true
+  ],
+  [
+    442,
+    true
+  ],
+  [
+    443,
+    true
+  ],
+  [
+    444,
+    true
+  ],
+  [
+    445,
+    true
+  ],
+  [
+    446,
+    false
+  ],
+  [
+    447,
+    false
+  ],
+  [
+    448,
+    false
+  ],
+  [
+    449,
+    false
+  ],
+  [
+    450,
+    false
+  ],
+  [
+    451,
+    false
+  ],
+  [
+    452,
+    true
+  ],
+  [
+    453,
+    true
+  ],
+  [
+    454,
+    true
+  ],
+  [
+    455,
+    true
+  ],
+  [
+    456,
+    true
+  ],
+  [
+    457,
+    true
+  ],
+  [
+    458,
+    false
+  ],
+  [
+    459,
+    false
+  ],
+  [
+    460,
+    false
+  ],
+  [
+    461,
+    true
+  ],
+  [
+    462,
+    true
+  ],
+  [
+    463,
+    true
+  ],
+  [
+    464,
+    true
+  ],
+  [
+    465,
+    true
+  ],
+  [
+    466,
+    true
+  ],
+  [
+    467,
+    true
+  ],
+  [
+    468,
+    true
+  ],
+  [
+    469,
+    true
+  ],
+  [
+    470,
+    true
+  ],
+  [
+    471,
+    true
+  ],
+  [
+    472,
+    false
+  ],
+  [
+    473,
+    false
+  ],
+  [
+    474,
+    false
+  ],
+  [
+    475,
+    true
+  ],
+  [
+    476,
+    true
+  ],
+  [
+    477,
+    false
+  ],
+  [
+    478,
+    false
+  ],
+  [
+    479,
+    false
+  ],
+  [
+    480,
+    true
+  ],
+  [
+    481,
+    false
+  ],
+  [
+    482,
+    false
+  ],
+  [
+    483,
+    false
+  ],
+  [
+    484,
+    true
+  ],
+  [
+    485,
+    true
+  ],
+  [
+    486,
+    true
+  ],
+  [
+    487,
+    true
+  ],
+  [
+    488,
+    true
+  ],
+  [
+    489,
+    true
+  ],
+  [
+    490,
+    true
+  ],
+  [
+    491,
+    true
+  ],
+  [
+    492,
+    false
+  ],
+  [
+    493,
+    true
+  ],
+  [
+    494,
+    true
+  ],
+  [
+    495,
+    false
+  ],
+  [
+    496,
+    false
+  ],
+  [
+    497,
+    true
+  ],
+  [
+    498,
+    false
+  ],
+  [
+    499,
+    true
+  ],
+  [
+    500,
+    false
+  ],
+  [
+    501,
+    false
+  ],
+  [
+    502,
+    false
+  ],
+  [
+    503,
+    false
+  ],
+  [
+    504,
+    false
+  ],
+  [
+    505,
+    true
+  ],
+  [
+    506,
+    true
+  ],
+  [
+    507,
+    false
+  ],
+  [
+    508,
+    false
+  ],
+  [
+    509,
+    true
+  ],
+  [
+    510,
+    true
+  ],
+  [
+    511,
+    true
+  ],
+  [
+    512,
+    false
+  ],
+  [
+    513,
+    false
+  ],
+  [
+    514,
+    false
+  ],
+  [
+    515,
+    false
+  ],
+  [
+    516,
+    false
+  ],
+  [
+    517,
+    false
+  ],
+  [
+    518,
+    true
+  ],
+  [
+    519,
+    true
+  ],
+  [
+    520,
+    true
+  ],
+  [
+    521,
+    true
+  ],
+  [
+    522,
+    true
+  ],
+  [
+    523,
+    true
+  ],
+  [
+    524,
+    true
+  ],
+  [
+    525,
+    true
+  ],
+  [
+    526,
+    true
+  ],
+  [
+    527,
+    true
+  ],
+  [
+    528,
+    false
+  ],
+  [
+    529,
+    true
+  ],
+  [
+    530,
+    true
+  ],
+  [
+    531,
+    true
+  ],
+  [
+    532,
+    true
+  ],
+  [
+    533,
+    true
+  ],
+  [
+    534,
+    false
+  ],
+  [
+    535,
+    false
+  ],
+  [
+    536,
+    false
+  ],
+  [
+    537,
+    false
+  ],
+  [
+    538,
+    true
+  ],
+  [
+    539,
+    false
+  ],
+  [
+    540,
+    false
+  ],
+  [
+    541,
+    false
+  ],
+  [
+    542,
+    true
+  ],
+  [
+    543,
+    true
+  ],
+  [
+    544,
+    true
+  ],
+  [
+    545,
+    true
+  ],
+  [
+    546,
+    false
+  ],
+  [
+    547,
+    true
+  ],
+  [
+    548,
+    true
+  ],
+  [
+    549,
+    true
+  ],
+  [
+    550,
+    true
+  ],
+  [
+    551,
+    true
+  ],
+  [
+    552,
+    true
+  ],
+  [
+    553,
+    true
+  ],
+  [
+    554,
+    true
+  ],
+  [
+    555,
+    true
+  ],
+  [
+    556,
+    true
+  ],
+  [
+    557,
+    false
+  ],
+  [
+    558,
+    true
+  ],
+  [
+    559,
+    true
+  ],
+  [
+    560,
+    true
+  ],
+  [
+    561,
+    false
+  ],
+  [
+    562,
+    false
+  ],
+  [
+    563,
+    false
+  ],
+  [
+    564,
+    true
+  ],
+  [
+    565,
+    true
+  ],
+  [
+    566,
+    false
+  ],
+  [
+    567,
+    true
+  ],
+  [
+    568,
+    true
+  ],
+  [
+    569,
+    true
+  ],
+  [
+    570,
+    true
+  ],
+  [
+    571,
+    true
+  ],
+  [
+    572,
+    true
+  ],
+  [
+    573,
+    true
+  ],
+  [
+    574,
+    false
+  ],
+  [
+    575,
+    false
+  ],
+  [
+    576,
+    false
+  ],
+  [
+    577,
+    false
+  ],
+  [
+    578,
+    false
+  ],
+  [
+    579,
+    true
+  ],
+  [
+    580,
+    true
+  ],
+  [
+    581,
+    true
+  ],
+  [
+    582,
+    true
+  ],
+  [
+    583,
+    true
+  ],
+  [
+    584,
+    true
+  ],
+  [
+    585,
+    true
+  ],
+  [
+    586,
+    true
+  ],
+  [
+    587,
+    true
+  ],
+  [
+    588,
+    true
+  ],
+  [
+    589,
+    true
+  ],
+  [
+    590,
+    true
+  ],
+  [
+    591,
+    true
+  ],
+  [
+    592,
+    true
+  ],
+  [
+    593,
+    true
+  ],
+  [
+    594,
+    true
+  ],
+  [
+    595,
+    true
+  ],
+  [
+    596,
+    true
+  ],
+  [
+    597,
+    true
+  ],
+  [
+    598,
+    true
+  ],
+  [
+    599,
+    true
+  ],
+  [
+    600,
+    true
+  ],
+  [
+    601,
+    true
+  ],
+  [
+    602,
+    true
+  ],
+  [
+    603,
+    true
+  ],
+  [
+    604,
+    true
+  ],
+  [
+    605,
+    true
+  ],
+  [
+    606,
+    true
+  ],
+  [
+    607,
+    true
+  ],
+  [
+    608,
+    true
+  ],
+  [
+    609,
+    true
+  ],
+  [
+    610,
+    true
+  ],
+  [
+    611,
+    true
+  ],
+  [
+    612,
+    true
+  ],
+  [
+    613,
+    true
+  ],
+  [
+    614,
+    true
+  ],
+  [
+    615,
+    true
+  ],
+  [
+    616,
+    true
+  ],
+  [
+    617,
+    true
+  ],
+  [
+    618,
+    false
+  ],
+  [
+    619,
+    true
+  ],
+  [
+    620,
+    true
+  ],
+  [
+    621,
+    true
+  ],
+  [
+    622,
+    true
+  ],
+  [
+    623,
+    true
+  ],
+  [
+    624,
+    true
+  ],
+  [
+    625,
+    false
+  ],
+  [
+    626,
+    false
+  ],
+  [
+    627,
+    false
+  ],
+  [
+    628,
+    false
+  ],
+  [
+    629,
+    true
+  ],
+  [
+    630,
+    true
+  ],
+  [
+    631,
+    true
+  ],
+  [
+    632,
+    true
+  ],
+  [
+    633,
+    false
+  ],
+  [
+    634,
+    true
+  ],
+  [
+    635,
+    false
+  ],
+  [
+    636,
+    false
+  ],
+  [
+    637,
+    true
+  ],
+  [
+    638,
+    false
+  ],
+  [
+    639,
+    true
+  ],
+  [
+    640,
+    true
+  ],
+  [
+    641,
+    false
+  ],
+  [
+    642,
+    true
+  ],
+  [
+    643,
+    true
+  ],
+  [
+    644,
+    true
+  ],
+  [
+    645,
+    true
+  ],
+  [
+    646,
+    true
+  ],
+  [
+    647,
+    true
+  ],
+  [
+    648,
+    true
+  ],
+  [
+    649,
+    true
+  ],
+  [
+    650,
+    true
+  ],
+  [
+    651,
+    true
+  ],
+  [
+    652,
+    true
+  ],
+  [
+    653,
+    true
+  ],
+  [
+    654,
+    true
+  ],
+  [
+    655,
+    false
+  ],
+  [
+    656,
+    true
+  ],
+  [
+    657,
+    true
+  ],
+  [
+    658,
+    true
+  ],
+  [
+    659,
+    false
+  ],
+  [
+    660,
+    true
+  ],
+  [
+    661,
+    false
+  ],
+  [
+    662,
+    false
+  ],
+  [
+    663,
+    true
+  ],
+  [
+    664,
+    true
+  ],
+  [
+    665,
+    true
+  ],
+  [
+    666,
+    false
+  ],
+  [
+    667,
+    false
+  ],
+  [
+    668,
+    false
+  ],
+  [
+    669,
+    false
+  ],
+  [
+    670,
+    false
+  ],
+  [
+    671,
+    false
+  ],
+  [
+    672,
+    false
+  ],
+  [
+    673,
+    false
+  ],
+  [
+    674,
+    false
+  ],
+  [
+    675,
+    false
+  ],
+  [
+    676,
+    false
+  ],
+  [
+    677,
+    false
+  ],
+  [
+    678,
+    false
+  ],
+  [
+    679,
+    false
+  ],
+  [
+    680,
+    false
+  ],
+  [
+    681,
+    false
+  ],
+  [
+    682,
+    false
+  ],
+  [
+    683,
+    false
+  ],
+  [
+    684,
+    false
+  ],
+  [
+    685,
+    false
+  ],
+  [
+    686,
+    false
+  ],
+  [
+    687,
+    false
+  ],
+  [
+    688,
+    false
+  ],
+  [
+    689,
+    false
+  ],
+  [
+    690,
+    false
+  ],
+  [
+    691,
+    false
+  ],
+  [
+    692,
+    false
+  ],
+  [
+    693,
+    true
+  ],
+  [
+    694,
+    true
+  ],
+  [
+    695,
+    true
+  ],
+  [
+    696,
+    true
+  ],
+  [
+    697,
+    false
+  ],
+  [
+    698,
+    true
+  ],
+  [
+    699,
+    true
+  ],
+  [
+    700,
+    true
+  ],
+  [
+    701,
+    true
+  ],
+  [
+    702,
+    true
+  ],
+  [
+    703,
+    true
+  ],
+  [
+    704,
+    true
+  ],
+  [
+    705,
+    true
+  ],
+  [
+    706,
+    true
+  ],
+  [
+    707,
+    true
+  ],
+  [
+    708,
+    false
+  ],
+  [
+    709,
+    true
+  ],
+  [
+    710,
+    true
+  ],
+  [
+    711,
+    true
+  ],
+  [
+    712,
+    true
+  ],
+  [
+    713,
+    true
+  ],
+  [
+    714,
+    true
+  ],
+  [
+    715,
+    true
+  ],
+  [
+    716,
+    true
+  ],
+  [
+    717,
+    false
+  ],
+  [
+    718,
+    false
+  ],
+  [
+    719,
+    false
+  ],
+  [
+    720,
+    true
+  ],
+  [
+    721,
+    true
+  ],
+  [
+    722,
+    false
+  ],
+  [
+    723,
+    true
+  ],
+  [
+    724,
+    true
+  ],
+  [
+    725,
+    true
+  ],
+  [
+    726,
+    true
+  ],
+  [
+    727,
+    false
+  ],
+  [
+    728,
+    false
+  ],
+  [
+    729,
+    false
+  ],
+  [
+    730,
+    false
+  ],
+  [
+    731,
+    false
+  ],
+  [
+    732,
+    false
+  ],
+  [
+    733,
+    true
+  ],
+  [
+    734,
+    false
+  ],
+  [
+    735,
+    false
+  ],
+  [
+    736,
+    false
+  ],
+  [
+    737,
+    false
+  ],
+  [
+    738,
+    false
+  ],
+  [
+    739,
+    false
+  ],
+  [
+    740,
+    false
+  ],
+  [
+    741,
+    false
+  ],
+  [
+    742,
+    false
+  ],
+  [
+    743,
+    false
+  ],
+  [
+    744,
+    false
+  ],
+  [
+    745,
+    false
+  ],
+  [
+    746,
+    false
+  ],
+  [
+    747,
+    false
+  ],
+  [
+    748,
+    false
+  ],
+  [
+    749,
+    false
+  ],
+  [
+    750,
+    false
+  ],
+  [
+    751,
+    true
+  ],
+  [
+    752,
+    true
+  ]
+]);
+function isImportant(tileType) {
+  return getOr(map4.get(tileType), false);
 }
 
 // src/ErrorAwareBufferReader.js
@@ -6813,8 +11607,11 @@ function make3(buffer) {
   };
 }
 
+// src/packetv1449/PacketV1449_TileSectionSend.js
+import * as Nodezlib from "node:zlib";
+
 // src/TileFrameImportantV1449.js
-var map3 = /* @__PURE__ */ new Map([
+var map5 = /* @__PURE__ */ new Map([
   [
     0,
     false
@@ -9588,8 +14385,8 @@ var map3 = /* @__PURE__ */ new Map([
     false
   ]
 ]);
-function isImportant(tileType) {
-  return getOr(map3.get(tileType), false);
+function isImportant2(tileType) {
+  return getOr(map5.get(tileType), false);
 }
 
 // src/packetv1449/PacketV1449_TileSectionSend.js
@@ -10040,30 +14837,6 @@ function pack$22(writer, entity) {
       return packDisplayItem(writer$1, entityKind._0);
   }
 }
-function isTheSameAs(self, compTile) {
-  let sameHeaders = isSome(self.activeTile) === isSome(compTile.activeTile) && self.inActive === compTile.inActive && self.wire === compTile.wire && self.wire2 === compTile.wire2 && self.wire3 === compTile.wire3 && self.halfBrick === compTile.halfBrick && equal(self.slope, compTile.slope) && self.actuator === compTile.actuator && equal(self.color, compTile.color);
-  if (!sameHeaders) {
-    return false;
-  }
-  let match = self.activeTile;
-  let match$1 = compTile.activeTile;
-  let activeMatches = match !== void 0 ? match$1 !== void 0 && match.tileType === match$1.tileType ? isImportant(match.tileType) ? equal(match.frame, match$1.frame) : true : false : match$1 === void 0;
-  if (!activeMatches) {
-    return false;
-  }
-  if (notequal(self.wall, compTile.wall) || notequal(self.liquid, compTile.liquid)) {
-    return false;
-  }
-  let sameWallColor = equal(self.wallColor, compTile.wallColor);
-  let sameWire4 = self.wire4 === compTile.wire4;
-  let match$2 = compTile.liquid;
-  let liquidMatches = match$2 !== void 0 ? sameWallColor && sameWire4 && self.lava === compTile.lava && self.honey === compTile.honey && self.shimmer === compTile.shimmer : sameWallColor && sameWire4;
-  if (!liquidMatches || self.invisibleBlock !== compTile.invisibleBlock || self.invisibleWall !== compTile.invisibleWall || self.fullbrightBlock !== compTile.fullbrightBlock) {
-    return false;
-  } else {
-    return self.fullbrightWall === compTile.fullbrightWall;
-  }
-}
 function clearTileCache(tile) {
   tile.activeTile = void 0;
   tile.color = void 0;
@@ -10290,7 +15063,7 @@ function parse$3(payload) {
       if (e$72.TAG === "Ok") {
         let tileType = e$72._0;
         let e$102;
-        if (isImportant(tileType)) {
+        if (isImportant2(tileType)) {
           let e$112 = readInt162(reader, "frameX");
           if (e$112.TAG === "Ok") {
             let e$122 = readInt162(reader, "frameY");
@@ -10628,6 +15401,608 @@ function parse$3(payload) {
     return e$15;
   }
 }
+var Chest = {
+  parse: parse65,
+  pack: pack3
+};
+var Sign = {
+  parse: parse$12,
+  pack: pack$12
+};
+var Entity = {
+  parse: parse$22,
+  pack: pack$22
+};
+
+// src/packet/Packet_TileSectionSend.js
+function isTheSameAs(self, compTile) {
+  let sameHeaders = isSome(self.activeTile) === isSome(compTile.activeTile) && self.inActive === compTile.inActive && self.wire === compTile.wire && self.wire2 === compTile.wire2 && self.wire3 === compTile.wire3 && self.halfBrick === compTile.halfBrick && equal(self.slope, compTile.slope) && self.actuator === compTile.actuator && equal(self.color, compTile.color);
+  if (!sameHeaders) {
+    return false;
+  }
+  let match = self.activeTile;
+  let match$1 = compTile.activeTile;
+  let activeMatches = match !== void 0 ? match$1 !== void 0 && match.tileType === match$1.tileType ? isImportant(match.tileType) ? equal(match.frame, match$1.frame) : true : false : match$1 === void 0;
+  if (!activeMatches) {
+    return false;
+  }
+  if (notequal(self.wall, compTile.wall) || notequal(self.liquid, compTile.liquid)) {
+    return false;
+  }
+  let sameWallColor = equal(self.wallColor, compTile.wallColor);
+  let sameWire4 = self.wire4 === compTile.wire4;
+  let match$2 = compTile.liquid;
+  let liquidMatches = match$2 !== void 0 ? sameWallColor && sameWire4 && self.lava === compTile.lava && self.honey === compTile.honey && self.shimmer === compTile.shimmer : sameWallColor && sameWire4;
+  if (!liquidMatches || self.invisibleBlock !== compTile.invisibleBlock || self.invisibleWall !== compTile.invisibleWall || self.fullbrightBlock !== compTile.fullbrightBlock) {
+    return false;
+  } else {
+    return self.fullbrightWall === compTile.fullbrightWall;
+  }
+}
+function clearTileCache2(tile) {
+  tile.activeTile = void 0;
+  tile.color = void 0;
+  tile.wallColor = void 0;
+  tile.wall = void 0;
+  tile.liquid = void 0;
+  tile.lava = false;
+  tile.honey = false;
+  tile.shimmer = false;
+  tile.wire = false;
+  tile.wire2 = false;
+  tile.wire3 = false;
+  tile.wire4 = false;
+  tile.halfBrick = false;
+  tile.slope = void 0;
+  tile.actuator = false;
+  tile.inActive = false;
+  tile.invisibleBlock = false;
+  tile.invisibleWall = false;
+  tile.fullbrightBlock = false;
+  tile.fullbrightWall = false;
+  tile.coatHeader = 0;
+}
+function readRepeated2(count, parseItem) {
+  let items = [];
+  let parseResult = {
+    TAG: "Ok",
+    _0: void 0
+  };
+  for (let _i = 0; _i < count; ++_i) {
+    let match = parseResult;
+    if (match.TAG === "Ok") {
+      let item = parseItem();
+      if (item.TAG === "Ok") {
+        items.push(item._0);
+      } else {
+        parseResult = {
+          TAG: "Error",
+          _0: item._0
+        };
+      }
+    }
+  }
+  let err = parseResult;
+  if (err.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: items
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: err._0
+    };
+  }
+}
+function parse66(payload) {
+  let packetReader = new packetreader_default(payload);
+  let e = getBytesLeft(packetReader);
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readBuffer(packetReader, e._0, "deflatedPayload");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let inflated;
+  try {
+    inflated = {
+      TAG: "Ok",
+      _0: Nodezlib2.inflateRawSync(e$1._0)
+    };
+  } catch (raw_obj) {
+    let obj = internalToException(raw_obj);
+    if (obj.RE_EXN_ID === "JsExn") {
+      inflated = {
+        TAG: "Error",
+        _0: {
+          context: "inflateRawSync",
+          error: obj._1
+        }
+      };
+    } else {
+      throw obj;
+    }
+  }
+  if (inflated.TAG !== "Ok") {
+    return inflated;
+  }
+  let reader = new bufferreader_default(inflated._0);
+  let e$2 = readInt322(reader, "tileX");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readInt322(reader, "tileY");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readInt162(reader, "width");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let width = e$4._0;
+  let e$5 = readInt162(reader, "height");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let height = e$5._0;
+  let tiles = [];
+  let tileCache = defaultTileCache();
+  let rleCount = {
+    contents: 0
+  };
+  if (height < 0 || width < 0) {
+    return {
+      TAG: "Error",
+      _0: {
+        context: "Packet_TileSectionSend.parse",
+        error: new Error("Tile section dimensions must be non-negative")
+      }
+    };
+  }
+  let parseResult = {
+    TAG: "Ok",
+    _0: void 0
+  };
+  let readTile = () => {
+    clearTileCache2(tileCache);
+    let e2 = readByte2(reader, "header5");
+    if (e2.TAG !== "Ok") {
+      return e2;
+    }
+    let header5 = fromByte(e2._0);
+    let e$16;
+    if (flag1(header5)) {
+      let e$22 = readByte2(reader, "header4_conditional");
+      if (e$22.TAG === "Ok") {
+        let header4 = fromByte(e$22._0);
+        let e$32;
+        if (flag1(header4)) {
+          let e$42 = readByte2(reader, "header3_conditional");
+          if (e$42.TAG === "Ok") {
+            let header3 = fromByte(e$42._0);
+            let e$52 = flag1(header3) ? readByte2(reader, "header2_conditional") : {
+              TAG: "Ok",
+              _0: 0
+            };
+            e$32 = e$52.TAG === "Ok" ? {
+              TAG: "Ok",
+              _0: [
+                header3,
+                e$52._0
+              ]
+            } : e$52;
+          } else {
+            e$32 = e$42;
+          }
+        } else {
+          e$32 = {
+            TAG: "Ok",
+            _0: [
+              fromByte(0),
+              0
+            ]
+          };
+        }
+        if (e$32.TAG === "Ok") {
+          let match = e$32._0;
+          e$16 = {
+            TAG: "Ok",
+            _0: [
+              header4,
+              match[0],
+              match[1]
+            ]
+          };
+        } else {
+          e$16 = e$32;
+        }
+      } else {
+        e$16 = e$22;
+      }
+    } else {
+      e$16 = {
+        TAG: "Ok",
+        _0: [
+          fromByte(0),
+          fromByte(0),
+          0
+        ]
+      };
+    }
+    if (e$16.TAG !== "Ok") {
+      return e$16;
+    }
+    let match$1 = e$16._0;
+    let header2 = match$1[2];
+    let header3$1 = match$1[1];
+    let header4$1 = match$1[0];
+    tileCache.coatHeader = header2;
+    tileCache.invisibleBlock = (header2 & 2) !== 0;
+    tileCache.invisibleWall = (header2 & 4) !== 0;
+    tileCache.fullbrightBlock = (header2 & 8) !== 0;
+    tileCache.fullbrightWall = (header2 & 16) !== 0;
+    let oldActive = tileCache.activeTile;
+    let e$62;
+    if (flag2(header5)) {
+      let oldType = mapOr(tileCache.activeTile, 0, (active) => active.tileType);
+      let e$72;
+      if (flag6(header5)) {
+        let e$82 = readByte2(reader, "tileType_byte1");
+        if (e$82.TAG === "Ok") {
+          let e$92 = readByte2(reader, "tileType_byte2");
+          e$72 = e$92.TAG === "Ok" ? {
+            TAG: "Ok",
+            _0: e$92._0 << 8 | e$82._0
+          } : e$92;
+        } else {
+          e$72 = e$82;
+        }
+      } else {
+        e$72 = readByte2(reader, "tileType");
+      }
+      if (e$72.TAG === "Ok") {
+        let tileType = e$72._0;
+        let e$102;
+        if (isImportant(tileType)) {
+          let e$112 = readInt162(reader, "frameX");
+          if (e$112.TAG === "Ok") {
+            let e$122 = readInt162(reader, "frameY");
+            e$102 = e$122.TAG === "Ok" ? {
+              TAG: "Ok",
+              _0: {
+                x: e$112._0,
+                y: e$122._0
+              }
+            } : e$122;
+          } else {
+            e$102 = e$112;
+          }
+        } else {
+          e$102 = isSome(oldActive) && tileType === oldType ? {
+            TAG: "Ok",
+            _0: oldActive.frame
+          } : {
+            TAG: "Ok",
+            _0: void 0
+          };
+        }
+        if (e$102.TAG === "Ok") {
+          let e$132;
+          if (flag4(header3$1)) {
+            let e$142 = readByte2(reader, "color");
+            if (e$142.TAG === "Ok") {
+              tileCache.color = e$142._0;
+              e$132 = {
+                TAG: "Ok",
+                _0: void 0
+              };
+            } else {
+              e$132 = e$142;
+            }
+          } else {
+            e$132 = {
+              TAG: "Ok",
+              _0: void 0
+            };
+          }
+          if (e$132.TAG === "Ok") {
+            tileCache.activeTile = {
+              tileType,
+              frame: e$102._0
+            };
+            e$62 = {
+              TAG: "Ok",
+              _0: void 0
+            };
+          } else {
+            e$62 = e$132;
+          }
+        } else {
+          e$62 = e$102;
+        }
+      } else {
+        e$62 = e$72;
+      }
+    } else {
+      e$62 = {
+        TAG: "Ok",
+        _0: void 0
+      };
+    }
+    if (e$62.TAG !== "Ok") {
+      return e$62;
+    }
+    let e$152;
+    if (flag3(header5)) {
+      let e$162 = readByte2(reader, "wall");
+      if (e$162.TAG === "Ok") {
+        tileCache.wall = e$162._0;
+        if (flag5(header3$1)) {
+          let e$17 = readByte2(reader, "wallColor");
+          if (e$17.TAG === "Ok") {
+            tileCache.wallColor = e$17._0;
+            e$152 = {
+              TAG: "Ok",
+              _0: void 0
+            };
+          } else {
+            e$152 = e$17;
+          }
+        } else {
+          e$152 = {
+            TAG: "Ok",
+            _0: void 0
+          };
+        }
+      } else {
+        e$152 = e$162;
+      }
+    } else {
+      e$152 = {
+        TAG: "Ok",
+        _0: void 0
+      };
+    }
+    if (e$152.TAG !== "Ok") {
+      return e$152;
+    }
+    let liquidBits = (toByte(header5) & 24) >> 3;
+    let e$18;
+    if (liquidBits !== 0) {
+      let e$19 = readByte2(reader, "liquidValue");
+      if (e$19.TAG === "Ok") {
+        tileCache.liquid = e$19._0;
+        if (flag8(header3$1)) {
+          tileCache.shimmer = true;
+        } else if (liquidBits > 1) {
+          if (liquidBits === 2) {
+            tileCache.lava = true;
+          } else {
+            tileCache.honey = true;
+          }
+        }
+        e$18 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      } else {
+        e$18 = e$19;
+      }
+    } else {
+      e$18 = {
+        TAG: "Ok",
+        _0: void 0
+      };
+    }
+    if (e$18.TAG !== "Ok") {
+      return e$18;
+    }
+    if (toByte(header4$1) > 1) {
+      if (flag2(header4$1)) {
+        tileCache.wire = true;
+      }
+      if (flag3(header4$1)) {
+        tileCache.wire2 = true;
+      }
+      if (flag4(header4$1)) {
+        tileCache.wire3 = true;
+      }
+      let slopeBits = (toByte(header4$1) & 112) >> 4;
+      if (slopeBits !== 0 && isSolid(mapOr(tileCache.activeTile, 0, (tile) => tile.tileType))) {
+        if (slopeBits === 1) {
+          tileCache.halfBrick = true;
+        } else {
+          tileCache.slope = slopeBits - 1 | 0;
+        }
+      }
+    }
+    let e$20;
+    if (toByte(header3$1) > 0) {
+      if (flag2(header3$1)) {
+        tileCache.actuator = true;
+      }
+      if (flag3(header3$1)) {
+        tileCache.inActive = true;
+      }
+      if (flag6(header3$1)) {
+        tileCache.wire4 = true;
+      }
+      let e$21;
+      if (flag7(header3$1)) {
+        let e$22 = readByte2(reader, "wall_highByte");
+        if (e$22.TAG === "Ok") {
+          tileCache.wall = e$22._0 << 8 | tileCache.wall;
+          e$21 = {
+            TAG: "Ok",
+            _0: void 0
+          };
+        } else {
+          e$21 = e$22;
+        }
+      } else {
+        e$21 = {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      e$20 = e$21.TAG === "Ok" ? {
+        TAG: "Ok",
+        _0: void 0
+      } : e$21;
+    } else {
+      e$20 = {
+        TAG: "Ok",
+        _0: void 0
+      };
+    }
+    if (e$20.TAG !== "Ok") {
+      return e$20;
+    }
+    let repeatCountBytes = (toByte(header5) & 192) >> 6;
+    let e$23;
+    if (repeatCountBytes !== 0) {
+      if (repeatCountBytes !== 1) {
+        let e$24 = readInt162(reader, "rle_int16");
+        if (e$24.TAG === "Ok") {
+          rleCount.contents = e$24._0;
+          e$23 = {
+            TAG: "Ok",
+            _0: void 0
+          };
+        } else {
+          e$23 = e$24;
+        }
+      } else {
+        let e$25 = readByte2(reader, "rle_byte");
+        if (e$25.TAG === "Ok") {
+          rleCount.contents = e$25._0;
+          e$23 = {
+            TAG: "Ok",
+            _0: void 0
+          };
+        } else {
+          e$23 = e$25;
+        }
+      }
+    } else {
+      rleCount.contents = 0;
+      e$23 = {
+        TAG: "Ok",
+        _0: void 0
+      };
+    }
+    if (e$23.TAG === "Ok") {
+      return {
+        TAG: "Ok",
+        _0: cacheToTile(tileCache)
+      };
+    } else {
+      return e$23;
+    }
+  };
+  for (let _y = 0; _y < height; ++_y) {
+    let match = parseResult;
+    if (match.TAG === "Ok") {
+      let row = [];
+      for (let _x = 0; _x < width; ++_x) {
+        let match$1 = parseResult;
+        if (match$1.TAG === "Ok") {
+          if (rleCount.contents !== 0) {
+            rleCount.contents = rleCount.contents - 1 | 0;
+            row.push(cacheToTile(tileCache));
+          } else {
+            let tile = readTile();
+            if (tile.TAG === "Ok") {
+              row.push(tile._0);
+            } else {
+              parseResult = {
+                TAG: "Error",
+                _0: tile._0
+              };
+            }
+          }
+        }
+      }
+      let match$2 = parseResult;
+      if (match$2.TAG === "Ok") {
+        tiles.push(row);
+      }
+    }
+  }
+  let err = parseResult;
+  if (err.TAG !== "Ok") {
+    return {
+      TAG: "Error",
+      _0: err._0
+    };
+  }
+  let e$6 = readInt162(reader, "chestCount");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let e$7 = readRepeated2(e$6._0, () => Chest.parse(reader));
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let e$8 = readInt162(reader, "signCount");
+  if (e$8.TAG !== "Ok") {
+    return e$8;
+  }
+  let e$9 = readRepeated2(e$8._0, () => Sign.parse(reader));
+  if (e$9.TAG !== "Ok") {
+    return e$9;
+  }
+  let e$10 = readInt162(reader, "entityCount");
+  if (e$10.TAG !== "Ok") {
+    return e$10;
+  }
+  let e$11 = getBytesLeft2(reader);
+  if (e$11.TAG !== "Ok") {
+    return e$11;
+  }
+  let e$12 = readBuffer2(reader, e$11._0, "entitiesBuffer");
+  if (e$12.TAG !== "Ok") {
+    return e$12;
+  }
+  let entityReader = new bufferreader_default(e$12._0);
+  let e$13 = readRepeated2(e$10._0, () => Entity.parse(entityReader));
+  if (e$13.TAG !== "Ok") {
+    return e$13;
+  }
+  let e$14 = getBytesLeft2(entityReader);
+  if (e$14.TAG !== "Ok") {
+    return e$14;
+  }
+  let e$15 = e$14._0 === 0 ? {
+    TAG: "Ok",
+    _0: void 0
+  } : {
+    TAG: "Error",
+    _0: {
+      context: "Packet_TileSectionSend.entities",
+      error: new Error("Unexpected trailing entity bytes")
+    }
+  };
+  if (e$15.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        height,
+        width,
+        tileX: e$2._0,
+        tileY: e$3._0,
+        tiles,
+        chests: e$7._0,
+        signs: e$9._0,
+        entities: e$13._0
+      }
+    };
+  } else {
+    return e$15;
+  }
+}
 function getLiquidBitFlags(tile) {
   let hasLiquid = isSome(tile.liquid);
   let liquidBits = hasLiquid ? tile.shimmer ? "One" : tile.honey ? "Three" : tile.lava ? "Two" : "One" : "Zero";
@@ -10860,19 +16235,19 @@ function toBuffer64(self) {
   }
   packInt162(innerWriter, self.chests.length, "chestCount");
   self.chests.forEach((chest) => {
-    pack3(innerWriter, chest);
+    Chest.pack(innerWriter, chest);
   });
   packInt162(innerWriter, self.signs.length, "signCount");
   self.signs.forEach((sign) => {
-    pack$12(innerWriter, sign);
+    Sign.pack(innerWriter, sign);
   });
   packInt162(innerWriter, self.entities.length, "entityCount");
   self.entities.forEach((entity) => {
-    pack$22(innerWriter, entity);
+    Entity.pack(innerWriter, entity);
   });
   let innerBuffer = slicedData(innerWriter);
   if (innerBuffer.TAG === "Ok") {
-    let deflatedPayload = Nodezlib.deflateRawSync(innerBuffer._0);
+    let deflatedPayload = Nodezlib2.deflateRawSync(innerBuffer._0);
     return data(packBuffer(outerPacketWriter, deflatedPayload, "deflatedPayload"));
   }
   let e = innerBuffer._0;
@@ -10884,28 +16259,19 @@ function toBuffer64(self) {
     }
   };
 }
-var Chest = {
-  parse: parse65,
-  pack: pack3
-};
-var Sign = {
-  parse: parse$12,
-  pack: pack$12
-};
-var Entity = {
-  parse: parse$22,
-  pack: pack$22
-};
+var Chest2;
+var Sign2;
+var Entity2;
 
-// src/packetv1449/PacketV1449_TileSquareSend.js
-var PacketV1449_TileSquareSend_exports = {};
-__export(PacketV1449_TileSquareSend_exports, {
-  Decode: () => Decode,
-  Encode: () => Encode,
-  parse: () => parse66,
+// src/packet/Packet_TileSquareSend.js
+var Packet_TileSquareSend_exports = {};
+__export(Packet_TileSquareSend_exports, {
+  Decode: () => Decode9,
+  Encode: () => Encode9,
+  parse: () => parse67,
   toBuffer: () => toBuffer65
 });
-function parse66(payload) {
+function parse67(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "tileX");
   if (e.TAG !== "Ok") {
@@ -11185,20 +16551,20 @@ function packTiles(writer, tiles) {
 function toBuffer65(self) {
   return data(packTiles(packByte(packByte(packByte(packInt16(packInt16(setType(make(), toInt("TileSquareSend")), self.tileX, "tileX"), self.tileY, "tileY"), self.width, "width"), self.height, "height"), self.changeType, "changeType"), self.tiles));
 }
-var Decode = {
-  parse: parse66
+var Decode9 = {
+  parse: parse67
 };
-var Encode = {
+var Encode9 = {
   toBuffer: toBuffer65
 };
 
 // src/packetv1449/PacketV1449_TimeSet.js
 var PacketV1449_TimeSet_exports = {};
 __export(PacketV1449_TimeSet_exports, {
-  parse: () => parse67,
+  parse: () => parse68,
   toBuffer: () => toBuffer66
 });
-function parse67(payload) {
+function parse68(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "dayTime");
   if (e.TAG !== "Ok") {
@@ -11231,19 +16597,22 @@ function toBuffer66(self) {
   return data(packInt16(packInt16(packInt32(packByte(setType(make(), toInt("TimeSet")), self.dayTime ? 1 : 0, "dayTime"), self.time, "time"), self.sunModY, "sunModY"), self.moonModY, "moonModY"));
 }
 
-// src/packetv1449/PacketV1449_TravellingMerchantInventory.js
-var PacketV1449_TravellingMerchantInventory_exports = {};
-__export(PacketV1449_TravellingMerchantInventory_exports, {
-  parse: () => parse68,
+// src/packet/Packet_TravellingMerchantInventory.js
+var Packet_TravellingMerchantInventory_exports = {};
+__export(Packet_TravellingMerchantInventory_exports, {
+  Decode: () => Decode10,
+  Encode: () => Encode10,
+  parse: () => parse69,
   toBuffer: () => toBuffer67
 });
-function parse68(payload) {
+function parse69(payload) {
   let reader = new packetreader_default(payload);
   let items = [];
+  let totalItems = payload.length / 2 | 0;
   let readItems = (_idx) => {
     while (true) {
       let idx = _idx;
-      if (idx >= 40) {
+      if (idx >= totalItems) {
         return {
           TAG: "Ok",
           _0: void 0
@@ -11271,6 +16640,10 @@ function parse68(payload) {
     return e;
   }
 }
+var Decode10 = {
+  readInt16,
+  parse: parse69
+};
 function packItems(writer, items) {
   let _writer = writer;
   let _idx = 0;
@@ -11287,26 +16660,25 @@ function packItems(writer, items) {
   ;
 }
 function toBuffer67(self) {
-  if (self.items.length !== 40) {
-    return {
-      TAG: "Error",
-      _0: {
-        context: "Packet_TravellingMerchantInventory.toBuffer",
-        error: new Error("Expected 40 items")
-      }
-    };
-  }
   let writer = setType(make(), toInt("TravellingMerchantInventory"));
   return data(packItems(writer, self.items));
 }
+var Encode10 = {
+  Writer: void 0,
+  packInt16,
+  setType,
+  data,
+  packItems,
+  toBuffer: toBuffer67
+};
 
 // src/packetv1449/PacketV1449_TreeGrowFx.js
 var PacketV1449_TreeGrowFx_exports = {};
 __export(PacketV1449_TreeGrowFx_exports, {
-  parse: () => parse69,
+  parse: () => parse70,
   toBuffer: () => toBuffer68
 });
-function parse69(payload) {
+function parse70(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "action");
   if (e.TAG !== "Ok") {
@@ -11347,9 +16719,9 @@ function toBuffer68(self) {
 // src/packetv1449/PacketV1449_Unused.js
 var PacketV1449_Unused_exports = {};
 __export(PacketV1449_Unused_exports, {
-  parse: () => parse70
+  parse: () => parse71
 });
-function parse70(_payload) {
+function parse71(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
@@ -11359,10 +16731,10 @@ function parse70(_payload) {
 // src/packetv1449/PacketV1449_WallPaint.js
 var PacketV1449_WallPaint_exports = {};
 __export(PacketV1449_WallPaint_exports, {
-  parse: () => parse71,
+  parse: () => parse72,
   toBuffer: () => toBuffer69
 });
-function parse71(payload) {
+function parse72(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -11398,10 +16770,10 @@ function toBuffer69(self) {
 // src/packetv1449/PacketV1449_WeaponsRackTryPlacing.js
 var PacketV1449_WeaponsRackTryPlacing_exports = {};
 __export(PacketV1449_WeaponsRackTryPlacing_exports, {
-  parse: () => parse72,
+  parse: () => parse73,
   toBuffer: () => toBuffer70
 });
-function parse72(payload) {
+function parse73(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -11442,10 +16814,10 @@ function toBuffer70(self) {
 // src/packetv1449/PacketV1449_WiredCannonShot.js
 var PacketV1449_WiredCannonShot_exports = {};
 __export(PacketV1449_WiredCannonShot_exports, {
-  parse: () => parse73,
+  parse: () => parse74,
   toBuffer: () => toBuffer71
 });
-function parse73(payload) {
+function parse74(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "damage");
   if (e.TAG !== "Ok") {
@@ -11496,10 +16868,10 @@ function toBuffer71(self) {
 // src/packetv1449/PacketV1449_WorldDataRequest.js
 var PacketV1449_WorldDataRequest_exports = {};
 __export(PacketV1449_WorldDataRequest_exports, {
-  parse: () => parse74,
+  parse: () => parse75,
   toBuffer: () => toBuffer72
 });
-function parse74(_payload) {
+function parse75(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
@@ -11512,13 +16884,15 @@ function toBuffer72(_self) {
   };
 }
 
-// src/packetv1449/PacketV1449_Zones.js
-var PacketV1449_Zones_exports = {};
-__export(PacketV1449_Zones_exports, {
-  parse: () => parse75,
+// src/packet/Packet_Zones.js
+var Packet_Zones_exports = {};
+__export(Packet_Zones_exports, {
+  Decode: () => Decode11,
+  Encode: () => Encode11,
+  parse: () => parse76,
   toBuffer: () => toBuffer73
 });
-function parse75(payload) {
+function parse76(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -11541,7 +16915,11 @@ function parse75(payload) {
     return e$4;
   }
   let e$5 = readByte(reader, "zone5");
-  if (e$5.TAG === "Ok") {
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = readByte(reader, "townNPCs");
+  if (e$6.TAG === "Ok") {
     return {
       TAG: "Ok",
       _0: {
@@ -11550,24 +16928,887 @@ function parse75(payload) {
         zone2: e$2._0,
         zone3: e$3._0,
         zone4: e$4._0,
-        zone5: e$5._0
+        zone5: e$5._0,
+        townNPCs: e$6._0
       }
     };
   } else {
-    return e$5;
+    return e$6;
   }
 }
+var Decode11 = {
+  readByte,
+  parse: parse76
+};
 function toBuffer73(self) {
-  return data(packByte(packByte(packByte(packByte(packByte(packByte(setType(make(), toInt("Zones")), self.playerId, "playerId"), self.zone1, "zone1"), self.zone2, "zone2"), self.zone3, "zone3"), self.zone4, "zone4"), self.zone5, "zone5"));
+  return data(packByte(packByte(packByte(packByte(packByte(packByte(packByte(setType(make(), toInt("Zones")), self.playerId, "playerId"), self.zone1, "zone1"), self.zone2, "zone2"), self.zone3, "zone3"), self.zone4, "zone4"), self.zone5, "zone5"), self.townNPCs, "townNPCs"));
 }
+var Encode11 = {
+  packByte,
+  setType,
+  data,
+  toBuffer: toBuffer73
+};
+
+// src/packet/Packet_ChestResize.js
+var Packet_ChestResize_exports = {};
+__export(Packet_ChestResize_exports, {
+  Decode: () => Decode12,
+  Encode: () => Encode12,
+  parse: () => parse77,
+  toBuffer: () => toBuffer74
+});
+function parse77(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "chestId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "newSize");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        chestId: e._0,
+        newSize: e$1._0
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+var Decode12 = {
+  readInt16,
+  parse: parse77
+};
+function toBuffer74(self) {
+  return data(packInt16(packInt16(setType(make(), toInt("ChestResize")), self.chestId, "chestId"), self.newSize, "newSize"));
+}
+var Encode12 = {
+  packInt16,
+  setType,
+  data,
+  toBuffer: toBuffer74
+};
+
+// src/packet/Packet_DeadCellsDisplayJarTryPlacing.js
+var Packet_DeadCellsDisplayJarTryPlacing_exports = {};
+__export(Packet_DeadCellsDisplayJarTryPlacing_exports, {
+  Decode: () => Decode13,
+  Encode: () => Encode13,
+  parse: () => parse78,
+  toBuffer: () => toBuffer75
+});
+function parse78(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "x");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "y");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readInt16(reader, "itemType");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readByte(reader, "prefix");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readInt16(reader, "stack");
+  if (e$4.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        x: e._0,
+        y: e$1._0,
+        itemType: e$2._0,
+        prefix: e$3._0,
+        stack: e$4._0
+      }
+    };
+  } else {
+    return e$4;
+  }
+}
+var Decode13 = {
+  readInt16,
+  readByte,
+  parse: parse78
+};
+function toBuffer75(self) {
+  return data(packInt16(packByte(packInt16(packInt16(packInt16(setType(make(), toInt("DeadCellsDisplayJarTryPlacing")), self.x, "x"), self.y, "y"), self.itemType, "itemType"), self.prefix, "prefix"), self.stack, "stack"));
+}
+var Encode13 = {
+  packInt16,
+  packByte,
+  setType,
+  data,
+  toBuffer: toBuffer75
+};
+
+// src/packet/Packet_DebugCommand.js
+var Packet_DebugCommand_exports = {};
+__export(Packet_DebugCommand_exports, {
+  Decode: () => Decode14,
+  Encode: () => Encode14,
+  parse: () => parse79,
+  toBuffer: () => toBuffer76
+});
+function parse79(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readString(reader, "command");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt32(reader, "argInt");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readSingle(reader, "argFloat");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readSingle(reader, "argFloat2");
+  if (e$3.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        command: e._0,
+        argInt: e$1._0,
+        argFloat: e$2._0,
+        argFloat2: e$3._0
+      }
+    };
+  } else {
+    return e$3;
+  }
+}
+var Decode14 = {
+  readString,
+  readInt32,
+  readSingle,
+  parse: parse79
+};
+function toBuffer76(self) {
+  return data(packSingle(packSingle(packInt32(packString(setType(make(), toInt("Unused")), self.command, "command"), self.argInt, "argInt"), self.argFloat, "argFloat"), self.argFloat2, "argFloat2"));
+}
+var Encode14 = {
+  packString,
+  packInt32,
+  packSingle,
+  setType,
+  data,
+  toBuffer: toBuffer76
+};
+
+// src/packet/Packet_HostToken.js
+var Packet_HostToken_exports = {};
+__export(Packet_HostToken_exports, {
+  Decode: () => Decode15,
+  Encode: () => Encode15,
+  parse: () => parse80,
+  toBuffer: () => toBuffer77
+});
+function parse80(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readString(reader, "token");
+  if (e.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        token: e._0
+      }
+    };
+  } else {
+    return e;
+  }
+}
+var Decode15 = {
+  readString,
+  parse: parse80
+};
+function toBuffer77(self) {
+  return data(packString(setType(make(), toInt("HostToken")), self.token, "token"));
+}
+var Encode15 = {
+  packString,
+  setType,
+  data,
+  toBuffer: toBuffer77
+};
+
+// src/packet/Packet_InitialTileSectionsRequest.js
+var Packet_InitialTileSectionsRequest_exports = {};
+__export(Packet_InitialTileSectionsRequest_exports, {
+  Decode: () => Decode16,
+  Encode: () => Encode16,
+  parse: () => parse81,
+  toBuffer: () => toBuffer78
+});
+function parse81(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt32(reader, "x");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt32(reader, "y");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readByte(reader, "team");
+  if (e$2.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        x: e._0,
+        y: e$1._0,
+        team: e$2._0
+      }
+    };
+  } else {
+    return e$2;
+  }
+}
+var Decode16 = {
+  readInt32,
+  readByte,
+  parse: parse81
+};
+function toBuffer78(self) {
+  return data(packByte(packInt32(packInt32(setType(new packetwriter_default(), toInt("InitialTileSectionsRequest")), self.x, "x"), self.y, "y"), self.team, "team"));
+}
+var Encode16 = {
+  toBuffer: toBuffer78
+};
+
+// src/packet/Packet_ItemDropClear.js
+var Packet_ItemDropClear_exports = {};
+__export(Packet_ItemDropClear_exports, {
+  Decode: () => Decode17,
+  Encode: () => Encode17,
+  parse: () => parse82,
+  toBuffer: () => toBuffer79
+});
+function parse82(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "itemDropId");
+  if (e.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        itemDropId: e._0
+      }
+    };
+  } else {
+    return e;
+  }
+}
+var Decode17 = {
+  readInt16,
+  parse: parse82
+};
+function toBuffer79(self) {
+  return data(packInt16(setType(make(), toInt("ItemDropClear")), self.itemDropId, "itemDropId"));
+}
+var Encode17 = {
+  packInt16,
+  setType,
+  data,
+  toBuffer: toBuffer79
+};
+
+// src/packet/Packet_ItemDropPosition.js
+var Packet_ItemDropPosition_exports = {};
+__export(Packet_ItemDropPosition_exports, {
+  Decode: () => Decode18,
+  Encode: () => Encode18,
+  parse: () => parse83,
+  toBuffer: () => toBuffer80
+});
+function parse83(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "itemDropId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readSingle(reader, "positionX");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readSingle(reader, "positionY");
+  if (e$2.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        itemDropId: e._0,
+        position: {
+          x: e$1._0,
+          y: e$2._0
+        }
+      }
+    };
+  } else {
+    return e$2;
+  }
+}
+var Decode18 = {
+  readInt16,
+  readSingle,
+  parse: parse83
+};
+function toBuffer80(self) {
+  return data(packSingle(packSingle(packInt16(setType(make(), toInt("ItemDropPosition")), self.itemDropId, "itemDropId"), self.position.x, "positionX"), self.position.y, "positionY"));
+}
+var Encode18 = {
+  packInt16,
+  packSingle,
+  setType,
+  data,
+  toBuffer: toBuffer80
+};
+
+// src/packet/Packet_ItemForceIntoNearestChest.js
+var Packet_ItemForceIntoNearestChest_exports = {};
+__export(Packet_ItemForceIntoNearestChest_exports, {
+  Decode: () => Decode19,
+  Encode: () => Encode19,
+  parse: () => parse84,
+  toBuffer: () => toBuffer81
+});
+function parse84(payload, fromServer) {
+  let reader = new packetreader_default(payload);
+  if (fromServer) {
+    let e = readInt32(reader, "blockedChestCount");
+    if (e.TAG !== "Ok") {
+      return e;
+    }
+    let count = e._0;
+    let chestIds = [];
+    let readChests = (_idx) => {
+      while (true) {
+        let idx = _idx;
+        if (idx >= count) {
+          return {
+            TAG: "Ok",
+            _0: void 0
+          };
+        }
+        let e2 = readUInt16(reader, `blockedChest` + idx.toString());
+        if (e2.TAG !== "Ok") {
+          return e2;
+        }
+        chestIds.push(e2._0);
+        _idx = idx + 1 | 0;
+        continue;
+      }
+      ;
+    };
+    let e$1 = readChests(0);
+    if (e$1.TAG === "Ok") {
+      return {
+        TAG: "Ok",
+        _0: {
+          TAG: "ServerBlockedChests",
+          _0: {
+            chestIds
+          }
+        }
+      };
+    } else {
+      return e$1;
+    }
+  }
+  let e$2 = readInt32(reader, "slotCount");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let count$1 = e$2._0;
+  let slotIds = [];
+  let readSlots = (_idx) => {
+    while (true) {
+      let idx = _idx;
+      if (idx >= count$1) {
+        return {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      let e = readInt16(reader, `slot` + idx.toString());
+      if (e.TAG !== "Ok") {
+        return e;
+      }
+      slotIds.push(e._0);
+      _idx = idx + 1 | 0;
+      continue;
+    }
+    ;
+  };
+  let e$3 = readSlots(0);
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readByte(reader, "smartStack");
+  if (e$4.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "ClientRequest",
+        _0: {
+          slotIds,
+          smartStack: e$4._0 !== 0
+        }
+      }
+    };
+  } else {
+    return e$4;
+  }
+}
+var Decode19 = {
+  readInt16,
+  readUInt16,
+  readInt32,
+  readByte,
+  parse: parse84
+};
+function packSlotIds(writer, slotIds) {
+  let writer$1 = packInt32(writer, slotIds.length, "slotCount");
+  slotIds.forEach((slotId, idx) => {
+    packInt16(writer$1, slotId, `slot` + idx.toString());
+  });
+  return writer$1;
+}
+function packChestIds(writer, chestIds) {
+  let writer$1 = packInt32(writer, chestIds.length, "blockedChestCount");
+  chestIds.forEach((chestId, idx) => {
+    packUInt16(writer$1, chestId, `blockedChest` + idx.toString());
+  });
+  return writer$1;
+}
+function toBuffer81(self) {
+  let writer = setType(make(), toInt("ItemForceIntoNearestChest"));
+  if (self.TAG !== "ClientRequest") {
+    return data(packChestIds(writer, self._0.chestIds));
+  }
+  let match = self._0;
+  return data(packByte(packSlotIds(writer, match.slotIds), match.smartStack ? 1 : 0, "smartStack"));
+}
+var Encode19 = {
+  Writer: void 0,
+  packInt16,
+  packUInt16,
+  packInt32,
+  packByte,
+  setType,
+  data,
+  packSlotIds,
+  packChestIds,
+  toBuffer: toBuffer81
+};
+
+// src/packet/Packet_LeashedEntityAnchorInsertItem.js
+var Packet_LeashedEntityAnchorInsertItem_exports = {};
+__export(Packet_LeashedEntityAnchorInsertItem_exports, {
+  Decode: () => Decode20,
+  Encode: () => Encode20,
+  parse: () => parse85,
+  toBuffer: () => toBuffer82
+});
+function parse85(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "x");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "y");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readInt16(reader, "itemType");
+  if (e$2.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        x: e._0,
+        y: e$1._0,
+        itemType: e$2._0
+      }
+    };
+  } else {
+    return e$2;
+  }
+}
+var Decode20 = {
+  readInt16,
+  parse: parse85
+};
+function toBuffer82(self) {
+  return data(packInt16(packInt16(packInt16(setType(make(), toInt("LeashedEntityAnchorInsertItem")), self.x, "x"), self.y, "y"), self.itemType, "itemType"));
+}
+var Encode20 = {
+  packInt16,
+  setType,
+  data,
+  toBuffer: toBuffer82
+};
+
+// src/packet/Packet_NpcHurtByDebuff.js
+var Packet_NpcHurtByDebuff_exports = {};
+__export(Packet_NpcHurtByDebuff_exports, {
+  Decode: () => Decode21,
+  Encode: () => Encode21,
+  parse: () => parse86,
+  toBuffer: () => toBuffer83
+});
+function parse86(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "npcId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "debuffId");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        npcId: e._0,
+        debuffId: e$1._0
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+var Decode21 = {
+  readByte,
+  readInt16,
+  parse: parse86
+};
+function toBuffer83(self) {
+  return data(packInt16(packByte(setType(make(), toInt("NpcHurtByDebuff")), self.npcId, "npcId"), self.debuffId, "debuffId"));
+}
+var Encode21 = {
+  packByte,
+  packInt16,
+  setType,
+  data,
+  toBuffer: toBuffer83
+};
+
+// src/packet/Packet_Ping.js
+var Packet_Ping_exports = {};
+__export(Packet_Ping_exports, {
+  Decode: () => Decode22,
+  Encode: () => Encode22,
+  parse: () => parse87,
+  toBuffer: () => toBuffer84
+});
+function parse87(_payload) {
+  return {
+    TAG: "Ok",
+    _0: void 0
+  };
+}
+var Decode22 = {
+  parse: parse87
+};
+function toBuffer84(_self) {
+  return data(setType(make(), toInt("Ping")));
+}
+var Encode22 = {
+  setType,
+  data,
+  toBuffer: toBuffer84
+};
+
+// src/packet/Packet_PlayerItemUseSound.js
+var Packet_PlayerItemUseSound_exports = {};
+__export(Packet_PlayerItemUseSound_exports, {
+  Decode: () => Decode23,
+  Encode: () => Encode23,
+  parse: () => parse88,
+  toBuffer: () => toBuffer85
+});
+function parse88(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0
+      }
+    };
+  } else {
+    return e;
+  }
+}
+var Decode23 = {
+  readByte,
+  parse: parse88
+};
+function toBuffer85(self) {
+  return data(packByte(setType(make(), toInt("PlayerItemUseSound")), self.playerId, "playerId"));
+}
+var Encode23 = {
+  packByte,
+  setType,
+  data,
+  toBuffer: toBuffer85
+};
+
+// src/packet/Packet_PlayerLuckFactorsUpdate.js
+var Packet_PlayerLuckFactorsUpdate_exports = {};
+__export(Packet_PlayerLuckFactorsUpdate_exports, {
+  Decode: () => Decode24,
+  Encode: () => Encode24,
+  parse: () => parse89,
+  toBuffer: () => toBuffer86
+});
+function parse89(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt32(reader, "ladyBugLuckTimeLeft");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readSingle(reader, "torchLuck");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readByte(reader, "luckPotion");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readByte(reader, "hasGardenGnomeNearby");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let hasGardenGnomeNearby = e$4._0 === 1;
+  let e$5 = readByte(reader, "brokenMirrorBadLuck");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let brokenMirrorBadLuck = e$5._0 === 1;
+  let e$6 = readSingle(reader, "equipmentBasedLuckBonus");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let e$7 = readSingle(reader, "coinLuck");
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let e$8 = readByte(reader, "kiteLuckLevel");
+  if (e$8.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        ladyBugLuckTimeLeft: e$1._0,
+        torchLuck: e$2._0,
+        luckPotion: e$3._0,
+        hasGardenGnomeNearby,
+        brokenMirrorBadLuck,
+        equipmentBasedLuckBonus: e$6._0,
+        coinLuck: e$7._0,
+        kiteLuckLevel: e$8._0
+      }
+    };
+  } else {
+    return e$8;
+  }
+}
+var Decode24 = {
+  readInt32,
+  readByte,
+  readSingle,
+  parse: parse89
+};
+function toBuffer86(self) {
+  return data(packByte(packSingle(packSingle(packByte(packByte(packByte(packSingle(packInt32(packByte(setType(make(), toInt("PlayerLuckFactorsUpdate")), self.playerId, "playerId"), self.ladyBugLuckTimeLeft, "ladyBugLuckTimeLeft"), self.torchLuck, "torchLuck"), self.luckPotion, "luckPotion"), self.hasGardenGnomeNearby ? 1 : 0, "hasGardenGnomeNearby"), self.brokenMirrorBadLuck ? 1 : 0, "brokenMirrorBadLuck"), self.equipmentBasedLuckBonus, "equipmentBasedLuckBonus"), self.coinLuck, "coinLuck"), self.kiteLuckLevel, "kiteLuckLevel"));
+}
+var Encode24 = {
+  packByte,
+  packInt32,
+  packSingle,
+  setType,
+  data,
+  toBuffer: toBuffer86
+};
+
+// src/packet/Packet_PlayerSpectate.js
+var Packet_PlayerSpectate_exports = {};
+__export(Packet_PlayerSpectate_exports, {
+  Decode: () => Decode25,
+  Encode: () => Encode25,
+  parse: () => parse90,
+  toBuffer: () => toBuffer87
+});
+function parse90(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "targetPlayerId");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        targetPlayerId: e$1._0
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+var Decode25 = {
+  readByte,
+  readInt16,
+  parse: parse90
+};
+function toBuffer87(self) {
+  return data(packInt16(packByte(setType(make(), toInt("PlayerSpectate")), self.playerId, "playerId"), self.targetPlayerId, "targetPlayerId"));
+}
+var Encode25 = {
+  packByte,
+  packInt16,
+  setType,
+  data,
+  toBuffer: toBuffer87
+};
+
+// src/packet/Packet_PlayerTeamSwapSpawn.js
+var Packet_PlayerTeamSwapSpawn_exports = {};
+__export(Packet_PlayerTeamSwapSpawn_exports, {
+  Decode: () => Decode26,
+  Encode: () => Encode26,
+  parse: () => parse91,
+  toBuffer: () => toBuffer88
+});
+function parse91(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0
+      }
+    };
+  } else {
+    return e;
+  }
+}
+var Decode26 = {
+  readByte,
+  parse: parse91
+};
+function toBuffer88(self) {
+  return data(packByte(setType(make(), toInt("PlayerTeamSwapSpawn")), self.playerId, "playerId"));
+}
+var Encode26 = {
+  packByte,
+  setType,
+  data,
+  toBuffer: toBuffer88
+};
+
+// src/packet/Packet_PlayerTeamUpdate.js
+var Packet_PlayerTeamUpdate_exports = {};
+__export(Packet_PlayerTeamUpdate_exports, {
+  Decode: () => Decode27,
+  Encode: () => Encode27,
+  parse: () => parse92,
+  toBuffer: () => toBuffer89
+});
+function parse92(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readByte(reader, "team");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        team: e$1._0
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+var Decode27 = {
+  readByte,
+  parse: parse92
+};
+function toBuffer89(self) {
+  return data(packByte(packByte(setType(make(), toInt("PlayerTeamUpdate")), self.playerId, "playerId"), self.team, "team"));
+}
+var Encode27 = {
+  packByte,
+  setType,
+  data,
+  toBuffer: toBuffer89
+};
+
+// src/packet/Packet_SectionRequest.js
+var Packet_SectionRequest_exports = {};
+__export(Packet_SectionRequest_exports, {
+  Decode: () => Decode28,
+  Encode: () => Encode28,
+  parse: () => parse93,
+  toBuffer: () => toBuffer90
+});
+function parse93(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readUInt16(reader, "sectionX");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readUInt16(reader, "sectionY");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        sectionX: e._0,
+        sectionY: e$1._0
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+var Decode28 = {
+  readUInt16,
+  parse: parse93
+};
+function toBuffer90(self) {
+  return data(packUInt16(packUInt16(setType(make(), toInt("SectionRequest")), self.sectionX, "sectionX"), self.sectionY, "sectionY"));
+}
+var Encode28 = {
+  packUInt16,
+  setType,
+  data,
+  toBuffer: toBuffer90
+};
 
 // src/packetv1449/PacketV1449_PlayerSlotSet.js
 var PacketV1449_PlayerSlotSet_exports = {};
 __export(PacketV1449_PlayerSlotSet_exports, {
-  parse: () => parse76,
-  toBuffer: () => toBuffer74
+  parse: () => parse94,
+  toBuffer: () => toBuffer91
 });
-function parse76(payload) {
+function parse94(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerSlotId");
   if (e.TAG !== "Ok") {
@@ -11586,17 +17827,19 @@ function parse76(payload) {
     return e$1;
   }
 }
-function toBuffer74(self) {
+function toBuffer91(self) {
   return data(packByte(packByte(setType(make(), toInt("PlayerSlotSet")), self.playerSlotId, "playerSlotId"), self.serverWantsToRunCheckBytesInClientLoopThread ? 1 : 0, "serverWantsToRunCheckBytesInClientLoopThread"));
 }
 
-// src/packetv1449/PacketV1449_PlayerUpdate.js
-var PacketV1449_PlayerUpdate_exports = {};
-__export(PacketV1449_PlayerUpdate_exports, {
-  parse: () => parse77,
-  toBuffer: () => toBuffer75
+// src/packet/Packet_PlayerUpdate.js
+var Packet_PlayerUpdate_exports = {};
+__export(Packet_PlayerUpdate_exports, {
+  Decode: () => Decode29,
+  Encode: () => Encode29,
+  parse: () => parse95,
+  toBuffer: () => toBuffer92
 });
-function parse77(payload) {
+function parse95(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -11640,7 +17883,7 @@ function parse77(payload) {
   let pulleyDirection = flag1(miscFlags1) ? flag2(miscFlags1) ? "Two" : "One" : void 0;
   let vortexStealthActive = flag4(miscFlags1);
   let gravityDirection = flag5(miscFlags1) ? "Normal" : "Inverted";
-  let shouldGuard = flag6(miscFlags1);
+  let shieldRaised = flag6(miscFlags1);
   let ghost = flag7(miscFlags1);
   let e$5 = readByte(reader, "selectedItem");
   if (e$5.TAG !== "Ok") {
@@ -11685,36 +17928,12 @@ function parse77(payload) {
     return e$8;
   }
   let e$11;
-  if (flag7(miscFlags2)) {
-    let e$12 = readSingle(reader, "potionOfReturnOrigX");
-    if (e$12.TAG === "Ok") {
-      let e$13 = readSingle(reader, "potionOfReturnOrigY");
-      if (e$13.TAG === "Ok") {
-        let e$14 = readSingle(reader, "potionOfReturnHomeX");
-        if (e$14.TAG === "Ok") {
-          let e$15 = readSingle(reader, "potionOfReturnHomeY");
-          e$11 = e$15.TAG === "Ok" ? {
-            TAG: "Ok",
-            _0: {
-              originalUsePosition: {
-                x: e$12._0,
-                y: e$13._0
-              },
-              homePosition: {
-                x: e$14._0,
-                y: e$15._0
-              }
-            }
-          } : e$15;
-        } else {
-          e$11 = e$14;
-        }
-      } else {
-        e$11 = e$13;
-      }
-    } else {
-      e$11 = e$12;
-    }
+  if (flag8(miscFlags1)) {
+    let e$12 = readUInt16(reader, "mountType");
+    e$11 = e$12.TAG === "Ok" ? {
+      TAG: "Ok",
+      _0: e$12._0
+    } : e$12;
   } else {
     e$11 = {
       TAG: "Ok",
@@ -11724,6 +17943,46 @@ function parse77(payload) {
   if (e$11.TAG !== "Ok") {
     return e$11;
   }
+  let e$13;
+  if (flag7(miscFlags2)) {
+    let e$14 = readSingle(reader, "potionOfReturnOrigX");
+    if (e$14.TAG === "Ok") {
+      let e$15 = readSingle(reader, "potionOfReturnOrigY");
+      if (e$15.TAG === "Ok") {
+        let e$16 = readSingle(reader, "potionOfReturnHomeX");
+        if (e$16.TAG === "Ok") {
+          let e$17 = readSingle(reader, "potionOfReturnHomeY");
+          e$13 = e$17.TAG === "Ok" ? {
+            TAG: "Ok",
+            _0: {
+              originalUsePosition: {
+                x: e$14._0,
+                y: e$15._0
+              },
+              homePosition: {
+                x: e$16._0,
+                y: e$17._0
+              }
+            }
+          } : e$17;
+        } else {
+          e$13 = e$16;
+        }
+      } else {
+        e$13 = e$15;
+      }
+    } else {
+      e$13 = e$14;
+    }
+  } else {
+    e$13 = {
+      TAG: "Ok",
+      _0: void 0
+    };
+  }
+  if (e$13.TAG !== "Ok") {
+    return e$13;
+  }
   let tryKeepingHoveringUp = flag1(miscFlags2);
   let isVoidVaultEnabled = flag2(miscFlags2);
   let isSitting = flag3(miscFlags2);
@@ -11732,6 +17991,35 @@ function parse77(payload) {
   let isTheAnimalBeingPetSmall = flag6(miscFlags2);
   let tryKeepingHoveringDown = flag8(miscFlags2);
   let isSleeping = flag1(miscFlags3);
+  let autoReuseAllWeapons = flag2(miscFlags3);
+  let controlDownHold = flag3(miscFlags3);
+  let isOperatingAnotherEntity = flag4(miscFlags3);
+  let controlUseTile = flag5(miscFlags3);
+  let e$18;
+  if (flag6(miscFlags3)) {
+    let e$19 = readSingle(reader, "netCameraTargetX");
+    if (e$19.TAG === "Ok") {
+      let e$20 = readSingle(reader, "netCameraTargetY");
+      e$18 = e$20.TAG === "Ok" ? {
+        TAG: "Ok",
+        _0: {
+          x: e$19._0,
+          y: e$20._0
+        }
+      } : e$20;
+    } else {
+      e$18 = e$19;
+    }
+  } else {
+    e$18 = {
+      TAG: "Ok",
+      _0: void 0
+    };
+  }
+  if (e$18.TAG !== "Ok") {
+    return e$18;
+  }
+  let lastItemUseAttemptSuccess = flag7(miscFlags3);
   return {
     TAG: "Ok",
     _0: {
@@ -11741,12 +18029,13 @@ function parse77(payload) {
       pulleyDirection,
       vortexStealthActive,
       gravityDirection,
-      shouldGuard,
+      shieldRaised,
       ghost,
       selectedItem: e$5._0,
       position,
       velocity: e$8._0,
-      potionOfReturn: e$11._0,
+      mountType: e$11._0,
+      potionOfReturn: e$13._0,
       tryKeepingHoveringUp,
       isVoidVaultEnabled,
       isSitting,
@@ -11754,31 +18043,50 @@ function parse77(payload) {
       isPettingAnimal,
       isTheAnimalBeingPetSmall,
       tryKeepingHoveringDown,
-      isSleeping
+      isSleeping,
+      autoReuseAllWeapons,
+      controlDownHold,
+      isOperatingAnotherEntity,
+      controlUseTile,
+      netCameraTarget: e$18._0,
+      lastItemUseAttemptSuccess
     }
   };
 }
+var Decode29 = {
+  readByte,
+  readSingle,
+  readUInt16,
+  parse: parse95
+};
 function packControlFlags(writer, control, direction) {
   let tmp;
   tmp = direction !== "Left";
   return packByte(writer, toByte(fromFlags(control.isHoldingUp, control.isHoldingDown, control.isHoldingLeft, control.isHoldingRight, control.isHoldingJump, control.isHoldingItemUse, tmp, false)), "controlFlags");
 }
-function packMiscFlags1(writer, pulleyDirection, velocity, vortexStealthActive, gravityDirection, shouldGuard, ghost) {
+function packMiscFlags1(writer, pulleyDirection, velocity, vortexStealthActive, gravityDirection, shieldRaised, ghost, mountType) {
   let tmp;
   tmp = pulleyDirection !== void 0 ? pulleyDirection !== "One" : false;
   let tmp$1;
   tmp$1 = gravityDirection === "Normal";
-  return packByte(writer, toByte(fromFlags(pulleyDirection !== void 0, tmp, velocity !== void 0, vortexStealthActive, tmp$1, shouldGuard, ghost, false)), "miscFlags1");
+  return packByte(writer, toByte(fromFlags(pulleyDirection !== void 0, tmp, velocity !== void 0, vortexStealthActive, tmp$1, shieldRaised, ghost, isSome(mountType))), "miscFlags1");
 }
 function packMiscFlags2(writer, tryKeepingHoveringUp, isVoidVaultEnabled, isSitting, hasFinishedAnyDd2Event, isPettingAnimal, isTheAnimalBeingPetSmall, potionOfReturn, tryKeepingHoveringDown) {
   return packByte(writer, toByte(fromFlags(tryKeepingHoveringUp, isVoidVaultEnabled, isSitting, hasFinishedAnyDd2Event, isPettingAnimal, isTheAnimalBeingPetSmall, potionOfReturn !== void 0, tryKeepingHoveringDown)), "miscFlags2");
 }
-function packMiscFlags3(writer, isSleeping) {
-  return packByte(writer, toByte(fromFlags(isSleeping, false, false, false, false, false, false, false)), "miscFlags3");
+function packMiscFlags3(writer, isSleeping, autoReuseAllWeapons, controlDownHold, isOperatingAnotherEntity, controlUseTile, netCameraTarget, lastItemUseAttemptSuccess) {
+  return packByte(writer, toByte(fromFlags(isSleeping, autoReuseAllWeapons, controlDownHold, isOperatingAnotherEntity, controlUseTile, isSome(netCameraTarget), lastItemUseAttemptSuccess, false)), "miscFlags3");
 }
 function packVelocity(writer, velocity) {
   if (velocity !== void 0) {
     return packSingle(packSingle(writer, velocity.x, "velocityX"), velocity.y, "velocityY");
+  } else {
+    return writer;
+  }
+}
+function packMountType(writer, mountType) {
+  if (mountType !== void 0) {
+    return packUInt16(writer, mountType, "mountType");
   } else {
     return writer;
   }
@@ -11790,15 +18098,41 @@ function packPotionOfReturn(writer, potionOfReturn) {
     return writer;
   }
 }
-function toBuffer75(self) {
-  return data(packPotionOfReturn(packVelocity(packSingle(packSingle(packByte(packMiscFlags3(packMiscFlags2(packMiscFlags1(packControlFlags(packByte(setType(make(), toInt("PlayerUpdate")), self.playerId, "playerId"), self.control, self.direction), self.pulleyDirection, self.velocity, self.vortexStealthActive, self.gravityDirection, self.shouldGuard, self.ghost), self.tryKeepingHoveringUp, self.isVoidVaultEnabled, self.isSitting, self.hasFinishedAnyDd2Event, self.isPettingAnimal, self.isTheAnimalBeingPetSmall, self.potionOfReturn, self.tryKeepingHoveringDown), self.isSleeping), self.selectedItem, "selectedItem"), self.position.x, "positionX"), self.position.y, "positionY"), self.velocity), self.potionOfReturn));
+function packNetCameraTarget(writer, netCameraTarget) {
+  if (netCameraTarget !== void 0) {
+    return packSingle(packSingle(writer, netCameraTarget.x, "netCameraTargetX"), netCameraTarget.y, "netCameraTargetY");
+  } else {
+    return writer;
+  }
 }
+function toBuffer92(self) {
+  return data(packNetCameraTarget(packPotionOfReturn(packMountType(packVelocity(packSingle(packSingle(packByte(packMiscFlags3(packMiscFlags2(packMiscFlags1(packControlFlags(packByte(setType(make(), toInt("PlayerUpdate")), self.playerId, "playerId"), self.control, self.direction), self.pulleyDirection, self.velocity, self.vortexStealthActive, self.gravityDirection, self.shieldRaised, self.ghost, self.mountType), self.tryKeepingHoveringUp, self.isVoidVaultEnabled, self.isSitting, self.hasFinishedAnyDd2Event, self.isPettingAnimal, self.isTheAnimalBeingPetSmall, self.potionOfReturn, self.tryKeepingHoveringDown), self.isSleeping, self.autoReuseAllWeapons, self.controlDownHold, self.isOperatingAnotherEntity, self.controlUseTile, self.netCameraTarget, self.lastItemUseAttemptSuccess), self.selectedItem, "selectedItem"), self.position.x, "positionX"), self.position.y, "positionY"), self.velocity), self.mountType), self.potionOfReturn), self.netCameraTarget));
+}
+var Encode29 = {
+  packByte,
+  packSingle,
+  packUInt16,
+  setType,
+  data,
+  packControlFlags,
+  packMiscFlags1,
+  packMiscFlags2,
+  packMiscFlags3,
+  packVelocity,
+  packMountType,
+  packPotionOfReturn,
+  packNetCameraTarget,
+  toBuffer: toBuffer92
+};
 
-// src/packetv1449/PacketV1449_PlayerInfo.js
-var PacketV1449_PlayerInfo_exports = {};
-__export(PacketV1449_PlayerInfo_exports, {
-  parse: () => parse78,
-  toBuffer: () => toBuffer76
+// src/packet/Packet_PlayerInfo.js
+var Packet_PlayerInfo_exports = {};
+__export(Packet_PlayerInfo_exports, {
+  Color: () => Color,
+  Decode: () => Decode30,
+  Encode: () => Encode30,
+  parse: () => parse96,
+  toBuffer: () => toBuffer93
 });
 function getDifficulty(difficultyFlags) {
   if (flag2(difficultyFlags)) {
@@ -11809,7 +18143,7 @@ function getDifficulty(difficultyFlags) {
     return "Softcore";
   }
 }
-function parse78(payload) {
+function parse96(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -11819,68 +18153,76 @@ function parse78(payload) {
   if (e$1.TAG !== "Ok") {
     return e$1;
   }
-  let e$2 = readByte(reader, "hair");
+  let e$2 = readByte(reader, "voiceVariant");
   if (e$2.TAG !== "Ok") {
     return e$2;
   }
-  let e$3 = readString(reader, "name");
+  let e$3 = readSingle(reader, "voicePitchOffset");
   if (e$3.TAG !== "Ok") {
     return e$3;
   }
-  let e$4 = readByte(reader, "hairDye");
+  let e$4 = readByte(reader, "hair");
   if (e$4.TAG !== "Ok") {
     return e$4;
   }
-  let e$5 = readByte(reader, "hideVisuals");
+  let e$5 = readString(reader, "name");
   if (e$5.TAG !== "Ok") {
     return e$5;
   }
-  let e$6 = readByte(reader, "hideVisuals2");
+  let e$6 = readByte(reader, "hairDye");
   if (e$6.TAG !== "Ok") {
     return e$6;
   }
-  let e$7 = readByte(reader, "hideMisc");
+  let e$7 = readByte(reader, "hideVisuals");
   if (e$7.TAG !== "Ok") {
     return e$7;
   }
-  let e$8 = readColor(reader, "hairColor");
+  let e$8 = readByte(reader, "hideVisuals2");
   if (e$8.TAG !== "Ok") {
     return e$8;
   }
-  let e$9 = readColor(reader, "skinColor");
+  let e$9 = readByte(reader, "hideMisc");
   if (e$9.TAG !== "Ok") {
     return e$9;
   }
-  let e$10 = readColor(reader, "eyeColor");
+  let e$10 = readColor(reader, "hairColor");
   if (e$10.TAG !== "Ok") {
     return e$10;
   }
-  let e$11 = readColor(reader, "shirtColor");
+  let e$11 = readColor(reader, "skinColor");
   if (e$11.TAG !== "Ok") {
     return e$11;
   }
-  let e$12 = readColor(reader, "underShirtColor");
+  let e$12 = readColor(reader, "eyeColor");
   if (e$12.TAG !== "Ok") {
     return e$12;
   }
-  let e$13 = readColor(reader, "pantsColor");
+  let e$13 = readColor(reader, "shirtColor");
   if (e$13.TAG !== "Ok") {
     return e$13;
   }
-  let e$14 = readColor(reader, "shoeColor");
+  let e$14 = readColor(reader, "underShirtColor");
   if (e$14.TAG !== "Ok") {
     return e$14;
   }
-  let e$15 = readByte(reader, "difficultyFlags");
+  let e$15 = readColor(reader, "pantsColor");
   if (e$15.TAG !== "Ok") {
     return e$15;
   }
-  let difficultyFlags = fromByte(e$15._0);
-  let e$16 = readByte(reader, "torchFlags");
+  let e$16 = readColor(reader, "shoeColor");
   if (e$16.TAG !== "Ok") {
     return e$16;
   }
-  let torchFlags = fromByte(e$16._0);
+  let e$17 = readByte(reader, "difficultyFlags");
+  if (e$17.TAG !== "Ok") {
+    return e$17;
+  }
+  let difficultyFlags = fromByte(e$17._0);
+  let e$18 = readByte(reader, "torchFlags");
+  if (e$18.TAG !== "Ok") {
+    return e$18;
+  }
+  let torchFlags = fromByte(e$18._0);
   let difficulty = getDifficulty(difficultyFlags);
   let extraAccessory = flag3(difficultyFlags);
   let mode = flag4(difficultyFlags) ? "Journey" : "Classic";
@@ -11889,16 +18231,16 @@ function parse78(payload) {
   let unlockedBiomeTorches = flag3(torchFlags);
   let unlockedSuperCart = flag4(torchFlags);
   let enabledSuperCart = flag5(torchFlags);
-  let e$17 = readByte(reader, "usedFlags");
-  let e$18;
-  e$18 = e$17.TAG === "Ok" ? {
+  let e$19 = readByte(reader, "usedFlags");
+  let e$20;
+  e$20 = e$19.TAG === "Ok" ? {
     TAG: "Ok",
-    _0: fromByte(e$17._0)
-  } : e$17;
-  if (e$18.TAG !== "Ok") {
-    return e$18;
+    _0: fromByte(e$19._0)
+  } : e$19;
+  if (e$20.TAG !== "Ok") {
+    return e$20;
   }
-  let usedFlags = e$18._0;
+  let usedFlags = e$20._0;
   let usedAegisCrystal = flag1(usedFlags);
   let usedAegisFruit = flag2(usedFlags);
   let usedArcaneCrystal = flag3(usedFlags);
@@ -11911,19 +18253,21 @@ function parse78(payload) {
     _0: {
       playerId: e._0,
       skinVariant: e$1._0,
-      hair: e$2._0,
-      name: e$3._0,
-      hairDye: e$4._0,
-      hideVisuals: e$5._0,
-      hideVisuals2: e$6._0,
-      hideMisc: e$7._0,
-      hairColor: e$8._0,
-      skinColor: e$9._0,
-      eyeColor: e$10._0,
-      shirtColor: e$11._0,
-      underShirtColor: e$12._0,
-      pantsColor: e$13._0,
-      shoeColor: e$14._0,
+      voiceVariant: e$2._0,
+      voicePitchOffset: e$3._0,
+      hair: e$4._0,
+      name: e$5._0,
+      hairDye: e$6._0,
+      hideVisuals: e$7._0,
+      hideVisuals2: e$8._0,
+      hideMisc: e$9._0,
+      hairColor: e$10._0,
+      skinColor: e$11._0,
+      eyeColor: e$12._0,
+      shirtColor: e$13._0,
+      underShirtColor: e$14._0,
+      pantsColor: e$15._0,
+      shoeColor: e$16._0,
       difficulty,
       mode,
       extraAccessory,
@@ -11942,6 +18286,14 @@ function parse78(payload) {
     }
   };
 }
+var Decode30 = {
+  readSingle,
+  readByte,
+  readString,
+  readColor,
+  getDifficulty,
+  parse: parse96
+};
 function packDifficultyFlags(writer, difficulty, extraAccessory, mode) {
   let byte = 0;
   let tmp;
@@ -11981,17 +18333,32 @@ function packUsedFlags(writer, usedAegisCrystal, usedAegisFruit, usedArcaneCryst
   byte = byte | (ateArtisanBread ? 64 : 0);
   return packByte(writer, byte, "usedFlags");
 }
-function toBuffer76(self) {
-  return data(packUsedFlags(packTorchFlags(packDifficultyFlags(packColor(packColor(packColor(packColor(packColor(packColor(packColor(packByte(packByte(packByte(packByte(packString(packByte(packByte(packByte(setType(make(), toInt("PlayerInfo")), self.playerId, "playerId"), self.skinVariant, "skinVariant"), self.hair, "hair"), self.name, "name"), self.hairDye, "hairDye"), self.hideVisuals, "hideVisuals"), self.hideVisuals2, "hideVisuals2"), self.hideMisc, "hideMisc"), self.hairColor, "hairColor"), self.skinColor, "skinColor"), self.eyeColor, "eyeColor"), self.shirtColor, "shirtColor"), self.underShirtColor, "underShirtColor"), self.pantsColor, "pantsColor"), self.shoeColor, "shoeColor"), self.difficulty, self.extraAccessory, self.mode), self.usingBiomeTorches, self.happyFunTorchTime, self.unlockedBiomeTorches, self.unlockedSuperCart, self.enabledSuperCart), self.usedAegisCrystal, self.usedAegisFruit, self.usedArcaneCrystal, self.usedGalaxyPearl, self.usedGummyWorm, self.usedAmbrosia, self.ateArtisanBread));
+function toBuffer93(self) {
+  return data(packUsedFlags(packTorchFlags(packDifficultyFlags(packColor(packColor(packColor(packColor(packColor(packColor(packColor(packByte(packByte(packByte(packByte(packString(packByte(packSingle(packByte(packByte(packByte(setType(make(), toInt("PlayerInfo")), self.playerId, "playerId"), self.skinVariant, "skinVariant"), self.voiceVariant, "voiceVariant"), self.voicePitchOffset, "voicePitchOffset"), self.hair, "hair"), self.name, "name"), self.hairDye, "hairDye"), self.hideVisuals, "hideVisuals"), self.hideVisuals2, "hideVisuals2"), self.hideMisc, "hideMisc"), self.hairColor, "hairColor"), self.skinColor, "skinColor"), self.eyeColor, "eyeColor"), self.shirtColor, "shirtColor"), self.underShirtColor, "underShirtColor"), self.pantsColor, "pantsColor"), self.shoeColor, "shoeColor"), self.difficulty, self.extraAccessory, self.mode), self.usingBiomeTorches, self.happyFunTorchTime, self.unlockedBiomeTorches, self.unlockedSuperCart, self.enabledSuperCart), self.usedAegisCrystal, self.usedAegisFruit, self.usedArcaneCrystal, self.usedGalaxyPearl, self.usedGummyWorm, self.usedAmbrosia, self.ateArtisanBread));
 }
+var Encode30 = {
+  packSingle,
+  packByte,
+  packString,
+  packColor,
+  setType,
+  data,
+  packDifficultyFlags,
+  packTorchFlags,
+  packUsedFlags,
+  toBuffer: toBuffer93
+};
+var Color;
 
-// src/packetv1449/PacketV1449_PlayerSpawn.js
-var PacketV1449_PlayerSpawn_exports = {};
-__export(PacketV1449_PlayerSpawn_exports, {
-  parse: () => parse79,
-  toBuffer: () => toBuffer77
+// src/packet/Packet_PlayerSpawn.js
+var Packet_PlayerSpawn_exports = {};
+__export(Packet_PlayerSpawn_exports, {
+  Decode: () => Decode31,
+  Encode: () => Encode31,
+  parse: () => parse97,
+  toBuffer: () => toBuffer94
 });
-function parse79(payload) {
+function parse97(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -12017,12 +18384,17 @@ function parse79(payload) {
   if (e$5.TAG !== "Ok") {
     return e$5;
   }
-  let e$6 = readByte(reader, "context");
+  let e$6 = readByte(reader, "team");
   if (e$6.TAG !== "Ok") {
     return e$6;
   }
+  let e$7 = readByte(reader, "context");
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let rawContext = e$7._0;
   let context;
-  switch (e$6._0) {
+  switch (rawContext) {
     case 0:
       context = "ReviveFromDeath";
       break;
@@ -12032,56 +18404,71 @@ function parse79(payload) {
     case 2:
       context = "RecallFromItem";
       break;
+    case 3:
+      context = "TeamSwap";
+      break;
     default:
-      context = void 0;
+      context = {
+        TAG: "Unknown",
+        _0: rawContext
+      };
   }
-  if (context !== void 0) {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0,
-        x: e$1._0,
-        y: e$2._0,
-        timeRemaining: e$3._0,
-        numberOfDeathsPve: e$4._0,
-        numberOfDeathsPvp: e$5._0,
-        context
-      }
-    };
-  } else {
-    return {
-      TAG: "Error",
-      _0: {
-        context: "PlayerSpawn.parse.context",
-        error: new Error("Unknown context")
-      }
-    };
-  }
+  return {
+    TAG: "Ok",
+    _0: {
+      playerId: e._0,
+      x: e$1._0,
+      y: e$2._0,
+      timeRemaining: e$3._0,
+      numberOfDeathsPve: e$4._0,
+      numberOfDeathsPvp: e$5._0,
+      team: e$6._0,
+      context
+    }
+  };
 }
-function toBuffer77(self) {
-  let match = self.context;
+var Decode31 = {
+  readByte,
+  readInt16,
+  readInt32,
+  parse: parse97
+};
+function toBuffer94(self) {
+  let n = self.context;
   let tmp;
-  switch (match) {
-    case "ReviveFromDeath":
-      tmp = 0;
-      break;
-    case "SpawningIntoWorld":
-      tmp = 1;
-      break;
-    case "RecallFromItem":
-      tmp = 2;
-      break;
+  if (typeof n !== "object") {
+    switch (n) {
+      case "ReviveFromDeath":
+        tmp = 0;
+        break;
+      case "SpawningIntoWorld":
+        tmp = 1;
+        break;
+      case "RecallFromItem":
+        tmp = 2;
+        break;
+      case "TeamSwap":
+        tmp = 3;
+        break;
+    }
+  } else {
+    tmp = n._0;
   }
-  return data(packByte(packInt16(packInt16(packInt32(packInt16(packInt16(packByte(setType(make(), toInt("PlayerSpawn")), self.playerId, "playerId"), self.x, "x"), self.y, "y"), self.timeRemaining, "timeRemaining"), self.numberOfDeathsPve, "numberOfDeathsPve"), self.numberOfDeathsPvp, "numberOfDeathsPvp"), tmp, "context"));
+  return data(packByte(packByte(packInt16(packInt16(packInt32(packInt16(packInt16(packByte(setType(make(), toInt("PlayerSpawn")), self.playerId, "playerId"), self.x, "x"), self.y, "y"), self.timeRemaining, "timeRemaining"), self.numberOfDeathsPve, "numberOfDeathsPve"), self.numberOfDeathsPvp, "numberOfDeathsPvp"), self.team, "team"), tmp, "context"));
 }
+var Encode31 = {
+  toBuffer: toBuffer94
+};
 
-// src/packetv1449/PacketV1449_PlayerInventorySlot.js
-var PacketV1449_PlayerInventorySlot_exports = {};
-__export(PacketV1449_PlayerInventorySlot_exports, {
-  parse: () => parse80,
-  toBuffer: () => toBuffer78
+// src/packet/Packet_PlayerInventorySlot.js
+var Packet_PlayerInventorySlot_exports = {};
+__export(Packet_PlayerInventorySlot_exports, {
+  Decode: () => Decode32,
+  Encode: () => Encode32,
+  parse: () => parse98,
+  toBuffer: () => toBuffer95
 });
-function parse80(payload) {
+function parse98(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -12099,33 +18486,49 @@ function parse80(payload) {
   if (e$3.TAG !== "Ok") {
     return e$3;
   }
-  let e$4 = readInt16(reader, "itemId");
-  if (e$4.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0,
-        slot: e$1._0,
-        stack: e$2._0,
-        prefix: e$3._0,
-        itemId: e$4._0
-      }
-    };
-  } else {
+  let e$4 = readInt16(reader, "itemType");
+  if (e$4.TAG !== "Ok") {
     return e$4;
   }
+  let e$5 = readByte(reader, "flags");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let flags = fromByte(e$5._0);
+  return {
+    TAG: "Ok",
+    _0: {
+      playerId: e._0,
+      slot: e$1._0,
+      stack: e$2._0,
+      prefix: e$3._0,
+      itemType: e$4._0,
+      favorited: flag1(flags),
+      blocked: flag2(flags)
+    }
+  };
 }
-function toBuffer78(self) {
-  return data(packInt16(packByte(packInt16(packInt16(packByte(setType(make(), toInt("PlayerInventorySlot")), self.playerId, "playerId"), self.slot, "slot"), self.stack, "stack"), self.prefix, "prefix"), self.itemId, "itemId"));
+var Decode32 = {
+  parse: parse98
+};
+function toBuffer95(self) {
+  return data(packByte(packInt16(packByte(packInt16(packInt16(packByte(setType(make(), toInt("PlayerInventorySlot")), self.playerId, "playerId"), self.slot, "slot"), self.stack, "stack"), self.prefix, "prefix"), self.itemType, "itemType"), toByte(fromFlags(self.favorited, self.blocked, false, false, false, false, false, false)), "flags"));
 }
+var Encode32 = {
+  packInt16,
+  packByte,
+  setType,
+  data,
+  toBuffer: toBuffer95
+};
 
 // src/packetv1449/PacketV1449_PlayerHealth.js
 var PacketV1449_PlayerHealth_exports = {};
 __export(PacketV1449_PlayerHealth_exports, {
-  parse: () => parse81,
-  toBuffer: () => toBuffer79
+  parse: () => parse99,
+  toBuffer: () => toBuffer96
 });
-function parse81(payload) {
+function parse99(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -12149,17 +18552,17 @@ function parse81(payload) {
     return e$2;
   }
 }
-function toBuffer79(self) {
+function toBuffer96(self) {
   return data(packInt16(packInt16(packByte(setType(make(), toInt("PlayerHealth")), self.playerId, "playerId"), self.health, "health"), self.maxHealth, "maxHealth"));
 }
 
 // src/packetv1449/PacketV1449_ClientUuid.js
 var PacketV1449_ClientUuid_exports = {};
 __export(PacketV1449_ClientUuid_exports, {
-  parse: () => parse82,
-  toBuffer: () => toBuffer80
+  parse: () => parse100,
+  toBuffer: () => toBuffer97
 });
-function parse82(payload) {
+function parse100(payload) {
   let reader = new packetreader_default(payload);
   let e = readString(reader, "uuid");
   if (e.TAG === "Ok") {
@@ -12173,17 +18576,17 @@ function parse82(payload) {
     return e;
   }
 }
-function toBuffer80(self) {
+function toBuffer97(self) {
   return data(packString(setType(make(), toInt("ClientUuid")), self.uuid, "uuid"));
 }
 
 // src/packetv1449/PacketV1449_ProjectileSync.js
 var PacketV1449_ProjectileSync_exports = {};
 __export(PacketV1449_ProjectileSync_exports, {
-  parse: () => parse83,
-  toBuffer: () => toBuffer81
+  parse: () => parse101,
+  toBuffer: () => toBuffer98
 });
-function parse83(payload) {
+function parse101(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "projectileId");
   if (e.TAG !== "Ok") {
@@ -12425,15 +18828,15 @@ function packOptionalData(writer, self) {
   }
   return writer;
 }
-function toBuffer81(self) {
+function toBuffer98(self) {
   return data(packOptionalData(packInt16(packByte(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt("ProjectileSync")), self.projectileId, "projectileId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.owner, "owner"), self.projectileType, "projectileType"), self));
 }
 
 // src/packetv1449/PacketV1449_PlayerDamage.js
 var PacketV1449_PlayerDamage_exports = {};
 __export(PacketV1449_PlayerDamage_exports, {
-  parse: () => parse84,
-  toBuffer: () => toBuffer82
+  parse: () => parse102,
+  toBuffer: () => toBuffer99
 });
 function readDamageFlags(reader) {
   let e = readByte(reader, "damageFlags");
@@ -12449,7 +18852,7 @@ function readDamageFlags(reader) {
     }
   };
 }
-function parse84(payload) {
+function parse102(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "target");
   if (e.TAG !== "Ok") {
@@ -12490,16 +18893,18 @@ function parse84(payload) {
     return e$5;
   }
 }
-function toBuffer82(self) {
+function toBuffer99(self) {
   let damageFlags = (self2) => toByte(fromFlags(self2.critical, self2.pvp, false, false, false, false, false, false));
   return data(packSByte(packByte(packByte(packInt16(packDeathReason(packByte(setType(make(), toInt("PlayerDamage")), self.target, "target"), self.deathReason), self.damage, "damage"), self.hitDirection, "hitDirection"), damageFlags(self), "damageFlags"), self.cooldownCounter, "cooldownCounter"));
 }
 
-// src/packetv1449/PacketV1449_WorldInfo.js
-var PacketV1449_WorldInfo_exports = {};
-__export(PacketV1449_WorldInfo_exports, {
-  parse: () => parse85,
-  toBuffer: () => toBuffer83
+// src/packet/Packet_WorldInfo.js
+var Packet_WorldInfo_exports = {};
+__export(Packet_WorldInfo_exports, {
+  Decode: () => Decode33,
+  Encode: () => Encode33,
+  parse: () => parse103,
+  toBuffer: () => toBuffer100
 });
 function readEventInfo(reader) {
   let e = readByte(reader, "eventInfo1");
@@ -12627,6 +19032,11 @@ function readEventInfo(reader) {
   let noTrapsWorld = flag1(eventInfo10);
   let zenithWorld = flag2(eventInfo10);
   let unlockedTruffleSpawn = flag3(eventInfo10);
+  let vampireSeed = flag4(eventInfo10);
+  let infectedSeed = flag5(eventInfo10);
+  let teamBasedSpawnsSeed = flag6(eventInfo10);
+  let skyblockWorld = flag7(eventInfo10);
+  let dualDungeonsSeed = flag8(eventInfo10);
   return {
     TAG: "Ok",
     _0: {
@@ -12704,11 +19114,16 @@ function readEventInfo(reader) {
       fastForwardTimeToDusk,
       noTrapsWorld,
       zenithWorld,
-      unlockedTruffleSpawn
+      unlockedTruffleSpawn,
+      vampireSeed,
+      infectedSeed,
+      teamBasedSpawnsSeed,
+      skyblockWorld,
+      dualDungeonsSeed
     }
   };
 }
-function parse85(payload) {
+function parse103(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "time");
   if (e.TAG !== "Ok") {
@@ -13017,7 +19432,43 @@ function parse85(payload) {
     return e$73;
   }
   let e$74 = readSingle(reader, "sandstormSeverity");
-  if (e$74.TAG === "Ok") {
+  if (e$74.TAG !== "Ok") {
+    return e$74;
+  }
+  let e$75 = readByte(reader, "extraSpawnPointCount");
+  if (e$75.TAG !== "Ok") {
+    return e$75;
+  }
+  let extraSpawnPointCount = e$75._0;
+  let extraSpawnPoints = [];
+  let readExtraSpawnPoints = (_idx) => {
+    while (true) {
+      let idx = _idx;
+      if (idx >= extraSpawnPointCount) {
+        return {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      let e2 = readInt16(reader, `extraSpawnPointX_` + idx.toString());
+      if (e2.TAG !== "Ok") {
+        return e2;
+      }
+      let e$110 = readInt16(reader, `extraSpawnPointY_` + idx.toString());
+      if (e$110.TAG !== "Ok") {
+        return e$110;
+      }
+      extraSpawnPoints.push({
+        x: e2._0,
+        y: e$110._0
+      });
+      _idx = idx + 1 | 0;
+      continue;
+    }
+    ;
+  };
+  let e$76 = readExtraSpawnPoints(0);
+  if (e$76.TAG === "Ok") {
     return {
       TAG: "Ok",
       _0: {
@@ -13094,13 +19545,26 @@ function parse85(payload) {
         adamantiteOreTier: e$71._0,
         invasionType: e$72._0,
         lobbyId: e$73._0,
-        sandstormSeverity: e$74._0
+        sandstormSeverity: e$74._0,
+        extraSpawnPoints
       }
     };
   } else {
-    return e$74;
+    return e$76;
   }
 }
+var Decode33 = {
+  readByte,
+  readInt16,
+  readInt32,
+  readUInt64,
+  readString,
+  readBytes,
+  readSingle,
+  readSByte,
+  readEventInfo,
+  parse: parse103
+};
 function packEventInfo(writer, eventInfo) {
   let eventInfo1 = fromFlags(eventInfo.shadowOrbSmashed, eventInfo.killedBoss1, eventInfo.killedBoss2, eventInfo.killedBoss3, eventInfo.hardMode, eventInfo.killedClown, eventInfo.serverSidedCharacters, eventInfo.killedPlantBoss);
   let eventInfo2 = fromFlags(eventInfo.killedMechBoss, eventInfo.killedMechBoss2, eventInfo.killedMechBoss3, eventInfo.killedAnyMechBoss, eventInfo.cloudBg, eventInfo.crimson, eventInfo.pumpkinMoon, eventInfo.snowMoon);
@@ -13111,20 +19575,35 @@ function packEventInfo(writer, eventInfo) {
   let eventInfo7 = fromFlags(eventInfo.boughtCat, eventInfo.boughtDog, eventInfo.boughtBunny, eventInfo.freeCake, eventInfo.drunkWorld, eventInfo.killedEmpressOfLight, eventInfo.killedQueenSlime, eventInfo.getGoodWorld);
   let eventInfo8 = fromFlags(eventInfo.tenthAnniversaryWorld, eventInfo.dontStarveWorld, eventInfo.downedDeerClops, eventInfo.notTheBeesWorld, eventInfo.remixWorld, eventInfo.unlockedSlimeBlueSpawn, eventInfo.combatBookVolumeTwoWasUsed, eventInfo.peddlersSatchelWasUsed);
   let eventInfo9 = fromFlags(eventInfo.unlockedSlimeGreenSpawn, eventInfo.unlockedSlimeOldSpawn, eventInfo.unlockedSlimePurpleSpawn, eventInfo.unlockedSlimeRainbowSpawn, eventInfo.unlockedSlimeRedSpawn, eventInfo.unlockedSlimeYellowSpawn, eventInfo.unlockedSlimeCopperSpawn, eventInfo.fastForwardTimeToDusk);
-  let eventInfo10 = fromFlags(eventInfo.noTrapsWorld, eventInfo.zenithWorld, eventInfo.unlockedTruffleSpawn, false, false, false, false, false);
+  let eventInfo10 = fromFlags(eventInfo.noTrapsWorld, eventInfo.zenithWorld, eventInfo.unlockedTruffleSpawn, eventInfo.vampireSeed, eventInfo.infectedSeed, eventInfo.teamBasedSpawnsSeed, eventInfo.skyblockWorld, eventInfo.dualDungeonsSeed);
   return packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(writer, toByte(eventInfo1), "eventInfo1"), toByte(eventInfo2), "eventInfo2"), toByte(eventInfo3), "eventInfo3"), toByte(eventInfo4), "eventInfo4"), toByte(eventInfo5), "eventInfo5"), toByte(eventInfo6), "eventInfo6"), toByte(eventInfo7), "eventInfo7"), toByte(eventInfo8), "eventInfo8"), toByte(eventInfo9), "eventInfo9"), toByte(eventInfo10), "eventInfo10");
 }
-function toBuffer83(self) {
-  return data(packSingle(packUInt64(packSByte(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packEventInfo(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packUInt64(packBytes(packByte(packString(packInt32(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packInt32(setType(make(), toInt("WorldInfo")), self.time, "time"), self.dayAndMoonInfo, "dayAndMoonInfo"), self.moonPhase, "moonPhase"), self.maxTilesX, "maxTilesX"), self.maxTilesY, "maxTilesY"), self.spawnX, "spawnX"), self.spawnY, "spawnY"), self.worldSurface, "worldSurface"), self.rockLayer, "rockLayer"), self.worldId, "worldId"), self.worldName, "worldName"), self.gameMode, "gameMode"), asArray(self.worldUniqueId), "worldUniqueId"), self.worldGeneratorVersion, "worldGeneratorVersion"), self.moonType, "moonType"), self.treeBackground, "treeBackground"), self.treeBackground2, "treeBackground2"), self.treeBackground3, "treeBackground3"), self.treeBackground4, "treeBackground4"), self.corruptionBackground, "corruptionBackground"), self.jungleBackground, "jungleBackground"), self.snowBackground, "snowBackground"), self.hallowBackground, "hallowBackground"), self.crimsonBackground, "crimsonBackground"), self.desertBackground, "desertBackground"), self.oceanBackground, "oceanBackground"), self.mushroomBackground, "mushroomBackground"), self.underworldBackground, "underworldBackground"), self.iceBackStyle, "iceBackStyle"), self.jungleBackStyle, "jungleBackStyle"), self.hellBackStyle, "hellBackStyle"), self.windSpeedSet, "windSpeedSet"), self.cloudNumber, "cloudNumber"), self.tree1, "tree1"), self.tree2, "tree2"), self.tree3, "tree3"), self.treeStyle1, "treeStyle1"), self.treeStyle2, "treeStyle2"), self.treeStyle3, "treeStyle3"), self.treeStyle4, "treeStyle4"), self.caveBack1, "caveBack1"), self.caveBack2, "caveBack2"), self.caveBack3, "caveBack3"), self.caveBackStyle1, "caveBackStyle1"), self.caveBackStyle2, "caveBackStyle2"), self.caveBackStyle3, "caveBackStyle3"), self.caveBackStyle4, "caveBackStyle4"), self.forest1TreeTopStyle, "forest1TreeTopStyle"), self.forest2TreeTopStyle, "forest2TreeTopStyle"), self.forest3TreeTopStyle, "forest3TreeTopStyle"), self.forest4TreeTopStyle, "forest4TreeTopStyle"), self.corruptionTreeTopStyle, "corruptionTreeTopStyle"), self.jungleTreeTopStyle, "jungleTreeTopStyle"), self.snowTreeTopStyle, "snowTreeTopStyle"), self.hallowTreeTopStyle, "hallowTreeTopStyle"), self.crimsonTreeTopStyle, "crimsonTreeTopStyle"), self.desertTreeTopStyle, "desertTreeTopStyle"), self.oceanTreeTopStyle, "oceanTreeTopStyle"), self.glowingMushroomTreeTopStyle, "glowingMushroomTreeTopStyle"), self.underworldTreeTopStyle, "underworldTreeTopStyle"), self.rain, "rain"), self.eventInfo), self.sundialCooldown, "sundialCooldown"), self.moondialCooldown, "moondialCooldown"), self.copperOreTier, "copperOreTier"), self.ironOreTier, "ironOreTier"), self.silverOreTier, "silverOreTier"), self.goldOreTier, "goldOreTier"), self.cobaltOreTier, "cobaltOreTier"), self.mythrilOreTier, "mythrilOreTier"), self.adamantiteOreTier, "adamantiteOreTier"), self.invasionType, "invasionType"), self.lobbyId, "lobbyId"), self.sandstormSeverity, "sandstormSeverity"));
+function packExtraSpawnPoints(writer, extraSpawnPoints) {
+  let writer$1 = packByte(writer, extraSpawnPoints.length, "extraSpawnPointCount");
+  extraSpawnPoints.forEach((point, idx) => {
+    let idxLabel = idx.toString();
+    packInt16(packInt16(writer$1, point.x, `extraSpawnPointX_` + idxLabel), point.y, `extraSpawnPointY_` + idxLabel);
+  });
+  return writer$1;
 }
+function toBuffer100(self) {
+  return data(packExtraSpawnPoints(packSingle(packUInt64(packSByte(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packEventInfo(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packUInt64(packBytes(packByte(packString(packInt32(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packInt32(setType(make(), toInt("WorldInfo")), self.time, "time"), self.dayAndMoonInfo, "dayAndMoonInfo"), self.moonPhase, "moonPhase"), self.maxTilesX, "maxTilesX"), self.maxTilesY, "maxTilesY"), self.spawnX, "spawnX"), self.spawnY, "spawnY"), self.worldSurface, "worldSurface"), self.rockLayer, "rockLayer"), self.worldId, "worldId"), self.worldName, "worldName"), self.gameMode, "gameMode"), asArray(self.worldUniqueId), "worldUniqueId"), self.worldGeneratorVersion, "worldGeneratorVersion"), self.moonType, "moonType"), self.treeBackground, "treeBackground"), self.treeBackground2, "treeBackground2"), self.treeBackground3, "treeBackground3"), self.treeBackground4, "treeBackground4"), self.corruptionBackground, "corruptionBackground"), self.jungleBackground, "jungleBackground"), self.snowBackground, "snowBackground"), self.hallowBackground, "hallowBackground"), self.crimsonBackground, "crimsonBackground"), self.desertBackground, "desertBackground"), self.oceanBackground, "oceanBackground"), self.mushroomBackground, "mushroomBackground"), self.underworldBackground, "underworldBackground"), self.iceBackStyle, "iceBackStyle"), self.jungleBackStyle, "jungleBackStyle"), self.hellBackStyle, "hellBackStyle"), self.windSpeedSet, "windSpeedSet"), self.cloudNumber, "cloudNumber"), self.tree1, "tree1"), self.tree2, "tree2"), self.tree3, "tree3"), self.treeStyle1, "treeStyle1"), self.treeStyle2, "treeStyle2"), self.treeStyle3, "treeStyle3"), self.treeStyle4, "treeStyle4"), self.caveBack1, "caveBack1"), self.caveBack2, "caveBack2"), self.caveBack3, "caveBack3"), self.caveBackStyle1, "caveBackStyle1"), self.caveBackStyle2, "caveBackStyle2"), self.caveBackStyle3, "caveBackStyle3"), self.caveBackStyle4, "caveBackStyle4"), self.forest1TreeTopStyle, "forest1TreeTopStyle"), self.forest2TreeTopStyle, "forest2TreeTopStyle"), self.forest3TreeTopStyle, "forest3TreeTopStyle"), self.forest4TreeTopStyle, "forest4TreeTopStyle"), self.corruptionTreeTopStyle, "corruptionTreeTopStyle"), self.jungleTreeTopStyle, "jungleTreeTopStyle"), self.snowTreeTopStyle, "snowTreeTopStyle"), self.hallowTreeTopStyle, "hallowTreeTopStyle"), self.crimsonTreeTopStyle, "crimsonTreeTopStyle"), self.desertTreeTopStyle, "desertTreeTopStyle"), self.oceanTreeTopStyle, "oceanTreeTopStyle"), self.glowingMushroomTreeTopStyle, "glowingMushroomTreeTopStyle"), self.underworldTreeTopStyle, "underworldTreeTopStyle"), self.rain, "rain"), self.eventInfo), self.sundialCooldown, "sundialCooldown"), self.moondialCooldown, "moondialCooldown"), self.copperOreTier, "copperOreTier"), self.ironOreTier, "ironOreTier"), self.silverOreTier, "silverOreTier"), self.goldOreTier, "goldOreTier"), self.cobaltOreTier, "cobaltOreTier"), self.mythrilOreTier, "mythrilOreTier"), self.adamantiteOreTier, "adamantiteOreTier"), self.invasionType, "invasionType"), self.lobbyId, "lobbyId"), self.sandstormSeverity, "sandstormSeverity"), self.extraSpawnPoints));
+}
+var Encode33 = {
+  packInt16,
+  packByte,
+  packEventInfo,
+  packExtraSpawnPoints,
+  toBuffer: toBuffer100
+};
 
 // src/packetv1449/PacketV1449_PlayerActive.js
 var PacketV1449_PlayerActive_exports = {};
 __export(PacketV1449_PlayerActive_exports, {
-  parse: () => parse86,
-  toBuffer: () => toBuffer84
+  parse: () => parse104,
+  toBuffer: () => toBuffer101
 });
-function parse86(payload) {
+function parse104(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -13143,15 +19622,17 @@ function parse86(payload) {
     return e$1;
   }
 }
-function toBuffer84(self) {
+function toBuffer101(self) {
   return data(packByte(packByte(setType(make(), toInt("PlayerActive")), self.playerId, "playerId"), self.active ? 1 : 0, "active"));
 }
 
-// src/packetv1449/PacketV1449_NpcUpdate.js
-var PacketV1449_NpcUpdate_exports = {};
-__export(PacketV1449_NpcUpdate_exports, {
-  parse: () => parse87,
-  toBuffer: () => toBuffer85
+// src/packet/Packet_NpcUpdate.js
+var Packet_NpcUpdate_exports = {};
+__export(Packet_NpcUpdate_exports, {
+  Decode: () => Decode34,
+  Encode: () => Encode34,
+  parse: () => parse105,
+  toBuffer: () => toBuffer102
 });
 function readNpcFlags1(reader, fieldName) {
   let e = readByte(reader, fieldName);
@@ -13184,11 +19665,13 @@ function readNpcFlags2(reader, fieldName) {
     _0: {
       statsScaled: flag1(flags),
       spawnedFromStatue: flag2(flags),
-      strengthMultiplier: flag3(flags)
+      difficulty: flag3(flags),
+      spawnNeedsSyncing: flag4(flags),
+      shimmerTransparency: flag5(flags)
     }
   };
 }
-function parse87(payload) {
+function parse105(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcSlotId");
   if (e.TAG !== "Ok") {
@@ -13220,6 +19703,801 @@ function parse87(payload) {
   }
   let npcFlags12 = e$6._0;
   let e$7 = readNpcFlags2(reader, "npcFlags2");
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let npcFlags22 = e$7._0;
+  let tmp;
+  if (npcFlags12.ai0) {
+    let e$8 = readSingle(reader, "ai0");
+    tmp = e$8.TAG === "Ok" ? {
+      TAG: "Ok",
+      _0: e$8._0
+    } : e$8;
+  } else {
+    tmp = {
+      TAG: "Ok",
+      _0: void 0
+    };
+  }
+  let tmp$1;
+  if (npcFlags12.ai1) {
+    let e$9 = readSingle(reader, "ai1");
+    tmp$1 = e$9.TAG === "Ok" ? {
+      TAG: "Ok",
+      _0: e$9._0
+    } : e$9;
+  } else {
+    tmp$1 = {
+      TAG: "Ok",
+      _0: void 0
+    };
+  }
+  let tmp$2;
+  if (npcFlags12.ai2) {
+    let e$10 = readSingle(reader, "ai2");
+    tmp$2 = e$10.TAG === "Ok" ? {
+      TAG: "Ok",
+      _0: e$10._0
+    } : e$10;
+  } else {
+    tmp$2 = {
+      TAG: "Ok",
+      _0: void 0
+    };
+  }
+  let tmp$3;
+  if (npcFlags12.ai3) {
+    let e$11 = readSingle(reader, "ai3");
+    tmp$3 = e$11.TAG === "Ok" ? {
+      TAG: "Ok",
+      _0: e$11._0
+    } : e$11;
+  } else {
+    tmp$3 = {
+      TAG: "Ok",
+      _0: void 0
+    };
+  }
+  let e$12 = all4([
+    tmp,
+    tmp$1,
+    tmp$2,
+    tmp$3
+  ]);
+  if (e$12.TAG !== "Ok") {
+    return e$12;
+  }
+  let e$13 = readInt16(reader, "npcTypeId");
+  if (e$13.TAG !== "Ok") {
+    return e$13;
+  }
+  let e$14;
+  if (npcFlags22.statsScaled) {
+    let e$15 = readByte(reader, "playerCountScale");
+    e$14 = e$15.TAG === "Ok" ? {
+      TAG: "Ok",
+      _0: e$15._0
+    } : e$15;
+  } else {
+    e$14 = {
+      TAG: "Ok",
+      _0: void 0
+    };
+  }
+  if (e$14.TAG !== "Ok") {
+    return e$14;
+  }
+  let e$16;
+  if (npcFlags22.difficulty) {
+    let e$17 = readSingle(reader, "difficulty");
+    e$16 = e$17.TAG === "Ok" ? {
+      TAG: "Ok",
+      _0: e$17._0
+    } : e$17;
+  } else {
+    e$16 = {
+      TAG: "Ok",
+      _0: void 0
+    };
+  }
+  if (e$16.TAG !== "Ok") {
+    return e$16;
+  }
+  let e$18;
+  if (npcFlags12.lifeMax) {
+    e$18 = {
+      TAG: "Ok",
+      _0: "Max"
+    };
+  } else {
+    let e$19 = readByte(reader, "lifeBytes");
+    if (e$19.TAG === "Ok") {
+      switch (e$19._0) {
+        case 1:
+          let e$20 = readSByte(reader, "life_sbyte");
+          e$18 = e$20.TAG === "Ok" ? {
+            TAG: "Ok",
+            _0: {
+              TAG: "Byte",
+              _0: e$20._0
+            }
+          } : e$20;
+          break;
+        case 2:
+          let e$21 = readInt16(reader, "life_int16");
+          e$18 = e$21.TAG === "Ok" ? {
+            TAG: "Ok",
+            _0: {
+              TAG: "Int16",
+              _0: e$21._0
+            }
+          } : e$21;
+          break;
+        case 4:
+          let e$22 = readInt32(reader, "life_int32");
+          e$18 = e$22.TAG === "Ok" ? {
+            TAG: "Ok",
+            _0: {
+              TAG: "Int32",
+              _0: e$22._0
+            }
+          } : e$22;
+          break;
+        default:
+          e$18 = {
+            TAG: "Error",
+            _0: {
+              context: "Packet_NpcUpdate.parse",
+              error: new Error("Invalid life byte count")
+            }
+          };
+      }
+    } else {
+      e$18 = e$19;
+    }
+  }
+  if (e$18.TAG !== "Ok") {
+    return e$18;
+  }
+  let releaseOwner = readByte(reader, "releaseOwner");
+  let releaseOwner$1;
+  releaseOwner$1 = releaseOwner.TAG === "Ok" ? releaseOwner._0 : void 0;
+  return {
+    TAG: "Ok",
+    _0: {
+      npcSlotId: e._0,
+      npcTypeId: e$13._0,
+      x: e$1._0,
+      y: e$2._0,
+      vx: e$3._0,
+      vy: e$4._0,
+      target: e$5._0,
+      directionX: npcFlags12.directionX,
+      directionY: npcFlags12.directionY,
+      ai: e$12._0,
+      spriteDirection: npcFlags12.spriteDirection,
+      life: e$18._0,
+      releaseOwner: releaseOwner$1,
+      playerCountScale: e$14._0,
+      difficulty: e$16._0,
+      spawnedFromStatue: npcFlags22.spawnedFromStatue,
+      spawnNeedsSyncing: npcFlags22.spawnNeedsSyncing,
+      shimmerTransparency: npcFlags22.shimmerTransparency
+    }
+  };
+}
+var Decode34 = {
+  readInt32,
+  readInt16,
+  readSingle,
+  readUInt16,
+  readByte,
+  readSByte,
+  readNpcFlags1,
+  readNpcFlags2,
+  parse: parse105
+};
+function npcFlags1(self) {
+  let match = self.ai;
+  return toByte(fromFlags(self.directionX, self.directionY, isSome(match[0]), isSome(match[1]), isSome(match[2]), isSome(match[3]), self.spriteDirection, self.life === "Max"));
+}
+function npcFlags2(self) {
+  return toByte(fromFlags(isSome(self.playerCountScale), self.spawnedFromStatue, isSome(self.difficulty), self.spawnNeedsSyncing, self.shimmerTransparency, false, false, false));
+}
+function packAi(writer, param) {
+  let ai3 = param[3];
+  let ai2 = param[2];
+  let ai1 = param[1];
+  let ai0 = param[0];
+  if (ai0 !== void 0) {
+    packSingle(writer, ai0, "ai0");
+  }
+  if (ai1 !== void 0) {
+    packSingle(writer, ai1, "ai1");
+  }
+  if (ai2 !== void 0) {
+    packSingle(writer, ai2, "ai2");
+  }
+  if (ai3 !== void 0) {
+    packSingle(writer, ai3, "ai3");
+  }
+  return writer;
+}
+function packPlayerCountScale(writer, playerCountScale) {
+  if (playerCountScale !== void 0) {
+    return packByte(writer, playerCountScale, "playerCountScale");
+  } else {
+    return writer;
+  }
+}
+function packDifficulty(writer, difficulty) {
+  if (difficulty !== void 0) {
+    return packSingle(writer, difficulty, "difficulty");
+  } else {
+    return writer;
+  }
+}
+function packLife(writer, life) {
+  if (typeof life !== "object") {
+    return writer;
+  }
+  switch (life.TAG) {
+    case "Byte":
+      return packSByte(packByte(writer, 1, "lifeBytes"), life._0, "life_sbyte");
+    case "Int16":
+      return packInt16(packByte(writer, 2, "lifeBytes"), life._0, "life_int16");
+    case "Int32":
+      return packInt32(packByte(writer, 4, "lifeBytes"), life._0, "life_int32");
+  }
+}
+function packReleaseOwner(writer, releaseOwner) {
+  if (releaseOwner !== void 0) {
+    return packByte(writer, releaseOwner, "releaseOwner");
+  } else {
+    return writer;
+  }
+}
+function toBuffer102(self) {
+  return data(packReleaseOwner(packLife(packDifficulty(packPlayerCountScale(packInt16(packAi(packByte(packByte(packUInt16(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt("NpcUpdate")), self.npcSlotId, "npcSlotId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.target, "target"), npcFlags1(self), "npcFlags1"), npcFlags2(self), "npcFlags2"), self.ai), self.npcTypeId, "npcTypeId"), self.playerCountScale), self.difficulty), self.life), self.releaseOwner));
+}
+var Encode34 = {
+  packInt32,
+  packInt16,
+  packSingle,
+  packUInt16,
+  packByte,
+  packSByte,
+  setType,
+  data,
+  npcFlags1,
+  npcFlags2,
+  packAi,
+  packPlayerCountScale,
+  packDifficulty,
+  packLife,
+  packReleaseOwner,
+  toBuffer: toBuffer102
+};
+
+// src/packetv1449/PacketV1449_Disconnect.js
+var PacketV1449_Disconnect_exports = {};
+__export(PacketV1449_Disconnect_exports, {
+  parse: () => parse106,
+  toBuffer: () => toBuffer103
+});
+function parse106(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readNetworkText(reader, "reason");
+  if (e.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        reason: e._0
+      }
+    };
+  } else {
+    return e;
+  }
+}
+function toBuffer103(self) {
+  return data(packNetworkText(setType(make(), toInt("Disconnect")), self.reason, "reason"));
+}
+
+// src/Parser.js
+var Parser_exports = {};
+__export(Parser_exports, {
+  convertFromV1449IfNeeded: () => convertFromV1449IfNeeded,
+  convertToV1449IfNeeded: () => convertToV1449IfNeeded,
+  parse: () => parse182,
+  parseLazy: () => parseLazy
+});
+
+// node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Stdlib_Lazy.js
+function from_fun(closure) {
+  return {
+    LAZY_DONE: false,
+    VAL: closure
+  };
+}
+var make4 = from_fun;
+
+// src/packetv1449/PacketV1449_Emoji.js
+function parse107(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readByte(reader, "emojiId");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        emojiId: e$1._0
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+
+// src/packetv1449/PacketV1449_Zones.js
+function parse108(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readByte(reader, "zone1");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readByte(reader, "zone2");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readByte(reader, "zone3");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readByte(reader, "zone4");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = readByte(reader, "zone5");
+  if (e$5.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        zone1: e$1._0,
+        zone2: e$2._0,
+        zone3: e$3._0,
+        zone4: e$4._0,
+        zone5: e$5._0
+      }
+    };
+  } else {
+    return e$5;
+  }
+}
+
+// src/packetv1449/PacketV1449_DoorUse.js
+function actionFromInt(self) {
+  switch (self) {
+    case 0:
+      return "OpenDoor";
+    case 1:
+      return "CloseDoor";
+    case 2:
+      return "ShiftTrapdoorOpen";
+    case 3:
+      return "ShiftTrapdoorClose";
+    case 4:
+      return "ShiftTallGateOpen";
+    case 5:
+      return "ShiftTallGateClose";
+    default:
+      return;
+  }
+}
+function parse109(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "action");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "x");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readInt16(reader, "y");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readByte(reader, "direction");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let action = actionFromInt(e._0);
+  let action$1 = action !== void 0 ? {
+    TAG: "Ok",
+    _0: action
+  } : {
+    TAG: "Error",
+    _0: {
+      context: "Packet_DoorUse.parse.action",
+      error: new Error("Unknown door action")
+    }
+  };
+  if (action$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        action: action$1._0,
+        x: e$1._0,
+        y: e$2._0,
+        direction: e$3._0 === 0 ? -1 : 1
+      }
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: action$1._0
+    };
+  }
+}
+
+// src/packetv1449/PacketV1449_HarpPlay.js
+function parse110(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readSingle(reader, "pitch");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        pitch: e$1._0
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+
+// src/packetv1449/PacketV1449_Teleport.js
+function parse111(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "flags");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let flags = fromByte(e._0);
+  let getPositionFromTarget = flag3(flags);
+  let match = flag1(flags);
+  let match$1 = flag2(flags);
+  let teleportType = match ? match$1 ? void 0 : "Npc" : match$1 ? "PlayerToPlayer" : "Player";
+  let e$1 = readInt16(reader, "targetId");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readSingle(reader, "x");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readSingle(reader, "y");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readByte(reader, "style");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = flag4(flags) ? map2(readInt32(reader, "extraInfo"), (v) => v) : {
+    TAG: "Ok",
+    _0: void 0
+  };
+  if (e$5.TAG === "Ok") {
+    if (teleportType !== void 0) {
+      return {
+        TAG: "Ok",
+        _0: {
+          teleportType,
+          getPositionFromTarget,
+          targetId: e$1._0,
+          x: e$2._0,
+          y: e$3._0,
+          style: e$4._0,
+          extraInfo: e$5._0
+        }
+      };
+    } else {
+      return {
+        TAG: "Error",
+        _0: {
+          context: "Packet_Teleport.parse",
+          error: new Error("Invalid teleport type flags")
+        }
+      };
+    }
+  } else {
+    return e$5;
+  }
+}
+
+// src/packetv1449/PacketV1449_ChestName.js
+function parse112(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "chestId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "x");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readInt16(reader, "y");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readString(reader, "name");
+  if (e$3.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        chestId: e._0,
+        x: e$1._0,
+        y: e$2._0,
+        name: e$3._0
+      }
+    };
+  } else {
+    return e$3;
+  }
+}
+
+// src/packetv1449/PacketV1449_ChestOpen.js
+function parse113(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "x");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "y");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        x: e._0,
+        y: e$1._0
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+
+// src/packetv1449/PacketV1449_ItemOwner.js
+function parse114(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "itemDropId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readByte(reader, "owner");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        itemDropId: e._0,
+        owner: e$1._0
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+
+// src/packetv1449/PacketV1449_LiquidSet.js
+function parse115(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "x");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "y");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readByte(reader, "liquid");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readByte(reader, "liquidType");
+  if (e$3.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        x: e._0,
+        y: e$1._0,
+        liquid: e$2._0,
+        liquidType: e$3._0
+      }
+    };
+  } else {
+    return e$3;
+  }
+}
+
+// src/packetv1449/PacketV1449_NpcStrike.js
+function parse116(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "npcId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "damage");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readSingle(reader, "knockback");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readByte(reader, "direction");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readByte(reader, "critical");
+  if (e$4.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        npcId: e._0,
+        damage: e$1._0,
+        knockback: e$2._0,
+        direction: e$3._0 - 1 | 0,
+        critical: e$4._0 === 1
+      }
+    };
+  } else {
+    return e$4;
+  }
+}
+
+// src/packetv1449/PacketV1449_NpcTamper.js
+function fromInt8(playerId) {
+  if (playerId !== -1) {
+    return {
+      TAG: "PlayerId",
+      _0: playerId
+    };
+  } else {
+    return "All";
+  }
+}
+function parse117(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readUInt16(reader, "npcId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readByte(reader, "setNpcImmunity");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2;
+  if (e$1._0 === 1) {
+    let e$3 = readInt32(reader, "immunityTime");
+    if (e$3.TAG === "Ok") {
+      let e$4 = readInt16(reader, "immunityFromPlayerId");
+      e$2 = e$4.TAG === "Ok" ? {
+        TAG: "Ok",
+        _0: [
+          e$3._0,
+          fromInt8(e$4._0)
+        ]
+      } : e$4;
+    } else {
+      e$2 = e$3;
+    }
+  } else {
+    e$2 = {
+      TAG: "Ok",
+      _0: [
+        void 0,
+        void 0
+      ]
+    };
+  }
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let match = e$2._0;
+  return {
+    TAG: "Ok",
+    _0: {
+      npcId: e._0,
+      immunityTime: match[0],
+      immunityFromPlayerId: match[1]
+    }
+  };
+}
+
+// src/packetv1449/PacketV1449_NpcUpdate.js
+function readNpcFlags12(reader, fieldName) {
+  let e = readByte(reader, fieldName);
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let flags = fromByte(e._0);
+  return {
+    TAG: "Ok",
+    _0: {
+      directionX: flag1(flags),
+      directionY: flag2(flags),
+      ai0: flag3(flags),
+      ai1: flag4(flags),
+      ai2: flag5(flags),
+      ai3: flag6(flags),
+      spriteDirection: flag7(flags),
+      lifeMax: flag8(flags)
+    }
+  };
+}
+function readNpcFlags22(reader, fieldName) {
+  let e = readByte(reader, fieldName);
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let flags = fromByte(e._0);
+  return {
+    TAG: "Ok",
+    _0: {
+      statsScaled: flag1(flags),
+      spawnedFromStatue: flag2(flags),
+      strengthMultiplier: flag3(flags)
+    }
+  };
+}
+function parse118(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "npcSlotId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readSingle(reader, "x");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readSingle(reader, "y");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readSingle(reader, "vx");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readSingle(reader, "vy");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = readUInt16(reader, "target");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = readNpcFlags12(reader, "npcFlags1");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let npcFlags12 = e$6._0;
+  let e$7 = readNpcFlags22(reader, "npcFlags2");
   if (e$7.TAG !== "Ok") {
     return e$7;
   }
@@ -13402,408 +20680,611 @@ function parse87(payload) {
     }
   };
 }
-function npcFlags1(self) {
-  let match = self.ai;
-  return toByte(fromFlags(self.directionX, self.directionY, isSome(match[0]), isSome(match[1]), isSome(match[2]), isSome(match[3]), self.spriteDirection, self.life === "Max"));
-}
-function npcFlags2(self) {
-  return toByte(fromFlags(isSome(self.playerCountScale), self.spawnedFromStatue, isSome(self.strengthMultiplier), false, false, false, false, false));
-}
-function packAi(writer, param) {
-  let ai3 = param[3];
-  let ai2 = param[2];
-  let ai1 = param[1];
-  let ai0 = param[0];
-  if (ai0 !== void 0) {
-    packSingle(writer, ai0, "ai0");
-  }
-  if (ai1 !== void 0) {
-    packSingle(writer, ai1, "ai1");
-  }
-  if (ai2 !== void 0) {
-    packSingle(writer, ai2, "ai2");
-  }
-  if (ai3 !== void 0) {
-    packSingle(writer, ai3, "ai3");
-  }
-  return writer;
-}
-function packPlayerCountScale(writer, playerCountScale) {
-  if (playerCountScale !== void 0) {
-    return packByte(writer, playerCountScale, "playerCountScale");
-  } else {
-    return writer;
-  }
-}
-function packStrengthMultiplier(writer, strengthMultiplier) {
-  if (strengthMultiplier !== void 0) {
-    return packSingle(writer, strengthMultiplier, "strengthMultiplier");
-  } else {
-    return writer;
-  }
-}
-function packLife(writer, life) {
-  if (typeof life !== "object") {
-    return writer;
-  }
-  switch (life.TAG) {
-    case "Byte":
-      return packSByte(packByte(writer, 1, "lifeBytes"), life._0, "life_sbyte");
-    case "Int16":
-      return packInt16(packByte(writer, 2, "lifeBytes"), life._0, "life_int16");
-    case "Int32":
-      return packInt32(packByte(writer, 4, "lifeBytes"), life._0, "life_int32");
-  }
-}
-function packReleaseOwner(writer, releaseOwner) {
-  if (releaseOwner !== void 0) {
-    return packByte(writer, releaseOwner, "releaseOwner");
-  } else {
-    return writer;
-  }
-}
-function toBuffer85(self) {
-  return data(packReleaseOwner(packLife(packStrengthMultiplier(packPlayerCountScale(packInt16(packAi(packByte(packByte(packUInt16(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt("NpcUpdate")), self.npcSlotId, "npcSlotId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.target, "target"), npcFlags1(self), "npcFlags1"), npcFlags2(self), "npcFlags2"), self.ai), self.npcTypeId, "npcTypeId"), self.playerCountScale), self.strengthMultiplier), self.life), self.releaseOwner));
-}
 
-// src/packetv1449/PacketV1449_Disconnect.js
-var PacketV1449_Disconnect_exports = {};
-__export(PacketV1449_Disconnect_exports, {
-  parse: () => parse88,
-  toBuffer: () => toBuffer86
-});
-function parse88(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readNetworkText(reader, "reason");
-  if (e.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        reason: e._0
-      }
-    };
-  } else {
-    return e;
-  }
-}
-function toBuffer86(self) {
-  return data(packNetworkText(setType(make(), toInt("Disconnect")), self.reason, "reason"));
-}
-
-// src/Parser.js
-var Parser_exports = {};
-__export(Parser_exports, {
-  convertFromV1449IfNeeded: () => convertFromV1449IfNeeded,
-  convertToV1449IfNeeded: () => convertToV1449IfNeeded,
-  parse: () => parse180,
-  parseLazy: () => parseLazy
-});
-
-// node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Stdlib_Lazy.js
-function from_fun(closure) {
-  return {
-    LAZY_DONE: false,
-    VAL: closure
-  };
-}
-var make4 = from_fun;
-
-// src/packet/Packet_Ping.js
-function parse89(_payload) {
-  return {
-    TAG: "Ok",
-    _0: void 0
-  };
-}
-
-// src/packetv1449/PacketV1449_Emoji.js
-function parse90(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
+// src/packetv1449/PacketV1449_WorldInfo.js
+function readEventInfo2(reader) {
+  let e = readByte(reader, "eventInfo1");
   if (e.TAG !== "Ok") {
     return e;
   }
-  let e$1 = readByte(reader, "emojiId");
-  if (e$1.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0,
-        emojiId: e$1._0
-      }
-    };
-  } else {
-    return e$1;
-  }
-}
-
-// src/packetv1449/PacketV1449_DoorUse.js
-function actionFromInt(self) {
-  switch (self) {
-    case 0:
-      return "OpenDoor";
-    case 1:
-      return "CloseDoor";
-    case 2:
-      return "ShiftTrapdoorOpen";
-    case 3:
-      return "ShiftTrapdoorClose";
-    case 4:
-      return "ShiftTallGateOpen";
-    case 5:
-      return "ShiftTallGateClose";
-    default:
-      return;
-  }
-}
-function parse91(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "action");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt16(reader, "x");
+  let e$1 = readByte(reader, "eventInfo2");
   if (e$1.TAG !== "Ok") {
     return e$1;
   }
-  let e$2 = readInt16(reader, "y");
+  let e$2 = readByte(reader, "eventInfo3");
   if (e$2.TAG !== "Ok") {
     return e$2;
   }
-  let e$3 = readByte(reader, "direction");
+  let e$3 = readByte(reader, "eventInfo4");
   if (e$3.TAG !== "Ok") {
     return e$3;
   }
-  let action = actionFromInt(e._0);
-  let action$1 = action !== void 0 ? {
+  let e$4 = readByte(reader, "eventInfo5");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = readByte(reader, "eventInfo6");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = readByte(reader, "eventInfo7");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let e$7 = readByte(reader, "eventInfo8");
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let e$8 = readByte(reader, "eventInfo9");
+  if (e$8.TAG !== "Ok") {
+    return e$8;
+  }
+  let e$9 = readByte(reader, "eventInfo10");
+  if (e$9.TAG !== "Ok") {
+    return e$9;
+  }
+  let eventInfo1 = fromByte(e._0);
+  let eventInfo2 = fromByte(e$1._0);
+  let eventInfo3 = fromByte(e$2._0);
+  let eventInfo4 = fromByte(e$3._0);
+  let eventInfo5 = fromByte(e$4._0);
+  let eventInfo6 = fromByte(e$5._0);
+  let eventInfo7 = fromByte(e$6._0);
+  let eventInfo8 = fromByte(e$7._0);
+  let eventInfo9 = fromByte(e$8._0);
+  let eventInfo10 = fromByte(e$9._0);
+  let shadowOrbSmashed = flag1(eventInfo1);
+  let killedBoss1 = flag2(eventInfo1);
+  let killedBoss2 = flag3(eventInfo1);
+  let killedBoss3 = flag4(eventInfo1);
+  let hardMode = flag5(eventInfo1);
+  let killedClown = flag6(eventInfo1);
+  let serverSidedCharacters = flag7(eventInfo1);
+  let killedPlantBoss = flag8(eventInfo1);
+  let killedMechBoss = flag1(eventInfo2);
+  let killedMechBoss2 = flag2(eventInfo2);
+  let killedMechBoss3 = flag3(eventInfo2);
+  let killedAnyMechBoss = flag4(eventInfo2);
+  let cloudBg = flag5(eventInfo2);
+  let crimson = flag6(eventInfo2);
+  let pumpkinMoon = flag7(eventInfo2);
+  let snowMoon = flag8(eventInfo2);
+  let expertMode = flag1(eventInfo3);
+  let fastForwardTime = flag2(eventInfo3);
+  let slimeRain = flag3(eventInfo3);
+  let killedKingSlime = flag4(eventInfo3);
+  let killedQueenBee = flag5(eventInfo3);
+  let killedFishron = flag6(eventInfo3);
+  let killedMartians = flag7(eventInfo3);
+  let killedAncientCultist = flag8(eventInfo3);
+  let killedMoonLord = flag1(eventInfo4);
+  let killedPumpking = flag2(eventInfo4);
+  let killedMourningWood = flag3(eventInfo4);
+  let killedIceQueen = flag4(eventInfo4);
+  let killedSantank = flag5(eventInfo4);
+  let killedEverscream = flag6(eventInfo4);
+  let killedGolem = flag7(eventInfo4);
+  let birthdayParty = flag8(eventInfo4);
+  let killedPirates = flag1(eventInfo5);
+  let killedFrostLegion = flag2(eventInfo5);
+  let killedGoblins = flag3(eventInfo5);
+  let sandstorm = flag4(eventInfo5);
+  let dungeonDefendersEvent = flag5(eventInfo5);
+  let killedDungeonDefendersTier1 = flag6(eventInfo5);
+  let killedDungeonDefendersTier2 = flag7(eventInfo5);
+  let killedDungeonDefendersTier3 = flag8(eventInfo5);
+  let combatBookUsed = flag1(eventInfo6);
+  let manualLanterns = flag2(eventInfo6);
+  let killedSolarTower = flag3(eventInfo6);
+  let killedVortexTower = flag4(eventInfo6);
+  let killedNebulaTower = flag5(eventInfo6);
+  let killedStardustTower = flag6(eventInfo6);
+  let forceHalloween = flag7(eventInfo6);
+  let forceChristmas = flag8(eventInfo6);
+  let boughtCat = flag1(eventInfo7);
+  let boughtDog = flag2(eventInfo7);
+  let boughtBunny = flag3(eventInfo7);
+  let freeCake = flag4(eventInfo7);
+  let drunkWorld = flag5(eventInfo7);
+  let killedEmpressOfLight = flag6(eventInfo7);
+  let killedQueenSlime = flag7(eventInfo7);
+  let getGoodWorld = flag8(eventInfo7);
+  let tenthAnniversaryWorld = flag1(eventInfo8);
+  let dontStarveWorld = flag2(eventInfo8);
+  let downedDeerClops = flag3(eventInfo8);
+  let notTheBeesWorld = flag4(eventInfo8);
+  let remixWorld = flag5(eventInfo8);
+  let unlockedSlimeBlueSpawn = flag6(eventInfo8);
+  let combatBookVolumeTwoWasUsed = flag7(eventInfo8);
+  let peddlersSatchelWasUsed = flag8(eventInfo8);
+  let unlockedSlimeGreenSpawn = flag1(eventInfo9);
+  let unlockedSlimeOldSpawn = flag2(eventInfo9);
+  let unlockedSlimePurpleSpawn = flag3(eventInfo9);
+  let unlockedSlimeRainbowSpawn = flag4(eventInfo9);
+  let unlockedSlimeRedSpawn = flag5(eventInfo9);
+  let unlockedSlimeYellowSpawn = flag6(eventInfo9);
+  let unlockedSlimeCopperSpawn = flag7(eventInfo9);
+  let fastForwardTimeToDusk = flag8(eventInfo9);
+  let noTrapsWorld = flag1(eventInfo10);
+  let zenithWorld = flag2(eventInfo10);
+  let unlockedTruffleSpawn = flag3(eventInfo10);
+  return {
     TAG: "Ok",
-    _0: action
+    _0: {
+      shadowOrbSmashed,
+      killedBoss1,
+      killedBoss2,
+      killedBoss3,
+      hardMode,
+      killedClown,
+      serverSidedCharacters,
+      killedPlantBoss,
+      killedMechBoss,
+      killedMechBoss2,
+      killedMechBoss3,
+      killedAnyMechBoss,
+      cloudBg,
+      crimson,
+      pumpkinMoon,
+      snowMoon,
+      expertMode,
+      fastForwardTime,
+      slimeRain,
+      killedKingSlime,
+      killedQueenBee,
+      killedFishron,
+      killedMartians,
+      killedAncientCultist,
+      killedMoonLord,
+      killedPumpking,
+      killedMourningWood,
+      killedIceQueen,
+      killedSantank,
+      killedEverscream,
+      killedGolem,
+      birthdayParty,
+      killedPirates,
+      killedFrostLegion,
+      killedGoblins,
+      sandstorm,
+      dungeonDefendersEvent,
+      killedDungeonDefendersTier1,
+      killedDungeonDefendersTier2,
+      killedDungeonDefendersTier3,
+      combatBookUsed,
+      manualLanterns,
+      killedSolarTower,
+      killedVortexTower,
+      killedNebulaTower,
+      killedStardustTower,
+      forceHalloween,
+      forceChristmas,
+      boughtCat,
+      boughtDog,
+      boughtBunny,
+      freeCake,
+      drunkWorld,
+      killedEmpressOfLight,
+      killedQueenSlime,
+      getGoodWorld,
+      tenthAnniversaryWorld,
+      dontStarveWorld,
+      downedDeerClops,
+      notTheBeesWorld,
+      remixWorld,
+      unlockedSlimeBlueSpawn,
+      combatBookVolumeTwoWasUsed,
+      peddlersSatchelWasUsed,
+      unlockedSlimeGreenSpawn,
+      unlockedSlimeOldSpawn,
+      unlockedSlimePurpleSpawn,
+      unlockedSlimeRainbowSpawn,
+      unlockedSlimeRedSpawn,
+      unlockedSlimeYellowSpawn,
+      unlockedSlimeCopperSpawn,
+      fastForwardTimeToDusk,
+      noTrapsWorld,
+      zenithWorld,
+      unlockedTruffleSpawn
+    }
+  };
+}
+function parse119(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt32(reader, "time");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readByte(reader, "dayAndMoonInfo");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readByte(reader, "moonPhase");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readInt16(reader, "maxTilesX");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readInt16(reader, "maxTilesY");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = readInt16(reader, "spawnX");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = readInt16(reader, "spawnY");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let e$7 = readInt16(reader, "worldSurface");
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let e$8 = readInt16(reader, "rockLayer");
+  if (e$8.TAG !== "Ok") {
+    return e$8;
+  }
+  let e$9 = readInt32(reader, "worldId");
+  if (e$9.TAG !== "Ok") {
+    return e$9;
+  }
+  let e$10 = readString(reader, "worldName");
+  if (e$10.TAG !== "Ok") {
+    return e$10;
+  }
+  let e$11 = readByte(reader, "gameMode");
+  if (e$11.TAG !== "Ok") {
+    return e$11;
+  }
+  let e$12 = readBytes(reader, 16, "worldUniqueId");
+  if (e$12.TAG !== "Ok") {
+    return e$12;
+  }
+  let worldUniqueId = fromArray2(e$12._0);
+  let e$13 = worldUniqueId !== void 0 ? {
+    TAG: "Ok",
+    _0: valFromOption(worldUniqueId)
   } : {
     TAG: "Error",
     _0: {
-      context: "Packet_DoorUse.parse.action",
-      error: new Error("Unknown door action")
+      context: "WorldInfo.parse.worldUniqueId",
+      error: new Error("Invalid worldUniqueId")
     }
   };
-  if (action$1.TAG === "Ok") {
+  if (e$13.TAG !== "Ok") {
+    return e$13;
+  }
+  let e$14 = readUInt64(reader, "worldGeneratorVersion");
+  if (e$14.TAG !== "Ok") {
+    return e$14;
+  }
+  let e$15 = readByte(reader, "moonType");
+  if (e$15.TAG !== "Ok") {
+    return e$15;
+  }
+  let e$16 = readByte(reader, "treeBackground");
+  if (e$16.TAG !== "Ok") {
+    return e$16;
+  }
+  let e$17 = readByte(reader, "treeBackground2");
+  if (e$17.TAG !== "Ok") {
+    return e$17;
+  }
+  let e$18 = readByte(reader, "treeBackground3");
+  if (e$18.TAG !== "Ok") {
+    return e$18;
+  }
+  let e$19 = readByte(reader, "treeBackground4");
+  if (e$19.TAG !== "Ok") {
+    return e$19;
+  }
+  let e$20 = readByte(reader, "corruptionBackground");
+  if (e$20.TAG !== "Ok") {
+    return e$20;
+  }
+  let e$21 = readByte(reader, "jungleBackground");
+  if (e$21.TAG !== "Ok") {
+    return e$21;
+  }
+  let e$22 = readByte(reader, "snowBackground");
+  if (e$22.TAG !== "Ok") {
+    return e$22;
+  }
+  let e$23 = readByte(reader, "hallowBackground");
+  if (e$23.TAG !== "Ok") {
+    return e$23;
+  }
+  let e$24 = readByte(reader, "crimsonBackground");
+  if (e$24.TAG !== "Ok") {
+    return e$24;
+  }
+  let e$25 = readByte(reader, "desertBackground");
+  if (e$25.TAG !== "Ok") {
+    return e$25;
+  }
+  let e$26 = readByte(reader, "oceanBackground");
+  if (e$26.TAG !== "Ok") {
+    return e$26;
+  }
+  let e$27 = readByte(reader, "mushroomBackground");
+  if (e$27.TAG !== "Ok") {
+    return e$27;
+  }
+  let e$28 = readByte(reader, "underworldBackground");
+  if (e$28.TAG !== "Ok") {
+    return e$28;
+  }
+  let e$29 = readByte(reader, "iceBackStyle");
+  if (e$29.TAG !== "Ok") {
+    return e$29;
+  }
+  let e$30 = readByte(reader, "jungleBackStyle");
+  if (e$30.TAG !== "Ok") {
+    return e$30;
+  }
+  let e$31 = readByte(reader, "hellBackStyle");
+  if (e$31.TAG !== "Ok") {
+    return e$31;
+  }
+  let e$32 = readSingle(reader, "windSpeedSet");
+  if (e$32.TAG !== "Ok") {
+    return e$32;
+  }
+  let e$33 = readByte(reader, "cloudNumber");
+  if (e$33.TAG !== "Ok") {
+    return e$33;
+  }
+  let e$34 = readInt32(reader, "tree1");
+  if (e$34.TAG !== "Ok") {
+    return e$34;
+  }
+  let e$35 = readInt32(reader, "tree2");
+  if (e$35.TAG !== "Ok") {
+    return e$35;
+  }
+  let e$36 = readInt32(reader, "tree3");
+  if (e$36.TAG !== "Ok") {
+    return e$36;
+  }
+  let e$37 = readByte(reader, "treeStyle1");
+  if (e$37.TAG !== "Ok") {
+    return e$37;
+  }
+  let e$38 = readByte(reader, "treeStyle2");
+  if (e$38.TAG !== "Ok") {
+    return e$38;
+  }
+  let e$39 = readByte(reader, "treeStyle3");
+  if (e$39.TAG !== "Ok") {
+    return e$39;
+  }
+  let e$40 = readByte(reader, "treeStyle4");
+  if (e$40.TAG !== "Ok") {
+    return e$40;
+  }
+  let e$41 = readInt32(reader, "caveBack1");
+  if (e$41.TAG !== "Ok") {
+    return e$41;
+  }
+  let e$42 = readInt32(reader, "caveBack2");
+  if (e$42.TAG !== "Ok") {
+    return e$42;
+  }
+  let e$43 = readInt32(reader, "caveBack3");
+  if (e$43.TAG !== "Ok") {
+    return e$43;
+  }
+  let e$44 = readByte(reader, "caveBackStyle1");
+  if (e$44.TAG !== "Ok") {
+    return e$44;
+  }
+  let e$45 = readByte(reader, "caveBackStyle2");
+  if (e$45.TAG !== "Ok") {
+    return e$45;
+  }
+  let e$46 = readByte(reader, "caveBackStyle3");
+  if (e$46.TAG !== "Ok") {
+    return e$46;
+  }
+  let e$47 = readByte(reader, "caveBackStyle4");
+  if (e$47.TAG !== "Ok") {
+    return e$47;
+  }
+  let e$48 = readByte(reader, "forest1TreeTopStyle");
+  if (e$48.TAG !== "Ok") {
+    return e$48;
+  }
+  let e$49 = readByte(reader, "forest2TreeTopStyle");
+  if (e$49.TAG !== "Ok") {
+    return e$49;
+  }
+  let e$50 = readByte(reader, "forest3TreeTopStyle");
+  if (e$50.TAG !== "Ok") {
+    return e$50;
+  }
+  let e$51 = readByte(reader, "forest4TreeTopStyle");
+  if (e$51.TAG !== "Ok") {
+    return e$51;
+  }
+  let e$52 = readByte(reader, "corruptionTreeTopStyle");
+  if (e$52.TAG !== "Ok") {
+    return e$52;
+  }
+  let e$53 = readByte(reader, "jungleTreeTopStyle");
+  if (e$53.TAG !== "Ok") {
+    return e$53;
+  }
+  let e$54 = readByte(reader, "snowTreeTopStyle");
+  if (e$54.TAG !== "Ok") {
+    return e$54;
+  }
+  let e$55 = readByte(reader, "hallowTreeTopStyle");
+  if (e$55.TAG !== "Ok") {
+    return e$55;
+  }
+  let e$56 = readByte(reader, "crimsonTreeTopStyle");
+  if (e$56.TAG !== "Ok") {
+    return e$56;
+  }
+  let e$57 = readByte(reader, "desertTreeTopStyle");
+  if (e$57.TAG !== "Ok") {
+    return e$57;
+  }
+  let e$58 = readByte(reader, "oceanTreeTopStyle");
+  if (e$58.TAG !== "Ok") {
+    return e$58;
+  }
+  let e$59 = readByte(reader, "glowingMushroomTreeTopStyle");
+  if (e$59.TAG !== "Ok") {
+    return e$59;
+  }
+  let e$60 = readByte(reader, "underworldTreeTopStyle");
+  if (e$60.TAG !== "Ok") {
+    return e$60;
+  }
+  let e$61 = readSingle(reader, "rain");
+  if (e$61.TAG !== "Ok") {
+    return e$61;
+  }
+  let e$62 = readEventInfo2(reader);
+  if (e$62.TAG !== "Ok") {
+    return e$62;
+  }
+  let e$63 = readByte(reader, "sundialCooldown");
+  if (e$63.TAG !== "Ok") {
+    return e$63;
+  }
+  let e$64 = readByte(reader, "moondialCooldown");
+  if (e$64.TAG !== "Ok") {
+    return e$64;
+  }
+  let e$65 = readInt16(reader, "copperOreTier");
+  if (e$65.TAG !== "Ok") {
+    return e$65;
+  }
+  let e$66 = readInt16(reader, "ironOreTier");
+  if (e$66.TAG !== "Ok") {
+    return e$66;
+  }
+  let e$67 = readInt16(reader, "silverOreTier");
+  if (e$67.TAG !== "Ok") {
+    return e$67;
+  }
+  let e$68 = readInt16(reader, "goldOreTier");
+  if (e$68.TAG !== "Ok") {
+    return e$68;
+  }
+  let e$69 = readInt16(reader, "cobaltOreTier");
+  if (e$69.TAG !== "Ok") {
+    return e$69;
+  }
+  let e$70 = readInt16(reader, "mythrilOreTier");
+  if (e$70.TAG !== "Ok") {
+    return e$70;
+  }
+  let e$71 = readInt16(reader, "adamantiteOreTier");
+  if (e$71.TAG !== "Ok") {
+    return e$71;
+  }
+  let e$72 = readSByte(reader, "invasionType");
+  if (e$72.TAG !== "Ok") {
+    return e$72;
+  }
+  let e$73 = readUInt64(reader, "lobbyId");
+  if (e$73.TAG !== "Ok") {
+    return e$73;
+  }
+  let e$74 = readSingle(reader, "sandstormSeverity");
+  if (e$74.TAG === "Ok") {
     return {
       TAG: "Ok",
       _0: {
-        action: action$1._0,
-        x: e$1._0,
-        y: e$2._0,
-        direction: e$3._0 === 0 ? -1 : 1
+        time: e._0,
+        dayAndMoonInfo: e$1._0,
+        moonPhase: e$2._0,
+        maxTilesX: e$3._0,
+        maxTilesY: e$4._0,
+        spawnX: e$5._0,
+        spawnY: e$6._0,
+        worldSurface: e$7._0,
+        rockLayer: e$8._0,
+        worldId: e$9._0,
+        worldName: e$10._0,
+        gameMode: e$11._0,
+        worldUniqueId: e$13._0,
+        worldGeneratorVersion: e$14._0,
+        moonType: e$15._0,
+        treeBackground: e$16._0,
+        treeBackground2: e$17._0,
+        treeBackground3: e$18._0,
+        treeBackground4: e$19._0,
+        corruptionBackground: e$20._0,
+        jungleBackground: e$21._0,
+        snowBackground: e$22._0,
+        hallowBackground: e$23._0,
+        crimsonBackground: e$24._0,
+        desertBackground: e$25._0,
+        oceanBackground: e$26._0,
+        mushroomBackground: e$27._0,
+        underworldBackground: e$28._0,
+        iceBackStyle: e$29._0,
+        jungleBackStyle: e$30._0,
+        hellBackStyle: e$31._0,
+        windSpeedSet: e$32._0,
+        cloudNumber: e$33._0,
+        tree1: e$34._0,
+        tree2: e$35._0,
+        tree3: e$36._0,
+        treeStyle1: e$37._0,
+        treeStyle2: e$38._0,
+        treeStyle3: e$39._0,
+        treeStyle4: e$40._0,
+        caveBack1: e$41._0,
+        caveBack2: e$42._0,
+        caveBack3: e$43._0,
+        caveBackStyle1: e$44._0,
+        caveBackStyle2: e$45._0,
+        caveBackStyle3: e$46._0,
+        caveBackStyle4: e$47._0,
+        forest1TreeTopStyle: e$48._0,
+        forest2TreeTopStyle: e$49._0,
+        forest3TreeTopStyle: e$50._0,
+        forest4TreeTopStyle: e$51._0,
+        corruptionTreeTopStyle: e$52._0,
+        jungleTreeTopStyle: e$53._0,
+        snowTreeTopStyle: e$54._0,
+        hallowTreeTopStyle: e$55._0,
+        crimsonTreeTopStyle: e$56._0,
+        desertTreeTopStyle: e$57._0,
+        oceanTreeTopStyle: e$58._0,
+        glowingMushroomTreeTopStyle: e$59._0,
+        underworldTreeTopStyle: e$60._0,
+        rain: e$61._0,
+        eventInfo: e$62._0,
+        sundialCooldown: e$63._0,
+        moondialCooldown: e$64._0,
+        copperOreTier: e$65._0,
+        ironOreTier: e$66._0,
+        silverOreTier: e$67._0,
+        goldOreTier: e$68._0,
+        cobaltOreTier: e$69._0,
+        mythrilOreTier: e$70._0,
+        adamantiteOreTier: e$71._0,
+        invasionType: e$72._0,
+        lobbyId: e$73._0,
+        sandstormSeverity: e$74._0
       }
     };
   } else {
-    return {
-      TAG: "Error",
-      _0: action$1._0
-    };
+    return e$74;
   }
-}
-
-// src/packetv1449/PacketV1449_HarpPlay.js
-function parse92(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readSingle(reader, "pitch");
-  if (e$1.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0,
-        pitch: e$1._0
-      }
-    };
-  } else {
-    return e$1;
-  }
-}
-
-// src/packetv1449/PacketV1449_ChestName.js
-function parse93(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt16(reader, "chestId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt16(reader, "x");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readInt16(reader, "y");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readString(reader, "name");
-  if (e$3.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        chestId: e._0,
-        x: e$1._0,
-        y: e$2._0,
-        name: e$3._0
-      }
-    };
-  } else {
-    return e$3;
-  }
-}
-
-// src/packetv1449/PacketV1449_ChestOpen.js
-function parse94(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt16(reader, "x");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt16(reader, "y");
-  if (e$1.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        x: e._0,
-        y: e$1._0
-      }
-    };
-  } else {
-    return e$1;
-  }
-}
-
-// src/packetv1449/PacketV1449_LiquidSet.js
-function parse95(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt16(reader, "x");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt16(reader, "y");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readByte(reader, "liquid");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readByte(reader, "liquidType");
-  if (e$3.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        x: e._0,
-        y: e$1._0,
-        liquid: e$2._0,
-        liquidType: e$3._0
-      }
-    };
-  } else {
-    return e$3;
-  }
-}
-
-// src/packetv1449/PacketV1449_NpcStrike.js
-function parse96(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt16(reader, "npcId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt16(reader, "damage");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readSingle(reader, "knockback");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readByte(reader, "direction");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readByte(reader, "critical");
-  if (e$4.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        npcId: e._0,
-        damage: e$1._0,
-        knockback: e$2._0,
-        direction: e$3._0 - 1 | 0,
-        critical: e$4._0 === 1
-      }
-    };
-  } else {
-    return e$4;
-  }
-}
-
-// src/packetv1449/PacketV1449_NpcTamper.js
-function fromInt8(playerId) {
-  if (playerId !== -1) {
-    return {
-      TAG: "PlayerId",
-      _0: playerId
-    };
-  } else {
-    return "All";
-  }
-}
-function parse97(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readUInt16(reader, "npcId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readByte(reader, "setNpcImmunity");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2;
-  if (e$1._0 === 1) {
-    let e$3 = readInt32(reader, "immunityTime");
-    if (e$3.TAG === "Ok") {
-      let e$4 = readInt16(reader, "immunityFromPlayerId");
-      e$2 = e$4.TAG === "Ok" ? {
-        TAG: "Ok",
-        _0: [
-          e$3._0,
-          fromInt8(e$4._0)
-        ]
-      } : e$4;
-    } else {
-      e$2 = e$3;
-    }
-  } else {
-    e$2 = {
-      TAG: "Ok",
-      _0: [
-        void 0,
-        void 0
-      ]
-    };
-  }
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let match = e$2._0;
-  return {
-    TAG: "Ok",
-    _0: {
-      npcId: e._0,
-      immunityTime: match[0],
-      immunityFromPlayerId: match[1]
-    }
-  };
 }
 
 // src/packetv1449/PacketV1449_HealEffect.js
-function parse98(payload) {
+function parse120(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -13824,7 +21305,7 @@ function parse98(payload) {
 }
 
 // src/packetv1449/PacketV1449_ManaEffect.js
-function parse99(payload) {
+function parse121(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -13845,7 +21326,7 @@ function parse99(payload) {
 }
 
 // src/packetv1449/PacketV1449_NpcBuffAdd.js
-function parse100(payload) {
+function parse122(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -13871,7 +21352,7 @@ function parse100(payload) {
 }
 
 // src/packetv1449/PacketV1449_NpcRelease.js
-function parse101(payload) {
+function parse123(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "x");
   if (e.TAG !== "Ok") {
@@ -13901,8 +21382,152 @@ function parse101(payload) {
   }
 }
 
+// src/packetv1449/PacketV1449_PlayerInfo.js
+function getDifficulty2(difficultyFlags) {
+  if (flag2(difficultyFlags)) {
+    return "Hardcore";
+  } else if (flag1(difficultyFlags)) {
+    return "Mediumcore";
+  } else {
+    return "Softcore";
+  }
+}
+function parse124(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readByte(reader, "skinVariant");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readByte(reader, "hair");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readString(reader, "name");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readByte(reader, "hairDye");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = readByte(reader, "hideVisuals");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = readByte(reader, "hideVisuals2");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let e$7 = readByte(reader, "hideMisc");
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let e$8 = readColor(reader, "hairColor");
+  if (e$8.TAG !== "Ok") {
+    return e$8;
+  }
+  let e$9 = readColor(reader, "skinColor");
+  if (e$9.TAG !== "Ok") {
+    return e$9;
+  }
+  let e$10 = readColor(reader, "eyeColor");
+  if (e$10.TAG !== "Ok") {
+    return e$10;
+  }
+  let e$11 = readColor(reader, "shirtColor");
+  if (e$11.TAG !== "Ok") {
+    return e$11;
+  }
+  let e$12 = readColor(reader, "underShirtColor");
+  if (e$12.TAG !== "Ok") {
+    return e$12;
+  }
+  let e$13 = readColor(reader, "pantsColor");
+  if (e$13.TAG !== "Ok") {
+    return e$13;
+  }
+  let e$14 = readColor(reader, "shoeColor");
+  if (e$14.TAG !== "Ok") {
+    return e$14;
+  }
+  let e$15 = readByte(reader, "difficultyFlags");
+  if (e$15.TAG !== "Ok") {
+    return e$15;
+  }
+  let difficultyFlags = fromByte(e$15._0);
+  let e$16 = readByte(reader, "torchFlags");
+  if (e$16.TAG !== "Ok") {
+    return e$16;
+  }
+  let torchFlags = fromByte(e$16._0);
+  let difficulty = getDifficulty2(difficultyFlags);
+  let extraAccessory = flag3(difficultyFlags);
+  let mode = flag4(difficultyFlags) ? "Journey" : "Classic";
+  let usingBiomeTorches = flag1(torchFlags);
+  let happyFunTorchTime = flag2(torchFlags);
+  let unlockedBiomeTorches = flag3(torchFlags);
+  let unlockedSuperCart = flag4(torchFlags);
+  let enabledSuperCart = flag5(torchFlags);
+  let e$17 = readByte(reader, "usedFlags");
+  let e$18;
+  e$18 = e$17.TAG === "Ok" ? {
+    TAG: "Ok",
+    _0: fromByte(e$17._0)
+  } : e$17;
+  if (e$18.TAG !== "Ok") {
+    return e$18;
+  }
+  let usedFlags = e$18._0;
+  let usedAegisCrystal = flag1(usedFlags);
+  let usedAegisFruit = flag2(usedFlags);
+  let usedArcaneCrystal = flag3(usedFlags);
+  let usedGalaxyPearl = flag4(usedFlags);
+  let usedGummyWorm = flag5(usedFlags);
+  let usedAmbrosia = flag6(usedFlags);
+  let ateArtisanBread = flag7(usedFlags);
+  return {
+    TAG: "Ok",
+    _0: {
+      playerId: e._0,
+      skinVariant: e$1._0,
+      hair: e$2._0,
+      name: e$3._0,
+      hairDye: e$4._0,
+      hideVisuals: e$5._0,
+      hideVisuals2: e$6._0,
+      hideMisc: e$7._0,
+      hairColor: e$8._0,
+      skinColor: e$9._0,
+      eyeColor: e$10._0,
+      shirtColor: e$11._0,
+      underShirtColor: e$12._0,
+      pantsColor: e$13._0,
+      shoeColor: e$14._0,
+      difficulty,
+      mode,
+      extraAccessory,
+      usingBiomeTorches,
+      unlockedBiomeTorches,
+      happyFunTorchTime,
+      unlockedSuperCart,
+      enabledSuperCart,
+      usedAegisCrystal,
+      usedAegisFruit,
+      usedArcaneCrystal,
+      usedGalaxyPearl,
+      usedGummyWorm,
+      usedAmbrosia,
+      ateArtisanBread
+    }
+  };
+}
+
 // src/packetv1449/PacketV1449_PortalKill.js
-function parse102(payload) {
+function parse125(payload) {
   let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "owner");
   if (e.TAG !== "Ok") {
@@ -13923,7 +21548,7 @@ function parse102(payload) {
 }
 
 // src/packetv1449/PacketV1449_EmoteBubble.js
-function parse103(payload) {
+function parse126(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "id");
   if (e.TAG !== "Ok") {
@@ -13981,8 +21606,77 @@ function parse103(payload) {
   }
 }
 
+// src/packetv1449/PacketV1449_PlayerSpawn.js
+function parse127(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "x");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readInt16(reader, "y");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readInt32(reader, "timeRemaining");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readInt16(reader, "numberOfDeathsPve");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = readInt16(reader, "numberOfDeathsPvp");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = readByte(reader, "context");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let context;
+  switch (e$6._0) {
+    case 0:
+      context = "ReviveFromDeath";
+      break;
+    case 1:
+      context = "SpawningIntoWorld";
+      break;
+    case 2:
+      context = "RecallFromItem";
+      break;
+    default:
+      context = void 0;
+  }
+  if (context !== void 0) {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        x: e$1._0,
+        y: e$2._0,
+        timeRemaining: e$3._0,
+        numberOfDeathsPve: e$4._0,
+        numberOfDeathsPvp: e$5._0,
+        context
+      }
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: {
+        context: "PlayerSpawn.parse.context",
+        error: new Error("Unknown context")
+      }
+    };
+  }
+}
+
 // src/packetv1449/PacketV1449_PasswordSend.js
-function parse104(payload) {
+function parse128(payload) {
   let reader = new packetreader_default(payload);
   let e = readString(reader, "password");
   if (e.TAG === "Ok") {
@@ -13997,8 +21691,172 @@ function parse104(payload) {
   }
 }
 
+// src/packetv1449/PacketV1449_PlayerUpdate.js
+function parse129(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readByte(reader, "controlFlags");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let controlFlags = fromByte(e$1._0);
+  let e$2 = readByte(reader, "miscFlags1");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let miscFlags1 = fromByte(e$2._0);
+  let e$3 = readByte(reader, "miscFlags2");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let miscFlags2 = fromByte(e$3._0);
+  let e$4 = readByte(reader, "miscFlags3");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let miscFlags3 = fromByte(e$4._0);
+  let control_isHoldingUp = flag1(controlFlags);
+  let control_isHoldingDown = flag2(controlFlags);
+  let control_isHoldingLeft = flag3(controlFlags);
+  let control_isHoldingRight = flag4(controlFlags);
+  let control_isHoldingJump = flag5(controlFlags);
+  let control_isHoldingItemUse = flag6(controlFlags);
+  let control = {
+    isHoldingUp: control_isHoldingUp,
+    isHoldingDown: control_isHoldingDown,
+    isHoldingLeft: control_isHoldingLeft,
+    isHoldingRight: control_isHoldingRight,
+    isHoldingJump: control_isHoldingJump,
+    isHoldingItemUse: control_isHoldingItemUse
+  };
+  let direction = flag7(controlFlags) ? "Right" : "Left";
+  let pulleyDirection = flag1(miscFlags1) ? flag2(miscFlags1) ? "Two" : "One" : void 0;
+  let vortexStealthActive = flag4(miscFlags1);
+  let gravityDirection = flag5(miscFlags1) ? "Normal" : "Inverted";
+  let shouldGuard = flag6(miscFlags1);
+  let ghost = flag7(miscFlags1);
+  let e$5 = readByte(reader, "selectedItem");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = readSingle(reader, "positionX");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let e$7 = readSingle(reader, "positionY");
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let position_x = e$6._0;
+  let position_y = e$7._0;
+  let position = {
+    x: position_x,
+    y: position_y
+  };
+  let e$8;
+  if (flag3(miscFlags1)) {
+    let e$9 = readSingle(reader, "velocityX");
+    if (e$9.TAG === "Ok") {
+      let e$10 = readSingle(reader, "velocityY");
+      e$8 = e$10.TAG === "Ok" ? {
+        TAG: "Ok",
+        _0: {
+          x: e$9._0,
+          y: e$10._0
+        }
+      } : e$10;
+    } else {
+      e$8 = e$9;
+    }
+  } else {
+    e$8 = {
+      TAG: "Ok",
+      _0: void 0
+    };
+  }
+  if (e$8.TAG !== "Ok") {
+    return e$8;
+  }
+  let e$11;
+  if (flag7(miscFlags2)) {
+    let e$12 = readSingle(reader, "potionOfReturnOrigX");
+    if (e$12.TAG === "Ok") {
+      let e$13 = readSingle(reader, "potionOfReturnOrigY");
+      if (e$13.TAG === "Ok") {
+        let e$14 = readSingle(reader, "potionOfReturnHomeX");
+        if (e$14.TAG === "Ok") {
+          let e$15 = readSingle(reader, "potionOfReturnHomeY");
+          e$11 = e$15.TAG === "Ok" ? {
+            TAG: "Ok",
+            _0: {
+              originalUsePosition: {
+                x: e$12._0,
+                y: e$13._0
+              },
+              homePosition: {
+                x: e$14._0,
+                y: e$15._0
+              }
+            }
+          } : e$15;
+        } else {
+          e$11 = e$14;
+        }
+      } else {
+        e$11 = e$13;
+      }
+    } else {
+      e$11 = e$12;
+    }
+  } else {
+    e$11 = {
+      TAG: "Ok",
+      _0: void 0
+    };
+  }
+  if (e$11.TAG !== "Ok") {
+    return e$11;
+  }
+  let tryKeepingHoveringUp = flag1(miscFlags2);
+  let isVoidVaultEnabled = flag2(miscFlags2);
+  let isSitting = flag3(miscFlags2);
+  let hasFinishedAnyDd2Event = flag4(miscFlags2);
+  let isPettingAnimal = flag5(miscFlags2);
+  let isTheAnimalBeingPetSmall = flag6(miscFlags2);
+  let tryKeepingHoveringDown = flag8(miscFlags2);
+  let isSleeping = flag1(miscFlags3);
+  return {
+    TAG: "Ok",
+    _0: {
+      playerId: e._0,
+      control,
+      direction,
+      pulleyDirection,
+      vortexStealthActive,
+      gravityDirection,
+      shouldGuard,
+      ghost,
+      selectedItem: e$5._0,
+      position,
+      velocity: e$8._0,
+      potionOfReturn: e$11._0,
+      tryKeepingHoveringUp,
+      isVoidVaultEnabled,
+      isSitting,
+      hasFinishedAnyDd2Event,
+      isPettingAnimal,
+      isTheAnimalBeingPetSmall,
+      tryKeepingHoveringDown,
+      isSleeping
+    }
+  };
+}
+
 // src/packetv1449/PacketV1449_GemLockToggle.js
-function parse105(payload) {
+function parse130(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -14024,7 +21882,7 @@ function parse105(payload) {
 }
 
 // src/packetv1449/PacketV1449_NebulaLevelUp.js
-function parse106(payload) {
+function parse131(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -14054,8 +21912,516 @@ function parse106(payload) {
   }
 }
 
+// src/packetv1449/PacketV1449_NetModuleLoad.js
+function fromInt9(n) {
+  switch (n) {
+    case 0:
+      return "Liquid";
+    case 1:
+      return "Text";
+    case 2:
+      return "Ping";
+    case 3:
+      return "Ambience";
+    case 4:
+      return "Bestiary";
+    case 5:
+      return "CreativeUnlocks";
+    case 6:
+      return "CreativePower";
+    case 7:
+      return "CreativeUnlocksPlayerReport";
+    case 8:
+      return "TeleportPylon";
+    case 9:
+      return "Particles";
+    case 10:
+      return "CreativePowerPermissions";
+    default:
+      return;
+  }
+}
+function parse132(payload, fromServer) {
+  let reader = new packetreader_default(payload);
+  let e = readUInt16(reader, "moduleType");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let match = fromInt9(e._0);
+  if (match === void 0) {
+    return {
+      TAG: "Error",
+      _0: {
+        context: "Packet_NetModuleLoad.parse",
+        error: new Error("Unknown net module type")
+      }
+    };
+  }
+  switch (match) {
+    case "Liquid":
+      let e$1 = readUInt16(reader, "changesCount");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let changesCount = e$1._0;
+      let readChanges = (_idx, _acc) => {
+        while (true) {
+          let acc = _acc;
+          let idx = _idx;
+          if (idx >= changesCount) {
+            return {
+              TAG: "Ok",
+              _0: acc.toReversed()
+            };
+          }
+          let e2 = readInt16(reader, "y");
+          if (e2.TAG !== "Ok") {
+            return e2;
+          }
+          let e$16 = readInt16(reader, "x");
+          if (e$16.TAG !== "Ok") {
+            return e$16;
+          }
+          let e$210 = readByte(reader, "amount");
+          if (e$210.TAG !== "Ok") {
+            return e$210;
+          }
+          let e$3 = readByte(reader, "liquidType");
+          if (e$3.TAG !== "Ok") {
+            return e$3;
+          }
+          _acc = concatMany([
+            [{
+              x: e$16._0,
+              y: e2._0,
+              amount: e$210._0,
+              liquidType: e$3._0
+            }],
+            acc
+          ]);
+          _idx = idx + 1 | 0;
+          continue;
+        }
+        ;
+      };
+      let e$2 = readChanges(0, []);
+      if (e$2.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "Liquid",
+            _0: {
+              changes: e$2._0
+            }
+          }
+        };
+      } else {
+        return e$2;
+      }
+    case "Text":
+      if (fromServer) {
+        let e$3 = readByte(reader, "playerId");
+        if (e$3.TAG !== "Ok") {
+          return e$3;
+        }
+        let e$4 = readNetworkText(reader, "message");
+        if (e$4.TAG !== "Ok") {
+          return e$4;
+        }
+        let e$5 = readColor(reader, "color");
+        if (e$5.TAG === "Ok") {
+          return {
+            TAG: "Ok",
+            _0: {
+              TAG: "ServerText",
+              _0: e$3._0,
+              _1: e$4._0,
+              _2: e$5._0
+            }
+          };
+        } else {
+          return e$5;
+        }
+      }
+      let e$6 = readString(reader, "commandId");
+      if (e$6.TAG !== "Ok") {
+        return e$6;
+      }
+      let e$7 = readString(reader, "message");
+      if (e$7.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "ClientText",
+            _0: e$6._0,
+            _1: e$7._0
+          }
+        };
+      } else {
+        return e$7;
+      }
+    case "Ping":
+      let e$8 = readSingle(reader, "x");
+      if (e$8.TAG !== "Ok") {
+        return e$8;
+      }
+      let e$9 = readSingle(reader, "y");
+      if (e$9.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "Ping",
+            _0: {
+              x: e$8._0,
+              y: e$9._0
+            }
+          }
+        };
+      } else {
+        return e$9;
+      }
+    case "Ambience":
+      let e$10 = readByte(reader, "playerId");
+      if (e$10.TAG !== "Ok") {
+        return e$10;
+      }
+      let e$11 = readInt32(reader, "seed");
+      if (e$11.TAG !== "Ok") {
+        return e$11;
+      }
+      let e$12 = readByte(reader, "skyEntityType");
+      if (e$12.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "Ambience",
+            _0: {
+              playerId: e$10._0,
+              seed: e$11._0,
+              skyEntityType: e$12._0
+            }
+          }
+        };
+      } else {
+        return e$12;
+      }
+    case "Bestiary":
+      let e$13 = readByte(reader, "rawBestiaryUnlockType");
+      if (e$13.TAG !== "Ok") {
+        return e$13;
+      }
+      let e$14 = readInt16(reader, "npcId");
+      if (e$14.TAG !== "Ok") {
+        return e$14;
+      }
+      let e$15;
+      switch (e$13._0) {
+        case 0:
+          let e$16 = readUInt16(reader, "killCount");
+          e$15 = e$16.TAG === "Ok" ? {
+            TAG: "Ok",
+            _0: {
+              TAG: "Kill",
+              _0: e$16._0
+            }
+          } : e$16;
+          break;
+        case 1:
+          e$15 = {
+            TAG: "Ok",
+            _0: "Sight"
+          };
+          break;
+        case 2:
+          e$15 = {
+            TAG: "Ok",
+            _0: "Chat"
+          };
+          break;
+        default:
+          e$15 = {
+            TAG: "Error",
+            _0: {
+              context: "Packet_NetModuleLoad.parseBestiary",
+              error: new Error("Unknown bestiary unlock type")
+            }
+          };
+      }
+      if (e$15.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "Bestiary",
+            _0: {
+              unlockType: e$15._0,
+              npcId: e$14._0
+            }
+          }
+        };
+      } else {
+        return e$15;
+      }
+    case "CreativeUnlocks":
+      let e$17 = readInt16(reader, "itemId");
+      if (e$17.TAG !== "Ok") {
+        return e$17;
+      }
+      let e$18 = readUInt16(reader, "researchedCount");
+      if (e$18.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "CreativeUnlocks",
+            _0: {
+              itemId: e$17._0,
+              researchedCount: e$18._0
+            }
+          }
+        };
+      } else {
+        return e$18;
+      }
+    case "CreativePower":
+      let p = parse$2(reader);
+      if (p !== void 0) {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "CreativePower",
+            _0: p
+          }
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: {
+            context: "Packet_NetModuleLoad.parseCreativePower",
+            error: new Error("Failed to parse creative power")
+          }
+        };
+      }
+    case "CreativeUnlocksPlayerReport":
+      let e$19 = readByte(reader, "unknownByte");
+      if (e$19.TAG !== "Ok") {
+        return e$19;
+      }
+      let e$20 = readUInt16(reader, "itemId");
+      if (e$20.TAG !== "Ok") {
+        return e$20;
+      }
+      let e$21 = readUInt16(reader, "researchedCount");
+      if (e$21.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "CreativeUnlocksPlayerReport",
+            _0: {
+              itemId: e$20._0,
+              researchedCount: e$21._0
+            }
+          }
+        };
+      } else {
+        return e$21;
+      }
+    case "TeleportPylon":
+      let e$22 = readByte(reader, "rawPylonAction");
+      if (e$22.TAG !== "Ok") {
+        return e$22;
+      }
+      let e$23 = readInt16(reader, "x");
+      if (e$23.TAG !== "Ok") {
+        return e$23;
+      }
+      let e$24 = readInt16(reader, "y");
+      if (e$24.TAG !== "Ok") {
+        return e$24;
+      }
+      let e$25 = readByte(reader, "pylonType");
+      if (e$25.TAG !== "Ok") {
+        return e$25;
+      }
+      let pylonAction;
+      switch (e$22._0) {
+        case 0:
+          pylonAction = "Added";
+          break;
+        case 1:
+          pylonAction = "Removed";
+          break;
+        case 2:
+          pylonAction = "RequestTeleport";
+          break;
+        default:
+          pylonAction = void 0;
+      }
+      if (pylonAction !== void 0) {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "TeleportPylon",
+            _0: {
+              pylonAction,
+              x: e$23._0,
+              y: e$24._0,
+              pylonType: e$25._0
+            }
+          }
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: {
+            context: "Packet_NetModuleLoad.parseTeleportPylon",
+            error: new Error("Unknown pylon action")
+          }
+        };
+      }
+    case "Particles":
+      let e$26 = readByte(reader, "particleType");
+      if (e$26.TAG !== "Ok") {
+        return e$26;
+      }
+      let e$27 = readSingle(reader, "x");
+      if (e$27.TAG !== "Ok") {
+        return e$27;
+      }
+      let e$28 = readSingle(reader, "y");
+      if (e$28.TAG !== "Ok") {
+        return e$28;
+      }
+      let e$29 = readSingle(reader, "vx");
+      if (e$29.TAG !== "Ok") {
+        return e$29;
+      }
+      let e$30 = readSingle(reader, "vy");
+      if (e$30.TAG !== "Ok") {
+        return e$30;
+      }
+      let e$31 = readInt32(reader, "shaderIndex");
+      if (e$31.TAG !== "Ok") {
+        return e$31;
+      }
+      let e$32 = readByte(reader, "invokedByPlayer");
+      if (e$32.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "Particles",
+            _0: {
+              particleType: e$26._0,
+              x: e$27._0,
+              y: e$28._0,
+              vx: e$29._0,
+              vy: e$30._0,
+              shaderIndex: e$31._0,
+              invokedByPlayer: e$32._0
+            }
+          }
+        };
+      } else {
+        return e$32;
+      }
+    case "CreativePowerPermissions":
+      let e$33 = readByte(reader, "unknownByte");
+      if (e$33.TAG !== "Ok") {
+        return e$33;
+      }
+      let e$34 = readUInt16(reader, "powerType");
+      if (e$34.TAG !== "Ok") {
+        return e$34;
+      }
+      let e$35 = readByte(reader, "rawPowerLevel");
+      if (e$35.TAG !== "Ok") {
+        return e$35;
+      }
+      let powerLevel;
+      switch (e$35._0) {
+        case 0:
+          powerLevel = "LockedForEveryone";
+          break;
+        case 1:
+          powerLevel = "CanBeChangedByHostAlone";
+          break;
+        case 2:
+          powerLevel = "CanBeChangedByEveryone";
+          break;
+        default:
+          powerLevel = void 0;
+      }
+      if (powerLevel !== void 0) {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "CreativePowerPermissions",
+            _0: {
+              powerType: e$34._0,
+              powerLevel
+            }
+          }
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: {
+            context: "Packet_NetModuleLoad.parseCreativePowerPermission",
+            error: new Error("Unknown creative power permission level")
+          }
+        };
+      }
+  }
+}
+
+// src/packetv1449/PacketV1449_NpcBuffUpdate.js
+function parse133(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "npcId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let buffs = [];
+  let buffTimes = [];
+  let readBuffs = (_idx) => {
+    while (true) {
+      let idx = _idx;
+      if (idx >= 20) {
+        return {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      let e2 = readUInt16(reader, `buff` + (idx + 1 | 0).toString());
+      if (e2.TAG !== "Ok") {
+        return e2;
+      }
+      let e$12 = readInt16(reader, `buffTime` + (idx + 1 | 0).toString());
+      if (e$12.TAG !== "Ok") {
+        return e$12;
+      }
+      buffs.push(e2._0);
+      buffTimes.push(e$12._0);
+      _idx = idx + 1 | 0;
+      continue;
+    }
+    ;
+  };
+  let e$1 = readBuffs(0);
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        npcId: e._0,
+        buffs,
+        buffTimes
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+
 // src/packetv1449/PacketV1449_NpcItemStrike.js
-function parse107(payload) {
+function parse134(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -14076,7 +22442,7 @@ function parse107(payload) {
 }
 
 // src/packetv1449/PacketV1449_PlayerStealth.js
-function parse108(payload) {
+function parse135(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -14097,7 +22463,7 @@ function parse108(payload) {
 }
 
 // src/packetv1449/PacketV1449_GoodEvilUpdate.js
-function parse109(payload) {
+function parse136(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "good");
   if (e.TAG !== "Ok") {
@@ -14179,7 +22545,7 @@ function parseFlags2(reader, flags2) {
     return notAmmo;
   }
 }
-function parse110(payload) {
+function parse137(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemId");
   if (e.TAG !== "Ok") {
@@ -14311,7 +22677,7 @@ function parse110(payload) {
 }
 
 // src/packetv1449/PacketV1449_ItemFramePlace.js
-function parse111(payload) {
+function parse138(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -14347,7 +22713,7 @@ function parse111(payload) {
 }
 
 // src/packetv1449/PacketV1449_LucyAxeMessage.js
-function parse112(payload) {
+function parse139(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "source");
   if (e.TAG !== "Ok") {
@@ -14396,8 +22762,294 @@ function parse112(payload) {
   };
 }
 
+// src/packetv1449/PacketV1449_PlayerBuffsSet.js
+function parse140(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let buffs = make2(44, 0);
+  let buffsParseResult = {
+    TAG: "Ok",
+    _0: void 0
+  };
+  for (let i = 0; i <= 43; ++i) {
+    let match = buffsParseResult;
+    if (match.TAG === "Ok") {
+      let label = "buff_" + i.toString();
+      let buff = readUInt16(reader, label);
+      if (buff.TAG === "Ok") {
+        buffs[i] = buff._0;
+      } else {
+        buffsParseResult = {
+          TAG: "Error",
+          _0: buff._0
+        };
+      }
+    }
+  }
+  let err = buffsParseResult;
+  if (err.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        buffs
+      }
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: err._0
+    };
+  }
+}
+
+// src/packetv1449/PacketV1449_TileSquareSend.js
+function parse141(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "tileX");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "tileY");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readByte(reader, "width");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let width = e$2._0;
+  let e$3 = readByte(reader, "height");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let height = e$3._0;
+  let e$4 = readByte(reader, "changeType");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let readTile = () => {
+    let e2 = readByte(reader, "flags1");
+    if (e2.TAG !== "Ok") {
+      return e2;
+    }
+    let flags1 = fromByte(e2._0);
+    let e$12 = readByte(reader, "flags2");
+    if (e$12.TAG !== "Ok") {
+      return e$12;
+    }
+    let flags2 = fromByte(e$12._0);
+    let e$22 = readByte(reader, "flags3");
+    if (e$22.TAG !== "Ok") {
+      return e$22;
+    }
+    let active = flag1(flags1);
+    let hasWall = flag3(flags1);
+    let hasLiquid = flag4(flags1);
+    let wire = flag5(flags1);
+    let halfBrick = flag6(flags1);
+    let actuator = flag7(flags1);
+    let inActive = flag8(flags1);
+    let wire2 = flag1(flags2);
+    let wire3 = flag2(flags2);
+    let e$32;
+    if (flag3(flags2)) {
+      let e$42 = readByte(reader, "color");
+      e$32 = e$42.TAG === "Ok" ? {
+        TAG: "Ok",
+        _0: e$42._0
+      } : e$42;
+    } else {
+      e$32 = {
+        TAG: "Ok",
+        _0: void 0
+      };
+    }
+    if (e$32.TAG !== "Ok") {
+      return e$32;
+    }
+    let e$5;
+    if (flag4(flags2)) {
+      let e$6 = readByte(reader, "wallColor");
+      e$5 = e$6.TAG === "Ok" ? {
+        TAG: "Ok",
+        _0: e$6._0
+      } : e$6;
+    } else {
+      e$5 = {
+        TAG: "Ok",
+        _0: void 0
+      };
+    }
+    if (e$5.TAG !== "Ok") {
+      return e$5;
+    }
+    let e$7;
+    if (active) {
+      let e$8 = readUInt16(reader, "tileType");
+      if (e$8.TAG === "Ok") {
+        let tileType = e$8._0;
+        let e$9;
+        if (isImportant2(tileType)) {
+          let e$10 = readInt16(reader, "frameX");
+          if (e$10.TAG === "Ok") {
+            let e$11 = readInt16(reader, "frameY");
+            e$9 = e$11.TAG === "Ok" ? {
+              TAG: "Ok",
+              _0: {
+                x: e$10._0,
+                y: e$11._0
+              }
+            } : e$11;
+          } else {
+            e$9 = e$10;
+          }
+        } else {
+          e$9 = {
+            TAG: "Ok",
+            _0: void 0
+          };
+        }
+        if (e$9.TAG === "Ok") {
+          let slope = ((0 + (flag5(flags2) ? 1 : 0) | 0) + (flag6(flags2) ? 2 : 0) | 0) + (flag7(flags2) ? 4 : 0) | 0;
+          e$7 = {
+            TAG: "Ok",
+            _0: {
+              tileType,
+              slope,
+              frame: e$9._0
+            }
+          };
+        } else {
+          e$7 = e$9;
+        }
+      } else {
+        e$7 = e$8;
+      }
+    } else {
+      e$7 = {
+        TAG: "Ok",
+        _0: void 0
+      };
+    }
+    if (e$7.TAG !== "Ok") {
+      return e$7;
+    }
+    let e$122;
+    if (hasWall) {
+      let e$13 = readUInt16(reader, "wall");
+      e$122 = e$13.TAG === "Ok" ? {
+        TAG: "Ok",
+        _0: e$13._0
+      } : e$13;
+    } else {
+      e$122 = {
+        TAG: "Ok",
+        _0: void 0
+      };
+    }
+    if (e$122.TAG !== "Ok") {
+      return e$122;
+    }
+    let e$14;
+    if (hasLiquid) {
+      let e$15 = readByte(reader, "liquidValue");
+      if (e$15.TAG === "Ok") {
+        let e$16 = readByte(reader, "liquidType");
+        e$14 = e$16.TAG === "Ok" ? {
+          TAG: "Ok",
+          _0: {
+            liquidValue: e$15._0,
+            liquidType: e$16._0
+          }
+        } : e$16;
+      } else {
+        e$14 = e$15;
+      }
+    } else {
+      e$14 = {
+        TAG: "Ok",
+        _0: void 0
+      };
+    }
+    if (e$14.TAG !== "Ok") {
+      return e$14;
+    }
+    let wire4 = flag8(flags2);
+    return {
+      TAG: "Ok",
+      _0: {
+        wire,
+        halfBrick,
+        actuator,
+        inActive,
+        wire2,
+        wire3,
+        wire4,
+        color: e$32._0,
+        wallColor: e$5._0,
+        activeTile: e$7._0,
+        wall: e$122._0,
+        liquid: e$14._0,
+        coatHeader: e$22._0
+      }
+    };
+  };
+  let tiles = [];
+  let parseResult = {
+    TAG: "Ok",
+    _0: void 0
+  };
+  for (let _x = 0; _x < width; ++_x) {
+    let match = parseResult;
+    if (match.TAG === "Ok") {
+      let column = [];
+      for (let _y = 0; _y < height; ++_y) {
+        let match$1 = parseResult;
+        if (match$1.TAG === "Ok") {
+          let tile = readTile();
+          if (tile.TAG === "Ok") {
+            column.push(tile._0);
+          } else {
+            parseResult = {
+              TAG: "Error",
+              _0: tile._0
+            };
+          }
+        }
+      }
+      let match$2 = parseResult;
+      if (match$2.TAG === "Ok") {
+        tiles.push(column);
+      }
+    }
+  }
+  let err = parseResult;
+  if (err.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        width,
+        height,
+        changeType: e$4._0,
+        tileX: e._0,
+        tileY: e$1._0,
+        tiles
+      }
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: err._0
+    };
+  }
+}
+
 // src/packetv1449/PacketV1449_LegacySoundPlay.js
-function parse113(payload) {
+function parse142(payload) {
   let reader = new packetreader_default(payload);
   let e = readSingle(reader, "x");
   if (e.TAG !== "Ok") {
@@ -14454,7 +23106,7 @@ function parse113(payload) {
 }
 
 // src/packetv1449/PacketV1449_PlayerHealOther.js
-function parse114(payload) {
+function parse143(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -14475,7 +23127,7 @@ function parse114(payload) {
 }
 
 // src/packetv1449/PacketV1449_PlayerSpawnSelf.js
-function parse115(_payload) {
+function parse144(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
@@ -14483,7 +23135,7 @@ function parse115(_payload) {
 }
 
 // src/packetv1449/PacketV1449_CombatTextCreate.js
-function parse116(payload) {
+function parse145(payload) {
   let reader = new packetreader_default(payload);
   let e = readSingle(reader, "x");
   if (e.TAG !== "Ok") {
@@ -14514,7 +23166,7 @@ function parse116(payload) {
 }
 
 // src/packetv1449/PacketV1449_NpcSpecialEffect.js
-function parse117(payload) {
+function parse146(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -14535,7 +23187,7 @@ function parse117(payload) {
 }
 
 // src/packetv1449/PacketV1449_PasswordRequired.js
-function parse118(_payload) {
+function parse147(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
@@ -14543,7 +23195,7 @@ function parse118(_payload) {
 }
 
 // src/packetv1449/PacketV1449_EventNotification.js
-function parse119(payload) {
+function parse148(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "eventId");
   if (e.TAG === "Ok") {
@@ -14559,7 +23211,7 @@ function parse119(payload) {
 }
 
 // src/packetv1449/PacketV1449_GolfBallLandInCup.js
-function parse120(payload) {
+function parse149(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -14595,7 +23247,7 @@ function parse120(payload) {
 }
 
 // src/packetv1449/PacketV1449_MassWireOperation.js
-function parse121(payload) {
+function parse150(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "startX");
   if (e.TAG !== "Ok") {
@@ -14631,7 +23283,7 @@ function parse121(payload) {
 }
 
 // src/packetv1449/PacketV1449_MoonLordCountdown.js
-function parse122(payload) {
+function parse151(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "maxMoonLordCountdown");
   if (e.TAG !== "Ok") {
@@ -14652,7 +23304,7 @@ function parse122(payload) {
 }
 
 // src/packetv1449/PacketV1449_ProjectileDestroy.js
-function parse123(payload) {
+function parse152(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "projectileId");
   if (e.TAG !== "Ok") {
@@ -14673,7 +23325,7 @@ function parse123(payload) {
 }
 
 // src/packetv1449/PacketV1449_RevengeMarkerSync.js
-function parse124(payload) {
+function parse153(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "uniqueId");
   if (e.TAG !== "Ok") {
@@ -14736,7 +23388,7 @@ function parse124(payload) {
 }
 
 // src/packetv1449/PacketV1449_CombatNumberCreate.js
-function parse125(payload) {
+function parse154(payload) {
   let reader = new packetreader_default(payload);
   let e = readSingle(reader, "x");
   if (e.TAG !== "Ok") {
@@ -14767,7 +23419,7 @@ function parse125(payload) {
 }
 
 // src/packetv1449/PacketV1449_MinionTargetUpdate.js
-function parse126(payload) {
+function parse155(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -14793,7 +23445,7 @@ function parse126(payload) {
 }
 
 // src/packetv1449/PacketV1449_ActiveContainerSync.js
-function parse127(payload) {
+function parse156(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "chestId");
   if (e.TAG !== "Ok") {
@@ -14832,8 +23484,44 @@ function parse127(payload) {
   }
 }
 
+// src/packetv1449/PacketV1449_PlayerInventorySlot.js
+function parse157(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "slot");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readInt16(reader, "stack");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readByte(reader, "prefix");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readInt16(reader, "itemId");
+  if (e$4.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        slot: e$1._0,
+        stack: e$2._0,
+        prefix: e$3._0,
+        itemId: e$4._0
+      }
+    };
+  } else {
+    return e$4;
+  }
+}
+
 // src/packetv1449/PacketV1449_RevengeMarkerRemove.js
-function parse128(payload) {
+function parse158(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "markerId");
   if (e.TAG === "Ok") {
@@ -14848,8 +23536,55 @@ function parse128(payload) {
   }
 }
 
+// src/packetv1449/PacketV1449_TeleportationPotion.js
+function parse159(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "teleportType");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  switch (e._0) {
+    case 0:
+      return {
+        TAG: "Ok",
+        _0: {
+          teleportType: "TeleportationPotion"
+        }
+      };
+    case 1:
+      return {
+        TAG: "Ok",
+        _0: {
+          teleportType: "MagicConch"
+        }
+      };
+    case 2:
+      return {
+        TAG: "Ok",
+        _0: {
+          teleportType: "DemonConch"
+        }
+      };
+    case 3:
+      return {
+        TAG: "Ok",
+        _0: {
+          teleportType: "ShellphoneSpawn"
+        }
+      };
+    default:
+      return {
+        TAG: "Error",
+        _0: {
+          context: "Packet_TeleportationPotion.parse",
+          error: new Error("Unknown teleport type")
+        }
+      };
+  }
+}
+
 // src/packetv1449/PacketV1449_MassWireOperationPay.js
-function parse129(payload) {
+function parse160(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemType");
   if (e.TAG !== "Ok") {
@@ -14875,7 +23610,7 @@ function parse129(payload) {
 }
 
 // src/packetv1449/PacketV1449_PlayerTeleportPortal.js
-function parse130(payload) {
+function parse161(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -14925,7 +23660,7 @@ function parse130(payload) {
 }
 
 // src/packetv1449/PacketV1449_CavernMonsterTypeSync.js
-function parse131(payload) {
+function parse162(payload) {
   let reader = new packetreader_default(payload);
   let rows = make2(2, []);
   let error;
@@ -14960,7 +23695,7 @@ function parse131(payload) {
 }
 
 // src/packetv1449/PacketV1449_ClientSyncedInventory.js
-function parse132(_payload) {
+function parse163(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
@@ -14968,7 +23703,7 @@ function parse132(_payload) {
 }
 
 // src/packetv1449/PacketV1449_FoodPlatterTryPlacing.js
-function parse133(payload) {
+function parse164(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -15004,7 +23739,7 @@ function parse133(payload) {
 }
 
 // src/packetv1449/PacketV1449_NpcKilledNotification.js
-function parse134(payload) {
+function parse165(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG === "Ok") {
@@ -15020,7 +23755,7 @@ function parse134(payload) {
 }
 
 // src/packetv1449/PacketV1449_ShieldStrengthsUpdate.js
-function parse135(payload) {
+function parse166(payload) {
   let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "solar");
   if (e.TAG !== "Ok") {
@@ -15051,7 +23786,7 @@ function parse135(payload) {
 }
 
 // src/packetv1449/PacketV1449_CrystalInvasionWipeAll.js
-function parse136(_payload) {
+function parse167(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
@@ -15059,10 +23794,10 @@ function parse136(_payload) {
 }
 
 // src/packetv1449/PacketV1449_ItemDropInstancedUpdate.js
-var parse137 = parse18;
+var parse168 = parse18;
 
 // src/packetv1449/PacketV1449_ItemDropProtectedUpdate.js
-function parse138(payload) {
+function parse169(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemDropId");
   if (e.TAG !== "Ok") {
@@ -15151,7 +23886,7 @@ function tryReading(reader, context) {
     return e$2;
   }
 }
-function parse139(payload) {
+function parse170(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -15177,7 +23912,7 @@ function parse139(payload) {
 }
 
 // src/packetv1449/PacketV1449_PlayerLuckFactorsUpdate.js
-function parse140(payload) {
+function parse171(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -15223,8 +23958,85 @@ function parse140(payload) {
   }
 }
 
+// src/packetv1449/PacketV1449_ShimmerEffectOrCoinLuck.js
+function parse172(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "kind");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  switch (e._0) {
+    case 0:
+      let e$1 = readSingle(reader, "shimmerX");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let e$2 = readSingle(reader, "shimmerY");
+      if (e$2.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "ShimmerEffect",
+            _0: e$1._0,
+            _1: e$2._0
+          }
+        };
+      } else {
+        return e$2;
+      }
+    case 1:
+      let e$3 = readSingle(reader, "coinLuckX");
+      if (e$3.TAG !== "Ok") {
+        return e$3;
+      }
+      let e$4 = readSingle(reader, "coinLuckY");
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let e$5 = readInt32(reader, "coinLuckAmount");
+      if (e$5.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "CoinLuck",
+            _0: {
+              position: {
+                x: e$3._0,
+                y: e$4._0
+              },
+              amount: e$5._0
+            }
+          }
+        };
+      } else {
+        return e$5;
+      }
+    case 2:
+      let e$6 = readInt32(reader, "newShimmerEffectId");
+      if (e$6.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "NewShimmerEffect",
+            _0: e$6._0
+          }
+        };
+      } else {
+        return e$6;
+      }
+    default:
+      return {
+        TAG: "Error",
+        _0: {
+          context: "Packet_ShimmerEffectOrCoinLuck.parse",
+          error: new Error("Unknown shimmer effect kind")
+        }
+      };
+  }
+}
+
 // src/packetv1449/PacketV1449_MinionAttackTargetUpdate.js
-function parse141(payload) {
+function parse173(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -15245,7 +24057,7 @@ function parse141(payload) {
 }
 
 // src/packetv1449/PacketV1449_ItemForceIntoNearestChest.js
-function parse142(payload) {
+function parse174(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "slot");
   if (e.TAG === "Ok") {
@@ -15261,7 +24073,7 @@ function parse142(payload) {
 }
 
 // src/packetv1449/PacketV1449_InitialTileSectionsRequest.js
-function parse143(payload) {
+function parse175(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "x");
   if (e.TAG !== "Ok") {
@@ -15282,7 +24094,7 @@ function parse143(payload) {
 }
 
 // src/packetv1449/PacketV1449_AnglerQuestsCompletedAmount.js
-function parse144(payload) {
+function parse176(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -15308,7 +24120,7 @@ function parse144(payload) {
 }
 
 // src/packetv1449/PacketV1449_CrystalInvasionSendWaitTime.js
-function parse145(payload) {
+function parse177(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "timeLeftBetweenWaves");
   if (e.TAG === "Ok") {
@@ -15323,8 +24135,85 @@ function parse145(payload) {
   }
 }
 
+// src/packetv1449/PacketV1449_TravellingMerchantInventory.js
+function parse178(payload) {
+  let reader = new packetreader_default(payload);
+  let items = [];
+  let readItems = (_idx) => {
+    while (true) {
+      let idx = _idx;
+      if (idx >= 40) {
+        return {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      let e2 = readInt16(reader, `item` + (idx + 1 | 0).toString());
+      if (e2.TAG !== "Ok") {
+        return e2;
+      }
+      items.push(e2._0);
+      _idx = idx + 1 | 0;
+      continue;
+    }
+    ;
+  };
+  let e = readItems(0);
+  if (e.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        items
+      }
+    };
+  } else {
+    return e;
+  }
+}
+
+// src/packetv1449/PacketV1449_TileEntityDisplayDollItemSync.js
+function parse179(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt32(reader, "tileEntityId");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readByte(reader, "itemIndex");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readUInt16(reader, "itemId");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readUInt16(reader, "stack");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = readByte(reader, "prefix");
+  if (e$5.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        tileEntityId: e$1._0,
+        itemIndex: e$2._0,
+        itemId: e$3._0,
+        stack: e$4._0,
+        prefix: e$5._0
+      }
+    };
+  } else {
+    return e$5;
+  }
+}
+
 // src/packetv1449/PacketV1449_DungeonDefendersEventAttemptSkipWait.js
-function parse146(_payload) {
+function parse180(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
@@ -15662,22 +24551,22 @@ function mapPacket(result, packetName2, fn) {
     _0: addPacketContext(packetName2, e)
   }));
 }
-function makeParsers(packetName2, parse181, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, _fromServer) => mapPacket(parse181(payload), packetName2, toPacket);
+function makeParsers(packetName2, parse183, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, _fromServer) => mapPacket(parse183(payload), packetName2, toPacket);
   let parseLazyWrapped = (payload, _fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse181(payload), (e) => addPacketContext(packetName2, e))))
+    _0: toLazyPacket(make4(() => mapError(parse183(payload), (e) => addPacketContext(packetName2, e))))
   });
   return {
     parse: parseWrapped,
     parseLazy: parseLazyWrapped
   };
 }
-function makeParsersWithFromServer(packetName2, parse181, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, fromServer) => mapPacket(parse181(payload, fromServer), packetName2, toPacket);
+function makeParsersWithFromServer(packetName2, parse183, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, fromServer) => mapPacket(parse183(payload, fromServer), packetName2, toPacket);
   let parseLazyWrapped = (payload, fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse181(payload, fromServer), (e) => addPacketContext(packetName2, e))))
+    _0: toLazyPacket(make4(() => mapError(parse183(payload, fromServer), (e) => addPacketContext(packetName2, e))))
   });
   return {
     parse: parseWrapped,
@@ -15709,7 +24598,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse88, (a) => ({
+          _0: makeParsers(packetName2, parse106, (a) => ({
             TAG: "Disconnect",
             _0: a
           }), (a) => ({
@@ -15727,7 +24616,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse76, (a) => ({
+          _0: makeParsers(packetName2, parse94, (a) => ({
             TAG: "PlayerSlotSet",
             _0: a
           }), (a) => ({
@@ -15744,7 +24633,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerInfo":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse78, (a) => ({
+        _0: makeParsers(packetName2, parse124, (a) => ({
           TAG: "PlayerInfo",
           _0: a
         }), (a) => ({
@@ -15755,7 +24644,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerInventorySlot":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse80, (a) => ({
+        _0: makeParsers(packetName2, parse157, (a) => ({
           TAG: "PlayerInventorySlot",
           _0: a
         }), (a) => ({
@@ -15772,7 +24661,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse74, (a) => ({
+          _0: makeParsers(packetName2, parse75, (a) => ({
             TAG: "WorldDataRequest",
             _0: a
           }), (a) => ({
@@ -15785,7 +24674,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse85, (a) => ({
+          _0: makeParsers(packetName2, parse119, (a) => ({
             TAG: "WorldInfo",
             _0: a
           }), (a) => ({
@@ -15808,7 +24697,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse143, (a) => ({
+          _0: makeParsers(packetName2, parse175, (a) => ({
             TAG: "InitialTileSectionsRequest",
             _0: a
           }), (a) => ({
@@ -15874,7 +24763,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerSpawn":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse79, (a) => ({
+        _0: makeParsers(packetName2, parse127, (a) => ({
           TAG: "PlayerSpawn",
           _0: a
         }), (a) => ({
@@ -15885,7 +24774,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse77, (a) => ({
+        _0: makeParsers(packetName2, parse129, (a) => ({
           TAG: "PlayerUpdate",
           _0: a
         }), (a) => ({
@@ -15897,7 +24786,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse86, (a) => ({
+          _0: makeParsers(packetName2, parse104, (a) => ({
             TAG: "PlayerActive",
             _0: a
           }), (a) => ({
@@ -15914,7 +24803,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerHealth":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse81, (a) => ({
+        _0: makeParsers(packetName2, parse99, (a) => ({
           TAG: "PlayerHealth",
           _0: a
         }), (a) => ({
@@ -15937,7 +24826,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse67, (a) => ({
+          _0: makeParsers(packetName2, parse68, (a) => ({
             TAG: "TimeSet",
             _0: a
           }), (a) => ({
@@ -15954,7 +24843,7 @@ function getParsers(packetType, fromServer) {
     case "DoorUse":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse91, (a) => ({
+        _0: makeParsers(packetName2, parse109, (a) => ({
           TAG: "DoorUse",
           _0: a
         }), (a) => ({
@@ -15965,7 +24854,7 @@ function getParsers(packetType, fromServer) {
     case "TileSquareSend":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse66, (a) => ({
+        _0: makeParsers(packetName2, parse141, (a) => ({
           TAG: "TileSquareSend",
           _0: a
         }), (a) => ({
@@ -15987,7 +24876,7 @@ function getParsers(packetType, fromServer) {
     case "ItemOwner":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse19, (a) => ({
+        _0: makeParsers(packetName2, parse114, (a) => ({
           TAG: "ItemOwner",
           _0: a
         }), (a) => ({
@@ -15999,7 +24888,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse87, (a) => ({
+          _0: makeParsers(packetName2, parse118, (a) => ({
             TAG: "NpcUpdate",
             _0: a
           }), (a) => ({
@@ -16016,7 +24905,7 @@ function getParsers(packetType, fromServer) {
     case "NpcItemStrike":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse107, (a) => ({
+        _0: makeParsers(packetName2, parse134, (a) => ({
           TAG: "NpcItemStrike",
           _0: a
         }), (a) => ({
@@ -16027,7 +24916,7 @@ function getParsers(packetType, fromServer) {
     case "ProjectileSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse83, (a) => ({
+        _0: makeParsers(packetName2, parse101, (a) => ({
           TAG: "ProjectileSync",
           _0: a
         }), (a) => ({
@@ -16038,7 +24927,7 @@ function getParsers(packetType, fromServer) {
     case "NpcStrike":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse96, (a) => ({
+        _0: makeParsers(packetName2, parse116, (a) => ({
           TAG: "NpcStrike",
           _0: a
         }), (a) => ({
@@ -16049,7 +24938,7 @@ function getParsers(packetType, fromServer) {
     case "ProjectileDestroy":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse123, (a) => ({
+        _0: makeParsers(packetName2, parse152, (a) => ({
           TAG: "ProjectileDestroy",
           _0: a
         }), (a) => ({
@@ -16077,7 +24966,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse94, (a) => ({
+          _0: makeParsers(packetName2, parse113, (a) => ({
             TAG: "ChestOpen",
             _0: a
           }), (a) => ({
@@ -16100,7 +24989,7 @@ function getParsers(packetType, fromServer) {
     case "ActiveContainerSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse127, (a) => ({
+        _0: makeParsers(packetName2, parse156, (a) => ({
           TAG: "ActiveContainerSync",
           _0: a
         }), (a) => ({
@@ -16122,7 +25011,7 @@ function getParsers(packetType, fromServer) {
     case "HealEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse98, (a) => ({
+        _0: makeParsers(packetName2, parse120, (a) => ({
           TAG: "HealEffect",
           _0: a
         }), (a) => ({
@@ -16133,7 +25022,7 @@ function getParsers(packetType, fromServer) {
     case "Zones":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse75, (a) => ({
+        _0: makeParsers(packetName2, parse108, (a) => ({
           TAG: "Zones",
           _0: a
         }), (a) => ({
@@ -16145,7 +25034,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse118, (a) => ({
+          _0: makeParsers(packetName2, parse147, (a) => ({
             TAG: "PasswordRequired",
             _0: a
           }), (a) => ({
@@ -16168,7 +25057,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse104, (a) => ({
+          _0: makeParsers(packetName2, parse128, (a) => ({
             TAG: "PasswordSend",
             _0: a
           }), (a) => ({
@@ -16231,7 +25120,7 @@ function getParsers(packetType, fromServer) {
     case "ManaEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse99, (a) => ({
+        _0: makeParsers(packetName2, parse121, (a) => ({
           TAG: "ManaEffect",
           _0: a
         }), (a) => ({
@@ -16282,7 +25171,7 @@ function getParsers(packetType, fromServer) {
     case "LiquidSet":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse95, (a) => ({
+        _0: makeParsers(packetName2, parse115, (a) => ({
           TAG: "LiquidSet",
           _0: a
         }), (a) => ({
@@ -16294,7 +25183,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse115, (a) => ({
+          _0: makeParsers(packetName2, parse144, (a) => ({
             TAG: "PlayerSpawnSelf",
             _0: a
           }), (a) => ({
@@ -16311,7 +25200,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerBuffsSet":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse38, (a) => ({
+        _0: makeParsers(packetName2, parse140, (a) => ({
           TAG: "PlayerBuffsSet",
           _0: a
         }), (a) => ({
@@ -16322,7 +25211,7 @@ function getParsers(packetType, fromServer) {
     case "NpcSpecialEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse117, (a) => ({
+        _0: makeParsers(packetName2, parse146, (a) => ({
           TAG: "NpcSpecialEffect",
           _0: a
         }), (a) => ({
@@ -16344,7 +25233,7 @@ function getParsers(packetType, fromServer) {
     case "NpcBuffAdd":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse100, (a) => ({
+        _0: makeParsers(packetName2, parse122, (a) => ({
           TAG: "NpcBuffAdd",
           _0: a
         }), (a) => ({
@@ -16356,7 +25245,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse25, (a) => ({
+          _0: makeParsers(packetName2, parse133, (a) => ({
             TAG: "NpcBuffUpdate",
             _0: a
           }), (a) => ({
@@ -16396,7 +25285,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse109, (a) => ({
+          _0: makeParsers(packetName2, parse136, (a) => ({
             TAG: "GoodEvilUpdate",
             _0: a
           }), (a) => ({
@@ -16413,7 +25302,7 @@ function getParsers(packetType, fromServer) {
     case "HarpPlay":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse92, (a) => ({
+        _0: makeParsers(packetName2, parse110, (a) => ({
           TAG: "HarpPlay",
           _0: a
         }), (a) => ({
@@ -16486,7 +25375,7 @@ function getParsers(packetType, fromServer) {
     case "WallPaint":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse71, (a) => ({
+        _0: makeParsers(packetName2, parse72, (a) => ({
           TAG: "WallPaint",
           _0: a
         }), (a) => ({
@@ -16497,7 +25386,7 @@ function getParsers(packetType, fromServer) {
     case "Teleport":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse53, (a) => ({
+        _0: makeParsers(packetName2, parse111, (a) => ({
           TAG: "Teleport",
           _0: a
         }), (a) => ({
@@ -16508,7 +25397,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerHealOther":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse114, (a) => ({
+        _0: makeParsers(packetName2, parse143, (a) => ({
           TAG: "PlayerHealOther",
           _0: a
         }), (a) => ({
@@ -16536,7 +25425,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse82, (a) => ({
+          _0: makeParsers(packetName2, parse100, (a) => ({
             TAG: "ClientUuid",
             _0: a
           }), (a) => ({
@@ -16548,7 +25437,7 @@ function getParsers(packetType, fromServer) {
     case "ChestName":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse93, (a) => ({
+        _0: makeParsers(packetName2, parse112, (a) => ({
           TAG: "ChestName",
           _0: a
         }), (a) => ({
@@ -16583,7 +25472,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse101, (a) => ({
+          _0: makeParsers(packetName2, parse123, (a) => ({
             TAG: "NpcRelease",
             _0: a
           }), (a) => ({
@@ -16596,7 +25485,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse68, (a) => ({
+          _0: makeParsers(packetName2, parse178, (a) => ({
             TAG: "TravellingMerchantInventory",
             _0: a
           }), (a) => ({
@@ -16613,7 +25502,7 @@ function getParsers(packetType, fromServer) {
     case "TeleportationPotion":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse54, (a) => ({
+        _0: makeParsers(packetName2, parse159, (a) => ({
           TAG: "TeleportationPotion",
           _0: a
         }), (a) => ({
@@ -16660,7 +25549,7 @@ function getParsers(packetType, fromServer) {
     case "AnglerQuestsCompletedAmount":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse144, (a) => ({
+        _0: makeParsers(packetName2, parse176, (a) => ({
           TAG: "AnglerQuestsCompletedAmount",
           _0: a
         }), (a) => ({
@@ -16737,7 +25626,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse125, (a) => ({
+          _0: makeParsers(packetName2, parse154, (a) => ({
             TAG: "CombatNumberCreate",
             _0: a
           }), (a) => ({
@@ -16754,7 +25643,7 @@ function getParsers(packetType, fromServer) {
     case "NetModuleLoad":
       return {
         TAG: "Ok",
-        _0: makeParsersWithFromServer(packetName2, parse23, (a) => ({
+        _0: makeParsersWithFromServer(packetName2, parse132, (a) => ({
           TAG: "NetModuleLoad",
           _0: a
         }), (a) => ({
@@ -16783,7 +25672,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerStealth":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse108, (a) => ({
+        _0: makeParsers(packetName2, parse135, (a) => ({
           TAG: "PlayerStealth",
           _0: a
         }), (a) => ({
@@ -16800,7 +25689,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse142, (a) => ({
+          _0: makeParsers(packetName2, parse174, (a) => ({
             TAG: "ItemForceIntoNearestChest",
             _0: a
           }), (a) => ({
@@ -16849,7 +25738,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse110, (a) => ({
+          _0: makeParsers(packetName2, parse137, (a) => ({
             TAG: "ItemDropModify",
             _0: a
           }), (a) => ({
@@ -16872,7 +25761,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse111, (a) => ({
+          _0: makeParsers(packetName2, parse138, (a) => ({
             TAG: "ItemFramePlace",
             _0: a
           }), (a) => ({
@@ -16884,7 +25773,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropInstancedUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse137, (a) => ({
+        _0: makeParsers(packetName2, parse168, (a) => ({
           TAG: "ItemDropInstancedUpdate",
           _0: a
         }), (a) => ({
@@ -16896,7 +25785,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse103, (a) => ({
+          _0: makeParsers(packetName2, parse126, (a) => ({
             TAG: "EmoteBubble",
             _0: a
           }), (a) => ({
@@ -16935,7 +25824,7 @@ function getParsers(packetType, fromServer) {
     case "Unused":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse70, (a) => ({
+        _0: makeParsers(packetName2, parse71, (a) => ({
           TAG: "Unused",
           _0: a
         }), (a) => ({
@@ -16952,7 +25841,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse102, (a) => ({
+          _0: makeParsers(packetName2, parse125, (a) => ({
             TAG: "PortalKill",
             _0: a
           }), (a) => ({
@@ -16964,7 +25853,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerTeleportPortal":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse130, (a) => ({
+        _0: makeParsers(packetName2, parse161, (a) => ({
           TAG: "PlayerTeleportPortal",
           _0: a
         }), (a) => ({
@@ -16976,7 +25865,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse134, (a) => ({
+          _0: makeParsers(packetName2, parse165, (a) => ({
             TAG: "NpcKilledNotification",
             _0: a
           }), (a) => ({
@@ -16994,7 +25883,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse119, (a) => ({
+          _0: makeParsers(packetName2, parse148, (a) => ({
             TAG: "EventNotification",
             _0: a
           }), (a) => ({
@@ -17011,7 +25900,7 @@ function getParsers(packetType, fromServer) {
     case "MinionTargetUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse126, (a) => ({
+        _0: makeParsers(packetName2, parse155, (a) => ({
           TAG: "MinionTargetUpdate",
           _0: a
         }), (a) => ({
@@ -17034,7 +25923,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse135, (a) => ({
+          _0: makeParsers(packetName2, parse166, (a) => ({
             TAG: "ShieldStrengthsUpdate",
             _0: a
           }), (a) => ({
@@ -17051,7 +25940,7 @@ function getParsers(packetType, fromServer) {
     case "NebulaLevelUp":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse106, (a) => ({
+        _0: makeParsers(packetName2, parse131, (a) => ({
           TAG: "NebulaLevelUp",
           _0: a
         }), (a) => ({
@@ -17063,7 +25952,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse122, (a) => ({
+          _0: makeParsers(packetName2, parse151, (a) => ({
             TAG: "MoonLordCountdown",
             _0: a
           }), (a) => ({
@@ -17104,7 +25993,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse105, (a) => ({
+          _0: makeParsers(packetName2, parse130, (a) => ({
             TAG: "GemLockToggle",
             _0: a
           }), (a) => ({
@@ -17153,7 +26042,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse73, (a) => ({
+          _0: makeParsers(packetName2, parse74, (a) => ({
             TAG: "WiredCannonShot",
             _0: a
           }), (a) => ({
@@ -17176,7 +26065,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse121, (a) => ({
+          _0: makeParsers(packetName2, parse150, (a) => ({
             TAG: "MassWireOperation",
             _0: a
           }), (a) => ({
@@ -17189,7 +26078,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse129, (a) => ({
+          _0: makeParsers(packetName2, parse160, (a) => ({
             TAG: "MassWireOperationPay",
             _0: a
           }), (a) => ({
@@ -17224,7 +26113,7 @@ function getParsers(packetType, fromServer) {
     case "TreeGrowFx":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse69, (a) => ({
+        _0: makeParsers(packetName2, parse70, (a) => ({
           TAG: "TreeGrowFx",
           _0: a
         }), (a) => ({
@@ -17254,7 +26143,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse136, (a) => ({
+          _0: makeParsers(packetName2, parse167, (a) => ({
             TAG: "CrystalInvasionWipeAll",
             _0: a
           }), (a) => ({
@@ -17271,7 +26160,7 @@ function getParsers(packetType, fromServer) {
     case "MinionAttackTargetUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse141, (a) => ({
+        _0: makeParsers(packetName2, parse173, (a) => ({
           TAG: "MinionAttackTargetUpdate",
           _0: a
         }), (a) => ({
@@ -17283,7 +26172,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse145, (a) => ({
+          _0: makeParsers(packetName2, parse177, (a) => ({
             TAG: "CrystalInvasionSendWaitTime",
             _0: a
           }), (a) => ({
@@ -17300,7 +26189,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerDamage":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse84, (a) => ({
+        _0: makeParsers(packetName2, parse102, (a) => ({
           TAG: "PlayerDamage",
           _0: a
         }), (a) => ({
@@ -17323,7 +26212,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse116, (a) => ({
+          _0: makeParsers(packetName2, parse145, (a) => ({
             TAG: "CombatTextCreate",
             _0: a
           }), (a) => ({
@@ -17346,7 +26235,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse90, (a) => ({
+          _0: makeParsers(packetName2, parse107, (a) => ({
             TAG: "Emoji",
             _0: a
           }), (a) => ({
@@ -17358,7 +26247,7 @@ function getParsers(packetType, fromServer) {
     case "TileEntityDisplayDollItemSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse56, (a) => ({
+        _0: makeParsers(packetName2, parse179, (a) => ({
           TAG: "TileEntityDisplayDollItemSync",
           _0: a
         }), (a) => ({
@@ -17386,7 +26275,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse72, (a) => ({
+          _0: makeParsers(packetName2, parse73, (a) => ({
             TAG: "WeaponsRackTryPlacing",
             _0: a
           }), (a) => ({
@@ -17421,7 +26310,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse124, (a) => ({
+          _0: makeParsers(packetName2, parse153, (a) => ({
             TAG: "RevengeMarkerSync",
             _0: a
           }), (a) => ({
@@ -17439,7 +26328,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse128, (a) => ({
+          _0: makeParsers(packetName2, parse158, (a) => ({
             TAG: "RevengeMarkerRemove",
             _0: a
           }), (a) => ({
@@ -17456,7 +26345,7 @@ function getParsers(packetType, fromServer) {
     case "GolfBallLandInCup":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse120, (a) => ({
+        _0: makeParsers(packetName2, parse149, (a) => ({
           TAG: "GolfBallLandInCup",
           _0: a
         }), (a) => ({
@@ -17504,7 +26393,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse97, (a) => ({
+          _0: makeParsers(packetName2, parse117, (a) => ({
             TAG: "NpcTamper",
             _0: a
           }), (a) => ({
@@ -17522,7 +26411,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse113, (a) => ({
+          _0: makeParsers(packetName2, parse142, (a) => ({
             TAG: "LegacySoundPlay",
             _0: a
           }), (a) => ({
@@ -17545,7 +26434,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse133, (a) => ({
+          _0: makeParsers(packetName2, parse164, (a) => ({
             TAG: "FoodPlatterTryPlacing",
             _0: a
           }), (a) => ({
@@ -17557,7 +26446,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerLuckFactorsUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse140, (a) => ({
+        _0: makeParsers(packetName2, parse171, (a) => ({
           TAG: "PlayerLuckFactorsUpdate",
           _0: a
         }), (a) => ({
@@ -17586,7 +26475,7 @@ function getParsers(packetType, fromServer) {
     case "CavernMonsterTypeSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse131, (a) => ({
+        _0: makeParsers(packetName2, parse162, (a) => ({
           TAG: "CavernMonsterTypeSync",
           _0: a
         }), (a) => ({
@@ -17621,7 +26510,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse132, (a) => ({
+          _0: makeParsers(packetName2, parse163, (a) => ({
             TAG: "ClientSyncedInventory",
             _0: a
           }), (a) => ({
@@ -17655,7 +26544,7 @@ function getParsers(packetType, fromServer) {
     case "LucyAxeMessage":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse112, (a) => ({
+        _0: makeParsers(packetName2, parse139, (a) => ({
           TAG: "LucyAxeMessage",
           _0: a
         }), (a) => ({
@@ -17666,7 +26555,7 @@ function getParsers(packetType, fromServer) {
     case "PiggyBankVoidLensUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse139, (a) => ({
+        _0: makeParsers(packetName2, parse170, (a) => ({
           TAG: "PiggyBankVoidLensUpdate",
           _0: a
         }), (a) => ({
@@ -17677,7 +26566,7 @@ function getParsers(packetType, fromServer) {
     case "DungeonDefendersEventAttemptSkipWait":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse146, (a) => ({
+        _0: makeParsers(packetName2, parse180, (a) => ({
           TAG: "DungeonDefendersEventAttemptSkipWait",
           _0: a
         }), (a) => ({
@@ -17710,7 +26599,7 @@ function getParsers(packetType, fromServer) {
     case "ShimmerEffectOrCoinLuck":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse46, (a) => ({
+        _0: makeParsers(packetName2, parse172, (a) => ({
           TAG: "ShimmerEffectOrCoinLuck",
           _0: a
         }), (a) => ({
@@ -17732,7 +26621,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropProtectedUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse138, (a) => ({
+        _0: makeParsers(packetName2, parse169, (a) => ({
           TAG: "ItemDropProtectedUpdate",
           _0: a
         }), (a) => ({
@@ -17750,7 +26639,7 @@ function getParsers(packetType, fromServer) {
       };
   }
 }
-function parse147(buffer, fromServer, ignoreOpt) {
+function parse181(buffer, fromServer, ignoreOpt) {
   let ignore = ignoreOpt !== void 0 ? ignoreOpt : [];
   let match = buffer.length;
   if (!(match > 2 || match < 0)) {
@@ -17803,3421 +26692,6 @@ function parse147(buffer, fromServer, ignoreOpt) {
       };
     }
     throw obj;
-  }
-}
-
-// src/packet/Packet_Zones.js
-function parse148(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readByte(reader, "zone1");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readByte(reader, "zone2");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readByte(reader, "zone3");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readByte(reader, "zone4");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let e$5 = readByte(reader, "zone5");
-  if (e$5.TAG !== "Ok") {
-    return e$5;
-  }
-  let e$6 = readByte(reader, "townNPCs");
-  if (e$6.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0,
-        zone1: e$1._0,
-        zone2: e$2._0,
-        zone3: e$3._0,
-        zone4: e$4._0,
-        zone5: e$5._0,
-        townNPCs: e$6._0
-      }
-    };
-  } else {
-    return e$6;
-  }
-}
-
-// src/packet/Packet_Teleport.js
-function parse149(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "flags");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let flags = fromByte(e._0);
-  let getPositionFromTarget = flag3(flags);
-  let match = flag1(flags);
-  let match$1 = flag2(flags);
-  let teleportType = match ? match$1 ? "TeleportAck" : "Npc" : match$1 ? "PlayerToPlayer" : "Player";
-  let e$1 = readInt16(reader, "targetId");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readSingle(reader, "x");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readSingle(reader, "y");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readByte(reader, "style");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let e$5 = flag4(flags) ? map2(readInt32(reader, "extraInfo"), (v) => v) : {
-    TAG: "Ok",
-    _0: void 0
-  };
-  if (e$5.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        teleportType,
-        getPositionFromTarget,
-        targetId: e$1._0,
-        x: e$2._0,
-        y: e$3._0,
-        style: e$4._0,
-        extraInfo: e$5._0
-      }
-    };
-  } else {
-    return e$5;
-  }
-}
-
-// src/packet/Packet_HostToken.js
-function parse150(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readString(reader, "token");
-  if (e.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        token: e._0
-      }
-    };
-  } else {
-    return e;
-  }
-}
-
-// src/packet/Packet_ItemOwner.js
-function parse151(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt16(reader, "itemDropId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readByte(reader, "owner");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readSingle(reader, "positionX");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readSingle(reader, "positionY");
-  if (e$3.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        itemDropId: e._0,
-        owner: e$1._0,
-        position: {
-          x: e$2._0,
-          y: e$3._0
-        }
-      }
-    };
-  } else {
-    return e$3;
-  }
-}
-
-// src/packet/Packet_NpcUpdate.js
-function readNpcFlags12(reader, fieldName) {
-  let e = readByte(reader, fieldName);
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let flags = fromByte(e._0);
-  return {
-    TAG: "Ok",
-    _0: {
-      directionX: flag1(flags),
-      directionY: flag2(flags),
-      ai0: flag3(flags),
-      ai1: flag4(flags),
-      ai2: flag5(flags),
-      ai3: flag6(flags),
-      spriteDirection: flag7(flags),
-      lifeMax: flag8(flags)
-    }
-  };
-}
-function readNpcFlags22(reader, fieldName) {
-  let e = readByte(reader, fieldName);
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let flags = fromByte(e._0);
-  return {
-    TAG: "Ok",
-    _0: {
-      statsScaled: flag1(flags),
-      spawnedFromStatue: flag2(flags),
-      difficulty: flag3(flags),
-      spawnNeedsSyncing: flag4(flags),
-      shimmerTransparency: flag5(flags)
-    }
-  };
-}
-function parse152(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt16(reader, "npcSlotId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readSingle(reader, "x");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readSingle(reader, "y");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readSingle(reader, "vx");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readSingle(reader, "vy");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let e$5 = readUInt16(reader, "target");
-  if (e$5.TAG !== "Ok") {
-    return e$5;
-  }
-  let e$6 = readNpcFlags12(reader, "npcFlags1");
-  if (e$6.TAG !== "Ok") {
-    return e$6;
-  }
-  let npcFlags12 = e$6._0;
-  let e$7 = readNpcFlags22(reader, "npcFlags2");
-  if (e$7.TAG !== "Ok") {
-    return e$7;
-  }
-  let npcFlags22 = e$7._0;
-  let tmp;
-  if (npcFlags12.ai0) {
-    let e$8 = readSingle(reader, "ai0");
-    tmp = e$8.TAG === "Ok" ? {
-      TAG: "Ok",
-      _0: e$8._0
-    } : e$8;
-  } else {
-    tmp = {
-      TAG: "Ok",
-      _0: void 0
-    };
-  }
-  let tmp$1;
-  if (npcFlags12.ai1) {
-    let e$9 = readSingle(reader, "ai1");
-    tmp$1 = e$9.TAG === "Ok" ? {
-      TAG: "Ok",
-      _0: e$9._0
-    } : e$9;
-  } else {
-    tmp$1 = {
-      TAG: "Ok",
-      _0: void 0
-    };
-  }
-  let tmp$2;
-  if (npcFlags12.ai2) {
-    let e$10 = readSingle(reader, "ai2");
-    tmp$2 = e$10.TAG === "Ok" ? {
-      TAG: "Ok",
-      _0: e$10._0
-    } : e$10;
-  } else {
-    tmp$2 = {
-      TAG: "Ok",
-      _0: void 0
-    };
-  }
-  let tmp$3;
-  if (npcFlags12.ai3) {
-    let e$11 = readSingle(reader, "ai3");
-    tmp$3 = e$11.TAG === "Ok" ? {
-      TAG: "Ok",
-      _0: e$11._0
-    } : e$11;
-  } else {
-    tmp$3 = {
-      TAG: "Ok",
-      _0: void 0
-    };
-  }
-  let e$12 = all4([
-    tmp,
-    tmp$1,
-    tmp$2,
-    tmp$3
-  ]);
-  if (e$12.TAG !== "Ok") {
-    return e$12;
-  }
-  let e$13 = readInt16(reader, "npcTypeId");
-  if (e$13.TAG !== "Ok") {
-    return e$13;
-  }
-  let e$14;
-  if (npcFlags22.statsScaled) {
-    let e$15 = readByte(reader, "playerCountScale");
-    e$14 = e$15.TAG === "Ok" ? {
-      TAG: "Ok",
-      _0: e$15._0
-    } : e$15;
-  } else {
-    e$14 = {
-      TAG: "Ok",
-      _0: void 0
-    };
-  }
-  if (e$14.TAG !== "Ok") {
-    return e$14;
-  }
-  let e$16;
-  if (npcFlags22.difficulty) {
-    let e$17 = readSingle(reader, "difficulty");
-    e$16 = e$17.TAG === "Ok" ? {
-      TAG: "Ok",
-      _0: e$17._0
-    } : e$17;
-  } else {
-    e$16 = {
-      TAG: "Ok",
-      _0: void 0
-    };
-  }
-  if (e$16.TAG !== "Ok") {
-    return e$16;
-  }
-  let e$18;
-  if (npcFlags12.lifeMax) {
-    e$18 = {
-      TAG: "Ok",
-      _0: "Max"
-    };
-  } else {
-    let e$19 = readByte(reader, "lifeBytes");
-    if (e$19.TAG === "Ok") {
-      switch (e$19._0) {
-        case 1:
-          let e$20 = readSByte(reader, "life_sbyte");
-          e$18 = e$20.TAG === "Ok" ? {
-            TAG: "Ok",
-            _0: {
-              TAG: "Byte",
-              _0: e$20._0
-            }
-          } : e$20;
-          break;
-        case 2:
-          let e$21 = readInt16(reader, "life_int16");
-          e$18 = e$21.TAG === "Ok" ? {
-            TAG: "Ok",
-            _0: {
-              TAG: "Int16",
-              _0: e$21._0
-            }
-          } : e$21;
-          break;
-        case 4:
-          let e$22 = readInt32(reader, "life_int32");
-          e$18 = e$22.TAG === "Ok" ? {
-            TAG: "Ok",
-            _0: {
-              TAG: "Int32",
-              _0: e$22._0
-            }
-          } : e$22;
-          break;
-        default:
-          e$18 = {
-            TAG: "Error",
-            _0: {
-              context: "Packet_NpcUpdate.parse",
-              error: new Error("Invalid life byte count")
-            }
-          };
-      }
-    } else {
-      e$18 = e$19;
-    }
-  }
-  if (e$18.TAG !== "Ok") {
-    return e$18;
-  }
-  let releaseOwner = readByte(reader, "releaseOwner");
-  let releaseOwner$1;
-  releaseOwner$1 = releaseOwner.TAG === "Ok" ? releaseOwner._0 : void 0;
-  return {
-    TAG: "Ok",
-    _0: {
-      npcSlotId: e._0,
-      npcTypeId: e$13._0,
-      x: e$1._0,
-      y: e$2._0,
-      vx: e$3._0,
-      vy: e$4._0,
-      target: e$5._0,
-      directionX: npcFlags12.directionX,
-      directionY: npcFlags12.directionY,
-      ai: e$12._0,
-      spriteDirection: npcFlags12.spriteDirection,
-      life: e$18._0,
-      releaseOwner: releaseOwner$1,
-      playerCountScale: e$14._0,
-      difficulty: e$16._0,
-      spawnedFromStatue: npcFlags22.spawnedFromStatue,
-      spawnNeedsSyncing: npcFlags22.spawnNeedsSyncing,
-      shimmerTransparency: npcFlags22.shimmerTransparency
-    }
-  };
-}
-
-// src/packet/Packet_WorldInfo.js
-function readEventInfo2(reader) {
-  let e = readByte(reader, "eventInfo1");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readByte(reader, "eventInfo2");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readByte(reader, "eventInfo3");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readByte(reader, "eventInfo4");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readByte(reader, "eventInfo5");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let e$5 = readByte(reader, "eventInfo6");
-  if (e$5.TAG !== "Ok") {
-    return e$5;
-  }
-  let e$6 = readByte(reader, "eventInfo7");
-  if (e$6.TAG !== "Ok") {
-    return e$6;
-  }
-  let e$7 = readByte(reader, "eventInfo8");
-  if (e$7.TAG !== "Ok") {
-    return e$7;
-  }
-  let e$8 = readByte(reader, "eventInfo9");
-  if (e$8.TAG !== "Ok") {
-    return e$8;
-  }
-  let e$9 = readByte(reader, "eventInfo10");
-  if (e$9.TAG !== "Ok") {
-    return e$9;
-  }
-  let eventInfo1 = fromByte(e._0);
-  let eventInfo2 = fromByte(e$1._0);
-  let eventInfo3 = fromByte(e$2._0);
-  let eventInfo4 = fromByte(e$3._0);
-  let eventInfo5 = fromByte(e$4._0);
-  let eventInfo6 = fromByte(e$5._0);
-  let eventInfo7 = fromByte(e$6._0);
-  let eventInfo8 = fromByte(e$7._0);
-  let eventInfo9 = fromByte(e$8._0);
-  let eventInfo10 = fromByte(e$9._0);
-  let shadowOrbSmashed = flag1(eventInfo1);
-  let killedBoss1 = flag2(eventInfo1);
-  let killedBoss2 = flag3(eventInfo1);
-  let killedBoss3 = flag4(eventInfo1);
-  let hardMode = flag5(eventInfo1);
-  let killedClown = flag6(eventInfo1);
-  let serverSidedCharacters = flag7(eventInfo1);
-  let killedPlantBoss = flag8(eventInfo1);
-  let killedMechBoss = flag1(eventInfo2);
-  let killedMechBoss2 = flag2(eventInfo2);
-  let killedMechBoss3 = flag3(eventInfo2);
-  let killedAnyMechBoss = flag4(eventInfo2);
-  let cloudBg = flag5(eventInfo2);
-  let crimson = flag6(eventInfo2);
-  let pumpkinMoon = flag7(eventInfo2);
-  let snowMoon = flag8(eventInfo2);
-  let expertMode = flag1(eventInfo3);
-  let fastForwardTime = flag2(eventInfo3);
-  let slimeRain = flag3(eventInfo3);
-  let killedKingSlime = flag4(eventInfo3);
-  let killedQueenBee = flag5(eventInfo3);
-  let killedFishron = flag6(eventInfo3);
-  let killedMartians = flag7(eventInfo3);
-  let killedAncientCultist = flag8(eventInfo3);
-  let killedMoonLord = flag1(eventInfo4);
-  let killedPumpking = flag2(eventInfo4);
-  let killedMourningWood = flag3(eventInfo4);
-  let killedIceQueen = flag4(eventInfo4);
-  let killedSantank = flag5(eventInfo4);
-  let killedEverscream = flag6(eventInfo4);
-  let killedGolem = flag7(eventInfo4);
-  let birthdayParty = flag8(eventInfo4);
-  let killedPirates = flag1(eventInfo5);
-  let killedFrostLegion = flag2(eventInfo5);
-  let killedGoblins = flag3(eventInfo5);
-  let sandstorm = flag4(eventInfo5);
-  let dungeonDefendersEvent = flag5(eventInfo5);
-  let killedDungeonDefendersTier1 = flag6(eventInfo5);
-  let killedDungeonDefendersTier2 = flag7(eventInfo5);
-  let killedDungeonDefendersTier3 = flag8(eventInfo5);
-  let combatBookUsed = flag1(eventInfo6);
-  let manualLanterns = flag2(eventInfo6);
-  let killedSolarTower = flag3(eventInfo6);
-  let killedVortexTower = flag4(eventInfo6);
-  let killedNebulaTower = flag5(eventInfo6);
-  let killedStardustTower = flag6(eventInfo6);
-  let forceHalloween = flag7(eventInfo6);
-  let forceChristmas = flag8(eventInfo6);
-  let boughtCat = flag1(eventInfo7);
-  let boughtDog = flag2(eventInfo7);
-  let boughtBunny = flag3(eventInfo7);
-  let freeCake = flag4(eventInfo7);
-  let drunkWorld = flag5(eventInfo7);
-  let killedEmpressOfLight = flag6(eventInfo7);
-  let killedQueenSlime = flag7(eventInfo7);
-  let getGoodWorld = flag8(eventInfo7);
-  let tenthAnniversaryWorld = flag1(eventInfo8);
-  let dontStarveWorld = flag2(eventInfo8);
-  let downedDeerClops = flag3(eventInfo8);
-  let notTheBeesWorld = flag4(eventInfo8);
-  let remixWorld = flag5(eventInfo8);
-  let unlockedSlimeBlueSpawn = flag6(eventInfo8);
-  let combatBookVolumeTwoWasUsed = flag7(eventInfo8);
-  let peddlersSatchelWasUsed = flag8(eventInfo8);
-  let unlockedSlimeGreenSpawn = flag1(eventInfo9);
-  let unlockedSlimeOldSpawn = flag2(eventInfo9);
-  let unlockedSlimePurpleSpawn = flag3(eventInfo9);
-  let unlockedSlimeRainbowSpawn = flag4(eventInfo9);
-  let unlockedSlimeRedSpawn = flag5(eventInfo9);
-  let unlockedSlimeYellowSpawn = flag6(eventInfo9);
-  let unlockedSlimeCopperSpawn = flag7(eventInfo9);
-  let fastForwardTimeToDusk = flag8(eventInfo9);
-  let noTrapsWorld = flag1(eventInfo10);
-  let zenithWorld = flag2(eventInfo10);
-  let unlockedTruffleSpawn = flag3(eventInfo10);
-  let vampireSeed = flag4(eventInfo10);
-  let infectedSeed = flag5(eventInfo10);
-  let teamBasedSpawnsSeed = flag6(eventInfo10);
-  let skyblockWorld = flag7(eventInfo10);
-  let dualDungeonsSeed = flag8(eventInfo10);
-  return {
-    TAG: "Ok",
-    _0: {
-      shadowOrbSmashed,
-      killedBoss1,
-      killedBoss2,
-      killedBoss3,
-      hardMode,
-      killedClown,
-      serverSidedCharacters,
-      killedPlantBoss,
-      killedMechBoss,
-      killedMechBoss2,
-      killedMechBoss3,
-      killedAnyMechBoss,
-      cloudBg,
-      crimson,
-      pumpkinMoon,
-      snowMoon,
-      expertMode,
-      fastForwardTime,
-      slimeRain,
-      killedKingSlime,
-      killedQueenBee,
-      killedFishron,
-      killedMartians,
-      killedAncientCultist,
-      killedMoonLord,
-      killedPumpking,
-      killedMourningWood,
-      killedIceQueen,
-      killedSantank,
-      killedEverscream,
-      killedGolem,
-      birthdayParty,
-      killedPirates,
-      killedFrostLegion,
-      killedGoblins,
-      sandstorm,
-      dungeonDefendersEvent,
-      killedDungeonDefendersTier1,
-      killedDungeonDefendersTier2,
-      killedDungeonDefendersTier3,
-      combatBookUsed,
-      manualLanterns,
-      killedSolarTower,
-      killedVortexTower,
-      killedNebulaTower,
-      killedStardustTower,
-      forceHalloween,
-      forceChristmas,
-      boughtCat,
-      boughtDog,
-      boughtBunny,
-      freeCake,
-      drunkWorld,
-      killedEmpressOfLight,
-      killedQueenSlime,
-      getGoodWorld,
-      tenthAnniversaryWorld,
-      dontStarveWorld,
-      downedDeerClops,
-      notTheBeesWorld,
-      remixWorld,
-      unlockedSlimeBlueSpawn,
-      combatBookVolumeTwoWasUsed,
-      peddlersSatchelWasUsed,
-      unlockedSlimeGreenSpawn,
-      unlockedSlimeOldSpawn,
-      unlockedSlimePurpleSpawn,
-      unlockedSlimeRainbowSpawn,
-      unlockedSlimeRedSpawn,
-      unlockedSlimeYellowSpawn,
-      unlockedSlimeCopperSpawn,
-      fastForwardTimeToDusk,
-      noTrapsWorld,
-      zenithWorld,
-      unlockedTruffleSpawn,
-      vampireSeed,
-      infectedSeed,
-      teamBasedSpawnsSeed,
-      skyblockWorld,
-      dualDungeonsSeed
-    }
-  };
-}
-function parse153(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt32(reader, "time");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readByte(reader, "dayAndMoonInfo");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readByte(reader, "moonPhase");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readInt16(reader, "maxTilesX");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readInt16(reader, "maxTilesY");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let e$5 = readInt16(reader, "spawnX");
-  if (e$5.TAG !== "Ok") {
-    return e$5;
-  }
-  let e$6 = readInt16(reader, "spawnY");
-  if (e$6.TAG !== "Ok") {
-    return e$6;
-  }
-  let e$7 = readInt16(reader, "worldSurface");
-  if (e$7.TAG !== "Ok") {
-    return e$7;
-  }
-  let e$8 = readInt16(reader, "rockLayer");
-  if (e$8.TAG !== "Ok") {
-    return e$8;
-  }
-  let e$9 = readInt32(reader, "worldId");
-  if (e$9.TAG !== "Ok") {
-    return e$9;
-  }
-  let e$10 = readString(reader, "worldName");
-  if (e$10.TAG !== "Ok") {
-    return e$10;
-  }
-  let e$11 = readByte(reader, "gameMode");
-  if (e$11.TAG !== "Ok") {
-    return e$11;
-  }
-  let e$12 = readBytes(reader, 16, "worldUniqueId");
-  if (e$12.TAG !== "Ok") {
-    return e$12;
-  }
-  let worldUniqueId = fromArray2(e$12._0);
-  let e$13 = worldUniqueId !== void 0 ? {
-    TAG: "Ok",
-    _0: valFromOption(worldUniqueId)
-  } : {
-    TAG: "Error",
-    _0: {
-      context: "WorldInfo.parse.worldUniqueId",
-      error: new Error("Invalid worldUniqueId")
-    }
-  };
-  if (e$13.TAG !== "Ok") {
-    return e$13;
-  }
-  let e$14 = readUInt64(reader, "worldGeneratorVersion");
-  if (e$14.TAG !== "Ok") {
-    return e$14;
-  }
-  let e$15 = readByte(reader, "moonType");
-  if (e$15.TAG !== "Ok") {
-    return e$15;
-  }
-  let e$16 = readByte(reader, "treeBackground");
-  if (e$16.TAG !== "Ok") {
-    return e$16;
-  }
-  let e$17 = readByte(reader, "treeBackground2");
-  if (e$17.TAG !== "Ok") {
-    return e$17;
-  }
-  let e$18 = readByte(reader, "treeBackground3");
-  if (e$18.TAG !== "Ok") {
-    return e$18;
-  }
-  let e$19 = readByte(reader, "treeBackground4");
-  if (e$19.TAG !== "Ok") {
-    return e$19;
-  }
-  let e$20 = readByte(reader, "corruptionBackground");
-  if (e$20.TAG !== "Ok") {
-    return e$20;
-  }
-  let e$21 = readByte(reader, "jungleBackground");
-  if (e$21.TAG !== "Ok") {
-    return e$21;
-  }
-  let e$22 = readByte(reader, "snowBackground");
-  if (e$22.TAG !== "Ok") {
-    return e$22;
-  }
-  let e$23 = readByte(reader, "hallowBackground");
-  if (e$23.TAG !== "Ok") {
-    return e$23;
-  }
-  let e$24 = readByte(reader, "crimsonBackground");
-  if (e$24.TAG !== "Ok") {
-    return e$24;
-  }
-  let e$25 = readByte(reader, "desertBackground");
-  if (e$25.TAG !== "Ok") {
-    return e$25;
-  }
-  let e$26 = readByte(reader, "oceanBackground");
-  if (e$26.TAG !== "Ok") {
-    return e$26;
-  }
-  let e$27 = readByte(reader, "mushroomBackground");
-  if (e$27.TAG !== "Ok") {
-    return e$27;
-  }
-  let e$28 = readByte(reader, "underworldBackground");
-  if (e$28.TAG !== "Ok") {
-    return e$28;
-  }
-  let e$29 = readByte(reader, "iceBackStyle");
-  if (e$29.TAG !== "Ok") {
-    return e$29;
-  }
-  let e$30 = readByte(reader, "jungleBackStyle");
-  if (e$30.TAG !== "Ok") {
-    return e$30;
-  }
-  let e$31 = readByte(reader, "hellBackStyle");
-  if (e$31.TAG !== "Ok") {
-    return e$31;
-  }
-  let e$32 = readSingle(reader, "windSpeedSet");
-  if (e$32.TAG !== "Ok") {
-    return e$32;
-  }
-  let e$33 = readByte(reader, "cloudNumber");
-  if (e$33.TAG !== "Ok") {
-    return e$33;
-  }
-  let e$34 = readInt32(reader, "tree1");
-  if (e$34.TAG !== "Ok") {
-    return e$34;
-  }
-  let e$35 = readInt32(reader, "tree2");
-  if (e$35.TAG !== "Ok") {
-    return e$35;
-  }
-  let e$36 = readInt32(reader, "tree3");
-  if (e$36.TAG !== "Ok") {
-    return e$36;
-  }
-  let e$37 = readByte(reader, "treeStyle1");
-  if (e$37.TAG !== "Ok") {
-    return e$37;
-  }
-  let e$38 = readByte(reader, "treeStyle2");
-  if (e$38.TAG !== "Ok") {
-    return e$38;
-  }
-  let e$39 = readByte(reader, "treeStyle3");
-  if (e$39.TAG !== "Ok") {
-    return e$39;
-  }
-  let e$40 = readByte(reader, "treeStyle4");
-  if (e$40.TAG !== "Ok") {
-    return e$40;
-  }
-  let e$41 = readInt32(reader, "caveBack1");
-  if (e$41.TAG !== "Ok") {
-    return e$41;
-  }
-  let e$42 = readInt32(reader, "caveBack2");
-  if (e$42.TAG !== "Ok") {
-    return e$42;
-  }
-  let e$43 = readInt32(reader, "caveBack3");
-  if (e$43.TAG !== "Ok") {
-    return e$43;
-  }
-  let e$44 = readByte(reader, "caveBackStyle1");
-  if (e$44.TAG !== "Ok") {
-    return e$44;
-  }
-  let e$45 = readByte(reader, "caveBackStyle2");
-  if (e$45.TAG !== "Ok") {
-    return e$45;
-  }
-  let e$46 = readByte(reader, "caveBackStyle3");
-  if (e$46.TAG !== "Ok") {
-    return e$46;
-  }
-  let e$47 = readByte(reader, "caveBackStyle4");
-  if (e$47.TAG !== "Ok") {
-    return e$47;
-  }
-  let e$48 = readByte(reader, "forest1TreeTopStyle");
-  if (e$48.TAG !== "Ok") {
-    return e$48;
-  }
-  let e$49 = readByte(reader, "forest2TreeTopStyle");
-  if (e$49.TAG !== "Ok") {
-    return e$49;
-  }
-  let e$50 = readByte(reader, "forest3TreeTopStyle");
-  if (e$50.TAG !== "Ok") {
-    return e$50;
-  }
-  let e$51 = readByte(reader, "forest4TreeTopStyle");
-  if (e$51.TAG !== "Ok") {
-    return e$51;
-  }
-  let e$52 = readByte(reader, "corruptionTreeTopStyle");
-  if (e$52.TAG !== "Ok") {
-    return e$52;
-  }
-  let e$53 = readByte(reader, "jungleTreeTopStyle");
-  if (e$53.TAG !== "Ok") {
-    return e$53;
-  }
-  let e$54 = readByte(reader, "snowTreeTopStyle");
-  if (e$54.TAG !== "Ok") {
-    return e$54;
-  }
-  let e$55 = readByte(reader, "hallowTreeTopStyle");
-  if (e$55.TAG !== "Ok") {
-    return e$55;
-  }
-  let e$56 = readByte(reader, "crimsonTreeTopStyle");
-  if (e$56.TAG !== "Ok") {
-    return e$56;
-  }
-  let e$57 = readByte(reader, "desertTreeTopStyle");
-  if (e$57.TAG !== "Ok") {
-    return e$57;
-  }
-  let e$58 = readByte(reader, "oceanTreeTopStyle");
-  if (e$58.TAG !== "Ok") {
-    return e$58;
-  }
-  let e$59 = readByte(reader, "glowingMushroomTreeTopStyle");
-  if (e$59.TAG !== "Ok") {
-    return e$59;
-  }
-  let e$60 = readByte(reader, "underworldTreeTopStyle");
-  if (e$60.TAG !== "Ok") {
-    return e$60;
-  }
-  let e$61 = readSingle(reader, "rain");
-  if (e$61.TAG !== "Ok") {
-    return e$61;
-  }
-  let e$62 = readEventInfo2(reader);
-  if (e$62.TAG !== "Ok") {
-    return e$62;
-  }
-  let e$63 = readByte(reader, "sundialCooldown");
-  if (e$63.TAG !== "Ok") {
-    return e$63;
-  }
-  let e$64 = readByte(reader, "moondialCooldown");
-  if (e$64.TAG !== "Ok") {
-    return e$64;
-  }
-  let e$65 = readInt16(reader, "copperOreTier");
-  if (e$65.TAG !== "Ok") {
-    return e$65;
-  }
-  let e$66 = readInt16(reader, "ironOreTier");
-  if (e$66.TAG !== "Ok") {
-    return e$66;
-  }
-  let e$67 = readInt16(reader, "silverOreTier");
-  if (e$67.TAG !== "Ok") {
-    return e$67;
-  }
-  let e$68 = readInt16(reader, "goldOreTier");
-  if (e$68.TAG !== "Ok") {
-    return e$68;
-  }
-  let e$69 = readInt16(reader, "cobaltOreTier");
-  if (e$69.TAG !== "Ok") {
-    return e$69;
-  }
-  let e$70 = readInt16(reader, "mythrilOreTier");
-  if (e$70.TAG !== "Ok") {
-    return e$70;
-  }
-  let e$71 = readInt16(reader, "adamantiteOreTier");
-  if (e$71.TAG !== "Ok") {
-    return e$71;
-  }
-  let e$72 = readSByte(reader, "invasionType");
-  if (e$72.TAG !== "Ok") {
-    return e$72;
-  }
-  let e$73 = readUInt64(reader, "lobbyId");
-  if (e$73.TAG !== "Ok") {
-    return e$73;
-  }
-  let e$74 = readSingle(reader, "sandstormSeverity");
-  if (e$74.TAG !== "Ok") {
-    return e$74;
-  }
-  let e$75 = readByte(reader, "extraSpawnPointCount");
-  if (e$75.TAG !== "Ok") {
-    return e$75;
-  }
-  let extraSpawnPointCount = e$75._0;
-  let extraSpawnPoints = [];
-  let readExtraSpawnPoints = (_idx) => {
-    while (true) {
-      let idx = _idx;
-      if (idx >= extraSpawnPointCount) {
-        return {
-          TAG: "Ok",
-          _0: void 0
-        };
-      }
-      let e2 = readInt16(reader, `extraSpawnPointX_` + idx.toString());
-      if (e2.TAG !== "Ok") {
-        return e2;
-      }
-      let e$110 = readInt16(reader, `extraSpawnPointY_` + idx.toString());
-      if (e$110.TAG !== "Ok") {
-        return e$110;
-      }
-      extraSpawnPoints.push({
-        x: e2._0,
-        y: e$110._0
-      });
-      _idx = idx + 1 | 0;
-      continue;
-    }
-    ;
-  };
-  let e$76 = readExtraSpawnPoints(0);
-  if (e$76.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        time: e._0,
-        dayAndMoonInfo: e$1._0,
-        moonPhase: e$2._0,
-        maxTilesX: e$3._0,
-        maxTilesY: e$4._0,
-        spawnX: e$5._0,
-        spawnY: e$6._0,
-        worldSurface: e$7._0,
-        rockLayer: e$8._0,
-        worldId: e$9._0,
-        worldName: e$10._0,
-        gameMode: e$11._0,
-        worldUniqueId: e$13._0,
-        worldGeneratorVersion: e$14._0,
-        moonType: e$15._0,
-        treeBackground: e$16._0,
-        treeBackground2: e$17._0,
-        treeBackground3: e$18._0,
-        treeBackground4: e$19._0,
-        corruptionBackground: e$20._0,
-        jungleBackground: e$21._0,
-        snowBackground: e$22._0,
-        hallowBackground: e$23._0,
-        crimsonBackground: e$24._0,
-        desertBackground: e$25._0,
-        oceanBackground: e$26._0,
-        mushroomBackground: e$27._0,
-        underworldBackground: e$28._0,
-        iceBackStyle: e$29._0,
-        jungleBackStyle: e$30._0,
-        hellBackStyle: e$31._0,
-        windSpeedSet: e$32._0,
-        cloudNumber: e$33._0,
-        tree1: e$34._0,
-        tree2: e$35._0,
-        tree3: e$36._0,
-        treeStyle1: e$37._0,
-        treeStyle2: e$38._0,
-        treeStyle3: e$39._0,
-        treeStyle4: e$40._0,
-        caveBack1: e$41._0,
-        caveBack2: e$42._0,
-        caveBack3: e$43._0,
-        caveBackStyle1: e$44._0,
-        caveBackStyle2: e$45._0,
-        caveBackStyle3: e$46._0,
-        caveBackStyle4: e$47._0,
-        forest1TreeTopStyle: e$48._0,
-        forest2TreeTopStyle: e$49._0,
-        forest3TreeTopStyle: e$50._0,
-        forest4TreeTopStyle: e$51._0,
-        corruptionTreeTopStyle: e$52._0,
-        jungleTreeTopStyle: e$53._0,
-        snowTreeTopStyle: e$54._0,
-        hallowTreeTopStyle: e$55._0,
-        crimsonTreeTopStyle: e$56._0,
-        desertTreeTopStyle: e$57._0,
-        oceanTreeTopStyle: e$58._0,
-        glowingMushroomTreeTopStyle: e$59._0,
-        underworldTreeTopStyle: e$60._0,
-        rain: e$61._0,
-        eventInfo: e$62._0,
-        sundialCooldown: e$63._0,
-        moondialCooldown: e$64._0,
-        copperOreTier: e$65._0,
-        ironOreTier: e$66._0,
-        silverOreTier: e$67._0,
-        goldOreTier: e$68._0,
-        cobaltOreTier: e$69._0,
-        mythrilOreTier: e$70._0,
-        adamantiteOreTier: e$71._0,
-        invasionType: e$72._0,
-        lobbyId: e$73._0,
-        sandstormSeverity: e$74._0,
-        extraSpawnPoints
-      }
-    };
-  } else {
-    return e$76;
-  }
-}
-
-// src/packet/Packet_PlayerInfo.js
-function getDifficulty2(difficultyFlags) {
-  if (flag2(difficultyFlags)) {
-    return "Hardcore";
-  } else if (flag1(difficultyFlags)) {
-    return "Mediumcore";
-  } else {
-    return "Softcore";
-  }
-}
-function parse154(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readByte(reader, "skinVariant");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readByte(reader, "voiceVariant");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readSingle(reader, "voicePitchOffset");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readByte(reader, "hair");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let e$5 = readString(reader, "name");
-  if (e$5.TAG !== "Ok") {
-    return e$5;
-  }
-  let e$6 = readByte(reader, "hairDye");
-  if (e$6.TAG !== "Ok") {
-    return e$6;
-  }
-  let e$7 = readByte(reader, "hideVisuals");
-  if (e$7.TAG !== "Ok") {
-    return e$7;
-  }
-  let e$8 = readByte(reader, "hideVisuals2");
-  if (e$8.TAG !== "Ok") {
-    return e$8;
-  }
-  let e$9 = readByte(reader, "hideMisc");
-  if (e$9.TAG !== "Ok") {
-    return e$9;
-  }
-  let e$10 = readColor(reader, "hairColor");
-  if (e$10.TAG !== "Ok") {
-    return e$10;
-  }
-  let e$11 = readColor(reader, "skinColor");
-  if (e$11.TAG !== "Ok") {
-    return e$11;
-  }
-  let e$12 = readColor(reader, "eyeColor");
-  if (e$12.TAG !== "Ok") {
-    return e$12;
-  }
-  let e$13 = readColor(reader, "shirtColor");
-  if (e$13.TAG !== "Ok") {
-    return e$13;
-  }
-  let e$14 = readColor(reader, "underShirtColor");
-  if (e$14.TAG !== "Ok") {
-    return e$14;
-  }
-  let e$15 = readColor(reader, "pantsColor");
-  if (e$15.TAG !== "Ok") {
-    return e$15;
-  }
-  let e$16 = readColor(reader, "shoeColor");
-  if (e$16.TAG !== "Ok") {
-    return e$16;
-  }
-  let e$17 = readByte(reader, "difficultyFlags");
-  if (e$17.TAG !== "Ok") {
-    return e$17;
-  }
-  let difficultyFlags = fromByte(e$17._0);
-  let e$18 = readByte(reader, "torchFlags");
-  if (e$18.TAG !== "Ok") {
-    return e$18;
-  }
-  let torchFlags = fromByte(e$18._0);
-  let difficulty = getDifficulty2(difficultyFlags);
-  let extraAccessory = flag3(difficultyFlags);
-  let mode = flag4(difficultyFlags) ? "Journey" : "Classic";
-  let usingBiomeTorches = flag1(torchFlags);
-  let happyFunTorchTime = flag2(torchFlags);
-  let unlockedBiomeTorches = flag3(torchFlags);
-  let unlockedSuperCart = flag4(torchFlags);
-  let enabledSuperCart = flag5(torchFlags);
-  let e$19 = readByte(reader, "usedFlags");
-  let e$20;
-  e$20 = e$19.TAG === "Ok" ? {
-    TAG: "Ok",
-    _0: fromByte(e$19._0)
-  } : e$19;
-  if (e$20.TAG !== "Ok") {
-    return e$20;
-  }
-  let usedFlags = e$20._0;
-  let usedAegisCrystal = flag1(usedFlags);
-  let usedAegisFruit = flag2(usedFlags);
-  let usedArcaneCrystal = flag3(usedFlags);
-  let usedGalaxyPearl = flag4(usedFlags);
-  let usedGummyWorm = flag5(usedFlags);
-  let usedAmbrosia = flag6(usedFlags);
-  let ateArtisanBread = flag7(usedFlags);
-  return {
-    TAG: "Ok",
-    _0: {
-      playerId: e._0,
-      skinVariant: e$1._0,
-      voiceVariant: e$2._0,
-      voicePitchOffset: e$3._0,
-      hair: e$4._0,
-      name: e$5._0,
-      hairDye: e$6._0,
-      hideVisuals: e$7._0,
-      hideVisuals2: e$8._0,
-      hideMisc: e$9._0,
-      hairColor: e$10._0,
-      skinColor: e$11._0,
-      eyeColor: e$12._0,
-      shirtColor: e$13._0,
-      underShirtColor: e$14._0,
-      pantsColor: e$15._0,
-      shoeColor: e$16._0,
-      difficulty,
-      mode,
-      extraAccessory,
-      usingBiomeTorches,
-      unlockedBiomeTorches,
-      happyFunTorchTime,
-      unlockedSuperCart,
-      enabledSuperCart,
-      usedAegisCrystal,
-      usedAegisFruit,
-      usedArcaneCrystal,
-      usedGalaxyPearl,
-      usedGummyWorm,
-      usedAmbrosia,
-      ateArtisanBread
-    }
-  };
-}
-
-// src/packet/Packet_ChestResize.js
-function parse155(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt16(reader, "chestId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt16(reader, "newSize");
-  if (e$1.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        chestId: e._0,
-        newSize: e$1._0
-      }
-    };
-  } else {
-    return e$1;
-  }
-}
-
-// src/packet/Packet_PlayerSpawn.js
-function parse156(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt16(reader, "x");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readInt16(reader, "y");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readInt32(reader, "timeRemaining");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readInt16(reader, "numberOfDeathsPve");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let e$5 = readInt16(reader, "numberOfDeathsPvp");
-  if (e$5.TAG !== "Ok") {
-    return e$5;
-  }
-  let e$6 = readByte(reader, "team");
-  if (e$6.TAG !== "Ok") {
-    return e$6;
-  }
-  let e$7 = readByte(reader, "context");
-  if (e$7.TAG !== "Ok") {
-    return e$7;
-  }
-  let rawContext = e$7._0;
-  let context;
-  switch (rawContext) {
-    case 0:
-      context = "ReviveFromDeath";
-      break;
-    case 1:
-      context = "SpawningIntoWorld";
-      break;
-    case 2:
-      context = "RecallFromItem";
-      break;
-    case 3:
-      context = "TeamSwap";
-      break;
-    default:
-      context = {
-        TAG: "Unknown",
-        _0: rawContext
-      };
-  }
-  return {
-    TAG: "Ok",
-    _0: {
-      playerId: e._0,
-      x: e$1._0,
-      y: e$2._0,
-      timeRemaining: e$3._0,
-      numberOfDeathsPve: e$4._0,
-      numberOfDeathsPvp: e$5._0,
-      team: e$6._0,
-      context
-    }
-  };
-}
-
-// src/packet/Packet_DebugCommand.js
-function parse157(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readString(reader, "command");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt32(reader, "argInt");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readSingle(reader, "argFloat");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readSingle(reader, "argFloat2");
-  if (e$3.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        command: e._0,
-        argInt: e$1._0,
-        argFloat: e$2._0,
-        argFloat2: e$3._0
-      }
-    };
-  } else {
-    return e$3;
-  }
-}
-
-// src/packet/Packet_PlayerUpdate.js
-function parse158(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readByte(reader, "controlFlags");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let controlFlags = fromByte(e$1._0);
-  let e$2 = readByte(reader, "miscFlags1");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let miscFlags1 = fromByte(e$2._0);
-  let e$3 = readByte(reader, "miscFlags2");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let miscFlags2 = fromByte(e$3._0);
-  let e$4 = readByte(reader, "miscFlags3");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let miscFlags3 = fromByte(e$4._0);
-  let control_isHoldingUp = flag1(controlFlags);
-  let control_isHoldingDown = flag2(controlFlags);
-  let control_isHoldingLeft = flag3(controlFlags);
-  let control_isHoldingRight = flag4(controlFlags);
-  let control_isHoldingJump = flag5(controlFlags);
-  let control_isHoldingItemUse = flag6(controlFlags);
-  let control = {
-    isHoldingUp: control_isHoldingUp,
-    isHoldingDown: control_isHoldingDown,
-    isHoldingLeft: control_isHoldingLeft,
-    isHoldingRight: control_isHoldingRight,
-    isHoldingJump: control_isHoldingJump,
-    isHoldingItemUse: control_isHoldingItemUse
-  };
-  let direction = flag7(controlFlags) ? "Right" : "Left";
-  let pulleyDirection = flag1(miscFlags1) ? flag2(miscFlags1) ? "Two" : "One" : void 0;
-  let vortexStealthActive = flag4(miscFlags1);
-  let gravityDirection = flag5(miscFlags1) ? "Normal" : "Inverted";
-  let shieldRaised = flag6(miscFlags1);
-  let ghost = flag7(miscFlags1);
-  let e$5 = readByte(reader, "selectedItem");
-  if (e$5.TAG !== "Ok") {
-    return e$5;
-  }
-  let e$6 = readSingle(reader, "positionX");
-  if (e$6.TAG !== "Ok") {
-    return e$6;
-  }
-  let e$7 = readSingle(reader, "positionY");
-  if (e$7.TAG !== "Ok") {
-    return e$7;
-  }
-  let position_x = e$6._0;
-  let position_y = e$7._0;
-  let position = {
-    x: position_x,
-    y: position_y
-  };
-  let e$8;
-  if (flag3(miscFlags1)) {
-    let e$9 = readSingle(reader, "velocityX");
-    if (e$9.TAG === "Ok") {
-      let e$10 = readSingle(reader, "velocityY");
-      e$8 = e$10.TAG === "Ok" ? {
-        TAG: "Ok",
-        _0: {
-          x: e$9._0,
-          y: e$10._0
-        }
-      } : e$10;
-    } else {
-      e$8 = e$9;
-    }
-  } else {
-    e$8 = {
-      TAG: "Ok",
-      _0: void 0
-    };
-  }
-  if (e$8.TAG !== "Ok") {
-    return e$8;
-  }
-  let e$11;
-  if (flag8(miscFlags1)) {
-    let e$12 = readUInt16(reader, "mountType");
-    e$11 = e$12.TAG === "Ok" ? {
-      TAG: "Ok",
-      _0: e$12._0
-    } : e$12;
-  } else {
-    e$11 = {
-      TAG: "Ok",
-      _0: void 0
-    };
-  }
-  if (e$11.TAG !== "Ok") {
-    return e$11;
-  }
-  let e$13;
-  if (flag7(miscFlags2)) {
-    let e$14 = readSingle(reader, "potionOfReturnOrigX");
-    if (e$14.TAG === "Ok") {
-      let e$15 = readSingle(reader, "potionOfReturnOrigY");
-      if (e$15.TAG === "Ok") {
-        let e$16 = readSingle(reader, "potionOfReturnHomeX");
-        if (e$16.TAG === "Ok") {
-          let e$17 = readSingle(reader, "potionOfReturnHomeY");
-          e$13 = e$17.TAG === "Ok" ? {
-            TAG: "Ok",
-            _0: {
-              originalUsePosition: {
-                x: e$14._0,
-                y: e$15._0
-              },
-              homePosition: {
-                x: e$16._0,
-                y: e$17._0
-              }
-            }
-          } : e$17;
-        } else {
-          e$13 = e$16;
-        }
-      } else {
-        e$13 = e$15;
-      }
-    } else {
-      e$13 = e$14;
-    }
-  } else {
-    e$13 = {
-      TAG: "Ok",
-      _0: void 0
-    };
-  }
-  if (e$13.TAG !== "Ok") {
-    return e$13;
-  }
-  let tryKeepingHoveringUp = flag1(miscFlags2);
-  let isVoidVaultEnabled = flag2(miscFlags2);
-  let isSitting = flag3(miscFlags2);
-  let hasFinishedAnyDd2Event = flag4(miscFlags2);
-  let isPettingAnimal = flag5(miscFlags2);
-  let isTheAnimalBeingPetSmall = flag6(miscFlags2);
-  let tryKeepingHoveringDown = flag8(miscFlags2);
-  let isSleeping = flag1(miscFlags3);
-  let autoReuseAllWeapons = flag2(miscFlags3);
-  let controlDownHold = flag3(miscFlags3);
-  let isOperatingAnotherEntity = flag4(miscFlags3);
-  let controlUseTile = flag5(miscFlags3);
-  let e$18;
-  if (flag6(miscFlags3)) {
-    let e$19 = readSingle(reader, "netCameraTargetX");
-    if (e$19.TAG === "Ok") {
-      let e$20 = readSingle(reader, "netCameraTargetY");
-      e$18 = e$20.TAG === "Ok" ? {
-        TAG: "Ok",
-        _0: {
-          x: e$19._0,
-          y: e$20._0
-        }
-      } : e$20;
-    } else {
-      e$18 = e$19;
-    }
-  } else {
-    e$18 = {
-      TAG: "Ok",
-      _0: void 0
-    };
-  }
-  if (e$18.TAG !== "Ok") {
-    return e$18;
-  }
-  let lastItemUseAttemptSuccess = flag7(miscFlags3);
-  return {
-    TAG: "Ok",
-    _0: {
-      playerId: e._0,
-      control,
-      direction,
-      pulleyDirection,
-      vortexStealthActive,
-      gravityDirection,
-      shieldRaised,
-      ghost,
-      selectedItem: e$5._0,
-      position,
-      velocity: e$8._0,
-      mountType: e$11._0,
-      potionOfReturn: e$13._0,
-      tryKeepingHoveringUp,
-      isVoidVaultEnabled,
-      isSitting,
-      hasFinishedAnyDd2Event,
-      isPettingAnimal,
-      isTheAnimalBeingPetSmall,
-      tryKeepingHoveringDown,
-      isSleeping,
-      autoReuseAllWeapons,
-      controlDownHold,
-      isOperatingAnotherEntity,
-      controlUseTile,
-      netCameraTarget: e$18._0,
-      lastItemUseAttemptSuccess
-    }
-  };
-}
-
-// src/packet/Packet_ItemDropClear.js
-function parse159(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt16(reader, "itemDropId");
-  if (e.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        itemDropId: e._0
-      }
-    };
-  } else {
-    return e;
-  }
-}
-
-// src/packet/Packet_NetModuleLoad.js
-function fromInt9(n) {
-  switch (n) {
-    case 0:
-      return "Liquid";
-    case 1:
-      return "Text";
-    case 2:
-      return "Ping";
-    case 3:
-      return "Ambience";
-    case 4:
-      return "Bestiary";
-    case 5:
-      return "CreativePower";
-    case 6:
-      return "CreativeUnlocksPlayerReport";
-    case 7:
-      return "TeleportPylon";
-    case 8:
-      return "Particles";
-    case 9:
-      return "CreativePowerPermissions";
-    case 10:
-      return "Banners";
-    case 11:
-      return "CraftingRequests";
-    case 12:
-      return "TagEffectState";
-    case 13:
-      return "LeashedEntity";
-    case 14:
-      return "UnbreakableWallScan";
-    default:
-      return;
-  }
-}
-function parseLiquid(reader) {
-  let e = readUInt16(reader, "changesCount");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let changesCount = e._0;
-  let readChanges = (_idx, _acc) => {
-    while (true) {
-      let acc = _acc;
-      let idx = _idx;
-      if (idx >= changesCount) {
-        return {
-          TAG: "Ok",
-          _0: acc.toReversed()
-        };
-      }
-      let e2 = readInt16(reader, "y");
-      if (e2.TAG !== "Ok") {
-        return e2;
-      }
-      let e$12 = readInt16(reader, "x");
-      if (e$12.TAG !== "Ok") {
-        return e$12;
-      }
-      let e$2 = readByte(reader, "amount");
-      if (e$2.TAG !== "Ok") {
-        return e$2;
-      }
-      let e$3 = readByte(reader, "liquidType");
-      if (e$3.TAG !== "Ok") {
-        return e$3;
-      }
-      _acc = concatMany([
-        [{
-          x: e$12._0,
-          y: e2._0,
-          amount: e$2._0,
-          liquidType: e$3._0
-        }],
-        acc
-      ]);
-      _idx = idx + 1 | 0;
-      continue;
-    }
-    ;
-  };
-  let e$1 = readChanges(0, []);
-  if (e$1.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        TAG: "Liquid",
-        _0: {
-          changes: e$1._0
-        }
-      }
-    };
-  } else {
-    return e$1;
-  }
-}
-function parseText(reader, fromServer) {
-  if (fromServer) {
-    let e = readByte(reader, "playerId");
-    if (e.TAG !== "Ok") {
-      return e;
-    }
-    let e$1 = readNetworkText(reader, "message");
-    if (e$1.TAG !== "Ok") {
-      return e$1;
-    }
-    let e$2 = readColor(reader, "color");
-    if (e$2.TAG === "Ok") {
-      return {
-        TAG: "Ok",
-        _0: {
-          TAG: "ServerText",
-          _0: e._0,
-          _1: e$1._0,
-          _2: e$2._0
-        }
-      };
-    } else {
-      return e$2;
-    }
-  }
-  let e$3 = readString(reader, "commandId");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readString(reader, "message");
-  if (e$4.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        TAG: "ClientText",
-        _0: e$3._0,
-        _1: e$4._0
-      }
-    };
-  } else {
-    return e$4;
-  }
-}
-function parsePing(reader) {
-  let e = readSingle(reader, "x");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readSingle(reader, "y");
-  if (e$1.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        TAG: "Ping",
-        _0: {
-          x: e._0,
-          y: e$1._0
-        }
-      }
-    };
-  } else {
-    return e$1;
-  }
-}
-function parseAmbience(reader) {
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt32(reader, "seed");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readByte(reader, "skyEntityType");
-  if (e$2.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        TAG: "Ambience",
-        _0: {
-          playerId: e._0,
-          seed: e$1._0,
-          skyEntityType: e$2._0
-        }
-      }
-    };
-  } else {
-    return e$2;
-  }
-}
-function parseBestiary(reader) {
-  let e = readByte(reader, "rawBestiaryUnlockType");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt16(reader, "npcId");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2;
-  switch (e._0) {
-    case 0:
-      let e$3 = read7BitEncodedInt(reader, "killCount");
-      e$2 = e$3.TAG === "Ok" ? {
-        TAG: "Ok",
-        _0: {
-          TAG: "Kill",
-          _0: e$3._0
-        }
-      } : e$3;
-      break;
-    case 1:
-      e$2 = {
-        TAG: "Ok",
-        _0: "Sight"
-      };
-      break;
-    case 2:
-      e$2 = {
-        TAG: "Ok",
-        _0: "Chat"
-      };
-      break;
-    default:
-      e$2 = {
-        TAG: "Error",
-        _0: {
-          context: "Packet_NetModuleLoad.parseBestiary",
-          error: new Error("Unknown bestiary unlock type")
-        }
-      };
-  }
-  if (e$2.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        TAG: "Bestiary",
-        _0: {
-          unlockType: e$2._0,
-          npcId: e$1._0
-        }
-      }
-    };
-  } else {
-    return e$2;
-  }
-}
-function parseCreativePower(reader) {
-  let p = parse$2(reader);
-  if (p !== void 0) {
-    return {
-      TAG: "Ok",
-      _0: {
-        TAG: "CreativePower",
-        _0: p
-      }
-    };
-  } else {
-    return {
-      TAG: "Error",
-      _0: {
-        context: "Packet_NetModuleLoad.parseCreativePower",
-        error: new Error("Failed to parse creative power")
-      }
-    };
-  }
-}
-function parseCreativeUnlocksPlayerReport(reader) {
-  let e = readByte(reader, "userId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readUInt16(reader, "itemId");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readUInt16(reader, "researchedCount");
-  if (e$2.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        TAG: "CreativeUnlocksPlayerReport",
-        _0: {
-          userId: e._0,
-          itemId: e$1._0,
-          researchedCount: e$2._0
-        }
-      }
-    };
-  } else {
-    return e$2;
-  }
-}
-function parseTeleportPylon(reader) {
-  let e = readByte(reader, "rawPylonAction");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt16(reader, "x");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readInt16(reader, "y");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readByte(reader, "pylonType");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let pylonAction;
-  switch (e._0) {
-    case 0:
-      pylonAction = "Added";
-      break;
-    case 1:
-      pylonAction = "Removed";
-      break;
-    case 2:
-      pylonAction = "RequestTeleport";
-      break;
-    default:
-      pylonAction = void 0;
-  }
-  if (pylonAction !== void 0) {
-    return {
-      TAG: "Ok",
-      _0: {
-        TAG: "TeleportPylon",
-        _0: {
-          pylonAction,
-          x: e$1._0,
-          y: e$2._0,
-          pylonType: e$3._0
-        }
-      }
-    };
-  } else {
-    return {
-      TAG: "Error",
-      _0: {
-        context: "Packet_NetModuleLoad.parseTeleportPylon",
-        error: new Error("Unknown pylon action")
-      }
-    };
-  }
-}
-function parseParticle(reader) {
-  let e = readByte(reader, "particleType");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readSingle(reader, "x");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readSingle(reader, "y");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readSingle(reader, "vx");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readSingle(reader, "vy");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let e$5 = readInt32(reader, "shaderIndex");
-  if (e$5.TAG !== "Ok") {
-    return e$5;
-  }
-  let e$6 = readByte(reader, "invokedByPlayer");
-  if (e$6.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        TAG: "Particles",
-        _0: {
-          particleType: e._0,
-          x: e$1._0,
-          y: e$2._0,
-          vx: e$3._0,
-          vy: e$4._0,
-          shaderIndex: e$5._0,
-          invokedByPlayer: e$6._0
-        }
-      }
-    };
-  } else {
-    return e$6;
-  }
-}
-function parseCreativePowerPermission(reader) {
-  let e = readByte(reader, "messageType");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readUInt16(reader, "powerType");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readByte(reader, "rawPowerLevel");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let powerLevel;
-  switch (e$2._0) {
-    case 0:
-      powerLevel = "LockedForEveryone";
-      break;
-    case 1:
-      powerLevel = "CanBeChangedByHostAlone";
-      break;
-    case 2:
-      powerLevel = "CanBeChangedByEveryone";
-      break;
-    default:
-      powerLevel = void 0;
-  }
-  if (powerLevel !== void 0) {
-    return {
-      TAG: "Ok",
-      _0: {
-        TAG: "CreativePowerPermissions",
-        _0: {
-          powerType: e$1._0,
-          powerLevel
-        }
-      }
-    };
-  } else {
-    return {
-      TAG: "Error",
-      _0: {
-        context: "Packet_NetModuleLoad.parseCreativePowerPermission",
-        error: new Error("Unknown creative power permission level")
-      }
-    };
-  }
-}
-function parseBanners(reader) {
-  let e = readByte(reader, "messageType");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  switch (e._0) {
-    case 0:
-      let e$1 = readInt16(reader, "killCountLength");
-      if (e$1.TAG !== "Ok") {
-        return e$1;
-      }
-      let killCountLength = e$1._0;
-      let readKillCounts = (_idx, _acc) => {
-        while (true) {
-          let acc = _acc;
-          let idx = _idx;
-          if (idx >= killCountLength) {
-            return {
-              TAG: "Ok",
-              _0: acc.toReversed()
-            };
-          }
-          let e2 = readInt32(reader, "killCount");
-          if (e2.TAG !== "Ok") {
-            return e2;
-          }
-          _acc = concatMany([
-            [e2._0],
-            acc
-          ]);
-          _idx = idx + 1 | 0;
-          continue;
-        }
-        ;
-      };
-      let e$2 = readKillCounts(0, []);
-      if (e$2.TAG !== "Ok") {
-        return e$2;
-      }
-      let e$3 = readInt16(reader, "claimableCountLength");
-      if (e$3.TAG !== "Ok") {
-        return e$3;
-      }
-      let claimableCountLength = e$3._0;
-      let readClaimableCounts = (_idx, _acc) => {
-        while (true) {
-          let acc = _acc;
-          let idx = _idx;
-          if (idx >= claimableCountLength) {
-            return {
-              TAG: "Ok",
-              _0: acc.toReversed()
-            };
-          }
-          let e2 = readUInt16(reader, "claimableCount");
-          if (e2.TAG !== "Ok") {
-            return e2;
-          }
-          _acc = concatMany([
-            [e2._0],
-            acc
-          ]);
-          _idx = idx + 1 | 0;
-          continue;
-        }
-        ;
-      };
-      let e$4 = readClaimableCounts(0, []);
-      if (e$4.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "Banners",
-            _0: {
-              TAG: "BannerFullState",
-              _0: {
-                killCounts: e$2._0,
-                claimableCounts: e$4._0
-              }
-            }
-          }
-        };
-      } else {
-        return e$4;
-      }
-    case 1:
-      let e$5 = readInt16(reader, "bannerId");
-      if (e$5.TAG !== "Ok") {
-        return e$5;
-      }
-      let e$6 = readInt32(reader, "killCount");
-      if (e$6.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "Banners",
-            _0: {
-              TAG: "BannerKillCountUpdate",
-              _0: {
-                bannerId: e$5._0,
-                killCount: e$6._0
-              }
-            }
-          }
-        };
-      } else {
-        return e$6;
-      }
-    case 2:
-      let e$7 = readInt16(reader, "bannerId");
-      if (e$7.TAG !== "Ok") {
-        return e$7;
-      }
-      let e$8 = readUInt16(reader, "claimCount");
-      if (e$8.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "Banners",
-            _0: {
-              TAG: "BannerClaimCountUpdate",
-              _0: {
-                bannerId: e$7._0,
-                claimCount: e$8._0
-              }
-            }
-          }
-        };
-      } else {
-        return e$8;
-      }
-    case 3:
-      let e$9 = readInt16(reader, "bannerId");
-      if (e$9.TAG !== "Ok") {
-        return e$9;
-      }
-      let e$10 = readUInt16(reader, "amount");
-      if (e$10.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "Banners",
-            _0: {
-              TAG: "BannerClaimRequest",
-              _0: {
-                bannerId: e$9._0,
-                amount: e$10._0
-              }
-            }
-          }
-        };
-      } else {
-        return e$10;
-      }
-    case 4:
-      let e$11 = readInt16(reader, "bannerId");
-      if (e$11.TAG !== "Ok") {
-        return e$11;
-      }
-      let e$12 = readUInt16(reader, "amount");
-      if (e$12.TAG !== "Ok") {
-        return e$12;
-      }
-      let e$13 = readBool(reader, "granted");
-      if (e$13.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "Banners",
-            _0: {
-              TAG: "BannerClaimResponse",
-              _0: {
-                bannerId: e$11._0,
-                amount: e$12._0,
-                granted: e$13._0
-              }
-            }
-          }
-        };
-      } else {
-        return e$13;
-      }
-    default:
-      return {
-        TAG: "Error",
-        _0: {
-          context: "Packet_NetModuleLoad.parseBanners",
-          error: new Error("Unknown banner message type")
-        }
-      };
-  }
-}
-function parseCraftingRequests(reader, fromServer) {
-  if (fromServer) {
-    let e = readBool(reader, "approved");
-    if (e.TAG === "Ok") {
-      return {
-        TAG: "Ok",
-        _0: {
-          TAG: "CraftingRequests",
-          _0: {
-            TAG: "CraftingResponse",
-            _0: {
-              approved: e._0
-            }
-          }
-        }
-      };
-    } else {
-      return e;
-    }
-  }
-  let e$1 = read7BitEncodedInt(reader, "itemsCount");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let itemsCount = e$1._0;
-  let readItems = (_idx, _acc) => {
-    while (true) {
-      let acc = _acc;
-      let idx = _idx;
-      if (idx >= itemsCount) {
-        return {
-          TAG: "Ok",
-          _0: acc.toReversed()
-        };
-      }
-      let e = readInt32(reader, "itemIdOrRecipeGroup");
-      if (e.TAG !== "Ok") {
-        return e;
-      }
-      let e$12 = read7BitEncodedInt(reader, "stack");
-      if (e$12.TAG !== "Ok") {
-        return e$12;
-      }
-      _acc = concatMany([
-        [{
-          itemIdOrRecipeGroup: e._0,
-          stack: e$12._0
-        }],
-        acc
-      ]);
-      _idx = idx + 1 | 0;
-      continue;
-    }
-    ;
-  };
-  let e$2 = readItems(0, []);
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = read7BitEncodedInt(reader, "chestCount");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let chestCount = e$3._0;
-  let readChests = (_idx, _acc) => {
-    while (true) {
-      let acc = _acc;
-      let idx = _idx;
-      if (idx >= chestCount) {
-        return {
-          TAG: "Ok",
-          _0: acc.toReversed()
-        };
-      }
-      let e = read7BitEncodedInt(reader, "chestIndex");
-      if (e.TAG !== "Ok") {
-        return e;
-      }
-      _acc = concatMany([
-        [e._0],
-        acc
-      ]);
-      _idx = idx + 1 | 0;
-      continue;
-    }
-    ;
-  };
-  let e$4 = readChests(0, []);
-  if (e$4.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        TAG: "CraftingRequests",
-        _0: {
-          TAG: "CraftingRequest",
-          _0: {
-            items: e$2._0,
-            chestIndexes: e$4._0
-          }
-        }
-      }
-    };
-  } else {
-    return e$4;
-  }
-}
-function readSparseNpcTimes(reader) {
-  let _acc = [];
-  while (true) {
-    let acc = _acc;
-    let e = readByte(reader, "npcIndex");
-    if (e.TAG !== "Ok") {
-      return e;
-    }
-    let npcIndex = e._0;
-    if (npcIndex >= 200) {
-      return {
-        TAG: "Ok",
-        _0: acc.toReversed()
-      };
-    }
-    let e$1 = readInt32(reader, "npcTime");
-    if (e$1.TAG !== "Ok") {
-      return e$1;
-    }
-    _acc = concatMany([
-      [{
-        npcIndex,
-        time: e$1._0
-      }],
-      acc
-    ]);
-    continue;
-  }
-  ;
-}
-function parseTagEffectState(reader) {
-  let e = readByte(reader, "ownerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let ownerId = e._0;
-  let e$1 = readByte(reader, "messageType");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  switch (e$1._0) {
-    case 0:
-      let e$2 = readInt16(reader, "effectType");
-      if (e$2.TAG !== "Ok") {
-        return e$2;
-      }
-      let effectType = e$2._0;
-      let e$3 = readSparseNpcTimes(reader);
-      if (e$3.TAG !== "Ok") {
-        return e$3;
-      }
-      let timeLeft = e$3._0;
-      let e$4 = getBytesLeft(reader);
-      if (e$4.TAG !== "Ok") {
-        return e$4;
-      }
-      if (e$4._0 <= 0) {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "TagEffectState",
-            _0: {
-              TAG: "TagFullState",
-              _0: {
-                ownerId,
-                effectType,
-                timeLeft,
-                procTimeLeft: void 0
-              }
-            }
-          }
-        };
-      }
-      let e$5 = readSparseNpcTimes(reader);
-      if (e$5.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "TagEffectState",
-            _0: {
-              TAG: "TagFullState",
-              _0: {
-                ownerId,
-                effectType,
-                timeLeft,
-                procTimeLeft: e$5._0
-              }
-            }
-          }
-        };
-      } else {
-        return e$5;
-      }
-    case 1:
-      let e$6 = readInt16(reader, "effectType");
-      if (e$6.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "TagEffectState",
-            _0: {
-              TAG: "TagChangeActiveEffect",
-              _0: {
-                ownerId,
-                effectType: e$6._0
-              }
-            }
-          }
-        };
-      } else {
-        return e$6;
-      }
-    case 2:
-      let e$7 = readByte(reader, "npcIndex");
-      if (e$7.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "TagEffectState",
-            _0: {
-              TAG: "TagApplyTagToNpc",
-              _0: {
-                ownerId,
-                npcIndex: e$7._0
-              }
-            }
-          }
-        };
-      } else {
-        return e$7;
-      }
-    case 3:
-      let e$8 = readByte(reader, "npcIndex");
-      if (e$8.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "TagEffectState",
-            _0: {
-              TAG: "TagEnableProcOnNpc",
-              _0: {
-                ownerId,
-                npcIndex: e$8._0
-              }
-            }
-          }
-        };
-      } else {
-        return e$8;
-      }
-    case 4:
-      let e$9 = readByte(reader, "npcIndex");
-      if (e$9.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "TagEffectState",
-            _0: {
-              TAG: "TagClearProcOnNpc",
-              _0: {
-                ownerId,
-                npcIndex: e$9._0
-              }
-            }
-          }
-        };
-      } else {
-        return e$9;
-      }
-    default:
-      return {
-        TAG: "Error",
-        _0: {
-          context: "Packet_NetModuleLoad.parseTagEffectState",
-          error: new Error("Unknown tag effect state message type")
-        }
-      };
-  }
-}
-function parseLeashedEntity(reader) {
-  let e = readByte(reader, "messageType");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  switch (e._0) {
-    case 0:
-      let e$1 = read7BitEncodedInt(reader, "slot");
-      if (e$1.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "LeashedEntity",
-            _0: {
-              TAG: "LeashedRemove",
-              _0: {
-                slot: e$1._0
-              }
-            }
-          }
-        };
-      } else {
-        return e$1;
-      }
-    case 1:
-      let e$2 = read7BitEncodedInt(reader, "slot");
-      if (e$2.TAG !== "Ok") {
-        return e$2;
-      }
-      let e$3 = read7BitEncodedInt(reader, "entityType");
-      if (e$3.TAG !== "Ok") {
-        return e$3;
-      }
-      let e$4 = readInt16(reader, "anchorX");
-      if (e$4.TAG !== "Ok") {
-        return e$4;
-      }
-      let e$5 = readInt16(reader, "anchorY");
-      if (e$5.TAG !== "Ok") {
-        return e$5;
-      }
-      let e$6 = getBytesLeft(reader);
-      if (e$6.TAG !== "Ok") {
-        return e$6;
-      }
-      let e$7 = readBuffer(reader, e$6._0, "payload");
-      if (e$7.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "LeashedEntity",
-            _0: {
-              TAG: "LeashedFullSync",
-              _0: {
-                slot: e$2._0,
-                entityType: e$3._0,
-                anchorX: e$4._0,
-                anchorY: e$5._0,
-                payload: e$7._0
-              }
-            }
-          }
-        };
-      } else {
-        return e$7;
-      }
-    case 2:
-      let e$8 = read7BitEncodedInt(reader, "slot");
-      if (e$8.TAG !== "Ok") {
-        return e$8;
-      }
-      let e$9 = read7BitEncodedInt(reader, "entityType");
-      if (e$9.TAG !== "Ok") {
-        return e$9;
-      }
-      let e$10 = getBytesLeft(reader);
-      if (e$10.TAG !== "Ok") {
-        return e$10;
-      }
-      let e$11 = readBuffer(reader, e$10._0, "payload");
-      if (e$11.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "LeashedEntity",
-            _0: {
-              TAG: "LeashedPartialSync",
-              _0: {
-                slot: e$8._0,
-                entityType: e$9._0,
-                payload: e$11._0
-              }
-            }
-          }
-        };
-      } else {
-        return e$11;
-      }
-    default:
-      return {
-        TAG: "Error",
-        _0: {
-          context: "Packet_NetModuleLoad.parseLeashedEntity",
-          error: new Error("Unknown leashed entity message type")
-        }
-      };
-  }
-}
-function parseUnbreakableWallScan(reader) {
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readBool(reader, "insideUnbreakableWalls");
-  if (e$1.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        TAG: "UnbreakableWallScan",
-        _0: {
-          playerId: e._0,
-          insideUnbreakableWalls: e$1._0
-        }
-      }
-    };
-  } else {
-    return e$1;
-  }
-}
-function parse160(payload, fromServer) {
-  let reader = new packetreader_default(payload);
-  let e = readUInt16(reader, "moduleType");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let match = fromInt9(e._0);
-  if (match === void 0) {
-    return {
-      TAG: "Error",
-      _0: {
-        context: "Packet_NetModuleLoad.parse",
-        error: new Error("Unknown net module type")
-      }
-    };
-  }
-  switch (match) {
-    case "Liquid":
-      return parseLiquid(reader);
-    case "Text":
-      return parseText(reader, fromServer);
-    case "Ping":
-      return parsePing(reader);
-    case "Ambience":
-      return parseAmbience(reader);
-    case "Bestiary":
-      return parseBestiary(reader);
-    case "CreativePower":
-      return parseCreativePower(reader);
-    case "CreativeUnlocksPlayerReport":
-      return parseCreativeUnlocksPlayerReport(reader);
-    case "TeleportPylon":
-      return parseTeleportPylon(reader);
-    case "Particles":
-      return parseParticle(reader);
-    case "CreativePowerPermissions":
-      return parseCreativePowerPermission(reader);
-    case "Banners":
-      return parseBanners(reader);
-    case "CraftingRequests":
-      return parseCraftingRequests(reader, fromServer);
-    case "TagEffectState":
-      return parseTagEffectState(reader);
-    case "LeashedEntity":
-      return parseLeashedEntity(reader);
-    case "UnbreakableWallScan":
-      return parseUnbreakableWallScan(reader);
-  }
-}
-
-// src/packet/Packet_NpcBuffUpdate.js
-function parse161(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt16(reader, "npcId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let buffs = [];
-  let buffTimes = [];
-  let readBuffs = () => {
-    while (true) {
-      let e2 = readUInt16(reader, "buff");
-      if (e2.TAG !== "Ok") {
-        return e2;
-      }
-      let buff = e2._0;
-      if (buff === 0) {
-        return {
-          TAG: "Ok",
-          _0: void 0
-        };
-      }
-      let e$12 = readUInt16(reader, "buffTime");
-      if (e$12.TAG !== "Ok") {
-        return e$12;
-      }
-      buffs.push(buff);
-      buffTimes.push(e$12._0);
-      continue;
-    }
-    ;
-  };
-  let e$1 = readBuffs();
-  if (e$1.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        npcId: e._0,
-        buffs,
-        buffTimes
-      }
-    };
-  } else {
-    return e$1;
-  }
-}
-
-// src/packet/Packet_PlayerBuffsSet.js
-function parse162(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let buffs = [];
-  let readBuffs = () => {
-    while (true) {
-      let e2 = readUInt16(reader, "buff");
-      if (e2.TAG !== "Ok") {
-        return e2;
-      }
-      let buff = e2._0;
-      if (buff === 0) {
-        return {
-          TAG: "Ok",
-          _0: void 0
-        };
-      }
-      buffs.push(buff);
-      continue;
-    }
-    ;
-  };
-  let e$1 = readBuffs();
-  if (e$1.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0,
-        buffs
-      }
-    };
-  } else {
-    return e$1;
-  }
-}
-
-// src/packet/Packet_PlayerSpectate.js
-function parse163(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt16(reader, "targetPlayerId");
-  if (e$1.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0,
-        targetPlayerId: e$1._0
-      }
-    };
-  } else {
-    return e$1;
-  }
-}
-
-// src/packet/Packet_SectionRequest.js
-function parse164(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readUInt16(reader, "sectionX");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readUInt16(reader, "sectionY");
-  if (e$1.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        sectionX: e._0,
-        sectionY: e$1._0
-      }
-    };
-  } else {
-    return e$1;
-  }
-}
-
-// src/packet/Packet_NpcHurtByDebuff.js
-function parse165(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "npcId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt16(reader, "debuffId");
-  if (e$1.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        npcId: e._0,
-        debuffId: e$1._0
-      }
-    };
-  } else {
-    return e$1;
-  }
-}
-
-// src/packet/Packet_ItemDropPosition.js
-function parse166(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt16(reader, "itemDropId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readSingle(reader, "positionX");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readSingle(reader, "positionY");
-  if (e$2.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        itemDropId: e._0,
-        position: {
-          x: e$1._0,
-          y: e$2._0
-        }
-      }
-    };
-  } else {
-    return e$2;
-  }
-}
-
-// src/packet/Packet_PlayerTeamUpdate.js
-function parse167(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readByte(reader, "team");
-  if (e$1.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0,
-        team: e$1._0
-      }
-    };
-  } else {
-    return e$1;
-  }
-}
-
-// src/packet/Packet_PlayerItemUseSound.js
-function parse168(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0
-      }
-    };
-  } else {
-    return e;
-  }
-}
-
-// src/packet/Packet_PlayerInventorySlot.js
-function parse169(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt16(reader, "slot");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readInt16(reader, "stack");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readByte(reader, "prefix");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readInt16(reader, "itemType");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let e$5 = readByte(reader, "flags");
-  if (e$5.TAG !== "Ok") {
-    return e$5;
-  }
-  let flags = fromByte(e$5._0);
-  return {
-    TAG: "Ok",
-    _0: {
-      playerId: e._0,
-      slot: e$1._0,
-      stack: e$2._0,
-      prefix: e$3._0,
-      itemType: e$4._0,
-      favorited: flag1(flags),
-      blocked: flag2(flags)
-    }
-  };
-}
-
-// src/packet/Packet_PlayerTeamSwapSpawn.js
-function parse170(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0
-      }
-    };
-  } else {
-    return e;
-  }
-}
-
-// src/packet/Packet_TeleportationPotion.js
-function parse171(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "teleportType");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  switch (e._0) {
-    case 0:
-      return {
-        TAG: "Ok",
-        _0: {
-          teleportType: "TeleportationPotion"
-        }
-      };
-    case 1:
-      return {
-        TAG: "Ok",
-        _0: {
-          teleportType: "MagicConch"
-        }
-      };
-    case 2:
-      return {
-        TAG: "Ok",
-        _0: {
-          teleportType: "DemonConch"
-        }
-      };
-    case 3:
-      return {
-        TAG: "Ok",
-        _0: {
-          teleportType: "ShellphoneSpawn"
-        }
-      };
-    case 4:
-      return {
-        TAG: "Ok",
-        _0: {
-          teleportType: "PlayerNoSpaceTeleport"
-        }
-      };
-    default:
-      return {
-        TAG: "Error",
-        _0: {
-          context: "Packet_TeleportationPotion.parse",
-          error: new Error("Unknown teleport type")
-        }
-      };
-  }
-}
-
-// src/packet/Packet_PlayerLuckFactorsUpdate.js
-function parse172(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt32(reader, "ladyBugLuckTimeLeft");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readSingle(reader, "torchLuck");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readByte(reader, "luckPotion");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readByte(reader, "hasGardenGnomeNearby");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let hasGardenGnomeNearby = e$4._0 === 1;
-  let e$5 = readByte(reader, "brokenMirrorBadLuck");
-  if (e$5.TAG !== "Ok") {
-    return e$5;
-  }
-  let brokenMirrorBadLuck = e$5._0 === 1;
-  let e$6 = readSingle(reader, "equipmentBasedLuckBonus");
-  if (e$6.TAG !== "Ok") {
-    return e$6;
-  }
-  let e$7 = readSingle(reader, "coinLuck");
-  if (e$7.TAG !== "Ok") {
-    return e$7;
-  }
-  let e$8 = readByte(reader, "kiteLuckLevel");
-  if (e$8.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0,
-        ladyBugLuckTimeLeft: e$1._0,
-        torchLuck: e$2._0,
-        luckPotion: e$3._0,
-        hasGardenGnomeNearby,
-        brokenMirrorBadLuck,
-        equipmentBasedLuckBonus: e$6._0,
-        coinLuck: e$7._0,
-        kiteLuckLevel: e$8._0
-      }
-    };
-  } else {
-    return e$8;
-  }
-}
-
-// src/packet/Packet_ShimmerEffectOrCoinLuck.js
-function parse173(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "kind");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let kind = e._0;
-  if (kind !== 0) {
-    if (kind !== 1) {
-      return {
-        TAG: "Error",
-        _0: {
-          context: "Packet_ShimmerEffectOrCoinLuck.parse",
-          error: new Error("Unknown shimmer effect kind")
-        }
-      };
-    }
-    let e$1 = readSingle(reader, "coinLuckX");
-    if (e$1.TAG !== "Ok") {
-      return e$1;
-    }
-    let e$2 = readSingle(reader, "coinLuckY");
-    if (e$2.TAG !== "Ok") {
-      return e$2;
-    }
-    let e$3 = readInt32(reader, "coinLuckAmount");
-    if (e$3.TAG === "Ok") {
-      return {
-        TAG: "Ok",
-        _0: {
-          TAG: "CoinLuck",
-          _0: {
-            position: {
-              x: e$1._0,
-              y: e$2._0
-            },
-            amount: e$3._0
-          }
-        }
-      };
-    } else {
-      return e$3;
-    }
-  }
-  let e$4 = readSingle(reader, "shimmerX");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let e$5 = readSingle(reader, "shimmerY");
-  if (e$5.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        TAG: "ShimmerEffect",
-        _0: e$4._0,
-        _1: e$5._0
-      }
-    };
-  } else {
-    return e$5;
-  }
-}
-
-// src/packet/Packet_ItemForceIntoNearestChest.js
-function parse174(payload, fromServer) {
-  let reader = new packetreader_default(payload);
-  if (fromServer) {
-    let e = readInt32(reader, "blockedChestCount");
-    if (e.TAG !== "Ok") {
-      return e;
-    }
-    let count = e._0;
-    let chestIds = [];
-    let readChests = (_idx) => {
-      while (true) {
-        let idx = _idx;
-        if (idx >= count) {
-          return {
-            TAG: "Ok",
-            _0: void 0
-          };
-        }
-        let e2 = readUInt16(reader, `blockedChest` + idx.toString());
-        if (e2.TAG !== "Ok") {
-          return e2;
-        }
-        chestIds.push(e2._0);
-        _idx = idx + 1 | 0;
-        continue;
-      }
-      ;
-    };
-    let e$1 = readChests(0);
-    if (e$1.TAG === "Ok") {
-      return {
-        TAG: "Ok",
-        _0: {
-          TAG: "ServerBlockedChests",
-          _0: {
-            chestIds
-          }
-        }
-      };
-    } else {
-      return e$1;
-    }
-  }
-  let e$2 = readInt32(reader, "slotCount");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let count$1 = e$2._0;
-  let slotIds = [];
-  let readSlots = (_idx) => {
-    while (true) {
-      let idx = _idx;
-      if (idx >= count$1) {
-        return {
-          TAG: "Ok",
-          _0: void 0
-        };
-      }
-      let e = readInt16(reader, `slot` + idx.toString());
-      if (e.TAG !== "Ok") {
-        return e;
-      }
-      slotIds.push(e._0);
-      _idx = idx + 1 | 0;
-      continue;
-    }
-    ;
-  };
-  let e$3 = readSlots(0);
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readByte(reader, "smartStack");
-  if (e$4.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        TAG: "ClientRequest",
-        _0: {
-          slotIds,
-          smartStack: e$4._0 !== 0
-        }
-      }
-    };
-  } else {
-    return e$4;
-  }
-}
-
-// src/packet/Packet_InitialTileSectionsRequest.js
-function parse175(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt32(reader, "x");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt32(reader, "y");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readByte(reader, "team");
-  if (e$2.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        x: e._0,
-        y: e$1._0,
-        team: e$2._0
-      }
-    };
-  } else {
-    return e$2;
-  }
-}
-
-// src/packet/Packet_TravellingMerchantInventory.js
-function parse176(payload) {
-  let reader = new packetreader_default(payload);
-  let items = [];
-  let totalItems = payload.length / 2 | 0;
-  let readItems = (_idx) => {
-    while (true) {
-      let idx = _idx;
-      if (idx >= totalItems) {
-        return {
-          TAG: "Ok",
-          _0: void 0
-        };
-      }
-      let e2 = readInt16(reader, `item` + (idx + 1 | 0).toString());
-      if (e2.TAG !== "Ok") {
-        return e2;
-      }
-      items.push(e2._0);
-      _idx = idx + 1 | 0;
-      continue;
-    }
-    ;
-  };
-  let e = readItems(0);
-  if (e.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        items
-      }
-    };
-  } else {
-    return e;
-  }
-}
-
-// src/packet/Packet_DeadCellsDisplayJarTryPlacing.js
-function parse177(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt16(reader, "x");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt16(reader, "y");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readInt16(reader, "itemType");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readByte(reader, "prefix");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readInt16(reader, "stack");
-  if (e$4.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        x: e._0,
-        y: e$1._0,
-        itemType: e$2._0,
-        prefix: e$3._0,
-        stack: e$4._0
-      }
-    };
-  } else {
-    return e$4;
-  }
-}
-
-// src/packet/Packet_LeashedEntityAnchorInsertItem.js
-function parse178(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt16(reader, "x");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt16(reader, "y");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readInt16(reader, "itemType");
-  if (e$2.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        x: e._0,
-        y: e$1._0,
-        itemType: e$2._0
-      }
-    };
-  } else {
-    return e$2;
-  }
-}
-
-// src/packet/Packet_TileEntityDisplayDollItemSync.js
-function commandFromInt(value) {
-  switch (value) {
-    case 0:
-      return "Equip";
-    case 1:
-      return "Dye";
-    case 2:
-      return "Pose";
-    case 3:
-      return "Misc";
-    default:
-      return;
-  }
-}
-function parse179(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let playerId = e._0;
-  let e$1 = readInt32(reader, "tileEntityId");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let tileEntityId = e$1._0;
-  let e$2 = readByte(reader, "itemIndex");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let itemIndex = e$2._0;
-  let e$3 = readByte(reader, "command");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let command = commandFromInt(e$3._0);
-  if (command === void 0) {
-    return {
-      TAG: "Error",
-      _0: {
-        context: "Packet_TileEntityDisplayDollItemSync.parse",
-        error: new Error("Unknown display doll command")
-      }
-    };
-  }
-  if (command === "Pose") {
-    let e$4 = readByte(reader, "pose");
-    if (e$4.TAG === "Ok") {
-      return {
-        TAG: "Ok",
-        _0: {
-          playerId,
-          tileEntityId,
-          itemIndex,
-          command,
-          data: {
-            TAG: "PoseValue",
-            _0: e$4._0
-          }
-        }
-      };
-    } else {
-      return e$4;
-    }
-  }
-  let e$5 = readUInt16(reader, "itemId");
-  if (e$5.TAG !== "Ok") {
-    return e$5;
-  }
-  let e$6 = readUInt16(reader, "stack");
-  if (e$6.TAG !== "Ok") {
-    return e$6;
-  }
-  let e$7 = readByte(reader, "prefix");
-  if (e$7.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId,
-        tileEntityId,
-        itemIndex,
-        command,
-        data: {
-          TAG: "Item",
-          _0: {
-            itemId: e$5._0,
-            stack: e$6._0,
-            prefix: e$7._0
-          }
-        }
-      }
-    };
-  } else {
-    return e$7;
   }
 }
 
@@ -21552,22 +27026,22 @@ function mapPacket2(result, packetName2, fn) {
     _0: addPacketContext2(packetName2, e)
   }));
 }
-function makeParsers2(packetName2, parse181, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, _fromServer) => mapPacket2(parse181(payload), packetName2, toPacket);
+function makeParsers2(packetName2, parse183, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, _fromServer) => mapPacket2(parse183(payload), packetName2, toPacket);
   let parseLazyWrapped = (payload, _fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse181(payload), (e) => addPacketContext2(packetName2, e))))
+    _0: toLazyPacket(make4(() => mapError(parse183(payload), (e) => addPacketContext2(packetName2, e))))
   });
   return {
     parse: parseWrapped,
     parseLazy: parseLazyWrapped
   };
 }
-function makeParsersWithFromServer2(packetName2, parse181, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, fromServer) => mapPacket2(parse181(payload, fromServer), packetName2, toPacket);
+function makeParsersWithFromServer2(packetName2, parse183, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, fromServer) => mapPacket2(parse183(payload, fromServer), packetName2, toPacket);
   let parseLazyWrapped = (payload, fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse181(payload, fromServer), (e) => addPacketContext2(packetName2, e))))
+    _0: toLazyPacket(make4(() => mapError(parse183(payload, fromServer), (e) => addPacketContext2(packetName2, e))))
   });
   return {
     parse: parseWrapped,
@@ -21599,7 +27073,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse88, (a) => ({
+          _0: makeParsers2(packetName2, parse106, (a) => ({
             TAG: "Disconnect",
             _0: a
           }), (a) => ({
@@ -21617,7 +27091,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse76, (a) => ({
+          _0: makeParsers2(packetName2, parse94, (a) => ({
             TAG: "PlayerSlotSet",
             _0: a
           }), (a) => ({
@@ -21634,7 +27108,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerInfo":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse154, (a) => ({
+        _0: makeParsers2(packetName2, parse96, (a) => ({
           TAG: "PlayerInfo",
           _0: a
         }), (a) => ({
@@ -21645,7 +27119,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerInventorySlot":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse169, (a) => ({
+        _0: makeParsers2(packetName2, parse98, (a) => ({
           TAG: "PlayerInventorySlot",
           _0: a
         }), (a) => ({
@@ -21662,7 +27136,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse74, (a) => ({
+          _0: makeParsers2(packetName2, parse75, (a) => ({
             TAG: "WorldDataRequest",
             _0: a
           }), (a) => ({
@@ -21675,7 +27149,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse153, (a) => ({
+          _0: makeParsers2(packetName2, parse103, (a) => ({
             TAG: "WorldInfo",
             _0: a
           }), (a) => ({
@@ -21698,7 +27172,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse175, (a) => ({
+          _0: makeParsers2(packetName2, parse81, (a) => ({
             TAG: "InitialTileSectionsRequest",
             _0: a
           }), (a) => ({
@@ -21764,7 +27238,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerSpawn":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse156, (a) => ({
+        _0: makeParsers2(packetName2, parse97, (a) => ({
           TAG: "PlayerSpawn",
           _0: a
         }), (a) => ({
@@ -21775,7 +27249,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse158, (a) => ({
+        _0: makeParsers2(packetName2, parse95, (a) => ({
           TAG: "PlayerUpdate",
           _0: a
         }), (a) => ({
@@ -21787,7 +27261,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse86, (a) => ({
+          _0: makeParsers2(packetName2, parse104, (a) => ({
             TAG: "PlayerActive",
             _0: a
           }), (a) => ({
@@ -21804,7 +27278,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerHealth":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse81, (a) => ({
+        _0: makeParsers2(packetName2, parse99, (a) => ({
           TAG: "PlayerHealth",
           _0: a
         }), (a) => ({
@@ -21827,7 +27301,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse67, (a) => ({
+          _0: makeParsers2(packetName2, parse68, (a) => ({
             TAG: "TimeSet",
             _0: a
           }), (a) => ({
@@ -21844,7 +27318,7 @@ function getParsers2(packetType, fromServer) {
     case "DoorUse":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse91, (a) => ({
+        _0: makeParsers2(packetName2, parse109, (a) => ({
           TAG: "DoorUse",
           _0: a
         }), (a) => ({
@@ -21855,7 +27329,7 @@ function getParsers2(packetType, fromServer) {
     case "TileSquareSend":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse66, (a) => ({
+        _0: makeParsers2(packetName2, parse141, (a) => ({
           TAG: "TileSquareSend",
           _0: a
         }), (a) => ({
@@ -21877,7 +27351,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemOwner":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse151, (a) => ({
+        _0: makeParsers2(packetName2, parse19, (a) => ({
           TAG: "ItemOwner",
           _0: a
         }), (a) => ({
@@ -21889,7 +27363,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse152, (a) => ({
+          _0: makeParsers2(packetName2, parse105, (a) => ({
             TAG: "NpcUpdate",
             _0: a
           }), (a) => ({
@@ -21906,7 +27380,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcItemStrike":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse107, (a) => ({
+        _0: makeParsers2(packetName2, parse134, (a) => ({
           TAG: "NpcItemStrike",
           _0: a
         }), (a) => ({
@@ -21917,7 +27391,7 @@ function getParsers2(packetType, fromServer) {
     case "ProjectileSync":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse83, (a) => ({
+        _0: makeParsers2(packetName2, parse101, (a) => ({
           TAG: "ProjectileSync",
           _0: a
         }), (a) => ({
@@ -21928,7 +27402,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcStrike":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse96, (a) => ({
+        _0: makeParsers2(packetName2, parse116, (a) => ({
           TAG: "NpcStrike",
           _0: a
         }), (a) => ({
@@ -21939,7 +27413,7 @@ function getParsers2(packetType, fromServer) {
     case "ProjectileDestroy":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse123, (a) => ({
+        _0: makeParsers2(packetName2, parse152, (a) => ({
           TAG: "ProjectileDestroy",
           _0: a
         }), (a) => ({
@@ -21967,7 +27441,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse94, (a) => ({
+          _0: makeParsers2(packetName2, parse113, (a) => ({
             TAG: "ChestOpen",
             _0: a
           }), (a) => ({
@@ -21990,7 +27464,7 @@ function getParsers2(packetType, fromServer) {
     case "ActiveContainerSync":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse127, (a) => ({
+        _0: makeParsers2(packetName2, parse156, (a) => ({
           TAG: "ActiveContainerSync",
           _0: a
         }), (a) => ({
@@ -22012,7 +27486,7 @@ function getParsers2(packetType, fromServer) {
     case "HealEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse98, (a) => ({
+        _0: makeParsers2(packetName2, parse120, (a) => ({
           TAG: "HealEffect",
           _0: a
         }), (a) => ({
@@ -22023,7 +27497,7 @@ function getParsers2(packetType, fromServer) {
     case "Zones":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse148, (a) => ({
+        _0: makeParsers2(packetName2, parse76, (a) => ({
           TAG: "Zones",
           _0: a
         }), (a) => ({
@@ -22035,7 +27509,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse118, (a) => ({
+          _0: makeParsers2(packetName2, parse147, (a) => ({
             TAG: "PasswordRequired",
             _0: a
           }), (a) => ({
@@ -22058,7 +27532,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse104, (a) => ({
+          _0: makeParsers2(packetName2, parse128, (a) => ({
             TAG: "PasswordSend",
             _0: a
           }), (a) => ({
@@ -22121,7 +27595,7 @@ function getParsers2(packetType, fromServer) {
     case "ManaEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse99, (a) => ({
+        _0: makeParsers2(packetName2, parse121, (a) => ({
           TAG: "ManaEffect",
           _0: a
         }), (a) => ({
@@ -22172,7 +27646,7 @@ function getParsers2(packetType, fromServer) {
     case "LiquidSet":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse95, (a) => ({
+        _0: makeParsers2(packetName2, parse115, (a) => ({
           TAG: "LiquidSet",
           _0: a
         }), (a) => ({
@@ -22184,7 +27658,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse115, (a) => ({
+          _0: makeParsers2(packetName2, parse144, (a) => ({
             TAG: "PlayerSpawnSelf",
             _0: a
           }), (a) => ({
@@ -22201,7 +27675,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerBuffsSet":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse162, (a) => ({
+        _0: makeParsers2(packetName2, parse38, (a) => ({
           TAG: "PlayerBuffsSet",
           _0: a
         }), (a) => ({
@@ -22212,7 +27686,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcSpecialEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse117, (a) => ({
+        _0: makeParsers2(packetName2, parse146, (a) => ({
           TAG: "NpcSpecialEffect",
           _0: a
         }), (a) => ({
@@ -22234,7 +27708,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcBuffAdd":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse100, (a) => ({
+        _0: makeParsers2(packetName2, parse122, (a) => ({
           TAG: "NpcBuffAdd",
           _0: a
         }), (a) => ({
@@ -22246,7 +27720,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse161, (a) => ({
+          _0: makeParsers2(packetName2, parse25, (a) => ({
             TAG: "NpcBuffUpdate",
             _0: a
           }), (a) => ({
@@ -22286,7 +27760,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse109, (a) => ({
+          _0: makeParsers2(packetName2, parse136, (a) => ({
             TAG: "GoodEvilUpdate",
             _0: a
           }), (a) => ({
@@ -22303,7 +27777,7 @@ function getParsers2(packetType, fromServer) {
     case "HarpPlay":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse92, (a) => ({
+        _0: makeParsers2(packetName2, parse110, (a) => ({
           TAG: "HarpPlay",
           _0: a
         }), (a) => ({
@@ -22376,7 +27850,7 @@ function getParsers2(packetType, fromServer) {
     case "WallPaint":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse71, (a) => ({
+        _0: makeParsers2(packetName2, parse72, (a) => ({
           TAG: "WallPaint",
           _0: a
         }), (a) => ({
@@ -22387,7 +27861,7 @@ function getParsers2(packetType, fromServer) {
     case "Teleport":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse149, (a) => ({
+        _0: makeParsers2(packetName2, parse53, (a) => ({
           TAG: "Teleport",
           _0: a
         }), (a) => ({
@@ -22398,7 +27872,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerHealOther":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse114, (a) => ({
+        _0: makeParsers2(packetName2, parse143, (a) => ({
           TAG: "PlayerHealOther",
           _0: a
         }), (a) => ({
@@ -22426,7 +27900,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse82, (a) => ({
+          _0: makeParsers2(packetName2, parse100, (a) => ({
             TAG: "ClientUuid",
             _0: a
           }), (a) => ({
@@ -22438,7 +27912,7 @@ function getParsers2(packetType, fromServer) {
     case "ChestName":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse93, (a) => ({
+        _0: makeParsers2(packetName2, parse112, (a) => ({
           TAG: "ChestName",
           _0: a
         }), (a) => ({
@@ -22473,7 +27947,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse101, (a) => ({
+          _0: makeParsers2(packetName2, parse123, (a) => ({
             TAG: "NpcRelease",
             _0: a
           }), (a) => ({
@@ -22486,7 +27960,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse176, (a) => ({
+          _0: makeParsers2(packetName2, parse69, (a) => ({
             TAG: "TravellingMerchantInventory",
             _0: a
           }), (a) => ({
@@ -22503,7 +27977,7 @@ function getParsers2(packetType, fromServer) {
     case "TeleportationPotion":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse171, (a) => ({
+        _0: makeParsers2(packetName2, parse54, (a) => ({
           TAG: "TeleportationPotion",
           _0: a
         }), (a) => ({
@@ -22550,7 +28024,7 @@ function getParsers2(packetType, fromServer) {
     case "AnglerQuestsCompletedAmount":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse144, (a) => ({
+        _0: makeParsers2(packetName2, parse176, (a) => ({
           TAG: "AnglerQuestsCompletedAmount",
           _0: a
         }), (a) => ({
@@ -22627,7 +28101,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse125, (a) => ({
+          _0: makeParsers2(packetName2, parse154, (a) => ({
             TAG: "CombatNumberCreate",
             _0: a
           }), (a) => ({
@@ -22644,7 +28118,7 @@ function getParsers2(packetType, fromServer) {
     case "NetModuleLoad":
       return {
         TAG: "Ok",
-        _0: makeParsersWithFromServer2(packetName2, parse160, (a) => ({
+        _0: makeParsersWithFromServer2(packetName2, parse23, (a) => ({
           TAG: "NetModuleLoad",
           _0: a
         }), (a) => ({
@@ -22673,7 +28147,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerStealth":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse108, (a) => ({
+        _0: makeParsers2(packetName2, parse135, (a) => ({
           TAG: "PlayerStealth",
           _0: a
         }), (a) => ({
@@ -22684,7 +28158,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemForceIntoNearestChest":
       return {
         TAG: "Ok",
-        _0: makeParsersWithFromServer2(packetName2, parse174, (a) => ({
+        _0: makeParsersWithFromServer2(packetName2, parse84, (a) => ({
           TAG: "ItemForceIntoNearestChest",
           _0: a
         }), (a) => ({
@@ -22732,7 +28206,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse110, (a) => ({
+          _0: makeParsers2(packetName2, parse137, (a) => ({
             TAG: "ItemDropModify",
             _0: a
           }), (a) => ({
@@ -22755,7 +28229,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse111, (a) => ({
+          _0: makeParsers2(packetName2, parse138, (a) => ({
             TAG: "ItemFramePlace",
             _0: a
           }), (a) => ({
@@ -22767,7 +28241,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemDropInstancedUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse137, (a) => ({
+        _0: makeParsers2(packetName2, parse168, (a) => ({
           TAG: "ItemDropInstancedUpdate",
           _0: a
         }), (a) => ({
@@ -22779,7 +28253,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse103, (a) => ({
+          _0: makeParsers2(packetName2, parse126, (a) => ({
             TAG: "EmoteBubble",
             _0: a
           }), (a) => ({
@@ -22818,7 +28292,7 @@ function getParsers2(packetType, fromServer) {
     case "Unused":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse157, (a) => ({
+        _0: makeParsers2(packetName2, parse79, (a) => ({
           TAG: "Unused",
           _0: a
         }), (a) => ({
@@ -22835,7 +28309,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse102, (a) => ({
+          _0: makeParsers2(packetName2, parse125, (a) => ({
             TAG: "PortalKill",
             _0: a
           }), (a) => ({
@@ -22847,7 +28321,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerTeleportPortal":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse130, (a) => ({
+        _0: makeParsers2(packetName2, parse161, (a) => ({
           TAG: "PlayerTeleportPortal",
           _0: a
         }), (a) => ({
@@ -22859,7 +28333,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse134, (a) => ({
+          _0: makeParsers2(packetName2, parse165, (a) => ({
             TAG: "NpcKilledNotification",
             _0: a
           }), (a) => ({
@@ -22877,7 +28351,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse119, (a) => ({
+          _0: makeParsers2(packetName2, parse148, (a) => ({
             TAG: "EventNotification",
             _0: a
           }), (a) => ({
@@ -22894,7 +28368,7 @@ function getParsers2(packetType, fromServer) {
     case "MinionTargetUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse126, (a) => ({
+        _0: makeParsers2(packetName2, parse155, (a) => ({
           TAG: "MinionTargetUpdate",
           _0: a
         }), (a) => ({
@@ -22917,7 +28391,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse135, (a) => ({
+          _0: makeParsers2(packetName2, parse166, (a) => ({
             TAG: "ShieldStrengthsUpdate",
             _0: a
           }), (a) => ({
@@ -22934,7 +28408,7 @@ function getParsers2(packetType, fromServer) {
     case "NebulaLevelUp":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse106, (a) => ({
+        _0: makeParsers2(packetName2, parse131, (a) => ({
           TAG: "NebulaLevelUp",
           _0: a
         }), (a) => ({
@@ -22946,7 +28420,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse122, (a) => ({
+          _0: makeParsers2(packetName2, parse151, (a) => ({
             TAG: "MoonLordCountdown",
             _0: a
           }), (a) => ({
@@ -22987,7 +28461,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse105, (a) => ({
+          _0: makeParsers2(packetName2, parse130, (a) => ({
             TAG: "GemLockToggle",
             _0: a
           }), (a) => ({
@@ -23036,7 +28510,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse73, (a) => ({
+          _0: makeParsers2(packetName2, parse74, (a) => ({
             TAG: "WiredCannonShot",
             _0: a
           }), (a) => ({
@@ -23059,7 +28533,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse121, (a) => ({
+          _0: makeParsers2(packetName2, parse150, (a) => ({
             TAG: "MassWireOperation",
             _0: a
           }), (a) => ({
@@ -23072,7 +28546,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse129, (a) => ({
+          _0: makeParsers2(packetName2, parse160, (a) => ({
             TAG: "MassWireOperationPay",
             _0: a
           }), (a) => ({
@@ -23107,7 +28581,7 @@ function getParsers2(packetType, fromServer) {
     case "TreeGrowFx":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse69, (a) => ({
+        _0: makeParsers2(packetName2, parse70, (a) => ({
           TAG: "TreeGrowFx",
           _0: a
         }), (a) => ({
@@ -23137,7 +28611,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse136, (a) => ({
+          _0: makeParsers2(packetName2, parse167, (a) => ({
             TAG: "CrystalInvasionWipeAll",
             _0: a
           }), (a) => ({
@@ -23154,7 +28628,7 @@ function getParsers2(packetType, fromServer) {
     case "MinionAttackTargetUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse141, (a) => ({
+        _0: makeParsers2(packetName2, parse173, (a) => ({
           TAG: "MinionAttackTargetUpdate",
           _0: a
         }), (a) => ({
@@ -23166,7 +28640,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse145, (a) => ({
+          _0: makeParsers2(packetName2, parse177, (a) => ({
             TAG: "CrystalInvasionSendWaitTime",
             _0: a
           }), (a) => ({
@@ -23183,7 +28657,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerDamage":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse84, (a) => ({
+        _0: makeParsers2(packetName2, parse102, (a) => ({
           TAG: "PlayerDamage",
           _0: a
         }), (a) => ({
@@ -23206,7 +28680,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse116, (a) => ({
+          _0: makeParsers2(packetName2, parse145, (a) => ({
             TAG: "CombatTextCreate",
             _0: a
           }), (a) => ({
@@ -23229,7 +28703,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse90, (a) => ({
+          _0: makeParsers2(packetName2, parse107, (a) => ({
             TAG: "Emoji",
             _0: a
           }), (a) => ({
@@ -23241,7 +28715,7 @@ function getParsers2(packetType, fromServer) {
     case "TileEntityDisplayDollItemSync":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse179, (a) => ({
+        _0: makeParsers2(packetName2, parse56, (a) => ({
           TAG: "TileEntityDisplayDollItemSync",
           _0: a
         }), (a) => ({
@@ -23269,7 +28743,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse72, (a) => ({
+          _0: makeParsers2(packetName2, parse73, (a) => ({
             TAG: "WeaponsRackTryPlacing",
             _0: a
           }), (a) => ({
@@ -23304,7 +28778,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse124, (a) => ({
+          _0: makeParsers2(packetName2, parse153, (a) => ({
             TAG: "RevengeMarkerSync",
             _0: a
           }), (a) => ({
@@ -23322,7 +28796,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse128, (a) => ({
+          _0: makeParsers2(packetName2, parse158, (a) => ({
             TAG: "RevengeMarkerRemove",
             _0: a
           }), (a) => ({
@@ -23339,7 +28813,7 @@ function getParsers2(packetType, fromServer) {
     case "GolfBallLandInCup":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse120, (a) => ({
+        _0: makeParsers2(packetName2, parse149, (a) => ({
           TAG: "GolfBallLandInCup",
           _0: a
         }), (a) => ({
@@ -23387,7 +28861,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse97, (a) => ({
+          _0: makeParsers2(packetName2, parse117, (a) => ({
             TAG: "NpcTamper",
             _0: a
           }), (a) => ({
@@ -23405,7 +28879,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse113, (a) => ({
+          _0: makeParsers2(packetName2, parse142, (a) => ({
             TAG: "LegacySoundPlay",
             _0: a
           }), (a) => ({
@@ -23428,7 +28902,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse133, (a) => ({
+          _0: makeParsers2(packetName2, parse164, (a) => ({
             TAG: "FoodPlatterTryPlacing",
             _0: a
           }), (a) => ({
@@ -23440,7 +28914,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerLuckFactorsUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse172, (a) => ({
+        _0: makeParsers2(packetName2, parse89, (a) => ({
           TAG: "PlayerLuckFactorsUpdate",
           _0: a
         }), (a) => ({
@@ -23469,7 +28943,7 @@ function getParsers2(packetType, fromServer) {
     case "CavernMonsterTypeSync":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse131, (a) => ({
+        _0: makeParsers2(packetName2, parse162, (a) => ({
           TAG: "CavernMonsterTypeSync",
           _0: a
         }), (a) => ({
@@ -23504,7 +28978,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName2, parse132, (a) => ({
+          _0: makeParsers2(packetName2, parse163, (a) => ({
             TAG: "ClientSyncedInventory",
             _0: a
           }), (a) => ({
@@ -23538,7 +29012,7 @@ function getParsers2(packetType, fromServer) {
     case "LucyAxeMessage":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse112, (a) => ({
+        _0: makeParsers2(packetName2, parse139, (a) => ({
           TAG: "LucyAxeMessage",
           _0: a
         }), (a) => ({
@@ -23549,7 +29023,7 @@ function getParsers2(packetType, fromServer) {
     case "PiggyBankVoidLensUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse139, (a) => ({
+        _0: makeParsers2(packetName2, parse170, (a) => ({
           TAG: "PiggyBankVoidLensUpdate",
           _0: a
         }), (a) => ({
@@ -23560,7 +29034,7 @@ function getParsers2(packetType, fromServer) {
     case "DungeonDefendersEventAttemptSkipWait":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse146, (a) => ({
+        _0: makeParsers2(packetName2, parse180, (a) => ({
           TAG: "DungeonDefendersEventAttemptSkipWait",
           _0: a
         }), (a) => ({
@@ -23593,7 +29067,7 @@ function getParsers2(packetType, fromServer) {
     case "ShimmerEffectOrCoinLuck":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse173, (a) => ({
+        _0: makeParsers2(packetName2, parse46, (a) => ({
           TAG: "ShimmerEffectOrCoinLuck",
           _0: a
         }), (a) => ({
@@ -23615,7 +29089,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemDropProtectedUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse138, (a) => ({
+        _0: makeParsers2(packetName2, parse169, (a) => ({
           TAG: "ItemDropProtectedUpdate",
           _0: a
         }), (a) => ({
@@ -23626,7 +29100,7 @@ function getParsers2(packetType, fromServer) {
     case "DeadCellsDisplayJarTryPlacing":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse177, (a) => ({
+        _0: makeParsers2(packetName2, parse78, (a) => ({
           TAG: "DeadCellsDisplayJarTryPlacing",
           _0: a
         }), (a) => ({
@@ -23637,7 +29111,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerSpectate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse163, (a) => ({
+        _0: makeParsers2(packetName2, parse90, (a) => ({
           TAG: "PlayerSpectate",
           _0: a
         }), (a) => ({
@@ -23648,7 +29122,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemDropClear":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse159, (a) => ({
+        _0: makeParsers2(packetName2, parse82, (a) => ({
           TAG: "ItemDropClear",
           _0: a
         }), (a) => ({
@@ -23659,7 +29133,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerItemUseSound":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse168, (a) => ({
+        _0: makeParsers2(packetName2, parse88, (a) => ({
           TAG: "PlayerItemUseSound",
           _0: a
         }), (a) => ({
@@ -23670,7 +29144,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcHurtByDebuff":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse165, (a) => ({
+        _0: makeParsers2(packetName2, parse86, (a) => ({
           TAG: "NpcHurtByDebuff",
           _0: a
         }), (a) => ({
@@ -23681,7 +29155,7 @@ function getParsers2(packetType, fromServer) {
     case "Ping":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse89, (a) => ({
+        _0: makeParsers2(packetName2, parse87, (a) => ({
           TAG: "Ping",
           _0: a
         }), (a) => ({
@@ -23692,7 +29166,7 @@ function getParsers2(packetType, fromServer) {
     case "ChestResize":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse155, (a) => ({
+        _0: makeParsers2(packetName2, parse77, (a) => ({
           TAG: "ChestResize",
           _0: a
         }), (a) => ({
@@ -23703,7 +29177,7 @@ function getParsers2(packetType, fromServer) {
     case "LeashedEntityAnchorInsertItem":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse178, (a) => ({
+        _0: makeParsers2(packetName2, parse85, (a) => ({
           TAG: "LeashedEntityAnchorInsertItem",
           _0: a
         }), (a) => ({
@@ -23714,7 +29188,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerTeamUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse167, (a) => ({
+        _0: makeParsers2(packetName2, parse92, (a) => ({
           TAG: "PlayerTeamUpdate",
           _0: a
         }), (a) => ({
@@ -23725,7 +29199,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerTeamSwapSpawn":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse170, (a) => ({
+        _0: makeParsers2(packetName2, parse91, (a) => ({
           TAG: "PlayerTeamSwapSpawn",
           _0: a
         }), (a) => ({
@@ -23736,7 +29210,7 @@ function getParsers2(packetType, fromServer) {
     case "SectionRequest":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse164, (a) => ({
+        _0: makeParsers2(packetName2, parse93, (a) => ({
           TAG: "SectionRequest",
           _0: a
         }), (a) => ({
@@ -23747,7 +29221,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemDropPosition":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse166, (a) => ({
+        _0: makeParsers2(packetName2, parse83, (a) => ({
           TAG: "ItemDropPosition",
           _0: a
         }), (a) => ({
@@ -23758,7 +29232,7 @@ function getParsers2(packetType, fromServer) {
     case "HostToken":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName2, parse150, (a) => ({
+        _0: makeParsers2(packetName2, parse80, (a) => ({
           TAG: "HostToken",
           _0: a
         }), (a) => ({
@@ -23768,7 +29242,7 @@ function getParsers2(packetType, fromServer) {
       };
   }
 }
-function parse180(buffer, fromServer, ignoreOpt) {
+function parse182(buffer, fromServer, ignoreOpt) {
   let ignore = ignoreOpt !== void 0 ? ignoreOpt : [];
   let match = buffer.length;
   if (!(match > 2 || match < 0)) {
@@ -25481,7 +30955,7 @@ function convertFromV1449IfNeeded(buffer, fromServer) {
       };
   }
   try {
-    return map2(map2(parse147(buffer, fromServer, void 0), fromV1449), (p) => ({
+    return map2(map2(parse181(buffer, fromServer, void 0), fromV1449), (p) => ({
       TAG: "ConvertedToLatestVersion",
       _0: p
     }));
@@ -25568,7 +31042,7 @@ function convertToV1449IfNeeded(buffer, fromServer) {
       };
   }
   try {
-    return map2(parse180(buffer, fromServer, void 0), (packet) => {
+    return map2(parse182(buffer, fromServer, void 0), (packet) => {
       switch (packet.TAG) {
         case "PlayerInventorySlot":
           let playerInventorySlot = packet._0;
@@ -25657,6 +31131,7 @@ export {
   PacketV1449_ChestItem_exports as ChestItemPacket,
   PacketV1449_ChestOrTempleUnlock_exports as ChestOrTempleUnlockPacket,
   PacketV1449_ChestPlace_exports as ChestPlacePacket,
+  Packet_ChestResize_exports as ChestResizePacket,
   PacketV1449_ClientFinishConnectingToServer_exports as ClientFinishConnectingToServerPacket,
   PacketV1449_ClientUuid_exports as ClientUuidPacket,
   PacketV1449_ConnectRequest_exports as ConnectRequestPacket,
@@ -25664,37 +31139,47 @@ export {
   CreativePowers_exports as CreativePowers,
   PacketV1449_CreditsOrSlimeTransform_exports as CreditsOrSlimeTransformPacket,
   PacketV1449_CrystalInvasionStart_exports as CrystalInvasionStartPacket,
+  Packet_DeadCellsDisplayJarTryPlacing_exports as DeadCellsDisplayJarTryPlacingPacket,
+  Packet_DebugCommand_exports as DebugCommandPacket,
   PacketV1449_DimensionsUpdate_exports as DimensionsUpdatePacket,
   PacketV1449_Disconnect_exports as DisconnectPacket,
   ErrorAwarePacketWriter_exports as ErrorAwarePacketWriter,
   PacketV1449_ExtraValueSync_exports as ExtraValueSyncPacket,
   PacketV1449_HaveDryadDoStardewAnimation_exports as HaveDryadDoStardewAnimationPacket,
+  Packet_HostToken_exports as HostTokenPacket,
+  Packet_InitialTileSectionsRequest_exports as InitialTileSectionsRequestPacket,
   PacketV1449_InvasionProgressReport_exports as InvasionProgressReportPacket,
+  Packet_ItemDropClear_exports as ItemDropClearPacket,
+  Packet_ItemDropPosition_exports as ItemDropPositionPacket,
   PacketV1449_ItemDropShimmeredUpdate_exports as ItemDropShimmeredUpdatePacket,
   PacketV1449_ItemDropUpdate_exports as ItemDropUpdatePacket,
-  PacketV1449_ItemOwner_exports as ItemOwnerPacket,
+  Packet_ItemForceIntoNearestChest_exports as ItemForceIntoNearestChestPacket,
+  Packet_ItemOwner_exports as ItemOwnerPacket,
   PacketV1449_ItemOwnerRemove_exports as ItemOwnerRemovePacket,
+  Packet_LeashedEntityAnchorInsertItem_exports as LeashedEntityAnchorInsertItemPacket,
   PacketV1449_LoadoutSwitch_exports as LoadoutSwitchPacket,
-  PacketV1449_NetModuleLoad_exports as NetModuleLoadPacket,
+  Packet_NetModuleLoad_exports as NetModuleLoadPacket,
   PacketV1449_NpcBuffRemovalRequest_exports as NpcBuffRemovalRequestPacket,
-  PacketV1449_NpcBuffUpdate_exports as NpcBuffUpdatePacket,
+  Packet_NpcBuffUpdate_exports as NpcBuffUpdatePacket,
   PacketV1449_NpcCatch_exports as NpcCatchPacket,
   PacketV1449_NpcFishOut_exports as NpcFishOutPacket,
   PacketV1449_NpcHomeUpdate_exports as NpcHomeUpdatePacket,
+  Packet_NpcHurtByDebuff_exports as NpcHurtByDebuffPacket,
   PacketV1449_NpcKillCount_exports as NpcKillCountPacket,
   PacketV1449_NpcNameUpdate_exports as NpcNameUpdatePacket,
   PacketV1449_NpcShopItem_exports as NpcShopItemPacket,
   PacketV1449_NpcTalk_exports as NpcTalkPacket,
   PacketV1449_NpcTeleportPortal_exports as NpcTeleportPortalPacket,
-  PacketV1449_NpcUpdate_exports as NpcUpdatePacket,
+  Packet_NpcUpdate_exports as NpcUpdatePacket,
   PacketV1449_ObjectPlace_exports as ObjectPlacePacket,
   PacketType_exports as PacketType,
   Parser_exports as Parser,
   PacketV1449_PartyToggle_exports as PartyTogglePacket,
+  Packet_Ping_exports as PingPacket,
   PacketV1449_PlayerActive_exports as PlayerActivePacket,
   PacketV1449_PlayerAnimation_exports as PlayerAnimationPacket,
   PacketV1449_PlayerBuffAdd_exports as PlayerBuffAddPacket,
-  PacketV1449_PlayerBuffsSet_exports as PlayerBuffsSetPacket,
+  Packet_PlayerBuffsSet_exports as PlayerBuffsSetPacket,
   PacketV1449_PlayerChestIndexSync_exports as PlayerChestIndexSyncPacket,
   PacketV1449_PlayerDamage_exports as PlayerDamagePacket,
   PacketV1449_PlayerDead_exports as PlayerDeadPacket,
@@ -25702,27 +31187,33 @@ export {
   PlayerDeathReason_exports as PlayerDeathReason,
   PacketV1449_PlayerDodge_exports as PlayerDodgePacket,
   PacketV1449_PlayerHealth_exports as PlayerHealthPacket,
-  PacketV1449_PlayerInfo_exports as PlayerInfoPacket,
-  PacketV1449_PlayerInventorySlot_exports as PlayerInventorySlotPacket,
+  Packet_PlayerInfo_exports as PlayerInfoPacket,
+  Packet_PlayerInventorySlot_exports as PlayerInventorySlotPacket,
+  Packet_PlayerItemUseSound_exports as PlayerItemUseSoundPacket,
+  Packet_PlayerLuckFactorsUpdate_exports as PlayerLuckFactorsUpdatePacket,
   PacketV1449_PlayerMana_exports as PlayerManaPacket,
   PacketV1449_PlayerSlotSet_exports as PlayerSlotSetPacket,
-  PacketV1449_PlayerSpawn_exports as PlayerSpawnPacket,
+  Packet_PlayerSpawn_exports as PlayerSpawnPacket,
+  Packet_PlayerSpectate_exports as PlayerSpectatePacket,
   PacketV1449_PlayerTeam_exports as PlayerTeamPacket,
-  PacketV1449_PlayerUpdate_exports as PlayerUpdatePacket,
+  Packet_PlayerTeamSwapSpawn_exports as PlayerTeamSwapSpawnPacket,
+  Packet_PlayerTeamUpdate_exports as PlayerTeamUpdatePacket,
+  Packet_PlayerUpdate_exports as PlayerUpdatePacket,
   Point_exports as Point,
   PacketV1449_ProjectileSync_exports as ProjectileSyncPacket,
   PacketV1449_PvpToggle_exports as PvpTogglePacket,
-  PacketV1449_ShimmerEffectOrCoinLuck_exports as ShimmerEffectOrCoinLuckPacket,
+  Packet_SectionRequest_exports as SectionRequestPacket,
+  Packet_ShimmerEffectOrCoinLuck_exports as ShimmerEffectOrCoinLuckPacket,
   PacketV1449_SignNew_exports as SignNewPacket,
   PacketV1449_SignRead_exports as SignReadPacket,
   PacketV1449_SmokePoof_exports as SmokePoofPacket,
   PacketV1449_SocialHandshake_exports as SocialHandshakePacket,
   PacketV1449_Status_exports as StatusPacket,
   PacketV1449_SwitchHit_exports as SwitchHitPacket,
-  PacketV1449_Teleport_exports as TeleportPacket,
-  PacketV1449_TeleportationPotion_exports as TeleportationPotionPacket,
+  Packet_Teleport_exports as TeleportPacket,
+  Packet_TeleportationPotion_exports as TeleportationPotionPacket,
   PacketV1449_TemporaryAnimationCreate_exports as TemporaryAnimationCreatePacket,
-  PacketV1449_TileEntityDisplayDollItemSync_exports as TileEntityDisplayDollItemSyncPacket,
+  Packet_TileEntityDisplayDollItemSync_exports as TileEntityDisplayDollItemSyncPacket,
   PacketV1449_TileEntityHatRackItemSync_exports as TileEntityHatRackItemSyncPacket,
   PacketV1449_TileEntityInteractionRequest_exports as TileEntityInteractionRequestPacket,
   PacketV1449_TileEntityPlace_exports as TileEntityPlacePacket,
@@ -25731,16 +31222,16 @@ export {
   PacketV1449_TilePaint_exports as TilePaintPacket,
   PacketV1449_TilePickingSync_exports as TilePickingSyncPacket,
   PacketV1449_TileSectionFrame_exports as TileSectionFramePacket,
-  PacketV1449_TileSectionSend_exports as TileSectionSendPacket,
-  PacketV1449_TileSquareSend_exports as TileSquareSendPacket,
+  Packet_TileSectionSend_exports as TileSectionSendPacket,
+  Packet_TileSquareSend_exports as TileSquareSendPacket,
   PacketV1449_TimeSet_exports as TimeSetPacket,
-  PacketV1449_TravellingMerchantInventory_exports as TravellingMerchantInventoryPacket,
+  Packet_TravellingMerchantInventory_exports as TravellingMerchantInventoryPacket,
   PacketV1449_TreeGrowFx_exports as TreeGrowFxPacket,
   PacketV1449_Unused_exports as UnusedPacket,
   PacketV1449_WallPaint_exports as WallPaintPacket,
   PacketV1449_WeaponsRackTryPlacing_exports as WeaponsRackTryPlacingPacket,
   PacketV1449_WiredCannonShot_exports as WiredCannonShotPacket,
   PacketV1449_WorldDataRequest_exports as WorldDataRequestPacket,
-  PacketV1449_WorldInfo_exports as WorldInfoPacket,
-  PacketV1449_Zones_exports as ZonesPacket
+  Packet_WorldInfo_exports as WorldInfoPacket,
+  Packet_Zones_exports as ZonesPacket
 };
