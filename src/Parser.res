@@ -2649,9 +2649,9 @@ let displayItemToV1449 = (
   stack: item.stack,
 }
 
-let displayItemOptionToV1449 = (
-  item: option<Packet.TileSectionSend.Entity.displayItem>,
-): option<PacketV1449.TileSectionSend.Entity.displayItem> => {
+let displayItemOptionToV1449 = (item: option<Packet.TileSectionSend.Entity.displayItem>): option<
+  PacketV1449.TileSectionSend.Entity.displayItem,
+> => {
   item->Option.map(displayItemToV1449)
 }
 
@@ -2934,7 +2934,7 @@ let fromV1449 = (packet: PacketV1449.t): Packet.t => {
   | packet => Obj.magic(packet)
   }
 }
-let v1449ToLatest = (packet: Packet.t): PacketV1449.t => {
+let latestToV1449 = (packet: Packet.t): PacketV1449.t => {
   switch packet {
   | PlayerInfo(playerInfo) =>
     PacketV1449.PlayerInfo({
@@ -3164,6 +3164,18 @@ let v1449ToLatest = (packet: Packet.t): PacketV1449.t => {
       signs: tileSectionSend.signs,
       entities: entitiesToV1449(tileSectionSend.entities),
     })
+  | ItemDropClear(itemDropClear) =>
+    PacketV1449.ItemDropUpdate({
+      itemDropId: itemDropClear.itemDropId,
+      x: 0.0,
+      y: 0.0,
+      vx: 0.0,
+      vy: 0.0,
+      stack: 0,
+      prefix: 0,
+      noDelay: 0,
+      itemId: 0,
+    })
   | packet => Obj.magic(packet)
   }
 }
@@ -3229,7 +3241,6 @@ let convertToV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): resu
     | Some(ChestResize)
     | Some(DeadCellsDisplayJarTryPlacing)
     | Some(HostToken)
-    | Some(ItemDropClear)
     | Some(ItemDropPosition)
     | Some(LeashedEntityAnchorInsertItem)
     | Some(NpcHurtByDebuff)
@@ -3259,7 +3270,8 @@ let convertToV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): resu
     | Some(TileEntityDisplayDollItemSync)
     | Some(PlayerLuckFactorsUpdate)
     | Some(ShimmerEffectOrCoinLuck)
-    | Some(NetModuleLoad) =>
+    | Some(NetModuleLoad)
+    | Some(ItemDropClear) =>
       try {
         parse(~buffer, ~fromServer)->Result.map(packet =>
           switch packet {
@@ -3282,7 +3294,7 @@ let convertToV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): resu
             | Some(converted) => ConvertedToV1449(PacketV1449.NetModuleLoad(converted))
             | None => DiscardAsNotExists
             }
-          | _ => ConvertedToV1449(v1449ToLatest(packet))
+          | _ => ConvertedToV1449(latestToV1449(packet))
           }
         )
       } catch {

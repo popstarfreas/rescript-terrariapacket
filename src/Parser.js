@@ -4304,7 +4304,7 @@ function fromV1449(packet) {
   }
 }
 
-function v1449ToLatest(packet) {
+function latestToV1449(packet) {
   switch (packet.TAG) {
     case "PlayerInfo" :
       let playerInfo = packet._0;
@@ -4664,6 +4664,21 @@ function v1449ToLatest(packet) {
           }
         };
       }
+    case "ItemDropClear" :
+      return {
+        TAG: "ItemDropUpdate",
+        _0: {
+          itemDropId: packet._0.itemDropId,
+          x: 0.0,
+          y: 0.0,
+          vx: 0.0,
+          vy: 0.0,
+          stack: 0,
+          prefix: 0,
+          noDelay: 0,
+          itemId: 0
+        }
+      };
     default:
       return packet;
   }
@@ -4783,10 +4798,10 @@ function convertToV1449IfNeeded(buffer, fromServer) {
     case "TileEntityDisplayDollItemSync" :
     case "PlayerLuckFactorsUpdate" :
     case "ShimmerEffectOrCoinLuck" :
+    case "ItemDropClear" :
       break;
     case "DeadCellsDisplayJarTryPlacing" :
     case "PlayerSpectate" :
-    case "ItemDropClear" :
     case "PlayerItemUseSound" :
     case "NpcHurtByDebuff" :
     case "Ping" :
@@ -4846,7 +4861,7 @@ function convertToV1449IfNeeded(buffer, fromServer) {
         default:
           return {
             TAG: "ConvertedToV1449",
-            _0: v1449ToLatest(packet)
+            _0: latestToV1449(packet)
           };
       }
     });
