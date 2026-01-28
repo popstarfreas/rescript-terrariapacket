@@ -93,4 +93,5 @@ export * as NpcUpdatePacket from "./packetv1449/PacketV1449_NpcUpdate.js";
 export * as DisconnectPacket from "./packetv1449/PacketV1449_Disconnect.js";
 export * as Parser from "./Parser.js";
 export * as Point from "./Point.js";
+export * as PacketType from "./PacketType.js";
 export type * as Result from "./shims/Result.js";

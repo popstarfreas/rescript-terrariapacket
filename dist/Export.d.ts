@@ -896,6 +896,8 @@ flag7: boolean,
 flag8: boolean
 ): t_77;
 
+declare function fromInt(n: number): t_248 | undefined;
+
 declare function getOr<A>(a: A[], index: number, or: A): A;
 
 declare type gravityDirection = "Normal" | "Inverted";
@@ -1477,6 +1479,17 @@ declare type PackError = {
     readonly context: string;
     readonly error: Error;
 };
+
+declare function packetName(packetType: t_248): string;
+
+export declare namespace PacketType {
+    export {
+        fromInt,
+        toInt,
+        packetName,
+        t_248 as t
+    }
+}
 
 /**
  * Packs a 16-bit signed integer.
@@ -5503,6 +5516,8 @@ declare type toBufferOk_86 = { TAG: "Ok"; _0: Buffer };
 declare type toBufferOk_9 = { TAG: "Ok"; _0: Buffer };
 
 declare function toByte(t: t_77): number;
+
+declare function toInt(packetType: t_248): number;
 
 declare function toString_2(data: CreativePower): string;
 

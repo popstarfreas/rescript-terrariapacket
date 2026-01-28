@@ -71,6 +71,7 @@ __export(Export_exports, {
   NpcTeleportPortalPacket: () => PacketV1449_NpcTeleportPortal_exports,
   NpcUpdatePacket: () => PacketV1449_NpcUpdate_exports,
   ObjectPlacePacket: () => PacketV1449_ObjectPlace_exports,
+  PacketType: () => PacketType_exports,
   Parser: () => Parser_exports,
   PartyTogglePacket: () => PacketV1449_PartyToggle_exports,
   PlayerActivePacket: () => PacketV1449_PlayerActive_exports,
@@ -136,6 +137,12 @@ __export(PacketV1449_AnglerQuest_exports, {
 });
 
 // src/PacketType.js
+var PacketType_exports = {};
+__export(PacketType_exports, {
+  fromInt: () => fromInt,
+  packetName: () => packetName,
+  toInt: () => toInt
+});
 function fromInt(n) {
   switch (n) {
     case 1:
@@ -772,6 +779,324 @@ function toInt(self) {
       return 160;
     case "HostToken":
       return 161;
+  }
+}
+function packetName(packetType) {
+  switch (packetType) {
+    case "ConnectRequest":
+      return "ConnectRequest";
+    case "Disconnect":
+      return "Disconnect";
+    case "PlayerSlotSet":
+      return "PlayerSlotSet";
+    case "PlayerInfo":
+      return "PlayerInfo";
+    case "PlayerInventorySlot":
+      return "PlayerInventorySlot";
+    case "WorldDataRequest":
+      return "WorldDataRequest";
+    case "WorldInfo":
+      return "WorldInfo";
+    case "InitialTileSectionsRequest":
+      return "InitialTileSectionsRequest";
+    case "Status":
+      return "Status";
+    case "TileSectionSend":
+      return "TileSectionSend";
+    case "TileSectionFrame":
+      return "TileSectionFrame";
+    case "PlayerSpawn":
+      return "PlayerSpawn";
+    case "PlayerUpdate":
+      return "PlayerUpdate";
+    case "PlayerActive":
+      return "PlayerActive";
+    case "PlayerHealth":
+      return "PlayerHealth";
+    case "TileModify":
+      return "TileModify";
+    case "TimeSet":
+      return "TimeSet";
+    case "DoorUse":
+      return "DoorUse";
+    case "TileSquareSend":
+      return "TileSquareSend";
+    case "ItemDropUpdate":
+      return "ItemDropUpdate";
+    case "ItemOwner":
+      return "ItemOwner";
+    case "NpcUpdate":
+      return "NpcUpdate";
+    case "NpcItemStrike":
+      return "NpcItemStrike";
+    case "ProjectileSync":
+      return "ProjectileSync";
+    case "NpcStrike":
+      return "NpcStrike";
+    case "ProjectileDestroy":
+      return "ProjectileDestroy";
+    case "PvpToggle":
+      return "PvpToggle";
+    case "ChestOpen":
+      return "ChestOpen";
+    case "ChestItem":
+      return "ChestItem";
+    case "ActiveContainerSync":
+      return "ActiveContainerSync";
+    case "ChestPlace":
+      return "ChestPlace";
+    case "HealEffect":
+      return "HealEffect";
+    case "Zones":
+      return "Zones";
+    case "PasswordRequired":
+      return "PasswordRequired";
+    case "PasswordSend":
+      return "PasswordSend";
+    case "ItemOwnerRemove":
+      return "ItemOwnerRemove";
+    case "NpcTalk":
+      return "NpcTalk";
+    case "PlayerAnimation":
+      return "PlayerAnimation";
+    case "PlayerMana":
+      return "PlayerMana";
+    case "ManaEffect":
+      return "ManaEffect";
+    case "PlayerTeam":
+      return "PlayerTeam";
+    case "SignRead":
+      return "SignRead";
+    case "SignNew":
+      return "SignNew";
+    case "LiquidSet":
+      return "LiquidSet";
+    case "PlayerSpawnSelf":
+      return "PlayerSpawnSelf";
+    case "PlayerBuffsSet":
+      return "PlayerBuffsSet";
+    case "NpcSpecialEffect":
+      return "NpcSpecialEffect";
+    case "ChestOrTempleUnlock":
+      return "ChestOrTempleUnlock";
+    case "NpcBuffAdd":
+      return "NpcBuffAdd";
+    case "NpcBuffUpdate":
+      return "NpcBuffUpdate";
+    case "PlayerBuffAdd":
+      return "PlayerBuffAdd";
+    case "NpcNameUpdate":
+      return "NpcNameUpdate";
+    case "GoodEvilUpdate":
+      return "GoodEvilUpdate";
+    case "HarpPlay":
+      return "HarpPlay";
+    case "SwitchHit":
+      return "SwitchHit";
+    case "NpcHomeUpdate":
+      return "NpcHomeUpdate";
+    case "BossOrInvasionSpawn":
+      return "BossOrInvasionSpawn";
+    case "PlayerDodge":
+      return "PlayerDodge";
+    case "TilePaint":
+      return "TilePaint";
+    case "WallPaint":
+      return "WallPaint";
+    case "Teleport":
+      return "Teleport";
+    case "PlayerHealOther":
+      return "PlayerHealOther";
+    case "DimensionsUpdate":
+      return "DimensionsUpdate";
+    case "ClientUuid":
+      return "ClientUuid";
+    case "ChestName":
+      return "ChestName";
+    case "NpcCatch":
+      return "NpcCatch";
+    case "NpcRelease":
+      return "NpcRelease";
+    case "TravellingMerchantInventory":
+      return "TravellingMerchantInventory";
+    case "TeleportationPotion":
+      return "TeleportationPotion";
+    case "AnglerQuest":
+      return "AnglerQuest";
+    case "AnglerQuestComplete":
+      return "AnglerQuestComplete";
+    case "AnglerQuestsCompletedAmount":
+      return "AnglerQuestsCompletedAmount";
+    case "TemporaryAnimationCreate":
+      return "TemporaryAnimationCreate";
+    case "InvasionProgressReport":
+      return "InvasionProgressReport";
+    case "ObjectPlace":
+      return "ObjectPlace";
+    case "PlayerChestIndexSync":
+      return "PlayerChestIndexSync";
+    case "CombatNumberCreate":
+      return "CombatNumberCreate";
+    case "NetModuleLoad":
+      return "NetModuleLoad";
+    case "NpcKillCount":
+      return "NpcKillCount";
+    case "PlayerStealth":
+      return "PlayerStealth";
+    case "ItemForceIntoNearestChest":
+      return "ItemForceIntoNearestChest";
+    case "TileEntityUpdate":
+      return "TileEntityUpdate";
+    case "TileEntityPlace":
+      return "TileEntityPlace";
+    case "ItemDropModify":
+      return "ItemDropModify";
+    case "ItemFramePlace":
+      return "ItemFramePlace";
+    case "ItemDropInstancedUpdate":
+      return "ItemDropInstancedUpdate";
+    case "EmoteBubble":
+      return "EmoteBubble";
+    case "ExtraValueSync":
+      return "ExtraValueSync";
+    case "SocialHandshake":
+      return "SocialHandshake";
+    case "Unused":
+      return "Unused";
+    case "PortalKill":
+      return "PortalKill";
+    case "PlayerTeleportPortal":
+      return "PlayerTeleportPortal";
+    case "NpcKilledNotification":
+      return "NpcKilledNotification";
+    case "EventNotification":
+      return "EventNotification";
+    case "MinionTargetUpdate":
+      return "MinionTargetUpdate";
+    case "NpcTeleportPortal":
+      return "NpcTeleportPortal";
+    case "ShieldStrengthsUpdate":
+      return "ShieldStrengthsUpdate";
+    case "NebulaLevelUp":
+      return "NebulaLevelUp";
+    case "MoonLordCountdown":
+      return "MoonLordCountdown";
+    case "NpcShopItem":
+      return "NpcShopItem";
+    case "GemLockToggle":
+      return "GemLockToggle";
+    case "SmokePoof":
+      return "SmokePoof";
+    case "ChatMessageSmart":
+      return "ChatMessageSmart";
+    case "WiredCannonShot":
+      return "WiredCannonShot";
+    case "MassWireOperation":
+      return "MassWireOperation";
+    case "MassWireOperationPay":
+      return "MassWireOperationPay";
+    case "PartyToggle":
+      return "PartyToggle";
+    case "TreeGrowFx":
+      return "TreeGrowFx";
+    case "CrystalInvasionStart":
+      return "CrystalInvasionStart";
+    case "CrystalInvasionWipeAll":
+      return "CrystalInvasionWipeAll";
+    case "MinionAttackTargetUpdate":
+      return "MinionAttackTargetUpdate";
+    case "CrystalInvasionSendWaitTime":
+      return "CrystalInvasionSendWaitTime";
+    case "PlayerDamage":
+      return "PlayerDamage";
+    case "PlayerDeath":
+      return "PlayerDeath";
+    case "CombatTextCreate":
+      return "CombatTextCreate";
+    case "Emoji":
+      return "Emoji";
+    case "TileEntityDisplayDollItemSync":
+      return "TileEntityDisplayDollItemSync";
+    case "TileEntityInteractionRequest":
+      return "TileEntityInteractionRequest";
+    case "WeaponsRackTryPlacing":
+      return "WeaponsRackTryPlacing";
+    case "TileEntityHatRackItemSync":
+      return "TileEntityHatRackItemSync";
+    case "TilePickingSync":
+      return "TilePickingSync";
+    case "RevengeMarkerSync":
+      return "RevengeMarkerSync";
+    case "RevengeMarkerRemove":
+      return "RevengeMarkerRemove";
+    case "GolfBallLandInCup":
+      return "GolfBallLandInCup";
+    case "ClientFinishConnectingToServer":
+      return "ClientFinishConnectingToServer";
+    case "NpcFishOut":
+      return "NpcFishOut";
+    case "NpcTamper":
+      return "NpcTamper";
+    case "LegacySoundPlay":
+      return "LegacySoundPlay";
+    case "FoodPlatterTryPlacing":
+      return "FoodPlatterTryPlacing";
+    case "PlayerLuckFactorsUpdate":
+      return "PlayerLuckFactorsUpdate";
+    case "PlayerDead":
+      return "PlayerDead";
+    case "CavernMonsterTypeSync":
+      return "CavernMonsterTypeSync";
+    case "NpcBuffRemovalRequest":
+      return "NpcBuffRemovalRequest";
+    case "ClientSyncedInventory":
+      return "ClientSyncedInventory";
+    case "CountsAsHostForGameplaySet":
+      return "CountsAsHostForGameplaySet";
+    case "CreditsOrSlimeTransform":
+      return "CreditsOrSlimeTransform";
+    case "LucyAxeMessage":
+      return "LucyAxeMessage";
+    case "PiggyBankVoidLensUpdate":
+      return "PiggyBankVoidLensUpdate";
+    case "DungeonDefendersEventAttemptSkipWait":
+      return "DungeonDefendersEventAttemptSkipWait";
+    case "HaveDryadDoStardewAnimation":
+      return "HaveDryadDoStardewAnimation";
+    case "ItemDropShimmeredUpdate":
+      return "ItemDropShimmeredUpdate";
+    case "ShimmerEffectOrCoinLuck":
+      return "ShimmerEffectOrCoinLuck";
+    case "LoadoutSwitch":
+      return "LoadoutSwitch";
+    case "ItemDropProtectedUpdate":
+      return "ItemDropProtectedUpdate";
+    case "DeadCellsDisplayJarTryPlacing":
+      return "DeadCellsDisplayJarTryPlacing";
+    case "PlayerSpectate":
+      return "PlayerSpectate";
+    case "ItemDropClear":
+      return "ItemDropClear";
+    case "PlayerItemUseSound":
+      return "PlayerItemUseSound";
+    case "NpcHurtByDebuff":
+      return "NpcHurtByDebuff";
+    case "Ping":
+      return "Ping";
+    case "ChestResize":
+      return "ChestResize";
+    case "LeashedEntityAnchorInsertItem":
+      return "LeashedEntityAnchorInsertItem";
+    case "PlayerTeamUpdate":
+      return "PlayerTeamUpdate";
+    case "PlayerTeamSwapSpawn":
+      return "PlayerTeamSwapSpawn";
+    case "SectionRequest":
+      return "SectionRequest";
+    case "ItemDropPosition":
+      return "ItemDropPosition";
+    case "HostToken":
+      return "HostToken";
   }
 }
 
@@ -15170,34 +15495,34 @@ function packetTypeName(packetType) {
       return "HostToken";
   }
 }
-function addPacketContext(packetName, err) {
+function addPacketContext(packetName2, err) {
   return {
-    context: "Packet " + packetName + ": " + err.context,
+    context: "Packet " + packetName2 + ": " + err.context,
     error: err.error
   };
 }
-function mapPacket(result, packetName, fn) {
+function mapPacket(result, packetName2, fn) {
   return mapError(map2(result, fn), (e) => ({
     TAG: "ReaderError",
-    _0: addPacketContext(packetName, e)
+    _0: addPacketContext(packetName2, e)
   }));
 }
-function makeParsers(packetName, parse181, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, _fromServer) => mapPacket(parse181(payload), packetName, toPacket);
+function makeParsers(packetName2, parse181, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, _fromServer) => mapPacket(parse181(payload), packetName2, toPacket);
   let parseLazyWrapped = (payload, _fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse181(payload), (e) => addPacketContext(packetName, e))))
+    _0: toLazyPacket(make4(() => mapError(parse181(payload), (e) => addPacketContext(packetName2, e))))
   });
   return {
     parse: parseWrapped,
     parseLazy: parseLazyWrapped
   };
 }
-function makeParsersWithFromServer(packetName, parse181, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, fromServer) => mapPacket(parse181(payload, fromServer), packetName, toPacket);
+function makeParsersWithFromServer(packetName2, parse181, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, fromServer) => mapPacket(parse181(payload, fromServer), packetName2, toPacket);
   let parseLazyWrapped = (payload, fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse181(payload, fromServer), (e) => addPacketContext(packetName, e))))
+    _0: toLazyPacket(make4(() => mapError(parse181(payload, fromServer), (e) => addPacketContext(packetName2, e))))
   });
   return {
     parse: parseWrapped,
@@ -15205,7 +15530,7 @@ function makeParsersWithFromServer(packetName, parse181, toPacket, toLazyPacket)
   };
 }
 function getParsers(packetType, fromServer) {
-  let packetName = packetTypeName(packetType);
+  let packetName2 = packetTypeName(packetType);
   switch (packetType) {
     case "ConnectRequest":
       if (fromServer) {
@@ -15216,7 +15541,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse9, (a) => ({
+          _0: makeParsers(packetName2, parse9, (a) => ({
             TAG: "ConnectRequest",
             _0: a
           }), (a) => ({
@@ -15229,7 +15554,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse88, (a) => ({
+          _0: makeParsers(packetName2, parse88, (a) => ({
             TAG: "Disconnect",
             _0: a
           }), (a) => ({
@@ -15247,7 +15572,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse76, (a) => ({
+          _0: makeParsers(packetName2, parse76, (a) => ({
             TAG: "PlayerSlotSet",
             _0: a
           }), (a) => ({
@@ -15264,7 +15589,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerInfo":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse78, (a) => ({
+        _0: makeParsers(packetName2, parse78, (a) => ({
           TAG: "PlayerInfo",
           _0: a
         }), (a) => ({
@@ -15275,7 +15600,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerInventorySlot":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse80, (a) => ({
+        _0: makeParsers(packetName2, parse80, (a) => ({
           TAG: "PlayerInventorySlot",
           _0: a
         }), (a) => ({
@@ -15292,7 +15617,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse74, (a) => ({
+          _0: makeParsers(packetName2, parse74, (a) => ({
             TAG: "WorldDataRequest",
             _0: a
           }), (a) => ({
@@ -15305,7 +15630,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse85, (a) => ({
+          _0: makeParsers(packetName2, parse85, (a) => ({
             TAG: "WorldInfo",
             _0: a
           }), (a) => ({
@@ -15328,7 +15653,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse143, (a) => ({
+          _0: makeParsers(packetName2, parse143, (a) => ({
             TAG: "InitialTileSectionsRequest",
             _0: a
           }), (a) => ({
@@ -15341,7 +15666,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse51, (a) => ({
+          _0: makeParsers(packetName2, parse51, (a) => ({
             TAG: "Status",
             _0: a
           }), (a) => ({
@@ -15359,7 +15684,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse$3, (a) => ({
+          _0: makeParsers(packetName2, parse$3, (a) => ({
             TAG: "TileSectionSend",
             _0: a
           }), (a) => ({
@@ -15377,7 +15702,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse64, (a) => ({
+          _0: makeParsers(packetName2, parse64, (a) => ({
             TAG: "TileSectionFrame",
             _0: a
           }), (a) => ({
@@ -15394,7 +15719,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerSpawn":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse79, (a) => ({
+        _0: makeParsers(packetName2, parse79, (a) => ({
           TAG: "PlayerSpawn",
           _0: a
         }), (a) => ({
@@ -15405,7 +15730,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse77, (a) => ({
+        _0: makeParsers(packetName2, parse77, (a) => ({
           TAG: "PlayerUpdate",
           _0: a
         }), (a) => ({
@@ -15417,7 +15742,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse86, (a) => ({
+          _0: makeParsers(packetName2, parse86, (a) => ({
             TAG: "PlayerActive",
             _0: a
           }), (a) => ({
@@ -15434,7 +15759,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerHealth":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse81, (a) => ({
+        _0: makeParsers(packetName2, parse81, (a) => ({
           TAG: "PlayerHealth",
           _0: a
         }), (a) => ({
@@ -15445,7 +15770,7 @@ function getParsers(packetType, fromServer) {
     case "TileModify":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse61, (a) => ({
+        _0: makeParsers(packetName2, parse61, (a) => ({
           TAG: "TileModify",
           _0: a
         }), (a) => ({
@@ -15457,7 +15782,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse67, (a) => ({
+          _0: makeParsers(packetName2, parse67, (a) => ({
             TAG: "TimeSet",
             _0: a
           }), (a) => ({
@@ -15474,7 +15799,7 @@ function getParsers(packetType, fromServer) {
     case "DoorUse":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse91, (a) => ({
+        _0: makeParsers(packetName2, parse91, (a) => ({
           TAG: "DoorUse",
           _0: a
         }), (a) => ({
@@ -15485,7 +15810,7 @@ function getParsers(packetType, fromServer) {
     case "TileSquareSend":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse66, (a) => ({
+        _0: makeParsers(packetName2, parse66, (a) => ({
           TAG: "TileSquareSend",
           _0: a
         }), (a) => ({
@@ -15496,7 +15821,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse18, (a) => ({
+        _0: makeParsers(packetName2, parse18, (a) => ({
           TAG: "ItemDropUpdate",
           _0: a
         }), (a) => ({
@@ -15507,7 +15832,7 @@ function getParsers(packetType, fromServer) {
     case "ItemOwner":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse19, (a) => ({
+        _0: makeParsers(packetName2, parse19, (a) => ({
           TAG: "ItemOwner",
           _0: a
         }), (a) => ({
@@ -15519,7 +15844,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse87, (a) => ({
+          _0: makeParsers(packetName2, parse87, (a) => ({
             TAG: "NpcUpdate",
             _0: a
           }), (a) => ({
@@ -15536,7 +15861,7 @@ function getParsers(packetType, fromServer) {
     case "NpcItemStrike":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse107, (a) => ({
+        _0: makeParsers(packetName2, parse107, (a) => ({
           TAG: "NpcItemStrike",
           _0: a
         }), (a) => ({
@@ -15547,7 +15872,7 @@ function getParsers(packetType, fromServer) {
     case "ProjectileSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse83, (a) => ({
+        _0: makeParsers(packetName2, parse83, (a) => ({
           TAG: "ProjectileSync",
           _0: a
         }), (a) => ({
@@ -15558,7 +15883,7 @@ function getParsers(packetType, fromServer) {
     case "NpcStrike":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse96, (a) => ({
+        _0: makeParsers(packetName2, parse96, (a) => ({
           TAG: "NpcStrike",
           _0: a
         }), (a) => ({
@@ -15569,7 +15894,7 @@ function getParsers(packetType, fromServer) {
     case "ProjectileDestroy":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse123, (a) => ({
+        _0: makeParsers(packetName2, parse123, (a) => ({
           TAG: "ProjectileDestroy",
           _0: a
         }), (a) => ({
@@ -15580,7 +15905,7 @@ function getParsers(packetType, fromServer) {
     case "PvpToggle":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse45, (a) => ({
+        _0: makeParsers(packetName2, parse45, (a) => ({
           TAG: "PvpToggle",
           _0: a
         }), (a) => ({
@@ -15597,7 +15922,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse94, (a) => ({
+          _0: makeParsers(packetName2, parse94, (a) => ({
             TAG: "ChestOpen",
             _0: a
           }), (a) => ({
@@ -15609,7 +15934,7 @@ function getParsers(packetType, fromServer) {
     case "ChestItem":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse5, (a) => ({
+        _0: makeParsers(packetName2, parse5, (a) => ({
           TAG: "ChestItem",
           _0: a
         }), (a) => ({
@@ -15620,7 +15945,7 @@ function getParsers(packetType, fromServer) {
     case "ActiveContainerSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse127, (a) => ({
+        _0: makeParsers(packetName2, parse127, (a) => ({
           TAG: "ActiveContainerSync",
           _0: a
         }), (a) => ({
@@ -15631,7 +15956,7 @@ function getParsers(packetType, fromServer) {
     case "ChestPlace":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse7, (a) => ({
+        _0: makeParsers(packetName2, parse7, (a) => ({
           TAG: "ChestPlace",
           _0: a
         }), (a) => ({
@@ -15642,7 +15967,7 @@ function getParsers(packetType, fromServer) {
     case "HealEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse98, (a) => ({
+        _0: makeParsers(packetName2, parse98, (a) => ({
           TAG: "HealEffect",
           _0: a
         }), (a) => ({
@@ -15653,7 +15978,7 @@ function getParsers(packetType, fromServer) {
     case "Zones":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse75, (a) => ({
+        _0: makeParsers(packetName2, parse75, (a) => ({
           TAG: "Zones",
           _0: a
         }), (a) => ({
@@ -15665,7 +15990,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse118, (a) => ({
+          _0: makeParsers(packetName2, parse118, (a) => ({
             TAG: "PasswordRequired",
             _0: a
           }), (a) => ({
@@ -15688,7 +16013,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse104, (a) => ({
+          _0: makeParsers(packetName2, parse104, (a) => ({
             TAG: "PasswordSend",
             _0: a
           }), (a) => ({
@@ -15701,7 +16026,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse20, (a) => ({
+          _0: makeParsers(packetName2, parse20, (a) => ({
             TAG: "ItemOwnerRemove",
             _0: a
           }), (a) => ({
@@ -15718,7 +16043,7 @@ function getParsers(packetType, fromServer) {
     case "NpcTalk":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse32, (a) => ({
+        _0: makeParsers(packetName2, parse32, (a) => ({
           TAG: "NpcTalk",
           _0: a
         }), (a) => ({
@@ -15729,7 +16054,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerAnimation":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse36, (a) => ({
+        _0: makeParsers(packetName2, parse36, (a) => ({
           TAG: "PlayerAnimation",
           _0: a
         }), (a) => ({
@@ -15740,7 +16065,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerMana":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse43, (a) => ({
+        _0: makeParsers(packetName2, parse43, (a) => ({
           TAG: "PlayerMana",
           _0: a
         }), (a) => ({
@@ -15751,7 +16076,7 @@ function getParsers(packetType, fromServer) {
     case "ManaEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse99, (a) => ({
+        _0: makeParsers(packetName2, parse99, (a) => ({
           TAG: "ManaEffect",
           _0: a
         }), (a) => ({
@@ -15762,7 +16087,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerTeam":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse44, (a) => ({
+        _0: makeParsers(packetName2, parse44, (a) => ({
           TAG: "PlayerTeam",
           _0: a
         }), (a) => ({
@@ -15779,7 +16104,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse48, (a) => ({
+          _0: makeParsers(packetName2, parse48, (a) => ({
             TAG: "SignRead",
             _0: a
           }), (a) => ({
@@ -15791,7 +16116,7 @@ function getParsers(packetType, fromServer) {
     case "SignNew":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse47, (a) => ({
+        _0: makeParsers(packetName2, parse47, (a) => ({
           TAG: "SignNew",
           _0: a
         }), (a) => ({
@@ -15802,7 +16127,7 @@ function getParsers(packetType, fromServer) {
     case "LiquidSet":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse95, (a) => ({
+        _0: makeParsers(packetName2, parse95, (a) => ({
           TAG: "LiquidSet",
           _0: a
         }), (a) => ({
@@ -15814,7 +16139,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse115, (a) => ({
+          _0: makeParsers(packetName2, parse115, (a) => ({
             TAG: "PlayerSpawnSelf",
             _0: a
           }), (a) => ({
@@ -15831,7 +16156,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerBuffsSet":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse38, (a) => ({
+        _0: makeParsers(packetName2, parse38, (a) => ({
           TAG: "PlayerBuffsSet",
           _0: a
         }), (a) => ({
@@ -15842,7 +16167,7 @@ function getParsers(packetType, fromServer) {
     case "NpcSpecialEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse117, (a) => ({
+        _0: makeParsers(packetName2, parse117, (a) => ({
           TAG: "NpcSpecialEffect",
           _0: a
         }), (a) => ({
@@ -15853,7 +16178,7 @@ function getParsers(packetType, fromServer) {
     case "ChestOrTempleUnlock":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse6, (a) => ({
+        _0: makeParsers(packetName2, parse6, (a) => ({
           TAG: "ChestOrTempleUnlock",
           _0: a
         }), (a) => ({
@@ -15864,7 +16189,7 @@ function getParsers(packetType, fromServer) {
     case "NpcBuffAdd":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse100, (a) => ({
+        _0: makeParsers(packetName2, parse100, (a) => ({
           TAG: "NpcBuffAdd",
           _0: a
         }), (a) => ({
@@ -15876,7 +16201,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse25, (a) => ({
+          _0: makeParsers(packetName2, parse25, (a) => ({
             TAG: "NpcBuffUpdate",
             _0: a
           }), (a) => ({
@@ -15893,7 +16218,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerBuffAdd":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse37, (a) => ({
+        _0: makeParsers(packetName2, parse37, (a) => ({
           TAG: "PlayerBuffAdd",
           _0: a
         }), (a) => ({
@@ -15904,7 +16229,7 @@ function getParsers(packetType, fromServer) {
     case "NpcNameUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, (__x) => parse30(__x, fromServer), (a) => ({
+        _0: makeParsers(packetName2, (__x) => parse30(__x, fromServer), (a) => ({
           TAG: "NpcNameUpdate",
           _0: a
         }), (a) => ({
@@ -15916,7 +16241,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse109, (a) => ({
+          _0: makeParsers(packetName2, parse109, (a) => ({
             TAG: "GoodEvilUpdate",
             _0: a
           }), (a) => ({
@@ -15933,7 +16258,7 @@ function getParsers(packetType, fromServer) {
     case "HarpPlay":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse92, (a) => ({
+        _0: makeParsers(packetName2, parse92, (a) => ({
           TAG: "HarpPlay",
           _0: a
         }), (a) => ({
@@ -15944,7 +16269,7 @@ function getParsers(packetType, fromServer) {
     case "SwitchHit":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse52, (a) => ({
+        _0: makeParsers(packetName2, parse52, (a) => ({
           TAG: "SwitchHit",
           _0: a
         }), (a) => ({
@@ -15955,7 +16280,7 @@ function getParsers(packetType, fromServer) {
     case "NpcHomeUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse28, (a) => ({
+        _0: makeParsers(packetName2, parse28, (a) => ({
           TAG: "NpcHomeUpdate",
           _0: a
         }), (a) => ({
@@ -15972,7 +16297,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse3, (a) => ({
+          _0: makeParsers(packetName2, parse3, (a) => ({
             TAG: "BossOrInvasionSpawn",
             _0: a
           }), (a) => ({
@@ -15984,7 +16309,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerDodge":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse42, (a) => ({
+        _0: makeParsers(packetName2, parse42, (a) => ({
           TAG: "PlayerDodge",
           _0: a
         }), (a) => ({
@@ -15995,7 +16320,7 @@ function getParsers(packetType, fromServer) {
     case "TilePaint":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse62, (a) => ({
+        _0: makeParsers(packetName2, parse62, (a) => ({
           TAG: "TilePaint",
           _0: a
         }), (a) => ({
@@ -16006,7 +16331,7 @@ function getParsers(packetType, fromServer) {
     case "WallPaint":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse71, (a) => ({
+        _0: makeParsers(packetName2, parse71, (a) => ({
           TAG: "WallPaint",
           _0: a
         }), (a) => ({
@@ -16017,7 +16342,7 @@ function getParsers(packetType, fromServer) {
     case "Teleport":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse53, (a) => ({
+        _0: makeParsers(packetName2, parse53, (a) => ({
           TAG: "Teleport",
           _0: a
         }), (a) => ({
@@ -16028,7 +16353,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerHealOther":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse114, (a) => ({
+        _0: makeParsers(packetName2, parse114, (a) => ({
           TAG: "PlayerHealOther",
           _0: a
         }), (a) => ({
@@ -16039,7 +16364,7 @@ function getParsers(packetType, fromServer) {
     case "DimensionsUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse13, (a) => ({
+        _0: makeParsers(packetName2, parse13, (a) => ({
           TAG: "DimensionsUpdate",
           _0: a
         }), (a) => ({
@@ -16056,7 +16381,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse82, (a) => ({
+          _0: makeParsers(packetName2, parse82, (a) => ({
             TAG: "ClientUuid",
             _0: a
           }), (a) => ({
@@ -16068,7 +16393,7 @@ function getParsers(packetType, fromServer) {
     case "ChestName":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse93, (a) => ({
+        _0: makeParsers(packetName2, parse93, (a) => ({
           TAG: "ChestName",
           _0: a
         }), (a) => ({
@@ -16085,7 +16410,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse26, (a) => ({
+          _0: makeParsers(packetName2, parse26, (a) => ({
             TAG: "NpcCatch",
             _0: a
           }), (a) => ({
@@ -16103,7 +16428,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse101, (a) => ({
+          _0: makeParsers(packetName2, parse101, (a) => ({
             TAG: "NpcRelease",
             _0: a
           }), (a) => ({
@@ -16116,7 +16441,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse68, (a) => ({
+          _0: makeParsers(packetName2, parse68, (a) => ({
             TAG: "TravellingMerchantInventory",
             _0: a
           }), (a) => ({
@@ -16133,7 +16458,7 @@ function getParsers(packetType, fromServer) {
     case "TeleportationPotion":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse54, (a) => ({
+        _0: makeParsers(packetName2, parse54, (a) => ({
           TAG: "TeleportationPotion",
           _0: a
         }), (a) => ({
@@ -16145,7 +16470,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse, (a) => ({
+          _0: makeParsers(packetName2, parse, (a) => ({
             TAG: "AnglerQuest",
             _0: a
           }), (a) => ({
@@ -16168,7 +16493,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse2, (a) => ({
+          _0: makeParsers(packetName2, parse2, (a) => ({
             TAG: "AnglerQuestComplete",
             _0: a
           }), (a) => ({
@@ -16180,7 +16505,7 @@ function getParsers(packetType, fromServer) {
     case "AnglerQuestsCompletedAmount":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse144, (a) => ({
+        _0: makeParsers(packetName2, parse144, (a) => ({
           TAG: "AnglerQuestsCompletedAmount",
           _0: a
         }), (a) => ({
@@ -16192,7 +16517,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse55, (a) => ({
+          _0: makeParsers(packetName2, parse55, (a) => ({
             TAG: "TemporaryAnimationCreate",
             _0: a
           }), (a) => ({
@@ -16210,7 +16535,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse16, (a) => ({
+          _0: makeParsers(packetName2, parse16, (a) => ({
             TAG: "InvasionProgressReport",
             _0: a
           }), (a) => ({
@@ -16227,7 +16552,7 @@ function getParsers(packetType, fromServer) {
     case "ObjectPlace":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse34, (a) => ({
+        _0: makeParsers(packetName2, parse34, (a) => ({
           TAG: "ObjectPlace",
           _0: a
         }), (a) => ({
@@ -16239,7 +16564,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse39, (a) => ({
+          _0: makeParsers(packetName2, parse39, (a) => ({
             TAG: "PlayerChestIndexSync",
             _0: a
           }), (a) => ({
@@ -16257,7 +16582,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse125, (a) => ({
+          _0: makeParsers(packetName2, parse125, (a) => ({
             TAG: "CombatNumberCreate",
             _0: a
           }), (a) => ({
@@ -16274,7 +16599,7 @@ function getParsers(packetType, fromServer) {
     case "NetModuleLoad":
       return {
         TAG: "Ok",
-        _0: makeParsersWithFromServer(packetName, parse23, (a) => ({
+        _0: makeParsersWithFromServer(packetName2, parse23, (a) => ({
           TAG: "NetModuleLoad",
           _0: a
         }), (a) => ({
@@ -16286,7 +16611,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse29, (a) => ({
+          _0: makeParsers(packetName2, parse29, (a) => ({
             TAG: "NpcKillCount",
             _0: a
           }), (a) => ({
@@ -16303,7 +16628,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerStealth":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse108, (a) => ({
+        _0: makeParsers(packetName2, parse108, (a) => ({
           TAG: "PlayerStealth",
           _0: a
         }), (a) => ({
@@ -16320,7 +16645,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse142, (a) => ({
+          _0: makeParsers(packetName2, parse142, (a) => ({
             TAG: "ItemForceIntoNearestChest",
             _0: a
           }), (a) => ({
@@ -16333,7 +16658,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse60, (a) => ({
+          _0: makeParsers(packetName2, parse60, (a) => ({
             TAG: "TileEntityUpdate",
             _0: a
           }), (a) => ({
@@ -16356,7 +16681,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse59, (a) => ({
+          _0: makeParsers(packetName2, parse59, (a) => ({
             TAG: "TileEntityPlace",
             _0: a
           }), (a) => ({
@@ -16369,7 +16694,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse110, (a) => ({
+          _0: makeParsers(packetName2, parse110, (a) => ({
             TAG: "ItemDropModify",
             _0: a
           }), (a) => ({
@@ -16392,7 +16717,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse111, (a) => ({
+          _0: makeParsers(packetName2, parse111, (a) => ({
             TAG: "ItemFramePlace",
             _0: a
           }), (a) => ({
@@ -16404,7 +16729,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropInstancedUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse137, (a) => ({
+        _0: makeParsers(packetName2, parse137, (a) => ({
           TAG: "ItemDropInstancedUpdate",
           _0: a
         }), (a) => ({
@@ -16416,7 +16741,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse103, (a) => ({
+          _0: makeParsers(packetName2, parse103, (a) => ({
             TAG: "EmoteBubble",
             _0: a
           }), (a) => ({
@@ -16433,7 +16758,7 @@ function getParsers(packetType, fromServer) {
     case "ExtraValueSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse14, (a) => ({
+        _0: makeParsers(packetName2, parse14, (a) => ({
           TAG: "ExtraValueSync",
           _0: a
         }), (a) => ({
@@ -16444,7 +16769,7 @@ function getParsers(packetType, fromServer) {
     case "SocialHandshake":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse50, (a) => ({
+        _0: makeParsers(packetName2, parse50, (a) => ({
           TAG: "SocialHandshake",
           _0: a
         }), (a) => ({
@@ -16455,7 +16780,7 @@ function getParsers(packetType, fromServer) {
     case "Unused":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse70, (a) => ({
+        _0: makeParsers(packetName2, parse70, (a) => ({
           TAG: "Unused",
           _0: a
         }), (a) => ({
@@ -16472,7 +16797,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse102, (a) => ({
+          _0: makeParsers(packetName2, parse102, (a) => ({
             TAG: "PortalKill",
             _0: a
           }), (a) => ({
@@ -16484,7 +16809,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerTeleportPortal":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse130, (a) => ({
+        _0: makeParsers(packetName2, parse130, (a) => ({
           TAG: "PlayerTeleportPortal",
           _0: a
         }), (a) => ({
@@ -16496,7 +16821,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse134, (a) => ({
+          _0: makeParsers(packetName2, parse134, (a) => ({
             TAG: "NpcKilledNotification",
             _0: a
           }), (a) => ({
@@ -16514,7 +16839,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse119, (a) => ({
+          _0: makeParsers(packetName2, parse119, (a) => ({
             TAG: "EventNotification",
             _0: a
           }), (a) => ({
@@ -16531,7 +16856,7 @@ function getParsers(packetType, fromServer) {
     case "MinionTargetUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse126, (a) => ({
+        _0: makeParsers(packetName2, parse126, (a) => ({
           TAG: "MinionTargetUpdate",
           _0: a
         }), (a) => ({
@@ -16542,7 +16867,7 @@ function getParsers(packetType, fromServer) {
     case "NpcTeleportPortal":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse33, (a) => ({
+        _0: makeParsers(packetName2, parse33, (a) => ({
           TAG: "NpcTeleportPortal",
           _0: a
         }), (a) => ({
@@ -16554,7 +16879,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse135, (a) => ({
+          _0: makeParsers(packetName2, parse135, (a) => ({
             TAG: "ShieldStrengthsUpdate",
             _0: a
           }), (a) => ({
@@ -16571,7 +16896,7 @@ function getParsers(packetType, fromServer) {
     case "NebulaLevelUp":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse106, (a) => ({
+        _0: makeParsers(packetName2, parse106, (a) => ({
           TAG: "NebulaLevelUp",
           _0: a
         }), (a) => ({
@@ -16583,7 +16908,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse122, (a) => ({
+          _0: makeParsers(packetName2, parse122, (a) => ({
             TAG: "MoonLordCountdown",
             _0: a
           }), (a) => ({
@@ -16601,7 +16926,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse31, (a) => ({
+          _0: makeParsers(packetName2, parse31, (a) => ({
             TAG: "NpcShopItem",
             _0: a
           }), (a) => ({
@@ -16624,7 +16949,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse105, (a) => ({
+          _0: makeParsers(packetName2, parse105, (a) => ({
             TAG: "GemLockToggle",
             _0: a
           }), (a) => ({
@@ -16637,7 +16962,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse49, (a) => ({
+          _0: makeParsers(packetName2, parse49, (a) => ({
             TAG: "SmokePoof",
             _0: a
           }), (a) => ({
@@ -16655,7 +16980,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse4, (a) => ({
+          _0: makeParsers(packetName2, parse4, (a) => ({
             TAG: "ChatMessageSmart",
             _0: a
           }), (a) => ({
@@ -16673,7 +16998,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse73, (a) => ({
+          _0: makeParsers(packetName2, parse73, (a) => ({
             TAG: "WiredCannonShot",
             _0: a
           }), (a) => ({
@@ -16696,7 +17021,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse121, (a) => ({
+          _0: makeParsers(packetName2, parse121, (a) => ({
             TAG: "MassWireOperation",
             _0: a
           }), (a) => ({
@@ -16709,7 +17034,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse129, (a) => ({
+          _0: makeParsers(packetName2, parse129, (a) => ({
             TAG: "MassWireOperationPay",
             _0: a
           }), (a) => ({
@@ -16732,7 +17057,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse35, (a) => ({
+          _0: makeParsers(packetName2, parse35, (a) => ({
             TAG: "PartyToggle",
             _0: a
           }), (a) => ({
@@ -16744,7 +17069,7 @@ function getParsers(packetType, fromServer) {
     case "TreeGrowFx":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse69, (a) => ({
+        _0: makeParsers(packetName2, parse69, (a) => ({
           TAG: "TreeGrowFx",
           _0: a
         }), (a) => ({
@@ -16761,7 +17086,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse12, (a) => ({
+          _0: makeParsers(packetName2, parse12, (a) => ({
             TAG: "CrystalInvasionStart",
             _0: a
           }), (a) => ({
@@ -16774,7 +17099,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse136, (a) => ({
+          _0: makeParsers(packetName2, parse136, (a) => ({
             TAG: "CrystalInvasionWipeAll",
             _0: a
           }), (a) => ({
@@ -16791,7 +17116,7 @@ function getParsers(packetType, fromServer) {
     case "MinionAttackTargetUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse141, (a) => ({
+        _0: makeParsers(packetName2, parse141, (a) => ({
           TAG: "MinionAttackTargetUpdate",
           _0: a
         }), (a) => ({
@@ -16803,7 +17128,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse145, (a) => ({
+          _0: makeParsers(packetName2, parse145, (a) => ({
             TAG: "CrystalInvasionSendWaitTime",
             _0: a
           }), (a) => ({
@@ -16820,7 +17145,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerDamage":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse84, (a) => ({
+        _0: makeParsers(packetName2, parse84, (a) => ({
           TAG: "PlayerDamage",
           _0: a
         }), (a) => ({
@@ -16831,7 +17156,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerDeath":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse41, (a) => ({
+        _0: makeParsers(packetName2, parse41, (a) => ({
           TAG: "PlayerDeath",
           _0: a
         }), (a) => ({
@@ -16843,7 +17168,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse116, (a) => ({
+          _0: makeParsers(packetName2, parse116, (a) => ({
             TAG: "CombatTextCreate",
             _0: a
           }), (a) => ({
@@ -16866,7 +17191,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse90, (a) => ({
+          _0: makeParsers(packetName2, parse90, (a) => ({
             TAG: "Emoji",
             _0: a
           }), (a) => ({
@@ -16878,7 +17203,7 @@ function getParsers(packetType, fromServer) {
     case "TileEntityDisplayDollItemSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse56, (a) => ({
+        _0: makeParsers(packetName2, parse56, (a) => ({
           TAG: "TileEntityDisplayDollItemSync",
           _0: a
         }), (a) => ({
@@ -16889,7 +17214,7 @@ function getParsers(packetType, fromServer) {
     case "TileEntityInteractionRequest":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse58, (a) => ({
+        _0: makeParsers(packetName2, parse58, (a) => ({
           TAG: "TileEntityInteractionRequest",
           _0: a
         }), (a) => ({
@@ -16906,7 +17231,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse72, (a) => ({
+          _0: makeParsers(packetName2, parse72, (a) => ({
             TAG: "WeaponsRackTryPlacing",
             _0: a
           }), (a) => ({
@@ -16918,7 +17243,7 @@ function getParsers(packetType, fromServer) {
     case "TileEntityHatRackItemSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse57, (a) => ({
+        _0: makeParsers(packetName2, parse57, (a) => ({
           TAG: "TileEntityHatRackItemSync",
           _0: a
         }), (a) => ({
@@ -16929,7 +17254,7 @@ function getParsers(packetType, fromServer) {
     case "TilePickingSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse63, (a) => ({
+        _0: makeParsers(packetName2, parse63, (a) => ({
           TAG: "TilePickingSync",
           _0: a
         }), (a) => ({
@@ -16941,7 +17266,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse124, (a) => ({
+          _0: makeParsers(packetName2, parse124, (a) => ({
             TAG: "RevengeMarkerSync",
             _0: a
           }), (a) => ({
@@ -16959,7 +17284,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse128, (a) => ({
+          _0: makeParsers(packetName2, parse128, (a) => ({
             TAG: "RevengeMarkerRemove",
             _0: a
           }), (a) => ({
@@ -16976,7 +17301,7 @@ function getParsers(packetType, fromServer) {
     case "GolfBallLandInCup":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse120, (a) => ({
+        _0: makeParsers(packetName2, parse120, (a) => ({
           TAG: "GolfBallLandInCup",
           _0: a
         }), (a) => ({
@@ -16988,7 +17313,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse8, (a) => ({
+          _0: makeParsers(packetName2, parse8, (a) => ({
             TAG: "ClientFinishConnectingToServer",
             _0: a
           }), (a) => ({
@@ -17011,7 +17336,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse27, (a) => ({
+          _0: makeParsers(packetName2, parse27, (a) => ({
             TAG: "NpcFishOut",
             _0: a
           }), (a) => ({
@@ -17024,7 +17349,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse97, (a) => ({
+          _0: makeParsers(packetName2, parse97, (a) => ({
             TAG: "NpcTamper",
             _0: a
           }), (a) => ({
@@ -17042,7 +17367,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse113, (a) => ({
+          _0: makeParsers(packetName2, parse113, (a) => ({
             TAG: "LegacySoundPlay",
             _0: a
           }), (a) => ({
@@ -17065,7 +17390,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse133, (a) => ({
+          _0: makeParsers(packetName2, parse133, (a) => ({
             TAG: "FoodPlatterTryPlacing",
             _0: a
           }), (a) => ({
@@ -17077,7 +17402,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerLuckFactorsUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse140, (a) => ({
+        _0: makeParsers(packetName2, parse140, (a) => ({
           TAG: "PlayerLuckFactorsUpdate",
           _0: a
         }), (a) => ({
@@ -17089,7 +17414,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse40, (a) => ({
+          _0: makeParsers(packetName2, parse40, (a) => ({
             TAG: "PlayerDead",
             _0: a
           }), (a) => ({
@@ -17106,7 +17431,7 @@ function getParsers(packetType, fromServer) {
     case "CavernMonsterTypeSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse131, (a) => ({
+        _0: makeParsers(packetName2, parse131, (a) => ({
           TAG: "CavernMonsterTypeSync",
           _0: a
         }), (a) => ({
@@ -17123,7 +17448,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse24, (a) => ({
+          _0: makeParsers(packetName2, parse24, (a) => ({
             TAG: "NpcBuffRemovalRequest",
             _0: a
           }), (a) => ({
@@ -17141,7 +17466,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, parse132, (a) => ({
+          _0: makeParsers(packetName2, parse132, (a) => ({
             TAG: "ClientSyncedInventory",
             _0: a
           }), (a) => ({
@@ -17153,7 +17478,7 @@ function getParsers(packetType, fromServer) {
     case "CountsAsHostForGameplaySet":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse10, (a) => ({
+        _0: makeParsers(packetName2, parse10, (a) => ({
           TAG: "CountsAsHostForGameplaySet",
           _0: a
         }), (a) => ({
@@ -17164,7 +17489,7 @@ function getParsers(packetType, fromServer) {
     case "CreditsOrSlimeTransform":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse11, (a) => ({
+        _0: makeParsers(packetName2, parse11, (a) => ({
           TAG: "CreditsOrSlimeTransform",
           _0: a
         }), (a) => ({
@@ -17175,7 +17500,7 @@ function getParsers(packetType, fromServer) {
     case "LucyAxeMessage":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse112, (a) => ({
+        _0: makeParsers(packetName2, parse112, (a) => ({
           TAG: "LucyAxeMessage",
           _0: a
         }), (a) => ({
@@ -17186,7 +17511,7 @@ function getParsers(packetType, fromServer) {
     case "PiggyBankVoidLensUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse139, (a) => ({
+        _0: makeParsers(packetName2, parse139, (a) => ({
           TAG: "PiggyBankVoidLensUpdate",
           _0: a
         }), (a) => ({
@@ -17197,7 +17522,7 @@ function getParsers(packetType, fromServer) {
     case "DungeonDefendersEventAttemptSkipWait":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse146, (a) => ({
+        _0: makeParsers(packetName2, parse146, (a) => ({
           TAG: "DungeonDefendersEventAttemptSkipWait",
           _0: a
         }), (a) => ({
@@ -17208,7 +17533,7 @@ function getParsers(packetType, fromServer) {
     case "HaveDryadDoStardewAnimation":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse15, (a) => ({
+        _0: makeParsers(packetName2, parse15, (a) => ({
           TAG: "HaveDryadDoStardewAnimation",
           _0: a
         }), (a) => ({
@@ -17219,7 +17544,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropShimmeredUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse17, (a) => ({
+        _0: makeParsers(packetName2, parse17, (a) => ({
           TAG: "ItemDropShimmeredUpdate",
           _0: a
         }), (a) => ({
@@ -17230,7 +17555,7 @@ function getParsers(packetType, fromServer) {
     case "ShimmerEffectOrCoinLuck":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse46, (a) => ({
+        _0: makeParsers(packetName2, parse46, (a) => ({
           TAG: "ShimmerEffectOrCoinLuck",
           _0: a
         }), (a) => ({
@@ -17241,7 +17566,7 @@ function getParsers(packetType, fromServer) {
     case "LoadoutSwitch":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse21, (a) => ({
+        _0: makeParsers(packetName2, parse21, (a) => ({
           TAG: "LoadoutSwitch",
           _0: a
         }), (a) => ({
@@ -17252,7 +17577,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropProtectedUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, parse138, (a) => ({
+        _0: makeParsers(packetName2, parse138, (a) => ({
           TAG: "ItemDropProtectedUpdate",
           _0: a
         }), (a) => ({
@@ -21060,34 +21385,34 @@ function packetTypeName2(packetType) {
       return "HostToken";
   }
 }
-function addPacketContext2(packetName, err) {
+function addPacketContext2(packetName2, err) {
   return {
-    context: "Packet " + packetName + ": " + err.context,
+    context: "Packet " + packetName2 + ": " + err.context,
     error: err.error
   };
 }
-function mapPacket2(result, packetName, fn) {
+function mapPacket2(result, packetName2, fn) {
   return mapError(map2(result, fn), (e) => ({
     TAG: "ReaderError",
-    _0: addPacketContext2(packetName, e)
+    _0: addPacketContext2(packetName2, e)
   }));
 }
-function makeParsers2(packetName, parse181, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, _fromServer) => mapPacket2(parse181(payload), packetName, toPacket);
+function makeParsers2(packetName2, parse181, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, _fromServer) => mapPacket2(parse181(payload), packetName2, toPacket);
   let parseLazyWrapped = (payload, _fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse181(payload), (e) => addPacketContext2(packetName, e))))
+    _0: toLazyPacket(make4(() => mapError(parse181(payload), (e) => addPacketContext2(packetName2, e))))
   });
   return {
     parse: parseWrapped,
     parseLazy: parseLazyWrapped
   };
 }
-function makeParsersWithFromServer2(packetName, parse181, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, fromServer) => mapPacket2(parse181(payload, fromServer), packetName, toPacket);
+function makeParsersWithFromServer2(packetName2, parse181, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, fromServer) => mapPacket2(parse181(payload, fromServer), packetName2, toPacket);
   let parseLazyWrapped = (payload, fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse181(payload, fromServer), (e) => addPacketContext2(packetName, e))))
+    _0: toLazyPacket(make4(() => mapError(parse181(payload, fromServer), (e) => addPacketContext2(packetName2, e))))
   });
   return {
     parse: parseWrapped,
@@ -21095,7 +21420,7 @@ function makeParsersWithFromServer2(packetName, parse181, toPacket, toLazyPacket
   };
 }
 function getParsers2(packetType, fromServer) {
-  let packetName = packetTypeName2(packetType);
+  let packetName2 = packetTypeName2(packetType);
   switch (packetType) {
     case "ConnectRequest":
       if (fromServer) {
@@ -21106,7 +21431,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse9, (a) => ({
+          _0: makeParsers2(packetName2, parse9, (a) => ({
             TAG: "ConnectRequest",
             _0: a
           }), (a) => ({
@@ -21119,7 +21444,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse88, (a) => ({
+          _0: makeParsers2(packetName2, parse88, (a) => ({
             TAG: "Disconnect",
             _0: a
           }), (a) => ({
@@ -21137,7 +21462,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse76, (a) => ({
+          _0: makeParsers2(packetName2, parse76, (a) => ({
             TAG: "PlayerSlotSet",
             _0: a
           }), (a) => ({
@@ -21154,7 +21479,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerInfo":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse154, (a) => ({
+        _0: makeParsers2(packetName2, parse154, (a) => ({
           TAG: "PlayerInfo",
           _0: a
         }), (a) => ({
@@ -21165,7 +21490,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerInventorySlot":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse169, (a) => ({
+        _0: makeParsers2(packetName2, parse169, (a) => ({
           TAG: "PlayerInventorySlot",
           _0: a
         }), (a) => ({
@@ -21182,7 +21507,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse74, (a) => ({
+          _0: makeParsers2(packetName2, parse74, (a) => ({
             TAG: "WorldDataRequest",
             _0: a
           }), (a) => ({
@@ -21195,7 +21520,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse153, (a) => ({
+          _0: makeParsers2(packetName2, parse153, (a) => ({
             TAG: "WorldInfo",
             _0: a
           }), (a) => ({
@@ -21218,7 +21543,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse175, (a) => ({
+          _0: makeParsers2(packetName2, parse175, (a) => ({
             TAG: "InitialTileSectionsRequest",
             _0: a
           }), (a) => ({
@@ -21231,7 +21556,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse51, (a) => ({
+          _0: makeParsers2(packetName2, parse51, (a) => ({
             TAG: "Status",
             _0: a
           }), (a) => ({
@@ -21249,7 +21574,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse$3, (a) => ({
+          _0: makeParsers2(packetName2, parse$3, (a) => ({
             TAG: "TileSectionSend",
             _0: a
           }), (a) => ({
@@ -21267,7 +21592,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse64, (a) => ({
+          _0: makeParsers2(packetName2, parse64, (a) => ({
             TAG: "TileSectionFrame",
             _0: a
           }), (a) => ({
@@ -21284,7 +21609,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerSpawn":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse156, (a) => ({
+        _0: makeParsers2(packetName2, parse156, (a) => ({
           TAG: "PlayerSpawn",
           _0: a
         }), (a) => ({
@@ -21295,7 +21620,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse158, (a) => ({
+        _0: makeParsers2(packetName2, parse158, (a) => ({
           TAG: "PlayerUpdate",
           _0: a
         }), (a) => ({
@@ -21307,7 +21632,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse86, (a) => ({
+          _0: makeParsers2(packetName2, parse86, (a) => ({
             TAG: "PlayerActive",
             _0: a
           }), (a) => ({
@@ -21324,7 +21649,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerHealth":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse81, (a) => ({
+        _0: makeParsers2(packetName2, parse81, (a) => ({
           TAG: "PlayerHealth",
           _0: a
         }), (a) => ({
@@ -21335,7 +21660,7 @@ function getParsers2(packetType, fromServer) {
     case "TileModify":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse61, (a) => ({
+        _0: makeParsers2(packetName2, parse61, (a) => ({
           TAG: "TileModify",
           _0: a
         }), (a) => ({
@@ -21347,7 +21672,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse67, (a) => ({
+          _0: makeParsers2(packetName2, parse67, (a) => ({
             TAG: "TimeSet",
             _0: a
           }), (a) => ({
@@ -21364,7 +21689,7 @@ function getParsers2(packetType, fromServer) {
     case "DoorUse":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse91, (a) => ({
+        _0: makeParsers2(packetName2, parse91, (a) => ({
           TAG: "DoorUse",
           _0: a
         }), (a) => ({
@@ -21375,7 +21700,7 @@ function getParsers2(packetType, fromServer) {
     case "TileSquareSend":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse66, (a) => ({
+        _0: makeParsers2(packetName2, parse66, (a) => ({
           TAG: "TileSquareSend",
           _0: a
         }), (a) => ({
@@ -21386,7 +21711,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemDropUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse18, (a) => ({
+        _0: makeParsers2(packetName2, parse18, (a) => ({
           TAG: "ItemDropUpdate",
           _0: a
         }), (a) => ({
@@ -21397,7 +21722,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemOwner":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse151, (a) => ({
+        _0: makeParsers2(packetName2, parse151, (a) => ({
           TAG: "ItemOwner",
           _0: a
         }), (a) => ({
@@ -21409,7 +21734,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse152, (a) => ({
+          _0: makeParsers2(packetName2, parse152, (a) => ({
             TAG: "NpcUpdate",
             _0: a
           }), (a) => ({
@@ -21426,7 +21751,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcItemStrike":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse107, (a) => ({
+        _0: makeParsers2(packetName2, parse107, (a) => ({
           TAG: "NpcItemStrike",
           _0: a
         }), (a) => ({
@@ -21437,7 +21762,7 @@ function getParsers2(packetType, fromServer) {
     case "ProjectileSync":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse83, (a) => ({
+        _0: makeParsers2(packetName2, parse83, (a) => ({
           TAG: "ProjectileSync",
           _0: a
         }), (a) => ({
@@ -21448,7 +21773,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcStrike":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse96, (a) => ({
+        _0: makeParsers2(packetName2, parse96, (a) => ({
           TAG: "NpcStrike",
           _0: a
         }), (a) => ({
@@ -21459,7 +21784,7 @@ function getParsers2(packetType, fromServer) {
     case "ProjectileDestroy":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse123, (a) => ({
+        _0: makeParsers2(packetName2, parse123, (a) => ({
           TAG: "ProjectileDestroy",
           _0: a
         }), (a) => ({
@@ -21470,7 +21795,7 @@ function getParsers2(packetType, fromServer) {
     case "PvpToggle":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse45, (a) => ({
+        _0: makeParsers2(packetName2, parse45, (a) => ({
           TAG: "PvpToggle",
           _0: a
         }), (a) => ({
@@ -21487,7 +21812,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse94, (a) => ({
+          _0: makeParsers2(packetName2, parse94, (a) => ({
             TAG: "ChestOpen",
             _0: a
           }), (a) => ({
@@ -21499,7 +21824,7 @@ function getParsers2(packetType, fromServer) {
     case "ChestItem":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse5, (a) => ({
+        _0: makeParsers2(packetName2, parse5, (a) => ({
           TAG: "ChestItem",
           _0: a
         }), (a) => ({
@@ -21510,7 +21835,7 @@ function getParsers2(packetType, fromServer) {
     case "ActiveContainerSync":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse127, (a) => ({
+        _0: makeParsers2(packetName2, parse127, (a) => ({
           TAG: "ActiveContainerSync",
           _0: a
         }), (a) => ({
@@ -21521,7 +21846,7 @@ function getParsers2(packetType, fromServer) {
     case "ChestPlace":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse7, (a) => ({
+        _0: makeParsers2(packetName2, parse7, (a) => ({
           TAG: "ChestPlace",
           _0: a
         }), (a) => ({
@@ -21532,7 +21857,7 @@ function getParsers2(packetType, fromServer) {
     case "HealEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse98, (a) => ({
+        _0: makeParsers2(packetName2, parse98, (a) => ({
           TAG: "HealEffect",
           _0: a
         }), (a) => ({
@@ -21543,7 +21868,7 @@ function getParsers2(packetType, fromServer) {
     case "Zones":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse148, (a) => ({
+        _0: makeParsers2(packetName2, parse148, (a) => ({
           TAG: "Zones",
           _0: a
         }), (a) => ({
@@ -21555,7 +21880,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse118, (a) => ({
+          _0: makeParsers2(packetName2, parse118, (a) => ({
             TAG: "PasswordRequired",
             _0: a
           }), (a) => ({
@@ -21578,7 +21903,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse104, (a) => ({
+          _0: makeParsers2(packetName2, parse104, (a) => ({
             TAG: "PasswordSend",
             _0: a
           }), (a) => ({
@@ -21591,7 +21916,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse20, (a) => ({
+          _0: makeParsers2(packetName2, parse20, (a) => ({
             TAG: "ItemOwnerRemove",
             _0: a
           }), (a) => ({
@@ -21608,7 +21933,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcTalk":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse32, (a) => ({
+        _0: makeParsers2(packetName2, parse32, (a) => ({
           TAG: "NpcTalk",
           _0: a
         }), (a) => ({
@@ -21619,7 +21944,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerAnimation":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse36, (a) => ({
+        _0: makeParsers2(packetName2, parse36, (a) => ({
           TAG: "PlayerAnimation",
           _0: a
         }), (a) => ({
@@ -21630,7 +21955,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerMana":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse43, (a) => ({
+        _0: makeParsers2(packetName2, parse43, (a) => ({
           TAG: "PlayerMana",
           _0: a
         }), (a) => ({
@@ -21641,7 +21966,7 @@ function getParsers2(packetType, fromServer) {
     case "ManaEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse99, (a) => ({
+        _0: makeParsers2(packetName2, parse99, (a) => ({
           TAG: "ManaEffect",
           _0: a
         }), (a) => ({
@@ -21652,7 +21977,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerTeam":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse44, (a) => ({
+        _0: makeParsers2(packetName2, parse44, (a) => ({
           TAG: "PlayerTeam",
           _0: a
         }), (a) => ({
@@ -21669,7 +21994,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse48, (a) => ({
+          _0: makeParsers2(packetName2, parse48, (a) => ({
             TAG: "SignRead",
             _0: a
           }), (a) => ({
@@ -21681,7 +22006,7 @@ function getParsers2(packetType, fromServer) {
     case "SignNew":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse47, (a) => ({
+        _0: makeParsers2(packetName2, parse47, (a) => ({
           TAG: "SignNew",
           _0: a
         }), (a) => ({
@@ -21692,7 +22017,7 @@ function getParsers2(packetType, fromServer) {
     case "LiquidSet":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse95, (a) => ({
+        _0: makeParsers2(packetName2, parse95, (a) => ({
           TAG: "LiquidSet",
           _0: a
         }), (a) => ({
@@ -21704,7 +22029,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse115, (a) => ({
+          _0: makeParsers2(packetName2, parse115, (a) => ({
             TAG: "PlayerSpawnSelf",
             _0: a
           }), (a) => ({
@@ -21721,7 +22046,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerBuffsSet":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse162, (a) => ({
+        _0: makeParsers2(packetName2, parse162, (a) => ({
           TAG: "PlayerBuffsSet",
           _0: a
         }), (a) => ({
@@ -21732,7 +22057,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcSpecialEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse117, (a) => ({
+        _0: makeParsers2(packetName2, parse117, (a) => ({
           TAG: "NpcSpecialEffect",
           _0: a
         }), (a) => ({
@@ -21743,7 +22068,7 @@ function getParsers2(packetType, fromServer) {
     case "ChestOrTempleUnlock":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse6, (a) => ({
+        _0: makeParsers2(packetName2, parse6, (a) => ({
           TAG: "ChestOrTempleUnlock",
           _0: a
         }), (a) => ({
@@ -21754,7 +22079,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcBuffAdd":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse100, (a) => ({
+        _0: makeParsers2(packetName2, parse100, (a) => ({
           TAG: "NpcBuffAdd",
           _0: a
         }), (a) => ({
@@ -21766,7 +22091,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse161, (a) => ({
+          _0: makeParsers2(packetName2, parse161, (a) => ({
             TAG: "NpcBuffUpdate",
             _0: a
           }), (a) => ({
@@ -21783,7 +22108,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerBuffAdd":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse37, (a) => ({
+        _0: makeParsers2(packetName2, parse37, (a) => ({
           TAG: "PlayerBuffAdd",
           _0: a
         }), (a) => ({
@@ -21794,7 +22119,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcNameUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, (__x) => parse30(__x, fromServer), (a) => ({
+        _0: makeParsers2(packetName2, (__x) => parse30(__x, fromServer), (a) => ({
           TAG: "NpcNameUpdate",
           _0: a
         }), (a) => ({
@@ -21806,7 +22131,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse109, (a) => ({
+          _0: makeParsers2(packetName2, parse109, (a) => ({
             TAG: "GoodEvilUpdate",
             _0: a
           }), (a) => ({
@@ -21823,7 +22148,7 @@ function getParsers2(packetType, fromServer) {
     case "HarpPlay":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse92, (a) => ({
+        _0: makeParsers2(packetName2, parse92, (a) => ({
           TAG: "HarpPlay",
           _0: a
         }), (a) => ({
@@ -21834,7 +22159,7 @@ function getParsers2(packetType, fromServer) {
     case "SwitchHit":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse52, (a) => ({
+        _0: makeParsers2(packetName2, parse52, (a) => ({
           TAG: "SwitchHit",
           _0: a
         }), (a) => ({
@@ -21845,7 +22170,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcHomeUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse28, (a) => ({
+        _0: makeParsers2(packetName2, parse28, (a) => ({
           TAG: "NpcHomeUpdate",
           _0: a
         }), (a) => ({
@@ -21862,7 +22187,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse3, (a) => ({
+          _0: makeParsers2(packetName2, parse3, (a) => ({
             TAG: "BossOrInvasionSpawn",
             _0: a
           }), (a) => ({
@@ -21874,7 +22199,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerDodge":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse42, (a) => ({
+        _0: makeParsers2(packetName2, parse42, (a) => ({
           TAG: "PlayerDodge",
           _0: a
         }), (a) => ({
@@ -21885,7 +22210,7 @@ function getParsers2(packetType, fromServer) {
     case "TilePaint":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse62, (a) => ({
+        _0: makeParsers2(packetName2, parse62, (a) => ({
           TAG: "TilePaint",
           _0: a
         }), (a) => ({
@@ -21896,7 +22221,7 @@ function getParsers2(packetType, fromServer) {
     case "WallPaint":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse71, (a) => ({
+        _0: makeParsers2(packetName2, parse71, (a) => ({
           TAG: "WallPaint",
           _0: a
         }), (a) => ({
@@ -21907,7 +22232,7 @@ function getParsers2(packetType, fromServer) {
     case "Teleport":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse149, (a) => ({
+        _0: makeParsers2(packetName2, parse149, (a) => ({
           TAG: "Teleport",
           _0: a
         }), (a) => ({
@@ -21918,7 +22243,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerHealOther":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse114, (a) => ({
+        _0: makeParsers2(packetName2, parse114, (a) => ({
           TAG: "PlayerHealOther",
           _0: a
         }), (a) => ({
@@ -21929,7 +22254,7 @@ function getParsers2(packetType, fromServer) {
     case "DimensionsUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse13, (a) => ({
+        _0: makeParsers2(packetName2, parse13, (a) => ({
           TAG: "DimensionsUpdate",
           _0: a
         }), (a) => ({
@@ -21946,7 +22271,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse82, (a) => ({
+          _0: makeParsers2(packetName2, parse82, (a) => ({
             TAG: "ClientUuid",
             _0: a
           }), (a) => ({
@@ -21958,7 +22283,7 @@ function getParsers2(packetType, fromServer) {
     case "ChestName":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse93, (a) => ({
+        _0: makeParsers2(packetName2, parse93, (a) => ({
           TAG: "ChestName",
           _0: a
         }), (a) => ({
@@ -21975,7 +22300,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse26, (a) => ({
+          _0: makeParsers2(packetName2, parse26, (a) => ({
             TAG: "NpcCatch",
             _0: a
           }), (a) => ({
@@ -21993,7 +22318,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse101, (a) => ({
+          _0: makeParsers2(packetName2, parse101, (a) => ({
             TAG: "NpcRelease",
             _0: a
           }), (a) => ({
@@ -22006,7 +22331,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse176, (a) => ({
+          _0: makeParsers2(packetName2, parse176, (a) => ({
             TAG: "TravellingMerchantInventory",
             _0: a
           }), (a) => ({
@@ -22023,7 +22348,7 @@ function getParsers2(packetType, fromServer) {
     case "TeleportationPotion":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse171, (a) => ({
+        _0: makeParsers2(packetName2, parse171, (a) => ({
           TAG: "TeleportationPotion",
           _0: a
         }), (a) => ({
@@ -22035,7 +22360,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse, (a) => ({
+          _0: makeParsers2(packetName2, parse, (a) => ({
             TAG: "AnglerQuest",
             _0: a
           }), (a) => ({
@@ -22058,7 +22383,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse2, (a) => ({
+          _0: makeParsers2(packetName2, parse2, (a) => ({
             TAG: "AnglerQuestComplete",
             _0: a
           }), (a) => ({
@@ -22070,7 +22395,7 @@ function getParsers2(packetType, fromServer) {
     case "AnglerQuestsCompletedAmount":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse144, (a) => ({
+        _0: makeParsers2(packetName2, parse144, (a) => ({
           TAG: "AnglerQuestsCompletedAmount",
           _0: a
         }), (a) => ({
@@ -22082,7 +22407,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse55, (a) => ({
+          _0: makeParsers2(packetName2, parse55, (a) => ({
             TAG: "TemporaryAnimationCreate",
             _0: a
           }), (a) => ({
@@ -22100,7 +22425,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse16, (a) => ({
+          _0: makeParsers2(packetName2, parse16, (a) => ({
             TAG: "InvasionProgressReport",
             _0: a
           }), (a) => ({
@@ -22117,7 +22442,7 @@ function getParsers2(packetType, fromServer) {
     case "ObjectPlace":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse34, (a) => ({
+        _0: makeParsers2(packetName2, parse34, (a) => ({
           TAG: "ObjectPlace",
           _0: a
         }), (a) => ({
@@ -22129,7 +22454,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse39, (a) => ({
+          _0: makeParsers2(packetName2, parse39, (a) => ({
             TAG: "PlayerChestIndexSync",
             _0: a
           }), (a) => ({
@@ -22147,7 +22472,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse125, (a) => ({
+          _0: makeParsers2(packetName2, parse125, (a) => ({
             TAG: "CombatNumberCreate",
             _0: a
           }), (a) => ({
@@ -22164,7 +22489,7 @@ function getParsers2(packetType, fromServer) {
     case "NetModuleLoad":
       return {
         TAG: "Ok",
-        _0: makeParsersWithFromServer2(packetName, parse160, (a) => ({
+        _0: makeParsersWithFromServer2(packetName2, parse160, (a) => ({
           TAG: "NetModuleLoad",
           _0: a
         }), (a) => ({
@@ -22176,7 +22501,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse29, (a) => ({
+          _0: makeParsers2(packetName2, parse29, (a) => ({
             TAG: "NpcKillCount",
             _0: a
           }), (a) => ({
@@ -22193,7 +22518,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerStealth":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse108, (a) => ({
+        _0: makeParsers2(packetName2, parse108, (a) => ({
           TAG: "PlayerStealth",
           _0: a
         }), (a) => ({
@@ -22204,7 +22529,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemForceIntoNearestChest":
       return {
         TAG: "Ok",
-        _0: makeParsersWithFromServer2(packetName, parse174, (a) => ({
+        _0: makeParsersWithFromServer2(packetName2, parse174, (a) => ({
           TAG: "ItemForceIntoNearestChest",
           _0: a
         }), (a) => ({
@@ -22216,7 +22541,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse60, (a) => ({
+          _0: makeParsers2(packetName2, parse60, (a) => ({
             TAG: "TileEntityUpdate",
             _0: a
           }), (a) => ({
@@ -22239,7 +22564,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse59, (a) => ({
+          _0: makeParsers2(packetName2, parse59, (a) => ({
             TAG: "TileEntityPlace",
             _0: a
           }), (a) => ({
@@ -22252,7 +22577,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse110, (a) => ({
+          _0: makeParsers2(packetName2, parse110, (a) => ({
             TAG: "ItemDropModify",
             _0: a
           }), (a) => ({
@@ -22275,7 +22600,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse111, (a) => ({
+          _0: makeParsers2(packetName2, parse111, (a) => ({
             TAG: "ItemFramePlace",
             _0: a
           }), (a) => ({
@@ -22287,7 +22612,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemDropInstancedUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse137, (a) => ({
+        _0: makeParsers2(packetName2, parse137, (a) => ({
           TAG: "ItemDropInstancedUpdate",
           _0: a
         }), (a) => ({
@@ -22299,7 +22624,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse103, (a) => ({
+          _0: makeParsers2(packetName2, parse103, (a) => ({
             TAG: "EmoteBubble",
             _0: a
           }), (a) => ({
@@ -22316,7 +22641,7 @@ function getParsers2(packetType, fromServer) {
     case "ExtraValueSync":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse14, (a) => ({
+        _0: makeParsers2(packetName2, parse14, (a) => ({
           TAG: "ExtraValueSync",
           _0: a
         }), (a) => ({
@@ -22327,7 +22652,7 @@ function getParsers2(packetType, fromServer) {
     case "SocialHandshake":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse50, (a) => ({
+        _0: makeParsers2(packetName2, parse50, (a) => ({
           TAG: "SocialHandshake",
           _0: a
         }), (a) => ({
@@ -22338,7 +22663,7 @@ function getParsers2(packetType, fromServer) {
     case "Unused":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse157, (a) => ({
+        _0: makeParsers2(packetName2, parse157, (a) => ({
           TAG: "Unused",
           _0: a
         }), (a) => ({
@@ -22355,7 +22680,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse102, (a) => ({
+          _0: makeParsers2(packetName2, parse102, (a) => ({
             TAG: "PortalKill",
             _0: a
           }), (a) => ({
@@ -22367,7 +22692,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerTeleportPortal":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse130, (a) => ({
+        _0: makeParsers2(packetName2, parse130, (a) => ({
           TAG: "PlayerTeleportPortal",
           _0: a
         }), (a) => ({
@@ -22379,7 +22704,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse134, (a) => ({
+          _0: makeParsers2(packetName2, parse134, (a) => ({
             TAG: "NpcKilledNotification",
             _0: a
           }), (a) => ({
@@ -22397,7 +22722,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse119, (a) => ({
+          _0: makeParsers2(packetName2, parse119, (a) => ({
             TAG: "EventNotification",
             _0: a
           }), (a) => ({
@@ -22414,7 +22739,7 @@ function getParsers2(packetType, fromServer) {
     case "MinionTargetUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse126, (a) => ({
+        _0: makeParsers2(packetName2, parse126, (a) => ({
           TAG: "MinionTargetUpdate",
           _0: a
         }), (a) => ({
@@ -22425,7 +22750,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcTeleportPortal":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse33, (a) => ({
+        _0: makeParsers2(packetName2, parse33, (a) => ({
           TAG: "NpcTeleportPortal",
           _0: a
         }), (a) => ({
@@ -22437,7 +22762,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse135, (a) => ({
+          _0: makeParsers2(packetName2, parse135, (a) => ({
             TAG: "ShieldStrengthsUpdate",
             _0: a
           }), (a) => ({
@@ -22454,7 +22779,7 @@ function getParsers2(packetType, fromServer) {
     case "NebulaLevelUp":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse106, (a) => ({
+        _0: makeParsers2(packetName2, parse106, (a) => ({
           TAG: "NebulaLevelUp",
           _0: a
         }), (a) => ({
@@ -22466,7 +22791,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse122, (a) => ({
+          _0: makeParsers2(packetName2, parse122, (a) => ({
             TAG: "MoonLordCountdown",
             _0: a
           }), (a) => ({
@@ -22484,7 +22809,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse31, (a) => ({
+          _0: makeParsers2(packetName2, parse31, (a) => ({
             TAG: "NpcShopItem",
             _0: a
           }), (a) => ({
@@ -22507,7 +22832,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse105, (a) => ({
+          _0: makeParsers2(packetName2, parse105, (a) => ({
             TAG: "GemLockToggle",
             _0: a
           }), (a) => ({
@@ -22520,7 +22845,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse49, (a) => ({
+          _0: makeParsers2(packetName2, parse49, (a) => ({
             TAG: "SmokePoof",
             _0: a
           }), (a) => ({
@@ -22538,7 +22863,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse4, (a) => ({
+          _0: makeParsers2(packetName2, parse4, (a) => ({
             TAG: "ChatMessageSmart",
             _0: a
           }), (a) => ({
@@ -22556,7 +22881,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse73, (a) => ({
+          _0: makeParsers2(packetName2, parse73, (a) => ({
             TAG: "WiredCannonShot",
             _0: a
           }), (a) => ({
@@ -22579,7 +22904,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse121, (a) => ({
+          _0: makeParsers2(packetName2, parse121, (a) => ({
             TAG: "MassWireOperation",
             _0: a
           }), (a) => ({
@@ -22592,7 +22917,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse129, (a) => ({
+          _0: makeParsers2(packetName2, parse129, (a) => ({
             TAG: "MassWireOperationPay",
             _0: a
           }), (a) => ({
@@ -22615,7 +22940,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse35, (a) => ({
+          _0: makeParsers2(packetName2, parse35, (a) => ({
             TAG: "PartyToggle",
             _0: a
           }), (a) => ({
@@ -22627,7 +22952,7 @@ function getParsers2(packetType, fromServer) {
     case "TreeGrowFx":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse69, (a) => ({
+        _0: makeParsers2(packetName2, parse69, (a) => ({
           TAG: "TreeGrowFx",
           _0: a
         }), (a) => ({
@@ -22644,7 +22969,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse12, (a) => ({
+          _0: makeParsers2(packetName2, parse12, (a) => ({
             TAG: "CrystalInvasionStart",
             _0: a
           }), (a) => ({
@@ -22657,7 +22982,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse136, (a) => ({
+          _0: makeParsers2(packetName2, parse136, (a) => ({
             TAG: "CrystalInvasionWipeAll",
             _0: a
           }), (a) => ({
@@ -22674,7 +22999,7 @@ function getParsers2(packetType, fromServer) {
     case "MinionAttackTargetUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse141, (a) => ({
+        _0: makeParsers2(packetName2, parse141, (a) => ({
           TAG: "MinionAttackTargetUpdate",
           _0: a
         }), (a) => ({
@@ -22686,7 +23011,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse145, (a) => ({
+          _0: makeParsers2(packetName2, parse145, (a) => ({
             TAG: "CrystalInvasionSendWaitTime",
             _0: a
           }), (a) => ({
@@ -22703,7 +23028,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerDamage":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse84, (a) => ({
+        _0: makeParsers2(packetName2, parse84, (a) => ({
           TAG: "PlayerDamage",
           _0: a
         }), (a) => ({
@@ -22714,7 +23039,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerDeath":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse41, (a) => ({
+        _0: makeParsers2(packetName2, parse41, (a) => ({
           TAG: "PlayerDeath",
           _0: a
         }), (a) => ({
@@ -22726,7 +23051,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse116, (a) => ({
+          _0: makeParsers2(packetName2, parse116, (a) => ({
             TAG: "CombatTextCreate",
             _0: a
           }), (a) => ({
@@ -22749,7 +23074,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse90, (a) => ({
+          _0: makeParsers2(packetName2, parse90, (a) => ({
             TAG: "Emoji",
             _0: a
           }), (a) => ({
@@ -22761,7 +23086,7 @@ function getParsers2(packetType, fromServer) {
     case "TileEntityDisplayDollItemSync":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse179, (a) => ({
+        _0: makeParsers2(packetName2, parse179, (a) => ({
           TAG: "TileEntityDisplayDollItemSync",
           _0: a
         }), (a) => ({
@@ -22772,7 +23097,7 @@ function getParsers2(packetType, fromServer) {
     case "TileEntityInteractionRequest":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse58, (a) => ({
+        _0: makeParsers2(packetName2, parse58, (a) => ({
           TAG: "TileEntityInteractionRequest",
           _0: a
         }), (a) => ({
@@ -22789,7 +23114,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse72, (a) => ({
+          _0: makeParsers2(packetName2, parse72, (a) => ({
             TAG: "WeaponsRackTryPlacing",
             _0: a
           }), (a) => ({
@@ -22801,7 +23126,7 @@ function getParsers2(packetType, fromServer) {
     case "TileEntityHatRackItemSync":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse57, (a) => ({
+        _0: makeParsers2(packetName2, parse57, (a) => ({
           TAG: "TileEntityHatRackItemSync",
           _0: a
         }), (a) => ({
@@ -22812,7 +23137,7 @@ function getParsers2(packetType, fromServer) {
     case "TilePickingSync":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse63, (a) => ({
+        _0: makeParsers2(packetName2, parse63, (a) => ({
           TAG: "TilePickingSync",
           _0: a
         }), (a) => ({
@@ -22824,7 +23149,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse124, (a) => ({
+          _0: makeParsers2(packetName2, parse124, (a) => ({
             TAG: "RevengeMarkerSync",
             _0: a
           }), (a) => ({
@@ -22842,7 +23167,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse128, (a) => ({
+          _0: makeParsers2(packetName2, parse128, (a) => ({
             TAG: "RevengeMarkerRemove",
             _0: a
           }), (a) => ({
@@ -22859,7 +23184,7 @@ function getParsers2(packetType, fromServer) {
     case "GolfBallLandInCup":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse120, (a) => ({
+        _0: makeParsers2(packetName2, parse120, (a) => ({
           TAG: "GolfBallLandInCup",
           _0: a
         }), (a) => ({
@@ -22871,7 +23196,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse8, (a) => ({
+          _0: makeParsers2(packetName2, parse8, (a) => ({
             TAG: "ClientFinishConnectingToServer",
             _0: a
           }), (a) => ({
@@ -22894,7 +23219,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse27, (a) => ({
+          _0: makeParsers2(packetName2, parse27, (a) => ({
             TAG: "NpcFishOut",
             _0: a
           }), (a) => ({
@@ -22907,7 +23232,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse97, (a) => ({
+          _0: makeParsers2(packetName2, parse97, (a) => ({
             TAG: "NpcTamper",
             _0: a
           }), (a) => ({
@@ -22925,7 +23250,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse113, (a) => ({
+          _0: makeParsers2(packetName2, parse113, (a) => ({
             TAG: "LegacySoundPlay",
             _0: a
           }), (a) => ({
@@ -22948,7 +23273,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse133, (a) => ({
+          _0: makeParsers2(packetName2, parse133, (a) => ({
             TAG: "FoodPlatterTryPlacing",
             _0: a
           }), (a) => ({
@@ -22960,7 +23285,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerLuckFactorsUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse172, (a) => ({
+        _0: makeParsers2(packetName2, parse172, (a) => ({
           TAG: "PlayerLuckFactorsUpdate",
           _0: a
         }), (a) => ({
@@ -22972,7 +23297,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse40, (a) => ({
+          _0: makeParsers2(packetName2, parse40, (a) => ({
             TAG: "PlayerDead",
             _0: a
           }), (a) => ({
@@ -22989,7 +23314,7 @@ function getParsers2(packetType, fromServer) {
     case "CavernMonsterTypeSync":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse131, (a) => ({
+        _0: makeParsers2(packetName2, parse131, (a) => ({
           TAG: "CavernMonsterTypeSync",
           _0: a
         }), (a) => ({
@@ -23006,7 +23331,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse24, (a) => ({
+          _0: makeParsers2(packetName2, parse24, (a) => ({
             TAG: "NpcBuffRemovalRequest",
             _0: a
           }), (a) => ({
@@ -23024,7 +23349,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName, parse132, (a) => ({
+          _0: makeParsers2(packetName2, parse132, (a) => ({
             TAG: "ClientSyncedInventory",
             _0: a
           }), (a) => ({
@@ -23036,7 +23361,7 @@ function getParsers2(packetType, fromServer) {
     case "CountsAsHostForGameplaySet":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse10, (a) => ({
+        _0: makeParsers2(packetName2, parse10, (a) => ({
           TAG: "CountsAsHostForGameplaySet",
           _0: a
         }), (a) => ({
@@ -23047,7 +23372,7 @@ function getParsers2(packetType, fromServer) {
     case "CreditsOrSlimeTransform":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse11, (a) => ({
+        _0: makeParsers2(packetName2, parse11, (a) => ({
           TAG: "CreditsOrSlimeTransform",
           _0: a
         }), (a) => ({
@@ -23058,7 +23383,7 @@ function getParsers2(packetType, fromServer) {
     case "LucyAxeMessage":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse112, (a) => ({
+        _0: makeParsers2(packetName2, parse112, (a) => ({
           TAG: "LucyAxeMessage",
           _0: a
         }), (a) => ({
@@ -23069,7 +23394,7 @@ function getParsers2(packetType, fromServer) {
     case "PiggyBankVoidLensUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse139, (a) => ({
+        _0: makeParsers2(packetName2, parse139, (a) => ({
           TAG: "PiggyBankVoidLensUpdate",
           _0: a
         }), (a) => ({
@@ -23080,7 +23405,7 @@ function getParsers2(packetType, fromServer) {
     case "DungeonDefendersEventAttemptSkipWait":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse146, (a) => ({
+        _0: makeParsers2(packetName2, parse146, (a) => ({
           TAG: "DungeonDefendersEventAttemptSkipWait",
           _0: a
         }), (a) => ({
@@ -23091,7 +23416,7 @@ function getParsers2(packetType, fromServer) {
     case "HaveDryadDoStardewAnimation":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse15, (a) => ({
+        _0: makeParsers2(packetName2, parse15, (a) => ({
           TAG: "HaveDryadDoStardewAnimation",
           _0: a
         }), (a) => ({
@@ -23102,7 +23427,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemDropShimmeredUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse17, (a) => ({
+        _0: makeParsers2(packetName2, parse17, (a) => ({
           TAG: "ItemDropShimmeredUpdate",
           _0: a
         }), (a) => ({
@@ -23113,7 +23438,7 @@ function getParsers2(packetType, fromServer) {
     case "ShimmerEffectOrCoinLuck":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse173, (a) => ({
+        _0: makeParsers2(packetName2, parse173, (a) => ({
           TAG: "ShimmerEffectOrCoinLuck",
           _0: a
         }), (a) => ({
@@ -23124,7 +23449,7 @@ function getParsers2(packetType, fromServer) {
     case "LoadoutSwitch":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse21, (a) => ({
+        _0: makeParsers2(packetName2, parse21, (a) => ({
           TAG: "LoadoutSwitch",
           _0: a
         }), (a) => ({
@@ -23135,7 +23460,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemDropProtectedUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse138, (a) => ({
+        _0: makeParsers2(packetName2, parse138, (a) => ({
           TAG: "ItemDropProtectedUpdate",
           _0: a
         }), (a) => ({
@@ -23146,7 +23471,7 @@ function getParsers2(packetType, fromServer) {
     case "DeadCellsDisplayJarTryPlacing":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse177, (a) => ({
+        _0: makeParsers2(packetName2, parse177, (a) => ({
           TAG: "DeadCellsDisplayJarTryPlacing",
           _0: a
         }), (a) => ({
@@ -23157,7 +23482,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerSpectate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse163, (a) => ({
+        _0: makeParsers2(packetName2, parse163, (a) => ({
           TAG: "PlayerSpectate",
           _0: a
         }), (a) => ({
@@ -23168,7 +23493,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemDropClear":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse159, (a) => ({
+        _0: makeParsers2(packetName2, parse159, (a) => ({
           TAG: "ItemDropClear",
           _0: a
         }), (a) => ({
@@ -23179,7 +23504,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerItemUseSound":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse168, (a) => ({
+        _0: makeParsers2(packetName2, parse168, (a) => ({
           TAG: "PlayerItemUseSound",
           _0: a
         }), (a) => ({
@@ -23190,7 +23515,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcHurtByDebuff":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse165, (a) => ({
+        _0: makeParsers2(packetName2, parse165, (a) => ({
           TAG: "NpcHurtByDebuff",
           _0: a
         }), (a) => ({
@@ -23201,7 +23526,7 @@ function getParsers2(packetType, fromServer) {
     case "Ping":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse89, (a) => ({
+        _0: makeParsers2(packetName2, parse89, (a) => ({
           TAG: "Ping",
           _0: a
         }), (a) => ({
@@ -23212,7 +23537,7 @@ function getParsers2(packetType, fromServer) {
     case "ChestResize":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse155, (a) => ({
+        _0: makeParsers2(packetName2, parse155, (a) => ({
           TAG: "ChestResize",
           _0: a
         }), (a) => ({
@@ -23223,7 +23548,7 @@ function getParsers2(packetType, fromServer) {
     case "LeashedEntityAnchorInsertItem":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse178, (a) => ({
+        _0: makeParsers2(packetName2, parse178, (a) => ({
           TAG: "LeashedEntityAnchorInsertItem",
           _0: a
         }), (a) => ({
@@ -23234,7 +23559,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerTeamUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse167, (a) => ({
+        _0: makeParsers2(packetName2, parse167, (a) => ({
           TAG: "PlayerTeamUpdate",
           _0: a
         }), (a) => ({
@@ -23245,7 +23570,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerTeamSwapSpawn":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse170, (a) => ({
+        _0: makeParsers2(packetName2, parse170, (a) => ({
           TAG: "PlayerTeamSwapSpawn",
           _0: a
         }), (a) => ({
@@ -23256,7 +23581,7 @@ function getParsers2(packetType, fromServer) {
     case "SectionRequest":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse164, (a) => ({
+        _0: makeParsers2(packetName2, parse164, (a) => ({
           TAG: "SectionRequest",
           _0: a
         }), (a) => ({
@@ -23267,7 +23592,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemDropPosition":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse166, (a) => ({
+        _0: makeParsers2(packetName2, parse166, (a) => ({
           TAG: "ItemDropPosition",
           _0: a
         }), (a) => ({
@@ -23278,7 +23603,7 @@ function getParsers2(packetType, fromServer) {
     case "HostToken":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName, parse150, (a) => ({
+        _0: makeParsers2(packetName2, parse150, (a) => ({
           TAG: "HostToken",
           _0: a
         }), (a) => ({
@@ -25129,6 +25454,7 @@ var Float = {
   NpcTeleportPortalPacket,
   NpcUpdatePacket,
   ObjectPlacePacket,
+  PacketType,
   Parser,
   PartyTogglePacket,
   PlayerActivePacket,
