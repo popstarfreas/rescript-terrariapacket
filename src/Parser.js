@@ -3730,6 +3730,11 @@ function fromV1449(packet) {
           team: 0
         }
       };
+    case "TileSectionSend" :
+      return {
+        TAG: "TileSectionSend",
+        _0: packet._0
+      };
     case "PlayerSpawn" :
       let playerSpawn = packet._0;
       return {
@@ -4379,6 +4384,7 @@ function convertFromV1449IfNeeded(buffer, fromServer) {
     case "PlayerInventorySlot" :
     case "WorldInfo" :
     case "InitialTileSectionsRequest" :
+    case "TileSectionSend" :
     case "PlayerSpawn" :
     case "PlayerUpdate" :
     case "ItemOwner" :

@@ -1,18 +1,22 @@
+@genType
 type frame = {
   x: int,
   y: int,
 }
 
+@genType
 type activeTile = {
   tileType: int,
   frame: option<frame>,
 }
 
+@genType
 type liquid = {
   liquidValue: int,
   liquidType: int,
 }
 
+@genType
 type tile = {
   activeTile: option<activeTile>,
   color: option<int>,
@@ -37,6 +41,7 @@ type tile = {
   coatHeader: int,
 }
 
+@genType
 type tileCache = {
   mutable activeTile: option<activeTile>,
   mutable color: option<int>,
@@ -62,30 +67,27 @@ type tileCache = {
 }
 
 module Chest: {
+  @genType
   type t = {
     id: int,
     x: int,
     y: int,
     name: string,
   }
-
-  let parse: ErrorAwareBufferReader.t => result<t, ErrorAwarePacketReader.readError>
-  let pack: (ErrorAwareBufferWriter.t, t) => ErrorAwareBufferWriter.t
 }
 
 module Sign: {
+  @genType
   type t = {
     id: int,
     x: int,
     y: int,
     name: string,
   }
-
-  let parse: ErrorAwareBufferReader.t => result<t, ErrorAwarePacketReader.readError>
-  let pack: (ErrorAwareBufferWriter.t, t) => ErrorAwareBufferWriter.t
 }
 
 module Entity: {
+  @genType
   type displayItem = {
     netId: int,
     prefix: int,
@@ -139,9 +141,6 @@ module Entity: {
     y: int,
     entityKind: kind,
   }
-
-  let parse: ErrorAwareBufferReader.t => result<t, ErrorAwarePacketReader.readError>
-  let pack: (ErrorAwareBufferWriter.t, t) => ErrorAwareBufferWriter.t
 }
 
 @genType
@@ -155,9 +154,6 @@ type t = {
   signs: array<Sign.t>,
   entities: array<Entity.t>,
 }
-
-let defaultTileCache: unit => tileCache
-let cacheToTile: tileCache => tile
 
 @genType
 let parse: NodeJs.Buffer.t => result<t, ErrorAwarePacketReader.readError>

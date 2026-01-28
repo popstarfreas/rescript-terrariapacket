@@ -2558,6 +2558,7 @@ let fromV1449 = (packet: PacketV1449.t): Packet.t => {
       favorited: false,
       blocked: false,
     })
+  | TileSectionSend(tileSectionSend) => Packet.TileSectionSend(tileSectionSend)
   | WorldInfo(worldInfo) => Packet.WorldInfo(worldInfoFromV1449(worldInfo))
   | InitialTileSectionsRequest(req) =>
     Packet.InitialTileSectionsRequest({x: req.x, y: req.y, team: 0})
@@ -2982,6 +2983,7 @@ let convertFromV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): re
     | Some(TileEntityDisplayDollItemSync)
     | Some(PlayerLuckFactorsUpdate)
     | Some(ShimmerEffectOrCoinLuck)
+    | Some(TileSectionSend)
     | Some(NetModuleLoad) =>
       try {
         Parserv1449.parse(~buffer, ~fromServer)

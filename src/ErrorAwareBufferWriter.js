@@ -267,6 +267,20 @@ function data(self) {
   }
 }
 
+function slicedData(self) {
+  if (self.TAG === "Writing") {
+    return {
+      TAG: "Ok",
+      _0: self._0.slicedData
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: self._0
+    };
+  }
+}
+
 function make(buffer) {
   return {
     TAG: "Writing",
@@ -286,6 +300,7 @@ export {
   packColor,
   packBuffer,
   data,
+  slicedData,
   make,
 }
 /* @popstarfreas/packetfactory/bufferwriter Not a pure module */

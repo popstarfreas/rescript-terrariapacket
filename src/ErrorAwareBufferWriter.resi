@@ -11,4 +11,5 @@ let packBytes: (t, array<int>, string) => t
 let packColor: (t, PacketFactory.Color.t, string) => t
 let packBuffer: (t, NodeJs.Buffer.t, string) => t
 let data: t => result<NodeJs.Buffer.t, packError>
+let slicedData: t => result<NodeJs.Buffer.t, packError>
 let make: NodeJs.Buffer.t => t

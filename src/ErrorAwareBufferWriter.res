@@ -14,6 +14,7 @@ let {
   packBytes,
   packColor,
   packBuffer,
+  slicedData,
   data,
 } = module(PacketFactory.BufferWriter)
 
@@ -155,6 +156,13 @@ let packBuffer = (self: t, value: NodeJs.Buffer.t, context: string): t => {
 let data = (self: t): result<NodeJs.Buffer.t, packError> => {
   switch self {
   | Writing(writer) => Ok(writer->data)
+  | Error(error) => Error(error)
+  }
+}
+
+let slicedData = (self: t): result<NodeJs.Buffer.t, packError> => {
+  switch self {
+  | Writing(writer) => Ok(writer->slicedData)
   | Error(error) => Error(error)
   }
 }
