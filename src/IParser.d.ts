@@ -4,6 +4,7 @@
 /* tslint:disable */
 
 import type { readError } from "./ErrorAwarePacketReader.js";
+import type { t as PacketType } from "./PacketType.js";
 
 export type parseError =
   | { TAG: "ReaderError"; _0: readError }
@@ -83,6 +84,6 @@ export type parseResult<a> =
   | { TAG: "Ok"; _0: (a) }
   | { TAG: "Error"; _0: parseError };
 
-export type parse<a> = (buffer: Buffer, fromServer: boolean) => parseResult<a>;
+export type parse<a> = (buffer: Buffer, fromServer: boolean, ignore?: PacketType[]) => parseResult<a>;
 
 export type parseLazy<a> = (buffer: Buffer, fromServer: boolean) => parseResult<a>;
