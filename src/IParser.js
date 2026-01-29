@@ -146,6 +146,10 @@ function toDisplayString(self) {
         return "Cannot parse a client-only packet from the server side: NpcBuffRemovalRequest";
       case "ClientSyncedInventoryFromServer" :
         return "Cannot parse a client-only packet from the server side: ClientSyncedInventory";
+      case "ServerInfoFromClient" :
+        return "Cannot parse a server-only packet from the client side: ServerInfo";
+      case "PlayerPlatformInfoFromServer" :
+        return "Cannot parse a server-only packet from the client side: PlayerPlatformInfo";
       case "NotImplemented" :
         return "NotImplemented: parser for this packet is not implemented";
       case "IgnoredPacket" :

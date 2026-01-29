@@ -1,4 +1,3 @@
-@genType
 type t = {
   chestId: int,
   newSize: int,

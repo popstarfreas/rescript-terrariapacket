@@ -155,6 +155,9 @@ module PlayerTeamSwapSpawn = Packet_PlayerTeamSwapSpawn
 module SectionRequest = Packet_SectionRequest
 module ItemDropPosition = Packet_ItemDropPosition
 module HostToken = Packet_HostToken
+module ServerInfo = Packet_ServerInfo
+module PlayerPlatformInfo = Packet_PlayerPlatformInfo
+
 type t =
   | ConnectRequest(ConnectRequest.t)
   | Disconnect(Disconnect.t)
@@ -313,6 +316,9 @@ type t =
   | SectionRequest(SectionRequest.t)
   | ItemDropPosition(ItemDropPosition.t)
   | HostToken(HostToken.t)
+  | ServerInfo(ServerInfo.t)
+  | PlayerPlatformInfo(PlayerPlatformInfo.t)
+
 module LazyPacket: {
   type lazyParsed<'a> = Lazy.t<result<'a, ErrorAwarePacketReader.readError>>
   type t =
@@ -473,6 +479,8 @@ module LazyPacket: {
     | SectionRequest(lazyParsed<SectionRequest.t>)
     | ItemDropPosition(lazyParsed<ItemDropPosition.t>)
     | HostToken(lazyParsed<HostToken.t>)
+    | ServerInfo(lazyParsed<ServerInfo.t>)
+    | PlayerPlatformInfo(lazyParsed<PlayerPlatformInfo.t>)
   let toPacketName: t => string
 }
 let toBuffer: (t, bool) => ISerializer.toBufferResult

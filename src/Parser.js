@@ -13,6 +13,7 @@ import * as Packet_NpcUpdate$TerrariaPacket from "./packet/Packet_NpcUpdate.js";
 import * as Packet_WorldInfo$TerrariaPacket from "./packet/Packet_WorldInfo.js";
 import * as PacketV1449_Emoji$TerrariaPacket from "./packetv1449/PacketV1449_Emoji.js";
 import * as Packet_PlayerInfo$TerrariaPacket from "./packet/Packet_PlayerInfo.js";
+import * as Packet_ServerInfo$TerrariaPacket from "./packet/Packet_ServerInfo.js";
 import * as PacketV1449_Status$TerrariaPacket from "./packetv1449/PacketV1449_Status.js";
 import * as Packet_ChestResize$TerrariaPacket from "./packet/Packet_ChestResize.js";
 import * as Packet_PlayerSpawn$TerrariaPacket from "./packet/Packet_PlayerSpawn.js";
@@ -82,6 +83,7 @@ import * as PacketV1449_PlayerBuffAdd$TerrariaPacket from "./packetv1449/PacketV
 import * as PacketV1449_PlayerSlotSet$TerrariaPacket from "./packetv1449/PacketV1449_PlayerSlotSet.js";
 import * as PacketV1449_PlayerStealth$TerrariaPacket from "./packetv1449/PacketV1449_PlayerStealth.js";
 import * as Packet_PlayerItemUseSound$TerrariaPacket from "./packet/Packet_PlayerItemUseSound.js";
+import * as Packet_PlayerPlatformInfo$TerrariaPacket from "./packet/Packet_PlayerPlatformInfo.js";
 import * as PacketV1449_ConnectRequest$TerrariaPacket from "./packetv1449/PacketV1449_ConnectRequest.js";
 import * as PacketV1449_ExtraValueSync$TerrariaPacket from "./packetv1449/PacketV1449_ExtraValueSync.js";
 import * as PacketV1449_GoodEvilUpdate$TerrariaPacket from "./packetv1449/PacketV1449_GoodEvilUpdate.js";
@@ -162,325 +164,6 @@ import * as PacketV1449_TileEntityInteractionRequest$TerrariaPacket from "./pack
 import * as PacketV1449_ClientFinishConnectingToServer$TerrariaPacket from "./packetv1449/PacketV1449_ClientFinishConnectingToServer.js";
 import * as PacketV1449_DungeonDefendersEventAttemptSkipWait$TerrariaPacket from "./packetv1449/PacketV1449_DungeonDefendersEventAttemptSkipWait.js";
 
-function packetTypeName(packetType) {
-  switch (packetType) {
-    case "ConnectRequest" :
-      return "ConnectRequest";
-    case "Disconnect" :
-      return "Disconnect";
-    case "PlayerSlotSet" :
-      return "PlayerSlotSet";
-    case "PlayerInfo" :
-      return "PlayerInfo";
-    case "PlayerInventorySlot" :
-      return "PlayerInventorySlot";
-    case "WorldDataRequest" :
-      return "WorldDataRequest";
-    case "WorldInfo" :
-      return "WorldInfo";
-    case "InitialTileSectionsRequest" :
-      return "InitialTileSectionsRequest";
-    case "Status" :
-      return "Status";
-    case "TileSectionSend" :
-      return "TileSectionSend";
-    case "TileSectionFrame" :
-      return "TileSectionFrame";
-    case "PlayerSpawn" :
-      return "PlayerSpawn";
-    case "PlayerUpdate" :
-      return "PlayerUpdate";
-    case "PlayerActive" :
-      return "PlayerActive";
-    case "PlayerHealth" :
-      return "PlayerHealth";
-    case "TileModify" :
-      return "TileModify";
-    case "TimeSet" :
-      return "TimeSet";
-    case "DoorUse" :
-      return "DoorUse";
-    case "TileSquareSend" :
-      return "TileSquareSend";
-    case "ItemDropUpdate" :
-      return "ItemDropUpdate";
-    case "ItemOwner" :
-      return "ItemOwner";
-    case "NpcUpdate" :
-      return "NpcUpdate";
-    case "NpcItemStrike" :
-      return "NpcItemStrike";
-    case "ProjectileSync" :
-      return "ProjectileSync";
-    case "NpcStrike" :
-      return "NpcStrike";
-    case "ProjectileDestroy" :
-      return "ProjectileDestroy";
-    case "PvpToggle" :
-      return "PvpToggle";
-    case "ChestOpen" :
-      return "ChestOpen";
-    case "ChestItem" :
-      return "ChestItem";
-    case "ActiveContainerSync" :
-      return "ActiveContainerSync";
-    case "ChestPlace" :
-      return "ChestPlace";
-    case "HealEffect" :
-      return "HealEffect";
-    case "Zones" :
-      return "Zones";
-    case "PasswordRequired" :
-      return "PasswordRequired";
-    case "PasswordSend" :
-      return "PasswordSend";
-    case "ItemOwnerRemove" :
-      return "ItemOwnerRemove";
-    case "NpcTalk" :
-      return "NpcTalk";
-    case "PlayerAnimation" :
-      return "PlayerAnimation";
-    case "PlayerMana" :
-      return "PlayerMana";
-    case "ManaEffect" :
-      return "ManaEffect";
-    case "PlayerTeam" :
-      return "PlayerTeam";
-    case "SignRead" :
-      return "SignRead";
-    case "SignNew" :
-      return "SignNew";
-    case "LiquidSet" :
-      return "LiquidSet";
-    case "PlayerSpawnSelf" :
-      return "PlayerSpawnSelf";
-    case "PlayerBuffsSet" :
-      return "PlayerBuffsSet";
-    case "NpcSpecialEffect" :
-      return "NpcSpecialEffect";
-    case "ChestOrTempleUnlock" :
-      return "ChestOrTempleUnlock";
-    case "NpcBuffAdd" :
-      return "NpcBuffAdd";
-    case "NpcBuffUpdate" :
-      return "NpcBuffUpdate";
-    case "PlayerBuffAdd" :
-      return "PlayerBuffAdd";
-    case "NpcNameUpdate" :
-      return "NpcNameUpdate";
-    case "GoodEvilUpdate" :
-      return "GoodEvilUpdate";
-    case "HarpPlay" :
-      return "HarpPlay";
-    case "SwitchHit" :
-      return "SwitchHit";
-    case "NpcHomeUpdate" :
-      return "NpcHomeUpdate";
-    case "BossOrInvasionSpawn" :
-      return "BossOrInvasionSpawn";
-    case "PlayerDodge" :
-      return "PlayerDodge";
-    case "TilePaint" :
-      return "TilePaint";
-    case "WallPaint" :
-      return "WallPaint";
-    case "Teleport" :
-      return "Teleport";
-    case "PlayerHealOther" :
-      return "PlayerHealOther";
-    case "DimensionsUpdate" :
-      return "DimensionsUpdate";
-    case "ClientUuid" :
-      return "ClientUuid";
-    case "ChestName" :
-      return "ChestName";
-    case "NpcCatch" :
-      return "NpcCatch";
-    case "NpcRelease" :
-      return "NpcRelease";
-    case "TravellingMerchantInventory" :
-      return "TravellingMerchantInventory";
-    case "TeleportationPotion" :
-      return "TeleportationPotion";
-    case "AnglerQuest" :
-      return "AnglerQuest";
-    case "AnglerQuestComplete" :
-      return "AnglerQuestComplete";
-    case "AnglerQuestsCompletedAmount" :
-      return "AnglerQuestsCompletedAmount";
-    case "TemporaryAnimationCreate" :
-      return "TemporaryAnimationCreate";
-    case "InvasionProgressReport" :
-      return "InvasionProgressReport";
-    case "ObjectPlace" :
-      return "ObjectPlace";
-    case "PlayerChestIndexSync" :
-      return "PlayerChestIndexSync";
-    case "CombatNumberCreate" :
-      return "CombatNumberCreate";
-    case "NetModuleLoad" :
-      return "NetModuleLoad";
-    case "NpcKillCount" :
-      return "NpcKillCount";
-    case "PlayerStealth" :
-      return "PlayerStealth";
-    case "ItemForceIntoNearestChest" :
-      return "ItemForceIntoNearestChest";
-    case "TileEntityUpdate" :
-      return "TileEntityUpdate";
-    case "TileEntityPlace" :
-      return "TileEntityPlace";
-    case "ItemDropModify" :
-      return "ItemDropModify";
-    case "ItemFramePlace" :
-      return "ItemFramePlace";
-    case "ItemDropInstancedUpdate" :
-      return "ItemDropInstancedUpdate";
-    case "EmoteBubble" :
-      return "EmoteBubble";
-    case "ExtraValueSync" :
-      return "ExtraValueSync";
-    case "SocialHandshake" :
-      return "SocialHandshake";
-    case "Unused" :
-      return "Unused";
-    case "PortalKill" :
-      return "PortalKill";
-    case "PlayerTeleportPortal" :
-      return "PlayerTeleportPortal";
-    case "NpcKilledNotification" :
-      return "NpcKilledNotification";
-    case "EventNotification" :
-      return "EventNotification";
-    case "MinionTargetUpdate" :
-      return "MinionTargetUpdate";
-    case "NpcTeleportPortal" :
-      return "NpcTeleportPortal";
-    case "ShieldStrengthsUpdate" :
-      return "ShieldStrengthsUpdate";
-    case "NebulaLevelUp" :
-      return "NebulaLevelUp";
-    case "MoonLordCountdown" :
-      return "MoonLordCountdown";
-    case "NpcShopItem" :
-      return "NpcShopItem";
-    case "GemLockToggle" :
-      return "GemLockToggle";
-    case "SmokePoof" :
-      return "SmokePoof";
-    case "ChatMessageSmart" :
-      return "ChatMessageSmart";
-    case "WiredCannonShot" :
-      return "WiredCannonShot";
-    case "MassWireOperation" :
-      return "MassWireOperation";
-    case "MassWireOperationPay" :
-      return "MassWireOperationPay";
-    case "PartyToggle" :
-      return "PartyToggle";
-    case "TreeGrowFx" :
-      return "TreeGrowFx";
-    case "CrystalInvasionStart" :
-      return "CrystalInvasionStart";
-    case "CrystalInvasionWipeAll" :
-      return "CrystalInvasionWipeAll";
-    case "MinionAttackTargetUpdate" :
-      return "MinionAttackTargetUpdate";
-    case "CrystalInvasionSendWaitTime" :
-      return "CrystalInvasionSendWaitTime";
-    case "PlayerDamage" :
-      return "PlayerDamage";
-    case "PlayerDeath" :
-      return "PlayerDeath";
-    case "CombatTextCreate" :
-      return "CombatTextCreate";
-    case "Emoji" :
-      return "Emoji";
-    case "TileEntityDisplayDollItemSync" :
-      return "TileEntityDisplayDollItemSync";
-    case "TileEntityInteractionRequest" :
-      return "TileEntityInteractionRequest";
-    case "WeaponsRackTryPlacing" :
-      return "WeaponsRackTryPlacing";
-    case "TileEntityHatRackItemSync" :
-      return "TileEntityHatRackItemSync";
-    case "TilePickingSync" :
-      return "TilePickingSync";
-    case "RevengeMarkerSync" :
-      return "RevengeMarkerSync";
-    case "RevengeMarkerRemove" :
-      return "RevengeMarkerRemove";
-    case "GolfBallLandInCup" :
-      return "GolfBallLandInCup";
-    case "ClientFinishConnectingToServer" :
-      return "ClientFinishConnectingToServer";
-    case "NpcFishOut" :
-      return "NpcFishOut";
-    case "NpcTamper" :
-      return "NpcTamper";
-    case "LegacySoundPlay" :
-      return "LegacySoundPlay";
-    case "FoodPlatterTryPlacing" :
-      return "FoodPlatterTryPlacing";
-    case "PlayerLuckFactorsUpdate" :
-      return "PlayerLuckFactorsUpdate";
-    case "PlayerDead" :
-      return "PlayerDead";
-    case "CavernMonsterTypeSync" :
-      return "CavernMonsterTypeSync";
-    case "NpcBuffRemovalRequest" :
-      return "NpcBuffRemovalRequest";
-    case "ClientSyncedInventory" :
-      return "ClientSyncedInventory";
-    case "CountsAsHostForGameplaySet" :
-      return "CountsAsHostForGameplaySet";
-    case "CreditsOrSlimeTransform" :
-      return "CreditsOrSlimeTransform";
-    case "LucyAxeMessage" :
-      return "LucyAxeMessage";
-    case "PiggyBankVoidLensUpdate" :
-      return "PiggyBankVoidLensUpdate";
-    case "DungeonDefendersEventAttemptSkipWait" :
-      return "DungeonDefendersEventAttemptSkipWait";
-    case "HaveDryadDoStardewAnimation" :
-      return "HaveDryadDoStardewAnimation";
-    case "ItemDropShimmeredUpdate" :
-      return "ItemDropShimmeredUpdate";
-    case "ShimmerEffectOrCoinLuck" :
-      return "ShimmerEffectOrCoinLuck";
-    case "LoadoutSwitch" :
-      return "LoadoutSwitch";
-    case "ItemDropProtectedUpdate" :
-      return "ItemDropProtectedUpdate";
-    case "DeadCellsDisplayJarTryPlacing" :
-      return "DeadCellsDisplayJarTryPlacing";
-    case "PlayerSpectate" :
-      return "PlayerSpectate";
-    case "ItemDropClear" :
-      return "ItemDropClear";
-    case "PlayerItemUseSound" :
-      return "PlayerItemUseSound";
-    case "NpcHurtByDebuff" :
-      return "NpcHurtByDebuff";
-    case "Ping" :
-      return "Ping";
-    case "ChestResize" :
-      return "ChestResize";
-    case "LeashedEntityAnchorInsertItem" :
-      return "LeashedEntityAnchorInsertItem";
-    case "PlayerTeamUpdate" :
-      return "PlayerTeamUpdate";
-    case "PlayerTeamSwapSpawn" :
-      return "PlayerTeamSwapSpawn";
-    case "SectionRequest" :
-      return "SectionRequest";
-    case "ItemDropPosition" :
-      return "ItemDropPosition";
-    case "HostToken" :
-      return "HostToken";
-  }
-}
-
 function addPacketContext(packetName, err) {
   return {
     context: "Packet " + packetName + ": " + err.context,
@@ -520,7 +203,7 @@ function makeParsersWithFromServer(packetName, parse, toPacket, toLazyPacket) {
 }
 
 function getParsers(packetType, fromServer) {
-  let packetName = packetTypeName(packetType);
+  let packetName = PacketType$TerrariaPacket.packetName(packetType);
   switch (packetType) {
     case "ConnectRequest" :
       if (fromServer) {
@@ -2704,6 +2387,42 @@ function getParsers(packetType, fromServer) {
           _0: a
         }))
       };
+    case "ServerInfo" :
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers(packetName, Packet_ServerInfo$TerrariaPacket.parse, a => ({
+            TAG: "ServerInfo",
+            _0: a
+          }), a => ({
+            TAG: "ServerInfo",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "ServerInfoFromClient"
+        };
+      }
+    case "PlayerPlatformInfo" :
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "PlayerPlatformInfoFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers(packetName, Packet_PlayerPlatformInfo$TerrariaPacket.parse, a => ({
+            TAG: "PlayerPlatformInfo",
+            _0: a
+          }), a => ({
+            TAG: "PlayerPlatformInfo",
+            _0: a
+          }))
+        };
+      }
   }
 }
 

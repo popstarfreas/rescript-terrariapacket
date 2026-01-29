@@ -156,6 +156,8 @@ type t =
   | SectionRequest
   | ItemDropPosition
   | HostToken
+  | ServerInfo
+  | PlayerPlatformInfo
 
 let fromInt = n =>
   switch n {
@@ -316,6 +318,8 @@ let fromInt = n =>
   | 159 => Some(SectionRequest)
   | 160 => Some(ItemDropPosition)
   | 161 => Some(HostToken)
+  | 162 => Some(ServerInfo)
+  | 163 => Some(PlayerPlatformInfo)
   | _ => None
   }
 
@@ -478,6 +482,8 @@ let toInt = self =>
   | SectionRequest => 159
   | ItemDropPosition => 160
   | HostToken => 161
+  | ServerInfo => 162
+  | PlayerPlatformInfo => 163
   }
 
 let packetName = (packetType: t): string =>
@@ -639,4 +645,6 @@ let packetName = (packetType: t): string =>
   | SectionRequest => "SectionRequest"
   | ItemDropPosition => "ItemDropPosition"
   | HostToken => "HostToken"
+  | ServerInfo => "ServerInfo"
+  | PlayerPlatformInfo => "PlayerPlatformInfo"
   }

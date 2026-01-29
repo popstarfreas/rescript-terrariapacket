@@ -317,6 +317,10 @@ function fromInt(n) {
       return "ItemDropPosition";
     case 161 :
       return "HostToken";
+    case 162 :
+      return "ServerInfo";
+    case 163 :
+      return "PlayerPlatformInfo";
     default:
       return;
   }
@@ -638,6 +642,10 @@ function toInt(self) {
       return 160;
     case "HostToken" :
       return 161;
+    case "ServerInfo" :
+      return 162;
+    case "PlayerPlatformInfo" :
+      return 163;
   }
 }
 
@@ -957,6 +965,10 @@ function packetName(packetType) {
       return "ItemDropPosition";
     case "HostToken" :
       return "HostToken";
+    case "ServerInfo" :
+      return "ServerInfo";
+    case "PlayerPlatformInfo" :
+      return "PlayerPlatformInfo";
   }
 }
 

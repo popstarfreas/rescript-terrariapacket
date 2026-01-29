@@ -1,164 +1,3 @@
-let packetTypeName = (packetType: PacketType.t): string =>
-  switch packetType {
-  | ConnectRequest => "ConnectRequest"
-  | Disconnect => "Disconnect"
-  | PlayerSlotSet => "PlayerSlotSet"
-  | PlayerInfo => "PlayerInfo"
-  | PlayerInventorySlot => "PlayerInventorySlot"
-  | WorldDataRequest => "WorldDataRequest"
-  | WorldInfo => "WorldInfo"
-  | InitialTileSectionsRequest => "InitialTileSectionsRequest"
-  | Status => "Status"
-  | TileSectionSend => "TileSectionSend"
-  | TileSectionFrame => "TileSectionFrame"
-  | PlayerSpawn => "PlayerSpawn"
-  | PlayerUpdate => "PlayerUpdate"
-  | PlayerActive => "PlayerActive"
-  | PlayerHealth => "PlayerHealth"
-  | TileModify => "TileModify"
-  | TimeSet => "TimeSet"
-  | DoorUse => "DoorUse"
-  | TileSquareSend => "TileSquareSend"
-  | ItemDropUpdate => "ItemDropUpdate"
-  | ItemOwner => "ItemOwner"
-  | NpcUpdate => "NpcUpdate"
-  | NpcItemStrike => "NpcItemStrike"
-  | ProjectileSync => "ProjectileSync"
-  | NpcStrike => "NpcStrike"
-  | ProjectileDestroy => "ProjectileDestroy"
-  | PvpToggle => "PvpToggle"
-  | ChestOpen => "ChestOpen"
-  | ChestItem => "ChestItem"
-  | ActiveContainerSync => "ActiveContainerSync"
-  | ChestPlace => "ChestPlace"
-  | HealEffect => "HealEffect"
-  | Zones => "Zones"
-  | PasswordRequired => "PasswordRequired"
-  | PasswordSend => "PasswordSend"
-  | ItemOwnerRemove => "ItemOwnerRemove"
-  | NpcTalk => "NpcTalk"
-  | PlayerAnimation => "PlayerAnimation"
-  | PlayerMana => "PlayerMana"
-  | ManaEffect => "ManaEffect"
-  | PlayerTeam => "PlayerTeam"
-  | SignRead => "SignRead"
-  | SignNew => "SignNew"
-  | LiquidSet => "LiquidSet"
-  | PlayerSpawnSelf => "PlayerSpawnSelf"
-  | PlayerBuffsSet => "PlayerBuffsSet"
-  | NpcSpecialEffect => "NpcSpecialEffect"
-  | ChestOrTempleUnlock => "ChestOrTempleUnlock"
-  | NpcBuffAdd => "NpcBuffAdd"
-  | NpcBuffUpdate => "NpcBuffUpdate"
-  | PlayerBuffAdd => "PlayerBuffAdd"
-  | NpcNameUpdate => "NpcNameUpdate"
-  | GoodEvilUpdate => "GoodEvilUpdate"
-  | HarpPlay => "HarpPlay"
-  | SwitchHit => "SwitchHit"
-  | NpcHomeUpdate => "NpcHomeUpdate"
-  | BossOrInvasionSpawn => "BossOrInvasionSpawn"
-  | PlayerDodge => "PlayerDodge"
-  | TilePaint => "TilePaint"
-  | WallPaint => "WallPaint"
-  | Teleport => "Teleport"
-  | PlayerHealOther => "PlayerHealOther"
-  | DimensionsUpdate => "DimensionsUpdate"
-  | ClientUuid => "ClientUuid"
-  | ChestName => "ChestName"
-  | NpcCatch => "NpcCatch"
-  | NpcRelease => "NpcRelease"
-  | TravellingMerchantInventory => "TravellingMerchantInventory"
-  | TeleportationPotion => "TeleportationPotion"
-  | AnglerQuest => "AnglerQuest"
-  | AnglerQuestComplete => "AnglerQuestComplete"
-  | AnglerQuestsCompletedAmount => "AnglerQuestsCompletedAmount"
-  | TemporaryAnimationCreate => "TemporaryAnimationCreate"
-  | InvasionProgressReport => "InvasionProgressReport"
-  | ObjectPlace => "ObjectPlace"
-  | PlayerChestIndexSync => "PlayerChestIndexSync"
-  | CombatNumberCreate => "CombatNumberCreate"
-  | NetModuleLoad => "NetModuleLoad"
-  | NpcKillCount => "NpcKillCount"
-  | PlayerStealth => "PlayerStealth"
-  | ItemForceIntoNearestChest => "ItemForceIntoNearestChest"
-  | TileEntityUpdate => "TileEntityUpdate"
-  | TileEntityPlace => "TileEntityPlace"
-  | ItemDropModify => "ItemDropModify"
-  | ItemFramePlace => "ItemFramePlace"
-  | ItemDropInstancedUpdate => "ItemDropInstancedUpdate"
-  | EmoteBubble => "EmoteBubble"
-  | ExtraValueSync => "ExtraValueSync"
-  | SocialHandshake => "SocialHandshake"
-  | Unused => "Unused"
-  | PortalKill => "PortalKill"
-  | PlayerTeleportPortal => "PlayerTeleportPortal"
-  | NpcKilledNotification => "NpcKilledNotification"
-  | EventNotification => "EventNotification"
-  | MinionTargetUpdate => "MinionTargetUpdate"
-  | NpcTeleportPortal => "NpcTeleportPortal"
-  | ShieldStrengthsUpdate => "ShieldStrengthsUpdate"
-  | NebulaLevelUp => "NebulaLevelUp"
-  | MoonLordCountdown => "MoonLordCountdown"
-  | NpcShopItem => "NpcShopItem"
-  | GemLockToggle => "GemLockToggle"
-  | SmokePoof => "SmokePoof"
-  | ChatMessageSmart => "ChatMessageSmart"
-  | WiredCannonShot => "WiredCannonShot"
-  | MassWireOperation => "MassWireOperation"
-  | MassWireOperationPay => "MassWireOperationPay"
-  | PartyToggle => "PartyToggle"
-  | TreeGrowFx => "TreeGrowFx"
-  | CrystalInvasionStart => "CrystalInvasionStart"
-  | CrystalInvasionWipeAll => "CrystalInvasionWipeAll"
-  | MinionAttackTargetUpdate => "MinionAttackTargetUpdate"
-  | CrystalInvasionSendWaitTime => "CrystalInvasionSendWaitTime"
-  | PlayerDamage => "PlayerDamage"
-  | PlayerDeath => "PlayerDeath"
-  | CombatTextCreate => "CombatTextCreate"
-  | Emoji => "Emoji"
-  | TileEntityDisplayDollItemSync => "TileEntityDisplayDollItemSync"
-  | TileEntityInteractionRequest => "TileEntityInteractionRequest"
-  | WeaponsRackTryPlacing => "WeaponsRackTryPlacing"
-  | TileEntityHatRackItemSync => "TileEntityHatRackItemSync"
-  | TilePickingSync => "TilePickingSync"
-  | RevengeMarkerSync => "RevengeMarkerSync"
-  | RevengeMarkerRemove => "RevengeMarkerRemove"
-  | GolfBallLandInCup => "GolfBallLandInCup"
-  | ClientFinishConnectingToServer => "ClientFinishConnectingToServer"
-  | NpcFishOut => "NpcFishOut"
-  | NpcTamper => "NpcTamper"
-  | LegacySoundPlay => "LegacySoundPlay"
-  | FoodPlatterTryPlacing => "FoodPlatterTryPlacing"
-  | PlayerLuckFactorsUpdate => "PlayerLuckFactorsUpdate"
-  | PlayerDead => "PlayerDead"
-  | CavernMonsterTypeSync => "CavernMonsterTypeSync"
-  | NpcBuffRemovalRequest => "NpcBuffRemovalRequest"
-  | ClientSyncedInventory => "ClientSyncedInventory"
-  | CountsAsHostForGameplaySet => "CountsAsHostForGameplaySet"
-  | CreditsOrSlimeTransform => "CreditsOrSlimeTransform"
-  | LucyAxeMessage => "LucyAxeMessage"
-  | PiggyBankVoidLensUpdate => "PiggyBankVoidLensUpdate"
-  | DungeonDefendersEventAttemptSkipWait => "DungeonDefendersEventAttemptSkipWait"
-  | HaveDryadDoStardewAnimation => "HaveDryadDoStardewAnimation"
-  | ItemDropShimmeredUpdate => "ItemDropShimmeredUpdate"
-  | ShimmerEffectOrCoinLuck => "ShimmerEffectOrCoinLuck"
-  | LoadoutSwitch => "LoadoutSwitch"
-  | ItemDropProtectedUpdate => "ItemDropProtectedUpdate"
-  | DeadCellsDisplayJarTryPlacing => "DeadCellsDisplayJarTryPlacing"
-  | PlayerSpectate => "PlayerSpectate"
-  | ItemDropClear => "ItemDropClear"
-  | PlayerItemUseSound => "PlayerItemUseSound"
-  | NpcHurtByDebuff => "NpcHurtByDebuff"
-  | Ping => "Ping"
-  | ChestResize => "ChestResize"
-  | LeashedEntityAnchorInsertItem => "LeashedEntityAnchorInsertItem"
-  | PlayerTeamUpdate => "PlayerTeamUpdate"
-  | PlayerTeamSwapSpawn => "PlayerTeamSwapSpawn"
-  | SectionRequest => "SectionRequest"
-  | ItemDropPosition => "ItemDropPosition"
-  | HostToken => "HostToken"
-  }
-
 let addPacketContext = (
   ~packetName,
   err: ErrorAwarePacketReader.readError,
@@ -214,7 +53,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
   parsers,
   IParser.parseError,
 > => {
-  let packetName = packetTypeName(packetType)
+  let packetName = PacketType.packetName(packetType)
   switch (packetType, fromServer) {
   | (ConnectRequest, true) => Error(ConnectRequestFromServer)
   | (ConnectRequest, false) =>
@@ -1694,6 +1533,26 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
         ~parse=Packet.HostToken.parse,
         ~toPacket=a => Packet.HostToken(a),
         ~toLazyPacket=a => Packet.LazyPacket.HostToken(a),
+      ),
+    )
+  | (ServerInfo, false) => Error(ServerInfoFromClient)
+  | (ServerInfo, true) =>
+    Ok(
+      makeParsers(
+        ~packetName,
+        ~parse=Packet.ServerInfo.parse,
+        ~toPacket=a => Packet.ServerInfo(a),
+        ~toLazyPacket=a => Packet.LazyPacket.ServerInfo(a),
+      ),
+    )
+  | (PlayerPlatformInfo, true) => Error(PlayerPlatformInfoFromServer)
+  | (PlayerPlatformInfo, false) =>
+    Ok(
+      makeParsers(
+        ~packetName,
+        ~parse=Packet.PlayerPlatformInfo.parse,
+        ~toPacket=a => Packet.PlayerPlatformInfo(a),
+        ~toLazyPacket=a => Packet.LazyPacket.PlayerPlatformInfo(a),
       ),
     )
   }

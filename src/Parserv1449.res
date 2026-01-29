@@ -144,19 +144,7 @@ let packetTypeName = (packetType: PacketType.t): string =>
   | ShimmerEffectOrCoinLuck => "ShimmerEffectOrCoinLuck"
   | LoadoutSwitch => "LoadoutSwitch"
   | ItemDropProtectedUpdate => "ItemDropProtectedUpdate"
-  | DeadCellsDisplayJarTryPlacing => "DeadCellsDisplayJarTryPlacing"
-  | PlayerSpectate => "PlayerSpectate"
-  | ItemDropClear => "ItemDropClear"
-  | PlayerItemUseSound => "PlayerItemUseSound"
-  | NpcHurtByDebuff => "NpcHurtByDebuff"
-  | Ping => "Ping"
-  | ChestResize => "ChestResize"
-  | LeashedEntityAnchorInsertItem => "LeashedEntityAnchorInsertItem"
-  | PlayerTeamUpdate => "PlayerTeamUpdate"
-  | PlayerTeamSwapSpawn => "PlayerTeamSwapSpawn"
-  | SectionRequest => "SectionRequest"
-  | ItemDropPosition => "ItemDropPosition"
-  | HostToken => "HostToken"
+  | _ => throw(Failure("Unknown packet type: " ++ PacketType.packetName(packetType)))
   }
 
 let addPacketContext = (

@@ -155,6 +155,8 @@ module PlayerTeamSwapSpawn = Packet_PlayerTeamSwapSpawn
 module SectionRequest = Packet_SectionRequest
 module ItemDropPosition = Packet_ItemDropPosition
 module HostToken = Packet_HostToken
+module ServerInfo = Packet_ServerInfo
+module PlayerPlatformInfo = Packet_PlayerPlatformInfo
 
 type t =
   | ConnectRequest(ConnectRequest.t)
@@ -314,6 +316,8 @@ type t =
   | SectionRequest(SectionRequest.t)
   | ItemDropPosition(ItemDropPosition.t)
   | HostToken(HostToken.t)
+  | ServerInfo(ServerInfo.t)
+  | PlayerPlatformInfo(PlayerPlatformInfo.t)
 
 type direction =
   | ServerOnly
@@ -479,6 +483,8 @@ let packetTypeOf = (packet: t): PacketType.t =>
   | SectionRequest(_) => PacketType.SectionRequest
   | ItemDropPosition(_) => PacketType.ItemDropPosition
   | HostToken(_) => PacketType.HostToken
+  | ServerInfo(_) => PacketType.ServerInfo
+  | PlayerPlatformInfo(_) => PacketType.PlayerPlatformInfo
   }
 
 let directionOfPacketType = (packetType: PacketType.t): direction =>
@@ -506,7 +512,8 @@ let directionOfPacketType = (packetType: PacketType.t): direction =>
   | NpcFishOut
   | FoodPlatterTryPlacing
   | NpcBuffRemovalRequest
-  | ClientSyncedInventory =>
+  | ClientSyncedInventory
+  | PlayerPlatformInfo =>
     ClientOnly
   | Disconnect
   | PlayerSlotSet
@@ -548,7 +555,8 @@ let directionOfPacketType = (packetType: PacketType.t): direction =>
   | ClientFinishConnectingToServer
   | NpcTamper
   | LegacySoundPlay
-  | PlayerDead =>
+  | PlayerDead
+  | ServerInfo =>
     ServerOnly
   | _ => Both
   }
@@ -735,6 +743,8 @@ module LazyPacket = {
     | SectionRequest(lazyParsed<SectionRequest.t>)
     | ItemDropPosition(lazyParsed<ItemDropPosition.t>)
     | HostToken(lazyParsed<HostToken.t>)
+    | ServerInfo(lazyParsed<ServerInfo.t>)
+    | PlayerPlatformInfo(lazyParsed<PlayerPlatformInfo.t>)
 
   let packetTypeOf = (packet: t): PacketType.t =>
     switch packet {
@@ -895,6 +905,8 @@ module LazyPacket = {
     | SectionRequest(_) => PacketType.SectionRequest
     | ItemDropPosition(_) => PacketType.ItemDropPosition
     | HostToken(_) => PacketType.HostToken
+    | ServerInfo(_) => PacketType.ServerInfo
+    | PlayerPlatformInfo(_) => PacketType.PlayerPlatformInfo
     }
 
   let toPacketName = (packet: t): string => packet->packetTypeOf->PacketType.packetName
@@ -1173,6 +1185,9 @@ let toBuffer = (packet: t, fromServer: bool): ISerializer.toBufferResult => {
     | ItemDropPosition(itemDropPosition) =>
       ItemDropPosition.toBuffer(itemDropPosition)->ISerializer.toBufferResult
     | HostToken(hostToken) => HostToken.toBuffer(hostToken)->ISerializer.toBufferResult
+    | ServerInfo(serverInfo) => ServerInfo.toBuffer(serverInfo)->ISerializer.toBufferResult
+    | PlayerPlatformInfo(playerPlatformInfo) =>
+      PlayerPlatformInfo.toBuffer(playerPlatformInfo)->ISerializer.toBufferResult
     }
   }
 }
@@ -1367,5 +1382,7 @@ let toPacketName = (packet: t): string => {
   | SectionRequest(_sectionRequest) => "SectionRequest"
   | ItemDropPosition(_itemDropPosition) => "ItemDropPosition"
   | HostToken(_hostToken) => "HostToken"
+  | ServerInfo(_serverInfo) => "ServerInfo"
+  | PlayerPlatformInfo(_playerPlatformInfo) => "PlayerPlatformInfo"
   }
 }

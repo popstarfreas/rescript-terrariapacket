@@ -68,6 +68,8 @@ module ParseError = {
     | PlayerDeadFromClient
     | NpcBuffRemovalRequestFromServer
     | ClientSyncedInventoryFromServer
+    | ServerInfoFromClient
+    | PlayerPlatformInfoFromServer
     | NotImplemented
     | InvalidPacketLength(int)
     | InvalidPacketType(int)
@@ -163,6 +165,8 @@ module ParseError = {
     | NpcTamperFromClient => serverOnlyFromClientError("NpcTamper")
     | LegacySoundPlayFromClient => serverOnlyFromClientError("LegacySoundPlay")
     | PlayerDeadFromClient => serverOnlyFromClientError("PlayerDead")
+    | ServerInfoFromClient => serverOnlyFromClientError("ServerInfo")
+    | PlayerPlatformInfoFromServer => serverOnlyFromClientError("PlayerPlatformInfo")
     | IgnoredPacket => "Packet was ignored"
     }
 }

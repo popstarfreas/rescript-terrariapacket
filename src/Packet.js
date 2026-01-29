@@ -14,6 +14,7 @@ import * as Packet_NpcUpdate$TerrariaPacket from "./packet/Packet_NpcUpdate.js";
 import * as Packet_WorldInfo$TerrariaPacket from "./packet/Packet_WorldInfo.js";
 import * as PacketV1449_Emoji$TerrariaPacket from "./packetv1449/PacketV1449_Emoji.js";
 import * as Packet_PlayerInfo$TerrariaPacket from "./packet/Packet_PlayerInfo.js";
+import * as Packet_ServerInfo$TerrariaPacket from "./packet/Packet_ServerInfo.js";
 import * as PacketV1449_Status$TerrariaPacket from "./packetv1449/PacketV1449_Status.js";
 import * as Packet_ChestResize$TerrariaPacket from "./packet/Packet_ChestResize.js";
 import * as Packet_PlayerSpawn$TerrariaPacket from "./packet/Packet_PlayerSpawn.js";
@@ -82,6 +83,7 @@ import * as PacketV1449_PlayerBuffAdd$TerrariaPacket from "./packetv1449/PacketV
 import * as PacketV1449_PlayerSlotSet$TerrariaPacket from "./packetv1449/PacketV1449_PlayerSlotSet.js";
 import * as PacketV1449_PlayerStealth$TerrariaPacket from "./packetv1449/PacketV1449_PlayerStealth.js";
 import * as Packet_PlayerItemUseSound$TerrariaPacket from "./packet/Packet_PlayerItemUseSound.js";
+import * as Packet_PlayerPlatformInfo$TerrariaPacket from "./packet/Packet_PlayerPlatformInfo.js";
 import * as PacketV1449_ConnectRequest$TerrariaPacket from "./packetv1449/PacketV1449_ConnectRequest.js";
 import * as PacketV1449_ExtraValueSync$TerrariaPacket from "./packetv1449/PacketV1449_ExtraValueSync.js";
 import * as PacketV1449_GoodEvilUpdate$TerrariaPacket from "./packetv1449/PacketV1449_GoodEvilUpdate.js";
@@ -477,6 +479,10 @@ function packetTypeOf(packet) {
       return "ItemDropPosition";
     case "HostToken" :
       return "HostToken";
+    case "ServerInfo" :
+      return "ServerInfo";
+    case "PlayerPlatformInfo" :
+      return "PlayerPlatformInfo";
   }
 }
 
@@ -523,6 +529,7 @@ function directionOfPacketType(packetType) {
     case "NpcTamper" :
     case "LegacySoundPlay" :
     case "PlayerDead" :
+    case "ServerInfo" :
       return "ServerOnly";
     case "ConnectRequest" :
     case "WorldDataRequest" :
@@ -548,6 +555,7 @@ function directionOfPacketType(packetType) {
     case "FoodPlatterTryPlacing" :
     case "NpcBuffRemovalRequest" :
     case "ClientSyncedInventory" :
+    case "PlayerPlatformInfo" :
       return "ClientOnly";
     default:
       return "Both";
@@ -900,6 +908,10 @@ function packetTypeOf$1(packet) {
       return "ItemDropPosition";
     case "HostToken" :
       return "HostToken";
+    case "ServerInfo" :
+      return "ServerInfo";
+    case "PlayerPlatformInfo" :
+      return "PlayerPlatformInfo";
   }
 }
 
@@ -1227,6 +1239,10 @@ function toBuffer(packet, fromServer) {
       return ISerializer$TerrariaPacket.toBufferResult(Packet_ItemDropPosition$TerrariaPacket.toBuffer(packet._0));
     case "HostToken" :
       return ISerializer$TerrariaPacket.toBufferResult(Packet_HostToken$TerrariaPacket.toBuffer(packet._0));
+    case "ServerInfo" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_ServerInfo$TerrariaPacket.toBuffer(packet._0));
+    case "PlayerPlatformInfo" :
+      return ISerializer$TerrariaPacket.toBufferResult(Packet_PlayerPlatformInfo$TerrariaPacket.toBuffer(packet._0));
   }
 }
 
@@ -1601,6 +1617,10 @@ function toPacketName$1(packet) {
       return "ItemDropPosition";
     case "HostToken" :
       return "HostToken";
+    case "ServerInfo" :
+      return "ServerInfo";
+    case "PlayerPlatformInfo" :
+      return "PlayerPlatformInfo";
   }
 }
 
@@ -1918,6 +1938,10 @@ let ItemDropPosition;
 
 let HostToken;
 
+let ServerInfo;
+
+let PlayerPlatformInfo;
+
 let LazyPacket = {
   toPacketName: toPacketName
 };
@@ -2080,6 +2104,8 @@ export {
   SectionRequest,
   ItemDropPosition,
   HostToken,
+  ServerInfo,
+  PlayerPlatformInfo,
   LazyPacket,
   toBuffer,
   toPacketName$1 as toPacketName,
