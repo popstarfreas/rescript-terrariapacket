@@ -10,7 +10,7 @@ type t = {
 }
 
 module Decode = {
-  let {readInt32, readByte, readUInt16, readSByte, readInt16} = module(ErrorAwarePacketReader)
+  let {readInt32, readByte, readUInt16, readInt16} = module(ErrorAwarePacketReader)
   let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
     let? Ok(id) = reader->readInt32("id")
@@ -20,20 +20,22 @@ module Decode = {
     } else {
       let? Ok(anchorMeta) = reader->readUInt16("anchorMeta")
       let? Ok(time) = reader->readUInt16("time")
-      let? Ok(emote) = reader->readSByte("emote")
-      let metadata = if emote < 0 {
-        reader->readInt16("metadata")->Result.map(v => Some(v))
+      // Emote is written as byte but can represent -1 (NPC head) as 255
+      // Metadata is only present when the original emote value was negative (i.e., -1 sent as 255)
+      let? Ok(emoteByte) = reader->readByte("emote")
+      if emoteByte == 255 {
+        // 255 represents -1 (NPC head display), metadata follows
+        let? Ok(meta) = reader->readInt16("metadata")
+        Ok({id, anchor: Anchor({anchorType, anchorMeta, time, emote: -1, metadata: Some(meta)})})
       } else {
-        Ok(None)
+        Ok({id, anchor: Anchor({anchorType, anchorMeta, time, emote: emoteByte, metadata: None})})
       }
-      let? Ok(metadata) = metadata
-      Ok({id, anchor: Anchor({anchorType, anchorMeta, time, emote, metadata})})
     }
   }
 }
 
 module Encode = {
-  let {packInt32, packByte, packUInt16, packSByte, packInt16, setType, data} = module(
+  let {packInt32, packByte, packUInt16, packInt16, setType, data} = module(
     ErrorAwarePacketWriter
   )
   let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
@@ -44,13 +46,19 @@ module Encode = {
     switch self.anchor {
     | Remove => writer->packByte(255, "anchorType")->data
     | Anchor(details) => {
+        // Emote -1 (NPC head) is written as 255, otherwise write the emote value as-is
+        let emoteByte = if details.emote == -1 {
+          255
+        } else {
+          details.emote
+        }
         let writer =
           writer
           ->packByte(details.anchorType, "anchorType")
           ->packUInt16(details.anchorMeta, "anchorMeta")
           ->packUInt16(details.time, "time")
-          ->packSByte(details.emote, "emote")
-        let writer = if details.emote < 0 {
+          ->packByte(emoteByte, "emote")
+        let writer = if details.emote == -1 {
           writer->packInt16(
             switch details.metadata {
             | Some(v) => v
