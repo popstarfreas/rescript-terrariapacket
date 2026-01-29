@@ -3069,6 +3069,7 @@ let latestToV1449 = (packet: Packet.t): PacketV1449.t => {
       | Packet.Teleport.Player => PacketV1449.Teleport.Player
       | Packet.Teleport.Npc => PacketV1449.Teleport.Npc
       | Packet.Teleport.PlayerToPlayer => PacketV1449.Teleport.PlayerToPlayer
+      // Should be discarded by previous code
       | Packet.Teleport.TeleportAck => PacketV1449.Teleport.Player
       },
       getPositionFromTarget: teleport.getPositionFromTarget,
@@ -3289,6 +3290,7 @@ let convertToV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): resu
               )
             | None => DiscardAsNotExists
             }
+          | Teleport({teleportType: Packet.Teleport.TeleportAck}) => DiscardAsNotExists
           | NetModuleLoad(netModuleLoad) =>
             switch netModuleLoadToV1449(netModuleLoad) {
             | Some(converted) => ConvertedToV1449(PacketV1449.NetModuleLoad(converted))
