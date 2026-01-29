@@ -64,7 +64,10 @@ module Entity = {
     entityKind: kind,
   }
 
-  let parseTrainingDummyKind = (reader): result<trainingDummy, ErrorAwarePacketReader.readError> => {
+  let parseTrainingDummyKind = (reader): result<
+    trainingDummy,
+    ErrorAwarePacketReader.readError,
+  > => {
     let? Ok(npcSlotId) = reader->readInt16("npcSlotId")
     Ok({npcSlotId: npcSlotId})
   }
@@ -226,7 +229,10 @@ module Entity = {
   let parseFoodPlatterKind = parseDisplayItem
   let parseDeadCellsDisplayJarKind = parseDisplayItem
 
-  let parseLeashedEntityAnchorKind = (reader): result<leashedEntityAnchor, ErrorAwarePacketReader.readError> => {
+  let parseLeashedEntityAnchorKind = (reader): result<
+    leashedEntityAnchor,
+    ErrorAwarePacketReader.readError,
+  > => {
     let? Ok(itemType) = reader->readInt16("itemType")
     Ok({itemType: itemType})
   }
@@ -268,7 +274,6 @@ module Entity = {
       y,
       entityKind,
     }
-    Console.log(NodeJs.Util.inspect(entity, {depth: 10}))
     Ok(entity)
   }
 
@@ -291,7 +296,14 @@ module Entity = {
   let packLogicSensor = (writer, logicSensorKind): bufferWriter => {
     writer
     ->packByte(logicSensorKind.checkType, "checkType")
-    ->packByte(if logicSensorKind.on { 1 } else { 0 }, "on")
+    ->packByte(
+      if logicSensorKind.on {
+        1
+      } else {
+        0
+      },
+      "on",
+    )
   }
 
   let hasItem = (arr, n) => {
@@ -410,7 +422,10 @@ module Entity = {
   let packFoodPlatter = packDisplayItem
   let packDeadCellsDisplayJar = packDisplayItem
 
-  let packLeashedEntityAnchor = (writer: bufferWriter, leashedEntityAnchor: leashedEntityAnchor): bufferWriter => {
+  let packLeashedEntityAnchor = (
+    writer: bufferWriter,
+    leashedEntityAnchor: leashedEntityAnchor,
+  ): bufferWriter => {
     writer->packInt16(leashedEntityAnchor.itemType, "itemType")
   }
 
