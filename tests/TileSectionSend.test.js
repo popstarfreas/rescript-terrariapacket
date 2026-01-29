@@ -61,10 +61,6 @@ function tt(t, data) {
     if (data2.TAG === "Ok") {
       let a = data$1.toString("hex");
       let b = data2._0.toString("hex");
-      let aLen = a.length;
-      let bLen = b.length;
-      console.log("a start vs b start", a.slice(0, 12), b.slice(0, 12));
-      console.log("a end vs b end", a.slice(aLen - 12 | 0, aLen), b.slice(bLen - 12 | 0, bLen));
       t.ok(a === b);
       return;
     }
@@ -82,10 +78,6 @@ function ttv145(t, data) {
     if (data2.TAG === "Ok") {
       let a = data$1.toString("hex");
       let b = data2._0.toString("hex");
-      let aLen = a.length;
-      let bLen = b.length;
-      console.log("a start vs b start", a.slice(0, 12), b.slice(0, 12));
-      console.log("a end vs b end", a.slice(aLen - 12 | 0, aLen), b.slice(bLen - 12 | 0, bLen));
       t.ok(a === b);
       return;
     }

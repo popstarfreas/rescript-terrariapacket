@@ -8,11 +8,10 @@ import Packetreader from "@popstarfreas/packetfactory/packetreader";
 function parse(payload) {
   let reader = new Packetreader(payload);
   let items = [];
-  let totalItems = payload.length / 2 | 0;
   let readItems = _idx => {
     while (true) {
       let idx = _idx;
-      if (idx >= totalItems) {
+      if (idx >= 40) {
         return {
           TAG: "Ok",
           _0: undefined

@@ -399,7 +399,6 @@ module Entity = {
       y,
       entityKind,
     }
-    Console.log(NodeJs.Util.inspect(entity, {depth: 10}))
     Ok(entity)
   }
 

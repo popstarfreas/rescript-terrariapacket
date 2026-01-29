@@ -6,11 +6,12 @@ import * as ErrorAwarePacketWriter$TerrariaPacket from "../ErrorAwarePacketWrite
 import Packetreader from "@popstarfreas/packetfactory/packetreader";
 
 function tryReading(reader, context) {
-  let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, context);
+  let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, context + "_ownerIndex");
   if (e.TAG !== "Ok") {
     return e;
   }
-  if (e._0 !== -1) {
+  let ownerIndex = e._0;
+  if (ownerIndex === -1) {
     return {
       TAG: "Ok",
       _0: undefined
@@ -25,6 +26,7 @@ function tryReading(reader, context) {
     return {
       TAG: "Ok",
       _0: {
+        ownerIndex: ownerIndex,
         expectedIdentity: e$1._0,
         expectedType: e$2._0
       }
@@ -34,11 +36,11 @@ function tryReading(reader, context) {
   }
 }
 
-function pack(writer, self) {
+function pack(writer, self, context) {
   if (self !== undefined) {
-    return ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, self.expectedIdentity, "expectedIdentity"), self.expectedType, "expectedType");
+    return ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, self.ownerIndex, context + "_ownerIndex"), self.expectedIdentity, context + "_expectedIdentity"), self.expectedType, context + "_expectedType");
   } else {
-    return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -1, "trackedProjectileReference");
+    return ErrorAwarePacketWriter$TerrariaPacket.packInt16(writer, -1, context + "_ownerIndex");
   }
 }
 
@@ -68,7 +70,7 @@ function parse(payload) {
 }
 
 function toBuffer(self) {
-  return ErrorAwarePacketWriter$TerrariaPacket.data(pack(pack(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PiggyBankVoidLensUpdate")), self.playerId, "playerId"), self.piggyBankProj), self.voidLensChest));
+  return ErrorAwarePacketWriter$TerrariaPacket.data(pack(pack(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PiggyBankVoidLensUpdate")), self.playerId, "playerId"), self.piggyBankProj, "piggyBankProj"), self.voidLensChest, "voidLensChest"));
 }
 
 let TrackedProjectileReference = {};

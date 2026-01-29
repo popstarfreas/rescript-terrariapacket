@@ -16150,11 +16150,10 @@ __export(Packet_TravellingMerchantInventory_exports, {
 function parse69(payload) {
   let reader = new packetreader_default(payload);
   let items = [];
-  let totalItems = payload.length / 2 | 0;
   let readItems = (_idx) => {
     while (true) {
       let idx = _idx;
-      if (idx >= totalItems) {
+      if (idx >= 40) {
         return {
           TAG: "Ok",
           _0: void 0
@@ -21427,11 +21426,12 @@ function parse156(payload) {
 
 // src/packetv1449/PacketV1449_PiggyBankVoidLensUpdate.js
 function tryReading(reader, context) {
-  let e = readInt16(reader, context);
+  let e = readInt16(reader, context + "_ownerIndex");
   if (e.TAG !== "Ok") {
     return e;
   }
-  if (e._0 !== -1) {
+  let ownerIndex = e._0;
+  if (ownerIndex === -1) {
     return {
       TAG: "Ok",
       _0: void 0
@@ -21446,6 +21446,7 @@ function tryReading(reader, context) {
     return {
       TAG: "Ok",
       _0: {
+        ownerIndex,
         expectedIdentity: e$1._0,
         expectedType: e$2._0
       }
@@ -22397,23 +22398,16 @@ function getParsers(packetType, fromServer) {
         };
       }
     case "ItemOwnerRemove":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers(packetName2, parse20, (a) => ({
-            TAG: "ItemOwnerRemove",
-            _0: a
-          }), (a) => ({
-            TAG: "ItemOwnerRemove",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "ItemOwnerRemoveFromClient"
-        };
-      }
+      return {
+        TAG: "Ok",
+        _0: makeParsers(packetName2, parse20, (a) => ({
+          TAG: "ItemOwnerRemove",
+          _0: a
+        }), (a) => ({
+          TAG: "ItemOwnerRemove",
+          _0: a
+        }))
+      };
     case "NpcTalk":
       return {
         TAG: "Ok",

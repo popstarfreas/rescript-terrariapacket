@@ -1013,23 +1013,16 @@ function getParsers(packetType, fromServer) {
         };
       }
     case "ItemOwnerRemove" :
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers(packetName, PacketV1449_ItemOwnerRemove$TerrariaPacket.parse, a => ({
-            TAG: "ItemOwnerRemove",
-            _0: a
-          }), a => ({
-            TAG: "ItemOwnerRemove",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "ItemOwnerRemoveFromClient"
-        };
-      }
+      return {
+        TAG: "Ok",
+        _0: makeParsers(packetName, PacketV1449_ItemOwnerRemove$TerrariaPacket.parse, a => ({
+          TAG: "ItemOwnerRemove",
+          _0: a
+        }), a => ({
+          TAG: "ItemOwnerRemove",
+          _0: a
+        }))
+      };
     case "NpcTalk" :
       return {
         TAG: "Ok",

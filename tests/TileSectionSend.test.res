@@ -69,10 +69,6 @@ let tt =  (t, data) => {
       | Ok(data2) =>
         let a = NodeJs.Buffer.toStringWithEncoding(data, NodeJs.StringEncoding.hex)
         let b = NodeJs.Buffer.toStringWithEncoding(data2, NodeJs.StringEncoding.hex)
-        let aLen = String.length(a)
-        let bLen = String.length(b)
-        Console.log3("a start vs b start", String.slice(a, ~start=0, ~end=12), String.slice(b, ~start=0, ~end=12))
-        Console.log3("a end vs b end", String.slice(a, ~start=aLen-12, ~end=aLen), String.slice(b, ~start=bLen-12, ~end=bLen))
         t->ok(a == b)
       }
     }
@@ -93,10 +89,6 @@ let ttv145 =  (t, data) => {
       | Ok(data2) =>
         let a = NodeJs.Buffer.toStringWithEncoding(data, NodeJs.StringEncoding.hex)
         let b = NodeJs.Buffer.toStringWithEncoding(data2, NodeJs.StringEncoding.hex)
-        let aLen = String.length(a)
-        let bLen = String.length(b)
-        Console.log3("a start vs b start", String.slice(a, ~start=0, ~end=12), String.slice(b, ~start=0, ~end=12))
-        Console.log3("a end vs b end", String.slice(a, ~start=aLen-12, ~end=aLen), String.slice(b, ~start=bLen-12, ~end=bLen))
         t->ok(a == b)
       }
     }

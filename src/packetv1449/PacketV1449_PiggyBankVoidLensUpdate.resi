@@ -1,6 +1,7 @@
 module TrackedProjectileReference: {
   @genType
   type t = {
+    ownerIndex: int,
     expectedIdentity: int,
     expectedType: int,
   }

@@ -546,8 +546,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
         ~toLazyPacket=a => Packet.LazyPacket.PasswordSend(a),
       ),
     )
-  | (ItemOwnerRemove, false) => Error(ItemOwnerRemoveFromClient)
-  | (ItemOwnerRemove, true) =>
+  | (ItemOwnerRemove, true | false) =>
     Ok(
       makeParsers(
         ~packetName,

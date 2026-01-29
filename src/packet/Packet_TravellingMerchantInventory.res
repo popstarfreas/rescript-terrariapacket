@@ -6,7 +6,8 @@ module Decode = {
   let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
     let items = []
-    let totalItems = payload->NodeJs.Buffer.length / 2
+    // Main.TravelShopMaxSlots = 40 in both v1449 and v145
+    let totalItems = 40
     let rec readItems = idx =>
       if idx >= totalItems {
         Ok()

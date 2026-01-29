@@ -1,6 +1,7 @@
 module TrackedProjectileReference = {
   @genType
   type t = {
+    ownerIndex: int,
     expectedIdentity: int,
     expectedType: int,
   }
@@ -9,24 +10,27 @@ module TrackedProjectileReference = {
     option<t>,
     ErrorAwarePacketReader.readError,
   > => {
-    let? Ok(marker) = reader->readInt16(context)
-    if marker == -1 {
+    let? Ok(ownerIndex) = reader->readInt16(context ++ "_ownerIndex")
+    // If ownerIndex == -1, nothing is being tracked (no more data follows)
+    // If ownerIndex != -1, read identity and type
+    if ownerIndex == -1 {
+      Ok(None)
+    } else {
       let? Ok(expectedIdentity) = reader->readInt16(context ++ "_expectedIdentity")
       let? Ok(expectedType) = reader->readInt16(context ++ "_expectedType")
-      Ok(Some({expectedIdentity, expectedType}))
-    } else {
-      Ok(None)
+      Ok(Some({ownerIndex, expectedIdentity, expectedType}))
     }
   }
 
   let {packInt16} = module(ErrorAwarePacketWriter)
-  let pack = (writer: ErrorAwarePacketWriter.t, self: option<t>) => {
+  let pack = (writer: ErrorAwarePacketWriter.t, self: option<t>, context: string) => {
     switch self {
-    | None => writer->packInt16(-1, "trackedProjectileReference")
-    | Some({expectedIdentity, expectedType}) =>
+    | None => writer->packInt16(-1, context ++ "_ownerIndex")
+    | Some({ownerIndex, expectedIdentity, expectedType}) =>
       writer
-      ->packInt16(expectedIdentity, "expectedIdentity")
-      ->packInt16(expectedType, "expectedType")
+      ->packInt16(ownerIndex, context ++ "_ownerIndex")
+      ->packInt16(expectedIdentity, context ++ "_expectedIdentity")
+      ->packInt16(expectedType, context ++ "_expectedType")
     }
   }
 }
@@ -61,8 +65,8 @@ module Encode = {
     Writer.make()
     ->setType(PacketType.PiggyBankVoidLensUpdate->PacketType.toInt)
     ->packByte(self.playerId, "playerId")
-    ->TrackedProjectileReference.pack(self.piggyBankProj)
-    ->TrackedProjectileReference.pack(self.voidLensChest)
+    ->TrackedProjectileReference.pack(self.piggyBankProj, "piggyBankProj")
+    ->TrackedProjectileReference.pack(self.voidLensChest, "voidLensChest")
     ->data
   }
 }
