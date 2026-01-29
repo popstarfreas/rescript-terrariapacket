@@ -5167,13 +5167,584 @@ var Decode2 = {
 var Buffer2;
 var maxNpcIndexSentinel = 200;
 
-// src/packetv1449/PacketV1449_NpcBuffRemovalRequest.js
-var PacketV1449_NpcBuffRemovalRequest_exports = {};
-__export(PacketV1449_NpcBuffRemovalRequest_exports, {
+// src/packetv1449/PacketV1449_NetModuleLoad.js
+var PacketV1449_NetModuleLoad_exports = {};
+__export(PacketV1449_NetModuleLoad_exports, {
+  NetModuleType: () => NetModuleType2,
   parse: () => parse24,
   toBuffer: () => toBuffer23
 });
-function parse24(payload) {
+function pylonActionToInt2(pylonAction) {
+  switch (pylonAction) {
+    case "Added":
+      return 0;
+    case "Removed":
+      return 1;
+    case "RequestTeleport":
+      return 2;
+  }
+}
+function powerLevelToInt2(powerLevel) {
+  switch (powerLevel) {
+    case "LockedForEveryone":
+      return 0;
+    case "CanBeChangedByHostAlone":
+      return 1;
+    case "CanBeChangedByEveryone":
+      return 2;
+  }
+}
+function fromInt7(n) {
+  switch (n) {
+    case 0:
+      return "Liquid";
+    case 1:
+      return "Text";
+    case 2:
+      return "Ping";
+    case 3:
+      return "Ambience";
+    case 4:
+      return "Bestiary";
+    case 5:
+      return "CreativeUnlocks";
+    case 6:
+      return "CreativePower";
+    case 7:
+      return "CreativeUnlocksPlayerReport";
+    case 8:
+      return "TeleportPylon";
+    case 9:
+      return "Particles";
+    case 10:
+      return "CreativePowerPermissions";
+    default:
+      return;
+  }
+}
+function toInt7(self) {
+  switch (self) {
+    case "Liquid":
+      return 0;
+    case "Text":
+      return 1;
+    case "Ping":
+      return 2;
+    case "Ambience":
+      return 3;
+    case "Bestiary":
+      return 4;
+    case "CreativeUnlocks":
+      return 5;
+    case "CreativePower":
+      return 6;
+    case "CreativeUnlocksPlayerReport":
+      return 7;
+    case "TeleportPylon":
+      return 8;
+    case "Particles":
+      return 9;
+    case "CreativePowerPermissions":
+      return 10;
+  }
+}
+var NetModuleType2 = {
+  fromInt: fromInt7,
+  toInt: toInt7
+};
+function toBuffer23(self) {
+  switch (self.TAG) {
+    case "Liquid":
+      let liquid = self._0;
+      let writer = packUInt16(packUInt16(setType(make(), toInt("NetModuleLoad")), 0, "moduleType"), liquid.changes.length, "changesCount");
+      liquid.changes.forEach((change) => {
+        packByte(packByte(packInt16(packInt16(writer, change.y, "y"), change.x, "x"), change.amount, "amount"), change.liquidType, "liquidType");
+      });
+      return data(writer);
+    case "ClientText":
+      let commandId = self._0;
+      let message = self._1;
+      return data(packString(packString(packUInt16(setType(make(), toInt("NetModuleLoad")), 1, "moduleType"), commandId, "commandId"), message, "message"));
+    case "ServerText":
+      let playerId = self._0;
+      let networkText = self._1;
+      let color = self._2;
+      return data(packColor(packNetworkText(packByte(packUInt16(setType(make(), toInt("NetModuleLoad")), 1, "moduleType"), playerId, "playerId"), networkText, "networkText"), color, "color"));
+    case "Ping":
+      let ping = self._0;
+      return data(packSingle(packSingle(packUInt16(setType(make(), toInt("NetModuleLoad")), 2, "moduleType"), ping.x, "x"), ping.y, "y"));
+    case "Ambience":
+      let ambience = self._0;
+      return data(packByte(packInt32(packByte(packUInt16(setType(make(), toInt("NetModuleLoad")), 3, "moduleType"), ambience.playerId, "playerId"), ambience.seed, "seed"), ambience.skyEntityType, "skyEntityType"));
+    case "Bestiary":
+      let bestiary = self._0;
+      let writer$1 = packUInt16(setType(make(), toInt("NetModuleLoad")), 4, "moduleType");
+      let _count = bestiary.unlockType;
+      let tmp;
+      tmp = typeof _count !== "object" ? _count === "Sight" ? packByte(writer$1, 1, "unlockTypeByte") : packByte(writer$1, 2, "unlockTypeByte") : packByte(writer$1, 0, "unlockTypeByte");
+      packInt16(tmp, bestiary.npcId, "npcId");
+      let count = bestiary.unlockType;
+      let tmp$1;
+      tmp$1 = typeof count !== "object" ? writer$1 : packUInt16(writer$1, count._0, "killCount");
+      return data(tmp$1);
+    case "CreativeUnlocks":
+      let creativeUnlock = self._0;
+      return data(packUInt16(packInt16(packUInt16(setType(make(), toInt("NetModuleLoad")), 5, "moduleType"), creativeUnlock.itemId, "itemId"), creativeUnlock.researchedCount, "researchedCount"));
+    case "CreativePower":
+      let creativePower = self._0;
+      return data(pack$2(packUInt16(setType(make(), toInt("NetModuleLoad")), 6, "moduleType"), creativePower));
+    case "CreativeUnlocksPlayerReport":
+      let unlockReport = self._0;
+      return data(packUInt16(packUInt16(packUInt16(setType(make(), toInt("NetModuleLoad")), 7, "moduleType"), unlockReport.itemId, "itemId"), unlockReport.researchedCount, "researchedCount"));
+    case "TeleportPylon":
+      let teleportPylon = self._0;
+      return data(packByte(packInt16(packInt16(packByte(packUInt16(setType(make(), toInt("NetModuleLoad")), 8, "moduleType"), pylonActionToInt2(teleportPylon.pylonAction), "pylonAction"), teleportPylon.x, "x"), teleportPylon.y, "y"), teleportPylon.pylonType, "pylonType"));
+    case "Particles":
+      let particle = self._0;
+      return data(packByte(packInt32(packSingle(packSingle(packSingle(packSingle(packByte(packUInt16(setType(make(), toInt("NetModuleLoad")), 9, "moduleType"), particle.particleType, "particleType"), particle.x, "x"), particle.y, "y"), particle.vx, "vx"), particle.vy, "vy"), particle.shaderIndex, "shaderIndex"), particle.invokedByPlayer, "invokedByPlayer"));
+    case "CreativePowerPermissions":
+      let creativePowerPermission = self._0;
+      return data(packByte(packByte(packUInt16(setType(make(), toInt("NetModuleLoad")), 10, "moduleType"), creativePowerPermission.powerType, "powerType"), powerLevelToInt2(creativePowerPermission.powerLevel), "powerLevel"));
+  }
+}
+function parse24(payload, fromServer) {
+  let reader = new packetreader_default(payload);
+  let e = readUInt16(reader, "moduleType");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let match = fromInt7(e._0);
+  if (match === void 0) {
+    return {
+      TAG: "Error",
+      _0: {
+        context: "Packet_NetModuleLoad.parse",
+        error: new Error("Unknown net module type")
+      }
+    };
+  }
+  switch (match) {
+    case "Liquid":
+      let e$1 = readUInt16(reader, "changesCount");
+      if (e$1.TAG !== "Ok") {
+        return e$1;
+      }
+      let changesCount = e$1._0;
+      let readChanges = (_idx, _acc) => {
+        while (true) {
+          let acc = _acc;
+          let idx = _idx;
+          if (idx >= changesCount) {
+            return {
+              TAG: "Ok",
+              _0: acc.toReversed()
+            };
+          }
+          let e2 = readInt16(reader, "y");
+          if (e2.TAG !== "Ok") {
+            return e2;
+          }
+          let e$16 = readInt16(reader, "x");
+          if (e$16.TAG !== "Ok") {
+            return e$16;
+          }
+          let e$210 = readByte(reader, "amount");
+          if (e$210.TAG !== "Ok") {
+            return e$210;
+          }
+          let e$3 = readByte(reader, "liquidType");
+          if (e$3.TAG !== "Ok") {
+            return e$3;
+          }
+          _acc = concatMany([
+            [{
+              x: e$16._0,
+              y: e2._0,
+              amount: e$210._0,
+              liquidType: e$3._0
+            }],
+            acc
+          ]);
+          _idx = idx + 1 | 0;
+          continue;
+        }
+        ;
+      };
+      let e$2 = readChanges(0, []);
+      if (e$2.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "Liquid",
+            _0: {
+              changes: e$2._0
+            }
+          }
+        };
+      } else {
+        return e$2;
+      }
+    case "Text":
+      if (fromServer) {
+        let e$3 = readByte(reader, "playerId");
+        if (e$3.TAG !== "Ok") {
+          return e$3;
+        }
+        let e$4 = readNetworkText(reader, "message");
+        if (e$4.TAG !== "Ok") {
+          return e$4;
+        }
+        let e$5 = readColor(reader, "color");
+        if (e$5.TAG === "Ok") {
+          return {
+            TAG: "Ok",
+            _0: {
+              TAG: "ServerText",
+              _0: e$3._0,
+              _1: e$4._0,
+              _2: e$5._0
+            }
+          };
+        } else {
+          return e$5;
+        }
+      }
+      let e$6 = readString(reader, "commandId");
+      if (e$6.TAG !== "Ok") {
+        return e$6;
+      }
+      let e$7 = readString(reader, "message");
+      if (e$7.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "ClientText",
+            _0: e$6._0,
+            _1: e$7._0
+          }
+        };
+      } else {
+        return e$7;
+      }
+    case "Ping":
+      let e$8 = readSingle(reader, "x");
+      if (e$8.TAG !== "Ok") {
+        return e$8;
+      }
+      let e$9 = readSingle(reader, "y");
+      if (e$9.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "Ping",
+            _0: {
+              x: e$8._0,
+              y: e$9._0
+            }
+          }
+        };
+      } else {
+        return e$9;
+      }
+    case "Ambience":
+      let e$10 = readByte(reader, "playerId");
+      if (e$10.TAG !== "Ok") {
+        return e$10;
+      }
+      let e$11 = readInt32(reader, "seed");
+      if (e$11.TAG !== "Ok") {
+        return e$11;
+      }
+      let e$12 = readByte(reader, "skyEntityType");
+      if (e$12.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "Ambience",
+            _0: {
+              playerId: e$10._0,
+              seed: e$11._0,
+              skyEntityType: e$12._0
+            }
+          }
+        };
+      } else {
+        return e$12;
+      }
+    case "Bestiary":
+      let e$13 = readByte(reader, "rawBestiaryUnlockType");
+      if (e$13.TAG !== "Ok") {
+        return e$13;
+      }
+      let e$14 = readInt16(reader, "npcId");
+      if (e$14.TAG !== "Ok") {
+        return e$14;
+      }
+      let e$15;
+      switch (e$13._0) {
+        case 0:
+          let e$16 = readUInt16(reader, "killCount");
+          e$15 = e$16.TAG === "Ok" ? {
+            TAG: "Ok",
+            _0: {
+              TAG: "Kill",
+              _0: e$16._0
+            }
+          } : e$16;
+          break;
+        case 1:
+          e$15 = {
+            TAG: "Ok",
+            _0: "Sight"
+          };
+          break;
+        case 2:
+          e$15 = {
+            TAG: "Ok",
+            _0: "Chat"
+          };
+          break;
+        default:
+          e$15 = {
+            TAG: "Error",
+            _0: {
+              context: "Packet_NetModuleLoad.parseBestiary",
+              error: new Error("Unknown bestiary unlock type")
+            }
+          };
+      }
+      if (e$15.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "Bestiary",
+            _0: {
+              unlockType: e$15._0,
+              npcId: e$14._0
+            }
+          }
+        };
+      } else {
+        return e$15;
+      }
+    case "CreativeUnlocks":
+      let e$17 = readInt16(reader, "itemId");
+      if (e$17.TAG !== "Ok") {
+        return e$17;
+      }
+      let e$18 = readUInt16(reader, "researchedCount");
+      if (e$18.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "CreativeUnlocks",
+            _0: {
+              itemId: e$17._0,
+              researchedCount: e$18._0
+            }
+          }
+        };
+      } else {
+        return e$18;
+      }
+    case "CreativePower":
+      let p = parse$2(reader);
+      if (p !== void 0) {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "CreativePower",
+            _0: p
+          }
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: {
+            context: "Packet_NetModuleLoad.parseCreativePower",
+            error: new Error("Failed to parse creative power")
+          }
+        };
+      }
+    case "CreativeUnlocksPlayerReport":
+      let e$19 = readByte(reader, "unknownByte");
+      if (e$19.TAG !== "Ok") {
+        return e$19;
+      }
+      let e$20 = readUInt16(reader, "itemId");
+      if (e$20.TAG !== "Ok") {
+        return e$20;
+      }
+      let e$21 = readUInt16(reader, "researchedCount");
+      if (e$21.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "CreativeUnlocksPlayerReport",
+            _0: {
+              itemId: e$20._0,
+              researchedCount: e$21._0
+            }
+          }
+        };
+      } else {
+        return e$21;
+      }
+    case "TeleportPylon":
+      let e$22 = readByte(reader, "rawPylonAction");
+      if (e$22.TAG !== "Ok") {
+        return e$22;
+      }
+      let e$23 = readInt16(reader, "x");
+      if (e$23.TAG !== "Ok") {
+        return e$23;
+      }
+      let e$24 = readInt16(reader, "y");
+      if (e$24.TAG !== "Ok") {
+        return e$24;
+      }
+      let e$25 = readByte(reader, "pylonType");
+      if (e$25.TAG !== "Ok") {
+        return e$25;
+      }
+      let pylonAction;
+      switch (e$22._0) {
+        case 0:
+          pylonAction = "Added";
+          break;
+        case 1:
+          pylonAction = "Removed";
+          break;
+        case 2:
+          pylonAction = "RequestTeleport";
+          break;
+        default:
+          pylonAction = void 0;
+      }
+      if (pylonAction !== void 0) {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "TeleportPylon",
+            _0: {
+              pylonAction,
+              x: e$23._0,
+              y: e$24._0,
+              pylonType: e$25._0
+            }
+          }
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: {
+            context: "Packet_NetModuleLoad.parseTeleportPylon",
+            error: new Error("Unknown pylon action")
+          }
+        };
+      }
+    case "Particles":
+      let e$26 = readByte(reader, "particleType");
+      if (e$26.TAG !== "Ok") {
+        return e$26;
+      }
+      let e$27 = readSingle(reader, "x");
+      if (e$27.TAG !== "Ok") {
+        return e$27;
+      }
+      let e$28 = readSingle(reader, "y");
+      if (e$28.TAG !== "Ok") {
+        return e$28;
+      }
+      let e$29 = readSingle(reader, "vx");
+      if (e$29.TAG !== "Ok") {
+        return e$29;
+      }
+      let e$30 = readSingle(reader, "vy");
+      if (e$30.TAG !== "Ok") {
+        return e$30;
+      }
+      let e$31 = readInt32(reader, "shaderIndex");
+      if (e$31.TAG !== "Ok") {
+        return e$31;
+      }
+      let e$32 = readByte(reader, "invokedByPlayer");
+      if (e$32.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "Particles",
+            _0: {
+              particleType: e$26._0,
+              x: e$27._0,
+              y: e$28._0,
+              vx: e$29._0,
+              vy: e$30._0,
+              shaderIndex: e$31._0,
+              invokedByPlayer: e$32._0
+            }
+          }
+        };
+      } else {
+        return e$32;
+      }
+    case "CreativePowerPermissions":
+      let e$33 = readByte(reader, "unknownByte");
+      if (e$33.TAG !== "Ok") {
+        return e$33;
+      }
+      let e$34 = readUInt16(reader, "powerType");
+      if (e$34.TAG !== "Ok") {
+        return e$34;
+      }
+      let e$35 = readByte(reader, "rawPowerLevel");
+      if (e$35.TAG !== "Ok") {
+        return e$35;
+      }
+      let powerLevel;
+      switch (e$35._0) {
+        case 0:
+          powerLevel = "LockedForEveryone";
+          break;
+        case 1:
+          powerLevel = "CanBeChangedByHostAlone";
+          break;
+        case 2:
+          powerLevel = "CanBeChangedByEveryone";
+          break;
+        default:
+          powerLevel = void 0;
+      }
+      if (powerLevel !== void 0) {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "CreativePowerPermissions",
+            _0: {
+              powerType: e$34._0,
+              powerLevel
+            }
+          }
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: {
+            context: "Packet_NetModuleLoad.parseCreativePowerPermission",
+            error: new Error("Unknown creative power permission level")
+          }
+        };
+      }
+  }
+}
+
+// src/packetv1449/PacketV1449_NpcBuffRemovalRequest.js
+var PacketV1449_NpcBuffRemovalRequest_exports = {};
+__export(PacketV1449_NpcBuffRemovalRequest_exports, {
+  parse: () => parse25,
+  toBuffer: () => toBuffer24
+});
+function parse25(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -5192,7 +5763,7 @@ function parse24(payload) {
     return e$1;
   }
 }
-function toBuffer23(self) {
+function toBuffer24(self) {
   return data(packUInt16(packInt16(setType(make(), toInt("NpcBuffRemovalRequest")), self.npcId, "npcId"), self.buffType, "buffType"));
 }
 
@@ -5201,10 +5772,10 @@ var Packet_NpcBuffUpdate_exports = {};
 __export(Packet_NpcBuffUpdate_exports, {
   Decode: () => Decode3,
   Encode: () => Encode3,
-  parse: () => parse25,
-  toBuffer: () => toBuffer24
+  parse: () => parse26,
+  toBuffer: () => toBuffer25
 });
-function parse25(payload) {
+function parse26(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -5252,7 +5823,7 @@ function parse25(payload) {
 var Decode3 = {
   readUInt16,
   readInt16,
-  parse: parse25
+  parse: parse26
 };
 function packBuffs(writer, buffs, buffTimes) {
   let len = min(buffs.length, buffTimes.length);
@@ -5262,7 +5833,7 @@ function packBuffs(writer, buffs, buffTimes) {
   }
   return packUInt16(writer, 0, "buff_terminator");
 }
-function toBuffer24(self) {
+function toBuffer25(self) {
   if (self.buffs.length !== self.buffTimes.length) {
     return {
       TAG: "Error",
@@ -5281,16 +5852,16 @@ var Encode3 = {
   setType,
   data,
   packBuffs,
-  toBuffer: toBuffer24
+  toBuffer: toBuffer25
 };
 
 // src/packetv1449/PacketV1449_NpcCatch.js
 var PacketV1449_NpcCatch_exports = {};
 __export(PacketV1449_NpcCatch_exports, {
-  parse: () => parse26,
-  toBuffer: () => toBuffer25
+  parse: () => parse27,
+  toBuffer: () => toBuffer26
 });
-function parse26(payload) {
+function parse27(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -5309,17 +5880,17 @@ function parse26(payload) {
     return e$1;
   }
 }
-function toBuffer25(self) {
+function toBuffer26(self) {
   return data(packByte(packInt16(setType(make(), toInt("NpcCatch")), self.npcId, "npcId"), self.playerId, "playerId"));
 }
 
 // src/packetv1449/PacketV1449_NpcFishOut.js
 var PacketV1449_NpcFishOut_exports = {};
 __export(PacketV1449_NpcFishOut_exports, {
-  parse: () => parse27,
-  toBuffer: () => toBuffer26
+  parse: () => parse28,
+  toBuffer: () => toBuffer27
 });
-function parse27(payload) {
+function parse28(payload) {
   let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -5343,17 +5914,17 @@ function parse27(payload) {
     return e$2;
   }
 }
-function toBuffer26(self) {
+function toBuffer27(self) {
   return data(packInt16(packUInt16(packUInt16(setType(make(), toInt("NpcFishOut")), self.x, "x"), self.y, "y"), self.npcNetId, "npcNetId"));
 }
 
 // src/packetv1449/PacketV1449_NpcHomeUpdate.js
 var PacketV1449_NpcHomeUpdate_exports = {};
 __export(PacketV1449_NpcHomeUpdate_exports, {
-  parse: () => parse28,
-  toBuffer: () => toBuffer27
+  parse: () => parse29,
+  toBuffer: () => toBuffer28
 });
-function parse28(payload) {
+function parse29(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -5382,17 +5953,17 @@ function parse28(payload) {
     return e$3;
   }
 }
-function toBuffer27(self) {
+function toBuffer28(self) {
   return data(packByte(packInt16(packInt16(packInt16(setType(make(), toInt("NpcHomeUpdate")), self.npcId, "npcId"), self.homeTileX, "homeTileX"), self.homeTileY, "homeTileY"), self.state, "state"));
 }
 
 // src/packetv1449/PacketV1449_NpcKillCount.js
 var PacketV1449_NpcKillCount_exports = {};
 __export(PacketV1449_NpcKillCount_exports, {
-  parse: () => parse29,
-  toBuffer: () => toBuffer28
+  parse: () => parse30,
+  toBuffer: () => toBuffer29
 });
-function parse29(payload) {
+function parse30(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -5411,17 +5982,17 @@ function parse29(payload) {
     return e$1;
   }
 }
-function toBuffer28(self) {
+function toBuffer29(self) {
   return data(packInt32(packInt16(setType(make(), toInt("NpcKillCount")), self.npcId, "npcId"), self.killCount, "killCount"));
 }
 
 // src/packetv1449/PacketV1449_NpcNameUpdate.js
 var PacketV1449_NpcNameUpdate_exports = {};
 __export(PacketV1449_NpcNameUpdate_exports, {
-  parse: () => parse30,
-  toBuffer: () => toBuffer29
+  parse: () => parse31,
+  toBuffer: () => toBuffer30
 });
-function parse30(payload, fromServer) {
+function parse31(payload, fromServer) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -5460,7 +6031,7 @@ function parse30(payload, fromServer) {
     return e$1;
   }
 }
-function toBuffer29(self) {
+function toBuffer30(self) {
   let writer = packInt16(setType(make(), toInt("NpcNameUpdate")), self.npcId, "npcId");
   let extraInfo = self.extraInfo;
   if (extraInfo !== void 0) {
@@ -5473,10 +6044,10 @@ function toBuffer29(self) {
 // src/packetv1449/PacketV1449_NpcShopItem.js
 var PacketV1449_NpcShopItem_exports = {};
 __export(PacketV1449_NpcShopItem_exports, {
-  parse: () => parse31,
-  toBuffer: () => toBuffer30
+  parse: () => parse32,
+  toBuffer: () => toBuffer31
 });
-function parse31(payload) {
+function parse32(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "slot");
   if (e.TAG !== "Ok") {
@@ -5515,7 +6086,7 @@ function parse31(payload) {
     return e$5;
   }
 }
-function toBuffer30(self) {
+function toBuffer31(self) {
   let flags = fromFlags(self.buyOnce, false, false, false, false, false, false, false);
   return data(packByte(packInt32(packByte(packInt16(packInt16(packByte(setType(make(), toInt("NpcShopItem")), self.slot, "slot"), self.itemId, "itemId"), self.stack, "stack"), self.prefix, "prefix"), self.value, "value"), toByte(flags), "flags"));
 }
@@ -5523,10 +6094,10 @@ function toBuffer30(self) {
 // src/packetv1449/PacketV1449_NpcTalk.js
 var PacketV1449_NpcTalk_exports = {};
 __export(PacketV1449_NpcTalk_exports, {
-  parse: () => parse32,
-  toBuffer: () => toBuffer31
+  parse: () => parse33,
+  toBuffer: () => toBuffer32
 });
-function parse32(payload) {
+function parse33(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -5545,17 +6116,17 @@ function parse32(payload) {
     return e$1;
   }
 }
-function toBuffer31(self) {
+function toBuffer32(self) {
   return data(packInt16(packByte(setType(make(), toInt("NpcTalk")), self.playerId, "playerId"), self.npcId, "npcId"));
 }
 
 // src/packetv1449/PacketV1449_NpcTeleportPortal.js
 var PacketV1449_NpcTeleportPortal_exports = {};
 __export(PacketV1449_NpcTeleportPortal_exports, {
-  parse: () => parse33,
-  toBuffer: () => toBuffer32
+  parse: () => parse34,
+  toBuffer: () => toBuffer33
 });
-function parse33(payload) {
+function parse34(payload) {
   let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -5598,17 +6169,17 @@ function parse33(payload) {
     return e$5;
   }
 }
-function toBuffer32(self) {
+function toBuffer33(self) {
   return data(packSingle(packSingle(packSingle(packSingle(packInt16(packUInt16(setType(make(), toInt("NpcTeleportPortal")), self.npcId, "npcId"), self.portalColor, "portalColor"), self.position.x, "posX"), self.position.y, "posY"), self.velocity.x, "velX"), self.velocity.y, "velY"));
 }
 
 // src/packetv1449/PacketV1449_ObjectPlace.js
 var PacketV1449_ObjectPlace_exports = {};
 __export(PacketV1449_ObjectPlace_exports, {
-  parse: () => parse34,
-  toBuffer: () => toBuffer33
+  parse: () => parse35,
+  toBuffer: () => toBuffer34
 });
-function parse34(payload) {
+function parse35(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -5672,7 +6243,7 @@ function parse34(payload) {
     };
   }
 }
-function toBuffer33(self) {
+function toBuffer34(self) {
   let match = self.direction;
   let tmp;
   tmp = match === "Left" ? 0 : 1;
@@ -5682,26 +6253,26 @@ function toBuffer33(self) {
 // src/packetv1449/PacketV1449_PartyToggle.js
 var PacketV1449_PartyToggle_exports = {};
 __export(PacketV1449_PartyToggle_exports, {
-  parse: () => parse35,
-  toBuffer: () => toBuffer34
+  parse: () => parse36,
+  toBuffer: () => toBuffer35
 });
-function parse35(_payload) {
+function parse36(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
   };
 }
-function toBuffer34(_self) {
+function toBuffer35(_self) {
   return data(setType(make(), toInt("PartyToggle")));
 }
 
 // src/packetv1449/PacketV1449_PlayerAnimation.js
 var PacketV1449_PlayerAnimation_exports = {};
 __export(PacketV1449_PlayerAnimation_exports, {
-  parse: () => parse36,
-  toBuffer: () => toBuffer35
+  parse: () => parse37,
+  toBuffer: () => toBuffer36
 });
-function parse36(payload) {
+function parse37(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -5725,17 +6296,17 @@ function parse36(payload) {
     return e$2;
   }
 }
-function toBuffer35(self) {
+function toBuffer36(self) {
   return data(packInt16(packSingle(packByte(setType(make(), toInt("PlayerAnimation")), self.playerId, "playerId"), self.itemRotation, "itemRotation"), self.itemAnimation, "itemAnimation"));
 }
 
 // src/packetv1449/PacketV1449_PlayerBuffAdd.js
 var PacketV1449_PlayerBuffAdd_exports = {};
 __export(PacketV1449_PlayerBuffAdd_exports, {
-  parse: () => parse37,
-  toBuffer: () => toBuffer36
+  parse: () => parse38,
+  toBuffer: () => toBuffer37
 });
-function parse37(payload) {
+function parse38(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -5759,7 +6330,7 @@ function parse37(payload) {
     return e$2;
   }
 }
-function toBuffer36(self) {
+function toBuffer37(self) {
   return data(packInt32(packUInt16(packByte(setType(make(), toInt("PlayerBuffAdd")), self.playerId, "playerId"), self.buff, "buff"), self.time, "time"));
 }
 
@@ -5768,10 +6339,10 @@ var Packet_PlayerBuffsSet_exports = {};
 __export(Packet_PlayerBuffsSet_exports, {
   Decode: () => Decode4,
   Encode: () => Encode4,
-  parse: () => parse38,
-  toBuffer: () => toBuffer37
+  parse: () => parse39,
+  toBuffer: () => toBuffer38
 });
-function parse38(payload) {
+function parse39(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -5812,7 +6383,7 @@ function parse38(payload) {
 var Decode4 = {
   readUInt16,
   readByte,
-  parse: parse38
+  parse: parse39
 };
 function packBuffs2(writer, buffs) {
   buffs.forEach((buff, idx) => {
@@ -5820,7 +6391,7 @@ function packBuffs2(writer, buffs) {
   });
   return packUInt16(writer, 0, "buff_terminator");
 }
-function toBuffer37(self) {
+function toBuffer38(self) {
   return data(packBuffs2(packByte(setType(make(), toInt("PlayerBuffsSet")), self.playerId, "playerId"), self.buffs));
 }
 var Encode4 = {
@@ -5829,16 +6400,16 @@ var Encode4 = {
   setType,
   data,
   packBuffs: packBuffs2,
-  toBuffer: toBuffer37
+  toBuffer: toBuffer38
 };
 
 // src/packetv1449/PacketV1449_PlayerChestIndexSync.js
 var PacketV1449_PlayerChestIndexSync_exports = {};
 __export(PacketV1449_PlayerChestIndexSync_exports, {
-  parse: () => parse39,
-  toBuffer: () => toBuffer38
+  parse: () => parse40,
+  toBuffer: () => toBuffer39
 });
-function parse39(payload) {
+function parse40(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -5857,17 +6428,17 @@ function parse39(payload) {
     return e$1;
   }
 }
-function toBuffer38(self) {
+function toBuffer39(self) {
   return data(packInt16(packByte(setType(make(), toInt("PlayerChestIndexSync")), self.playerId, "playerId"), self.chestId, "chestId"));
 }
 
 // src/packetv1449/PacketV1449_PlayerDead.js
 var PacketV1449_PlayerDead_exports = {};
 __export(PacketV1449_PlayerDead_exports, {
-  parse: () => parse40,
-  toBuffer: () => toBuffer39
+  parse: () => parse41,
+  toBuffer: () => toBuffer40
 });
-function parse40(payload) {
+function parse41(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG === "Ok") {
@@ -5881,15 +6452,15 @@ function parse40(payload) {
     return e;
   }
 }
-function toBuffer39(self) {
+function toBuffer40(self) {
   return data(packByte(setType(make(), toInt("PlayerDead")), self.playerId, "playerId"));
 }
 
 // src/packetv1449/PacketV1449_PlayerDeath.js
 var PacketV1449_PlayerDeath_exports = {};
 __export(PacketV1449_PlayerDeath_exports, {
-  parse: () => parse41,
-  toBuffer: () => toBuffer40
+  parse: () => parse42,
+  toBuffer: () => toBuffer41
 });
 
 // src/PlayerDeathReason.js
@@ -6189,7 +6760,7 @@ function pack2(writer, self) {
 var packDeathReason = pack2;
 
 // src/packetv1449/PacketV1449_PlayerDeath.js
-function parse41(payload) {
+function parse42(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -6223,15 +6794,15 @@ function parse41(payload) {
     return e$4;
   }
 }
-function toBuffer40(self) {
+function toBuffer41(self) {
   return data(packByte(packByte(packInt16(packDeathReason(packByte(setType(make(), toInt("PlayerDeath")), self.playerId, "playerId"), self.deathReason), self.damage, "damage"), self.hitDirection, "hitDirection"), self.pvp ? 1 : 0, "pvp"));
 }
 
 // src/packetv1449/PacketV1449_PlayerDodge.js
 var PacketV1449_PlayerDodge_exports = {};
 __export(PacketV1449_PlayerDodge_exports, {
-  parse: () => parse42,
-  toBuffer: () => toBuffer41
+  parse: () => parse43,
+  toBuffer: () => toBuffer42
 });
 function dodgeFromByte(b) {
   switch (b) {
@@ -6255,7 +6826,7 @@ function dodgeToByte(d) {
       return 4;
   }
 }
-function parse42(payload) {
+function parse43(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -6291,17 +6862,17 @@ function parse42(payload) {
     };
   }
 }
-function toBuffer41(self) {
+function toBuffer42(self) {
   return data(packByte(packByte(setType(make(), toInt("PlayerDodge")), self.playerId, "playerId"), dodgeToByte(self.dodge), "dodge"));
 }
 
 // src/packetv1449/PacketV1449_PlayerMana.js
 var PacketV1449_PlayerMana_exports = {};
 __export(PacketV1449_PlayerMana_exports, {
-  parse: () => parse43,
-  toBuffer: () => toBuffer42
+  parse: () => parse44,
+  toBuffer: () => toBuffer43
 });
-function parse43(payload) {
+function parse44(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -6325,17 +6896,17 @@ function parse43(payload) {
     return e$2;
   }
 }
-function toBuffer42(self) {
+function toBuffer43(self) {
   return data(packInt16(packInt16(packByte(setType(make(), toInt("PlayerMana")), self.playerId, "playerId"), self.mana, "mana"), self.maxMana, "maxMana"));
 }
 
 // src/packetv1449/PacketV1449_PlayerTeam.js
 var PacketV1449_PlayerTeam_exports = {};
 __export(PacketV1449_PlayerTeam_exports, {
-  parse: () => parse44,
-  toBuffer: () => toBuffer43
+  parse: () => parse45,
+  toBuffer: () => toBuffer44
 });
-function parse44(payload) {
+function parse45(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -6354,17 +6925,17 @@ function parse44(payload) {
     return e$1;
   }
 }
-function toBuffer43(self) {
+function toBuffer44(self) {
   return data(packByte(packByte(setType(make(), toInt("PlayerTeam")), self.playerId, "playerId"), self.team, "team"));
 }
 
 // src/packetv1449/PacketV1449_PvpToggle.js
 var PacketV1449_PvpToggle_exports = {};
 __export(PacketV1449_PvpToggle_exports, {
-  parse: () => parse45,
-  toBuffer: () => toBuffer44
+  parse: () => parse46,
+  toBuffer: () => toBuffer45
 });
-function parse45(payload) {
+function parse46(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -6383,7 +6954,7 @@ function parse45(payload) {
     return e$1;
   }
 }
-function toBuffer44(self) {
+function toBuffer45(self) {
   return data(packByte(packByte(setType(make(), toInt("PvpToggle")), self.playerId, "playerId"), self.pvpEnabled ? 1 : 0, "pvpEnabled"));
 }
 
@@ -6392,10 +6963,10 @@ var Packet_ShimmerEffectOrCoinLuck_exports = {};
 __export(Packet_ShimmerEffectOrCoinLuck_exports, {
   Decode: () => Decode5,
   Encode: () => Encode5,
-  parse: () => parse46,
-  toBuffer: () => toBuffer45
+  parse: () => parse47,
+  toBuffer: () => toBuffer46
 });
-function parse46(payload) {
+function parse47(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "kind");
   if (e.TAG !== "Ok") {
@@ -6461,9 +7032,9 @@ var Decode5 = {
   readByte,
   readInt32,
   readSingle,
-  parse: parse46
+  parse: parse47
 };
-function toBuffer45(self) {
+function toBuffer46(self) {
   let writer = setType(make(), toInt("ShimmerEffectOrCoinLuck"));
   let tmp;
   if (self.TAG === "ShimmerEffect") {
@@ -6482,16 +7053,16 @@ var Encode5 = {
   packSingle,
   setType,
   data,
-  toBuffer: toBuffer45
+  toBuffer: toBuffer46
 };
 
 // src/packetv1449/PacketV1449_SignNew.js
 var PacketV1449_SignNew_exports = {};
 __export(PacketV1449_SignNew_exports, {
-  parse: () => parse47,
-  toBuffer: () => toBuffer46
+  parse: () => parse48,
+  toBuffer: () => toBuffer47
 });
-function parse47(payload) {
+function parse48(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "signId");
   if (e.TAG !== "Ok") {
@@ -6530,7 +7101,7 @@ function parse47(payload) {
     return e$5;
   }
 }
-function toBuffer46(self) {
+function toBuffer47(self) {
   let flags = fromFlags(self.deleteSign, false, false, false, false, false, false, false);
   return data(packByte(packByte(packString(packInt16(packInt16(packInt16(setType(make(), toInt("SignNew")), self.signId, "signId"), self.x, "x"), self.y, "y"), self.text, "text"), self.playerId, "playerId"), toByte(flags), "flags"));
 }
@@ -6538,10 +7109,10 @@ function toBuffer46(self) {
 // src/packetv1449/PacketV1449_SignRead.js
 var PacketV1449_SignRead_exports = {};
 __export(PacketV1449_SignRead_exports, {
-  parse: () => parse48,
-  toBuffer: () => toBuffer47
+  parse: () => parse49,
+  toBuffer: () => toBuffer48
 });
-function parse48(payload) {
+function parse49(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -6560,17 +7131,17 @@ function parse48(payload) {
     return e$1;
   }
 }
-function toBuffer47(self) {
+function toBuffer48(self) {
   return data(packInt16(packInt16(setType(make(), toInt("SignRead")), self.x, "x"), self.y, "y"));
 }
 
 // src/packetv1449/PacketV1449_SmokePoof.js
 var PacketV1449_SmokePoof_exports = {};
 __export(PacketV1449_SmokePoof_exports, {
-  parse: () => parse49,
-  toBuffer: () => toBuffer48
+  parse: () => parse50,
+  toBuffer: () => toBuffer49
 });
-function parse49(payload) {
+function parse50(payload) {
   let reader = new packetreader_default(payload);
   let e = readUInt32(reader, "packedPosition");
   if (e.TAG === "Ok") {
@@ -6584,33 +7155,33 @@ function parse49(payload) {
     return e;
   }
 }
-function toBuffer48(self) {
+function toBuffer49(self) {
   return data(packUInt32(setType(make(), toInt("SmokePoof")), self.packedPosition, "packedPosition"));
 }
 
 // src/packetv1449/PacketV1449_SocialHandshake.js
 var PacketV1449_SocialHandshake_exports = {};
 __export(PacketV1449_SocialHandshake_exports, {
-  parse: () => parse50,
-  toBuffer: () => toBuffer49
+  parse: () => parse51,
+  toBuffer: () => toBuffer50
 });
-function parse50(_payload) {
+function parse51(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
   };
 }
-function toBuffer49(_self) {
+function toBuffer50(_self) {
   return data(setType(make(), toInt("SocialHandshake")));
 }
 
 // src/packetv1449/PacketV1449_Status.js
 var PacketV1449_Status_exports = {};
 __export(PacketV1449_Status_exports, {
-  parse: () => parse51,
-  toBuffer: () => toBuffer50
+  parse: () => parse52,
+  toBuffer: () => toBuffer51
 });
-function parse51(payload) {
+function parse52(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "max");
   if (e.TAG !== "Ok") {
@@ -6645,17 +7216,17 @@ function flagsToByte(flags) {
   byte = byte | (flags.runCheckBytes ? 4 : 0);
   return byte;
 }
-function toBuffer50(self) {
+function toBuffer51(self) {
   return data(packByte(packNetworkText(packInt32(setType(make(), toInt("Status")), self.max, "max"), self.text, "text"), flagsToByte(self.flags), "flags"));
 }
 
 // src/packetv1449/PacketV1449_SwitchHit.js
 var PacketV1449_SwitchHit_exports = {};
 __export(PacketV1449_SwitchHit_exports, {
-  parse: () => parse52,
-  toBuffer: () => toBuffer51
+  parse: () => parse53,
+  toBuffer: () => toBuffer52
 });
-function parse52(payload) {
+function parse53(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -6674,7 +7245,7 @@ function parse52(payload) {
     return e$1;
   }
 }
-function toBuffer51(self) {
+function toBuffer52(self) {
   return data(packInt16(packInt16(setType(make(), toInt("SwitchHit")), self.x, "x"), self.y, "y"));
 }
 
@@ -6683,8 +7254,8 @@ var Packet_Teleport_exports = {};
 __export(Packet_Teleport_exports, {
   Decode: () => Decode6,
   Encode: () => Encode6,
-  parse: () => parse53,
-  toBuffer: () => toBuffer52
+  parse: () => parse54,
+  toBuffer: () => toBuffer53
 });
 
 // node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Stdlib_Result.js
@@ -6753,7 +7324,7 @@ function all4(param) {
 }
 
 // src/packet/Packet_Teleport.js
-function parse53(payload) {
+function parse54(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "flags");
   if (e.TAG !== "Ok") {
@@ -6806,12 +7377,12 @@ var Decode6 = {
   readInt16,
   readSingle,
   readInt32,
-  parse: parse53
+  parse: parse54
 };
 function getFlags(self) {
   return toByte(fromFlags(self.teleportType === "Npc" || self.teleportType === "TeleportAck", self.teleportType === "PlayerToPlayer" || self.teleportType === "TeleportAck", self.getPositionFromTarget, isSome(self.extraInfo), false, false, false, false));
 }
-function toBuffer52(self) {
+function toBuffer53(self) {
   let writer = packByte(packSingle(packSingle(packInt16(packByte(setType(make(), toInt("Teleport")), getFlags(self), "flags"), self.targetId, "targetId"), self.x, "x"), self.y, "y"), self.style, "style");
   let extraInfo = self.extraInfo;
   return data(extraInfo !== void 0 ? packInt32(writer, extraInfo, "extraInfo") : writer);
@@ -6824,7 +7395,7 @@ var Encode6 = {
   setType,
   data,
   getFlags,
-  toBuffer: toBuffer52
+  toBuffer: toBuffer53
 };
 
 // src/packet/Packet_TeleportationPotion.js
@@ -6832,9 +7403,9 @@ var Packet_TeleportationPotion_exports = {};
 __export(Packet_TeleportationPotion_exports, {
   Decode: () => Decode7,
   Encode: () => Encode7,
-  parse: () => parse54,
+  parse: () => parse55,
   teleportTypeToInt: () => teleportTypeToInt,
-  toBuffer: () => toBuffer53
+  toBuffer: () => toBuffer54
 });
 function teleportTypeToInt(teleportType) {
   switch (teleportType) {
@@ -6850,7 +7421,7 @@ function teleportTypeToInt(teleportType) {
       return 4;
   }
 }
-function parse54(payload) {
+function parse55(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "teleportType");
   if (e.TAG !== "Ok") {
@@ -6904,9 +7475,9 @@ function parse54(payload) {
 }
 var Decode7 = {
   readByte,
-  parse: parse54
+  parse: parse55
 };
-function toBuffer53(self) {
+function toBuffer54(self) {
   return data(packByte(setType(make(), toInt("TeleportationPotion")), teleportTypeToInt(self.teleportType), "teleportType"));
 }
 var Encode7 = {
@@ -6914,16 +7485,16 @@ var Encode7 = {
   packByte,
   setType,
   data,
-  toBuffer: toBuffer53
+  toBuffer: toBuffer54
 };
 
 // src/packetv1449/PacketV1449_TemporaryAnimationCreate.js
 var PacketV1449_TemporaryAnimationCreate_exports = {};
 __export(PacketV1449_TemporaryAnimationCreate_exports, {
-  parse: () => parse55,
-  toBuffer: () => toBuffer54
+  parse: () => parse56,
+  toBuffer: () => toBuffer55
 });
-function parse55(payload) {
+function parse56(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "typeId");
   if (e.TAG !== "Ok") {
@@ -6952,7 +7523,7 @@ function parse55(payload) {
     return e$3;
   }
 }
-function toBuffer54(self) {
+function toBuffer55(self) {
   return data(packInt16(packInt16(packUInt16(packInt16(setType(make(), toInt("TemporaryAnimationCreate")), self.typeId, "typeId"), self.tileType, "tileType"), self.x, "x"), self.y, "y"));
 }
 
@@ -6963,8 +7534,8 @@ __export(Packet_TileEntityDisplayDollItemSync_exports, {
   Encode: () => Encode8,
   commandFromInt: () => commandFromInt,
   commandToInt: () => commandToInt,
-  parse: () => parse56,
-  toBuffer: () => toBuffer55
+  parse: () => parse57,
+  toBuffer: () => toBuffer56
 });
 function commandToInt(command) {
   switch (command) {
@@ -6992,7 +7563,7 @@ function commandFromInt(value) {
       return;
   }
 }
-function parse56(payload) {
+function parse57(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -7078,9 +7649,9 @@ var Decode8 = {
   readByte,
   readInt32,
   readUInt16,
-  parse: parse56
+  parse: parse57
 };
-function toBuffer55(self) {
+function toBuffer56(self) {
   let writer = packByte(packByte(packInt32(packByte(setType(make(), toInt("TileEntityDisplayDollItemSync")), self.playerId, "playerId"), self.tileEntityId, "tileEntityId"), self.itemIndex, "itemIndex"), commandToInt(self.command), "command");
   let pose = self.data;
   let tmp;
@@ -7099,16 +7670,16 @@ var Encode8 = {
   packUInt16,
   setType,
   data,
-  toBuffer: toBuffer55
+  toBuffer: toBuffer56
 };
 
 // src/packetv1449/PacketV1449_TileEntityHatRackItemSync.js
 var PacketV1449_TileEntityHatRackItemSync_exports = {};
 __export(PacketV1449_TileEntityHatRackItemSync_exports, {
-  parse: () => parse57,
-  toBuffer: () => toBuffer56
+  parse: () => parse58,
+  toBuffer: () => toBuffer57
 });
-function parse57(payload) {
+function parse58(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -7147,17 +7718,17 @@ function parse57(payload) {
     return e$5;
   }
 }
-function toBuffer56(self) {
+function toBuffer57(self) {
   return data(packByte(packUInt16(packUInt16(packByte(packInt32(packByte(setType(make(), toInt("TileEntityHatRackItemSync")), self.playerId, "playerId"), self.tileEntityId, "tileEntityId"), self.itemIndex, "itemIndex"), self.itemId, "itemId"), self.stack, "stack"), self.prefix, "prefix"));
 }
 
 // src/packetv1449/PacketV1449_TileEntityInteractionRequest.js
 var PacketV1449_TileEntityInteractionRequest_exports = {};
 __export(PacketV1449_TileEntityInteractionRequest_exports, {
-  parse: () => parse58,
-  toBuffer: () => toBuffer57
+  parse: () => parse59,
+  toBuffer: () => toBuffer58
 });
-function parse58(payload) {
+function parse59(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "tileEntityId");
   if (e.TAG !== "Ok") {
@@ -7176,17 +7747,17 @@ function parse58(payload) {
     return e$1;
   }
 }
-function toBuffer57(self) {
+function toBuffer58(self) {
   return data(packByte(packInt32(setType(make(), toInt("TileEntityInteractionRequest")), self.tileEntityId, "tileEntityId"), self.playerId, "playerId"));
 }
 
 // src/packetv1449/PacketV1449_TileEntityPlace.js
 var PacketV1449_TileEntityPlace_exports = {};
 __export(PacketV1449_TileEntityPlace_exports, {
-  parse: () => parse59,
-  toBuffer: () => toBuffer58
+  parse: () => parse60,
+  toBuffer: () => toBuffer59
 });
-function parse59(payload) {
+function parse60(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -7210,17 +7781,17 @@ function parse59(payload) {
     return e$2;
   }
 }
-function toBuffer58(self) {
+function toBuffer59(self) {
   return data(packByte(packInt16(packInt16(setType(make(), toInt("TileEntityPlace")), self.x, "x"), self.y, "y"), self.tileEntityType, "tileEntityType"));
 }
 
 // src/packetv1449/PacketV1449_TileEntityUpdate.js
 var PacketV1449_TileEntityUpdate_exports = {};
 __export(PacketV1449_TileEntityUpdate_exports, {
-  parse: () => parse60,
-  toBuffer: () => toBuffer59
+  parse: () => parse61,
+  toBuffer: () => toBuffer60
 });
-function parse60(payload) {
+function parse61(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "tileEntityId");
   if (e.TAG !== "Ok") {
@@ -7260,7 +7831,7 @@ function parse60(payload) {
     return e$3;
   }
 }
-function toBuffer59(self) {
+function toBuffer60(self) {
   let writer = packInt32(setType(make(), toInt("TileEntityUpdate")), self.tileEntityId, "tileEntityId");
   let tileEntityData = self.payload;
   if (typeof tileEntityData !== "object") {
@@ -7274,10 +7845,10 @@ function toBuffer59(self) {
 var PacketV1449_TileModify_exports = {};
 __export(PacketV1449_TileModify_exports, {
   Action: () => Action2,
-  parse: () => parse61,
-  toBuffer: () => toBuffer60
+  parse: () => parse62,
+  toBuffer: () => toBuffer61
 });
-function fromInt7(action) {
+function fromInt8(action) {
   switch (action) {
     case 0:
       return "KillTile";
@@ -7331,7 +7902,7 @@ function fromInt7(action) {
       return;
   }
 }
-function toInt7(action) {
+function toInt8(action) {
   switch (action) {
     case "KillTile":
       return 0;
@@ -7384,10 +7955,10 @@ function toInt7(action) {
   }
 }
 var Action2 = {
-  fromInt: fromInt7,
-  toInt: toInt7
+  fromInt: fromInt8,
+  toInt: toInt8
 };
-function parse61(payload) {
+function parse62(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "action");
   if (e.TAG !== "Ok") {
@@ -7409,7 +7980,7 @@ function parse61(payload) {
   if (e$4.TAG !== "Ok") {
     return e$4;
   }
-  let action = fromInt7(e._0);
+  let action = fromInt8(e._0);
   let action$1 = action !== void 0 ? {
     TAG: "Ok",
     _0: action
@@ -7438,17 +8009,17 @@ function parse61(payload) {
     };
   }
 }
-function toBuffer60(self) {
-  return data(packByte(packInt16(packInt16(packInt16(packByte(setType(make(), toInt("TileModify")), toInt7(self.action), "action"), self.tileX, "tileX"), self.tileY, "tileY"), self.value1, "value1"), self.value2, "value2"));
+function toBuffer61(self) {
+  return data(packByte(packInt16(packInt16(packInt16(packByte(setType(make(), toInt("TileModify")), toInt8(self.action), "action"), self.tileX, "tileX"), self.tileY, "tileY"), self.value1, "value1"), self.value2, "value2"));
 }
 
 // src/packetv1449/PacketV1449_TilePaint.js
 var PacketV1449_TilePaint_exports = {};
 __export(PacketV1449_TilePaint_exports, {
-  parse: () => parse62,
-  toBuffer: () => toBuffer61
+  parse: () => parse63,
+  toBuffer: () => toBuffer62
 });
-function parse62(payload) {
+function parse63(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -7477,17 +8048,17 @@ function parse62(payload) {
     return e$3;
   }
 }
-function toBuffer61(self) {
+function toBuffer62(self) {
   return data(packByte(packByte(packInt16(packInt16(setType(make(), toInt("TilePaint")), self.x, "x"), self.y, "y"), self.color, "color"), self.coat, "coat"));
 }
 
 // src/packetv1449/PacketV1449_TilePickingSync.js
 var PacketV1449_TilePickingSync_exports = {};
 __export(PacketV1449_TilePickingSync_exports, {
-  parse: () => parse63,
-  toBuffer: () => toBuffer62
+  parse: () => parse64,
+  toBuffer: () => toBuffer63
 });
-function parse63(payload) {
+function parse64(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -7516,17 +8087,17 @@ function parse63(payload) {
     return e$3;
   }
 }
-function toBuffer62(self) {
+function toBuffer63(self) {
   return data(packByte(packInt16(packInt16(packByte(setType(make(), toInt("TilePickingSync")), self.playerId, "playerId"), self.x, "x"), self.y, "y"), self.pickPower, "pickPower"));
 }
 
 // src/packetv1449/PacketV1449_TileSectionFrame.js
 var PacketV1449_TileSectionFrame_exports = {};
 __export(PacketV1449_TileSectionFrame_exports, {
-  parse: () => parse64,
-  toBuffer: () => toBuffer63
+  parse: () => parse65,
+  toBuffer: () => toBuffer64
 });
-function parse64(payload) {
+function parse65(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "startX");
   if (e.TAG !== "Ok") {
@@ -7555,7 +8126,7 @@ function parse64(payload) {
     return e$3;
   }
 }
-function toBuffer63(self) {
+function toBuffer64(self) {
   return data(packInt16(packInt16(packInt16(packInt16(setType(make(), toInt("TileSectionFrame")), self.startX, "startX"), self.startY, "startY"), self.endX, "endX"), self.endY, "endY"));
 }
 
@@ -7566,7 +8137,7 @@ __export(Packet_TileSectionSend_exports, {
   Entity: () => Entity,
   Sign: () => Sign2,
   parse: () => parse$13,
-  toBuffer: () => toBuffer64
+  toBuffer: () => toBuffer65
 });
 import * as Nodezlib from "node:zlib";
 
@@ -14449,7 +15020,7 @@ function cacheToTile(cache) {
     coatHeader: cache.coatHeader
   };
 }
-function parse65(reader) {
+function parse66(reader) {
   let e = readInt162(reader, "id");
   if (e.TAG !== "Ok") {
     return e;
@@ -14512,7 +15083,7 @@ function pack$12(writer, sign) {
   return packString2(packInt162(packInt162(packInt162(writer, sign.id, "id"), sign.x, "x"), sign.y, "y"), sign.name, "name");
 }
 var Chest = {
-  parse: parse65,
+  parse: parse66,
   pack: pack3
 };
 var Sign = {
@@ -14851,7 +15422,7 @@ function parseEntityKind(entityType, reader) {
       };
   }
 }
-function parse66(reader) {
+function parse67(reader) {
   let e = readByte2(reader, "entityType");
   if (e.TAG !== "Ok") {
     return e;
@@ -15518,7 +16089,7 @@ function parse$13(payload) {
     return e$12;
   }
   let entityReader = new bufferreader_default(e$12._0);
-  let e$13 = readRepeated(e$10._0, () => parse66(entityReader));
+  let e$13 = readRepeated(e$10._0, () => parse67(entityReader));
   if (e$13.TAG !== "Ok") {
     return e$13;
   }
@@ -15767,7 +16338,7 @@ function decidePackTile(writer, lastTile, tile) {
     };
   }
 }
-function toBuffer64(self) {
+function toBuffer65(self) {
   let outerPacketWriter = setType(make(), toInt("TileSectionSend"));
   let innerWriter = make3(Buffer.allocUnsafe(64e3));
   packInt162(packInt162(packInt322(packInt322(innerWriter, self.tileX, "tileX"), self.tileY, "tileY"), self.width, "width"), self.height, "height");
@@ -15813,7 +16384,7 @@ function toBuffer64(self) {
 var Chest2;
 var Sign2;
 var Entity = {
-  parse: parse66,
+  parse: parse67,
   pack: pack4
 };
 
@@ -15822,10 +16393,10 @@ var Packet_TileSquareSend_exports = {};
 __export(Packet_TileSquareSend_exports, {
   Decode: () => Decode9,
   Encode: () => Encode9,
-  parse: () => parse67,
-  toBuffer: () => toBuffer65
+  parse: () => parse68,
+  toBuffer: () => toBuffer66
 });
-function parse67(payload) {
+function parse68(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "tileX");
   if (e.TAG !== "Ok") {
@@ -16102,23 +16673,23 @@ function packTiles(writer, tiles) {
   }
   return writer;
 }
-function toBuffer65(self) {
+function toBuffer66(self) {
   return data(packTiles(packByte(packByte(packByte(packInt16(packInt16(setType(make(), toInt("TileSquareSend")), self.tileX, "tileX"), self.tileY, "tileY"), self.width, "width"), self.height, "height"), self.changeType, "changeType"), self.tiles));
 }
 var Decode9 = {
-  parse: parse67
+  parse: parse68
 };
 var Encode9 = {
-  toBuffer: toBuffer65
+  toBuffer: toBuffer66
 };
 
 // src/packetv1449/PacketV1449_TimeSet.js
 var PacketV1449_TimeSet_exports = {};
 __export(PacketV1449_TimeSet_exports, {
-  parse: () => parse68,
-  toBuffer: () => toBuffer66
+  parse: () => parse69,
+  toBuffer: () => toBuffer67
 });
-function parse68(payload) {
+function parse69(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "dayTime");
   if (e.TAG !== "Ok") {
@@ -16147,7 +16718,7 @@ function parse68(payload) {
     return e$3;
   }
 }
-function toBuffer66(self) {
+function toBuffer67(self) {
   return data(packInt16(packInt16(packInt32(packByte(setType(make(), toInt("TimeSet")), self.dayTime ? 1 : 0, "dayTime"), self.time, "time"), self.sunModY, "sunModY"), self.moonModY, "moonModY"));
 }
 
@@ -16156,10 +16727,10 @@ var Packet_TravellingMerchantInventory_exports = {};
 __export(Packet_TravellingMerchantInventory_exports, {
   Decode: () => Decode10,
   Encode: () => Encode10,
-  parse: () => parse69,
-  toBuffer: () => toBuffer67
+  parse: () => parse70,
+  toBuffer: () => toBuffer68
 });
-function parse69(payload) {
+function parse70(payload) {
   let reader = new packetreader_default(payload);
   let items = [];
   let readItems = (_idx) => {
@@ -16195,7 +16766,7 @@ function parse69(payload) {
 }
 var Decode10 = {
   readInt16,
-  parse: parse69
+  parse: parse70
 };
 function packItems(writer, items) {
   let _writer = writer;
@@ -16212,7 +16783,7 @@ function packItems(writer, items) {
   }
   ;
 }
-function toBuffer67(self) {
+function toBuffer68(self) {
   let writer = setType(make(), toInt("TravellingMerchantInventory"));
   return data(packItems(writer, self.items));
 }
@@ -16222,16 +16793,16 @@ var Encode10 = {
   setType,
   data,
   packItems,
-  toBuffer: toBuffer67
+  toBuffer: toBuffer68
 };
 
 // src/packetv1449/PacketV1449_TreeGrowFx.js
 var PacketV1449_TreeGrowFx_exports = {};
 __export(PacketV1449_TreeGrowFx_exports, {
-  parse: () => parse70,
-  toBuffer: () => toBuffer68
+  parse: () => parse71,
+  toBuffer: () => toBuffer69
 });
-function parse70(payload) {
+function parse71(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "action");
   if (e.TAG !== "Ok") {
@@ -16265,16 +16836,16 @@ function parse70(payload) {
     return e$4;
   }
 }
-function toBuffer68(self) {
+function toBuffer69(self) {
   return data(packInt16(packByte(packInt32(packInt32(packByte(setType(make(), toInt("TreeGrowFx")), self.action, "action"), self.x, "x"), self.y, "y"), self.style, "style"), self.treeType, "treeType"));
 }
 
 // src/packetv1449/PacketV1449_Unused.js
 var PacketV1449_Unused_exports = {};
 __export(PacketV1449_Unused_exports, {
-  parse: () => parse71
+  parse: () => parse72
 });
-function parse71(_payload) {
+function parse72(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
@@ -16284,10 +16855,10 @@ function parse71(_payload) {
 // src/packetv1449/PacketV1449_WallPaint.js
 var PacketV1449_WallPaint_exports = {};
 __export(PacketV1449_WallPaint_exports, {
-  parse: () => parse72,
-  toBuffer: () => toBuffer69
+  parse: () => parse73,
+  toBuffer: () => toBuffer70
 });
-function parse72(payload) {
+function parse73(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -16316,17 +16887,17 @@ function parse72(payload) {
     return e$3;
   }
 }
-function toBuffer69(self) {
+function toBuffer70(self) {
   return data(packByte(packByte(packInt16(packInt16(setType(make(), toInt("WallPaint")), self.x, "x"), self.y, "y"), self.color, "color"), self.coat, "coat"));
 }
 
 // src/packetv1449/PacketV1449_WeaponsRackTryPlacing.js
 var PacketV1449_WeaponsRackTryPlacing_exports = {};
 __export(PacketV1449_WeaponsRackTryPlacing_exports, {
-  parse: () => parse73,
-  toBuffer: () => toBuffer70
+  parse: () => parse74,
+  toBuffer: () => toBuffer71
 });
-function parse73(payload) {
+function parse74(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -16360,17 +16931,17 @@ function parse73(payload) {
     return e$4;
   }
 }
-function toBuffer70(self) {
+function toBuffer71(self) {
   return data(packInt16(packInt16(packInt16(packInt16(packInt16(setType(make(), toInt("WeaponsRackTryPlacing")), self.x, "x"), self.y, "y"), self.itemId, "itemId"), self.prefix, "prefix"), self.stack, "stack"));
 }
 
 // src/packetv1449/PacketV1449_WiredCannonShot.js
 var PacketV1449_WiredCannonShot_exports = {};
 __export(PacketV1449_WiredCannonShot_exports, {
-  parse: () => parse74,
-  toBuffer: () => toBuffer71
+  parse: () => parse75,
+  toBuffer: () => toBuffer72
 });
-function parse74(payload) {
+function parse75(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "damage");
   if (e.TAG !== "Ok") {
@@ -16414,23 +16985,23 @@ function parse74(payload) {
     return e$6;
   }
 }
-function toBuffer71(self) {
+function toBuffer72(self) {
   return data(packByte(packInt16(packInt16(packInt16(packInt16(packSingle(packInt16(setType(make(), toInt("WiredCannonShot")), self.damage, "damage"), self.knockback, "knockback"), self.x, "x"), self.y, "y"), self.angle, "angle"), self.ammo, "ammo"), self.playerId, "playerId"));
 }
 
 // src/packetv1449/PacketV1449_WorldDataRequest.js
 var PacketV1449_WorldDataRequest_exports = {};
 __export(PacketV1449_WorldDataRequest_exports, {
-  parse: () => parse75,
-  toBuffer: () => toBuffer72
+  parse: () => parse76,
+  toBuffer: () => toBuffer73
 });
-function parse75(_payload) {
+function parse76(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
   };
 }
-function toBuffer72(_self) {
+function toBuffer73(_self) {
   return {
     TAG: "Ok",
     _0: new packetwriter_default().setType(toInt("WorldDataRequest")).data
@@ -16442,10 +17013,10 @@ var Packet_Zones_exports = {};
 __export(Packet_Zones_exports, {
   Decode: () => Decode11,
   Encode: () => Encode11,
-  parse: () => parse76,
-  toBuffer: () => toBuffer73
+  parse: () => parse77,
+  toBuffer: () => toBuffer74
 });
-function parse76(payload) {
+function parse77(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -16491,16 +17062,16 @@ function parse76(payload) {
 }
 var Decode11 = {
   readByte,
-  parse: parse76
+  parse: parse77
 };
-function toBuffer73(self) {
+function toBuffer74(self) {
   return data(packByte(packByte(packByte(packByte(packByte(packByte(packByte(setType(make(), toInt("Zones")), self.playerId, "playerId"), self.zone1, "zone1"), self.zone2, "zone2"), self.zone3, "zone3"), self.zone4, "zone4"), self.zone5, "zone5"), self.townNPCs, "townNPCs"));
 }
 var Encode11 = {
   packByte,
   setType,
   data,
-  toBuffer: toBuffer73
+  toBuffer: toBuffer74
 };
 
 // src/packet/Packet_ChestResize.js
@@ -16508,10 +17079,10 @@ var Packet_ChestResize_exports = {};
 __export(Packet_ChestResize_exports, {
   Decode: () => Decode12,
   Encode: () => Encode12,
-  parse: () => parse77,
-  toBuffer: () => toBuffer74
+  parse: () => parse78,
+  toBuffer: () => toBuffer75
 });
-function parse77(payload) {
+function parse78(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "chestId");
   if (e.TAG !== "Ok") {
@@ -16532,16 +17103,16 @@ function parse77(payload) {
 }
 var Decode12 = {
   readInt16,
-  parse: parse77
+  parse: parse78
 };
-function toBuffer74(self) {
+function toBuffer75(self) {
   return data(packInt16(packInt16(setType(make(), toInt("ChestResize")), self.chestId, "chestId"), self.newSize, "newSize"));
 }
 var Encode12 = {
   packInt16,
   setType,
   data,
-  toBuffer: toBuffer74
+  toBuffer: toBuffer75
 };
 
 // src/packet/Packet_DeadCellsDisplayJarTryPlacing.js
@@ -16549,10 +17120,10 @@ var Packet_DeadCellsDisplayJarTryPlacing_exports = {};
 __export(Packet_DeadCellsDisplayJarTryPlacing_exports, {
   Decode: () => Decode13,
   Encode: () => Encode13,
-  parse: () => parse78,
-  toBuffer: () => toBuffer75
+  parse: () => parse79,
+  toBuffer: () => toBuffer76
 });
-function parse78(payload) {
+function parse79(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -16589,9 +17160,9 @@ function parse78(payload) {
 var Decode13 = {
   readInt16,
   readByte,
-  parse: parse78
+  parse: parse79
 };
-function toBuffer75(self) {
+function toBuffer76(self) {
   return data(packInt16(packByte(packInt16(packInt16(packInt16(setType(make(), toInt("DeadCellsDisplayJarTryPlacing")), self.x, "x"), self.y, "y"), self.itemType, "itemType"), self.prefix, "prefix"), self.stack, "stack"));
 }
 var Encode13 = {
@@ -16599,7 +17170,7 @@ var Encode13 = {
   packByte,
   setType,
   data,
-  toBuffer: toBuffer75
+  toBuffer: toBuffer76
 };
 
 // src/packet/Packet_DebugCommand.js
@@ -16607,10 +17178,10 @@ var Packet_DebugCommand_exports = {};
 __export(Packet_DebugCommand_exports, {
   Decode: () => Decode14,
   Encode: () => Encode14,
-  parse: () => parse79,
-  toBuffer: () => toBuffer76
+  parse: () => parse80,
+  toBuffer: () => toBuffer77
 });
-function parse79(payload) {
+function parse80(payload) {
   let reader = new packetreader_default(payload);
   let e = readString(reader, "command");
   if (e.TAG !== "Ok") {
@@ -16643,9 +17214,9 @@ var Decode14 = {
   readString,
   readInt32,
   readSingle,
-  parse: parse79
+  parse: parse80
 };
-function toBuffer76(self) {
+function toBuffer77(self) {
   return data(packSingle(packSingle(packInt32(packString(setType(make(), toInt("Unused")), self.command, "command"), self.argInt, "argInt"), self.argFloat, "argFloat"), self.argFloat2, "argFloat2"));
 }
 var Encode14 = {
@@ -16654,7 +17225,7 @@ var Encode14 = {
   packSingle,
   setType,
   data,
-  toBuffer: toBuffer76
+  toBuffer: toBuffer77
 };
 
 // src/packet/Packet_HostToken.js
@@ -16662,10 +17233,10 @@ var Packet_HostToken_exports = {};
 __export(Packet_HostToken_exports, {
   Decode: () => Decode15,
   Encode: () => Encode15,
-  parse: () => parse80,
-  toBuffer: () => toBuffer77
+  parse: () => parse81,
+  toBuffer: () => toBuffer78
 });
-function parse80(payload) {
+function parse81(payload) {
   let reader = new packetreader_default(payload);
   let e = readString(reader, "token");
   if (e.TAG === "Ok") {
@@ -16681,16 +17252,16 @@ function parse80(payload) {
 }
 var Decode15 = {
   readString,
-  parse: parse80
+  parse: parse81
 };
-function toBuffer77(self) {
+function toBuffer78(self) {
   return data(packString(setType(make(), toInt("HostToken")), self.token, "token"));
 }
 var Encode15 = {
   packString,
   setType,
   data,
-  toBuffer: toBuffer77
+  toBuffer: toBuffer78
 };
 
 // src/packet/Packet_InitialTileSectionsRequest.js
@@ -16698,10 +17269,10 @@ var Packet_InitialTileSectionsRequest_exports = {};
 __export(Packet_InitialTileSectionsRequest_exports, {
   Decode: () => Decode16,
   Encode: () => Encode16,
-  parse: () => parse81,
-  toBuffer: () => toBuffer78
+  parse: () => parse82,
+  toBuffer: () => toBuffer79
 });
-function parse81(payload) {
+function parse82(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "x");
   if (e.TAG !== "Ok") {
@@ -16728,13 +17299,13 @@ function parse81(payload) {
 var Decode16 = {
   readInt32,
   readByte,
-  parse: parse81
+  parse: parse82
 };
-function toBuffer78(self) {
+function toBuffer79(self) {
   return data(packByte(packInt32(packInt32(setType(new packetwriter_default(), toInt("InitialTileSectionsRequest")), self.x, "x"), self.y, "y"), self.team, "team"));
 }
 var Encode16 = {
-  toBuffer: toBuffer78
+  toBuffer: toBuffer79
 };
 
 // src/packet/Packet_ItemDropClear.js
@@ -16742,10 +17313,10 @@ var Packet_ItemDropClear_exports = {};
 __export(Packet_ItemDropClear_exports, {
   Decode: () => Decode17,
   Encode: () => Encode17,
-  parse: () => parse82,
-  toBuffer: () => toBuffer79
+  parse: () => parse83,
+  toBuffer: () => toBuffer80
 });
-function parse82(payload) {
+function parse83(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemDropId");
   if (e.TAG === "Ok") {
@@ -16761,16 +17332,16 @@ function parse82(payload) {
 }
 var Decode17 = {
   readInt16,
-  parse: parse82
+  parse: parse83
 };
-function toBuffer79(self) {
+function toBuffer80(self) {
   return data(packInt16(setType(make(), toInt("ItemDropClear")), self.itemDropId, "itemDropId"));
 }
 var Encode17 = {
   packInt16,
   setType,
   data,
-  toBuffer: toBuffer79
+  toBuffer: toBuffer80
 };
 
 // src/packet/Packet_ItemDropPosition.js
@@ -16778,10 +17349,10 @@ var Packet_ItemDropPosition_exports = {};
 __export(Packet_ItemDropPosition_exports, {
   Decode: () => Decode18,
   Encode: () => Encode18,
-  parse: () => parse83,
-  toBuffer: () => toBuffer80
+  parse: () => parse84,
+  toBuffer: () => toBuffer81
 });
-function parse83(payload) {
+function parse84(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemDropId");
   if (e.TAG !== "Ok") {
@@ -16810,9 +17381,9 @@ function parse83(payload) {
 var Decode18 = {
   readInt16,
   readSingle,
-  parse: parse83
+  parse: parse84
 };
-function toBuffer80(self) {
+function toBuffer81(self) {
   return data(packSingle(packSingle(packInt16(setType(make(), toInt("ItemDropPosition")), self.itemDropId, "itemDropId"), self.position.x, "positionX"), self.position.y, "positionY"));
 }
 var Encode18 = {
@@ -16820,7 +17391,7 @@ var Encode18 = {
   packSingle,
   setType,
   data,
-  toBuffer: toBuffer80
+  toBuffer: toBuffer81
 };
 
 // src/packet/Packet_ItemForceIntoNearestChest.js
@@ -16828,10 +17399,10 @@ var Packet_ItemForceIntoNearestChest_exports = {};
 __export(Packet_ItemForceIntoNearestChest_exports, {
   Decode: () => Decode19,
   Encode: () => Encode19,
-  parse: () => parse84,
-  toBuffer: () => toBuffer81
+  parse: () => parse85,
+  toBuffer: () => toBuffer82
 });
-function parse84(payload, fromServer) {
+function parse85(payload, fromServer) {
   let reader = new packetreader_default(payload);
   if (fromServer) {
     let e = readInt32(reader, "blockedChestCount");
@@ -16924,7 +17495,7 @@ var Decode19 = {
   readUInt16,
   readInt32,
   readByte,
-  parse: parse84
+  parse: parse85
 };
 function packSlotIds(writer, slotIds) {
   let writer$1 = packInt32(writer, slotIds.length, "slotCount");
@@ -16940,7 +17511,7 @@ function packChestIds(writer, chestIds) {
   });
   return writer$1;
 }
-function toBuffer81(self) {
+function toBuffer82(self) {
   let writer = setType(make(), toInt("ItemForceIntoNearestChest"));
   if (self.TAG !== "ClientRequest") {
     return data(packChestIds(writer, self._0.chestIds));
@@ -16958,7 +17529,7 @@ var Encode19 = {
   data,
   packSlotIds,
   packChestIds,
-  toBuffer: toBuffer81
+  toBuffer: toBuffer82
 };
 
 // src/packet/Packet_LeashedEntityAnchorInsertItem.js
@@ -16966,10 +17537,10 @@ var Packet_LeashedEntityAnchorInsertItem_exports = {};
 __export(Packet_LeashedEntityAnchorInsertItem_exports, {
   Decode: () => Decode20,
   Encode: () => Encode20,
-  parse: () => parse85,
-  toBuffer: () => toBuffer82
+  parse: () => parse86,
+  toBuffer: () => toBuffer83
 });
-function parse85(payload) {
+function parse86(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -16995,16 +17566,16 @@ function parse85(payload) {
 }
 var Decode20 = {
   readInt16,
-  parse: parse85
+  parse: parse86
 };
-function toBuffer82(self) {
+function toBuffer83(self) {
   return data(packInt16(packInt16(packInt16(setType(make(), toInt("LeashedEntityAnchorInsertItem")), self.x, "x"), self.y, "y"), self.itemType, "itemType"));
 }
 var Encode20 = {
   packInt16,
   setType,
   data,
-  toBuffer: toBuffer82
+  toBuffer: toBuffer83
 };
 
 // src/packet/Packet_NpcHurtByDebuff.js
@@ -17012,10 +17583,10 @@ var Packet_NpcHurtByDebuff_exports = {};
 __export(Packet_NpcHurtByDebuff_exports, {
   Decode: () => Decode21,
   Encode: () => Encode21,
-  parse: () => parse86,
-  toBuffer: () => toBuffer83
+  parse: () => parse87,
+  toBuffer: () => toBuffer84
 });
-function parse86(payload) {
+function parse87(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -17037,9 +17608,9 @@ function parse86(payload) {
 var Decode21 = {
   readByte,
   readInt16,
-  parse: parse86
+  parse: parse87
 };
-function toBuffer83(self) {
+function toBuffer84(self) {
   return data(packInt16(packByte(setType(make(), toInt("NpcHurtByDebuff")), self.npcId, "npcId"), self.debuffId, "debuffId"));
 }
 var Encode21 = {
@@ -17047,7 +17618,7 @@ var Encode21 = {
   packInt16,
   setType,
   data,
-  toBuffer: toBuffer83
+  toBuffer: toBuffer84
 };
 
 // src/packet/Packet_Ping.js
@@ -17055,25 +17626,25 @@ var Packet_Ping_exports = {};
 __export(Packet_Ping_exports, {
   Decode: () => Decode22,
   Encode: () => Encode22,
-  parse: () => parse87,
-  toBuffer: () => toBuffer84
+  parse: () => parse88,
+  toBuffer: () => toBuffer85
 });
-function parse87(_payload) {
+function parse88(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
   };
 }
 var Decode22 = {
-  parse: parse87
+  parse: parse88
 };
-function toBuffer84(_self) {
+function toBuffer85(_self) {
   return data(setType(make(), toInt("Ping")));
 }
 var Encode22 = {
   setType,
   data,
-  toBuffer: toBuffer84
+  toBuffer: toBuffer85
 };
 
 // src/packet/Packet_PlayerItemUseSound.js
@@ -17081,10 +17652,10 @@ var Packet_PlayerItemUseSound_exports = {};
 __export(Packet_PlayerItemUseSound_exports, {
   Decode: () => Decode23,
   Encode: () => Encode23,
-  parse: () => parse88,
-  toBuffer: () => toBuffer85
+  parse: () => parse89,
+  toBuffer: () => toBuffer86
 });
-function parse88(payload) {
+function parse89(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG === "Ok") {
@@ -17100,16 +17671,16 @@ function parse88(payload) {
 }
 var Decode23 = {
   readByte,
-  parse: parse88
+  parse: parse89
 };
-function toBuffer85(self) {
+function toBuffer86(self) {
   return data(packByte(setType(make(), toInt("PlayerItemUseSound")), self.playerId, "playerId"));
 }
 var Encode23 = {
   packByte,
   setType,
   data,
-  toBuffer: toBuffer85
+  toBuffer: toBuffer86
 };
 
 // src/packet/Packet_PlayerLuckFactorsUpdate.js
@@ -17117,10 +17688,10 @@ var Packet_PlayerLuckFactorsUpdate_exports = {};
 __export(Packet_PlayerLuckFactorsUpdate_exports, {
   Decode: () => Decode24,
   Encode: () => Encode24,
-  parse: () => parse89,
-  toBuffer: () => toBuffer86
+  parse: () => parse90,
+  toBuffer: () => toBuffer87
 });
-function parse89(payload) {
+function parse90(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -17180,9 +17751,9 @@ var Decode24 = {
   readInt32,
   readByte,
   readSingle,
-  parse: parse89
+  parse: parse90
 };
-function toBuffer86(self) {
+function toBuffer87(self) {
   return data(packByte(packSingle(packSingle(packByte(packByte(packByte(packSingle(packInt32(packByte(setType(make(), toInt("PlayerLuckFactorsUpdate")), self.playerId, "playerId"), self.ladyBugLuckTimeLeft, "ladyBugLuckTimeLeft"), self.torchLuck, "torchLuck"), self.luckPotion, "luckPotion"), self.hasGardenGnomeNearby ? 1 : 0, "hasGardenGnomeNearby"), self.brokenMirrorBadLuck ? 1 : 0, "brokenMirrorBadLuck"), self.equipmentBasedLuckBonus, "equipmentBasedLuckBonus"), self.coinLuck, "coinLuck"), self.kiteLuckLevel, "kiteLuckLevel"));
 }
 var Encode24 = {
@@ -17191,7 +17762,7 @@ var Encode24 = {
   packSingle,
   setType,
   data,
-  toBuffer: toBuffer86
+  toBuffer: toBuffer87
 };
 
 // src/packet/Packet_PlayerSpectate.js
@@ -17199,10 +17770,10 @@ var Packet_PlayerSpectate_exports = {};
 __export(Packet_PlayerSpectate_exports, {
   Decode: () => Decode25,
   Encode: () => Encode25,
-  parse: () => parse90,
-  toBuffer: () => toBuffer87
+  parse: () => parse91,
+  toBuffer: () => toBuffer88
 });
-function parse90(payload) {
+function parse91(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -17224,9 +17795,9 @@ function parse90(payload) {
 var Decode25 = {
   readByte,
   readInt16,
-  parse: parse90
+  parse: parse91
 };
-function toBuffer87(self) {
+function toBuffer88(self) {
   return data(packInt16(packByte(setType(make(), toInt("PlayerSpectate")), self.playerId, "playerId"), self.targetPlayerId, "targetPlayerId"));
 }
 var Encode25 = {
@@ -17234,7 +17805,7 @@ var Encode25 = {
   packInt16,
   setType,
   data,
-  toBuffer: toBuffer87
+  toBuffer: toBuffer88
 };
 
 // src/packet/Packet_PlayerTeamSwapSpawn.js
@@ -17242,10 +17813,10 @@ var Packet_PlayerTeamSwapSpawn_exports = {};
 __export(Packet_PlayerTeamSwapSpawn_exports, {
   Decode: () => Decode26,
   Encode: () => Encode26,
-  parse: () => parse91,
-  toBuffer: () => toBuffer88
+  parse: () => parse92,
+  toBuffer: () => toBuffer89
 });
-function parse91(payload) {
+function parse92(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG === "Ok") {
@@ -17261,16 +17832,16 @@ function parse91(payload) {
 }
 var Decode26 = {
   readByte,
-  parse: parse91
+  parse: parse92
 };
-function toBuffer88(self) {
+function toBuffer89(self) {
   return data(packByte(setType(make(), toInt("PlayerTeamSwapSpawn")), self.playerId, "playerId"));
 }
 var Encode26 = {
   packByte,
   setType,
   data,
-  toBuffer: toBuffer88
+  toBuffer: toBuffer89
 };
 
 // src/packet/Packet_PlayerTeamUpdate.js
@@ -17278,10 +17849,10 @@ var Packet_PlayerTeamUpdate_exports = {};
 __export(Packet_PlayerTeamUpdate_exports, {
   Decode: () => Decode27,
   Encode: () => Encode27,
-  parse: () => parse92,
-  toBuffer: () => toBuffer89
+  parse: () => parse93,
+  toBuffer: () => toBuffer90
 });
-function parse92(payload) {
+function parse93(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -17302,16 +17873,16 @@ function parse92(payload) {
 }
 var Decode27 = {
   readByte,
-  parse: parse92
+  parse: parse93
 };
-function toBuffer89(self) {
+function toBuffer90(self) {
   return data(packByte(packByte(setType(make(), toInt("PlayerTeamUpdate")), self.playerId, "playerId"), self.team, "team"));
 }
 var Encode27 = {
   packByte,
   setType,
   data,
-  toBuffer: toBuffer89
+  toBuffer: toBuffer90
 };
 
 // src/packet/Packet_SectionRequest.js
@@ -17319,10 +17890,10 @@ var Packet_SectionRequest_exports = {};
 __export(Packet_SectionRequest_exports, {
   Decode: () => Decode28,
   Encode: () => Encode28,
-  parse: () => parse93,
-  toBuffer: () => toBuffer90
+  parse: () => parse94,
+  toBuffer: () => toBuffer91
 });
-function parse93(payload) {
+function parse94(payload) {
   let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "sectionX");
   if (e.TAG !== "Ok") {
@@ -17343,25 +17914,25 @@ function parse93(payload) {
 }
 var Decode28 = {
   readUInt16,
-  parse: parse93
+  parse: parse94
 };
-function toBuffer90(self) {
+function toBuffer91(self) {
   return data(packUInt16(packUInt16(setType(make(), toInt("SectionRequest")), self.sectionX, "sectionX"), self.sectionY, "sectionY"));
 }
 var Encode28 = {
   packUInt16,
   setType,
   data,
-  toBuffer: toBuffer90
+  toBuffer: toBuffer91
 };
 
 // src/packetv1449/PacketV1449_PlayerSlotSet.js
 var PacketV1449_PlayerSlotSet_exports = {};
 __export(PacketV1449_PlayerSlotSet_exports, {
-  parse: () => parse94,
-  toBuffer: () => toBuffer91
+  parse: () => parse95,
+  toBuffer: () => toBuffer92
 });
-function parse94(payload) {
+function parse95(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerSlotId");
   if (e.TAG !== "Ok") {
@@ -17380,7 +17951,7 @@ function parse94(payload) {
     return e$1;
   }
 }
-function toBuffer91(self) {
+function toBuffer92(self) {
   return data(packByte(packByte(setType(make(), toInt("PlayerSlotSet")), self.playerSlotId, "playerSlotId"), self.serverWantsToRunCheckBytesInClientLoopThread ? 1 : 0, "serverWantsToRunCheckBytesInClientLoopThread"));
 }
 
@@ -17389,10 +17960,10 @@ var Packet_PlayerUpdate_exports = {};
 __export(Packet_PlayerUpdate_exports, {
   Decode: () => Decode29,
   Encode: () => Encode29,
-  parse: () => parse95,
-  toBuffer: () => toBuffer92
+  parse: () => parse96,
+  toBuffer: () => toBuffer93
 });
-function parse95(payload) {
+function parse96(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -17610,7 +18181,7 @@ var Decode29 = {
   readByte,
   readSingle,
   readUInt16,
-  parse: parse95
+  parse: parse96
 };
 function packControlFlags(writer, control, direction) {
   let tmp;
@@ -17658,7 +18229,7 @@ function packNetCameraTarget(writer, netCameraTarget) {
     return writer;
   }
 }
-function toBuffer92(self) {
+function toBuffer93(self) {
   return data(packNetCameraTarget(packPotionOfReturn(packMountType(packVelocity(packSingle(packSingle(packByte(packMiscFlags3(packMiscFlags2(packMiscFlags1(packControlFlags(packByte(setType(make(), toInt("PlayerUpdate")), self.playerId, "playerId"), self.control, self.direction), self.pulleyDirection, self.velocity, self.vortexStealthActive, self.gravityDirection, self.shieldRaised, self.ghost, self.mountType), self.tryKeepingHoveringUp, self.isVoidVaultEnabled, self.isSitting, self.hasFinishedAnyDd2Event, self.isPettingAnimal, self.isTheAnimalBeingPetSmall, self.potionOfReturn, self.tryKeepingHoveringDown), self.isSleeping, self.autoReuseAllWeapons, self.controlDownHold, self.isOperatingAnotherEntity, self.controlUseTile, self.netCameraTarget, self.lastItemUseAttemptSuccess), self.selectedItem, "selectedItem"), self.position.x, "positionX"), self.position.y, "positionY"), self.velocity), self.mountType), self.potionOfReturn), self.netCameraTarget));
 }
 var Encode29 = {
@@ -17675,7 +18246,7 @@ var Encode29 = {
   packMountType,
   packPotionOfReturn,
   packNetCameraTarget,
-  toBuffer: toBuffer92
+  toBuffer: toBuffer93
 };
 
 // src/packet/Packet_PlayerInfo.js
@@ -17684,8 +18255,8 @@ __export(Packet_PlayerInfo_exports, {
   Color: () => Color,
   Decode: () => Decode30,
   Encode: () => Encode30,
-  parse: () => parse96,
-  toBuffer: () => toBuffer93
+  parse: () => parse97,
+  toBuffer: () => toBuffer94
 });
 function getDifficulty(difficultyFlags) {
   if (flag2(difficultyFlags)) {
@@ -17696,7 +18267,7 @@ function getDifficulty(difficultyFlags) {
     return "Softcore";
   }
 }
-function parse96(payload) {
+function parse97(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -17845,7 +18416,7 @@ var Decode30 = {
   readString,
   readColor,
   getDifficulty,
-  parse: parse96
+  parse: parse97
 };
 function packDifficultyFlags(writer, difficulty, extraAccessory, mode) {
   let byte = 0;
@@ -17886,7 +18457,7 @@ function packUsedFlags(writer, usedAegisCrystal, usedAegisFruit, usedArcaneCryst
   byte = byte | (ateArtisanBread ? 64 : 0);
   return packByte(writer, byte, "usedFlags");
 }
-function toBuffer93(self) {
+function toBuffer94(self) {
   return data(packUsedFlags(packTorchFlags(packDifficultyFlags(packColor(packColor(packColor(packColor(packColor(packColor(packColor(packByte(packByte(packByte(packByte(packString(packByte(packSingle(packByte(packByte(packByte(setType(make(), toInt("PlayerInfo")), self.playerId, "playerId"), self.skinVariant, "skinVariant"), self.voiceVariant, "voiceVariant"), self.voicePitchOffset, "voicePitchOffset"), self.hair, "hair"), self.name, "name"), self.hairDye, "hairDye"), self.hideVisuals, "hideVisuals"), self.hideVisuals2, "hideVisuals2"), self.hideMisc, "hideMisc"), self.hairColor, "hairColor"), self.skinColor, "skinColor"), self.eyeColor, "eyeColor"), self.shirtColor, "shirtColor"), self.underShirtColor, "underShirtColor"), self.pantsColor, "pantsColor"), self.shoeColor, "shoeColor"), self.difficulty, self.extraAccessory, self.mode), self.usingBiomeTorches, self.happyFunTorchTime, self.unlockedBiomeTorches, self.unlockedSuperCart, self.enabledSuperCart), self.usedAegisCrystal, self.usedAegisFruit, self.usedArcaneCrystal, self.usedGalaxyPearl, self.usedGummyWorm, self.usedAmbrosia, self.ateArtisanBread));
 }
 var Encode30 = {
@@ -17899,7 +18470,7 @@ var Encode30 = {
   packDifficultyFlags,
   packTorchFlags,
   packUsedFlags,
-  toBuffer: toBuffer93
+  toBuffer: toBuffer94
 };
 var Color;
 
@@ -17908,10 +18479,10 @@ var Packet_PlayerSpawn_exports = {};
 __export(Packet_PlayerSpawn_exports, {
   Decode: () => Decode31,
   Encode: () => Encode31,
-  parse: () => parse97,
-  toBuffer: () => toBuffer94
+  parse: () => parse98,
+  toBuffer: () => toBuffer95
 });
-function parse97(payload) {
+function parse98(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -17984,9 +18555,9 @@ var Decode31 = {
   readByte,
   readInt16,
   readInt32,
-  parse: parse97
+  parse: parse98
 };
-function toBuffer94(self) {
+function toBuffer95(self) {
   let n = self.context;
   let tmp;
   if (typeof n !== "object") {
@@ -18010,7 +18581,7 @@ function toBuffer94(self) {
   return data(packByte(packByte(packInt16(packInt16(packInt32(packInt16(packInt16(packByte(setType(make(), toInt("PlayerSpawn")), self.playerId, "playerId"), self.x, "x"), self.y, "y"), self.timeRemaining, "timeRemaining"), self.numberOfDeathsPve, "numberOfDeathsPve"), self.numberOfDeathsPvp, "numberOfDeathsPvp"), self.team, "team"), tmp, "context"));
 }
 var Encode31 = {
-  toBuffer: toBuffer94
+  toBuffer: toBuffer95
 };
 
 // src/packet/Packet_PlayerInventorySlot.js
@@ -18018,10 +18589,10 @@ var Packet_PlayerInventorySlot_exports = {};
 __export(Packet_PlayerInventorySlot_exports, {
   Decode: () => Decode32,
   Encode: () => Encode32,
-  parse: () => parse98,
-  toBuffer: () => toBuffer95
+  parse: () => parse99,
+  toBuffer: () => toBuffer96
 });
-function parse98(payload) {
+function parse99(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -18062,9 +18633,9 @@ function parse98(payload) {
   };
 }
 var Decode32 = {
-  parse: parse98
+  parse: parse99
 };
-function toBuffer95(self) {
+function toBuffer96(self) {
   return data(packByte(packInt16(packByte(packInt16(packInt16(packByte(setType(make(), toInt("PlayerInventorySlot")), self.playerId, "playerId"), self.slot, "slot"), self.stack, "stack"), self.prefix, "prefix"), self.itemType, "itemType"), toByte(fromFlags(self.favorited, self.blocked, false, false, false, false, false, false)), "flags"));
 }
 var Encode32 = {
@@ -18072,16 +18643,16 @@ var Encode32 = {
   packByte,
   setType,
   data,
-  toBuffer: toBuffer95
+  toBuffer: toBuffer96
 };
 
 // src/packetv1449/PacketV1449_PlayerHealth.js
 var PacketV1449_PlayerHealth_exports = {};
 __export(PacketV1449_PlayerHealth_exports, {
-  parse: () => parse99,
-  toBuffer: () => toBuffer96
+  parse: () => parse100,
+  toBuffer: () => toBuffer97
 });
-function parse99(payload) {
+function parse100(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -18105,17 +18676,17 @@ function parse99(payload) {
     return e$2;
   }
 }
-function toBuffer96(self) {
+function toBuffer97(self) {
   return data(packInt16(packInt16(packByte(setType(make(), toInt("PlayerHealth")), self.playerId, "playerId"), self.health, "health"), self.maxHealth, "maxHealth"));
 }
 
 // src/packetv1449/PacketV1449_ClientUuid.js
 var PacketV1449_ClientUuid_exports = {};
 __export(PacketV1449_ClientUuid_exports, {
-  parse: () => parse100,
-  toBuffer: () => toBuffer97
+  parse: () => parse101,
+  toBuffer: () => toBuffer98
 });
-function parse100(payload) {
+function parse101(payload) {
   let reader = new packetreader_default(payload);
   let e = readString(reader, "uuid");
   if (e.TAG === "Ok") {
@@ -18129,17 +18700,17 @@ function parse100(payload) {
     return e;
   }
 }
-function toBuffer97(self) {
+function toBuffer98(self) {
   return data(packString(setType(make(), toInt("ClientUuid")), self.uuid, "uuid"));
 }
 
 // src/packetv1449/PacketV1449_ProjectileSync.js
 var PacketV1449_ProjectileSync_exports = {};
 __export(PacketV1449_ProjectileSync_exports, {
-  parse: () => parse101,
-  toBuffer: () => toBuffer98
+  parse: () => parse102,
+  toBuffer: () => toBuffer99
 });
-function parse101(payload) {
+function parse102(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "projectileId");
   if (e.TAG !== "Ok") {
@@ -18381,15 +18952,15 @@ function packOptionalData(writer, self) {
   }
   return writer;
 }
-function toBuffer98(self) {
+function toBuffer99(self) {
   return data(packOptionalData(packInt16(packByte(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt("ProjectileSync")), self.projectileId, "projectileId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.owner, "owner"), self.projectileType, "projectileType"), self));
 }
 
 // src/packetv1449/PacketV1449_PlayerDamage.js
 var PacketV1449_PlayerDamage_exports = {};
 __export(PacketV1449_PlayerDamage_exports, {
-  parse: () => parse102,
-  toBuffer: () => toBuffer99
+  parse: () => parse103,
+  toBuffer: () => toBuffer100
 });
 function readDamageFlags(reader) {
   let e = readByte(reader, "damageFlags");
@@ -18405,7 +18976,7 @@ function readDamageFlags(reader) {
     }
   };
 }
-function parse102(payload) {
+function parse103(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "target");
   if (e.TAG !== "Ok") {
@@ -18446,7 +19017,7 @@ function parse102(payload) {
     return e$5;
   }
 }
-function toBuffer99(self) {
+function toBuffer100(self) {
   let damageFlags = (self2) => toByte(fromFlags(self2.critical, self2.pvp, false, false, false, false, false, false));
   return data(packSByte(packByte(packByte(packInt16(packDeathReason(packByte(setType(make(), toInt("PlayerDamage")), self.target, "target"), self.deathReason), self.damage, "damage"), self.hitDirection, "hitDirection"), damageFlags(self), "damageFlags"), self.cooldownCounter, "cooldownCounter"));
 }
@@ -18456,8 +19027,8 @@ var Packet_WorldInfo_exports = {};
 __export(Packet_WorldInfo_exports, {
   Decode: () => Decode33,
   Encode: () => Encode33,
-  parse: () => parse103,
-  toBuffer: () => toBuffer100
+  parse: () => parse104,
+  toBuffer: () => toBuffer101
 });
 function readEventInfo(reader) {
   let e = readByte(reader, "eventInfo1");
@@ -18676,7 +19247,7 @@ function readEventInfo(reader) {
     }
   };
 }
-function parse103(payload) {
+function parse104(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "time");
   if (e.TAG !== "Ok") {
@@ -19116,7 +19687,7 @@ var Decode33 = {
   readSingle,
   readSByte,
   readEventInfo,
-  parse: parse103
+  parse: parse104
 };
 function packEventInfo(writer, eventInfo) {
   let eventInfo1 = fromFlags(eventInfo.shadowOrbSmashed, eventInfo.killedBoss1, eventInfo.killedBoss2, eventInfo.killedBoss3, eventInfo.hardMode, eventInfo.killedClown, eventInfo.serverSidedCharacters, eventInfo.killedPlantBoss);
@@ -19139,7 +19710,7 @@ function packExtraSpawnPoints(writer, extraSpawnPoints) {
   });
   return writer$1;
 }
-function toBuffer100(self) {
+function toBuffer101(self) {
   return data(packExtraSpawnPoints(packSingle(packUInt64(packSByte(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packEventInfo(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packUInt64(packBytes(packByte(packString(packInt32(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packInt32(setType(make(), toInt("WorldInfo")), self.time, "time"), self.dayAndMoonInfo, "dayAndMoonInfo"), self.moonPhase, "moonPhase"), self.maxTilesX, "maxTilesX"), self.maxTilesY, "maxTilesY"), self.spawnX, "spawnX"), self.spawnY, "spawnY"), self.worldSurface, "worldSurface"), self.rockLayer, "rockLayer"), self.worldId, "worldId"), self.worldName, "worldName"), self.gameMode, "gameMode"), asArray(self.worldUniqueId), "worldUniqueId"), self.worldGeneratorVersion, "worldGeneratorVersion"), self.moonType, "moonType"), self.treeBackground, "treeBackground"), self.treeBackground2, "treeBackground2"), self.treeBackground3, "treeBackground3"), self.treeBackground4, "treeBackground4"), self.corruptionBackground, "corruptionBackground"), self.jungleBackground, "jungleBackground"), self.snowBackground, "snowBackground"), self.hallowBackground, "hallowBackground"), self.crimsonBackground, "crimsonBackground"), self.desertBackground, "desertBackground"), self.oceanBackground, "oceanBackground"), self.mushroomBackground, "mushroomBackground"), self.underworldBackground, "underworldBackground"), self.iceBackStyle, "iceBackStyle"), self.jungleBackStyle, "jungleBackStyle"), self.hellBackStyle, "hellBackStyle"), self.windSpeedSet, "windSpeedSet"), self.cloudNumber, "cloudNumber"), self.tree1, "tree1"), self.tree2, "tree2"), self.tree3, "tree3"), self.treeStyle1, "treeStyle1"), self.treeStyle2, "treeStyle2"), self.treeStyle3, "treeStyle3"), self.treeStyle4, "treeStyle4"), self.caveBack1, "caveBack1"), self.caveBack2, "caveBack2"), self.caveBack3, "caveBack3"), self.caveBackStyle1, "caveBackStyle1"), self.caveBackStyle2, "caveBackStyle2"), self.caveBackStyle3, "caveBackStyle3"), self.caveBackStyle4, "caveBackStyle4"), self.forest1TreeTopStyle, "forest1TreeTopStyle"), self.forest2TreeTopStyle, "forest2TreeTopStyle"), self.forest3TreeTopStyle, "forest3TreeTopStyle"), self.forest4TreeTopStyle, "forest4TreeTopStyle"), self.corruptionTreeTopStyle, "corruptionTreeTopStyle"), self.jungleTreeTopStyle, "jungleTreeTopStyle"), self.snowTreeTopStyle, "snowTreeTopStyle"), self.hallowTreeTopStyle, "hallowTreeTopStyle"), self.crimsonTreeTopStyle, "crimsonTreeTopStyle"), self.desertTreeTopStyle, "desertTreeTopStyle"), self.oceanTreeTopStyle, "oceanTreeTopStyle"), self.glowingMushroomTreeTopStyle, "glowingMushroomTreeTopStyle"), self.underworldTreeTopStyle, "underworldTreeTopStyle"), self.rain, "rain"), self.eventInfo), self.sundialCooldown, "sundialCooldown"), self.moondialCooldown, "moondialCooldown"), self.copperOreTier, "copperOreTier"), self.ironOreTier, "ironOreTier"), self.silverOreTier, "silverOreTier"), self.goldOreTier, "goldOreTier"), self.cobaltOreTier, "cobaltOreTier"), self.mythrilOreTier, "mythrilOreTier"), self.adamantiteOreTier, "adamantiteOreTier"), self.invasionType, "invasionType"), self.lobbyId, "lobbyId"), self.sandstormSeverity, "sandstormSeverity"), self.extraSpawnPoints));
 }
 var Encode33 = {
@@ -19147,16 +19718,16 @@ var Encode33 = {
   packByte,
   packEventInfo,
   packExtraSpawnPoints,
-  toBuffer: toBuffer100
+  toBuffer: toBuffer101
 };
 
 // src/packetv1449/PacketV1449_PlayerActive.js
 var PacketV1449_PlayerActive_exports = {};
 __export(PacketV1449_PlayerActive_exports, {
-  parse: () => parse104,
-  toBuffer: () => toBuffer101
+  parse: () => parse105,
+  toBuffer: () => toBuffer102
 });
-function parse104(payload) {
+function parse105(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -19175,7 +19746,7 @@ function parse104(payload) {
     return e$1;
   }
 }
-function toBuffer101(self) {
+function toBuffer102(self) {
   return data(packByte(packByte(setType(make(), toInt("PlayerActive")), self.playerId, "playerId"), self.active ? 1 : 0, "active"));
 }
 
@@ -19184,8 +19755,8 @@ var Packet_NpcUpdate_exports = {};
 __export(Packet_NpcUpdate_exports, {
   Decode: () => Decode34,
   Encode: () => Encode34,
-  parse: () => parse105,
-  toBuffer: () => toBuffer102
+  parse: () => parse106,
+  toBuffer: () => toBuffer103
 });
 function readNpcFlags1(reader, fieldName) {
   let e = readByte(reader, fieldName);
@@ -19224,7 +19795,7 @@ function readNpcFlags2(reader, fieldName) {
     }
   };
 }
-function parse105(payload) {
+function parse106(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcSlotId");
   if (e.TAG !== "Ok") {
@@ -19449,7 +20020,7 @@ var Decode34 = {
   readSByte,
   readNpcFlags1,
   readNpcFlags2,
-  parse: parse105
+  parse: parse106
 };
 function npcFlags1(self) {
   let match = self.ai;
@@ -19511,7 +20082,7 @@ function packReleaseOwner(writer, releaseOwner) {
     return writer;
   }
 }
-function toBuffer102(self) {
+function toBuffer103(self) {
   return data(packReleaseOwner(packLife(packDifficulty(packPlayerCountScale(packInt16(packAi(packByte(packByte(packUInt16(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt("NpcUpdate")), self.npcSlotId, "npcSlotId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.target, "target"), npcFlags1(self), "npcFlags1"), npcFlags2(self), "npcFlags2"), self.ai), self.npcTypeId, "npcTypeId"), self.playerCountScale), self.difficulty), self.life), self.releaseOwner));
 }
 var Encode34 = {
@@ -19530,16 +20101,16 @@ var Encode34 = {
   packDifficulty,
   packLife,
   packReleaseOwner,
-  toBuffer: toBuffer102
+  toBuffer: toBuffer103
 };
 
 // src/packetv1449/PacketV1449_Disconnect.js
 var PacketV1449_Disconnect_exports = {};
 __export(PacketV1449_Disconnect_exports, {
-  parse: () => parse106,
-  toBuffer: () => toBuffer103
+  parse: () => parse107,
+  toBuffer: () => toBuffer104
 });
-function parse106(payload) {
+function parse107(payload) {
   let reader = new packetreader_default(payload);
   let e = readNetworkText(reader, "reason");
   if (e.TAG === "Ok") {
@@ -19553,14 +20124,14 @@ function parse106(payload) {
     return e;
   }
 }
-function toBuffer103(self) {
+function toBuffer104(self) {
   return data(packNetworkText(setType(make(), toInt("Disconnect")), self.reason, "reason"));
 }
 
 // src/Parser.js
 var Parser_exports = {};
 __export(Parser_exports, {
-  parse: () => parse164,
+  parse: () => parse165,
   parseLazy: () => parseLazy
 });
 
@@ -19574,7 +20145,7 @@ function from_fun(closure) {
 var make4 = from_fun;
 
 // src/packetv1449/PacketV1449_Emoji.js
-function parse107(payload) {
+function parse108(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -19595,7 +20166,7 @@ function parse107(payload) {
 }
 
 // src/packet/Packet_ServerInfo.js
-function parse108(_payload) {
+function parse109(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
@@ -19621,7 +20192,7 @@ function actionFromInt(self) {
       return;
   }
 }
-function parse109(payload) {
+function parse110(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "action");
   if (e.TAG !== "Ok") {
@@ -19669,7 +20240,7 @@ function parse109(payload) {
 }
 
 // src/packetv1449/PacketV1449_HarpPlay.js
-function parse110(payload) {
+function parse111(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -19690,7 +20261,7 @@ function parse110(payload) {
 }
 
 // src/packetv1449/PacketV1449_ChestName.js
-function parse111(payload) {
+function parse112(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "chestId");
   if (e.TAG !== "Ok") {
@@ -19721,7 +20292,7 @@ function parse111(payload) {
 }
 
 // src/packetv1449/PacketV1449_ChestOpen.js
-function parse112(payload) {
+function parse113(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -19742,7 +20313,7 @@ function parse112(payload) {
 }
 
 // src/packetv1449/PacketV1449_LiquidSet.js
-function parse113(payload) {
+function parse114(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -19773,7 +20344,7 @@ function parse113(payload) {
 }
 
 // src/packetv1449/PacketV1449_NpcStrike.js
-function parse114(payload) {
+function parse115(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -19809,7 +20380,7 @@ function parse114(payload) {
 }
 
 // src/packetv1449/PacketV1449_NpcTamper.js
-function fromInt8(playerId) {
+function fromInt9(playerId) {
   if (playerId !== -1) {
     return {
       TAG: "PlayerId",
@@ -19819,7 +20390,7 @@ function fromInt8(playerId) {
     return "All";
   }
 }
-function parse115(payload) {
+function parse116(payload) {
   let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -19838,7 +20409,7 @@ function parse115(payload) {
         TAG: "Ok",
         _0: [
           e$3._0,
-          fromInt8(e$4._0)
+          fromInt9(e$4._0)
         ]
       } : e$4;
     } else {
@@ -19868,7 +20439,7 @@ function parse115(payload) {
 }
 
 // src/packetv1449/PacketV1449_HealEffect.js
-function parse116(payload) {
+function parse117(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -19889,7 +20460,7 @@ function parse116(payload) {
 }
 
 // src/packetv1449/PacketV1449_ManaEffect.js
-function parse117(payload) {
+function parse118(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -19910,7 +20481,7 @@ function parse117(payload) {
 }
 
 // src/packetv1449/PacketV1449_NpcBuffAdd.js
-function parse118(payload) {
+function parse119(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -19936,7 +20507,7 @@ function parse118(payload) {
 }
 
 // src/packetv1449/PacketV1449_NpcRelease.js
-function parse119(payload) {
+function parse120(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "x");
   if (e.TAG !== "Ok") {
@@ -19967,7 +20538,7 @@ function parse119(payload) {
 }
 
 // src/packetv1449/PacketV1449_PortalKill.js
-function parse120(payload) {
+function parse121(payload) {
   let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "owner");
   if (e.TAG !== "Ok") {
@@ -19988,7 +20559,7 @@ function parse120(payload) {
 }
 
 // src/packetv1449/PacketV1449_EmoteBubble.js
-function parse121(payload) {
+function parse122(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "id");
   if (e.TAG !== "Ok") {
@@ -20062,7 +20633,7 @@ function parse121(payload) {
 }
 
 // src/packetv1449/PacketV1449_PasswordSend.js
-function parse122(payload) {
+function parse123(payload) {
   let reader = new packetreader_default(payload);
   let e = readString(reader, "password");
   if (e.TAG === "Ok") {
@@ -20078,7 +20649,7 @@ function parse122(payload) {
 }
 
 // src/packetv1449/PacketV1449_GemLockToggle.js
-function parse123(payload) {
+function parse124(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -20104,7 +20675,7 @@ function parse123(payload) {
 }
 
 // src/packetv1449/PacketV1449_NebulaLevelUp.js
-function parse124(payload) {
+function parse125(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -20135,7 +20706,7 @@ function parse124(payload) {
 }
 
 // src/packetv1449/PacketV1449_NpcItemStrike.js
-function parse125(payload) {
+function parse126(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -20156,7 +20727,7 @@ function parse125(payload) {
 }
 
 // src/packetv1449/PacketV1449_PlayerStealth.js
-function parse126(payload) {
+function parse127(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -20177,7 +20748,7 @@ function parse126(payload) {
 }
 
 // src/packet/Packet_PlayerPlatformInfo.js
-function fromInt9(n) {
+function fromInt10(n) {
   switch (n) {
     case 0:
       return "None";
@@ -20199,7 +20770,7 @@ function fromInt9(n) {
       return;
   }
 }
-function parse127(payload) {
+function parse128(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -20210,7 +20781,7 @@ function parse127(payload) {
     return e$1;
   }
   let platformId = e$1._0;
-  let platformId$1 = fromInt9(platformId);
+  let platformId$1 = fromInt10(platformId);
   if (platformId$1 !== void 0) {
     return {
       TAG: "Ok",
@@ -20231,7 +20802,7 @@ function parse127(payload) {
 }
 
 // src/packetv1449/PacketV1449_GoodEvilUpdate.js
-function parse128(payload) {
+function parse129(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "good");
   if (e.TAG !== "Ok") {
@@ -20313,7 +20884,7 @@ function parseFlags2(reader, flags2) {
     return notAmmo;
   }
 }
-function parse129(payload) {
+function parse130(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemId");
   if (e.TAG !== "Ok") {
@@ -20445,7 +21016,7 @@ function parse129(payload) {
 }
 
 // src/packetv1449/PacketV1449_ItemFramePlace.js
-function parse130(payload) {
+function parse131(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -20481,7 +21052,7 @@ function parse130(payload) {
 }
 
 // src/packetv1449/PacketV1449_LucyAxeMessage.js
-function parse131(payload) {
+function parse132(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "source");
   if (e.TAG !== "Ok") {
@@ -20531,7 +21102,7 @@ function parse131(payload) {
 }
 
 // src/packetv1449/PacketV1449_TileSquareSend.js
-function parse132(payload) {
+function parse133(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "tileX");
   if (e.TAG !== "Ok") {
@@ -20773,7 +21344,7 @@ function parse132(payload) {
 }
 
 // src/packetv1449/PacketV1449_LegacySoundPlay.js
-function parse133(payload) {
+function parse134(payload) {
   let reader = new packetreader_default(payload);
   let e = readSingle(reader, "x");
   if (e.TAG !== "Ok") {
@@ -20830,7 +21401,7 @@ function parse133(payload) {
 }
 
 // src/packetv1449/PacketV1449_PlayerHealOther.js
-function parse134(payload) {
+function parse135(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -20851,7 +21422,7 @@ function parse134(payload) {
 }
 
 // src/packetv1449/PacketV1449_PlayerSpawnSelf.js
-function parse135(_payload) {
+function parse136(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
@@ -20859,7 +21430,7 @@ function parse135(_payload) {
 }
 
 // src/packetv1449/PacketV1449_CombatTextCreate.js
-function parse136(payload) {
+function parse137(payload) {
   let reader = new packetreader_default(payload);
   let e = readSingle(reader, "x");
   if (e.TAG !== "Ok") {
@@ -20890,7 +21461,7 @@ function parse136(payload) {
 }
 
 // src/packetv1449/PacketV1449_NpcSpecialEffect.js
-function parse137(payload) {
+function parse138(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -20911,7 +21482,7 @@ function parse137(payload) {
 }
 
 // src/packetv1449/PacketV1449_PasswordRequired.js
-function parse138(_payload) {
+function parse139(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
@@ -20919,7 +21490,7 @@ function parse138(_payload) {
 }
 
 // src/packetv1449/PacketV1449_EventNotification.js
-function parse139(payload) {
+function parse140(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "eventId");
   if (e.TAG === "Ok") {
@@ -20935,7 +21506,7 @@ function parse139(payload) {
 }
 
 // src/packetv1449/PacketV1449_GolfBallLandInCup.js
-function parse140(payload) {
+function parse141(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -20971,7 +21542,7 @@ function parse140(payload) {
 }
 
 // src/packetv1449/PacketV1449_MassWireOperation.js
-function parse141(payload) {
+function parse142(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "startX");
   if (e.TAG !== "Ok") {
@@ -21007,7 +21578,7 @@ function parse141(payload) {
 }
 
 // src/packetv1449/PacketV1449_MoonLordCountdown.js
-function parse142(payload) {
+function parse143(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "maxMoonLordCountdown");
   if (e.TAG !== "Ok") {
@@ -21028,7 +21599,7 @@ function parse142(payload) {
 }
 
 // src/packetv1449/PacketV1449_ProjectileDestroy.js
-function parse143(payload) {
+function parse144(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "projectileId");
   if (e.TAG !== "Ok") {
@@ -21049,7 +21620,7 @@ function parse143(payload) {
 }
 
 // src/packetv1449/PacketV1449_RevengeMarkerSync.js
-function parse144(payload) {
+function parse145(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "uniqueId");
   if (e.TAG !== "Ok") {
@@ -21112,7 +21683,7 @@ function parse144(payload) {
 }
 
 // src/packetv1449/PacketV1449_CombatNumberCreate.js
-function parse145(payload) {
+function parse146(payload) {
   let reader = new packetreader_default(payload);
   let e = readSingle(reader, "x");
   if (e.TAG !== "Ok") {
@@ -21143,7 +21714,7 @@ function parse145(payload) {
 }
 
 // src/packetv1449/PacketV1449_MinionTargetUpdate.js
-function parse146(payload) {
+function parse147(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -21169,7 +21740,7 @@ function parse146(payload) {
 }
 
 // src/packetv1449/PacketV1449_ActiveContainerSync.js
-function parse147(payload) {
+function parse148(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "chestId");
   if (e.TAG !== "Ok") {
@@ -21209,7 +21780,7 @@ function parse147(payload) {
 }
 
 // src/packetv1449/PacketV1449_RevengeMarkerRemove.js
-function parse148(payload) {
+function parse149(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "markerId");
   if (e.TAG === "Ok") {
@@ -21225,7 +21796,7 @@ function parse148(payload) {
 }
 
 // src/packetv1449/PacketV1449_MassWireOperationPay.js
-function parse149(payload) {
+function parse150(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemType");
   if (e.TAG !== "Ok") {
@@ -21251,7 +21822,7 @@ function parse149(payload) {
 }
 
 // src/packetv1449/PacketV1449_PlayerTeleportPortal.js
-function parse150(payload) {
+function parse151(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -21301,7 +21872,7 @@ function parse150(payload) {
 }
 
 // src/packetv1449/PacketV1449_CavernMonsterTypeSync.js
-function parse151(payload) {
+function parse152(payload) {
   let reader = new packetreader_default(payload);
   let rows = make2(2, []);
   let error;
@@ -21336,7 +21907,7 @@ function parse151(payload) {
 }
 
 // src/packetv1449/PacketV1449_ClientSyncedInventory.js
-function parse152(_payload) {
+function parse153(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
@@ -21344,7 +21915,7 @@ function parse152(_payload) {
 }
 
 // src/packetv1449/PacketV1449_FoodPlatterTryPlacing.js
-function parse153(payload) {
+function parse154(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -21380,7 +21951,7 @@ function parse153(payload) {
 }
 
 // src/packetv1449/PacketV1449_NpcKilledNotification.js
-function parse154(payload) {
+function parse155(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG === "Ok") {
@@ -21396,7 +21967,7 @@ function parse154(payload) {
 }
 
 // src/packetv1449/PacketV1449_ShieldStrengthsUpdate.js
-function parse155(payload) {
+function parse156(payload) {
   let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "solar");
   if (e.TAG !== "Ok") {
@@ -21427,7 +21998,7 @@ function parse155(payload) {
 }
 
 // src/packetv1449/PacketV1449_CrystalInvasionWipeAll.js
-function parse156(_payload) {
+function parse157(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
@@ -21435,10 +22006,10 @@ function parse156(_payload) {
 }
 
 // src/packetv1449/PacketV1449_ItemDropInstancedUpdate.js
-var parse157 = parse18;
+var parse158 = parse18;
 
 // src/packetv1449/PacketV1449_ItemDropProtectedUpdate.js
-function parse158(payload) {
+function parse159(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemDropId");
   if (e.TAG !== "Ok") {
@@ -21529,7 +22100,7 @@ function tryReading(reader, context) {
     return e$2;
   }
 }
-function parse159(payload) {
+function parse160(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -21555,7 +22126,7 @@ function parse159(payload) {
 }
 
 // src/packetv1449/PacketV1449_MinionAttackTargetUpdate.js
-function parse160(payload) {
+function parse161(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -21576,7 +22147,7 @@ function parse160(payload) {
 }
 
 // src/packetv1449/PacketV1449_AnglerQuestsCompletedAmount.js
-function parse161(payload) {
+function parse162(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -21602,7 +22173,7 @@ function parse161(payload) {
 }
 
 // src/packetv1449/PacketV1449_CrystalInvasionSendWaitTime.js
-function parse162(payload) {
+function parse163(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "timeLeftBetweenWaves");
   if (e.TAG === "Ok") {
@@ -21618,7 +22189,7 @@ function parse162(payload) {
 }
 
 // src/packetv1449/PacketV1449_DungeonDefendersEventAttemptSkipWait.js
-function parse163(_payload) {
+function parse164(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
@@ -21638,22 +22209,22 @@ function mapPacket(result, packetName2, fn) {
     _0: addPacketContext(packetName2, e)
   }));
 }
-function makeParsers(packetName2, parse165, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, _fromServer) => mapPacket(parse165(payload), packetName2, toPacket);
+function makeParsers(packetName2, parse166, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, _fromServer) => mapPacket(parse166(payload), packetName2, toPacket);
   let parseLazyWrapped = (payload, _fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse165(payload), (e) => addPacketContext(packetName2, e))))
+    _0: toLazyPacket(make4(() => mapError(parse166(payload), (e) => addPacketContext(packetName2, e))))
   });
   return {
     parse: parseWrapped,
     parseLazy: parseLazyWrapped
   };
 }
-function makeParsersWithFromServer(packetName2, parse165, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, fromServer) => mapPacket(parse165(payload, fromServer), packetName2, toPacket);
+function makeParsersWithFromServer(packetName2, parse166, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, fromServer) => mapPacket(parse166(payload, fromServer), packetName2, toPacket);
   let parseLazyWrapped = (payload, fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse165(payload, fromServer), (e) => addPacketContext(packetName2, e))))
+    _0: toLazyPacket(make4(() => mapError(parse166(payload, fromServer), (e) => addPacketContext(packetName2, e))))
   });
   return {
     parse: parseWrapped,
@@ -21685,7 +22256,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse106, (a) => ({
+          _0: makeParsers(packetName2, parse107, (a) => ({
             TAG: "Disconnect",
             _0: a
           }), (a) => ({
@@ -21703,7 +22274,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse94, (a) => ({
+          _0: makeParsers(packetName2, parse95, (a) => ({
             TAG: "PlayerSlotSet",
             _0: a
           }), (a) => ({
@@ -21720,7 +22291,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerInfo":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse96, (a) => ({
+        _0: makeParsers(packetName2, parse97, (a) => ({
           TAG: "PlayerInfo",
           _0: a
         }), (a) => ({
@@ -21731,7 +22302,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerInventorySlot":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse98, (a) => ({
+        _0: makeParsers(packetName2, parse99, (a) => ({
           TAG: "PlayerInventorySlot",
           _0: a
         }), (a) => ({
@@ -21748,7 +22319,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse75, (a) => ({
+          _0: makeParsers(packetName2, parse76, (a) => ({
             TAG: "WorldDataRequest",
             _0: a
           }), (a) => ({
@@ -21761,7 +22332,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse103, (a) => ({
+          _0: makeParsers(packetName2, parse104, (a) => ({
             TAG: "WorldInfo",
             _0: a
           }), (a) => ({
@@ -21784,7 +22355,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse81, (a) => ({
+          _0: makeParsers(packetName2, parse82, (a) => ({
             TAG: "InitialTileSectionsRequest",
             _0: a
           }), (a) => ({
@@ -21797,7 +22368,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse51, (a) => ({
+          _0: makeParsers(packetName2, parse52, (a) => ({
             TAG: "Status",
             _0: a
           }), (a) => ({
@@ -21833,7 +22404,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse64, (a) => ({
+          _0: makeParsers(packetName2, parse65, (a) => ({
             TAG: "TileSectionFrame",
             _0: a
           }), (a) => ({
@@ -21850,7 +22421,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerSpawn":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse97, (a) => ({
+        _0: makeParsers(packetName2, parse98, (a) => ({
           TAG: "PlayerSpawn",
           _0: a
         }), (a) => ({
@@ -21861,7 +22432,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse95, (a) => ({
+        _0: makeParsers(packetName2, parse96, (a) => ({
           TAG: "PlayerUpdate",
           _0: a
         }), (a) => ({
@@ -21873,7 +22444,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse104, (a) => ({
+          _0: makeParsers(packetName2, parse105, (a) => ({
             TAG: "PlayerActive",
             _0: a
           }), (a) => ({
@@ -21890,7 +22461,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerHealth":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse99, (a) => ({
+        _0: makeParsers(packetName2, parse100, (a) => ({
           TAG: "PlayerHealth",
           _0: a
         }), (a) => ({
@@ -21901,7 +22472,7 @@ function getParsers(packetType, fromServer) {
     case "TileModify":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse61, (a) => ({
+        _0: makeParsers(packetName2, parse62, (a) => ({
           TAG: "TileModify",
           _0: a
         }), (a) => ({
@@ -21913,7 +22484,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse68, (a) => ({
+          _0: makeParsers(packetName2, parse69, (a) => ({
             TAG: "TimeSet",
             _0: a
           }), (a) => ({
@@ -21930,7 +22501,7 @@ function getParsers(packetType, fromServer) {
     case "DoorUse":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse109, (a) => ({
+        _0: makeParsers(packetName2, parse110, (a) => ({
           TAG: "DoorUse",
           _0: a
         }), (a) => ({
@@ -21941,7 +22512,7 @@ function getParsers(packetType, fromServer) {
     case "TileSquareSend":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse132, (a) => ({
+        _0: makeParsers(packetName2, parse133, (a) => ({
           TAG: "TileSquareSend",
           _0: a
         }), (a) => ({
@@ -21975,7 +22546,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse105, (a) => ({
+          _0: makeParsers(packetName2, parse106, (a) => ({
             TAG: "NpcUpdate",
             _0: a
           }), (a) => ({
@@ -21992,7 +22563,7 @@ function getParsers(packetType, fromServer) {
     case "NpcItemStrike":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse125, (a) => ({
+        _0: makeParsers(packetName2, parse126, (a) => ({
           TAG: "NpcItemStrike",
           _0: a
         }), (a) => ({
@@ -22003,7 +22574,7 @@ function getParsers(packetType, fromServer) {
     case "ProjectileSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse101, (a) => ({
+        _0: makeParsers(packetName2, parse102, (a) => ({
           TAG: "ProjectileSync",
           _0: a
         }), (a) => ({
@@ -22014,7 +22585,7 @@ function getParsers(packetType, fromServer) {
     case "NpcStrike":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse114, (a) => ({
+        _0: makeParsers(packetName2, parse115, (a) => ({
           TAG: "NpcStrike",
           _0: a
         }), (a) => ({
@@ -22025,7 +22596,7 @@ function getParsers(packetType, fromServer) {
     case "ProjectileDestroy":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse143, (a) => ({
+        _0: makeParsers(packetName2, parse144, (a) => ({
           TAG: "ProjectileDestroy",
           _0: a
         }), (a) => ({
@@ -22036,7 +22607,7 @@ function getParsers(packetType, fromServer) {
     case "PvpToggle":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse45, (a) => ({
+        _0: makeParsers(packetName2, parse46, (a) => ({
           TAG: "PvpToggle",
           _0: a
         }), (a) => ({
@@ -22053,7 +22624,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse112, (a) => ({
+          _0: makeParsers(packetName2, parse113, (a) => ({
             TAG: "ChestOpen",
             _0: a
           }), (a) => ({
@@ -22076,7 +22647,7 @@ function getParsers(packetType, fromServer) {
     case "ActiveContainerSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse147, (a) => ({
+        _0: makeParsers(packetName2, parse148, (a) => ({
           TAG: "ActiveContainerSync",
           _0: a
         }), (a) => ({
@@ -22098,7 +22669,7 @@ function getParsers(packetType, fromServer) {
     case "HealEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse116, (a) => ({
+        _0: makeParsers(packetName2, parse117, (a) => ({
           TAG: "HealEffect",
           _0: a
         }), (a) => ({
@@ -22109,7 +22680,7 @@ function getParsers(packetType, fromServer) {
     case "Zones":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse76, (a) => ({
+        _0: makeParsers(packetName2, parse77, (a) => ({
           TAG: "Zones",
           _0: a
         }), (a) => ({
@@ -22121,7 +22692,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse138, (a) => ({
+          _0: makeParsers(packetName2, parse139, (a) => ({
             TAG: "PasswordRequired",
             _0: a
           }), (a) => ({
@@ -22144,7 +22715,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse122, (a) => ({
+          _0: makeParsers(packetName2, parse123, (a) => ({
             TAG: "PasswordSend",
             _0: a
           }), (a) => ({
@@ -22167,7 +22738,7 @@ function getParsers(packetType, fromServer) {
     case "NpcTalk":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse32, (a) => ({
+        _0: makeParsers(packetName2, parse33, (a) => ({
           TAG: "NpcTalk",
           _0: a
         }), (a) => ({
@@ -22178,7 +22749,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerAnimation":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse36, (a) => ({
+        _0: makeParsers(packetName2, parse37, (a) => ({
           TAG: "PlayerAnimation",
           _0: a
         }), (a) => ({
@@ -22189,7 +22760,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerMana":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse43, (a) => ({
+        _0: makeParsers(packetName2, parse44, (a) => ({
           TAG: "PlayerMana",
           _0: a
         }), (a) => ({
@@ -22200,7 +22771,7 @@ function getParsers(packetType, fromServer) {
     case "ManaEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse117, (a) => ({
+        _0: makeParsers(packetName2, parse118, (a) => ({
           TAG: "ManaEffect",
           _0: a
         }), (a) => ({
@@ -22211,7 +22782,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerTeam":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse44, (a) => ({
+        _0: makeParsers(packetName2, parse45, (a) => ({
           TAG: "PlayerTeam",
           _0: a
         }), (a) => ({
@@ -22228,7 +22799,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse48, (a) => ({
+          _0: makeParsers(packetName2, parse49, (a) => ({
             TAG: "SignRead",
             _0: a
           }), (a) => ({
@@ -22240,7 +22811,7 @@ function getParsers(packetType, fromServer) {
     case "SignNew":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse47, (a) => ({
+        _0: makeParsers(packetName2, parse48, (a) => ({
           TAG: "SignNew",
           _0: a
         }), (a) => ({
@@ -22251,7 +22822,7 @@ function getParsers(packetType, fromServer) {
     case "LiquidSet":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse113, (a) => ({
+        _0: makeParsers(packetName2, parse114, (a) => ({
           TAG: "LiquidSet",
           _0: a
         }), (a) => ({
@@ -22263,7 +22834,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse135, (a) => ({
+          _0: makeParsers(packetName2, parse136, (a) => ({
             TAG: "PlayerSpawnSelf",
             _0: a
           }), (a) => ({
@@ -22280,7 +22851,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerBuffsSet":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse38, (a) => ({
+        _0: makeParsers(packetName2, parse39, (a) => ({
           TAG: "PlayerBuffsSet",
           _0: a
         }), (a) => ({
@@ -22291,7 +22862,7 @@ function getParsers(packetType, fromServer) {
     case "NpcSpecialEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse137, (a) => ({
+        _0: makeParsers(packetName2, parse138, (a) => ({
           TAG: "NpcSpecialEffect",
           _0: a
         }), (a) => ({
@@ -22313,7 +22884,7 @@ function getParsers(packetType, fromServer) {
     case "NpcBuffAdd":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse118, (a) => ({
+        _0: makeParsers(packetName2, parse119, (a) => ({
           TAG: "NpcBuffAdd",
           _0: a
         }), (a) => ({
@@ -22325,7 +22896,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse25, (a) => ({
+          _0: makeParsers(packetName2, parse26, (a) => ({
             TAG: "NpcBuffUpdate",
             _0: a
           }), (a) => ({
@@ -22342,7 +22913,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerBuffAdd":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse37, (a) => ({
+        _0: makeParsers(packetName2, parse38, (a) => ({
           TAG: "PlayerBuffAdd",
           _0: a
         }), (a) => ({
@@ -22353,7 +22924,7 @@ function getParsers(packetType, fromServer) {
     case "NpcNameUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, (__x) => parse30(__x, fromServer), (a) => ({
+        _0: makeParsers(packetName2, (__x) => parse31(__x, fromServer), (a) => ({
           TAG: "NpcNameUpdate",
           _0: a
         }), (a) => ({
@@ -22365,7 +22936,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse128, (a) => ({
+          _0: makeParsers(packetName2, parse129, (a) => ({
             TAG: "GoodEvilUpdate",
             _0: a
           }), (a) => ({
@@ -22382,7 +22953,7 @@ function getParsers(packetType, fromServer) {
     case "HarpPlay":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse110, (a) => ({
+        _0: makeParsers(packetName2, parse111, (a) => ({
           TAG: "HarpPlay",
           _0: a
         }), (a) => ({
@@ -22393,7 +22964,7 @@ function getParsers(packetType, fromServer) {
     case "SwitchHit":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse52, (a) => ({
+        _0: makeParsers(packetName2, parse53, (a) => ({
           TAG: "SwitchHit",
           _0: a
         }), (a) => ({
@@ -22404,7 +22975,7 @@ function getParsers(packetType, fromServer) {
     case "NpcHomeUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse28, (a) => ({
+        _0: makeParsers(packetName2, parse29, (a) => ({
           TAG: "NpcHomeUpdate",
           _0: a
         }), (a) => ({
@@ -22433,7 +23004,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerDodge":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse42, (a) => ({
+        _0: makeParsers(packetName2, parse43, (a) => ({
           TAG: "PlayerDodge",
           _0: a
         }), (a) => ({
@@ -22444,7 +23015,7 @@ function getParsers(packetType, fromServer) {
     case "TilePaint":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse62, (a) => ({
+        _0: makeParsers(packetName2, parse63, (a) => ({
           TAG: "TilePaint",
           _0: a
         }), (a) => ({
@@ -22455,7 +23026,7 @@ function getParsers(packetType, fromServer) {
     case "WallPaint":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse72, (a) => ({
+        _0: makeParsers(packetName2, parse73, (a) => ({
           TAG: "WallPaint",
           _0: a
         }), (a) => ({
@@ -22466,7 +23037,7 @@ function getParsers(packetType, fromServer) {
     case "Teleport":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse53, (a) => ({
+        _0: makeParsers(packetName2, parse54, (a) => ({
           TAG: "Teleport",
           _0: a
         }), (a) => ({
@@ -22477,7 +23048,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerHealOther":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse134, (a) => ({
+        _0: makeParsers(packetName2, parse135, (a) => ({
           TAG: "PlayerHealOther",
           _0: a
         }), (a) => ({
@@ -22505,7 +23076,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse100, (a) => ({
+          _0: makeParsers(packetName2, parse101, (a) => ({
             TAG: "ClientUuid",
             _0: a
           }), (a) => ({
@@ -22517,7 +23088,7 @@ function getParsers(packetType, fromServer) {
     case "ChestName":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse111, (a) => ({
+        _0: makeParsers(packetName2, parse112, (a) => ({
           TAG: "ChestName",
           _0: a
         }), (a) => ({
@@ -22534,7 +23105,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse26, (a) => ({
+          _0: makeParsers(packetName2, parse27, (a) => ({
             TAG: "NpcCatch",
             _0: a
           }), (a) => ({
@@ -22552,7 +23123,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse119, (a) => ({
+          _0: makeParsers(packetName2, parse120, (a) => ({
             TAG: "NpcRelease",
             _0: a
           }), (a) => ({
@@ -22565,7 +23136,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse69, (a) => ({
+          _0: makeParsers(packetName2, parse70, (a) => ({
             TAG: "TravellingMerchantInventory",
             _0: a
           }), (a) => ({
@@ -22582,7 +23153,7 @@ function getParsers(packetType, fromServer) {
     case "TeleportationPotion":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse54, (a) => ({
+        _0: makeParsers(packetName2, parse55, (a) => ({
           TAG: "TeleportationPotion",
           _0: a
         }), (a) => ({
@@ -22629,7 +23200,7 @@ function getParsers(packetType, fromServer) {
     case "AnglerQuestsCompletedAmount":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse161, (a) => ({
+        _0: makeParsers(packetName2, parse162, (a) => ({
           TAG: "AnglerQuestsCompletedAmount",
           _0: a
         }), (a) => ({
@@ -22641,7 +23212,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse55, (a) => ({
+          _0: makeParsers(packetName2, parse56, (a) => ({
             TAG: "TemporaryAnimationCreate",
             _0: a
           }), (a) => ({
@@ -22676,7 +23247,7 @@ function getParsers(packetType, fromServer) {
     case "ObjectPlace":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse34, (a) => ({
+        _0: makeParsers(packetName2, parse35, (a) => ({
           TAG: "ObjectPlace",
           _0: a
         }), (a) => ({
@@ -22688,7 +23259,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse39, (a) => ({
+          _0: makeParsers(packetName2, parse40, (a) => ({
             TAG: "PlayerChestIndexSync",
             _0: a
           }), (a) => ({
@@ -22706,7 +23277,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse145, (a) => ({
+          _0: makeParsers(packetName2, parse146, (a) => ({
             TAG: "CombatNumberCreate",
             _0: a
           }), (a) => ({
@@ -22735,7 +23306,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse29, (a) => ({
+          _0: makeParsers(packetName2, parse30, (a) => ({
             TAG: "NpcKillCount",
             _0: a
           }), (a) => ({
@@ -22752,7 +23323,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerStealth":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse126, (a) => ({
+        _0: makeParsers(packetName2, parse127, (a) => ({
           TAG: "PlayerStealth",
           _0: a
         }), (a) => ({
@@ -22763,7 +23334,7 @@ function getParsers(packetType, fromServer) {
     case "ItemForceIntoNearestChest":
       return {
         TAG: "Ok",
-        _0: makeParsersWithFromServer(packetName2, parse84, (a) => ({
+        _0: makeParsersWithFromServer(packetName2, parse85, (a) => ({
           TAG: "ItemForceIntoNearestChest",
           _0: a
         }), (a) => ({
@@ -22775,7 +23346,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse60, (a) => ({
+          _0: makeParsers(packetName2, parse61, (a) => ({
             TAG: "TileEntityUpdate",
             _0: a
           }), (a) => ({
@@ -22798,7 +23369,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse59, (a) => ({
+          _0: makeParsers(packetName2, parse60, (a) => ({
             TAG: "TileEntityPlace",
             _0: a
           }), (a) => ({
@@ -22811,7 +23382,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse129, (a) => ({
+          _0: makeParsers(packetName2, parse130, (a) => ({
             TAG: "ItemDropModify",
             _0: a
           }), (a) => ({
@@ -22834,7 +23405,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse130, (a) => ({
+          _0: makeParsers(packetName2, parse131, (a) => ({
             TAG: "ItemFramePlace",
             _0: a
           }), (a) => ({
@@ -22846,7 +23417,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropInstancedUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse157, (a) => ({
+        _0: makeParsers(packetName2, parse158, (a) => ({
           TAG: "ItemDropInstancedUpdate",
           _0: a
         }), (a) => ({
@@ -22858,7 +23429,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse121, (a) => ({
+          _0: makeParsers(packetName2, parse122, (a) => ({
             TAG: "EmoteBubble",
             _0: a
           }), (a) => ({
@@ -22886,7 +23457,7 @@ function getParsers(packetType, fromServer) {
     case "SocialHandshake":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse50, (a) => ({
+        _0: makeParsers(packetName2, parse51, (a) => ({
           TAG: "SocialHandshake",
           _0: a
         }), (a) => ({
@@ -22897,7 +23468,7 @@ function getParsers(packetType, fromServer) {
     case "Unused":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse79, (a) => ({
+        _0: makeParsers(packetName2, parse80, (a) => ({
           TAG: "Unused",
           _0: a
         }), (a) => ({
@@ -22914,7 +23485,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse120, (a) => ({
+          _0: makeParsers(packetName2, parse121, (a) => ({
             TAG: "PortalKill",
             _0: a
           }), (a) => ({
@@ -22926,7 +23497,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerTeleportPortal":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse150, (a) => ({
+        _0: makeParsers(packetName2, parse151, (a) => ({
           TAG: "PlayerTeleportPortal",
           _0: a
         }), (a) => ({
@@ -22938,7 +23509,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse154, (a) => ({
+          _0: makeParsers(packetName2, parse155, (a) => ({
             TAG: "NpcKilledNotification",
             _0: a
           }), (a) => ({
@@ -22956,7 +23527,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse139, (a) => ({
+          _0: makeParsers(packetName2, parse140, (a) => ({
             TAG: "EventNotification",
             _0: a
           }), (a) => ({
@@ -22973,7 +23544,7 @@ function getParsers(packetType, fromServer) {
     case "MinionTargetUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse146, (a) => ({
+        _0: makeParsers(packetName2, parse147, (a) => ({
           TAG: "MinionTargetUpdate",
           _0: a
         }), (a) => ({
@@ -22984,7 +23555,7 @@ function getParsers(packetType, fromServer) {
     case "NpcTeleportPortal":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse33, (a) => ({
+        _0: makeParsers(packetName2, parse34, (a) => ({
           TAG: "NpcTeleportPortal",
           _0: a
         }), (a) => ({
@@ -22996,7 +23567,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse155, (a) => ({
+          _0: makeParsers(packetName2, parse156, (a) => ({
             TAG: "ShieldStrengthsUpdate",
             _0: a
           }), (a) => ({
@@ -23013,7 +23584,7 @@ function getParsers(packetType, fromServer) {
     case "NebulaLevelUp":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse124, (a) => ({
+        _0: makeParsers(packetName2, parse125, (a) => ({
           TAG: "NebulaLevelUp",
           _0: a
         }), (a) => ({
@@ -23025,7 +23596,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse142, (a) => ({
+          _0: makeParsers(packetName2, parse143, (a) => ({
             TAG: "MoonLordCountdown",
             _0: a
           }), (a) => ({
@@ -23043,7 +23614,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse31, (a) => ({
+          _0: makeParsers(packetName2, parse32, (a) => ({
             TAG: "NpcShopItem",
             _0: a
           }), (a) => ({
@@ -23066,7 +23637,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse123, (a) => ({
+          _0: makeParsers(packetName2, parse124, (a) => ({
             TAG: "GemLockToggle",
             _0: a
           }), (a) => ({
@@ -23079,7 +23650,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse49, (a) => ({
+          _0: makeParsers(packetName2, parse50, (a) => ({
             TAG: "SmokePoof",
             _0: a
           }), (a) => ({
@@ -23115,7 +23686,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse74, (a) => ({
+          _0: makeParsers(packetName2, parse75, (a) => ({
             TAG: "WiredCannonShot",
             _0: a
           }), (a) => ({
@@ -23138,7 +23709,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse141, (a) => ({
+          _0: makeParsers(packetName2, parse142, (a) => ({
             TAG: "MassWireOperation",
             _0: a
           }), (a) => ({
@@ -23151,7 +23722,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse149, (a) => ({
+          _0: makeParsers(packetName2, parse150, (a) => ({
             TAG: "MassWireOperationPay",
             _0: a
           }), (a) => ({
@@ -23174,7 +23745,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse35, (a) => ({
+          _0: makeParsers(packetName2, parse36, (a) => ({
             TAG: "PartyToggle",
             _0: a
           }), (a) => ({
@@ -23186,7 +23757,7 @@ function getParsers(packetType, fromServer) {
     case "TreeGrowFx":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse70, (a) => ({
+        _0: makeParsers(packetName2, parse71, (a) => ({
           TAG: "TreeGrowFx",
           _0: a
         }), (a) => ({
@@ -23216,7 +23787,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse156, (a) => ({
+          _0: makeParsers(packetName2, parse157, (a) => ({
             TAG: "CrystalInvasionWipeAll",
             _0: a
           }), (a) => ({
@@ -23233,7 +23804,7 @@ function getParsers(packetType, fromServer) {
     case "MinionAttackTargetUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse160, (a) => ({
+        _0: makeParsers(packetName2, parse161, (a) => ({
           TAG: "MinionAttackTargetUpdate",
           _0: a
         }), (a) => ({
@@ -23245,7 +23816,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse162, (a) => ({
+          _0: makeParsers(packetName2, parse163, (a) => ({
             TAG: "CrystalInvasionSendWaitTime",
             _0: a
           }), (a) => ({
@@ -23262,7 +23833,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerDamage":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse102, (a) => ({
+        _0: makeParsers(packetName2, parse103, (a) => ({
           TAG: "PlayerDamage",
           _0: a
         }), (a) => ({
@@ -23273,7 +23844,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerDeath":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse41, (a) => ({
+        _0: makeParsers(packetName2, parse42, (a) => ({
           TAG: "PlayerDeath",
           _0: a
         }), (a) => ({
@@ -23285,7 +23856,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse136, (a) => ({
+          _0: makeParsers(packetName2, parse137, (a) => ({
             TAG: "CombatTextCreate",
             _0: a
           }), (a) => ({
@@ -23308,7 +23879,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse107, (a) => ({
+          _0: makeParsers(packetName2, parse108, (a) => ({
             TAG: "Emoji",
             _0: a
           }), (a) => ({
@@ -23320,7 +23891,7 @@ function getParsers(packetType, fromServer) {
     case "TileEntityDisplayDollItemSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse56, (a) => ({
+        _0: makeParsers(packetName2, parse57, (a) => ({
           TAG: "TileEntityDisplayDollItemSync",
           _0: a
         }), (a) => ({
@@ -23331,7 +23902,7 @@ function getParsers(packetType, fromServer) {
     case "TileEntityInteractionRequest":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse58, (a) => ({
+        _0: makeParsers(packetName2, parse59, (a) => ({
           TAG: "TileEntityInteractionRequest",
           _0: a
         }), (a) => ({
@@ -23348,7 +23919,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse73, (a) => ({
+          _0: makeParsers(packetName2, parse74, (a) => ({
             TAG: "WeaponsRackTryPlacing",
             _0: a
           }), (a) => ({
@@ -23360,7 +23931,7 @@ function getParsers(packetType, fromServer) {
     case "TileEntityHatRackItemSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse57, (a) => ({
+        _0: makeParsers(packetName2, parse58, (a) => ({
           TAG: "TileEntityHatRackItemSync",
           _0: a
         }), (a) => ({
@@ -23371,7 +23942,7 @@ function getParsers(packetType, fromServer) {
     case "TilePickingSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse63, (a) => ({
+        _0: makeParsers(packetName2, parse64, (a) => ({
           TAG: "TilePickingSync",
           _0: a
         }), (a) => ({
@@ -23383,7 +23954,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse144, (a) => ({
+          _0: makeParsers(packetName2, parse145, (a) => ({
             TAG: "RevengeMarkerSync",
             _0: a
           }), (a) => ({
@@ -23401,7 +23972,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse148, (a) => ({
+          _0: makeParsers(packetName2, parse149, (a) => ({
             TAG: "RevengeMarkerRemove",
             _0: a
           }), (a) => ({
@@ -23418,7 +23989,7 @@ function getParsers(packetType, fromServer) {
     case "GolfBallLandInCup":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse140, (a) => ({
+        _0: makeParsers(packetName2, parse141, (a) => ({
           TAG: "GolfBallLandInCup",
           _0: a
         }), (a) => ({
@@ -23453,7 +24024,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse27, (a) => ({
+          _0: makeParsers(packetName2, parse28, (a) => ({
             TAG: "NpcFishOut",
             _0: a
           }), (a) => ({
@@ -23466,7 +24037,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse115, (a) => ({
+          _0: makeParsers(packetName2, parse116, (a) => ({
             TAG: "NpcTamper",
             _0: a
           }), (a) => ({
@@ -23484,7 +24055,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse133, (a) => ({
+          _0: makeParsers(packetName2, parse134, (a) => ({
             TAG: "LegacySoundPlay",
             _0: a
           }), (a) => ({
@@ -23507,7 +24078,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse153, (a) => ({
+          _0: makeParsers(packetName2, parse154, (a) => ({
             TAG: "FoodPlatterTryPlacing",
             _0: a
           }), (a) => ({
@@ -23519,7 +24090,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerLuckFactorsUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse89, (a) => ({
+        _0: makeParsers(packetName2, parse90, (a) => ({
           TAG: "PlayerLuckFactorsUpdate",
           _0: a
         }), (a) => ({
@@ -23531,7 +24102,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse40, (a) => ({
+          _0: makeParsers(packetName2, parse41, (a) => ({
             TAG: "PlayerDead",
             _0: a
           }), (a) => ({
@@ -23548,7 +24119,7 @@ function getParsers(packetType, fromServer) {
     case "CavernMonsterTypeSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse151, (a) => ({
+        _0: makeParsers(packetName2, parse152, (a) => ({
           TAG: "CavernMonsterTypeSync",
           _0: a
         }), (a) => ({
@@ -23565,7 +24136,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse24, (a) => ({
+          _0: makeParsers(packetName2, parse25, (a) => ({
             TAG: "NpcBuffRemovalRequest",
             _0: a
           }), (a) => ({
@@ -23583,7 +24154,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse152, (a) => ({
+          _0: makeParsers(packetName2, parse153, (a) => ({
             TAG: "ClientSyncedInventory",
             _0: a
           }), (a) => ({
@@ -23617,7 +24188,7 @@ function getParsers(packetType, fromServer) {
     case "LucyAxeMessage":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse131, (a) => ({
+        _0: makeParsers(packetName2, parse132, (a) => ({
           TAG: "LucyAxeMessage",
           _0: a
         }), (a) => ({
@@ -23628,7 +24199,7 @@ function getParsers(packetType, fromServer) {
     case "PiggyBankVoidLensUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse159, (a) => ({
+        _0: makeParsers(packetName2, parse160, (a) => ({
           TAG: "PiggyBankVoidLensUpdate",
           _0: a
         }), (a) => ({
@@ -23639,7 +24210,7 @@ function getParsers(packetType, fromServer) {
     case "DungeonDefendersEventAttemptSkipWait":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse163, (a) => ({
+        _0: makeParsers(packetName2, parse164, (a) => ({
           TAG: "DungeonDefendersEventAttemptSkipWait",
           _0: a
         }), (a) => ({
@@ -23672,7 +24243,7 @@ function getParsers(packetType, fromServer) {
     case "ShimmerEffectOrCoinLuck":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse46, (a) => ({
+        _0: makeParsers(packetName2, parse47, (a) => ({
           TAG: "ShimmerEffectOrCoinLuck",
           _0: a
         }), (a) => ({
@@ -23694,7 +24265,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropProtectedUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse158, (a) => ({
+        _0: makeParsers(packetName2, parse159, (a) => ({
           TAG: "ItemDropProtectedUpdate",
           _0: a
         }), (a) => ({
@@ -23705,7 +24276,7 @@ function getParsers(packetType, fromServer) {
     case "DeadCellsDisplayJarTryPlacing":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse78, (a) => ({
+        _0: makeParsers(packetName2, parse79, (a) => ({
           TAG: "DeadCellsDisplayJarTryPlacing",
           _0: a
         }), (a) => ({
@@ -23716,7 +24287,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerSpectate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse90, (a) => ({
+        _0: makeParsers(packetName2, parse91, (a) => ({
           TAG: "PlayerSpectate",
           _0: a
         }), (a) => ({
@@ -23727,7 +24298,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropClear":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse82, (a) => ({
+        _0: makeParsers(packetName2, parse83, (a) => ({
           TAG: "ItemDropClear",
           _0: a
         }), (a) => ({
@@ -23738,7 +24309,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerItemUseSound":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse88, (a) => ({
+        _0: makeParsers(packetName2, parse89, (a) => ({
           TAG: "PlayerItemUseSound",
           _0: a
         }), (a) => ({
@@ -23749,7 +24320,7 @@ function getParsers(packetType, fromServer) {
     case "NpcHurtByDebuff":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse86, (a) => ({
+        _0: makeParsers(packetName2, parse87, (a) => ({
           TAG: "NpcHurtByDebuff",
           _0: a
         }), (a) => ({
@@ -23760,7 +24331,7 @@ function getParsers(packetType, fromServer) {
     case "Ping":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse87, (a) => ({
+        _0: makeParsers(packetName2, parse88, (a) => ({
           TAG: "Ping",
           _0: a
         }), (a) => ({
@@ -23771,7 +24342,7 @@ function getParsers(packetType, fromServer) {
     case "ChestResize":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse77, (a) => ({
+        _0: makeParsers(packetName2, parse78, (a) => ({
           TAG: "ChestResize",
           _0: a
         }), (a) => ({
@@ -23782,7 +24353,7 @@ function getParsers(packetType, fromServer) {
     case "LeashedEntityAnchorInsertItem":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse85, (a) => ({
+        _0: makeParsers(packetName2, parse86, (a) => ({
           TAG: "LeashedEntityAnchorInsertItem",
           _0: a
         }), (a) => ({
@@ -23793,7 +24364,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerTeamUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse92, (a) => ({
+        _0: makeParsers(packetName2, parse93, (a) => ({
           TAG: "PlayerTeamUpdate",
           _0: a
         }), (a) => ({
@@ -23804,7 +24375,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerTeamSwapSpawn":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse91, (a) => ({
+        _0: makeParsers(packetName2, parse92, (a) => ({
           TAG: "PlayerTeamSwapSpawn",
           _0: a
         }), (a) => ({
@@ -23815,7 +24386,7 @@ function getParsers(packetType, fromServer) {
     case "SectionRequest":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse93, (a) => ({
+        _0: makeParsers(packetName2, parse94, (a) => ({
           TAG: "SectionRequest",
           _0: a
         }), (a) => ({
@@ -23826,7 +24397,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropPosition":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse83, (a) => ({
+        _0: makeParsers(packetName2, parse84, (a) => ({
           TAG: "ItemDropPosition",
           _0: a
         }), (a) => ({
@@ -23837,7 +24408,7 @@ function getParsers(packetType, fromServer) {
     case "HostToken":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse80, (a) => ({
+        _0: makeParsers(packetName2, parse81, (a) => ({
           TAG: "HostToken",
           _0: a
         }), (a) => ({
@@ -23849,7 +24420,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse108, (a) => ({
+          _0: makeParsers(packetName2, parse109, (a) => ({
             TAG: "ServerInfo",
             _0: a
           }), (a) => ({
@@ -23872,7 +24443,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse127, (a) => ({
+          _0: makeParsers(packetName2, parse128, (a) => ({
             TAG: "PlayerPlatformInfo",
             _0: a
           }), (a) => ({
@@ -23883,7 +24454,7 @@ function getParsers(packetType, fromServer) {
       }
   }
 }
-function parse164(buffer, fromServer, ignoreOpt) {
+function parse165(buffer, fromServer, ignoreOpt) {
   let ignore = ignoreOpt !== void 0 ? ignoreOpt : [];
   let match = buffer.length;
   if (!(match > 2 || match < 0)) {
@@ -24044,6 +24615,7 @@ export {
   Packet_LeashedEntityAnchorInsertItem_exports as LeashedEntityAnchorInsertItemPacket,
   PacketV1449_LoadoutSwitch_exports as LoadoutSwitchPacket,
   Packet_NetModuleLoad_exports as NetModuleLoadPacket,
+  PacketV1449_NetModuleLoad_exports as NetModuleLoadV1449Packet,
   PacketV1449_NpcBuffRemovalRequest_exports as NpcBuffRemovalRequestPacket,
   Packet_NpcBuffUpdate_exports as NpcBuffUpdatePacket,
   PacketV1449_NpcCatch_exports as NpcCatchPacket,

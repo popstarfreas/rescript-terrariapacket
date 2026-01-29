@@ -20,6 +20,7 @@ export * as ItemOwnerPacket from "./packet/Packet_ItemOwner.js";
 export * as ItemOwnerRemovePacket from "./packetv1449/PacketV1449_ItemOwnerRemove.js";
 export * as LoadoutSwitchPacket from "./packetv1449/PacketV1449_LoadoutSwitch.js";
 export * as NetModuleLoadPacket from "./packet/Packet_NetModuleLoad.js";
+export * as NetModuleLoadV1449Packet from "./packetv1449/PacketV1449_NetModuleLoad.js";
 export * as NpcBuffRemovalRequestPacket from "./packetv1449/PacketV1449_NpcBuffRemovalRequest.js";
 export * as NpcBuffUpdatePacket from "./packet/Packet_NpcBuffUpdate.js";
 export * as NpcCatchPacket from "./packetv1449/PacketV1449_NpcCatch.js";
