@@ -7693,12 +7693,12 @@ function toBuffer63(self) {
 var Packet_TileSectionSend_exports = {};
 __export(Packet_TileSectionSend_exports, {
   Chest: () => Chest2,
-  Entity: () => Entity2,
+  Entity: () => Entity,
   Sign: () => Sign2,
-  parse: () => parse66,
+  parse: () => parse$13,
   toBuffer: () => toBuffer64
 });
-var Nodezlib2 = __toESM(require("node:zlib"), 1);
+var Nodezlib = __toESM(require("node:zlib"), 1);
 
 // node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Primitive_object.js
 var for_in = function(o, foo) {
@@ -11749,9 +11749,6 @@ function make3(buffer) {
   };
 }
 
-// src/packetv1449/PacketV1449_TileSectionSend.js
-var Nodezlib = __toESM(require("node:zlib"), 1);
-
 // src/TileFrameImportantV1449.js
 var map5 = /* @__PURE__ */ new Map([
   [
@@ -14644,6 +14641,16 @@ function parse$12(reader) {
 function pack$12(writer, sign) {
   return packString2(packInt162(packInt162(packInt162(writer, sign.id, "id"), sign.x, "x"), sign.y, "y"), sign.name, "name");
 }
+var Chest = {
+  parse: parse65,
+  pack: pack3
+};
+var Sign = {
+  parse: parse$12,
+  pack: pack$12
+};
+
+// src/packet/Packet_TileSectionSend.js
 function parseTrainingDummyKind(reader) {
   let e = readInt162(reader, "npcSlotId");
   if (e.TAG === "Ok") {
@@ -14709,8 +14716,18 @@ function parseDisplayDollKind(reader) {
     return e$1;
   }
   let dyeFlags = fromByte(e$1._0);
+  let e$2 = readByte2(reader, "pose");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readByte2(reader, "extraFlags");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let extraFlags = fromByte(e$3._0);
   let items = [];
   let dyes = [];
+  let misc = [];
   let parseResult = {
     TAG: "Ok",
     _0: void 0
@@ -14733,22 +14750,70 @@ function parseDisplayDollKind(reader) {
       }
     }
   }
+  let match$1 = parseResult;
+  if (match$1.TAG === "Ok") {
+    if (flag2(extraFlags)) {
+      let item$1 = parseDisplayItem(reader);
+      if (item$1.TAG === "Ok") {
+        items.push(item$1._0);
+      } else {
+        parseResult = {
+          TAG: "Error",
+          _0: item$1._0
+        };
+      }
+    } else {
+      items.push(void 0);
+    }
+  }
   for (let i$1 = 0; i$1 <= 7; ++i$1) {
-    let match$1 = parseResult;
-    if (match$1.TAG === "Ok") {
+    let match$2 = parseResult;
+    if (match$2.TAG === "Ok") {
       if (flagN(dyeFlags, 1 << i$1)) {
-        let item$1 = parseDisplayItem(reader);
-        if (item$1.TAG === "Ok") {
-          dyes.push(item$1._0);
+        let item$2 = parseDisplayItem(reader);
+        if (item$2.TAG === "Ok") {
+          dyes.push(item$2._0);
         } else {
           parseResult = {
             TAG: "Error",
-            _0: item$1._0
+            _0: item$2._0
           };
         }
       } else {
         dyes.push(void 0);
       }
+    }
+  }
+  let match$3 = parseResult;
+  if (match$3.TAG === "Ok") {
+    if (flag3(extraFlags)) {
+      let item$3 = parseDisplayItem(reader);
+      if (item$3.TAG === "Ok") {
+        dyes.push(item$3._0);
+      } else {
+        parseResult = {
+          TAG: "Error",
+          _0: item$3._0
+        };
+      }
+    } else {
+      dyes.push(void 0);
+    }
+  }
+  let match$4 = parseResult;
+  if (match$4.TAG === "Ok") {
+    if (flag1(extraFlags)) {
+      let item$4 = parseDisplayItem(reader);
+      if (item$4.TAG === "Ok") {
+        misc.push(item$4._0);
+      } else {
+        parseResult = {
+          TAG: "Error",
+          _0: item$4._0
+        };
+      }
+    } else {
+      misc.push(void 0);
     }
   }
   let err = parseResult;
@@ -14757,7 +14822,9 @@ function parseDisplayDollKind(reader) {
       TAG: "Ok",
       _0: {
         items,
-        dyes
+        dyes,
+        misc,
+        pose: e$2._0
       }
     };
   } else {
@@ -14831,6 +14898,19 @@ function parseHatRackKind(reader) {
     };
   }
 }
+function parseLeashedEntityAnchorKind(reader) {
+  let e = readInt162(reader, "itemType");
+  if (e.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        itemType: e._0
+      }
+    };
+  } else {
+    return e;
+  }
+}
 function parseEntityKind(entityType, reader) {
   switch (entityType) {
     case 0:
@@ -14876,6 +14956,21 @@ function parseEntityKind(entityType, reader) {
           _0: void 0
         }
       };
+    case 8:
+      return map2(parseDisplayItem(reader), (v) => ({
+        TAG: "DeadCellsDisplayJar",
+        _0: v
+      }));
+    case 9:
+      return map2(parseLeashedEntityAnchorKind(reader), (v) => ({
+        TAG: "KiteAnchor",
+        _0: v
+      }));
+    case 10:
+      return map2(parseLeashedEntityAnchorKind(reader), (v) => ({
+        TAG: "CritterAnchor",
+        _0: v
+      }));
     default:
       return {
         TAG: "Error",
@@ -14886,7 +14981,7 @@ function parseEntityKind(entityType, reader) {
       };
   }
 }
-function parse$22(reader) {
+function parse66(reader) {
   let e = readByte2(reader, "entityType");
   if (e.TAG !== "Ok") {
     return e;
@@ -14905,20 +15000,24 @@ function parse$22(reader) {
     return e$3;
   }
   let e$4 = parseEntityKind(entityType, reader);
-  if (e$4.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        entityType,
-        id: e$1._0,
-        x: e$2._0,
-        y: e$3._0,
-        entityKind: e$4._0
-      }
-    };
-  } else {
+  if (e$4.TAG !== "Ok") {
     return e$4;
   }
+  let entity_id = e$1._0;
+  let entity_x = e$2._0;
+  let entity_y = e$3._0;
+  let entity_entityKind = e$4._0;
+  let entity = {
+    entityType,
+    id: entity_id,
+    x: entity_x,
+    y: entity_y,
+    entityKind: entity_entityKind
+  };
+  return {
+    TAG: "Ok",
+    _0: entity
+  };
 }
 function packDisplayItem(writer, displayItem) {
   return packInt162(packByte2(packInt162(writer, displayItem.netId, "netId"), displayItem.prefix, "prefix"), displayItem.stack, "stack");
@@ -14926,7 +15025,7 @@ function packDisplayItem(writer, displayItem) {
 function hasItem(arr, n) {
   return isSome(flatMap(arr[n], (a) => a));
 }
-function pack$22(writer, entity) {
+function pack4(writer, entity) {
   let writer$1 = packInt162(packInt162(packInt322(packByte2(writer, entity.entityType, "entityType"), entity.id, "id"), entity.x, "x"), entity.y, "y");
   let entityKind = entity.entityKind;
   switch (entityKind.TAG) {
@@ -14934,18 +15033,31 @@ function pack$22(writer, entity) {
       let displayDollKind = entityKind._0;
       let itemFlags = fromFlags(hasItem(displayDollKind.items, 0), hasItem(displayDollKind.items, 1), hasItem(displayDollKind.items, 2), hasItem(displayDollKind.items, 3), hasItem(displayDollKind.items, 4), hasItem(displayDollKind.items, 5), hasItem(displayDollKind.items, 6), hasItem(displayDollKind.items, 7));
       let dyeFlags = fromFlags(hasItem(displayDollKind.dyes, 0), hasItem(displayDollKind.dyes, 1), hasItem(displayDollKind.dyes, 2), hasItem(displayDollKind.dyes, 3), hasItem(displayDollKind.dyes, 4), hasItem(displayDollKind.dyes, 5), hasItem(displayDollKind.dyes, 6), hasItem(displayDollKind.dyes, 7));
-      packByte2(packByte2(writer$1, toByte(itemFlags), "itemFlags"), toByte(dyeFlags), "dyeFlags");
+      let extraFlags = fromFlags(hasItem(displayDollKind.misc, 0), hasItem(displayDollKind.items, 8), hasItem(displayDollKind.dyes, 8), false, false, false, false, false);
+      packByte2(packByte2(packByte2(packByte2(writer$1, toByte(itemFlags), "itemFlags"), toByte(dyeFlags), "dyeFlags"), displayDollKind.pose, "pose"), toByte(extraFlags), "extraFlags");
       for (let i = 0; i <= 7; ++i) {
         let item = flatMap(displayDollKind.items[i], (a) => a);
         if (item !== void 0) {
           packDisplayItem(writer$1, item);
         }
       }
+      let item$1 = flatMap(displayDollKind.items[8], (a) => a);
+      if (item$1 !== void 0) {
+        packDisplayItem(writer$1, item$1);
+      }
       for (let i$1 = 0; i$1 <= 7; ++i$1) {
-        let item$1 = flatMap(displayDollKind.dyes[i$1], (a) => a);
-        if (item$1 !== void 0) {
-          packDisplayItem(writer$1, item$1);
+        let item$2 = flatMap(displayDollKind.dyes[i$1], (a) => a);
+        if (item$2 !== void 0) {
+          packDisplayItem(writer$1, item$2);
         }
+      }
+      let item$3 = flatMap(displayDollKind.dyes[8], (a) => a);
+      if (item$3 !== void 0) {
+        packDisplayItem(writer$1, item$3);
+      }
+      let item$4 = flatMap(displayDollKind.misc[0], (a) => a);
+      if (item$4 !== void 0) {
+        packDisplayItem(writer$1, item$4);
       }
       return writer$1;
     case "HatRack":
@@ -14953,15 +15065,15 @@ function pack$22(writer, entity) {
       let flags = fromFlags(hasItem(hatRackKind.items, 0), hasItem(hatRackKind.items, 1), hasItem(hatRackKind.dyes, 0), hasItem(hatRackKind.dyes, 1), false, false, false, false);
       packByte2(writer$1, toByte(flags), "flags");
       for (let i$2 = 0; i$2 <= 1; ++i$2) {
-        let item$2 = flatMap(hatRackKind.items[i$2], (a) => a);
-        if (item$2 !== void 0) {
-          packDisplayItem(writer$1, item$2);
+        let item$5 = flatMap(hatRackKind.items[i$2], (a) => a);
+        if (item$5 !== void 0) {
+          packDisplayItem(writer$1, item$5);
         }
       }
       for (let i$3 = 0; i$3 <= 1; ++i$3) {
-        let item$3 = flatMap(hatRackKind.dyes[i$3], (a) => a);
-        if (item$3 !== void 0) {
-          packDisplayItem(writer$1, item$3);
+        let item$6 = flatMap(hatRackKind.dyes[i$3], (a) => a);
+        if (item$6 !== void 0) {
+          packDisplayItem(writer$1, item$6);
         }
       }
       return writer$1;
@@ -14976,7 +15088,36 @@ function pack$22(writer, entity) {
     case "FoodPlatter":
     case "ItemFrame":
     case "WeaponsRack":
+    case "DeadCellsDisplayJar":
       return packDisplayItem(writer$1, entityKind._0);
+    case "KiteAnchor":
+    case "CritterAnchor":
+      let leashedEntityAnchor = entityKind._0;
+      return packInt162(writer$1, leashedEntityAnchor.itemType, "itemType");
+  }
+}
+function isTheSameAs(self, compTile) {
+  let sameHeaders = isSome(self.activeTile) === isSome(compTile.activeTile) && self.inActive === compTile.inActive && self.wire === compTile.wire && self.wire2 === compTile.wire2 && self.wire3 === compTile.wire3 && self.halfBrick === compTile.halfBrick && equal(self.slope, compTile.slope) && self.actuator === compTile.actuator && equal(self.color, compTile.color);
+  if (!sameHeaders) {
+    return false;
+  }
+  let match = self.activeTile;
+  let match$1 = compTile.activeTile;
+  let activeMatches = match !== void 0 ? match$1 !== void 0 && match.tileType === match$1.tileType ? isImportant(match.tileType) ? equal(match.frame, match$1.frame) : true : false : match$1 === void 0;
+  if (!activeMatches) {
+    return false;
+  }
+  if (notequal(self.wall, compTile.wall) || notequal(self.liquid, compTile.liquid)) {
+    return false;
+  }
+  let sameWallColor = equal(self.wallColor, compTile.wallColor);
+  let sameWire4 = self.wire4 === compTile.wire4;
+  let match$2 = compTile.liquid;
+  let liquidMatches = match$2 !== void 0 ? sameWallColor && sameWire4 && self.lava === compTile.lava && self.honey === compTile.honey && self.shimmer === compTile.shimmer : sameWallColor && sameWire4;
+  if (!liquidMatches || self.invisibleBlock !== compTile.invisibleBlock || self.invisibleWall !== compTile.invisibleWall || self.fullbrightBlock !== compTile.fullbrightBlock) {
+    return false;
+  } else {
+    return self.fullbrightWall === compTile.fullbrightWall;
   }
 }
 function clearTileCache(tile) {
@@ -15035,7 +15176,7 @@ function readRepeated(count, parseItem) {
     };
   }
 }
-function parse$3(payload) {
+function parse$13(payload) {
   let packetReader = new packetreader_default(payload);
   let e = getBytesLeft(packetReader);
   if (e.TAG !== "Ok") {
@@ -15107,608 +15248,6 @@ function parse$3(payload) {
   };
   let readTile = () => {
     clearTileCache(tileCache);
-    let e2 = readByte2(reader, "header5");
-    if (e2.TAG !== "Ok") {
-      return e2;
-    }
-    let header5 = fromByte(e2._0);
-    let e$16;
-    if (flag1(header5)) {
-      let e$22 = readByte2(reader, "header4_conditional");
-      if (e$22.TAG === "Ok") {
-        let header4 = fromByte(e$22._0);
-        let e$32;
-        if (flag1(header4)) {
-          let e$42 = readByte2(reader, "header3_conditional");
-          if (e$42.TAG === "Ok") {
-            let header3 = fromByte(e$42._0);
-            let e$52 = flag1(header3) ? readByte2(reader, "header2_conditional") : {
-              TAG: "Ok",
-              _0: 0
-            };
-            e$32 = e$52.TAG === "Ok" ? {
-              TAG: "Ok",
-              _0: [
-                header3,
-                e$52._0
-              ]
-            } : e$52;
-          } else {
-            e$32 = e$42;
-          }
-        } else {
-          e$32 = {
-            TAG: "Ok",
-            _0: [
-              fromByte(0),
-              0
-            ]
-          };
-        }
-        if (e$32.TAG === "Ok") {
-          let match = e$32._0;
-          e$16 = {
-            TAG: "Ok",
-            _0: [
-              header4,
-              match[0],
-              match[1]
-            ]
-          };
-        } else {
-          e$16 = e$32;
-        }
-      } else {
-        e$16 = e$22;
-      }
-    } else {
-      e$16 = {
-        TAG: "Ok",
-        _0: [
-          fromByte(0),
-          fromByte(0),
-          0
-        ]
-      };
-    }
-    if (e$16.TAG !== "Ok") {
-      return e$16;
-    }
-    let match$1 = e$16._0;
-    let header2 = match$1[2];
-    let header3$1 = match$1[1];
-    let header4$1 = match$1[0];
-    tileCache.coatHeader = header2;
-    tileCache.invisibleBlock = (header2 & 2) !== 0;
-    tileCache.invisibleWall = (header2 & 4) !== 0;
-    tileCache.fullbrightBlock = (header2 & 8) !== 0;
-    tileCache.fullbrightWall = (header2 & 16) !== 0;
-    let oldActive = tileCache.activeTile;
-    let e$62;
-    if (flag2(header5)) {
-      let oldType = mapOr(tileCache.activeTile, 0, (active) => active.tileType);
-      let e$72;
-      if (flag6(header5)) {
-        let e$82 = readByte2(reader, "tileType_byte1");
-        if (e$82.TAG === "Ok") {
-          let e$92 = readByte2(reader, "tileType_byte2");
-          e$72 = e$92.TAG === "Ok" ? {
-            TAG: "Ok",
-            _0: e$92._0 << 8 | e$82._0
-          } : e$92;
-        } else {
-          e$72 = e$82;
-        }
-      } else {
-        e$72 = readByte2(reader, "tileType");
-      }
-      if (e$72.TAG === "Ok") {
-        let tileType = e$72._0;
-        let e$102;
-        if (isImportant2(tileType)) {
-          let e$112 = readInt162(reader, "frameX");
-          if (e$112.TAG === "Ok") {
-            let e$122 = readInt162(reader, "frameY");
-            e$102 = e$122.TAG === "Ok" ? {
-              TAG: "Ok",
-              _0: {
-                x: e$112._0,
-                y: e$122._0
-              }
-            } : e$122;
-          } else {
-            e$102 = e$112;
-          }
-        } else {
-          e$102 = isSome(oldActive) && tileType === oldType ? {
-            TAG: "Ok",
-            _0: oldActive.frame
-          } : {
-            TAG: "Ok",
-            _0: void 0
-          };
-        }
-        if (e$102.TAG === "Ok") {
-          let e$132;
-          if (flag4(header3$1)) {
-            let e$142 = readByte2(reader, "color");
-            if (e$142.TAG === "Ok") {
-              tileCache.color = e$142._0;
-              e$132 = {
-                TAG: "Ok",
-                _0: void 0
-              };
-            } else {
-              e$132 = e$142;
-            }
-          } else {
-            e$132 = {
-              TAG: "Ok",
-              _0: void 0
-            };
-          }
-          if (e$132.TAG === "Ok") {
-            tileCache.activeTile = {
-              tileType,
-              frame: e$102._0
-            };
-            e$62 = {
-              TAG: "Ok",
-              _0: void 0
-            };
-          } else {
-            e$62 = e$132;
-          }
-        } else {
-          e$62 = e$102;
-        }
-      } else {
-        e$62 = e$72;
-      }
-    } else {
-      e$62 = {
-        TAG: "Ok",
-        _0: void 0
-      };
-    }
-    if (e$62.TAG !== "Ok") {
-      return e$62;
-    }
-    let e$152;
-    if (flag3(header5)) {
-      let e$162 = readByte2(reader, "wall");
-      if (e$162.TAG === "Ok") {
-        tileCache.wall = e$162._0;
-        if (flag5(header3$1)) {
-          let e$17 = readByte2(reader, "wallColor");
-          if (e$17.TAG === "Ok") {
-            tileCache.wallColor = e$17._0;
-            e$152 = {
-              TAG: "Ok",
-              _0: void 0
-            };
-          } else {
-            e$152 = e$17;
-          }
-        } else {
-          e$152 = {
-            TAG: "Ok",
-            _0: void 0
-          };
-        }
-      } else {
-        e$152 = e$162;
-      }
-    } else {
-      e$152 = {
-        TAG: "Ok",
-        _0: void 0
-      };
-    }
-    if (e$152.TAG !== "Ok") {
-      return e$152;
-    }
-    let liquidBits = (toByte(header5) & 24) >> 3;
-    let e$18;
-    if (liquidBits !== 0) {
-      let e$19 = readByte2(reader, "liquidValue");
-      if (e$19.TAG === "Ok") {
-        tileCache.liquid = e$19._0;
-        if (flag8(header3$1)) {
-          tileCache.shimmer = true;
-        } else if (liquidBits > 1) {
-          if (liquidBits === 2) {
-            tileCache.lava = true;
-          } else {
-            tileCache.honey = true;
-          }
-        }
-        e$18 = {
-          TAG: "Ok",
-          _0: void 0
-        };
-      } else {
-        e$18 = e$19;
-      }
-    } else {
-      e$18 = {
-        TAG: "Ok",
-        _0: void 0
-      };
-    }
-    if (e$18.TAG !== "Ok") {
-      return e$18;
-    }
-    if (toByte(header4$1) > 1) {
-      if (flag2(header4$1)) {
-        tileCache.wire = true;
-      }
-      if (flag3(header4$1)) {
-        tileCache.wire2 = true;
-      }
-      if (flag4(header4$1)) {
-        tileCache.wire3 = true;
-      }
-      let slopeBits = (toByte(header4$1) & 112) >> 4;
-      if (slopeBits !== 0) {
-        if (slopeBits === 1) {
-          tileCache.halfBrick = true;
-        } else {
-          tileCache.slope = slopeBits - 1 | 0;
-        }
-      }
-    }
-    let e$20;
-    if (toByte(header3$1) > 0) {
-      if (flag2(header3$1)) {
-        tileCache.actuator = true;
-      }
-      if (flag3(header3$1)) {
-        tileCache.inActive = true;
-      }
-      if (flag6(header3$1)) {
-        tileCache.wire4 = true;
-      }
-      let e$21;
-      if (flag7(header3$1)) {
-        let e$22 = readByte2(reader, "wall_highByte");
-        if (e$22.TAG === "Ok") {
-          tileCache.wall = e$22._0 << 8 | tileCache.wall;
-          e$21 = {
-            TAG: "Ok",
-            _0: void 0
-          };
-        } else {
-          e$21 = e$22;
-        }
-      } else {
-        e$21 = {
-          TAG: "Ok",
-          _0: void 0
-        };
-      }
-      e$20 = e$21.TAG === "Ok" ? {
-        TAG: "Ok",
-        _0: void 0
-      } : e$21;
-    } else {
-      e$20 = {
-        TAG: "Ok",
-        _0: void 0
-      };
-    }
-    if (e$20.TAG !== "Ok") {
-      return e$20;
-    }
-    let repeatCountBytes = (toByte(header5) & 192) >> 6;
-    let e$23;
-    if (repeatCountBytes !== 0) {
-      if (repeatCountBytes !== 1) {
-        let e$24 = readInt162(reader, "rle_int16");
-        if (e$24.TAG === "Ok") {
-          rleCount.contents = e$24._0;
-          e$23 = {
-            TAG: "Ok",
-            _0: void 0
-          };
-        } else {
-          e$23 = e$24;
-        }
-      } else {
-        let e$25 = readByte2(reader, "rle_byte");
-        if (e$25.TAG === "Ok") {
-          rleCount.contents = e$25._0;
-          e$23 = {
-            TAG: "Ok",
-            _0: void 0
-          };
-        } else {
-          e$23 = e$25;
-        }
-      }
-    } else {
-      rleCount.contents = 0;
-      e$23 = {
-        TAG: "Ok",
-        _0: void 0
-      };
-    }
-    if (e$23.TAG === "Ok") {
-      return {
-        TAG: "Ok",
-        _0: cacheToTile(tileCache)
-      };
-    } else {
-      return e$23;
-    }
-  };
-  for (let _y = 0; _y < height; ++_y) {
-    let match = parseResult;
-    if (match.TAG === "Ok") {
-      let row = [];
-      for (let _x = 0; _x < width; ++_x) {
-        let match$1 = parseResult;
-        if (match$1.TAG === "Ok") {
-          if (rleCount.contents !== 0) {
-            rleCount.contents = rleCount.contents - 1 | 0;
-            row.push(cacheToTile(tileCache));
-          } else {
-            let tile = readTile();
-            if (tile.TAG === "Ok") {
-              row.push(tile._0);
-            } else {
-              parseResult = {
-                TAG: "Error",
-                _0: tile._0
-              };
-            }
-          }
-        }
-      }
-      let match$2 = parseResult;
-      if (match$2.TAG === "Ok") {
-        tiles.push(row);
-      }
-    }
-  }
-  let err = parseResult;
-  if (err.TAG !== "Ok") {
-    return {
-      TAG: "Error",
-      _0: err._0
-    };
-  }
-  let e$6 = readInt162(reader, "chestCount");
-  if (e$6.TAG !== "Ok") {
-    return e$6;
-  }
-  let e$7 = readRepeated(e$6._0, () => parse65(reader));
-  if (e$7.TAG !== "Ok") {
-    return e$7;
-  }
-  let e$8 = readInt162(reader, "signCount");
-  if (e$8.TAG !== "Ok") {
-    return e$8;
-  }
-  let e$9 = readRepeated(e$8._0, () => parse$12(reader));
-  if (e$9.TAG !== "Ok") {
-    return e$9;
-  }
-  let e$10 = readInt162(reader, "entityCount");
-  if (e$10.TAG !== "Ok") {
-    return e$10;
-  }
-  let e$11 = getBytesLeft2(reader);
-  if (e$11.TAG !== "Ok") {
-    return e$11;
-  }
-  let e$12 = readBuffer2(reader, e$11._0, "entitiesBuffer");
-  if (e$12.TAG !== "Ok") {
-    return e$12;
-  }
-  let entityReader = new bufferreader_default(e$12._0);
-  let e$13 = readRepeated(e$10._0, () => parse$22(entityReader));
-  if (e$13.TAG !== "Ok") {
-    return e$13;
-  }
-  let e$14 = getBytesLeft2(entityReader);
-  if (e$14.TAG !== "Ok") {
-    return e$14;
-  }
-  let e$15 = e$14._0 === 0 ? {
-    TAG: "Ok",
-    _0: void 0
-  } : {
-    TAG: "Error",
-    _0: {
-      context: "Packet_TileSectionSend.entities",
-      error: new Error("Unexpected trailing entity bytes")
-    }
-  };
-  if (e$15.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        height,
-        width,
-        tileX: e$2._0,
-        tileY: e$3._0,
-        tiles,
-        chests: e$7._0,
-        signs: e$9._0,
-        entities: e$13._0
-      }
-    };
-  } else {
-    return e$15;
-  }
-}
-var Chest = {
-  parse: parse65,
-  pack: pack3
-};
-var Sign = {
-  parse: parse$12,
-  pack: pack$12
-};
-var Entity = {
-  parse: parse$22,
-  pack: pack$22
-};
-
-// src/packet/Packet_TileSectionSend.js
-function isTheSameAs(self, compTile) {
-  let sameHeaders = isSome(self.activeTile) === isSome(compTile.activeTile) && self.inActive === compTile.inActive && self.wire === compTile.wire && self.wire2 === compTile.wire2 && self.wire3 === compTile.wire3 && self.halfBrick === compTile.halfBrick && equal(self.slope, compTile.slope) && self.actuator === compTile.actuator && equal(self.color, compTile.color);
-  if (!sameHeaders) {
-    return false;
-  }
-  let match = self.activeTile;
-  let match$1 = compTile.activeTile;
-  let activeMatches = match !== void 0 ? match$1 !== void 0 && match.tileType === match$1.tileType ? isImportant(match.tileType) ? equal(match.frame, match$1.frame) : true : false : match$1 === void 0;
-  if (!activeMatches) {
-    return false;
-  }
-  if (notequal(self.wall, compTile.wall) || notequal(self.liquid, compTile.liquid)) {
-    return false;
-  }
-  let sameWallColor = equal(self.wallColor, compTile.wallColor);
-  let sameWire4 = self.wire4 === compTile.wire4;
-  let match$2 = compTile.liquid;
-  let liquidMatches = match$2 !== void 0 ? sameWallColor && sameWire4 && self.lava === compTile.lava && self.honey === compTile.honey && self.shimmer === compTile.shimmer : sameWallColor && sameWire4;
-  if (!liquidMatches || self.invisibleBlock !== compTile.invisibleBlock || self.invisibleWall !== compTile.invisibleWall || self.fullbrightBlock !== compTile.fullbrightBlock) {
-    return false;
-  } else {
-    return self.fullbrightWall === compTile.fullbrightWall;
-  }
-}
-function clearTileCache2(tile) {
-  tile.activeTile = void 0;
-  tile.color = void 0;
-  tile.wallColor = void 0;
-  tile.wall = void 0;
-  tile.liquid = void 0;
-  tile.lava = false;
-  tile.honey = false;
-  tile.shimmer = false;
-  tile.wire = false;
-  tile.wire2 = false;
-  tile.wire3 = false;
-  tile.wire4 = false;
-  tile.halfBrick = false;
-  tile.slope = void 0;
-  tile.actuator = false;
-  tile.inActive = false;
-  tile.invisibleBlock = false;
-  tile.invisibleWall = false;
-  tile.fullbrightBlock = false;
-  tile.fullbrightWall = false;
-  tile.coatHeader = 0;
-}
-function readRepeated2(count, parseItem) {
-  let items = [];
-  let parseResult = {
-    TAG: "Ok",
-    _0: void 0
-  };
-  for (let _i = 0; _i < count; ++_i) {
-    let match = parseResult;
-    if (match.TAG === "Ok") {
-      let item = parseItem();
-      if (item.TAG === "Ok") {
-        items.push(item._0);
-      } else {
-        parseResult = {
-          TAG: "Error",
-          _0: item._0
-        };
-      }
-    }
-  }
-  let err = parseResult;
-  if (err.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: items
-    };
-  } else {
-    return {
-      TAG: "Error",
-      _0: err._0
-    };
-  }
-}
-function parse66(payload) {
-  let packetReader = new packetreader_default(payload);
-  let e = getBytesLeft(packetReader);
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readBuffer(packetReader, e._0, "deflatedPayload");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let inflated;
-  try {
-    inflated = {
-      TAG: "Ok",
-      _0: Nodezlib2.inflateRawSync(e$1._0)
-    };
-  } catch (raw_obj) {
-    let obj = internalToException(raw_obj);
-    if (obj.RE_EXN_ID === "JsExn") {
-      inflated = {
-        TAG: "Error",
-        _0: {
-          context: "inflateRawSync",
-          error: obj._1
-        }
-      };
-    } else {
-      throw obj;
-    }
-  }
-  if (inflated.TAG !== "Ok") {
-    return inflated;
-  }
-  let reader = new bufferreader_default(inflated._0);
-  let e$2 = readInt322(reader, "tileX");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readInt322(reader, "tileY");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readInt162(reader, "width");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let width = e$4._0;
-  let e$5 = readInt162(reader, "height");
-  if (e$5.TAG !== "Ok") {
-    return e$5;
-  }
-  let height = e$5._0;
-  let tiles = [];
-  let tileCache = defaultTileCache();
-  let rleCount = {
-    contents: 0
-  };
-  if (height < 0 || width < 0) {
-    return {
-      TAG: "Error",
-      _0: {
-        context: "Packet_TileSectionSend.parse",
-        error: new Error("Tile section dimensions must be non-negative")
-      }
-    };
-  }
-  let parseResult = {
-    TAG: "Ok",
-    _0: void 0
-  };
-  let readTile = () => {
-    clearTileCache2(tileCache);
     let e2 = readByte2(reader, "header5");
     if (e2.TAG !== "Ok") {
       return e2;
@@ -16084,7 +15623,7 @@ function parse66(payload) {
   if (e$6.TAG !== "Ok") {
     return e$6;
   }
-  let e$7 = readRepeated2(e$6._0, () => Chest.parse(reader));
+  let e$7 = readRepeated(e$6._0, () => Chest.parse(reader));
   if (e$7.TAG !== "Ok") {
     return e$7;
   }
@@ -16092,7 +15631,7 @@ function parse66(payload) {
   if (e$8.TAG !== "Ok") {
     return e$8;
   }
-  let e$9 = readRepeated2(e$8._0, () => Sign.parse(reader));
+  let e$9 = readRepeated(e$8._0, () => Sign.parse(reader));
   if (e$9.TAG !== "Ok") {
     return e$9;
   }
@@ -16109,7 +15648,7 @@ function parse66(payload) {
     return e$12;
   }
   let entityReader = new bufferreader_default(e$12._0);
-  let e$13 = readRepeated2(e$10._0, () => Entity.parse(entityReader));
+  let e$13 = readRepeated(e$10._0, () => parse66(entityReader));
   if (e$13.TAG !== "Ok") {
     return e$13;
   }
@@ -16385,11 +15924,11 @@ function toBuffer64(self) {
   });
   packInt162(innerWriter, self.entities.length, "entityCount");
   self.entities.forEach((entity) => {
-    Entity.pack(innerWriter, entity);
+    pack4(innerWriter, entity);
   });
   let innerBuffer = slicedData(innerWriter);
   if (innerBuffer.TAG === "Ok") {
-    let deflatedPayload = Nodezlib2.deflateRawSync(innerBuffer._0);
+    let deflatedPayload = Nodezlib.deflateRawSync(innerBuffer._0);
     return data(packBuffer(outerPacketWriter, deflatedPayload, "deflatedPayload"));
   }
   let e = innerBuffer._0;
@@ -16403,7 +15942,10 @@ function toBuffer64(self) {
 }
 var Chest2;
 var Sign2;
-var Entity2;
+var Entity = {
+  parse: parse66,
+  pack: pack4
+};
 
 // src/packet/Packet_TileSquareSend.js
 var Packet_TileSquareSend_exports = {};
@@ -20149,9 +19691,7 @@ function toBuffer103(self) {
 // src/Parser.js
 var Parser_exports = {};
 __export(Parser_exports, {
-  convertFromV1449IfNeeded: () => convertFromV1449IfNeeded,
-  convertToV1449IfNeeded: () => convertToV1449IfNeeded,
-  parse: () => parse182,
+  parse: () => parse162,
   parseLazy: () => parseLazy
 });
 
@@ -20185,47 +19725,6 @@ function parse107(payload) {
   }
 }
 
-// src/packetv1449/PacketV1449_Zones.js
-function parse108(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readByte(reader, "zone1");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readByte(reader, "zone2");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readByte(reader, "zone3");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readByte(reader, "zone4");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let e$5 = readByte(reader, "zone5");
-  if (e$5.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0,
-        zone1: e$1._0,
-        zone2: e$2._0,
-        zone3: e$3._0,
-        zone4: e$4._0,
-        zone5: e$5._0
-      }
-    };
-  } else {
-    return e$5;
-  }
-}
-
 // src/packetv1449/PacketV1449_DoorUse.js
 function actionFromInt(self) {
   switch (self) {
@@ -20245,7 +19744,7 @@ function actionFromInt(self) {
       return;
   }
 }
-function parse109(payload) {
+function parse108(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "action");
   if (e.TAG !== "Ok") {
@@ -20293,7 +19792,7 @@ function parse109(payload) {
 }
 
 // src/packetv1449/PacketV1449_HarpPlay.js
-function parse110(payload) {
+function parse109(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -20313,68 +19812,8 @@ function parse110(payload) {
   }
 }
 
-// src/packetv1449/PacketV1449_Teleport.js
-function parse111(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "flags");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let flags = fromByte(e._0);
-  let getPositionFromTarget = flag3(flags);
-  let match = flag1(flags);
-  let match$1 = flag2(flags);
-  let teleportType = match ? match$1 ? void 0 : "Npc" : match$1 ? "PlayerToPlayer" : "Player";
-  let e$1 = readInt16(reader, "targetId");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readSingle(reader, "x");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readSingle(reader, "y");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readByte(reader, "style");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let e$5 = flag4(flags) ? map2(readInt32(reader, "extraInfo"), (v) => v) : {
-    TAG: "Ok",
-    _0: void 0
-  };
-  if (e$5.TAG === "Ok") {
-    if (teleportType !== void 0) {
-      return {
-        TAG: "Ok",
-        _0: {
-          teleportType,
-          getPositionFromTarget,
-          targetId: e$1._0,
-          x: e$2._0,
-          y: e$3._0,
-          style: e$4._0,
-          extraInfo: e$5._0
-        }
-      };
-    } else {
-      return {
-        TAG: "Error",
-        _0: {
-          context: "Packet_Teleport.parse",
-          error: new Error("Invalid teleport type flags")
-        }
-      };
-    }
-  } else {
-    return e$5;
-  }
-}
-
 // src/packetv1449/PacketV1449_ChestName.js
-function parse112(payload) {
+function parse110(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "chestId");
   if (e.TAG !== "Ok") {
@@ -20405,7 +19844,7 @@ function parse112(payload) {
 }
 
 // src/packetv1449/PacketV1449_ChestOpen.js
-function parse113(payload) {
+function parse111(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -20425,29 +19864,8 @@ function parse113(payload) {
   }
 }
 
-// src/packetv1449/PacketV1449_ItemOwner.js
-function parse114(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt16(reader, "itemDropId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readByte(reader, "owner");
-  if (e$1.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        itemDropId: e._0,
-        owner: e$1._0
-      }
-    };
-  } else {
-    return e$1;
-  }
-}
-
 // src/packetv1449/PacketV1449_LiquidSet.js
-function parse115(payload) {
+function parse112(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -20478,7 +19896,7 @@ function parse115(payload) {
 }
 
 // src/packetv1449/PacketV1449_NpcStrike.js
-function parse116(payload) {
+function parse113(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -20524,7 +19942,7 @@ function fromInt8(playerId) {
     return "All";
   }
 }
-function parse117(payload) {
+function parse114(payload) {
   let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -20572,861 +19990,8 @@ function parse117(payload) {
   };
 }
 
-// src/packetv1449/PacketV1449_NpcUpdate.js
-function readNpcFlags12(reader, fieldName) {
-  let e = readByte(reader, fieldName);
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let flags = fromByte(e._0);
-  return {
-    TAG: "Ok",
-    _0: {
-      directionX: flag1(flags),
-      directionY: flag2(flags),
-      ai0: flag3(flags),
-      ai1: flag4(flags),
-      ai2: flag5(flags),
-      ai3: flag6(flags),
-      spriteDirection: flag7(flags),
-      lifeMax: flag8(flags)
-    }
-  };
-}
-function readNpcFlags22(reader, fieldName) {
-  let e = readByte(reader, fieldName);
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let flags = fromByte(e._0);
-  return {
-    TAG: "Ok",
-    _0: {
-      statsScaled: flag1(flags),
-      spawnedFromStatue: flag2(flags),
-      strengthMultiplier: flag3(flags)
-    }
-  };
-}
-function parse118(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt16(reader, "npcSlotId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readSingle(reader, "x");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readSingle(reader, "y");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readSingle(reader, "vx");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readSingle(reader, "vy");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let e$5 = readUInt16(reader, "target");
-  if (e$5.TAG !== "Ok") {
-    return e$5;
-  }
-  let e$6 = readNpcFlags12(reader, "npcFlags1");
-  if (e$6.TAG !== "Ok") {
-    return e$6;
-  }
-  let npcFlags12 = e$6._0;
-  let e$7 = readNpcFlags22(reader, "npcFlags2");
-  if (e$7.TAG !== "Ok") {
-    return e$7;
-  }
-  let npcFlags22 = e$7._0;
-  let tmp;
-  if (npcFlags12.ai0) {
-    let e$8 = readSingle(reader, "ai0");
-    tmp = e$8.TAG === "Ok" ? {
-      TAG: "Ok",
-      _0: e$8._0
-    } : e$8;
-  } else {
-    tmp = {
-      TAG: "Ok",
-      _0: void 0
-    };
-  }
-  let tmp$1;
-  if (npcFlags12.ai1) {
-    let e$9 = readSingle(reader, "ai1");
-    tmp$1 = e$9.TAG === "Ok" ? {
-      TAG: "Ok",
-      _0: e$9._0
-    } : e$9;
-  } else {
-    tmp$1 = {
-      TAG: "Ok",
-      _0: void 0
-    };
-  }
-  let tmp$2;
-  if (npcFlags12.ai2) {
-    let e$10 = readSingle(reader, "ai2");
-    tmp$2 = e$10.TAG === "Ok" ? {
-      TAG: "Ok",
-      _0: e$10._0
-    } : e$10;
-  } else {
-    tmp$2 = {
-      TAG: "Ok",
-      _0: void 0
-    };
-  }
-  let tmp$3;
-  if (npcFlags12.ai3) {
-    let e$11 = readSingle(reader, "ai3");
-    tmp$3 = e$11.TAG === "Ok" ? {
-      TAG: "Ok",
-      _0: e$11._0
-    } : e$11;
-  } else {
-    tmp$3 = {
-      TAG: "Ok",
-      _0: void 0
-    };
-  }
-  let e$12 = all4([
-    tmp,
-    tmp$1,
-    tmp$2,
-    tmp$3
-  ]);
-  if (e$12.TAG !== "Ok") {
-    return e$12;
-  }
-  let e$13 = readInt16(reader, "npcTypeId");
-  if (e$13.TAG !== "Ok") {
-    return e$13;
-  }
-  let e$14;
-  if (npcFlags22.statsScaled) {
-    let e$15 = readByte(reader, "playerCountScale");
-    e$14 = e$15.TAG === "Ok" ? {
-      TAG: "Ok",
-      _0: e$15._0
-    } : e$15;
-  } else {
-    e$14 = {
-      TAG: "Ok",
-      _0: void 0
-    };
-  }
-  if (e$14.TAG !== "Ok") {
-    return e$14;
-  }
-  let e$16;
-  if (npcFlags22.strengthMultiplier) {
-    let e$17 = readSingle(reader, "strengthMultiplier");
-    e$16 = e$17.TAG === "Ok" ? {
-      TAG: "Ok",
-      _0: e$17._0
-    } : e$17;
-  } else {
-    e$16 = {
-      TAG: "Ok",
-      _0: void 0
-    };
-  }
-  if (e$16.TAG !== "Ok") {
-    return e$16;
-  }
-  let e$18;
-  if (npcFlags12.lifeMax) {
-    e$18 = {
-      TAG: "Ok",
-      _0: "Max"
-    };
-  } else {
-    let e$19 = readByte(reader, "lifeBytes");
-    if (e$19.TAG === "Ok") {
-      switch (e$19._0) {
-        case 1:
-          let e$20 = readSByte(reader, "life_sbyte");
-          e$18 = e$20.TAG === "Ok" ? {
-            TAG: "Ok",
-            _0: {
-              TAG: "Byte",
-              _0: e$20._0
-            }
-          } : e$20;
-          break;
-        case 2:
-          let e$21 = readInt16(reader, "life_int16");
-          e$18 = e$21.TAG === "Ok" ? {
-            TAG: "Ok",
-            _0: {
-              TAG: "Int16",
-              _0: e$21._0
-            }
-          } : e$21;
-          break;
-        case 4:
-          let e$22 = readInt32(reader, "life_int32");
-          e$18 = e$22.TAG === "Ok" ? {
-            TAG: "Ok",
-            _0: {
-              TAG: "Int32",
-              _0: e$22._0
-            }
-          } : e$22;
-          break;
-        default:
-          e$18 = {
-            TAG: "Error",
-            _0: {
-              context: "Packet_NpcUpdate.parse",
-              error: new Error("Invalid life byte count")
-            }
-          };
-      }
-    } else {
-      e$18 = e$19;
-    }
-  }
-  if (e$18.TAG !== "Ok") {
-    return e$18;
-  }
-  let releaseOwner = readByte(reader, "releaseOwner");
-  let releaseOwner$1;
-  releaseOwner$1 = releaseOwner.TAG === "Ok" ? releaseOwner._0 : void 0;
-  return {
-    TAG: "Ok",
-    _0: {
-      npcSlotId: e._0,
-      npcTypeId: e$13._0,
-      x: e$1._0,
-      y: e$2._0,
-      vx: e$3._0,
-      vy: e$4._0,
-      target: e$5._0,
-      directionX: npcFlags12.directionX,
-      directionY: npcFlags12.directionY,
-      ai: e$12._0,
-      spriteDirection: npcFlags12.spriteDirection,
-      life: e$18._0,
-      releaseOwner: releaseOwner$1,
-      playerCountScale: e$14._0,
-      strengthMultiplier: e$16._0,
-      spawnedFromStatue: npcFlags22.spawnedFromStatue
-    }
-  };
-}
-
-// src/packetv1449/PacketV1449_WorldInfo.js
-function readEventInfo2(reader) {
-  let e = readByte(reader, "eventInfo1");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readByte(reader, "eventInfo2");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readByte(reader, "eventInfo3");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readByte(reader, "eventInfo4");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readByte(reader, "eventInfo5");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let e$5 = readByte(reader, "eventInfo6");
-  if (e$5.TAG !== "Ok") {
-    return e$5;
-  }
-  let e$6 = readByte(reader, "eventInfo7");
-  if (e$6.TAG !== "Ok") {
-    return e$6;
-  }
-  let e$7 = readByte(reader, "eventInfo8");
-  if (e$7.TAG !== "Ok") {
-    return e$7;
-  }
-  let e$8 = readByte(reader, "eventInfo9");
-  if (e$8.TAG !== "Ok") {
-    return e$8;
-  }
-  let e$9 = readByte(reader, "eventInfo10");
-  if (e$9.TAG !== "Ok") {
-    return e$9;
-  }
-  let eventInfo1 = fromByte(e._0);
-  let eventInfo2 = fromByte(e$1._0);
-  let eventInfo3 = fromByte(e$2._0);
-  let eventInfo4 = fromByte(e$3._0);
-  let eventInfo5 = fromByte(e$4._0);
-  let eventInfo6 = fromByte(e$5._0);
-  let eventInfo7 = fromByte(e$6._0);
-  let eventInfo8 = fromByte(e$7._0);
-  let eventInfo9 = fromByte(e$8._0);
-  let eventInfo10 = fromByte(e$9._0);
-  let shadowOrbSmashed = flag1(eventInfo1);
-  let killedBoss1 = flag2(eventInfo1);
-  let killedBoss2 = flag3(eventInfo1);
-  let killedBoss3 = flag4(eventInfo1);
-  let hardMode = flag5(eventInfo1);
-  let killedClown = flag6(eventInfo1);
-  let serverSidedCharacters = flag7(eventInfo1);
-  let killedPlantBoss = flag8(eventInfo1);
-  let killedMechBoss = flag1(eventInfo2);
-  let killedMechBoss2 = flag2(eventInfo2);
-  let killedMechBoss3 = flag3(eventInfo2);
-  let killedAnyMechBoss = flag4(eventInfo2);
-  let cloudBg = flag5(eventInfo2);
-  let crimson = flag6(eventInfo2);
-  let pumpkinMoon = flag7(eventInfo2);
-  let snowMoon = flag8(eventInfo2);
-  let expertMode = flag1(eventInfo3);
-  let fastForwardTime = flag2(eventInfo3);
-  let slimeRain = flag3(eventInfo3);
-  let killedKingSlime = flag4(eventInfo3);
-  let killedQueenBee = flag5(eventInfo3);
-  let killedFishron = flag6(eventInfo3);
-  let killedMartians = flag7(eventInfo3);
-  let killedAncientCultist = flag8(eventInfo3);
-  let killedMoonLord = flag1(eventInfo4);
-  let killedPumpking = flag2(eventInfo4);
-  let killedMourningWood = flag3(eventInfo4);
-  let killedIceQueen = flag4(eventInfo4);
-  let killedSantank = flag5(eventInfo4);
-  let killedEverscream = flag6(eventInfo4);
-  let killedGolem = flag7(eventInfo4);
-  let birthdayParty = flag8(eventInfo4);
-  let killedPirates = flag1(eventInfo5);
-  let killedFrostLegion = flag2(eventInfo5);
-  let killedGoblins = flag3(eventInfo5);
-  let sandstorm = flag4(eventInfo5);
-  let dungeonDefendersEvent = flag5(eventInfo5);
-  let killedDungeonDefendersTier1 = flag6(eventInfo5);
-  let killedDungeonDefendersTier2 = flag7(eventInfo5);
-  let killedDungeonDefendersTier3 = flag8(eventInfo5);
-  let combatBookUsed = flag1(eventInfo6);
-  let manualLanterns = flag2(eventInfo6);
-  let killedSolarTower = flag3(eventInfo6);
-  let killedVortexTower = flag4(eventInfo6);
-  let killedNebulaTower = flag5(eventInfo6);
-  let killedStardustTower = flag6(eventInfo6);
-  let forceHalloween = flag7(eventInfo6);
-  let forceChristmas = flag8(eventInfo6);
-  let boughtCat = flag1(eventInfo7);
-  let boughtDog = flag2(eventInfo7);
-  let boughtBunny = flag3(eventInfo7);
-  let freeCake = flag4(eventInfo7);
-  let drunkWorld = flag5(eventInfo7);
-  let killedEmpressOfLight = flag6(eventInfo7);
-  let killedQueenSlime = flag7(eventInfo7);
-  let getGoodWorld = flag8(eventInfo7);
-  let tenthAnniversaryWorld = flag1(eventInfo8);
-  let dontStarveWorld = flag2(eventInfo8);
-  let downedDeerClops = flag3(eventInfo8);
-  let notTheBeesWorld = flag4(eventInfo8);
-  let remixWorld = flag5(eventInfo8);
-  let unlockedSlimeBlueSpawn = flag6(eventInfo8);
-  let combatBookVolumeTwoWasUsed = flag7(eventInfo8);
-  let peddlersSatchelWasUsed = flag8(eventInfo8);
-  let unlockedSlimeGreenSpawn = flag1(eventInfo9);
-  let unlockedSlimeOldSpawn = flag2(eventInfo9);
-  let unlockedSlimePurpleSpawn = flag3(eventInfo9);
-  let unlockedSlimeRainbowSpawn = flag4(eventInfo9);
-  let unlockedSlimeRedSpawn = flag5(eventInfo9);
-  let unlockedSlimeYellowSpawn = flag6(eventInfo9);
-  let unlockedSlimeCopperSpawn = flag7(eventInfo9);
-  let fastForwardTimeToDusk = flag8(eventInfo9);
-  let noTrapsWorld = flag1(eventInfo10);
-  let zenithWorld = flag2(eventInfo10);
-  let unlockedTruffleSpawn = flag3(eventInfo10);
-  return {
-    TAG: "Ok",
-    _0: {
-      shadowOrbSmashed,
-      killedBoss1,
-      killedBoss2,
-      killedBoss3,
-      hardMode,
-      killedClown,
-      serverSidedCharacters,
-      killedPlantBoss,
-      killedMechBoss,
-      killedMechBoss2,
-      killedMechBoss3,
-      killedAnyMechBoss,
-      cloudBg,
-      crimson,
-      pumpkinMoon,
-      snowMoon,
-      expertMode,
-      fastForwardTime,
-      slimeRain,
-      killedKingSlime,
-      killedQueenBee,
-      killedFishron,
-      killedMartians,
-      killedAncientCultist,
-      killedMoonLord,
-      killedPumpking,
-      killedMourningWood,
-      killedIceQueen,
-      killedSantank,
-      killedEverscream,
-      killedGolem,
-      birthdayParty,
-      killedPirates,
-      killedFrostLegion,
-      killedGoblins,
-      sandstorm,
-      dungeonDefendersEvent,
-      killedDungeonDefendersTier1,
-      killedDungeonDefendersTier2,
-      killedDungeonDefendersTier3,
-      combatBookUsed,
-      manualLanterns,
-      killedSolarTower,
-      killedVortexTower,
-      killedNebulaTower,
-      killedStardustTower,
-      forceHalloween,
-      forceChristmas,
-      boughtCat,
-      boughtDog,
-      boughtBunny,
-      freeCake,
-      drunkWorld,
-      killedEmpressOfLight,
-      killedQueenSlime,
-      getGoodWorld,
-      tenthAnniversaryWorld,
-      dontStarveWorld,
-      downedDeerClops,
-      notTheBeesWorld,
-      remixWorld,
-      unlockedSlimeBlueSpawn,
-      combatBookVolumeTwoWasUsed,
-      peddlersSatchelWasUsed,
-      unlockedSlimeGreenSpawn,
-      unlockedSlimeOldSpawn,
-      unlockedSlimePurpleSpawn,
-      unlockedSlimeRainbowSpawn,
-      unlockedSlimeRedSpawn,
-      unlockedSlimeYellowSpawn,
-      unlockedSlimeCopperSpawn,
-      fastForwardTimeToDusk,
-      noTrapsWorld,
-      zenithWorld,
-      unlockedTruffleSpawn
-    }
-  };
-}
-function parse119(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt32(reader, "time");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readByte(reader, "dayAndMoonInfo");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readByte(reader, "moonPhase");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readInt16(reader, "maxTilesX");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readInt16(reader, "maxTilesY");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let e$5 = readInt16(reader, "spawnX");
-  if (e$5.TAG !== "Ok") {
-    return e$5;
-  }
-  let e$6 = readInt16(reader, "spawnY");
-  if (e$6.TAG !== "Ok") {
-    return e$6;
-  }
-  let e$7 = readInt16(reader, "worldSurface");
-  if (e$7.TAG !== "Ok") {
-    return e$7;
-  }
-  let e$8 = readInt16(reader, "rockLayer");
-  if (e$8.TAG !== "Ok") {
-    return e$8;
-  }
-  let e$9 = readInt32(reader, "worldId");
-  if (e$9.TAG !== "Ok") {
-    return e$9;
-  }
-  let e$10 = readString(reader, "worldName");
-  if (e$10.TAG !== "Ok") {
-    return e$10;
-  }
-  let e$11 = readByte(reader, "gameMode");
-  if (e$11.TAG !== "Ok") {
-    return e$11;
-  }
-  let e$12 = readBytes(reader, 16, "worldUniqueId");
-  if (e$12.TAG !== "Ok") {
-    return e$12;
-  }
-  let worldUniqueId = fromArray2(e$12._0);
-  let e$13 = worldUniqueId !== void 0 ? {
-    TAG: "Ok",
-    _0: valFromOption(worldUniqueId)
-  } : {
-    TAG: "Error",
-    _0: {
-      context: "WorldInfo.parse.worldUniqueId",
-      error: new Error("Invalid worldUniqueId")
-    }
-  };
-  if (e$13.TAG !== "Ok") {
-    return e$13;
-  }
-  let e$14 = readUInt64(reader, "worldGeneratorVersion");
-  if (e$14.TAG !== "Ok") {
-    return e$14;
-  }
-  let e$15 = readByte(reader, "moonType");
-  if (e$15.TAG !== "Ok") {
-    return e$15;
-  }
-  let e$16 = readByte(reader, "treeBackground");
-  if (e$16.TAG !== "Ok") {
-    return e$16;
-  }
-  let e$17 = readByte(reader, "treeBackground2");
-  if (e$17.TAG !== "Ok") {
-    return e$17;
-  }
-  let e$18 = readByte(reader, "treeBackground3");
-  if (e$18.TAG !== "Ok") {
-    return e$18;
-  }
-  let e$19 = readByte(reader, "treeBackground4");
-  if (e$19.TAG !== "Ok") {
-    return e$19;
-  }
-  let e$20 = readByte(reader, "corruptionBackground");
-  if (e$20.TAG !== "Ok") {
-    return e$20;
-  }
-  let e$21 = readByte(reader, "jungleBackground");
-  if (e$21.TAG !== "Ok") {
-    return e$21;
-  }
-  let e$22 = readByte(reader, "snowBackground");
-  if (e$22.TAG !== "Ok") {
-    return e$22;
-  }
-  let e$23 = readByte(reader, "hallowBackground");
-  if (e$23.TAG !== "Ok") {
-    return e$23;
-  }
-  let e$24 = readByte(reader, "crimsonBackground");
-  if (e$24.TAG !== "Ok") {
-    return e$24;
-  }
-  let e$25 = readByte(reader, "desertBackground");
-  if (e$25.TAG !== "Ok") {
-    return e$25;
-  }
-  let e$26 = readByte(reader, "oceanBackground");
-  if (e$26.TAG !== "Ok") {
-    return e$26;
-  }
-  let e$27 = readByte(reader, "mushroomBackground");
-  if (e$27.TAG !== "Ok") {
-    return e$27;
-  }
-  let e$28 = readByte(reader, "underworldBackground");
-  if (e$28.TAG !== "Ok") {
-    return e$28;
-  }
-  let e$29 = readByte(reader, "iceBackStyle");
-  if (e$29.TAG !== "Ok") {
-    return e$29;
-  }
-  let e$30 = readByte(reader, "jungleBackStyle");
-  if (e$30.TAG !== "Ok") {
-    return e$30;
-  }
-  let e$31 = readByte(reader, "hellBackStyle");
-  if (e$31.TAG !== "Ok") {
-    return e$31;
-  }
-  let e$32 = readSingle(reader, "windSpeedSet");
-  if (e$32.TAG !== "Ok") {
-    return e$32;
-  }
-  let e$33 = readByte(reader, "cloudNumber");
-  if (e$33.TAG !== "Ok") {
-    return e$33;
-  }
-  let e$34 = readInt32(reader, "tree1");
-  if (e$34.TAG !== "Ok") {
-    return e$34;
-  }
-  let e$35 = readInt32(reader, "tree2");
-  if (e$35.TAG !== "Ok") {
-    return e$35;
-  }
-  let e$36 = readInt32(reader, "tree3");
-  if (e$36.TAG !== "Ok") {
-    return e$36;
-  }
-  let e$37 = readByte(reader, "treeStyle1");
-  if (e$37.TAG !== "Ok") {
-    return e$37;
-  }
-  let e$38 = readByte(reader, "treeStyle2");
-  if (e$38.TAG !== "Ok") {
-    return e$38;
-  }
-  let e$39 = readByte(reader, "treeStyle3");
-  if (e$39.TAG !== "Ok") {
-    return e$39;
-  }
-  let e$40 = readByte(reader, "treeStyle4");
-  if (e$40.TAG !== "Ok") {
-    return e$40;
-  }
-  let e$41 = readInt32(reader, "caveBack1");
-  if (e$41.TAG !== "Ok") {
-    return e$41;
-  }
-  let e$42 = readInt32(reader, "caveBack2");
-  if (e$42.TAG !== "Ok") {
-    return e$42;
-  }
-  let e$43 = readInt32(reader, "caveBack3");
-  if (e$43.TAG !== "Ok") {
-    return e$43;
-  }
-  let e$44 = readByte(reader, "caveBackStyle1");
-  if (e$44.TAG !== "Ok") {
-    return e$44;
-  }
-  let e$45 = readByte(reader, "caveBackStyle2");
-  if (e$45.TAG !== "Ok") {
-    return e$45;
-  }
-  let e$46 = readByte(reader, "caveBackStyle3");
-  if (e$46.TAG !== "Ok") {
-    return e$46;
-  }
-  let e$47 = readByte(reader, "caveBackStyle4");
-  if (e$47.TAG !== "Ok") {
-    return e$47;
-  }
-  let e$48 = readByte(reader, "forest1TreeTopStyle");
-  if (e$48.TAG !== "Ok") {
-    return e$48;
-  }
-  let e$49 = readByte(reader, "forest2TreeTopStyle");
-  if (e$49.TAG !== "Ok") {
-    return e$49;
-  }
-  let e$50 = readByte(reader, "forest3TreeTopStyle");
-  if (e$50.TAG !== "Ok") {
-    return e$50;
-  }
-  let e$51 = readByte(reader, "forest4TreeTopStyle");
-  if (e$51.TAG !== "Ok") {
-    return e$51;
-  }
-  let e$52 = readByte(reader, "corruptionTreeTopStyle");
-  if (e$52.TAG !== "Ok") {
-    return e$52;
-  }
-  let e$53 = readByte(reader, "jungleTreeTopStyle");
-  if (e$53.TAG !== "Ok") {
-    return e$53;
-  }
-  let e$54 = readByte(reader, "snowTreeTopStyle");
-  if (e$54.TAG !== "Ok") {
-    return e$54;
-  }
-  let e$55 = readByte(reader, "hallowTreeTopStyle");
-  if (e$55.TAG !== "Ok") {
-    return e$55;
-  }
-  let e$56 = readByte(reader, "crimsonTreeTopStyle");
-  if (e$56.TAG !== "Ok") {
-    return e$56;
-  }
-  let e$57 = readByte(reader, "desertTreeTopStyle");
-  if (e$57.TAG !== "Ok") {
-    return e$57;
-  }
-  let e$58 = readByte(reader, "oceanTreeTopStyle");
-  if (e$58.TAG !== "Ok") {
-    return e$58;
-  }
-  let e$59 = readByte(reader, "glowingMushroomTreeTopStyle");
-  if (e$59.TAG !== "Ok") {
-    return e$59;
-  }
-  let e$60 = readByte(reader, "underworldTreeTopStyle");
-  if (e$60.TAG !== "Ok") {
-    return e$60;
-  }
-  let e$61 = readSingle(reader, "rain");
-  if (e$61.TAG !== "Ok") {
-    return e$61;
-  }
-  let e$62 = readEventInfo2(reader);
-  if (e$62.TAG !== "Ok") {
-    return e$62;
-  }
-  let e$63 = readByte(reader, "sundialCooldown");
-  if (e$63.TAG !== "Ok") {
-    return e$63;
-  }
-  let e$64 = readByte(reader, "moondialCooldown");
-  if (e$64.TAG !== "Ok") {
-    return e$64;
-  }
-  let e$65 = readInt16(reader, "copperOreTier");
-  if (e$65.TAG !== "Ok") {
-    return e$65;
-  }
-  let e$66 = readInt16(reader, "ironOreTier");
-  if (e$66.TAG !== "Ok") {
-    return e$66;
-  }
-  let e$67 = readInt16(reader, "silverOreTier");
-  if (e$67.TAG !== "Ok") {
-    return e$67;
-  }
-  let e$68 = readInt16(reader, "goldOreTier");
-  if (e$68.TAG !== "Ok") {
-    return e$68;
-  }
-  let e$69 = readInt16(reader, "cobaltOreTier");
-  if (e$69.TAG !== "Ok") {
-    return e$69;
-  }
-  let e$70 = readInt16(reader, "mythrilOreTier");
-  if (e$70.TAG !== "Ok") {
-    return e$70;
-  }
-  let e$71 = readInt16(reader, "adamantiteOreTier");
-  if (e$71.TAG !== "Ok") {
-    return e$71;
-  }
-  let e$72 = readSByte(reader, "invasionType");
-  if (e$72.TAG !== "Ok") {
-    return e$72;
-  }
-  let e$73 = readUInt64(reader, "lobbyId");
-  if (e$73.TAG !== "Ok") {
-    return e$73;
-  }
-  let e$74 = readSingle(reader, "sandstormSeverity");
-  if (e$74.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        time: e._0,
-        dayAndMoonInfo: e$1._0,
-        moonPhase: e$2._0,
-        maxTilesX: e$3._0,
-        maxTilesY: e$4._0,
-        spawnX: e$5._0,
-        spawnY: e$6._0,
-        worldSurface: e$7._0,
-        rockLayer: e$8._0,
-        worldId: e$9._0,
-        worldName: e$10._0,
-        gameMode: e$11._0,
-        worldUniqueId: e$13._0,
-        worldGeneratorVersion: e$14._0,
-        moonType: e$15._0,
-        treeBackground: e$16._0,
-        treeBackground2: e$17._0,
-        treeBackground3: e$18._0,
-        treeBackground4: e$19._0,
-        corruptionBackground: e$20._0,
-        jungleBackground: e$21._0,
-        snowBackground: e$22._0,
-        hallowBackground: e$23._0,
-        crimsonBackground: e$24._0,
-        desertBackground: e$25._0,
-        oceanBackground: e$26._0,
-        mushroomBackground: e$27._0,
-        underworldBackground: e$28._0,
-        iceBackStyle: e$29._0,
-        jungleBackStyle: e$30._0,
-        hellBackStyle: e$31._0,
-        windSpeedSet: e$32._0,
-        cloudNumber: e$33._0,
-        tree1: e$34._0,
-        tree2: e$35._0,
-        tree3: e$36._0,
-        treeStyle1: e$37._0,
-        treeStyle2: e$38._0,
-        treeStyle3: e$39._0,
-        treeStyle4: e$40._0,
-        caveBack1: e$41._0,
-        caveBack2: e$42._0,
-        caveBack3: e$43._0,
-        caveBackStyle1: e$44._0,
-        caveBackStyle2: e$45._0,
-        caveBackStyle3: e$46._0,
-        caveBackStyle4: e$47._0,
-        forest1TreeTopStyle: e$48._0,
-        forest2TreeTopStyle: e$49._0,
-        forest3TreeTopStyle: e$50._0,
-        forest4TreeTopStyle: e$51._0,
-        corruptionTreeTopStyle: e$52._0,
-        jungleTreeTopStyle: e$53._0,
-        snowTreeTopStyle: e$54._0,
-        hallowTreeTopStyle: e$55._0,
-        crimsonTreeTopStyle: e$56._0,
-        desertTreeTopStyle: e$57._0,
-        oceanTreeTopStyle: e$58._0,
-        glowingMushroomTreeTopStyle: e$59._0,
-        underworldTreeTopStyle: e$60._0,
-        rain: e$61._0,
-        eventInfo: e$62._0,
-        sundialCooldown: e$63._0,
-        moondialCooldown: e$64._0,
-        copperOreTier: e$65._0,
-        ironOreTier: e$66._0,
-        silverOreTier: e$67._0,
-        goldOreTier: e$68._0,
-        cobaltOreTier: e$69._0,
-        mythrilOreTier: e$70._0,
-        adamantiteOreTier: e$71._0,
-        invasionType: e$72._0,
-        lobbyId: e$73._0,
-        sandstormSeverity: e$74._0
-      }
-    };
-  } else {
-    return e$74;
-  }
-}
-
 // src/packetv1449/PacketV1449_HealEffect.js
-function parse120(payload) {
+function parse115(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -21447,7 +20012,7 @@ function parse120(payload) {
 }
 
 // src/packetv1449/PacketV1449_ManaEffect.js
-function parse121(payload) {
+function parse116(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -21468,7 +20033,7 @@ function parse121(payload) {
 }
 
 // src/packetv1449/PacketV1449_NpcBuffAdd.js
-function parse122(payload) {
+function parse117(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -21494,7 +20059,7 @@ function parse122(payload) {
 }
 
 // src/packetv1449/PacketV1449_NpcRelease.js
-function parse123(payload) {
+function parse118(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "x");
   if (e.TAG !== "Ok") {
@@ -21524,152 +20089,8 @@ function parse123(payload) {
   }
 }
 
-// src/packetv1449/PacketV1449_PlayerInfo.js
-function getDifficulty2(difficultyFlags) {
-  if (flag2(difficultyFlags)) {
-    return "Hardcore";
-  } else if (flag1(difficultyFlags)) {
-    return "Mediumcore";
-  } else {
-    return "Softcore";
-  }
-}
-function parse124(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readByte(reader, "skinVariant");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readByte(reader, "hair");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readString(reader, "name");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readByte(reader, "hairDye");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let e$5 = readByte(reader, "hideVisuals");
-  if (e$5.TAG !== "Ok") {
-    return e$5;
-  }
-  let e$6 = readByte(reader, "hideVisuals2");
-  if (e$6.TAG !== "Ok") {
-    return e$6;
-  }
-  let e$7 = readByte(reader, "hideMisc");
-  if (e$7.TAG !== "Ok") {
-    return e$7;
-  }
-  let e$8 = readColor(reader, "hairColor");
-  if (e$8.TAG !== "Ok") {
-    return e$8;
-  }
-  let e$9 = readColor(reader, "skinColor");
-  if (e$9.TAG !== "Ok") {
-    return e$9;
-  }
-  let e$10 = readColor(reader, "eyeColor");
-  if (e$10.TAG !== "Ok") {
-    return e$10;
-  }
-  let e$11 = readColor(reader, "shirtColor");
-  if (e$11.TAG !== "Ok") {
-    return e$11;
-  }
-  let e$12 = readColor(reader, "underShirtColor");
-  if (e$12.TAG !== "Ok") {
-    return e$12;
-  }
-  let e$13 = readColor(reader, "pantsColor");
-  if (e$13.TAG !== "Ok") {
-    return e$13;
-  }
-  let e$14 = readColor(reader, "shoeColor");
-  if (e$14.TAG !== "Ok") {
-    return e$14;
-  }
-  let e$15 = readByte(reader, "difficultyFlags");
-  if (e$15.TAG !== "Ok") {
-    return e$15;
-  }
-  let difficultyFlags = fromByte(e$15._0);
-  let e$16 = readByte(reader, "torchFlags");
-  if (e$16.TAG !== "Ok") {
-    return e$16;
-  }
-  let torchFlags = fromByte(e$16._0);
-  let difficulty = getDifficulty2(difficultyFlags);
-  let extraAccessory = flag3(difficultyFlags);
-  let mode = flag4(difficultyFlags) ? "Journey" : "Classic";
-  let usingBiomeTorches = flag1(torchFlags);
-  let happyFunTorchTime = flag2(torchFlags);
-  let unlockedBiomeTorches = flag3(torchFlags);
-  let unlockedSuperCart = flag4(torchFlags);
-  let enabledSuperCart = flag5(torchFlags);
-  let e$17 = readByte(reader, "usedFlags");
-  let e$18;
-  e$18 = e$17.TAG === "Ok" ? {
-    TAG: "Ok",
-    _0: fromByte(e$17._0)
-  } : e$17;
-  if (e$18.TAG !== "Ok") {
-    return e$18;
-  }
-  let usedFlags = e$18._0;
-  let usedAegisCrystal = flag1(usedFlags);
-  let usedAegisFruit = flag2(usedFlags);
-  let usedArcaneCrystal = flag3(usedFlags);
-  let usedGalaxyPearl = flag4(usedFlags);
-  let usedGummyWorm = flag5(usedFlags);
-  let usedAmbrosia = flag6(usedFlags);
-  let ateArtisanBread = flag7(usedFlags);
-  return {
-    TAG: "Ok",
-    _0: {
-      playerId: e._0,
-      skinVariant: e$1._0,
-      hair: e$2._0,
-      name: e$3._0,
-      hairDye: e$4._0,
-      hideVisuals: e$5._0,
-      hideVisuals2: e$6._0,
-      hideMisc: e$7._0,
-      hairColor: e$8._0,
-      skinColor: e$9._0,
-      eyeColor: e$10._0,
-      shirtColor: e$11._0,
-      underShirtColor: e$12._0,
-      pantsColor: e$13._0,
-      shoeColor: e$14._0,
-      difficulty,
-      mode,
-      extraAccessory,
-      usingBiomeTorches,
-      unlockedBiomeTorches,
-      happyFunTorchTime,
-      unlockedSuperCart,
-      enabledSuperCart,
-      usedAegisCrystal,
-      usedAegisFruit,
-      usedArcaneCrystal,
-      usedGalaxyPearl,
-      usedGummyWorm,
-      usedAmbrosia,
-      ateArtisanBread
-    }
-  };
-}
-
 // src/packetv1449/PacketV1449_PortalKill.js
-function parse125(payload) {
+function parse119(payload) {
   let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "owner");
   if (e.TAG !== "Ok") {
@@ -21690,7 +20111,7 @@ function parse125(payload) {
 }
 
 // src/packetv1449/PacketV1449_EmoteBubble.js
-function parse126(payload) {
+function parse120(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "id");
   if (e.TAG !== "Ok") {
@@ -21715,20 +20136,18 @@ function parse126(payload) {
   if (e$2.TAG !== "Ok") {
     return e$2;
   }
+  let anchorMeta = e$2._0;
   let e$3 = readUInt16(reader, "time");
   if (e$3.TAG !== "Ok") {
     return e$3;
   }
-  let e$4 = readSByte(reader, "emote");
+  let time = e$3._0;
+  let e$4 = readByte(reader, "emote");
   if (e$4.TAG !== "Ok") {
     return e$4;
   }
-  let emote = e$4._0;
-  let metadata = emote < 0 ? map2(readInt16(reader, "metadata"), (v) => v) : {
-    TAG: "Ok",
-    _0: void 0
-  };
-  if (metadata.TAG === "Ok") {
+  let emoteByte = e$4._0;
+  if (emoteByte !== 255) {
     return {
       TAG: "Ok",
       _0: {
@@ -21736,89 +20155,37 @@ function parse126(payload) {
         anchor: {
           TAG: "Anchor",
           anchorType,
-          anchorMeta: e$2._0,
-          time: e$3._0,
-          emote,
-          metadata: metadata._0
+          anchorMeta,
+          time,
+          emote: emoteByte,
+          metadata: void 0
+        }
+      }
+    };
+  }
+  let e$5 = readInt16(reader, "metadata");
+  if (e$5.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        id,
+        anchor: {
+          TAG: "Anchor",
+          anchorType,
+          anchorMeta,
+          time,
+          emote: -1,
+          metadata: e$5._0
         }
       }
     };
   } else {
-    return metadata;
-  }
-}
-
-// src/packetv1449/PacketV1449_PlayerSpawn.js
-function parse127(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt16(reader, "x");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readInt16(reader, "y");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readInt32(reader, "timeRemaining");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readInt16(reader, "numberOfDeathsPve");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let e$5 = readInt16(reader, "numberOfDeathsPvp");
-  if (e$5.TAG !== "Ok") {
     return e$5;
-  }
-  let e$6 = readByte(reader, "context");
-  if (e$6.TAG !== "Ok") {
-    return e$6;
-  }
-  let context;
-  switch (e$6._0) {
-    case 0:
-      context = "ReviveFromDeath";
-      break;
-    case 1:
-      context = "SpawningIntoWorld";
-      break;
-    case 2:
-      context = "RecallFromItem";
-      break;
-    default:
-      context = void 0;
-  }
-  if (context !== void 0) {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0,
-        x: e$1._0,
-        y: e$2._0,
-        timeRemaining: e$3._0,
-        numberOfDeathsPve: e$4._0,
-        numberOfDeathsPvp: e$5._0,
-        context
-      }
-    };
-  } else {
-    return {
-      TAG: "Error",
-      _0: {
-        context: "PlayerSpawn.parse.context",
-        error: new Error("Unknown context")
-      }
-    };
   }
 }
 
 // src/packetv1449/PacketV1449_PasswordSend.js
-function parse128(payload) {
+function parse121(payload) {
   let reader = new packetreader_default(payload);
   let e = readString(reader, "password");
   if (e.TAG === "Ok") {
@@ -21833,172 +20200,8 @@ function parse128(payload) {
   }
 }
 
-// src/packetv1449/PacketV1449_PlayerUpdate.js
-function parse129(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readByte(reader, "controlFlags");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let controlFlags = fromByte(e$1._0);
-  let e$2 = readByte(reader, "miscFlags1");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let miscFlags1 = fromByte(e$2._0);
-  let e$3 = readByte(reader, "miscFlags2");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let miscFlags2 = fromByte(e$3._0);
-  let e$4 = readByte(reader, "miscFlags3");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let miscFlags3 = fromByte(e$4._0);
-  let control_isHoldingUp = flag1(controlFlags);
-  let control_isHoldingDown = flag2(controlFlags);
-  let control_isHoldingLeft = flag3(controlFlags);
-  let control_isHoldingRight = flag4(controlFlags);
-  let control_isHoldingJump = flag5(controlFlags);
-  let control_isHoldingItemUse = flag6(controlFlags);
-  let control = {
-    isHoldingUp: control_isHoldingUp,
-    isHoldingDown: control_isHoldingDown,
-    isHoldingLeft: control_isHoldingLeft,
-    isHoldingRight: control_isHoldingRight,
-    isHoldingJump: control_isHoldingJump,
-    isHoldingItemUse: control_isHoldingItemUse
-  };
-  let direction = flag7(controlFlags) ? "Right" : "Left";
-  let pulleyDirection = flag1(miscFlags1) ? flag2(miscFlags1) ? "Two" : "One" : void 0;
-  let vortexStealthActive = flag4(miscFlags1);
-  let gravityDirection = flag5(miscFlags1) ? "Normal" : "Inverted";
-  let shouldGuard = flag6(miscFlags1);
-  let ghost = flag7(miscFlags1);
-  let e$5 = readByte(reader, "selectedItem");
-  if (e$5.TAG !== "Ok") {
-    return e$5;
-  }
-  let e$6 = readSingle(reader, "positionX");
-  if (e$6.TAG !== "Ok") {
-    return e$6;
-  }
-  let e$7 = readSingle(reader, "positionY");
-  if (e$7.TAG !== "Ok") {
-    return e$7;
-  }
-  let position_x = e$6._0;
-  let position_y = e$7._0;
-  let position = {
-    x: position_x,
-    y: position_y
-  };
-  let e$8;
-  if (flag3(miscFlags1)) {
-    let e$9 = readSingle(reader, "velocityX");
-    if (e$9.TAG === "Ok") {
-      let e$10 = readSingle(reader, "velocityY");
-      e$8 = e$10.TAG === "Ok" ? {
-        TAG: "Ok",
-        _0: {
-          x: e$9._0,
-          y: e$10._0
-        }
-      } : e$10;
-    } else {
-      e$8 = e$9;
-    }
-  } else {
-    e$8 = {
-      TAG: "Ok",
-      _0: void 0
-    };
-  }
-  if (e$8.TAG !== "Ok") {
-    return e$8;
-  }
-  let e$11;
-  if (flag7(miscFlags2)) {
-    let e$12 = readSingle(reader, "potionOfReturnOrigX");
-    if (e$12.TAG === "Ok") {
-      let e$13 = readSingle(reader, "potionOfReturnOrigY");
-      if (e$13.TAG === "Ok") {
-        let e$14 = readSingle(reader, "potionOfReturnHomeX");
-        if (e$14.TAG === "Ok") {
-          let e$15 = readSingle(reader, "potionOfReturnHomeY");
-          e$11 = e$15.TAG === "Ok" ? {
-            TAG: "Ok",
-            _0: {
-              originalUsePosition: {
-                x: e$12._0,
-                y: e$13._0
-              },
-              homePosition: {
-                x: e$14._0,
-                y: e$15._0
-              }
-            }
-          } : e$15;
-        } else {
-          e$11 = e$14;
-        }
-      } else {
-        e$11 = e$13;
-      }
-    } else {
-      e$11 = e$12;
-    }
-  } else {
-    e$11 = {
-      TAG: "Ok",
-      _0: void 0
-    };
-  }
-  if (e$11.TAG !== "Ok") {
-    return e$11;
-  }
-  let tryKeepingHoveringUp = flag1(miscFlags2);
-  let isVoidVaultEnabled = flag2(miscFlags2);
-  let isSitting = flag3(miscFlags2);
-  let hasFinishedAnyDd2Event = flag4(miscFlags2);
-  let isPettingAnimal = flag5(miscFlags2);
-  let isTheAnimalBeingPetSmall = flag6(miscFlags2);
-  let tryKeepingHoveringDown = flag8(miscFlags2);
-  let isSleeping = flag1(miscFlags3);
-  return {
-    TAG: "Ok",
-    _0: {
-      playerId: e._0,
-      control,
-      direction,
-      pulleyDirection,
-      vortexStealthActive,
-      gravityDirection,
-      shouldGuard,
-      ghost,
-      selectedItem: e$5._0,
-      position,
-      velocity: e$8._0,
-      potionOfReturn: e$11._0,
-      tryKeepingHoveringUp,
-      isVoidVaultEnabled,
-      isSitting,
-      hasFinishedAnyDd2Event,
-      isPettingAnimal,
-      isTheAnimalBeingPetSmall,
-      tryKeepingHoveringDown,
-      isSleeping
-    }
-  };
-}
-
 // src/packetv1449/PacketV1449_GemLockToggle.js
-function parse130(payload) {
+function parse122(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -22024,7 +20227,7 @@ function parse130(payload) {
 }
 
 // src/packetv1449/PacketV1449_NebulaLevelUp.js
-function parse131(payload) {
+function parse123(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -22054,516 +20257,8 @@ function parse131(payload) {
   }
 }
 
-// src/packetv1449/PacketV1449_NetModuleLoad.js
-function fromInt9(n) {
-  switch (n) {
-    case 0:
-      return "Liquid";
-    case 1:
-      return "Text";
-    case 2:
-      return "Ping";
-    case 3:
-      return "Ambience";
-    case 4:
-      return "Bestiary";
-    case 5:
-      return "CreativeUnlocks";
-    case 6:
-      return "CreativePower";
-    case 7:
-      return "CreativeUnlocksPlayerReport";
-    case 8:
-      return "TeleportPylon";
-    case 9:
-      return "Particles";
-    case 10:
-      return "CreativePowerPermissions";
-    default:
-      return;
-  }
-}
-function parse132(payload, fromServer) {
-  let reader = new packetreader_default(payload);
-  let e = readUInt16(reader, "moduleType");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let match = fromInt9(e._0);
-  if (match === void 0) {
-    return {
-      TAG: "Error",
-      _0: {
-        context: "Packet_NetModuleLoad.parse",
-        error: new Error("Unknown net module type")
-      }
-    };
-  }
-  switch (match) {
-    case "Liquid":
-      let e$1 = readUInt16(reader, "changesCount");
-      if (e$1.TAG !== "Ok") {
-        return e$1;
-      }
-      let changesCount = e$1._0;
-      let readChanges = (_idx, _acc) => {
-        while (true) {
-          let acc = _acc;
-          let idx = _idx;
-          if (idx >= changesCount) {
-            return {
-              TAG: "Ok",
-              _0: acc.toReversed()
-            };
-          }
-          let e2 = readInt16(reader, "y");
-          if (e2.TAG !== "Ok") {
-            return e2;
-          }
-          let e$16 = readInt16(reader, "x");
-          if (e$16.TAG !== "Ok") {
-            return e$16;
-          }
-          let e$210 = readByte(reader, "amount");
-          if (e$210.TAG !== "Ok") {
-            return e$210;
-          }
-          let e$3 = readByte(reader, "liquidType");
-          if (e$3.TAG !== "Ok") {
-            return e$3;
-          }
-          _acc = concatMany([
-            [{
-              x: e$16._0,
-              y: e2._0,
-              amount: e$210._0,
-              liquidType: e$3._0
-            }],
-            acc
-          ]);
-          _idx = idx + 1 | 0;
-          continue;
-        }
-        ;
-      };
-      let e$2 = readChanges(0, []);
-      if (e$2.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "Liquid",
-            _0: {
-              changes: e$2._0
-            }
-          }
-        };
-      } else {
-        return e$2;
-      }
-    case "Text":
-      if (fromServer) {
-        let e$3 = readByte(reader, "playerId");
-        if (e$3.TAG !== "Ok") {
-          return e$3;
-        }
-        let e$4 = readNetworkText(reader, "message");
-        if (e$4.TAG !== "Ok") {
-          return e$4;
-        }
-        let e$5 = readColor(reader, "color");
-        if (e$5.TAG === "Ok") {
-          return {
-            TAG: "Ok",
-            _0: {
-              TAG: "ServerText",
-              _0: e$3._0,
-              _1: e$4._0,
-              _2: e$5._0
-            }
-          };
-        } else {
-          return e$5;
-        }
-      }
-      let e$6 = readString(reader, "commandId");
-      if (e$6.TAG !== "Ok") {
-        return e$6;
-      }
-      let e$7 = readString(reader, "message");
-      if (e$7.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "ClientText",
-            _0: e$6._0,
-            _1: e$7._0
-          }
-        };
-      } else {
-        return e$7;
-      }
-    case "Ping":
-      let e$8 = readSingle(reader, "x");
-      if (e$8.TAG !== "Ok") {
-        return e$8;
-      }
-      let e$9 = readSingle(reader, "y");
-      if (e$9.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "Ping",
-            _0: {
-              x: e$8._0,
-              y: e$9._0
-            }
-          }
-        };
-      } else {
-        return e$9;
-      }
-    case "Ambience":
-      let e$10 = readByte(reader, "playerId");
-      if (e$10.TAG !== "Ok") {
-        return e$10;
-      }
-      let e$11 = readInt32(reader, "seed");
-      if (e$11.TAG !== "Ok") {
-        return e$11;
-      }
-      let e$12 = readByte(reader, "skyEntityType");
-      if (e$12.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "Ambience",
-            _0: {
-              playerId: e$10._0,
-              seed: e$11._0,
-              skyEntityType: e$12._0
-            }
-          }
-        };
-      } else {
-        return e$12;
-      }
-    case "Bestiary":
-      let e$13 = readByte(reader, "rawBestiaryUnlockType");
-      if (e$13.TAG !== "Ok") {
-        return e$13;
-      }
-      let e$14 = readInt16(reader, "npcId");
-      if (e$14.TAG !== "Ok") {
-        return e$14;
-      }
-      let e$15;
-      switch (e$13._0) {
-        case 0:
-          let e$16 = readUInt16(reader, "killCount");
-          e$15 = e$16.TAG === "Ok" ? {
-            TAG: "Ok",
-            _0: {
-              TAG: "Kill",
-              _0: e$16._0
-            }
-          } : e$16;
-          break;
-        case 1:
-          e$15 = {
-            TAG: "Ok",
-            _0: "Sight"
-          };
-          break;
-        case 2:
-          e$15 = {
-            TAG: "Ok",
-            _0: "Chat"
-          };
-          break;
-        default:
-          e$15 = {
-            TAG: "Error",
-            _0: {
-              context: "Packet_NetModuleLoad.parseBestiary",
-              error: new Error("Unknown bestiary unlock type")
-            }
-          };
-      }
-      if (e$15.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "Bestiary",
-            _0: {
-              unlockType: e$15._0,
-              npcId: e$14._0
-            }
-          }
-        };
-      } else {
-        return e$15;
-      }
-    case "CreativeUnlocks":
-      let e$17 = readInt16(reader, "itemId");
-      if (e$17.TAG !== "Ok") {
-        return e$17;
-      }
-      let e$18 = readUInt16(reader, "researchedCount");
-      if (e$18.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "CreativeUnlocks",
-            _0: {
-              itemId: e$17._0,
-              researchedCount: e$18._0
-            }
-          }
-        };
-      } else {
-        return e$18;
-      }
-    case "CreativePower":
-      let p = parse$2(reader);
-      if (p !== void 0) {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "CreativePower",
-            _0: p
-          }
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: {
-            context: "Packet_NetModuleLoad.parseCreativePower",
-            error: new Error("Failed to parse creative power")
-          }
-        };
-      }
-    case "CreativeUnlocksPlayerReport":
-      let e$19 = readByte(reader, "unknownByte");
-      if (e$19.TAG !== "Ok") {
-        return e$19;
-      }
-      let e$20 = readUInt16(reader, "itemId");
-      if (e$20.TAG !== "Ok") {
-        return e$20;
-      }
-      let e$21 = readUInt16(reader, "researchedCount");
-      if (e$21.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "CreativeUnlocksPlayerReport",
-            _0: {
-              itemId: e$20._0,
-              researchedCount: e$21._0
-            }
-          }
-        };
-      } else {
-        return e$21;
-      }
-    case "TeleportPylon":
-      let e$22 = readByte(reader, "rawPylonAction");
-      if (e$22.TAG !== "Ok") {
-        return e$22;
-      }
-      let e$23 = readInt16(reader, "x");
-      if (e$23.TAG !== "Ok") {
-        return e$23;
-      }
-      let e$24 = readInt16(reader, "y");
-      if (e$24.TAG !== "Ok") {
-        return e$24;
-      }
-      let e$25 = readByte(reader, "pylonType");
-      if (e$25.TAG !== "Ok") {
-        return e$25;
-      }
-      let pylonAction;
-      switch (e$22._0) {
-        case 0:
-          pylonAction = "Added";
-          break;
-        case 1:
-          pylonAction = "Removed";
-          break;
-        case 2:
-          pylonAction = "RequestTeleport";
-          break;
-        default:
-          pylonAction = void 0;
-      }
-      if (pylonAction !== void 0) {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "TeleportPylon",
-            _0: {
-              pylonAction,
-              x: e$23._0,
-              y: e$24._0,
-              pylonType: e$25._0
-            }
-          }
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: {
-            context: "Packet_NetModuleLoad.parseTeleportPylon",
-            error: new Error("Unknown pylon action")
-          }
-        };
-      }
-    case "Particles":
-      let e$26 = readByte(reader, "particleType");
-      if (e$26.TAG !== "Ok") {
-        return e$26;
-      }
-      let e$27 = readSingle(reader, "x");
-      if (e$27.TAG !== "Ok") {
-        return e$27;
-      }
-      let e$28 = readSingle(reader, "y");
-      if (e$28.TAG !== "Ok") {
-        return e$28;
-      }
-      let e$29 = readSingle(reader, "vx");
-      if (e$29.TAG !== "Ok") {
-        return e$29;
-      }
-      let e$30 = readSingle(reader, "vy");
-      if (e$30.TAG !== "Ok") {
-        return e$30;
-      }
-      let e$31 = readInt32(reader, "shaderIndex");
-      if (e$31.TAG !== "Ok") {
-        return e$31;
-      }
-      let e$32 = readByte(reader, "invokedByPlayer");
-      if (e$32.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "Particles",
-            _0: {
-              particleType: e$26._0,
-              x: e$27._0,
-              y: e$28._0,
-              vx: e$29._0,
-              vy: e$30._0,
-              shaderIndex: e$31._0,
-              invokedByPlayer: e$32._0
-            }
-          }
-        };
-      } else {
-        return e$32;
-      }
-    case "CreativePowerPermissions":
-      let e$33 = readByte(reader, "unknownByte");
-      if (e$33.TAG !== "Ok") {
-        return e$33;
-      }
-      let e$34 = readUInt16(reader, "powerType");
-      if (e$34.TAG !== "Ok") {
-        return e$34;
-      }
-      let e$35 = readByte(reader, "rawPowerLevel");
-      if (e$35.TAG !== "Ok") {
-        return e$35;
-      }
-      let powerLevel;
-      switch (e$35._0) {
-        case 0:
-          powerLevel = "LockedForEveryone";
-          break;
-        case 1:
-          powerLevel = "CanBeChangedByHostAlone";
-          break;
-        case 2:
-          powerLevel = "CanBeChangedByEveryone";
-          break;
-        default:
-          powerLevel = void 0;
-      }
-      if (powerLevel !== void 0) {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "CreativePowerPermissions",
-            _0: {
-              powerType: e$34._0,
-              powerLevel
-            }
-          }
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: {
-            context: "Packet_NetModuleLoad.parseCreativePowerPermission",
-            error: new Error("Unknown creative power permission level")
-          }
-        };
-      }
-  }
-}
-
-// src/packetv1449/PacketV1449_NpcBuffUpdate.js
-function parse133(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt16(reader, "npcId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let buffs = [];
-  let buffTimes = [];
-  let readBuffs = (_idx) => {
-    while (true) {
-      let idx = _idx;
-      if (idx >= 20) {
-        return {
-          TAG: "Ok",
-          _0: void 0
-        };
-      }
-      let e2 = readUInt16(reader, `buff` + (idx + 1 | 0).toString());
-      if (e2.TAG !== "Ok") {
-        return e2;
-      }
-      let e$12 = readInt16(reader, `buffTime` + (idx + 1 | 0).toString());
-      if (e$12.TAG !== "Ok") {
-        return e$12;
-      }
-      buffs.push(e2._0);
-      buffTimes.push(e$12._0);
-      _idx = idx + 1 | 0;
-      continue;
-    }
-    ;
-  };
-  let e$1 = readBuffs(0);
-  if (e$1.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        npcId: e._0,
-        buffs,
-        buffTimes
-      }
-    };
-  } else {
-    return e$1;
-  }
-}
-
 // src/packetv1449/PacketV1449_NpcItemStrike.js
-function parse134(payload) {
+function parse124(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -22584,7 +20279,7 @@ function parse134(payload) {
 }
 
 // src/packetv1449/PacketV1449_PlayerStealth.js
-function parse135(payload) {
+function parse125(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -22605,7 +20300,7 @@ function parse135(payload) {
 }
 
 // src/packetv1449/PacketV1449_GoodEvilUpdate.js
-function parse136(payload) {
+function parse126(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "good");
   if (e.TAG !== "Ok") {
@@ -22687,7 +20382,7 @@ function parseFlags2(reader, flags2) {
     return notAmmo;
   }
 }
-function parse137(payload) {
+function parse127(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemId");
   if (e.TAG !== "Ok") {
@@ -22819,7 +20514,7 @@ function parse137(payload) {
 }
 
 // src/packetv1449/PacketV1449_ItemFramePlace.js
-function parse138(payload) {
+function parse128(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -22855,7 +20550,7 @@ function parse138(payload) {
 }
 
 // src/packetv1449/PacketV1449_LucyAxeMessage.js
-function parse139(payload) {
+function parse129(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "source");
   if (e.TAG !== "Ok") {
@@ -22904,52 +20599,8 @@ function parse139(payload) {
   };
 }
 
-// src/packetv1449/PacketV1449_PlayerBuffsSet.js
-function parse140(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let buffs = make2(44, 0);
-  let buffsParseResult = {
-    TAG: "Ok",
-    _0: void 0
-  };
-  for (let i = 0; i <= 43; ++i) {
-    let match = buffsParseResult;
-    if (match.TAG === "Ok") {
-      let label = "buff_" + i.toString();
-      let buff = readUInt16(reader, label);
-      if (buff.TAG === "Ok") {
-        buffs[i] = buff._0;
-      } else {
-        buffsParseResult = {
-          TAG: "Error",
-          _0: buff._0
-        };
-      }
-    }
-  }
-  let err = buffsParseResult;
-  if (err.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0,
-        buffs
-      }
-    };
-  } else {
-    return {
-      TAG: "Error",
-      _0: err._0
-    };
-  }
-}
-
 // src/packetv1449/PacketV1449_TileSquareSend.js
-function parse141(payload) {
+function parse130(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "tileX");
   if (e.TAG !== "Ok") {
@@ -23191,7 +20842,7 @@ function parse141(payload) {
 }
 
 // src/packetv1449/PacketV1449_LegacySoundPlay.js
-function parse142(payload) {
+function parse131(payload) {
   let reader = new packetreader_default(payload);
   let e = readSingle(reader, "x");
   if (e.TAG !== "Ok") {
@@ -23248,7 +20899,7 @@ function parse142(payload) {
 }
 
 // src/packetv1449/PacketV1449_PlayerHealOther.js
-function parse143(payload) {
+function parse132(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -23269,7 +20920,7 @@ function parse143(payload) {
 }
 
 // src/packetv1449/PacketV1449_PlayerSpawnSelf.js
-function parse144(_payload) {
+function parse133(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
@@ -23277,7 +20928,7 @@ function parse144(_payload) {
 }
 
 // src/packetv1449/PacketV1449_CombatTextCreate.js
-function parse145(payload) {
+function parse134(payload) {
   let reader = new packetreader_default(payload);
   let e = readSingle(reader, "x");
   if (e.TAG !== "Ok") {
@@ -23308,7 +20959,7 @@ function parse145(payload) {
 }
 
 // src/packetv1449/PacketV1449_NpcSpecialEffect.js
-function parse146(payload) {
+function parse135(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -23329,7 +20980,7 @@ function parse146(payload) {
 }
 
 // src/packetv1449/PacketV1449_PasswordRequired.js
-function parse147(_payload) {
+function parse136(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
@@ -23337,7 +20988,7 @@ function parse147(_payload) {
 }
 
 // src/packetv1449/PacketV1449_EventNotification.js
-function parse148(payload) {
+function parse137(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "eventId");
   if (e.TAG === "Ok") {
@@ -23353,7 +21004,7 @@ function parse148(payload) {
 }
 
 // src/packetv1449/PacketV1449_GolfBallLandInCup.js
-function parse149(payload) {
+function parse138(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -23389,7 +21040,7 @@ function parse149(payload) {
 }
 
 // src/packetv1449/PacketV1449_MassWireOperation.js
-function parse150(payload) {
+function parse139(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "startX");
   if (e.TAG !== "Ok") {
@@ -23425,7 +21076,7 @@ function parse150(payload) {
 }
 
 // src/packetv1449/PacketV1449_MoonLordCountdown.js
-function parse151(payload) {
+function parse140(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "maxMoonLordCountdown");
   if (e.TAG !== "Ok") {
@@ -23446,7 +21097,7 @@ function parse151(payload) {
 }
 
 // src/packetv1449/PacketV1449_ProjectileDestroy.js
-function parse152(payload) {
+function parse141(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "projectileId");
   if (e.TAG !== "Ok") {
@@ -23467,7 +21118,7 @@ function parse152(payload) {
 }
 
 // src/packetv1449/PacketV1449_RevengeMarkerSync.js
-function parse153(payload) {
+function parse142(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "uniqueId");
   if (e.TAG !== "Ok") {
@@ -23530,7 +21181,7 @@ function parse153(payload) {
 }
 
 // src/packetv1449/PacketV1449_CombatNumberCreate.js
-function parse154(payload) {
+function parse143(payload) {
   let reader = new packetreader_default(payload);
   let e = readSingle(reader, "x");
   if (e.TAG !== "Ok") {
@@ -23561,7 +21212,7 @@ function parse154(payload) {
 }
 
 // src/packetv1449/PacketV1449_MinionTargetUpdate.js
-function parse155(payload) {
+function parse144(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -23587,7 +21238,7 @@ function parse155(payload) {
 }
 
 // src/packetv1449/PacketV1449_ActiveContainerSync.js
-function parse156(payload) {
+function parse145(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "chestId");
   if (e.TAG !== "Ok") {
@@ -23626,44 +21277,8 @@ function parse156(payload) {
   }
 }
 
-// src/packetv1449/PacketV1449_PlayerInventorySlot.js
-function parse157(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt16(reader, "slot");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readInt16(reader, "stack");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readByte(reader, "prefix");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readInt16(reader, "itemId");
-  if (e$4.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0,
-        slot: e$1._0,
-        stack: e$2._0,
-        prefix: e$3._0,
-        itemId: e$4._0
-      }
-    };
-  } else {
-    return e$4;
-  }
-}
-
 // src/packetv1449/PacketV1449_RevengeMarkerRemove.js
-function parse158(payload) {
+function parse146(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "markerId");
   if (e.TAG === "Ok") {
@@ -23678,55 +21293,8 @@ function parse158(payload) {
   }
 }
 
-// src/packetv1449/PacketV1449_TeleportationPotion.js
-function parse159(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "teleportType");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  switch (e._0) {
-    case 0:
-      return {
-        TAG: "Ok",
-        _0: {
-          teleportType: "TeleportationPotion"
-        }
-      };
-    case 1:
-      return {
-        TAG: "Ok",
-        _0: {
-          teleportType: "MagicConch"
-        }
-      };
-    case 2:
-      return {
-        TAG: "Ok",
-        _0: {
-          teleportType: "DemonConch"
-        }
-      };
-    case 3:
-      return {
-        TAG: "Ok",
-        _0: {
-          teleportType: "ShellphoneSpawn"
-        }
-      };
-    default:
-      return {
-        TAG: "Error",
-        _0: {
-          context: "Packet_TeleportationPotion.parse",
-          error: new Error("Unknown teleport type")
-        }
-      };
-  }
-}
-
 // src/packetv1449/PacketV1449_MassWireOperationPay.js
-function parse160(payload) {
+function parse147(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemType");
   if (e.TAG !== "Ok") {
@@ -23752,7 +21320,7 @@ function parse160(payload) {
 }
 
 // src/packetv1449/PacketV1449_PlayerTeleportPortal.js
-function parse161(payload) {
+function parse148(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -23802,7 +21370,7 @@ function parse161(payload) {
 }
 
 // src/packetv1449/PacketV1449_CavernMonsterTypeSync.js
-function parse162(payload) {
+function parse149(payload) {
   let reader = new packetreader_default(payload);
   let rows = make2(2, []);
   let error;
@@ -23837,7 +21405,7 @@ function parse162(payload) {
 }
 
 // src/packetv1449/PacketV1449_ClientSyncedInventory.js
-function parse163(_payload) {
+function parse150(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
@@ -23845,7 +21413,7 @@ function parse163(_payload) {
 }
 
 // src/packetv1449/PacketV1449_FoodPlatterTryPlacing.js
-function parse164(payload) {
+function parse151(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -23881,7 +21449,7 @@ function parse164(payload) {
 }
 
 // src/packetv1449/PacketV1449_NpcKilledNotification.js
-function parse165(payload) {
+function parse152(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG === "Ok") {
@@ -23897,7 +21465,7 @@ function parse165(payload) {
 }
 
 // src/packetv1449/PacketV1449_ShieldStrengthsUpdate.js
-function parse166(payload) {
+function parse153(payload) {
   let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "solar");
   if (e.TAG !== "Ok") {
@@ -23928,7 +21496,7 @@ function parse166(payload) {
 }
 
 // src/packetv1449/PacketV1449_CrystalInvasionWipeAll.js
-function parse167(_payload) {
+function parse154(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
@@ -23936,10 +21504,10 @@ function parse167(_payload) {
 }
 
 // src/packetv1449/PacketV1449_ItemDropInstancedUpdate.js
-var parse168 = parse18;
+var parse155 = parse18;
 
 // src/packetv1449/PacketV1449_ItemDropProtectedUpdate.js
-function parse169(payload) {
+function parse156(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemDropId");
   if (e.TAG !== "Ok") {
@@ -24028,7 +21596,7 @@ function tryReading(reader, context) {
     return e$2;
   }
 }
-function parse170(payload) {
+function parse157(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -24053,132 +21621,8 @@ function parse170(payload) {
   }
 }
 
-// src/packetv1449/PacketV1449_PlayerLuckFactorsUpdate.js
-function parse171(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt32(reader, "ladyBugLuckTimeLeft");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readSingle(reader, "torchLuck");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readByte(reader, "luckPotion");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readByte(reader, "hasGardenGnomeNearby");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let hasGardenGnomeNearby = e$4._0 === 1;
-  let e$5 = readSingle(reader, "equipmentBasedLuckBonus");
-  if (e$5.TAG !== "Ok") {
-    return e$5;
-  }
-  let e$6 = readSingle(reader, "coinLuck");
-  if (e$6.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0,
-        ladyBugLuckTimeLeft: e$1._0,
-        torchLuck: e$2._0,
-        luckPotion: e$3._0,
-        hasGardenGnomeNearby,
-        equipmentBasedLuckBonus: e$5._0,
-        coinLuck: e$6._0
-      }
-    };
-  } else {
-    return e$6;
-  }
-}
-
-// src/packetv1449/PacketV1449_ShimmerEffectOrCoinLuck.js
-function parse172(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "kind");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  switch (e._0) {
-    case 0:
-      let e$1 = readSingle(reader, "shimmerX");
-      if (e$1.TAG !== "Ok") {
-        return e$1;
-      }
-      let e$2 = readSingle(reader, "shimmerY");
-      if (e$2.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "ShimmerEffect",
-            _0: e$1._0,
-            _1: e$2._0
-          }
-        };
-      } else {
-        return e$2;
-      }
-    case 1:
-      let e$3 = readSingle(reader, "coinLuckX");
-      if (e$3.TAG !== "Ok") {
-        return e$3;
-      }
-      let e$4 = readSingle(reader, "coinLuckY");
-      if (e$4.TAG !== "Ok") {
-        return e$4;
-      }
-      let e$5 = readInt32(reader, "coinLuckAmount");
-      if (e$5.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "CoinLuck",
-            _0: {
-              position: {
-                x: e$3._0,
-                y: e$4._0
-              },
-              amount: e$5._0
-            }
-          }
-        };
-      } else {
-        return e$5;
-      }
-    case 2:
-      let e$6 = readInt32(reader, "newShimmerEffectId");
-      if (e$6.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "NewShimmerEffect",
-            _0: e$6._0
-          }
-        };
-      } else {
-        return e$6;
-      }
-    default:
-      return {
-        TAG: "Error",
-        _0: {
-          context: "Packet_ShimmerEffectOrCoinLuck.parse",
-          error: new Error("Unknown shimmer effect kind")
-        }
-      };
-  }
-}
-
 // src/packetv1449/PacketV1449_MinionAttackTargetUpdate.js
-function parse173(payload) {
+function parse158(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -24198,45 +21642,8 @@ function parse173(payload) {
   }
 }
 
-// src/packetv1449/PacketV1449_ItemForceIntoNearestChest.js
-function parse174(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt16(reader, "slot");
-  if (e.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        slot: e._0
-      }
-    };
-  } else {
-    return e;
-  }
-}
-
-// src/packetv1449/PacketV1449_InitialTileSectionsRequest.js
-function parse175(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt32(reader, "x");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt32(reader, "y");
-  if (e$1.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        x: e._0,
-        y: e$1._0
-      }
-    };
-  } else {
-    return e$1;
-  }
-}
-
 // src/packetv1449/PacketV1449_AnglerQuestsCompletedAmount.js
-function parse176(payload) {
+function parse159(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -24262,7 +21669,7 @@ function parse176(payload) {
 }
 
 // src/packetv1449/PacketV1449_CrystalInvasionSendWaitTime.js
-function parse177(payload) {
+function parse160(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "timeLeftBetweenWaves");
   if (e.TAG === "Ok") {
@@ -24277,92 +21684,15 @@ function parse177(payload) {
   }
 }
 
-// src/packetv1449/PacketV1449_TravellingMerchantInventory.js
-function parse178(payload) {
-  let reader = new packetreader_default(payload);
-  let items = [];
-  let readItems = (_idx) => {
-    while (true) {
-      let idx = _idx;
-      if (idx >= 40) {
-        return {
-          TAG: "Ok",
-          _0: void 0
-        };
-      }
-      let e2 = readInt16(reader, `item` + (idx + 1 | 0).toString());
-      if (e2.TAG !== "Ok") {
-        return e2;
-      }
-      items.push(e2._0);
-      _idx = idx + 1 | 0;
-      continue;
-    }
-    ;
-  };
-  let e = readItems(0);
-  if (e.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        items
-      }
-    };
-  } else {
-    return e;
-  }
-}
-
-// src/packetv1449/PacketV1449_TileEntityDisplayDollItemSync.js
-function parse179(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt32(reader, "tileEntityId");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readByte(reader, "itemIndex");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readUInt16(reader, "itemId");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let e$4 = readUInt16(reader, "stack");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let e$5 = readByte(reader, "prefix");
-  if (e$5.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0,
-        tileEntityId: e$1._0,
-        itemIndex: e$2._0,
-        itemId: e$3._0,
-        stack: e$4._0,
-        prefix: e$5._0
-      }
-    };
-  } else {
-    return e$5;
-  }
-}
-
 // src/packetv1449/PacketV1449_DungeonDefendersEventAttemptSkipWait.js
-function parse180(_payload) {
+function parse161(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
   };
 }
 
-// src/Parserv1449.js
+// src/Parser.js
 function packetTypeName(packetType) {
   switch (packetType) {
     case "ConnectRequest":
@@ -24693,22 +22023,22 @@ function mapPacket(result, packetName2, fn) {
     _0: addPacketContext(packetName2, e)
   }));
 }
-function makeParsers(packetName2, parse183, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, _fromServer) => mapPacket(parse183(payload), packetName2, toPacket);
+function makeParsers(packetName2, parse163, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, _fromServer) => mapPacket(parse163(payload), packetName2, toPacket);
   let parseLazyWrapped = (payload, _fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse183(payload), (e) => addPacketContext(packetName2, e))))
+    _0: toLazyPacket(make4(() => mapError(parse163(payload), (e) => addPacketContext(packetName2, e))))
   });
   return {
     parse: parseWrapped,
     parseLazy: parseLazyWrapped
   };
 }
-function makeParsersWithFromServer(packetName2, parse183, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, fromServer) => mapPacket(parse183(payload, fromServer), packetName2, toPacket);
+function makeParsersWithFromServer(packetName2, parse163, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, fromServer) => mapPacket(parse163(payload, fromServer), packetName2, toPacket);
   let parseLazyWrapped = (payload, fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse183(payload, fromServer), (e) => addPacketContext(packetName2, e))))
+    _0: toLazyPacket(make4(() => mapError(parse163(payload, fromServer), (e) => addPacketContext(packetName2, e))))
   });
   return {
     parse: parseWrapped,
@@ -24775,7 +22105,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerInfo":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse124, (a) => ({
+        _0: makeParsers(packetName2, parse96, (a) => ({
           TAG: "PlayerInfo",
           _0: a
         }), (a) => ({
@@ -24786,7 +22116,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerInventorySlot":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse157, (a) => ({
+        _0: makeParsers(packetName2, parse98, (a) => ({
           TAG: "PlayerInventorySlot",
           _0: a
         }), (a) => ({
@@ -24816,7 +22146,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse119, (a) => ({
+          _0: makeParsers(packetName2, parse103, (a) => ({
             TAG: "WorldInfo",
             _0: a
           }), (a) => ({
@@ -24839,7 +22169,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse175, (a) => ({
+          _0: makeParsers(packetName2, parse81, (a) => ({
             TAG: "InitialTileSectionsRequest",
             _0: a
           }), (a) => ({
@@ -24870,7 +22200,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse$3, (a) => ({
+          _0: makeParsers(packetName2, parse$13, (a) => ({
             TAG: "TileSectionSend",
             _0: a
           }), (a) => ({
@@ -24905,7 +22235,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerSpawn":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse127, (a) => ({
+        _0: makeParsers(packetName2, parse97, (a) => ({
           TAG: "PlayerSpawn",
           _0: a
         }), (a) => ({
@@ -24916,7 +22246,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse129, (a) => ({
+        _0: makeParsers(packetName2, parse95, (a) => ({
           TAG: "PlayerUpdate",
           _0: a
         }), (a) => ({
@@ -24985,7 +22315,7 @@ function getParsers(packetType, fromServer) {
     case "DoorUse":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse109, (a) => ({
+        _0: makeParsers(packetName2, parse108, (a) => ({
           TAG: "DoorUse",
           _0: a
         }), (a) => ({
@@ -24996,7 +22326,7 @@ function getParsers(packetType, fromServer) {
     case "TileSquareSend":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse141, (a) => ({
+        _0: makeParsers(packetName2, parse130, (a) => ({
           TAG: "TileSquareSend",
           _0: a
         }), (a) => ({
@@ -25018,7 +22348,7 @@ function getParsers(packetType, fromServer) {
     case "ItemOwner":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse114, (a) => ({
+        _0: makeParsers(packetName2, parse19, (a) => ({
           TAG: "ItemOwner",
           _0: a
         }), (a) => ({
@@ -25030,7 +22360,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse118, (a) => ({
+          _0: makeParsers(packetName2, parse105, (a) => ({
             TAG: "NpcUpdate",
             _0: a
           }), (a) => ({
@@ -25047,7 +22377,7 @@ function getParsers(packetType, fromServer) {
     case "NpcItemStrike":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse134, (a) => ({
+        _0: makeParsers(packetName2, parse124, (a) => ({
           TAG: "NpcItemStrike",
           _0: a
         }), (a) => ({
@@ -25069,7 +22399,7 @@ function getParsers(packetType, fromServer) {
     case "NpcStrike":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse116, (a) => ({
+        _0: makeParsers(packetName2, parse113, (a) => ({
           TAG: "NpcStrike",
           _0: a
         }), (a) => ({
@@ -25080,7 +22410,7 @@ function getParsers(packetType, fromServer) {
     case "ProjectileDestroy":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse152, (a) => ({
+        _0: makeParsers(packetName2, parse141, (a) => ({
           TAG: "ProjectileDestroy",
           _0: a
         }), (a) => ({
@@ -25108,7 +22438,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse113, (a) => ({
+          _0: makeParsers(packetName2, parse111, (a) => ({
             TAG: "ChestOpen",
             _0: a
           }), (a) => ({
@@ -25131,7 +22461,7 @@ function getParsers(packetType, fromServer) {
     case "ActiveContainerSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse156, (a) => ({
+        _0: makeParsers(packetName2, parse145, (a) => ({
           TAG: "ActiveContainerSync",
           _0: a
         }), (a) => ({
@@ -25153,7 +22483,7 @@ function getParsers(packetType, fromServer) {
     case "HealEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse120, (a) => ({
+        _0: makeParsers(packetName2, parse115, (a) => ({
           TAG: "HealEffect",
           _0: a
         }), (a) => ({
@@ -25164,7 +22494,7 @@ function getParsers(packetType, fromServer) {
     case "Zones":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse108, (a) => ({
+        _0: makeParsers(packetName2, parse76, (a) => ({
           TAG: "Zones",
           _0: a
         }), (a) => ({
@@ -25176,7 +22506,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse147, (a) => ({
+          _0: makeParsers(packetName2, parse136, (a) => ({
             TAG: "PasswordRequired",
             _0: a
           }), (a) => ({
@@ -25199,7 +22529,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse128, (a) => ({
+          _0: makeParsers(packetName2, parse121, (a) => ({
             TAG: "PasswordSend",
             _0: a
           }), (a) => ({
@@ -25262,7 +22592,7 @@ function getParsers(packetType, fromServer) {
     case "ManaEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse121, (a) => ({
+        _0: makeParsers(packetName2, parse116, (a) => ({
           TAG: "ManaEffect",
           _0: a
         }), (a) => ({
@@ -25313,7 +22643,7 @@ function getParsers(packetType, fromServer) {
     case "LiquidSet":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse115, (a) => ({
+        _0: makeParsers(packetName2, parse112, (a) => ({
           TAG: "LiquidSet",
           _0: a
         }), (a) => ({
@@ -25325,7 +22655,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse144, (a) => ({
+          _0: makeParsers(packetName2, parse133, (a) => ({
             TAG: "PlayerSpawnSelf",
             _0: a
           }), (a) => ({
@@ -25342,7 +22672,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerBuffsSet":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse140, (a) => ({
+        _0: makeParsers(packetName2, parse38, (a) => ({
           TAG: "PlayerBuffsSet",
           _0: a
         }), (a) => ({
@@ -25353,7 +22683,7 @@ function getParsers(packetType, fromServer) {
     case "NpcSpecialEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse146, (a) => ({
+        _0: makeParsers(packetName2, parse135, (a) => ({
           TAG: "NpcSpecialEffect",
           _0: a
         }), (a) => ({
@@ -25375,7 +22705,7 @@ function getParsers(packetType, fromServer) {
     case "NpcBuffAdd":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse122, (a) => ({
+        _0: makeParsers(packetName2, parse117, (a) => ({
           TAG: "NpcBuffAdd",
           _0: a
         }), (a) => ({
@@ -25387,7 +22717,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse133, (a) => ({
+          _0: makeParsers(packetName2, parse25, (a) => ({
             TAG: "NpcBuffUpdate",
             _0: a
           }), (a) => ({
@@ -25427,7 +22757,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse136, (a) => ({
+          _0: makeParsers(packetName2, parse126, (a) => ({
             TAG: "GoodEvilUpdate",
             _0: a
           }), (a) => ({
@@ -25444,7 +22774,7 @@ function getParsers(packetType, fromServer) {
     case "HarpPlay":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse110, (a) => ({
+        _0: makeParsers(packetName2, parse109, (a) => ({
           TAG: "HarpPlay",
           _0: a
         }), (a) => ({
@@ -25528,7 +22858,7 @@ function getParsers(packetType, fromServer) {
     case "Teleport":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse111, (a) => ({
+        _0: makeParsers(packetName2, parse53, (a) => ({
           TAG: "Teleport",
           _0: a
         }), (a) => ({
@@ -25539,7 +22869,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerHealOther":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse143, (a) => ({
+        _0: makeParsers(packetName2, parse132, (a) => ({
           TAG: "PlayerHealOther",
           _0: a
         }), (a) => ({
@@ -25579,7 +22909,7 @@ function getParsers(packetType, fromServer) {
     case "ChestName":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse112, (a) => ({
+        _0: makeParsers(packetName2, parse110, (a) => ({
           TAG: "ChestName",
           _0: a
         }), (a) => ({
@@ -25614,7 +22944,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse123, (a) => ({
+          _0: makeParsers(packetName2, parse118, (a) => ({
             TAG: "NpcRelease",
             _0: a
           }), (a) => ({
@@ -25627,7 +22957,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse178, (a) => ({
+          _0: makeParsers(packetName2, parse69, (a) => ({
             TAG: "TravellingMerchantInventory",
             _0: a
           }), (a) => ({
@@ -25644,7 +22974,7 @@ function getParsers(packetType, fromServer) {
     case "TeleportationPotion":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse159, (a) => ({
+        _0: makeParsers(packetName2, parse54, (a) => ({
           TAG: "TeleportationPotion",
           _0: a
         }), (a) => ({
@@ -25691,7 +23021,7 @@ function getParsers(packetType, fromServer) {
     case "AnglerQuestsCompletedAmount":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse176, (a) => ({
+        _0: makeParsers(packetName2, parse159, (a) => ({
           TAG: "AnglerQuestsCompletedAmount",
           _0: a
         }), (a) => ({
@@ -25768,7 +23098,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse154, (a) => ({
+          _0: makeParsers(packetName2, parse143, (a) => ({
             TAG: "CombatNumberCreate",
             _0: a
           }), (a) => ({
@@ -25785,7 +23115,7 @@ function getParsers(packetType, fromServer) {
     case "NetModuleLoad":
       return {
         TAG: "Ok",
-        _0: makeParsersWithFromServer(packetName2, parse132, (a) => ({
+        _0: makeParsersWithFromServer(packetName2, parse23, (a) => ({
           TAG: "NetModuleLoad",
           _0: a
         }), (a) => ({
@@ -25814,7 +23144,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerStealth":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse135, (a) => ({
+        _0: makeParsers(packetName2, parse125, (a) => ({
           TAG: "PlayerStealth",
           _0: a
         }), (a) => ({
@@ -25823,23 +23153,16 @@ function getParsers(packetType, fromServer) {
         }))
       };
     case "ItemForceIntoNearestChest":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "ItemForceIntoNearestChestFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers(packetName2, parse174, (a) => ({
-            TAG: "ItemForceIntoNearestChest",
-            _0: a
-          }), (a) => ({
-            TAG: "ItemForceIntoNearestChest",
-            _0: a
-          }))
-        };
-      }
+      return {
+        TAG: "Ok",
+        _0: makeParsersWithFromServer(packetName2, parse84, (a) => ({
+          TAG: "ItemForceIntoNearestChest",
+          _0: a
+        }), (a) => ({
+          TAG: "ItemForceIntoNearestChest",
+          _0: a
+        }))
+      };
     case "TileEntityUpdate":
       if (fromServer) {
         return {
@@ -25880,7 +23203,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse137, (a) => ({
+          _0: makeParsers(packetName2, parse127, (a) => ({
             TAG: "ItemDropModify",
             _0: a
           }), (a) => ({
@@ -25903,7 +23226,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse138, (a) => ({
+          _0: makeParsers(packetName2, parse128, (a) => ({
             TAG: "ItemFramePlace",
             _0: a
           }), (a) => ({
@@ -25915,7 +23238,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropInstancedUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse168, (a) => ({
+        _0: makeParsers(packetName2, parse155, (a) => ({
           TAG: "ItemDropInstancedUpdate",
           _0: a
         }), (a) => ({
@@ -25927,7 +23250,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse126, (a) => ({
+          _0: makeParsers(packetName2, parse120, (a) => ({
             TAG: "EmoteBubble",
             _0: a
           }), (a) => ({
@@ -25966,7 +23289,7 @@ function getParsers(packetType, fromServer) {
     case "Unused":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse71, (a) => ({
+        _0: makeParsers(packetName2, parse79, (a) => ({
           TAG: "Unused",
           _0: a
         }), (a) => ({
@@ -25983,7 +23306,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse125, (a) => ({
+          _0: makeParsers(packetName2, parse119, (a) => ({
             TAG: "PortalKill",
             _0: a
           }), (a) => ({
@@ -25995,7 +23318,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerTeleportPortal":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse161, (a) => ({
+        _0: makeParsers(packetName2, parse148, (a) => ({
           TAG: "PlayerTeleportPortal",
           _0: a
         }), (a) => ({
@@ -26007,7 +23330,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse165, (a) => ({
+          _0: makeParsers(packetName2, parse152, (a) => ({
             TAG: "NpcKilledNotification",
             _0: a
           }), (a) => ({
@@ -26025,7 +23348,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse148, (a) => ({
+          _0: makeParsers(packetName2, parse137, (a) => ({
             TAG: "EventNotification",
             _0: a
           }), (a) => ({
@@ -26042,7 +23365,7 @@ function getParsers(packetType, fromServer) {
     case "MinionTargetUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse155, (a) => ({
+        _0: makeParsers(packetName2, parse144, (a) => ({
           TAG: "MinionTargetUpdate",
           _0: a
         }), (a) => ({
@@ -26065,7 +23388,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse166, (a) => ({
+          _0: makeParsers(packetName2, parse153, (a) => ({
             TAG: "ShieldStrengthsUpdate",
             _0: a
           }), (a) => ({
@@ -26082,7 +23405,7 @@ function getParsers(packetType, fromServer) {
     case "NebulaLevelUp":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse131, (a) => ({
+        _0: makeParsers(packetName2, parse123, (a) => ({
           TAG: "NebulaLevelUp",
           _0: a
         }), (a) => ({
@@ -26094,7 +23417,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse151, (a) => ({
+          _0: makeParsers(packetName2, parse140, (a) => ({
             TAG: "MoonLordCountdown",
             _0: a
           }), (a) => ({
@@ -26135,7 +23458,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse130, (a) => ({
+          _0: makeParsers(packetName2, parse122, (a) => ({
             TAG: "GemLockToggle",
             _0: a
           }), (a) => ({
@@ -26207,7 +23530,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse150, (a) => ({
+          _0: makeParsers(packetName2, parse139, (a) => ({
             TAG: "MassWireOperation",
             _0: a
           }), (a) => ({
@@ -26220,7 +23543,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse160, (a) => ({
+          _0: makeParsers(packetName2, parse147, (a) => ({
             TAG: "MassWireOperationPay",
             _0: a
           }), (a) => ({
@@ -26285,7 +23608,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse167, (a) => ({
+          _0: makeParsers(packetName2, parse154, (a) => ({
             TAG: "CrystalInvasionWipeAll",
             _0: a
           }), (a) => ({
@@ -26302,7 +23625,7 @@ function getParsers(packetType, fromServer) {
     case "MinionAttackTargetUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse173, (a) => ({
+        _0: makeParsers(packetName2, parse158, (a) => ({
           TAG: "MinionAttackTargetUpdate",
           _0: a
         }), (a) => ({
@@ -26314,7 +23637,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse177, (a) => ({
+          _0: makeParsers(packetName2, parse160, (a) => ({
             TAG: "CrystalInvasionSendWaitTime",
             _0: a
           }), (a) => ({
@@ -26354,7 +23677,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse145, (a) => ({
+          _0: makeParsers(packetName2, parse134, (a) => ({
             TAG: "CombatTextCreate",
             _0: a
           }), (a) => ({
@@ -26389,7 +23712,7 @@ function getParsers(packetType, fromServer) {
     case "TileEntityDisplayDollItemSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse179, (a) => ({
+        _0: makeParsers(packetName2, parse56, (a) => ({
           TAG: "TileEntityDisplayDollItemSync",
           _0: a
         }), (a) => ({
@@ -26452,7 +23775,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse153, (a) => ({
+          _0: makeParsers(packetName2, parse142, (a) => ({
             TAG: "RevengeMarkerSync",
             _0: a
           }), (a) => ({
@@ -26470,7 +23793,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse158, (a) => ({
+          _0: makeParsers(packetName2, parse146, (a) => ({
             TAG: "RevengeMarkerRemove",
             _0: a
           }), (a) => ({
@@ -26487,7 +23810,7 @@ function getParsers(packetType, fromServer) {
     case "GolfBallLandInCup":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse149, (a) => ({
+        _0: makeParsers(packetName2, parse138, (a) => ({
           TAG: "GolfBallLandInCup",
           _0: a
         }), (a) => ({
@@ -26535,7 +23858,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse117, (a) => ({
+          _0: makeParsers(packetName2, parse114, (a) => ({
             TAG: "NpcTamper",
             _0: a
           }), (a) => ({
@@ -26553,7 +23876,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse142, (a) => ({
+          _0: makeParsers(packetName2, parse131, (a) => ({
             TAG: "LegacySoundPlay",
             _0: a
           }), (a) => ({
@@ -26576,7 +23899,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse164, (a) => ({
+          _0: makeParsers(packetName2, parse151, (a) => ({
             TAG: "FoodPlatterTryPlacing",
             _0: a
           }), (a) => ({
@@ -26588,7 +23911,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerLuckFactorsUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse171, (a) => ({
+        _0: makeParsers(packetName2, parse89, (a) => ({
           TAG: "PlayerLuckFactorsUpdate",
           _0: a
         }), (a) => ({
@@ -26617,7 +23940,7 @@ function getParsers(packetType, fromServer) {
     case "CavernMonsterTypeSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse162, (a) => ({
+        _0: makeParsers(packetName2, parse149, (a) => ({
           TAG: "CavernMonsterTypeSync",
           _0: a
         }), (a) => ({
@@ -26652,7 +23975,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName2, parse163, (a) => ({
+          _0: makeParsers(packetName2, parse150, (a) => ({
             TAG: "ClientSyncedInventory",
             _0: a
           }), (a) => ({
@@ -26686,7 +24009,7 @@ function getParsers(packetType, fromServer) {
     case "LucyAxeMessage":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse139, (a) => ({
+        _0: makeParsers(packetName2, parse129, (a) => ({
           TAG: "LucyAxeMessage",
           _0: a
         }), (a) => ({
@@ -26697,7 +24020,7 @@ function getParsers(packetType, fromServer) {
     case "PiggyBankVoidLensUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse170, (a) => ({
+        _0: makeParsers(packetName2, parse157, (a) => ({
           TAG: "PiggyBankVoidLensUpdate",
           _0: a
         }), (a) => ({
@@ -26708,7 +24031,7 @@ function getParsers(packetType, fromServer) {
     case "DungeonDefendersEventAttemptSkipWait":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse180, (a) => ({
+        _0: makeParsers(packetName2, parse161, (a) => ({
           TAG: "DungeonDefendersEventAttemptSkipWait",
           _0: a
         }), (a) => ({
@@ -26741,7 +24064,7 @@ function getParsers(packetType, fromServer) {
     case "ShimmerEffectOrCoinLuck":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse172, (a) => ({
+        _0: makeParsers(packetName2, parse46, (a) => ({
           TAG: "ShimmerEffectOrCoinLuck",
           _0: a
         }), (a) => ({
@@ -26763,7 +24086,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropProtectedUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName2, parse169, (a) => ({
+        _0: makeParsers(packetName2, parse156, (a) => ({
           TAG: "ItemDropProtectedUpdate",
           _0: a
         }), (a) => ({
@@ -26771,17 +24094,152 @@ function getParsers(packetType, fromServer) {
           _0: a
         }))
       };
-    default:
+    case "DeadCellsDisplayJarTryPlacing":
       return {
-        TAG: "Error",
-        _0: {
-          TAG: "InvalidPacketType",
-          _0: toInt(packetType)
-        }
+        TAG: "Ok",
+        _0: makeParsers(packetName2, parse78, (a) => ({
+          TAG: "DeadCellsDisplayJarTryPlacing",
+          _0: a
+        }), (a) => ({
+          TAG: "DeadCellsDisplayJarTryPlacing",
+          _0: a
+        }))
+      };
+    case "PlayerSpectate":
+      return {
+        TAG: "Ok",
+        _0: makeParsers(packetName2, parse90, (a) => ({
+          TAG: "PlayerSpectate",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerSpectate",
+          _0: a
+        }))
+      };
+    case "ItemDropClear":
+      return {
+        TAG: "Ok",
+        _0: makeParsers(packetName2, parse82, (a) => ({
+          TAG: "ItemDropClear",
+          _0: a
+        }), (a) => ({
+          TAG: "ItemDropClear",
+          _0: a
+        }))
+      };
+    case "PlayerItemUseSound":
+      return {
+        TAG: "Ok",
+        _0: makeParsers(packetName2, parse88, (a) => ({
+          TAG: "PlayerItemUseSound",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerItemUseSound",
+          _0: a
+        }))
+      };
+    case "NpcHurtByDebuff":
+      return {
+        TAG: "Ok",
+        _0: makeParsers(packetName2, parse86, (a) => ({
+          TAG: "NpcHurtByDebuff",
+          _0: a
+        }), (a) => ({
+          TAG: "NpcHurtByDebuff",
+          _0: a
+        }))
+      };
+    case "Ping":
+      return {
+        TAG: "Ok",
+        _0: makeParsers(packetName2, parse87, (a) => ({
+          TAG: "Ping",
+          _0: a
+        }), (a) => ({
+          TAG: "Ping",
+          _0: a
+        }))
+      };
+    case "ChestResize":
+      return {
+        TAG: "Ok",
+        _0: makeParsers(packetName2, parse77, (a) => ({
+          TAG: "ChestResize",
+          _0: a
+        }), (a) => ({
+          TAG: "ChestResize",
+          _0: a
+        }))
+      };
+    case "LeashedEntityAnchorInsertItem":
+      return {
+        TAG: "Ok",
+        _0: makeParsers(packetName2, parse85, (a) => ({
+          TAG: "LeashedEntityAnchorInsertItem",
+          _0: a
+        }), (a) => ({
+          TAG: "LeashedEntityAnchorInsertItem",
+          _0: a
+        }))
+      };
+    case "PlayerTeamUpdate":
+      return {
+        TAG: "Ok",
+        _0: makeParsers(packetName2, parse92, (a) => ({
+          TAG: "PlayerTeamUpdate",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerTeamUpdate",
+          _0: a
+        }))
+      };
+    case "PlayerTeamSwapSpawn":
+      return {
+        TAG: "Ok",
+        _0: makeParsers(packetName2, parse91, (a) => ({
+          TAG: "PlayerTeamSwapSpawn",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerTeamSwapSpawn",
+          _0: a
+        }))
+      };
+    case "SectionRequest":
+      return {
+        TAG: "Ok",
+        _0: makeParsers(packetName2, parse93, (a) => ({
+          TAG: "SectionRequest",
+          _0: a
+        }), (a) => ({
+          TAG: "SectionRequest",
+          _0: a
+        }))
+      };
+    case "ItemDropPosition":
+      return {
+        TAG: "Ok",
+        _0: makeParsers(packetName2, parse83, (a) => ({
+          TAG: "ItemDropPosition",
+          _0: a
+        }), (a) => ({
+          TAG: "ItemDropPosition",
+          _0: a
+        }))
+      };
+    case "HostToken":
+      return {
+        TAG: "Ok",
+        _0: makeParsers(packetName2, parse80, (a) => ({
+          TAG: "HostToken",
+          _0: a
+        }), (a) => ({
+          TAG: "HostToken",
+          _0: a
+        }))
       };
   }
 }
-function parse181(buffer, fromServer, ignoreOpt) {
+function parse162(buffer, fromServer, ignoreOpt) {
   let ignore = ignoreOpt !== void 0 ? ignoreOpt : [];
   let match = buffer.length;
   if (!(match > 2 || match < 0)) {
@@ -26836,2609 +24294,6 @@ function parse181(buffer, fromServer, ignoreOpt) {
     throw obj;
   }
 }
-
-// src/Parser.js
-function packetTypeName2(packetType) {
-  switch (packetType) {
-    case "ConnectRequest":
-      return "ConnectRequest";
-    case "Disconnect":
-      return "Disconnect";
-    case "PlayerSlotSet":
-      return "PlayerSlotSet";
-    case "PlayerInfo":
-      return "PlayerInfo";
-    case "PlayerInventorySlot":
-      return "PlayerInventorySlot";
-    case "WorldDataRequest":
-      return "WorldDataRequest";
-    case "WorldInfo":
-      return "WorldInfo";
-    case "InitialTileSectionsRequest":
-      return "InitialTileSectionsRequest";
-    case "Status":
-      return "Status";
-    case "TileSectionSend":
-      return "TileSectionSend";
-    case "TileSectionFrame":
-      return "TileSectionFrame";
-    case "PlayerSpawn":
-      return "PlayerSpawn";
-    case "PlayerUpdate":
-      return "PlayerUpdate";
-    case "PlayerActive":
-      return "PlayerActive";
-    case "PlayerHealth":
-      return "PlayerHealth";
-    case "TileModify":
-      return "TileModify";
-    case "TimeSet":
-      return "TimeSet";
-    case "DoorUse":
-      return "DoorUse";
-    case "TileSquareSend":
-      return "TileSquareSend";
-    case "ItemDropUpdate":
-      return "ItemDropUpdate";
-    case "ItemOwner":
-      return "ItemOwner";
-    case "NpcUpdate":
-      return "NpcUpdate";
-    case "NpcItemStrike":
-      return "NpcItemStrike";
-    case "ProjectileSync":
-      return "ProjectileSync";
-    case "NpcStrike":
-      return "NpcStrike";
-    case "ProjectileDestroy":
-      return "ProjectileDestroy";
-    case "PvpToggle":
-      return "PvpToggle";
-    case "ChestOpen":
-      return "ChestOpen";
-    case "ChestItem":
-      return "ChestItem";
-    case "ActiveContainerSync":
-      return "ActiveContainerSync";
-    case "ChestPlace":
-      return "ChestPlace";
-    case "HealEffect":
-      return "HealEffect";
-    case "Zones":
-      return "Zones";
-    case "PasswordRequired":
-      return "PasswordRequired";
-    case "PasswordSend":
-      return "PasswordSend";
-    case "ItemOwnerRemove":
-      return "ItemOwnerRemove";
-    case "NpcTalk":
-      return "NpcTalk";
-    case "PlayerAnimation":
-      return "PlayerAnimation";
-    case "PlayerMana":
-      return "PlayerMana";
-    case "ManaEffect":
-      return "ManaEffect";
-    case "PlayerTeam":
-      return "PlayerTeam";
-    case "SignRead":
-      return "SignRead";
-    case "SignNew":
-      return "SignNew";
-    case "LiquidSet":
-      return "LiquidSet";
-    case "PlayerSpawnSelf":
-      return "PlayerSpawnSelf";
-    case "PlayerBuffsSet":
-      return "PlayerBuffsSet";
-    case "NpcSpecialEffect":
-      return "NpcSpecialEffect";
-    case "ChestOrTempleUnlock":
-      return "ChestOrTempleUnlock";
-    case "NpcBuffAdd":
-      return "NpcBuffAdd";
-    case "NpcBuffUpdate":
-      return "NpcBuffUpdate";
-    case "PlayerBuffAdd":
-      return "PlayerBuffAdd";
-    case "NpcNameUpdate":
-      return "NpcNameUpdate";
-    case "GoodEvilUpdate":
-      return "GoodEvilUpdate";
-    case "HarpPlay":
-      return "HarpPlay";
-    case "SwitchHit":
-      return "SwitchHit";
-    case "NpcHomeUpdate":
-      return "NpcHomeUpdate";
-    case "BossOrInvasionSpawn":
-      return "BossOrInvasionSpawn";
-    case "PlayerDodge":
-      return "PlayerDodge";
-    case "TilePaint":
-      return "TilePaint";
-    case "WallPaint":
-      return "WallPaint";
-    case "Teleport":
-      return "Teleport";
-    case "PlayerHealOther":
-      return "PlayerHealOther";
-    case "DimensionsUpdate":
-      return "DimensionsUpdate";
-    case "ClientUuid":
-      return "ClientUuid";
-    case "ChestName":
-      return "ChestName";
-    case "NpcCatch":
-      return "NpcCatch";
-    case "NpcRelease":
-      return "NpcRelease";
-    case "TravellingMerchantInventory":
-      return "TravellingMerchantInventory";
-    case "TeleportationPotion":
-      return "TeleportationPotion";
-    case "AnglerQuest":
-      return "AnglerQuest";
-    case "AnglerQuestComplete":
-      return "AnglerQuestComplete";
-    case "AnglerQuestsCompletedAmount":
-      return "AnglerQuestsCompletedAmount";
-    case "TemporaryAnimationCreate":
-      return "TemporaryAnimationCreate";
-    case "InvasionProgressReport":
-      return "InvasionProgressReport";
-    case "ObjectPlace":
-      return "ObjectPlace";
-    case "PlayerChestIndexSync":
-      return "PlayerChestIndexSync";
-    case "CombatNumberCreate":
-      return "CombatNumberCreate";
-    case "NetModuleLoad":
-      return "NetModuleLoad";
-    case "NpcKillCount":
-      return "NpcKillCount";
-    case "PlayerStealth":
-      return "PlayerStealth";
-    case "ItemForceIntoNearestChest":
-      return "ItemForceIntoNearestChest";
-    case "TileEntityUpdate":
-      return "TileEntityUpdate";
-    case "TileEntityPlace":
-      return "TileEntityPlace";
-    case "ItemDropModify":
-      return "ItemDropModify";
-    case "ItemFramePlace":
-      return "ItemFramePlace";
-    case "ItemDropInstancedUpdate":
-      return "ItemDropInstancedUpdate";
-    case "EmoteBubble":
-      return "EmoteBubble";
-    case "ExtraValueSync":
-      return "ExtraValueSync";
-    case "SocialHandshake":
-      return "SocialHandshake";
-    case "Unused":
-      return "Unused";
-    case "PortalKill":
-      return "PortalKill";
-    case "PlayerTeleportPortal":
-      return "PlayerTeleportPortal";
-    case "NpcKilledNotification":
-      return "NpcKilledNotification";
-    case "EventNotification":
-      return "EventNotification";
-    case "MinionTargetUpdate":
-      return "MinionTargetUpdate";
-    case "NpcTeleportPortal":
-      return "NpcTeleportPortal";
-    case "ShieldStrengthsUpdate":
-      return "ShieldStrengthsUpdate";
-    case "NebulaLevelUp":
-      return "NebulaLevelUp";
-    case "MoonLordCountdown":
-      return "MoonLordCountdown";
-    case "NpcShopItem":
-      return "NpcShopItem";
-    case "GemLockToggle":
-      return "GemLockToggle";
-    case "SmokePoof":
-      return "SmokePoof";
-    case "ChatMessageSmart":
-      return "ChatMessageSmart";
-    case "WiredCannonShot":
-      return "WiredCannonShot";
-    case "MassWireOperation":
-      return "MassWireOperation";
-    case "MassWireOperationPay":
-      return "MassWireOperationPay";
-    case "PartyToggle":
-      return "PartyToggle";
-    case "TreeGrowFx":
-      return "TreeGrowFx";
-    case "CrystalInvasionStart":
-      return "CrystalInvasionStart";
-    case "CrystalInvasionWipeAll":
-      return "CrystalInvasionWipeAll";
-    case "MinionAttackTargetUpdate":
-      return "MinionAttackTargetUpdate";
-    case "CrystalInvasionSendWaitTime":
-      return "CrystalInvasionSendWaitTime";
-    case "PlayerDamage":
-      return "PlayerDamage";
-    case "PlayerDeath":
-      return "PlayerDeath";
-    case "CombatTextCreate":
-      return "CombatTextCreate";
-    case "Emoji":
-      return "Emoji";
-    case "TileEntityDisplayDollItemSync":
-      return "TileEntityDisplayDollItemSync";
-    case "TileEntityInteractionRequest":
-      return "TileEntityInteractionRequest";
-    case "WeaponsRackTryPlacing":
-      return "WeaponsRackTryPlacing";
-    case "TileEntityHatRackItemSync":
-      return "TileEntityHatRackItemSync";
-    case "TilePickingSync":
-      return "TilePickingSync";
-    case "RevengeMarkerSync":
-      return "RevengeMarkerSync";
-    case "RevengeMarkerRemove":
-      return "RevengeMarkerRemove";
-    case "GolfBallLandInCup":
-      return "GolfBallLandInCup";
-    case "ClientFinishConnectingToServer":
-      return "ClientFinishConnectingToServer";
-    case "NpcFishOut":
-      return "NpcFishOut";
-    case "NpcTamper":
-      return "NpcTamper";
-    case "LegacySoundPlay":
-      return "LegacySoundPlay";
-    case "FoodPlatterTryPlacing":
-      return "FoodPlatterTryPlacing";
-    case "PlayerLuckFactorsUpdate":
-      return "PlayerLuckFactorsUpdate";
-    case "PlayerDead":
-      return "PlayerDead";
-    case "CavernMonsterTypeSync":
-      return "CavernMonsterTypeSync";
-    case "NpcBuffRemovalRequest":
-      return "NpcBuffRemovalRequest";
-    case "ClientSyncedInventory":
-      return "ClientSyncedInventory";
-    case "CountsAsHostForGameplaySet":
-      return "CountsAsHostForGameplaySet";
-    case "CreditsOrSlimeTransform":
-      return "CreditsOrSlimeTransform";
-    case "LucyAxeMessage":
-      return "LucyAxeMessage";
-    case "PiggyBankVoidLensUpdate":
-      return "PiggyBankVoidLensUpdate";
-    case "DungeonDefendersEventAttemptSkipWait":
-      return "DungeonDefendersEventAttemptSkipWait";
-    case "HaveDryadDoStardewAnimation":
-      return "HaveDryadDoStardewAnimation";
-    case "ItemDropShimmeredUpdate":
-      return "ItemDropShimmeredUpdate";
-    case "ShimmerEffectOrCoinLuck":
-      return "ShimmerEffectOrCoinLuck";
-    case "LoadoutSwitch":
-      return "LoadoutSwitch";
-    case "ItemDropProtectedUpdate":
-      return "ItemDropProtectedUpdate";
-    case "DeadCellsDisplayJarTryPlacing":
-      return "DeadCellsDisplayJarTryPlacing";
-    case "PlayerSpectate":
-      return "PlayerSpectate";
-    case "ItemDropClear":
-      return "ItemDropClear";
-    case "PlayerItemUseSound":
-      return "PlayerItemUseSound";
-    case "NpcHurtByDebuff":
-      return "NpcHurtByDebuff";
-    case "Ping":
-      return "Ping";
-    case "ChestResize":
-      return "ChestResize";
-    case "LeashedEntityAnchorInsertItem":
-      return "LeashedEntityAnchorInsertItem";
-    case "PlayerTeamUpdate":
-      return "PlayerTeamUpdate";
-    case "PlayerTeamSwapSpawn":
-      return "PlayerTeamSwapSpawn";
-    case "SectionRequest":
-      return "SectionRequest";
-    case "ItemDropPosition":
-      return "ItemDropPosition";
-    case "HostToken":
-      return "HostToken";
-  }
-}
-function addPacketContext2(packetName2, err) {
-  return {
-    context: "Packet " + packetName2 + ": " + err.context,
-    error: err.error
-  };
-}
-function mapPacket2(result, packetName2, fn) {
-  return mapError(map2(result, fn), (e) => ({
-    TAG: "ReaderError",
-    _0: addPacketContext2(packetName2, e)
-  }));
-}
-function makeParsers2(packetName2, parse183, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, _fromServer) => mapPacket2(parse183(payload), packetName2, toPacket);
-  let parseLazyWrapped = (payload, _fromServer) => ({
-    TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse183(payload), (e) => addPacketContext2(packetName2, e))))
-  });
-  return {
-    parse: parseWrapped,
-    parseLazy: parseLazyWrapped
-  };
-}
-function makeParsersWithFromServer2(packetName2, parse183, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, fromServer) => mapPacket2(parse183(payload, fromServer), packetName2, toPacket);
-  let parseLazyWrapped = (payload, fromServer) => ({
-    TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse183(payload, fromServer), (e) => addPacketContext2(packetName2, e))))
-  });
-  return {
-    parse: parseWrapped,
-    parseLazy: parseLazyWrapped
-  };
-}
-function getParsers2(packetType, fromServer) {
-  let packetName2 = packetTypeName2(packetType);
-  switch (packetType) {
-    case "ConnectRequest":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "ConnectRequestFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse9, (a) => ({
-            TAG: "ConnectRequest",
-            _0: a
-          }), (a) => ({
-            TAG: "ConnectRequest",
-            _0: a
-          }))
-        };
-      }
-    case "Disconnect":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse106, (a) => ({
-            TAG: "Disconnect",
-            _0: a
-          }), (a) => ({
-            TAG: "Disconnect",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "DisconnectFromClient"
-        };
-      }
-    case "PlayerSlotSet":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse94, (a) => ({
-            TAG: "PlayerSlotSet",
-            _0: a
-          }), (a) => ({
-            TAG: "PlayerSlotSet",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "PlayerSlotSetFromClient"
-        };
-      }
-    case "PlayerInfo":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse96, (a) => ({
-          TAG: "PlayerInfo",
-          _0: a
-        }), (a) => ({
-          TAG: "PlayerInfo",
-          _0: a
-        }))
-      };
-    case "PlayerInventorySlot":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse98, (a) => ({
-          TAG: "PlayerInventorySlot",
-          _0: a
-        }), (a) => ({
-          TAG: "PlayerInventorySlot",
-          _0: a
-        }))
-      };
-    case "WorldDataRequest":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "WorldDataRequestFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse75, (a) => ({
-            TAG: "WorldDataRequest",
-            _0: a
-          }), (a) => ({
-            TAG: "WorldDataRequest",
-            _0: a
-          }))
-        };
-      }
-    case "WorldInfo":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse103, (a) => ({
-            TAG: "WorldInfo",
-            _0: a
-          }), (a) => ({
-            TAG: "WorldInfo",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "WorldInfoFromClient"
-        };
-      }
-    case "InitialTileSectionsRequest":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "InitialTileSectionsRequestFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse81, (a) => ({
-            TAG: "InitialTileSectionsRequest",
-            _0: a
-          }), (a) => ({
-            TAG: "InitialTileSectionsRequest",
-            _0: a
-          }))
-        };
-      }
-    case "Status":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse51, (a) => ({
-            TAG: "Status",
-            _0: a
-          }), (a) => ({
-            TAG: "Status",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "StatusFromClient"
-        };
-      }
-    case "TileSectionSend":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse$3, (a) => ({
-            TAG: "TileSectionSend",
-            _0: a
-          }), (a) => ({
-            TAG: "TileSectionSend",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "TileSectionSendFromClient"
-        };
-      }
-    case "TileSectionFrame":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse64, (a) => ({
-            TAG: "TileSectionFrame",
-            _0: a
-          }), (a) => ({
-            TAG: "TileSectionFrame",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "TileSectionFrameFromClient"
-        };
-      }
-    case "PlayerSpawn":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse97, (a) => ({
-          TAG: "PlayerSpawn",
-          _0: a
-        }), (a) => ({
-          TAG: "PlayerSpawn",
-          _0: a
-        }))
-      };
-    case "PlayerUpdate":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse95, (a) => ({
-          TAG: "PlayerUpdate",
-          _0: a
-        }), (a) => ({
-          TAG: "PlayerUpdate",
-          _0: a
-        }))
-      };
-    case "PlayerActive":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse104, (a) => ({
-            TAG: "PlayerActive",
-            _0: a
-          }), (a) => ({
-            TAG: "PlayerActive",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "PlayerActiveFromClient"
-        };
-      }
-    case "PlayerHealth":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse99, (a) => ({
-          TAG: "PlayerHealth",
-          _0: a
-        }), (a) => ({
-          TAG: "PlayerHealth",
-          _0: a
-        }))
-      };
-    case "TileModify":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse61, (a) => ({
-          TAG: "TileModify",
-          _0: a
-        }), (a) => ({
-          TAG: "TileModify",
-          _0: a
-        }))
-      };
-    case "TimeSet":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse68, (a) => ({
-            TAG: "TimeSet",
-            _0: a
-          }), (a) => ({
-            TAG: "TimeSet",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "TimeSetFromClient"
-        };
-      }
-    case "DoorUse":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse109, (a) => ({
-          TAG: "DoorUse",
-          _0: a
-        }), (a) => ({
-          TAG: "DoorUse",
-          _0: a
-        }))
-      };
-    case "TileSquareSend":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse141, (a) => ({
-          TAG: "TileSquareSend",
-          _0: a
-        }), (a) => ({
-          TAG: "TileSquareSend",
-          _0: a
-        }))
-      };
-    case "ItemDropUpdate":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse18, (a) => ({
-          TAG: "ItemDropUpdate",
-          _0: a
-        }), (a) => ({
-          TAG: "ItemDropUpdate",
-          _0: a
-        }))
-      };
-    case "ItemOwner":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse19, (a) => ({
-          TAG: "ItemOwner",
-          _0: a
-        }), (a) => ({
-          TAG: "ItemOwner",
-          _0: a
-        }))
-      };
-    case "NpcUpdate":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse105, (a) => ({
-            TAG: "NpcUpdate",
-            _0: a
-          }), (a) => ({
-            TAG: "NpcUpdate",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "NpcUpdateFromClient"
-        };
-      }
-    case "NpcItemStrike":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse134, (a) => ({
-          TAG: "NpcItemStrike",
-          _0: a
-        }), (a) => ({
-          TAG: "NpcItemStrike",
-          _0: a
-        }))
-      };
-    case "ProjectileSync":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse101, (a) => ({
-          TAG: "ProjectileSync",
-          _0: a
-        }), (a) => ({
-          TAG: "ProjectileSync",
-          _0: a
-        }))
-      };
-    case "NpcStrike":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse116, (a) => ({
-          TAG: "NpcStrike",
-          _0: a
-        }), (a) => ({
-          TAG: "NpcStrike",
-          _0: a
-        }))
-      };
-    case "ProjectileDestroy":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse152, (a) => ({
-          TAG: "ProjectileDestroy",
-          _0: a
-        }), (a) => ({
-          TAG: "ProjectileDestroy",
-          _0: a
-        }))
-      };
-    case "PvpToggle":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse45, (a) => ({
-          TAG: "PvpToggle",
-          _0: a
-        }), (a) => ({
-          TAG: "PvpToggle",
-          _0: a
-        }))
-      };
-    case "ChestOpen":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "ChestOpenFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse113, (a) => ({
-            TAG: "ChestOpen",
-            _0: a
-          }), (a) => ({
-            TAG: "ChestOpen",
-            _0: a
-          }))
-        };
-      }
-    case "ChestItem":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse5, (a) => ({
-          TAG: "ChestItem",
-          _0: a
-        }), (a) => ({
-          TAG: "ChestItem",
-          _0: a
-        }))
-      };
-    case "ActiveContainerSync":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse156, (a) => ({
-          TAG: "ActiveContainerSync",
-          _0: a
-        }), (a) => ({
-          TAG: "ActiveContainerSync",
-          _0: a
-        }))
-      };
-    case "ChestPlace":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse7, (a) => ({
-          TAG: "ChestPlace",
-          _0: a
-        }), (a) => ({
-          TAG: "ChestPlace",
-          _0: a
-        }))
-      };
-    case "HealEffect":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse120, (a) => ({
-          TAG: "HealEffect",
-          _0: a
-        }), (a) => ({
-          TAG: "HealEffect",
-          _0: a
-        }))
-      };
-    case "Zones":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse76, (a) => ({
-          TAG: "Zones",
-          _0: a
-        }), (a) => ({
-          TAG: "Zones",
-          _0: a
-        }))
-      };
-    case "PasswordRequired":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse147, (a) => ({
-            TAG: "PasswordRequired",
-            _0: a
-          }), (a) => ({
-            TAG: "PasswordRequired",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "PasswordRequiredFromClient"
-        };
-      }
-    case "PasswordSend":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "PasswordSendFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse128, (a) => ({
-            TAG: "PasswordSend",
-            _0: a
-          }), (a) => ({
-            TAG: "PasswordSend",
-            _0: a
-          }))
-        };
-      }
-    case "ItemOwnerRemove":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse20, (a) => ({
-            TAG: "ItemOwnerRemove",
-            _0: a
-          }), (a) => ({
-            TAG: "ItemOwnerRemove",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "ItemOwnerRemoveFromClient"
-        };
-      }
-    case "NpcTalk":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse32, (a) => ({
-          TAG: "NpcTalk",
-          _0: a
-        }), (a) => ({
-          TAG: "NpcTalk",
-          _0: a
-        }))
-      };
-    case "PlayerAnimation":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse36, (a) => ({
-          TAG: "PlayerAnimation",
-          _0: a
-        }), (a) => ({
-          TAG: "PlayerAnimation",
-          _0: a
-        }))
-      };
-    case "PlayerMana":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse43, (a) => ({
-          TAG: "PlayerMana",
-          _0: a
-        }), (a) => ({
-          TAG: "PlayerMana",
-          _0: a
-        }))
-      };
-    case "ManaEffect":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse121, (a) => ({
-          TAG: "ManaEffect",
-          _0: a
-        }), (a) => ({
-          TAG: "ManaEffect",
-          _0: a
-        }))
-      };
-    case "PlayerTeam":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse44, (a) => ({
-          TAG: "PlayerTeam",
-          _0: a
-        }), (a) => ({
-          TAG: "PlayerTeam",
-          _0: a
-        }))
-      };
-    case "SignRead":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "SignReadFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse48, (a) => ({
-            TAG: "SignRead",
-            _0: a
-          }), (a) => ({
-            TAG: "SignRead",
-            _0: a
-          }))
-        };
-      }
-    case "SignNew":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse47, (a) => ({
-          TAG: "SignNew",
-          _0: a
-        }), (a) => ({
-          TAG: "SignNew",
-          _0: a
-        }))
-      };
-    case "LiquidSet":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse115, (a) => ({
-          TAG: "LiquidSet",
-          _0: a
-        }), (a) => ({
-          TAG: "LiquidSet",
-          _0: a
-        }))
-      };
-    case "PlayerSpawnSelf":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse144, (a) => ({
-            TAG: "PlayerSpawnSelf",
-            _0: a
-          }), (a) => ({
-            TAG: "PlayerSpawnSelf",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "PlayerSpawnSelfFromClient"
-        };
-      }
-    case "PlayerBuffsSet":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse38, (a) => ({
-          TAG: "PlayerBuffsSet",
-          _0: a
-        }), (a) => ({
-          TAG: "PlayerBuffsSet",
-          _0: a
-        }))
-      };
-    case "NpcSpecialEffect":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse146, (a) => ({
-          TAG: "NpcSpecialEffect",
-          _0: a
-        }), (a) => ({
-          TAG: "NpcSpecialEffect",
-          _0: a
-        }))
-      };
-    case "ChestOrTempleUnlock":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse6, (a) => ({
-          TAG: "ChestOrTempleUnlock",
-          _0: a
-        }), (a) => ({
-          TAG: "ChestOrTempleUnlock",
-          _0: a
-        }))
-      };
-    case "NpcBuffAdd":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse122, (a) => ({
-          TAG: "NpcBuffAdd",
-          _0: a
-        }), (a) => ({
-          TAG: "NpcBuffAdd",
-          _0: a
-        }))
-      };
-    case "NpcBuffUpdate":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse25, (a) => ({
-            TAG: "NpcBuffUpdate",
-            _0: a
-          }), (a) => ({
-            TAG: "NpcBuffUpdate",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "NpcBuffUpdateFromClient"
-        };
-      }
-    case "PlayerBuffAdd":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse37, (a) => ({
-          TAG: "PlayerBuffAdd",
-          _0: a
-        }), (a) => ({
-          TAG: "PlayerBuffAdd",
-          _0: a
-        }))
-      };
-    case "NpcNameUpdate":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, (__x) => parse30(__x, fromServer), (a) => ({
-          TAG: "NpcNameUpdate",
-          _0: a
-        }), (a) => ({
-          TAG: "NpcNameUpdate",
-          _0: a
-        }))
-      };
-    case "GoodEvilUpdate":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse136, (a) => ({
-            TAG: "GoodEvilUpdate",
-            _0: a
-          }), (a) => ({
-            TAG: "GoodEvilUpdate",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "GoodEvilUpdateFromClient"
-        };
-      }
-    case "HarpPlay":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse110, (a) => ({
-          TAG: "HarpPlay",
-          _0: a
-        }), (a) => ({
-          TAG: "HarpPlay",
-          _0: a
-        }))
-      };
-    case "SwitchHit":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse52, (a) => ({
-          TAG: "SwitchHit",
-          _0: a
-        }), (a) => ({
-          TAG: "SwitchHit",
-          _0: a
-        }))
-      };
-    case "NpcHomeUpdate":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse28, (a) => ({
-          TAG: "NpcHomeUpdate",
-          _0: a
-        }), (a) => ({
-          TAG: "NpcHomeUpdate",
-          _0: a
-        }))
-      };
-    case "BossOrInvasionSpawn":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "BossOrInvasionSpawnFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse3, (a) => ({
-            TAG: "BossOrInvasionSpawn",
-            _0: a
-          }), (a) => ({
-            TAG: "BossOrInvasionSpawn",
-            _0: a
-          }))
-        };
-      }
-    case "PlayerDodge":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse42, (a) => ({
-          TAG: "PlayerDodge",
-          _0: a
-        }), (a) => ({
-          TAG: "PlayerDodge",
-          _0: a
-        }))
-      };
-    case "TilePaint":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse62, (a) => ({
-          TAG: "TilePaint",
-          _0: a
-        }), (a) => ({
-          TAG: "TilePaint",
-          _0: a
-        }))
-      };
-    case "WallPaint":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse72, (a) => ({
-          TAG: "WallPaint",
-          _0: a
-        }), (a) => ({
-          TAG: "WallPaint",
-          _0: a
-        }))
-      };
-    case "Teleport":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse53, (a) => ({
-          TAG: "Teleport",
-          _0: a
-        }), (a) => ({
-          TAG: "Teleport",
-          _0: a
-        }))
-      };
-    case "PlayerHealOther":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse143, (a) => ({
-          TAG: "PlayerHealOther",
-          _0: a
-        }), (a) => ({
-          TAG: "PlayerHealOther",
-          _0: a
-        }))
-      };
-    case "DimensionsUpdate":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse13, (a) => ({
-          TAG: "DimensionsUpdate",
-          _0: a
-        }), (a) => ({
-          TAG: "DimensionsUpdate",
-          _0: a
-        }))
-      };
-    case "ClientUuid":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "ClientUuidFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse100, (a) => ({
-            TAG: "ClientUuid",
-            _0: a
-          }), (a) => ({
-            TAG: "ClientUuid",
-            _0: a
-          }))
-        };
-      }
-    case "ChestName":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse112, (a) => ({
-          TAG: "ChestName",
-          _0: a
-        }), (a) => ({
-          TAG: "ChestName",
-          _0: a
-        }))
-      };
-    case "NpcCatch":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "NpcCatchFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse26, (a) => ({
-            TAG: "NpcCatch",
-            _0: a
-          }), (a) => ({
-            TAG: "NpcCatch",
-            _0: a
-          }))
-        };
-      }
-    case "NpcRelease":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "NpcReleaseFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse123, (a) => ({
-            TAG: "NpcRelease",
-            _0: a
-          }), (a) => ({
-            TAG: "NpcRelease",
-            _0: a
-          }))
-        };
-      }
-    case "TravellingMerchantInventory":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse69, (a) => ({
-            TAG: "TravellingMerchantInventory",
-            _0: a
-          }), (a) => ({
-            TAG: "TravellingMerchantInventory",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "TravellingMerchantInventoryFromClient"
-        };
-      }
-    case "TeleportationPotion":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse54, (a) => ({
-          TAG: "TeleportationPotion",
-          _0: a
-        }), (a) => ({
-          TAG: "TeleportationPotion",
-          _0: a
-        }))
-      };
-    case "AnglerQuest":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse, (a) => ({
-            TAG: "AnglerQuest",
-            _0: a
-          }), (a) => ({
-            TAG: "AnglerQuest",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "AnglerQuestFromClient"
-        };
-      }
-    case "AnglerQuestComplete":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "AnglerQuestCompleteFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse2, (a) => ({
-            TAG: "AnglerQuestComplete",
-            _0: a
-          }), (a) => ({
-            TAG: "AnglerQuestComplete",
-            _0: a
-          }))
-        };
-      }
-    case "AnglerQuestsCompletedAmount":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse176, (a) => ({
-          TAG: "AnglerQuestsCompletedAmount",
-          _0: a
-        }), (a) => ({
-          TAG: "AnglerQuestsCompletedAmount",
-          _0: a
-        }))
-      };
-    case "TemporaryAnimationCreate":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse55, (a) => ({
-            TAG: "TemporaryAnimationCreate",
-            _0: a
-          }), (a) => ({
-            TAG: "TemporaryAnimationCreate",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "TemporaryAnimationCreateFromClient"
-        };
-      }
-    case "InvasionProgressReport":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse16, (a) => ({
-            TAG: "InvasionProgressReport",
-            _0: a
-          }), (a) => ({
-            TAG: "InvasionProgressReport",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "InvasionProgressReportFromClient"
-        };
-      }
-    case "ObjectPlace":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse34, (a) => ({
-          TAG: "ObjectPlace",
-          _0: a
-        }), (a) => ({
-          TAG: "ObjectPlace",
-          _0: a
-        }))
-      };
-    case "PlayerChestIndexSync":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse39, (a) => ({
-            TAG: "PlayerChestIndexSync",
-            _0: a
-          }), (a) => ({
-            TAG: "PlayerChestIndexSync",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "PlayerChestIndexSyncFromClient"
-        };
-      }
-    case "CombatNumberCreate":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse154, (a) => ({
-            TAG: "CombatNumberCreate",
-            _0: a
-          }), (a) => ({
-            TAG: "CombatNumberCreate",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "CombatNumberCreateFromClient"
-        };
-      }
-    case "NetModuleLoad":
-      return {
-        TAG: "Ok",
-        _0: makeParsersWithFromServer2(packetName2, parse23, (a) => ({
-          TAG: "NetModuleLoad",
-          _0: a
-        }), (a) => ({
-          TAG: "NetModuleLoad",
-          _0: a
-        }))
-      };
-    case "NpcKillCount":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse29, (a) => ({
-            TAG: "NpcKillCount",
-            _0: a
-          }), (a) => ({
-            TAG: "NpcKillCount",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "NpcKillCountFromClient"
-        };
-      }
-    case "PlayerStealth":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse135, (a) => ({
-          TAG: "PlayerStealth",
-          _0: a
-        }), (a) => ({
-          TAG: "PlayerStealth",
-          _0: a
-        }))
-      };
-    case "ItemForceIntoNearestChest":
-      return {
-        TAG: "Ok",
-        _0: makeParsersWithFromServer2(packetName2, parse84, (a) => ({
-          TAG: "ItemForceIntoNearestChest",
-          _0: a
-        }), (a) => ({
-          TAG: "ItemForceIntoNearestChest",
-          _0: a
-        }))
-      };
-    case "TileEntityUpdate":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse60, (a) => ({
-            TAG: "TileEntityUpdate",
-            _0: a
-          }), (a) => ({
-            TAG: "TileEntityUpdate",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "TileEntityUpdateFromClient"
-        };
-      }
-    case "TileEntityPlace":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "TileEntityPlaceFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse59, (a) => ({
-            TAG: "TileEntityPlace",
-            _0: a
-          }), (a) => ({
-            TAG: "TileEntityPlace",
-            _0: a
-          }))
-        };
-      }
-    case "ItemDropModify":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse137, (a) => ({
-            TAG: "ItemDropModify",
-            _0: a
-          }), (a) => ({
-            TAG: "ItemDropModify",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "ItemDropModifyFromClient"
-        };
-      }
-    case "ItemFramePlace":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "ItemFramePlaceFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse138, (a) => ({
-            TAG: "ItemFramePlace",
-            _0: a
-          }), (a) => ({
-            TAG: "ItemFramePlace",
-            _0: a
-          }))
-        };
-      }
-    case "ItemDropInstancedUpdate":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse168, (a) => ({
-          TAG: "ItemDropInstancedUpdate",
-          _0: a
-        }), (a) => ({
-          TAG: "ItemDropInstancedUpdate",
-          _0: a
-        }))
-      };
-    case "EmoteBubble":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse126, (a) => ({
-            TAG: "EmoteBubble",
-            _0: a
-          }), (a) => ({
-            TAG: "EmoteBubble",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "EmoteBubbleFromClient"
-        };
-      }
-    case "ExtraValueSync":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse14, (a) => ({
-          TAG: "ExtraValueSync",
-          _0: a
-        }), (a) => ({
-          TAG: "ExtraValueSync",
-          _0: a
-        }))
-      };
-    case "SocialHandshake":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse50, (a) => ({
-          TAG: "SocialHandshake",
-          _0: a
-        }), (a) => ({
-          TAG: "SocialHandshake",
-          _0: a
-        }))
-      };
-    case "Unused":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse79, (a) => ({
-          TAG: "Unused",
-          _0: a
-        }), (a) => ({
-          TAG: "Unused",
-          _0: a
-        }))
-      };
-    case "PortalKill":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "PortalKillFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse125, (a) => ({
-            TAG: "PortalKill",
-            _0: a
-          }), (a) => ({
-            TAG: "PortalKill",
-            _0: a
-          }))
-        };
-      }
-    case "PlayerTeleportPortal":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse161, (a) => ({
-          TAG: "PlayerTeleportPortal",
-          _0: a
-        }), (a) => ({
-          TAG: "PlayerTeleportPortal",
-          _0: a
-        }))
-      };
-    case "NpcKilledNotification":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse165, (a) => ({
-            TAG: "NpcKilledNotification",
-            _0: a
-          }), (a) => ({
-            TAG: "NpcKilledNotification",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "NpcKilledNotificationFromClient"
-        };
-      }
-    case "EventNotification":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse148, (a) => ({
-            TAG: "EventNotification",
-            _0: a
-          }), (a) => ({
-            TAG: "EventNotification",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "EventNotificationFromClient"
-        };
-      }
-    case "MinionTargetUpdate":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse155, (a) => ({
-          TAG: "MinionTargetUpdate",
-          _0: a
-        }), (a) => ({
-          TAG: "MinionTargetUpdate",
-          _0: a
-        }))
-      };
-    case "NpcTeleportPortal":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse33, (a) => ({
-          TAG: "NpcTeleportPortal",
-          _0: a
-        }), (a) => ({
-          TAG: "NpcTeleportPortal",
-          _0: a
-        }))
-      };
-    case "ShieldStrengthsUpdate":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse166, (a) => ({
-            TAG: "ShieldStrengthsUpdate",
-            _0: a
-          }), (a) => ({
-            TAG: "ShieldStrengthsUpdate",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "ShieldStrengthsUpdateFromClient"
-        };
-      }
-    case "NebulaLevelUp":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse131, (a) => ({
-          TAG: "NebulaLevelUp",
-          _0: a
-        }), (a) => ({
-          TAG: "NebulaLevelUp",
-          _0: a
-        }))
-      };
-    case "MoonLordCountdown":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse151, (a) => ({
-            TAG: "MoonLordCountdown",
-            _0: a
-          }), (a) => ({
-            TAG: "MoonLordCountdown",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "MoonLordCountdownFromClient"
-        };
-      }
-    case "NpcShopItem":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse31, (a) => ({
-            TAG: "NpcShopItem",
-            _0: a
-          }), (a) => ({
-            TAG: "NpcShopItem",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "NpcShopItemFromClient"
-        };
-      }
-    case "GemLockToggle":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "GemLockToggleFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse130, (a) => ({
-            TAG: "GemLockToggle",
-            _0: a
-          }), (a) => ({
-            TAG: "GemLockToggle",
-            _0: a
-          }))
-        };
-      }
-    case "SmokePoof":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse49, (a) => ({
-            TAG: "SmokePoof",
-            _0: a
-          }), (a) => ({
-            TAG: "SmokePoof",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "SmokePoofFromClient"
-        };
-      }
-    case "ChatMessageSmart":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse4, (a) => ({
-            TAG: "ChatMessageSmart",
-            _0: a
-          }), (a) => ({
-            TAG: "ChatMessageSmart",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "ChatMessageSmartFromClient"
-        };
-      }
-    case "WiredCannonShot":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse74, (a) => ({
-            TAG: "WiredCannonShot",
-            _0: a
-          }), (a) => ({
-            TAG: "WiredCannonShot",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "WiredCannonShotFromClient"
-        };
-      }
-    case "MassWireOperation":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "MassWireOperationFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse150, (a) => ({
-            TAG: "MassWireOperation",
-            _0: a
-          }), (a) => ({
-            TAG: "MassWireOperation",
-            _0: a
-          }))
-        };
-      }
-    case "MassWireOperationPay":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse160, (a) => ({
-            TAG: "MassWireOperationPay",
-            _0: a
-          }), (a) => ({
-            TAG: "MassWireOperationPay",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "MassWireOperationPayFromClient"
-        };
-      }
-    case "PartyToggle":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "PartyToggleFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse35, (a) => ({
-            TAG: "PartyToggle",
-            _0: a
-          }), (a) => ({
-            TAG: "PartyToggle",
-            _0: a
-          }))
-        };
-      }
-    case "TreeGrowFx":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse70, (a) => ({
-          TAG: "TreeGrowFx",
-          _0: a
-        }), (a) => ({
-          TAG: "TreeGrowFx",
-          _0: a
-        }))
-      };
-    case "CrystalInvasionStart":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "CrystalInvasionStartFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse12, (a) => ({
-            TAG: "CrystalInvasionStart",
-            _0: a
-          }), (a) => ({
-            TAG: "CrystalInvasionStart",
-            _0: a
-          }))
-        };
-      }
-    case "CrystalInvasionWipeAll":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse167, (a) => ({
-            TAG: "CrystalInvasionWipeAll",
-            _0: a
-          }), (a) => ({
-            TAG: "CrystalInvasionWipeAll",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "CrystalInvasionWipeAllFromClient"
-        };
-      }
-    case "MinionAttackTargetUpdate":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse173, (a) => ({
-          TAG: "MinionAttackTargetUpdate",
-          _0: a
-        }), (a) => ({
-          TAG: "MinionAttackTargetUpdate",
-          _0: a
-        }))
-      };
-    case "CrystalInvasionSendWaitTime":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse177, (a) => ({
-            TAG: "CrystalInvasionSendWaitTime",
-            _0: a
-          }), (a) => ({
-            TAG: "CrystalInvasionSendWaitTime",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "CrystalInvasionSendWaitTimeFromClient"
-        };
-      }
-    case "PlayerDamage":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse102, (a) => ({
-          TAG: "PlayerDamage",
-          _0: a
-        }), (a) => ({
-          TAG: "PlayerDamage",
-          _0: a
-        }))
-      };
-    case "PlayerDeath":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse41, (a) => ({
-          TAG: "PlayerDeath",
-          _0: a
-        }), (a) => ({
-          TAG: "PlayerDeath",
-          _0: a
-        }))
-      };
-    case "CombatTextCreate":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse145, (a) => ({
-            TAG: "CombatTextCreate",
-            _0: a
-          }), (a) => ({
-            TAG: "CombatTextCreate",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "CombatTextCreateFromClient"
-        };
-      }
-    case "Emoji":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "EmojiFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse107, (a) => ({
-            TAG: "Emoji",
-            _0: a
-          }), (a) => ({
-            TAG: "Emoji",
-            _0: a
-          }))
-        };
-      }
-    case "TileEntityDisplayDollItemSync":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse56, (a) => ({
-          TAG: "TileEntityDisplayDollItemSync",
-          _0: a
-        }), (a) => ({
-          TAG: "TileEntityDisplayDollItemSync",
-          _0: a
-        }))
-      };
-    case "TileEntityInteractionRequest":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse58, (a) => ({
-          TAG: "TileEntityInteractionRequest",
-          _0: a
-        }), (a) => ({
-          TAG: "TileEntityInteractionRequest",
-          _0: a
-        }))
-      };
-    case "WeaponsRackTryPlacing":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "WeaponsRackTryPlacingFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse73, (a) => ({
-            TAG: "WeaponsRackTryPlacing",
-            _0: a
-          }), (a) => ({
-            TAG: "WeaponsRackTryPlacing",
-            _0: a
-          }))
-        };
-      }
-    case "TileEntityHatRackItemSync":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse57, (a) => ({
-          TAG: "TileEntityHatRackItemSync",
-          _0: a
-        }), (a) => ({
-          TAG: "TileEntityHatRackItemSync",
-          _0: a
-        }))
-      };
-    case "TilePickingSync":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse63, (a) => ({
-          TAG: "TilePickingSync",
-          _0: a
-        }), (a) => ({
-          TAG: "TilePickingSync",
-          _0: a
-        }))
-      };
-    case "RevengeMarkerSync":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse153, (a) => ({
-            TAG: "RevengeMarkerSync",
-            _0: a
-          }), (a) => ({
-            TAG: "RevengeMarkerSync",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "RevengeMarkerSyncFromClient"
-        };
-      }
-    case "RevengeMarkerRemove":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse158, (a) => ({
-            TAG: "RevengeMarkerRemove",
-            _0: a
-          }), (a) => ({
-            TAG: "RevengeMarkerRemove",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "RevengeMarkerRemoveFromClient"
-        };
-      }
-    case "GolfBallLandInCup":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse149, (a) => ({
-          TAG: "GolfBallLandInCup",
-          _0: a
-        }), (a) => ({
-          TAG: "GolfBallLandInCup",
-          _0: a
-        }))
-      };
-    case "ClientFinishConnectingToServer":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse8, (a) => ({
-            TAG: "ClientFinishConnectingToServer",
-            _0: a
-          }), (a) => ({
-            TAG: "ClientFinishConnectingToServer",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "ClientFinishConnectingToServerFromClient"
-        };
-      }
-    case "NpcFishOut":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "NpcFishOutFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse27, (a) => ({
-            TAG: "NpcFishOut",
-            _0: a
-          }), (a) => ({
-            TAG: "NpcFishOut",
-            _0: a
-          }))
-        };
-      }
-    case "NpcTamper":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse117, (a) => ({
-            TAG: "NpcTamper",
-            _0: a
-          }), (a) => ({
-            TAG: "NpcTamper",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "NpcTamperFromClient"
-        };
-      }
-    case "LegacySoundPlay":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse142, (a) => ({
-            TAG: "LegacySoundPlay",
-            _0: a
-          }), (a) => ({
-            TAG: "LegacySoundPlay",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "LegacySoundPlayFromClient"
-        };
-      }
-    case "FoodPlatterTryPlacing":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "FoodPlatterTryPlacingFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse164, (a) => ({
-            TAG: "FoodPlatterTryPlacing",
-            _0: a
-          }), (a) => ({
-            TAG: "FoodPlatterTryPlacing",
-            _0: a
-          }))
-        };
-      }
-    case "PlayerLuckFactorsUpdate":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse89, (a) => ({
-          TAG: "PlayerLuckFactorsUpdate",
-          _0: a
-        }), (a) => ({
-          TAG: "PlayerLuckFactorsUpdate",
-          _0: a
-        }))
-      };
-    case "PlayerDead":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse40, (a) => ({
-            TAG: "PlayerDead",
-            _0: a
-          }), (a) => ({
-            TAG: "PlayerDead",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "PlayerDeadFromClient"
-        };
-      }
-    case "CavernMonsterTypeSync":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse162, (a) => ({
-          TAG: "CavernMonsterTypeSync",
-          _0: a
-        }), (a) => ({
-          TAG: "CavernMonsterTypeSync",
-          _0: a
-        }))
-      };
-    case "NpcBuffRemovalRequest":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "NpcBuffRemovalRequestFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse24, (a) => ({
-            TAG: "NpcBuffRemovalRequest",
-            _0: a
-          }), (a) => ({
-            TAG: "NpcBuffRemovalRequest",
-            _0: a
-          }))
-        };
-      }
-    case "ClientSyncedInventory":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "ClientSyncedInventoryFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers2(packetName2, parse163, (a) => ({
-            TAG: "ClientSyncedInventory",
-            _0: a
-          }), (a) => ({
-            TAG: "ClientSyncedInventory",
-            _0: a
-          }))
-        };
-      }
-    case "CountsAsHostForGameplaySet":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse10, (a) => ({
-          TAG: "CountsAsHostForGameplaySet",
-          _0: a
-        }), (a) => ({
-          TAG: "CountsAsHostForGameplaySet",
-          _0: a
-        }))
-      };
-    case "CreditsOrSlimeTransform":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse11, (a) => ({
-          TAG: "CreditsOrSlimeTransform",
-          _0: a
-        }), (a) => ({
-          TAG: "CreditsOrSlimeTransform",
-          _0: a
-        }))
-      };
-    case "LucyAxeMessage":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse139, (a) => ({
-          TAG: "LucyAxeMessage",
-          _0: a
-        }), (a) => ({
-          TAG: "LucyAxeMessage",
-          _0: a
-        }))
-      };
-    case "PiggyBankVoidLensUpdate":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse170, (a) => ({
-          TAG: "PiggyBankVoidLensUpdate",
-          _0: a
-        }), (a) => ({
-          TAG: "PiggyBankVoidLensUpdate",
-          _0: a
-        }))
-      };
-    case "DungeonDefendersEventAttemptSkipWait":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse180, (a) => ({
-          TAG: "DungeonDefendersEventAttemptSkipWait",
-          _0: a
-        }), (a) => ({
-          TAG: "DungeonDefendersEventAttemptSkipWait",
-          _0: a
-        }))
-      };
-    case "HaveDryadDoStardewAnimation":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse15, (a) => ({
-          TAG: "HaveDryadDoStardewAnimation",
-          _0: a
-        }), (a) => ({
-          TAG: "HaveDryadDoStardewAnimation",
-          _0: a
-        }))
-      };
-    case "ItemDropShimmeredUpdate":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse17, (a) => ({
-          TAG: "ItemDropShimmeredUpdate",
-          _0: a
-        }), (a) => ({
-          TAG: "ItemDropShimmeredUpdate",
-          _0: a
-        }))
-      };
-    case "ShimmerEffectOrCoinLuck":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse46, (a) => ({
-          TAG: "ShimmerEffectOrCoinLuck",
-          _0: a
-        }), (a) => ({
-          TAG: "ShimmerEffectOrCoinLuck",
-          _0: a
-        }))
-      };
-    case "LoadoutSwitch":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse21, (a) => ({
-          TAG: "LoadoutSwitch",
-          _0: a
-        }), (a) => ({
-          TAG: "LoadoutSwitch",
-          _0: a
-        }))
-      };
-    case "ItemDropProtectedUpdate":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse169, (a) => ({
-          TAG: "ItemDropProtectedUpdate",
-          _0: a
-        }), (a) => ({
-          TAG: "ItemDropProtectedUpdate",
-          _0: a
-        }))
-      };
-    case "DeadCellsDisplayJarTryPlacing":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse78, (a) => ({
-          TAG: "DeadCellsDisplayJarTryPlacing",
-          _0: a
-        }), (a) => ({
-          TAG: "DeadCellsDisplayJarTryPlacing",
-          _0: a
-        }))
-      };
-    case "PlayerSpectate":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse90, (a) => ({
-          TAG: "PlayerSpectate",
-          _0: a
-        }), (a) => ({
-          TAG: "PlayerSpectate",
-          _0: a
-        }))
-      };
-    case "ItemDropClear":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse82, (a) => ({
-          TAG: "ItemDropClear",
-          _0: a
-        }), (a) => ({
-          TAG: "ItemDropClear",
-          _0: a
-        }))
-      };
-    case "PlayerItemUseSound":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse88, (a) => ({
-          TAG: "PlayerItemUseSound",
-          _0: a
-        }), (a) => ({
-          TAG: "PlayerItemUseSound",
-          _0: a
-        }))
-      };
-    case "NpcHurtByDebuff":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse86, (a) => ({
-          TAG: "NpcHurtByDebuff",
-          _0: a
-        }), (a) => ({
-          TAG: "NpcHurtByDebuff",
-          _0: a
-        }))
-      };
-    case "Ping":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse87, (a) => ({
-          TAG: "Ping",
-          _0: a
-        }), (a) => ({
-          TAG: "Ping",
-          _0: a
-        }))
-      };
-    case "ChestResize":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse77, (a) => ({
-          TAG: "ChestResize",
-          _0: a
-        }), (a) => ({
-          TAG: "ChestResize",
-          _0: a
-        }))
-      };
-    case "LeashedEntityAnchorInsertItem":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse85, (a) => ({
-          TAG: "LeashedEntityAnchorInsertItem",
-          _0: a
-        }), (a) => ({
-          TAG: "LeashedEntityAnchorInsertItem",
-          _0: a
-        }))
-      };
-    case "PlayerTeamUpdate":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse92, (a) => ({
-          TAG: "PlayerTeamUpdate",
-          _0: a
-        }), (a) => ({
-          TAG: "PlayerTeamUpdate",
-          _0: a
-        }))
-      };
-    case "PlayerTeamSwapSpawn":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse91, (a) => ({
-          TAG: "PlayerTeamSwapSpawn",
-          _0: a
-        }), (a) => ({
-          TAG: "PlayerTeamSwapSpawn",
-          _0: a
-        }))
-      };
-    case "SectionRequest":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse93, (a) => ({
-          TAG: "SectionRequest",
-          _0: a
-        }), (a) => ({
-          TAG: "SectionRequest",
-          _0: a
-        }))
-      };
-    case "ItemDropPosition":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse83, (a) => ({
-          TAG: "ItemDropPosition",
-          _0: a
-        }), (a) => ({
-          TAG: "ItemDropPosition",
-          _0: a
-        }))
-      };
-    case "HostToken":
-      return {
-        TAG: "Ok",
-        _0: makeParsers2(packetName2, parse80, (a) => ({
-          TAG: "HostToken",
-          _0: a
-        }), (a) => ({
-          TAG: "HostToken",
-          _0: a
-        }))
-      };
-  }
-}
-function parse182(buffer, fromServer, ignoreOpt) {
-  let ignore = ignoreOpt !== void 0 ? ignoreOpt : [];
-  let match = buffer.length;
-  if (!(match > 2 || match < 0)) {
-    return {
-      TAG: "Error",
-      _0: {
-        TAG: "InvalidPacketLength",
-        _0: buffer.length
-      }
-    };
-  }
-  let packetType = fromInt(buffer[2]);
-  if (packetType === void 0) {
-    return {
-      TAG: "Error",
-      _0: {
-        TAG: "InvalidPacketType",
-        _0: buffer[2]
-      }
-    };
-  }
-  if (ignore.includes(packetType)) {
-    return {
-      TAG: "Error",
-      _0: "IgnoredPacket"
-    };
-  }
-  try {
-    let parsers = getParsers2(packetType, fromServer);
-    if (parsers.TAG === "Ok") {
-      return parsers._0.parse(buffer, fromServer);
-    } else {
-      return {
-        TAG: "Error",
-        _0: parsers._0
-      };
-    }
-  } catch (raw_obj) {
-    let obj = internalToException(raw_obj);
-    if (obj.RE_EXN_ID === "JsExn") {
-      return {
-        TAG: "Error",
-        _0: {
-          TAG: "ReaderError",
-          _0: {
-            context: "Parser.parse",
-            error: obj._1
-          }
-        }
-      };
-    }
-    throw obj;
-  }
-}
 function parseLazy(buffer, fromServer) {
   let match = buffer.length;
   if (!(match > 2 || match < 0)) {
@@ -29461,7 +24316,7 @@ function parseLazy(buffer, fromServer) {
     };
   }
   try {
-    let parsers = getParsers2(packetType, fromServer);
+    let parsers = getParsers(packetType, fromServer);
     if (parsers.TAG === "Ok") {
       return parsers._0.parseLazy(buffer, fromServer);
     } else {
@@ -29470,1762 +24325,6 @@ function parseLazy(buffer, fromServer) {
         _0: parsers._0
       };
     }
-  } catch (raw_obj) {
-    let obj = internalToException(raw_obj);
-    if (obj.RE_EXN_ID === "JsExn") {
-      return {
-        TAG: "Error",
-        _0: {
-          TAG: "ReaderError",
-          _0: {
-            context: "Parser.parseLazy",
-            error: obj._1
-          }
-        }
-      };
-    }
-    throw obj;
-  }
-}
-function worldEventInfoFromV1449(eventInfo) {
-  return {
-    shadowOrbSmashed: eventInfo.shadowOrbSmashed,
-    killedBoss1: eventInfo.killedBoss1,
-    killedBoss2: eventInfo.killedBoss2,
-    killedBoss3: eventInfo.killedBoss3,
-    hardMode: eventInfo.hardMode,
-    killedClown: eventInfo.killedClown,
-    serverSidedCharacters: eventInfo.serverSidedCharacters,
-    killedPlantBoss: eventInfo.killedPlantBoss,
-    killedMechBoss: eventInfo.killedMechBoss,
-    killedMechBoss2: eventInfo.killedMechBoss2,
-    killedMechBoss3: eventInfo.killedMechBoss3,
-    killedAnyMechBoss: eventInfo.killedAnyMechBoss,
-    cloudBg: eventInfo.cloudBg,
-    crimson: eventInfo.crimson,
-    pumpkinMoon: eventInfo.pumpkinMoon,
-    snowMoon: eventInfo.snowMoon,
-    expertMode: eventInfo.expertMode,
-    fastForwardTime: eventInfo.fastForwardTime,
-    slimeRain: eventInfo.slimeRain,
-    killedKingSlime: eventInfo.killedKingSlime,
-    killedQueenBee: eventInfo.killedQueenBee,
-    killedFishron: eventInfo.killedFishron,
-    killedMartians: eventInfo.killedMartians,
-    killedAncientCultist: eventInfo.killedAncientCultist,
-    killedMoonLord: eventInfo.killedMoonLord,
-    killedPumpking: eventInfo.killedPumpking,
-    killedMourningWood: eventInfo.killedMourningWood,
-    killedIceQueen: eventInfo.killedIceQueen,
-    killedSantank: eventInfo.killedSantank,
-    killedEverscream: eventInfo.killedEverscream,
-    killedGolem: eventInfo.killedGolem,
-    birthdayParty: eventInfo.birthdayParty,
-    killedPirates: eventInfo.killedPirates,
-    killedFrostLegion: eventInfo.killedFrostLegion,
-    killedGoblins: eventInfo.killedGoblins,
-    sandstorm: eventInfo.sandstorm,
-    dungeonDefendersEvent: eventInfo.dungeonDefendersEvent,
-    killedDungeonDefendersTier1: eventInfo.killedDungeonDefendersTier1,
-    killedDungeonDefendersTier2: eventInfo.killedDungeonDefendersTier2,
-    killedDungeonDefendersTier3: eventInfo.killedDungeonDefendersTier3,
-    combatBookUsed: eventInfo.combatBookUsed,
-    manualLanterns: eventInfo.manualLanterns,
-    killedSolarTower: eventInfo.killedSolarTower,
-    killedVortexTower: eventInfo.killedVortexTower,
-    killedNebulaTower: eventInfo.killedNebulaTower,
-    killedStardustTower: eventInfo.killedStardustTower,
-    forceHalloween: eventInfo.forceHalloween,
-    forceChristmas: eventInfo.forceChristmas,
-    boughtCat: eventInfo.boughtCat,
-    boughtDog: eventInfo.boughtDog,
-    boughtBunny: eventInfo.boughtBunny,
-    freeCake: eventInfo.freeCake,
-    drunkWorld: eventInfo.drunkWorld,
-    killedEmpressOfLight: eventInfo.killedEmpressOfLight,
-    killedQueenSlime: eventInfo.killedQueenSlime,
-    getGoodWorld: eventInfo.getGoodWorld,
-    tenthAnniversaryWorld: eventInfo.tenthAnniversaryWorld,
-    dontStarveWorld: eventInfo.dontStarveWorld,
-    downedDeerClops: eventInfo.downedDeerClops,
-    notTheBeesWorld: eventInfo.notTheBeesWorld,
-    remixWorld: eventInfo.remixWorld,
-    unlockedSlimeBlueSpawn: eventInfo.unlockedSlimeBlueSpawn,
-    combatBookVolumeTwoWasUsed: eventInfo.combatBookVolumeTwoWasUsed,
-    peddlersSatchelWasUsed: eventInfo.peddlersSatchelWasUsed,
-    unlockedSlimeGreenSpawn: eventInfo.unlockedSlimeGreenSpawn,
-    unlockedSlimeOldSpawn: eventInfo.unlockedSlimeOldSpawn,
-    unlockedSlimePurpleSpawn: eventInfo.unlockedSlimePurpleSpawn,
-    unlockedSlimeRainbowSpawn: eventInfo.unlockedSlimeRainbowSpawn,
-    unlockedSlimeRedSpawn: eventInfo.unlockedSlimeRedSpawn,
-    unlockedSlimeYellowSpawn: eventInfo.unlockedSlimeYellowSpawn,
-    unlockedSlimeCopperSpawn: eventInfo.unlockedSlimeCopperSpawn,
-    fastForwardTimeToDusk: eventInfo.fastForwardTimeToDusk,
-    noTrapsWorld: eventInfo.noTrapsWorld,
-    zenithWorld: eventInfo.zenithWorld,
-    unlockedTruffleSpawn: eventInfo.unlockedTruffleSpawn,
-    vampireSeed: false,
-    infectedSeed: false,
-    teamBasedSpawnsSeed: false,
-    skyblockWorld: false,
-    dualDungeonsSeed: false
-  };
-}
-function worldEventInfoToV1449(eventInfo) {
-  return {
-    shadowOrbSmashed: eventInfo.shadowOrbSmashed,
-    killedBoss1: eventInfo.killedBoss1,
-    killedBoss2: eventInfo.killedBoss2,
-    killedBoss3: eventInfo.killedBoss3,
-    hardMode: eventInfo.hardMode,
-    killedClown: eventInfo.killedClown,
-    serverSidedCharacters: eventInfo.serverSidedCharacters,
-    killedPlantBoss: eventInfo.killedPlantBoss,
-    killedMechBoss: eventInfo.killedMechBoss,
-    killedMechBoss2: eventInfo.killedMechBoss2,
-    killedMechBoss3: eventInfo.killedMechBoss3,
-    killedAnyMechBoss: eventInfo.killedAnyMechBoss,
-    cloudBg: eventInfo.cloudBg,
-    crimson: eventInfo.crimson,
-    pumpkinMoon: eventInfo.pumpkinMoon,
-    snowMoon: eventInfo.snowMoon,
-    expertMode: eventInfo.expertMode,
-    fastForwardTime: eventInfo.fastForwardTime,
-    slimeRain: eventInfo.slimeRain,
-    killedKingSlime: eventInfo.killedKingSlime,
-    killedQueenBee: eventInfo.killedQueenBee,
-    killedFishron: eventInfo.killedFishron,
-    killedMartians: eventInfo.killedMartians,
-    killedAncientCultist: eventInfo.killedAncientCultist,
-    killedMoonLord: eventInfo.killedMoonLord,
-    killedPumpking: eventInfo.killedPumpking,
-    killedMourningWood: eventInfo.killedMourningWood,
-    killedIceQueen: eventInfo.killedIceQueen,
-    killedSantank: eventInfo.killedSantank,
-    killedEverscream: eventInfo.killedEverscream,
-    killedGolem: eventInfo.killedGolem,
-    birthdayParty: eventInfo.birthdayParty,
-    killedPirates: eventInfo.killedPirates,
-    killedFrostLegion: eventInfo.killedFrostLegion,
-    killedGoblins: eventInfo.killedGoblins,
-    sandstorm: eventInfo.sandstorm,
-    dungeonDefendersEvent: eventInfo.dungeonDefendersEvent,
-    killedDungeonDefendersTier1: eventInfo.killedDungeonDefendersTier1,
-    killedDungeonDefendersTier2: eventInfo.killedDungeonDefendersTier2,
-    killedDungeonDefendersTier3: eventInfo.killedDungeonDefendersTier3,
-    combatBookUsed: eventInfo.combatBookUsed,
-    manualLanterns: eventInfo.manualLanterns,
-    killedSolarTower: eventInfo.killedSolarTower,
-    killedVortexTower: eventInfo.killedVortexTower,
-    killedNebulaTower: eventInfo.killedNebulaTower,
-    killedStardustTower: eventInfo.killedStardustTower,
-    forceHalloween: eventInfo.forceHalloween,
-    forceChristmas: eventInfo.forceChristmas,
-    boughtCat: eventInfo.boughtCat,
-    boughtDog: eventInfo.boughtDog,
-    boughtBunny: eventInfo.boughtBunny,
-    freeCake: eventInfo.freeCake,
-    drunkWorld: eventInfo.drunkWorld,
-    killedEmpressOfLight: eventInfo.killedEmpressOfLight,
-    killedQueenSlime: eventInfo.killedQueenSlime,
-    getGoodWorld: eventInfo.getGoodWorld,
-    tenthAnniversaryWorld: eventInfo.tenthAnniversaryWorld,
-    dontStarveWorld: eventInfo.dontStarveWorld,
-    downedDeerClops: eventInfo.downedDeerClops,
-    notTheBeesWorld: eventInfo.notTheBeesWorld,
-    remixWorld: eventInfo.remixWorld,
-    unlockedSlimeBlueSpawn: eventInfo.unlockedSlimeBlueSpawn,
-    combatBookVolumeTwoWasUsed: eventInfo.combatBookVolumeTwoWasUsed,
-    peddlersSatchelWasUsed: eventInfo.peddlersSatchelWasUsed,
-    unlockedSlimeGreenSpawn: eventInfo.unlockedSlimeGreenSpawn,
-    unlockedSlimeOldSpawn: eventInfo.unlockedSlimeOldSpawn,
-    unlockedSlimePurpleSpawn: eventInfo.unlockedSlimePurpleSpawn,
-    unlockedSlimeRainbowSpawn: eventInfo.unlockedSlimeRainbowSpawn,
-    unlockedSlimeRedSpawn: eventInfo.unlockedSlimeRedSpawn,
-    unlockedSlimeYellowSpawn: eventInfo.unlockedSlimeYellowSpawn,
-    unlockedSlimeCopperSpawn: eventInfo.unlockedSlimeCopperSpawn,
-    fastForwardTimeToDusk: eventInfo.fastForwardTimeToDusk,
-    noTrapsWorld: eventInfo.noTrapsWorld,
-    zenithWorld: eventInfo.zenithWorld,
-    unlockedTruffleSpawn: eventInfo.unlockedTruffleSpawn
-  };
-}
-function worldInfoFromV1449(worldInfo) {
-  return {
-    time: worldInfo.time,
-    dayAndMoonInfo: worldInfo.dayAndMoonInfo,
-    moonPhase: worldInfo.moonPhase,
-    maxTilesX: worldInfo.maxTilesX,
-    maxTilesY: worldInfo.maxTilesY,
-    spawnX: worldInfo.spawnX,
-    spawnY: worldInfo.spawnY,
-    worldSurface: worldInfo.worldSurface,
-    rockLayer: worldInfo.rockLayer,
-    worldId: worldInfo.worldId,
-    worldName: worldInfo.worldName,
-    gameMode: worldInfo.gameMode,
-    worldUniqueId: worldInfo.worldUniqueId,
-    worldGeneratorVersion: worldInfo.worldGeneratorVersion,
-    moonType: worldInfo.moonType,
-    treeBackground: worldInfo.treeBackground,
-    treeBackground2: worldInfo.treeBackground2,
-    treeBackground3: worldInfo.treeBackground3,
-    treeBackground4: worldInfo.treeBackground4,
-    corruptionBackground: worldInfo.corruptionBackground,
-    jungleBackground: worldInfo.jungleBackground,
-    snowBackground: worldInfo.snowBackground,
-    hallowBackground: worldInfo.hallowBackground,
-    crimsonBackground: worldInfo.crimsonBackground,
-    desertBackground: worldInfo.desertBackground,
-    oceanBackground: worldInfo.oceanBackground,
-    mushroomBackground: worldInfo.mushroomBackground,
-    underworldBackground: worldInfo.underworldBackground,
-    iceBackStyle: worldInfo.iceBackStyle,
-    jungleBackStyle: worldInfo.jungleBackStyle,
-    hellBackStyle: worldInfo.hellBackStyle,
-    windSpeedSet: worldInfo.windSpeedSet,
-    cloudNumber: worldInfo.cloudNumber,
-    tree1: worldInfo.tree1,
-    tree2: worldInfo.tree2,
-    tree3: worldInfo.tree3,
-    treeStyle1: worldInfo.treeStyle1,
-    treeStyle2: worldInfo.treeStyle2,
-    treeStyle3: worldInfo.treeStyle3,
-    treeStyle4: worldInfo.treeStyle4,
-    caveBack1: worldInfo.caveBack1,
-    caveBack2: worldInfo.caveBack2,
-    caveBack3: worldInfo.caveBack3,
-    caveBackStyle1: worldInfo.caveBackStyle1,
-    caveBackStyle2: worldInfo.caveBackStyle2,
-    caveBackStyle3: worldInfo.caveBackStyle3,
-    caveBackStyle4: worldInfo.caveBackStyle4,
-    forest1TreeTopStyle: worldInfo.forest1TreeTopStyle,
-    forest2TreeTopStyle: worldInfo.forest2TreeTopStyle,
-    forest3TreeTopStyle: worldInfo.forest3TreeTopStyle,
-    forest4TreeTopStyle: worldInfo.forest4TreeTopStyle,
-    corruptionTreeTopStyle: worldInfo.corruptionTreeTopStyle,
-    jungleTreeTopStyle: worldInfo.jungleTreeTopStyle,
-    snowTreeTopStyle: worldInfo.snowTreeTopStyle,
-    hallowTreeTopStyle: worldInfo.hallowTreeTopStyle,
-    crimsonTreeTopStyle: worldInfo.crimsonTreeTopStyle,
-    desertTreeTopStyle: worldInfo.desertTreeTopStyle,
-    oceanTreeTopStyle: worldInfo.oceanTreeTopStyle,
-    glowingMushroomTreeTopStyle: worldInfo.glowingMushroomTreeTopStyle,
-    underworldTreeTopStyle: worldInfo.underworldTreeTopStyle,
-    rain: worldInfo.rain,
-    eventInfo: worldEventInfoFromV1449(worldInfo.eventInfo),
-    sundialCooldown: worldInfo.sundialCooldown,
-    moondialCooldown: worldInfo.moondialCooldown,
-    copperOreTier: worldInfo.copperOreTier,
-    ironOreTier: worldInfo.ironOreTier,
-    silverOreTier: worldInfo.silverOreTier,
-    goldOreTier: worldInfo.goldOreTier,
-    cobaltOreTier: worldInfo.cobaltOreTier,
-    mythrilOreTier: worldInfo.mythrilOreTier,
-    adamantiteOreTier: worldInfo.adamantiteOreTier,
-    invasionType: worldInfo.invasionType,
-    lobbyId: worldInfo.lobbyId,
-    sandstormSeverity: worldInfo.sandstormSeverity,
-    extraSpawnPoints: []
-  };
-}
-function worldInfoToV1449(worldInfo) {
-  return {
-    time: worldInfo.time,
-    dayAndMoonInfo: worldInfo.dayAndMoonInfo,
-    moonPhase: worldInfo.moonPhase,
-    maxTilesX: worldInfo.maxTilesX,
-    maxTilesY: worldInfo.maxTilesY,
-    spawnX: worldInfo.spawnX,
-    spawnY: worldInfo.spawnY,
-    worldSurface: worldInfo.worldSurface,
-    rockLayer: worldInfo.rockLayer,
-    worldId: worldInfo.worldId,
-    worldName: worldInfo.worldName,
-    gameMode: worldInfo.gameMode,
-    worldUniqueId: worldInfo.worldUniqueId,
-    worldGeneratorVersion: worldInfo.worldGeneratorVersion,
-    moonType: worldInfo.moonType,
-    treeBackground: worldInfo.treeBackground,
-    treeBackground2: worldInfo.treeBackground2,
-    treeBackground3: worldInfo.treeBackground3,
-    treeBackground4: worldInfo.treeBackground4,
-    corruptionBackground: worldInfo.corruptionBackground,
-    jungleBackground: worldInfo.jungleBackground,
-    snowBackground: worldInfo.snowBackground,
-    hallowBackground: worldInfo.hallowBackground,
-    crimsonBackground: worldInfo.crimsonBackground,
-    desertBackground: worldInfo.desertBackground,
-    oceanBackground: worldInfo.oceanBackground,
-    mushroomBackground: worldInfo.mushroomBackground,
-    underworldBackground: worldInfo.underworldBackground,
-    iceBackStyle: worldInfo.iceBackStyle,
-    jungleBackStyle: worldInfo.jungleBackStyle,
-    hellBackStyle: worldInfo.hellBackStyle,
-    windSpeedSet: worldInfo.windSpeedSet,
-    cloudNumber: worldInfo.cloudNumber,
-    tree1: worldInfo.tree1,
-    tree2: worldInfo.tree2,
-    tree3: worldInfo.tree3,
-    treeStyle1: worldInfo.treeStyle1,
-    treeStyle2: worldInfo.treeStyle2,
-    treeStyle3: worldInfo.treeStyle3,
-    treeStyle4: worldInfo.treeStyle4,
-    caveBack1: worldInfo.caveBack1,
-    caveBack2: worldInfo.caveBack2,
-    caveBack3: worldInfo.caveBack3,
-    caveBackStyle1: worldInfo.caveBackStyle1,
-    caveBackStyle2: worldInfo.caveBackStyle2,
-    caveBackStyle3: worldInfo.caveBackStyle3,
-    caveBackStyle4: worldInfo.caveBackStyle4,
-    forest1TreeTopStyle: worldInfo.forest1TreeTopStyle,
-    forest2TreeTopStyle: worldInfo.forest2TreeTopStyle,
-    forest3TreeTopStyle: worldInfo.forest3TreeTopStyle,
-    forest4TreeTopStyle: worldInfo.forest4TreeTopStyle,
-    corruptionTreeTopStyle: worldInfo.corruptionTreeTopStyle,
-    jungleTreeTopStyle: worldInfo.jungleTreeTopStyle,
-    snowTreeTopStyle: worldInfo.snowTreeTopStyle,
-    hallowTreeTopStyle: worldInfo.hallowTreeTopStyle,
-    crimsonTreeTopStyle: worldInfo.crimsonTreeTopStyle,
-    desertTreeTopStyle: worldInfo.desertTreeTopStyle,
-    oceanTreeTopStyle: worldInfo.oceanTreeTopStyle,
-    glowingMushroomTreeTopStyle: worldInfo.glowingMushroomTreeTopStyle,
-    underworldTreeTopStyle: worldInfo.underworldTreeTopStyle,
-    rain: worldInfo.rain,
-    eventInfo: worldEventInfoToV1449(worldInfo.eventInfo),
-    sundialCooldown: worldInfo.sundialCooldown,
-    moondialCooldown: worldInfo.moondialCooldown,
-    copperOreTier: worldInfo.copperOreTier,
-    ironOreTier: worldInfo.ironOreTier,
-    silverOreTier: worldInfo.silverOreTier,
-    goldOreTier: worldInfo.goldOreTier,
-    cobaltOreTier: worldInfo.cobaltOreTier,
-    mythrilOreTier: worldInfo.mythrilOreTier,
-    adamantiteOreTier: worldInfo.adamantiteOreTier,
-    invasionType: worldInfo.invasionType,
-    lobbyId: worldInfo.lobbyId,
-    sandstormSeverity: worldInfo.sandstormSeverity
-  };
-}
-function playerSpawnContextFromV1449(context) {
-  switch (context) {
-    case "ReviveFromDeath":
-      return "ReviveFromDeath";
-    case "SpawningIntoWorld":
-      return "SpawningIntoWorld";
-    case "RecallFromItem":
-      return "RecallFromItem";
-  }
-}
-function playerSpawnContextToV1449(context) {
-  if (typeof context === "object") {
-    return "SpawningIntoWorld";
-  }
-  switch (context) {
-    case "ReviveFromDeath":
-      return "ReviveFromDeath";
-    case "RecallFromItem":
-      return "RecallFromItem";
-    default:
-      return "SpawningIntoWorld";
-  }
-}
-function playerUpdateControlFromV1449(control) {
-  return {
-    isHoldingUp: control.isHoldingUp,
-    isHoldingDown: control.isHoldingDown,
-    isHoldingLeft: control.isHoldingLeft,
-    isHoldingRight: control.isHoldingRight,
-    isHoldingJump: control.isHoldingJump,
-    isHoldingItemUse: control.isHoldingItemUse
-  };
-}
-function playerUpdateControlToV1449(control) {
-  return {
-    isHoldingUp: control.isHoldingUp,
-    isHoldingDown: control.isHoldingDown,
-    isHoldingLeft: control.isHoldingLeft,
-    isHoldingRight: control.isHoldingRight,
-    isHoldingJump: control.isHoldingJump,
-    isHoldingItemUse: control.isHoldingItemUse
-  };
-}
-function playerUpdateDirectionFromV1449(direction) {
-  if (direction === "Left") {
-    return "Left";
-  } else {
-    return "Right";
-  }
-}
-function playerUpdateDirectionToV1449(direction) {
-  if (direction === "Left") {
-    return "Left";
-  } else {
-    return "Right";
-  }
-}
-function playerUpdatePulleyDirectionFromV1449(pulleyDirection) {
-  if (pulleyDirection !== void 0) {
-    if (pulleyDirection === "One") {
-      return "One";
-    } else {
-      return "Two";
-    }
-  }
-}
-function playerUpdatePulleyDirectionToV1449(pulleyDirection) {
-  if (pulleyDirection !== void 0) {
-    if (pulleyDirection === "One") {
-      return "One";
-    } else {
-      return "Two";
-    }
-  }
-}
-function playerUpdateGravityDirectionFromV1449(gravityDirection) {
-  if (gravityDirection === "Normal") {
-    return "Normal";
-  } else {
-    return "Inverted";
-  }
-}
-function playerUpdateGravityDirectionToV1449(gravityDirection) {
-  if (gravityDirection === "Normal") {
-    return "Normal";
-  } else {
-    return "Inverted";
-  }
-}
-function playerUpdatePotionOfReturnFromV1449(potionOfReturn) {
-  if (potionOfReturn !== void 0) {
-    return {
-      originalUsePosition: potionOfReturn.originalUsePosition,
-      homePosition: potionOfReturn.homePosition
-    };
-  }
-}
-function playerUpdatePotionOfReturnToV1449(potionOfReturn) {
-  if (potionOfReturn !== void 0) {
-    return {
-      originalUsePosition: potionOfReturn.originalUsePosition,
-      homePosition: potionOfReturn.homePosition
-    };
-  }
-}
-function npcUpdateLifeFromV1449(life) {
-  if (typeof life !== "object") {
-    return "Max";
-  }
-  switch (life.TAG) {
-    case "Byte":
-      return {
-        TAG: "Byte",
-        _0: life._0
-      };
-    case "Int16":
-      return {
-        TAG: "Int16",
-        _0: life._0
-      };
-    case "Int32":
-      return {
-        TAG: "Int32",
-        _0: life._0
-      };
-  }
-}
-function npcUpdateLifeToV1449(life) {
-  if (typeof life !== "object") {
-    return "Max";
-  }
-  switch (life.TAG) {
-    case "Byte":
-      return {
-        TAG: "Byte",
-        _0: life._0
-      };
-    case "Int16":
-      return {
-        TAG: "Int16",
-        _0: life._0
-      };
-    case "Int32":
-      return {
-        TAG: "Int32",
-        _0: life._0
-      };
-  }
-}
-function shimmerCoinLuckFromV1449(coinLuck) {
-  return {
-    position: coinLuck.position,
-    amount: coinLuck.amount
-  };
-}
-function shimmerCoinLuckToV1449(coinLuck) {
-  return {
-    position: coinLuck.position,
-    amount: coinLuck.amount
-  };
-}
-function netModuleLoadLiquidChangeFromV1449(change) {
-  return {
-    x: change.x,
-    y: change.y,
-    amount: change.amount,
-    liquidType: change.liquidType
-  };
-}
-function netModuleLoadLiquidFromV1449(liquid) {
-  return {
-    changes: liquid.changes.map(netModuleLoadLiquidChangeFromV1449)
-  };
-}
-function netModuleLoadPositionFromV1449(position) {
-  return {
-    x: position.x,
-    y: position.y
-  };
-}
-function netModuleLoadAmbienceFromV1449(ambience) {
-  return {
-    playerId: ambience.playerId,
-    seed: ambience.seed,
-    skyEntityType: ambience.skyEntityType
-  };
-}
-function netModuleLoadBestiaryUnlockTypeFromV1449(unlockType) {
-  if (typeof unlockType !== "object") {
-    if (unlockType === "Sight") {
-      return "Sight";
-    } else {
-      return "Chat";
-    }
-  } else {
-    return {
-      TAG: "Kill",
-      _0: unlockType._0
-    };
-  }
-}
-function netModuleLoadBestiaryFromV1449(bestiary) {
-  return {
-    unlockType: netModuleLoadBestiaryUnlockTypeFromV1449(bestiary.unlockType),
-    npcId: bestiary.npcId
-  };
-}
-function netModuleLoadPylonActionFromV1449(action) {
-  switch (action) {
-    case "Added":
-      return "Added";
-    case "Removed":
-      return "Removed";
-    case "RequestTeleport":
-      return "RequestTeleport";
-  }
-}
-function netModuleLoadTeleportPylonFromV1449(teleportPylon) {
-  return {
-    pylonAction: netModuleLoadPylonActionFromV1449(teleportPylon.pylonAction),
-    x: teleportPylon.x,
-    y: teleportPylon.y,
-    pylonType: teleportPylon.pylonType
-  };
-}
-function netModuleLoadParticleFromV1449(particle) {
-  return {
-    particleType: particle.particleType,
-    x: particle.x,
-    y: particle.y,
-    vx: particle.vx,
-    vy: particle.vy,
-    shaderIndex: particle.shaderIndex,
-    invokedByPlayer: particle.invokedByPlayer
-  };
-}
-function netModuleLoadPowerLevelFromV1449(powerLevel) {
-  switch (powerLevel) {
-    case "LockedForEveryone":
-      return "LockedForEveryone";
-    case "CanBeChangedByHostAlone":
-      return "CanBeChangedByHostAlone";
-    case "CanBeChangedByEveryone":
-      return "CanBeChangedByEveryone";
-  }
-}
-function netModuleLoadCreativePowerPermissionFromV1449(permission) {
-  return {
-    powerType: permission.powerType,
-    powerLevel: netModuleLoadPowerLevelFromV1449(permission.powerLevel)
-  };
-}
-function netModuleLoadLiquidChangeToV1449(change) {
-  return {
-    x: change.x,
-    y: change.y,
-    amount: change.amount,
-    liquidType: change.liquidType
-  };
-}
-function netModuleLoadLiquidToV1449(liquid) {
-  return {
-    changes: liquid.changes.map(netModuleLoadLiquidChangeToV1449)
-  };
-}
-function netModuleLoadPositionToV1449(position) {
-  return {
-    x: position.x,
-    y: position.y
-  };
-}
-function netModuleLoadAmbienceToV1449(ambience) {
-  return {
-    playerId: ambience.playerId,
-    seed: ambience.seed,
-    skyEntityType: ambience.skyEntityType
-  };
-}
-function netModuleLoadBestiaryUnlockTypeToV1449(unlockType) {
-  if (typeof unlockType !== "object") {
-    if (unlockType === "Sight") {
-      return "Sight";
-    } else {
-      return "Chat";
-    }
-  } else {
-    return {
-      TAG: "Kill",
-      _0: unlockType._0
-    };
-  }
-}
-function netModuleLoadBestiaryToV1449(bestiary) {
-  return {
-    unlockType: netModuleLoadBestiaryUnlockTypeToV1449(bestiary.unlockType),
-    npcId: bestiary.npcId
-  };
-}
-function netModuleLoadPylonActionToV1449(action) {
-  switch (action) {
-    case "Added":
-      return "Added";
-    case "Removed":
-      return "Removed";
-    case "RequestTeleport":
-      return "RequestTeleport";
-  }
-}
-function netModuleLoadTeleportPylonToV1449(teleportPylon) {
-  return {
-    pylonAction: netModuleLoadPylonActionToV1449(teleportPylon.pylonAction),
-    x: teleportPylon.x,
-    y: teleportPylon.y,
-    pylonType: teleportPylon.pylonType
-  };
-}
-function netModuleLoadParticleToV1449(particle) {
-  return {
-    particleType: particle.particleType,
-    x: particle.x,
-    y: particle.y,
-    vx: particle.vx,
-    vy: particle.vy,
-    shaderIndex: particle.shaderIndex,
-    invokedByPlayer: particle.invokedByPlayer
-  };
-}
-function netModuleLoadPowerLevelToV1449(powerLevel) {
-  switch (powerLevel) {
-    case "LockedForEveryone":
-      return "LockedForEveryone";
-    case "CanBeChangedByHostAlone":
-      return "CanBeChangedByHostAlone";
-    case "CanBeChangedByEveryone":
-      return "CanBeChangedByEveryone";
-  }
-}
-function netModuleLoadCreativePowerPermissionToV1449(permission) {
-  return {
-    powerType: permission.powerType,
-    powerLevel: netModuleLoadPowerLevelToV1449(permission.powerLevel)
-  };
-}
-function netModuleLoadFromV1449(netModuleLoad) {
-  switch (netModuleLoad.TAG) {
-    case "Liquid":
-      return {
-        TAG: "Liquid",
-        _0: netModuleLoadLiquidFromV1449(netModuleLoad._0)
-      };
-    case "ClientText":
-      return {
-        TAG: "ClientText",
-        _0: netModuleLoad._0,
-        _1: netModuleLoad._1
-      };
-    case "ServerText":
-      return {
-        TAG: "ServerText",
-        _0: netModuleLoad._0,
-        _1: netModuleLoad._1,
-        _2: netModuleLoad._2
-      };
-    case "Ping":
-      return {
-        TAG: "Ping",
-        _0: netModuleLoadPositionFromV1449(netModuleLoad._0)
-      };
-    case "Ambience":
-      return {
-        TAG: "Ambience",
-        _0: netModuleLoadAmbienceFromV1449(netModuleLoad._0)
-      };
-    case "Bestiary":
-      return {
-        TAG: "Bestiary",
-        _0: netModuleLoadBestiaryFromV1449(netModuleLoad._0)
-      };
-    case "CreativePower":
-      return {
-        TAG: "CreativePower",
-        _0: netModuleLoad._0
-      };
-    case "CreativeUnlocks":
-    case "CreativeUnlocksPlayerReport":
-      break;
-    case "TeleportPylon":
-      return {
-        TAG: "TeleportPylon",
-        _0: netModuleLoadTeleportPylonFromV1449(netModuleLoad._0)
-      };
-    case "Particles":
-      return {
-        TAG: "Particles",
-        _0: netModuleLoadParticleFromV1449(netModuleLoad._0)
-      };
-    case "CreativePowerPermissions":
-      return {
-        TAG: "CreativePowerPermissions",
-        _0: netModuleLoadCreativePowerPermissionFromV1449(netModuleLoad._0)
-      };
-  }
-  let creativeUnlock = netModuleLoad._0;
-  return {
-    TAG: "CreativeUnlocksPlayerReport",
-    _0: {
-      userId: 0,
-      itemId: creativeUnlock.itemId,
-      researchedCount: creativeUnlock.researchedCount
-    }
-  };
-}
-function netModuleLoadToV1449(netModuleLoad) {
-  switch (netModuleLoad.TAG) {
-    case "Liquid":
-      return {
-        TAG: "Liquid",
-        _0: netModuleLoadLiquidToV1449(netModuleLoad._0)
-      };
-    case "ClientText":
-      return {
-        TAG: "ClientText",
-        _0: netModuleLoad._0,
-        _1: netModuleLoad._1
-      };
-    case "ServerText":
-      return {
-        TAG: "ServerText",
-        _0: netModuleLoad._0,
-        _1: netModuleLoad._1,
-        _2: netModuleLoad._2
-      };
-    case "Ping":
-      return {
-        TAG: "Ping",
-        _0: netModuleLoadPositionToV1449(netModuleLoad._0)
-      };
-    case "Ambience":
-      return {
-        TAG: "Ambience",
-        _0: netModuleLoadAmbienceToV1449(netModuleLoad._0)
-      };
-    case "Bestiary":
-      return {
-        TAG: "Bestiary",
-        _0: netModuleLoadBestiaryToV1449(netModuleLoad._0)
-      };
-    case "CreativePower":
-      return {
-        TAG: "CreativePower",
-        _0: netModuleLoad._0
-      };
-    case "CreativeUnlocksPlayerReport":
-      let unlockReport = netModuleLoad._0;
-      return {
-        TAG: "CreativeUnlocksPlayerReport",
-        _0: {
-          itemId: unlockReport.itemId,
-          researchedCount: unlockReport.researchedCount
-        }
-      };
-    case "TeleportPylon":
-      return {
-        TAG: "TeleportPylon",
-        _0: netModuleLoadTeleportPylonToV1449(netModuleLoad._0)
-      };
-    case "Particles":
-      return {
-        TAG: "Particles",
-        _0: netModuleLoadParticleToV1449(netModuleLoad._0)
-      };
-    case "CreativePowerPermissions":
-      return {
-        TAG: "CreativePowerPermissions",
-        _0: netModuleLoadCreativePowerPermissionToV1449(netModuleLoad._0)
-      };
-    default:
-      return;
-  }
-}
-function playerInventorySlotIdFromV1449(slot) {
-  if (slot <= 98 || slot <= 138) {
-    return slot;
-  } else if (slot <= 178) {
-    return slot + 160 | 0;
-  } else if (slot === 179 || slot <= 219) {
-    return slot + 320 | 0;
-  } else if (slot <= 259) {
-    return slot + 480 | 0;
-  } else if (slot <= 349) {
-    return slot + 640 | 0;
-  } else {
-    return slot;
-  }
-}
-function playerInventorySlotIdToV1449(slot) {
-  if (slot <= 98) {
-    return slot;
-  }
-  if (slot <= 298) {
-    let index = slot - 99 | 0;
-    if (index < 40) {
-      return slot;
-    } else {
-      return;
-    }
-  }
-  if (slot <= 498) {
-    let index$1 = slot - 299 | 0;
-    if (index$1 < 40) {
-      return 139 + index$1 | 0;
-    } else {
-      return;
-    }
-  }
-  if (slot === 499) {
-    return 179;
-  }
-  if (slot <= 699) {
-    let index$2 = slot - 500 | 0;
-    if (index$2 < 40) {
-      return 180 + index$2 | 0;
-    } else {
-      return;
-    }
-  }
-  if (slot > 899) {
-    if (slot <= 989) {
-      return slot - 640 | 0;
-    } else {
-      return;
-    }
-  }
-  let index$3 = slot - 700 | 0;
-  if (index$3 < 40) {
-    return 220 + index$3 | 0;
-  }
-}
-function fromV1449(packet) {
-  switch (packet.TAG) {
-    case "PlayerInfo":
-      let playerInfo = packet._0;
-      return {
-        TAG: "PlayerInfo",
-        _0: {
-          playerId: playerInfo.playerId,
-          skinVariant: playerInfo.skinVariant,
-          voiceVariant: 1,
-          voicePitchOffset: 0,
-          hair: playerInfo.hair,
-          name: playerInfo.name,
-          hairDye: playerInfo.hairDye,
-          hideVisuals: playerInfo.hideVisuals,
-          hideVisuals2: playerInfo.hideVisuals2,
-          hideMisc: playerInfo.hideMisc,
-          hairColor: playerInfo.hairColor,
-          skinColor: playerInfo.skinColor,
-          eyeColor: playerInfo.eyeColor,
-          shirtColor: playerInfo.shirtColor,
-          underShirtColor: playerInfo.underShirtColor,
-          pantsColor: playerInfo.pantsColor,
-          shoeColor: playerInfo.shoeColor,
-          difficulty: playerInfo.difficulty,
-          mode: playerInfo.mode,
-          extraAccessory: playerInfo.extraAccessory,
-          usingBiomeTorches: playerInfo.usingBiomeTorches,
-          unlockedBiomeTorches: playerInfo.unlockedBiomeTorches,
-          happyFunTorchTime: playerInfo.happyFunTorchTime,
-          unlockedSuperCart: playerInfo.unlockedSuperCart,
-          enabledSuperCart: playerInfo.enabledSuperCart,
-          usedAegisCrystal: playerInfo.usedAegisCrystal,
-          usedAegisFruit: playerInfo.usedAegisFruit,
-          usedArcaneCrystal: playerInfo.usedArcaneCrystal,
-          usedGalaxyPearl: playerInfo.usedGalaxyPearl,
-          usedGummyWorm: playerInfo.usedGummyWorm,
-          usedAmbrosia: playerInfo.usedAmbrosia,
-          ateArtisanBread: playerInfo.ateArtisanBread
-        }
-      };
-    case "PlayerInventorySlot":
-      let playerInventorySlot = packet._0;
-      return {
-        TAG: "PlayerInventorySlot",
-        _0: {
-          playerId: playerInventorySlot.playerId,
-          slot: playerInventorySlotIdFromV1449(playerInventorySlot.slot),
-          stack: playerInventorySlot.stack,
-          prefix: playerInventorySlot.prefix,
-          itemType: playerInventorySlot.itemId,
-          favorited: false,
-          blocked: false
-        }
-      };
-    case "WorldInfo":
-      return {
-        TAG: "WorldInfo",
-        _0: worldInfoFromV1449(packet._0)
-      };
-    case "InitialTileSectionsRequest":
-      let req = packet._0;
-      return {
-        TAG: "InitialTileSectionsRequest",
-        _0: {
-          x: req.x,
-          y: req.y,
-          team: 0
-        }
-      };
-    case "TileSectionSend":
-      return {
-        TAG: "TileSectionSend",
-        _0: packet._0
-      };
-    case "PlayerSpawn":
-      let playerSpawn = packet._0;
-      return {
-        TAG: "PlayerSpawn",
-        _0: {
-          playerId: playerSpawn.playerId,
-          x: playerSpawn.x,
-          y: playerSpawn.y,
-          timeRemaining: playerSpawn.timeRemaining,
-          numberOfDeathsPve: playerSpawn.numberOfDeathsPve,
-          numberOfDeathsPvp: playerSpawn.numberOfDeathsPvp,
-          team: 0,
-          context: playerSpawnContextFromV1449(playerSpawn.context)
-        }
-      };
-    case "PlayerUpdate":
-      let playerUpdate = packet._0;
-      return {
-        TAG: "PlayerUpdate",
-        _0: {
-          playerId: playerUpdate.playerId,
-          control: playerUpdateControlFromV1449(playerUpdate.control),
-          direction: playerUpdateDirectionFromV1449(playerUpdate.direction),
-          pulleyDirection: playerUpdatePulleyDirectionFromV1449(playerUpdate.pulleyDirection),
-          vortexStealthActive: playerUpdate.vortexStealthActive,
-          gravityDirection: playerUpdateGravityDirectionFromV1449(playerUpdate.gravityDirection),
-          shieldRaised: playerUpdate.shouldGuard,
-          ghost: playerUpdate.ghost,
-          selectedItem: playerUpdate.selectedItem,
-          position: playerUpdate.position,
-          velocity: playerUpdate.velocity,
-          mountType: void 0,
-          potionOfReturn: playerUpdatePotionOfReturnFromV1449(playerUpdate.potionOfReturn),
-          tryKeepingHoveringUp: playerUpdate.tryKeepingHoveringUp,
-          isVoidVaultEnabled: playerUpdate.isVoidVaultEnabled,
-          isSitting: playerUpdate.isSitting,
-          hasFinishedAnyDd2Event: playerUpdate.hasFinishedAnyDd2Event,
-          isPettingAnimal: playerUpdate.isPettingAnimal,
-          isTheAnimalBeingPetSmall: playerUpdate.isTheAnimalBeingPetSmall,
-          tryKeepingHoveringDown: playerUpdate.tryKeepingHoveringDown,
-          isSleeping: playerUpdate.isSleeping,
-          autoReuseAllWeapons: false,
-          controlDownHold: false,
-          isOperatingAnotherEntity: false,
-          controlUseTile: false,
-          netCameraTarget: void 0,
-          lastItemUseAttemptSuccess: false
-        }
-      };
-    case "TileSquareSend":
-      return {
-        TAG: "TileSquareSend",
-        _0: packet._0
-      };
-    case "ItemOwner":
-      let itemOwner = packet._0;
-      return {
-        TAG: "ItemOwner",
-        _0: {
-          itemDropId: itemOwner.itemDropId,
-          owner: itemOwner.owner,
-          position: {
-            x: 0,
-            y: 0
-          }
-        }
-      };
-    case "NpcUpdate":
-      let npcUpdate = packet._0;
-      return {
-        TAG: "NpcUpdate",
-        _0: {
-          npcSlotId: npcUpdate.npcSlotId,
-          npcTypeId: npcUpdate.npcTypeId,
-          x: npcUpdate.x,
-          y: npcUpdate.y,
-          vx: npcUpdate.vx,
-          vy: npcUpdate.vy,
-          target: npcUpdate.target,
-          directionX: npcUpdate.directionX,
-          directionY: npcUpdate.directionY,
-          ai: npcUpdate.ai,
-          spriteDirection: npcUpdate.spriteDirection,
-          life: npcUpdateLifeFromV1449(npcUpdate.life),
-          releaseOwner: npcUpdate.releaseOwner,
-          playerCountScale: npcUpdate.playerCountScale,
-          difficulty: npcUpdate.strengthMultiplier,
-          spawnedFromStatue: npcUpdate.spawnedFromStatue,
-          spawnNeedsSyncing: false,
-          shimmerTransparency: false
-        }
-      };
-    case "Zones":
-      let zones = packet._0;
-      return {
-        TAG: "Zones",
-        _0: {
-          playerId: zones.playerId,
-          zone1: zones.zone1,
-          zone2: zones.zone2,
-          zone3: zones.zone3,
-          zone4: zones.zone4,
-          zone5: zones.zone5,
-          townNPCs: 0
-        }
-      };
-    case "PlayerBuffsSet":
-      let playerBuffsSet = packet._0;
-      return {
-        TAG: "PlayerBuffsSet",
-        _0: {
-          playerId: playerBuffsSet.playerId,
-          buffs: playerBuffsSet.buffs.filter((buff) => buff !== 0)
-        }
-      };
-    case "NpcBuffUpdate":
-      let npcBuffUpdate = packet._0;
-      let buffs = [];
-      let buffTimes = [];
-      for (let i = 0, i_finish = npcBuffUpdate.buffs.length; i < i_finish; ++i) {
-        let buff = npcBuffUpdate.buffs[i];
-        let buffTime = npcBuffUpdate.buffTimes[i];
-        if (buff > 0 && buffTime > 0) {
-          buffs.push(buff);
-          buffTimes.push(buffTime);
-        }
-      }
-      return {
-        TAG: "NpcBuffUpdate",
-        _0: {
-          npcId: npcBuffUpdate.npcId,
-          buffs,
-          buffTimes
-        }
-      };
-    case "Teleport":
-      let teleport = packet._0;
-      let match = teleport.teleportType;
-      let tmp;
-      switch (match) {
-        case "Player":
-          tmp = "Player";
-          break;
-        case "Npc":
-          tmp = "Npc";
-          break;
-        case "PlayerToPlayer":
-          tmp = "PlayerToPlayer";
-          break;
-      }
-      return {
-        TAG: "Teleport",
-        _0: {
-          teleportType: tmp,
-          getPositionFromTarget: teleport.getPositionFromTarget,
-          targetId: teleport.targetId,
-          x: teleport.x,
-          y: teleport.y,
-          style: teleport.style,
-          extraInfo: teleport.extraInfo
-        }
-      };
-    case "TravellingMerchantInventory":
-      return {
-        TAG: "TravellingMerchantInventory",
-        _0: {
-          items: packet._0.items
-        }
-      };
-    case "TeleportationPotion":
-      let match$1 = packet._0.teleportType;
-      let tmp$1;
-      switch (match$1) {
-        case "TeleportationPotion":
-          tmp$1 = "TeleportationPotion";
-          break;
-        case "MagicConch":
-          tmp$1 = "MagicConch";
-          break;
-        case "DemonConch":
-          tmp$1 = "DemonConch";
-          break;
-        case "ShellphoneSpawn":
-          tmp$1 = "ShellphoneSpawn";
-          break;
-      }
-      return {
-        TAG: "TeleportationPotion",
-        _0: {
-          teleportType: tmp$1
-        }
-      };
-    case "NetModuleLoad":
-      return {
-        TAG: "NetModuleLoad",
-        _0: netModuleLoadFromV1449(packet._0)
-      };
-    case "ItemForceIntoNearestChest":
-      return {
-        TAG: "ItemForceIntoNearestChest",
-        _0: {
-          TAG: "ClientRequest",
-          _0: {
-            slotIds: [packet._0.slot],
-            smartStack: false
-          }
-        }
-      };
-    case "TileEntityDisplayDollItemSync":
-      let tileEntityDisplayDollItemSync = packet._0;
-      return {
-        TAG: "TileEntityDisplayDollItemSync",
-        _0: {
-          playerId: tileEntityDisplayDollItemSync.playerId,
-          tileEntityId: tileEntityDisplayDollItemSync.tileEntityId,
-          itemIndex: tileEntityDisplayDollItemSync.itemIndex,
-          command: "Equip",
-          data: {
-            TAG: "Item",
-            _0: {
-              itemId: tileEntityDisplayDollItemSync.itemId,
-              stack: tileEntityDisplayDollItemSync.stack,
-              prefix: tileEntityDisplayDollItemSync.prefix
-            }
-          }
-        }
-      };
-    case "PlayerLuckFactorsUpdate":
-      let playerLuckFactorsUpdate = packet._0;
-      return {
-        TAG: "PlayerLuckFactorsUpdate",
-        _0: {
-          playerId: playerLuckFactorsUpdate.playerId,
-          ladyBugLuckTimeLeft: playerLuckFactorsUpdate.ladyBugLuckTimeLeft,
-          torchLuck: playerLuckFactorsUpdate.torchLuck,
-          luckPotion: playerLuckFactorsUpdate.luckPotion,
-          hasGardenGnomeNearby: playerLuckFactorsUpdate.hasGardenGnomeNearby,
-          brokenMirrorBadLuck: false,
-          equipmentBasedLuckBonus: playerLuckFactorsUpdate.equipmentBasedLuckBonus,
-          coinLuck: playerLuckFactorsUpdate.coinLuck,
-          kiteLuckLevel: 0
-        }
-      };
-    case "ShimmerEffectOrCoinLuck":
-      let shimmerEffectOrCoinLuck = packet._0;
-      switch (shimmerEffectOrCoinLuck.TAG) {
-        case "ShimmerEffect":
-          return {
-            TAG: "ShimmerEffectOrCoinLuck",
-            _0: {
-              TAG: "ShimmerEffect",
-              _0: shimmerEffectOrCoinLuck._0,
-              _1: shimmerEffectOrCoinLuck._1
-            }
-          };
-        case "CoinLuck":
-          return {
-            TAG: "ShimmerEffectOrCoinLuck",
-            _0: {
-              TAG: "CoinLuck",
-              _0: shimmerCoinLuckFromV1449(shimmerEffectOrCoinLuck._0)
-            }
-          };
-        case "NewShimmerEffect":
-          return {
-            TAG: "ShimmerEffectOrCoinLuck",
-            _0: {
-              TAG: "ShimmerEffect",
-              _0: 0,
-              _1: 0
-            }
-          };
-      }
-    default:
-      return packet;
-  }
-}
-function v1449ToLatest(packet) {
-  switch (packet.TAG) {
-    case "PlayerInfo":
-      let playerInfo = packet._0;
-      return {
-        TAG: "PlayerInfo",
-        _0: {
-          playerId: playerInfo.playerId,
-          skinVariant: playerInfo.skinVariant,
-          hair: playerInfo.hair,
-          name: playerInfo.name,
-          hairDye: playerInfo.hairDye,
-          hideVisuals: playerInfo.hideVisuals,
-          hideVisuals2: playerInfo.hideVisuals2,
-          hideMisc: playerInfo.hideMisc,
-          hairColor: playerInfo.hairColor,
-          skinColor: playerInfo.skinColor,
-          eyeColor: playerInfo.eyeColor,
-          shirtColor: playerInfo.shirtColor,
-          underShirtColor: playerInfo.underShirtColor,
-          pantsColor: playerInfo.pantsColor,
-          shoeColor: playerInfo.shoeColor,
-          difficulty: playerInfo.difficulty,
-          mode: playerInfo.mode,
-          extraAccessory: playerInfo.extraAccessory,
-          usingBiomeTorches: playerInfo.usingBiomeTorches,
-          unlockedBiomeTorches: playerInfo.unlockedBiomeTorches,
-          happyFunTorchTime: playerInfo.happyFunTorchTime,
-          unlockedSuperCart: playerInfo.unlockedSuperCart,
-          enabledSuperCart: playerInfo.enabledSuperCart,
-          usedAegisCrystal: playerInfo.usedAegisCrystal,
-          usedAegisFruit: playerInfo.usedAegisFruit,
-          usedArcaneCrystal: playerInfo.usedArcaneCrystal,
-          usedGalaxyPearl: playerInfo.usedGalaxyPearl,
-          usedGummyWorm: playerInfo.usedGummyWorm,
-          usedAmbrosia: playerInfo.usedAmbrosia,
-          ateArtisanBread: playerInfo.ateArtisanBread
-        }
-      };
-    case "PlayerInventorySlot":
-      let playerInventorySlot = packet._0;
-      return {
-        TAG: "PlayerInventorySlot",
-        _0: {
-          playerId: playerInventorySlot.playerId,
-          slot: playerInventorySlot.slot,
-          stack: playerInventorySlot.stack,
-          prefix: playerInventorySlot.prefix,
-          itemId: playerInventorySlot.itemType
-        }
-      };
-    case "WorldInfo":
-      return {
-        TAG: "WorldInfo",
-        _0: worldInfoToV1449(packet._0)
-      };
-    case "InitialTileSectionsRequest":
-      let req = packet._0;
-      return {
-        TAG: "InitialTileSectionsRequest",
-        _0: {
-          x: req.x,
-          y: req.y
-        }
-      };
-    case "PlayerSpawn":
-      let playerSpawn = packet._0;
-      return {
-        TAG: "PlayerSpawn",
-        _0: {
-          playerId: playerSpawn.playerId,
-          x: playerSpawn.x,
-          y: playerSpawn.y,
-          timeRemaining: playerSpawn.timeRemaining,
-          numberOfDeathsPve: playerSpawn.numberOfDeathsPve,
-          numberOfDeathsPvp: playerSpawn.numberOfDeathsPvp,
-          context: playerSpawnContextToV1449(playerSpawn.context)
-        }
-      };
-    case "PlayerUpdate":
-      let playerUpdate = packet._0;
-      return {
-        TAG: "PlayerUpdate",
-        _0: {
-          playerId: playerUpdate.playerId,
-          control: playerUpdateControlToV1449(playerUpdate.control),
-          direction: playerUpdateDirectionToV1449(playerUpdate.direction),
-          pulleyDirection: playerUpdatePulleyDirectionToV1449(playerUpdate.pulleyDirection),
-          vortexStealthActive: playerUpdate.vortexStealthActive,
-          gravityDirection: playerUpdateGravityDirectionToV1449(playerUpdate.gravityDirection),
-          shouldGuard: playerUpdate.shieldRaised,
-          ghost: playerUpdate.ghost,
-          selectedItem: playerUpdate.selectedItem,
-          position: playerUpdate.position,
-          velocity: playerUpdate.velocity,
-          potionOfReturn: playerUpdatePotionOfReturnToV1449(playerUpdate.potionOfReturn),
-          tryKeepingHoveringUp: playerUpdate.tryKeepingHoveringUp,
-          isVoidVaultEnabled: playerUpdate.isVoidVaultEnabled,
-          isSitting: playerUpdate.isSitting,
-          hasFinishedAnyDd2Event: playerUpdate.hasFinishedAnyDd2Event,
-          isPettingAnimal: playerUpdate.isPettingAnimal,
-          isTheAnimalBeingPetSmall: playerUpdate.isTheAnimalBeingPetSmall,
-          tryKeepingHoveringDown: playerUpdate.tryKeepingHoveringDown,
-          isSleeping: playerUpdate.isSleeping
-        }
-      };
-    case "ItemOwner":
-      let itemOwner = packet._0;
-      return {
-        TAG: "ItemOwner",
-        _0: {
-          itemDropId: itemOwner.itemDropId,
-          owner: itemOwner.owner
-        }
-      };
-    case "NpcUpdate":
-      let npcUpdate = packet._0;
-      return {
-        TAG: "NpcUpdate",
-        _0: {
-          npcSlotId: npcUpdate.npcSlotId,
-          npcTypeId: npcUpdate.npcTypeId,
-          x: npcUpdate.x,
-          y: npcUpdate.y,
-          vx: npcUpdate.vx,
-          vy: npcUpdate.vy,
-          target: npcUpdate.target,
-          directionX: npcUpdate.directionX,
-          directionY: npcUpdate.directionY,
-          ai: npcUpdate.ai,
-          spriteDirection: npcUpdate.spriteDirection,
-          life: npcUpdateLifeToV1449(npcUpdate.life),
-          releaseOwner: npcUpdate.releaseOwner,
-          playerCountScale: npcUpdate.playerCountScale,
-          strengthMultiplier: npcUpdate.difficulty,
-          spawnedFromStatue: npcUpdate.spawnedFromStatue
-        }
-      };
-    case "Zones":
-      let zones = packet._0;
-      return {
-        TAG: "Zones",
-        _0: {
-          playerId: zones.playerId,
-          zone1: zones.zone1,
-          zone2: zones.zone2,
-          zone3: zones.zone3,
-          zone4: zones.zone4,
-          zone5: zones.zone5
-        }
-      };
-    case "PlayerBuffsSet":
-      let playerBuffsSet = packet._0;
-      let buffs = make2(44, 0);
-      let max2 = min(44, playerBuffsSet.buffs.length);
-      for (let i = 0; i < max2; ++i) {
-        buffs[i] = playerBuffsSet.buffs[i];
-      }
-      return {
-        TAG: "PlayerBuffsSet",
-        _0: {
-          playerId: playerBuffsSet.playerId,
-          buffs
-        }
-      };
-    case "NpcBuffUpdate":
-      let npcBuffUpdate = packet._0;
-      let buffs$1 = make2(20, 0);
-      let buffTimes = make2(20, 0);
-      let max$1 = min(20, npcBuffUpdate.buffs.length);
-      for (let i$1 = 0; i$1 < max$1; ++i$1) {
-        buffs$1[i$1] = npcBuffUpdate.buffs[i$1];
-        buffTimes[i$1] = npcBuffUpdate.buffTimes[i$1];
-      }
-      return {
-        TAG: "NpcBuffUpdate",
-        _0: {
-          npcId: npcBuffUpdate.npcId,
-          buffs: buffs$1,
-          buffTimes
-        }
-      };
-    case "Teleport":
-      let teleport = packet._0;
-      let match = teleport.teleportType;
-      let tmp;
-      switch (match) {
-        case "Npc":
-          tmp = "Npc";
-          break;
-        case "PlayerToPlayer":
-          tmp = "PlayerToPlayer";
-          break;
-        case "Player":
-        case "TeleportAck":
-          tmp = "Player";
-          break;
-      }
-      return {
-        TAG: "Teleport",
-        _0: {
-          teleportType: tmp,
-          getPositionFromTarget: teleport.getPositionFromTarget,
-          targetId: teleport.targetId,
-          x: teleport.x,
-          y: teleport.y,
-          style: teleport.style,
-          extraInfo: teleport.extraInfo
-        }
-      };
-    case "TravellingMerchantInventory":
-      let inv = packet._0;
-      let items = make2(40, 0);
-      let max$2 = min(40, inv.items.length);
-      for (let i$2 = 0; i$2 < max$2; ++i$2) {
-        items[i$2] = inv.items[i$2];
-      }
-      return {
-        TAG: "TravellingMerchantInventory",
-        _0: {
-          items
-        }
-      };
-    case "TeleportationPotion":
-      let match$1 = packet._0.teleportType;
-      let tmp$1;
-      switch (match$1) {
-        case "MagicConch":
-          tmp$1 = "MagicConch";
-          break;
-        case "DemonConch":
-          tmp$1 = "DemonConch";
-          break;
-        case "ShellphoneSpawn":
-          tmp$1 = "ShellphoneSpawn";
-          break;
-        case "TeleportationPotion":
-        case "PlayerNoSpaceTeleport":
-          tmp$1 = "TeleportationPotion";
-          break;
-      }
-      return {
-        TAG: "TeleportationPotion",
-        _0: {
-          teleportType: tmp$1
-        }
-      };
-    case "NetModuleLoad":
-      let converted = netModuleLoadToV1449(packet._0);
-      if (converted !== void 0) {
-        return {
-          TAG: "NetModuleLoad",
-          _0: converted
-        };
-      } else {
-        return {
-          TAG: "NetModuleLoad",
-          _0: {
-            TAG: "Ping",
-            _0: {
-              x: 0,
-              y: 0
-            }
-          }
-        };
-      }
-    case "ItemForceIntoNearestChest":
-      let itemForce = packet._0;
-      if (itemForce.TAG === "ClientRequest") {
-        return {
-          TAG: "ItemForceIntoNearestChest",
-          _0: {
-            slot: getOr(itemForce._0.slotIds[0], 0)
-          }
-        };
-      } else {
-        return {
-          TAG: "ItemForceIntoNearestChest",
-          _0: {
-            slot: 0
-          }
-        };
-      }
-    case "TileEntityDisplayDollItemSync":
-      let tileEntityDisplayDollItemSync = packet._0;
-      let item = tileEntityDisplayDollItemSync.data;
-      if (item.TAG !== "Item") {
-        return {
-          TAG: "TileEntityDisplayDollItemSync",
-          _0: {
-            playerId: tileEntityDisplayDollItemSync.playerId,
-            tileEntityId: tileEntityDisplayDollItemSync.tileEntityId,
-            itemIndex: tileEntityDisplayDollItemSync.itemIndex,
-            itemId: 0,
-            stack: 0,
-            prefix: 0
-          }
-        };
-      }
-      let item$1 = item._0;
-      return {
-        TAG: "TileEntityDisplayDollItemSync",
-        _0: {
-          playerId: tileEntityDisplayDollItemSync.playerId,
-          tileEntityId: tileEntityDisplayDollItemSync.tileEntityId,
-          itemIndex: tileEntityDisplayDollItemSync.itemIndex,
-          itemId: item$1.itemId,
-          stack: item$1.stack,
-          prefix: item$1.prefix
-        }
-      };
-    case "PlayerLuckFactorsUpdate":
-      let playerLuckFactorsUpdate = packet._0;
-      return {
-        TAG: "PlayerLuckFactorsUpdate",
-        _0: {
-          playerId: playerLuckFactorsUpdate.playerId,
-          ladyBugLuckTimeLeft: playerLuckFactorsUpdate.ladyBugLuckTimeLeft,
-          torchLuck: playerLuckFactorsUpdate.torchLuck,
-          luckPotion: playerLuckFactorsUpdate.luckPotion,
-          hasGardenGnomeNearby: playerLuckFactorsUpdate.hasGardenGnomeNearby,
-          equipmentBasedLuckBonus: playerLuckFactorsUpdate.equipmentBasedLuckBonus,
-          coinLuck: playerLuckFactorsUpdate.coinLuck
-        }
-      };
-    case "ShimmerEffectOrCoinLuck":
-      let shimmerEffectOrCoinLuck = packet._0;
-      if (shimmerEffectOrCoinLuck.TAG === "ShimmerEffect") {
-        return {
-          TAG: "ShimmerEffectOrCoinLuck",
-          _0: {
-            TAG: "ShimmerEffect",
-            _0: shimmerEffectOrCoinLuck._0,
-            _1: shimmerEffectOrCoinLuck._1
-          }
-        };
-      } else {
-        return {
-          TAG: "ShimmerEffectOrCoinLuck",
-          _0: {
-            TAG: "CoinLuck",
-            _0: shimmerCoinLuckToV1449(shimmerEffectOrCoinLuck._0)
-          }
-        };
-      }
-    default:
-      return packet;
-  }
-}
-function convertFromV1449IfNeeded(buffer, fromServer) {
-  let match = buffer.length;
-  if (!(match > 2 || match < 0)) {
-    return {
-      TAG: "Error",
-      _0: {
-        TAG: "InvalidPacketLength",
-        _0: buffer.length
-      }
-    };
-  }
-  let match$1 = fromInt(buffer[2]);
-  if (match$1 === void 0) {
-    return {
-      TAG: "Error",
-      _0: {
-        TAG: "InvalidPacketType",
-        _0: buffer[2]
-      }
-    };
-  }
-  switch (match$1) {
-    case "PlayerInfo":
-    case "PlayerInventorySlot":
-    case "WorldInfo":
-    case "InitialTileSectionsRequest":
-    case "TileSectionSend":
-    case "PlayerSpawn":
-    case "PlayerUpdate":
-    case "TileSquareSend":
-    case "ItemOwner":
-    case "NpcUpdate":
-    case "Zones":
-    case "PlayerBuffsSet":
-    case "NpcBuffUpdate":
-    case "Teleport":
-    case "TravellingMerchantInventory":
-    case "TeleportationPotion":
-    case "NetModuleLoad":
-    case "ItemForceIntoNearestChest":
-    case "TileEntityDisplayDollItemSync":
-    case "PlayerLuckFactorsUpdate":
-    case "ShimmerEffectOrCoinLuck":
-      break;
-    default:
-      return {
-        TAG: "Ok",
-        _0: "PacketStructureIsSame"
-      };
-  }
-  try {
-    return map2(map2(parse181(buffer, fromServer, void 0), fromV1449), (p) => ({
-      TAG: "ConvertedToLatestVersion",
-      _0: p
-    }));
-  } catch (raw_obj) {
-    let obj = internalToException(raw_obj);
-    if (obj.RE_EXN_ID === "JsExn") {
-      return {
-        TAG: "Error",
-        _0: {
-          TAG: "ReaderError",
-          _0: {
-            context: "Parser.parseLazy",
-            error: obj._1
-          }
-        }
-      };
-    }
-    throw obj;
-  }
-}
-function convertToV1449IfNeeded(buffer, fromServer) {
-  let match = buffer.length;
-  if (!(match > 2 || match < 0)) {
-    return {
-      TAG: "Error",
-      _0: {
-        TAG: "InvalidPacketLength",
-        _0: buffer.length
-      }
-    };
-  }
-  let match$1 = fromInt(buffer[2]);
-  if (match$1 === void 0) {
-    return {
-      TAG: "Error",
-      _0: {
-        TAG: "InvalidPacketType",
-        _0: buffer[2]
-      }
-    };
-  }
-  switch (match$1) {
-    case "PlayerInfo":
-    case "PlayerInventorySlot":
-    case "WorldInfo":
-    case "InitialTileSectionsRequest":
-    case "PlayerSpawn":
-    case "PlayerUpdate":
-    case "ItemOwner":
-    case "NpcUpdate":
-    case "Zones":
-    case "PlayerBuffsSet":
-    case "NpcBuffUpdate":
-    case "Teleport":
-    case "TravellingMerchantInventory":
-    case "TeleportationPotion":
-    case "NetModuleLoad":
-    case "ItemForceIntoNearestChest":
-    case "TileEntityDisplayDollItemSync":
-    case "PlayerLuckFactorsUpdate":
-    case "ShimmerEffectOrCoinLuck":
-      break;
-    case "DeadCellsDisplayJarTryPlacing":
-    case "PlayerSpectate":
-    case "ItemDropClear":
-    case "PlayerItemUseSound":
-    case "NpcHurtByDebuff":
-    case "Ping":
-    case "ChestResize":
-    case "LeashedEntityAnchorInsertItem":
-    case "PlayerTeamUpdate":
-    case "PlayerTeamSwapSpawn":
-    case "SectionRequest":
-    case "ItemDropPosition":
-    case "HostToken":
-      return {
-        TAG: "Ok",
-        _0: "DiscardAsNotExists"
-      };
-    default:
-      return {
-        TAG: "Ok",
-        _0: "PacketStructureIsSame"
-      };
-  }
-  try {
-    return map2(parse182(buffer, fromServer, void 0), (packet) => {
-      switch (packet.TAG) {
-        case "PlayerInventorySlot":
-          let playerInventorySlot = packet._0;
-          let slot = playerInventorySlotIdToV1449(playerInventorySlot.slot);
-          if (slot !== void 0) {
-            return {
-              TAG: "ConvertedToV1449",
-              _0: {
-                TAG: "PlayerInventorySlot",
-                _0: {
-                  playerId: playerInventorySlot.playerId,
-                  slot,
-                  stack: playerInventorySlot.stack,
-                  prefix: playerInventorySlot.prefix,
-                  itemId: playerInventorySlot.itemType
-                }
-              }
-            };
-          } else {
-            return "DiscardAsNotExists";
-          }
-        case "NetModuleLoad":
-          let converted = netModuleLoadToV1449(packet._0);
-          if (converted !== void 0) {
-            return {
-              TAG: "ConvertedToV1449",
-              _0: {
-                TAG: "NetModuleLoad",
-                _0: converted
-              }
-            };
-          } else {
-            return "DiscardAsNotExists";
-          }
-        default:
-          return {
-            TAG: "ConvertedToV1449",
-            _0: v1449ToLatest(packet)
-          };
-      }
-    });
   } catch (raw_obj) {
     let obj = internalToException(raw_obj);
     if (obj.RE_EXN_ID === "JsExn") {
