@@ -1157,7 +1157,7 @@ __export(ErrorAwarePacketWriter_exports, {
   setType: () => setType
 });
 
-// node_modules/.pnpm/@popstarfreas+packetfactory@7.2.2/node_modules/@popstarfreas/packetfactory/app/bufferwriter.js
+// node_modules/.pnpm/@popstarfreas+packetfactory@7.2.3/node_modules/@popstarfreas/packetfactory/app/bufferwriter.js
 var BufferWriter = class {
   constructor(buffer) {
     this._offset = 0;
@@ -1278,7 +1278,7 @@ var BufferWriter = class {
 };
 var bufferwriter_default = BufferWriter;
 
-// node_modules/.pnpm/@popstarfreas+packetfactory@7.2.2/node_modules/@popstarfreas/packetfactory/app/dumbpacketwriter.js
+// node_modules/.pnpm/@popstarfreas+packetfactory@7.2.3/node_modules/@popstarfreas/packetfactory/app/dumbpacketwriter.js
 var PacketWriter = class {
   constructor(buffer) {
     this._writer = new bufferwriter_default(buffer);
@@ -1379,7 +1379,7 @@ var PacketWriter = class {
 };
 var dumbpacketwriter_default = PacketWriter;
 
-// node_modules/.pnpm/@popstarfreas+packetfactory@7.2.2/node_modules/@popstarfreas/packetfactory/app/networktext.js
+// node_modules/.pnpm/@popstarfreas+packetfactory@7.2.3/node_modules/@popstarfreas/packetfactory/app/networktext.js
 var NetworkText = class {
   constructor(mode, text, substitutionList = void 0) {
     this._mode = mode;
@@ -1401,7 +1401,7 @@ var NetworkText = class {
 };
 var networktext_default = NetworkText;
 
-// node_modules/.pnpm/@popstarfreas+packetfactory@7.2.2/node_modules/@popstarfreas/packetfactory/app/bufferreader.js
+// node_modules/.pnpm/@popstarfreas+packetfactory@7.2.3/node_modules/@popstarfreas/packetfactory/app/bufferreader.js
 var BufferReader = class {
   constructor(data2) {
     this.head = 0;
@@ -1599,7 +1599,7 @@ var BufferReader = class {
 };
 var bufferreader_default = BufferReader;
 
-// node_modules/.pnpm/@popstarfreas+packetfactory@7.2.2/node_modules/@popstarfreas/packetfactory/app/utils.js
+// node_modules/.pnpm/@popstarfreas+packetfactory@7.2.3/node_modules/@popstarfreas/packetfactory/app/utils.js
 function getPackedStringByteLen(str) {
   const strLen = Buffer.from(str, "utf8").length;
   if (strLen >= 128) {
@@ -1608,7 +1608,7 @@ function getPackedStringByteLen(str) {
   return 1 + strLen;
 }
 
-// node_modules/.pnpm/@popstarfreas+packetfactory@7.2.2/node_modules/@popstarfreas/packetfactory/app/packetwriter.js
+// node_modules/.pnpm/@popstarfreas+packetfactory@7.2.3/node_modules/@popstarfreas/packetfactory/app/packetwriter.js
 var PacketWriter2 = class {
   constructor(writerCls = dumbpacketwriter_default) {
     this._queue = [];
@@ -1705,6 +1705,14 @@ var PacketWriter2 = class {
   packNetworkText(networkText) {
     this.packByte(networkText.mode);
     this.packString(networkText.text);
+    if (networkText.substitutionList) {
+      this.packByte(networkText.substitutionList.length);
+      for (let i = 0; i < networkText.substitutionList.length; i++) {
+        this.packNetworkText(networkText.substitutionList[i]);
+      }
+    } else if (networkText.mode != 0) {
+      this.packByte(0);
+    }
     return this;
   }
   packColor(color) {
@@ -2061,7 +2069,7 @@ function make() {
   return new packetwriter_default();
 }
 
-// node_modules/.pnpm/@popstarfreas+packetfactory@7.2.2/node_modules/@popstarfreas/packetfactory/app/packetreader.js
+// node_modules/.pnpm/@popstarfreas+packetfactory@7.2.3/node_modules/@popstarfreas/packetfactory/app/packetreader.js
 var PacketReader = class extends bufferreader_default {
   constructor(data2) {
     super(data2);
