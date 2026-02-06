@@ -146,6 +146,7 @@ type t = {
   underworldTreeTopStyle: int,
   rain: float,
   eventInfo: eventInfo,
+  lowTiles: bool,
   sundialCooldown: int,
   moondialCooldown: int,
   copperOreTier: int,
@@ -430,6 +431,8 @@ module Decode = {
     let? Ok(underworldTreeTopStyle) = reader->readByte("underworldTreeTopStyle")
     let? Ok(rain) = reader->readSingle("rain")
     let? Ok(eventInfo) = reader->readEventInfo
+    let? Ok(lowTilesRaw) = reader->readByte("lowTiles")
+    let lowTiles = lowTilesRaw->BitFlags.fromByte->BitFlags.flag1
     let? Ok(sundialCooldown) = reader->readByte("sundialCooldown")
     let? Ok(moondialCooldown) = reader->readByte("moondialCooldown")
     let? Ok(copperOreTier) = reader->readInt16("copperOreTier")
@@ -518,6 +521,7 @@ module Decode = {
       underworldTreeTopStyle,
       rain,
       eventInfo,
+      lowTiles,
       sundialCooldown,
       moondialCooldown,
       copperOreTier,
@@ -731,6 +735,19 @@ module Encode = {
     ->ErrorAwarePacketWriter.packByte(self.underworldTreeTopStyle, "underworldTreeTopStyle")
     ->ErrorAwarePacketWriter.packSingle(self.rain, "rain")
     ->packEventInfo(self.eventInfo)
+    ->ErrorAwarePacketWriter.packByte(
+      BitFlags.fromFlags(
+        ~flag1=self.lowTiles,
+        ~flag2=false,
+        ~flag3=false,
+        ~flag4=false,
+        ~flag5=false,
+        ~flag6=false,
+        ~flag7=false,
+        ~flag8=false,
+      )->BitFlags.toByte,
+      "lowTiles",
+    )
     ->ErrorAwarePacketWriter.packByte(self.sundialCooldown, "sundialCooldown")
     ->ErrorAwarePacketWriter.packByte(self.moondialCooldown, "moondialCooldown")
     ->ErrorAwarePacketWriter.packInt16(self.copperOreTier, "copperOreTier")

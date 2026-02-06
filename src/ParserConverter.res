@@ -231,6 +231,7 @@ let worldInfoFromV1449 = (worldInfo: PacketV1449.WorldInfo.t): Packet.WorldInfo.
     underworldTreeTopStyle: worldInfo.underworldTreeTopStyle,
     rain: worldInfo.rain,
     eventInfo: worldEventInfoFromV1449(worldInfo.eventInfo),
+    lowTiles: false,
     sundialCooldown: worldInfo.sundialCooldown,
     moondialCooldown: worldInfo.moondialCooldown,
     copperOreTier: worldInfo.copperOreTier,

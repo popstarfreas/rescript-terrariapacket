@@ -429,7 +429,7 @@ module Decode = {
     | 2 => Ok(Chat)
     | _ =>
       Error({
-        context: "Packet_NetModuleLoad.parseBestiary",
+        context: "PacketV1449_NetModuleLoad.parseBestiary",
         error: JsError.make("Unknown bestiary unlock type")->JsError.toJsExn,
       })
     }
@@ -449,7 +449,7 @@ module Decode = {
     | Some(p) => Ok(CreativePower(p))
     | None =>
       Error({
-        ErrorAwarePacketReader.context: "Packet_NetModuleLoad.parseCreativePower",
+        ErrorAwarePacketReader.context: "PacketV1449_NetModuleLoad.parseCreativePower",
         error: JsError.make("Failed to parse creative power")->JsError.toJsExn,
       })
     }
@@ -479,7 +479,7 @@ module Decode = {
     | Some(pylonAction) => Ok(TeleportPylon({pylonAction, x, y, pylonType}))
     | None =>
       Error({
-        context: "Packet_NetModuleLoad.parseTeleportPylon",
+        context: "PacketV1449_NetModuleLoad.parseTeleportPylon",
         error: JsError.make("Unknown pylon action")->JsError.toJsExn,
       })
     }
@@ -523,7 +523,7 @@ module Decode = {
     | Some(powerLevel) => Ok(CreativePowerPermissions({powerType, powerLevel}))
     | None =>
       Error({
-        context: "Packet_NetModuleLoad.parseCreativePowerPermission",
+        context: "PacketV1449_NetModuleLoad.parseCreativePowerPermission",
         error: JsError.make("Unknown creative power permission level")->JsError.toJsExn,
       })
     }
@@ -546,7 +546,7 @@ module Decode = {
     | Some(NetModuleType.CreativePowerPermissions) => reader->parseCreativePowerPermission
     | None =>
       Error({
-        context: "Packet_NetModuleLoad.parse",
+        context: "PacketV1449_NetModuleLoad.parse",
         error: JsError.make("Unknown net module type")->JsError.toJsExn,
       })
     }

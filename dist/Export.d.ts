@@ -3338,6 +3338,7 @@ declare type t_107 = {
     readonly underworldTreeTopStyle: number;
     readonly rain: number;
     readonly eventInfo: eventInfo;
+    readonly lowTiles: boolean;
     readonly sundialCooldown: number;
     readonly moondialCooldown: number;
     readonly copperOreTier: number;

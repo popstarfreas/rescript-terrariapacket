@@ -159,7 +159,7 @@ function parse(payload, fromServer) {
     return {
       TAG: "Error",
       _0: {
-        context: "Packet_NetModuleLoad.parse",
+        context: "PacketV1449_NetModuleLoad.parse",
         error: new Error("Unknown net module type")
       }
     };
@@ -348,7 +348,7 @@ function parse(payload, fromServer) {
           e$15 = {
             TAG: "Error",
             _0: {
-              context: "Packet_NetModuleLoad.parseBestiary",
+              context: "PacketV1449_NetModuleLoad.parseBestiary",
               error: new Error("Unknown bestiary unlock type")
             }
           };
@@ -401,7 +401,7 @@ function parse(payload, fromServer) {
         return {
           TAG: "Error",
           _0: {
-            context: "Packet_NetModuleLoad.parseCreativePower",
+            context: "PacketV1449_NetModuleLoad.parseCreativePower",
             error: new Error("Failed to parse creative power")
           }
         };
@@ -478,7 +478,7 @@ function parse(payload, fromServer) {
         return {
           TAG: "Error",
           _0: {
-            context: "Packet_NetModuleLoad.parseTeleportPylon",
+            context: "PacketV1449_NetModuleLoad.parseTeleportPylon",
             error: new Error("Unknown pylon action")
           }
         };
@@ -570,7 +570,7 @@ function parse(payload, fromServer) {
         return {
           TAG: "Error",
           _0: {
-            context: "Packet_NetModuleLoad.parseCreativePowerPermission",
+            context: "PacketV1449_NetModuleLoad.parseCreativePowerPermission",
             error: new Error("Unknown creative power permission level")
           }
         };
