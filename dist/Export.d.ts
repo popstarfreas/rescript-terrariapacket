@@ -575,6 +575,7 @@ export declare namespace DimensionsUpdatePacket {
         ip,
         dimensionName,
         port,
+        switchServerManual,
         t_13 as t,
         UpdateType_t,
         UpdateType,
@@ -3181,6 +3182,18 @@ export declare namespace SwitchHitPacket {
     }
 }
 
+declare type switchServerManual = {
+    readonly serverName: (undefined | string);
+    readonly ip: ip;
+    readonly port: port
+};
+
+declare type switchServerManual_2 = {
+    readonly serverName: (undefined | string);
+    readonly ip: ip_2;
+    readonly port: port_2
+};
+
 declare type t = { readonly anglerQuest: number; readonly anglerQuestFinished: boolean };
 
 declare type t_10 = { readonly playerId: number; readonly countsAsHost: boolean };
@@ -3811,7 +3824,7 @@ declare type t_13 =
 | "GamemodesJoinMode"
 | { TAG: "RealIpAddress"; _0: ip }
 | { TAG: "SwitchServer"; _0: dimensionName }
-| { TAG: "SwitchServerManual"; _0: ip; _1: port };
+| { TAG: "SwitchServerManual"; _0: switchServerManual };
 
 declare type t_130 = { readonly x: number; readonly y: number };
 
@@ -3960,7 +3973,7 @@ declare type t_161 =
 | "GamemodesJoinMode"
 | { TAG: "RealIpAddress"; _0: ip_2 }
 | { TAG: "SwitchServer"; _0: dimensionName_2 }
-| { TAG: "SwitchServerManual"; _0: ip_2; _1: port_2 };
+| { TAG: "SwitchServerManual"; _0: switchServerManual_2 };
 
 declare type t_162 = { readonly uuid: string };
 

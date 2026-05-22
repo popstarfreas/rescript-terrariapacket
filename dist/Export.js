@@ -2724,6 +2724,73 @@ __export(PacketV1449_DimensionsUpdate_exports, {
   parse: () => parse13,
   toBuffer: () => toBuffer13
 });
+
+// node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Stdlib_Result.js
+function map(opt, f) {
+  if (opt.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: f(opt._0)
+    };
+  } else {
+    return opt;
+  }
+}
+function mapError(r, f) {
+  if (r.TAG === "Ok") {
+    return r;
+  } else {
+    return {
+      TAG: "Error",
+      _0: f(r._0)
+    };
+  }
+}
+function all4(param) {
+  let d = param[3];
+  let c = param[2];
+  let b = param[1];
+  let a = param[0];
+  if (a.TAG === "Ok") {
+    if (b.TAG === "Ok") {
+      if (c.TAG === "Ok") {
+        if (d.TAG === "Ok") {
+          return {
+            TAG: "Ok",
+            _0: [
+              a._0,
+              b._0,
+              c._0,
+              d._0
+            ]
+          };
+        } else {
+          return {
+            TAG: "Error",
+            _0: d._0
+          };
+        }
+      } else {
+        return {
+          TAG: "Error",
+          _0: c._0
+        };
+      }
+    } else {
+      return {
+        TAG: "Error",
+        _0: b._0
+      };
+    }
+  } else {
+    return {
+      TAG: "Error",
+      _0: a._0
+    };
+  }
+}
+
+// src/packetv1449/PacketV1449_DimensionsUpdate.js
 function toInt4(self) {
   switch (self) {
     case "RealIpAddress":
@@ -2808,17 +2875,32 @@ function parse13(payload) {
         return e$3;
       }
       let e$4 = readUInt16(reader, "port");
-      if (e$4.TAG === "Ok") {
+      if (e$4.TAG !== "Ok") {
+        return e$4;
+      }
+      let bytesLeft = getBytesLeft(reader);
+      let e$5;
+      e$5 = bytesLeft.TAG === "Ok" ? bytesLeft._0 > 0 ? map(readString(reader, "serverName"), (v) => v) : {
+        TAG: "Ok",
+        _0: void 0
+      } : {
+        TAG: "Error",
+        _0: bytesLeft._0
+      };
+      if (e$5.TAG === "Ok") {
         return {
           TAG: "Ok",
           _0: {
             TAG: "SwitchServerManual",
-            _0: e$3._0,
-            _1: e$4._0
+            _0: {
+              serverName: e$5._0,
+              ip: e$3._0,
+              port: e$4._0
+            }
           }
         };
       } else {
-        return e$4;
+        return e$5;
       }
   }
 }
@@ -2837,9 +2919,11 @@ function toBuffer13(self) {
       let dimensionName = self._0;
       return data(packString(packInt16(setType(make(), toInt("DimensionsUpdate")), 2, "updateType"), dimensionName, "dimensionName"));
     case "SwitchServerManual":
-      let ip$1 = self._0;
-      let port = self._1;
-      return data(packUInt16(packString(packInt16(setType(make(), toInt("DimensionsUpdate")), 3, "updateType"), ip$1, "ip"), port, "port"));
+      let match = self._0;
+      let ip$1 = match.ip;
+      let port = match.port;
+      let serverName = match.serverName;
+      return data((serverName !== void 0 ? (__x) => packString(__x, serverName, "serverName") : (writer) => writer)(packUInt16(packString(packInt16(setType(make(), toInt("DimensionsUpdate")), 3, "updateType"), ip$1, "ip"), port, "port")));
   }
 }
 
@@ -3244,7 +3328,7 @@ function mapOr(opt, $$default, f) {
     return $$default;
   }
 }
-function map(opt, f) {
+function map2(opt, f) {
   if (opt !== void 0) {
     return some(f(valFromOption(opt)));
   }
@@ -3742,7 +3826,7 @@ function parse$2(reader) {
     case 4:
       return "StartMidnightImmediately";
     case 5:
-      return map(parse$1(reader), (m) => ({
+      return map2(parse$1(reader), (m) => ({
         TAG: "GodmodePower",
         _0: m
       }));
@@ -3772,7 +3856,7 @@ function parse$2(reader) {
         _0: reader.readByte() === 1
       };
     case 11:
-      return map(parse$1(reader), (m) => ({
+      return map2(parse$1(reader), (m) => ({
         TAG: "FarPlacementRangePower",
         _0: m
       }));
@@ -3787,7 +3871,7 @@ function parse$2(reader) {
         _0: reader.readByte() === 1
       };
     case 14:
-      return map(parse22(reader), (m) => ({
+      return map2(parse22(reader), (m) => ({
         TAG: "SpawnRateSliderPerPlayerPower",
         _0: m
       }));
@@ -7307,73 +7391,6 @@ __export(Packet_Teleport_exports, {
   parse: () => parse54,
   toBuffer: () => toBuffer53
 });
-
-// node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Stdlib_Result.js
-function map2(opt, f) {
-  if (opt.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: f(opt._0)
-    };
-  } else {
-    return opt;
-  }
-}
-function mapError(r, f) {
-  if (r.TAG === "Ok") {
-    return r;
-  } else {
-    return {
-      TAG: "Error",
-      _0: f(r._0)
-    };
-  }
-}
-function all4(param) {
-  let d = param[3];
-  let c = param[2];
-  let b = param[1];
-  let a = param[0];
-  if (a.TAG === "Ok") {
-    if (b.TAG === "Ok") {
-      if (c.TAG === "Ok") {
-        if (d.TAG === "Ok") {
-          return {
-            TAG: "Ok",
-            _0: [
-              a._0,
-              b._0,
-              c._0,
-              d._0
-            ]
-          };
-        } else {
-          return {
-            TAG: "Error",
-            _0: d._0
-          };
-        }
-      } else {
-        return {
-          TAG: "Error",
-          _0: c._0
-        };
-      }
-    } else {
-      return {
-        TAG: "Error",
-        _0: b._0
-      };
-    }
-  } else {
-    return {
-      TAG: "Error",
-      _0: a._0
-    };
-  }
-}
-
-// src/packet/Packet_Teleport.js
 function parse54(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "flags");
@@ -7401,7 +7418,7 @@ function parse54(payload) {
   if (e$4.TAG !== "Ok") {
     return e$4;
   }
-  let e$5 = flag4(flags) ? map2(readInt32(reader, "extraInfo"), (v) => v) : {
+  let e$5 = flag4(flags) ? map(readInt32(reader, "extraInfo"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
@@ -15405,37 +15422,37 @@ function parseLeashedEntityAnchorKind(reader) {
 function parseEntityKind(entityType, reader) {
   switch (entityType) {
     case 0:
-      return map2(parseTrainingDummyKind(reader), (v) => ({
+      return map(parseTrainingDummyKind(reader), (v) => ({
         TAG: "TrainingDummy",
         _0: v
       }));
     case 1:
-      return map2(parseDisplayItem(reader), (v) => ({
+      return map(parseDisplayItem(reader), (v) => ({
         TAG: "ItemFrame",
         _0: v
       }));
     case 2:
-      return map2(parseLogicSensorKind(reader), (v) => ({
+      return map(parseLogicSensorKind(reader), (v) => ({
         TAG: "LogicSensor",
         _0: v
       }));
     case 3:
-      return map2(parseDisplayDollKind(reader), (v) => ({
+      return map(parseDisplayDollKind(reader), (v) => ({
         TAG: "DisplayDoll",
         _0: v
       }));
     case 4:
-      return map2(parseDisplayItem(reader), (v) => ({
+      return map(parseDisplayItem(reader), (v) => ({
         TAG: "WeaponsRack",
         _0: v
       }));
     case 5:
-      return map2(parseHatRackKind(reader), (v) => ({
+      return map(parseHatRackKind(reader), (v) => ({
         TAG: "HatRack",
         _0: v
       }));
     case 6:
-      return map2(parseDisplayItem(reader), (v) => ({
+      return map(parseDisplayItem(reader), (v) => ({
         TAG: "FoodPlatter",
         _0: v
       }));
@@ -15448,17 +15465,17 @@ function parseEntityKind(entityType, reader) {
         }
       };
     case 8:
-      return map2(parseDisplayItem(reader), (v) => ({
+      return map(parseDisplayItem(reader), (v) => ({
         TAG: "DeadCellsDisplayJar",
         _0: v
       }));
     case 9:
-      return map2(parseLeashedEntityAnchorKind(reader), (v) => ({
+      return map(parseLeashedEntityAnchorKind(reader), (v) => ({
         TAG: "KiteAnchor",
         _0: v
       }));
     case 10:
-      return map2(parseLeashedEntityAnchorKind(reader), (v) => ({
+      return map(parseLeashedEntityAnchorKind(reader), (v) => ({
         TAG: "CritterAnchor",
         _0: v
       }));
@@ -20885,42 +20902,42 @@ function parse129(payload) {
 
 // src/packetv1449/PacketV1449_ItemDropModify.js
 function parseFlags2(reader, flags2) {
-  let width = flag1(flags2) ? map2(readInt16(reader, "width"), (v) => v) : {
+  let width = flag1(flags2) ? map(readInt16(reader, "width"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
   if (width.TAG !== "Ok") {
     return width;
   }
-  let height = flag2(flags2) ? map2(readInt16(reader, "height"), (v) => v) : {
+  let height = flag2(flags2) ? map(readInt16(reader, "height"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
   if (height.TAG !== "Ok") {
     return height;
   }
-  let scale = flag3(flags2) ? map2(readSingle(reader, "scale"), (v) => v) : {
+  let scale = flag3(flags2) ? map(readSingle(reader, "scale"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
   if (scale.TAG !== "Ok") {
     return scale;
   }
-  let ammo = flag4(flags2) ? map2(readInt16(reader, "ammo"), (v) => v) : {
+  let ammo = flag4(flags2) ? map(readInt16(reader, "ammo"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
   if (ammo.TAG !== "Ok") {
     return ammo;
   }
-  let useAmmo = flag5(flags2) ? map2(readInt16(reader, "useAmmo"), (v) => v) : {
+  let useAmmo = flag5(flags2) ? map(readInt16(reader, "useAmmo"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
   if (useAmmo.TAG !== "Ok") {
     return useAmmo;
   }
-  let notAmmo = flag6(flags2) ? map2(readByte(reader, "notAmmo"), (v) => v === 1) : {
+  let notAmmo = flag6(flags2) ? map(readByte(reader, "notAmmo"), (v) => v === 1) : {
     TAG: "Ok",
     _0: void 0
   };
@@ -20987,42 +21004,42 @@ function parse130(payload) {
   if (color.TAG !== "Ok") {
     return color;
   }
-  let damage = flag2(flags1) ? map2(readUInt16(reader, "damage"), (v) => v) : {
+  let damage = flag2(flags1) ? map(readUInt16(reader, "damage"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
   if (damage.TAG !== "Ok") {
     return damage;
   }
-  let knockback = flag3(flags1) ? map2(readSingle(reader, "knockback"), (v) => v) : {
+  let knockback = flag3(flags1) ? map(readSingle(reader, "knockback"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
   if (knockback.TAG !== "Ok") {
     return knockback;
   }
-  let useAnimation = flag4(flags1) ? map2(readUInt16(reader, "useAnimation"), (v) => v) : {
+  let useAnimation = flag4(flags1) ? map(readUInt16(reader, "useAnimation"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
   if (useAnimation.TAG !== "Ok") {
     return useAnimation;
   }
-  let useTime = flag5(flags1) ? map2(readUInt16(reader, "useTime"), (v) => v) : {
+  let useTime = flag5(flags1) ? map(readUInt16(reader, "useTime"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
   if (useTime.TAG !== "Ok") {
     return useTime;
   }
-  let shoot = flag6(flags1) ? map2(readInt16(reader, "shoot"), (v) => v) : {
+  let shoot = flag6(flags1) ? map(readInt16(reader, "shoot"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
   if (shoot.TAG !== "Ok") {
     return shoot;
   }
-  let shootSpeed = flag7(flags1) ? map2(readSingle(reader, "shootSpeed"), (v) => v) : {
+  let shootSpeed = flag7(flags1) ? map(readSingle(reader, "shootSpeed"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
@@ -21419,21 +21436,21 @@ function parse134(payload) {
     return e$3;
   }
   let flags = fromByte(e$3._0);
-  let e$4 = flag1(flags) ? map2(readInt32(reader, "styleOverride"), (v) => v) : {
+  let e$4 = flag1(flags) ? map(readInt32(reader, "styleOverride"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
   if (e$4.TAG !== "Ok") {
     return e$4;
   }
-  let e$5 = flag2(flags) ? map2(readSingle(reader, "volumeOverride"), (v) => v) : {
+  let e$5 = flag2(flags) ? map(readSingle(reader, "volumeOverride"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
   if (e$5.TAG !== "Ok") {
     return e$5;
   }
-  let e$6 = flag3(flags) ? map2(readSingle(reader, "pitchOverride"), (v) => v) : {
+  let e$6 = flag3(flags) ? map(readSingle(reader, "pitchOverride"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
@@ -22260,7 +22277,7 @@ function addPacketContext(packetName2, err) {
   };
 }
 function mapPacket(result, packetName2, fn) {
-  return mapError(map2(result, fn), (e) => ({
+  return mapError(map(result, fn), (e) => ({
     TAG: "ReaderError",
     _0: addPacketContext(packetName2, e)
   }));
