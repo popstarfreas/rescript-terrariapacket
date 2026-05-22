@@ -11,11 +11,17 @@ export type dimensionName = string;
 
 export type port = number;
 
+export type switchServerManual = {
+  readonly serverName: (undefined | string);
+  readonly ip: ip;
+  readonly port: port
+};
+
 export type t =
   | "GamemodesJoinMode"
   | { TAG: "RealIpAddress"; _0: ip }
   | { TAG: "SwitchServer"; _0: dimensionName }
-  | { TAG: "SwitchServerManual"; _0: ip; _1: port };
+  | { TAG: "SwitchServerManual"; _0: switchServerManual };
 
 export type UpdateType_t =
   | "RealIpAddress"

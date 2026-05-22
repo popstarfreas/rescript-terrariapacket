@@ -2,15 +2,19 @@ type ip = string
 type dimensionName = string
 type port = int
 
-@genType
+type switchServerManual = {
+  serverName: option<string>,
+  ip: ip,
+  port: port,
+}
+
 type t =
   | RealIpAddress(ip)
   | GamemodesJoinMode
   | SwitchServer(dimensionName)
-  | SwitchServerManual(ip, port)
+  | SwitchServerManual(switchServerManual)
 
 module UpdateType: {
-  @genType
   type t =
     | RealIpAddress
     | GamemodesJoinMode

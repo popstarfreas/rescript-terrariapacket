@@ -2,11 +2,17 @@ type ip = string
 type dimensionName = string
 type port = int
 
+type switchServerManual = {
+  serverName: option<string>,
+  ip: ip,
+  port: port,
+}
+
 type t =
   | RealIpAddress(ip)
   | GamemodesJoinMode
   | SwitchServer(dimensionName)
-  | SwitchServerManual(ip, port)
+  | SwitchServerManual(switchServerManual)
 
 module UpdateType = {
   type t =
@@ -52,7 +58,12 @@ module Decode = {
   let parseSwitchServerManual = reader => {
     let? Ok(ip) = reader->readString("ip")
     let? Ok(port) = reader->readUInt16("port")
-    Ok(SwitchServerManual(ip, port))
+    let? Ok(serverName) = switch reader->ErrorAwarePacketReader.getBytesLeft {
+    | Ok(bytesLeft) if bytesLeft > 0 => reader->readString("serverName")->Result.map(v => Some(v))
+    | Ok(_) => Ok(None)
+    | Error(error) => Error(error)
+    }
+    Ok(SwitchServerManual({ip, port, serverName}))
   }
 
   let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
@@ -105,7 +116,7 @@ module Encode = {
     ->data
   }
 
-  let switchServerManualToBuffer = (ip: string, port: int): result<
+  let switchServerManualToBuffer = (ip: string, port: int, serverName: option<string>): result<
     NodeJs.Buffer.t,
     ErrorAwarePacketWriter.packError,
   > => {
@@ -114,6 +125,10 @@ module Encode = {
     ->packInt16(UpdateType.SwitchServerManual->UpdateType.toInt, "updateType")
     ->packString(ip, "ip")
     ->packUInt16(port, "port")
+    ->switch serverName {
+    | Some(serverName) => packString(_, serverName, "serverName")
+    | None => writer => writer
+    }
     ->data
   }
 
@@ -122,7 +137,7 @@ module Encode = {
     | RealIpAddress(ip) => realIpAddressToBuffer(ip)
     | GamemodesJoinMode => gamemodesJoinModeToBuffer()
     | SwitchServer(dimensionName) => switchServerToBuffer(dimensionName)
-    | SwitchServerManual(ip, port) => switchServerManualToBuffer(ip, port)
+    | SwitchServerManual({ip, port, serverName}) => switchServerManualToBuffer(ip, port, serverName)
     }
   }
 }
