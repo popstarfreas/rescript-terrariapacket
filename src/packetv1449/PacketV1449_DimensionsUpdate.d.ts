@@ -17,17 +17,27 @@ export type switchServerManual = {
   readonly port: port
 };
 
+export type rttUpdate = {
+  readonly playerId: number;
+  readonly clientRttMicros: number;
+  readonly serverRttMicros: number;
+  readonly overallRttMicros: number;
+  readonly updatedAt: bigint
+};
+
 export type t =
   | "GamemodesJoinMode"
   | { TAG: "RealIpAddress"; _0: ip }
   | { TAG: "SwitchServer"; _0: dimensionName }
-  | { TAG: "SwitchServerManual"; _0: switchServerManual };
+  | { TAG: "SwitchServerManual"; _0: switchServerManual }
+  | { TAG: "RttUpdate"; _0: rttUpdate };
 
 export type UpdateType_t =
   | "RealIpAddress"
   | "GamemodesJoinMode"
   | "SwitchServer"
-  | "SwitchServerManual";
+  | "SwitchServerManual"
+  | "RttUpdate";
 
 export declare const UpdateType: {
   toInt: (_1: UpdateType_t) => number;

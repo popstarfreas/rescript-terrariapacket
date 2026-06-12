@@ -576,6 +576,7 @@ export declare namespace DimensionsUpdatePacket {
         dimensionName,
         port,
         switchServerManual,
+        rttUpdate,
         t_13 as t,
         UpdateType_t,
         UpdateType,
@@ -3188,6 +3189,14 @@ declare type switchServerManual = {
     readonly port: port
 };
 
+declare type rttUpdate = {
+    readonly playerId: number;
+    readonly clientRttMicros: number;
+    readonly serverRttMicros: number;
+    readonly overallRttMicros: number;
+    readonly updatedAt: bigint
+};
+
 declare type switchServerManual_2 = {
     readonly serverName: (undefined | string);
     readonly ip: ip_2;
@@ -3824,7 +3833,8 @@ declare type t_13 =
 | "GamemodesJoinMode"
 | { TAG: "RealIpAddress"; _0: ip }
 | { TAG: "SwitchServer"; _0: dimensionName }
-| { TAG: "SwitchServerManual"; _0: switchServerManual };
+| { TAG: "SwitchServerManual"; _0: switchServerManual }
+| { TAG: "RttUpdate"; _0: rttUpdate };
 
 declare type t_130 = { readonly x: number; readonly y: number };
 
@@ -6071,7 +6081,8 @@ declare type UpdateType_t =
 | "RealIpAddress"
 | "GamemodesJoinMode"
 | "SwitchServer"
-| "SwitchServerManual";
+| "SwitchServerManual"
+| "RttUpdate";
 
 export declare namespace WallPaintPacket {
     export {
