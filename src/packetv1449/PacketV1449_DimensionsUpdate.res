@@ -8,11 +8,20 @@ type switchServerManual = {
   port: port,
 }
 
+type rttUpdate = {
+  playerId: int,
+  clientRttMicros: int,
+  serverRttMicros: int,
+  overallRttMicros: int,
+  updatedAt: NodeJs.BigInt.t,
+}
+
 type t =
   | RealIpAddress(ip)
   | GamemodesJoinMode
   | SwitchServer(dimensionName)
   | SwitchServerManual(switchServerManual)
+  | RttUpdate(rttUpdate)
 
 module UpdateType = {
   type t =
@@ -20,6 +29,7 @@ module UpdateType = {
     | GamemodesJoinMode
     | SwitchServer
     | SwitchServerManual
+    | RttUpdate
 
   let toInt = self =>
     switch self {
@@ -27,6 +37,7 @@ module UpdateType = {
     | GamemodesJoinMode => 1
     | SwitchServer => 2
     | SwitchServerManual => 3
+    | RttUpdate => 6
     }
 
   let fromInt = n =>
@@ -35,12 +46,13 @@ module UpdateType = {
     | 1 => Some(GamemodesJoinMode)
     | 2 => Some(SwitchServer)
     | 3 => Some(SwitchServerManual)
+    | 6 => Some(RttUpdate)
     | _ => None
     }
 }
 
 module Decode = {
-  let {readString, readUInt16, readInt16} = module(ErrorAwarePacketReader)
+  let {readString, readUInt16, readInt16, readByte, readInt32, readUInt64} = module(ErrorAwarePacketReader)
 
   let parseRealIpAddress = reader => {
     let? Ok(ip) = reader->readString("ip")
@@ -66,6 +78,15 @@ module Decode = {
     Ok(SwitchServerManual({ip, port, serverName}))
   }
 
+  let parseRttUpdate = reader => {
+    let? Ok(playerId) = reader->readByte("playerId")
+    let? Ok(clientRttMicros) = reader->readInt32("clientRttMicros")
+    let? Ok(serverRttMicros) = reader->readInt32("serverRttMicros")
+    let? Ok(overallRttMicros) = reader->readInt32("overallRttMicros")
+    let? Ok(updatedAt) = reader->readUInt64("updatedAt")
+    Ok(RttUpdate({playerId, clientRttMicros, serverRttMicros, overallRttMicros, updatedAt}))
+  }
+
   let parse = (payload: NodeJs.Buffer.t): result<t, ErrorAwarePacketReader.readError> => {
     let reader = PacketFactory.PacketReader.make(payload)
     let? Ok(updateType) = reader->readInt16("updateType")
@@ -74,6 +95,7 @@ module Decode = {
     | Some(GamemodesJoinMode) => parseGamemodesJoinMode(reader)
     | Some(SwitchServer) => parseSwitchServer(reader)
     | Some(SwitchServerManual) => parseSwitchServerManual(reader)
+    | Some(RttUpdate) => parseRttUpdate(reader)
     | None =>
       Error({
         context: "DimensionsUpdate.parse.updateType",
@@ -84,7 +106,7 @@ module Decode = {
 }
 
 module Encode = {
-  let {packString, packInt16, packUInt16, setType, data} = module(ErrorAwarePacketWriter)
+  let {packString, packInt16, packUInt16, packByte, packInt32, packUInt64, setType, data} = module(ErrorAwarePacketWriter)
 
   let realIpAddressToBuffer = (ip: string): result<
     NodeJs.Buffer.t,
@@ -132,12 +154,28 @@ module Encode = {
     ->data
   }
 
+  let rttUpdateToBuffer = (rttUpdate: rttUpdate): result<
+    NodeJs.Buffer.t,
+    ErrorAwarePacketWriter.packError,
+  > => {
+    ErrorAwarePacketWriter.make()
+    ->setType(PacketType.DimensionsUpdate->PacketType.toInt)
+    ->packInt16(UpdateType.RttUpdate->UpdateType.toInt, "updateType")
+    ->packByte(rttUpdate.playerId, "playerId")
+    ->packInt32(rttUpdate.clientRttMicros, "clientRttMicros")
+    ->packInt32(rttUpdate.serverRttMicros, "serverRttMicros")
+    ->packInt32(rttUpdate.overallRttMicros, "overallRttMicros")
+    ->packUInt64(rttUpdate.updatedAt, "updatedAt")
+    ->data
+  }
+
   let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
     switch self {
     | RealIpAddress(ip) => realIpAddressToBuffer(ip)
     | GamemodesJoinMode => gamemodesJoinModeToBuffer()
     | SwitchServer(dimensionName) => switchServerToBuffer(dimensionName)
     | SwitchServerManual({ip, port, serverName}) => switchServerManualToBuffer(ip, port, serverName)
+    | RttUpdate(rttUpdate) => rttUpdateToBuffer(rttUpdate)
     }
   }
 }

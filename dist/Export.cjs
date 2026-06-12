@@ -2944,6 +2944,8 @@ function toInt4(self) {
       return 2;
     case "SwitchServerManual":
       return 3;
+    case "RttUpdate":
+      return 6;
   }
 }
 function fromInt4(n) {
@@ -2956,6 +2958,8 @@ function fromInt4(n) {
       return "SwitchServer";
     case 3:
       return "SwitchServerManual";
+    case 6:
+      return "RttUpdate";
     default:
       return;
   }
@@ -3045,6 +3049,41 @@ function parse13(payload) {
       } else {
         return e$5;
       }
+    case "RttUpdate":
+      let e$6 = readByte(reader, "playerId");
+      if (e$6.TAG !== "Ok") {
+        return e$6;
+      }
+      let e$7 = readInt32(reader, "clientRttMicros");
+      if (e$7.TAG !== "Ok") {
+        return e$7;
+      }
+      let e$8 = readInt32(reader, "serverRttMicros");
+      if (e$8.TAG !== "Ok") {
+        return e$8;
+      }
+      let e$9 = readInt32(reader, "overallRttMicros");
+      if (e$9.TAG !== "Ok") {
+        return e$9;
+      }
+      let e$10 = readUInt64(reader, "updatedAt");
+      if (e$10.TAG === "Ok") {
+        return {
+          TAG: "Ok",
+          _0: {
+            TAG: "RttUpdate",
+            _0: {
+              playerId: e$6._0,
+              clientRttMicros: e$7._0,
+              serverRttMicros: e$8._0,
+              overallRttMicros: e$9._0,
+              updatedAt: e$10._0
+            }
+          }
+        };
+      } else {
+        return e$10;
+      }
   }
 }
 function gamemodesJoinModeToBuffer() {
@@ -3067,6 +3106,9 @@ function toBuffer13(self) {
       let port = match.port;
       let serverName = match.serverName;
       return data((serverName !== void 0 ? (__x) => packString(__x, serverName, "serverName") : (writer) => writer)(packUInt16(packString(packInt16(setType(make(), toInt("DimensionsUpdate")), 3, "updateType"), ip$1, "ip"), port, "port")));
+    case "RttUpdate":
+      let rttUpdate = self._0;
+      return data(packUInt64(packInt32(packInt32(packInt32(packByte(packInt16(setType(make(), toInt("DimensionsUpdate")), 6, "updateType"), rttUpdate.playerId, "playerId"), rttUpdate.clientRttMicros, "clientRttMicros"), rttUpdate.serverRttMicros, "serverRttMicros"), rttUpdate.overallRttMicros, "overallRttMicros"), rttUpdate.updatedAt, "updatedAt"));
   }
 }
 

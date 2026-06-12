@@ -8,11 +8,20 @@ type switchServerManual = {
   port: port,
 }
 
+type rttUpdate = {
+  playerId: int,
+  clientRttMicros: int,
+  serverRttMicros: int,
+  overallRttMicros: int,
+  updatedAt: NodeJs.BigInt.t,
+}
+
 type t =
   | RealIpAddress(ip)
   | GamemodesJoinMode
   | SwitchServer(dimensionName)
   | SwitchServerManual(switchServerManual)
+  | RttUpdate(rttUpdate)
 
 module UpdateType: {
   type t =
@@ -20,6 +29,7 @@ module UpdateType: {
     | GamemodesJoinMode
     | SwitchServer
     | SwitchServerManual
+    | RttUpdate
 
   let toInt: t => int
 

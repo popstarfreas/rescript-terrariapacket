@@ -55,6 +55,39 @@ Zora.test("DimensionsUpdate parses and serialises legacy SwitchServerManual pack
 
 Zora.test("DimensionsUpdate parses and serialises SwitchServerManual packets with serverName", t => assertSwitchServerManualRoundTrip(t, "1700430300093132372e302e302e31611e054c6f626279", "Lobby"));
 
+Zora.test("DimensionsUpdate parses and serialises RTT update packets", t => {
+  let hex = "1a0043060003d8d600008813000060ea000015cd5b0700000000";
+  let buffer = Buffer.from(hex, "hex");
+  let packet = PacketV1449_DimensionsUpdate$TerrariaPacket.parse(buffer);
+  if (packet.TAG === "Ok") {
+    let packet$1 = packet._0;
+    if (typeof packet$1 !== "object") {
+      t.fail("Expected RttUpdate");
+      return;
+    }
+    if (packet$1.TAG === "RttUpdate") {
+      let rttUpdate = packet$1._0;
+      t.equal(rttUpdate.playerId, 3);
+      t.equal(rttUpdate.clientRttMicros, 55000);
+      t.equal(rttUpdate.serverRttMicros, 5000);
+      t.equal(rttUpdate.overallRttMicros, 60000);
+      t.equal(Number(rttUpdate.updatedAt), 123456789);
+      let encoded = PacketV1449_DimensionsUpdate$TerrariaPacket.toBuffer(packet$1);
+      if (encoded.TAG === "Ok") {
+        t.equal(encoded._0.toString("hex"), hex);
+        return;
+      }
+      t.fail(errorMessage(encoded._0.error));
+      return;
+    }
+    t.fail("Expected RttUpdate");
+    return;
+  } else {
+    t.fail(errorMessage(packet._0.error));
+    return;
+  }
+});
+
 export {
   bufferFromHex,
   bufferToHex,

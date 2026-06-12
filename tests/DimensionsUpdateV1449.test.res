@@ -44,3 +44,25 @@ zoraBlock("DimensionsUpdate parses and serialises SwitchServerManual packets wit
     ~expectedServerName=Some("Lobby"),
   )
 })
+
+zoraBlock("DimensionsUpdate parses and serialises RTT update packets", t => {
+  let hex = "1a0043060003d8d600008813000060ea000015cd5b0700000000"
+  let buffer = bufferFromHex(hex)
+
+  switch PacketV1449_DimensionsUpdate.parse(buffer) {
+  | Ok(PacketV1449_DimensionsUpdate.RttUpdate(rttUpdate) as packet) => {
+      t->equal(rttUpdate.playerId, 3)
+      t->equal(rttUpdate.clientRttMicros, 55000)
+      t->equal(rttUpdate.serverRttMicros, 5000)
+      t->equal(rttUpdate.overallRttMicros, 60000)
+      t->equal(NodeJs.BigInt.toInt(rttUpdate.updatedAt), 123456789)
+
+      switch PacketV1449_DimensionsUpdate.toBuffer(packet) {
+      | Ok(encoded) => t->equal(bufferToHex(encoded), hex)
+      | Error(err) => t->fail(~msg=errorMessage(err.error))
+      }
+    }
+  | Ok(_) => t->fail(~msg="Expected RttUpdate")
+  | Error(err) => t->fail(~msg=errorMessage(err.error))
+  }
+})
