@@ -27,7 +27,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// Export.ts
+// src/Export.ts
 var Export_exports = {};
 __export(Export_exports, {
   AnglerQuestCompletePacket: () => PacketV1449_AnglerQuestComplete_exports,
@@ -159,14 +159,14 @@ __export(Export_exports, {
 });
 module.exports = __toCommonJS(Export_exports);
 
-// packetv1449/PacketV1449_AnglerQuest.js
+// src/packetv1449/PacketV1449_AnglerQuest.js
 var PacketV1449_AnglerQuest_exports = {};
 __export(PacketV1449_AnglerQuest_exports, {
   parse: () => parse,
   toBuffer: () => toBuffer
 });
 
-// PacketType.js
+// src/PacketType.js
 var PacketType_exports = {};
 __export(PacketType_exports, {
   fromInt: () => fromInt,
@@ -1148,12 +1148,12 @@ function packetName(packetType) {
   }
 }
 
-// ../node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Stdlib_JsError.js
+// node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Stdlib_JsError.js
 function throwWithMessage(str) {
   throw new Error(str);
 }
 
-// ../node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Primitive_exceptions.js
+// node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Primitive_exceptions.js
 function isExtension(e) {
   if (e == null) {
     return false;
@@ -1172,7 +1172,7 @@ function internalToException(e) {
   }
 }
 
-// ErrorAwarePacketReader.js
+// src/ErrorAwarePacketReader.js
 function readByteUnsafe(prim) {
   return prim.readByte();
 }
@@ -1296,7 +1296,7 @@ function getBytesLeft(reader) {
   return withContext(getBytesLeftUnsafe, reader, "getBytesLeft");
 }
 
-// ErrorAwarePacketWriter.js
+// src/ErrorAwarePacketWriter.js
 var ErrorAwarePacketWriter_exports = {};
 __export(ErrorAwarePacketWriter_exports, {
   data: () => data,
@@ -1319,7 +1319,7 @@ __export(ErrorAwarePacketWriter_exports, {
   setType: () => setType
 });
 
-// ../node_modules/.pnpm/@popstarfreas+packetfactory@7.2.3/node_modules/@popstarfreas/packetfactory/app/bufferwriter.js
+// node_modules/.pnpm/@popstarfreas+packetfactory@7.2.3/node_modules/@popstarfreas/packetfactory/app/bufferwriter.js
 var BufferWriter = class {
   constructor(buffer) {
     this._offset = 0;
@@ -1440,7 +1440,7 @@ var BufferWriter = class {
 };
 var bufferwriter_default = BufferWriter;
 
-// ../node_modules/.pnpm/@popstarfreas+packetfactory@7.2.3/node_modules/@popstarfreas/packetfactory/app/dumbpacketwriter.js
+// node_modules/.pnpm/@popstarfreas+packetfactory@7.2.3/node_modules/@popstarfreas/packetfactory/app/dumbpacketwriter.js
 var PacketWriter = class {
   constructor(buffer) {
     this._writer = new bufferwriter_default(buffer);
@@ -1541,7 +1541,7 @@ var PacketWriter = class {
 };
 var dumbpacketwriter_default = PacketWriter;
 
-// ../node_modules/.pnpm/@popstarfreas+packetfactory@7.2.3/node_modules/@popstarfreas/packetfactory/app/networktext.js
+// node_modules/.pnpm/@popstarfreas+packetfactory@7.2.3/node_modules/@popstarfreas/packetfactory/app/networktext.js
 var NetworkText = class {
   constructor(mode, text, substitutionList = void 0) {
     this._mode = mode;
@@ -1563,7 +1563,7 @@ var NetworkText = class {
 };
 var networktext_default = NetworkText;
 
-// ../node_modules/.pnpm/@popstarfreas+packetfactory@7.2.3/node_modules/@popstarfreas/packetfactory/app/bufferreader.js
+// node_modules/.pnpm/@popstarfreas+packetfactory@7.2.3/node_modules/@popstarfreas/packetfactory/app/bufferreader.js
 var BufferReader = class {
   constructor(data2) {
     this.head = 0;
@@ -1761,7 +1761,7 @@ var BufferReader = class {
 };
 var bufferreader_default = BufferReader;
 
-// ../node_modules/.pnpm/@popstarfreas+packetfactory@7.2.3/node_modules/@popstarfreas/packetfactory/app/utils.js
+// node_modules/.pnpm/@popstarfreas+packetfactory@7.2.3/node_modules/@popstarfreas/packetfactory/app/utils.js
 function getPackedStringByteLen(str) {
   const strLen = Buffer.from(str, "utf8").length;
   if (strLen >= 128) {
@@ -1770,7 +1770,7 @@ function getPackedStringByteLen(str) {
   return 1 + strLen;
 }
 
-// ../node_modules/.pnpm/@popstarfreas+packetfactory@7.2.3/node_modules/@popstarfreas/packetfactory/app/packetwriter.js
+// node_modules/.pnpm/@popstarfreas+packetfactory@7.2.3/node_modules/@popstarfreas/packetfactory/app/packetwriter.js
 var PacketWriter2 = class {
   constructor(writerCls = dumbpacketwriter_default) {
     this._queue = [];
@@ -1892,7 +1892,7 @@ var PacketWriter2 = class {
 };
 var packetwriter_default = PacketWriter2;
 
-// ErrorAwarePacketWriter.js
+// src/ErrorAwarePacketWriter.js
 function packSingle(self, value, context) {
   if (self.TAG !== "Writing") {
     return self;
@@ -2247,7 +2247,7 @@ function make() {
   return new packetwriter_default();
 }
 
-// ../node_modules/.pnpm/@popstarfreas+packetfactory@7.2.3/node_modules/@popstarfreas/packetfactory/app/packetreader.js
+// node_modules/.pnpm/@popstarfreas+packetfactory@7.2.3/node_modules/@popstarfreas/packetfactory/app/packetreader.js
 var PacketReader = class extends bufferreader_default {
   constructor(data2) {
     super(data2);
@@ -2265,7 +2265,7 @@ var PacketReader = class extends bufferreader_default {
 };
 var packetreader_default = PacketReader;
 
-// packetv1449/PacketV1449_AnglerQuest.js
+// src/packetv1449/PacketV1449_AnglerQuest.js
 function parse(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "anglerQuest");
@@ -2289,7 +2289,7 @@ function toBuffer(self) {
   return data(packBool(packByte(setType(new packetwriter_default(), toInt("AnglerQuest")), self.anglerQuest, "anglerQuest"), self.anglerQuestFinished, "anglerQuestFinished"));
 }
 
-// packetv1449/PacketV1449_AnglerQuestComplete.js
+// src/packetv1449/PacketV1449_AnglerQuestComplete.js
 var PacketV1449_AnglerQuestComplete_exports = {};
 __export(PacketV1449_AnglerQuestComplete_exports, {
   parse: () => parse2,
@@ -2305,7 +2305,7 @@ function toBuffer2(_self) {
   return data(setType(make(), toInt("AnglerQuestComplete")));
 }
 
-// packetv1449/PacketV1449_BossOrInvasionSpawn.js
+// src/packetv1449/PacketV1449_BossOrInvasionSpawn.js
 var PacketV1449_BossOrInvasionSpawn_exports = {};
 __export(PacketV1449_BossOrInvasionSpawn_exports, {
   parse: () => parse3,
@@ -2445,7 +2445,7 @@ function toBuffer3(self) {
   return data(packSpawnType(packInt16(setType(make(), toInt("BossOrInvasionSpawn")), self.playerId, "playerId"), self.spawnType));
 }
 
-// packetv1449/PacketV1449_ChatMessageSmart.js
+// src/packetv1449/PacketV1449_ChatMessageSmart.js
 var PacketV1449_ChatMessageSmart_exports = {};
 __export(PacketV1449_ChatMessageSmart_exports, {
   parse: () => parse4,
@@ -2479,7 +2479,7 @@ function toBuffer4(self) {
   return data(packInt16(packNetworkText(packColor(setType(make(), toInt("ChatMessageSmart")), self.color, "color"), self.message, "message"), self.widthLimit, "widthLimit"));
 }
 
-// packetv1449/PacketV1449_ChestItem.js
+// src/packetv1449/PacketV1449_ChestItem.js
 var PacketV1449_ChestItem_exports = {};
 __export(PacketV1449_ChestItem_exports, {
   parse: () => parse5,
@@ -2523,7 +2523,7 @@ function toBuffer5(self) {
   return data(packInt16(packByte(packInt16(packByte(packInt16(setType(make(), toInt("ChestItem")), self.chestId, "chestId"), self.slot, "slot"), self.stack, "stack"), self.prefix, "prefix"), self.itemNetId, "itemNetId"));
 }
 
-// packetv1449/PacketV1449_ChestOrTempleUnlock.js
+// src/packetv1449/PacketV1449_ChestOrTempleUnlock.js
 var PacketV1449_ChestOrTempleUnlock_exports = {};
 __export(PacketV1449_ChestOrTempleUnlock_exports, {
   parse: () => parse6,
@@ -2593,7 +2593,7 @@ function toBuffer6(self) {
   return data(packInt16(packInt16(packByte(setType(make(), toInt("ChestOrTempleUnlock")), unlockTypeToInt(self.unlockType), "unlockType"), self.x, "x"), self.y, "y"));
 }
 
-// packetv1449/PacketV1449_ChestPlace.js
+// src/packetv1449/PacketV1449_ChestPlace.js
 var PacketV1449_ChestPlace_exports = {};
 __export(PacketV1449_ChestPlace_exports, {
   Action: () => Action,
@@ -2734,7 +2734,7 @@ function toBuffer7(self) {
   return data(packInt16(packInt16(packInt16(packInt16(packAction(setType(make(), toInt("ChestPlace")), self.action), self.x, "x"), self.y, "y"), self.style, "style"), self.id, "id"));
 }
 
-// packetv1449/PacketV1449_ClientFinishConnectingToServer.js
+// src/packetv1449/PacketV1449_ClientFinishConnectingToServer.js
 var PacketV1449_ClientFinishConnectingToServer_exports = {};
 __export(PacketV1449_ClientFinishConnectingToServer_exports, {
   parse: () => parse8,
@@ -2750,7 +2750,7 @@ function toBuffer8(_self) {
   return data(setType(make(), toInt("ClientFinishConnectingToServer")));
 }
 
-// packetv1449/PacketV1449_ConnectRequest.js
+// src/packetv1449/PacketV1449_ConnectRequest.js
 var PacketV1449_ConnectRequest_exports = {};
 __export(PacketV1449_ConnectRequest_exports, {
   parse: () => parse9,
@@ -2774,7 +2774,7 @@ function toBuffer9(self) {
   return data(packString(setType(make(), toInt("ConnectRequest")), self.version, "version"));
 }
 
-// packetv1449/PacketV1449_CountsAsHostForGameplaySet.js
+// src/packetv1449/PacketV1449_CountsAsHostForGameplaySet.js
 var PacketV1449_CountsAsHostForGameplaySet_exports = {};
 __export(PacketV1449_CountsAsHostForGameplaySet_exports, {
   parse: () => parse10,
@@ -2803,7 +2803,7 @@ function toBuffer10(self) {
   return data(packBool(packByte(setType(new packetwriter_default(), toInt("CountsAsHostForGameplaySet")), self.playerId, "playerId"), self.countsAsHost, "countsAsHost"));
 }
 
-// packetv1449/PacketV1449_CreditsOrSlimeTransform.js
+// src/packetv1449/PacketV1449_CreditsOrSlimeTransform.js
 var PacketV1449_CreditsOrSlimeTransform_exports = {};
 __export(PacketV1449_CreditsOrSlimeTransform_exports, {
   EventType: () => EventType,
@@ -2866,7 +2866,7 @@ function toBuffer11(self) {
 }
 var EventType = {};
 
-// packetv1449/PacketV1449_CrystalInvasionStart.js
+// src/packetv1449/PacketV1449_CrystalInvasionStart.js
 var PacketV1449_CrystalInvasionStart_exports = {};
 __export(PacketV1449_CrystalInvasionStart_exports, {
   parse: () => parse12,
@@ -2895,7 +2895,7 @@ function toBuffer12(self) {
   return data(packInt16(packInt16(setType(make(), toInt("CrystalInvasionStart")), self.x, "x"), self.y, "y"));
 }
 
-// packetv1449/PacketV1449_DimensionsUpdate.js
+// src/packetv1449/PacketV1449_DimensionsUpdate.js
 var PacketV1449_DimensionsUpdate_exports = {};
 __export(PacketV1449_DimensionsUpdate_exports, {
   UpdateType: () => UpdateType,
@@ -2903,7 +2903,7 @@ __export(PacketV1449_DimensionsUpdate_exports, {
   toBuffer: () => toBuffer13
 });
 
-// ../node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Stdlib_Result.js
+// node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Stdlib_Result.js
 function map(opt, f) {
   if (opt.TAG === "Ok") {
     return {
@@ -2968,7 +2968,7 @@ function all4(param) {
   }
 }
 
-// packetv1449/PacketV1449_DimensionsUpdate.js
+// src/packetv1449/PacketV1449_DimensionsUpdate.js
 function toInt4(self) {
   switch (self) {
     case "RealIpAddress":
@@ -3147,7 +3147,7 @@ function toBuffer13(self) {
   }
 }
 
-// packetv1449/PacketV1449_ExtraValueSync.js
+// src/packetv1449/PacketV1449_ExtraValueSync.js
 var PacketV1449_ExtraValueSync_exports = {};
 __export(PacketV1449_ExtraValueSync_exports, {
   parse: () => parse14,
@@ -3186,7 +3186,7 @@ function toBuffer14(self) {
   return data(packSingle(packSingle(packInt32(packInt16(setType(make(), toInt("ExtraValueSync")), self.npcSlotId, "npcSlotId"), self.extraValue, "extraValue"), self.x, "x"), self.y, "y"));
 }
 
-// packetv1449/PacketV1449_HaveDryadDoStardewAnimation.js
+// src/packetv1449/PacketV1449_HaveDryadDoStardewAnimation.js
 var PacketV1449_HaveDryadDoStardewAnimation_exports = {};
 __export(PacketV1449_HaveDryadDoStardewAnimation_exports, {
   parse: () => parse15,
@@ -3202,7 +3202,7 @@ function toBuffer15(_self) {
   return data(setType(make(), toInt("HaveDryadDoStardewAnimation")));
 }
 
-// packetv1449/PacketV1449_InvasionProgressReport.js
+// src/packetv1449/PacketV1449_InvasionProgressReport.js
 var PacketV1449_InvasionProgressReport_exports = {};
 __export(PacketV1449_InvasionProgressReport_exports, {
   parse: () => parse16,
@@ -3241,7 +3241,7 @@ function toBuffer16(self) {
   return data(packSByte(packSByte(packInt32(packInt32(setType(make(), toInt("InvasionProgressReport")), self.progress, "progress"), self.progressMax, "progressMax"), self.icon, "icon"), self.wave, "wave"));
 }
 
-// packetv1449/PacketV1449_ItemDropShimmeredUpdate.js
+// src/packetv1449/PacketV1449_ItemDropShimmeredUpdate.js
 var PacketV1449_ItemDropShimmeredUpdate_exports = {};
 __export(PacketV1449_ItemDropShimmeredUpdate_exports, {
   parse: () => parse17,
@@ -3315,7 +3315,7 @@ function toBuffer17(self) {
   return data(packSingle(packByte(packInt16(packByte(packByte(packInt16(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt("ItemDropShimmeredUpdate")), self.itemDropId, "itemDropId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.stack, "stack"), self.prefix, "prefix"), self.noDelay, "noDelay"), self.itemId, "itemId"), self.shimmered ? 1 : 0, "shimmered"), self.shimmeredTime, "shimmeredTime"));
 }
 
-// packet/Packet_ItemDropUpdate.js
+// src/packet/Packet_ItemDropUpdate.js
 var Packet_ItemDropUpdate_exports = {};
 __export(Packet_ItemDropUpdate_exports, {
   Decode: () => Decode,
@@ -3326,7 +3326,7 @@ __export(Packet_ItemDropUpdate_exports, {
   toBuffer: () => toBuffer18
 });
 
-// ../node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Primitive_option.js
+// node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Primitive_option.js
 function some(x) {
   if (x === void 0) {
     return {
@@ -3354,7 +3354,7 @@ function valFromOption(x) {
   }
 }
 
-// ../node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Stdlib_Option.js
+// node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Stdlib_Option.js
 function mapOr(opt, $$default, f) {
   if (opt !== void 0) {
     return f(valFromOption(opt));
@@ -3383,7 +3383,7 @@ function isSome(x) {
   return x !== void 0;
 }
 
-// BitFlags.js
+// src/BitFlags.js
 var BitFlags_exports = {};
 __export(BitFlags_exports, {
   flag1: () => flag1,
@@ -3402,7 +3402,7 @@ __export(BitFlags_exports, {
   toByte: () => toByte
 });
 
-// ArrayExt.js
+// src/ArrayExt.js
 var ArrayExt_exports = {};
 __export(ArrayExt_exports, {
   getOr: () => getOr2,
@@ -3422,7 +3422,7 @@ function getOr2(self, index, or) {
   return getOr(self[index], or);
 }
 
-// BitFlags.js
+// src/BitFlags.js
 function fromByte(byte) {
   return byte;
 }
@@ -3482,7 +3482,7 @@ function toByte(self) {
   return self;
 }
 
-// packet/Packet_ItemDropUpdate.js
+// src/packet/Packet_ItemDropUpdate.js
 function ownershipFromInt(value) {
   switch (value) {
     case 0:
@@ -3637,7 +3637,7 @@ function toBuffer18(self) {
   return toBufferWithType(self, "ItemDropUpdate");
 }
 
-// packet/Packet_ItemOwner.js
+// src/packet/Packet_ItemOwner.js
 var Packet_ItemOwner_exports = {};
 __export(Packet_ItemOwner_exports, {
   Decode: () => Decode2,
@@ -3711,7 +3711,7 @@ var Encode2 = {
   toBuffer: toBuffer19
 };
 
-// packet/Packet_ItemOwnerRemove.js
+// src/packet/Packet_ItemOwnerRemove.js
 var Packet_ItemOwnerRemove_exports = {};
 __export(Packet_ItemOwnerRemove_exports, {
   parse: () => parse20,
@@ -3740,14 +3740,14 @@ function toBuffer20(self) {
   return data(packBool(packInt16(setType(make(), toInt("ItemOwnerRemove")), self.itemDropId, "itemDropId"), self.forceAssignToServer, "forceAssignToServer"));
 }
 
-// packetv1449/PacketV1449_LoadoutSwitch.js
+// src/packetv1449/PacketV1449_LoadoutSwitch.js
 var PacketV1449_LoadoutSwitch_exports = {};
 __export(PacketV1449_LoadoutSwitch_exports, {
   parse: () => parse21,
   toBuffer: () => toBuffer21
 });
 
-// Array16.js
+// src/Array16.js
 var Array16_exports = {};
 __export(Array16_exports, {
   asArray: () => asArray,
@@ -3756,7 +3756,7 @@ __export(Array16_exports, {
   toBitFlagsPair: () => toBitFlagsPair
 });
 
-// ../node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Stdlib_Array.js
+// node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Stdlib_Array.js
 function make2(length, x) {
   if (length <= 0) {
     return [];
@@ -3766,7 +3766,7 @@ function make2(length, x) {
   return arr;
 }
 
-// Array16.js
+// src/Array16.js
 function fromArray2(a) {
   if (a.length === 16) {
     return a;
@@ -3804,7 +3804,7 @@ function asArray(self) {
   return self;
 }
 
-// packetv1449/PacketV1449_LoadoutSwitch.js
+// src/packetv1449/PacketV1449_LoadoutSwitch.js
 function parse21(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
@@ -3838,7 +3838,7 @@ function toBuffer21(self) {
   return data(packUInt16(packByte(packByte(setType(make(), toInt("LoadoutSwitch")), self.playerId, "playerId"), self.loadout, "loadout"), hideVisibleAccessory, "hideVisibleAccessory"));
 }
 
-// packet/Packet_NetModuleLoad.js
+// src/packet/Packet_NetModuleLoad.js
 var Packet_NetModuleLoad_exports = {};
 __export(Packet_NetModuleLoad_exports, {
   Buffer: () => Buffer2,
@@ -3852,7 +3852,7 @@ __export(Packet_NetModuleLoad_exports, {
   toBuffer: () => toBuffer22
 });
 
-// ../node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Primitive_int.js
+// node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Primitive_int.js
 function min(x, y) {
   if (x < y) {
     return x;
@@ -3861,7 +3861,7 @@ function min(x, y) {
   }
 }
 
-// ../node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Belt_Array.js
+// node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Belt_Array.js
 function concatMany(arrs) {
   let lenArrs = arrs.length;
   let totalLen = 0;
@@ -3880,7 +3880,7 @@ function concatMany(arrs) {
   return result;
 }
 
-// CreativePowers.js
+// src/CreativePowers.js
 var CreativePowers_exports = {};
 __export(CreativePowers_exports, {
   CreativePowerType: () => CreativePowerType,
@@ -4230,7 +4230,7 @@ var PerPlayerTogglePower = {
   parse: parse$1
 };
 
-// packet/Packet_NetModuleLoad.js
+// src/packet/Packet_NetModuleLoad.js
 function pylonActionToInt(pylonAction) {
   switch (pylonAction) {
     case "Added":
@@ -5492,7 +5492,7 @@ var Decode3 = {
 var Buffer2;
 var maxNpcIndexSentinel = 200;
 
-// packetv1449/PacketV1449_NetModuleLoad.js
+// src/packetv1449/PacketV1449_NetModuleLoad.js
 var PacketV1449_NetModuleLoad_exports = {};
 __export(PacketV1449_NetModuleLoad_exports, {
   NetModuleType: () => NetModuleType2,
@@ -6063,7 +6063,7 @@ function parse24(payload, fromServer) {
   }
 }
 
-// packetv1449/PacketV1449_NpcBuffRemovalRequest.js
+// src/packetv1449/PacketV1449_NpcBuffRemovalRequest.js
 var PacketV1449_NpcBuffRemovalRequest_exports = {};
 __export(PacketV1449_NpcBuffRemovalRequest_exports, {
   parse: () => parse25,
@@ -6092,7 +6092,7 @@ function toBuffer24(self) {
   return data(packUInt16(packInt16(setType(make(), toInt("NpcBuffRemovalRequest")), self.npcId, "npcId"), self.buffType, "buffType"));
 }
 
-// packetv1456/PacketV1456_NpcBuffUpdate.js
+// src/packetv1456/PacketV1456_NpcBuffUpdate.js
 var PacketV1456_NpcBuffUpdate_exports = {};
 __export(PacketV1456_NpcBuffUpdate_exports, {
   Decode: () => Decode4,
@@ -6101,7 +6101,7 @@ __export(PacketV1456_NpcBuffUpdate_exports, {
   toBuffer: () => toBuffer25
 });
 
-// PacketTypeV1456.js
+// src/PacketTypeV1456.js
 var PacketTypeV1456_exports = {};
 __export(PacketTypeV1456_exports, {
   fromInt: () => fromInt8,
@@ -7077,7 +7077,7 @@ function packetName2(packetType) {
   }
 }
 
-// packetv1456/PacketV1456_NpcBuffUpdate.js
+// src/packetv1456/PacketV1456_NpcBuffUpdate.js
 function parse26(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
@@ -7158,7 +7158,7 @@ var Encode4 = {
   toBuffer: toBuffer25
 };
 
-// packet/Packet_NpcCatch.js
+// src/packet/Packet_NpcCatch.js
 var Packet_NpcCatch_exports = {};
 __export(Packet_NpcCatch_exports, {
   parse: () => parse27,
@@ -7182,7 +7182,7 @@ function toBuffer26(self) {
   return data(packInt16(setType(make(), toInt("NpcCatch")), self.npcId, "npcId"));
 }
 
-// packetv1449/PacketV1449_NpcFishOut.js
+// src/packetv1449/PacketV1449_NpcFishOut.js
 var PacketV1449_NpcFishOut_exports = {};
 __export(PacketV1449_NpcFishOut_exports, {
   parse: () => parse28,
@@ -7216,7 +7216,7 @@ function toBuffer27(self) {
   return data(packInt16(packUInt16(packUInt16(setType(make(), toInt("NpcFishOut")), self.x, "x"), self.y, "y"), self.npcNetId, "npcNetId"));
 }
 
-// packetv1449/PacketV1449_NpcHomeUpdate.js
+// src/packetv1449/PacketV1449_NpcHomeUpdate.js
 var PacketV1449_NpcHomeUpdate_exports = {};
 __export(PacketV1449_NpcHomeUpdate_exports, {
   parse: () => parse29,
@@ -7255,7 +7255,7 @@ function toBuffer28(self) {
   return data(packByte(packInt16(packInt16(packInt16(setType(make(), toInt("NpcHomeUpdate")), self.npcId, "npcId"), self.homeTileX, "homeTileX"), self.homeTileY, "homeTileY"), self.state, "state"));
 }
 
-// packetv1449/PacketV1449_NpcKillCount.js
+// src/packetv1449/PacketV1449_NpcKillCount.js
 var PacketV1449_NpcKillCount_exports = {};
 __export(PacketV1449_NpcKillCount_exports, {
   parse: () => parse30,
@@ -7284,7 +7284,7 @@ function toBuffer29(self) {
   return data(packInt32(packInt16(setType(make(), toInt("NpcKillCount")), self.npcId, "npcId"), self.killCount, "killCount"));
 }
 
-// packetv1449/PacketV1449_NpcNameUpdate.js
+// src/packetv1449/PacketV1449_NpcNameUpdate.js
 var PacketV1449_NpcNameUpdate_exports = {};
 __export(PacketV1449_NpcNameUpdate_exports, {
   parse: () => parse31,
@@ -7339,7 +7339,7 @@ function toBuffer30(self) {
   }
 }
 
-// packetv1449/PacketV1449_NpcShopItem.js
+// src/packetv1449/PacketV1449_NpcShopItem.js
 var PacketV1449_NpcShopItem_exports = {};
 __export(PacketV1449_NpcShopItem_exports, {
   parse: () => parse32,
@@ -7389,7 +7389,7 @@ function toBuffer31(self) {
   return data(packByte(packInt32(packByte(packInt16(packInt16(packByte(setType(make(), toInt("NpcShopItem")), self.slot, "slot"), self.itemId, "itemId"), self.stack, "stack"), self.prefix, "prefix"), self.value, "value"), toByte(flags), "flags"));
 }
 
-// packetv1449/PacketV1449_NpcTalk.js
+// src/packetv1449/PacketV1449_NpcTalk.js
 var PacketV1449_NpcTalk_exports = {};
 __export(PacketV1449_NpcTalk_exports, {
   parse: () => parse33,
@@ -7418,7 +7418,7 @@ function toBuffer32(self) {
   return data(packInt16(packByte(setType(make(), toInt("NpcTalk")), self.playerId, "playerId"), self.npcId, "npcId"));
 }
 
-// packetv1449/PacketV1449_NpcTeleportPortal.js
+// src/packetv1449/PacketV1449_NpcTeleportPortal.js
 var PacketV1449_NpcTeleportPortal_exports = {};
 __export(PacketV1449_NpcTeleportPortal_exports, {
   parse: () => parse34,
@@ -7471,7 +7471,7 @@ function toBuffer33(self) {
   return data(packSingle(packSingle(packSingle(packSingle(packInt16(packUInt16(setType(make(), toInt("NpcTeleportPortal")), self.npcId, "npcId"), self.portalColor, "portalColor"), self.position.x, "posX"), self.position.y, "posY"), self.velocity.x, "velX"), self.velocity.y, "velY"));
 }
 
-// packetv1449/PacketV1449_ObjectPlace.js
+// src/packetv1449/PacketV1449_ObjectPlace.js
 var PacketV1449_ObjectPlace_exports = {};
 __export(PacketV1449_ObjectPlace_exports, {
   parse: () => parse35,
@@ -7548,7 +7548,7 @@ function toBuffer34(self) {
   return data(packByte(packSByte(packByte(packInt16(packInt16(packInt16(packInt16(setType(make(), toInt("ObjectPlace")), self.x, "x"), self.y, "y"), self.objectType, "objectType"), self.style, "style"), self.alternate, "alternate"), self.random, "random"), tmp, "direction"));
 }
 
-// packetv1449/PacketV1449_PartyToggle.js
+// src/packetv1449/PacketV1449_PartyToggle.js
 var PacketV1449_PartyToggle_exports = {};
 __export(PacketV1449_PartyToggle_exports, {
   parse: () => parse36,
@@ -7564,7 +7564,7 @@ function toBuffer35(_self) {
   return data(setType(make(), toInt("PartyToggle")));
 }
 
-// packetv1449/PacketV1449_PlayerAnimation.js
+// src/packetv1449/PacketV1449_PlayerAnimation.js
 var PacketV1449_PlayerAnimation_exports = {};
 __export(PacketV1449_PlayerAnimation_exports, {
   parse: () => parse37,
@@ -7598,7 +7598,7 @@ function toBuffer36(self) {
   return data(packInt16(packSingle(packByte(setType(make(), toInt("PlayerAnimation")), self.playerId, "playerId"), self.itemRotation, "itemRotation"), self.itemAnimation, "itemAnimation"));
 }
 
-// packetv1449/PacketV1449_PlayerBuffAdd.js
+// src/packetv1449/PacketV1449_PlayerBuffAdd.js
 var PacketV1449_PlayerBuffAdd_exports = {};
 __export(PacketV1449_PlayerBuffAdd_exports, {
   parse: () => parse38,
@@ -7632,7 +7632,7 @@ function toBuffer37(self) {
   return data(packInt32(packUInt16(packByte(setType(make(), toInt("PlayerBuffAdd")), self.playerId, "playerId"), self.buff, "buff"), self.time, "time"));
 }
 
-// packetv1456/PacketV1456_PlayerBuffsSet.js
+// src/packetv1456/PacketV1456_PlayerBuffsSet.js
 var PacketV1456_PlayerBuffsSet_exports = {};
 __export(PacketV1456_PlayerBuffsSet_exports, {
   Decode: () => Decode5,
@@ -7701,7 +7701,7 @@ var Encode5 = {
   toBuffer: toBuffer38
 };
 
-// packetv1449/PacketV1449_PlayerChestIndexSync.js
+// src/packetv1449/PacketV1449_PlayerChestIndexSync.js
 var PacketV1449_PlayerChestIndexSync_exports = {};
 __export(PacketV1449_PlayerChestIndexSync_exports, {
   parse: () => parse40,
@@ -7730,7 +7730,7 @@ function toBuffer39(self) {
   return data(packInt16(packByte(setType(make(), toInt("PlayerChestIndexSync")), self.playerId, "playerId"), self.chestId, "chestId"));
 }
 
-// packetv1449/PacketV1449_PlayerDead.js
+// src/packetv1449/PacketV1449_PlayerDead.js
 var PacketV1449_PlayerDead_exports = {};
 __export(PacketV1449_PlayerDead_exports, {
   parse: () => parse41,
@@ -7754,14 +7754,14 @@ function toBuffer40(self) {
   return data(packByte(setType(make(), toInt("PlayerDead")), self.playerId, "playerId"));
 }
 
-// packetv1449/PacketV1449_PlayerDeath.js
+// src/packetv1449/PacketV1449_PlayerDeath.js
 var PacketV1449_PlayerDeath_exports = {};
 __export(PacketV1449_PlayerDeath_exports, {
   parse: () => parse42,
   toBuffer: () => toBuffer41
 });
 
-// PlayerDeathReason.js
+// src/PlayerDeathReason.js
 var PlayerDeathReason_exports = {};
 __export(PlayerDeathReason_exports, {
   packDeathReason: () => packDeathReason,
@@ -8057,7 +8057,7 @@ function pack2(writer, self) {
 }
 var packDeathReason = pack2;
 
-// packetv1449/PacketV1449_PlayerDeath.js
+// src/packetv1449/PacketV1449_PlayerDeath.js
 function parse42(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
@@ -8096,7 +8096,7 @@ function toBuffer41(self) {
   return data(packByte(packByte(packInt16(packDeathReason(packByte(setType(make(), toInt("PlayerDeath")), self.playerId, "playerId"), self.deathReason), self.damage, "damage"), self.hitDirection, "hitDirection"), self.pvp ? 1 : 0, "pvp"));
 }
 
-// packet/Packet_PlayerDodge.js
+// src/packet/Packet_PlayerDodge.js
 var Packet_PlayerDodge_exports = {};
 __export(Packet_PlayerDodge_exports, {
   dodgeFromByte: () => dodgeFromByte,
@@ -8163,7 +8163,7 @@ function toBuffer42(self) {
   return data(packByte(packByte(setType(make(), toInt("PlayerDodge")), self.playerId, "playerId"), dodgeToByte(self.dodge), "dodge"));
 }
 
-// packetv1449/PacketV1449_PlayerMana.js
+// src/packetv1449/PacketV1449_PlayerMana.js
 var PacketV1449_PlayerMana_exports = {};
 __export(PacketV1449_PlayerMana_exports, {
   parse: () => parse44,
@@ -8197,7 +8197,7 @@ function toBuffer43(self) {
   return data(packInt16(packInt16(packByte(setType(make(), toInt("PlayerMana")), self.playerId, "playerId"), self.mana, "mana"), self.maxMana, "maxMana"));
 }
 
-// packetv1449/PacketV1449_PlayerTeam.js
+// src/packetv1449/PacketV1449_PlayerTeam.js
 var PacketV1449_PlayerTeam_exports = {};
 __export(PacketV1449_PlayerTeam_exports, {
   parse: () => parse45,
@@ -8226,7 +8226,7 @@ function toBuffer44(self) {
   return data(packByte(packByte(setType(make(), toInt("PlayerTeam")), self.playerId, "playerId"), self.team, "team"));
 }
 
-// packetv1449/PacketV1449_PvpToggle.js
+// src/packetv1449/PacketV1449_PvpToggle.js
 var PacketV1449_PvpToggle_exports = {};
 __export(PacketV1449_PvpToggle_exports, {
   parse: () => parse46,
@@ -8255,7 +8255,7 @@ function toBuffer45(self) {
   return data(packByte(packByte(setType(make(), toInt("PvpToggle")), self.playerId, "playerId"), self.pvpEnabled ? 1 : 0, "pvpEnabled"));
 }
 
-// packetv1456/PacketV1456_ShimmerEffectOrCoinLuck.js
+// src/packetv1456/PacketV1456_ShimmerEffectOrCoinLuck.js
 var PacketV1456_ShimmerEffectOrCoinLuck_exports = {};
 __export(PacketV1456_ShimmerEffectOrCoinLuck_exports, {
   Decode: () => Decode6,
@@ -8353,7 +8353,7 @@ var Encode6 = {
   toBuffer: toBuffer46
 };
 
-// packetv1449/PacketV1449_SignNew.js
+// src/packetv1449/PacketV1449_SignNew.js
 var PacketV1449_SignNew_exports = {};
 __export(PacketV1449_SignNew_exports, {
   parse: () => parse48,
@@ -8403,7 +8403,7 @@ function toBuffer47(self) {
   return data(packByte(packByte(packString(packInt16(packInt16(packInt16(setType(make(), toInt("SignNew")), self.signId, "signId"), self.x, "x"), self.y, "y"), self.text, "text"), self.playerId, "playerId"), toByte(flags), "flags"));
 }
 
-// packetv1449/PacketV1449_SignRead.js
+// src/packetv1449/PacketV1449_SignRead.js
 var PacketV1449_SignRead_exports = {};
 __export(PacketV1449_SignRead_exports, {
   parse: () => parse49,
@@ -8432,7 +8432,7 @@ function toBuffer48(self) {
   return data(packInt16(packInt16(setType(make(), toInt("SignRead")), self.x, "x"), self.y, "y"));
 }
 
-// packetv1449/PacketV1449_SmokePoof.js
+// src/packetv1449/PacketV1449_SmokePoof.js
 var PacketV1449_SmokePoof_exports = {};
 __export(PacketV1449_SmokePoof_exports, {
   parse: () => parse50,
@@ -8456,7 +8456,7 @@ function toBuffer49(self) {
   return data(packUInt32(setType(make(), toInt("SmokePoof")), self.packedPosition, "packedPosition"));
 }
 
-// packetv1449/PacketV1449_SocialHandshake.js
+// src/packetv1449/PacketV1449_SocialHandshake.js
 var PacketV1449_SocialHandshake_exports = {};
 __export(PacketV1449_SocialHandshake_exports, {
   parse: () => parse51,
@@ -8472,7 +8472,7 @@ function toBuffer50(_self) {
   return data(setType(make(), toInt("SocialHandshake")));
 }
 
-// packetv1449/PacketV1449_Status.js
+// src/packetv1449/PacketV1449_Status.js
 var PacketV1449_Status_exports = {};
 __export(PacketV1449_Status_exports, {
   parse: () => parse52,
@@ -8517,7 +8517,7 @@ function toBuffer51(self) {
   return data(packByte(packNetworkText(packInt32(setType(make(), toInt("Status")), self.max, "max"), self.text, "text"), flagsToByte(self.flags), "flags"));
 }
 
-// packetv1449/PacketV1449_SwitchHit.js
+// src/packetv1449/PacketV1449_SwitchHit.js
 var PacketV1449_SwitchHit_exports = {};
 __export(PacketV1449_SwitchHit_exports, {
   parse: () => parse53,
@@ -8546,7 +8546,7 @@ function toBuffer52(self) {
   return data(packInt16(packInt16(setType(make(), toInt("SwitchHit")), self.x, "x"), self.y, "y"));
 }
 
-// packetv1456/PacketV1456_Teleport.js
+// src/packetv1456/PacketV1456_Teleport.js
 var PacketV1456_Teleport_exports = {};
 __export(PacketV1456_Teleport_exports, {
   Decode: () => Decode7,
@@ -8628,7 +8628,7 @@ var Encode7 = {
   toBuffer: toBuffer53
 };
 
-// packetv1456/PacketV1456_TeleportationPotion.js
+// src/packetv1456/PacketV1456_TeleportationPotion.js
 var PacketV1456_TeleportationPotion_exports = {};
 __export(PacketV1456_TeleportationPotion_exports, {
   Decode: () => Decode8,
@@ -8718,7 +8718,7 @@ var Encode8 = {
   toBuffer: toBuffer54
 };
 
-// packetv1449/PacketV1449_TemporaryAnimationCreate.js
+// src/packetv1449/PacketV1449_TemporaryAnimationCreate.js
 var PacketV1449_TemporaryAnimationCreate_exports = {};
 __export(PacketV1449_TemporaryAnimationCreate_exports, {
   parse: () => parse56,
@@ -8757,7 +8757,7 @@ function toBuffer55(self) {
   return data(packInt16(packInt16(packUInt16(packInt16(setType(make(), toInt("TemporaryAnimationCreate")), self.typeId, "typeId"), self.tileType, "tileType"), self.x, "x"), self.y, "y"));
 }
 
-// packetv1456/PacketV1456_TileEntityDisplayDollItemSync.js
+// src/packetv1456/PacketV1456_TileEntityDisplayDollItemSync.js
 var PacketV1456_TileEntityDisplayDollItemSync_exports = {};
 __export(PacketV1456_TileEntityDisplayDollItemSync_exports, {
   Decode: () => Decode9,
@@ -8903,7 +8903,7 @@ var Encode9 = {
   toBuffer: toBuffer56
 };
 
-// packetv1449/PacketV1449_TileEntityHatRackItemSync.js
+// src/packetv1449/PacketV1449_TileEntityHatRackItemSync.js
 var PacketV1449_TileEntityHatRackItemSync_exports = {};
 __export(PacketV1449_TileEntityHatRackItemSync_exports, {
   parse: () => parse58,
@@ -8952,7 +8952,7 @@ function toBuffer57(self) {
   return data(packByte(packUInt16(packUInt16(packByte(packInt32(packByte(setType(make(), toInt("TileEntityHatRackItemSync")), self.playerId, "playerId"), self.tileEntityId, "tileEntityId"), self.itemIndex, "itemIndex"), self.itemId, "itemId"), self.stack, "stack"), self.prefix, "prefix"));
 }
 
-// packetv1449/PacketV1449_TileEntityInteractionRequest.js
+// src/packetv1449/PacketV1449_TileEntityInteractionRequest.js
 var PacketV1449_TileEntityInteractionRequest_exports = {};
 __export(PacketV1449_TileEntityInteractionRequest_exports, {
   parse: () => parse59,
@@ -8981,7 +8981,7 @@ function toBuffer58(self) {
   return data(packByte(packInt32(setType(make(), toInt("TileEntityInteractionRequest")), self.tileEntityId, "tileEntityId"), self.playerId, "playerId"));
 }
 
-// packetv1449/PacketV1449_TileEntityPlace.js
+// src/packetv1449/PacketV1449_TileEntityPlace.js
 var PacketV1449_TileEntityPlace_exports = {};
 __export(PacketV1449_TileEntityPlace_exports, {
   parse: () => parse60,
@@ -9015,7 +9015,7 @@ function toBuffer59(self) {
   return data(packByte(packInt16(packInt16(setType(make(), toInt("TileEntityPlace")), self.x, "x"), self.y, "y"), self.tileEntityType, "tileEntityType"));
 }
 
-// packetv1449/PacketV1449_TileEntityUpdate.js
+// src/packetv1449/PacketV1449_TileEntityUpdate.js
 var PacketV1449_TileEntityUpdate_exports = {};
 __export(PacketV1449_TileEntityUpdate_exports, {
   parse: () => parse61,
@@ -9071,7 +9071,7 @@ function toBuffer60(self) {
   }
 }
 
-// packetv1449/PacketV1449_TileModify.js
+// src/packetv1449/PacketV1449_TileModify.js
 var PacketV1449_TileModify_exports = {};
 __export(PacketV1449_TileModify_exports, {
   Action: () => Action2,
@@ -9243,7 +9243,7 @@ function toBuffer61(self) {
   return data(packByte(packInt16(packInt16(packInt16(packByte(setType(make(), toInt("TileModify")), toInt9(self.action), "action"), self.tileX, "tileX"), self.tileY, "tileY"), self.value1, "value1"), self.value2, "value2"));
 }
 
-// packetv1449/PacketV1449_TilePaint.js
+// src/packetv1449/PacketV1449_TilePaint.js
 var PacketV1449_TilePaint_exports = {};
 __export(PacketV1449_TilePaint_exports, {
   parse: () => parse63,
@@ -9282,7 +9282,7 @@ function toBuffer62(self) {
   return data(packByte(packByte(packInt16(packInt16(setType(make(), toInt("TilePaint")), self.x, "x"), self.y, "y"), self.color, "color"), self.coat, "coat"));
 }
 
-// packetv1449/PacketV1449_TilePickingSync.js
+// src/packetv1449/PacketV1449_TilePickingSync.js
 var PacketV1449_TilePickingSync_exports = {};
 __export(PacketV1449_TilePickingSync_exports, {
   parse: () => parse64,
@@ -9321,7 +9321,7 @@ function toBuffer63(self) {
   return data(packByte(packInt16(packInt16(packByte(setType(make(), toInt("TilePickingSync")), self.playerId, "playerId"), self.x, "x"), self.y, "y"), self.pickPower, "pickPower"));
 }
 
-// packetv1449/PacketV1449_TileSectionFrame.js
+// src/packetv1449/PacketV1449_TileSectionFrame.js
 var PacketV1449_TileSectionFrame_exports = {};
 __export(PacketV1449_TileSectionFrame_exports, {
   parse: () => parse65,
@@ -9360,7 +9360,7 @@ function toBuffer64(self) {
   return data(packInt16(packInt16(packInt16(packInt16(setType(make(), toInt("TileSectionFrame")), self.startX, "startX"), self.startY, "startY"), self.endX, "endX"), self.endY, "endY"));
 }
 
-// packetv1456/PacketV1456_TileSectionSend.js
+// src/packetv1456/PacketV1456_TileSectionSend.js
 var PacketV1456_TileSectionSend_exports = {};
 __export(PacketV1456_TileSectionSend_exports, {
   Chest: () => Chest2,
@@ -9371,7 +9371,7 @@ __export(PacketV1456_TileSectionSend_exports, {
 });
 var Nodezlib = __toESM(require("node:zlib"), 1);
 
-// ../node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Primitive_object.js
+// node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Primitive_object.js
 var for_in = function(o, foo) {
   for (var x in o) {
     foo(x);
@@ -9454,7 +9454,7 @@ function notequal(a, b) {
   }
 }
 
-// TileSolid.js
+// src/TileSolid.js
 var map3 = /* @__PURE__ */ new Map([
   [
     379,
@@ -10229,7 +10229,7 @@ function isSolid(tileType) {
   return getOr(map3.get(tileType), false);
 }
 
-// TileFrameImportant.js
+// src/TileFrameImportant.js
 var map4 = /* @__PURE__ */ new Map([
   [
     0,
@@ -13248,7 +13248,7 @@ function isImportant(tileType) {
   return getOr(map4.get(tileType), false);
 }
 
-// ErrorAwareBufferReader.js
+// src/ErrorAwareBufferReader.js
 function readByteUnsafe2(prim) {
   return prim.readByte();
 }
@@ -13303,7 +13303,7 @@ function getBytesLeft2(reader) {
   return withContext2(getBytesLeftUnsafe2, reader, "getBytesLeft");
 }
 
-// ErrorAwareBufferWriter.js
+// src/ErrorAwareBufferWriter.js
 function packInt322(self, value, context) {
   if (self.TAG !== "Writing") {
     return self;
@@ -13420,7 +13420,7 @@ function make3(buffer) {
   };
 }
 
-// packetv1449/PacketV1449_TileSectionSend.js
+// src/packetv1449/PacketV1449_TileSectionSend.js
 function defaultTileCache() {
   return {
     activeTile: void 0,
@@ -13542,7 +13542,7 @@ var Sign = {
   pack: pack$12
 };
 
-// packetv1456/PacketV1456_TileSectionSend.js
+// src/packetv1456/PacketV1456_TileSectionSend.js
 function parseTrainingDummyKind(reader) {
   let e = readInt162(reader, "npcSlotId");
   if (e.TAG === "Ok") {
@@ -14839,7 +14839,7 @@ var Entity = {
   pack: pack4
 };
 
-// packetv1456/PacketV1456_TileSquareSend.js
+// src/packetv1456/PacketV1456_TileSquareSend.js
 var PacketV1456_TileSquareSend_exports = {};
 __export(PacketV1456_TileSquareSend_exports, {
   Decode: () => Decode10,
@@ -15134,7 +15134,7 @@ var Encode10 = {
   toBuffer: toBuffer66
 };
 
-// packetv1449/PacketV1449_TimeSet.js
+// src/packetv1449/PacketV1449_TimeSet.js
 var PacketV1449_TimeSet_exports = {};
 __export(PacketV1449_TimeSet_exports, {
   parse: () => parse69,
@@ -15173,7 +15173,7 @@ function toBuffer67(self) {
   return data(packInt16(packInt16(packInt32(packByte(setType(make(), toInt("TimeSet")), self.dayTime ? 1 : 0, "dayTime"), self.time, "time"), self.sunModY, "sunModY"), self.moonModY, "moonModY"));
 }
 
-// packetv1456/PacketV1456_TravellingMerchantInventory.js
+// src/packetv1456/PacketV1456_TravellingMerchantInventory.js
 var PacketV1456_TravellingMerchantInventory_exports = {};
 __export(PacketV1456_TravellingMerchantInventory_exports, {
   Decode: () => Decode11,
@@ -15247,7 +15247,7 @@ var Encode11 = {
   toBuffer: toBuffer68
 };
 
-// packetv1449/PacketV1449_TreeGrowFx.js
+// src/packetv1449/PacketV1449_TreeGrowFx.js
 var PacketV1449_TreeGrowFx_exports = {};
 __export(PacketV1449_TreeGrowFx_exports, {
   parse: () => parse71,
@@ -15291,7 +15291,7 @@ function toBuffer69(self) {
   return data(packInt16(packByte(packInt32(packInt32(packByte(setType(make(), toInt("TreeGrowFx")), self.action, "action"), self.x, "x"), self.y, "y"), self.style, "style"), self.treeType, "treeType"));
 }
 
-// packetv1449/PacketV1449_Unused.js
+// src/packetv1449/PacketV1449_Unused.js
 var PacketV1449_Unused_exports = {};
 __export(PacketV1449_Unused_exports, {
   parse: () => parse72
@@ -15303,7 +15303,7 @@ function parse72(_payload) {
   };
 }
 
-// packetv1449/PacketV1449_WallPaint.js
+// src/packetv1449/PacketV1449_WallPaint.js
 var PacketV1449_WallPaint_exports = {};
 __export(PacketV1449_WallPaint_exports, {
   parse: () => parse73,
@@ -15342,7 +15342,7 @@ function toBuffer70(self) {
   return data(packByte(packByte(packInt16(packInt16(setType(make(), toInt("WallPaint")), self.x, "x"), self.y, "y"), self.color, "color"), self.coat, "coat"));
 }
 
-// packetv1449/PacketV1449_WeaponsRackTryPlacing.js
+// src/packetv1449/PacketV1449_WeaponsRackTryPlacing.js
 var PacketV1449_WeaponsRackTryPlacing_exports = {};
 __export(PacketV1449_WeaponsRackTryPlacing_exports, {
   parse: () => parse74,
@@ -15386,7 +15386,7 @@ function toBuffer71(self) {
   return data(packInt16(packInt16(packInt16(packInt16(packInt16(setType(make(), toInt("WeaponsRackTryPlacing")), self.x, "x"), self.y, "y"), self.itemId, "itemId"), self.prefix, "prefix"), self.stack, "stack"));
 }
 
-// packetv1449/PacketV1449_WiredCannonShot.js
+// src/packetv1449/PacketV1449_WiredCannonShot.js
 var PacketV1449_WiredCannonShot_exports = {};
 __export(PacketV1449_WiredCannonShot_exports, {
   parse: () => parse75,
@@ -15440,7 +15440,7 @@ function toBuffer72(self) {
   return data(packByte(packInt16(packInt16(packInt16(packInt16(packSingle(packInt16(setType(make(), toInt("WiredCannonShot")), self.damage, "damage"), self.knockback, "knockback"), self.x, "x"), self.y, "y"), self.angle, "angle"), self.ammo, "ammo"), self.playerId, "playerId"));
 }
 
-// packetv1449/PacketV1449_WorldDataRequest.js
+// src/packetv1449/PacketV1449_WorldDataRequest.js
 var PacketV1449_WorldDataRequest_exports = {};
 __export(PacketV1449_WorldDataRequest_exports, {
   parse: () => parse76,
@@ -15459,7 +15459,7 @@ function toBuffer73(_self) {
   };
 }
 
-// packetv1456/PacketV1456_Zones.js
+// src/packetv1456/PacketV1456_Zones.js
 var PacketV1456_Zones_exports = {};
 __export(PacketV1456_Zones_exports, {
   Decode: () => Decode12,
@@ -15525,7 +15525,7 @@ var Encode12 = {
   toBuffer: toBuffer74
 };
 
-// packetv1456/PacketV1456_ChestResize.js
+// src/packetv1456/PacketV1456_ChestResize.js
 var PacketV1456_ChestResize_exports = {};
 __export(PacketV1456_ChestResize_exports, {
   Decode: () => Decode13,
@@ -15566,7 +15566,7 @@ var Encode13 = {
   toBuffer: toBuffer75
 };
 
-// packetv1456/PacketV1456_DeadCellsDisplayJarTryPlacing.js
+// src/packetv1456/PacketV1456_DeadCellsDisplayJarTryPlacing.js
 var PacketV1456_DeadCellsDisplayJarTryPlacing_exports = {};
 __export(PacketV1456_DeadCellsDisplayJarTryPlacing_exports, {
   Decode: () => Decode14,
@@ -15624,7 +15624,7 @@ var Encode14 = {
   toBuffer: toBuffer76
 };
 
-// packetv1456/PacketV1456_DebugCommand.js
+// src/packetv1456/PacketV1456_DebugCommand.js
 var PacketV1456_DebugCommand_exports = {};
 __export(PacketV1456_DebugCommand_exports, {
   Decode: () => Decode15,
@@ -15679,7 +15679,7 @@ var Encode15 = {
   toBuffer: toBuffer77
 };
 
-// packetv1456/PacketV1456_HostToken.js
+// src/packetv1456/PacketV1456_HostToken.js
 var PacketV1456_HostToken_exports = {};
 __export(PacketV1456_HostToken_exports, {
   Decode: () => Decode16,
@@ -15715,7 +15715,7 @@ var Encode16 = {
   toBuffer: toBuffer78
 };
 
-// packetv1456/PacketV1456_InitialTileSectionsRequest.js
+// src/packetv1456/PacketV1456_InitialTileSectionsRequest.js
 var PacketV1456_InitialTileSectionsRequest_exports = {};
 __export(PacketV1456_InitialTileSectionsRequest_exports, {
   Decode: () => Decode17,
@@ -15759,7 +15759,7 @@ var Encode17 = {
   toBuffer: toBuffer79
 };
 
-// packetv1456/PacketV1456_ItemDropClear.js
+// src/packetv1456/PacketV1456_ItemDropClear.js
 var PacketV1456_ItemDropClear_exports = {};
 __export(PacketV1456_ItemDropClear_exports, {
   Decode: () => Decode18,
@@ -15795,7 +15795,7 @@ var Encode18 = {
   toBuffer: toBuffer80
 };
 
-// packetv1456/PacketV1456_ItemDropPosition.js
+// src/packetv1456/PacketV1456_ItemDropPosition.js
 var PacketV1456_ItemDropPosition_exports = {};
 __export(PacketV1456_ItemDropPosition_exports, {
   Decode: () => Decode19,
@@ -15845,7 +15845,7 @@ var Encode19 = {
   toBuffer: toBuffer81
 };
 
-// packetv1456/PacketV1456_ItemForceIntoNearestChest.js
+// src/packetv1456/PacketV1456_ItemForceIntoNearestChest.js
 var PacketV1456_ItemForceIntoNearestChest_exports = {};
 __export(PacketV1456_ItemForceIntoNearestChest_exports, {
   Decode: () => Decode20,
@@ -15983,7 +15983,7 @@ var Encode20 = {
   toBuffer: toBuffer82
 };
 
-// packetv1456/PacketV1456_LeashedEntityAnchorInsertItem.js
+// src/packetv1456/PacketV1456_LeashedEntityAnchorInsertItem.js
 var PacketV1456_LeashedEntityAnchorInsertItem_exports = {};
 __export(PacketV1456_LeashedEntityAnchorInsertItem_exports, {
   Decode: () => Decode21,
@@ -16029,7 +16029,7 @@ var Encode21 = {
   toBuffer: toBuffer83
 };
 
-// packetv1456/PacketV1456_NpcHurtByDebuff.js
+// src/packetv1456/PacketV1456_NpcHurtByDebuff.js
 var PacketV1456_NpcHurtByDebuff_exports = {};
 __export(PacketV1456_NpcHurtByDebuff_exports, {
   Decode: () => Decode22,
@@ -16072,7 +16072,7 @@ var Encode22 = {
   toBuffer: toBuffer84
 };
 
-// packetv1456/PacketV1456_Ping.js
+// src/packetv1456/PacketV1456_Ping.js
 var PacketV1456_Ping_exports = {};
 __export(PacketV1456_Ping_exports, {
   Decode: () => Decode23,
@@ -16098,7 +16098,7 @@ var Encode23 = {
   toBuffer: toBuffer85
 };
 
-// packetv1456/PacketV1456_PlayerItemUseSound.js
+// src/packetv1456/PacketV1456_PlayerItemUseSound.js
 var PacketV1456_PlayerItemUseSound_exports = {};
 __export(PacketV1456_PlayerItemUseSound_exports, {
   Decode: () => Decode24,
@@ -16134,7 +16134,7 @@ var Encode24 = {
   toBuffer: toBuffer86
 };
 
-// packetv1456/PacketV1456_PlayerLuckFactorsUpdate.js
+// src/packetv1456/PacketV1456_PlayerLuckFactorsUpdate.js
 var PacketV1456_PlayerLuckFactorsUpdate_exports = {};
 __export(PacketV1456_PlayerLuckFactorsUpdate_exports, {
   Decode: () => Decode25,
@@ -16216,7 +16216,7 @@ var Encode25 = {
   toBuffer: toBuffer87
 };
 
-// packetv1456/PacketV1456_PlayerSpectate.js
+// src/packetv1456/PacketV1456_PlayerSpectate.js
 var PacketV1456_PlayerSpectate_exports = {};
 __export(PacketV1456_PlayerSpectate_exports, {
   Decode: () => Decode26,
@@ -16259,7 +16259,7 @@ var Encode26 = {
   toBuffer: toBuffer88
 };
 
-// packetv1456/PacketV1456_PlayerTeamSwapSpawn.js
+// src/packetv1456/PacketV1456_PlayerTeamSwapSpawn.js
 var PacketV1456_PlayerTeamSwapSpawn_exports = {};
 __export(PacketV1456_PlayerTeamSwapSpawn_exports, {
   Decode: () => Decode27,
@@ -16295,7 +16295,7 @@ var Encode27 = {
   toBuffer: toBuffer89
 };
 
-// packetv1456/PacketV1456_PlayerTeamUpdate.js
+// src/packetv1456/PacketV1456_PlayerTeamUpdate.js
 var PacketV1456_PlayerTeamUpdate_exports = {};
 __export(PacketV1456_PlayerTeamUpdate_exports, {
   Decode: () => Decode28,
@@ -16336,7 +16336,7 @@ var Encode28 = {
   toBuffer: toBuffer90
 };
 
-// packetv1456/PacketV1456_SectionRequest.js
+// src/packetv1456/PacketV1456_SectionRequest.js
 var PacketV1456_SectionRequest_exports = {};
 __export(PacketV1456_SectionRequest_exports, {
   Decode: () => Decode29,
@@ -16377,7 +16377,7 @@ var Encode29 = {
   toBuffer: toBuffer91
 };
 
-// packetv1449/PacketV1449_PlayerSlotSet.js
+// src/packetv1449/PacketV1449_PlayerSlotSet.js
 var PacketV1449_PlayerSlotSet_exports = {};
 __export(PacketV1449_PlayerSlotSet_exports, {
   parse: () => parse95,
@@ -16406,7 +16406,7 @@ function toBuffer92(self) {
   return data(packByte(packByte(setType(make(), toInt("PlayerSlotSet")), self.playerSlotId, "playerSlotId"), self.serverWantsToRunCheckBytesInClientLoopThread ? 1 : 0, "serverWantsToRunCheckBytesInClientLoopThread"));
 }
 
-// packet/Packet_PlayerUpdate.js
+// src/packet/Packet_PlayerUpdate.js
 var Packet_PlayerUpdate_exports = {};
 __export(Packet_PlayerUpdate_exports, {
   Decode: () => Decode30,
@@ -16704,7 +16704,7 @@ var Encode30 = {
   toBuffer: toBuffer93
 };
 
-// packetv1456/PacketV1456_PlayerInfo.js
+// src/packetv1456/PacketV1456_PlayerInfo.js
 var PacketV1456_PlayerInfo_exports = {};
 __export(PacketV1456_PlayerInfo_exports, {
   Color: () => Color,
@@ -16929,7 +16929,7 @@ var Encode31 = {
 };
 var Color;
 
-// packetv1456/PacketV1456_PlayerSpawn.js
+// src/packetv1456/PacketV1456_PlayerSpawn.js
 var PacketV1456_PlayerSpawn_exports = {};
 __export(PacketV1456_PlayerSpawn_exports, {
   Decode: () => Decode32,
@@ -17039,7 +17039,7 @@ var Encode32 = {
   toBuffer: toBuffer95
 };
 
-// packetv1456/PacketV1456_PlayerInventorySlot.js
+// src/packetv1456/PacketV1456_PlayerInventorySlot.js
 var PacketV1456_PlayerInventorySlot_exports = {};
 __export(PacketV1456_PlayerInventorySlot_exports, {
   Decode: () => Decode33,
@@ -17101,7 +17101,7 @@ var Encode33 = {
   toBuffer: toBuffer96
 };
 
-// packetv1449/PacketV1449_PlayerHealth.js
+// src/packetv1449/PacketV1449_PlayerHealth.js
 var PacketV1449_PlayerHealth_exports = {};
 __export(PacketV1449_PlayerHealth_exports, {
   parse: () => parse100,
@@ -17135,7 +17135,7 @@ function toBuffer97(self) {
   return data(packInt16(packInt16(packByte(setType(make(), toInt("PlayerHealth")), self.playerId, "playerId"), self.health, "health"), self.maxHealth, "maxHealth"));
 }
 
-// packetv1449/PacketV1449_ClientUuid.js
+// src/packetv1449/PacketV1449_ClientUuid.js
 var PacketV1449_ClientUuid_exports = {};
 __export(PacketV1449_ClientUuid_exports, {
   parse: () => parse101,
@@ -17159,7 +17159,7 @@ function toBuffer98(self) {
   return data(packString(setType(make(), toInt("ClientUuid")), self.uuid, "uuid"));
 }
 
-// packet/Packet_ProjectileSync.js
+// src/packet/Packet_ProjectileSync.js
 var Packet_ProjectileSync_exports = {};
 __export(Packet_ProjectileSync_exports, {
   Decode: () => Decode34,
@@ -17168,7 +17168,7 @@ __export(Packet_ProjectileSync_exports, {
   toBuffer: () => toBuffer99
 });
 
-// ProjectileKey.js
+// src/ProjectileKey.js
 var ProjectileKey_exports = {};
 __export(ProjectileKey_exports, {
   fromInt: () => fromInt10,
@@ -17185,7 +17185,7 @@ function toInt10(self) {
   return self.spawner & 255 | (self.index & 1023) << 8 | (self.generation & 16383) << 18;
 }
 
-// packet/Packet_ProjectileSync.js
+// src/packet/Packet_ProjectileSync.js
 function parse102(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "projectileKey");
@@ -17411,7 +17411,7 @@ var Encode34 = {
   toBuffer: toBuffer99
 };
 
-// packetv1449/PacketV1449_PlayerDamage.js
+// src/packetv1449/PacketV1449_PlayerDamage.js
 var PacketV1449_PlayerDamage_exports = {};
 __export(PacketV1449_PlayerDamage_exports, {
   parse: () => parse103,
@@ -17477,7 +17477,7 @@ function toBuffer100(self) {
   return data(packSByte(packByte(packByte(packInt16(packDeathReason(packByte(setType(make(), toInt("PlayerDamage")), self.target, "target"), self.deathReason), self.damage, "damage"), self.hitDirection, "hitDirection"), damageFlags(self), "damageFlags"), self.cooldownCounter, "cooldownCounter"));
 }
 
-// packet/Packet_WorldInfo.js
+// src/packet/Packet_WorldInfo.js
 var Packet_WorldInfo_exports = {};
 __export(Packet_WorldInfo_exports, {
   Decode: () => Decode35,
@@ -18191,7 +18191,7 @@ var Encode35 = {
   toBuffer: toBuffer101
 };
 
-// packetv1449/PacketV1449_PlayerActive.js
+// src/packetv1449/PacketV1449_PlayerActive.js
 var PacketV1449_PlayerActive_exports = {};
 __export(PacketV1449_PlayerActive_exports, {
   parse: () => parse105,
@@ -18220,7 +18220,7 @@ function toBuffer102(self) {
   return data(packByte(packByte(setType(make(), toInt("PlayerActive")), self.playerId, "playerId"), self.active ? 1 : 0, "active"));
 }
 
-// packet/Packet_NpcUpdate.js
+// src/packet/Packet_NpcUpdate.js
 var Packet_NpcUpdate_exports = {};
 __export(Packet_NpcUpdate_exports, {
   Decode: () => Decode36,
@@ -18579,7 +18579,7 @@ var Encode36 = {
   toBuffer: toBuffer103
 };
 
-// packetv1449/PacketV1449_Disconnect.js
+// src/packetv1449/PacketV1449_Disconnect.js
 var PacketV1449_Disconnect_exports = {};
 __export(PacketV1449_Disconnect_exports, {
   parse: () => parse107,
@@ -18603,14 +18603,14 @@ function toBuffer104(self) {
   return data(packNetworkText(setType(make(), toInt("Disconnect")), self.reason, "reason"));
 }
 
-// Parser.js
+// src/Parser.js
 var Parser_exports = {};
 __export(Parser_exports, {
   parse: () => parse163,
   parseLazy: () => parseLazy
 });
 
-// ../node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Stdlib_Lazy.js
+// node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Stdlib_Lazy.js
 function from_fun(closure) {
   return {
     LAZY_DONE: false,
@@ -18619,7 +18619,7 @@ function from_fun(closure) {
 }
 var make4 = from_fun;
 
-// packet/Packet_NpcStrike.js
+// src/packet/Packet_NpcStrike.js
 var Packet_NpcStrike_exports = {};
 __export(Packet_NpcStrike_exports, {
   parse: () => parse108,
@@ -18668,7 +18668,7 @@ function toBuffer105(self) {
   return data(packBool(packByte(packSingle(packInt16(packByte(packByte(setType(make(), toInt("NpcStrike")), self.npcSlotId, "npcSlotId"), self.generation, "generation"), self.damage, "damage"), self.knockback, "knockback"), self.direction + 1 | 0, "direction"), self.critical, "critical"));
 }
 
-// packetv1449/PacketV1449_Emoji.js
+// src/packetv1449/PacketV1449_Emoji.js
 function parse109(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
@@ -18692,7 +18692,7 @@ function toBuffer106(self) {
   return data(packByte(packByte(setType(make(), toInt("Emoji")), self.playerId, "playerId"), self.emojiId, "emojiId"));
 }
 
-// packet/Packet_ServerInfo.js
+// src/packet/Packet_ServerInfo.js
 var Packet_ServerInfo_exports = {};
 __export(Packet_ServerInfo_exports, {
   Decode: () => Decode37,
@@ -18720,7 +18720,7 @@ var Encode37 = {
   toBuffer: toBuffer107
 };
 
-// packetv1449/PacketV1449_DoorUse.js
+// src/packetv1449/PacketV1449_DoorUse.js
 function actionToInt(self) {
   switch (self) {
     case "OpenDoor":
@@ -18805,7 +18805,7 @@ function toBuffer108(self) {
   return data(packByte(packInt16(packInt16(packByte(setType(make(), toInt("DoorUse")), actionToInt(self.action), "action"), self.x, "x"), self.y, "y"), self.direction >= 0 ? 1 : 0, "direction"));
 }
 
-// packet/Packet_DamageNPCAck.js
+// src/packet/Packet_DamageNPCAck.js
 var Packet_DamageNPCAck_exports = {};
 __export(Packet_DamageNPCAck_exports, {
   parse: () => parse112,
@@ -18821,7 +18821,7 @@ function toBuffer109(_self) {
   return data(setType(make(), toInt("DamageNPCAck")));
 }
 
-// packetv1449/PacketV1449_HarpPlay.js
+// src/packetv1449/PacketV1449_HarpPlay.js
 function parse113(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
@@ -18845,7 +18845,7 @@ function toBuffer110(self) {
   return data(packSingle(packByte(setType(make(), toInt("HarpPlay")), self.playerId, "playerId"), self.pitch, "pitch"));
 }
 
-// packetv1449/PacketV1449_ChestName.js
+// src/packetv1449/PacketV1449_ChestName.js
 function parse114(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "chestId");
@@ -18879,7 +18879,7 @@ function toBuffer111(self) {
   return data(packString(packInt16(packInt16(packInt16(setType(make(), toInt("ChestName")), self.chestId, "chestId"), self.x, "x"), self.y, "y"), self.name, "name"));
 }
 
-// packetv1449/PacketV1449_ChestOpen.js
+// src/packetv1449/PacketV1449_ChestOpen.js
 function parse115(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
@@ -18903,7 +18903,7 @@ function toBuffer112(self) {
   return data(packInt16(packInt16(setType(make(), toInt("ChestOpen")), self.x, "x"), self.y, "y"));
 }
 
-// packetv1449/PacketV1449_LiquidSet.js
+// src/packetv1449/PacketV1449_LiquidSet.js
 function parse116(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
@@ -18937,7 +18937,7 @@ function toBuffer113(self) {
   return data(packByte(packByte(packInt16(packInt16(setType(make(), toInt("LiquidSet")), self.x, "x"), self.y, "y"), self.liquid, "liquid"), self.liquidType, "liquidType"));
 }
 
-// packetv1449/PacketV1449_NpcTamper.js
+// src/packetv1449/PacketV1449_NpcTamper.js
 function fromInt11(playerId) {
   if (playerId !== -1) {
     return {
@@ -19013,7 +19013,7 @@ function toBuffer114(self) {
   return data(packImmunity(packUInt16(setType(make(), toInt("NpcTamper")), self.npcId, "npcId"), self.immunityTime, self.immunityFromPlayerId));
 }
 
-// packetv1449/PacketV1449_HealEffect.js
+// src/packetv1449/PacketV1449_HealEffect.js
 function parse118(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
@@ -19037,7 +19037,7 @@ function toBuffer115(self) {
   return data(packInt16(packByte(setType(make(), toInt("HealEffect")), self.playerId, "playerId"), self.healAmount, "healAmount"));
 }
 
-// packetv1449/PacketV1449_ManaEffect.js
+// src/packetv1449/PacketV1449_ManaEffect.js
 function parse119(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
@@ -19061,7 +19061,7 @@ function toBuffer116(self) {
   return data(packInt16(packByte(setType(make(), toInt("ManaEffect")), self.playerId, "playerId"), self.manaAmount, "manaAmount"));
 }
 
-// packetv1449/PacketV1449_NpcBuffAdd.js
+// src/packetv1449/PacketV1449_NpcBuffAdd.js
 function parse120(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
@@ -19090,7 +19090,7 @@ function toBuffer117(self) {
   return data(packInt16(packUInt16(packInt16(setType(make(), toInt("NpcBuffAdd")), self.npcId, "npcId"), self.buffType, "buffType"), self.time, "time"));
 }
 
-// packetv1449/PacketV1449_NpcRelease.js
+// src/packetv1449/PacketV1449_NpcRelease.js
 function parse121(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "x");
@@ -19124,7 +19124,7 @@ function toBuffer118(self) {
   return data(packByte(packInt16(packInt32(packInt32(setType(make(), toInt("NpcRelease")), self.x, "x"), self.y, "y"), self.npcType, "npcType"), self.style, "style"));
 }
 
-// packetv1449/PacketV1449_PortalKill.js
+// src/packetv1449/PacketV1449_PortalKill.js
 function parse122(payload) {
   let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "owner");
@@ -19148,7 +19148,7 @@ function toBuffer119(self) {
   return data(packByte(packUInt16(setType(make(), toInt("PortalKill")), self.owner, "owner"), self.portalColor, "portalColor"));
 }
 
-// packetv1449/PacketV1449_EmoteBubble.js
+// src/packetv1449/PacketV1449_EmoteBubble.js
 function parse123(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "id");
@@ -19239,7 +19239,7 @@ function toBuffer120(self) {
   return data(tmp);
 }
 
-// packetv1449/PacketV1449_PasswordSend.js
+// src/packetv1449/PacketV1449_PasswordSend.js
 function parse124(payload) {
   let reader = new packetreader_default(payload);
   let e = readString(reader, "password");
@@ -19258,7 +19258,7 @@ function toBuffer121(self) {
   return data(packString(setType(make(), toInt("PasswordSend")), self.password, "password"));
 }
 
-// packet/Packet_ProjectileDestroy.js
+// src/packet/Packet_ProjectileDestroy.js
 var Packet_ProjectileDestroy_exports = {};
 __export(Packet_ProjectileDestroy_exports, {
   parse: () => parse125,
@@ -19294,7 +19294,7 @@ function toBuffer122(self) {
   return data(packSingle(packSingle(packInt32(setType(make(), toInt("ProjectileDestroy")), toInt10(self.projectileKey), "projectileKey"), self.position.x, "positionX"), self.position.y, "positionY"));
 }
 
-// packetv1449/PacketV1449_GemLockToggle.js
+// src/packetv1449/PacketV1449_GemLockToggle.js
 function parse126(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
@@ -19323,7 +19323,7 @@ function toBuffer123(self) {
   return data(packBool(packInt16(packInt16(setType(make(), toInt("GemLockToggle")), self.x, "x"), self.y, "y"), self.active, "active"));
 }
 
-// packetv1449/PacketV1449_NebulaLevelUp.js
+// src/packetv1449/PacketV1449_NebulaLevelUp.js
 function parse127(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
@@ -19357,7 +19357,7 @@ function toBuffer124(self) {
   return data(packSingle(packSingle(packUInt16(packByte(setType(make(), toInt("NebulaLevelUp")), self.playerId, "playerId"), self.level, "level"), self.x, "x"), self.y, "y"));
 }
 
-// packetv1449/PacketV1449_PlayerStealth.js
+// src/packetv1449/PacketV1449_PlayerStealth.js
 function parse128(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
@@ -19381,7 +19381,7 @@ function toBuffer125(self) {
   return data(packSingle(packByte(setType(make(), toInt("PlayerStealth")), self.playerId, "playerId"), self.stealth, "stealth"));
 }
 
-// packet/Packet_PlayerPlatformInfo.js
+// src/packet/Packet_PlayerPlatformInfo.js
 var Packet_PlayerPlatformInfo_exports = {};
 __export(Packet_PlayerPlatformInfo_exports, {
   Decode: () => Decode38,
@@ -19480,7 +19480,7 @@ var Encode38 = {
   toBuffer: toBuffer126
 };
 
-// packetv1449/PacketV1449_GoodEvilUpdate.js
+// src/packetv1449/PacketV1449_GoodEvilUpdate.js
 function parse130(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "good");
@@ -19509,7 +19509,7 @@ function toBuffer127(self) {
   return data(packByte(packByte(packByte(setType(make(), toInt("GoodEvilUpdate")), self.good, "good"), self.evil, "evil"), self.blood, "blood"));
 }
 
-// packetv1449/PacketV1449_ItemDropModify.js
+// src/packetv1449/PacketV1449_ItemDropModify.js
 function parseFlags2(reader, flags22) {
   let width = flag1(flags22) ? map(readInt16(reader, "width"), (v) => v) : {
     TAG: "Ok",
@@ -19765,7 +19765,7 @@ function toBuffer128(self) {
   return data(writer);
 }
 
-// packetv1449/PacketV1449_ItemFramePlace.js
+// src/packetv1449/PacketV1449_ItemFramePlace.js
 function parse132(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
@@ -19804,7 +19804,7 @@ function toBuffer129(self) {
   return data(packInt16(packByte(packInt16(packInt16(packInt16(setType(make(), toInt("ItemFramePlace")), self.x, "x"), self.y, "y"), self.itemId, "itemId"), self.prefix, "prefix"), self.stack, "stack"));
 }
 
-// packetv1449/PacketV1449_LucyAxeMessage.js
+// src/packetv1449/PacketV1449_LucyAxeMessage.js
 function parse133(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "source");
@@ -19857,7 +19857,7 @@ function toBuffer130(self) {
   return data(packInt32(packInt32(packSingle(packSingle(packByte(packByte(setType(make(), toInt("LucyAxeMessage")), self.source, "source"), self.variant, "variant"), self.velocity.x, "velocityX"), self.velocity.y, "velocityY"), self.position.x, "positionX"), self.position.y, "positionY"));
 }
 
-// packetv1449/PacketV1449_LegacySoundPlay.js
+// src/packetv1449/PacketV1449_LegacySoundPlay.js
 function parse134(payload) {
   let reader = new packetreader_default(payload);
   let e = readSingle(reader, "x");
@@ -19931,7 +19931,7 @@ function toBuffer131(self) {
   return data(writer);
 }
 
-// packetv1449/PacketV1449_PlayerHealOther.js
+// src/packetv1449/PacketV1449_PlayerHealOther.js
 function parse135(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
@@ -19955,7 +19955,7 @@ function toBuffer132(self) {
   return data(packInt16(packByte(setType(make(), toInt("PlayerHealOther")), self.playerId, "playerId"), self.healAmount, "healAmount"));
 }
 
-// packetv1449/PacketV1449_PlayerSpawnSelf.js
+// src/packetv1449/PacketV1449_PlayerSpawnSelf.js
 function parse136(_payload) {
   return {
     TAG: "Ok",
@@ -19966,7 +19966,7 @@ function toBuffer133(_self) {
   return data(setType(make(), toInt("PlayerSpawnSelf")));
 }
 
-// packetv1449/PacketV1449_CombatTextCreate.js
+// src/packetv1449/PacketV1449_CombatTextCreate.js
 function parse137(payload) {
   let reader = new packetreader_default(payload);
   let e = readSingle(reader, "x");
@@ -20000,7 +20000,7 @@ function toBuffer134(self) {
   return data(packNetworkText(packColor(packSingle(packSingle(setType(make(), toInt("CombatTextCreate")), self.x, "x"), self.y, "y"), self.color, "color"), self.text, "text"));
 }
 
-// packetv1449/PacketV1449_NpcSpecialEffect.js
+// src/packetv1449/PacketV1449_NpcSpecialEffect.js
 function parse138(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
@@ -20024,7 +20024,7 @@ function toBuffer135(self) {
   return data(packByte(packByte(setType(make(), toInt("NpcSpecialEffect")), self.playerId, "playerId"), self.effectType, "effectType"));
 }
 
-// packetv1449/PacketV1449_PasswordRequired.js
+// src/packetv1449/PacketV1449_PasswordRequired.js
 function parse139(_payload) {
   return {
     TAG: "Ok",
@@ -20035,7 +20035,7 @@ function toBuffer136(_self) {
   return data(setType(make(), toInt("PasswordRequired")));
 }
 
-// packetv1449/PacketV1449_EventNotification.js
+// src/packetv1449/PacketV1449_EventNotification.js
 function parse140(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "eventId");
@@ -20054,7 +20054,7 @@ function toBuffer137(self) {
   return data(packInt16(setType(make(), toInt("EventNotification")), self.eventId, "eventId"));
 }
 
-// packetv1449/PacketV1449_GolfBallLandInCup.js
+// src/packetv1449/PacketV1449_GolfBallLandInCup.js
 function parse141(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
@@ -20093,7 +20093,7 @@ function toBuffer138(self) {
   return data(packUInt16(packUInt16(packUInt16(packUInt16(packByte(setType(make(), toInt("GolfBallLandInCup")), self.playerId, "playerId"), self.cupX, "cupX"), self.cupY, "cupY"), self.projId, "projId"), self.projType, "projType"));
 }
 
-// packetv1449/PacketV1449_MassWireOperation.js
+// src/packetv1449/PacketV1449_MassWireOperation.js
 function parse142(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "startX");
@@ -20132,7 +20132,7 @@ function toBuffer139(self) {
   return data(packByte(packInt16(packInt16(packInt16(packInt16(setType(make(), toInt("MassWireOperation")), self.startX, "startX"), self.startY, "startY"), self.endX, "endX"), self.endY, "endY"), self.toolMode, "toolMode"));
 }
 
-// packetv1449/PacketV1449_MoonLordCountdown.js
+// src/packetv1449/PacketV1449_MoonLordCountdown.js
 function parse143(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "maxMoonLordCountdown");
@@ -20156,7 +20156,7 @@ function toBuffer140(self) {
   return data(packInt32(packInt32(setType(make(), toInt("MoonLordCountdown")), self.maxMoonLordCountdown, "maxMoonLordCountdown"), self.moonLordCountdown, "moonLordCountdown"));
 }
 
-// packetv1449/PacketV1449_RevengeMarkerSync.js
+// src/packetv1449/PacketV1449_RevengeMarkerSync.js
 function parse144(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "uniqueId");
@@ -20222,7 +20222,7 @@ function toBuffer141(self) {
   return data(packBool(packSingle(packInt32(packInt32(packInt32(packSingle(packInt32(packSingle(packSingle(packInt32(setType(make(), toInt("RevengeMarkerSync")), self.uniqueId, "uniqueId"), self.position.x, "posX"), self.position.y, "posY"), self.npcNetId, "npcNetId"), self.npcHpPercent, "npcHpPercent"), self.npcTypeAgainstDiscouragement, "npcTypeAgainstDiscouragement"), self.npcAiStyleAgainstDiscouragement, "npcAiStyleAgainstDiscouragement"), self.coinValue, "coinValue"), self.baseValue, "baseValue"), self.spawnedFromStatue, "spawnedFromStatue"));
 }
 
-// packetv1449/PacketV1449_CombatNumberCreate.js
+// src/packetv1449/PacketV1449_CombatNumberCreate.js
 function parse145(payload) {
   let reader = new packetreader_default(payload);
   let e = readSingle(reader, "x");
@@ -20256,7 +20256,7 @@ function toBuffer142(self) {
   return data(packInt32(packColor(packSingle(packSingle(setType(make(), toInt("CombatNumberCreate")), self.x, "x"), self.y, "y"), self.color, "color"), self.amount, "amount"));
 }
 
-// packetv1449/PacketV1449_MinionTargetUpdate.js
+// src/packetv1449/PacketV1449_MinionTargetUpdate.js
 function parse146(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
@@ -20285,7 +20285,7 @@ function toBuffer143(self) {
   return data(packSingle(packSingle(packByte(setType(make(), toInt("MinionTargetUpdate")), self.playerId, "playerId"), self.x, "x"), self.y, "y"));
 }
 
-// packet/Packet_ItemDropInstancedUpdate.js
+// src/packet/Packet_ItemDropInstancedUpdate.js
 var Packet_ItemDropInstancedUpdate_exports = {};
 __export(Packet_ItemDropInstancedUpdate_exports, {
   parse: () => parse147,
@@ -20296,7 +20296,7 @@ function toBuffer144(self) {
 }
 var parse147 = parse18;
 
-// packetv1449/PacketV1449_ActiveContainerSync.js
+// src/packetv1449/PacketV1449_ActiveContainerSync.js
 function parse148(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "chestId");
@@ -20340,7 +20340,7 @@ function toBuffer145(self) {
   return data(self.nameLength > 0 && self.nameLength <= 20 ? packString(writer, self.name, "name") : writer);
 }
 
-// packetv1449/PacketV1449_RevengeMarkerRemove.js
+// src/packetv1449/PacketV1449_RevengeMarkerRemove.js
 function parse149(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "markerId");
@@ -20359,7 +20359,7 @@ function toBuffer146(self) {
   return data(packInt32(setType(make(), toInt("RevengeMarkerRemove")), self.markerId, "markerId"));
 }
 
-// packetv1449/PacketV1449_MassWireOperationPay.js
+// src/packetv1449/PacketV1449_MassWireOperationPay.js
 function parse150(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemType");
@@ -20388,7 +20388,7 @@ function toBuffer147(self) {
   return data(packByte(packInt16(packInt16(setType(make(), toInt("MassWireOperationPay")), self.itemType, "itemType"), self.stack, "stack"), self.playerId, "playerId"));
 }
 
-// packetv1449/PacketV1449_PlayerTeleportPortal.js
+// src/packetv1449/PacketV1449_PlayerTeleportPortal.js
 function parse151(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
@@ -20441,7 +20441,7 @@ function toBuffer148(self) {
   return data(packSingle(packSingle(packSingle(packSingle(packInt16(packByte(setType(make(), toInt("PlayerTeleportPortal")), self.playerId, "playerId"), self.extraInfo, "extraInfo"), self.position.x, "positionX"), self.position.y, "positionY"), self.velocity.x, "velocityX"), self.velocity.y, "velocityY"));
 }
 
-// packetv1449/PacketV1449_CavernMonsterTypeSync.js
+// src/packetv1449/PacketV1449_CavernMonsterTypeSync.js
 function parse152(payload) {
   let reader = new packetreader_default(payload);
   let rows = make2(2, []);
@@ -20519,7 +20519,7 @@ function toBuffer149(self) {
   }
 }
 
-// packetv1449/PacketV1449_ClientSyncedInventory.js
+// src/packetv1449/PacketV1449_ClientSyncedInventory.js
 function parse153(_payload) {
   return {
     TAG: "Ok",
@@ -20527,7 +20527,7 @@ function parse153(_payload) {
   };
 }
 
-// packetv1449/PacketV1449_FoodPlatterTryPlacing.js
+// src/packetv1449/PacketV1449_FoodPlatterTryPlacing.js
 function parse154(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
@@ -20566,7 +20566,7 @@ function toBuffer150(self) {
   return data(packInt16(packByte(packInt16(packInt16(packInt16(setType(make(), toInt("FoodPlatterTryPlacing")), self.x, "x"), self.y, "y"), self.itemId, "itemId"), self.prefix, "prefix"), self.stack, "stack"));
 }
 
-// packetv1449/PacketV1449_NpcKilledNotification.js
+// src/packetv1449/PacketV1449_NpcKilledNotification.js
 function parse155(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
@@ -20585,7 +20585,7 @@ function toBuffer151(self) {
   return data(packInt16(setType(make(), toInt("NpcKilledNotification")), self.npcId, "npcId"));
 }
 
-// packetv1449/PacketV1449_ShieldStrengthsUpdate.js
+// src/packetv1449/PacketV1449_ShieldStrengthsUpdate.js
 function parse156(payload) {
   let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "solar");
@@ -20619,7 +20619,7 @@ function toBuffer152(self) {
   return data(packUInt16(packUInt16(packUInt16(packUInt16(setType(make(), toInt("ShieldStrengthsUpdate")), self.solar, "solar"), self.vortex, "vortex"), self.nebula, "nebula"), self.stardust, "stardust"));
 }
 
-// packetv1449/PacketV1449_CrystalInvasionWipeAll.js
+// src/packetv1449/PacketV1449_CrystalInvasionWipeAll.js
 function parse157(_payload) {
   return {
     TAG: "Ok",
@@ -20630,7 +20630,7 @@ function toBuffer153(_self) {
   return data(setType(make(), toInt("CrystalInvasionWipeAll")));
 }
 
-// packetv1449/PacketV1449_PiggyBankVoidLensUpdate.js
+// src/packetv1449/PacketV1449_PiggyBankVoidLensUpdate.js
 function tryReading(reader, context) {
   let e = readInt16(reader, context + "_ownerIndex");
   if (e.TAG !== "Ok") {
@@ -20696,7 +20696,7 @@ function toBuffer154(self) {
   return data(pack5(pack5(packByte(setType(make(), toInt("PiggyBankVoidLensUpdate")), self.playerId, "playerId"), self.piggyBankProj, "piggyBankProj"), self.voidLensChest, "voidLensChest"));
 }
 
-// packetv1449/PacketV1449_MinionAttackTargetUpdate.js
+// src/packetv1449/PacketV1449_MinionAttackTargetUpdate.js
 function parse159(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
@@ -20720,7 +20720,7 @@ function toBuffer155(self) {
   return data(packInt16(packByte(setType(make(), toInt("MinionAttackTargetUpdate")), self.playerId, "playerId"), self.targetNpcId, "targetNpcId"));
 }
 
-// packetv1449/PacketV1449_AnglerQuestsCompletedAmount.js
+// src/packetv1449/PacketV1449_AnglerQuestsCompletedAmount.js
 function parse160(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
@@ -20749,7 +20749,7 @@ function toBuffer156(self) {
   return data(packInt32(packInt32(packByte(setType(make(), toInt("AnglerQuestsCompletedAmount")), self.playerId, "playerId"), self.anglerQuestsFinished, "anglerQuestsFinished"), self.golferScoreAccumulated, "golferScoreAccumulated"));
 }
 
-// packetv1449/PacketV1449_CrystalInvasionSendWaitTime.js
+// src/packetv1449/PacketV1449_CrystalInvasionSendWaitTime.js
 function parse161(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "timeLeftBetweenWaves");
@@ -20768,7 +20768,7 @@ function toBuffer157(self) {
   return data(packInt32(setType(new packetwriter_default(), toInt("CrystalInvasionSendWaitTime")), self.timeLeftBetweenWaves, "timeLeftBetweenWaves"));
 }
 
-// packetv1449/PacketV1449_DungeonDefendersEventAttemptSkipWait.js
+// src/packetv1449/PacketV1449_DungeonDefendersEventAttemptSkipWait.js
 function parse162(_payload) {
   return {
     TAG: "Ok",
@@ -20779,7 +20779,7 @@ function toBuffer158(_self) {
   return data(setType(make(), toInt("DungeonDefendersEventAttemptSkipWait")));
 }
 
-// Parser.js
+// src/Parser.js
 function addPacketContext(packetName3, err) {
   return {
     context: "Packet " + packetName3 + ": " + err.context,
@@ -23138,14 +23138,14 @@ function parseLazy(buffer, fromServer) {
   }
 }
 
-// ParserV1456.js
+// src/ParserV1456.js
 var ParserV1456_exports = {};
 __export(ParserV1456_exports, {
   parse: () => parse181,
   parseLazy: () => parseLazy2
 });
 
-// packetv1449/PacketV1449_NpcCatch.js
+// src/packetv1449/PacketV1449_NpcCatch.js
 function parse164(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
@@ -23169,7 +23169,7 @@ function toBuffer159(self) {
   return data(packByte(packInt16(setType(make(), toInt("NpcCatch")), self.npcId, "npcId"), self.playerId, "playerId"));
 }
 
-// packetv1449/PacketV1449_NpcStrike.js
+// src/packetv1449/PacketV1449_NpcStrike.js
 function parse165(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
@@ -23208,7 +23208,7 @@ function toBuffer160(self) {
   return data(packByte(packByte(packSingle(packInt16(packInt16(setType(make(), toInt("NpcStrike")), self.npcId, "npcId"), self.damage, "damage"), self.knockback, "knockback"), self.direction + 1 | 0, "direction"), self.critical ? 1 : 0, "critical"));
 }
 
-// packetv1456/PacketV1456_ItemOwner.js
+// src/packetv1456/PacketV1456_ItemOwner.js
 function parse166(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemDropId");
@@ -23244,7 +23244,7 @@ function toBuffer161(self) {
   return data(packSingle(packSingle(packByte(packInt16(setType(make(), toInt8("ItemOwner")), self.itemDropId, "itemDropId"), self.owner, "owner"), self.position.x, "positionX"), self.position.y, "positionY"));
 }
 
-// packetv1456/PacketV1456_NpcUpdate.js
+// src/packetv1456/PacketV1456_NpcUpdate.js
 function readNpcFlags12(reader, fieldName) {
   let e = readByte(reader, fieldName);
   if (e.TAG !== "Ok") {
@@ -23562,7 +23562,7 @@ function toBuffer162(self) {
   return data(packReleaseOwner2(packLife2(packDifficulty2(packPlayerCountScale2(packInt16(packAi2(packByte(packByte(packUInt16(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt8("NpcUpdate")), self.npcSlotId, "npcSlotId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.target, "target"), npcFlags12(self), "npcFlags1"), npcFlags22(self), "npcFlags2"), self.ai), self.npcTypeId, "npcTypeId"), self.playerCountScale), self.difficulty), self.life), self.releaseOwner));
 }
 
-// packetv1456/PacketV1456_WorldInfo.js
+// src/packetv1456/PacketV1456_WorldInfo.js
 function readEventInfo2(reader) {
   let e = readByte(reader, "eventInfo1");
   if (e.TAG !== "Ok") {
@@ -24241,7 +24241,7 @@ function toBuffer163(self) {
   return data(packExtraSpawnPoints2(packSingle(packUInt64(packSByte(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packByte(packEventInfo2(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packUInt64(packBytes(packByte(packString(packInt32(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packInt32(setType(make(), toInt8("WorldInfo")), self.time, "time"), self.dayAndMoonInfo, "dayAndMoonInfo"), self.moonPhase, "moonPhase"), self.maxTilesX, "maxTilesX"), self.maxTilesY, "maxTilesY"), self.spawnX, "spawnX"), self.spawnY, "spawnY"), self.worldSurface, "worldSurface"), self.rockLayer, "rockLayer"), self.worldId, "worldId"), self.worldName, "worldName"), self.gameMode, "gameMode"), asArray(self.worldUniqueId), "worldUniqueId"), self.worldGeneratorVersion, "worldGeneratorVersion"), self.moonType, "moonType"), self.treeBackground, "treeBackground"), self.treeBackground2, "treeBackground2"), self.treeBackground3, "treeBackground3"), self.treeBackground4, "treeBackground4"), self.corruptionBackground, "corruptionBackground"), self.jungleBackground, "jungleBackground"), self.snowBackground, "snowBackground"), self.hallowBackground, "hallowBackground"), self.crimsonBackground, "crimsonBackground"), self.desertBackground, "desertBackground"), self.oceanBackground, "oceanBackground"), self.mushroomBackground, "mushroomBackground"), self.underworldBackground, "underworldBackground"), self.iceBackStyle, "iceBackStyle"), self.jungleBackStyle, "jungleBackStyle"), self.hellBackStyle, "hellBackStyle"), self.windSpeedSet, "windSpeedSet"), self.cloudNumber, "cloudNumber"), self.tree1, "tree1"), self.tree2, "tree2"), self.tree3, "tree3"), self.treeStyle1, "treeStyle1"), self.treeStyle2, "treeStyle2"), self.treeStyle3, "treeStyle3"), self.treeStyle4, "treeStyle4"), self.caveBack1, "caveBack1"), self.caveBack2, "caveBack2"), self.caveBack3, "caveBack3"), self.caveBackStyle1, "caveBackStyle1"), self.caveBackStyle2, "caveBackStyle2"), self.caveBackStyle3, "caveBackStyle3"), self.caveBackStyle4, "caveBackStyle4"), self.forest1TreeTopStyle, "forest1TreeTopStyle"), self.forest2TreeTopStyle, "forest2TreeTopStyle"), self.forest3TreeTopStyle, "forest3TreeTopStyle"), self.forest4TreeTopStyle, "forest4TreeTopStyle"), self.corruptionTreeTopStyle, "corruptionTreeTopStyle"), self.jungleTreeTopStyle, "jungleTreeTopStyle"), self.snowTreeTopStyle, "snowTreeTopStyle"), self.hallowTreeTopStyle, "hallowTreeTopStyle"), self.crimsonTreeTopStyle, "crimsonTreeTopStyle"), self.desertTreeTopStyle, "desertTreeTopStyle"), self.oceanTreeTopStyle, "oceanTreeTopStyle"), self.glowingMushroomTreeTopStyle, "glowingMushroomTreeTopStyle"), self.underworldTreeTopStyle, "underworldTreeTopStyle"), self.rain, "rain"), self.eventInfo), toByte(fromFlags(self.lowTiles, false, false, false, false, false, false, false)), "lowTiles"), self.sundialCooldown, "sundialCooldown"), self.moondialCooldown, "moondialCooldown"), self.copperOreTier, "copperOreTier"), self.ironOreTier, "ironOreTier"), self.silverOreTier, "silverOreTier"), self.goldOreTier, "goldOreTier"), self.cobaltOreTier, "cobaltOreTier"), self.mythrilOreTier, "mythrilOreTier"), self.adamantiteOreTier, "adamantiteOreTier"), self.invasionType, "invasionType"), self.lobbyId, "lobbyId"), self.sandstormSeverity, "sandstormSeverity"), self.extraSpawnPoints));
 }
 
-// packetv1456/PacketV1456_ServerInfo.js
+// src/packetv1456/PacketV1456_ServerInfo.js
 function parse169(_payload) {
   return {
     TAG: "Ok",
@@ -24252,7 +24252,7 @@ function toBuffer164(_self) {
   return data(setType(make(), toInt8("ServerInfo")));
 }
 
-// packetv1449/PacketV1449_PlayerDodge.js
+// src/packetv1449/PacketV1449_PlayerDodge.js
 function dodgeFromByte2(b) {
   switch (b) {
     case 1:
@@ -24315,7 +24315,7 @@ function toBuffer165(self) {
   return data(packByte(packByte(setType(make(), toInt("PlayerDodge")), self.playerId, "playerId"), dodgeToByte2(self.dodge), "dodge"));
 }
 
-// packetv1456/PacketV1456_PlayerUpdate.js
+// src/packetv1456/PacketV1456_PlayerUpdate.js
 function parse171(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
@@ -24580,7 +24580,7 @@ function toBuffer166(self) {
   return data(packNetCameraTarget2(packPotionOfReturn2(packMountType2(packVelocity2(packSingle(packSingle(packByte(packMiscFlags32(packMiscFlags22(packMiscFlags12(packControlFlags2(packByte(setType(make(), toInt8("PlayerUpdate")), self.playerId, "playerId"), self.control, self.direction), self.pulleyDirection, self.velocity, self.vortexStealthActive, self.gravityDirection, self.shieldRaised, self.ghost, self.mountType), self.tryKeepingHoveringUp, self.isVoidVaultEnabled, self.isSitting, self.hasFinishedAnyDd2Event, self.isPettingAnimal, self.isTheAnimalBeingPetSmall, self.potionOfReturn, self.tryKeepingHoveringDown), self.isSleeping, self.autoReuseAllWeapons, self.controlDownHold, self.isOperatingAnotherEntity, self.controlUseTile, self.netCameraTarget, self.lastItemUseAttemptSuccess), self.selectedItem, "selectedItem"), self.position.x, "positionX"), self.position.y, "positionY"), self.velocity), self.mountType), self.potionOfReturn), self.netCameraTarget));
 }
 
-// packetv1449/PacketV1449_NpcItemStrike.js
+// src/packetv1449/PacketV1449_NpcItemStrike.js
 function parse172(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
@@ -24604,7 +24604,7 @@ function toBuffer167(self) {
   return data(packByte(packInt16(setType(make(), toInt("NpcItemStrike")), self.npcId, "npcId"), self.playerId, "playerId"));
 }
 
-// packetv1456/PacketV1456_NetModuleLoad.js
+// src/packetv1456/PacketV1456_NetModuleLoad.js
 function pylonActionToInt3(pylonAction) {
   switch (pylonAction) {
     case "Added":
@@ -25913,7 +25913,7 @@ function parse173(payload, fromServer) {
   }
 }
 
-// packetv1449/PacketV1449_ItemDropUpdate.js
+// src/packetv1449/PacketV1449_ItemDropUpdate.js
 function parse174(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemDropId");
@@ -25972,7 +25972,7 @@ function toBuffer169(self) {
   return data(packInt16(packByte(packByte(packInt16(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt("ItemDropUpdate")), self.itemDropId, "itemDropId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.stack, "stack"), self.prefix, "prefix"), self.noDelay, "noDelay"), self.itemId, "itemId"));
 }
 
-// packetv1449/PacketV1449_ProjectileSync.js
+// src/packetv1449/PacketV1449_ProjectileSync.js
 function parse175(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "projectileId");
@@ -26219,7 +26219,7 @@ function toBuffer170(self) {
   return data(packOptionalData(packInt16(packByte(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt("ProjectileSync")), self.projectileId, "projectileId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.owner, "owner"), self.projectileType, "projectileType"), self));
 }
 
-// packetv1449/PacketV1449_ItemOwnerRemove.js
+// src/packetv1449/PacketV1449_ItemOwnerRemove.js
 function parse176(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemDropId");
@@ -26238,7 +26238,7 @@ function toBuffer171(self) {
   return data(packInt16(setType(make(), toInt("ItemOwnerRemove")), self.itemDropId, "itemDropId"));
 }
 
-// packetv1449/PacketV1449_ProjectileDestroy.js
+// src/packetv1449/PacketV1449_ProjectileDestroy.js
 function parse177(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "projectileId");
@@ -26262,7 +26262,7 @@ function toBuffer172(self) {
   return data(packByte(packInt16(setType(make(), toInt("ProjectileDestroy")), self.projectileId, "projectileId"), self.owner, "owner"));
 }
 
-// packetv1456/PacketV1456_PlayerPlatformInfo.js
+// src/packetv1456/PacketV1456_PlayerPlatformInfo.js
 function fromInt14(n) {
   switch (n) {
     case 0:
@@ -26339,11 +26339,11 @@ function toBuffer173(self) {
   return data(packByte(packByte(setType(make(), toInt8("PlayerPlatformInfo")), self.playerId, "playerId"), toInt13(self.platformId), "platformId"));
 }
 
-// packetv1449/PacketV1449_ItemDropInstancedUpdate.js
+// src/packetv1449/PacketV1449_ItemDropInstancedUpdate.js
 var parse179 = parse174;
 var toBuffer174 = toBuffer169;
 
-// packetv1449/PacketV1449_ItemDropProtectedUpdate.js
+// src/packetv1449/PacketV1449_ItemDropProtectedUpdate.js
 function parse180(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemDropId");
@@ -26407,7 +26407,7 @@ function toBuffer175(self) {
   return data(packByte(packInt16(packByte(packByte(packInt16(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt("ItemDropProtectedUpdate")), self.itemDropId, "itemDropId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.stack, "stack"), self.prefix, "prefix"), self.noDelay, "noDelay"), self.itemId, "itemId"), self.timeLeftInWhichTheItemCannotBeTakenByEnemies, "timeLeftInWhichTheItemCannotBeTakenByEnemies"));
 }
 
-// ParserV1456.js
+// src/ParserV1456.js
 function addPacketContext2(packetName3, err) {
   return {
     context: "Packet " + packetName3 + ": " + err.context,
@@ -28769,7 +28769,7 @@ function parseLazy2(buffer, fromServer) {
   }
 }
 
-// Packet.js
+// src/Packet.js
 var Packet_exports = {};
 __export(Packet_exports, {
   ActiveContainerSync: () => ActiveContainerSync,
@@ -28937,7 +28937,7 @@ __export(Packet_exports, {
   toPacketName: () => toPacketName$1
 });
 
-// ../node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Pervasives.js
+// node_modules/.pnpm/@rescript+runtime@12.0.1/node_modules/@rescript/runtime/lib/es6/Pervasives.js
 function string_of_bool(b) {
   if (b) {
     return "true";
@@ -28946,7 +28946,7 @@ function string_of_bool(b) {
   }
 }
 
-// ISerializer.js
+// src/ISerializer.js
 function toBufferResult(result) {
   if (result.TAG === "Ok") {
     return {
@@ -28961,7 +28961,7 @@ function toBufferResult(result) {
   }
 }
 
-// Packet.js
+// src/Packet.js
 function packetTypeOf(packet) {
   switch (packet.TAG) {
     case "ConnectRequest":
@@ -30587,7 +30587,7 @@ var LazyPacket = {
   toPacketName
 };
 
-// PacketV1456.js
+// src/PacketV1456.js
 var PacketV1456_exports = {};
 __export(PacketV1456_exports, {
   ActiveContainerSync: () => ActiveContainerSync2,
@@ -32369,7 +32369,7 @@ var LazyPacket2 = {
   toPacketName: toPacketName2
 };
 
-// Point.js
+// src/Point.js
 var Point_exports = {};
 __export(Point_exports, {
   Float: () => Float,
@@ -32388,7 +32388,7 @@ var Float = {
   toString: toString$12
 };
 
-// ParserConverterV1456.js
+// src/ParserConverterV1456.js
 var ParserConverterV1456_exports = {};
 __export(ParserConverterV1456_exports, {
   convertFromLatestIfNeeded: () => convertFromLatestIfNeeded,
