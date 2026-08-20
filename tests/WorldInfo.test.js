@@ -11,7 +11,26 @@ Zora.test("should correctly parse and serialise WorldInfo", t => {
   let buffer = Buffer.from("a80007483f00000000d0206009b7100e037c0782072a09214a054c6f6262790221123b408994804ab40674ee13ee1d0501000000160100000504090708000305020402050201030002cdcc4c3f411c08000050120000491b000004010403d90a0000de0b0000ed1900000207000500040403000404020402040001000000000e2d9841023d60f404000006000700a700a800a900ffffffffffff000000000000000000ae9d273e00", "hex");
   let result = Packet_WorldInfo$TerrariaPacket.parse(buffer);
   if (result.TAG === "Ok") {
-    console.log(result._0);
+    let newrecord = {...result._0};
+    newrecord.noLightningSeed = true;
+    newrecord.moreLightningSeed = true;
+    newrecord.forceChristmasForever = true;
+    newrecord.forceHalloweenForever = true;
+    let encoded = Packet_WorldInfo$TerrariaPacket.toBuffer(newrecord);
+    if (encoded.TAG === "Ok") {
+      let parsed = Packet_WorldInfo$TerrariaPacket.parse(encoded._0);
+      if (parsed.TAG === "Ok") {
+        let parsed$1 = parsed._0;
+        t.ok(parsed$1.forceHalloweenForever);
+        t.ok(parsed$1.forceChristmasForever);
+        t.ok(parsed$1.moreLightningSeed);
+        t.ok(parsed$1.noLightningSeed);
+        return;
+      }
+      t.fail(Stdlib_Option.getOrThrow(Stdlib_JsExn.message(parsed._0.error), undefined));
+      return;
+    }
+    t.fail(Stdlib_Option.getOrThrow(Stdlib_JsExn.message(encoded._0.error), undefined));
     return;
   }
   t.fail(Stdlib_Option.getOrThrow(Stdlib_JsExn.message(result._0.error), undefined));
@@ -23,32 +42,37 @@ Zora.test("should correctly parse and serialise WorldInfo", t => {
   if (err.TAG === "Ok") {
     let packet = err._0;
     if (typeof packet !== "object") {
-      t.fail("PacketStructureIsSame");
-      return;
-    }
-    let packet$1 = packet._0;
-    if (packet$1.TAG === "WorldInfo") {
-      let p = Packet$TerrariaPacket.toBuffer(packet$1, true);
-      if (typeof p !== "object") {
-        t.fail("NotImplemented");
+      if (packet === "PacketStructureIsSame") {
+        t.fail("PacketStructureIsSame");
         return;
       }
-      if (p.TAG === "Ok") {
-        let buffer$1 = p._0;
-        t.equal(buffer$1, buffer$1);
-        let result = Packet_WorldInfo$TerrariaPacket.parse(buffer$1);
-        if (result.TAG === "Ok") {
-          console.log(result._0);
-          return;
-        }
-        t.fail(result._0);
-        return;
-      }
-      t.fail(p._0);
+      t.fail("DiscardAsNotExists");
       return;
     } else {
-      t.fail("ConvertedToLatestVersion");
-      return;
+      let packet$1 = packet._0;
+      if (packet$1.TAG === "WorldInfo") {
+        let p = Packet$TerrariaPacket.toBuffer(packet$1, true);
+        if (typeof p !== "object") {
+          t.fail("NotImplemented");
+          return;
+        }
+        if (p.TAG === "Ok") {
+          let buffer$1 = p._0;
+          t.equal(buffer$1, buffer$1);
+          let result = Packet_WorldInfo$TerrariaPacket.parse(buffer$1);
+          if (result.TAG === "Ok") {
+            console.log(result._0);
+            return;
+          }
+          t.fail(result._0);
+          return;
+        }
+        t.fail(p._0);
+        return;
+      } else {
+        t.fail("ConvertedToLatestVersion");
+        return;
+      }
     }
   } else {
     t.fail(err._0);

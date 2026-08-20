@@ -9,6 +9,7 @@ import * as Packet_NpcUpdate$TerrariaPacket from "../src/packet/Packet_NpcUpdate
 Zora.test("should correctly parse and serialise NpcUpdate", t => {
   let data = {
     npcSlotId: 0,
+    generation: 0,
     npcTypeId: 0,
     x: 0,
     y: 0,

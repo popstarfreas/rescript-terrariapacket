@@ -1,6 +1,7 @@
 type convertIfNeeded =
   | PacketStructureIsSame
   | ConvertedToLatestVersion(Packet.t)
+  | DiscardAsNotExists
 let convertFromV1449IfNeeded: (
   ~buffer: NodeJs.Buffer.t,
   ~fromServer: bool,

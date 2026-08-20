@@ -37,22 +37,29 @@ function assertConvertsToLatestParticles(result, t) {
   if (result.TAG === "Ok") {
     let match = result._0;
     if (typeof match !== "object") {
+      if (match === "PacketStructureIsSame") {
+        t.fail("Expected ConvertedToLatestVersion(NetModuleLoad(Particles))");
+        return;
+      }
       t.fail("Expected ConvertedToLatestVersion(NetModuleLoad(Particles))");
       return;
-    }
-    let match$1 = match._0;
-    if (match$1.TAG === "NetModuleLoad") {
-      if (match$1._0.TAG === "Particles") {
-        t.ok(true);
+    } else {
+      let match$1 = match._0;
+      if (match$1.TAG === "NetModuleLoad") {
+        if (match$1._0.TAG === "Particles") {
+          t.ok(true);
+          return;
+        }
+        t.fail("Expected ConvertedToLatestVersion(NetModuleLoad(Particles))");
         return;
       }
       t.fail("Expected ConvertedToLatestVersion(NetModuleLoad(Particles))");
       return;
     }
-    t.fail("Expected ConvertedToLatestVersion(NetModuleLoad(Particles))");
+  } else {
+    t.fail(IParser$TerrariaPacket.ParseError.toDisplayString(result._0));
     return;
   }
-  t.fail(IParser$TerrariaPacket.ParseError.toDisplayString(result._0));
 }
 
 Zora$1.test("should correctly parse and serialise NetModuleLoad", t => {

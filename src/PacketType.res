@@ -156,6 +156,7 @@ type t =
   | SectionRequest
   | ItemDropPosition
   | HostToken
+  | DamageNPCAck
   | ServerInfo
   | PlayerPlatformInfo
 
@@ -318,8 +319,9 @@ let fromInt = n =>
   | 159 => Some(SectionRequest)
   | 160 => Some(ItemDropPosition)
   | 161 => Some(HostToken)
-  | 162 => Some(ServerInfo)
-  | 163 => Some(PlayerPlatformInfo)
+  | 162 => Some(DamageNPCAck)
+  | 163 => Some(ServerInfo)
+  | 164 => Some(PlayerPlatformInfo)
   | _ => None
   }
 
@@ -482,8 +484,9 @@ let toInt = self =>
   | SectionRequest => 159
   | ItemDropPosition => 160
   | HostToken => 161
-  | ServerInfo => 162
-  | PlayerPlatformInfo => 163
+  | DamageNPCAck => 162
+  | ServerInfo => 163
+  | PlayerPlatformInfo => 164
   }
 
 let packetName = (packetType: t): string =>
@@ -645,6 +648,7 @@ let packetName = (packetType: t): string =>
   | SectionRequest => "SectionRequest"
   | ItemDropPosition => "ItemDropPosition"
   | HostToken => "HostToken"
+  | DamageNPCAck => "DamageNPCAck"
   | ServerInfo => "ServerInfo"
   | PlayerPlatformInfo => "PlayerPlatformInfo"
   }

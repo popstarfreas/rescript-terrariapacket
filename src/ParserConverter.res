@@ -232,6 +232,10 @@ let worldInfoFromV1449 = (worldInfo: PacketV1449.WorldInfo.t): Packet.WorldInfo.
     rain: worldInfo.rain,
     eventInfo: worldEventInfoFromV1449(worldInfo.eventInfo),
     lowTiles: false,
+    forceHalloweenForever: false,
+    forceChristmasForever: false,
+    moreLightningSeed: false,
+    noLightningSeed: false,
     sundialCooldown: worldInfo.sundialCooldown,
     moondialCooldown: worldInfo.moondialCooldown,
     copperOreTier: worldInfo.copperOreTier,
@@ -357,6 +361,7 @@ let playerUpdateControlFromV1449 = (
     isHoldingRight: control.isHoldingRight,
     isHoldingJump: control.isHoldingJump,
     isHoldingItemUse: control.isHoldingItemUse,
+    isHoldingDash: false,
   }
 }
 
@@ -690,10 +695,9 @@ let netModuleLoadFromV1449 = (
   | Ambience(ambience) => Packet.NetModuleLoad.Ambience(netModuleLoadAmbienceFromV1449(ambience))
   | Bestiary(bestiary) => Packet.NetModuleLoad.Bestiary(netModuleLoadBestiaryFromV1449(bestiary))
   | CreativeUnlocks(creativeUnlock) =>
-    Packet.NetModuleLoad.CreativeUnlocksPlayerReport({
-      userId: 0,
+    Packet.NetModuleLoad.CreativeUnlocks({
       itemId: creativeUnlock.itemId,
-      researchedCount: creativeUnlock.researchedCount,
+      sacrificeCount: creativeUnlock.researchedCount,
     })
   | CreativePower(creativePower) => Packet.NetModuleLoad.CreativePower(creativePower)
   | CreativeUnlocksPlayerReport(unlockReport) =>
@@ -725,6 +729,13 @@ let netModuleLoadToV1449 = (netModuleLoad: Packet.NetModuleLoad.t): option<
     Some(PacketV1449.NetModuleLoad.Ambience(netModuleLoadAmbienceToV1449(ambience)))
   | Bestiary(bestiary) =>
     Some(PacketV1449.NetModuleLoad.Bestiary(netModuleLoadBestiaryToV1449(bestiary)))
+  | CreativeUnlocks(creativeUnlock) =>
+    Some(
+      PacketV1449.NetModuleLoad.CreativeUnlocks({
+        itemId: creativeUnlock.itemId,
+        researchedCount: creativeUnlock.sacrificeCount,
+      }),
+    )
   | CreativePower(creativePower) => Some(PacketV1449.NetModuleLoad.CreativePower(creativePower))
   | CreativeUnlocksPlayerReport(unlockReport) =>
     Some(
@@ -745,7 +756,6 @@ let netModuleLoadToV1449 = (netModuleLoad: Packet.NetModuleLoad.t): option<
     )
   | Banners(_)
   | CraftingRequests(_)
-  | TagEffectState(_)
   | LeashedEntity(_)
   | UnbreakableWallScan(_) =>
     None
@@ -940,6 +950,50 @@ let entitiesToV1449 = (entities: array<Packet.TileSectionSend.Entity.t>): array<
   })
 }
 
+let itemDropOwnershipFromV1449 = value =>
+  switch Int.bitwiseAnd(value, 3) {
+  | 0 => Packet.ItemDropUpdate.None
+  | 1 => Packet.ItemDropUpdate.ReserveForLocalPlayer
+  | 2 => Packet.ItemDropUpdate.GrabDelayForLocalPlayer
+  | _ => Packet.ItemDropUpdate.GrabDelayForAllPlayers
+  }
+
+let itemDropOwnershipToV1449 = ownership =>
+  switch ownership {
+  | Packet.ItemDropUpdate.None => 0
+  | Packet.ItemDropUpdate.ReserveForLocalPlayer => 1
+  | Packet.ItemDropUpdate.GrabDelayForLocalPlayer => 2
+  | Packet.ItemDropUpdate.GrabDelayForAllPlayers => 3
+  }
+
+let itemDropFromV1449 = (
+  item: PacketV1449.ItemDropUpdate.t,
+  ~shimmer: option<Packet.ItemDropUpdate.shimmer>=?,
+  ~enemyGrabDelayTime: option<int>=?,
+): Packet.ItemDropUpdate.t => {
+  itemDropId: item.itemDropId,
+  position: {x: item.x, y: item.y},
+  velocity: {x: item.vx, y: item.vy},
+  stack: item.stack,
+  prefix: item.prefix,
+  ownership: itemDropOwnershipFromV1449(item.noDelay),
+  itemId: item.itemId,
+  shimmer,
+  enemyGrabDelayTime,
+}
+
+let itemDropToV1449 = (item: Packet.ItemDropUpdate.t): PacketV1449.ItemDropUpdate.t => {
+  itemDropId: item.itemDropId,
+  x: item.position.x,
+  y: item.position.y,
+  vx: item.velocity.x,
+  vy: item.velocity.y,
+  stack: item.stack,
+  prefix: item.prefix,
+  noDelay: itemDropOwnershipToV1449(item.ownership),
+  itemId: item.itemId,
+}
+
 let fromV1449 = (packet: PacketV1449.t): Packet.t => {
   switch packet {
   | PlayerInfo(playerInfo) =>
@@ -1042,16 +1096,34 @@ let fromV1449 = (packet: PacketV1449.t): Packet.t => {
       controlUseTile: false,
       netCameraTarget: None,
       lastItemUseAttemptSuccess: false,
+      snappingStoneLightUp: false,
     })
+  | ItemDropUpdate(item) => Packet.ItemDropUpdate(itemDropFromV1449(item))
+  | ItemDropInstancedUpdate(item) =>
+    Packet.ItemDropInstancedUpdate(itemDropFromV1449(item))
+  | ItemDropShimmeredUpdate(item) =>
+    Packet.ItemDropUpdate(itemDropFromV1449(
+      Obj.magic(item),
+      ~shimmer={shimmered: item.shimmered, shimmerTime: item.shimmeredTime},
+    ))
+  | ItemDropProtectedUpdate(item) =>
+    Packet.ItemDropUpdate(itemDropFromV1449(
+      Obj.magic(item),
+      ~enemyGrabDelayTime=item.timeLeftInWhichTheItemCannotBeTakenByEnemies,
+    ))
   | ItemOwner(itemOwner) =>
     Packet.ItemOwner({
       itemDropId: itemOwner.itemDropId,
       owner: itemOwner.owner,
+      timeToKeepReservation: 0,
+      grabDelayPlayer: 0,
+      grabDelayTime: 0,
       position: {x: 0.0, y: 0.0},
     })
   | NpcUpdate(npcUpdate) =>
     Packet.NpcUpdate({
       npcSlotId: npcUpdate.npcSlotId,
+      generation: 0,
       npcTypeId: npcUpdate.npcTypeId,
       x: npcUpdate.x,
       y: npcUpdate.y,
@@ -1070,6 +1142,48 @@ let fromV1449 = (packet: PacketV1449.t): Packet.t => {
       spawnNeedsSyncing: false,
       shimmerTransparency: false,
     })
+  | ProjectileSync(value) =>
+    Packet.ProjectileSync({
+      projectileKey: {
+        spawner: value.owner,
+        index: value.projectileId,
+        generation: value.projectileUuid->Option.getOr(0),
+      },
+      position: {x: value.x, y: value.y},
+      velocity: {x: value.vx, y: value.vy},
+      projectileType: value.projectileType,
+      ai: value.ai,
+      bannerIdToRespondTo: value.bannerIdToRespondTo,
+      damage: value.damage,
+      knockback: value.knockback,
+      originalDamage: value.originalDamage,
+    })
+  | NpcStrike(value) =>
+    Packet.NpcStrike({
+      npcSlotId: value.npcId,
+      generation: 0,
+      damage: value.damage,
+      knockback: value.knockback,
+      direction: value.direction,
+      critical: value.critical,
+    })
+  | ProjectileDestroy(value) =>
+    Packet.ProjectileDestroy({
+      projectileKey: {spawner: value.owner, index: value.projectileId, generation: 0},
+      position: {x: 0.0, y: 0.0},
+    })
+  | ItemOwnerRemove(value) =>
+    Packet.ItemOwnerRemove({itemDropId: value.itemDropId, forceAssignToServer: false})
+  | PlayerDodge(value) =>
+    Packet.PlayerDodge({
+      playerId: value.playerId,
+      dodge: switch value.dodge {
+      | Ninja => Packet.PlayerDodge.Ninja
+      | Shadow => Packet.PlayerDodge.Shadow
+      | BrainOfConfusion => Packet.PlayerDodge.BrainOfConfusion
+      },
+    })
+  | NpcCatch(value) => Packet.NpcCatch({npcId: value.npcId})
   | Zones(zones) =>
     Packet.Zones({
       playerId: zones.playerId,
@@ -1248,6 +1362,27 @@ let latestToV1449 = (packet: Packet.t): PacketV1449.t => {
       tryKeepingHoveringDown: playerUpdate.tryKeepingHoveringDown,
       isSleeping: playerUpdate.isSleeping,
     })
+  | ItemDropUpdate(item) =>
+    switch (item.shimmer, item.enemyGrabDelayTime) {
+    | (Some(shimmer), _) =>
+      let base = itemDropToV1449(item)
+      let base: PacketV1449.ItemDropShimmeredUpdate.t = Obj.magic(base)
+      PacketV1449.ItemDropShimmeredUpdate({
+        ...base,
+        shimmered: shimmer.shimmered,
+        shimmeredTime: shimmer.shimmerTime,
+      })
+    | (None, Some(enemyGrabDelayTime)) =>
+      let base = itemDropToV1449(item)
+      let base: PacketV1449.ItemDropProtectedUpdate.t = Obj.magic(base)
+      PacketV1449.ItemDropProtectedUpdate({
+        ...base,
+        timeLeftInWhichTheItemCannotBeTakenByEnemies: enemyGrabDelayTime,
+      })
+    | (None, None) => PacketV1449.ItemDropUpdate(itemDropToV1449(item))
+    }
+  | ItemDropInstancedUpdate(item) =>
+    PacketV1449.ItemDropInstancedUpdate(itemDropToV1449(item))
   | ItemOwner(itemOwner) =>
     PacketV1449.ItemOwner({
       itemDropId: itemOwner.itemDropId,
@@ -1272,6 +1407,46 @@ let latestToV1449 = (packet: Packet.t): PacketV1449.t => {
       strengthMultiplier: npcUpdate.difficulty,
       spawnedFromStatue: npcUpdate.spawnedFromStatue,
     })
+  | ProjectileSync(value) =>
+    PacketV1449.ProjectileSync({
+      projectileId: value.projectileKey.index,
+      x: value.position.x,
+      y: value.position.y,
+      vx: value.velocity.x,
+      vy: value.velocity.y,
+      owner: value.projectileKey.spawner,
+      projectileType: value.projectileType,
+      ai: value.ai,
+      bannerIdToRespondTo: value.bannerIdToRespondTo,
+      damage: value.damage,
+      knockback: value.knockback,
+      originalDamage: value.originalDamage,
+      projectileUuid: value.projectileKey.generation == 0 ? None : Some(value.projectileKey.generation),
+    })
+  | NpcStrike(value) =>
+    PacketV1449.NpcStrike({
+      npcId: value.npcSlotId,
+      damage: value.damage,
+      knockback: value.knockback,
+      direction: value.direction,
+      critical: value.critical,
+    })
+  | ProjectileDestroy(value) =>
+    PacketV1449.ProjectileDestroy({
+      projectileId: value.projectileKey.index,
+      owner: value.projectileKey.spawner,
+    })
+  | ItemOwnerRemove(value) => PacketV1449.ItemOwnerRemove({itemDropId: value.itemDropId})
+  | PlayerDodge(value) =>
+    PacketV1449.PlayerDodge({
+      playerId: value.playerId,
+      dodge: switch value.dodge {
+      | Ninja => PacketV1449.PlayerDodge.Ninja
+      | Shadow => PacketV1449.PlayerDodge.Shadow
+      | BrainOfConfusion | MysticSash => PacketV1449.PlayerDodge.BrainOfConfusion
+      },
+    })
+  | NpcCatch(value) => PacketV1449.NpcCatch({npcId: value.npcId, playerId: 0})
   | Zones(zones) =>
     PacketV1449.Zones({
       playerId: zones.playerId,
@@ -1420,6 +1595,7 @@ let latestToV1449 = (packet: Packet.t): PacketV1449.t => {
 type convertIfNeeded =
   | PacketStructureIsSame
   | ConvertedToLatestVersion(Packet.t)
+  | DiscardAsNotExists
 let convertFromV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): result<
   convertIfNeeded,
   IParser.parseError,
@@ -1428,6 +1604,8 @@ let convertFromV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): re
   | 0 | 1 | 2 => Error(InvalidPacketLength(buffer->NodeJs.Buffer.length))
   | _ =>
     switch buffer->NodeJs.Buffer.unsafeGet(2)->PacketType.fromInt {
+    | Some(NpcItemStrike) => Ok(DiscardAsNotExists)
+    | Some(ShimmerEffectOrCoinLuck) if !fromServer => Ok(DiscardAsNotExists)
     // Packets with structural changes between v1449 and v145
     | Some(PlayerInfo)
     | Some(PlayerInventorySlot)
@@ -1435,8 +1613,13 @@ let convertFromV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): re
     | Some(InitialTileSectionsRequest)
     | Some(PlayerSpawn)
     | Some(PlayerUpdate)
+    | Some(ItemDropUpdate)
     | Some(ItemOwner)
     | Some(NpcUpdate)
+    | Some(ProjectileSync)
+    | Some(NpcStrike)
+    | Some(ProjectileDestroy)
+    | Some(ItemOwnerRemove)
     | Some(Zones)
     | Some(PlayerBuffsSet)
     | Some(NpcBuffUpdate)
@@ -1446,7 +1629,12 @@ let convertFromV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): re
     | Some(ItemForceIntoNearestChest)
     | Some(TileEntityDisplayDollItemSync)
     | Some(PlayerLuckFactorsUpdate)
+    | Some(PlayerDodge)
+    | Some(NpcCatch)
     | Some(ShimmerEffectOrCoinLuck)
+    | Some(ItemDropInstancedUpdate)
+    | Some(ItemDropShimmeredUpdate)
+    | Some(ItemDropProtectedUpdate)
     | Some(TileSectionSend)
     | Some(TileSquareSend)
     | Some(NetModuleLoad) =>
@@ -1486,7 +1674,13 @@ let convertToV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): resu
     | Some(PlayerSpectate)
     | Some(PlayerTeamSwapSpawn)
     | Some(PlayerTeamUpdate)
-    | Some(SectionRequest) =>
+    | Some(SectionRequest)
+    | Some(DamageNPCAck)
+    | Some(ServerInfo)
+    | Some(PlayerPlatformInfo)
+    | Some(NpcItemStrike)
+    | Some(ItemDropShimmeredUpdate)
+    | Some(ItemDropProtectedUpdate) =>
       Ok(DiscardAsNotExists)
     // Packets with structural changes between v1449 and v145
     | Some(PlayerInfo)
@@ -1495,8 +1689,13 @@ let convertToV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): resu
     | Some(InitialTileSectionsRequest)
     | Some(PlayerSpawn)
     | Some(PlayerUpdate)
+    | Some(ItemDropUpdate)
     | Some(ItemOwner)
     | Some(NpcUpdate)
+    | Some(ProjectileSync)
+    | Some(NpcStrike)
+    | Some(ProjectileDestroy)
+    | Some(ItemOwnerRemove)
     | Some(Zones)
     | Some(PlayerBuffsSet)
     | Some(NpcBuffUpdate)
@@ -1506,7 +1705,10 @@ let convertToV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): resu
     | Some(ItemForceIntoNearestChest)
     | Some(TileEntityDisplayDollItemSync)
     | Some(PlayerLuckFactorsUpdate)
+    | Some(PlayerDodge)
+    | Some(NpcCatch)
     | Some(ShimmerEffectOrCoinLuck)
+    | Some(ItemDropInstancedUpdate)
     | Some(NetModuleLoad)
     | Some(ItemDropClear) =>
       try {

@@ -77,6 +77,8 @@ export type parseError =
   | "PlayerDeadFromClient"
   | "NpcBuffRemovalRequestFromServer"
   | "ClientSyncedInventoryFromServer"
+  | "ServerInfoFromClient"
+  | "PlayerPlatformInfoFromServer"
   | "NotImplemented"
   | "IgnoredPacket";
 

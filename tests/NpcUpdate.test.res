@@ -3,6 +3,7 @@ open Zora
 zoraBlock("should correctly parse and serialise NpcUpdate", t => {
   let data: Packet_NpcUpdate.t = {
     npcSlotId: 0,
+    generation: 0,
     npcTypeId: 0,
     x: 0.,
     y: 0.,

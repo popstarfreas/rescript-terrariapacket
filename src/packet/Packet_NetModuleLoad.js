@@ -42,21 +42,21 @@ function fromInt(n) {
     case 4 :
       return "Bestiary";
     case 5 :
-      return "CreativePower";
+      return "CreativeUnlocks";
     case 6 :
-      return "CreativeUnlocksPlayerReport";
+      return "CreativePower";
     case 7 :
-      return "TeleportPylon";
+      return "CreativeUnlocksPlayerReport";
     case 8 :
-      return "Particles";
+      return "TeleportPylon";
     case 9 :
-      return "CreativePowerPermissions";
+      return "Particles";
     case 10 :
-      return "Banners";
+      return "CreativePowerPermissions";
     case 11 :
-      return "CraftingRequests";
+      return "Banners";
     case 12 :
-      return "TagEffectState";
+      return "CraftingRequests";
     case 13 :
       return "LeashedEntity";
     case 14 :
@@ -78,21 +78,21 @@ function toInt(self) {
       return 3;
     case "Bestiary" :
       return 4;
-    case "CreativePower" :
+    case "CreativeUnlocks" :
       return 5;
-    case "CreativeUnlocksPlayerReport" :
+    case "CreativePower" :
       return 6;
-    case "TeleportPylon" :
+    case "CreativeUnlocksPlayerReport" :
       return 7;
-    case "Particles" :
+    case "TeleportPylon" :
       return 8;
-    case "CreativePowerPermissions" :
+    case "Particles" :
       return 9;
-    case "Banners" :
+    case "CreativePowerPermissions" :
       return 10;
-    case "CraftingRequests" :
+    case "Banners" :
       return 11;
-    case "TagEffectState" :
+    case "CraftingRequests" :
       return 12;
     case "LeashedEntity" :
       return 13;
@@ -163,27 +163,31 @@ function bestiaryToBuffer(bestiary) {
 }
 
 function creativePowerToBuffer(creativePower) {
-  return ErrorAwarePacketWriter$TerrariaPacket.data(CreativePowers$TerrariaPacket.pack(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 5, "moduleType"), creativePower));
+  return ErrorAwarePacketWriter$TerrariaPacket.data(CreativePowers$TerrariaPacket.pack(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 6, "moduleType"), creativePower));
+}
+
+function creativeUnlocksToBuffer(creativeUnlock) {
+  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 5, "moduleType"), creativeUnlock.itemId, "itemId"), creativeUnlock.sacrificeCount, "sacrificeCount"));
 }
 
 function creativeUnlocksPlayerReportToBuffer(unlockReport) {
-  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 6, "moduleType"), unlockReport.userId, "userId"), unlockReport.itemId, "itemId"), unlockReport.researchedCount, "researchedCount"));
+  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 7, "moduleType"), unlockReport.userId, "userId"), unlockReport.itemId, "itemId"), unlockReport.researchedCount, "researchedCount"));
 }
 
 function teleportPylonToBuffer(teleportPylon) {
-  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 7, "moduleType"), pylonActionToInt(teleportPylon.pylonAction), "pylonAction"), teleportPylon.x, "x"), teleportPylon.y, "y"), teleportPylon.pylonType, "pylonType"));
+  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 8, "moduleType"), pylonActionToInt(teleportPylon.pylonAction), "pylonAction"), teleportPylon.x, "x"), teleportPylon.y, "y"), teleportPylon.pylonType, "pylonType"));
 }
 
 function particlesToBuffer(particle) {
-  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 8, "moduleType"), particle.particleType, "particleType"), particle.x, "x"), particle.y, "y"), particle.vx, "vx"), particle.vy, "vy"), particle.shaderIndex, "shaderIndex"), particle.invokedByPlayer, "invokedByPlayer"));
+  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 9, "moduleType"), particle.particleType, "particleType"), particle.x, "x"), particle.y, "y"), particle.vx, "vx"), particle.vy, "vy"), particle.shaderIndex, "shaderIndex"), particle.invokedByPlayer, "invokedByPlayer"));
 }
 
 function creativePowerPermissionsToBuffer(creativePowerPermission) {
-  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 9, "moduleType"), 0, "messageType"), creativePowerPermission.powerType, "powerType"), powerLevelToInt(creativePowerPermission.powerLevel), "powerLevel"));
+  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 10, "moduleType"), 0, "messageType"), creativePowerPermission.powerType, "powerType"), powerLevelToInt(creativePowerPermission.powerLevel), "powerLevel"));
 }
 
 function bannersToBuffer(message) {
-  let writer = ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 10, "moduleType");
+  let writer = ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 11, "moduleType");
   switch (message.TAG) {
     case "BannerFullState" :
       let state = message._0;
@@ -212,7 +216,7 @@ function bannersToBuffer(message) {
 }
 
 function craftingRequestsToBuffer(message) {
-  let writer = ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 11, "moduleType");
+  let writer = ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 12, "moduleType");
   if (message.TAG !== "CraftingRequest") {
     return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packBool(writer, message._0.approved, "approved"));
   }
@@ -236,33 +240,6 @@ function packSparseNpcTimes(writer, entries) {
     writer$1.contents = ErrorAwarePacketWriter$TerrariaPacket.packInt32(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer$1.contents, entry.npcIndex, "npcIndex"), entry.time, "npcTime");
   });
   return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer$1.contents, 200, "npcIndexSentinel");
-}
-
-function tagEffectStateToBuffer(message) {
-  let writer = ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NetModuleLoad")), 12, "moduleType");
-  switch (message.TAG) {
-    case "TagFullState" :
-      let match = message._0;
-      let procTimeLeft = match.procTimeLeft;
-      let writer$1 = packSparseNpcTimes(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, match.ownerId, "ownerId"), 0, "messageType"), match.effectType, "effectType"), match.timeLeft);
-      if (procTimeLeft !== undefined) {
-        return ErrorAwarePacketWriter$TerrariaPacket.data(packSparseNpcTimes(writer$1, procTimeLeft));
-      } else {
-        return ErrorAwarePacketWriter$TerrariaPacket.data(writer$1);
-      }
-    case "TagChangeActiveEffect" :
-      let match$1 = message._0;
-      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, match$1.ownerId, "ownerId"), 1, "messageType"), match$1.effectType, "effectType"));
-    case "TagApplyTagToNpc" :
-      let match$2 = message._0;
-      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, match$2.ownerId, "ownerId"), 2, "messageType"), match$2.npcIndex, "npcIndex"));
-    case "TagEnableProcOnNpc" :
-      let match$3 = message._0;
-      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, match$3.ownerId, "ownerId"), 3, "messageType"), match$3.npcIndex, "npcIndex"));
-    case "TagClearProcOnNpc" :
-      let match$4 = message._0;
-      return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, match$4.ownerId, "ownerId"), 4, "messageType"), match$4.npcIndex, "npcIndex"));
-  }
 }
 
 function leashedEntityToBuffer(message) {
@@ -297,6 +274,8 @@ function toBuffer(self) {
       return ambienceToBuffer(self._0);
     case "Bestiary" :
       return bestiaryToBuffer(self._0);
+    case "CreativeUnlocks" :
+      return creativeUnlocksToBuffer(self._0);
     case "CreativePower" :
       return creativePowerToBuffer(self._0);
     case "CreativeUnlocksPlayerReport" :
@@ -311,8 +290,6 @@ function toBuffer(self) {
       return bannersToBuffer(self._0);
     case "CraftingRequests" :
       return craftingRequestsToBuffer(self._0);
-    case "TagEffectState" :
-      return tagEffectStateToBuffer(self._0);
     case "LeashedEntity" :
       return leashedEntityToBuffer(self._0);
     case "UnbreakableWallScan" :
@@ -341,6 +318,7 @@ let Encode = {
   ambienceToBuffer: ambienceToBuffer,
   bestiaryToBuffer: bestiaryToBuffer,
   creativePowerToBuffer: creativePowerToBuffer,
+  creativeUnlocksToBuffer: creativeUnlocksToBuffer,
   creativeUnlocksPlayerReportToBuffer: creativeUnlocksPlayerReportToBuffer,
   teleportPylonToBuffer: teleportPylonToBuffer,
   particlesToBuffer: particlesToBuffer,
@@ -348,7 +326,6 @@ let Encode = {
   bannersToBuffer: bannersToBuffer,
   craftingRequestsToBuffer: craftingRequestsToBuffer,
   packSparseNpcTimes: packSparseNpcTimes,
-  tagEffectStateToBuffer: tagEffectStateToBuffer,
   leashedEntityToBuffer: leashedEntityToBuffer,
   unbreakableWallScanToBuffer: unbreakableWallScanToBuffer,
   toBuffer: toBuffer
@@ -584,6 +561,28 @@ function parseCreativePower(reader) {
         error: new Error("Failed to parse creative power")
       }
     };
+  }
+}
+
+function parseCreativeUnlocks(reader) {
+  let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "itemId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "sacrificeCount");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "CreativeUnlocks",
+        _0: {
+          itemId: e._0,
+          sacrificeCount: e$1._0
+        }
+      }
+    };
+  } else {
+    return e$1;
   }
 }
 
@@ -1091,156 +1090,6 @@ function readSparseNpcTimes(reader) {
   };
 }
 
-function parseTagEffectState(reader) {
-  let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "ownerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let ownerId = e._0;
-  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "messageType");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  switch (e$1._0) {
-    case 0 :
-      let e$2 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "effectType");
-      if (e$2.TAG !== "Ok") {
-        return e$2;
-      }
-      let effectType = e$2._0;
-      let e$3 = readSparseNpcTimes(reader);
-      if (e$3.TAG !== "Ok") {
-        return e$3;
-      }
-      let timeLeft = e$3._0;
-      let e$4 = ErrorAwarePacketReader$TerrariaPacket.getBytesLeft(reader);
-      if (e$4.TAG !== "Ok") {
-        return e$4;
-      }
-      if (e$4._0 <= 0) {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "TagEffectState",
-            _0: {
-              TAG: "TagFullState",
-              _0: {
-                ownerId: ownerId,
-                effectType: effectType,
-                timeLeft: timeLeft,
-                procTimeLeft: undefined
-              }
-            }
-          }
-        };
-      }
-      let e$5 = readSparseNpcTimes(reader);
-      if (e$5.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "TagEffectState",
-            _0: {
-              TAG: "TagFullState",
-              _0: {
-                ownerId: ownerId,
-                effectType: effectType,
-                timeLeft: timeLeft,
-                procTimeLeft: e$5._0
-              }
-            }
-          }
-        };
-      } else {
-        return e$5;
-      }
-    case 1 :
-      let e$6 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "effectType");
-      if (e$6.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "TagEffectState",
-            _0: {
-              TAG: "TagChangeActiveEffect",
-              _0: {
-                ownerId: ownerId,
-                effectType: e$6._0
-              }
-            }
-          }
-        };
-      } else {
-        return e$6;
-      }
-    case 2 :
-      let e$7 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "npcIndex");
-      if (e$7.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "TagEffectState",
-            _0: {
-              TAG: "TagApplyTagToNpc",
-              _0: {
-                ownerId: ownerId,
-                npcIndex: e$7._0
-              }
-            }
-          }
-        };
-      } else {
-        return e$7;
-      }
-    case 3 :
-      let e$8 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "npcIndex");
-      if (e$8.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "TagEffectState",
-            _0: {
-              TAG: "TagEnableProcOnNpc",
-              _0: {
-                ownerId: ownerId,
-                npcIndex: e$8._0
-              }
-            }
-          }
-        };
-      } else {
-        return e$8;
-      }
-    case 4 :
-      let e$9 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "npcIndex");
-      if (e$9.TAG === "Ok") {
-        return {
-          TAG: "Ok",
-          _0: {
-            TAG: "TagEffectState",
-            _0: {
-              TAG: "TagClearProcOnNpc",
-              _0: {
-                ownerId: ownerId,
-                npcIndex: e$9._0
-              }
-            }
-          }
-        };
-      } else {
-        return e$9;
-      }
-    default:
-      return {
-        TAG: "Error",
-        _0: {
-          context: "Packet_NetModuleLoad.parseTagEffectState",
-          error: new Error("Unknown tag effect state message type")
-        }
-      };
-  }
-}
-
 function parseLeashedEntity(reader) {
   let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "messageType");
   if (e.TAG !== "Ok") {
@@ -1399,6 +1248,8 @@ function parse(payload, fromServer) {
       return parseAmbience(reader);
     case "Bestiary" :
       return parseBestiary(reader);
+    case "CreativeUnlocks" :
+      return parseCreativeUnlocks(reader);
     case "CreativePower" :
       return parseCreativePower(reader);
     case "CreativeUnlocksPlayerReport" :
@@ -1413,8 +1264,6 @@ function parse(payload, fromServer) {
       return parseBanners(reader);
     case "CraftingRequests" :
       return parseCraftingRequests(reader, fromServer);
-    case "TagEffectState" :
-      return parseTagEffectState(reader);
     case "LeashedEntity" :
       return parseLeashedEntity(reader);
     case "UnbreakableWallScan" :
@@ -1441,6 +1290,7 @@ let Decode = {
   parseAmbience: parseAmbience,
   parseBestiary: parseBestiary,
   parseCreativePower: parseCreativePower,
+  parseCreativeUnlocks: parseCreativeUnlocks,
   parseCreativeUnlocksPlayerReport: parseCreativeUnlocksPlayerReport,
   parseTeleportPylon: parseTeleportPylon,
   parseParticle: parseParticle,
@@ -1448,7 +1298,6 @@ let Decode = {
   parseBanners: parseBanners,
   parseCraftingRequests: parseCraftingRequests,
   readSparseNpcTimes: readSparseNpcTimes,
-  parseTagEffectState: parseTagEffectState,
   parseLeashedEntity: parseLeashedEntity,
   parseUnbreakableWallScan: parseUnbreakableWallScan,
   parse: parse

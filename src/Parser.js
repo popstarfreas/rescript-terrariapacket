@@ -4,45 +4,40 @@ import * as Stdlib_Lazy from "@rescript/runtime/lib/es6/Stdlib_Lazy.js";
 import * as Stdlib_Result from "@rescript/runtime/lib/es6/Stdlib_Result.js";
 import * as Primitive_exceptions from "@rescript/runtime/lib/es6/Primitive_exceptions.js";
 import * as PacketType$TerrariaPacket from "./PacketType.js";
-import * as Packet_Ping$TerrariaPacket from "./packet/Packet_Ping.js";
-import * as Packet_Zones$TerrariaPacket from "./packet/Packet_Zones.js";
-import * as Packet_Teleport$TerrariaPacket from "./packet/Packet_Teleport.js";
-import * as Packet_HostToken$TerrariaPacket from "./packet/Packet_HostToken.js";
+import * as Packet_NpcCatch$TerrariaPacket from "./packet/Packet_NpcCatch.js";
+import * as PacketV1456_Ping$TerrariaPacket from "./packetv1456/PacketV1456_Ping.js";
 import * as Packet_ItemOwner$TerrariaPacket from "./packet/Packet_ItemOwner.js";
+import * as Packet_NpcStrike$TerrariaPacket from "./packet/Packet_NpcStrike.js";
 import * as Packet_NpcUpdate$TerrariaPacket from "./packet/Packet_NpcUpdate.js";
 import * as Packet_WorldInfo$TerrariaPacket from "./packet/Packet_WorldInfo.js";
 import * as PacketV1449_Emoji$TerrariaPacket from "./packetv1449/PacketV1449_Emoji.js";
-import * as Packet_PlayerInfo$TerrariaPacket from "./packet/Packet_PlayerInfo.js";
+import * as PacketV1456_Zones$TerrariaPacket from "./packetv1456/PacketV1456_Zones.js";
 import * as Packet_ServerInfo$TerrariaPacket from "./packet/Packet_ServerInfo.js";
 import * as PacketV1449_Status$TerrariaPacket from "./packetv1449/PacketV1449_Status.js";
-import * as Packet_ChestResize$TerrariaPacket from "./packet/Packet_ChestResize.js";
-import * as Packet_PlayerSpawn$TerrariaPacket from "./packet/Packet_PlayerSpawn.js";
+import * as Packet_PlayerDodge$TerrariaPacket from "./packet/Packet_PlayerDodge.js";
 import * as PacketV1449_DoorUse$TerrariaPacket from "./packetv1449/PacketV1449_DoorUse.js";
 import * as PacketV1449_NpcTalk$TerrariaPacket from "./packetv1449/PacketV1449_NpcTalk.js";
 import * as PacketV1449_SignNew$TerrariaPacket from "./packetv1449/PacketV1449_SignNew.js";
 import * as PacketV1449_TimeSet$TerrariaPacket from "./packetv1449/PacketV1449_TimeSet.js";
-import * as Packet_DebugCommand$TerrariaPacket from "./packet/Packet_DebugCommand.js";
+import * as Packet_DamageNPCAck$TerrariaPacket from "./packet/Packet_DamageNPCAck.js";
 import * as Packet_PlayerUpdate$TerrariaPacket from "./packet/Packet_PlayerUpdate.js";
 import * as PacketV1449_HarpPlay$TerrariaPacket from "./packetv1449/PacketV1449_HarpPlay.js";
-import * as PacketV1449_NpcCatch$TerrariaPacket from "./packetv1449/PacketV1449_NpcCatch.js";
 import * as PacketV1449_SignRead$TerrariaPacket from "./packetv1449/PacketV1449_SignRead.js";
-import * as Packet_ItemDropClear$TerrariaPacket from "./packet/Packet_ItemDropClear.js";
+import * as PacketV1456_Teleport$TerrariaPacket from "./packetv1456/PacketV1456_Teleport.js";
 import * as Packet_NetModuleLoad$TerrariaPacket from "./packet/Packet_NetModuleLoad.js";
-import * as Packet_NpcBuffUpdate$TerrariaPacket from "./packet/Packet_NpcBuffUpdate.js";
 import * as PacketV1449_ChestItem$TerrariaPacket from "./packetv1449/PacketV1449_ChestItem.js";
 import * as PacketV1449_ChestName$TerrariaPacket from "./packetv1449/PacketV1449_ChestName.js";
 import * as PacketV1449_ChestOpen$TerrariaPacket from "./packetv1449/PacketV1449_ChestOpen.js";
 import * as PacketV1449_LiquidSet$TerrariaPacket from "./packetv1449/PacketV1449_LiquidSet.js";
-import * as PacketV1449_NpcStrike$TerrariaPacket from "./packetv1449/PacketV1449_NpcStrike.js";
 import * as PacketV1449_NpcTamper$TerrariaPacket from "./packetv1449/PacketV1449_NpcTamper.js";
 import * as PacketV1449_PvpToggle$TerrariaPacket from "./packetv1449/PacketV1449_PvpToggle.js";
 import * as PacketV1449_SmokePoof$TerrariaPacket from "./packetv1449/PacketV1449_SmokePoof.js";
 import * as PacketV1449_SwitchHit$TerrariaPacket from "./packetv1449/PacketV1449_SwitchHit.js";
 import * as PacketV1449_TilePaint$TerrariaPacket from "./packetv1449/PacketV1449_TilePaint.js";
 import * as PacketV1449_WallPaint$TerrariaPacket from "./packetv1449/PacketV1449_WallPaint.js";
-import * as Packet_PlayerBuffsSet$TerrariaPacket from "./packet/Packet_PlayerBuffsSet.js";
-import * as Packet_PlayerSpectate$TerrariaPacket from "./packet/Packet_PlayerSpectate.js";
-import * as Packet_SectionRequest$TerrariaPacket from "./packet/Packet_SectionRequest.js";
+import * as PacketV1456_HostToken$TerrariaPacket from "./packetv1456/PacketV1456_HostToken.js";
+import * as Packet_ItemDropUpdate$TerrariaPacket from "./packet/Packet_ItemDropUpdate.js";
+import * as Packet_ProjectileSync$TerrariaPacket from "./packet/Packet_ProjectileSync.js";
 import * as PacketV1449_ChestPlace$TerrariaPacket from "./packetv1449/PacketV1449_ChestPlace.js";
 import * as PacketV1449_ClientUuid$TerrariaPacket from "./packetv1449/PacketV1449_ClientUuid.js";
 import * as PacketV1449_Disconnect$TerrariaPacket from "./packetv1449/PacketV1449_Disconnect.js";
@@ -57,46 +52,44 @@ import * as PacketV1449_PlayerTeam$TerrariaPacket from "./packetv1449/PacketV144
 import * as PacketV1449_PortalKill$TerrariaPacket from "./packetv1449/PacketV1449_PortalKill.js";
 import * as PacketV1449_TileModify$TerrariaPacket from "./packetv1449/PacketV1449_TileModify.js";
 import * as PacketV1449_TreeGrowFx$TerrariaPacket from "./packetv1449/PacketV1449_TreeGrowFx.js";
-import * as Packet_NpcHurtByDebuff$TerrariaPacket from "./packet/Packet_NpcHurtByDebuff.js";
-import * as Packet_TileSectionSend$TerrariaPacket from "./packet/Packet_TileSectionSend.js";
+import * as PacketV1456_PlayerInfo$TerrariaPacket from "./packetv1456/PacketV1456_PlayerInfo.js";
+import * as Packet_ItemOwnerRemove$TerrariaPacket from "./packet/Packet_ItemOwnerRemove.js";
 import * as PacketV1449_AnglerQuest$TerrariaPacket from "./packetv1449/PacketV1449_AnglerQuest.js";
 import * as PacketV1449_EmoteBubble$TerrariaPacket from "./packetv1449/PacketV1449_EmoteBubble.js";
 import * as PacketV1449_NpcShopItem$TerrariaPacket from "./packetv1449/PacketV1449_NpcShopItem.js";
 import * as PacketV1449_ObjectPlace$TerrariaPacket from "./packetv1449/PacketV1449_ObjectPlace.js";
 import * as PacketV1449_PartyToggle$TerrariaPacket from "./packetv1449/PacketV1449_PartyToggle.js";
 import * as PacketV1449_PlayerDeath$TerrariaPacket from "./packetv1449/PacketV1449_PlayerDeath.js";
-import * as PacketV1449_PlayerDodge$TerrariaPacket from "./packetv1449/PacketV1449_PlayerDodge.js";
-import * as Packet_ItemDropPosition$TerrariaPacket from "./packet/Packet_ItemDropPosition.js";
-import * as Packet_PlayerTeamUpdate$TerrariaPacket from "./packet/Packet_PlayerTeamUpdate.js";
+import * as PacketV1456_ChestResize$TerrariaPacket from "./packetv1456/PacketV1456_ChestResize.js";
+import * as PacketV1456_PlayerSpawn$TerrariaPacket from "./packetv1456/PacketV1456_PlayerSpawn.js";
 import * as PacketV1449_NpcKillCount$TerrariaPacket from "./packetv1449/PacketV1449_NpcKillCount.js";
 import * as PacketV1449_PasswordSend$TerrariaPacket from "./packetv1449/PacketV1449_PasswordSend.js";
 import * as PacketV1449_PlayerActive$TerrariaPacket from "./packetv1449/PacketV1449_PlayerActive.js";
 import * as PacketV1449_PlayerDamage$TerrariaPacket from "./packetv1449/PacketV1449_PlayerDamage.js";
 import * as PacketV1449_PlayerHealth$TerrariaPacket from "./packetv1449/PacketV1449_PlayerHealth.js";
+import * as PacketV1456_DebugCommand$TerrariaPacket from "./packetv1456/PacketV1456_DebugCommand.js";
+import * as Packet_ProjectileDestroy$TerrariaPacket from "./packet/Packet_ProjectileDestroy.js";
 import * as PacketV1449_GemLockToggle$TerrariaPacket from "./packetv1449/PacketV1449_GemLockToggle.js";
 import * as PacketV1449_LoadoutSwitch$TerrariaPacket from "./packetv1449/PacketV1449_LoadoutSwitch.js";
 import * as PacketV1449_NebulaLevelUp$TerrariaPacket from "./packetv1449/PacketV1449_NebulaLevelUp.js";
 import * as PacketV1449_NpcHomeUpdate$TerrariaPacket from "./packetv1449/PacketV1449_NpcHomeUpdate.js";
-import * as PacketV1449_NpcItemStrike$TerrariaPacket from "./packetv1449/PacketV1449_NpcItemStrike.js";
 import * as PacketV1449_NpcNameUpdate$TerrariaPacket from "./packetv1449/PacketV1449_NpcNameUpdate.js";
 import * as PacketV1449_PlayerBuffAdd$TerrariaPacket from "./packetv1449/PacketV1449_PlayerBuffAdd.js";
 import * as PacketV1449_PlayerSlotSet$TerrariaPacket from "./packetv1449/PacketV1449_PlayerSlotSet.js";
 import * as PacketV1449_PlayerStealth$TerrariaPacket from "./packetv1449/PacketV1449_PlayerStealth.js";
-import * as Packet_PlayerItemUseSound$TerrariaPacket from "./packet/Packet_PlayerItemUseSound.js";
+import * as PacketV1456_ItemDropClear$TerrariaPacket from "./packetv1456/PacketV1456_ItemDropClear.js";
+import * as PacketV1456_NpcBuffUpdate$TerrariaPacket from "./packetv1456/PacketV1456_NpcBuffUpdate.js";
 import * as Packet_PlayerPlatformInfo$TerrariaPacket from "./packet/Packet_PlayerPlatformInfo.js";
 import * as PacketV1449_ConnectRequest$TerrariaPacket from "./packetv1449/PacketV1449_ConnectRequest.js";
 import * as PacketV1449_ExtraValueSync$TerrariaPacket from "./packetv1449/PacketV1449_ExtraValueSync.js";
 import * as PacketV1449_GoodEvilUpdate$TerrariaPacket from "./packetv1449/PacketV1449_GoodEvilUpdate.js";
 import * as PacketV1449_ItemDropModify$TerrariaPacket from "./packetv1449/PacketV1449_ItemDropModify.js";
-import * as PacketV1449_ItemDropUpdate$TerrariaPacket from "./packetv1449/PacketV1449_ItemDropUpdate.js";
 import * as PacketV1449_ItemFramePlace$TerrariaPacket from "./packetv1449/PacketV1449_ItemFramePlace.js";
 import * as PacketV1449_LucyAxeMessage$TerrariaPacket from "./packetv1449/PacketV1449_LucyAxeMessage.js";
-import * as PacketV1449_ProjectileSync$TerrariaPacket from "./packetv1449/PacketV1449_ProjectileSync.js";
-import * as PacketV1449_TileSquareSend$TerrariaPacket from "./packetv1449/PacketV1449_TileSquareSend.js";
-import * as Packet_PlayerInventorySlot$TerrariaPacket from "./packet/Packet_PlayerInventorySlot.js";
-import * as Packet_PlayerTeamSwapSpawn$TerrariaPacket from "./packet/Packet_PlayerTeamSwapSpawn.js";
-import * as Packet_TeleportationPotion$TerrariaPacket from "./packet/Packet_TeleportationPotion.js";
-import * as PacketV1449_ItemOwnerRemove$TerrariaPacket from "./packetv1449/PacketV1449_ItemOwnerRemove.js";
+import * as PacketV1456_PlayerBuffsSet$TerrariaPacket from "./packetv1456/PacketV1456_PlayerBuffsSet.js";
+import * as PacketV1456_PlayerSpectate$TerrariaPacket from "./packetv1456/PacketV1456_PlayerSpectate.js";
+import * as PacketV1456_SectionRequest$TerrariaPacket from "./packetv1456/PacketV1456_SectionRequest.js";
+import * as PacketV1456_TileSquareSend$TerrariaPacket from "./packetv1456/PacketV1456_TileSquareSend.js";
 import * as PacketV1449_LegacySoundPlay$TerrariaPacket from "./packetv1449/PacketV1449_LegacySoundPlay.js";
 import * as PacketV1449_PlayerAnimation$TerrariaPacket from "./packetv1449/PacketV1449_PlayerAnimation.js";
 import * as PacketV1449_PlayerHealOther$TerrariaPacket from "./packetv1449/PacketV1449_PlayerHealOther.js";
@@ -105,6 +98,8 @@ import * as PacketV1449_SocialHandshake$TerrariaPacket from "./packetv1449/Packe
 import * as PacketV1449_TileEntityPlace$TerrariaPacket from "./packetv1449/PacketV1449_TileEntityPlace.js";
 import * as PacketV1449_TilePickingSync$TerrariaPacket from "./packetv1449/PacketV1449_TilePickingSync.js";
 import * as PacketV1449_WiredCannonShot$TerrariaPacket from "./packetv1449/PacketV1449_WiredCannonShot.js";
+import * as PacketV1456_NpcHurtByDebuff$TerrariaPacket from "./packetv1456/PacketV1456_NpcHurtByDebuff.js";
+import * as PacketV1456_TileSectionSend$TerrariaPacket from "./packetv1456/PacketV1456_TileSectionSend.js";
 import * as PacketV1449_ChatMessageSmart$TerrariaPacket from "./packetv1449/PacketV1449_ChatMessageSmart.js";
 import * as PacketV1449_CombatTextCreate$TerrariaPacket from "./packetv1449/PacketV1449_CombatTextCreate.js";
 import * as PacketV1449_DimensionsUpdate$TerrariaPacket from "./packetv1449/PacketV1449_DimensionsUpdate.js";
@@ -113,27 +108,30 @@ import * as PacketV1449_PasswordRequired$TerrariaPacket from "./packetv1449/Pack
 import * as PacketV1449_TileEntityUpdate$TerrariaPacket from "./packetv1449/PacketV1449_TileEntityUpdate.js";
 import * as PacketV1449_TileSectionFrame$TerrariaPacket from "./packetv1449/PacketV1449_TileSectionFrame.js";
 import * as PacketV1449_WorldDataRequest$TerrariaPacket from "./packetv1449/PacketV1449_WorldDataRequest.js";
+import * as PacketV1456_ItemDropPosition$TerrariaPacket from "./packetv1456/PacketV1456_ItemDropPosition.js";
+import * as PacketV1456_PlayerTeamUpdate$TerrariaPacket from "./packetv1456/PacketV1456_PlayerTeamUpdate.js";
 import * as PacketV1449_EventNotification$TerrariaPacket from "./packetv1449/PacketV1449_EventNotification.js";
 import * as PacketV1449_GolfBallLandInCup$TerrariaPacket from "./packetv1449/PacketV1449_GolfBallLandInCup.js";
 import * as PacketV1449_MassWireOperation$TerrariaPacket from "./packetv1449/PacketV1449_MassWireOperation.js";
 import * as PacketV1449_MoonLordCountdown$TerrariaPacket from "./packetv1449/PacketV1449_MoonLordCountdown.js";
 import * as PacketV1449_NpcTeleportPortal$TerrariaPacket from "./packetv1449/PacketV1449_NpcTeleportPortal.js";
-import * as PacketV1449_ProjectileDestroy$TerrariaPacket from "./packetv1449/PacketV1449_ProjectileDestroy.js";
 import * as PacketV1449_RevengeMarkerSync$TerrariaPacket from "./packetv1449/PacketV1449_RevengeMarkerSync.js";
 import * as PacketV1449_CombatNumberCreate$TerrariaPacket from "./packetv1449/PacketV1449_CombatNumberCreate.js";
 import * as PacketV1449_MinionTargetUpdate$TerrariaPacket from "./packetv1449/PacketV1449_MinionTargetUpdate.js";
-import * as Packet_PlayerLuckFactorsUpdate$TerrariaPacket from "./packet/Packet_PlayerLuckFactorsUpdate.js";
-import * as Packet_ShimmerEffectOrCoinLuck$TerrariaPacket from "./packet/Packet_ShimmerEffectOrCoinLuck.js";
+import * as PacketV1456_PlayerItemUseSound$TerrariaPacket from "./packetv1456/PacketV1456_PlayerItemUseSound.js";
+import * as Packet_ItemDropInstancedUpdate$TerrariaPacket from "./packet/Packet_ItemDropInstancedUpdate.js";
 import * as PacketV1449_ActiveContainerSync$TerrariaPacket from "./packetv1449/PacketV1449_ActiveContainerSync.js";
 import * as PacketV1449_AnglerQuestComplete$TerrariaPacket from "./packetv1449/PacketV1449_AnglerQuestComplete.js";
 import * as PacketV1449_BossOrInvasionSpawn$TerrariaPacket from "./packetv1449/PacketV1449_BossOrInvasionSpawn.js";
 import * as PacketV1449_ChestOrTempleUnlock$TerrariaPacket from "./packetv1449/PacketV1449_ChestOrTempleUnlock.js";
 import * as PacketV1449_RevengeMarkerRemove$TerrariaPacket from "./packetv1449/PacketV1449_RevengeMarkerRemove.js";
+import * as PacketV1456_PlayerInventorySlot$TerrariaPacket from "./packetv1456/PacketV1456_PlayerInventorySlot.js";
+import * as PacketV1456_PlayerTeamSwapSpawn$TerrariaPacket from "./packetv1456/PacketV1456_PlayerTeamSwapSpawn.js";
+import * as PacketV1456_TeleportationPotion$TerrariaPacket from "./packetv1456/PacketV1456_TeleportationPotion.js";
 import * as PacketV1449_CrystalInvasionStart$TerrariaPacket from "./packetv1449/PacketV1449_CrystalInvasionStart.js";
 import * as PacketV1449_MassWireOperationPay$TerrariaPacket from "./packetv1449/PacketV1449_MassWireOperationPay.js";
 import * as PacketV1449_PlayerChestIndexSync$TerrariaPacket from "./packetv1449/PacketV1449_PlayerChestIndexSync.js";
 import * as PacketV1449_PlayerTeleportPortal$TerrariaPacket from "./packetv1449/PacketV1449_PlayerTeleportPortal.js";
-import * as Packet_ItemForceIntoNearestChest$TerrariaPacket from "./packet/Packet_ItemForceIntoNearestChest.js";
 import * as PacketV1449_CavernMonsterTypeSync$TerrariaPacket from "./packetv1449/PacketV1449_CavernMonsterTypeSync.js";
 import * as PacketV1449_ClientSyncedInventory$TerrariaPacket from "./packetv1449/PacketV1449_ClientSyncedInventory.js";
 import * as PacketV1449_FoodPlatterTryPlacing$TerrariaPacket from "./packetv1449/PacketV1449_FoodPlatterTryPlacing.js";
@@ -141,26 +139,26 @@ import * as PacketV1449_NpcBuffRemovalRequest$TerrariaPacket from "./packetv1449
 import * as PacketV1449_NpcKilledNotification$TerrariaPacket from "./packetv1449/PacketV1449_NpcKilledNotification.js";
 import * as PacketV1449_ShieldStrengthsUpdate$TerrariaPacket from "./packetv1449/PacketV1449_ShieldStrengthsUpdate.js";
 import * as PacketV1449_WeaponsRackTryPlacing$TerrariaPacket from "./packetv1449/PacketV1449_WeaponsRackTryPlacing.js";
-import * as Packet_InitialTileSectionsRequest$TerrariaPacket from "./packet/Packet_InitialTileSectionsRequest.js";
 import * as PacketV1449_CrystalInvasionWipeAll$TerrariaPacket from "./packetv1449/PacketV1449_CrystalInvasionWipeAll.js";
 import * as PacketV1449_InvasionProgressReport$TerrariaPacket from "./packetv1449/PacketV1449_InvasionProgressReport.js";
-import * as Packet_TravellingMerchantInventory$TerrariaPacket from "./packet/Packet_TravellingMerchantInventory.js";
 import * as PacketV1449_CreditsOrSlimeTransform$TerrariaPacket from "./packetv1449/PacketV1449_CreditsOrSlimeTransform.js";
-import * as PacketV1449_ItemDropInstancedUpdate$TerrariaPacket from "./packetv1449/PacketV1449_ItemDropInstancedUpdate.js";
-import * as PacketV1449_ItemDropProtectedUpdate$TerrariaPacket from "./packetv1449/PacketV1449_ItemDropProtectedUpdate.js";
-import * as PacketV1449_ItemDropShimmeredUpdate$TerrariaPacket from "./packetv1449/PacketV1449_ItemDropShimmeredUpdate.js";
 import * as PacketV1449_PiggyBankVoidLensUpdate$TerrariaPacket from "./packetv1449/PacketV1449_PiggyBankVoidLensUpdate.js";
+import * as PacketV1456_PlayerLuckFactorsUpdate$TerrariaPacket from "./packetv1456/PacketV1456_PlayerLuckFactorsUpdate.js";
+import * as PacketV1456_ShimmerEffectOrCoinLuck$TerrariaPacket from "./packetv1456/PacketV1456_ShimmerEffectOrCoinLuck.js";
 import * as PacketV1449_MinionAttackTargetUpdate$TerrariaPacket from "./packetv1449/PacketV1449_MinionAttackTargetUpdate.js";
 import * as PacketV1449_TemporaryAnimationCreate$TerrariaPacket from "./packetv1449/PacketV1449_TemporaryAnimationCreate.js";
-import * as Packet_DeadCellsDisplayJarTryPlacing$TerrariaPacket from "./packet/Packet_DeadCellsDisplayJarTryPlacing.js";
-import * as Packet_LeashedEntityAnchorInsertItem$TerrariaPacket from "./packet/Packet_LeashedEntityAnchorInsertItem.js";
-import * as Packet_TileEntityDisplayDollItemSync$TerrariaPacket from "./packet/Packet_TileEntityDisplayDollItemSync.js";
 import * as PacketV1449_TileEntityHatRackItemSync$TerrariaPacket from "./packetv1449/PacketV1449_TileEntityHatRackItemSync.js";
+import * as PacketV1456_ItemForceIntoNearestChest$TerrariaPacket from "./packetv1456/PacketV1456_ItemForceIntoNearestChest.js";
 import * as PacketV1449_CountsAsHostForGameplaySet$TerrariaPacket from "./packetv1449/PacketV1449_CountsAsHostForGameplaySet.js";
+import * as PacketV1456_InitialTileSectionsRequest$TerrariaPacket from "./packetv1456/PacketV1456_InitialTileSectionsRequest.js";
 import * as PacketV1449_AnglerQuestsCompletedAmount$TerrariaPacket from "./packetv1449/PacketV1449_AnglerQuestsCompletedAmount.js";
 import * as PacketV1449_CrystalInvasionSendWaitTime$TerrariaPacket from "./packetv1449/PacketV1449_CrystalInvasionSendWaitTime.js";
 import * as PacketV1449_HaveDryadDoStardewAnimation$TerrariaPacket from "./packetv1449/PacketV1449_HaveDryadDoStardewAnimation.js";
+import * as PacketV1456_TravellingMerchantInventory$TerrariaPacket from "./packetv1456/PacketV1456_TravellingMerchantInventory.js";
 import * as PacketV1449_TileEntityInteractionRequest$TerrariaPacket from "./packetv1449/PacketV1449_TileEntityInteractionRequest.js";
+import * as PacketV1456_DeadCellsDisplayJarTryPlacing$TerrariaPacket from "./packetv1456/PacketV1456_DeadCellsDisplayJarTryPlacing.js";
+import * as PacketV1456_LeashedEntityAnchorInsertItem$TerrariaPacket from "./packetv1456/PacketV1456_LeashedEntityAnchorInsertItem.js";
+import * as PacketV1456_TileEntityDisplayDollItemSync$TerrariaPacket from "./packetv1456/PacketV1456_TileEntityDisplayDollItemSync.js";
 import * as PacketV1449_ClientFinishConnectingToServer$TerrariaPacket from "./packetv1449/PacketV1449_ClientFinishConnectingToServer.js";
 import * as PacketV1449_DungeonDefendersEventAttemptSkipWait$TerrariaPacket from "./packetv1449/PacketV1449_DungeonDefendersEventAttemptSkipWait.js";
 
@@ -262,7 +260,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerInfo" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_PlayerInfo$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_PlayerInfo$TerrariaPacket.parse, a => ({
           TAG: "PlayerInfo",
           _0: a
         }), a => ({
@@ -273,7 +271,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerInventorySlot" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_PlayerInventorySlot$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_PlayerInventorySlot$TerrariaPacket.parse, a => ({
           TAG: "PlayerInventorySlot",
           _0: a
         }), a => ({
@@ -326,7 +324,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, Packet_InitialTileSectionsRequest$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, PacketV1456_InitialTileSectionsRequest$TerrariaPacket.parse, a => ({
             TAG: "InitialTileSectionsRequest",
             _0: a
           }), a => ({
@@ -357,7 +355,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, Packet_TileSectionSend$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, PacketV1456_TileSectionSend$TerrariaPacket.parse, a => ({
             TAG: "TileSectionSend",
             _0: a
           }), a => ({
@@ -392,7 +390,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerSpawn" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_PlayerSpawn$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_PlayerSpawn$TerrariaPacket.parse, a => ({
           TAG: "PlayerSpawn",
           _0: a
         }), a => ({
@@ -483,7 +481,7 @@ function getParsers(packetType, fromServer) {
     case "TileSquareSend" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, PacketV1449_TileSquareSend$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_TileSquareSend$TerrariaPacket.parse, a => ({
           TAG: "TileSquareSend",
           _0: a
         }), a => ({
@@ -494,7 +492,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropUpdate" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, PacketV1449_ItemDropUpdate$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_ItemDropUpdate$TerrariaPacket.parse, a => ({
           TAG: "ItemDropUpdate",
           _0: a
         }), a => ({
@@ -531,21 +529,10 @@ function getParsers(packetType, fromServer) {
           _0: "NpcUpdateFromClient"
         };
       }
-    case "NpcItemStrike" :
-      return {
-        TAG: "Ok",
-        _0: makeParsers(packetName, PacketV1449_NpcItemStrike$TerrariaPacket.parse, a => ({
-          TAG: "NpcItemStrike",
-          _0: a
-        }), a => ({
-          TAG: "NpcItemStrike",
-          _0: a
-        }))
-      };
     case "ProjectileSync" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, PacketV1449_ProjectileSync$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_ProjectileSync$TerrariaPacket.parse, a => ({
           TAG: "ProjectileSync",
           _0: a
         }), a => ({
@@ -556,7 +543,7 @@ function getParsers(packetType, fromServer) {
     case "NpcStrike" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, PacketV1449_NpcStrike$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_NpcStrike$TerrariaPacket.parse, a => ({
           TAG: "NpcStrike",
           _0: a
         }), a => ({
@@ -567,7 +554,7 @@ function getParsers(packetType, fromServer) {
     case "ProjectileDestroy" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, PacketV1449_ProjectileDestroy$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_ProjectileDestroy$TerrariaPacket.parse, a => ({
           TAG: "ProjectileDestroy",
           _0: a
         }), a => ({
@@ -651,7 +638,7 @@ function getParsers(packetType, fromServer) {
     case "Zones" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_Zones$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_Zones$TerrariaPacket.parse, a => ({
           TAG: "Zones",
           _0: a
         }), a => ({
@@ -698,7 +685,7 @@ function getParsers(packetType, fromServer) {
     case "ItemOwnerRemove" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, PacketV1449_ItemOwnerRemove$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_ItemOwnerRemove$TerrariaPacket.parse, a => ({
           TAG: "ItemOwnerRemove",
           _0: a
         }), a => ({
@@ -822,7 +809,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerBuffsSet" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_PlayerBuffsSet$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_PlayerBuffsSet$TerrariaPacket.parse, a => ({
           TAG: "PlayerBuffsSet",
           _0: a
         }), a => ({
@@ -867,7 +854,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, Packet_NpcBuffUpdate$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, PacketV1456_NpcBuffUpdate$TerrariaPacket.parse, a => ({
             TAG: "NpcBuffUpdate",
             _0: a
           }), a => ({
@@ -975,7 +962,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerDodge" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, PacketV1449_PlayerDodge$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_PlayerDodge$TerrariaPacket.parse, a => ({
           TAG: "PlayerDodge",
           _0: a
         }), a => ({
@@ -1008,7 +995,7 @@ function getParsers(packetType, fromServer) {
     case "Teleport" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_Teleport$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_Teleport$TerrariaPacket.parse, a => ({
           TAG: "Teleport",
           _0: a
         }), a => ({
@@ -1076,7 +1063,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, PacketV1449_NpcCatch$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, Packet_NpcCatch$TerrariaPacket.parse, a => ({
             TAG: "NpcCatch",
             _0: a
           }), a => ({
@@ -1107,7 +1094,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName, Packet_TravellingMerchantInventory$TerrariaPacket.parse, a => ({
+          _0: makeParsers(packetName, PacketV1456_TravellingMerchantInventory$TerrariaPacket.parse, a => ({
             TAG: "TravellingMerchantInventory",
             _0: a
           }), a => ({
@@ -1124,7 +1111,7 @@ function getParsers(packetType, fromServer) {
     case "TeleportationPotion" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_TeleportationPotion$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_TeleportationPotion$TerrariaPacket.parse, a => ({
           TAG: "TeleportationPotion",
           _0: a
         }), a => ({
@@ -1305,7 +1292,7 @@ function getParsers(packetType, fromServer) {
     case "ItemForceIntoNearestChest" :
       return {
         TAG: "Ok",
-        _0: makeParsersWithFromServer(packetName, Packet_ItemForceIntoNearestChest$TerrariaPacket.parse, a => ({
+        _0: makeParsersWithFromServer(packetName, PacketV1456_ItemForceIntoNearestChest$TerrariaPacket.parse, a => ({
           TAG: "ItemForceIntoNearestChest",
           _0: a
         }), a => ({
@@ -1388,7 +1375,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropInstancedUpdate" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, PacketV1449_ItemDropInstancedUpdate$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, Packet_ItemDropInstancedUpdate$TerrariaPacket.parse, a => ({
           TAG: "ItemDropInstancedUpdate",
           _0: a
         }), a => ({
@@ -1439,7 +1426,7 @@ function getParsers(packetType, fromServer) {
     case "Unused" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_DebugCommand$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_DebugCommand$TerrariaPacket.parse, a => ({
           TAG: "Unused",
           _0: a
         }), a => ({
@@ -1862,7 +1849,7 @@ function getParsers(packetType, fromServer) {
     case "TileEntityDisplayDollItemSync" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_TileEntityDisplayDollItemSync$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_TileEntityDisplayDollItemSync$TerrariaPacket.parse, a => ({
           TAG: "TileEntityDisplayDollItemSync",
           _0: a
         }), a => ({
@@ -2061,7 +2048,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerLuckFactorsUpdate" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_PlayerLuckFactorsUpdate$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_PlayerLuckFactorsUpdate$TerrariaPacket.parse, a => ({
           TAG: "PlayerLuckFactorsUpdate",
           _0: a
         }), a => ({
@@ -2200,28 +2187,24 @@ function getParsers(packetType, fromServer) {
           _0: a
         }))
       };
-    case "ItemDropShimmeredUpdate" :
-      return {
-        TAG: "Ok",
-        _0: makeParsers(packetName, PacketV1449_ItemDropShimmeredUpdate$TerrariaPacket.parse, a => ({
-          TAG: "ItemDropShimmeredUpdate",
-          _0: a
-        }), a => ({
-          TAG: "ItemDropShimmeredUpdate",
-          _0: a
-        }))
-      };
     case "ShimmerEffectOrCoinLuck" :
-      return {
-        TAG: "Ok",
-        _0: makeParsers(packetName, Packet_ShimmerEffectOrCoinLuck$TerrariaPacket.parse, a => ({
-          TAG: "ShimmerEffectOrCoinLuck",
-          _0: a
-        }), a => ({
-          TAG: "ShimmerEffectOrCoinLuck",
-          _0: a
-        }))
-      };
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers(packetName, PacketV1456_ShimmerEffectOrCoinLuck$TerrariaPacket.parse, a => ({
+            TAG: "ShimmerEffectOrCoinLuck",
+            _0: a
+          }), a => ({
+            TAG: "ShimmerEffectOrCoinLuck",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "NotImplemented"
+        };
+      }
     case "LoadoutSwitch" :
       return {
         TAG: "Ok",
@@ -2233,21 +2216,10 @@ function getParsers(packetType, fromServer) {
           _0: a
         }))
       };
-    case "ItemDropProtectedUpdate" :
-      return {
-        TAG: "Ok",
-        _0: makeParsers(packetName, PacketV1449_ItemDropProtectedUpdate$TerrariaPacket.parse, a => ({
-          TAG: "ItemDropProtectedUpdate",
-          _0: a
-        }), a => ({
-          TAG: "ItemDropProtectedUpdate",
-          _0: a
-        }))
-      };
     case "DeadCellsDisplayJarTryPlacing" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_DeadCellsDisplayJarTryPlacing$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_DeadCellsDisplayJarTryPlacing$TerrariaPacket.parse, a => ({
           TAG: "DeadCellsDisplayJarTryPlacing",
           _0: a
         }), a => ({
@@ -2258,7 +2230,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerSpectate" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_PlayerSpectate$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_PlayerSpectate$TerrariaPacket.parse, a => ({
           TAG: "PlayerSpectate",
           _0: a
         }), a => ({
@@ -2269,7 +2241,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropClear" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_ItemDropClear$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_ItemDropClear$TerrariaPacket.parse, a => ({
           TAG: "ItemDropClear",
           _0: a
         }), a => ({
@@ -2280,7 +2252,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerItemUseSound" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_PlayerItemUseSound$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_PlayerItemUseSound$TerrariaPacket.parse, a => ({
           TAG: "PlayerItemUseSound",
           _0: a
         }), a => ({
@@ -2291,7 +2263,7 @@ function getParsers(packetType, fromServer) {
     case "NpcHurtByDebuff" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_NpcHurtByDebuff$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_NpcHurtByDebuff$TerrariaPacket.parse, a => ({
           TAG: "NpcHurtByDebuff",
           _0: a
         }), a => ({
@@ -2302,7 +2274,7 @@ function getParsers(packetType, fromServer) {
     case "Ping" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_Ping$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_Ping$TerrariaPacket.parse, a => ({
           TAG: "Ping",
           _0: a
         }), a => ({
@@ -2313,7 +2285,7 @@ function getParsers(packetType, fromServer) {
     case "ChestResize" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_ChestResize$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_ChestResize$TerrariaPacket.parse, a => ({
           TAG: "ChestResize",
           _0: a
         }), a => ({
@@ -2324,7 +2296,7 @@ function getParsers(packetType, fromServer) {
     case "LeashedEntityAnchorInsertItem" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_LeashedEntityAnchorInsertItem$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_LeashedEntityAnchorInsertItem$TerrariaPacket.parse, a => ({
           TAG: "LeashedEntityAnchorInsertItem",
           _0: a
         }), a => ({
@@ -2335,7 +2307,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerTeamUpdate" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_PlayerTeamUpdate$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_PlayerTeamUpdate$TerrariaPacket.parse, a => ({
           TAG: "PlayerTeamUpdate",
           _0: a
         }), a => ({
@@ -2346,7 +2318,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerTeamSwapSpawn" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_PlayerTeamSwapSpawn$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_PlayerTeamSwapSpawn$TerrariaPacket.parse, a => ({
           TAG: "PlayerTeamSwapSpawn",
           _0: a
         }), a => ({
@@ -2357,7 +2329,7 @@ function getParsers(packetType, fromServer) {
     case "SectionRequest" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_SectionRequest$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_SectionRequest$TerrariaPacket.parse, a => ({
           TAG: "SectionRequest",
           _0: a
         }), a => ({
@@ -2368,7 +2340,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropPosition" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_ItemDropPosition$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_ItemDropPosition$TerrariaPacket.parse, a => ({
           TAG: "ItemDropPosition",
           _0: a
         }), a => ({
@@ -2379,7 +2351,7 @@ function getParsers(packetType, fromServer) {
     case "HostToken" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, Packet_HostToken$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1456_HostToken$TerrariaPacket.parse, a => ({
           TAG: "HostToken",
           _0: a
         }), a => ({
@@ -2387,6 +2359,24 @@ function getParsers(packetType, fromServer) {
           _0: a
         }))
       };
+    case "DamageNPCAck" :
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers(packetName, Packet_DamageNPCAck$TerrariaPacket.parse, a => ({
+            TAG: "DamageNPCAck",
+            _0: a
+          }), a => ({
+            TAG: "DamageNPCAck",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "NotImplemented"
+        };
+      }
     case "ServerInfo" :
       if (fromServer) {
         return {
@@ -2423,6 +2413,11 @@ function getParsers(packetType, fromServer) {
           }))
         };
       }
+    default:
+      return {
+        TAG: "Error",
+        _0: "NotImplemented"
+      };
   }
 }
 
@@ -2535,4 +2530,4 @@ export {
   parse,
   parseLazy,
 }
-/* Packet_Ping-TerrariaPacket Not a pure module */
+/* Packet_NpcCatch-TerrariaPacket Not a pure module */

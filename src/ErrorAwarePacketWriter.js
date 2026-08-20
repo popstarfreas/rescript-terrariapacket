@@ -103,6 +103,22 @@ function packByte(self, value, context) {
   }
 }
 
+function pack7BitEncodedInt(self, value, context) {
+  let writer = self;
+  let remaining = value;
+  let $$continue = true;
+  while ($$continue) {
+    let byte = remaining & 127;
+    remaining = (remaining >>> 7);
+    if (remaining !== 0) {
+      byte = byte | 128;
+    }
+    writer = packByte(writer, byte, context);
+    $$continue = remaining !== 0;
+  };
+  return writer;
+}
+
 function packBool(self, value, context) {
   return packByte(self, value ? 1 : 0, context);
 }
@@ -362,6 +378,7 @@ export {
   packUInt32,
   packInt32,
   packByte,
+  pack7BitEncodedInt,
   packBool,
   packUInt16,
   packInt16,

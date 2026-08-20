@@ -160,7 +160,10 @@ export type t =
   | "PlayerTeamSwapSpawn"
   | "SectionRequest"
   | "ItemDropPosition"
-  | "HostToken";
+  | "HostToken"
+  | "DamageNPCAck"
+  | "ServerInfo"
+  | "PlayerPlatformInfo";
 
 export declare function fromInt(n: number): t | undefined;
 

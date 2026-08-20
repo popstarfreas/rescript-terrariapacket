@@ -10,6 +10,9 @@ import type { Float_t as Point_Float_t } from "../Point.js";
 export type t = {
   readonly itemDropId: number;
   readonly owner: number;
+  readonly timeToKeepReservation: number;
+  readonly grabDelayPlayer: number;
+  readonly grabDelayTime: number;
   readonly position: Point_Float_t;
 };
 

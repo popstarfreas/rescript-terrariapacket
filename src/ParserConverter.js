@@ -239,6 +239,10 @@ function worldInfoFromV1449(worldInfo) {
     rain: worldInfo.rain,
     eventInfo: worldEventInfoFromV1449(worldInfo.eventInfo),
     lowTiles: false,
+    forceHalloweenForever: false,
+    forceChristmasForever: false,
+    moreLightningSeed: false,
+    noLightningSeed: false,
     sundialCooldown: worldInfo.sundialCooldown,
     moondialCooldown: worldInfo.moondialCooldown,
     copperOreTier: worldInfo.copperOreTier,
@@ -366,7 +370,8 @@ function playerUpdateControlFromV1449(control) {
     isHoldingLeft: control.isHoldingLeft,
     isHoldingRight: control.isHoldingRight,
     isHoldingJump: control.isHoldingJump,
-    isHoldingItemUse: control.isHoldingItemUse
+    isHoldingItemUse: control.isHoldingItemUse,
+    isHoldingDash: false
   };
 }
 
@@ -750,14 +755,30 @@ function netModuleLoadFromV1449(netModuleLoad) {
         TAG: "Bestiary",
         _0: netModuleLoadBestiaryFromV1449(netModuleLoad._0)
       };
+    case "CreativeUnlocks" :
+      let creativeUnlock = netModuleLoad._0;
+      return {
+        TAG: "CreativeUnlocks",
+        _0: {
+          itemId: creativeUnlock.itemId,
+          sacrificeCount: creativeUnlock.researchedCount
+        }
+      };
     case "CreativePower" :
       return {
         TAG: "CreativePower",
         _0: netModuleLoad._0
       };
-    case "CreativeUnlocks" :
     case "CreativeUnlocksPlayerReport" :
-      break;
+      let unlockReport = netModuleLoad._0;
+      return {
+        TAG: "CreativeUnlocksPlayerReport",
+        _0: {
+          userId: 0,
+          itemId: unlockReport.itemId,
+          researchedCount: unlockReport.researchedCount
+        }
+      };
     case "TeleportPylon" :
       return {
         TAG: "TeleportPylon",
@@ -774,15 +795,6 @@ function netModuleLoadFromV1449(netModuleLoad) {
         _0: netModuleLoadCreativePowerPermissionFromV1449(netModuleLoad._0)
       };
   }
-  let creativeUnlock = netModuleLoad._0;
-  return {
-    TAG: "CreativeUnlocksPlayerReport",
-    _0: {
-      userId: 0,
-      itemId: creativeUnlock.itemId,
-      researchedCount: creativeUnlock.researchedCount
-    }
-  };
 }
 
 function netModuleLoadToV1449(netModuleLoad) {
@@ -819,6 +831,15 @@ function netModuleLoadToV1449(netModuleLoad) {
       return {
         TAG: "Bestiary",
         _0: netModuleLoadBestiaryToV1449(netModuleLoad._0)
+      };
+    case "CreativeUnlocks" :
+      let creativeUnlock = netModuleLoad._0;
+      return {
+        TAG: "CreativeUnlocks",
+        _0: {
+          itemId: creativeUnlock.itemId,
+          researchedCount: creativeUnlock.sacrificeCount
+        }
       };
     case "CreativePower" :
       return {
@@ -1128,6 +1149,67 @@ function entitiesToV1449(entities) {
   }));
 }
 
+function itemDropOwnershipFromV1449(value) {
+  let match = value & 3;
+  switch (match) {
+    case 0 :
+      return "None";
+    case 1 :
+      return "ReserveForLocalPlayer";
+    case 2 :
+      return "GrabDelayForLocalPlayer";
+    default:
+      return "GrabDelayForAllPlayers";
+  }
+}
+
+function itemDropOwnershipToV1449(ownership) {
+  switch (ownership) {
+    case "None" :
+      return 0;
+    case "ReserveForLocalPlayer" :
+      return 1;
+    case "GrabDelayForLocalPlayer" :
+      return 2;
+    case "GrabDelayForAllPlayers" :
+      return 3;
+  }
+}
+
+function itemDropFromV1449(item, shimmer, enemyGrabDelayTime) {
+  return {
+    itemDropId: item.itemDropId,
+    position: {
+      x: item.x,
+      y: item.y
+    },
+    velocity: {
+      x: item.vx,
+      y: item.vy
+    },
+    stack: item.stack,
+    prefix: item.prefix,
+    ownership: itemDropOwnershipFromV1449(item.noDelay),
+    itemId: item.itemId,
+    shimmer: shimmer,
+    enemyGrabDelayTime: enemyGrabDelayTime
+  };
+}
+
+function itemDropToV1449(item) {
+  return {
+    itemDropId: item.itemDropId,
+    x: item.position.x,
+    y: item.position.y,
+    vx: item.velocity.x,
+    vy: item.velocity.y,
+    stack: item.stack,
+    prefix: item.prefix,
+    noDelay: itemDropOwnershipToV1449(item.ownership),
+    itemId: item.itemId
+  };
+}
+
 function fromV1449(packet) {
   switch (packet.TAG) {
     case "PlayerInfo" :
@@ -1259,13 +1341,19 @@ function fromV1449(packet) {
           isOperatingAnotherEntity: false,
           controlUseTile: false,
           netCameraTarget: undefined,
-          lastItemUseAttemptSuccess: false
+          lastItemUseAttemptSuccess: false,
+          snappingStoneLightUp: false
         }
       };
     case "TileSquareSend" :
       return {
         TAG: "TileSquareSend",
         _0: packet._0
+      };
+    case "ItemDropUpdate" :
+      return {
+        TAG: "ItemDropUpdate",
+        _0: itemDropFromV1449(packet._0, undefined, undefined)
       };
     case "ItemOwner" :
       let itemOwner = packet._0;
@@ -1274,6 +1362,9 @@ function fromV1449(packet) {
         _0: {
           itemDropId: itemOwner.itemDropId,
           owner: itemOwner.owner,
+          timeToKeepReservation: 0,
+          grabDelayPlayer: 0,
+          grabDelayTime: 0,
           position: {
             x: 0.0,
             y: 0.0
@@ -1286,6 +1377,7 @@ function fromV1449(packet) {
         TAG: "NpcUpdate",
         _0: {
           npcSlotId: npcUpdate.npcSlotId,
+          generation: 0,
           npcTypeId: npcUpdate.npcTypeId,
           x: npcUpdate.x,
           y: npcUpdate.y,
@@ -1305,6 +1397,61 @@ function fromV1449(packet) {
           shimmerTransparency: false
         }
       };
+    case "ProjectileSync" :
+      let value = packet._0;
+      return {
+        TAG: "ProjectileSync",
+        _0: {
+          projectileKey: {
+            spawner: value.owner,
+            index: value.projectileId,
+            generation: Stdlib_Option.getOr(value.projectileUuid, 0)
+          },
+          position: {
+            x: value.x,
+            y: value.y
+          },
+          velocity: {
+            x: value.vx,
+            y: value.vy
+          },
+          projectileType: value.projectileType,
+          ai: value.ai,
+          bannerIdToRespondTo: value.bannerIdToRespondTo,
+          damage: value.damage,
+          knockback: value.knockback,
+          originalDamage: value.originalDamage
+        }
+      };
+    case "NpcStrike" :
+      let value$1 = packet._0;
+      return {
+        TAG: "NpcStrike",
+        _0: {
+          npcSlotId: value$1.npcId,
+          generation: 0,
+          damage: value$1.damage,
+          knockback: value$1.knockback,
+          direction: value$1.direction,
+          critical: value$1.critical
+        }
+      };
+    case "ProjectileDestroy" :
+      let value$2 = packet._0;
+      return {
+        TAG: "ProjectileDestroy",
+        _0: {
+          projectileKey: {
+            spawner: value$2.owner,
+            index: value$2.projectileId,
+            generation: 0
+          },
+          position: {
+            x: 0.0,
+            y: 0.0
+          }
+        }
+      };
     case "Zones" :
       let zones = packet._0;
       return {
@@ -1317,6 +1464,14 @@ function fromV1449(packet) {
           zone4: zones.zone4,
           zone5: zones.zone5,
           townNPCs: 0
+        }
+      };
+    case "ItemOwnerRemove" :
+      return {
+        TAG: "ItemOwnerRemove",
+        _0: {
+          itemDropId: packet._0.itemDropId,
+          forceAssignToServer: false
         }
       };
     case "PlayerBuffsSet" :
@@ -1348,31 +1503,60 @@ function fromV1449(packet) {
           buffTimes: buffTimes
         }
       };
-    case "Teleport" :
-      let teleport = packet._0;
-      let match = teleport.teleportType;
+    case "PlayerDodge" :
+      let value$3 = packet._0;
+      let match = value$3.dodge;
       let tmp;
       switch (match) {
+        case "Ninja" :
+          tmp = "Ninja";
+          break;
+        case "Shadow" :
+          tmp = "Shadow";
+          break;
+        case "BrainOfConfusion" :
+          tmp = "BrainOfConfusion";
+          break;
+      }
+      return {
+        TAG: "PlayerDodge",
+        _0: {
+          playerId: value$3.playerId,
+          dodge: tmp
+        }
+      };
+    case "Teleport" :
+      let teleport = packet._0;
+      let match$1 = teleport.teleportType;
+      let tmp$1;
+      switch (match$1) {
         case "Player" :
-          tmp = "Player";
+          tmp$1 = "Player";
           break;
         case "Npc" :
-          tmp = "Npc";
+          tmp$1 = "Npc";
           break;
         case "PlayerToPlayer" :
-          tmp = "PlayerToPlayer";
+          tmp$1 = "PlayerToPlayer";
           break;
       }
       return {
         TAG: "Teleport",
         _0: {
-          teleportType: tmp,
+          teleportType: tmp$1,
           getPositionFromTarget: teleport.getPositionFromTarget,
           targetId: teleport.targetId,
           x: teleport.x,
           y: teleport.y,
           style: teleport.style,
           extraInfo: teleport.extraInfo
+        }
+      };
+    case "NpcCatch" :
+      return {
+        TAG: "NpcCatch",
+        _0: {
+          npcId: packet._0.npcId
         }
       };
     case "TravellingMerchantInventory" :
@@ -1383,26 +1567,26 @@ function fromV1449(packet) {
         }
       };
     case "TeleportationPotion" :
-      let match$1 = packet._0.teleportType;
-      let tmp$1;
-      switch (match$1) {
+      let match$2 = packet._0.teleportType;
+      let tmp$2;
+      switch (match$2) {
         case "TeleportationPotion" :
-          tmp$1 = "TeleportationPotion";
+          tmp$2 = "TeleportationPotion";
           break;
         case "MagicConch" :
-          tmp$1 = "MagicConch";
+          tmp$2 = "MagicConch";
           break;
         case "DemonConch" :
-          tmp$1 = "DemonConch";
+          tmp$2 = "DemonConch";
           break;
         case "ShellphoneSpawn" :
-          tmp$1 = "ShellphoneSpawn";
+          tmp$2 = "ShellphoneSpawn";
           break;
       }
       return {
         TAG: "TeleportationPotion",
         _0: {
-          teleportType: tmp$1
+          teleportType: tmp$2
         }
       };
     case "NetModuleLoad" :
@@ -1420,6 +1604,11 @@ function fromV1449(packet) {
             smartStack: false
           }
         }
+      };
+    case "ItemDropInstancedUpdate" :
+      return {
+        TAG: "ItemDropInstancedUpdate",
+        _0: itemDropFromV1449(packet._0, undefined, undefined)
       };
     case "TileEntityDisplayDollItemSync" :
       let tileEntityDisplayDollItemSync = packet._0;
@@ -1456,6 +1645,15 @@ function fromV1449(packet) {
           kiteLuckLevel: 0
         }
       };
+    case "ItemDropShimmeredUpdate" :
+      let item = packet._0;
+      return {
+        TAG: "ItemDropUpdate",
+        _0: itemDropFromV1449(item, {
+          shimmered: item.shimmered,
+          shimmerTime: item.shimmeredTime
+        }, undefined)
+      };
     case "ShimmerEffectOrCoinLuck" :
       let shimmerEffectOrCoinLuck = packet._0;
       switch (shimmerEffectOrCoinLuck.TAG) {
@@ -1486,6 +1684,12 @@ function fromV1449(packet) {
             }
           };
       }
+    case "ItemDropProtectedUpdate" :
+      let item$1 = packet._0;
+      return {
+        TAG: "ItemDropUpdate",
+        _0: itemDropFromV1449(item$1, undefined, item$1.timeLeftInWhichTheItemCannotBeTakenByEnemies)
+      };
     default:
       return packet;
   }
@@ -1612,6 +1816,51 @@ function latestToV1449(packet) {
           isSleeping: playerUpdate.isSleeping
         }
       };
+    case "ItemDropUpdate" :
+      let item = packet._0;
+      let match = item.shimmer;
+      let match$1 = item.enemyGrabDelayTime;
+      if (match !== undefined) {
+        let base = itemDropToV1449(item);
+        return {
+          TAG: "ItemDropShimmeredUpdate",
+          _0: {
+            itemDropId: base.itemDropId,
+            x: base.x,
+            y: base.y,
+            vx: base.vx,
+            vy: base.vy,
+            stack: base.stack,
+            prefix: base.prefix,
+            noDelay: base.noDelay,
+            itemId: base.itemId,
+            shimmered: match.shimmered,
+            shimmeredTime: match.shimmerTime
+          }
+        };
+      }
+      if (match$1 === undefined) {
+        return {
+          TAG: "ItemDropUpdate",
+          _0: itemDropToV1449(item)
+        };
+      }
+      let base$1 = itemDropToV1449(item);
+      return {
+        TAG: "ItemDropProtectedUpdate",
+        _0: {
+          itemDropId: base$1.itemDropId,
+          x: base$1.x,
+          y: base$1.y,
+          vx: base$1.vx,
+          vy: base$1.vy,
+          stack: base$1.stack,
+          prefix: base$1.prefix,
+          noDelay: base$1.noDelay,
+          itemId: base$1.itemId,
+          timeLeftInWhichTheItemCannotBeTakenByEnemies: match$1
+        }
+      };
     case "ItemOwner" :
       let itemOwner = packet._0;
       return {
@@ -1644,6 +1893,47 @@ function latestToV1449(packet) {
           spawnedFromStatue: npcUpdate.spawnedFromStatue
         }
       };
+    case "ProjectileSync" :
+      let value = packet._0;
+      return {
+        TAG: "ProjectileSync",
+        _0: {
+          projectileId: value.projectileKey.index,
+          x: value.position.x,
+          y: value.position.y,
+          vx: value.velocity.x,
+          vy: value.velocity.y,
+          owner: value.projectileKey.spawner,
+          projectileType: value.projectileType,
+          ai: value.ai,
+          bannerIdToRespondTo: value.bannerIdToRespondTo,
+          damage: value.damage,
+          knockback: value.knockback,
+          originalDamage: value.originalDamage,
+          projectileUuid: value.projectileKey.generation === 0 ? undefined : value.projectileKey.generation
+        }
+      };
+    case "NpcStrike" :
+      let value$1 = packet._0;
+      return {
+        TAG: "NpcStrike",
+        _0: {
+          npcId: value$1.npcSlotId,
+          damage: value$1.damage,
+          knockback: value$1.knockback,
+          direction: value$1.direction,
+          critical: value$1.critical
+        }
+      };
+    case "ProjectileDestroy" :
+      let value$2 = packet._0;
+      return {
+        TAG: "ProjectileDestroy",
+        _0: {
+          projectileId: value$2.projectileKey.index,
+          owner: value$2.projectileKey.spawner
+        }
+      };
     case "Zones" :
       let zones = packet._0;
       return {
@@ -1655,6 +1945,13 @@ function latestToV1449(packet) {
           zone3: zones.zone3,
           zone4: zones.zone4,
           zone5: zones.zone5
+        }
+      };
+    case "ItemOwnerRemove" :
+      return {
+        TAG: "ItemOwnerRemove",
+        _0: {
+          itemDropId: packet._0.itemDropId
         }
       };
     case "PlayerBuffsSet" :
@@ -1688,32 +1985,63 @@ function latestToV1449(packet) {
           buffTimes: buffTimes
         }
       };
+    case "PlayerDodge" :
+      let value$3 = packet._0;
+      let match$2 = value$3.dodge;
+      let tmp;
+      switch (match$2) {
+        case "Ninja" :
+          tmp = "Ninja";
+          break;
+        case "Shadow" :
+          tmp = "Shadow";
+          break;
+        case "BrainOfConfusion" :
+        case "MysticSash" :
+          tmp = "BrainOfConfusion";
+          break;
+      }
+      return {
+        TAG: "PlayerDodge",
+        _0: {
+          playerId: value$3.playerId,
+          dodge: tmp
+        }
+      };
     case "Teleport" :
       let teleport = packet._0;
-      let match = teleport.teleportType;
-      let tmp;
-      switch (match) {
+      let match$3 = teleport.teleportType;
+      let tmp$1;
+      switch (match$3) {
         case "Npc" :
-          tmp = "Npc";
+          tmp$1 = "Npc";
           break;
         case "PlayerToPlayer" :
-          tmp = "PlayerToPlayer";
+          tmp$1 = "PlayerToPlayer";
           break;
         case "Player" :
         case "TeleportAck" :
-          tmp = "Player";
+          tmp$1 = "Player";
           break;
       }
       return {
         TAG: "Teleport",
         _0: {
-          teleportType: tmp,
+          teleportType: tmp$1,
           getPositionFromTarget: teleport.getPositionFromTarget,
           targetId: teleport.targetId,
           x: teleport.x,
           y: teleport.y,
           style: teleport.style,
           extraInfo: teleport.extraInfo
+        }
+      };
+    case "NpcCatch" :
+      return {
+        TAG: "NpcCatch",
+        _0: {
+          npcId: packet._0.npcId,
+          playerId: 0
         }
       };
     case "TravellingMerchantInventory" :
@@ -1730,27 +2058,27 @@ function latestToV1449(packet) {
         }
       };
     case "TeleportationPotion" :
-      let match$1 = packet._0.teleportType;
-      let tmp$1;
-      switch (match$1) {
+      let match$4 = packet._0.teleportType;
+      let tmp$2;
+      switch (match$4) {
         case "MagicConch" :
-          tmp$1 = "MagicConch";
+          tmp$2 = "MagicConch";
           break;
         case "DemonConch" :
-          tmp$1 = "DemonConch";
+          tmp$2 = "DemonConch";
           break;
         case "ShellphoneSpawn" :
-          tmp$1 = "ShellphoneSpawn";
+          tmp$2 = "ShellphoneSpawn";
           break;
         case "TeleportationPotion" :
         case "PlayerNoSpaceTeleport" :
-          tmp$1 = "TeleportationPotion";
+          tmp$2 = "TeleportationPotion";
           break;
       }
       return {
         TAG: "TeleportationPotion",
         _0: {
-          teleportType: tmp$1
+          teleportType: tmp$2
         }
       };
     case "NetModuleLoad" :
@@ -1789,10 +2117,15 @@ function latestToV1449(packet) {
           }
         };
       }
+    case "ItemDropInstancedUpdate" :
+      return {
+        TAG: "ItemDropInstancedUpdate",
+        _0: itemDropToV1449(packet._0)
+      };
     case "TileEntityDisplayDollItemSync" :
       let tileEntityDisplayDollItemSync = packet._0;
-      let item = tileEntityDisplayDollItemSync.data;
-      if (item.TAG !== "Item") {
+      let item$1 = tileEntityDisplayDollItemSync.data;
+      if (item$1.TAG !== "Item") {
         return {
           TAG: "TileEntityDisplayDollItemSync",
           _0: {
@@ -1805,16 +2138,16 @@ function latestToV1449(packet) {
           }
         };
       }
-      let item$1 = item._0;
+      let item$2 = item$1._0;
       return {
         TAG: "TileEntityDisplayDollItemSync",
         _0: {
           playerId: tileEntityDisplayDollItemSync.playerId,
           tileEntityId: tileEntityDisplayDollItemSync.tileEntityId,
           itemIndex: tileEntityDisplayDollItemSync.itemIndex,
-          itemId: item$1.itemId,
-          stack: item$1.stack,
-          prefix: item$1.prefix
+          itemId: item$2.itemId,
+          stack: item$2.stack,
+          prefix: item$2.prefix
         }
       };
     case "PlayerLuckFactorsUpdate" :
@@ -1893,6 +2226,19 @@ function convertFromV1449IfNeeded(buffer, fromServer) {
     };
   }
   switch (match$1) {
+    case "NpcItemStrike" :
+      return {
+        TAG: "Ok",
+        _0: "DiscardAsNotExists"
+      };
+    case "ShimmerEffectOrCoinLuck" :
+      if (!fromServer) {
+        return {
+          TAG: "Ok",
+          _0: "DiscardAsNotExists"
+        };
+      }
+      break;
     case "PlayerInfo" :
     case "PlayerInventorySlot" :
     case "WorldInfo" :
@@ -1901,19 +2247,28 @@ function convertFromV1449IfNeeded(buffer, fromServer) {
     case "PlayerSpawn" :
     case "PlayerUpdate" :
     case "TileSquareSend" :
+    case "ItemDropUpdate" :
     case "ItemOwner" :
     case "NpcUpdate" :
+    case "ProjectileSync" :
+    case "NpcStrike" :
+    case "ProjectileDestroy" :
     case "Zones" :
+    case "ItemOwnerRemove" :
     case "PlayerBuffsSet" :
     case "NpcBuffUpdate" :
+    case "PlayerDodge" :
     case "Teleport" :
+    case "NpcCatch" :
     case "TravellingMerchantInventory" :
     case "TeleportationPotion" :
     case "NetModuleLoad" :
     case "ItemForceIntoNearestChest" :
+    case "ItemDropInstancedUpdate" :
     case "TileEntityDisplayDollItemSync" :
     case "PlayerLuckFactorsUpdate" :
-    case "ShimmerEffectOrCoinLuck" :
+    case "ItemDropShimmeredUpdate" :
+    case "ItemDropProtectedUpdate" :
       break;
     default:
       return {
@@ -1972,21 +2327,32 @@ function convertToV1449IfNeeded(buffer, fromServer) {
     case "InitialTileSectionsRequest" :
     case "PlayerSpawn" :
     case "PlayerUpdate" :
+    case "ItemDropUpdate" :
     case "ItemOwner" :
     case "NpcUpdate" :
+    case "ProjectileSync" :
+    case "NpcStrike" :
+    case "ProjectileDestroy" :
     case "Zones" :
+    case "ItemOwnerRemove" :
     case "PlayerBuffsSet" :
     case "NpcBuffUpdate" :
+    case "PlayerDodge" :
     case "Teleport" :
+    case "NpcCatch" :
     case "TravellingMerchantInventory" :
     case "TeleportationPotion" :
     case "NetModuleLoad" :
     case "ItemForceIntoNearestChest" :
+    case "ItemDropInstancedUpdate" :
     case "TileEntityDisplayDollItemSync" :
     case "PlayerLuckFactorsUpdate" :
     case "ShimmerEffectOrCoinLuck" :
     case "ItemDropClear" :
       break;
+    case "NpcItemStrike" :
+    case "ItemDropShimmeredUpdate" :
+    case "ItemDropProtectedUpdate" :
     case "DeadCellsDisplayJarTryPlacing" :
     case "PlayerSpectate" :
     case "PlayerItemUseSound" :
@@ -1999,6 +2365,9 @@ function convertToV1449IfNeeded(buffer, fromServer) {
     case "SectionRequest" :
     case "ItemDropPosition" :
     case "HostToken" :
+    case "DamageNPCAck" :
+    case "ServerInfo" :
+    case "PlayerPlatformInfo" :
       return {
         TAG: "Ok",
         _0: "DiscardAsNotExists"

@@ -8,7 +8,28 @@ zoraBlock("should correctly parse and serialise WorldInfo", t => {
   let result = Packet_WorldInfo.parse(buffer)
 
   switch result {
-  | Ok(_data2) => Console.log(_data2)
+  | Ok(data) => {
+      let withPermanentFlags = {
+        ...data,
+        forceHalloweenForever: true,
+        forceChristmasForever: true,
+        moreLightningSeed: true,
+        noLightningSeed: true,
+      }
+      switch Packet_WorldInfo.toBuffer(withPermanentFlags) {
+      | Ok(encoded) =>
+        switch Packet_WorldInfo.parse(encoded) {
+        | Ok(parsed) => {
+            t->ok(parsed.forceHalloweenForever)
+            t->ok(parsed.forceChristmasForever)
+            t->ok(parsed.moreLightningSeed)
+            t->ok(parsed.noLightningSeed)
+          }
+        | Error(err) => t->fail(~msg=JsExn.message(err.error)->Option.getOrThrow)
+        }
+      | Error(err) => t->fail(~msg=JsExn.message(err.error)->Option.getOrThrow)
+      }
+    }
   | Error(err) => t->fail(~msg=JsExn.message(err.error)->Option.getOrThrow)
   }
 })
@@ -21,6 +42,7 @@ zoraBlock("should correctly parse and serialise WorldInfo", t => {
   )
   switch ParserConverter.convertFromV1449IfNeeded(~buffer, ~fromServer=true) {
   | Ok(PacketStructureIsSame) => t->fail(~msg="PacketStructureIsSame")
+  | Ok(DiscardAsNotExists) => t->fail(~msg="DiscardAsNotExists")
   | Ok(ConvertedToLatestVersion(WorldInfo(_) as packet)) => {
       let p = Packet.toBuffer(packet, true)
       switch p {

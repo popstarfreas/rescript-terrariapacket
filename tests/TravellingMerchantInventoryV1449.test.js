@@ -2,11 +2,11 @@
 
 import * as Zora from "@dusty-phillips/rescript-zora/src/Zora.js";
 import * as Zora$1 from "zora";
-import * as Packet_TravellingMerchantInventory$TerrariaPacket from "../src/packet/Packet_TravellingMerchantInventory.js";
+import * as PacketV1456_TravellingMerchantInventory$TerrariaPacket from "../src/packetv1456/PacketV1456_TravellingMerchantInventory.js";
 
 Zora$1.test("should correctly parse TravellingMerchantInventory", t => {
   let data = Buffer.from("530048d408d508d608d111c511310e360e4411a608da087a1400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", "hex");
-  let v = Packet_TravellingMerchantInventory$TerrariaPacket.parse(data);
+  let v = PacketV1456_TravellingMerchantInventory$TerrariaPacket.parse(data);
   if (v.TAG === "Ok") {
     return Zora.ignoreValue(t, v._0);
   }

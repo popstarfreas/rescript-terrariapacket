@@ -39,13 +39,15 @@ function parse(payload) {
   let control_isHoldingRight = BitFlags$TerrariaPacket.flag4(controlFlags);
   let control_isHoldingJump = BitFlags$TerrariaPacket.flag5(controlFlags);
   let control_isHoldingItemUse = BitFlags$TerrariaPacket.flag6(controlFlags);
+  let control_isHoldingDash = BitFlags$TerrariaPacket.flag8(controlFlags);
   let control = {
     isHoldingUp: control_isHoldingUp,
     isHoldingDown: control_isHoldingDown,
     isHoldingLeft: control_isHoldingLeft,
     isHoldingRight: control_isHoldingRight,
     isHoldingJump: control_isHoldingJump,
-    isHoldingItemUse: control_isHoldingItemUse
+    isHoldingItemUse: control_isHoldingItemUse,
+    isHoldingDash: control_isHoldingDash
   };
   let direction = BitFlags$TerrariaPacket.flag7(controlFlags) ? "Right" : "Left";
   let pulleyDirection = BitFlags$TerrariaPacket.flag1(miscFlags1) ? (
@@ -190,6 +192,7 @@ function parse(payload) {
     return e$18;
   }
   let lastItemUseAttemptSuccess = BitFlags$TerrariaPacket.flag7(miscFlags3);
+  let snappingStoneLightUp = BitFlags$TerrariaPacket.flag8(miscFlags3);
   return {
     TAG: "Ok",
     _0: {
@@ -219,7 +222,8 @@ function parse(payload) {
       isOperatingAnotherEntity: isOperatingAnotherEntity,
       controlUseTile: controlUseTile,
       netCameraTarget: e$18._0,
-      lastItemUseAttemptSuccess: lastItemUseAttemptSuccess
+      lastItemUseAttemptSuccess: lastItemUseAttemptSuccess,
+      snappingStoneLightUp: snappingStoneLightUp
     }
   };
 }
@@ -234,7 +238,7 @@ let Decode = {
 function packControlFlags(writer, control, direction) {
   let tmp;
   tmp = direction !== "Left";
-  return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(control.isHoldingUp, control.isHoldingDown, control.isHoldingLeft, control.isHoldingRight, control.isHoldingJump, control.isHoldingItemUse, tmp, false)), "controlFlags");
+  return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(control.isHoldingUp, control.isHoldingDown, control.isHoldingLeft, control.isHoldingRight, control.isHoldingJump, control.isHoldingItemUse, tmp, control.isHoldingDash)), "controlFlags");
 }
 
 function packMiscFlags1(writer, pulleyDirection, velocity, vortexStealthActive, gravityDirection, shieldRaised, ghost, mountType) {
@@ -249,8 +253,8 @@ function packMiscFlags2(writer, tryKeepingHoveringUp, isVoidVaultEnabled, isSitt
   return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(tryKeepingHoveringUp, isVoidVaultEnabled, isSitting, hasFinishedAnyDd2Event, isPettingAnimal, isTheAnimalBeingPetSmall, potionOfReturn !== undefined, tryKeepingHoveringDown)), "miscFlags2");
 }
 
-function packMiscFlags3(writer, isSleeping, autoReuseAllWeapons, controlDownHold, isOperatingAnotherEntity, controlUseTile, netCameraTarget, lastItemUseAttemptSuccess) {
-  return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(isSleeping, autoReuseAllWeapons, controlDownHold, isOperatingAnotherEntity, controlUseTile, Stdlib_Option.isSome(netCameraTarget), lastItemUseAttemptSuccess, false)), "miscFlags3");
+function packMiscFlags3(writer, isSleeping, autoReuseAllWeapons, controlDownHold, isOperatingAnotherEntity, controlUseTile, netCameraTarget, lastItemUseAttemptSuccess, snappingStoneLightUp) {
+  return ErrorAwarePacketWriter$TerrariaPacket.packByte(writer, BitFlags$TerrariaPacket.toByte(BitFlags$TerrariaPacket.fromFlags(isSleeping, autoReuseAllWeapons, controlDownHold, isOperatingAnotherEntity, controlUseTile, Stdlib_Option.isSome(netCameraTarget), lastItemUseAttemptSuccess, snappingStoneLightUp)), "miscFlags3");
 }
 
 function packVelocity(writer, velocity) {
@@ -286,7 +290,7 @@ function packNetCameraTarget(writer, netCameraTarget) {
 }
 
 function toBuffer(self) {
-  return ErrorAwarePacketWriter$TerrariaPacket.data(packNetCameraTarget(packPotionOfReturn(packMountType(packVelocity(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(packMiscFlags3(packMiscFlags2(packMiscFlags1(packControlFlags(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerUpdate")), self.playerId, "playerId"), self.control, self.direction), self.pulleyDirection, self.velocity, self.vortexStealthActive, self.gravityDirection, self.shieldRaised, self.ghost, self.mountType), self.tryKeepingHoveringUp, self.isVoidVaultEnabled, self.isSitting, self.hasFinishedAnyDd2Event, self.isPettingAnimal, self.isTheAnimalBeingPetSmall, self.potionOfReturn, self.tryKeepingHoveringDown), self.isSleeping, self.autoReuseAllWeapons, self.controlDownHold, self.isOperatingAnotherEntity, self.controlUseTile, self.netCameraTarget, self.lastItemUseAttemptSuccess), self.selectedItem, "selectedItem"), self.position.x, "positionX"), self.position.y, "positionY"), self.velocity), self.mountType), self.potionOfReturn), self.netCameraTarget));
+  return ErrorAwarePacketWriter$TerrariaPacket.data(packNetCameraTarget(packPotionOfReturn(packMountType(packVelocity(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(packMiscFlags3(packMiscFlags2(packMiscFlags1(packControlFlags(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("PlayerUpdate")), self.playerId, "playerId"), self.control, self.direction), self.pulleyDirection, self.velocity, self.vortexStealthActive, self.gravityDirection, self.shieldRaised, self.ghost, self.mountType), self.tryKeepingHoveringUp, self.isVoidVaultEnabled, self.isSitting, self.hasFinishedAnyDd2Event, self.isPettingAnimal, self.isTheAnimalBeingPetSmall, self.potionOfReturn, self.tryKeepingHoveringDown), self.isSleeping, self.autoReuseAllWeapons, self.controlDownHold, self.isOperatingAnotherEntity, self.controlUseTile, self.netCameraTarget, self.lastItemUseAttemptSuccess, self.snappingStoneLightUp), self.selectedItem, "selectedItem"), self.position.x, "positionX"), self.position.y, "positionY"), self.velocity), self.mountType), self.potionOfReturn), self.netCameraTarget));
 }
 
 let Encode = {

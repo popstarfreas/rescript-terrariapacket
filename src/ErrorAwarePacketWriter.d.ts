@@ -44,6 +44,9 @@ export function packInt32(writer: ErrorAwarePacketWriter, value: number, context
  */
 export function packByte(writer: ErrorAwarePacketWriter, value: number, context: string): ErrorAwarePacketWriter;
 
+/** Packs a signed 32-bit integer using the .NET 7-bit encoded format. */
+export function pack7BitEncodedInt(writer: ErrorAwarePacketWriter, value: number, context: string): ErrorAwarePacketWriter;
+
 /**
  * Packs a 16-bit signed integer.
  * @param writer The packet writer instance.

@@ -49,47 +49,51 @@ function readNpcFlags2(reader, fieldName) {
 
 function parse(payload) {
   let reader = new Packetreader(payload);
-  let e = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcSlotId");
+  let e = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "npcSlotId");
   if (e.TAG !== "Ok") {
     return e;
   }
-  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
+  let e$1 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "generation");
   if (e$1.TAG !== "Ok") {
     return e$1;
   }
-  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "x");
   if (e$2.TAG !== "Ok") {
     return e$2;
   }
-  let e$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
+  let e$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "y");
   if (e$3.TAG !== "Ok") {
     return e$3;
   }
-  let e$4 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
+  let e$4 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vx");
   if (e$4.TAG !== "Ok") {
     return e$4;
   }
-  let e$5 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "target");
+  let e$5 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "vy");
   if (e$5.TAG !== "Ok") {
     return e$5;
   }
-  let e$6 = readNpcFlags1(reader, "npcFlags1");
+  let e$6 = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, "target");
   if (e$6.TAG !== "Ok") {
     return e$6;
   }
-  let npcFlags1 = e$6._0;
-  let e$7 = readNpcFlags2(reader, "npcFlags2");
+  let e$7 = readNpcFlags1(reader, "npcFlags1");
   if (e$7.TAG !== "Ok") {
     return e$7;
   }
-  let npcFlags2 = e$7._0;
+  let npcFlags1 = e$7._0;
+  let e$8 = readNpcFlags2(reader, "npcFlags2");
+  if (e$8.TAG !== "Ok") {
+    return e$8;
+  }
+  let npcFlags2 = e$8._0;
   let tmp;
   if (npcFlags1.ai0) {
-    let e$8 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai0");
-    tmp = e$8.TAG === "Ok" ? ({
+    let e$9 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai0");
+    tmp = e$9.TAG === "Ok" ? ({
         TAG: "Ok",
-        _0: e$8._0
-      }) : e$8;
+        _0: e$9._0
+      }) : e$9;
   } else {
     tmp = {
       TAG: "Ok",
@@ -98,11 +102,11 @@ function parse(payload) {
   }
   let tmp$1;
   if (npcFlags1.ai1) {
-    let e$9 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai1");
-    tmp$1 = e$9.TAG === "Ok" ? ({
+    let e$10 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai1");
+    tmp$1 = e$10.TAG === "Ok" ? ({
         TAG: "Ok",
-        _0: e$9._0
-      }) : e$9;
+        _0: e$10._0
+      }) : e$10;
   } else {
     tmp$1 = {
       TAG: "Ok",
@@ -111,11 +115,11 @@ function parse(payload) {
   }
   let tmp$2;
   if (npcFlags1.ai2) {
-    let e$10 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai2");
-    tmp$2 = e$10.TAG === "Ok" ? ({
+    let e$11 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai2");
+    tmp$2 = e$11.TAG === "Ok" ? ({
         TAG: "Ok",
-        _0: e$10._0
-      }) : e$10;
+        _0: e$11._0
+      }) : e$11;
   } else {
     tmp$2 = {
       TAG: "Ok",
@@ -124,104 +128,104 @@ function parse(payload) {
   }
   let tmp$3;
   if (npcFlags1.ai3) {
-    let e$11 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai3");
-    tmp$3 = e$11.TAG === "Ok" ? ({
+    let e$12 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "ai3");
+    tmp$3 = e$12.TAG === "Ok" ? ({
         TAG: "Ok",
-        _0: e$11._0
-      }) : e$11;
+        _0: e$12._0
+      }) : e$12;
   } else {
     tmp$3 = {
       TAG: "Ok",
       _0: undefined
     };
   }
-  let e$12 = Stdlib_Result.all4([
+  let e$13 = Stdlib_Result.all4([
     tmp,
     tmp$1,
     tmp$2,
     tmp$3
   ]);
-  if (e$12.TAG !== "Ok") {
-    return e$12;
-  }
-  let e$13 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcTypeId");
   if (e$13.TAG !== "Ok") {
     return e$13;
   }
-  let e$14;
-  if (npcFlags2.statsScaled) {
-    let e$15 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerCountScale");
-    e$14 = e$15.TAG === "Ok" ? ({
-        TAG: "Ok",
-        _0: e$15._0
-      }) : e$15;
-  } else {
-    e$14 = {
-      TAG: "Ok",
-      _0: undefined
-    };
-  }
+  let e$14 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "npcTypeId");
   if (e$14.TAG !== "Ok") {
     return e$14;
   }
-  let e$16;
-  if (npcFlags2.difficulty) {
-    let e$17 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "difficulty");
-    e$16 = e$17.TAG === "Ok" ? ({
+  let e$15;
+  if (npcFlags2.statsScaled) {
+    let e$16 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "playerCountScale");
+    e$15 = e$16.TAG === "Ok" ? ({
         TAG: "Ok",
-        _0: e$17._0
-      }) : e$17;
+        _0: e$16._0
+      }) : e$16;
   } else {
-    e$16 = {
+    e$15 = {
       TAG: "Ok",
       _0: undefined
     };
   }
-  if (e$16.TAG !== "Ok") {
-    return e$16;
+  if (e$15.TAG !== "Ok") {
+    return e$15;
   }
-  let e$18;
+  let e$17;
+  if (npcFlags2.difficulty) {
+    let e$18 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "difficulty");
+    e$17 = e$18.TAG === "Ok" ? ({
+        TAG: "Ok",
+        _0: e$18._0
+      }) : e$18;
+  } else {
+    e$17 = {
+      TAG: "Ok",
+      _0: undefined
+    };
+  }
+  if (e$17.TAG !== "Ok") {
+    return e$17;
+  }
+  let e$19;
   if (npcFlags1.lifeMax) {
-    e$18 = {
+    e$19 = {
       TAG: "Ok",
       _0: "Max"
     };
   } else {
-    let e$19 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "lifeBytes");
-    if (e$19.TAG === "Ok") {
-      switch (e$19._0) {
+    let e$20 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "lifeBytes");
+    if (e$20.TAG === "Ok") {
+      switch (e$20._0) {
         case 1 :
-          let e$20 = ErrorAwarePacketReader$TerrariaPacket.readSByte(reader, "life_sbyte");
-          e$18 = e$20.TAG === "Ok" ? ({
+          let e$21 = ErrorAwarePacketReader$TerrariaPacket.readSByte(reader, "life_sbyte");
+          e$19 = e$21.TAG === "Ok" ? ({
               TAG: "Ok",
               _0: {
                 TAG: "Byte",
-                _0: e$20._0
-              }
-            }) : e$20;
-          break;
-        case 2 :
-          let e$21 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "life_int16");
-          e$18 = e$21.TAG === "Ok" ? ({
-              TAG: "Ok",
-              _0: {
-                TAG: "Int16",
                 _0: e$21._0
               }
             }) : e$21;
           break;
-        case 4 :
-          let e$22 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "life_int32");
-          e$18 = e$22.TAG === "Ok" ? ({
+        case 2 :
+          let e$22 = ErrorAwarePacketReader$TerrariaPacket.readInt16(reader, "life_int16");
+          e$19 = e$22.TAG === "Ok" ? ({
               TAG: "Ok",
               _0: {
-                TAG: "Int32",
+                TAG: "Int16",
                 _0: e$22._0
               }
             }) : e$22;
           break;
+        case 4 :
+          let e$23 = ErrorAwarePacketReader$TerrariaPacket.readInt32(reader, "life_int32");
+          e$19 = e$23.TAG === "Ok" ? ({
+              TAG: "Ok",
+              _0: {
+                TAG: "Int32",
+                _0: e$23._0
+              }
+            }) : e$23;
+          break;
         default:
-          e$18 = {
+          e$19 = {
             TAG: "Error",
             _0: {
               context: "Packet_NpcUpdate.parse",
@@ -230,11 +234,11 @@ function parse(payload) {
           };
       }
     } else {
-      e$18 = e$19;
+      e$19 = e$20;
     }
   }
-  if (e$18.TAG !== "Ok") {
-    return e$18;
+  if (e$19.TAG !== "Ok") {
+    return e$19;
   }
   let releaseOwner = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "releaseOwner");
   let releaseOwner$1;
@@ -243,20 +247,21 @@ function parse(payload) {
     TAG: "Ok",
     _0: {
       npcSlotId: e._0,
-      npcTypeId: e$13._0,
-      x: e$1._0,
-      y: e$2._0,
-      vx: e$3._0,
-      vy: e$4._0,
-      target: e$5._0,
+      generation: e$1._0,
+      npcTypeId: e$14._0,
+      x: e$2._0,
+      y: e$3._0,
+      vx: e$4._0,
+      vy: e$5._0,
+      target: e$6._0,
       directionX: npcFlags1.directionX,
       directionY: npcFlags1.directionY,
-      ai: e$12._0,
+      ai: e$13._0,
       spriteDirection: npcFlags1.spriteDirection,
-      life: e$18._0,
+      life: e$19._0,
       releaseOwner: releaseOwner$1,
-      playerCountScale: e$14._0,
-      difficulty: e$16._0,
+      playerCountScale: e$15._0,
+      difficulty: e$17._0,
       spawnedFromStatue: npcFlags2.spawnedFromStatue,
       spawnNeedsSyncing: npcFlags2.spawnNeedsSyncing,
       shimmerTransparency: npcFlags2.shimmerTransparency
@@ -344,7 +349,7 @@ function packReleaseOwner(writer, releaseOwner) {
 }
 
 function toBuffer(self) {
-  return ErrorAwarePacketWriter$TerrariaPacket.data(packReleaseOwner(packLife(packDifficulty(packPlayerCountScale(ErrorAwarePacketWriter$TerrariaPacket.packInt16(packAi(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcUpdate")), self.npcSlotId, "npcSlotId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.target, "target"), npcFlags1(self), "npcFlags1"), npcFlags2(self), "npcFlags2"), self.ai), self.npcTypeId, "npcTypeId"), self.playerCountScale), self.difficulty), self.life), self.releaseOwner));
+  return ErrorAwarePacketWriter$TerrariaPacket.data(packReleaseOwner(packLife(packDifficulty(packPlayerCountScale(ErrorAwarePacketWriter$TerrariaPacket.packInt16(packAi(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packUInt16(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("NpcUpdate")), self.npcSlotId, "npcSlotId"), self.generation, "generation"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.target, "target"), npcFlags1(self), "npcFlags1"), npcFlags2(self), "npcFlags2"), self.ai), self.npcTypeId, "npcTypeId"), self.playerCountScale), self.difficulty), self.life), self.releaseOwner));
 }
 
 let Encode = {

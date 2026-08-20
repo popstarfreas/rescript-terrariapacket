@@ -34,6 +34,11 @@ type bestiary = {
   npcId: int,
 }
 
+type creativeUnlock = {
+  itemId: int,
+  sacrificeCount: int,
+}
+
 type unlockReport = {
   userId: int,
   itemId: int,
@@ -154,6 +159,7 @@ type t =
   | Ping(position)
   | Ambience(ambience)
   | Bestiary(bestiary)
+  | CreativeUnlocks(creativeUnlock)
   | CreativePower(CreativePowers.t)
   | CreativeUnlocksPlayerReport(unlockReport)
   | TeleportPylon(teleportPylon)
@@ -161,7 +167,6 @@ type t =
   | CreativePowerPermissions(creativePowerPermission)
   | Banners(bannerMessage)
   | CraftingRequests(craftingMessage)
-  | TagEffectState(tagEffectStateMessage)
   | LeashedEntity(leashedEntityMessage)
   | UnbreakableWallScan(unbreakableWallScan)
 
@@ -188,6 +193,7 @@ module NetModuleType = {
     | Ping
     | Ambience
     | Bestiary
+    | CreativeUnlocks
     | CreativePower
     | CreativeUnlocksPlayerReport
     | TeleportPylon
@@ -195,7 +201,6 @@ module NetModuleType = {
     | CreativePowerPermissions
     | Banners
     | CraftingRequests
-    | TagEffectState
     | LeashedEntity
     | UnbreakableWallScan
 
@@ -206,14 +211,14 @@ module NetModuleType = {
     | 2 => Some(Ping)
     | 3 => Some(Ambience)
     | 4 => Some(Bestiary)
-    | 5 => Some(CreativePower)
-    | 6 => Some(CreativeUnlocksPlayerReport)
-    | 7 => Some(TeleportPylon)
-    | 8 => Some(Particles)
-    | 9 => Some(CreativePowerPermissions)
-    | 10 => Some(Banners)
-    | 11 => Some(CraftingRequests)
-    | 12 => Some(TagEffectState)
+    | 5 => Some(CreativeUnlocks)
+    | 6 => Some(CreativePower)
+    | 7 => Some(CreativeUnlocksPlayerReport)
+    | 8 => Some(TeleportPylon)
+    | 9 => Some(Particles)
+    | 10 => Some(CreativePowerPermissions)
+    | 11 => Some(Banners)
+    | 12 => Some(CraftingRequests)
     | 13 => Some(LeashedEntity)
     | 14 => Some(UnbreakableWallScan)
     | _ => None
@@ -226,14 +231,14 @@ module NetModuleType = {
     | Ping => 2
     | Ambience => 3
     | Bestiary => 4
-    | CreativePower => 5
-    | CreativeUnlocksPlayerReport => 6
-    | TeleportPylon => 7
-    | Particles => 8
-    | CreativePowerPermissions => 9
-    | Banners => 10
-    | CraftingRequests => 11
-    | TagEffectState => 12
+    | CreativeUnlocks => 5
+    | CreativePower => 6
+    | CreativeUnlocksPlayerReport => 7
+    | TeleportPylon => 8
+    | Particles => 9
+    | CreativePowerPermissions => 10
+    | Banners => 11
+    | CraftingRequests => 12
     | LeashedEntity => 13
     | UnbreakableWallScan => 14
     }
@@ -368,6 +373,18 @@ module Encode = {
     ->setType(PacketType.NetModuleLoad->PacketType.toInt)
     ->packUInt16(NetModuleType.CreativePower->NetModuleType.toInt, "moduleType")
     ->CreativePowers.pack(creativePower)
+    ->data
+  }
+
+  let creativeUnlocksToBuffer = (creativeUnlock: creativeUnlock): result<
+    Buffer.t,
+    ErrorAwarePacketWriter.packError,
+  > => {
+    ErrorAwarePacketWriter.make()
+    ->setType(PacketType.NetModuleLoad->PacketType.toInt)
+    ->packUInt16(NetModuleType.CreativeUnlocks->NetModuleType.toInt, "moduleType")
+    ->packInt16(creativeUnlock.itemId, "itemId")
+    ->packUInt16(creativeUnlock.sacrificeCount, "sacrificeCount")
     ->data
   }
 
@@ -518,53 +535,6 @@ module Encode = {
     writer.contents->packByte(maxNpcIndexSentinel, "npcIndexSentinel")
   }
 
-  let tagEffectStateToBuffer = (message: tagEffectStateMessage): result<
-    Buffer.t,
-    ErrorAwarePacketWriter.packError,
-  > => {
-    let writer =
-      ErrorAwarePacketWriter.make()
-      ->setType(PacketType.NetModuleLoad->PacketType.toInt)
-      ->packUInt16(NetModuleType.TagEffectState->NetModuleType.toInt, "moduleType")
-    switch message {
-    | TagFullState({ownerId, effectType, timeLeft, procTimeLeft}) =>
-      let writer =
-        writer
-        ->packByte(ownerId, "ownerId")
-        ->packByte(0, "messageType")
-        ->packInt16(effectType, "effectType")
-        ->packSparseNpcTimes(timeLeft)
-      switch procTimeLeft {
-      | None => writer->data
-      | Some(entries) => writer->packSparseNpcTimes(entries)->data
-      }
-    | TagChangeActiveEffect({ownerId, effectType}) =>
-      writer
-      ->packByte(ownerId, "ownerId")
-      ->packByte(1, "messageType")
-      ->packInt16(effectType, "effectType")
-      ->data
-    | TagApplyTagToNpc({ownerId, npcIndex}) =>
-      writer
-      ->packByte(ownerId, "ownerId")
-      ->packByte(2, "messageType")
-      ->packByte(npcIndex, "npcIndex")
-      ->data
-    | TagEnableProcOnNpc({ownerId, npcIndex}) =>
-      writer
-      ->packByte(ownerId, "ownerId")
-      ->packByte(3, "messageType")
-      ->packByte(npcIndex, "npcIndex")
-      ->data
-    | TagClearProcOnNpc({ownerId, npcIndex}) =>
-      writer
-      ->packByte(ownerId, "ownerId")
-      ->packByte(4, "messageType")
-      ->packByte(npcIndex, "npcIndex")
-      ->data
-    }
-  }
-
   let leashedEntityToBuffer = (message: leashedEntityMessage): result<
     Buffer.t,
     ErrorAwarePacketWriter.packError,
@@ -618,6 +588,7 @@ module Encode = {
     | Ping(ping) => pingToBuffer(ping)
     | Ambience(ambience) => ambienceToBuffer(ambience)
     | Bestiary(bestiary) => bestiaryToBuffer(bestiary)
+    | CreativeUnlocks(creativeUnlock) => creativeUnlocksToBuffer(creativeUnlock)
     | CreativePower(creativePower) => creativePowerToBuffer(creativePower)
     | CreativeUnlocksPlayerReport(unlockReport) =>
       creativeUnlocksPlayerReportToBuffer(unlockReport)
@@ -627,7 +598,6 @@ module Encode = {
       creativePowerPermissionsToBuffer(creativePowerPermission)
     | Banners(message) => bannersToBuffer(message)
     | CraftingRequests(message) => craftingRequestsToBuffer(message)
-    | TagEffectState(message) => tagEffectStateToBuffer(message)
     | LeashedEntity(message) => leashedEntityToBuffer(message)
     | UnbreakableWallScan(payload) => unbreakableWallScanToBuffer(payload)
     }
@@ -736,6 +706,12 @@ module Decode = {
         error: JsError.make("Failed to parse creative power")->JsError.toJsExn,
       })
     }
+  }
+
+  let parseCreativeUnlocks = (reader: PacketFactory.PacketReader.t) => {
+    let? Ok(itemId) = reader->readInt16("itemId")
+    let? Ok(sacrificeCount) = reader->readUInt16("sacrificeCount")
+    Ok(CreativeUnlocks({itemId, sacrificeCount}))
   }
 
   let parseCreativeUnlocksPlayerReport = (reader: PacketFactory.PacketReader.t) => {
@@ -901,50 +877,6 @@ module Decode = {
     loop([])
   }
 
-  let parseTagEffectState = (reader: PacketFactory.PacketReader.t) => {
-    let? Ok(ownerId) = reader->readByte("ownerId")
-    let? Ok(messageType) = reader->readByte("messageType")
-    switch messageType {
-    | 0 =>
-      let? Ok(effectType) = reader->readInt16("effectType")
-      let? Ok(timeLeft) = readSparseNpcTimes(reader)
-      let? Ok(bytesLeft) = reader->getBytesLeft
-      if bytesLeft > 0 {
-        let? Ok(procTimeLeft) = readSparseNpcTimes(reader)
-        Ok(TagEffectState(TagFullState({
-          ownerId,
-          effectType,
-          timeLeft,
-          procTimeLeft: Some(procTimeLeft),
-        })))
-      } else {
-        Ok(TagEffectState(TagFullState({
-          ownerId,
-          effectType,
-          timeLeft,
-          procTimeLeft: None,
-        })))
-      }
-    | 1 =>
-      let? Ok(effectType) = reader->readInt16("effectType")
-      Ok(TagEffectState(TagChangeActiveEffect({ownerId, effectType})))
-    | 2 =>
-      let? Ok(npcIndex) = reader->readByte("npcIndex")
-      Ok(TagEffectState(TagApplyTagToNpc({ownerId, npcIndex})))
-    | 3 =>
-      let? Ok(npcIndex) = reader->readByte("npcIndex")
-      Ok(TagEffectState(TagEnableProcOnNpc({ownerId, npcIndex})))
-    | 4 =>
-      let? Ok(npcIndex) = reader->readByte("npcIndex")
-      Ok(TagEffectState(TagClearProcOnNpc({ownerId, npcIndex})))
-    | _ =>
-      Error({
-        context: "Packet_NetModuleLoad.parseTagEffectState",
-        error: JsError.make("Unknown tag effect state message type")->JsError.toJsExn,
-      })
-    }
-  }
-
   let parseLeashedEntity = (reader: PacketFactory.PacketReader.t) => {
     let? Ok(messageType) = reader->readByte("messageType")
     switch messageType {
@@ -988,6 +920,7 @@ module Decode = {
     | Some(NetModuleType.Ping) => reader->parsePing
     | Some(NetModuleType.Ambience) => reader->parseAmbience
     | Some(NetModuleType.Bestiary) => reader->parseBestiary
+    | Some(NetModuleType.CreativeUnlocks) => reader->parseCreativeUnlocks
     | Some(NetModuleType.CreativePower) => reader->parseCreativePower
     | Some(NetModuleType.CreativeUnlocksPlayerReport) => reader->parseCreativeUnlocksPlayerReport
     | Some(NetModuleType.TeleportPylon) => reader->parseTeleportPylon
@@ -995,7 +928,6 @@ module Decode = {
     | Some(NetModuleType.CreativePowerPermissions) => reader->parseCreativePowerPermission
     | Some(NetModuleType.Banners) => reader->parseBanners
     | Some(NetModuleType.CraftingRequests) => reader->parseCraftingRequests(fromServer)
-    | Some(NetModuleType.TagEffectState) => reader->parseTagEffectState
     | Some(NetModuleType.LeashedEntity) => reader->parseLeashedEntity
     | Some(NetModuleType.UnbreakableWallScan) => reader->parseUnbreakableWallScan
     | None =>

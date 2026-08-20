@@ -21,6 +21,7 @@ export type control = {
   readonly isHoldingRight: boolean;
   readonly isHoldingJump: boolean;
   readonly isHoldingItemUse: boolean;
+  readonly isHoldingDash: boolean;
 };
 
 export type pulleyDirection = "One" | "Two";
@@ -55,6 +56,7 @@ export type t = {
   readonly controlUseTile: boolean;
   readonly netCameraTarget: (undefined | Point_Float_t);
   readonly lastItemUseAttemptSuccess: boolean;
+  readonly snappingStoneLightUp: boolean;
 };
 
 export type parseOk = { TAG: "Ok"; _0: t };

@@ -79,6 +79,22 @@ let packByte = (self: t, value: int, context: string): t => {
   }
 }
 
+let pack7BitEncodedInt = (self: t, value: int, context: string): t => {
+  let writer = ref(self)
+  let remaining = ref(value)
+  let continue = ref(true)
+  while continue.contents {
+    let byte = ref(Int.bitwiseAnd(remaining.contents, 0x7f))
+    remaining := Int.shiftRightUnsigned(remaining.contents, 7)
+    if remaining.contents != 0 {
+      byte := Int.bitwiseOr(byte.contents, 0x80)
+    }
+    writer := writer.contents->packByte(byte.contents, context)
+    continue := remaining.contents != 0
+  }
+  writer.contents
+}
+
 let packBool = (self: t, value: bool, context: string): t => {
   self->packByte(value ? 1 : 0, context)
 }

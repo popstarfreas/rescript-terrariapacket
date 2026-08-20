@@ -1,0 +1,56 @@
+/* TypeScript file generated from PacketV1456_PlayerInfo.res by genType. */
+
+/* eslint-disable */
+/* tslint:disable */
+
+import type { readError } from "../ErrorAwarePacketReader.js";
+import type { PackError } from "../ErrorAwarePacketWriter.js";
+import type Color from "@popstarfreas/packetfactory/color";
+
+export type difficulty = "Softcore" | "Mediumcore" | "Hardcore";
+
+export type mode = "Classic" | "Journey";
+
+export type t = {
+  readonly playerId: number;
+  readonly skinVariant: number;
+  readonly voiceVariant: number;
+  readonly voicePitchOffset: number;
+  readonly hair: number;
+  readonly name: string;
+  readonly hairDye: number;
+  readonly hideVisuals: number;
+  readonly hideVisuals2: number;
+  readonly hideMisc: number;
+  readonly hairColor: Color;
+  readonly skinColor: Color;
+  readonly eyeColor: Color;
+  readonly shirtColor: Color;
+  readonly underShirtColor: Color;
+  readonly pantsColor: Color;
+  readonly shoeColor: Color;
+  readonly difficulty: difficulty;
+  readonly mode: mode;
+  readonly extraAccessory: boolean;
+  readonly usingBiomeTorches: boolean;
+  readonly unlockedBiomeTorches: boolean;
+  readonly happyFunTorchTime: boolean;
+  readonly unlockedSuperCart: boolean;
+  readonly enabledSuperCart: boolean;
+  readonly usedAegisCrystal: boolean;
+  readonly usedAegisFruit: boolean;
+  readonly usedArcaneCrystal: boolean;
+  readonly usedGalaxyPearl: boolean;
+  readonly usedGummyWorm: boolean;
+  readonly usedAmbrosia: boolean;
+  readonly ateArtisanBread: boolean;
+};
+
+export type parseOk = { TAG: "Ok"; _0: t };
+export type parseError = { TAG: "Error"; _0: readError };
+export type parse = parseOk | parseError;
+export declare const parse: (_1: Buffer) => parse;
+export type toBufferOk = { TAG: "Ok"; _0: Buffer };
+export type toBufferError = { TAG: "Error"; _0: PackError };
+export type toBuffer = toBufferOk | toBufferError;
+export declare const toBuffer: (_1: t) => toBuffer;

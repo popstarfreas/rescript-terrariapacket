@@ -15,42 +15,59 @@ function parse(payload) {
   if (e$1.TAG !== "Ok") {
     return e$1;
   }
-  let e$2 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionX");
+  let e$2 = ErrorAwarePacketReader$TerrariaPacket.read7BitEncodedInt(reader, "timeToKeepReservation");
   if (e$2.TAG !== "Ok") {
     return e$2;
   }
-  let e$3 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionY");
-  if (e$3.TAG === "Ok") {
+  let e$3 = ErrorAwarePacketReader$TerrariaPacket.readByte(reader, "grabDelayPlayer");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = ErrorAwarePacketReader$TerrariaPacket.read7BitEncodedInt(reader, "grabDelayTime");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionX");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = ErrorAwarePacketReader$TerrariaPacket.readSingle(reader, "positionY");
+  if (e$6.TAG === "Ok") {
     return {
       TAG: "Ok",
       _0: {
         itemDropId: e._0,
         owner: e$1._0,
+        timeToKeepReservation: e$2._0,
+        grabDelayPlayer: e$3._0,
+        grabDelayTime: e$4._0,
         position: {
-          x: e$2._0,
-          y: e$3._0
+          x: e$5._0,
+          y: e$6._0
         }
       }
     };
   } else {
-    return e$3;
+    return e$6;
   }
 }
 
 let Decode = {
   readInt16: ErrorAwarePacketReader$TerrariaPacket.readInt16,
   readByte: ErrorAwarePacketReader$TerrariaPacket.readByte,
+  read7BitEncodedInt: ErrorAwarePacketReader$TerrariaPacket.read7BitEncodedInt,
   readSingle: ErrorAwarePacketReader$TerrariaPacket.readSingle,
   parse: parse
 };
 
 function toBuffer(self) {
-  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ItemOwner")), self.itemDropId, "itemDropId"), self.owner, "owner"), self.position.x, "positionX"), self.position.y, "positionY"));
+  return ErrorAwarePacketWriter$TerrariaPacket.data(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.packSingle(ErrorAwarePacketWriter$TerrariaPacket.pack7BitEncodedInt(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.pack7BitEncodedInt(ErrorAwarePacketWriter$TerrariaPacket.packByte(ErrorAwarePacketWriter$TerrariaPacket.packInt16(ErrorAwarePacketWriter$TerrariaPacket.setType(ErrorAwarePacketWriter$TerrariaPacket.make(), PacketType$TerrariaPacket.toInt("ItemOwner")), self.itemDropId, "itemDropId"), self.owner, "owner"), self.timeToKeepReservation, "timeToKeepReservation"), self.grabDelayPlayer, "grabDelayPlayer"), self.grabDelayTime, "grabDelayTime"), self.position.x, "positionX"), self.position.y, "positionY"));
 }
 
 let Encode = {
   packInt16: ErrorAwarePacketWriter$TerrariaPacket.packInt16,
   packByte: ErrorAwarePacketWriter$TerrariaPacket.packByte,
+  pack7BitEncodedInt: ErrorAwarePacketWriter$TerrariaPacket.pack7BitEncodedInt,
   packSingle: ErrorAwarePacketWriter$TerrariaPacket.packSingle,
   setType: ErrorAwarePacketWriter$TerrariaPacket.setType,
   data: ErrorAwarePacketWriter$TerrariaPacket.data,

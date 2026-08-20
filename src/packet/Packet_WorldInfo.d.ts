@@ -156,6 +156,10 @@ export type t = {
   readonly rain: number;
   readonly eventInfo: eventInfo;
   readonly lowTiles: boolean;
+  readonly forceHalloweenForever: boolean;
+  readonly forceChristmasForever: boolean;
+  readonly moreLightningSeed: boolean;
+  readonly noLightningSeed: boolean;
   readonly sundialCooldown: number;
   readonly moondialCooldown: number;
   readonly copperOreTier: number;

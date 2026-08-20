@@ -147,6 +147,10 @@ type t = {
   rain: float,
   eventInfo: eventInfo,
   lowTiles: bool,
+  forceHalloweenForever: bool,
+  forceChristmasForever: bool,
+  moreLightningSeed: bool,
+  noLightningSeed: bool,
   sundialCooldown: int,
   moondialCooldown: int,
   copperOreTier: int,
@@ -431,8 +435,13 @@ module Decode = {
     let? Ok(underworldTreeTopStyle) = reader->readByte("underworldTreeTopStyle")
     let? Ok(rain) = reader->readSingle("rain")
     let? Ok(eventInfo) = reader->readEventInfo
-    let? Ok(lowTilesRaw) = reader->readByte("lowTiles")
-    let lowTiles = lowTilesRaw->BitFlags.fromByte->BitFlags.flag1
+    let? Ok(worldFlagsRaw) = reader->readByte("worldFlags")
+    let worldFlags = worldFlagsRaw->BitFlags.fromByte
+    let lowTiles = worldFlags->BitFlags.flag1
+    let forceHalloweenForever = worldFlags->BitFlags.flag2
+    let forceChristmasForever = worldFlags->BitFlags.flag3
+    let moreLightningSeed = worldFlags->BitFlags.flag4
+    let noLightningSeed = worldFlags->BitFlags.flag5
     let? Ok(sundialCooldown) = reader->readByte("sundialCooldown")
     let? Ok(moondialCooldown) = reader->readByte("moondialCooldown")
     let? Ok(copperOreTier) = reader->readInt16("copperOreTier")
@@ -522,6 +531,10 @@ module Decode = {
       rain,
       eventInfo,
       lowTiles,
+      forceHalloweenForever,
+      forceChristmasForever,
+      moreLightningSeed,
+      noLightningSeed,
       sundialCooldown,
       moondialCooldown,
       copperOreTier,
@@ -738,15 +751,15 @@ module Encode = {
     ->ErrorAwarePacketWriter.packByte(
       BitFlags.fromFlags(
         ~flag1=self.lowTiles,
-        ~flag2=false,
-        ~flag3=false,
-        ~flag4=false,
-        ~flag5=false,
+        ~flag2=self.forceHalloweenForever,
+        ~flag3=self.forceChristmasForever,
+        ~flag4=self.moreLightningSeed,
+        ~flag5=self.noLightningSeed,
         ~flag6=false,
         ~flag7=false,
         ~flag8=false,
       )->BitFlags.toByte,
-      "lowTiles",
+      "worldFlags",
     )
     ->ErrorAwarePacketWriter.packByte(self.sundialCooldown, "sundialCooldown")
     ->ErrorAwarePacketWriter.packByte(self.moondialCooldown, "moondialCooldown")

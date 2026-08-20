@@ -16,6 +16,7 @@ export type life =
 
 export type t = {
   readonly npcSlotId: number;
+  readonly generation: number;
   readonly npcTypeId: number;
   readonly x: number;
   readonly y: number;

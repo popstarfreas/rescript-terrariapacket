@@ -7,6 +7,7 @@ type life =
 
 type t = {
   npcSlotId: int,
+  generation: int,
   npcTypeId: int,
   x: float,
   y: float,
@@ -79,7 +80,8 @@ module Decode = {
 
   let parse = (payload: NodeJs.Buffer.t) => {
     let reader = PacketFactory.PacketReader.make(payload)
-    let? Ok(npcSlotId) = reader->readInt16("npcSlotId")
+    let? Ok(npcSlotId) = reader->readByte("npcSlotId")
+    let? Ok(generation) = reader->readByte("generation")
     let? Ok(x) = reader->readSingle("x")
     let? Ok(y) = reader->readSingle("y")
     let? Ok(vx) = reader->readSingle("vx")
@@ -155,6 +157,7 @@ module Decode = {
 
     Ok({
       npcSlotId,
+      generation,
       npcTypeId,
       x,
       y,
@@ -262,7 +265,8 @@ module Encode = {
   let toBuffer = (self: t): result<NodeJs.Buffer.t, ErrorAwarePacketWriter.packError> => {
     ErrorAwarePacketWriter.make()
     ->setType(PacketType.NpcUpdate->PacketType.toInt)
-    ->packInt16(self.npcSlotId, "npcSlotId")
+    ->packByte(self.npcSlotId, "npcSlotId")
+    ->packByte(self.generation, "generation")
     ->packSingle(self.x, "x")
     ->packSingle(self.y, "y")
     ->packSingle(self.vx, "vx")

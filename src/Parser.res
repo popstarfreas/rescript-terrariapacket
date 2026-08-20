@@ -265,15 +265,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
         ~toLazyPacket=a => Packet.LazyPacket.NpcUpdate(a),
       ),
     )
-  | (NpcItemStrike, true | false) =>
-    Ok(
-      makeParsers(
-        ~packetName,
-        ~parse=Packet.NpcItemStrike.parse,
-        ~toPacket=a => Packet.NpcItemStrike(a),
-        ~toLazyPacket=a => Packet.LazyPacket.NpcItemStrike(a),
-      ),
-    )
+  | (NpcItemStrike, true | false) => Error(NotImplemented)
   | (ProjectileSync, true | false) =>
     Ok(
       makeParsers(
@@ -1382,16 +1374,9 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
         ~toLazyPacket=a => Packet.LazyPacket.HaveDryadDoStardewAnimation(a),
       ),
     )
-  | (ItemDropShimmeredUpdate, _) =>
-    Ok(
-      makeParsers(
-        ~packetName,
-        ~parse=Packet.ItemDropShimmeredUpdate.parse,
-        ~toPacket=a => Packet.ItemDropShimmeredUpdate(a),
-        ~toLazyPacket=a => Packet.LazyPacket.ItemDropShimmeredUpdate(a),
-      ),
-    )
-  | (ShimmerEffectOrCoinLuck, _) =>
+  | (ItemDropShimmeredUpdate, _) => Error(NotImplemented)
+  | (ShimmerEffectOrCoinLuck, false) => Error(NotImplemented)
+  | (ShimmerEffectOrCoinLuck, true) =>
     Ok(
       makeParsers(
         ~packetName,
@@ -1409,15 +1394,7 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
         ~toLazyPacket=a => Packet.LazyPacket.LoadoutSwitch(a),
       ),
     )
-  | (ItemDropProtectedUpdate, _) =>
-    Ok(
-      makeParsers(
-        ~packetName,
-        ~parse=Packet.ItemDropProtectedUpdate.parse,
-        ~toPacket=a => Packet.ItemDropProtectedUpdate(a),
-        ~toLazyPacket=a => Packet.LazyPacket.ItemDropProtectedUpdate(a),
-      ),
-    )
+  | (ItemDropProtectedUpdate, _) => Error(NotImplemented)
   | (DeadCellsDisplayJarTryPlacing, _) =>
     Ok(
       makeParsers(
@@ -1533,6 +1510,16 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
         ~parse=Packet.HostToken.parse,
         ~toPacket=a => Packet.HostToken(a),
         ~toLazyPacket=a => Packet.LazyPacket.HostToken(a),
+      ),
+    )
+  | (DamageNPCAck, false) => Error(NotImplemented)
+  | (DamageNPCAck, true) =>
+    Ok(
+      makeParsers(
+        ~packetName,
+        ~parse=Packet.DamageNPCAck.parse,
+        ~toPacket=a => Packet.DamageNPCAck(a),
+        ~toLazyPacket=a => Packet.LazyPacket.DamageNPCAck(a),
       ),
     )
   | (ServerInfo, false) => Error(ServerInfoFromClient)

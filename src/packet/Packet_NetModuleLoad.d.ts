@@ -45,6 +45,11 @@ export type bestiary = {
   readonly npcId: number;
 };
 
+export type creativeUnlock = {
+  readonly itemId: number;
+  readonly sacrificeCount: number;
+};
+
 export type unlockReport = {
   readonly userId: number;
   readonly itemId: number;
@@ -162,6 +167,7 @@ export type t =
   | { TAG: "Ping"; _0: position }
   | { TAG: "Ambience"; _0: ambience }
   | { TAG: "Bestiary"; _0: bestiary }
+  | { TAG: "CreativeUnlocks"; _0: creativeUnlock }
   | { TAG: "CreativePower"; _0: CreativePower }
   | { TAG: "CreativeUnlocksPlayerReport"; _0: unlockReport }
   | { TAG: "TeleportPylon"; _0: teleportPylon }
@@ -169,7 +175,6 @@ export type t =
   | { TAG: "CreativePowerPermissions"; _0: creativePowerPermission }
   | { TAG: "Banners"; _0: bannerMessage }
   | { TAG: "CraftingRequests"; _0: craftingMessage }
-  | { TAG: "TagEffectState"; _0: tagEffectStateMessage }
   | { TAG: "LeashedEntity"; _0: leashedEntityMessage }
   | { TAG: "UnbreakableWallScan"; _0: unbreakableWallScan };
 

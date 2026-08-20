@@ -14,6 +14,7 @@ type control = {
   isHoldingRight: bool,
   isHoldingJump: bool,
   isHoldingItemUse: bool,
+  isHoldingDash: bool,
 }
 
 // What does 1 and 2 actually mean?
@@ -53,6 +54,7 @@ type t = {
   controlUseTile: bool,
   netCameraTarget: option<Point.t<float>>,
   lastItemUseAttemptSuccess: bool,
+  snappingStoneLightUp: bool,
 }
 
 module Decode = {
@@ -75,6 +77,7 @@ module Decode = {
       isHoldingRight: controlFlags->BitFlags.flag4,
       isHoldingJump: controlFlags->BitFlags.flag5,
       isHoldingItemUse: controlFlags->BitFlags.flag6,
+      isHoldingDash: controlFlags->BitFlags.flag8,
     }
     let direction = switch controlFlags->BitFlags.flag7 {
     | true => Right
@@ -165,6 +168,7 @@ module Decode = {
     | false => Ok(None)
     }
     let lastItemUseAttemptSuccess = miscFlags3->BitFlags.flag7
+    let snappingStoneLightUp = miscFlags3->BitFlags.flag8
 
     Ok({
       playerId,
@@ -194,6 +198,7 @@ module Decode = {
       controlUseTile,
       netCameraTarget,
       lastItemUseAttemptSuccess,
+      snappingStoneLightUp,
     })
   }
 }
@@ -214,7 +219,7 @@ module Encode = {
         | Left => false
         | Right => true
         },
-        ~flag8=false,
+        ~flag8=control.isHoldingDash,
       )->BitFlags.toByte,
       "controlFlags",
     )
@@ -296,6 +301,7 @@ module Encode = {
     controlUseTile: bool,
     netCameraTarget: option<Point.t<float>>,
     lastItemUseAttemptSuccess: bool,
+    snappingStoneLightUp: bool,
   ) => {
     writer->packByte(
       BitFlags.fromFlags(
@@ -306,7 +312,7 @@ module Encode = {
         ~flag5=controlUseTile,
         ~flag6=netCameraTarget->Option.isSome,
         ~flag7=lastItemUseAttemptSuccess,
-        ~flag8=false,
+        ~flag8=snappingStoneLightUp,
       )->BitFlags.toByte,
       "miscFlags3",
     )
@@ -383,6 +389,7 @@ module Encode = {
       self.controlUseTile,
       self.netCameraTarget,
       self.lastItemUseAttemptSuccess,
+      self.snappingStoneLightUp,
     )
     ->packByte(self.selectedItem, "selectedItem")
     ->packSingle(self.position.x, "positionX")

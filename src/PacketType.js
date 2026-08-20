@@ -318,8 +318,10 @@ function fromInt(n) {
     case 161 :
       return "HostToken";
     case 162 :
-      return "ServerInfo";
+      return "DamageNPCAck";
     case 163 :
+      return "ServerInfo";
+    case 164 :
       return "PlayerPlatformInfo";
     default:
       return;
@@ -642,10 +644,12 @@ function toInt(self) {
       return 160;
     case "HostToken" :
       return 161;
-    case "ServerInfo" :
+    case "DamageNPCAck" :
       return 162;
-    case "PlayerPlatformInfo" :
+    case "ServerInfo" :
       return 163;
+    case "PlayerPlatformInfo" :
+      return 164;
   }
 }
 
@@ -965,6 +969,8 @@ function packetName(packetType) {
       return "ItemDropPosition";
     case "HostToken" :
       return "HostToken";
+    case "DamageNPCAck" :
+      return "DamageNPCAck";
     case "ServerInfo" :
       return "ServerInfo";
     case "PlayerPlatformInfo" :
