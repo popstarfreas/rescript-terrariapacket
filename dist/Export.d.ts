@@ -454,10 +454,20 @@ buffer: Buffer,
 fromServer: boolean,
 ) => result<fromLatestIfNeeded>;
 
+declare const convertFromLatestIfNeeded_2: (
+buffer: Buffer,
+fromServer: boolean,
+) => result_2<fromLatestIfNeeded_2>;
+
 declare const convertToLatestIfNeeded: (
 buffer: Buffer,
 fromServer: boolean,
 ) => result<toLatestIfNeeded>;
+
+declare const convertToLatestIfNeeded_2: (
+buffer: Buffer,
+fromServer: boolean,
+) => result_2<toLatestIfNeeded_2>;
 
 export declare namespace CountsAsHostForGameplaySetPacket {
     export {
@@ -601,8 +611,8 @@ export declare namespace CrystalInvasionStartPacket {
 export declare namespace DamageNPCAckPacket {
     export {
         t_232 as t,
-        parse_109 as parse,
-        toBuffer_107 as toBuffer
+        parse_111 as parse,
+        toBuffer_109 as toBuffer
     }
 }
 
@@ -953,6 +963,89 @@ declare type eventInfo_2 = {
     readonly dualDungeonsSeed: boolean;
 };
 
+declare type eventInfo_3 = {
+    readonly shadowOrbSmashed: boolean;
+    readonly killedBoss1: boolean;
+    readonly killedBoss2: boolean;
+    readonly killedBoss3: boolean;
+    readonly hardMode: boolean;
+    readonly killedClown: boolean;
+    readonly serverSidedCharacters: boolean;
+    readonly killedPlantBoss: boolean;
+    readonly killedMechBoss: boolean;
+    readonly killedMechBoss2: boolean;
+    readonly killedMechBoss3: boolean;
+    readonly killedAnyMechBoss: boolean;
+    readonly cloudBg: boolean;
+    readonly crimson: boolean;
+    readonly pumpkinMoon: boolean;
+    readonly snowMoon: boolean;
+    readonly expertMode: boolean;
+    readonly fastForwardTime: boolean;
+    readonly slimeRain: boolean;
+    readonly killedKingSlime: boolean;
+    readonly killedQueenBee: boolean;
+    readonly killedFishron: boolean;
+    readonly killedMartians: boolean;
+    readonly killedAncientCultist: boolean;
+    readonly killedMoonLord: boolean;
+    readonly killedPumpking: boolean;
+    readonly killedMourningWood: boolean;
+    readonly killedIceQueen: boolean;
+    readonly killedSantank: boolean;
+    readonly killedEverscream: boolean;
+    readonly killedGolem: boolean;
+    readonly birthdayParty: boolean;
+    readonly killedPirates: boolean;
+    readonly killedFrostLegion: boolean;
+    readonly killedGoblins: boolean;
+    readonly sandstorm: boolean;
+    readonly dungeonDefendersEvent: boolean;
+    readonly killedDungeonDefendersTier1: boolean;
+    readonly killedDungeonDefendersTier2: boolean;
+    readonly killedDungeonDefendersTier3: boolean;
+    readonly combatBookUsed: boolean;
+    readonly manualLanterns: boolean;
+    readonly killedSolarTower: boolean;
+    readonly killedVortexTower: boolean;
+    readonly killedNebulaTower: boolean;
+    readonly killedStardustTower: boolean;
+    readonly forceHalloween: boolean;
+    readonly forceChristmas: boolean;
+    readonly boughtCat: boolean;
+    readonly boughtDog: boolean;
+    readonly boughtBunny: boolean;
+    readonly freeCake: boolean;
+    readonly drunkWorld: boolean;
+    readonly killedEmpressOfLight: boolean;
+    readonly killedQueenSlime: boolean;
+    readonly getGoodWorld: boolean;
+    readonly tenthAnniversaryWorld: boolean;
+    readonly dontStarveWorld: boolean;
+    readonly downedDeerClops: boolean;
+    readonly notTheBeesWorld: boolean;
+    readonly remixWorld: boolean;
+    readonly unlockedSlimeBlueSpawn: boolean;
+    readonly combatBookVolumeTwoWasUsed: boolean;
+    readonly peddlersSatchelWasUsed: boolean;
+    readonly unlockedSlimeGreenSpawn: boolean;
+    readonly unlockedSlimeOldSpawn: boolean;
+    readonly unlockedSlimePurpleSpawn: boolean;
+    readonly unlockedSlimeRainbowSpawn: boolean;
+    readonly unlockedSlimeRedSpawn: boolean;
+    readonly unlockedSlimeYellowSpawn: boolean;
+    readonly unlockedSlimeCopperSpawn: boolean;
+    readonly fastForwardTimeToDusk: boolean;
+    readonly noTrapsWorld: boolean;
+    readonly zenithWorld: boolean;
+    readonly unlockedTruffleSpawn: boolean;
+    readonly vampireSeed: boolean;
+    readonly infectedSeed: boolean;
+    readonly teamBasedSpawnsSeed: boolean;
+    readonly skyblockWorld: boolean;
+    readonly dualDungeonsSeed: boolean;
+};
+
 declare const EventType: {};
 
 declare type EventType_t = 
@@ -1038,9 +1131,16 @@ declare function fromInt_2(n: number): t_112 | undefined;
 
 declare function fromInt_3(n: number): t_236 | undefined;
 
+declare function fromInt_4(n: number): t_253 | undefined;
+
 declare type fromLatestIfNeeded =
 | "PacketStructureIsSame"
 | { TAG: "ConvertedFromLatest"; _0: t_237 }
+| "DiscardAsNotExists";
+
+declare type fromLatestIfNeeded_2 =
+| "PacketStructureIsSame"
+| { TAG: "ConvertedFromLatest"; _0: t_254 }
 | "DiscardAsNotExists";
 
 declare function getOr<A>(a: A[], index: number, or: A): A;
@@ -1128,8 +1228,8 @@ export declare namespace ItemDropClearPacket {
 export declare namespace ItemDropInstancedUpdatePacket {
     export {
         t_176 as t,
-        parse_110 as parse,
-        toBuffer_108 as toBuffer
+        parse_112 as parse,
+        toBuffer_110 as toBuffer
     }
 }
 
@@ -1215,9 +1315,15 @@ declare const LazyPacket_2: {
     readonly toPacketName: (packet: LazyPacket_t_2) => string;
 };
 
+declare const LazyPacket_3: {
+    readonly toPacketName: (packet: LazyPacket_t_3) => string;
+};
+
 declare type LazyPacket_lazyParsed<a> = t_235<Result_2<a, readError>>;
 
 declare type LazyPacket_lazyParsed_2<a> = t_235<Result_2<a, readError>>;
+
+declare type LazyPacket_lazyParsed_3<a> = t_235<Result_2<a, readError>>;
 
 declare type LazyPacket_t =
     { TAG: "ConnectRequest"; _0: LazyPacket_lazyParsed<t_114> }
@@ -1541,6 +1647,168 @@ declare type LazyPacket_t_2 =
 | { TAG: "HostToken"; _0: LazyPacket_lazyParsed_2<t_82> }
 | { TAG: "ServerInfo"; _0: LazyPacket_lazyParsed_2<t_251> }
 | { TAG: "PlayerPlatformInfo"; _0: LazyPacket_lazyParsed_2<t_252> };
+
+declare type LazyPacket_t_3 =
+    { TAG: "ConnectRequest"; _0: LazyPacket_lazyParsed_3<t_114> }
+| { TAG: "Disconnect"; _0: LazyPacket_lazyParsed_3<t_115> }
+| { TAG: "PlayerSlotSet"; _0: LazyPacket_lazyParsed_3<t_116> }
+| { TAG: "PlayerInfo"; _0: LazyPacket_lazyParsed_3<t_100> }
+| { TAG: "PlayerInventorySlot"; _0: LazyPacket_lazyParsed_3<t_102> }
+| { TAG: "WorldDataRequest"; _0: LazyPacket_lazyParsed_3<t_117> }
+| { TAG: "WorldInfo"; _0: LazyPacket_lazyParsed_3<t_255> }
+| { TAG: "InitialTileSectionsRequest"; _0: LazyPacket_lazyParsed_3<t_83> }
+| { TAG: "Status"; _0: LazyPacket_lazyParsed_3<t_118> }
+| { TAG: "TileSectionSend"; _0: LazyPacket_lazyParsed_3<t_68> }
+| { TAG: "TileSectionFrame"; _0: LazyPacket_lazyParsed_3<t_119> }
+| { TAG: "PlayerSpawn"; _0: LazyPacket_lazyParsed_3<t_101> }
+| { TAG: "PlayerUpdate"; _0: LazyPacket_lazyParsed_3<t_99> }
+| { TAG: "PlayerActive"; _0: LazyPacket_lazyParsed_3<t_120> }
+| { TAG: "PlayerHealth"; _0: LazyPacket_lazyParsed_3<t_121> }
+| { TAG: "TileModify"; _0: LazyPacket_lazyParsed_3<t_122> }
+| { TAG: "TimeSet"; _0: LazyPacket_lazyParsed_3<t_123> }
+| { TAG: "DoorUse"; _0: LazyPacket_lazyParsed_3<t_124> }
+| { TAG: "TileSquareSend"; _0: LazyPacket_lazyParsed_3<t_69> }
+| { TAG: "ItemDropUpdate"; _0: LazyPacket_lazyParsed_3<t_18> }
+| { TAG: "ItemOwner"; _0: LazyPacket_lazyParsed_3<t_20> }
+| { TAG: "NpcUpdate"; _0: LazyPacket_lazyParsed_3<t_110> }
+| { TAG: "NpcItemStrike"; _0: LazyPacket_lazyParsed_3<t_125> }
+| { TAG: "ProjectileSync"; _0: LazyPacket_lazyParsed_3<t_105> }
+| { TAG: "NpcStrike"; _0: LazyPacket_lazyParsed_3<t_126> }
+| { TAG: "ProjectileDestroy"; _0: LazyPacket_lazyParsed_3<t_127> }
+| { TAG: "PvpToggle"; _0: LazyPacket_lazyParsed_3<t_128> }
+| { TAG: "ChestOpen"; _0: LazyPacket_lazyParsed_3<t_129> }
+| { TAG: "ChestItem"; _0: LazyPacket_lazyParsed_3<t_130> }
+| { TAG: "ActiveContainerSync"; _0: LazyPacket_lazyParsed_3<t_131> }
+| { TAG: "ChestPlace"; _0: LazyPacket_lazyParsed_3<t_132> }
+| { TAG: "HealEffect"; _0: LazyPacket_lazyParsed_3<t_133> }
+| { TAG: "Zones"; _0: LazyPacket_lazyParsed_3<t_78> }
+| { TAG: "PasswordRequired"; _0: LazyPacket_lazyParsed_3<t_134> }
+| { TAG: "PasswordSend"; _0: LazyPacket_lazyParsed_3<t_135> }
+| { TAG: "ItemOwnerRemove"; _0: LazyPacket_lazyParsed_3<t_21> }
+| { TAG: "NpcTalk"; _0: LazyPacket_lazyParsed_3<t_136> }
+| { TAG: "PlayerAnimation"; _0: LazyPacket_lazyParsed_3<t_137> }
+| { TAG: "PlayerMana"; _0: LazyPacket_lazyParsed_3<t_138> }
+| { TAG: "ManaEffect"; _0: LazyPacket_lazyParsed_3<t_139> }
+| { TAG: "PlayerTeam"; _0: LazyPacket_lazyParsed_3<t_140> }
+| { TAG: "SignRead"; _0: LazyPacket_lazyParsed_3<t_141> }
+| { TAG: "SignNew"; _0: LazyPacket_lazyParsed_3<t_142> }
+| { TAG: "LiquidSet"; _0: LazyPacket_lazyParsed_3<t_143> }
+| { TAG: "PlayerSpawnSelf"; _0: LazyPacket_lazyParsed_3<t_144> }
+| { TAG: "PlayerBuffsSet"; _0: LazyPacket_lazyParsed_3<t_40> }
+| { TAG: "NpcSpecialEffect"; _0: LazyPacket_lazyParsed_3<t_145> }
+| { TAG: "ChestOrTempleUnlock"; _0: LazyPacket_lazyParsed_3<t_146> }
+| { TAG: "NpcBuffAdd"; _0: LazyPacket_lazyParsed_3<t_147> }
+| { TAG: "NpcBuffUpdate"; _0: LazyPacket_lazyParsed_3<t_26> }
+| { TAG: "PlayerBuffAdd"; _0: LazyPacket_lazyParsed_3<t_148> }
+| { TAG: "NpcNameUpdate"; _0: LazyPacket_lazyParsed_3<t_149> }
+| { TAG: "GoodEvilUpdate"; _0: LazyPacket_lazyParsed_3<t_150> }
+| { TAG: "HarpPlay"; _0: LazyPacket_lazyParsed_3<t_151> }
+| { TAG: "SwitchHit"; _0: LazyPacket_lazyParsed_3<t_152> }
+| { TAG: "NpcHomeUpdate"; _0: LazyPacket_lazyParsed_3<t_153> }
+| { TAG: "BossOrInvasionSpawn"; _0: LazyPacket_lazyParsed_3<t_154> }
+| { TAG: "PlayerDodge"; _0: LazyPacket_lazyParsed_3<t_45> }
+| { TAG: "TilePaint"; _0: LazyPacket_lazyParsed_3<t_155> }
+| { TAG: "WallPaint"; _0: LazyPacket_lazyParsed_3<t_156> }
+| { TAG: "Teleport"; _0: LazyPacket_lazyParsed_3<t_56> }
+| { TAG: "PlayerHealOther"; _0: LazyPacket_lazyParsed_3<t_157> }
+| { TAG: "DimensionsUpdate"; _0: LazyPacket_lazyParsed_3<t_158> }
+| { TAG: "ClientUuid"; _0: LazyPacket_lazyParsed_3<t_159> }
+| { TAG: "ChestName"; _0: LazyPacket_lazyParsed_3<t_160> }
+| { TAG: "NpcCatch"; _0: LazyPacket_lazyParsed_3<t_27> }
+| { TAG: "NpcRelease"; _0: LazyPacket_lazyParsed_3<t_161> }
+| { TAG: "TravellingMerchantInventory"; _0: LazyPacket_lazyParsed_3<t_71> }
+| { TAG: "TeleportationPotion"; _0: LazyPacket_lazyParsed_3<t_57> }
+| { TAG: "AnglerQuest"; _0: LazyPacket_lazyParsed_3<t_162> }
+| { TAG: "AnglerQuestComplete"; _0: LazyPacket_lazyParsed_3<t_163> }
+| { TAG: "AnglerQuestsCompletedAmount"; _0: LazyPacket_lazyParsed_3<t_164> }
+| { TAG: "TemporaryAnimationCreate"; _0: LazyPacket_lazyParsed_3<t_165> }
+| { TAG: "InvasionProgressReport"; _0: LazyPacket_lazyParsed_3<t_166> }
+| { TAG: "ObjectPlace"; _0: LazyPacket_lazyParsed_3<t_167> }
+| { TAG: "PlayerChestIndexSync"; _0: LazyPacket_lazyParsed_3<t_168> }
+| { TAG: "CombatNumberCreate"; _0: LazyPacket_lazyParsed_3<t_169> }
+| { TAG: "NetModuleLoad"; _0: LazyPacket_lazyParsed_3<t_23> }
+| { TAG: "NpcKillCount"; _0: LazyPacket_lazyParsed_3<t_170> }
+| { TAG: "PlayerStealth"; _0: LazyPacket_lazyParsed_3<t_171> }
+| { TAG: "ItemForceIntoNearestChest"; _0: LazyPacket_lazyParsed_3<t_86> }
+| { TAG: "TileEntityUpdate"; _0: LazyPacket_lazyParsed_3<t_172> }
+| { TAG: "TileEntityPlace"; _0: LazyPacket_lazyParsed_3<t_173> }
+| { TAG: "ItemDropModify"; _0: LazyPacket_lazyParsed_3<t_174> }
+| { TAG: "ItemFramePlace"; _0: LazyPacket_lazyParsed_3<t_175> }
+| { TAG: "ItemDropInstancedUpdate"; _0: LazyPacket_lazyParsed_3<t_176> }
+| { TAG: "EmoteBubble"; _0: LazyPacket_lazyParsed_3<t_177> }
+| { TAG: "ExtraValueSync"; _0: LazyPacket_lazyParsed_3<t_178> }
+| { TAG: "SocialHandshake"; _0: LazyPacket_lazyParsed_3<t_179> }
+| { TAG: "Unused"; _0: LazyPacket_lazyParsed_3<t_180> }
+| { TAG: "PortalKill"; _0: LazyPacket_lazyParsed_3<t_181> }
+| { TAG: "PlayerTeleportPortal"; _0: LazyPacket_lazyParsed_3<t_182> }
+| { TAG: "NpcKilledNotification"; _0: LazyPacket_lazyParsed_3<t_183> }
+| { TAG: "EventNotification"; _0: LazyPacket_lazyParsed_3<t_184> }
+| { TAG: "MinionTargetUpdate"; _0: LazyPacket_lazyParsed_3<t_185> }
+| { TAG: "NpcTeleportPortal"; _0: LazyPacket_lazyParsed_3<t_186> }
+| { TAG: "ShieldStrengthsUpdate"; _0: LazyPacket_lazyParsed_3<t_187> }
+| { TAG: "NebulaLevelUp"; _0: LazyPacket_lazyParsed_3<t_188> }
+| { TAG: "MoonLordCountdown"; _0: LazyPacket_lazyParsed_3<t_189> }
+| { TAG: "NpcShopItem"; _0: LazyPacket_lazyParsed_3<t_190> }
+| { TAG: "GemLockToggle"; _0: LazyPacket_lazyParsed_3<t_191> }
+| { TAG: "SmokePoof"; _0: LazyPacket_lazyParsed_3<t_192> }
+| { TAG: "ChatMessageSmart"; _0: LazyPacket_lazyParsed_3<t_193> }
+| { TAG: "WiredCannonShot"; _0: LazyPacket_lazyParsed_3<t_194> }
+| { TAG: "MassWireOperation"; _0: LazyPacket_lazyParsed_3<t_195> }
+| { TAG: "MassWireOperationPay"; _0: LazyPacket_lazyParsed_3<t_196> }
+| { TAG: "PartyToggle"; _0: LazyPacket_lazyParsed_3<t_197> }
+| { TAG: "TreeGrowFx"; _0: LazyPacket_lazyParsed_3<t_198> }
+| { TAG: "CrystalInvasionStart"; _0: LazyPacket_lazyParsed_3<t_199> }
+| { TAG: "CrystalInvasionWipeAll"; _0: LazyPacket_lazyParsed_3<t_200> }
+| { TAG: "MinionAttackTargetUpdate"; _0: LazyPacket_lazyParsed_3<t_201> }
+| { TAG: "CrystalInvasionSendWaitTime"; _0: LazyPacket_lazyParsed_3<t_202> }
+| { TAG: "PlayerDamage"; _0: LazyPacket_lazyParsed_3<t_203> }
+| { TAG: "PlayerDeath"; _0: LazyPacket_lazyParsed_3<t_204> }
+| { TAG: "CombatTextCreate"; _0: LazyPacket_lazyParsed_3<t_205> }
+| { TAG: "Emoji"; _0: LazyPacket_lazyParsed_3<t_206> }
+| { TAG: "TileEntityDisplayDollItemSync"; _0: LazyPacket_lazyParsed_3<t_59> }
+| { TAG: "TileEntityInteractionRequest"; _0: LazyPacket_lazyParsed_3<t_207> }
+| { TAG: "WeaponsRackTryPlacing"; _0: LazyPacket_lazyParsed_3<t_208> }
+| { TAG: "TileEntityHatRackItemSync"; _0: LazyPacket_lazyParsed_3<t_209> }
+| { TAG: "TilePickingSync"; _0: LazyPacket_lazyParsed_3<t_210> }
+| { TAG: "RevengeMarkerSync"; _0: LazyPacket_lazyParsed_3<t_211> }
+| { TAG: "RevengeMarkerRemove"; _0: LazyPacket_lazyParsed_3<t_212> }
+| { TAG: "GolfBallLandInCup"; _0: LazyPacket_lazyParsed_3<t_213> }
+| { TAG: "ClientFinishConnectingToServer"; _0: LazyPacket_lazyParsed_3<t_214> }
+| { TAG: "NpcFishOut"; _0: LazyPacket_lazyParsed_3<t_215> }
+| { TAG: "NpcTamper"; _0: LazyPacket_lazyParsed_3<t_216> }
+| { TAG: "LegacySoundPlay"; _0: LazyPacket_lazyParsed_3<t_217> }
+| { TAG: "FoodPlatterTryPlacing"; _0: LazyPacket_lazyParsed_3<t_218> }
+| { TAG: "PlayerLuckFactorsUpdate"; _0: LazyPacket_lazyParsed_3<t_91> }
+| { TAG: "PlayerDead"; _0: LazyPacket_lazyParsed_3<t_219> }
+| { TAG: "CavernMonsterTypeSync"; _0: LazyPacket_lazyParsed_3<t_220> }
+| { TAG: "NpcBuffRemovalRequest"; _0: LazyPacket_lazyParsed_3<t_221> }
+| { TAG: "ClientSyncedInventory"; _0: LazyPacket_lazyParsed_3<t_222> }
+| { TAG: "CountsAsHostForGameplaySet"; _0: LazyPacket_lazyParsed_3<t_223> }
+| { TAG: "CreditsOrSlimeTransform"; _0: LazyPacket_lazyParsed_3<t_224> }
+| { TAG: "LucyAxeMessage"; _0: LazyPacket_lazyParsed_3<t_225> }
+| { TAG: "PiggyBankVoidLensUpdate"; _0: LazyPacket_lazyParsed_3<t_226> }
+| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: LazyPacket_lazyParsed_3<t_227> }
+| { TAG: "HaveDryadDoStardewAnimation"; _0: LazyPacket_lazyParsed_3<t_228> }
+| { TAG: "ItemDropShimmeredUpdate"; _0: LazyPacket_lazyParsed_3<t_229> }
+| { TAG: "ShimmerEffectOrCoinLuck"; _0: LazyPacket_lazyParsed_3<t_49> }
+| { TAG: "LoadoutSwitch"; _0: LazyPacket_lazyParsed_3<t_230> }
+| { TAG: "ItemDropProtectedUpdate"; _0: LazyPacket_lazyParsed_3<t_231> }
+| { TAG: "DeadCellsDisplayJarTryPlacing"; _0: LazyPacket_lazyParsed_3<t_80> }
+| { TAG: "PlayerSpectate"; _0: LazyPacket_lazyParsed_3<t_92> }
+| { TAG: "ItemDropClear"; _0: LazyPacket_lazyParsed_3<t_84> }
+| { TAG: "PlayerItemUseSound"; _0: LazyPacket_lazyParsed_3<t_90> }
+| { TAG: "NpcHurtByDebuff"; _0: LazyPacket_lazyParsed_3<t_88> }
+| { TAG: "Ping"; _0: LazyPacket_lazyParsed_3<t_89> }
+| { TAG: "ChestResize"; _0: LazyPacket_lazyParsed_3<t_79> }
+| { TAG: "LeashedEntityAnchorInsertItem"; _0: LazyPacket_lazyParsed_3<t_87> }
+| { TAG: "PlayerTeamUpdate"; _0: LazyPacket_lazyParsed_3<t_94> }
+| { TAG: "PlayerTeamSwapSpawn"; _0: LazyPacket_lazyParsed_3<t_93> }
+| { TAG: "SectionRequest"; _0: LazyPacket_lazyParsed_3<t_95> }
+| { TAG: "ItemDropPosition"; _0: LazyPacket_lazyParsed_3<t_85> }
+| { TAG: "HostToken"; _0: LazyPacket_lazyParsed_3<t_82> }
+| { TAG: "DamageNPCAck"; _0: LazyPacket_lazyParsed_3<t_232> }
+| { TAG: "ServerInfo"; _0: LazyPacket_lazyParsed_3<t_233> }
+| { TAG: "PlayerPlatformInfo"; _0: LazyPacket_lazyParsed_3<t_234> };
 
 export declare namespace LeashedEntityAnchorInsertItemPacket {
     export {
@@ -1877,8 +2145,8 @@ export declare namespace NpcShopItemPacket {
 export declare namespace NpcStrikePacket {
     export {
         t_126 as t,
-        parse_111 as parse,
-        toBuffer_109 as toBuffer
+        parse_113 as parse,
+        toBuffer_111 as toBuffer
     }
 }
 
@@ -2027,6 +2295,8 @@ declare function packetName(packetType: t_112): string;
 
 declare function packetName_2(packetType: t_236): string;
 
+declare function packetName_3(packetType: t_253): string;
+
 export declare namespace PacketType {
     export {
         fromInt_2 as fromInt,
@@ -2045,6 +2315,15 @@ export declare namespace PacketTypeV1456 {
     }
 }
 
+export declare namespace PacketTypeV1457 {
+    export {
+        fromInt_4 as fromInt,
+        toInt_4 as toInt,
+        packetName_3 as packetName,
+        t_253 as t
+    }
+}
+
 export declare namespace PacketV1456 {
     export {
         t_237 as t,
@@ -2054,6 +2333,18 @@ export declare namespace PacketV1456 {
         LazyPacket_2 as LazyPacket,
         toBuffer_106 as toBuffer,
         toPacketName_2 as toPacketName
+    }
+}
+
+export declare namespace PacketV1457 {
+    export {
+        t_254 as t,
+        LazyPacket_lazyParsed_3 as LazyPacket_lazyParsed,
+        LazyPacket_t_3 as LazyPacket_t,
+        toBufferResult_3 as toBufferResult,
+        LazyPacket_3 as LazyPacket,
+        toBuffer_107 as toBuffer,
+        toPacketName_3 as toPacketName
     }
 }
 
@@ -2153,33 +2444,43 @@ fromServer: boolean,
 ignore?: t_236[],
 ) => parseResult<t_237>;
 
-declare type parse_109 = { TAG: "Ok"; _0: t_232 } | { TAG: "Error"; _0: readError };
-
-declare const parse_109: (_1: Buffer) => parse_109;
+declare const parse_109: (
+buffer: Buffer,
+fromServer: boolean,
+ignore?: t_253[],
+) => parseResult<t_254>;
 
 declare type parse_11 = parseOk_11 | parseError_11;
 
 declare const parse_11: (_1: Buffer) => parse_11;
 
-declare type parse_110 = { TAG: "Ok"; _0: t_176 } | { TAG: "Error"; _0: readError };
+declare type parse_110 = parseOk_101 | parseError_102;
 
 declare const parse_110: (_1: Buffer) => parse_110;
 
-declare type parse_111 = { TAG: "Ok"; _0: t_126 } | { TAG: "Error"; _0: readError };
+declare type parse_111 = { TAG: "Ok"; _0: t_232 } | { TAG: "Error"; _0: readError };
 
 declare const parse_111: (_1: Buffer) => parse_111;
 
-declare type parse_112 = { TAG: "Ok"; _0: t_127 } | { TAG: "Error"; _0: readError };
+declare type parse_112 = { TAG: "Ok"; _0: t_176 } | { TAG: "Error"; _0: readError };
 
 declare const parse_112: (_1: Buffer) => parse_112;
 
-declare type parse_113 = { TAG: "Ok"; _0: t_233 } | { TAG: "Error"; _0: readError };
+declare type parse_113 = { TAG: "Ok"; _0: t_126 } | { TAG: "Error"; _0: readError };
 
 declare const parse_113: (_1: Buffer) => parse_113;
 
-declare type parse_114 = { TAG: "Ok"; _0: t_234 } | { TAG: "Error"; _0: readError };
+declare type parse_114 = { TAG: "Ok"; _0: t_127 } | { TAG: "Error"; _0: readError };
 
 declare const parse_114: (_1: Buffer) => parse_114;
+
+declare type parse_115 = { TAG: "Ok"; _0: t_233 } | { TAG: "Error"; _0: readError };
+
+declare const parse_115: (_1: Buffer) => parse_115;
+
+declare type parse_116 = { TAG: "Ok"; _0: t_234 } | { TAG: "Error"; _0: readError };
+
+declare const parse_116: (_1: Buffer) => parse_116;
 
 declare type parse_12 = parseOk_12 | parseError_12;
 
@@ -2640,12 +2941,15 @@ declare type parseError_101 =
 | "LegacySoundPlayFromClient"
 | "FoodPlatterTryPlacingFromServer"
 | "PlayerDeadFromClient"
+| "CavernMonsterTypeSyncFromClient"
 | "NpcBuffRemovalRequestFromServer"
 | "ClientSyncedInventoryFromServer"
 | "ServerInfoFromClient"
 | "PlayerPlatformInfoFromServer"
 | "NotImplemented"
 | "IgnoredPacket";
+
+declare type parseError_102 = { TAG: "Error"; _0: readError };
 
 declare type parseError_11 = { TAG: "Error"; _0: readError };
 
@@ -2850,11 +3154,18 @@ buffer: Buffer,
 fromServer: boolean,
 ) => parseResult<LazyPacket_t_2>;
 
+declare const parseLazy_4: (
+buffer: Buffer,
+fromServer: boolean,
+) => parseResult<LazyPacket_t_3>;
+
 declare type parseOk = { TAG: "Ok"; _0: t };
 
 declare type parseOk_10 = { TAG: "Ok"; _0: t_10 };
 
 declare type parseOk_100 = { TAG: "Ok"; _0: t_111 };
+
+declare type parseOk_101 = { TAG: "Ok"; _0: t_255 };
 
 declare type parseOk_11 = { TAG: "Ok"; _0: t_11 };
 
@@ -3067,6 +3378,16 @@ export declare namespace ParserConverterV1456 {
     }
 }
 
+export declare namespace ParserConverterV1457 {
+    export {
+        toLatestIfNeeded_2 as toLatestIfNeeded,
+        fromLatestIfNeeded_2 as fromLatestIfNeeded,
+        result_2 as result,
+        convertToLatestIfNeeded_2 as convertToLatestIfNeeded,
+        convertFromLatestIfNeeded_2 as convertFromLatestIfNeeded
+    }
+}
+
 declare type parseResult<a> =
 | { TAG: "Ok"; _0: (a) }
 | { TAG: "Error"; _0: parseError_101 };
@@ -3075,6 +3396,13 @@ export declare namespace ParserV1456 {
     export {
         parse_108 as parse,
         parseLazy_3 as parseLazy
+    }
+}
+
+export declare namespace ParserV1457 {
+    export {
+        parse_109 as parse,
+        parseLazy_4 as parseLazy
     }
 }
 
@@ -3361,8 +3689,8 @@ export declare namespace PlayerPlatformInfoPacket {
     export {
         PlatformId_t,
         t_234 as t,
-        parse_114 as parse,
-        toBuffer_112 as toBuffer
+        parse_116 as parse,
+        toBuffer_114 as toBuffer
     }
 }
 
@@ -3508,8 +3836,8 @@ declare type powerLevel_3 =
 export declare namespace ProjectileDestroyPacket {
     export {
         t_127 as t,
-        parse_112 as parse,
-        toBuffer_110 as toBuffer
+        parse_114 as parse,
+        toBuffer_112 as toBuffer
     }
 }
 
@@ -3569,6 +3897,8 @@ declare type Result_2<T, E> = {
     _0: E,
 }
 
+declare type result_2<a> = { TAG: "Ok"; _0: a } | { TAG: "Error"; _0: parseError_101 };
+
 declare type Result_3<T, E> = {
     TAG: "Ok",
     _0: T,
@@ -3610,8 +3940,8 @@ declare type serverBlockedChests = { readonly chestIds: number[] };
 export declare namespace ServerInfoPacket {
     export {
         t_233 as t,
-        parse_113 as parse,
-        toBuffer_111 as toBuffer
+        parse_115 as parse,
+        toBuffer_113 as toBuffer
     }
 }
 
@@ -3959,6 +4289,8 @@ declare type t_108 = {
     readonly lobbyId: bigint;
     readonly sandstormSeverity: number;
     readonly extraSpawnPoints: Int_t[];
+    readonly dungeonX: number;
+    readonly dungeonY: number;
 };
 
 declare type t_109 = {
@@ -5504,6 +5836,413 @@ declare type t_251 = void;
 
 declare type t_252 = { readonly playerId: number; readonly platformId: PlatformId_t_2 };
 
+declare type t_253 =
+| "ConnectRequest"
+| "Disconnect"
+| "PlayerSlotSet"
+| "PlayerInfo"
+| "PlayerInventorySlot"
+| "WorldDataRequest"
+| "WorldInfo"
+| "InitialTileSectionsRequest"
+| "Status"
+| "TileSectionSend"
+| "TileSectionFrame"
+| "PlayerSpawn"
+| "PlayerUpdate"
+| "PlayerActive"
+| "PlayerHealth"
+| "TileModify"
+| "TimeSet"
+| "DoorUse"
+| "TileSquareSend"
+| "ItemDropUpdate"
+| "ItemOwner"
+| "NpcUpdate"
+| "NpcItemStrike"
+| "ProjectileSync"
+| "NpcStrike"
+| "ProjectileDestroy"
+| "PvpToggle"
+| "ChestOpen"
+| "ChestItem"
+| "ActiveContainerSync"
+| "ChestPlace"
+| "HealEffect"
+| "Zones"
+| "PasswordRequired"
+| "PasswordSend"
+| "ItemOwnerRemove"
+| "NpcTalk"
+| "PlayerAnimation"
+| "PlayerMana"
+| "ManaEffect"
+| "PlayerTeam"
+| "SignRead"
+| "SignNew"
+| "LiquidSet"
+| "PlayerSpawnSelf"
+| "PlayerBuffsSet"
+| "NpcSpecialEffect"
+| "ChestOrTempleUnlock"
+| "NpcBuffAdd"
+| "NpcBuffUpdate"
+| "PlayerBuffAdd"
+| "NpcNameUpdate"
+| "GoodEvilUpdate"
+| "HarpPlay"
+| "SwitchHit"
+| "NpcHomeUpdate"
+| "BossOrInvasionSpawn"
+| "PlayerDodge"
+| "TilePaint"
+| "WallPaint"
+| "Teleport"
+| "PlayerHealOther"
+| "DimensionsUpdate"
+| "ClientUuid"
+| "ChestName"
+| "NpcCatch"
+| "NpcRelease"
+| "TravellingMerchantInventory"
+| "TeleportationPotion"
+| "AnglerQuest"
+| "AnglerQuestComplete"
+| "AnglerQuestsCompletedAmount"
+| "TemporaryAnimationCreate"
+| "InvasionProgressReport"
+| "ObjectPlace"
+| "PlayerChestIndexSync"
+| "CombatNumberCreate"
+| "NetModuleLoad"
+| "NpcKillCount"
+| "PlayerStealth"
+| "ItemForceIntoNearestChest"
+| "TileEntityUpdate"
+| "TileEntityPlace"
+| "ItemDropModify"
+| "ItemFramePlace"
+| "ItemDropInstancedUpdate"
+| "EmoteBubble"
+| "ExtraValueSync"
+| "SocialHandshake"
+| "Unused"
+| "PortalKill"
+| "PlayerTeleportPortal"
+| "NpcKilledNotification"
+| "EventNotification"
+| "MinionTargetUpdate"
+| "NpcTeleportPortal"
+| "ShieldStrengthsUpdate"
+| "NebulaLevelUp"
+| "MoonLordCountdown"
+| "NpcShopItem"
+| "GemLockToggle"
+| "SmokePoof"
+| "ChatMessageSmart"
+| "WiredCannonShot"
+| "MassWireOperation"
+| "MassWireOperationPay"
+| "PartyToggle"
+| "TreeGrowFx"
+| "CrystalInvasionStart"
+| "CrystalInvasionWipeAll"
+| "MinionAttackTargetUpdate"
+| "CrystalInvasionSendWaitTime"
+| "PlayerDamage"
+| "PlayerDeath"
+| "CombatTextCreate"
+| "Emoji"
+| "TileEntityDisplayDollItemSync"
+| "TileEntityInteractionRequest"
+| "WeaponsRackTryPlacing"
+| "TileEntityHatRackItemSync"
+| "TilePickingSync"
+| "RevengeMarkerSync"
+| "RevengeMarkerRemove"
+| "GolfBallLandInCup"
+| "ClientFinishConnectingToServer"
+| "NpcFishOut"
+| "NpcTamper"
+| "LegacySoundPlay"
+| "FoodPlatterTryPlacing"
+| "PlayerLuckFactorsUpdate"
+| "PlayerDead"
+| "CavernMonsterTypeSync"
+| "NpcBuffRemovalRequest"
+| "ClientSyncedInventory"
+| "CountsAsHostForGameplaySet"
+| "CreditsOrSlimeTransform"
+| "LucyAxeMessage"
+| "PiggyBankVoidLensUpdate"
+| "DungeonDefendersEventAttemptSkipWait"
+| "HaveDryadDoStardewAnimation"
+| "ItemDropShimmeredUpdate"
+| "ShimmerEffectOrCoinLuck"
+| "LoadoutSwitch"
+| "ItemDropProtectedUpdate"
+| "DeadCellsDisplayJarTryPlacing"
+| "PlayerSpectate"
+| "ItemDropClear"
+| "PlayerItemUseSound"
+| "NpcHurtByDebuff"
+| "Ping"
+| "ChestResize"
+| "LeashedEntityAnchorInsertItem"
+| "PlayerTeamUpdate"
+| "PlayerTeamSwapSpawn"
+| "SectionRequest"
+| "ItemDropPosition"
+| "HostToken"
+| "DamageNPCAck"
+| "ServerInfo"
+| "PlayerPlatformInfo";
+
+declare type t_254 =
+    { TAG: "ConnectRequest"; _0: t_114 }
+| { TAG: "Disconnect"; _0: t_115 }
+| { TAG: "PlayerSlotSet"; _0: t_116 }
+| { TAG: "PlayerInfo"; _0: t_100 }
+| { TAG: "PlayerInventorySlot"; _0: t_102 }
+| { TAG: "WorldDataRequest"; _0: t_117 }
+| { TAG: "WorldInfo"; _0: t_255 }
+| { TAG: "InitialTileSectionsRequest"; _0: t_83 }
+| { TAG: "Status"; _0: t_118 }
+| { TAG: "TileSectionSend"; _0: t_68 }
+| { TAG: "TileSectionFrame"; _0: t_119 }
+| { TAG: "PlayerSpawn"; _0: t_101 }
+| { TAG: "PlayerUpdate"; _0: t_99 }
+| { TAG: "PlayerActive"; _0: t_120 }
+| { TAG: "PlayerHealth"; _0: t_121 }
+| { TAG: "TileModify"; _0: t_122 }
+| { TAG: "TimeSet"; _0: t_123 }
+| { TAG: "DoorUse"; _0: t_124 }
+| { TAG: "TileSquareSend"; _0: t_69 }
+| { TAG: "ItemDropUpdate"; _0: t_18 }
+| { TAG: "ItemOwner"; _0: t_20 }
+| { TAG: "NpcUpdate"; _0: t_110 }
+| { TAG: "NpcItemStrike"; _0: t_125 }
+| { TAG: "ProjectileSync"; _0: t_105 }
+| { TAG: "NpcStrike"; _0: t_126 }
+| { TAG: "ProjectileDestroy"; _0: t_127 }
+| { TAG: "PvpToggle"; _0: t_128 }
+| { TAG: "ChestOpen"; _0: t_129 }
+| { TAG: "ChestItem"; _0: t_130 }
+| { TAG: "ActiveContainerSync"; _0: t_131 }
+| { TAG: "ChestPlace"; _0: t_132 }
+| { TAG: "HealEffect"; _0: t_133 }
+| { TAG: "Zones"; _0: t_78 }
+| { TAG: "PasswordRequired"; _0: t_134 }
+| { TAG: "PasswordSend"; _0: t_135 }
+| { TAG: "ItemOwnerRemove"; _0: t_21 }
+| { TAG: "NpcTalk"; _0: t_136 }
+| { TAG: "PlayerAnimation"; _0: t_137 }
+| { TAG: "PlayerMana"; _0: t_138 }
+| { TAG: "ManaEffect"; _0: t_139 }
+| { TAG: "PlayerTeam"; _0: t_140 }
+| { TAG: "SignRead"; _0: t_141 }
+| { TAG: "SignNew"; _0: t_142 }
+| { TAG: "LiquidSet"; _0: t_143 }
+| { TAG: "PlayerSpawnSelf"; _0: t_144 }
+| { TAG: "PlayerBuffsSet"; _0: t_40 }
+| { TAG: "NpcSpecialEffect"; _0: t_145 }
+| { TAG: "ChestOrTempleUnlock"; _0: t_146 }
+| { TAG: "NpcBuffAdd"; _0: t_147 }
+| { TAG: "NpcBuffUpdate"; _0: t_26 }
+| { TAG: "PlayerBuffAdd"; _0: t_148 }
+| { TAG: "NpcNameUpdate"; _0: t_149 }
+| { TAG: "GoodEvilUpdate"; _0: t_150 }
+| { TAG: "HarpPlay"; _0: t_151 }
+| { TAG: "SwitchHit"; _0: t_152 }
+| { TAG: "NpcHomeUpdate"; _0: t_153 }
+| { TAG: "BossOrInvasionSpawn"; _0: t_154 }
+| { TAG: "PlayerDodge"; _0: t_45 }
+| { TAG: "TilePaint"; _0: t_155 }
+| { TAG: "WallPaint"; _0: t_156 }
+| { TAG: "Teleport"; _0: t_56 }
+| { TAG: "PlayerHealOther"; _0: t_157 }
+| { TAG: "DimensionsUpdate"; _0: t_158 }
+| { TAG: "ClientUuid"; _0: t_159 }
+| { TAG: "ChestName"; _0: t_160 }
+| { TAG: "NpcCatch"; _0: t_27 }
+| { TAG: "NpcRelease"; _0: t_161 }
+| { TAG: "TravellingMerchantInventory"; _0: t_71 }
+| { TAG: "TeleportationPotion"; _0: t_57 }
+| { TAG: "AnglerQuest"; _0: t_162 }
+| { TAG: "AnglerQuestComplete"; _0: t_163 }
+| { TAG: "AnglerQuestsCompletedAmount"; _0: t_164 }
+| { TAG: "TemporaryAnimationCreate"; _0: t_165 }
+| { TAG: "InvasionProgressReport"; _0: t_166 }
+| { TAG: "ObjectPlace"; _0: t_167 }
+| { TAG: "PlayerChestIndexSync"; _0: t_168 }
+| { TAG: "CombatNumberCreate"; _0: t_169 }
+| { TAG: "NetModuleLoad"; _0: t_23 }
+| { TAG: "NpcKillCount"; _0: t_170 }
+| { TAG: "PlayerStealth"; _0: t_171 }
+| { TAG: "ItemForceIntoNearestChest"; _0: t_86 }
+| { TAG: "TileEntityUpdate"; _0: t_172 }
+| { TAG: "TileEntityPlace"; _0: t_173 }
+| { TAG: "ItemDropModify"; _0: t_174 }
+| { TAG: "ItemFramePlace"; _0: t_175 }
+| { TAG: "ItemDropInstancedUpdate"; _0: t_176 }
+| { TAG: "EmoteBubble"; _0: t_177 }
+| { TAG: "ExtraValueSync"; _0: t_178 }
+| { TAG: "SocialHandshake"; _0: t_179 }
+| { TAG: "Unused"; _0: t_180 }
+| { TAG: "PortalKill"; _0: t_181 }
+| { TAG: "PlayerTeleportPortal"; _0: t_182 }
+| { TAG: "NpcKilledNotification"; _0: t_183 }
+| { TAG: "EventNotification"; _0: t_184 }
+| { TAG: "MinionTargetUpdate"; _0: t_185 }
+| { TAG: "NpcTeleportPortal"; _0: t_186 }
+| { TAG: "ShieldStrengthsUpdate"; _0: t_187 }
+| { TAG: "NebulaLevelUp"; _0: t_188 }
+| { TAG: "MoonLordCountdown"; _0: t_189 }
+| { TAG: "NpcShopItem"; _0: t_190 }
+| { TAG: "GemLockToggle"; _0: t_191 }
+| { TAG: "SmokePoof"; _0: t_192 }
+| { TAG: "ChatMessageSmart"; _0: t_193 }
+| { TAG: "WiredCannonShot"; _0: t_194 }
+| { TAG: "MassWireOperation"; _0: t_195 }
+| { TAG: "MassWireOperationPay"; _0: t_196 }
+| { TAG: "PartyToggle"; _0: t_197 }
+| { TAG: "TreeGrowFx"; _0: t_198 }
+| { TAG: "CrystalInvasionStart"; _0: t_199 }
+| { TAG: "CrystalInvasionWipeAll"; _0: t_200 }
+| { TAG: "MinionAttackTargetUpdate"; _0: t_201 }
+| { TAG: "CrystalInvasionSendWaitTime"; _0: t_202 }
+| { TAG: "PlayerDamage"; _0: t_203 }
+| { TAG: "PlayerDeath"; _0: t_204 }
+| { TAG: "CombatTextCreate"; _0: t_205 }
+| { TAG: "Emoji"; _0: t_206 }
+| { TAG: "TileEntityDisplayDollItemSync"; _0: t_59 }
+| { TAG: "TileEntityInteractionRequest"; _0: t_207 }
+| { TAG: "WeaponsRackTryPlacing"; _0: t_208 }
+| { TAG: "TileEntityHatRackItemSync"; _0: t_209 }
+| { TAG: "TilePickingSync"; _0: t_210 }
+| { TAG: "RevengeMarkerSync"; _0: t_211 }
+| { TAG: "RevengeMarkerRemove"; _0: t_212 }
+| { TAG: "GolfBallLandInCup"; _0: t_213 }
+| { TAG: "ClientFinishConnectingToServer"; _0: t_214 }
+| { TAG: "NpcFishOut"; _0: t_215 }
+| { TAG: "NpcTamper"; _0: t_216 }
+| { TAG: "LegacySoundPlay"; _0: t_217 }
+| { TAG: "FoodPlatterTryPlacing"; _0: t_218 }
+| { TAG: "PlayerLuckFactorsUpdate"; _0: t_91 }
+| { TAG: "PlayerDead"; _0: t_219 }
+| { TAG: "CavernMonsterTypeSync"; _0: t_220 }
+| { TAG: "NpcBuffRemovalRequest"; _0: t_221 }
+| { TAG: "ClientSyncedInventory"; _0: t_222 }
+| { TAG: "CountsAsHostForGameplaySet"; _0: t_223 }
+| { TAG: "CreditsOrSlimeTransform"; _0: t_224 }
+| { TAG: "LucyAxeMessage"; _0: t_225 }
+| { TAG: "PiggyBankVoidLensUpdate"; _0: t_226 }
+| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: t_227 }
+| { TAG: "HaveDryadDoStardewAnimation"; _0: t_228 }
+| { TAG: "ItemDropShimmeredUpdate"; _0: t_229 }
+| { TAG: "ShimmerEffectOrCoinLuck"; _0: t_49 }
+| { TAG: "LoadoutSwitch"; _0: t_230 }
+| { TAG: "ItemDropProtectedUpdate"; _0: t_231 }
+| { TAG: "DeadCellsDisplayJarTryPlacing"; _0: t_80 }
+| { TAG: "PlayerSpectate"; _0: t_92 }
+| { TAG: "ItemDropClear"; _0: t_84 }
+| { TAG: "PlayerItemUseSound"; _0: t_90 }
+| { TAG: "NpcHurtByDebuff"; _0: t_88 }
+| { TAG: "Ping"; _0: t_89 }
+| { TAG: "ChestResize"; _0: t_79 }
+| { TAG: "LeashedEntityAnchorInsertItem"; _0: t_87 }
+| { TAG: "PlayerTeamUpdate"; _0: t_94 }
+| { TAG: "PlayerTeamSwapSpawn"; _0: t_93 }
+| { TAG: "SectionRequest"; _0: t_95 }
+| { TAG: "ItemDropPosition"; _0: t_85 }
+| { TAG: "HostToken"; _0: t_82 }
+| { TAG: "DamageNPCAck"; _0: t_232 }
+| { TAG: "ServerInfo"; _0: t_233 }
+| { TAG: "PlayerPlatformInfo"; _0: t_234 };
+
+declare type t_255 = {
+    readonly time: number;
+    readonly dayAndMoonInfo: number;
+    readonly moonPhase: number;
+    readonly maxTilesX: number;
+    readonly maxTilesY: number;
+    readonly spawnX: number;
+    readonly spawnY: number;
+    readonly worldSurface: number;
+    readonly rockLayer: number;
+    readonly worldId: number;
+    readonly worldName: string;
+    readonly gameMode: number;
+    readonly worldUniqueId: worldUniqueId_3;
+    readonly worldGeneratorVersion: bigint;
+    readonly moonType: number;
+    readonly treeBackground: number;
+    readonly treeBackground2: number;
+    readonly treeBackground3: number;
+    readonly treeBackground4: number;
+    readonly corruptionBackground: number;
+    readonly jungleBackground: number;
+    readonly snowBackground: number;
+    readonly hallowBackground: number;
+    readonly crimsonBackground: number;
+    readonly desertBackground: number;
+    readonly oceanBackground: number;
+    readonly mushroomBackground: number;
+    readonly underworldBackground: number;
+    readonly iceBackStyle: number;
+    readonly jungleBackStyle: number;
+    readonly hellBackStyle: number;
+    readonly windSpeedSet: number;
+    readonly cloudNumber: number;
+    readonly tree1: number;
+    readonly tree2: number;
+    readonly tree3: number;
+    readonly treeStyle1: number;
+    readonly treeStyle2: number;
+    readonly treeStyle3: number;
+    readonly treeStyle4: number;
+    readonly caveBack1: number;
+    readonly caveBack2: number;
+    readonly caveBack3: number;
+    readonly caveBackStyle1: number;
+    readonly caveBackStyle2: number;
+    readonly caveBackStyle3: number;
+    readonly caveBackStyle4: number;
+    readonly forest1TreeTopStyle: number;
+    readonly forest2TreeTopStyle: number;
+    readonly forest3TreeTopStyle: number;
+    readonly forest4TreeTopStyle: number;
+    readonly corruptionTreeTopStyle: number;
+    readonly jungleTreeTopStyle: number;
+    readonly snowTreeTopStyle: number;
+    readonly hallowTreeTopStyle: number;
+    readonly crimsonTreeTopStyle: number;
+    readonly desertTreeTopStyle: number;
+    readonly oceanTreeTopStyle: number;
+    readonly glowingMushroomTreeTopStyle: number;
+    readonly underworldTreeTopStyle: number;
+    readonly rain: number;
+    readonly eventInfo: eventInfo_3;
+    readonly lowTiles: boolean;
+    readonly forceHalloweenForever: boolean;
+    readonly forceChristmasForever: boolean;
+    readonly moreLightningSeed: boolean;
+    readonly noLightningSeed: boolean;
+    readonly sundialCooldown: number;
+    readonly moondialCooldown: number;
+    readonly copperOreTier: number;
+    readonly ironOreTier: number;
+    readonly silverOreTier: number;
+    readonly goldOreTier: number;
+    readonly cobaltOreTier: number;
+    readonly mythrilOreTier: number;
+    readonly adamantiteOreTier: number;
+    readonly invasionType: number;
+    readonly lobbyId: bigint;
+    readonly sandstormSeverity: number;
+    readonly extraSpawnPoints: Int_t[];
+};
+
 declare type t_26 = {
     readonly npcId: number;
     readonly buffs: number[];
@@ -6330,17 +7069,15 @@ declare const toBuffer_105: (packet: t_113, fromServer: boolean) => toBufferResu
 
 declare const toBuffer_106: (packet: t_237, fromServer: boolean) => toBufferResult_2;
 
-declare type toBuffer_107 = { TAG: "Ok"; _0: Buffer } | { TAG: "Error"; _0: PackError };
+declare const toBuffer_107: (packet: t_254, fromServer: boolean) => toBufferResult_3;
 
-declare const toBuffer_107: (_1: t_232) => toBuffer_107;
+declare type toBuffer_108 = toBufferOk_100 | toBufferError_100;
 
-declare type toBuffer_108 = { TAG: "Ok"; _0: Buffer } | { TAG: "Error"; _0: PackError };
-
-declare const toBuffer_108: (_1: t_176) => toBuffer_108;
+declare const toBuffer_108: (_1: t_255) => toBuffer_108;
 
 declare type toBuffer_109 = { TAG: "Ok"; _0: Buffer } | { TAG: "Error"; _0: PackError };
 
-declare const toBuffer_109: (_1: t_126) => toBuffer_109;
+declare const toBuffer_109: (_1: t_232) => toBuffer_109;
 
 declare type toBuffer_11 = toBufferOk_11 | toBufferError_11;
 
@@ -6348,15 +7085,23 @@ declare const toBuffer_11: (_1: t_11) => toBuffer_11;
 
 declare type toBuffer_110 = { TAG: "Ok"; _0: Buffer } | { TAG: "Error"; _0: PackError };
 
-declare const toBuffer_110: (_1: t_127) => toBuffer_110;
+declare const toBuffer_110: (_1: t_176) => toBuffer_110;
 
 declare type toBuffer_111 = { TAG: "Ok"; _0: Buffer } | { TAG: "Error"; _0: PackError };
 
-declare const toBuffer_111: (_1: t_233) => toBuffer_111;
+declare const toBuffer_111: (_1: t_126) => toBuffer_111;
 
 declare type toBuffer_112 = { TAG: "Ok"; _0: Buffer } | { TAG: "Error"; _0: PackError };
 
-declare const toBuffer_112: (_1: t_234) => toBuffer_112;
+declare const toBuffer_112: (_1: t_127) => toBuffer_112;
+
+declare type toBuffer_113 = { TAG: "Ok"; _0: Buffer } | { TAG: "Error"; _0: PackError };
+
+declare const toBuffer_113: (_1: t_233) => toBuffer_113;
+
+declare type toBuffer_114 = { TAG: "Ok"; _0: Buffer } | { TAG: "Error"; _0: PackError };
+
+declare const toBuffer_114: (_1: t_234) => toBuffer_114;
 
 declare type toBuffer_12 = toBufferOk_12 | toBufferError_12;
 
@@ -6746,6 +7491,8 @@ declare type toBufferError = { TAG: "Error"; _0: PackError };
 
 declare type toBufferError_10 = { TAG: "Error"; _0: PackError };
 
+declare type toBufferError_100 = { TAG: "Error"; _0: PackError };
+
 declare type toBufferError_11 = { TAG: "Error"; _0: PackError };
 
 declare type toBufferError_12 = { TAG: "Error"; _0: PackError };
@@ -6943,6 +7690,8 @@ declare type toBufferError_99 = { TAG: "Error"; _0: PackError };
 declare type toBufferOk = { TAG: "Ok"; _0: Buffer };
 
 declare type toBufferOk_10 = { TAG: "Ok"; _0: Buffer };
+
+declare type toBufferOk_100 = { TAG: "Ok"; _0: Buffer };
 
 declare type toBufferOk_11 = { TAG: "Ok"; _0: Buffer };
 
@@ -7148,6 +7897,11 @@ declare type toBufferResult_2 =
 | "NotImplemented"
 | { TAG: "Error"; _0: PackError };
 
+declare type toBufferResult_3 =
+| { TAG: "Ok"; _0: Buffer }
+| "NotImplemented"
+| { TAG: "Error"; _0: PackError };
+
 declare function toByte(t: t_96): number;
 
 declare const toInt: (self: t_106) => number;
@@ -7156,7 +7910,14 @@ declare function toInt_2(packetType: t_112): number;
 
 declare function toInt_3(packetType: t_236): number;
 
+declare function toInt_4(packetType: t_253): number;
+
 declare type toLatestIfNeeded =
+| "PacketStructureIsSame"
+| { TAG: "ConvertedToLatest"; _0: t_113 }
+| "DiscardAsNotExists";
+
+declare type toLatestIfNeeded_2 =
 | "PacketStructureIsSame"
 | { TAG: "ConvertedToLatest"; _0: t_113 }
 | "DiscardAsNotExists";
@@ -7164,6 +7925,8 @@ declare type toLatestIfNeeded =
 declare const toPacketName: (packet: t_113) => string;
 
 declare const toPacketName_2: (packet: t_237) => string;
+
+declare const toPacketName_3: (packet: t_254) => string;
 
 declare function toString_2(data: CreativePower): string;
 
@@ -7309,9 +8072,25 @@ export declare namespace WorldInfoPacket {
     }
 }
 
+export declare namespace WorldInfoV1457Packet {
+    export {
+        eventInfo_3 as eventInfo,
+        worldUniqueId_3 as worldUniqueId,
+        t_255 as t,
+        parseOk_101 as parseOk,
+        parseError_102 as parseError,
+        parse_110 as parse,
+        toBufferOk_100 as toBufferOk,
+        toBufferError_100 as toBufferError,
+        toBuffer_108 as toBuffer
+    }
+}
+
 declare type worldUniqueId = number[];
 
 declare type worldUniqueId_2 = number[];
+
+declare type worldUniqueId_3 = number[];
 
 export declare namespace ZonesPacket {
     export {
