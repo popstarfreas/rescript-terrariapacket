@@ -66,6 +66,7 @@ module ParseError = {
     | LegacySoundPlayFromClient
     | FoodPlatterTryPlacingFromServer
     | PlayerDeadFromClient
+    | CavernMonsterTypeSyncFromClient
     | NpcBuffRemovalRequestFromServer
     | ClientSyncedInventoryFromServer
     | ServerInfoFromClient
@@ -165,6 +166,7 @@ module ParseError = {
     | NpcTamperFromClient => serverOnlyFromClientError("NpcTamper")
     | LegacySoundPlayFromClient => serverOnlyFromClientError("LegacySoundPlay")
     | PlayerDeadFromClient => serverOnlyFromClientError("PlayerDead")
+    | CavernMonsterTypeSyncFromClient => serverOnlyFromClientError("CavernMonsterTypeSync")
     | ServerInfoFromClient => serverOnlyFromClientError("ServerInfo")
     | PlayerPlatformInfoFromServer => serverOnlyFromClientError("PlayerPlatformInfo")
     | IgnoredPacket => "Packet was ignored"

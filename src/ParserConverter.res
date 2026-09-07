@@ -249,6 +249,8 @@ let worldInfoFromV1449 = (worldInfo: PacketV1449.WorldInfo.t): Packet.WorldInfo.
     lobbyId: worldInfo.lobbyId,
     sandstormSeverity: worldInfo.sandstormSeverity,
     extraSpawnPoints: [],
+    dungeonX: 0,
+    dungeonY: 0,
   }
 }
 
@@ -1605,6 +1607,7 @@ let convertFromV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): re
   | _ =>
     switch buffer->NodeJs.Buffer.unsafeGet(2)->PacketType.fromInt {
     | Some(NpcItemStrike) => Ok(DiscardAsNotExists)
+    | Some(CavernMonsterTypeSync) if !fromServer => Ok(DiscardAsNotExists)
     | Some(ShimmerEffectOrCoinLuck) if !fromServer => Ok(DiscardAsNotExists)
     // Packets with structural changes between v1449 and v145
     | Some(PlayerInfo)

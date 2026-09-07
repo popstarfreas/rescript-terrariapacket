@@ -31,9 +31,9 @@ zoraBlock("1.4.5.6 and 1.4.5.7 tail packet IDs remain distinct", t => {
   let oldServer = PacketV1456_ServerInfo.toBuffer()->packedBuffer(t)
   let oldPlatform =
     PacketV1456_PlayerPlatformInfo.toBuffer({playerId: 7, platformId: Steam})->packedBuffer(t)
-  let damageAck = Packet_DamageNPCAck.toBuffer()->packedBuffer(t)
-  let server = Packet_ServerInfo.toBuffer()->packedBuffer(t)
-  let platform = Packet_PlayerPlatformInfo.toBuffer({playerId: 7, platformId: Steam})->packedBuffer(t)
+  let damageAck = PacketV1457_DamageNPCAck.toBuffer()->packedBuffer(t)
+  let server = PacketV1457_ServerInfo.toBuffer()->packedBuffer(t)
+  let platform = PacketV1457_PlayerPlatformInfo.toBuffer({playerId: 7, platformId: Steam})->packedBuffer(t)
 
   t->equal(oldServer->bufferToHex, "0300a2")
   t->equal(oldPlatform->bufferToHex, "0500a30706")
@@ -86,7 +86,7 @@ zoraBlock("1.4.5.6 and 1.4.5.7 tail packet IDs remain distinct", t => {
 })
 
 zoraBlock("1.4.5.7 item reservation fields use 7-bit encoded integers", t => {
-  let packet: Packet_ItemOwner.t = {
+  let packet: PacketV1457_ItemOwner.t = {
     itemDropId: 0x1234,
     owner: 5,
     timeToKeepReservation: 300,
@@ -94,9 +94,9 @@ zoraBlock("1.4.5.7 item reservation fields use 7-bit encoded integers", t => {
     grabDelayTime: 16384,
     position: {x: 1.5, y: -2.25},
   }
-  let encoded = Packet_ItemOwner.toBuffer(packet)->packedBuffer(t)
+  let encoded = PacketV1457_ItemOwner.toBuffer(packet)->packedBuffer(t)
   t->equal(encoded->bufferToHex, "140016341205ac02098080010000c03f000010c0")
-  switch Packet_ItemOwner.parse(encoded) {
+  switch PacketV1457_ItemOwner.parse(encoded) {
   | Ok(parsed) => t->equal(parsed, packet)
   | Error(error) => t->fail(~msg=JsExn.message(error.error)->Option.getOr("Parse failed"))
   }
@@ -108,18 +108,18 @@ zoraBlock("1.4.5.7 projectile keys pack spawner, index and generation", t => {
   t->equal(packed, 1221678354)
   t->equal(ProjectileKey.fromInt(packed), key)
 
-  let packet: Packet_ProjectileDestroy.t = {
+  let packet: PacketV1457_ProjectileDestroy.t = {
     projectileKey: key,
     position: {x: 1.5, y: -2.25},
   }
-  let encoded = Packet_ProjectileDestroy.toBuffer(packet)->packedBuffer(t)
+  let encoded = PacketV1457_ProjectileDestroy.toBuffer(packet)->packedBuffer(t)
   t->equal(encoded->bufferToHex, "0f001d1255d1480000c03f000010c0")
-  switch Packet_ProjectileDestroy.parse(encoded) {
+  switch PacketV1457_ProjectileDestroy.parse(encoded) {
   | Ok(parsed) => t->equal(parsed, packet)
   | Error(error) => t->fail(~msg=JsExn.message(error.error)->Option.getOr("Parse failed"))
   }
 
-  let sync: Packet_ProjectileSync.t = {
+  let sync: PacketV1457_ProjectileSync.t = {
     projectileKey: key,
     position: {x: 1.5, y: -2.25},
     velocity: {x: 3.25, y: -4.5},
@@ -130,12 +130,12 @@ zoraBlock("1.4.5.7 projectile keys pack spawner, index and generation", t => {
     knockback: Some(6.75),
     originalDamage: Some(456),
   }
-  let encodedSync = Packet_ProjectileSync.toBuffer(sync)->packedBuffer(t)
+  let encodedSync = PacketV1457_ProjectileSync.toBuffer(sync)->packedBuffer(t)
   t->equal(
     encodedSync->bufferToHex,
     "2d001b1255d1480000c03f000010c000005040000090c041017d010000a03ff40185ff0000d840c80100002040",
   )
-  switch Packet_ProjectileSync.parse(encodedSync) {
+  switch PacketV1457_ProjectileSync.parse(encodedSync) {
   | Ok(parsed) => t->equal(parsed, sync)
   | Error(error) => t->fail(~msg=JsExn.message(error.error)->Option.getOr("Parse failed"))
   }
@@ -143,7 +143,7 @@ zoraBlock("1.4.5.7 projectile keys pack spawner, index and generation", t => {
 
 zoraBlock("1.4.5.7 simple changed packets use their new layouts", t => {
   t->equal(
-    Packet_NpcStrike.toBuffer({
+    PacketV1457_NpcStrike.toBuffer({
       npcSlotId: 0x12,
       generation: 0x34,
       damage: 0x1234,
@@ -156,25 +156,25 @@ zoraBlock("1.4.5.7 simple changed packets use their new layouts", t => {
     "0d001c123434120000c03f0201",
   )
   t->equal(
-    Packet_ItemOwnerRemove.toBuffer({itemDropId: 1234, forceAssignToServer: true})
+    PacketV1457_ItemOwnerRemove.toBuffer({itemDropId: 1234, forceAssignToServer: true})
     ->packedBuffer(t)
     ->bufferToHex,
     "060027d20401",
   )
   t->equal(
-    Packet_PlayerDodge.toBuffer({playerId: 9, dodge: MysticSash})
+    PacketV1457_PlayerDodge.toBuffer({playerId: 9, dodge: MysticSash})
     ->packedBuffer(t)
     ->bufferToHex,
     "05003e0905",
   )
   t->equal(
-    Packet_NpcCatch.toBuffer({npcId: 1234})->packedBuffer(t)->bufferToHex,
+    PacketV1457_NpcCatch.toBuffer({npcId: 1234})->packedBuffer(t)->bufferToHex,
     "050046d204",
   )
 })
 
 zoraBlock("1.4.5.7 player update carries dash and snapping-stone flags", t => {
-  let packet: Packet_PlayerUpdate.t = {
+  let packet: PacketV1457_PlayerUpdate.t = {
     playerId: 1,
     control: {
       isHoldingUp: false,
@@ -212,16 +212,16 @@ zoraBlock("1.4.5.7 player update carries dash and snapping-stone flags", t => {
     lastItemUseAttemptSuccess: false,
     snappingStoneLightUp: true,
   }
-  let encoded = Packet_PlayerUpdate.toBuffer(packet)->packedBuffer(t)
+  let encoded = PacketV1457_PlayerUpdate.toBuffer(packet)->packedBuffer(t)
   t->equal(encoded->bufferToHex, "11000d0180100080020000803f00000040")
-  switch Packet_PlayerUpdate.parse(encoded) {
+  switch PacketV1457_PlayerUpdate.parse(encoded) {
   | Ok(parsed) => t->equal(parsed, packet)
   | Error(error) => t->fail(~msg=JsExn.message(error.error)->Option.getOr("Parse failed"))
   }
 })
 
 zoraBlock("1.4.5.7 merges shimmer and protection into item-drop flags", t => {
-  let packet: Packet_ItemDropUpdate.t = {
+  let packet: PacketV1457_ItemDropUpdate.t = {
     itemDropId: 8,
     position: {x: 1.0, y: 2.0},
     velocity: {x: 3.0, y: 4.0},
@@ -232,17 +232,17 @@ zoraBlock("1.4.5.7 merges shimmer and protection into item-drop flags", t => {
     shimmer: Some({shimmered: true, shimmerTime: 8.5}),
     enemyGrabDelayTime: Some(9),
   }
-  let encoded = Packet_ItemDropUpdate.toBuffer(packet)->packedBuffer(t)
-  switch Packet_ItemDropUpdate.parse(encoded) {
+  let encoded = PacketV1457_ItemDropUpdate.toBuffer(packet)->packedBuffer(t)
+  switch PacketV1457_ItemDropUpdate.parse(encoded) {
   | Ok(parsed) => t->equal(parsed, packet)
   | Error(error) => t->fail(~msg=JsExn.message(error.error)->Option.getOr("Parse failed"))
   }
 
   let creativeUnlock =
-    Packet_NetModuleLoad.CreativeUnlocks({itemId: 1234, sacrificeCount: 42})
-  let encodedCreative = Packet_NetModuleLoad.toBuffer(creativeUnlock)->packedBuffer(t)
+    PacketV1457_NetModuleLoad.CreativeUnlocks({itemId: 1234, sacrificeCount: 42})
+  let encodedCreative = PacketV1457_NetModuleLoad.toBuffer(creativeUnlock)->packedBuffer(t)
   t->equal(encodedCreative->bufferToHex, "0900520500d2042a00")
-  switch Packet_NetModuleLoad.parse(encodedCreative, ~fromServer=true) {
+  switch PacketV1457_NetModuleLoad.parse(encodedCreative, ~fromServer=true) {
   | Ok(parsed) => t->equal(parsed, creativeUnlock)
   | Error(error) => t->fail(~msg=JsExn.message(error.error)->Option.getOr("Parse failed"))
   }

@@ -255,7 +255,9 @@ function worldInfoFromV1449(worldInfo) {
     invasionType: worldInfo.invasionType,
     lobbyId: worldInfo.lobbyId,
     sandstormSeverity: worldInfo.sandstormSeverity,
-    extraSpawnPoints: []
+    extraSpawnPoints: [],
+    dungeonX: 0,
+    dungeonY: 0
   };
 }
 
@@ -2231,6 +2233,18 @@ function convertFromV1449IfNeeded(buffer, fromServer) {
         TAG: "Ok",
         _0: "DiscardAsNotExists"
       };
+    case "CavernMonsterTypeSync" :
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: "PacketStructureIsSame"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: "DiscardAsNotExists"
+        };
+      }
     case "ShimmerEffectOrCoinLuck" :
       if (!fromServer) {
         return {

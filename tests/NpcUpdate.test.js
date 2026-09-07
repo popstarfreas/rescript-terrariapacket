@@ -4,7 +4,7 @@ import * as Zora from "zora";
 import * as Stdlib_JsExn from "@rescript/runtime/lib/es6/Stdlib_JsExn.js";
 import * as Stdlib_Option from "@rescript/runtime/lib/es6/Stdlib_Option.js";
 import * as Stdlib_Result from "@rescript/runtime/lib/es6/Stdlib_Result.js";
-import * as Packet_NpcUpdate$TerrariaPacket from "../src/packet/Packet_NpcUpdate.js";
+import * as PacketV1457_NpcUpdate$TerrariaPacket from "../src/packetv1457/PacketV1457_NpcUpdate.js";
 
 Zora.test("should correctly parse and serialise NpcUpdate", t => {
   let data = {
@@ -36,11 +36,11 @@ Zora.test("should correctly parse and serialise NpcUpdate", t => {
     spawnNeedsSyncing: false,
     shimmerTransparency: false
   };
-  let result = Packet_NpcUpdate$TerrariaPacket.toBuffer(data);
+  let result = PacketV1457_NpcUpdate$TerrariaPacket.toBuffer(data);
   if (Stdlib_Result.isError(result)) {
     t.fail("Failed to serialise NpcUpdate");
   }
-  let result$1 = Packet_NpcUpdate$TerrariaPacket.parse(Stdlib_Result.getOrThrow(result, undefined));
+  let result$1 = PacketV1457_NpcUpdate$TerrariaPacket.parse(Stdlib_Result.getOrThrow(result, undefined));
   if (result$1.TAG === "Ok") {
     t.equal(data, result$1._0);
     return;

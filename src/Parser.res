@@ -1291,7 +1291,8 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
         ~toLazyPacket=a => Packet.LazyPacket.PlayerDead(a),
       ),
     )
-  | (CavernMonsterTypeSync, true | false) =>
+  | (CavernMonsterTypeSync, false) => Error(CavernMonsterTypeSyncFromClient)
+  | (CavernMonsterTypeSync, true) =>
     Ok(
       makeParsers(
         ~packetName,

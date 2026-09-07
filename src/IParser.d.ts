@@ -75,6 +75,7 @@ export type parseError =
   | "LegacySoundPlayFromClient"
   | "FoodPlatterTryPlacingFromServer"
   | "PlayerDeadFromClient"
+  | "CavernMonsterTypeSyncFromClient"
   | "NpcBuffRemovalRequestFromServer"
   | "ClientSyncedInventoryFromServer"
   | "ServerInfoFromClient"

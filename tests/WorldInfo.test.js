@@ -8,7 +8,7 @@ import * as ParserConverter$TerrariaPacket from "../src/ParserConverter.js";
 import * as Packet_WorldInfo$TerrariaPacket from "../src/packet/Packet_WorldInfo.js";
 
 Zora.test("should correctly parse and serialise WorldInfo", t => {
-  let buffer = Buffer.from("a80007483f00000000d0206009b7100e037c0782072a09214a054c6f6262790221123b408994804ab40674ee13ee1d0501000000160100000504090708000305020402050201030002cdcc4c3f411c08000050120000491b000004010403d90a0000de0b0000ed1900000207000500040403000404020402040001000000000e2d9841023d60f404000006000700a700a800a900ffffffffffff000000000000000000ae9d273e00", "hex");
+  let buffer = Buffer.from("ac0007483f00000000d0206009b7100e037c0782072a09214a054c6f6262790221123b408994804ab40674ee13ee1d0501000000160100000504090708000305020402050201030002cdcc4c3f411c08000050120000491b000004010403d90a0000de0b0000ed1900000207000500040403000404020402040001000000000e2d9841023d60f404000006000700a700a800a900ffffffffffff000000000000000000ae9d273e003412c7cf", "hex");
   let result = Packet_WorldInfo$TerrariaPacket.parse(buffer);
   if (result.TAG === "Ok") {
     let newrecord = {...result._0};
@@ -61,7 +61,9 @@ Zora.test("should correctly parse and serialise WorldInfo", t => {
           t.equal(buffer$1, buffer$1);
           let result = Packet_WorldInfo$TerrariaPacket.parse(buffer$1);
           if (result.TAG === "Ok") {
-            console.log(result._0);
+            let data2 = result._0;
+            t.equal(data2.dungeonX, 0);
+            t.equal(data2.dungeonY, 0);
             return;
           }
           t.fail(result._0);

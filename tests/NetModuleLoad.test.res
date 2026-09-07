@@ -24,7 +24,7 @@ let assertReaderError = (result, t, ~expectedContext, ~expectedMessage) =>
 let assertConvertsToLatestParticles = (result, t) =>
   switch result {
   | Ok(ParserConverter.ConvertedToLatestVersion(
-      Packet.NetModuleLoad(Packet_NetModuleLoad.Particles(_)),
+      Packet.NetModuleLoad(PacketV1457_NetModuleLoad.Particles(_)),
     )) =>
     t->ok(true)
   | Ok(_) => t->fail(~msg="Expected ConvertedToLatestVersion(NetModuleLoad(Particles))")
@@ -32,7 +32,7 @@ let assertConvertsToLatestParticles = (result, t) =>
   }
 
 zoraBlock("should correctly parse and serialise NetModuleLoad", t => {
-  let data: Packet_NetModuleLoad.t = Packet_NetModuleLoad.ServerText(
+  let data: PacketV1457_NetModuleLoad.t = PacketV1457_NetModuleLoad.ServerText(
     255,
     PacketFactory.NetworkText.make(
       2,
@@ -42,13 +42,13 @@ zoraBlock("should correctly parse and serialise NetModuleLoad", t => {
     {\"R": 225, \"G": 25, \"B": 25},
   )
 
-  let result = Packet_NetModuleLoad.toBuffer(data)
+  let result = PacketV1457_NetModuleLoad.toBuffer(data)
 
   if result->Result.isError {
     t->fail(~msg="Failed to serialise NetModuleLoad")
   }
 
-  let result = result->Result.getOrThrow->Packet_NetModuleLoad.parse(~fromServer=true)
+  let result = result->Result.getOrThrow->PacketV1457_NetModuleLoad.parse(~fromServer=true)
   switch result {
   | Ok(data2) => t->equal(data, data2)
   | Error(err) => t->fail(~msg=JsExn.message(err.error)->Option.getOrThrow)

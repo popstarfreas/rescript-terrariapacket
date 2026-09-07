@@ -3,6 +3,17 @@
 
  Not all packets yet have implementations.
 
+ The default `Packet`, `Parser`, and packet exports target Terraria **1.4.5.8**
+ (`Terraria326` in the connection request). The connection codec accepts a version
+ string supplied by the caller.
+
+ For **1.4.5.7**, use `PacketV1457`, `PacketTypeV1457`, `ParserV1457`, and
+ `WorldInfoV1457Packet`. `ParserConverterV1457` converts changed packets to and
+ from the latest format, following the same API as `ParserConverterV1456`.
+ WorldInfo now ends with signed 16-bit `dungeonX` and `dungeonY` coordinates.
+ Conversions from older versions set them to `0`; conversions back omit them.
+ Client-sent cavern-monster sync packets are discarded when converting to 1.4.5.8.
+
  It's currently powering two Dark Gaming projects:
  * Dimensions (public; proxy service for Terraria Servers)
  * TrueSSC (private; transaction-based inventory anti-cheat for SSC)

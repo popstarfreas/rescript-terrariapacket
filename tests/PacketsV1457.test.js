@@ -11,24 +11,24 @@ import * as PacketV1456$TerrariaPacket from "../src/PacketV1456.js";
 import * as ParserV1456$TerrariaPacket from "../src/ParserV1456.js";
 import * as ProjectileKey$TerrariaPacket from "../src/ProjectileKey.js";
 import * as PacketTypeV1456$TerrariaPacket from "../src/PacketTypeV1456.js";
-import * as Packet_NpcCatch$TerrariaPacket from "../src/packet/Packet_NpcCatch.js";
 import * as ParserConverter$TerrariaPacket from "../src/ParserConverter.js";
-import * as Packet_ItemOwner$TerrariaPacket from "../src/packet/Packet_ItemOwner.js";
-import * as Packet_NpcStrike$TerrariaPacket from "../src/packet/Packet_NpcStrike.js";
-import * as Packet_ServerInfo$TerrariaPacket from "../src/packet/Packet_ServerInfo.js";
-import * as Packet_PlayerDodge$TerrariaPacket from "../src/packet/Packet_PlayerDodge.js";
-import * as Packet_DamageNPCAck$TerrariaPacket from "../src/packet/Packet_DamageNPCAck.js";
-import * as Packet_PlayerUpdate$TerrariaPacket from "../src/packet/Packet_PlayerUpdate.js";
-import * as Packet_NetModuleLoad$TerrariaPacket from "../src/packet/Packet_NetModuleLoad.js";
+import * as PacketV1457_NpcCatch$TerrariaPacket from "../src/packetv1457/PacketV1457_NpcCatch.js";
 import * as ParserConverterV1456$TerrariaPacket from "../src/ParserConverterV1456.js";
-import * as Packet_ItemDropUpdate$TerrariaPacket from "../src/packet/Packet_ItemDropUpdate.js";
-import * as Packet_ProjectileSync$TerrariaPacket from "../src/packet/Packet_ProjectileSync.js";
+import * as PacketV1457_ItemOwner$TerrariaPacket from "../src/packetv1457/PacketV1457_ItemOwner.js";
+import * as PacketV1457_NpcStrike$TerrariaPacket from "../src/packetv1457/PacketV1457_NpcStrike.js";
 import * as PacketV1456_ServerInfo$TerrariaPacket from "../src/packetv1456/PacketV1456_ServerInfo.js";
-import * as Packet_ItemOwnerRemove$TerrariaPacket from "../src/packet/Packet_ItemOwnerRemove.js";
-import * as Packet_ProjectileDestroy$TerrariaPacket from "../src/packet/Packet_ProjectileDestroy.js";
+import * as PacketV1457_ServerInfo$TerrariaPacket from "../src/packetv1457/PacketV1457_ServerInfo.js";
+import * as PacketV1457_PlayerDodge$TerrariaPacket from "../src/packetv1457/PacketV1457_PlayerDodge.js";
+import * as PacketV1457_DamageNPCAck$TerrariaPacket from "../src/packetv1457/PacketV1457_DamageNPCAck.js";
+import * as PacketV1457_PlayerUpdate$TerrariaPacket from "../src/packetv1457/PacketV1457_PlayerUpdate.js";
 import * as PacketV1449_NpcItemStrike$TerrariaPacket from "../src/packetv1449/PacketV1449_NpcItemStrike.js";
-import * as Packet_PlayerPlatformInfo$TerrariaPacket from "../src/packet/Packet_PlayerPlatformInfo.js";
+import * as PacketV1457_NetModuleLoad$TerrariaPacket from "../src/packetv1457/PacketV1457_NetModuleLoad.js";
+import * as PacketV1457_ItemDropUpdate$TerrariaPacket from "../src/packetv1457/PacketV1457_ItemDropUpdate.js";
+import * as PacketV1457_ProjectileSync$TerrariaPacket from "../src/packetv1457/PacketV1457_ProjectileSync.js";
+import * as PacketV1457_ItemOwnerRemove$TerrariaPacket from "../src/packetv1457/PacketV1457_ItemOwnerRemove.js";
+import * as PacketV1457_ProjectileDestroy$TerrariaPacket from "../src/packetv1457/PacketV1457_ProjectileDestroy.js";
 import * as PacketV1456_PlayerPlatformInfo$TerrariaPacket from "../src/packetv1456/PacketV1456_PlayerPlatformInfo.js";
+import * as PacketV1457_PlayerPlatformInfo$TerrariaPacket from "../src/packetv1457/PacketV1457_PlayerPlatformInfo.js";
 import * as PacketV1449_ItemDropProtectedUpdate$TerrariaPacket from "../src/packetv1449/PacketV1449_ItemDropProtectedUpdate.js";
 import * as PacketV1449_ItemDropShimmeredUpdate$TerrariaPacket from "../src/packetv1449/PacketV1449_ItemDropShimmeredUpdate.js";
 
@@ -68,9 +68,9 @@ Zora.test("1.4.5.6 and 1.4.5.7 tail packet IDs remain distinct", t => {
     playerId: 7,
     platformId: "Steam"
   }), t);
-  let damageAck = packedBuffer(Packet_DamageNPCAck$TerrariaPacket.toBuffer(), t);
-  let server = packedBuffer(Packet_ServerInfo$TerrariaPacket.toBuffer(), t);
-  let platform = packedBuffer(Packet_PlayerPlatformInfo$TerrariaPacket.toBuffer({
+  let damageAck = packedBuffer(PacketV1457_DamageNPCAck$TerrariaPacket.toBuffer(), t);
+  let server = packedBuffer(PacketV1457_ServerInfo$TerrariaPacket.toBuffer(), t);
+  let platform = packedBuffer(PacketV1457_PlayerPlatformInfo$TerrariaPacket.toBuffer({
     playerId: 7,
     platformId: "Steam"
   }), t);
@@ -171,9 +171,9 @@ Zora.test("1.4.5.7 item reservation fields use 7-bit encoded integers", t => {
       y: -2.25
     }
   };
-  let encoded = packedBuffer(Packet_ItemOwner$TerrariaPacket.toBuffer(packet), t);
+  let encoded = packedBuffer(PacketV1457_ItemOwner$TerrariaPacket.toBuffer(packet), t);
   t.equal(encoded.toString("hex"), "140016341205ac02098080010000c03f000010c0");
-  let parsed = Packet_ItemOwner$TerrariaPacket.parse(encoded);
+  let parsed = PacketV1457_ItemOwner$TerrariaPacket.parse(encoded);
   if (parsed.TAG === "Ok") {
     t.equal(parsed._0, packet);
     return;
@@ -198,9 +198,9 @@ Zora.test("1.4.5.7 projectile keys pack spawner, index and generation", t => {
     projectileKey: key,
     position: packet_position
   };
-  let encoded = packedBuffer(Packet_ProjectileDestroy$TerrariaPacket.toBuffer(packet), t);
+  let encoded = packedBuffer(PacketV1457_ProjectileDestroy$TerrariaPacket.toBuffer(packet), t);
   t.equal(encoded.toString("hex"), "0f001d1255d1480000c03f000010c0");
-  let parsed = Packet_ProjectileDestroy$TerrariaPacket.parse(encoded);
+  let parsed = PacketV1457_ProjectileDestroy$TerrariaPacket.parse(encoded);
   if (parsed.TAG === "Ok") {
     t.equal(parsed._0, packet);
   } else {
@@ -234,9 +234,9 @@ Zora.test("1.4.5.7 projectile keys pack spawner, index and generation", t => {
     knockback: sync_knockback,
     originalDamage: sync_originalDamage
   };
-  let encodedSync = packedBuffer(Packet_ProjectileSync$TerrariaPacket.toBuffer(sync), t);
+  let encodedSync = packedBuffer(PacketV1457_ProjectileSync$TerrariaPacket.toBuffer(sync), t);
   t.equal(encodedSync.toString("hex"), "2d001b1255d1480000c03f000010c000005040000090c041017d010000a03ff40185ff0000d840c80100002040");
-  let parsed$1 = Packet_ProjectileSync$TerrariaPacket.parse(encodedSync);
+  let parsed$1 = PacketV1457_ProjectileSync$TerrariaPacket.parse(encodedSync);
   if (parsed$1.TAG === "Ok") {
     t.equal(parsed$1._0, sync);
     return;
@@ -245,7 +245,7 @@ Zora.test("1.4.5.7 projectile keys pack spawner, index and generation", t => {
 });
 
 Zora.test("1.4.5.7 simple changed packets use their new layouts", t => {
-  t.equal(packedBuffer(Packet_NpcStrike$TerrariaPacket.toBuffer({
+  t.equal(packedBuffer(PacketV1457_NpcStrike$TerrariaPacket.toBuffer({
     npcSlotId: 18,
     generation: 52,
     damage: 4660,
@@ -253,15 +253,15 @@ Zora.test("1.4.5.7 simple changed packets use their new layouts", t => {
     direction: 1,
     critical: true
   }), t).toString("hex"), "0d001c123434120000c03f0201");
-  t.equal(packedBuffer(Packet_ItemOwnerRemove$TerrariaPacket.toBuffer({
+  t.equal(packedBuffer(PacketV1457_ItemOwnerRemove$TerrariaPacket.toBuffer({
     itemDropId: 1234,
     forceAssignToServer: true
   }), t).toString("hex"), "060027d20401");
-  t.equal(packedBuffer(Packet_PlayerDodge$TerrariaPacket.toBuffer({
+  t.equal(packedBuffer(PacketV1457_PlayerDodge$TerrariaPacket.toBuffer({
     playerId: 9,
     dodge: "MysticSash"
   }), t).toString("hex"), "05003e0905");
-  t.equal(packedBuffer(Packet_NpcCatch$TerrariaPacket.toBuffer({
+  t.equal(packedBuffer(PacketV1457_NpcCatch$TerrariaPacket.toBuffer({
     npcId: 1234
   }), t).toString("hex"), "050046d204");
 });
@@ -308,9 +308,9 @@ Zora.test("1.4.5.7 player update carries dash and snapping-stone flags", t => {
     lastItemUseAttemptSuccess: false,
     snappingStoneLightUp: true
   };
-  let encoded = packedBuffer(Packet_PlayerUpdate$TerrariaPacket.toBuffer(packet), t);
+  let encoded = packedBuffer(PacketV1457_PlayerUpdate$TerrariaPacket.toBuffer(packet), t);
   t.equal(encoded.toString("hex"), "11000d0180100080020000803f00000040");
-  let parsed = Packet_PlayerUpdate$TerrariaPacket.parse(encoded);
+  let parsed = PacketV1457_PlayerUpdate$TerrariaPacket.parse(encoded);
   if (parsed.TAG === "Ok") {
     t.equal(parsed._0, packet);
     return;
@@ -339,8 +339,8 @@ Zora.test("1.4.5.7 merges shimmer and protection into item-drop flags", t => {
     },
     enemyGrabDelayTime: 9
   };
-  let encoded = packedBuffer(Packet_ItemDropUpdate$TerrariaPacket.toBuffer(packet), t);
-  let parsed = Packet_ItemDropUpdate$TerrariaPacket.parse(encoded);
+  let encoded = packedBuffer(PacketV1457_ItemDropUpdate$TerrariaPacket.toBuffer(packet), t);
+  let parsed = PacketV1457_ItemDropUpdate$TerrariaPacket.parse(encoded);
   if (parsed.TAG === "Ok") {
     t.equal(parsed._0, packet);
   } else {
@@ -353,9 +353,9 @@ Zora.test("1.4.5.7 merges shimmer and protection into item-drop flags", t => {
       sacrificeCount: 42
     }
   };
-  let encodedCreative = packedBuffer(Packet_NetModuleLoad$TerrariaPacket.toBuffer(creativeUnlock), t);
+  let encodedCreative = packedBuffer(PacketV1457_NetModuleLoad$TerrariaPacket.toBuffer(creativeUnlock), t);
   t.equal(encodedCreative.toString("hex"), "0900520500d2042a00");
-  let parsed$1 = Packet_NetModuleLoad$TerrariaPacket.parse(encodedCreative, true);
+  let parsed$1 = PacketV1457_NetModuleLoad$TerrariaPacket.parse(encodedCreative, true);
   if (parsed$1.TAG === "Ok") {
     t.equal(parsed$1._0, creativeUnlock);
   } else {

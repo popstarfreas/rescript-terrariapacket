@@ -1,7 +1,7 @@
 open Zora
 
 zoraBlock("should correctly parse and serialise NpcUpdate", t => {
-  let data: Packet_NpcUpdate.t = {
+  let data: PacketV1457_NpcUpdate.t = {
     npcSlotId: 0,
     generation: 0,
     npcTypeId: 0,
@@ -23,13 +23,13 @@ zoraBlock("should correctly parse and serialise NpcUpdate", t => {
     shimmerTransparency: false,
   }
 
-  let result = Packet_NpcUpdate.toBuffer(data)
+  let result = PacketV1457_NpcUpdate.toBuffer(data)
 
   if result->Result.isError {
     t->fail(~msg="Failed to serialise NpcUpdate")
   }
 
-  let result = result->Result.getOrThrow->Packet_NpcUpdate.parse
+  let result = result->Result.getOrThrow->PacketV1457_NpcUpdate.parse
   switch result {
   | Ok(data2) => t->equal(data, data2)
   | Error(err) => t->fail(~msg=JsExn.message(err.error)->Option.getOrThrow)

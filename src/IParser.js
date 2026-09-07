@@ -142,6 +142,8 @@ function toDisplayString(self) {
         return "Cannot parse a client-only packet from the server side: FoodPlatterTryPlacing";
       case "PlayerDeadFromClient" :
         return "Cannot parse a server-only packet from the client side: PlayerDead";
+      case "CavernMonsterTypeSyncFromClient" :
+        return "Cannot parse a server-only packet from the client side: CavernMonsterTypeSync";
       case "NpcBuffRemovalRequestFromServer" :
         return "Cannot parse a client-only packet from the server side: NpcBuffRemovalRequest";
       case "ClientSyncedInventoryFromServer" :

@@ -252,7 +252,7 @@ function toLatest(packet) {
       let newrecord = {...packet._0};
       return {
         TAG: "WorldInfo",
-        _0: (newrecord.noLightningSeed = false, newrecord.moreLightningSeed = false, newrecord.forceChristmasForever = false, newrecord.forceHalloweenForever = false, newrecord)
+        _0: (newrecord.dungeonY = 0, newrecord.dungeonX = 0, newrecord.noLightningSeed = false, newrecord.moreLightningSeed = false, newrecord.forceChristmasForever = false, newrecord.forceHalloweenForever = false, newrecord)
       };
     case "PlayerUpdate" :
       let value = packet._0;
@@ -643,6 +643,7 @@ function convertToLatestIfNeeded(buffer, fromServer) {
         TAG: "Ok",
         _0: "DiscardAsNotExists"
       };
+    case "CavernMonsterTypeSync" :
     case "ShimmerEffectOrCoinLuck" :
       if (fromServer) {
         return {

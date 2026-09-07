@@ -164,6 +164,8 @@ type t = {
   lobbyId: NodeJs.BigInt.t,
   sandstormSeverity: float,
   extraSpawnPoints: array<Point.t<int>>,
+  dungeonX: int,
+  dungeonY: int,
 }
 
 module Decode = {
@@ -466,6 +468,8 @@ module Decode = {
         readExtraSpawnPoints(idx + 1)
       }
     let? Ok(_) = readExtraSpawnPoints(0)
+    let? Ok(dungeonX) = reader->readInt16("dungeonX")
+    let? Ok(dungeonY) = reader->readInt16("dungeonY")
 
     Ok({
       time,
@@ -548,6 +552,8 @@ module Decode = {
       lobbyId,
       sandstormSeverity,
       extraSpawnPoints,
+      dungeonX,
+      dungeonY,
     })
   }
 }
@@ -774,6 +780,8 @@ module Encode = {
     ->ErrorAwarePacketWriter.packUInt64(self.lobbyId, "lobbyId")
     ->ErrorAwarePacketWriter.packSingle(self.sandstormSeverity, "sandstormSeverity")
     ->packExtraSpawnPoints(self.extraSpawnPoints)
+    ->packInt16(self.dungeonX, "dungeonX")
+    ->packInt16(self.dungeonY, "dungeonY")
     ->ErrorAwarePacketWriter.data
   }
 }

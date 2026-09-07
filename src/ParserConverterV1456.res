@@ -115,6 +115,8 @@ let toLatest = (packet: PacketV1456.t): option<Packet.t> =>
         forceChristmasForever: false,
         moreLightningSeed: false,
         noLightningSeed: false,
+        dungeonX: 0,
+        dungeonY: 0,
       }))
     }
   | PlayerUpdate(value) => {
@@ -283,6 +285,7 @@ let convertToLatestIfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): res
     switch buffer->NodeJs.Buffer.unsafeGet(2)->PacketTypeV1456.fromInt {
     | None => Error(IParser.ParseError.InvalidPacketType(buffer->NodeJs.Buffer.unsafeGet(2)))
     | Some(NpcItemStrike) => Ok(DiscardAsNotExists)
+    | Some(CavernMonsterTypeSync) if !fromServer => Ok(DiscardAsNotExists)
     | Some(ShimmerEffectOrCoinLuck) if !fromServer => Ok(DiscardAsNotExists)
     | Some(WorldInfo)
     | Some(PlayerUpdate)

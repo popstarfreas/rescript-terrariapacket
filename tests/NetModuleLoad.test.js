@@ -8,9 +8,9 @@ import * as Stdlib_Result from "@rescript/runtime/lib/es6/Stdlib_Result.js";
 import * as Packet$TerrariaPacket from "../src/Packet.js";
 import * as IParser$TerrariaPacket from "../src/IParser.js";
 import * as ParserConverter$TerrariaPacket from "../src/ParserConverter.js";
-import * as Packet_NetModuleLoad$TerrariaPacket from "../src/packet/Packet_NetModuleLoad.js";
 import Networktext from "@popstarfreas/packetfactory/networktext";
 import * as PacketV1449_NetModuleLoad$TerrariaPacket from "../src/packetv1449/PacketV1449_NetModuleLoad.js";
+import * as PacketV1457_NetModuleLoad$TerrariaPacket from "../src/packetv1457/PacketV1457_NetModuleLoad.js";
 
 function convertFromV1449(hex) {
   return ParserConverter$TerrariaPacket.convertFromV1449IfNeeded(Buffer.from(hex, "hex"), true);
@@ -75,11 +75,11 @@ Zora$1.test("should correctly parse and serialise NetModuleLoad", t => {
     _1: data_1,
     _2: data_2
   };
-  let result = Packet_NetModuleLoad$TerrariaPacket.toBuffer(data);
+  let result = PacketV1457_NetModuleLoad$TerrariaPacket.toBuffer(data);
   if (Stdlib_Result.isError(result)) {
     t.fail("Failed to serialise NetModuleLoad");
   }
-  let result$1 = Packet_NetModuleLoad$TerrariaPacket.parse(Stdlib_Result.getOrThrow(result, undefined), true);
+  let result$1 = PacketV1457_NetModuleLoad$TerrariaPacket.parse(Stdlib_Result.getOrThrow(result, undefined), true);
   if (result$1.TAG === "Ok") {
     t.equal(data, result$1._0);
     return;

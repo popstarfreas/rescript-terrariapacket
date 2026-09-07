@@ -10,20 +10,20 @@ module Status = PacketV1449_Status
 module TileSectionSend = PacketV1456_TileSectionSend
 module TileSectionFrame = PacketV1449_TileSectionFrame
 module PlayerSpawn = PacketV1456_PlayerSpawn
-module PlayerUpdate = Packet_PlayerUpdate
+module PlayerUpdate = PacketV1457_PlayerUpdate
 module PlayerActive = PacketV1449_PlayerActive
 module PlayerHealth = PacketV1449_PlayerHealth
 module TileModify = PacketV1449_TileModify
 module TimeSet = PacketV1449_TimeSet
 module DoorUse = PacketV1449_DoorUse
 module TileSquareSend = PacketV1456_TileSquareSend
-module ItemDropUpdate = Packet_ItemDropUpdate
-module ItemOwner = Packet_ItemOwner
-module NpcUpdate = Packet_NpcUpdate
+module ItemDropUpdate = PacketV1457_ItemDropUpdate
+module ItemOwner = PacketV1457_ItemOwner
+module NpcUpdate = PacketV1457_NpcUpdate
 module NpcItemStrike = PacketV1449_NpcItemStrike
-module ProjectileSync = Packet_ProjectileSync
-module NpcStrike = Packet_NpcStrike
-module ProjectileDestroy = Packet_ProjectileDestroy
+module ProjectileSync = PacketV1457_ProjectileSync
+module NpcStrike = PacketV1457_NpcStrike
+module ProjectileDestroy = PacketV1457_ProjectileDestroy
 module PvpToggle = PacketV1449_PvpToggle
 module ChestOpen = PacketV1449_ChestOpen
 module ChestItem = PacketV1449_ChestItem
@@ -33,7 +33,7 @@ module HealEffect = PacketV1449_HealEffect
 module Zones = PacketV1456_Zones
 module PasswordRequired = PacketV1449_PasswordRequired
 module PasswordSend = PacketV1449_PasswordSend
-module ItemOwnerRemove = Packet_ItemOwnerRemove
+module ItemOwnerRemove = PacketV1457_ItemOwnerRemove
 module NpcTalk = PacketV1449_NpcTalk
 module PlayerAnimation = PacketV1449_PlayerAnimation
 module PlayerMana = PacketV1449_PlayerMana
@@ -55,7 +55,7 @@ module HarpPlay = PacketV1449_HarpPlay
 module SwitchHit = PacketV1449_SwitchHit
 module NpcHomeUpdate = PacketV1449_NpcHomeUpdate
 module BossOrInvasionSpawn = PacketV1449_BossOrInvasionSpawn
-module PlayerDodge = Packet_PlayerDodge
+module PlayerDodge = PacketV1457_PlayerDodge
 module TilePaint = PacketV1449_TilePaint
 module WallPaint = PacketV1449_WallPaint
 module Teleport = PacketV1456_Teleport
@@ -63,7 +63,7 @@ module PlayerHealOther = PacketV1449_PlayerHealOther
 module DimensionsUpdate = PacketV1449_DimensionsUpdate
 module ClientUuid = PacketV1449_ClientUuid
 module ChestName = PacketV1449_ChestName
-module NpcCatch = Packet_NpcCatch
+module NpcCatch = PacketV1457_NpcCatch
 module NpcRelease = PacketV1449_NpcRelease
 module TravellingMerchantInventory = PacketV1456_TravellingMerchantInventory
 module TeleportationPotion = PacketV1456_TeleportationPotion
@@ -75,7 +75,7 @@ module InvasionProgressReport = PacketV1449_InvasionProgressReport
 module ObjectPlace = PacketV1449_ObjectPlace
 module PlayerChestIndexSync = PacketV1449_PlayerChestIndexSync
 module CombatNumberCreate = PacketV1449_CombatNumberCreate
-module NetModuleLoad = Packet_NetModuleLoad
+module NetModuleLoad = PacketV1457_NetModuleLoad
 module NpcKillCount = PacketV1449_NpcKillCount
 module PlayerStealth = PacketV1449_PlayerStealth
 module ItemForceIntoNearestChest = PacketV1456_ItemForceIntoNearestChest
@@ -83,7 +83,7 @@ module TileEntityUpdate = PacketV1449_TileEntityUpdate
 module TileEntityPlace = PacketV1449_TileEntityPlace
 module ItemDropModify = PacketV1449_ItemDropModify
 module ItemFramePlace = PacketV1449_ItemFramePlace
-module ItemDropInstancedUpdate = Packet_ItemDropInstancedUpdate
+module ItemDropInstancedUpdate = PacketV1457_ItemDropInstancedUpdate
 module EmoteBubble = PacketV1449_EmoteBubble
 module ExtraValueSync = PacketV1449_ExtraValueSync
 module SocialHandshake = PacketV1449_SocialHandshake
@@ -155,9 +155,9 @@ module PlayerTeamSwapSpawn = PacketV1456_PlayerTeamSwapSpawn
 module SectionRequest = PacketV1456_SectionRequest
 module ItemDropPosition = PacketV1456_ItemDropPosition
 module HostToken = PacketV1456_HostToken
-module DamageNPCAck = Packet_DamageNPCAck
-module ServerInfo = Packet_ServerInfo
-module PlayerPlatformInfo = Packet_PlayerPlatformInfo
+module DamageNPCAck = PacketV1457_DamageNPCAck
+module ServerInfo = PacketV1457_ServerInfo
+module PlayerPlatformInfo = PacketV1457_PlayerPlatformInfo
 
 type t =
   | ConnectRequest(ConnectRequest.t)
@@ -521,6 +521,7 @@ let directionOfPacketType = (packetType: PacketType.t): direction =>
   | Disconnect
   | PlayerSlotSet
   | WorldInfo
+  | CavernMonsterTypeSync
   | Status
   | TileSectionSend
   | TileSectionFrame

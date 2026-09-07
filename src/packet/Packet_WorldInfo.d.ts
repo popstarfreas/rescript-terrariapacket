@@ -173,6 +173,8 @@ export type t = {
   readonly lobbyId: bigint;
   readonly sandstormSeverity: number;
   readonly extraSpawnPoints: Point_Int_t[];
+  readonly dungeonX: number;
+  readonly dungeonY: number;
 };
 
 export type parseOk = { TAG: "Ok"; _0: t };
