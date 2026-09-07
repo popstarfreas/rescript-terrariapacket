@@ -8,10 +8,10 @@ module Decode = {
     let rows = Array.make(~length=2, [])
     let error = ref(None)
     for i in 0 to 1 {
-      if error.contents != None {
+      if error.contents == None {
         let row = Array.make(~length=3, 0)
         for j in 0 to 2 {
-          if error.contents != None {
+          if error.contents == None {
             switch reader->readUInt16(`monster_${Int.toString(i)}_${Int.toString(j)}`) {
             | Ok(value) => row->Array.setUnsafe(j, value)
             | Error(err) => error := Some(err)

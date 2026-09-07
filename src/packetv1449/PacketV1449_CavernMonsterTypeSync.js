@@ -11,10 +11,10 @@ function parse(payload) {
   let rows = Stdlib_Array.make(2, []);
   let error;
   for (let i = 0; i <= 1; ++i) {
-    if (error !== undefined) {
+    if (error === undefined) {
       let row = Stdlib_Array.make(3, 0);
       for (let j = 0; j <= 2; ++j) {
-        if (error !== undefined) {
+        if (error === undefined) {
           let value = ErrorAwarePacketReader$TerrariaPacket.readUInt16(reader, `monster_` + i.toString() + `_` + j.toString());
           if (value.TAG === "Ok") {
             row[j] = value._0;
