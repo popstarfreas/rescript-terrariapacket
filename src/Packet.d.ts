@@ -174,7 +174,7 @@ import type { t as Packet_PasswordRequired_t } from '../src/packetv1449/PacketV1
 
 import type { t as Packet_PasswordSend_t } from '../src/packetv1449/PacketV1449_PasswordSend.js';
 
-import type { t as Packet_PiggyBankVoidLensUpdate_t } from '../src/packetv1449/PacketV1449_PiggyBankVoidLensUpdate.js';
+import type { t as Packet_PiggyBankVoidLensUpdate_t } from './packetv1457/PacketV1457_PiggyBankVoidLensUpdate.js';
 
 import type { t as Packet_PlayerActive_t } from '../src/packetv1449/PacketV1449_PlayerActive.js';
 

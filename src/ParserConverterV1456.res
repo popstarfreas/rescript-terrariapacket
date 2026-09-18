@@ -24,6 +24,37 @@ let ownershipToV1456 = ownership =>
   | Packet.ItemDropUpdate.GrabDelayForAllPlayers => 3
   }
 
+let trackedProjectileToLatest = (
+  value: option<PacketV1456.PiggyBankVoidLensUpdate.TrackedProjectileReference.t>,
+): Packet.PiggyBankVoidLensUpdate.TrackedProjectileReference.t =>
+  switch value {
+  | None => {
+      projectileKey: {spawner: 0, index: 0, generation: 0},
+      projectileType: 0,
+    }
+  | Some(value) => {
+      projectileKey: {
+        spawner: value.ownerIndex,
+        index: value.expectedIdentity,
+        generation: 0,
+      },
+      projectileType: value.expectedType,
+    }
+  }
+
+let trackedProjectileFromLatest = (
+  value: Packet.PiggyBankVoidLensUpdate.TrackedProjectileReference.t,
+): option<PacketV1456.PiggyBankVoidLensUpdate.TrackedProjectileReference.t> =>
+  if value.projectileKey->ProjectileKey.toInt == 0 && value.projectileType == 0 {
+    None
+  } else {
+    Some({
+      ownerIndex: value.projectileKey.spawner,
+      expectedIdentity: value.projectileKey.index,
+      expectedType: value.projectileType,
+    })
+  }
+
 let itemDropFromV1456 = (
   item: PacketV1456.ItemDropUpdate.t,
   ~shimmer: option<Packet.ItemDropUpdate.shimmer>=?,
@@ -196,6 +227,12 @@ let toLatest = (packet: PacketV1456.t): option<Packet.t> =>
       },
     }))
   | NpcCatch(value) => Some(Packet.NpcCatch({npcId: value.npcId}))
+  | PiggyBankVoidLensUpdate(value) =>
+    Some(Packet.PiggyBankVoidLensUpdate({
+      playerId: value.playerId,
+      piggyBankProj: trackedProjectileToLatest(value.piggyBankProj),
+      voidLensChest: trackedProjectileToLatest(value.voidLensChest),
+    }))
   | NetModuleLoad(value) => netModuleToLatest(value)->Option.map(value => Packet.NetModuleLoad(value))
   | ServerInfo(_) => Some(Packet.ServerInfo())
   | PlayerPlatformInfo(value) => Some(Packet.PlayerPlatformInfo(Obj.magic(value)))
@@ -269,6 +306,12 @@ let fromLatest = (packet: Packet.t): PacketV1456.t =>
       },
     })
   | NpcCatch(value) => PacketV1456.NpcCatch({npcId: value.npcId, playerId: 0})
+  | PiggyBankVoidLensUpdate(value) =>
+    PacketV1456.PiggyBankVoidLensUpdate({
+      playerId: value.playerId,
+      piggyBankProj: trackedProjectileFromLatest(value.piggyBankProj),
+      voidLensChest: trackedProjectileFromLatest(value.voidLensChest),
+    })
   | NetModuleLoad(value) => PacketV1456.NetModuleLoad(netModuleFromLatest(value))
   | ServerInfo(_) => PacketV1456.ServerInfo()
   | PlayerPlatformInfo(value) => PacketV1456.PlayerPlatformInfo(Obj.magic(value))
@@ -298,6 +341,7 @@ let convertToLatestIfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): res
     | Some(ItemOwnerRemove)
     | Some(PlayerDodge)
     | Some(NpcCatch)
+    | Some(PiggyBankVoidLensUpdate)
     | Some(NetModuleLoad)
     | Some(ItemDropInstancedUpdate)
     | Some(ItemDropShimmeredUpdate)
@@ -339,6 +383,7 @@ let convertFromLatestIfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): r
     | Some(ItemOwnerRemove)
     | Some(PlayerDodge)
     | Some(NpcCatch)
+    | Some(PiggyBankVoidLensUpdate)
     | Some(NetModuleLoad)
     | Some(ItemDropInstancedUpdate)
     | Some(ServerInfo)

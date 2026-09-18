@@ -141,10 +141,10 @@ import * as PacketV1449_WeaponsRackTryPlacing$TerrariaPacket from "./packetv1449
 import * as PacketV1449_CrystalInvasionWipeAll$TerrariaPacket from "./packetv1449/PacketV1449_CrystalInvasionWipeAll.js";
 import * as PacketV1449_InvasionProgressReport$TerrariaPacket from "./packetv1449/PacketV1449_InvasionProgressReport.js";
 import * as PacketV1449_CreditsOrSlimeTransform$TerrariaPacket from "./packetv1449/PacketV1449_CreditsOrSlimeTransform.js";
-import * as PacketV1449_PiggyBankVoidLensUpdate$TerrariaPacket from "./packetv1449/PacketV1449_PiggyBankVoidLensUpdate.js";
 import * as PacketV1456_PlayerLuckFactorsUpdate$TerrariaPacket from "./packetv1456/PacketV1456_PlayerLuckFactorsUpdate.js";
 import * as PacketV1456_ShimmerEffectOrCoinLuck$TerrariaPacket from "./packetv1456/PacketV1456_ShimmerEffectOrCoinLuck.js";
 import * as PacketV1457_ItemDropInstancedUpdate$TerrariaPacket from "./packetv1457/PacketV1457_ItemDropInstancedUpdate.js";
+import * as PacketV1457_PiggyBankVoidLensUpdate$TerrariaPacket from "./packetv1457/PacketV1457_PiggyBankVoidLensUpdate.js";
 import * as PacketV1449_MinionAttackTargetUpdate$TerrariaPacket from "./packetv1449/PacketV1449_MinionAttackTargetUpdate.js";
 import * as PacketV1449_TemporaryAnimationCreate$TerrariaPacket from "./packetv1449/PacketV1449_TemporaryAnimationCreate.js";
 import * as PacketV1449_TileEntityHatRackItemSync$TerrariaPacket from "./packetv1449/PacketV1449_TileEntityHatRackItemSync.js";
@@ -2157,7 +2157,7 @@ function getParsers(packetType, fromServer) {
     case "PiggyBankVoidLensUpdate" :
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName, PacketV1449_PiggyBankVoidLensUpdate$TerrariaPacket.parse, a => ({
+        _0: makeParsers(packetName, PacketV1457_PiggyBankVoidLensUpdate$TerrariaPacket.parse, a => ({
           TAG: "PiggyBankVoidLensUpdate",
           _0: a
         }), a => ({

@@ -21616,82 +21616,59 @@ function toBuffer152(_self) {
   return data(setType(make(), toInt("CrystalInvasionWipeAll")));
 }
 
-// src/packetv1449/PacketV1449_PiggyBankVoidLensUpdate.js
-function tryReading(reader, context) {
-  let e = readInt16(reader, context + "_ownerIndex");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let ownerIndex = e._0;
-  if (ownerIndex === -1) {
-    return {
-      TAG: "Ok",
-      _0: void 0
-    };
-  }
-  let e$1 = readInt16(reader, context + "_expectedIdentity");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readInt16(reader, context + "_expectedType");
-  if (e$2.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        ownerIndex,
-        expectedIdentity: e$1._0,
-        expectedType: e$2._0
-      }
-    };
-  } else {
-    return e$2;
-  }
+// src/packetv1457/PacketV1457_ItemDropInstancedUpdate.js
+var PacketV1457_ItemDropInstancedUpdate_exports = {};
+__export(PacketV1457_ItemDropInstancedUpdate_exports, {
+  parse: () => parse157,
+  toBuffer: () => toBuffer153
+});
+function toBuffer153(self) {
+  return Encode.toBufferWithType(self, "ItemDropInstancedUpdate");
 }
-function pack5(writer, self, context) {
-  if (self !== void 0) {
-    return packInt16(packInt16(packInt16(writer, self.ownerIndex, context + "_ownerIndex"), self.expectedIdentity, context + "_expectedIdentity"), self.expectedType, context + "_expectedType");
-  } else {
-    return packInt16(writer, -1, context + "_ownerIndex");
-  }
-}
-function parse157(payload) {
+var parse157 = parse18;
+
+// src/packetv1457/PacketV1457_PiggyBankVoidLensUpdate.js
+function parse158(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
     return e;
   }
-  let e$1 = tryReading(reader, "piggyBankProj");
+  let e$1 = readInt32(reader, "piggyBankProjectileKey");
   if (e$1.TAG !== "Ok") {
     return e$1;
   }
-  let e$2 = tryReading(reader, "voidLensChest");
-  if (e$2.TAG === "Ok") {
+  let e$2 = readInt16(reader, "piggyBankProjectileType");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readInt32(reader, "voidLensProjectileKey");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readInt16(reader, "voidLensProjectileType");
+  if (e$4.TAG === "Ok") {
     return {
       TAG: "Ok",
       _0: {
         playerId: e._0,
-        piggyBankProj: e$1._0,
-        voidLensChest: e$2._0
+        piggyBankProj: {
+          projectileKey: fromInt11(e$1._0),
+          projectileType: e$2._0
+        },
+        voidLensChest: {
+          projectileKey: fromInt11(e$3._0),
+          projectileType: e$4._0
+        }
       }
     };
   } else {
-    return e$2;
+    return e$4;
   }
 }
-function toBuffer153(self) {
-  return data(pack5(pack5(packByte(setType(make(), toInt("PiggyBankVoidLensUpdate")), self.playerId, "playerId"), self.piggyBankProj, "piggyBankProj"), self.voidLensChest, "voidLensChest"));
-}
-
-// src/packetv1457/PacketV1457_ItemDropInstancedUpdate.js
-var PacketV1457_ItemDropInstancedUpdate_exports = {};
-__export(PacketV1457_ItemDropInstancedUpdate_exports, {
-  parse: () => parse158,
-  toBuffer: () => toBuffer154
-});
 function toBuffer154(self) {
-  return Encode.toBufferWithType(self, "ItemDropInstancedUpdate");
+  return data(packInt16(packInt32(packInt16(packInt32(packByte(setType(make(), toInt5("PiggyBankVoidLensUpdate")), self.playerId, "playerId"), toInt11(self.piggyBankProj.projectileKey), "piggyBankProjectileKey"), self.piggyBankProj.projectileType, "piggyBankProjectileType"), toInt11(self.voidLensChest.projectileKey), "voidLensProjectileKey"), self.voidLensChest.projectileType, "voidLensProjectileType"));
 }
-var parse158 = parse18;
 
 // src/packetv1449/PacketV1449_MinionAttackTargetUpdate.js
 function parse159(payload) {
@@ -21789,22 +21766,22 @@ function mapPacket(result, packetName4, fn) {
     _0: addPacketContext(packetName4, e)
   }));
 }
-function makeParsers(packetName4, parse184, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, _fromServer) => mapPacket(parse184(payload), packetName4, toPacket);
+function makeParsers(packetName4, parse185, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, _fromServer) => mapPacket(parse185(payload), packetName4, toPacket);
   let parseLazyWrapped = (payload, _fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse184(payload), (e) => addPacketContext(packetName4, e))))
+    _0: toLazyPacket(make4(() => mapError(parse185(payload), (e) => addPacketContext(packetName4, e))))
   });
   return {
     parse: parseWrapped,
     parseLazy: parseLazyWrapped
   };
 }
-function makeParsersWithFromServer(packetName4, parse184, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, fromServer) => mapPacket(parse184(payload, fromServer), packetName4, toPacket);
+function makeParsersWithFromServer(packetName4, parse185, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, fromServer) => mapPacket(parse185(payload, fromServer), packetName4, toPacket);
   let parseLazyWrapped = (payload, fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse184(payload, fromServer), (e) => addPacketContext(packetName4, e))))
+    _0: toLazyPacket(make4(() => mapError(parse185(payload, fromServer), (e) => addPacketContext(packetName4, e))))
   });
   return {
     parse: parseWrapped,
@@ -22986,7 +22963,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropInstancedUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse158, (a) => ({
+        _0: makeParsers(packetName4, parse157, (a) => ({
           TAG: "ItemDropInstancedUpdate",
           _0: a
         }), (a) => ({
@@ -23775,7 +23752,7 @@ function getParsers(packetType, fromServer) {
     case "PiggyBankVoidLensUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse157, (a) => ({
+        _0: makeParsers(packetName4, parse158, (a) => ({
           TAG: "PiggyBankVoidLensUpdate",
           _0: a
         }), (a) => ({
@@ -24145,7 +24122,7 @@ function parseLazy(buffer, fromServer) {
 // src/ParserV1456.js
 var ParserV1456_exports = {};
 __export(ParserV1456_exports, {
-  parse: () => parse181,
+  parse: () => parse182,
   parseLazy: () => parseLazy2
 });
 
@@ -27411,6 +27388,72 @@ function toBuffer175(self) {
   return data(packByte(packInt16(packByte(packByte(packInt16(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt("ItemDropProtectedUpdate")), self.itemDropId, "itemDropId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.stack, "stack"), self.prefix, "prefix"), self.noDelay, "noDelay"), self.itemId, "itemId"), self.timeLeftInWhichTheItemCannotBeTakenByEnemies, "timeLeftInWhichTheItemCannotBeTakenByEnemies"));
 }
 
+// src/packetv1449/PacketV1449_PiggyBankVoidLensUpdate.js
+function tryReading(reader, context) {
+  let e = readInt16(reader, context + "_ownerIndex");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let ownerIndex = e._0;
+  if (ownerIndex === -1) {
+    return {
+      TAG: "Ok",
+      _0: void 0
+    };
+  }
+  let e$1 = readInt16(reader, context + "_expectedIdentity");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readInt16(reader, context + "_expectedType");
+  if (e$2.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        ownerIndex,
+        expectedIdentity: e$1._0,
+        expectedType: e$2._0
+      }
+    };
+  } else {
+    return e$2;
+  }
+}
+function pack5(writer, self, context) {
+  if (self !== void 0) {
+    return packInt16(packInt16(packInt16(writer, self.ownerIndex, context + "_ownerIndex"), self.expectedIdentity, context + "_expectedIdentity"), self.expectedType, context + "_expectedType");
+  } else {
+    return packInt16(writer, -1, context + "_ownerIndex");
+  }
+}
+function parse181(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = tryReading(reader, "piggyBankProj");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = tryReading(reader, "voidLensChest");
+  if (e$2.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        piggyBankProj: e$1._0,
+        voidLensChest: e$2._0
+      }
+    };
+  } else {
+    return e$2;
+  }
+}
+function toBuffer176(self) {
+  return data(pack5(pack5(packByte(setType(make(), toInt("PiggyBankVoidLensUpdate")), self.playerId, "playerId"), self.piggyBankProj, "piggyBankProj"), self.voidLensChest, "voidLensChest"));
+}
+
 // src/ParserV1456.js
 function addPacketContext2(packetName4, err) {
   return {
@@ -27424,22 +27467,22 @@ function mapPacket2(result, packetName4, fn) {
     _0: addPacketContext2(packetName4, e)
   }));
 }
-function makeParsers2(packetName4, parse184, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, _fromServer) => mapPacket2(parse184(payload), packetName4, toPacket);
+function makeParsers2(packetName4, parse185, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, _fromServer) => mapPacket2(parse185(payload), packetName4, toPacket);
   let parseLazyWrapped = (payload, _fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse184(payload), (e) => addPacketContext2(packetName4, e))))
+    _0: toLazyPacket(make4(() => mapError(parse185(payload), (e) => addPacketContext2(packetName4, e))))
   });
   return {
     parse: parseWrapped,
     parseLazy: parseLazyWrapped
   };
 }
-function makeParsersWithFromServer2(packetName4, parse184, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, fromServer) => mapPacket2(parse184(payload, fromServer), packetName4, toPacket);
+function makeParsersWithFromServer2(packetName4, parse185, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, fromServer) => mapPacket2(parse185(payload, fromServer), packetName4, toPacket);
   let parseLazyWrapped = (payload, fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse184(payload, fromServer), (e) => addPacketContext2(packetName4, e))))
+    _0: toLazyPacket(make4(() => mapError(parse185(payload, fromServer), (e) => addPacketContext2(packetName4, e))))
   });
   return {
     parse: parseWrapped,
@@ -29414,7 +29457,7 @@ function getParsers2(packetType, fromServer) {
     case "PiggyBankVoidLensUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse157, (a) => ({
+        _0: makeParsers2(packetName4, parse181, (a) => ({
           TAG: "PiggyBankVoidLensUpdate",
           _0: a
         }), (a) => ({
@@ -29669,7 +29712,7 @@ function getParsers2(packetType, fromServer) {
       }
   }
 }
-function parse181(buffer, fromServer, ignoreOpt) {
+function parse182(buffer, fromServer, ignoreOpt) {
   let ignore = ignoreOpt !== void 0 ? ignoreOpt : [];
   let match = buffer.length;
   if (!(match > 2 || match < 0)) {
@@ -29776,7 +29819,7 @@ function parseLazy2(buffer, fromServer) {
 // src/ParserV1457.js
 var ParserV1457_exports = {};
 __export(ParserV1457_exports, {
-  parse: () => parse183,
+  parse: () => parse184,
   parseLazy: () => parseLazy3
 });
 
@@ -29785,8 +29828,8 @@ var PacketV1457_WorldInfo_exports = {};
 __export(PacketV1457_WorldInfo_exports, {
   Decode: () => Decode39,
   Encode: () => Encode39,
-  parse: () => parse182,
-  toBuffer: () => toBuffer176
+  parse: () => parse183,
+  toBuffer: () => toBuffer177
 });
 function readEventInfo3(reader) {
   let e = readByte(reader, "eventInfo1");
@@ -30005,7 +30048,7 @@ function readEventInfo3(reader) {
     }
   };
 }
-function parse182(payload) {
+function parse183(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "time");
   if (e.TAG !== "Ok") {
@@ -30460,7 +30503,7 @@ var Decode39 = {
   readSingle,
   readSByte,
   readEventInfo: readEventInfo3,
-  parse: parse182
+  parse: parse183
 };
 function packEventInfo3(writer, eventInfo) {
   let eventInfo1 = fromFlags(eventInfo.shadowOrbSmashed, eventInfo.killedBoss1, eventInfo.killedBoss2, eventInfo.killedBoss3, eventInfo.hardMode, eventInfo.killedClown, eventInfo.serverSidedCharacters, eventInfo.killedPlantBoss);
@@ -30483,7 +30526,7 @@ function packExtraSpawnPoints3(writer, extraSpawnPoints) {
   });
   return writer$1;
 }
-function toBuffer176(self) {
+function toBuffer177(self) {
   return data(packExtraSpawnPoints3(packSingle(packUInt64(packSByte(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packByte(packEventInfo3(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packUInt64(packBytes(packByte(packString(packInt32(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packInt32(setType(make(), toInt5("WorldInfo")), self.time, "time"), self.dayAndMoonInfo, "dayAndMoonInfo"), self.moonPhase, "moonPhase"), self.maxTilesX, "maxTilesX"), self.maxTilesY, "maxTilesY"), self.spawnX, "spawnX"), self.spawnY, "spawnY"), self.worldSurface, "worldSurface"), self.rockLayer, "rockLayer"), self.worldId, "worldId"), self.worldName, "worldName"), self.gameMode, "gameMode"), asArray(self.worldUniqueId), "worldUniqueId"), self.worldGeneratorVersion, "worldGeneratorVersion"), self.moonType, "moonType"), self.treeBackground, "treeBackground"), self.treeBackground2, "treeBackground2"), self.treeBackground3, "treeBackground3"), self.treeBackground4, "treeBackground4"), self.corruptionBackground, "corruptionBackground"), self.jungleBackground, "jungleBackground"), self.snowBackground, "snowBackground"), self.hallowBackground, "hallowBackground"), self.crimsonBackground, "crimsonBackground"), self.desertBackground, "desertBackground"), self.oceanBackground, "oceanBackground"), self.mushroomBackground, "mushroomBackground"), self.underworldBackground, "underworldBackground"), self.iceBackStyle, "iceBackStyle"), self.jungleBackStyle, "jungleBackStyle"), self.hellBackStyle, "hellBackStyle"), self.windSpeedSet, "windSpeedSet"), self.cloudNumber, "cloudNumber"), self.tree1, "tree1"), self.tree2, "tree2"), self.tree3, "tree3"), self.treeStyle1, "treeStyle1"), self.treeStyle2, "treeStyle2"), self.treeStyle3, "treeStyle3"), self.treeStyle4, "treeStyle4"), self.caveBack1, "caveBack1"), self.caveBack2, "caveBack2"), self.caveBack3, "caveBack3"), self.caveBackStyle1, "caveBackStyle1"), self.caveBackStyle2, "caveBackStyle2"), self.caveBackStyle3, "caveBackStyle3"), self.caveBackStyle4, "caveBackStyle4"), self.forest1TreeTopStyle, "forest1TreeTopStyle"), self.forest2TreeTopStyle, "forest2TreeTopStyle"), self.forest3TreeTopStyle, "forest3TreeTopStyle"), self.forest4TreeTopStyle, "forest4TreeTopStyle"), self.corruptionTreeTopStyle, "corruptionTreeTopStyle"), self.jungleTreeTopStyle, "jungleTreeTopStyle"), self.snowTreeTopStyle, "snowTreeTopStyle"), self.hallowTreeTopStyle, "hallowTreeTopStyle"), self.crimsonTreeTopStyle, "crimsonTreeTopStyle"), self.desertTreeTopStyle, "desertTreeTopStyle"), self.oceanTreeTopStyle, "oceanTreeTopStyle"), self.glowingMushroomTreeTopStyle, "glowingMushroomTreeTopStyle"), self.underworldTreeTopStyle, "underworldTreeTopStyle"), self.rain, "rain"), self.eventInfo), toByte(fromFlags(self.lowTiles, self.forceHalloweenForever, self.forceChristmasForever, self.moreLightningSeed, self.noLightningSeed, false, false, false)), "worldFlags"), self.sundialCooldown, "sundialCooldown"), self.moondialCooldown, "moondialCooldown"), self.copperOreTier, "copperOreTier"), self.ironOreTier, "ironOreTier"), self.silverOreTier, "silverOreTier"), self.goldOreTier, "goldOreTier"), self.cobaltOreTier, "cobaltOreTier"), self.mythrilOreTier, "mythrilOreTier"), self.adamantiteOreTier, "adamantiteOreTier"), self.invasionType, "invasionType"), self.lobbyId, "lobbyId"), self.sandstormSeverity, "sandstormSeverity"), self.extraSpawnPoints));
 }
 var Encode39 = {
@@ -30491,7 +30534,7 @@ var Encode39 = {
   packByte,
   packEventInfo: packEventInfo3,
   packExtraSpawnPoints: packExtraSpawnPoints3,
-  toBuffer: toBuffer176
+  toBuffer: toBuffer177
 };
 
 // src/ParserV1457.js
@@ -30507,22 +30550,22 @@ function mapPacket3(result, packetName4, fn) {
     _0: addPacketContext3(packetName4, e)
   }));
 }
-function makeParsers3(packetName4, parse184, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, _fromServer) => mapPacket3(parse184(payload), packetName4, toPacket);
+function makeParsers3(packetName4, parse185, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, _fromServer) => mapPacket3(parse185(payload), packetName4, toPacket);
   let parseLazyWrapped = (payload, _fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse184(payload), (e) => addPacketContext3(packetName4, e))))
+    _0: toLazyPacket(make4(() => mapError(parse185(payload), (e) => addPacketContext3(packetName4, e))))
   });
   return {
     parse: parseWrapped,
     parseLazy: parseLazyWrapped
   };
 }
-function makeParsersWithFromServer3(packetName4, parse184, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, fromServer) => mapPacket3(parse184(payload, fromServer), packetName4, toPacket);
+function makeParsersWithFromServer3(packetName4, parse185, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, fromServer) => mapPacket3(parse185(payload, fromServer), packetName4, toPacket);
   let parseLazyWrapped = (payload, fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse184(payload, fromServer), (e) => addPacketContext3(packetName4, e))))
+    _0: toLazyPacket(make4(() => mapError(parse185(payload, fromServer), (e) => addPacketContext3(packetName4, e))))
   });
   return {
     parse: parseWrapped,
@@ -30630,7 +30673,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse182, (a) => ({
+          _0: makeParsers3(packetName4, parse183, (a) => ({
             TAG: "WorldInfo",
             _0: a
           }), (a) => ({
@@ -31704,7 +31747,7 @@ function getParsers3(packetType, fromServer) {
     case "ItemDropInstancedUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse158, (a) => ({
+        _0: makeParsers3(packetName4, parse157, (a) => ({
           TAG: "ItemDropInstancedUpdate",
           _0: a
         }), (a) => ({
@@ -32486,7 +32529,7 @@ function getParsers3(packetType, fromServer) {
     case "PiggyBankVoidLensUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse157, (a) => ({
+        _0: makeParsers3(packetName4, parse158, (a) => ({
           TAG: "PiggyBankVoidLensUpdate",
           _0: a
         }), (a) => ({
@@ -32749,7 +32792,7 @@ function getParsers3(packetType, fromServer) {
       };
   }
 }
-function parse183(buffer, fromServer, ignoreOpt) {
+function parse184(buffer, fromServer, ignoreOpt) {
   let ignore = ignoreOpt !== void 0 ? ignoreOpt : [];
   let match = buffer.length;
   if (!(match > 2 || match < 0)) {
@@ -33017,7 +33060,7 @@ __export(Packet_exports, {
   WorldDataRequest: () => WorldDataRequest,
   WorldInfo: () => WorldInfo,
   Zones: () => Zones,
-  toBuffer: () => toBuffer177,
+  toBuffer: () => toBuffer178,
   toPacketName: () => toPacketName$1
 });
 
@@ -33802,7 +33845,7 @@ function packetTypeOf$1(packet) {
 function toPacketName(packet) {
   return packetName(packetTypeOf$1(packet));
 }
-function toBuffer177(packet, fromServer) {
+function toBuffer178(packet, fromServer) {
   let packetType = packetTypeOf(packet);
   let err = guardDirection(packetType, fromServer);
   if (err !== void 0) {
@@ -33980,7 +34023,7 @@ function toBuffer177(packet, fromServer) {
     case "ItemFramePlace":
       return toBufferResult(toBuffer127(packet._0));
     case "ItemDropInstancedUpdate":
-      return toBufferResult(toBuffer154(packet._0));
+      return toBufferResult(toBuffer153(packet._0));
     case "EmoteBubble":
       return toBufferResult(toBuffer119(packet._0));
     case "ExtraValueSync":
@@ -34084,7 +34127,7 @@ function toBuffer177(packet, fromServer) {
     case "LucyAxeMessage":
       return toBufferResult(toBuffer128(packet._0));
     case "PiggyBankVoidLensUpdate":
-      return toBufferResult(toBuffer153(packet._0));
+      return toBufferResult(toBuffer154(packet._0));
     case "DungeonDefendersEventAttemptSkipWait":
       return toBufferResult(toBuffer158(packet._0));
     case "HaveDryadDoStardewAnimation":
@@ -34835,7 +34878,7 @@ __export(PacketV1456_exports, {
   WorldDataRequest: () => WorldDataRequest2,
   WorldInfo: () => WorldInfo2,
   Zones: () => Zones2,
-  toBuffer: () => toBuffer178,
+  toBuffer: () => toBuffer179,
   toPacketName: () => toPacketName$12
 });
 function packetTypeOf2(packet) {
@@ -35588,7 +35631,7 @@ function packetTypeOf$12(packet) {
 function toPacketName2(packet) {
   return packetName3(packetTypeOf$12(packet));
 }
-function toBuffer178(packet, fromServer) {
+function toBuffer179(packet, fromServer) {
   let packetType = packetTypeOf2(packet);
   let err = guardDirection2(packetType, fromServer);
   if (err !== void 0) {
@@ -35869,7 +35912,7 @@ function toBuffer178(packet, fromServer) {
     case "LucyAxeMessage":
       return toBufferResult(toBuffer128(packet._0));
     case "PiggyBankVoidLensUpdate":
-      return toBufferResult(toBuffer153(packet._0));
+      return toBufferResult(toBuffer176(packet._0));
     case "DungeonDefendersEventAttemptSkipWait":
       return toBufferResult(toBuffer158(packet._0));
     case "HaveDryadDoStardewAnimation":
@@ -36618,7 +36661,7 @@ __export(PacketV1457_exports, {
   WorldDataRequest: () => WorldDataRequest3,
   WorldInfo: () => WorldInfo3,
   Zones: () => Zones3,
-  toBuffer: () => toBuffer179,
+  toBuffer: () => toBuffer180,
   toPacketName: () => toPacketName$13
 });
 function packetTypeOf3(packet) {
@@ -37376,7 +37419,7 @@ function packetTypeOf$13(packet) {
 function toPacketName3(packet) {
   return packetName2(packetTypeOf$13(packet));
 }
-function toBuffer179(packet, fromServer) {
+function toBuffer180(packet, fromServer) {
   let packetType = packetTypeOf3(packet);
   let err = guardDirection3(packetType, fromServer);
   if (err !== void 0) {
@@ -37396,7 +37439,7 @@ function toBuffer179(packet, fromServer) {
     case "WorldDataRequest":
       return toBufferResult(toBuffer73(packet._0));
     case "WorldInfo":
-      return toBufferResult(toBuffer176(packet._0));
+      return toBufferResult(toBuffer177(packet._0));
     case "InitialTileSectionsRequest":
       return toBufferResult(toBuffer79(packet._0));
     case "Status":
@@ -37554,7 +37597,7 @@ function toBuffer179(packet, fromServer) {
     case "ItemFramePlace":
       return toBufferResult(toBuffer127(packet._0));
     case "ItemDropInstancedUpdate":
-      return toBufferResult(toBuffer154(packet._0));
+      return toBufferResult(toBuffer153(packet._0));
     case "EmoteBubble":
       return toBufferResult(toBuffer119(packet._0));
     case "ExtraValueSync":
@@ -37658,7 +37701,7 @@ function toBuffer179(packet, fromServer) {
     case "LucyAxeMessage":
       return toBufferResult(toBuffer128(packet._0));
     case "PiggyBankVoidLensUpdate":
-      return toBufferResult(toBuffer153(packet._0));
+      return toBufferResult(toBuffer154(packet._0));
     case "DungeonDefendersEventAttemptSkipWait":
       return toBufferResult(toBuffer158(packet._0));
     case "HaveDryadDoStardewAnimation":
@@ -38296,6 +38339,38 @@ function ownershipToV1456(ownership) {
       return 3;
   }
 }
+function trackedProjectileToLatest(value) {
+  if (value !== void 0) {
+    return {
+      projectileKey: {
+        spawner: value.ownerIndex,
+        index: value.expectedIdentity,
+        generation: 0
+      },
+      projectileType: value.expectedType
+    };
+  } else {
+    return {
+      projectileKey: {
+        spawner: 0,
+        index: 0,
+        generation: 0
+      },
+      projectileType: 0
+    };
+  }
+}
+function trackedProjectileFromLatest(value) {
+  if (toInt11(value.projectileKey) === 0 && value.projectileType === 0) {
+    return;
+  } else {
+    return {
+      ownerIndex: value.projectileKey.spawner,
+      expectedIdentity: value.projectileKey.index,
+      expectedType: value.projectileType
+    };
+  }
+}
 function itemDropFromV1456(item, shimmer, enemyGrabDelayTime) {
   return {
     itemDropId: item.itemDropId,
@@ -38674,20 +38749,30 @@ function toLatest(packet) {
         TAG: "ItemDropInstancedUpdate",
         _0: itemDropFromV1456(packet._0, void 0, void 0)
       };
-    case "ItemDropShimmeredUpdate":
+    case "PiggyBankVoidLensUpdate":
       let value$7 = packet._0;
       return {
-        TAG: "ItemDropUpdate",
-        _0: itemDropFromV1456(value$7, {
-          shimmered: value$7.shimmered,
-          shimmerTime: value$7.shimmeredTime
-        }, void 0)
+        TAG: "PiggyBankVoidLensUpdate",
+        _0: {
+          playerId: value$7.playerId,
+          piggyBankProj: trackedProjectileToLatest(value$7.piggyBankProj),
+          voidLensChest: trackedProjectileToLatest(value$7.voidLensChest)
+        }
       };
-    case "ItemDropProtectedUpdate":
+    case "ItemDropShimmeredUpdate":
       let value$8 = packet._0;
       return {
         TAG: "ItemDropUpdate",
-        _0: itemDropFromV1456(value$8, void 0, value$8.timeLeftInWhichTheItemCannotBeTakenByEnemies)
+        _0: itemDropFromV1456(value$8, {
+          shimmered: value$8.shimmered,
+          shimmerTime: value$8.shimmeredTime
+        }, void 0)
+      };
+    case "ItemDropProtectedUpdate":
+      let value$9 = packet._0;
+      return {
+        TAG: "ItemDropUpdate",
+        _0: itemDropFromV1456(value$9, void 0, value$9.timeLeftInWhichTheItemCannotBeTakenByEnemies)
       };
     case "ServerInfo":
       return {
@@ -38859,6 +38944,16 @@ function fromLatest(packet) {
         TAG: "ItemDropInstancedUpdate",
         _0: itemDropBaseToV1456(packet._0)
       };
+    case "PiggyBankVoidLensUpdate":
+      let value$5 = packet._0;
+      return {
+        TAG: "PiggyBankVoidLensUpdate",
+        _0: {
+          playerId: value$5.playerId,
+          piggyBankProj: trackedProjectileFromLatest(value$5.piggyBankProj),
+          voidLensChest: trackedProjectileFromLatest(value$5.voidLensChest)
+        }
+      };
     case "ServerInfo":
       return {
         TAG: "ServerInfo",
@@ -38925,6 +39020,7 @@ function convertToLatestIfNeeded(buffer, fromServer) {
     case "NpcCatch":
     case "NetModuleLoad":
     case "ItemDropInstancedUpdate":
+    case "PiggyBankVoidLensUpdate":
     case "ItemDropShimmeredUpdate":
     case "ItemDropProtectedUpdate":
     case "ServerInfo":
@@ -38936,7 +39032,7 @@ function convertToLatestIfNeeded(buffer, fromServer) {
         _0: "PacketStructureIsSame"
       };
   }
-  return map(parse181(buffer, fromServer, void 0), (packet) => {
+  return map(parse182(buffer, fromServer, void 0), (packet) => {
     let packet$1 = toLatest(packet);
     if (packet$1 !== void 0) {
       return {
@@ -38990,6 +39086,7 @@ function convertFromLatestIfNeeded(buffer, fromServer) {
     case "NpcCatch":
     case "NetModuleLoad":
     case "ItemDropInstancedUpdate":
+    case "PiggyBankVoidLensUpdate":
     case "ServerInfo":
     case "PlayerPlatformInfo":
       break;
@@ -39039,7 +39136,7 @@ function convertToLatestIfNeeded2(buffer, fromServer) {
   }
   switch (match) {
     case "WorldInfo":
-      return map(parse183(buffer, fromServer, void 0), (packet) => {
+      return map(parse184(buffer, fromServer, void 0), (packet) => {
         if (packet.TAG !== "WorldInfo") {
           return "PacketStructureIsSame";
         }

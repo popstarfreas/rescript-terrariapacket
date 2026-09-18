@@ -5,6 +5,7 @@ import * as Stdlib_Result from "@rescript/runtime/lib/es6/Stdlib_Result.js";
 import * as Parser$TerrariaPacket from "./Parser.js";
 import * as PacketType$TerrariaPacket from "./PacketType.js";
 import * as ParserV1456$TerrariaPacket from "./ParserV1456.js";
+import * as ProjectileKey$TerrariaPacket from "./ProjectileKey.js";
 import * as PacketTypeV1456$TerrariaPacket from "./PacketTypeV1456.js";
 
 function ownershipFromV1456(value) {
@@ -31,6 +32,40 @@ function ownershipToV1456(ownership) {
       return 2;
     case "GrabDelayForAllPlayers" :
       return 3;
+  }
+}
+
+function trackedProjectileToLatest(value) {
+  if (value !== undefined) {
+    return {
+      projectileKey: {
+        spawner: value.ownerIndex,
+        index: value.expectedIdentity,
+        generation: 0
+      },
+      projectileType: value.expectedType
+    };
+  } else {
+    return {
+      projectileKey: {
+        spawner: 0,
+        index: 0,
+        generation: 0
+      },
+      projectileType: 0
+    };
+  }
+}
+
+function trackedProjectileFromLatest(value) {
+  if (ProjectileKey$TerrariaPacket.toInt(value.projectileKey) === 0 && value.projectileType === 0) {
+    return;
+  } else {
+    return {
+      ownerIndex: value.projectileKey.spawner,
+      expectedIdentity: value.projectileKey.index,
+      expectedType: value.projectileType
+    };
   }
 }
 
@@ -416,20 +451,30 @@ function toLatest(packet) {
         TAG: "ItemDropInstancedUpdate",
         _0: itemDropFromV1456(packet._0, undefined, undefined)
       };
-    case "ItemDropShimmeredUpdate" :
+    case "PiggyBankVoidLensUpdate" :
       let value$7 = packet._0;
       return {
-        TAG: "ItemDropUpdate",
-        _0: itemDropFromV1456(value$7, {
-          shimmered: value$7.shimmered,
-          shimmerTime: value$7.shimmeredTime
-        }, undefined)
+        TAG: "PiggyBankVoidLensUpdate",
+        _0: {
+          playerId: value$7.playerId,
+          piggyBankProj: trackedProjectileToLatest(value$7.piggyBankProj),
+          voidLensChest: trackedProjectileToLatest(value$7.voidLensChest)
+        }
       };
-    case "ItemDropProtectedUpdate" :
+    case "ItemDropShimmeredUpdate" :
       let value$8 = packet._0;
       return {
         TAG: "ItemDropUpdate",
-        _0: itemDropFromV1456(value$8, undefined, value$8.timeLeftInWhichTheItemCannotBeTakenByEnemies)
+        _0: itemDropFromV1456(value$8, {
+          shimmered: value$8.shimmered,
+          shimmerTime: value$8.shimmeredTime
+        }, undefined)
+      };
+    case "ItemDropProtectedUpdate" :
+      let value$9 = packet._0;
+      return {
+        TAG: "ItemDropUpdate",
+        _0: itemDropFromV1456(value$9, undefined, value$9.timeLeftInWhichTheItemCannotBeTakenByEnemies)
       };
     case "ServerInfo" :
       return {
@@ -602,6 +647,16 @@ function fromLatest(packet) {
         TAG: "ItemDropInstancedUpdate",
         _0: itemDropBaseToV1456(packet._0)
       };
+    case "PiggyBankVoidLensUpdate" :
+      let value$5 = packet._0;
+      return {
+        TAG: "PiggyBankVoidLensUpdate",
+        _0: {
+          playerId: value$5.playerId,
+          piggyBankProj: trackedProjectileFromLatest(value$5.piggyBankProj),
+          voidLensChest: trackedProjectileFromLatest(value$5.voidLensChest)
+        }
+      };
     case "ServerInfo" :
       return {
         TAG: "ServerInfo",
@@ -669,6 +724,7 @@ function convertToLatestIfNeeded(buffer, fromServer) {
     case "NpcCatch" :
     case "NetModuleLoad" :
     case "ItemDropInstancedUpdate" :
+    case "PiggyBankVoidLensUpdate" :
     case "ItemDropShimmeredUpdate" :
     case "ItemDropProtectedUpdate" :
     case "ServerInfo" :
@@ -735,6 +791,7 @@ function convertFromLatestIfNeeded(buffer, fromServer) {
     case "NpcCatch" :
     case "NetModuleLoad" :
     case "ItemDropInstancedUpdate" :
+    case "PiggyBankVoidLensUpdate" :
     case "ServerInfo" :
     case "PlayerPlatformInfo" :
       break;

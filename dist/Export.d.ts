@@ -1131,7 +1131,7 @@ declare function fromInt_2(n: number): t_112 | undefined;
 
 declare function fromInt_3(n: number): t_236 | undefined;
 
-declare function fromInt_4(n: number): t_253 | undefined;
+declare function fromInt_4(n: number): t_254 | undefined;
 
 declare type fromLatestIfNeeded =
 | "PacketStructureIsSame"
@@ -1140,7 +1140,7 @@ declare type fromLatestIfNeeded =
 
 declare type fromLatestIfNeeded_2 =
 | "PacketStructureIsSame"
-| { TAG: "ConvertedFromLatest"; _0: t_254 }
+| { TAG: "ConvertedFromLatest"; _0: t_255 }
 | "DiscardAsNotExists";
 
 declare function getOr<A>(a: A[], index: number, or: A): A;
@@ -1625,7 +1625,7 @@ declare type LazyPacket_t_2 =
 | { TAG: "CountsAsHostForGameplaySet"; _0: LazyPacket_lazyParsed_2<t_223> }
 | { TAG: "CreditsOrSlimeTransform"; _0: LazyPacket_lazyParsed_2<t_224> }
 | { TAG: "LucyAxeMessage"; _0: LazyPacket_lazyParsed_2<t_225> }
-| { TAG: "PiggyBankVoidLensUpdate"; _0: LazyPacket_lazyParsed_2<t_226> }
+| { TAG: "PiggyBankVoidLensUpdate"; _0: LazyPacket_lazyParsed_2<t_251> }
 | { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: LazyPacket_lazyParsed_2<t_227> }
 | { TAG: "HaveDryadDoStardewAnimation"; _0: LazyPacket_lazyParsed_2<t_228> }
 | { TAG: "ItemDropShimmeredUpdate"; _0: LazyPacket_lazyParsed_2<t_229> }
@@ -1645,8 +1645,8 @@ declare type LazyPacket_t_2 =
 | { TAG: "SectionRequest"; _0: LazyPacket_lazyParsed_2<t_95> }
 | { TAG: "ItemDropPosition"; _0: LazyPacket_lazyParsed_2<t_85> }
 | { TAG: "HostToken"; _0: LazyPacket_lazyParsed_2<t_82> }
-| { TAG: "ServerInfo"; _0: LazyPacket_lazyParsed_2<t_251> }
-| { TAG: "PlayerPlatformInfo"; _0: LazyPacket_lazyParsed_2<t_252> };
+| { TAG: "ServerInfo"; _0: LazyPacket_lazyParsed_2<t_252> }
+| { TAG: "PlayerPlatformInfo"; _0: LazyPacket_lazyParsed_2<t_253> };
 
 declare type LazyPacket_t_3 =
     { TAG: "ConnectRequest"; _0: LazyPacket_lazyParsed_3<t_114> }
@@ -1655,7 +1655,7 @@ declare type LazyPacket_t_3 =
 | { TAG: "PlayerInfo"; _0: LazyPacket_lazyParsed_3<t_100> }
 | { TAG: "PlayerInventorySlot"; _0: LazyPacket_lazyParsed_3<t_102> }
 | { TAG: "WorldDataRequest"; _0: LazyPacket_lazyParsed_3<t_117> }
-| { TAG: "WorldInfo"; _0: LazyPacket_lazyParsed_3<t_255> }
+| { TAG: "WorldInfo"; _0: LazyPacket_lazyParsed_3<t_256> }
 | { TAG: "InitialTileSectionsRequest"; _0: LazyPacket_lazyParsed_3<t_83> }
 | { TAG: "Status"; _0: LazyPacket_lazyParsed_3<t_118> }
 | { TAG: "TileSectionSend"; _0: LazyPacket_lazyParsed_3<t_68> }
@@ -2295,7 +2295,7 @@ declare function packetName(packetType: t_112): string;
 
 declare function packetName_2(packetType: t_236): string;
 
-declare function packetName_3(packetType: t_253): string;
+declare function packetName_3(packetType: t_254): string;
 
 export declare namespace PacketType {
     export {
@@ -2320,7 +2320,7 @@ export declare namespace PacketTypeV1457 {
         fromInt_4 as fromInt,
         toInt_4 as toInt,
         packetName_3 as packetName,
-        t_253 as t
+        t_254 as t
     }
 }
 
@@ -2338,7 +2338,7 @@ export declare namespace PacketV1456 {
 
 export declare namespace PacketV1457 {
     export {
-        t_254 as t,
+        t_255 as t,
         LazyPacket_lazyParsed_3 as LazyPacket_lazyParsed,
         LazyPacket_t_3 as LazyPacket_t,
         toBufferResult_3 as toBufferResult,
@@ -2447,8 +2447,8 @@ ignore?: t_236[],
 declare const parse_109: (
 buffer: Buffer,
 fromServer: boolean,
-ignore?: t_253[],
-) => parseResult<t_254>;
+ignore?: t_254[],
+) => parseResult<t_255>;
 
 declare type parse_11 = parseOk_11 | parseError_11;
 
@@ -3165,7 +3165,7 @@ declare type parseOk_10 = { TAG: "Ok"; _0: t_10 };
 
 declare type parseOk_100 = { TAG: "Ok"; _0: t_111 };
 
-declare type parseOk_101 = { TAG: "Ok"; _0: t_255 };
+declare type parseOk_101 = { TAG: "Ok"; _0: t_256 };
 
 declare type parseOk_11 = { TAG: "Ok"; _0: t_11 };
 
@@ -5239,9 +5239,9 @@ declare type t_225 = {
 };
 
 declare type t_226 = {
-    readonly playerId: number; 
-    readonly piggyBankProj: (undefined | TrackedProjectileReference_t); 
-    readonly voidLensChest: (undefined | TrackedProjectileReference_t)
+    readonly playerId: number;
+    readonly piggyBankProj: TrackedProjectileReference_t;
+    readonly voidLensChest: TrackedProjectileReference_t;
 };
 
 declare type t_227 = void;
@@ -5605,7 +5605,7 @@ declare type t_237 =
 | { TAG: "CountsAsHostForGameplaySet"; _0: t_223 }
 | { TAG: "CreditsOrSlimeTransform"; _0: t_224 }
 | { TAG: "LucyAxeMessage"; _0: t_225 }
-| { TAG: "PiggyBankVoidLensUpdate"; _0: t_226 }
+| { TAG: "PiggyBankVoidLensUpdate"; _0: t_251 }
 | { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: t_227 }
 | { TAG: "HaveDryadDoStardewAnimation"; _0: t_228 }
 | { TAG: "ItemDropShimmeredUpdate"; _0: t_229 }
@@ -5625,8 +5625,8 @@ declare type t_237 =
 | { TAG: "SectionRequest"; _0: t_95 }
 | { TAG: "ItemDropPosition"; _0: t_85 }
 | { TAG: "HostToken"; _0: t_82 }
-| { TAG: "ServerInfo"; _0: t_251 }
-| { TAG: "PlayerPlatformInfo"; _0: t_252 };
+| { TAG: "ServerInfo"; _0: t_252 }
+| { TAG: "PlayerPlatformInfo"; _0: t_253 };
 
 declare type t_238 = {
     readonly time: number;
@@ -5832,11 +5832,17 @@ declare type t_25 = { readonly npcId: number; readonly buffType: number };
 
 declare type t_250 = t_240;
 
-declare type t_251 = void;
+declare type t_251 = {
+    readonly playerId: number; 
+    readonly piggyBankProj: (undefined | TrackedProjectileReference_t_2); 
+    readonly voidLensChest: (undefined | TrackedProjectileReference_t_2)
+};
 
-declare type t_252 = { readonly playerId: number; readonly platformId: PlatformId_t_2 };
+declare type t_252 = void;
 
-declare type t_253 =
+declare type t_253 = { readonly playerId: number; readonly platformId: PlatformId_t_2 };
+
+declare type t_254 =
 | "ConnectRequest"
 | "Disconnect"
 | "PlayerSlotSet"
@@ -5998,14 +6004,14 @@ declare type t_253 =
 | "ServerInfo"
 | "PlayerPlatformInfo";
 
-declare type t_254 =
+declare type t_255 =
     { TAG: "ConnectRequest"; _0: t_114 }
 | { TAG: "Disconnect"; _0: t_115 }
 | { TAG: "PlayerSlotSet"; _0: t_116 }
 | { TAG: "PlayerInfo"; _0: t_100 }
 | { TAG: "PlayerInventorySlot"; _0: t_102 }
 | { TAG: "WorldDataRequest"; _0: t_117 }
-| { TAG: "WorldInfo"; _0: t_255 }
+| { TAG: "WorldInfo"; _0: t_256 }
 | { TAG: "InitialTileSectionsRequest"; _0: t_83 }
 | { TAG: "Status"; _0: t_118 }
 | { TAG: "TileSectionSend"; _0: t_68 }
@@ -6160,7 +6166,7 @@ declare type t_254 =
 | { TAG: "ServerInfo"; _0: t_233 }
 | { TAG: "PlayerPlatformInfo"; _0: t_234 };
 
-declare type t_255 = {
+declare type t_256 = {
     readonly time: number;
     readonly dayAndMoonInfo: number;
     readonly moonPhase: number;
@@ -7069,11 +7075,11 @@ declare const toBuffer_105: (packet: t_113, fromServer: boolean) => toBufferResu
 
 declare const toBuffer_106: (packet: t_237, fromServer: boolean) => toBufferResult_2;
 
-declare const toBuffer_107: (packet: t_254, fromServer: boolean) => toBufferResult_3;
+declare const toBuffer_107: (packet: t_255, fromServer: boolean) => toBufferResult_3;
 
 declare type toBuffer_108 = toBufferOk_100 | toBufferError_100;
 
-declare const toBuffer_108: (_1: t_255) => toBuffer_108;
+declare const toBuffer_108: (_1: t_256) => toBuffer_108;
 
 declare type toBuffer_109 = { TAG: "Ok"; _0: Buffer } | { TAG: "Error"; _0: PackError };
 
@@ -7910,7 +7916,7 @@ declare function toInt_2(packetType: t_112): number;
 
 declare function toInt_3(packetType: t_236): number;
 
-declare function toInt_4(packetType: t_253): number;
+declare function toInt_4(packetType: t_254): number;
 
 declare type toLatestIfNeeded =
 | "PacketStructureIsSame"
@@ -7926,11 +7932,16 @@ declare const toPacketName: (packet: t_113) => string;
 
 declare const toPacketName_2: (packet: t_237) => string;
 
-declare const toPacketName_3: (packet: t_254) => string;
+declare const toPacketName_3: (packet: t_255) => string;
 
 declare function toString_2(data: CreativePower): string;
 
-declare type TrackedProjectileReference_t = { readonly expectedIdentity: number; readonly expectedType: number };
+declare type TrackedProjectileReference_t = {
+    readonly projectileKey: t_106;
+    readonly projectileType: number;
+};
+
+declare type TrackedProjectileReference_t_2 = { readonly expectedIdentity: number; readonly expectedType: number };
 
 export declare namespace TravellingMerchantInventoryPacket {
     export {
@@ -8076,7 +8087,7 @@ export declare namespace WorldInfoV1457Packet {
     export {
         eventInfo_3 as eventInfo,
         worldUniqueId_3 as worldUniqueId,
-        t_255 as t,
+        t_256 as t,
         parseOk_101 as parseOk,
         parseError_102 as parseError,
         parse_110 as parse,
