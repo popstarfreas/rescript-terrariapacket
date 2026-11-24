@@ -1523,24 +1523,31 @@ let getParsers = (packetType: PacketType.t, fromServer: bool): result<
         ~toLazyPacket=a => Packet.LazyPacket.DamageNPCAck(a),
       ),
     )
-  | (ServerInfo, false) => Error(ServerInfoFromClient)
-  | (ServerInfo, true) =>
+  | (ServerInfo, _) =>
     Ok(
-      makeParsers(
+      makeParsersWithFromServer(
         ~packetName,
         ~parse=Packet.ServerInfo.parse,
         ~toPacket=a => Packet.ServerInfo(a),
         ~toLazyPacket=a => Packet.LazyPacket.ServerInfo(a),
       ),
     )
-  | (PlayerPlatformInfo, true) => Error(PlayerPlatformInfoFromServer)
-  | (PlayerPlatformInfo, false) =>
+  | (PlayerPlatformInfo, _) =>
     Ok(
       makeParsers(
         ~packetName,
         ~parse=Packet.PlayerPlatformInfo.parse,
         ~toPacket=a => Packet.PlayerPlatformInfo(a),
         ~toLazyPacket=a => Packet.LazyPacket.PlayerPlatformInfo(a),
+      ),
+    )
+  | (CustomServerAck, _) =>
+    Ok(
+      makeParsers(
+        ~packetName,
+        ~parse=Packet.CustomServerAck.parse,
+        ~toPacket=a => Packet.CustomServerAck(a),
+        ~toLazyPacket=a => Packet.LazyPacket.CustomServerAck(a),
       ),
     )
   }

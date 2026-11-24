@@ -5,6 +5,7 @@ import * as Parser$TerrariaPacket from "./Parser.js";
 import * as PacketType$TerrariaPacket from "./PacketType.js";
 import * as ParserV1457$TerrariaPacket from "./ParserV1457.js";
 import * as PacketTypeV1457$TerrariaPacket from "./PacketTypeV1457.js";
+import * as ParserConverterV1458$TerrariaPacket from "./ParserConverterV1458.js";
 
 function convertToLatestIfNeeded(buffer, fromServer) {
   if (buffer.length < 3) {
@@ -37,10 +38,15 @@ function convertToLatestIfNeeded(buffer, fromServer) {
           TAG: "ConvertedToLatest",
           _0: {
             TAG: "WorldInfo",
-            _0: (newrecord.dungeonY = 0, newrecord.dungeonX = 0, newrecord)
+            _0: (newrecord.dungeonY = 0, newrecord.dungeonX = 0, newrecord.noSpidersSeed = false, newrecord)
           }
         };
       });
+    case "PlayerAnimation" :
+    case "ItemDropModify" :
+    case "EmoteBubble" :
+    case "PlayerDamage" :
+      break;
     case "CavernMonsterTypeSync" :
       if (fromServer) {
         return {
@@ -53,12 +59,32 @@ function convertToLatestIfNeeded(buffer, fromServer) {
           _0: "DiscardAsNotExists"
         };
       }
+    case "ServerInfo" :
+    case "PlayerPlatformInfo" :
+      return {
+        TAG: "Ok",
+        _0: "DiscardAsNotExists"
+      };
     default:
       return {
         TAG: "Ok",
         _0: "PacketStructureIsSame"
       };
   }
+  return Stdlib_Result.map(ParserConverterV1458$TerrariaPacket.convertToLatestIfNeeded(buffer, fromServer), result => {
+    if (typeof result !== "object") {
+      if (result === "PacketStructureIsSame") {
+        return "PacketStructureIsSame";
+      } else {
+        return "DiscardAsNotExists";
+      }
+    } else {
+      return {
+        TAG: "ConvertedToLatest",
+        _0: result._0
+      };
+    }
+  });
 }
 
 function convertFromLatestIfNeeded(buffer, fromServer) {
@@ -72,8 +98,17 @@ function convertFromLatestIfNeeded(buffer, fromServer) {
     };
   }
   let match = PacketType$TerrariaPacket.fromInt(buffer[2]);
-  if (match !== undefined) {
-    if (match === "WorldInfo") {
+  if (match === undefined) {
+    return {
+      TAG: "Error",
+      _0: {
+        TAG: "InvalidPacketType",
+        _0: buffer[2]
+      }
+    };
+  }
+  switch (match) {
+    case "WorldInfo" :
       return Stdlib_Result.map(Parser$TerrariaPacket.parse(buffer, fromServer, undefined), packet => {
         if (packet.TAG === "WorldInfo") {
           return {
@@ -87,21 +122,70 @@ function convertFromLatestIfNeeded(buffer, fromServer) {
           return "PacketStructureIsSame";
         }
       });
-    } else {
+    case "PlayerAnimation" :
+    case "ItemDropModify" :
+    case "EmoteBubble" :
+    case "PlayerDamage" :
+      break;
+    case "ServerInfo" :
+    case "PlayerPlatformInfo" :
+    case "CustomServerAck" :
+      return {
+        TAG: "Ok",
+        _0: "DiscardAsNotExists"
+      };
+    default:
       return {
         TAG: "Ok",
         _0: "PacketStructureIsSame"
       };
-    }
-  } else {
-    return {
-      TAG: "Error",
-      _0: {
-        TAG: "InvalidPacketType",
-        _0: buffer[2]
-      }
-    };
   }
+  return Stdlib_Result.map(ParserConverterV1458$TerrariaPacket.convertFromLatestIfNeeded(buffer, fromServer), result => {
+    if (typeof result !== "object") {
+      if (result === "PacketStructureIsSame") {
+        return "PacketStructureIsSame";
+      } else {
+        return "DiscardAsNotExists";
+      }
+    }
+    let packet = result._0;
+    switch (packet.TAG) {
+      case "PlayerAnimation" :
+        return {
+          TAG: "ConvertedFromLatest",
+          _0: {
+            TAG: "PlayerAnimation",
+            _0: packet._0
+          }
+        };
+      case "ItemDropModify" :
+        return {
+          TAG: "ConvertedFromLatest",
+          _0: {
+            TAG: "ItemDropModify",
+            _0: packet._0
+          }
+        };
+      case "EmoteBubble" :
+        return {
+          TAG: "ConvertedFromLatest",
+          _0: {
+            TAG: "EmoteBubble",
+            _0: packet._0
+          }
+        };
+      case "PlayerDamage" :
+        return {
+          TAG: "ConvertedFromLatest",
+          _0: {
+            TAG: "PlayerDamage",
+            _0: packet._0
+          }
+        };
+      default:
+        return "PacketStructureIsSame";
+    }
+  });
 }
 
 export {

@@ -3,9 +3,12 @@
 
  Not all packets yet have implementations.
 
- The default `Packet`, `Parser`, and packet exports target Terraria **1.4.5.8**
- (`Terraria326` in the connection request). The connection codec accepts a version
+ The default `Packet`, `Parser`, and packet exports target Terraria **1.4.6**
+ (`Terraria329` in the connection request). The connection codec accepts a version
  string supplied by the caller.
+
+ For **1.4.5.8** (protocol 326), use `PacketV1458`, `PacketTypeV1458`,
+ `ParserV1458` and `ParserConverterV1458`. Unchanged packets can be forwarded as received.
 
  For **1.4.5.7**, use `PacketV1457`, `PacketTypeV1457`, `ParserV1457`, and
  `WorldInfoV1457Packet`. `ParserConverterV1457` converts changed packets to and

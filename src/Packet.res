@@ -35,7 +35,7 @@ module PasswordRequired = PacketV1449_PasswordRequired
 module PasswordSend = PacketV1449_PasswordSend
 module ItemOwnerRemove = PacketV1457_ItemOwnerRemove
 module NpcTalk = PacketV1449_NpcTalk
-module PlayerAnimation = PacketV1449_PlayerAnimation
+module PlayerAnimation = Packet_PlayerAnimation
 module PlayerMana = PacketV1449_PlayerMana
 module ManaEffect = PacketV1449_ManaEffect
 module PlayerTeam = PacketV1449_PlayerTeam
@@ -81,10 +81,10 @@ module PlayerStealth = PacketV1449_PlayerStealth
 module ItemForceIntoNearestChest = PacketV1456_ItemForceIntoNearestChest
 module TileEntityUpdate = PacketV1449_TileEntityUpdate
 module TileEntityPlace = PacketV1449_TileEntityPlace
-module ItemDropModify = PacketV1449_ItemDropModify
+module ItemDropModify = Packet_ItemDropModify
 module ItemFramePlace = PacketV1449_ItemFramePlace
 module ItemDropInstancedUpdate = PacketV1457_ItemDropInstancedUpdate
-module EmoteBubble = PacketV1449_EmoteBubble
+module EmoteBubble = Packet_EmoteBubble
 module ExtraValueSync = PacketV1449_ExtraValueSync
 module SocialHandshake = PacketV1449_SocialHandshake
 module Unused = PacketV1456_DebugCommand
@@ -110,7 +110,7 @@ module CrystalInvasionStart = PacketV1449_CrystalInvasionStart
 module CrystalInvasionWipeAll = PacketV1449_CrystalInvasionWipeAll
 module MinionAttackTargetUpdate = PacketV1449_MinionAttackTargetUpdate
 module CrystalInvasionSendWaitTime = PacketV1449_CrystalInvasionSendWaitTime
-module PlayerDamage = PacketV1449_PlayerDamage
+module PlayerDamage = Packet_PlayerDamage
 module PlayerDeath = PacketV1449_PlayerDeath
 module CombatTextCreate = PacketV1449_CombatTextCreate
 module Emoji = PacketV1449_Emoji
@@ -156,8 +156,9 @@ module SectionRequest = PacketV1456_SectionRequest
 module ItemDropPosition = PacketV1456_ItemDropPosition
 module HostToken = PacketV1456_HostToken
 module DamageNPCAck = PacketV1457_DamageNPCAck
-module ServerInfo = PacketV1457_ServerInfo
-module PlayerPlatformInfo = PacketV1457_PlayerPlatformInfo
+module ServerInfo = Packet_ServerInfo
+module PlayerPlatformInfo = Packet_PlayerPlatformInfo
+module CustomServerAck = Packet_CustomServerAck
 
 type t =
   | ConnectRequest(ConnectRequest.t)
@@ -320,6 +321,7 @@ type t =
   | DamageNPCAck(DamageNPCAck.t)
   | ServerInfo(ServerInfo.t)
   | PlayerPlatformInfo(PlayerPlatformInfo.t)
+  | CustomServerAck(CustomServerAck.t)
 
 type direction =
   | ServerOnly
@@ -488,6 +490,7 @@ let packetTypeOf = (packet: t): PacketType.t =>
   | DamageNPCAck(_) => PacketType.DamageNPCAck
   | ServerInfo(_) => PacketType.ServerInfo
   | PlayerPlatformInfo(_) => PacketType.PlayerPlatformInfo
+  | CustomServerAck(_) => PacketType.CustomServerAck
   }
 
 let directionOfPacketType = (packetType: PacketType.t): direction =>
@@ -515,8 +518,7 @@ let directionOfPacketType = (packetType: PacketType.t): direction =>
   | NpcFishOut
   | FoodPlatterTryPlacing
   | NpcBuffRemovalRequest
-  | ClientSyncedInventory
-  | PlayerPlatformInfo =>
+  | ClientSyncedInventory =>
     ClientOnly
   | Disconnect
   | PlayerSlotSet
@@ -560,8 +562,7 @@ let directionOfPacketType = (packetType: PacketType.t): direction =>
   | NpcTamper
   | LegacySoundPlay
   | PlayerDead
-  | DamageNPCAck
-  | ServerInfo =>
+  | DamageNPCAck =>
     ServerOnly
   | _ => Both
   }
@@ -751,6 +752,7 @@ module LazyPacket = {
     | DamageNPCAck(lazyParsed<DamageNPCAck.t>)
     | ServerInfo(lazyParsed<ServerInfo.t>)
     | PlayerPlatformInfo(lazyParsed<PlayerPlatformInfo.t>)
+    | CustomServerAck(lazyParsed<CustomServerAck.t>)
 
   let packetTypeOf = (packet: t): PacketType.t =>
     switch packet {
@@ -914,6 +916,7 @@ module LazyPacket = {
     | DamageNPCAck(_) => PacketType.DamageNPCAck
     | ServerInfo(_) => PacketType.ServerInfo
     | PlayerPlatformInfo(_) => PacketType.PlayerPlatformInfo
+    | CustomServerAck(_) => PacketType.CustomServerAck
     }
 
   let toPacketName = (packet: t): string => packet->packetTypeOf->PacketType.packetName
@@ -1194,9 +1197,10 @@ let toBuffer = (packet: t, fromServer: bool): ISerializer.toBufferResult => {
     | HostToken(hostToken) => HostToken.toBuffer(hostToken)->ISerializer.toBufferResult
     | DamageNPCAck(damageNPCAck) =>
       DamageNPCAck.toBuffer(damageNPCAck)->ISerializer.toBufferResult
-    | ServerInfo(serverInfo) => ServerInfo.toBuffer(serverInfo)->ISerializer.toBufferResult
+    | ServerInfo(serverInfo) => ServerInfo.toBuffer(serverInfo, fromServer)->ISerializer.toBufferResult
     | PlayerPlatformInfo(playerPlatformInfo) =>
       PlayerPlatformInfo.toBuffer(playerPlatformInfo)->ISerializer.toBufferResult
+    | CustomServerAck(value) => CustomServerAck.toBuffer(value)->ISerializer.toBufferResult
     }
   }
 }
@@ -1389,5 +1393,6 @@ let toPacketName = (packet: t): string => {
   | DamageNPCAck(_damageNPCAck) => "DamageNPCAck"
   | ServerInfo(_serverInfo) => "ServerInfo"
   | PlayerPlatformInfo(_playerPlatformInfo) => "PlayerPlatformInfo"
+  | CustomServerAck(_customServerAck) => "CustomServerAck"
   }
 }

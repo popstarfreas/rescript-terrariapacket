@@ -146,6 +146,7 @@ let toLatest = (packet: PacketV1456.t): option<Packet.t> =>
         forceChristmasForever: false,
         moreLightningSeed: false,
         noLightningSeed: false,
+        noSpidersSeed: false,
         dungeonX: 0,
         dungeonY: 0,
       }))
@@ -234,8 +235,8 @@ let toLatest = (packet: PacketV1456.t): option<Packet.t> =>
       voidLensChest: trackedProjectileToLatest(value.voidLensChest),
     }))
   | NetModuleLoad(value) => netModuleToLatest(value)->Option.map(value => Packet.NetModuleLoad(value))
-  | ServerInfo(_) => Some(Packet.ServerInfo())
-  | PlayerPlatformInfo(value) => Some(Packet.PlayerPlatformInfo(Obj.magic(value)))
+  | ServerInfo(_) => None
+  | PlayerPlatformInfo(value) => Some(Packet.PlayerPlatformInfo({playerId: value.playerId, platformId: Obj.magic(value.platformId), userId: "", platformName: "", isHost: false}))
   | _ => None
   }
 
@@ -354,6 +355,14 @@ let convertToLatestIfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): res
         | None => DiscardAsNotExists
         }
       )
+    | Some(PlayerAnimation | ItemDropModify | PlayerDamage | EmoteBubble) =>
+      ParserConverterV1458.convertToLatestIfNeeded(~buffer, ~fromServer)->Result.map(result =>
+        switch result {
+        | ConvertedToLatest(packet) => ConvertedToLatest(packet)
+        | PacketStructureIsSame => PacketStructureIsSame
+        | DiscardAsNotExists => DiscardAsNotExists
+        }
+      )
     | Some(_) => Ok(PacketStructureIsSame)
     }
   }
@@ -368,6 +377,8 @@ let convertFromLatestIfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): r
   } else {
     switch buffer->NodeJs.Buffer.unsafeGet(2)->PacketType.fromInt {
     | None => Error(IParser.ParseError.InvalidPacketType(buffer->NodeJs.Buffer.unsafeGet(2)))
+    | Some(ServerInfo) if !fromServer => Ok(DiscardAsNotExists)
+    | Some(PlayerPlatformInfo) if fromServer => Ok(DiscardAsNotExists)
     | Some(NpcItemStrike)
     | Some(ItemDropShimmeredUpdate)
     | Some(ItemDropProtectedUpdate)
@@ -393,6 +404,21 @@ let convertFromLatestIfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): r
         switch packet {
         | NetModuleLoad(CreativeUnlocks(_)) => DiscardAsNotExists
         | packet => ConvertedFromLatest(fromLatest(packet))
+        }
+      )
+    | Some(CustomServerAck) => Ok(DiscardAsNotExists)
+    | Some(PlayerAnimation | ItemDropModify | PlayerDamage | EmoteBubble) =>
+      ParserConverterV1458.convertFromLatestIfNeeded(~buffer, ~fromServer)->Result.map(result =>
+        switch result {
+        | PacketStructureIsSame => PacketStructureIsSame
+        | DiscardAsNotExists => DiscardAsNotExists
+        | ConvertedFromLatest(packet) => switch packet {
+          | PlayerAnimation(value) => ConvertedFromLatest(PacketV1456.PlayerAnimation(value))
+          | ItemDropModify(value) => ConvertedFromLatest(PacketV1456.ItemDropModify(value))
+          | PlayerDamage(value) => ConvertedFromLatest(PacketV1456.PlayerDamage(value))
+          | EmoteBubble(value) => ConvertedFromLatest(PacketV1456.EmoteBubble(value))
+          | _ => PacketStructureIsSame
+          }
         }
       )
     | Some(_) => Ok(PacketStructureIsSame)

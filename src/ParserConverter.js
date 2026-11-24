@@ -8,6 +8,7 @@ import * as Primitive_exceptions from "@rescript/runtime/lib/es6/Primitive_excep
 import * as Parser$TerrariaPacket from "./Parser.js";
 import * as PacketType$TerrariaPacket from "./PacketType.js";
 import * as Parserv1449$TerrariaPacket from "./Parserv1449.js";
+import * as ParserConverterV1458$TerrariaPacket from "./ParserConverterV1458.js";
 
 function worldEventInfoFromV1449(eventInfo) {
   return {
@@ -243,6 +244,7 @@ function worldInfoFromV1449(worldInfo) {
     forceChristmasForever: false,
     moreLightningSeed: false,
     noLightningSeed: false,
+    noSpidersSeed: false,
     sundialCooldown: worldInfo.sundialCooldown,
     moondialCooldown: worldInfo.moondialCooldown,
     copperOreTier: worldInfo.copperOreTier,
@@ -2227,12 +2229,14 @@ function convertFromV1449IfNeeded(buffer, fromServer) {
       }
     };
   }
+  let exit = 0;
   switch (match$1) {
-    case "NpcItemStrike" :
-      return {
-        TAG: "Ok",
-        _0: "DiscardAsNotExists"
-      };
+    case "PlayerAnimation" :
+    case "ItemDropModify" :
+    case "EmoteBubble" :
+    case "PlayerDamage" :
+      exit = 2;
+      break;
     case "CavernMonsterTypeSync" :
       if (fromServer) {
         return {
@@ -2284,11 +2288,33 @@ function convertFromV1449IfNeeded(buffer, fromServer) {
     case "ItemDropShimmeredUpdate" :
     case "ItemDropProtectedUpdate" :
       break;
+    case "NpcItemStrike" :
+    case "CustomServerAck" :
+      return {
+        TAG: "Ok",
+        _0: "DiscardAsNotExists"
+      };
     default:
       return {
         TAG: "Ok",
         _0: "PacketStructureIsSame"
       };
+  }
+  if (exit === 2) {
+    return Stdlib_Result.map(ParserConverterV1458$TerrariaPacket.convertToLatestIfNeeded(buffer, fromServer), result => {
+      if (typeof result !== "object") {
+        if (result === "PacketStructureIsSame") {
+          return "PacketStructureIsSame";
+        } else {
+          return "DiscardAsNotExists";
+        }
+      } else {
+        return {
+          TAG: "ConvertedToLatestVersion",
+          _0: result._0
+        };
+      }
+    });
   }
   try {
     return Stdlib_Result.map(Stdlib_Result.map(Parserv1449$TerrariaPacket.parse(buffer, fromServer, undefined), fromV1449), p => ({
@@ -2334,7 +2360,14 @@ function convertToV1449IfNeeded(buffer, fromServer) {
       }
     };
   }
+  let exit = 0;
   switch (match$1) {
+    case "PlayerAnimation" :
+    case "ItemDropModify" :
+    case "EmoteBubble" :
+    case "PlayerDamage" :
+      exit = 2;
+      break;
     case "PlayerInfo" :
     case "PlayerInventorySlot" :
     case "WorldInfo" :
@@ -2382,6 +2415,7 @@ function convertToV1449IfNeeded(buffer, fromServer) {
     case "DamageNPCAck" :
     case "ServerInfo" :
     case "PlayerPlatformInfo" :
+    case "CustomServerAck" :
       return {
         TAG: "Ok",
         _0: "DiscardAsNotExists"
@@ -2391,6 +2425,54 @@ function convertToV1449IfNeeded(buffer, fromServer) {
         TAG: "Ok",
         _0: "PacketStructureIsSame"
       };
+  }
+  if (exit === 2) {
+    return Stdlib_Result.map(ParserConverterV1458$TerrariaPacket.convertFromLatestIfNeeded(buffer, fromServer), result => {
+      if (typeof result !== "object") {
+        if (result === "PacketStructureIsSame") {
+          return "PacketStructureIsSame";
+        } else {
+          return "DiscardAsNotExists";
+        }
+      }
+      let packet = result._0;
+      switch (packet.TAG) {
+        case "PlayerAnimation" :
+          return {
+            TAG: "ConvertedToV1449",
+            _0: {
+              TAG: "PlayerAnimation",
+              _0: packet._0
+            }
+          };
+        case "ItemDropModify" :
+          return {
+            TAG: "ConvertedToV1449",
+            _0: {
+              TAG: "ItemDropModify",
+              _0: packet._0
+            }
+          };
+        case "EmoteBubble" :
+          return {
+            TAG: "ConvertedToV1449",
+            _0: {
+              TAG: "EmoteBubble",
+              _0: packet._0
+            }
+          };
+        case "PlayerDamage" :
+          return {
+            TAG: "ConvertedToV1449",
+            _0: {
+              TAG: "PlayerDamage",
+              _0: packet._0
+            }
+          };
+        default:
+          return "PacketStructureIsSame";
+      }
+    });
   }
   try {
     return Stdlib_Result.map(Parser$TerrariaPacket.parse(buffer, fromServer, undefined), packet => {

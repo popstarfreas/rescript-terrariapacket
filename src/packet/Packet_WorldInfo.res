@@ -151,6 +151,7 @@ type t = {
   forceChristmasForever: bool,
   moreLightningSeed: bool,
   noLightningSeed: bool,
+  noSpidersSeed: bool,
   sundialCooldown: int,
   moondialCooldown: int,
   copperOreTier: int,
@@ -444,6 +445,7 @@ module Decode = {
     let forceChristmasForever = worldFlags->BitFlags.flag3
     let moreLightningSeed = worldFlags->BitFlags.flag4
     let noLightningSeed = worldFlags->BitFlags.flag5
+    let noSpidersSeed = worldFlags->BitFlags.flag6
     let? Ok(sundialCooldown) = reader->readByte("sundialCooldown")
     let? Ok(moondialCooldown) = reader->readByte("moondialCooldown")
     let? Ok(copperOreTier) = reader->readInt16("copperOreTier")
@@ -539,6 +541,7 @@ module Decode = {
       forceChristmasForever,
       moreLightningSeed,
       noLightningSeed,
+      noSpidersSeed,
       sundialCooldown,
       moondialCooldown,
       copperOreTier,
@@ -761,7 +764,7 @@ module Encode = {
         ~flag3=self.forceChristmasForever,
         ~flag4=self.moreLightningSeed,
         ~flag5=self.noLightningSeed,
-        ~flag6=false,
+        ~flag6=self.noSpidersSeed,
         ~flag7=false,
         ~flag8=false,
       )->BitFlags.toByte,

@@ -64,7 +64,7 @@ import type { t as Packet_DungeonDefendersEventAttemptSkipWait_t } from '../src/
 
 import type { t as Packet_Emoji_t } from '../src/packetv1449/PacketV1449_Emoji.js';
 
-import type { t as Packet_EmoteBubble_t } from '../src/packetv1449/PacketV1449_EmoteBubble.js';
+import type { t as Packet_EmoteBubble_t } from '../src/packet/Packet_EmoteBubble.js';
 
 import type { t as Packet_EventNotification_t } from '../src/packetv1449/PacketV1449_EventNotification.js';
 
@@ -90,7 +90,7 @@ import type { t as Packet_InvasionProgressReport_t } from '../src/packetv1449/Pa
 
 import type { t as Packet_ItemDropInstancedUpdate_t } from './packetv1457/PacketV1457_ItemDropInstancedUpdate.js';
 
-import type { t as Packet_ItemDropModify_t } from '../src/packetv1449/PacketV1449_ItemDropModify.js';
+import type { t as Packet_ItemDropModify_t } from '../src/packet/Packet_ItemDropModify.js';
 
 import type { t as Packet_ItemDropProtectedUpdate_t } from '../src/packetv1449/PacketV1449_ItemDropProtectedUpdate.js';
 
@@ -178,7 +178,7 @@ import type { t as Packet_PiggyBankVoidLensUpdate_t } from './packetv1457/Packet
 
 import type { t as Packet_PlayerActive_t } from '../src/packetv1449/PacketV1449_PlayerActive.js';
 
-import type { t as Packet_PlayerAnimation_t } from '../src/packetv1449/PacketV1449_PlayerAnimation.js';
+import type { t as Packet_PlayerAnimation_t } from '../src/packet/Packet_PlayerAnimation.js';
 
 import type { t as Packet_PlayerBuffAdd_t } from '../src/packetv1449/PacketV1449_PlayerBuffAdd.js';
 
@@ -186,7 +186,7 @@ import type { t as Packet_PlayerBuffsSet_t } from './packetv1456/PacketV1456_Pla
 
 import type { t as Packet_PlayerChestIndexSync_t } from '../src/packetv1449/PacketV1449_PlayerChestIndexSync.js';
 
-import type { t as Packet_PlayerDamage_t } from '../src/packetv1449/PacketV1449_PlayerDamage.js';
+import type { t as Packet_PlayerDamage_t } from '../src/packet/Packet_PlayerDamage.js';
 
 import type { t as Packet_PlayerDead_t } from '../src/packetv1449/PacketV1449_PlayerDead.js';
 
@@ -324,9 +324,10 @@ import type { t as Packet_HostToken_t } from './packetv1456/PacketV1456_HostToke
 
 import type { t as Packet_DamageNPCAck_t } from './packetv1457/PacketV1457_DamageNPCAck.js';
 
-import type { t as Packet_ServerInfo_t } from './packetv1457/PacketV1457_ServerInfo.js';
+import type { t as Packet_ServerInfo_t } from './packet/Packet_ServerInfo.js';
 
-import type { t as Packet_PlayerPlatformInfo_t } from './packetv1457/PacketV1457_PlayerPlatformInfo.js';
+import type { t as Packet_PlayerPlatformInfo_t } from './packet/Packet_PlayerPlatformInfo.js';
+import type { t as Packet_CustomServerAck_t } from './packet/Packet_CustomServerAck.js';
 
 export type t =
   { TAG: "ConnectRequest"; _0: Packet_ConnectRequest_t }
@@ -488,7 +489,8 @@ export type t =
   | { TAG: "HostToken"; _0: Packet_HostToken_t }
   | { TAG: "DamageNPCAck"; _0: Packet_DamageNPCAck_t }
   | { TAG: "ServerInfo"; _0: Packet_ServerInfo_t }
-  | { TAG: "PlayerPlatformInfo"; _0: Packet_PlayerPlatformInfo_t };
+  | { TAG: "PlayerPlatformInfo"; _0: Packet_PlayerPlatformInfo_t }
+  | { TAG: "CustomServerAck"; _0: Packet_CustomServerAck_t };
 
 export type LazyPacket_lazyParsed<a> = Lazy_t<Result<a, readError>>;
 
@@ -652,7 +654,8 @@ export type LazyPacket_t =
   | { TAG: "HostToken"; _0: LazyPacket_lazyParsed<Packet_HostToken_t> }
   | { TAG: "DamageNPCAck"; _0: LazyPacket_lazyParsed<Packet_DamageNPCAck_t> }
   | { TAG: "ServerInfo"; _0: LazyPacket_lazyParsed<Packet_ServerInfo_t> }
-  | { TAG: "PlayerPlatformInfo"; _0: LazyPacket_lazyParsed<Packet_PlayerPlatformInfo_t> };
+  | { TAG: "PlayerPlatformInfo"; _0: LazyPacket_lazyParsed<Packet_PlayerPlatformInfo_t> }
+  | { TAG: "CustomServerAck"; _0: LazyPacket_lazyParsed<Packet_CustomServerAck_t> };
 
 export type toBufferResult =
   | { TAG: "Ok"; _0: Buffer }

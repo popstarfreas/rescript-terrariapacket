@@ -67,14 +67,14 @@ zoraBlock("1.4.5.6 and 1.4.5.7 tail packet IDs remain distinct", t => {
   }
 
   switch ParserConverterV1456.convertToLatestIfNeeded(~buffer=oldServer, ~fromServer=true) {
-  | Ok(ParserConverterV1456.ConvertedToLatest(Packet.ServerInfo(_))) => t->ok(true)
-  | Ok(_) => t->fail(~msg="Expected converted ServerInfo")
+  | Ok(ParserConverterV1456.DiscardAsNotExists) => t->ok(true)
+  | Ok(_) => t->fail(~msg="Expected empty legacy ServerInfo to be discarded")
   | Error(error) => t->fail(~msg=IParser.ParseError.toDisplayString(error))
   }
 
   switch ParserConverterV1456.convertFromLatestIfNeeded(~buffer=server, ~fromServer=true) {
-  | Ok(ParserConverterV1456.ConvertedFromLatest(PacketV1456.ServerInfo(_))) => t->ok(true)
-  | Ok(_) => t->fail(~msg="Expected ServerInfo converted to v1.4.5.6")
+  | Error(IParser.ParseError.ReaderError(_)) => t->ok(true)
+  | Ok(_) => t->fail(~msg="Expected truncated 1.4.6 ServerInfo to be rejected")
   | Error(error) => t->fail(~msg=IParser.ParseError.toDisplayString(error))
   }
 

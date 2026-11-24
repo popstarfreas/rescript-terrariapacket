@@ -15,6 +15,7 @@ type other =
   | ChaosState
   | ChaosState2Male
   | ChaosState3Female
+  | Other(int)
 
 @genType
 type t = {

@@ -323,6 +323,8 @@ function fromInt(n) {
       return "ServerInfo";
     case 164 :
       return "PlayerPlatformInfo";
+    case 165 :
+      return "CustomServerAck";
     default:
       return;
   }
@@ -650,6 +652,8 @@ function toInt(self) {
       return 163;
     case "PlayerPlatformInfo" :
       return 164;
+    case "CustomServerAck" :
+      return 165;
   }
 }
 
@@ -975,6 +979,8 @@ function packetName(packetType) {
       return "ServerInfo";
     case "PlayerPlatformInfo" :
       return "PlayerPlatformInfo";
+    case "CustomServerAck" :
+      return "CustomServerAck";
   }
 }
 

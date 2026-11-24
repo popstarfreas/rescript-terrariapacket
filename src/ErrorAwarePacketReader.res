@@ -61,10 +61,10 @@ let read7BitEncodedInt = (reader: t, context: string): result<int, readError> =>
       let shift = ref(0)
       let continue = ref(true)
       while continue.contents {
-        if shift.contents >= 35 {
+        let byte = readByteUnsafe(reader)
+        if shift.contents == 28 && byte > 0x0f {
           JsError.throwWithMessage("Invalid 7-bit encoded int")
         }
-        let byte = readByteUnsafe(reader)
         result := Int.bitwiseOr(
           result.contents,
           Int.shiftLeft(Int.bitwiseAnd(byte, 0x7f), shift.contents),

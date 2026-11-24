@@ -14,6 +14,7 @@ type other =
   | ChaosState
   | ChaosState2Male
   | ChaosState3Female
+  | Other(int)
 
 let otherFromByte = (byte: int) => {
   switch byte {
@@ -32,7 +33,7 @@ let otherFromByte = (byte: int) => {
   | 12 => Some(ChaosState)
   | 13 => Some(ChaosState2Male)
   | 14 => Some(ChaosState3Female)
-  | _ => None
+  | byte => Some(Other(byte))
   }
 }
 
@@ -53,6 +54,7 @@ let otherToByte = (other: other) => {
   | ChaosState => 12
   | ChaosState2Male => 13
   | ChaosState3Female => 14
+  | Other(byte) => byte
   }
 }
 

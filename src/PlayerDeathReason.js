@@ -38,11 +38,17 @@ function otherFromByte(byte) {
     case 14 :
       return "ChaosState3Female";
     default:
-      return;
+      return {
+        TAG: "Other",
+        _0: byte
+      };
   }
 }
 
 function otherToByte(other) {
+  if (typeof other === "object") {
+    return other._0;
+  }
   switch (other) {
     case "FallDamage" :
       return 0;

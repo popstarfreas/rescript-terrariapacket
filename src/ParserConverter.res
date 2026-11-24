@@ -236,6 +236,7 @@ let worldInfoFromV1449 = (worldInfo: PacketV1449.WorldInfo.t): Packet.WorldInfo.
     forceChristmasForever: false,
     moreLightningSeed: false,
     noLightningSeed: false,
+    noSpidersSeed: false,
     sundialCooldown: worldInfo.sundialCooldown,
     moondialCooldown: worldInfo.moondialCooldown,
     copperOreTier: worldInfo.copperOreTier,
@@ -1648,6 +1649,15 @@ let convertFromV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): re
       } catch {
       | JsExn(obj) => Error(ReaderError({context: "Parser.parseLazy", error: obj}))
       }
+    | Some(CustomServerAck) => Ok(DiscardAsNotExists)
+    | Some(PlayerAnimation | ItemDropModify | PlayerDamage | EmoteBubble) =>
+      ParserConverterV1458.convertToLatestIfNeeded(~buffer, ~fromServer)->Result.map(result =>
+        switch result {
+        | PacketStructureIsSame => PacketStructureIsSame
+        | DiscardAsNotExists => DiscardAsNotExists
+        | ConvertedToLatest(packet) => ConvertedToLatestVersion(packet)
+        }
+      )
     | Some(_) => Ok(PacketStructureIsSame)
     | None => Error(InvalidPacketType(buffer->NodeJs.Buffer.unsafeGet(2)))
     }
@@ -1743,6 +1753,21 @@ let convertToV1449IfNeeded = (~buffer: NodeJs.Buffer.t, ~fromServer: bool): resu
       } catch {
       | JsExn(obj) => Error(ReaderError({context: "Parser.parseLazy", error: obj}))
       }
+    | Some(CustomServerAck) => Ok(DiscardAsNotExists)
+    | Some(PlayerAnimation | ItemDropModify | PlayerDamage | EmoteBubble) =>
+      ParserConverterV1458.convertFromLatestIfNeeded(~buffer, ~fromServer)->Result.map(result =>
+        switch result {
+        | PacketStructureIsSame => PacketStructureIsSame
+        | DiscardAsNotExists => DiscardAsNotExists
+        | ConvertedFromLatest(packet) => switch packet {
+          | PlayerAnimation(value) => ConvertedToV1449(PacketV1449.PlayerAnimation(value))
+          | ItemDropModify(value) => ConvertedToV1449(PacketV1449.ItemDropModify(value))
+          | PlayerDamage(value) => ConvertedToV1449(PacketV1449.PlayerDamage(value))
+          | EmoteBubble(value) => ConvertedToV1449(PacketV1449.EmoteBubble(value))
+          | _ => PacketStructureIsSame
+          }
+        }
+      )
     | Some(_) => Ok(PacketStructureIsSame)
     | None => Error(InvalidPacketType(buffer->NodeJs.Buffer.unsafeGet(2)))
     }

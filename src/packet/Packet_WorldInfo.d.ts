@@ -160,6 +160,7 @@ export type t = {
   readonly forceChristmasForever: boolean;
   readonly moreLightningSeed: boolean;
   readonly noLightningSeed: boolean;
+  readonly noSpidersSeed: boolean;
   readonly sundialCooldown: number;
   readonly moondialCooldown: number;
   readonly copperOreTier: number;

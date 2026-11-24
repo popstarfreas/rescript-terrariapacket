@@ -119,31 +119,35 @@ Zora.test("1.4.5.6 and 1.4.5.7 tail packet IDs remain distinct", t => {
   }
   let error$1 = ParserConverterV1456$TerrariaPacket.convertToLatestIfNeeded(oldServer, true);
   if (error$1.TAG === "Ok") {
-    let match = error$1._0;
-    if (typeof match !== "object" || match._0.TAG !== "ServerInfo") {
-      t.fail("Expected converted ServerInfo");
-    } else {
+    let tmp = error$1._0;
+    if (typeof tmp !== "object" && tmp !== "PacketStructureIsSame") {
       t.ok(true);
+    } else {
+      t.fail("Expected empty legacy ServerInfo to be discarded");
     }
   } else {
     t.fail(IParser$TerrariaPacket.ParseError.toDisplayString(error$1._0));
   }
   let error$2 = ParserConverterV1456$TerrariaPacket.convertFromLatestIfNeeded(server, true);
   if (error$2.TAG === "Ok") {
-    let match$1 = error$2._0;
-    if (typeof match$1 !== "object" || match$1._0.TAG !== "ServerInfo") {
-      t.fail("Expected ServerInfo converted to v1.4.5.6");
+    t.fail("Expected truncated 1.4.6 ServerInfo to be rejected");
+  } else {
+    let error$3 = error$2._0;
+    let exit = 0;
+    if (typeof error$3 !== "object" || error$3.TAG !== "ReaderError") {
+      exit = 1;
     } else {
       t.ok(true);
     }
-  } else {
-    t.fail(IParser$TerrariaPacket.ParseError.toDisplayString(error$2._0));
+    if (exit === 1) {
+      t.fail(IParser$TerrariaPacket.ParseError.toDisplayString(error$3));
+    }
   }
-  let error$3 = ParserConverterV1456$TerrariaPacket.convertFromLatestIfNeeded(damageAck, true);
-  if (error$3.TAG === "Ok") {
-    let tmp = error$3._0;
-    if (typeof tmp !== "object") {
-      if (tmp === "PacketStructureIsSame") {
+  let error$4 = ParserConverterV1456$TerrariaPacket.convertFromLatestIfNeeded(damageAck, true);
+  if (error$4.TAG === "Ok") {
+    let tmp$1 = error$4._0;
+    if (typeof tmp$1 !== "object") {
+      if (tmp$1 === "PacketStructureIsSame") {
         t.fail("Expected DamageNPCAck to be discarded for v1.4.5.6");
         return;
       }
@@ -154,7 +158,7 @@ Zora.test("1.4.5.6 and 1.4.5.7 tail packet IDs remain distinct", t => {
       return;
     }
   } else {
-    t.fail(IParser$TerrariaPacket.ParseError.toDisplayString(error$3._0));
+    t.fail(IParser$TerrariaPacket.ParseError.toDisplayString(error$4._0));
     return;
   }
 });

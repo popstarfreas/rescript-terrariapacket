@@ -18,7 +18,8 @@ export type other =
   | "WallOfFleshLicked"
   | "ChaosState"
   | "ChaosState2Male"
-  | "ChaosState3Female";
+  | "ChaosState3Female"
+  | { TAG: "Other"; _0: number };
 
 export type t = {
   readonly killerPlayerId: (undefined | number); 

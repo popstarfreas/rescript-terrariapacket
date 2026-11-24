@@ -9,13 +9,11 @@ export type anchor =
   | "Remove"
   | {
       TAG: "Anchor";
-      _0: {
-        readonly anchorType: number;
-        readonly anchorMeta: number;
-        readonly time: number;
-        readonly emote: number;
-        readonly metadata: number | undefined
-      }
+      readonly anchorType: number;
+      readonly anchorMeta: number;
+      readonly time: number;
+      readonly emote: number;
+      readonly metadata: number | undefined
     };
 
 export type t = { readonly id: number; readonly anchor: anchor };

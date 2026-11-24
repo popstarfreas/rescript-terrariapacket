@@ -159,6 +159,7 @@ type t =
   | DamageNPCAck
   | ServerInfo
   | PlayerPlatformInfo
+  | CustomServerAck
 
 let fromInt = n =>
   switch n {
@@ -322,6 +323,7 @@ let fromInt = n =>
   | 162 => Some(DamageNPCAck)
   | 163 => Some(ServerInfo)
   | 164 => Some(PlayerPlatformInfo)
+  | 165 => Some(CustomServerAck)
   | _ => None
   }
 
@@ -487,6 +489,7 @@ let toInt = self =>
   | DamageNPCAck => 162
   | ServerInfo => 163
   | PlayerPlatformInfo => 164
+  | CustomServerAck => 165
   }
 
 let packetName = (packetType: t): string =>
@@ -651,4 +654,5 @@ let packetName = (packetType: t): string =>
   | DamageNPCAck => "DamageNPCAck"
   | ServerInfo => "ServerInfo"
   | PlayerPlatformInfo => "PlayerPlatformInfo"
+  | CustomServerAck => "CustomServerAck"
   }

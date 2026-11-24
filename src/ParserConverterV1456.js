@@ -7,6 +7,7 @@ import * as PacketType$TerrariaPacket from "./PacketType.js";
 import * as ParserV1456$TerrariaPacket from "./ParserV1456.js";
 import * as ProjectileKey$TerrariaPacket from "./ProjectileKey.js";
 import * as PacketTypeV1456$TerrariaPacket from "./PacketTypeV1456.js";
+import * as ParserConverterV1458$TerrariaPacket from "./ParserConverterV1458.js";
 
 function ownershipFromV1456(value) {
   let match = value & 3;
@@ -287,7 +288,7 @@ function toLatest(packet) {
       let newrecord = {...packet._0};
       return {
         TAG: "WorldInfo",
-        _0: (newrecord.dungeonY = 0, newrecord.dungeonX = 0, newrecord.noLightningSeed = false, newrecord.moreLightningSeed = false, newrecord.forceChristmasForever = false, newrecord.forceHalloweenForever = false, newrecord)
+        _0: (newrecord.dungeonY = 0, newrecord.dungeonX = 0, newrecord.noSpidersSeed = false, newrecord.noLightningSeed = false, newrecord.moreLightningSeed = false, newrecord.forceChristmasForever = false, newrecord.forceHalloweenForever = false, newrecord)
       };
     case "PlayerUpdate" :
       let value = packet._0;
@@ -476,15 +477,17 @@ function toLatest(packet) {
         TAG: "ItemDropUpdate",
         _0: itemDropFromV1456(value$9, undefined, value$9.timeLeftInWhichTheItemCannotBeTakenByEnemies)
       };
-    case "ServerInfo" :
-      return {
-        TAG: "ServerInfo",
-        _0: undefined
-      };
     case "PlayerPlatformInfo" :
+      let value$10 = packet._0;
       return {
         TAG: "PlayerPlatformInfo",
-        _0: packet._0
+        _0: {
+          playerId: value$10.playerId,
+          platformId: value$10.platformId,
+          userId: "",
+          platformName: "",
+          isHost: false
+        }
       };
     default:
       return;
@@ -692,12 +695,19 @@ function convertToLatestIfNeeded(buffer, fromServer) {
       }
     };
   }
+  let exit = 0;
   switch (match) {
     case "NpcItemStrike" :
       return {
         TAG: "Ok",
         _0: "DiscardAsNotExists"
       };
+    case "PlayerAnimation" :
+    case "ItemDropModify" :
+    case "EmoteBubble" :
+    case "PlayerDamage" :
+      exit = 2;
+      break;
     case "CavernMonsterTypeSync" :
     case "ShimmerEffectOrCoinLuck" :
       if (fromServer) {
@@ -736,6 +746,22 @@ function convertToLatestIfNeeded(buffer, fromServer) {
         _0: "PacketStructureIsSame"
       };
   }
+  if (exit === 2) {
+    return Stdlib_Result.map(ParserConverterV1458$TerrariaPacket.convertToLatestIfNeeded(buffer, fromServer), result => {
+      if (typeof result !== "object") {
+        if (result === "PacketStructureIsSame") {
+          return "PacketStructureIsSame";
+        } else {
+          return "DiscardAsNotExists";
+        }
+      } else {
+        return {
+          TAG: "ConvertedToLatest",
+          _0: result._0
+        };
+      }
+    });
+  }
   return Stdlib_Result.map(ParserV1456$TerrariaPacket.parse(buffer, fromServer, undefined), packet => {
     let packet$1 = toLatest(packet);
     if (packet$1 !== undefined) {
@@ -769,15 +795,14 @@ function convertFromLatestIfNeeded(buffer, fromServer) {
       }
     };
   }
+  let exit = 0;
   switch (match) {
-    case "NpcItemStrike" :
-    case "ItemDropShimmeredUpdate" :
-    case "ItemDropProtectedUpdate" :
-    case "DamageNPCAck" :
-      return {
-        TAG: "Ok",
-        _0: "DiscardAsNotExists"
-      };
+    case "PlayerAnimation" :
+    case "ItemDropModify" :
+    case "EmoteBubble" :
+    case "PlayerDamage" :
+      exit = 2;
+      break;
     case "WorldInfo" :
     case "PlayerUpdate" :
     case "ItemDropUpdate" :
@@ -792,14 +817,85 @@ function convertFromLatestIfNeeded(buffer, fromServer) {
     case "NetModuleLoad" :
     case "ItemDropInstancedUpdate" :
     case "PiggyBankVoidLensUpdate" :
-    case "ServerInfo" :
-    case "PlayerPlatformInfo" :
       break;
+    case "ServerInfo" :
+      if (!fromServer) {
+        return {
+          TAG: "Ok",
+          _0: "DiscardAsNotExists"
+        };
+      }
+      break;
+    case "PlayerPlatformInfo" :
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: "DiscardAsNotExists"
+        };
+      }
+      break;
+    case "NpcItemStrike" :
+    case "ItemDropShimmeredUpdate" :
+    case "ItemDropProtectedUpdate" :
+    case "DamageNPCAck" :
+    case "CustomServerAck" :
+      return {
+        TAG: "Ok",
+        _0: "DiscardAsNotExists"
+      };
     default:
       return {
         TAG: "Ok",
         _0: "PacketStructureIsSame"
       };
+  }
+  if (exit === 2) {
+    return Stdlib_Result.map(ParserConverterV1458$TerrariaPacket.convertFromLatestIfNeeded(buffer, fromServer), result => {
+      if (typeof result !== "object") {
+        if (result === "PacketStructureIsSame") {
+          return "PacketStructureIsSame";
+        } else {
+          return "DiscardAsNotExists";
+        }
+      }
+      let packet = result._0;
+      switch (packet.TAG) {
+        case "PlayerAnimation" :
+          return {
+            TAG: "ConvertedFromLatest",
+            _0: {
+              TAG: "PlayerAnimation",
+              _0: packet._0
+            }
+          };
+        case "ItemDropModify" :
+          return {
+            TAG: "ConvertedFromLatest",
+            _0: {
+              TAG: "ItemDropModify",
+              _0: packet._0
+            }
+          };
+        case "EmoteBubble" :
+          return {
+            TAG: "ConvertedFromLatest",
+            _0: {
+              TAG: "EmoteBubble",
+              _0: packet._0
+            }
+          };
+        case "PlayerDamage" :
+          return {
+            TAG: "ConvertedFromLatest",
+            _0: {
+              TAG: "PlayerDamage",
+              _0: packet._0
+            }
+          };
+        default:
+          return "PacketStructureIsSame";
+      }
+    });
   }
   return Stdlib_Result.map(Parser$TerrariaPacket.parse(buffer, fromServer, undefined), packet => {
     if (packet.TAG === "NetModuleLoad" && packet._0.TAG === "CreativeUnlocks") {

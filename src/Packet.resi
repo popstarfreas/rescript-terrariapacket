@@ -35,7 +35,7 @@ module PasswordRequired = PacketV1449_PasswordRequired
 module PasswordSend = PacketV1449_PasswordSend
 module ItemOwnerRemove = PacketV1457_ItemOwnerRemove
 module NpcTalk = PacketV1449_NpcTalk
-module PlayerAnimation = PacketV1449_PlayerAnimation
+module PlayerAnimation = Packet_PlayerAnimation
 module PlayerMana = PacketV1449_PlayerMana
 module ManaEffect = PacketV1449_ManaEffect
 module PlayerTeam = PacketV1449_PlayerTeam
@@ -81,10 +81,10 @@ module PlayerStealth = PacketV1449_PlayerStealth
 module ItemForceIntoNearestChest = PacketV1456_ItemForceIntoNearestChest
 module TileEntityUpdate = PacketV1449_TileEntityUpdate
 module TileEntityPlace = PacketV1449_TileEntityPlace
-module ItemDropModify = PacketV1449_ItemDropModify
+module ItemDropModify = Packet_ItemDropModify
 module ItemFramePlace = PacketV1449_ItemFramePlace
 module ItemDropInstancedUpdate = PacketV1457_ItemDropInstancedUpdate
-module EmoteBubble = PacketV1449_EmoteBubble
+module EmoteBubble = Packet_EmoteBubble
 module ExtraValueSync = PacketV1449_ExtraValueSync
 module SocialHandshake = PacketV1449_SocialHandshake
 module Unused = PacketV1456_DebugCommand
@@ -110,7 +110,7 @@ module CrystalInvasionStart = PacketV1449_CrystalInvasionStart
 module CrystalInvasionWipeAll = PacketV1449_CrystalInvasionWipeAll
 module MinionAttackTargetUpdate = PacketV1449_MinionAttackTargetUpdate
 module CrystalInvasionSendWaitTime = PacketV1449_CrystalInvasionSendWaitTime
-module PlayerDamage = PacketV1449_PlayerDamage
+module PlayerDamage = Packet_PlayerDamage
 module PlayerDeath = PacketV1449_PlayerDeath
 module CombatTextCreate = PacketV1449_CombatTextCreate
 module Emoji = PacketV1449_Emoji
@@ -156,8 +156,9 @@ module SectionRequest = PacketV1456_SectionRequest
 module ItemDropPosition = PacketV1456_ItemDropPosition
 module HostToken = PacketV1456_HostToken
 module DamageNPCAck = PacketV1457_DamageNPCAck
-module ServerInfo = PacketV1457_ServerInfo
-module PlayerPlatformInfo = PacketV1457_PlayerPlatformInfo
+module ServerInfo = Packet_ServerInfo
+module PlayerPlatformInfo = Packet_PlayerPlatformInfo
+module CustomServerAck = Packet_CustomServerAck
 
 type t =
   | ConnectRequest(ConnectRequest.t)
@@ -320,6 +321,7 @@ type t =
   | DamageNPCAck(DamageNPCAck.t)
   | ServerInfo(ServerInfo.t)
   | PlayerPlatformInfo(PlayerPlatformInfo.t)
+  | CustomServerAck(CustomServerAck.t)
 
 module LazyPacket: {
   type lazyParsed<'a> = Lazy.t<result<'a, ErrorAwarePacketReader.readError>>
@@ -484,6 +486,7 @@ module LazyPacket: {
     | DamageNPCAck(lazyParsed<DamageNPCAck.t>)
     | ServerInfo(lazyParsed<ServerInfo.t>)
     | PlayerPlatformInfo(lazyParsed<PlayerPlatformInfo.t>)
+    | CustomServerAck(lazyParsed<CustomServerAck.t>)
   let toPacketName: t => string
 }
 let toBuffer: (t, bool) => ISerializer.toBufferResult

@@ -163,7 +163,8 @@ export type t =
   | "HostToken"
   | "DamageNPCAck"
   | "ServerInfo"
-  | "PlayerPlatformInfo";
+  | "PlayerPlatformInfo"
+  | "CustomServerAck";
 
 export declare function fromInt(n: number): t | undefined;
 

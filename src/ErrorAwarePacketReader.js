@@ -122,10 +122,10 @@ function read7BitEncodedInt(reader, context) {
     let shift = 0;
     let $$continue = true;
     while ($$continue) {
-      if (shift >= 35) {
+      let byte = reader.readByte();
+      if (shift === 28 && byte > 15) {
         Stdlib_JsError.throwWithMessage("Invalid 7-bit encoded int");
       }
-      let byte = reader.readByte();
       result = result | ((byte & 127) << shift);
       if ((byte & 128) === 0) {
         $$continue = false;

@@ -128,7 +128,7 @@ zoraBlock("WorldInfo converts between 1.4.5.7 and 1.4.5.8 without changing older
 
 zoraBlock("1.4.5.8 keeps packet IDs and the generic connection version codec", t => {
   for id in 0 to 255 {
-    let latest = PacketType.fromInt(id)->Option.map(PacketType.packetName)
+    let latest = PacketTypeV1458.fromInt(id)->Option.map(PacketTypeV1458.packetName)
     let previous = PacketTypeV1457.fromInt(id)->Option.map(PacketTypeV1457.packetName)
     t->equal(latest, previous)
   }

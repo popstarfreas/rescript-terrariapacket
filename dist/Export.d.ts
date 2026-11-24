@@ -124,17 +124,29 @@ declare type ambience_3 = {
     readonly skyEntityType: number;
 };
 
-declare type anchor =
+declare type anchor = "Remove" | {
+    TAG: "Anchor";
+    readonly target: target;
+    readonly time: number;
+    readonly emote: number;
+};
+
+declare type anchor_2 =
 | "Remove"
 | {
     TAG: "Anchor";
-    _0: {
-        readonly anchorType: number;
-        readonly anchorMeta: number;
-        readonly time: number;
-        readonly emote: number;
-        readonly metadata: number | undefined
-    }
+    readonly anchorType: number;
+    readonly anchorMeta: number;
+    readonly time: number;
+    readonly emote: number;
+    readonly metadata: number | undefined
+};
+
+declare type anchor_3 = "Remove" | {
+    TAG: "Anchor";
+    readonly target: target_2;
+    readonly time: number;
+    readonly emote: number;
 };
 
 export declare namespace AnglerQuestCompletePacket {
@@ -399,6 +411,20 @@ declare type color = {
     readonly a: number
 };
 
+declare type color_2 = {
+    readonly r: number;
+    readonly g: number;
+    readonly b: number;
+    readonly a: number
+};
+
+declare type color_3 = {
+    readonly r: number;
+    readonly g: number;
+    readonly b: number;
+    readonly a: number
+};
+
 declare type command =
 | "Equip"
 | "Dye"
@@ -459,6 +485,11 @@ buffer: Buffer,
 fromServer: boolean,
 ) => result_2<fromLatestIfNeeded_2>;
 
+declare const convertFromLatestIfNeeded_3: (
+buffer: Buffer,
+fromServer: boolean,
+) => result_3<fromLatestIfNeeded_3>;
+
 declare const convertToLatestIfNeeded: (
 buffer: Buffer,
 fromServer: boolean,
@@ -468,6 +499,11 @@ declare const convertToLatestIfNeeded_2: (
 buffer: Buffer,
 fromServer: boolean,
 ) => result_2<toLatestIfNeeded_2>;
+
+declare const convertToLatestIfNeeded_3: (
+buffer: Buffer,
+fromServer: boolean,
+) => result_3<toLatestIfNeeded_3>;
 
 export declare namespace CountsAsHostForGameplaySetPacket {
     export {
@@ -608,9 +644,17 @@ export declare namespace CrystalInvasionStartPacket {
     }
 }
 
+export declare namespace CustomServerAckPacket {
+    export {
+        t_236 as t,
+        parse_120 as parse,
+        toBuffer_118 as toBuffer
+    }
+}
+
 export declare namespace DamageNPCAckPacket {
     export {
-        t_232 as t,
+        t_233 as t,
         parse_111 as parse,
         toBuffer_109 as toBuffer
     }
@@ -717,7 +761,19 @@ declare type dodge = "Ninja" | "Shadow" | "BrainOfConfusion" | "MysticSash";
 
 declare type dodge_2 = "Ninja" | "Shadow" | "BrainOfConfusion";
 
+export declare namespace EmoteBubblePacket {
+    export {
+        target_2 as target,
+        anchor_3 as anchor,
+        t_269 as t,
+        parse_119 as parse,
+        toBuffer_117 as toBuffer
+    }
+}
+
 declare const Encode: { toBuffer: (_1: t_69) => toBuffer_66 };
+
+declare type endpoint = { readonly address: string; readonly port: number };
 
 declare type Entity_displayDoll = {
     readonly items: (undefined | Entity_displayItem)[];
@@ -1046,6 +1102,89 @@ declare type eventInfo_3 = {
     readonly dualDungeonsSeed: boolean;
 };
 
+declare type eventInfo_4 = {
+    readonly shadowOrbSmashed: boolean;
+    readonly killedBoss1: boolean;
+    readonly killedBoss2: boolean;
+    readonly killedBoss3: boolean;
+    readonly hardMode: boolean;
+    readonly killedClown: boolean;
+    readonly serverSidedCharacters: boolean;
+    readonly killedPlantBoss: boolean;
+    readonly killedMechBoss: boolean;
+    readonly killedMechBoss2: boolean;
+    readonly killedMechBoss3: boolean;
+    readonly killedAnyMechBoss: boolean;
+    readonly cloudBg: boolean;
+    readonly crimson: boolean;
+    readonly pumpkinMoon: boolean;
+    readonly snowMoon: boolean;
+    readonly expertMode: boolean;
+    readonly fastForwardTime: boolean;
+    readonly slimeRain: boolean;
+    readonly killedKingSlime: boolean;
+    readonly killedQueenBee: boolean;
+    readonly killedFishron: boolean;
+    readonly killedMartians: boolean;
+    readonly killedAncientCultist: boolean;
+    readonly killedMoonLord: boolean;
+    readonly killedPumpking: boolean;
+    readonly killedMourningWood: boolean;
+    readonly killedIceQueen: boolean;
+    readonly killedSantank: boolean;
+    readonly killedEverscream: boolean;
+    readonly killedGolem: boolean;
+    readonly birthdayParty: boolean;
+    readonly killedPirates: boolean;
+    readonly killedFrostLegion: boolean;
+    readonly killedGoblins: boolean;
+    readonly sandstorm: boolean;
+    readonly dungeonDefendersEvent: boolean;
+    readonly killedDungeonDefendersTier1: boolean;
+    readonly killedDungeonDefendersTier2: boolean;
+    readonly killedDungeonDefendersTier3: boolean;
+    readonly combatBookUsed: boolean;
+    readonly manualLanterns: boolean;
+    readonly killedSolarTower: boolean;
+    readonly killedVortexTower: boolean;
+    readonly killedNebulaTower: boolean;
+    readonly killedStardustTower: boolean;
+    readonly forceHalloween: boolean;
+    readonly forceChristmas: boolean;
+    readonly boughtCat: boolean;
+    readonly boughtDog: boolean;
+    readonly boughtBunny: boolean;
+    readonly freeCake: boolean;
+    readonly drunkWorld: boolean;
+    readonly killedEmpressOfLight: boolean;
+    readonly killedQueenSlime: boolean;
+    readonly getGoodWorld: boolean;
+    readonly tenthAnniversaryWorld: boolean;
+    readonly dontStarveWorld: boolean;
+    readonly downedDeerClops: boolean;
+    readonly notTheBeesWorld: boolean;
+    readonly remixWorld: boolean;
+    readonly unlockedSlimeBlueSpawn: boolean;
+    readonly combatBookVolumeTwoWasUsed: boolean;
+    readonly peddlersSatchelWasUsed: boolean;
+    readonly unlockedSlimeGreenSpawn: boolean;
+    readonly unlockedSlimeOldSpawn: boolean;
+    readonly unlockedSlimePurpleSpawn: boolean;
+    readonly unlockedSlimeRainbowSpawn: boolean;
+    readonly unlockedSlimeRedSpawn: boolean;
+    readonly unlockedSlimeYellowSpawn: boolean;
+    readonly unlockedSlimeCopperSpawn: boolean;
+    readonly fastForwardTimeToDusk: boolean;
+    readonly noTrapsWorld: boolean;
+    readonly zenithWorld: boolean;
+    readonly unlockedTruffleSpawn: boolean;
+    readonly vampireSeed: boolean;
+    readonly infectedSeed: boolean;
+    readonly teamBasedSpawnsSeed: boolean;
+    readonly skyblockWorld: boolean;
+    readonly dualDungeonsSeed: boolean;
+};
+
 declare const EventType: {};
 
 declare type EventType_t = 
@@ -1129,18 +1268,25 @@ declare const fromInt: (bits: number) => t_106;
 
 declare function fromInt_2(n: number): t_112 | undefined;
 
-declare function fromInt_3(n: number): t_236 | undefined;
+declare function fromInt_3(n: number): t_238 | undefined;
 
-declare function fromInt_4(n: number): t_254 | undefined;
+declare function fromInt_4(n: number): t_260 | undefined;
+
+declare function fromInt_5(n: number): t_267 | undefined;
 
 declare type fromLatestIfNeeded =
 | "PacketStructureIsSame"
-| { TAG: "ConvertedFromLatest"; _0: t_237 }
+| { TAG: "ConvertedFromLatest"; _0: t_239 }
 | "DiscardAsNotExists";
 
 declare type fromLatestIfNeeded_2 =
 | "PacketStructureIsSame"
-| { TAG: "ConvertedFromLatest"; _0: t_255 }
+| { TAG: "ConvertedFromLatest"; _0: t_261 }
+| "DiscardAsNotExists";
+
+declare type fromLatestIfNeeded_3 =
+| "PacketStructureIsSame"
+| { TAG: "ConvertedFromLatest"; _0: t_265 }
 | "DiscardAsNotExists";
 
 declare function getOr<A>(a: A[], index: number, or: A): A;
@@ -1233,6 +1379,19 @@ export declare namespace ItemDropInstancedUpdatePacket {
     }
 }
 
+export declare namespace ItemDropModifyPacket {
+    export {
+        color_3 as color,
+        t_268 as t,
+        parseOk_102 as parseOk,
+        parseError_103 as parseError,
+        parse_118 as parse,
+        toBufferOk_101 as toBufferOk,
+        toBufferError_101 as toBufferError,
+        toBuffer_116 as toBuffer
+    }
+}
+
 export declare namespace ItemDropPositionPacket {
     export {
         t_85 as t,
@@ -1319,11 +1478,17 @@ declare const LazyPacket_3: {
     readonly toPacketName: (packet: LazyPacket_t_3) => string;
 };
 
-declare type LazyPacket_lazyParsed<a> = t_235<Result_2<a, readError>>;
+declare const LazyPacket_4: {
+    readonly toPacketName: (packet: LazyPacket_t_4) => string;
+};
 
-declare type LazyPacket_lazyParsed_2<a> = t_235<Result_2<a, readError>>;
+declare type LazyPacket_lazyParsed<a> = t_237<Result_2<a, readError>>;
 
-declare type LazyPacket_lazyParsed_3<a> = t_235<Result_2<a, readError>>;
+declare type LazyPacket_lazyParsed_2<a> = t_237<Result_2<a, readError>>;
+
+declare type LazyPacket_lazyParsed_3<a> = t_237<Result_2<a, readError>>;
+
+declare type LazyPacket_lazyParsed_4<a> = t_237<Result_2<a, readError>>;
 
 declare type LazyPacket_t =
     { TAG: "ConnectRequest"; _0: LazyPacket_lazyParsed<t_114> }
@@ -1413,63 +1578,63 @@ declare type LazyPacket_t =
 | { TAG: "ItemFramePlace"; _0: LazyPacket_lazyParsed<t_175> }
 | { TAG: "ItemDropInstancedUpdate"; _0: LazyPacket_lazyParsed<t_176> }
 | { TAG: "EmoteBubble"; _0: LazyPacket_lazyParsed<t_177> }
-| { TAG: "ExtraValueSync"; _0: LazyPacket_lazyParsed<t_178> }
-| { TAG: "SocialHandshake"; _0: LazyPacket_lazyParsed<t_179> }
-| { TAG: "Unused"; _0: LazyPacket_lazyParsed<t_180> }
-| { TAG: "PortalKill"; _0: LazyPacket_lazyParsed<t_181> }
-| { TAG: "PlayerTeleportPortal"; _0: LazyPacket_lazyParsed<t_182> }
-| { TAG: "NpcKilledNotification"; _0: LazyPacket_lazyParsed<t_183> }
-| { TAG: "EventNotification"; _0: LazyPacket_lazyParsed<t_184> }
-| { TAG: "MinionTargetUpdate"; _0: LazyPacket_lazyParsed<t_185> }
-| { TAG: "NpcTeleportPortal"; _0: LazyPacket_lazyParsed<t_186> }
-| { TAG: "ShieldStrengthsUpdate"; _0: LazyPacket_lazyParsed<t_187> }
-| { TAG: "NebulaLevelUp"; _0: LazyPacket_lazyParsed<t_188> }
-| { TAG: "MoonLordCountdown"; _0: LazyPacket_lazyParsed<t_189> }
-| { TAG: "NpcShopItem"; _0: LazyPacket_lazyParsed<t_190> }
-| { TAG: "GemLockToggle"; _0: LazyPacket_lazyParsed<t_191> }
-| { TAG: "SmokePoof"; _0: LazyPacket_lazyParsed<t_192> }
-| { TAG: "ChatMessageSmart"; _0: LazyPacket_lazyParsed<t_193> }
-| { TAG: "WiredCannonShot"; _0: LazyPacket_lazyParsed<t_194> }
-| { TAG: "MassWireOperation"; _0: LazyPacket_lazyParsed<t_195> }
-| { TAG: "MassWireOperationPay"; _0: LazyPacket_lazyParsed<t_196> }
-| { TAG: "PartyToggle"; _0: LazyPacket_lazyParsed<t_197> }
-| { TAG: "TreeGrowFx"; _0: LazyPacket_lazyParsed<t_198> }
-| { TAG: "CrystalInvasionStart"; _0: LazyPacket_lazyParsed<t_199> }
-| { TAG: "CrystalInvasionWipeAll"; _0: LazyPacket_lazyParsed<t_200> }
-| { TAG: "MinionAttackTargetUpdate"; _0: LazyPacket_lazyParsed<t_201> }
-| { TAG: "CrystalInvasionSendWaitTime"; _0: LazyPacket_lazyParsed<t_202> }
-| { TAG: "PlayerDamage"; _0: LazyPacket_lazyParsed<t_203> }
-| { TAG: "PlayerDeath"; _0: LazyPacket_lazyParsed<t_204> }
-| { TAG: "CombatTextCreate"; _0: LazyPacket_lazyParsed<t_205> }
-| { TAG: "Emoji"; _0: LazyPacket_lazyParsed<t_206> }
+| { TAG: "ExtraValueSync"; _0: LazyPacket_lazyParsed<t_179> }
+| { TAG: "SocialHandshake"; _0: LazyPacket_lazyParsed<t_180> }
+| { TAG: "Unused"; _0: LazyPacket_lazyParsed<t_181> }
+| { TAG: "PortalKill"; _0: LazyPacket_lazyParsed<t_182> }
+| { TAG: "PlayerTeleportPortal"; _0: LazyPacket_lazyParsed<t_183> }
+| { TAG: "NpcKilledNotification"; _0: LazyPacket_lazyParsed<t_184> }
+| { TAG: "EventNotification"; _0: LazyPacket_lazyParsed<t_185> }
+| { TAG: "MinionTargetUpdate"; _0: LazyPacket_lazyParsed<t_186> }
+| { TAG: "NpcTeleportPortal"; _0: LazyPacket_lazyParsed<t_187> }
+| { TAG: "ShieldStrengthsUpdate"; _0: LazyPacket_lazyParsed<t_188> }
+| { TAG: "NebulaLevelUp"; _0: LazyPacket_lazyParsed<t_189> }
+| { TAG: "MoonLordCountdown"; _0: LazyPacket_lazyParsed<t_190> }
+| { TAG: "NpcShopItem"; _0: LazyPacket_lazyParsed<t_191> }
+| { TAG: "GemLockToggle"; _0: LazyPacket_lazyParsed<t_192> }
+| { TAG: "SmokePoof"; _0: LazyPacket_lazyParsed<t_193> }
+| { TAG: "ChatMessageSmart"; _0: LazyPacket_lazyParsed<t_194> }
+| { TAG: "WiredCannonShot"; _0: LazyPacket_lazyParsed<t_195> }
+| { TAG: "MassWireOperation"; _0: LazyPacket_lazyParsed<t_196> }
+| { TAG: "MassWireOperationPay"; _0: LazyPacket_lazyParsed<t_197> }
+| { TAG: "PartyToggle"; _0: LazyPacket_lazyParsed<t_198> }
+| { TAG: "TreeGrowFx"; _0: LazyPacket_lazyParsed<t_199> }
+| { TAG: "CrystalInvasionStart"; _0: LazyPacket_lazyParsed<t_200> }
+| { TAG: "CrystalInvasionWipeAll"; _0: LazyPacket_lazyParsed<t_201> }
+| { TAG: "MinionAttackTargetUpdate"; _0: LazyPacket_lazyParsed<t_202> }
+| { TAG: "CrystalInvasionSendWaitTime"; _0: LazyPacket_lazyParsed<t_203> }
+| { TAG: "PlayerDamage"; _0: LazyPacket_lazyParsed<t_204> }
+| { TAG: "PlayerDeath"; _0: LazyPacket_lazyParsed<t_205> }
+| { TAG: "CombatTextCreate"; _0: LazyPacket_lazyParsed<t_206> }
+| { TAG: "Emoji"; _0: LazyPacket_lazyParsed<t_207> }
 | { TAG: "TileEntityDisplayDollItemSync"; _0: LazyPacket_lazyParsed<t_59> }
-| { TAG: "TileEntityInteractionRequest"; _0: LazyPacket_lazyParsed<t_207> }
-| { TAG: "WeaponsRackTryPlacing"; _0: LazyPacket_lazyParsed<t_208> }
-| { TAG: "TileEntityHatRackItemSync"; _0: LazyPacket_lazyParsed<t_209> }
-| { TAG: "TilePickingSync"; _0: LazyPacket_lazyParsed<t_210> }
-| { TAG: "RevengeMarkerSync"; _0: LazyPacket_lazyParsed<t_211> }
-| { TAG: "RevengeMarkerRemove"; _0: LazyPacket_lazyParsed<t_212> }
-| { TAG: "GolfBallLandInCup"; _0: LazyPacket_lazyParsed<t_213> }
-| { TAG: "ClientFinishConnectingToServer"; _0: LazyPacket_lazyParsed<t_214> }
-| { TAG: "NpcFishOut"; _0: LazyPacket_lazyParsed<t_215> }
-| { TAG: "NpcTamper"; _0: LazyPacket_lazyParsed<t_216> }
-| { TAG: "LegacySoundPlay"; _0: LazyPacket_lazyParsed<t_217> }
-| { TAG: "FoodPlatterTryPlacing"; _0: LazyPacket_lazyParsed<t_218> }
+| { TAG: "TileEntityInteractionRequest"; _0: LazyPacket_lazyParsed<t_208> }
+| { TAG: "WeaponsRackTryPlacing"; _0: LazyPacket_lazyParsed<t_209> }
+| { TAG: "TileEntityHatRackItemSync"; _0: LazyPacket_lazyParsed<t_210> }
+| { TAG: "TilePickingSync"; _0: LazyPacket_lazyParsed<t_211> }
+| { TAG: "RevengeMarkerSync"; _0: LazyPacket_lazyParsed<t_212> }
+| { TAG: "RevengeMarkerRemove"; _0: LazyPacket_lazyParsed<t_213> }
+| { TAG: "GolfBallLandInCup"; _0: LazyPacket_lazyParsed<t_214> }
+| { TAG: "ClientFinishConnectingToServer"; _0: LazyPacket_lazyParsed<t_215> }
+| { TAG: "NpcFishOut"; _0: LazyPacket_lazyParsed<t_216> }
+| { TAG: "NpcTamper"; _0: LazyPacket_lazyParsed<t_217> }
+| { TAG: "LegacySoundPlay"; _0: LazyPacket_lazyParsed<t_218> }
+| { TAG: "FoodPlatterTryPlacing"; _0: LazyPacket_lazyParsed<t_219> }
 | { TAG: "PlayerLuckFactorsUpdate"; _0: LazyPacket_lazyParsed<t_91> }
-| { TAG: "PlayerDead"; _0: LazyPacket_lazyParsed<t_219> }
-| { TAG: "CavernMonsterTypeSync"; _0: LazyPacket_lazyParsed<t_220> }
-| { TAG: "NpcBuffRemovalRequest"; _0: LazyPacket_lazyParsed<t_221> }
-| { TAG: "ClientSyncedInventory"; _0: LazyPacket_lazyParsed<t_222> }
-| { TAG: "CountsAsHostForGameplaySet"; _0: LazyPacket_lazyParsed<t_223> }
-| { TAG: "CreditsOrSlimeTransform"; _0: LazyPacket_lazyParsed<t_224> }
-| { TAG: "LucyAxeMessage"; _0: LazyPacket_lazyParsed<t_225> }
-| { TAG: "PiggyBankVoidLensUpdate"; _0: LazyPacket_lazyParsed<t_226> }
-| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: LazyPacket_lazyParsed<t_227> }
-| { TAG: "HaveDryadDoStardewAnimation"; _0: LazyPacket_lazyParsed<t_228> }
-| { TAG: "ItemDropShimmeredUpdate"; _0: LazyPacket_lazyParsed<t_229> }
+| { TAG: "PlayerDead"; _0: LazyPacket_lazyParsed<t_220> }
+| { TAG: "CavernMonsterTypeSync"; _0: LazyPacket_lazyParsed<t_221> }
+| { TAG: "NpcBuffRemovalRequest"; _0: LazyPacket_lazyParsed<t_222> }
+| { TAG: "ClientSyncedInventory"; _0: LazyPacket_lazyParsed<t_223> }
+| { TAG: "CountsAsHostForGameplaySet"; _0: LazyPacket_lazyParsed<t_224> }
+| { TAG: "CreditsOrSlimeTransform"; _0: LazyPacket_lazyParsed<t_225> }
+| { TAG: "LucyAxeMessage"; _0: LazyPacket_lazyParsed<t_226> }
+| { TAG: "PiggyBankVoidLensUpdate"; _0: LazyPacket_lazyParsed<t_227> }
+| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: LazyPacket_lazyParsed<t_228> }
+| { TAG: "HaveDryadDoStardewAnimation"; _0: LazyPacket_lazyParsed<t_229> }
+| { TAG: "ItemDropShimmeredUpdate"; _0: LazyPacket_lazyParsed<t_230> }
 | { TAG: "ShimmerEffectOrCoinLuck"; _0: LazyPacket_lazyParsed<t_49> }
-| { TAG: "LoadoutSwitch"; _0: LazyPacket_lazyParsed<t_230> }
-| { TAG: "ItemDropProtectedUpdate"; _0: LazyPacket_lazyParsed<t_231> }
+| { TAG: "LoadoutSwitch"; _0: LazyPacket_lazyParsed<t_231> }
+| { TAG: "ItemDropProtectedUpdate"; _0: LazyPacket_lazyParsed<t_232> }
 | { TAG: "DeadCellsDisplayJarTryPlacing"; _0: LazyPacket_lazyParsed<t_80> }
 | { TAG: "PlayerSpectate"; _0: LazyPacket_lazyParsed<t_92> }
 | { TAG: "ItemDropClear"; _0: LazyPacket_lazyParsed<t_84> }
@@ -1483,9 +1648,10 @@ declare type LazyPacket_t =
 | { TAG: "SectionRequest"; _0: LazyPacket_lazyParsed<t_95> }
 | { TAG: "ItemDropPosition"; _0: LazyPacket_lazyParsed<t_85> }
 | { TAG: "HostToken"; _0: LazyPacket_lazyParsed<t_82> }
-| { TAG: "DamageNPCAck"; _0: LazyPacket_lazyParsed<t_232> }
-| { TAG: "ServerInfo"; _0: LazyPacket_lazyParsed<t_233> }
-| { TAG: "PlayerPlatformInfo"; _0: LazyPacket_lazyParsed<t_234> };
+| { TAG: "DamageNPCAck"; _0: LazyPacket_lazyParsed<t_233> }
+| { TAG: "ServerInfo"; _0: LazyPacket_lazyParsed<t_234> }
+| { TAG: "PlayerPlatformInfo"; _0: LazyPacket_lazyParsed<t_235> }
+| { TAG: "CustomServerAck"; _0: LazyPacket_lazyParsed<t_236> };
 
 declare type LazyPacket_t_2 =
     { TAG: "ConnectRequest"; _0: LazyPacket_lazyParsed_2<t_114> }
@@ -1494,26 +1660,26 @@ declare type LazyPacket_t_2 =
 | { TAG: "PlayerInfo"; _0: LazyPacket_lazyParsed_2<t_100> }
 | { TAG: "PlayerInventorySlot"; _0: LazyPacket_lazyParsed_2<t_102> }
 | { TAG: "WorldDataRequest"; _0: LazyPacket_lazyParsed_2<t_117> }
-| { TAG: "WorldInfo"; _0: LazyPacket_lazyParsed_2<t_238> }
+| { TAG: "WorldInfo"; _0: LazyPacket_lazyParsed_2<t_240> }
 | { TAG: "InitialTileSectionsRequest"; _0: LazyPacket_lazyParsed_2<t_83> }
 | { TAG: "Status"; _0: LazyPacket_lazyParsed_2<t_118> }
 | { TAG: "TileSectionSend"; _0: LazyPacket_lazyParsed_2<t_68> }
 | { TAG: "TileSectionFrame"; _0: LazyPacket_lazyParsed_2<t_119> }
 | { TAG: "PlayerSpawn"; _0: LazyPacket_lazyParsed_2<t_101> }
-| { TAG: "PlayerUpdate"; _0: LazyPacket_lazyParsed_2<t_239> }
+| { TAG: "PlayerUpdate"; _0: LazyPacket_lazyParsed_2<t_241> }
 | { TAG: "PlayerActive"; _0: LazyPacket_lazyParsed_2<t_120> }
 | { TAG: "PlayerHealth"; _0: LazyPacket_lazyParsed_2<t_121> }
 | { TAG: "TileModify"; _0: LazyPacket_lazyParsed_2<t_122> }
 | { TAG: "TimeSet"; _0: LazyPacket_lazyParsed_2<t_123> }
 | { TAG: "DoorUse"; _0: LazyPacket_lazyParsed_2<t_124> }
 | { TAG: "TileSquareSend"; _0: LazyPacket_lazyParsed_2<t_69> }
-| { TAG: "ItemDropUpdate"; _0: LazyPacket_lazyParsed_2<t_240> }
-| { TAG: "ItemOwner"; _0: LazyPacket_lazyParsed_2<t_241> }
-| { TAG: "NpcUpdate"; _0: LazyPacket_lazyParsed_2<t_242> }
+| { TAG: "ItemDropUpdate"; _0: LazyPacket_lazyParsed_2<t_242> }
+| { TAG: "ItemOwner"; _0: LazyPacket_lazyParsed_2<t_243> }
+| { TAG: "NpcUpdate"; _0: LazyPacket_lazyParsed_2<t_244> }
 | { TAG: "NpcItemStrike"; _0: LazyPacket_lazyParsed_2<t_125> }
-| { TAG: "ProjectileSync"; _0: LazyPacket_lazyParsed_2<t_243> }
-| { TAG: "NpcStrike"; _0: LazyPacket_lazyParsed_2<t_244> }
-| { TAG: "ProjectileDestroy"; _0: LazyPacket_lazyParsed_2<t_245> }
+| { TAG: "ProjectileSync"; _0: LazyPacket_lazyParsed_2<t_245> }
+| { TAG: "NpcStrike"; _0: LazyPacket_lazyParsed_2<t_246> }
+| { TAG: "ProjectileDestroy"; _0: LazyPacket_lazyParsed_2<t_247> }
 | { TAG: "PvpToggle"; _0: LazyPacket_lazyParsed_2<t_128> }
 | { TAG: "ChestOpen"; _0: LazyPacket_lazyParsed_2<t_129> }
 | { TAG: "ChestItem"; _0: LazyPacket_lazyParsed_2<t_130> }
@@ -1523,9 +1689,9 @@ declare type LazyPacket_t_2 =
 | { TAG: "Zones"; _0: LazyPacket_lazyParsed_2<t_78> }
 | { TAG: "PasswordRequired"; _0: LazyPacket_lazyParsed_2<t_134> }
 | { TAG: "PasswordSend"; _0: LazyPacket_lazyParsed_2<t_135> }
-| { TAG: "ItemOwnerRemove"; _0: LazyPacket_lazyParsed_2<t_246> }
+| { TAG: "ItemOwnerRemove"; _0: LazyPacket_lazyParsed_2<t_248> }
 | { TAG: "NpcTalk"; _0: LazyPacket_lazyParsed_2<t_136> }
-| { TAG: "PlayerAnimation"; _0: LazyPacket_lazyParsed_2<t_137> }
+| { TAG: "PlayerAnimation"; _0: LazyPacket_lazyParsed_2<t_249> }
 | { TAG: "PlayerMana"; _0: LazyPacket_lazyParsed_2<t_138> }
 | { TAG: "ManaEffect"; _0: LazyPacket_lazyParsed_2<t_139> }
 | { TAG: "PlayerTeam"; _0: LazyPacket_lazyParsed_2<t_140> }
@@ -1545,7 +1711,7 @@ declare type LazyPacket_t_2 =
 | { TAG: "SwitchHit"; _0: LazyPacket_lazyParsed_2<t_152> }
 | { TAG: "NpcHomeUpdate"; _0: LazyPacket_lazyParsed_2<t_153> }
 | { TAG: "BossOrInvasionSpawn"; _0: LazyPacket_lazyParsed_2<t_154> }
-| { TAG: "PlayerDodge"; _0: LazyPacket_lazyParsed_2<t_247> }
+| { TAG: "PlayerDodge"; _0: LazyPacket_lazyParsed_2<t_250> }
 | { TAG: "TilePaint"; _0: LazyPacket_lazyParsed_2<t_155> }
 | { TAG: "WallPaint"; _0: LazyPacket_lazyParsed_2<t_156> }
 | { TAG: "Teleport"; _0: LazyPacket_lazyParsed_2<t_56> }
@@ -1553,7 +1719,7 @@ declare type LazyPacket_t_2 =
 | { TAG: "DimensionsUpdate"; _0: LazyPacket_lazyParsed_2<t_158> }
 | { TAG: "ClientUuid"; _0: LazyPacket_lazyParsed_2<t_159> }
 | { TAG: "ChestName"; _0: LazyPacket_lazyParsed_2<t_160> }
-| { TAG: "NpcCatch"; _0: LazyPacket_lazyParsed_2<t_248> }
+| { TAG: "NpcCatch"; _0: LazyPacket_lazyParsed_2<t_251> }
 | { TAG: "NpcRelease"; _0: LazyPacket_lazyParsed_2<t_161> }
 | { TAG: "TravellingMerchantInventory"; _0: LazyPacket_lazyParsed_2<t_71> }
 | { TAG: "TeleportationPotion"; _0: LazyPacket_lazyParsed_2<t_57> }
@@ -1565,73 +1731,73 @@ declare type LazyPacket_t_2 =
 | { TAG: "ObjectPlace"; _0: LazyPacket_lazyParsed_2<t_167> }
 | { TAG: "PlayerChestIndexSync"; _0: LazyPacket_lazyParsed_2<t_168> }
 | { TAG: "CombatNumberCreate"; _0: LazyPacket_lazyParsed_2<t_169> }
-| { TAG: "NetModuleLoad"; _0: LazyPacket_lazyParsed_2<t_249> }
+| { TAG: "NetModuleLoad"; _0: LazyPacket_lazyParsed_2<t_252> }
 | { TAG: "NpcKillCount"; _0: LazyPacket_lazyParsed_2<t_170> }
 | { TAG: "PlayerStealth"; _0: LazyPacket_lazyParsed_2<t_171> }
 | { TAG: "ItemForceIntoNearestChest"; _0: LazyPacket_lazyParsed_2<t_86> }
 | { TAG: "TileEntityUpdate"; _0: LazyPacket_lazyParsed_2<t_172> }
 | { TAG: "TileEntityPlace"; _0: LazyPacket_lazyParsed_2<t_173> }
-| { TAG: "ItemDropModify"; _0: LazyPacket_lazyParsed_2<t_174> }
+| { TAG: "ItemDropModify"; _0: LazyPacket_lazyParsed_2<t_253> }
 | { TAG: "ItemFramePlace"; _0: LazyPacket_lazyParsed_2<t_175> }
-| { TAG: "ItemDropInstancedUpdate"; _0: LazyPacket_lazyParsed_2<t_250> }
-| { TAG: "EmoteBubble"; _0: LazyPacket_lazyParsed_2<t_177> }
-| { TAG: "ExtraValueSync"; _0: LazyPacket_lazyParsed_2<t_178> }
-| { TAG: "SocialHandshake"; _0: LazyPacket_lazyParsed_2<t_179> }
-| { TAG: "Unused"; _0: LazyPacket_lazyParsed_2<t_180> }
-| { TAG: "PortalKill"; _0: LazyPacket_lazyParsed_2<t_181> }
-| { TAG: "PlayerTeleportPortal"; _0: LazyPacket_lazyParsed_2<t_182> }
-| { TAG: "NpcKilledNotification"; _0: LazyPacket_lazyParsed_2<t_183> }
-| { TAG: "EventNotification"; _0: LazyPacket_lazyParsed_2<t_184> }
-| { TAG: "MinionTargetUpdate"; _0: LazyPacket_lazyParsed_2<t_185> }
-| { TAG: "NpcTeleportPortal"; _0: LazyPacket_lazyParsed_2<t_186> }
-| { TAG: "ShieldStrengthsUpdate"; _0: LazyPacket_lazyParsed_2<t_187> }
-| { TAG: "NebulaLevelUp"; _0: LazyPacket_lazyParsed_2<t_188> }
-| { TAG: "MoonLordCountdown"; _0: LazyPacket_lazyParsed_2<t_189> }
-| { TAG: "NpcShopItem"; _0: LazyPacket_lazyParsed_2<t_190> }
-| { TAG: "GemLockToggle"; _0: LazyPacket_lazyParsed_2<t_191> }
-| { TAG: "SmokePoof"; _0: LazyPacket_lazyParsed_2<t_192> }
-| { TAG: "ChatMessageSmart"; _0: LazyPacket_lazyParsed_2<t_193> }
-| { TAG: "WiredCannonShot"; _0: LazyPacket_lazyParsed_2<t_194> }
-| { TAG: "MassWireOperation"; _0: LazyPacket_lazyParsed_2<t_195> }
-| { TAG: "MassWireOperationPay"; _0: LazyPacket_lazyParsed_2<t_196> }
-| { TAG: "PartyToggle"; _0: LazyPacket_lazyParsed_2<t_197> }
-| { TAG: "TreeGrowFx"; _0: LazyPacket_lazyParsed_2<t_198> }
-| { TAG: "CrystalInvasionStart"; _0: LazyPacket_lazyParsed_2<t_199> }
-| { TAG: "CrystalInvasionWipeAll"; _0: LazyPacket_lazyParsed_2<t_200> }
-| { TAG: "MinionAttackTargetUpdate"; _0: LazyPacket_lazyParsed_2<t_201> }
-| { TAG: "CrystalInvasionSendWaitTime"; _0: LazyPacket_lazyParsed_2<t_202> }
-| { TAG: "PlayerDamage"; _0: LazyPacket_lazyParsed_2<t_203> }
-| { TAG: "PlayerDeath"; _0: LazyPacket_lazyParsed_2<t_204> }
-| { TAG: "CombatTextCreate"; _0: LazyPacket_lazyParsed_2<t_205> }
-| { TAG: "Emoji"; _0: LazyPacket_lazyParsed_2<t_206> }
+| { TAG: "ItemDropInstancedUpdate"; _0: LazyPacket_lazyParsed_2<t_254> }
+| { TAG: "EmoteBubble"; _0: LazyPacket_lazyParsed_2<t_255> }
+| { TAG: "ExtraValueSync"; _0: LazyPacket_lazyParsed_2<t_179> }
+| { TAG: "SocialHandshake"; _0: LazyPacket_lazyParsed_2<t_180> }
+| { TAG: "Unused"; _0: LazyPacket_lazyParsed_2<t_181> }
+| { TAG: "PortalKill"; _0: LazyPacket_lazyParsed_2<t_182> }
+| { TAG: "PlayerTeleportPortal"; _0: LazyPacket_lazyParsed_2<t_183> }
+| { TAG: "NpcKilledNotification"; _0: LazyPacket_lazyParsed_2<t_184> }
+| { TAG: "EventNotification"; _0: LazyPacket_lazyParsed_2<t_185> }
+| { TAG: "MinionTargetUpdate"; _0: LazyPacket_lazyParsed_2<t_186> }
+| { TAG: "NpcTeleportPortal"; _0: LazyPacket_lazyParsed_2<t_187> }
+| { TAG: "ShieldStrengthsUpdate"; _0: LazyPacket_lazyParsed_2<t_188> }
+| { TAG: "NebulaLevelUp"; _0: LazyPacket_lazyParsed_2<t_189> }
+| { TAG: "MoonLordCountdown"; _0: LazyPacket_lazyParsed_2<t_190> }
+| { TAG: "NpcShopItem"; _0: LazyPacket_lazyParsed_2<t_191> }
+| { TAG: "GemLockToggle"; _0: LazyPacket_lazyParsed_2<t_192> }
+| { TAG: "SmokePoof"; _0: LazyPacket_lazyParsed_2<t_193> }
+| { TAG: "ChatMessageSmart"; _0: LazyPacket_lazyParsed_2<t_194> }
+| { TAG: "WiredCannonShot"; _0: LazyPacket_lazyParsed_2<t_195> }
+| { TAG: "MassWireOperation"; _0: LazyPacket_lazyParsed_2<t_196> }
+| { TAG: "MassWireOperationPay"; _0: LazyPacket_lazyParsed_2<t_197> }
+| { TAG: "PartyToggle"; _0: LazyPacket_lazyParsed_2<t_198> }
+| { TAG: "TreeGrowFx"; _0: LazyPacket_lazyParsed_2<t_199> }
+| { TAG: "CrystalInvasionStart"; _0: LazyPacket_lazyParsed_2<t_200> }
+| { TAG: "CrystalInvasionWipeAll"; _0: LazyPacket_lazyParsed_2<t_201> }
+| { TAG: "MinionAttackTargetUpdate"; _0: LazyPacket_lazyParsed_2<t_202> }
+| { TAG: "CrystalInvasionSendWaitTime"; _0: LazyPacket_lazyParsed_2<t_203> }
+| { TAG: "PlayerDamage"; _0: LazyPacket_lazyParsed_2<t_256> }
+| { TAG: "PlayerDeath"; _0: LazyPacket_lazyParsed_2<t_205> }
+| { TAG: "CombatTextCreate"; _0: LazyPacket_lazyParsed_2<t_206> }
+| { TAG: "Emoji"; _0: LazyPacket_lazyParsed_2<t_207> }
 | { TAG: "TileEntityDisplayDollItemSync"; _0: LazyPacket_lazyParsed_2<t_59> }
-| { TAG: "TileEntityInteractionRequest"; _0: LazyPacket_lazyParsed_2<t_207> }
-| { TAG: "WeaponsRackTryPlacing"; _0: LazyPacket_lazyParsed_2<t_208> }
-| { TAG: "TileEntityHatRackItemSync"; _0: LazyPacket_lazyParsed_2<t_209> }
-| { TAG: "TilePickingSync"; _0: LazyPacket_lazyParsed_2<t_210> }
-| { TAG: "RevengeMarkerSync"; _0: LazyPacket_lazyParsed_2<t_211> }
-| { TAG: "RevengeMarkerRemove"; _0: LazyPacket_lazyParsed_2<t_212> }
-| { TAG: "GolfBallLandInCup"; _0: LazyPacket_lazyParsed_2<t_213> }
-| { TAG: "ClientFinishConnectingToServer"; _0: LazyPacket_lazyParsed_2<t_214> }
-| { TAG: "NpcFishOut"; _0: LazyPacket_lazyParsed_2<t_215> }
-| { TAG: "NpcTamper"; _0: LazyPacket_lazyParsed_2<t_216> }
-| { TAG: "LegacySoundPlay"; _0: LazyPacket_lazyParsed_2<t_217> }
-| { TAG: "FoodPlatterTryPlacing"; _0: LazyPacket_lazyParsed_2<t_218> }
+| { TAG: "TileEntityInteractionRequest"; _0: LazyPacket_lazyParsed_2<t_208> }
+| { TAG: "WeaponsRackTryPlacing"; _0: LazyPacket_lazyParsed_2<t_209> }
+| { TAG: "TileEntityHatRackItemSync"; _0: LazyPacket_lazyParsed_2<t_210> }
+| { TAG: "TilePickingSync"; _0: LazyPacket_lazyParsed_2<t_211> }
+| { TAG: "RevengeMarkerSync"; _0: LazyPacket_lazyParsed_2<t_212> }
+| { TAG: "RevengeMarkerRemove"; _0: LazyPacket_lazyParsed_2<t_213> }
+| { TAG: "GolfBallLandInCup"; _0: LazyPacket_lazyParsed_2<t_214> }
+| { TAG: "ClientFinishConnectingToServer"; _0: LazyPacket_lazyParsed_2<t_215> }
+| { TAG: "NpcFishOut"; _0: LazyPacket_lazyParsed_2<t_216> }
+| { TAG: "NpcTamper"; _0: LazyPacket_lazyParsed_2<t_217> }
+| { TAG: "LegacySoundPlay"; _0: LazyPacket_lazyParsed_2<t_218> }
+| { TAG: "FoodPlatterTryPlacing"; _0: LazyPacket_lazyParsed_2<t_219> }
 | { TAG: "PlayerLuckFactorsUpdate"; _0: LazyPacket_lazyParsed_2<t_91> }
-| { TAG: "PlayerDead"; _0: LazyPacket_lazyParsed_2<t_219> }
-| { TAG: "CavernMonsterTypeSync"; _0: LazyPacket_lazyParsed_2<t_220> }
-| { TAG: "NpcBuffRemovalRequest"; _0: LazyPacket_lazyParsed_2<t_221> }
-| { TAG: "ClientSyncedInventory"; _0: LazyPacket_lazyParsed_2<t_222> }
-| { TAG: "CountsAsHostForGameplaySet"; _0: LazyPacket_lazyParsed_2<t_223> }
-| { TAG: "CreditsOrSlimeTransform"; _0: LazyPacket_lazyParsed_2<t_224> }
-| { TAG: "LucyAxeMessage"; _0: LazyPacket_lazyParsed_2<t_225> }
-| { TAG: "PiggyBankVoidLensUpdate"; _0: LazyPacket_lazyParsed_2<t_251> }
-| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: LazyPacket_lazyParsed_2<t_227> }
-| { TAG: "HaveDryadDoStardewAnimation"; _0: LazyPacket_lazyParsed_2<t_228> }
-| { TAG: "ItemDropShimmeredUpdate"; _0: LazyPacket_lazyParsed_2<t_229> }
+| { TAG: "PlayerDead"; _0: LazyPacket_lazyParsed_2<t_220> }
+| { TAG: "CavernMonsterTypeSync"; _0: LazyPacket_lazyParsed_2<t_221> }
+| { TAG: "NpcBuffRemovalRequest"; _0: LazyPacket_lazyParsed_2<t_222> }
+| { TAG: "ClientSyncedInventory"; _0: LazyPacket_lazyParsed_2<t_223> }
+| { TAG: "CountsAsHostForGameplaySet"; _0: LazyPacket_lazyParsed_2<t_224> }
+| { TAG: "CreditsOrSlimeTransform"; _0: LazyPacket_lazyParsed_2<t_225> }
+| { TAG: "LucyAxeMessage"; _0: LazyPacket_lazyParsed_2<t_226> }
+| { TAG: "PiggyBankVoidLensUpdate"; _0: LazyPacket_lazyParsed_2<t_257> }
+| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: LazyPacket_lazyParsed_2<t_228> }
+| { TAG: "HaveDryadDoStardewAnimation"; _0: LazyPacket_lazyParsed_2<t_229> }
+| { TAG: "ItemDropShimmeredUpdate"; _0: LazyPacket_lazyParsed_2<t_230> }
 | { TAG: "ShimmerEffectOrCoinLuck"; _0: LazyPacket_lazyParsed_2<t_49> }
-| { TAG: "LoadoutSwitch"; _0: LazyPacket_lazyParsed_2<t_230> }
-| { TAG: "ItemDropProtectedUpdate"; _0: LazyPacket_lazyParsed_2<t_231> }
+| { TAG: "LoadoutSwitch"; _0: LazyPacket_lazyParsed_2<t_231> }
+| { TAG: "ItemDropProtectedUpdate"; _0: LazyPacket_lazyParsed_2<t_232> }
 | { TAG: "DeadCellsDisplayJarTryPlacing"; _0: LazyPacket_lazyParsed_2<t_80> }
 | { TAG: "PlayerSpectate"; _0: LazyPacket_lazyParsed_2<t_92> }
 | { TAG: "ItemDropClear"; _0: LazyPacket_lazyParsed_2<t_84> }
@@ -1645,8 +1811,8 @@ declare type LazyPacket_t_2 =
 | { TAG: "SectionRequest"; _0: LazyPacket_lazyParsed_2<t_95> }
 | { TAG: "ItemDropPosition"; _0: LazyPacket_lazyParsed_2<t_85> }
 | { TAG: "HostToken"; _0: LazyPacket_lazyParsed_2<t_82> }
-| { TAG: "ServerInfo"; _0: LazyPacket_lazyParsed_2<t_252> }
-| { TAG: "PlayerPlatformInfo"; _0: LazyPacket_lazyParsed_2<t_253> };
+| { TAG: "ServerInfo"; _0: LazyPacket_lazyParsed_2<t_258> }
+| { TAG: "PlayerPlatformInfo"; _0: LazyPacket_lazyParsed_2<t_259> };
 
 declare type LazyPacket_t_3 =
     { TAG: "ConnectRequest"; _0: LazyPacket_lazyParsed_3<t_114> }
@@ -1655,7 +1821,7 @@ declare type LazyPacket_t_3 =
 | { TAG: "PlayerInfo"; _0: LazyPacket_lazyParsed_3<t_100> }
 | { TAG: "PlayerInventorySlot"; _0: LazyPacket_lazyParsed_3<t_102> }
 | { TAG: "WorldDataRequest"; _0: LazyPacket_lazyParsed_3<t_117> }
-| { TAG: "WorldInfo"; _0: LazyPacket_lazyParsed_3<t_256> }
+| { TAG: "WorldInfo"; _0: LazyPacket_lazyParsed_3<t_262> }
 | { TAG: "InitialTileSectionsRequest"; _0: LazyPacket_lazyParsed_3<t_83> }
 | { TAG: "Status"; _0: LazyPacket_lazyParsed_3<t_118> }
 | { TAG: "TileSectionSend"; _0: LazyPacket_lazyParsed_3<t_68> }
@@ -1686,7 +1852,7 @@ declare type LazyPacket_t_3 =
 | { TAG: "PasswordSend"; _0: LazyPacket_lazyParsed_3<t_135> }
 | { TAG: "ItemOwnerRemove"; _0: LazyPacket_lazyParsed_3<t_21> }
 | { TAG: "NpcTalk"; _0: LazyPacket_lazyParsed_3<t_136> }
-| { TAG: "PlayerAnimation"; _0: LazyPacket_lazyParsed_3<t_137> }
+| { TAG: "PlayerAnimation"; _0: LazyPacket_lazyParsed_3<t_249> }
 | { TAG: "PlayerMana"; _0: LazyPacket_lazyParsed_3<t_138> }
 | { TAG: "ManaEffect"; _0: LazyPacket_lazyParsed_3<t_139> }
 | { TAG: "PlayerTeam"; _0: LazyPacket_lazyParsed_3<t_140> }
@@ -1732,67 +1898,67 @@ declare type LazyPacket_t_3 =
 | { TAG: "ItemForceIntoNearestChest"; _0: LazyPacket_lazyParsed_3<t_86> }
 | { TAG: "TileEntityUpdate"; _0: LazyPacket_lazyParsed_3<t_172> }
 | { TAG: "TileEntityPlace"; _0: LazyPacket_lazyParsed_3<t_173> }
-| { TAG: "ItemDropModify"; _0: LazyPacket_lazyParsed_3<t_174> }
+| { TAG: "ItemDropModify"; _0: LazyPacket_lazyParsed_3<t_253> }
 | { TAG: "ItemFramePlace"; _0: LazyPacket_lazyParsed_3<t_175> }
 | { TAG: "ItemDropInstancedUpdate"; _0: LazyPacket_lazyParsed_3<t_176> }
-| { TAG: "EmoteBubble"; _0: LazyPacket_lazyParsed_3<t_177> }
-| { TAG: "ExtraValueSync"; _0: LazyPacket_lazyParsed_3<t_178> }
-| { TAG: "SocialHandshake"; _0: LazyPacket_lazyParsed_3<t_179> }
-| { TAG: "Unused"; _0: LazyPacket_lazyParsed_3<t_180> }
-| { TAG: "PortalKill"; _0: LazyPacket_lazyParsed_3<t_181> }
-| { TAG: "PlayerTeleportPortal"; _0: LazyPacket_lazyParsed_3<t_182> }
-| { TAG: "NpcKilledNotification"; _0: LazyPacket_lazyParsed_3<t_183> }
-| { TAG: "EventNotification"; _0: LazyPacket_lazyParsed_3<t_184> }
-| { TAG: "MinionTargetUpdate"; _0: LazyPacket_lazyParsed_3<t_185> }
-| { TAG: "NpcTeleportPortal"; _0: LazyPacket_lazyParsed_3<t_186> }
-| { TAG: "ShieldStrengthsUpdate"; _0: LazyPacket_lazyParsed_3<t_187> }
-| { TAG: "NebulaLevelUp"; _0: LazyPacket_lazyParsed_3<t_188> }
-| { TAG: "MoonLordCountdown"; _0: LazyPacket_lazyParsed_3<t_189> }
-| { TAG: "NpcShopItem"; _0: LazyPacket_lazyParsed_3<t_190> }
-| { TAG: "GemLockToggle"; _0: LazyPacket_lazyParsed_3<t_191> }
-| { TAG: "SmokePoof"; _0: LazyPacket_lazyParsed_3<t_192> }
-| { TAG: "ChatMessageSmart"; _0: LazyPacket_lazyParsed_3<t_193> }
-| { TAG: "WiredCannonShot"; _0: LazyPacket_lazyParsed_3<t_194> }
-| { TAG: "MassWireOperation"; _0: LazyPacket_lazyParsed_3<t_195> }
-| { TAG: "MassWireOperationPay"; _0: LazyPacket_lazyParsed_3<t_196> }
-| { TAG: "PartyToggle"; _0: LazyPacket_lazyParsed_3<t_197> }
-| { TAG: "TreeGrowFx"; _0: LazyPacket_lazyParsed_3<t_198> }
-| { TAG: "CrystalInvasionStart"; _0: LazyPacket_lazyParsed_3<t_199> }
-| { TAG: "CrystalInvasionWipeAll"; _0: LazyPacket_lazyParsed_3<t_200> }
-| { TAG: "MinionAttackTargetUpdate"; _0: LazyPacket_lazyParsed_3<t_201> }
-| { TAG: "CrystalInvasionSendWaitTime"; _0: LazyPacket_lazyParsed_3<t_202> }
-| { TAG: "PlayerDamage"; _0: LazyPacket_lazyParsed_3<t_203> }
-| { TAG: "PlayerDeath"; _0: LazyPacket_lazyParsed_3<t_204> }
-| { TAG: "CombatTextCreate"; _0: LazyPacket_lazyParsed_3<t_205> }
-| { TAG: "Emoji"; _0: LazyPacket_lazyParsed_3<t_206> }
+| { TAG: "EmoteBubble"; _0: LazyPacket_lazyParsed_3<t_255> }
+| { TAG: "ExtraValueSync"; _0: LazyPacket_lazyParsed_3<t_179> }
+| { TAG: "SocialHandshake"; _0: LazyPacket_lazyParsed_3<t_180> }
+| { TAG: "Unused"; _0: LazyPacket_lazyParsed_3<t_181> }
+| { TAG: "PortalKill"; _0: LazyPacket_lazyParsed_3<t_182> }
+| { TAG: "PlayerTeleportPortal"; _0: LazyPacket_lazyParsed_3<t_183> }
+| { TAG: "NpcKilledNotification"; _0: LazyPacket_lazyParsed_3<t_184> }
+| { TAG: "EventNotification"; _0: LazyPacket_lazyParsed_3<t_185> }
+| { TAG: "MinionTargetUpdate"; _0: LazyPacket_lazyParsed_3<t_186> }
+| { TAG: "NpcTeleportPortal"; _0: LazyPacket_lazyParsed_3<t_187> }
+| { TAG: "ShieldStrengthsUpdate"; _0: LazyPacket_lazyParsed_3<t_188> }
+| { TAG: "NebulaLevelUp"; _0: LazyPacket_lazyParsed_3<t_189> }
+| { TAG: "MoonLordCountdown"; _0: LazyPacket_lazyParsed_3<t_190> }
+| { TAG: "NpcShopItem"; _0: LazyPacket_lazyParsed_3<t_191> }
+| { TAG: "GemLockToggle"; _0: LazyPacket_lazyParsed_3<t_192> }
+| { TAG: "SmokePoof"; _0: LazyPacket_lazyParsed_3<t_193> }
+| { TAG: "ChatMessageSmart"; _0: LazyPacket_lazyParsed_3<t_194> }
+| { TAG: "WiredCannonShot"; _0: LazyPacket_lazyParsed_3<t_195> }
+| { TAG: "MassWireOperation"; _0: LazyPacket_lazyParsed_3<t_196> }
+| { TAG: "MassWireOperationPay"; _0: LazyPacket_lazyParsed_3<t_197> }
+| { TAG: "PartyToggle"; _0: LazyPacket_lazyParsed_3<t_198> }
+| { TAG: "TreeGrowFx"; _0: LazyPacket_lazyParsed_3<t_199> }
+| { TAG: "CrystalInvasionStart"; _0: LazyPacket_lazyParsed_3<t_200> }
+| { TAG: "CrystalInvasionWipeAll"; _0: LazyPacket_lazyParsed_3<t_201> }
+| { TAG: "MinionAttackTargetUpdate"; _0: LazyPacket_lazyParsed_3<t_202> }
+| { TAG: "CrystalInvasionSendWaitTime"; _0: LazyPacket_lazyParsed_3<t_203> }
+| { TAG: "PlayerDamage"; _0: LazyPacket_lazyParsed_3<t_256> }
+| { TAG: "PlayerDeath"; _0: LazyPacket_lazyParsed_3<t_205> }
+| { TAG: "CombatTextCreate"; _0: LazyPacket_lazyParsed_3<t_206> }
+| { TAG: "Emoji"; _0: LazyPacket_lazyParsed_3<t_207> }
 | { TAG: "TileEntityDisplayDollItemSync"; _0: LazyPacket_lazyParsed_3<t_59> }
-| { TAG: "TileEntityInteractionRequest"; _0: LazyPacket_lazyParsed_3<t_207> }
-| { TAG: "WeaponsRackTryPlacing"; _0: LazyPacket_lazyParsed_3<t_208> }
-| { TAG: "TileEntityHatRackItemSync"; _0: LazyPacket_lazyParsed_3<t_209> }
-| { TAG: "TilePickingSync"; _0: LazyPacket_lazyParsed_3<t_210> }
-| { TAG: "RevengeMarkerSync"; _0: LazyPacket_lazyParsed_3<t_211> }
-| { TAG: "RevengeMarkerRemove"; _0: LazyPacket_lazyParsed_3<t_212> }
-| { TAG: "GolfBallLandInCup"; _0: LazyPacket_lazyParsed_3<t_213> }
-| { TAG: "ClientFinishConnectingToServer"; _0: LazyPacket_lazyParsed_3<t_214> }
-| { TAG: "NpcFishOut"; _0: LazyPacket_lazyParsed_3<t_215> }
-| { TAG: "NpcTamper"; _0: LazyPacket_lazyParsed_3<t_216> }
-| { TAG: "LegacySoundPlay"; _0: LazyPacket_lazyParsed_3<t_217> }
-| { TAG: "FoodPlatterTryPlacing"; _0: LazyPacket_lazyParsed_3<t_218> }
+| { TAG: "TileEntityInteractionRequest"; _0: LazyPacket_lazyParsed_3<t_208> }
+| { TAG: "WeaponsRackTryPlacing"; _0: LazyPacket_lazyParsed_3<t_209> }
+| { TAG: "TileEntityHatRackItemSync"; _0: LazyPacket_lazyParsed_3<t_210> }
+| { TAG: "TilePickingSync"; _0: LazyPacket_lazyParsed_3<t_211> }
+| { TAG: "RevengeMarkerSync"; _0: LazyPacket_lazyParsed_3<t_212> }
+| { TAG: "RevengeMarkerRemove"; _0: LazyPacket_lazyParsed_3<t_213> }
+| { TAG: "GolfBallLandInCup"; _0: LazyPacket_lazyParsed_3<t_214> }
+| { TAG: "ClientFinishConnectingToServer"; _0: LazyPacket_lazyParsed_3<t_215> }
+| { TAG: "NpcFishOut"; _0: LazyPacket_lazyParsed_3<t_216> }
+| { TAG: "NpcTamper"; _0: LazyPacket_lazyParsed_3<t_217> }
+| { TAG: "LegacySoundPlay"; _0: LazyPacket_lazyParsed_3<t_218> }
+| { TAG: "FoodPlatterTryPlacing"; _0: LazyPacket_lazyParsed_3<t_219> }
 | { TAG: "PlayerLuckFactorsUpdate"; _0: LazyPacket_lazyParsed_3<t_91> }
-| { TAG: "PlayerDead"; _0: LazyPacket_lazyParsed_3<t_219> }
-| { TAG: "CavernMonsterTypeSync"; _0: LazyPacket_lazyParsed_3<t_220> }
-| { TAG: "NpcBuffRemovalRequest"; _0: LazyPacket_lazyParsed_3<t_221> }
-| { TAG: "ClientSyncedInventory"; _0: LazyPacket_lazyParsed_3<t_222> }
-| { TAG: "CountsAsHostForGameplaySet"; _0: LazyPacket_lazyParsed_3<t_223> }
-| { TAG: "CreditsOrSlimeTransform"; _0: LazyPacket_lazyParsed_3<t_224> }
-| { TAG: "LucyAxeMessage"; _0: LazyPacket_lazyParsed_3<t_225> }
-| { TAG: "PiggyBankVoidLensUpdate"; _0: LazyPacket_lazyParsed_3<t_226> }
-| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: LazyPacket_lazyParsed_3<t_227> }
-| { TAG: "HaveDryadDoStardewAnimation"; _0: LazyPacket_lazyParsed_3<t_228> }
-| { TAG: "ItemDropShimmeredUpdate"; _0: LazyPacket_lazyParsed_3<t_229> }
+| { TAG: "PlayerDead"; _0: LazyPacket_lazyParsed_3<t_220> }
+| { TAG: "CavernMonsterTypeSync"; _0: LazyPacket_lazyParsed_3<t_221> }
+| { TAG: "NpcBuffRemovalRequest"; _0: LazyPacket_lazyParsed_3<t_222> }
+| { TAG: "ClientSyncedInventory"; _0: LazyPacket_lazyParsed_3<t_223> }
+| { TAG: "CountsAsHostForGameplaySet"; _0: LazyPacket_lazyParsed_3<t_224> }
+| { TAG: "CreditsOrSlimeTransform"; _0: LazyPacket_lazyParsed_3<t_225> }
+| { TAG: "LucyAxeMessage"; _0: LazyPacket_lazyParsed_3<t_226> }
+| { TAG: "PiggyBankVoidLensUpdate"; _0: LazyPacket_lazyParsed_3<t_227> }
+| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: LazyPacket_lazyParsed_3<t_228> }
+| { TAG: "HaveDryadDoStardewAnimation"; _0: LazyPacket_lazyParsed_3<t_229> }
+| { TAG: "ItemDropShimmeredUpdate"; _0: LazyPacket_lazyParsed_3<t_230> }
 | { TAG: "ShimmerEffectOrCoinLuck"; _0: LazyPacket_lazyParsed_3<t_49> }
-| { TAG: "LoadoutSwitch"; _0: LazyPacket_lazyParsed_3<t_230> }
-| { TAG: "ItemDropProtectedUpdate"; _0: LazyPacket_lazyParsed_3<t_231> }
+| { TAG: "LoadoutSwitch"; _0: LazyPacket_lazyParsed_3<t_231> }
+| { TAG: "ItemDropProtectedUpdate"; _0: LazyPacket_lazyParsed_3<t_232> }
 | { TAG: "DeadCellsDisplayJarTryPlacing"; _0: LazyPacket_lazyParsed_3<t_80> }
 | { TAG: "PlayerSpectate"; _0: LazyPacket_lazyParsed_3<t_92> }
 | { TAG: "ItemDropClear"; _0: LazyPacket_lazyParsed_3<t_84> }
@@ -1806,9 +1972,171 @@ declare type LazyPacket_t_3 =
 | { TAG: "SectionRequest"; _0: LazyPacket_lazyParsed_3<t_95> }
 | { TAG: "ItemDropPosition"; _0: LazyPacket_lazyParsed_3<t_85> }
 | { TAG: "HostToken"; _0: LazyPacket_lazyParsed_3<t_82> }
-| { TAG: "DamageNPCAck"; _0: LazyPacket_lazyParsed_3<t_232> }
-| { TAG: "ServerInfo"; _0: LazyPacket_lazyParsed_3<t_233> }
-| { TAG: "PlayerPlatformInfo"; _0: LazyPacket_lazyParsed_3<t_234> };
+| { TAG: "DamageNPCAck"; _0: LazyPacket_lazyParsed_3<t_233> }
+| { TAG: "ServerInfo"; _0: LazyPacket_lazyParsed_3<t_263> }
+| { TAG: "PlayerPlatformInfo"; _0: LazyPacket_lazyParsed_3<t_264> };
+
+declare type LazyPacket_t_4 =
+    { TAG: "ConnectRequest"; _0: LazyPacket_lazyParsed_4<t_114> }
+| { TAG: "Disconnect"; _0: LazyPacket_lazyParsed_4<t_115> }
+| { TAG: "PlayerSlotSet"; _0: LazyPacket_lazyParsed_4<t_116> }
+| { TAG: "PlayerInfo"; _0: LazyPacket_lazyParsed_4<t_100> }
+| { TAG: "PlayerInventorySlot"; _0: LazyPacket_lazyParsed_4<t_102> }
+| { TAG: "WorldDataRequest"; _0: LazyPacket_lazyParsed_4<t_117> }
+| { TAG: "WorldInfo"; _0: LazyPacket_lazyParsed_4<t_266> }
+| { TAG: "InitialTileSectionsRequest"; _0: LazyPacket_lazyParsed_4<t_83> }
+| { TAG: "Status"; _0: LazyPacket_lazyParsed_4<t_118> }
+| { TAG: "TileSectionSend"; _0: LazyPacket_lazyParsed_4<t_68> }
+| { TAG: "TileSectionFrame"; _0: LazyPacket_lazyParsed_4<t_119> }
+| { TAG: "PlayerSpawn"; _0: LazyPacket_lazyParsed_4<t_101> }
+| { TAG: "PlayerUpdate"; _0: LazyPacket_lazyParsed_4<t_99> }
+| { TAG: "PlayerActive"; _0: LazyPacket_lazyParsed_4<t_120> }
+| { TAG: "PlayerHealth"; _0: LazyPacket_lazyParsed_4<t_121> }
+| { TAG: "TileModify"; _0: LazyPacket_lazyParsed_4<t_122> }
+| { TAG: "TimeSet"; _0: LazyPacket_lazyParsed_4<t_123> }
+| { TAG: "DoorUse"; _0: LazyPacket_lazyParsed_4<t_124> }
+| { TAG: "TileSquareSend"; _0: LazyPacket_lazyParsed_4<t_69> }
+| { TAG: "ItemDropUpdate"; _0: LazyPacket_lazyParsed_4<t_18> }
+| { TAG: "ItemOwner"; _0: LazyPacket_lazyParsed_4<t_20> }
+| { TAG: "NpcUpdate"; _0: LazyPacket_lazyParsed_4<t_110> }
+| { TAG: "NpcItemStrike"; _0: LazyPacket_lazyParsed_4<t_125> }
+| { TAG: "ProjectileSync"; _0: LazyPacket_lazyParsed_4<t_105> }
+| { TAG: "NpcStrike"; _0: LazyPacket_lazyParsed_4<t_126> }
+| { TAG: "ProjectileDestroy"; _0: LazyPacket_lazyParsed_4<t_127> }
+| { TAG: "PvpToggle"; _0: LazyPacket_lazyParsed_4<t_128> }
+| { TAG: "ChestOpen"; _0: LazyPacket_lazyParsed_4<t_129> }
+| { TAG: "ChestItem"; _0: LazyPacket_lazyParsed_4<t_130> }
+| { TAG: "ActiveContainerSync"; _0: LazyPacket_lazyParsed_4<t_131> }
+| { TAG: "ChestPlace"; _0: LazyPacket_lazyParsed_4<t_132> }
+| { TAG: "HealEffect"; _0: LazyPacket_lazyParsed_4<t_133> }
+| { TAG: "Zones"; _0: LazyPacket_lazyParsed_4<t_78> }
+| { TAG: "PasswordRequired"; _0: LazyPacket_lazyParsed_4<t_134> }
+| { TAG: "PasswordSend"; _0: LazyPacket_lazyParsed_4<t_135> }
+| { TAG: "ItemOwnerRemove"; _0: LazyPacket_lazyParsed_4<t_21> }
+| { TAG: "NpcTalk"; _0: LazyPacket_lazyParsed_4<t_136> }
+| { TAG: "PlayerAnimation"; _0: LazyPacket_lazyParsed_4<t_249> }
+| { TAG: "PlayerMana"; _0: LazyPacket_lazyParsed_4<t_138> }
+| { TAG: "ManaEffect"; _0: LazyPacket_lazyParsed_4<t_139> }
+| { TAG: "PlayerTeam"; _0: LazyPacket_lazyParsed_4<t_140> }
+| { TAG: "SignRead"; _0: LazyPacket_lazyParsed_4<t_141> }
+| { TAG: "SignNew"; _0: LazyPacket_lazyParsed_4<t_142> }
+| { TAG: "LiquidSet"; _0: LazyPacket_lazyParsed_4<t_143> }
+| { TAG: "PlayerSpawnSelf"; _0: LazyPacket_lazyParsed_4<t_144> }
+| { TAG: "PlayerBuffsSet"; _0: LazyPacket_lazyParsed_4<t_40> }
+| { TAG: "NpcSpecialEffect"; _0: LazyPacket_lazyParsed_4<t_145> }
+| { TAG: "ChestOrTempleUnlock"; _0: LazyPacket_lazyParsed_4<t_146> }
+| { TAG: "NpcBuffAdd"; _0: LazyPacket_lazyParsed_4<t_147> }
+| { TAG: "NpcBuffUpdate"; _0: LazyPacket_lazyParsed_4<t_26> }
+| { TAG: "PlayerBuffAdd"; _0: LazyPacket_lazyParsed_4<t_148> }
+| { TAG: "NpcNameUpdate"; _0: LazyPacket_lazyParsed_4<t_149> }
+| { TAG: "GoodEvilUpdate"; _0: LazyPacket_lazyParsed_4<t_150> }
+| { TAG: "HarpPlay"; _0: LazyPacket_lazyParsed_4<t_151> }
+| { TAG: "SwitchHit"; _0: LazyPacket_lazyParsed_4<t_152> }
+| { TAG: "NpcHomeUpdate"; _0: LazyPacket_lazyParsed_4<t_153> }
+| { TAG: "BossOrInvasionSpawn"; _0: LazyPacket_lazyParsed_4<t_154> }
+| { TAG: "PlayerDodge"; _0: LazyPacket_lazyParsed_4<t_45> }
+| { TAG: "TilePaint"; _0: LazyPacket_lazyParsed_4<t_155> }
+| { TAG: "WallPaint"; _0: LazyPacket_lazyParsed_4<t_156> }
+| { TAG: "Teleport"; _0: LazyPacket_lazyParsed_4<t_56> }
+| { TAG: "PlayerHealOther"; _0: LazyPacket_lazyParsed_4<t_157> }
+| { TAG: "DimensionsUpdate"; _0: LazyPacket_lazyParsed_4<t_158> }
+| { TAG: "ClientUuid"; _0: LazyPacket_lazyParsed_4<t_159> }
+| { TAG: "ChestName"; _0: LazyPacket_lazyParsed_4<t_160> }
+| { TAG: "NpcCatch"; _0: LazyPacket_lazyParsed_4<t_27> }
+| { TAG: "NpcRelease"; _0: LazyPacket_lazyParsed_4<t_161> }
+| { TAG: "TravellingMerchantInventory"; _0: LazyPacket_lazyParsed_4<t_71> }
+| { TAG: "TeleportationPotion"; _0: LazyPacket_lazyParsed_4<t_57> }
+| { TAG: "AnglerQuest"; _0: LazyPacket_lazyParsed_4<t_162> }
+| { TAG: "AnglerQuestComplete"; _0: LazyPacket_lazyParsed_4<t_163> }
+| { TAG: "AnglerQuestsCompletedAmount"; _0: LazyPacket_lazyParsed_4<t_164> }
+| { TAG: "TemporaryAnimationCreate"; _0: LazyPacket_lazyParsed_4<t_165> }
+| { TAG: "InvasionProgressReport"; _0: LazyPacket_lazyParsed_4<t_166> }
+| { TAG: "ObjectPlace"; _0: LazyPacket_lazyParsed_4<t_167> }
+| { TAG: "PlayerChestIndexSync"; _0: LazyPacket_lazyParsed_4<t_168> }
+| { TAG: "CombatNumberCreate"; _0: LazyPacket_lazyParsed_4<t_169> }
+| { TAG: "NetModuleLoad"; _0: LazyPacket_lazyParsed_4<t_23> }
+| { TAG: "NpcKillCount"; _0: LazyPacket_lazyParsed_4<t_170> }
+| { TAG: "PlayerStealth"; _0: LazyPacket_lazyParsed_4<t_171> }
+| { TAG: "ItemForceIntoNearestChest"; _0: LazyPacket_lazyParsed_4<t_86> }
+| { TAG: "TileEntityUpdate"; _0: LazyPacket_lazyParsed_4<t_172> }
+| { TAG: "TileEntityPlace"; _0: LazyPacket_lazyParsed_4<t_173> }
+| { TAG: "ItemDropModify"; _0: LazyPacket_lazyParsed_4<t_253> }
+| { TAG: "ItemFramePlace"; _0: LazyPacket_lazyParsed_4<t_175> }
+| { TAG: "ItemDropInstancedUpdate"; _0: LazyPacket_lazyParsed_4<t_176> }
+| { TAG: "EmoteBubble"; _0: LazyPacket_lazyParsed_4<t_255> }
+| { TAG: "ExtraValueSync"; _0: LazyPacket_lazyParsed_4<t_179> }
+| { TAG: "SocialHandshake"; _0: LazyPacket_lazyParsed_4<t_180> }
+| { TAG: "Unused"; _0: LazyPacket_lazyParsed_4<t_181> }
+| { TAG: "PortalKill"; _0: LazyPacket_lazyParsed_4<t_182> }
+| { TAG: "PlayerTeleportPortal"; _0: LazyPacket_lazyParsed_4<t_183> }
+| { TAG: "NpcKilledNotification"; _0: LazyPacket_lazyParsed_4<t_184> }
+| { TAG: "EventNotification"; _0: LazyPacket_lazyParsed_4<t_185> }
+| { TAG: "MinionTargetUpdate"; _0: LazyPacket_lazyParsed_4<t_186> }
+| { TAG: "NpcTeleportPortal"; _0: LazyPacket_lazyParsed_4<t_187> }
+| { TAG: "ShieldStrengthsUpdate"; _0: LazyPacket_lazyParsed_4<t_188> }
+| { TAG: "NebulaLevelUp"; _0: LazyPacket_lazyParsed_4<t_189> }
+| { TAG: "MoonLordCountdown"; _0: LazyPacket_lazyParsed_4<t_190> }
+| { TAG: "NpcShopItem"; _0: LazyPacket_lazyParsed_4<t_191> }
+| { TAG: "GemLockToggle"; _0: LazyPacket_lazyParsed_4<t_192> }
+| { TAG: "SmokePoof"; _0: LazyPacket_lazyParsed_4<t_193> }
+| { TAG: "ChatMessageSmart"; _0: LazyPacket_lazyParsed_4<t_194> }
+| { TAG: "WiredCannonShot"; _0: LazyPacket_lazyParsed_4<t_195> }
+| { TAG: "MassWireOperation"; _0: LazyPacket_lazyParsed_4<t_196> }
+| { TAG: "MassWireOperationPay"; _0: LazyPacket_lazyParsed_4<t_197> }
+| { TAG: "PartyToggle"; _0: LazyPacket_lazyParsed_4<t_198> }
+| { TAG: "TreeGrowFx"; _0: LazyPacket_lazyParsed_4<t_199> }
+| { TAG: "CrystalInvasionStart"; _0: LazyPacket_lazyParsed_4<t_200> }
+| { TAG: "CrystalInvasionWipeAll"; _0: LazyPacket_lazyParsed_4<t_201> }
+| { TAG: "MinionAttackTargetUpdate"; _0: LazyPacket_lazyParsed_4<t_202> }
+| { TAG: "CrystalInvasionSendWaitTime"; _0: LazyPacket_lazyParsed_4<t_203> }
+| { TAG: "PlayerDamage"; _0: LazyPacket_lazyParsed_4<t_256> }
+| { TAG: "PlayerDeath"; _0: LazyPacket_lazyParsed_4<t_205> }
+| { TAG: "CombatTextCreate"; _0: LazyPacket_lazyParsed_4<t_206> }
+| { TAG: "Emoji"; _0: LazyPacket_lazyParsed_4<t_207> }
+| { TAG: "TileEntityDisplayDollItemSync"; _0: LazyPacket_lazyParsed_4<t_59> }
+| { TAG: "TileEntityInteractionRequest"; _0: LazyPacket_lazyParsed_4<t_208> }
+| { TAG: "WeaponsRackTryPlacing"; _0: LazyPacket_lazyParsed_4<t_209> }
+| { TAG: "TileEntityHatRackItemSync"; _0: LazyPacket_lazyParsed_4<t_210> }
+| { TAG: "TilePickingSync"; _0: LazyPacket_lazyParsed_4<t_211> }
+| { TAG: "RevengeMarkerSync"; _0: LazyPacket_lazyParsed_4<t_212> }
+| { TAG: "RevengeMarkerRemove"; _0: LazyPacket_lazyParsed_4<t_213> }
+| { TAG: "GolfBallLandInCup"; _0: LazyPacket_lazyParsed_4<t_214> }
+| { TAG: "ClientFinishConnectingToServer"; _0: LazyPacket_lazyParsed_4<t_215> }
+| { TAG: "NpcFishOut"; _0: LazyPacket_lazyParsed_4<t_216> }
+| { TAG: "NpcTamper"; _0: LazyPacket_lazyParsed_4<t_217> }
+| { TAG: "LegacySoundPlay"; _0: LazyPacket_lazyParsed_4<t_218> }
+| { TAG: "FoodPlatterTryPlacing"; _0: LazyPacket_lazyParsed_4<t_219> }
+| { TAG: "PlayerLuckFactorsUpdate"; _0: LazyPacket_lazyParsed_4<t_91> }
+| { TAG: "PlayerDead"; _0: LazyPacket_lazyParsed_4<t_220> }
+| { TAG: "CavernMonsterTypeSync"; _0: LazyPacket_lazyParsed_4<t_221> }
+| { TAG: "NpcBuffRemovalRequest"; _0: LazyPacket_lazyParsed_4<t_222> }
+| { TAG: "ClientSyncedInventory"; _0: LazyPacket_lazyParsed_4<t_223> }
+| { TAG: "CountsAsHostForGameplaySet"; _0: LazyPacket_lazyParsed_4<t_224> }
+| { TAG: "CreditsOrSlimeTransform"; _0: LazyPacket_lazyParsed_4<t_225> }
+| { TAG: "LucyAxeMessage"; _0: LazyPacket_lazyParsed_4<t_226> }
+| { TAG: "PiggyBankVoidLensUpdate"; _0: LazyPacket_lazyParsed_4<t_227> }
+| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: LazyPacket_lazyParsed_4<t_228> }
+| { TAG: "HaveDryadDoStardewAnimation"; _0: LazyPacket_lazyParsed_4<t_229> }
+| { TAG: "ItemDropShimmeredUpdate"; _0: LazyPacket_lazyParsed_4<t_230> }
+| { TAG: "ShimmerEffectOrCoinLuck"; _0: LazyPacket_lazyParsed_4<t_49> }
+| { TAG: "LoadoutSwitch"; _0: LazyPacket_lazyParsed_4<t_231> }
+| { TAG: "ItemDropProtectedUpdate"; _0: LazyPacket_lazyParsed_4<t_232> }
+| { TAG: "DeadCellsDisplayJarTryPlacing"; _0: LazyPacket_lazyParsed_4<t_80> }
+| { TAG: "PlayerSpectate"; _0: LazyPacket_lazyParsed_4<t_92> }
+| { TAG: "ItemDropClear"; _0: LazyPacket_lazyParsed_4<t_84> }
+| { TAG: "PlayerItemUseSound"; _0: LazyPacket_lazyParsed_4<t_90> }
+| { TAG: "NpcHurtByDebuff"; _0: LazyPacket_lazyParsed_4<t_88> }
+| { TAG: "Ping"; _0: LazyPacket_lazyParsed_4<t_89> }
+| { TAG: "ChestResize"; _0: LazyPacket_lazyParsed_4<t_79> }
+| { TAG: "LeashedEntityAnchorInsertItem"; _0: LazyPacket_lazyParsed_4<t_87> }
+| { TAG: "PlayerTeamUpdate"; _0: LazyPacket_lazyParsed_4<t_94> }
+| { TAG: "PlayerTeamSwapSpawn"; _0: LazyPacket_lazyParsed_4<t_93> }
+| { TAG: "SectionRequest"; _0: LazyPacket_lazyParsed_4<t_95> }
+| { TAG: "ItemDropPosition"; _0: LazyPacket_lazyParsed_4<t_85> }
+| { TAG: "HostToken"; _0: LazyPacket_lazyParsed_4<t_82> }
+| { TAG: "DamageNPCAck"; _0: LazyPacket_lazyParsed_4<t_233> }
+| { TAG: "ServerInfo"; _0: LazyPacket_lazyParsed_4<t_263> }
+| { TAG: "PlayerPlatformInfo"; _0: LazyPacket_lazyParsed_4<t_264> };
 
 export declare namespace LeashedEntityAnchorInsertItemPacket {
     export {
@@ -2216,7 +2544,8 @@ declare type other =
 | "WallOfFleshLicked"
 | "ChaosState"
 | "ChaosState2Male"
-| "ChaosState3Female";
+| "ChaosState3Female"
+| { TAG: "Other"; _0: number };
 
 declare type other_2 = 
 "FallDamage"
@@ -2233,7 +2562,8 @@ declare type other_2 =
 | "WallOfFleshLicked"
 | "ChaosState"
 | "ChaosState2Male"
-| "ChaosState3Female";
+| "ChaosState3Female"
+| { TAG: "Other"; _0: number };
 
 declare type ownership =
 | "None"
@@ -2293,9 +2623,11 @@ export declare namespace Packet {
 
 declare function packetName(packetType: t_112): string;
 
-declare function packetName_2(packetType: t_236): string;
+declare function packetName_2(packetType: t_238): string;
 
-declare function packetName_3(packetType: t_254): string;
+declare function packetName_3(packetType: t_260): string;
+
+declare function packetName_4(packetType: t_267): string;
 
 export declare namespace PacketType {
     export {
@@ -2311,7 +2643,7 @@ export declare namespace PacketTypeV1456 {
         fromInt_3 as fromInt,
         toInt_3 as toInt,
         packetName_2 as packetName,
-        t_236 as t
+        t_238 as t
     }
 }
 
@@ -2320,13 +2652,22 @@ export declare namespace PacketTypeV1457 {
         fromInt_4 as fromInt,
         toInt_4 as toInt,
         packetName_3 as packetName,
-        t_254 as t
+        t_260 as t
+    }
+}
+
+export declare namespace PacketTypeV1458 {
+    export {
+        fromInt_5 as fromInt,
+        toInt_5 as toInt,
+        packetName_4 as packetName,
+        t_267 as t
     }
 }
 
 export declare namespace PacketV1456 {
     export {
-        t_237 as t,
+        t_239 as t,
         LazyPacket_lazyParsed_2 as LazyPacket_lazyParsed,
         LazyPacket_t_2 as LazyPacket_t,
         toBufferResult_2 as toBufferResult,
@@ -2338,13 +2679,25 @@ export declare namespace PacketV1456 {
 
 export declare namespace PacketV1457 {
     export {
-        t_255 as t,
+        t_261 as t,
         LazyPacket_lazyParsed_3 as LazyPacket_lazyParsed,
         LazyPacket_t_3 as LazyPacket_t,
         toBufferResult_3 as toBufferResult,
         LazyPacket_3 as LazyPacket,
         toBuffer_107 as toBuffer,
         toPacketName_3 as toPacketName
+    }
+}
+
+export declare namespace PacketV1458 {
+    export {
+        t_265 as t,
+        LazyPacket_lazyParsed_4 as LazyPacket_lazyParsed,
+        LazyPacket_t_4 as LazyPacket_t,
+        toBufferResult_4 as toBufferResult,
+        LazyPacket_4 as LazyPacket,
+        toBuffer_115 as toBuffer,
+        toPacketName_4 as toPacketName
     }
 }
 
@@ -2441,14 +2794,14 @@ declare type parse_107<a> = (buffer: Buffer, fromServer: boolean, ignore?: t_112
 declare const parse_108: (
 buffer: Buffer,
 fromServer: boolean,
-ignore?: t_236[],
-) => parseResult<t_237>;
+ignore?: t_238[],
+) => parseResult<t_239>;
 
 declare const parse_109: (
 buffer: Buffer,
 fromServer: boolean,
-ignore?: t_254[],
-) => parseResult<t_255>;
+ignore?: t_260[],
+) => parseResult<t_261>;
 
 declare type parse_11 = parseOk_11 | parseError_11;
 
@@ -2458,7 +2811,7 @@ declare type parse_110 = parseOk_101 | parseError_102;
 
 declare const parse_110: (_1: Buffer) => parse_110;
 
-declare type parse_111 = { TAG: "Ok"; _0: t_232 } | { TAG: "Error"; _0: readError };
+declare type parse_111 = { TAG: "Ok"; _0: t_233 } | { TAG: "Error"; _0: readError };
 
 declare const parse_111: (_1: Buffer) => parse_111;
 
@@ -2474,17 +2827,39 @@ declare type parse_114 = { TAG: "Ok"; _0: t_127 } | { TAG: "Error"; _0: readErro
 
 declare const parse_114: (_1: Buffer) => parse_114;
 
-declare type parse_115 = { TAG: "Ok"; _0: t_233 } | { TAG: "Error"; _0: readError };
+declare type parse_115 = { TAG: "Ok"; _0: t_234 } | { TAG: "Error"; _0: readError };
 
-declare const parse_115: (_1: Buffer) => parse_115;
+declare const parse_115: (buffer: Buffer, fromServer: boolean) => parse_115;
 
-declare type parse_116 = { TAG: "Ok"; _0: t_234 } | { TAG: "Error"; _0: readError };
+declare type parse_116 = { TAG: "Ok"; _0: t_235 } | { TAG: "Error"; _0: readError };
 
 declare const parse_116: (_1: Buffer) => parse_116;
+
+declare const parse_117: (
+buffer: Buffer,
+fromServer: boolean,
+ignore?: t_267[],
+) => parseResult<t_265>;
+
+declare type parse_118 = parseOk_102 | parseError_103;
+
+declare const parse_118: (_1: Buffer) => parse_118;
+
+declare type parse_119 = { TAG: "Ok"; _0: t_269 } | { TAG: "Error"; _0: readError };
+
+declare const parse_119: (_1: Buffer) => parse_119;
 
 declare type parse_12 = parseOk_12 | parseError_12;
 
 declare const parse_12: (_1: Buffer) => parse_12;
+
+declare type parse_120 = { TAG: "Ok"; _0: t_236 } | { TAG: "Error"; _0: readError };
+
+declare const parse_120: (_1: Buffer) => parse_120;
+
+declare type parse_121 = parseOk_103 | parseError_104;
+
+declare const parse_121: (_1: Buffer) => parse_121;
 
 declare type parse_13 = parseOk_13 | parseError_13;
 
@@ -2951,6 +3326,10 @@ declare type parseError_101 =
 
 declare type parseError_102 = { TAG: "Error"; _0: readError };
 
+declare type parseError_103 = { TAG: "Error"; _0: readError };
+
+declare type parseError_104 = { TAG: "Error"; _0: readError };
+
 declare type parseError_11 = { TAG: "Error"; _0: readError };
 
 declare type parseError_12 = { TAG: "Error"; _0: readError };
@@ -3159,13 +3538,22 @@ buffer: Buffer,
 fromServer: boolean,
 ) => parseResult<LazyPacket_t_3>;
 
+declare const parseLazy_5: (
+buffer: Buffer,
+fromServer: boolean,
+) => parseResult<LazyPacket_t_4>;
+
 declare type parseOk = { TAG: "Ok"; _0: t };
 
 declare type parseOk_10 = { TAG: "Ok"; _0: t_10 };
 
 declare type parseOk_100 = { TAG: "Ok"; _0: t_111 };
 
-declare type parseOk_101 = { TAG: "Ok"; _0: t_256 };
+declare type parseOk_101 = { TAG: "Ok"; _0: t_262 };
+
+declare type parseOk_102 = { TAG: "Ok"; _0: t_268 };
+
+declare type parseOk_103 = { TAG: "Ok"; _0: t_266 };
 
 declare type parseOk_11 = { TAG: "Ok"; _0: t_11 };
 
@@ -3388,6 +3776,16 @@ export declare namespace ParserConverterV1457 {
     }
 }
 
+export declare namespace ParserConverterV1458 {
+    export {
+        toLatestIfNeeded_3 as toLatestIfNeeded,
+        fromLatestIfNeeded_3 as fromLatestIfNeeded,
+        result_3 as result,
+        convertToLatestIfNeeded_3 as convertToLatestIfNeeded,
+        convertFromLatestIfNeeded_3 as convertFromLatestIfNeeded
+    }
+}
+
 declare type parseResult<a> =
 | { TAG: "Ok"; _0: (a) }
 | { TAG: "Error"; _0: parseError_101 };
@@ -3403,6 +3801,13 @@ export declare namespace ParserV1457 {
     export {
         parse_109 as parse,
         parseLazy_4 as parseLazy
+    }
+}
+
+export declare namespace ParserV1458 {
+    export {
+        parse_117 as parse,
+        parseLazy_5 as parseLazy
     }
 }
 
@@ -3484,6 +3889,16 @@ declare type PlatformId_t =
 | "GameCenter";
 
 declare type PlatformId_t_2 =
+| "None"
+| "Stadia"
+| "XBO"
+| "PSN"
+| "Editor"
+| "Nintendo"
+| "Steam"
+| "GameCenter";
+
+declare type PlatformId_t_3 =
 | "None"
 | "Stadia"
 | "XBO"
@@ -3688,7 +4103,7 @@ export declare namespace PlayerManaPacket {
 export declare namespace PlayerPlatformInfoPacket {
     export {
         PlatformId_t,
-        t_234 as t,
+        t_235 as t,
         parse_116 as parse,
         toBuffer_114 as toBuffer
     }
@@ -3907,6 +4322,8 @@ declare type Result_3<T, E> = {
     _0: E,
 }
 
+declare type result_3<a> = { TAG: "Ok"; _0: a } | { TAG: "Error"; _0: parseError_101 };
+
 declare type rttUpdate = {
     readonly playerId: number;
     readonly clientRttMicros: number;
@@ -3939,7 +4356,8 @@ declare type serverBlockedChests = { readonly chestIds: number[] };
 
 export declare namespace ServerInfoPacket {
     export {
-        t_233 as t,
+        endpoint,
+        t_234 as t,
         parse_115 as parse,
         toBuffer_113 as toBuffer
     }
@@ -4205,6 +4623,7 @@ declare type t_107 = {
     readonly hitDirection: number;
     readonly critical: boolean;
     readonly pvp: boolean;
+    readonly dodgeable: boolean;
     readonly cooldownCounter: number
 };
 
@@ -4276,6 +4695,7 @@ declare type t_108 = {
     readonly forceChristmasForever: boolean;
     readonly moreLightningSeed: boolean;
     readonly noLightningSeed: boolean;
+    readonly noSpidersSeed: boolean;
     readonly sundialCooldown: number;
     readonly moondialCooldown: number;
     readonly copperOreTier: number;
@@ -4486,7 +4906,8 @@ declare type t_112 =
 | "HostToken"
 | "DamageNPCAck"
 | "ServerInfo"
-| "PlayerPlatformInfo";
+| "PlayerPlatformInfo"
+| "CustomServerAck";
 
 declare type t_113 =
     { TAG: "ConnectRequest"; _0: t_114 }
@@ -4576,63 +4997,63 @@ declare type t_113 =
 | { TAG: "ItemFramePlace"; _0: t_175 }
 | { TAG: "ItemDropInstancedUpdate"; _0: t_176 }
 | { TAG: "EmoteBubble"; _0: t_177 }
-| { TAG: "ExtraValueSync"; _0: t_178 }
-| { TAG: "SocialHandshake"; _0: t_179 }
-| { TAG: "Unused"; _0: t_180 }
-| { TAG: "PortalKill"; _0: t_181 }
-| { TAG: "PlayerTeleportPortal"; _0: t_182 }
-| { TAG: "NpcKilledNotification"; _0: t_183 }
-| { TAG: "EventNotification"; _0: t_184 }
-| { TAG: "MinionTargetUpdate"; _0: t_185 }
-| { TAG: "NpcTeleportPortal"; _0: t_186 }
-| { TAG: "ShieldStrengthsUpdate"; _0: t_187 }
-| { TAG: "NebulaLevelUp"; _0: t_188 }
-| { TAG: "MoonLordCountdown"; _0: t_189 }
-| { TAG: "NpcShopItem"; _0: t_190 }
-| { TAG: "GemLockToggle"; _0: t_191 }
-| { TAG: "SmokePoof"; _0: t_192 }
-| { TAG: "ChatMessageSmart"; _0: t_193 }
-| { TAG: "WiredCannonShot"; _0: t_194 }
-| { TAG: "MassWireOperation"; _0: t_195 }
-| { TAG: "MassWireOperationPay"; _0: t_196 }
-| { TAG: "PartyToggle"; _0: t_197 }
-| { TAG: "TreeGrowFx"; _0: t_198 }
-| { TAG: "CrystalInvasionStart"; _0: t_199 }
-| { TAG: "CrystalInvasionWipeAll"; _0: t_200 }
-| { TAG: "MinionAttackTargetUpdate"; _0: t_201 }
-| { TAG: "CrystalInvasionSendWaitTime"; _0: t_202 }
-| { TAG: "PlayerDamage"; _0: t_203 }
-| { TAG: "PlayerDeath"; _0: t_204 }
-| { TAG: "CombatTextCreate"; _0: t_205 }
-| { TAG: "Emoji"; _0: t_206 }
+| { TAG: "ExtraValueSync"; _0: t_179 }
+| { TAG: "SocialHandshake"; _0: t_180 }
+| { TAG: "Unused"; _0: t_181 }
+| { TAG: "PortalKill"; _0: t_182 }
+| { TAG: "PlayerTeleportPortal"; _0: t_183 }
+| { TAG: "NpcKilledNotification"; _0: t_184 }
+| { TAG: "EventNotification"; _0: t_185 }
+| { TAG: "MinionTargetUpdate"; _0: t_186 }
+| { TAG: "NpcTeleportPortal"; _0: t_187 }
+| { TAG: "ShieldStrengthsUpdate"; _0: t_188 }
+| { TAG: "NebulaLevelUp"; _0: t_189 }
+| { TAG: "MoonLordCountdown"; _0: t_190 }
+| { TAG: "NpcShopItem"; _0: t_191 }
+| { TAG: "GemLockToggle"; _0: t_192 }
+| { TAG: "SmokePoof"; _0: t_193 }
+| { TAG: "ChatMessageSmart"; _0: t_194 }
+| { TAG: "WiredCannonShot"; _0: t_195 }
+| { TAG: "MassWireOperation"; _0: t_196 }
+| { TAG: "MassWireOperationPay"; _0: t_197 }
+| { TAG: "PartyToggle"; _0: t_198 }
+| { TAG: "TreeGrowFx"; _0: t_199 }
+| { TAG: "CrystalInvasionStart"; _0: t_200 }
+| { TAG: "CrystalInvasionWipeAll"; _0: t_201 }
+| { TAG: "MinionAttackTargetUpdate"; _0: t_202 }
+| { TAG: "CrystalInvasionSendWaitTime"; _0: t_203 }
+| { TAG: "PlayerDamage"; _0: t_204 }
+| { TAG: "PlayerDeath"; _0: t_205 }
+| { TAG: "CombatTextCreate"; _0: t_206 }
+| { TAG: "Emoji"; _0: t_207 }
 | { TAG: "TileEntityDisplayDollItemSync"; _0: t_59 }
-| { TAG: "TileEntityInteractionRequest"; _0: t_207 }
-| { TAG: "WeaponsRackTryPlacing"; _0: t_208 }
-| { TAG: "TileEntityHatRackItemSync"; _0: t_209 }
-| { TAG: "TilePickingSync"; _0: t_210 }
-| { TAG: "RevengeMarkerSync"; _0: t_211 }
-| { TAG: "RevengeMarkerRemove"; _0: t_212 }
-| { TAG: "GolfBallLandInCup"; _0: t_213 }
-| { TAG: "ClientFinishConnectingToServer"; _0: t_214 }
-| { TAG: "NpcFishOut"; _0: t_215 }
-| { TAG: "NpcTamper"; _0: t_216 }
-| { TAG: "LegacySoundPlay"; _0: t_217 }
-| { TAG: "FoodPlatterTryPlacing"; _0: t_218 }
+| { TAG: "TileEntityInteractionRequest"; _0: t_208 }
+| { TAG: "WeaponsRackTryPlacing"; _0: t_209 }
+| { TAG: "TileEntityHatRackItemSync"; _0: t_210 }
+| { TAG: "TilePickingSync"; _0: t_211 }
+| { TAG: "RevengeMarkerSync"; _0: t_212 }
+| { TAG: "RevengeMarkerRemove"; _0: t_213 }
+| { TAG: "GolfBallLandInCup"; _0: t_214 }
+| { TAG: "ClientFinishConnectingToServer"; _0: t_215 }
+| { TAG: "NpcFishOut"; _0: t_216 }
+| { TAG: "NpcTamper"; _0: t_217 }
+| { TAG: "LegacySoundPlay"; _0: t_218 }
+| { TAG: "FoodPlatterTryPlacing"; _0: t_219 }
 | { TAG: "PlayerLuckFactorsUpdate"; _0: t_91 }
-| { TAG: "PlayerDead"; _0: t_219 }
-| { TAG: "CavernMonsterTypeSync"; _0: t_220 }
-| { TAG: "NpcBuffRemovalRequest"; _0: t_221 }
-| { TAG: "ClientSyncedInventory"; _0: t_222 }
-| { TAG: "CountsAsHostForGameplaySet"; _0: t_223 }
-| { TAG: "CreditsOrSlimeTransform"; _0: t_224 }
-| { TAG: "LucyAxeMessage"; _0: t_225 }
-| { TAG: "PiggyBankVoidLensUpdate"; _0: t_226 }
-| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: t_227 }
-| { TAG: "HaveDryadDoStardewAnimation"; _0: t_228 }
-| { TAG: "ItemDropShimmeredUpdate"; _0: t_229 }
+| { TAG: "PlayerDead"; _0: t_220 }
+| { TAG: "CavernMonsterTypeSync"; _0: t_221 }
+| { TAG: "NpcBuffRemovalRequest"; _0: t_222 }
+| { TAG: "ClientSyncedInventory"; _0: t_223 }
+| { TAG: "CountsAsHostForGameplaySet"; _0: t_224 }
+| { TAG: "CreditsOrSlimeTransform"; _0: t_225 }
+| { TAG: "LucyAxeMessage"; _0: t_226 }
+| { TAG: "PiggyBankVoidLensUpdate"; _0: t_227 }
+| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: t_228 }
+| { TAG: "HaveDryadDoStardewAnimation"; _0: t_229 }
+| { TAG: "ItemDropShimmeredUpdate"; _0: t_230 }
 | { TAG: "ShimmerEffectOrCoinLuck"; _0: t_49 }
-| { TAG: "LoadoutSwitch"; _0: t_230 }
-| { TAG: "ItemDropProtectedUpdate"; _0: t_231 }
+| { TAG: "LoadoutSwitch"; _0: t_231 }
+| { TAG: "ItemDropProtectedUpdate"; _0: t_232 }
 | { TAG: "DeadCellsDisplayJarTryPlacing"; _0: t_80 }
 | { TAG: "PlayerSpectate"; _0: t_92 }
 | { TAG: "ItemDropClear"; _0: t_84 }
@@ -4646,9 +5067,10 @@ declare type t_113 =
 | { TAG: "SectionRequest"; _0: t_95 }
 | { TAG: "ItemDropPosition"; _0: t_85 }
 | { TAG: "HostToken"; _0: t_82 }
-| { TAG: "DamageNPCAck"; _0: t_232 }
-| { TAG: "ServerInfo"; _0: t_233 }
-| { TAG: "PlayerPlatformInfo"; _0: t_234 };
+| { TAG: "DamageNPCAck"; _0: t_233 }
+| { TAG: "ServerInfo"; _0: t_234 }
+| { TAG: "PlayerPlatformInfo"; _0: t_235 }
+| { TAG: "CustomServerAck"; _0: t_236 };
 
 declare type t_114 = { readonly version: string };
 
@@ -4770,7 +5192,8 @@ declare type t_136 = { readonly playerId: number; readonly npcId: number };
 declare type t_137 = {
     readonly playerId: number;
     readonly itemRotation: number;
-    readonly itemAnimation: number
+    readonly itemAnimation: number;
+    readonly itemAnimationMax: number
 };
 
 declare type t_138 = {
@@ -4963,8 +5386,6 @@ declare type t_174 = {
     readonly useTime: number | undefined;
     readonly shoot: number | undefined;
     readonly shootSpeed: number | undefined;
-    readonly width: number | undefined;
-    readonly height: number | undefined;
     readonly scale: number | undefined;
     readonly ammo: number | undefined;
     readonly useAmmo: number | undefined;
@@ -4984,13 +5405,17 @@ declare type t_176 = t_18;
 declare type t_177 = { readonly id: number; readonly anchor: anchor };
 
 declare type t_178 = {
+    readonly spawner: number;
+    readonly index: number;
+    readonly generation: number;
+};
+
+declare type t_179 = {
     readonly npcSlotId: number; 
     readonly extraValue: number; 
     readonly x: number; 
     readonly y: number
 };
-
-declare type t_179 = void;
 
 declare type t_18 = {
     readonly itemDropId: number;
@@ -5004,49 +5429,51 @@ declare type t_18 = {
     readonly enemyGrabDelayTime: undefined | number;
 };
 
-declare type t_180 = undefined;
+declare type t_180 = void;
 
-declare type t_181 = { readonly owner: number; readonly portalColor: number };
+declare type t_181 = undefined;
 
-declare type t_182 = {
+declare type t_182 = { readonly owner: number; readonly portalColor: number };
+
+declare type t_183 = {
     readonly playerId: number;
     readonly extraInfo: number;
     readonly position: t_35<number>;
     readonly velocity: t_35<number>
 };
 
-declare type t_183 = { readonly npcId: number };
+declare type t_184 = { readonly npcId: number };
 
-declare type t_184 = { readonly eventId: number };
+declare type t_185 = { readonly eventId: number };
 
-declare type t_185 = { readonly playerId: number; readonly x: number; readonly y: number };
+declare type t_186 = { readonly playerId: number; readonly x: number; readonly y: number };
 
-declare type t_186 = {
+declare type t_187 = {
     readonly npcId: number;
     readonly portalColor: number;
     readonly position: t_35<number>;
     readonly velocity: t_35<number>
 };
 
-declare type t_187 = {
+declare type t_188 = {
     readonly solar: number;
     readonly vortex: number;
     readonly nebula: number;
     readonly stardust: number
 };
 
-declare type t_188 = {
+declare type t_189 = {
     readonly playerId: number;
     readonly level: number;
     readonly x: number;
     readonly y: number
 };
 
-declare type t_189 = { readonly maxMoonLordCountdown: number; readonly moonLordCountdown: number };
-
 declare type t_19<a> = { readonly x: a; readonly y: a };
 
-declare type t_190 = {
+declare type t_190 = { readonly maxMoonLordCountdown: number; readonly moonLordCountdown: number };
+
+declare type t_191 = {
     readonly slot: number;
     readonly itemId: number;
     readonly stack: number;
@@ -5055,17 +5482,17 @@ declare type t_190 = {
     readonly buyOnce: boolean
 };
 
-declare type t_191 = { readonly x: number; readonly y: number; readonly active: boolean };
+declare type t_192 = { readonly x: number; readonly y: number; readonly active: boolean };
 
-declare type t_192 = { readonly packedPosition: number };
+declare type t_193 = { readonly packedPosition: number };
 
-declare type t_193 = {
+declare type t_194 = {
     readonly color: Color;
     readonly message: NetworkText;
     readonly widthLimit: number
 };
 
-declare type t_194 = {
+declare type t_195 = {
     readonly damage: number;
     readonly knockback: number;
     readonly x: number;
@@ -5075,7 +5502,7 @@ declare type t_194 = {
     readonly playerId: number
 };
 
-declare type t_195 = {
+declare type t_196 = {
     readonly startX: number;
     readonly startY: number;
     readonly endX: number;
@@ -5083,19 +5510,17 @@ declare type t_195 = {
     readonly toolMode: number
 };
 
-declare type t_196 = { readonly itemType: number; readonly stack: number; readonly playerId: number };
+declare type t_197 = { readonly itemType: number; readonly stack: number; readonly playerId: number };
 
-declare type t_197 = void;
+declare type t_198 = void;
 
-declare type t_198 = {
+declare type t_199 = {
     readonly action: number;
     readonly x: number;
     readonly y: number;
     readonly style: number;
     readonly treeType: number
 };
-
-declare type t_199 = { readonly x: number; readonly y: number };
 
 declare type t_2 = void;
 
@@ -5108,23 +5533,26 @@ declare type t_20 = {
     readonly position: Float_t;
 };
 
-declare type t_200 = void;
+declare type t_200 = { readonly x: number; readonly y: number };
 
-declare type t_201 = { readonly playerId: number; readonly targetNpcId: number };
+declare type t_201 = void;
 
-declare type t_202 = { readonly timeLeftBetweenWaves: number };
+declare type t_202 = { readonly playerId: number; readonly targetNpcId: number };
 
-declare type t_203 = {
+declare type t_203 = { readonly timeLeftBetweenWaves: number };
+
+declare type t_204 = {
     readonly target: number;
     readonly deathReason: t_44;
     readonly damage: number;
     readonly hitDirection: number;
     readonly critical: boolean;
     readonly pvp: boolean;
+    readonly dodgeable: boolean;
     readonly cooldownCounter: number
 };
 
-declare type t_204 = {
+declare type t_205 = {
     readonly playerId: number;
     readonly deathReason: t_44;
     readonly damage: number;
@@ -5132,18 +5560,18 @@ declare type t_204 = {
     readonly pvp: boolean
 };
 
-declare type t_205 = {
+declare type t_206 = {
     readonly x: number;
     readonly y: number;
     readonly color: Color;
     readonly text: NetworkText
 };
 
-declare type t_206 = { readonly playerId: number; readonly emojiId: number };
+declare type t_207 = { readonly playerId: number; readonly emojiId: number };
 
-declare type t_207 = { readonly tileEntityId: number; readonly playerId: number };
+declare type t_208 = { readonly tileEntityId: number; readonly playerId: number };
 
-declare type t_208 = {
+declare type t_209 = {
     readonly x: number; 
     readonly y: number; 
     readonly itemId: number; 
@@ -5151,7 +5579,9 @@ declare type t_208 = {
     readonly stack: number
 };
 
-declare type t_209 = {
+declare type t_21 = { readonly itemDropId: number; readonly forceAssignToServer: boolean };
+
+declare type t_210 = {
     readonly playerId: number; 
     readonly tileEntityId: number; 
     readonly itemIndex: number; 
@@ -5160,16 +5590,14 @@ declare type t_209 = {
     readonly prefix: number
 };
 
-declare type t_21 = { readonly itemDropId: number; readonly forceAssignToServer: boolean };
-
-declare type t_210 = {
+declare type t_211 = {
     readonly playerId: number;
     readonly x: number;
     readonly y: number;
     readonly pickPower: number
 };
 
-declare type t_211 = {
+declare type t_212 = {
     readonly uniqueId: number;
     readonly position: t_35<number>;
     readonly npcNetId: number;
@@ -5181,9 +5609,9 @@ declare type t_211 = {
     readonly spawnedFromStatue: boolean
 };
 
-declare type t_212 = { readonly markerId: number };
+declare type t_213 = { readonly markerId: number };
 
-declare type t_213 = {
+declare type t_214 = {
     readonly playerId: number;
     readonly cupX: number;
     readonly cupY: number;
@@ -5191,17 +5619,17 @@ declare type t_213 = {
     readonly projType: number
 };
 
-declare type t_214 = void;
+declare type t_215 = void;
 
-declare type t_215 = { readonly x: number; readonly y: number; readonly npcNetId: number };
+declare type t_216 = { readonly x: number; readonly y: number; readonly npcNetId: number };
 
-declare type t_216 = {
+declare type t_217 = {
     readonly npcId: number; 
     readonly immunityTime: (undefined | number); 
     readonly immunityFromPlayerId: (undefined | Immunity_t)
 };
 
-declare type t_217 = {
+declare type t_218 = {
     readonly position: t_35<number>;
     readonly soundIndex: number;
     readonly styleOverride: number | undefined;
@@ -5209,7 +5637,7 @@ declare type t_217 = {
     readonly pitchOverride: number | undefined
 };
 
-declare type t_218 = {
+declare type t_219 = {
     readonly x: number; 
     readonly y: number; 
     readonly itemId: number; 
@@ -5217,50 +5645,36 @@ declare type t_218 = {
     readonly stack: number
 };
 
-declare type t_219 = { readonly playerId: number };
-
 declare type t_22 = { readonly playerId: number; readonly loadout: number };
 
-declare type t_220 = number[][];
+declare type t_220 = { readonly playerId: number };
 
-declare type t_221 = { readonly npcId: number; readonly buffType: number };
+declare type t_221 = number[][];
 
-declare type t_222 = void;
+declare type t_222 = { readonly npcId: number; readonly buffType: number };
 
-declare type t_223 = { readonly playerId: number; readonly countsAsHost: boolean };
+declare type t_223 = void;
 
-declare type t_224 = { readonly eventType: EventType_t_2; readonly value: number };
+declare type t_224 = { readonly playerId: number; readonly countsAsHost: boolean };
 
-declare type t_225 = {
+declare type t_225 = { readonly eventType: EventType_t_2; readonly value: number };
+
+declare type t_226 = {
     readonly source: number; 
     readonly variant: number; 
     readonly velocity: t_35<number>; 
     readonly position: t_35<number>
 };
 
-declare type t_226 = {
+declare type t_227 = {
     readonly playerId: number;
     readonly piggyBankProj: TrackedProjectileReference_t;
     readonly voidLensChest: TrackedProjectileReference_t;
 };
 
-declare type t_227 = void;
-
 declare type t_228 = void;
 
-declare type t_229 = {
-    readonly itemDropId: number; 
-    readonly x: number; 
-    readonly y: number; 
-    readonly vx: number; 
-    readonly vy: number; 
-    readonly stack: number; 
-    readonly prefix: number; 
-    readonly noDelay: number; 
-    readonly itemId: number; 
-    readonly shimmered: boolean; 
-    readonly shimmeredTime: number
-};
+declare type t_229 = void;
 
 declare type t_23 =
 | { TAG: "Liquid"; _0: liquid }
@@ -5280,9 +5694,23 @@ declare type t_23 =
 | { TAG: "LeashedEntity"; _0: leashedEntityMessage }
 | { TAG: "UnbreakableWallScan"; _0: unbreakableWallScan };
 
-declare type t_230 = { readonly playerId: number; readonly loadout: number };
+declare type t_230 = {
+    readonly itemDropId: number; 
+    readonly x: number; 
+    readonly y: number; 
+    readonly vx: number; 
+    readonly vy: number; 
+    readonly stack: number; 
+    readonly prefix: number; 
+    readonly noDelay: number; 
+    readonly itemId: number; 
+    readonly shimmered: boolean; 
+    readonly shimmeredTime: number
+};
 
-declare type t_231 = {
+declare type t_231 = { readonly playerId: number; readonly loadout: number };
+
+declare type t_232 = {
     readonly itemDropId: number; 
     readonly x: number; 
     readonly y: number; 
@@ -5295,18 +5723,32 @@ declare type t_231 = {
     readonly timeLeftInWhichTheItemCannotBeTakenByEnemies: number
 };
 
-declare type t_232 = void;
-
 declare type t_233 = void;
 
-declare type t_234 = { readonly playerId: number; readonly platformId: PlatformId_t };
+declare type t_234 = "Request" | {
+    TAG: "Response";
+    readonly listenPort: number;
+    readonly worldName: string;
+    readonly hostName: string;
+    readonly maxTilesX: number;
+    readonly crimson: boolean;
+    readonly gameMode: number;
+    readonly maxPlayers: number;
+    readonly activePlayers: number;
+    readonly description: string;
+    readonly externalEndpoint: endpoint | undefined;
+};
 
-declare type t_235<T> = {
+declare type t_235 = { readonly playerId: number; readonly platformId: PlatformId_t; readonly userId: string; readonly platformName: string; readonly isHost: boolean };
+
+declare type t_236 = number;
+
+declare type t_237<T> = {
     LAZY_DONE: boolean,
     VAL: () => T
 }
 
-declare type t_236 =
+declare type t_238 =
 | "ConnectRequest"
 | "Disconnect"
 | "PlayerSlotSet"
@@ -5467,33 +5909,33 @@ declare type t_236 =
 | "ServerInfo"
 | "PlayerPlatformInfo";
 
-declare type t_237 =
+declare type t_239 =
     { TAG: "ConnectRequest"; _0: t_114 }
 | { TAG: "Disconnect"; _0: t_115 }
 | { TAG: "PlayerSlotSet"; _0: t_116 }
 | { TAG: "PlayerInfo"; _0: t_100 }
 | { TAG: "PlayerInventorySlot"; _0: t_102 }
 | { TAG: "WorldDataRequest"; _0: t_117 }
-| { TAG: "WorldInfo"; _0: t_238 }
+| { TAG: "WorldInfo"; _0: t_240 }
 | { TAG: "InitialTileSectionsRequest"; _0: t_83 }
 | { TAG: "Status"; _0: t_118 }
 | { TAG: "TileSectionSend"; _0: t_68 }
 | { TAG: "TileSectionFrame"; _0: t_119 }
 | { TAG: "PlayerSpawn"; _0: t_101 }
-| { TAG: "PlayerUpdate"; _0: t_239 }
+| { TAG: "PlayerUpdate"; _0: t_241 }
 | { TAG: "PlayerActive"; _0: t_120 }
 | { TAG: "PlayerHealth"; _0: t_121 }
 | { TAG: "TileModify"; _0: t_122 }
 | { TAG: "TimeSet"; _0: t_123 }
 | { TAG: "DoorUse"; _0: t_124 }
 | { TAG: "TileSquareSend"; _0: t_69 }
-| { TAG: "ItemDropUpdate"; _0: t_240 }
-| { TAG: "ItemOwner"; _0: t_241 }
-| { TAG: "NpcUpdate"; _0: t_242 }
+| { TAG: "ItemDropUpdate"; _0: t_242 }
+| { TAG: "ItemOwner"; _0: t_243 }
+| { TAG: "NpcUpdate"; _0: t_244 }
 | { TAG: "NpcItemStrike"; _0: t_125 }
-| { TAG: "ProjectileSync"; _0: t_243 }
-| { TAG: "NpcStrike"; _0: t_244 }
-| { TAG: "ProjectileDestroy"; _0: t_245 }
+| { TAG: "ProjectileSync"; _0: t_245 }
+| { TAG: "NpcStrike"; _0: t_246 }
+| { TAG: "ProjectileDestroy"; _0: t_247 }
 | { TAG: "PvpToggle"; _0: t_128 }
 | { TAG: "ChestOpen"; _0: t_129 }
 | { TAG: "ChestItem"; _0: t_130 }
@@ -5503,9 +5945,9 @@ declare type t_237 =
 | { TAG: "Zones"; _0: t_78 }
 | { TAG: "PasswordRequired"; _0: t_134 }
 | { TAG: "PasswordSend"; _0: t_135 }
-| { TAG: "ItemOwnerRemove"; _0: t_246 }
+| { TAG: "ItemOwnerRemove"; _0: t_248 }
 | { TAG: "NpcTalk"; _0: t_136 }
-| { TAG: "PlayerAnimation"; _0: t_137 }
+| { TAG: "PlayerAnimation"; _0: t_249 }
 | { TAG: "PlayerMana"; _0: t_138 }
 | { TAG: "ManaEffect"; _0: t_139 }
 | { TAG: "PlayerTeam"; _0: t_140 }
@@ -5525,7 +5967,7 @@ declare type t_237 =
 | { TAG: "SwitchHit"; _0: t_152 }
 | { TAG: "NpcHomeUpdate"; _0: t_153 }
 | { TAG: "BossOrInvasionSpawn"; _0: t_154 }
-| { TAG: "PlayerDodge"; _0: t_247 }
+| { TAG: "PlayerDodge"; _0: t_250 }
 | { TAG: "TilePaint"; _0: t_155 }
 | { TAG: "WallPaint"; _0: t_156 }
 | { TAG: "Teleport"; _0: t_56 }
@@ -5533,7 +5975,7 @@ declare type t_237 =
 | { TAG: "DimensionsUpdate"; _0: t_158 }
 | { TAG: "ClientUuid"; _0: t_159 }
 | { TAG: "ChestName"; _0: t_160 }
-| { TAG: "NpcCatch"; _0: t_248 }
+| { TAG: "NpcCatch"; _0: t_251 }
 | { TAG: "NpcRelease"; _0: t_161 }
 | { TAG: "TravellingMerchantInventory"; _0: t_71 }
 | { TAG: "TeleportationPotion"; _0: t_57 }
@@ -5545,73 +5987,73 @@ declare type t_237 =
 | { TAG: "ObjectPlace"; _0: t_167 }
 | { TAG: "PlayerChestIndexSync"; _0: t_168 }
 | { TAG: "CombatNumberCreate"; _0: t_169 }
-| { TAG: "NetModuleLoad"; _0: t_249 }
+| { TAG: "NetModuleLoad"; _0: t_252 }
 | { TAG: "NpcKillCount"; _0: t_170 }
 | { TAG: "PlayerStealth"; _0: t_171 }
 | { TAG: "ItemForceIntoNearestChest"; _0: t_86 }
 | { TAG: "TileEntityUpdate"; _0: t_172 }
 | { TAG: "TileEntityPlace"; _0: t_173 }
-| { TAG: "ItemDropModify"; _0: t_174 }
+| { TAG: "ItemDropModify"; _0: t_253 }
 | { TAG: "ItemFramePlace"; _0: t_175 }
-| { TAG: "ItemDropInstancedUpdate"; _0: t_250 }
-| { TAG: "EmoteBubble"; _0: t_177 }
-| { TAG: "ExtraValueSync"; _0: t_178 }
-| { TAG: "SocialHandshake"; _0: t_179 }
-| { TAG: "Unused"; _0: t_180 }
-| { TAG: "PortalKill"; _0: t_181 }
-| { TAG: "PlayerTeleportPortal"; _0: t_182 }
-| { TAG: "NpcKilledNotification"; _0: t_183 }
-| { TAG: "EventNotification"; _0: t_184 }
-| { TAG: "MinionTargetUpdate"; _0: t_185 }
-| { TAG: "NpcTeleportPortal"; _0: t_186 }
-| { TAG: "ShieldStrengthsUpdate"; _0: t_187 }
-| { TAG: "NebulaLevelUp"; _0: t_188 }
-| { TAG: "MoonLordCountdown"; _0: t_189 }
-| { TAG: "NpcShopItem"; _0: t_190 }
-| { TAG: "GemLockToggle"; _0: t_191 }
-| { TAG: "SmokePoof"; _0: t_192 }
-| { TAG: "ChatMessageSmart"; _0: t_193 }
-| { TAG: "WiredCannonShot"; _0: t_194 }
-| { TAG: "MassWireOperation"; _0: t_195 }
-| { TAG: "MassWireOperationPay"; _0: t_196 }
-| { TAG: "PartyToggle"; _0: t_197 }
-| { TAG: "TreeGrowFx"; _0: t_198 }
-| { TAG: "CrystalInvasionStart"; _0: t_199 }
-| { TAG: "CrystalInvasionWipeAll"; _0: t_200 }
-| { TAG: "MinionAttackTargetUpdate"; _0: t_201 }
-| { TAG: "CrystalInvasionSendWaitTime"; _0: t_202 }
-| { TAG: "PlayerDamage"; _0: t_203 }
-| { TAG: "PlayerDeath"; _0: t_204 }
-| { TAG: "CombatTextCreate"; _0: t_205 }
-| { TAG: "Emoji"; _0: t_206 }
+| { TAG: "ItemDropInstancedUpdate"; _0: t_254 }
+| { TAG: "EmoteBubble"; _0: t_255 }
+| { TAG: "ExtraValueSync"; _0: t_179 }
+| { TAG: "SocialHandshake"; _0: t_180 }
+| { TAG: "Unused"; _0: t_181 }
+| { TAG: "PortalKill"; _0: t_182 }
+| { TAG: "PlayerTeleportPortal"; _0: t_183 }
+| { TAG: "NpcKilledNotification"; _0: t_184 }
+| { TAG: "EventNotification"; _0: t_185 }
+| { TAG: "MinionTargetUpdate"; _0: t_186 }
+| { TAG: "NpcTeleportPortal"; _0: t_187 }
+| { TAG: "ShieldStrengthsUpdate"; _0: t_188 }
+| { TAG: "NebulaLevelUp"; _0: t_189 }
+| { TAG: "MoonLordCountdown"; _0: t_190 }
+| { TAG: "NpcShopItem"; _0: t_191 }
+| { TAG: "GemLockToggle"; _0: t_192 }
+| { TAG: "SmokePoof"; _0: t_193 }
+| { TAG: "ChatMessageSmart"; _0: t_194 }
+| { TAG: "WiredCannonShot"; _0: t_195 }
+| { TAG: "MassWireOperation"; _0: t_196 }
+| { TAG: "MassWireOperationPay"; _0: t_197 }
+| { TAG: "PartyToggle"; _0: t_198 }
+| { TAG: "TreeGrowFx"; _0: t_199 }
+| { TAG: "CrystalInvasionStart"; _0: t_200 }
+| { TAG: "CrystalInvasionWipeAll"; _0: t_201 }
+| { TAG: "MinionAttackTargetUpdate"; _0: t_202 }
+| { TAG: "CrystalInvasionSendWaitTime"; _0: t_203 }
+| { TAG: "PlayerDamage"; _0: t_256 }
+| { TAG: "PlayerDeath"; _0: t_205 }
+| { TAG: "CombatTextCreate"; _0: t_206 }
+| { TAG: "Emoji"; _0: t_207 }
 | { TAG: "TileEntityDisplayDollItemSync"; _0: t_59 }
-| { TAG: "TileEntityInteractionRequest"; _0: t_207 }
-| { TAG: "WeaponsRackTryPlacing"; _0: t_208 }
-| { TAG: "TileEntityHatRackItemSync"; _0: t_209 }
-| { TAG: "TilePickingSync"; _0: t_210 }
-| { TAG: "RevengeMarkerSync"; _0: t_211 }
-| { TAG: "RevengeMarkerRemove"; _0: t_212 }
-| { TAG: "GolfBallLandInCup"; _0: t_213 }
-| { TAG: "ClientFinishConnectingToServer"; _0: t_214 }
-| { TAG: "NpcFishOut"; _0: t_215 }
-| { TAG: "NpcTamper"; _0: t_216 }
-| { TAG: "LegacySoundPlay"; _0: t_217 }
-| { TAG: "FoodPlatterTryPlacing"; _0: t_218 }
+| { TAG: "TileEntityInteractionRequest"; _0: t_208 }
+| { TAG: "WeaponsRackTryPlacing"; _0: t_209 }
+| { TAG: "TileEntityHatRackItemSync"; _0: t_210 }
+| { TAG: "TilePickingSync"; _0: t_211 }
+| { TAG: "RevengeMarkerSync"; _0: t_212 }
+| { TAG: "RevengeMarkerRemove"; _0: t_213 }
+| { TAG: "GolfBallLandInCup"; _0: t_214 }
+| { TAG: "ClientFinishConnectingToServer"; _0: t_215 }
+| { TAG: "NpcFishOut"; _0: t_216 }
+| { TAG: "NpcTamper"; _0: t_217 }
+| { TAG: "LegacySoundPlay"; _0: t_218 }
+| { TAG: "FoodPlatterTryPlacing"; _0: t_219 }
 | { TAG: "PlayerLuckFactorsUpdate"; _0: t_91 }
-| { TAG: "PlayerDead"; _0: t_219 }
-| { TAG: "CavernMonsterTypeSync"; _0: t_220 }
-| { TAG: "NpcBuffRemovalRequest"; _0: t_221 }
-| { TAG: "ClientSyncedInventory"; _0: t_222 }
-| { TAG: "CountsAsHostForGameplaySet"; _0: t_223 }
-| { TAG: "CreditsOrSlimeTransform"; _0: t_224 }
-| { TAG: "LucyAxeMessage"; _0: t_225 }
-| { TAG: "PiggyBankVoidLensUpdate"; _0: t_251 }
-| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: t_227 }
-| { TAG: "HaveDryadDoStardewAnimation"; _0: t_228 }
-| { TAG: "ItemDropShimmeredUpdate"; _0: t_229 }
+| { TAG: "PlayerDead"; _0: t_220 }
+| { TAG: "CavernMonsterTypeSync"; _0: t_221 }
+| { TAG: "NpcBuffRemovalRequest"; _0: t_222 }
+| { TAG: "ClientSyncedInventory"; _0: t_223 }
+| { TAG: "CountsAsHostForGameplaySet"; _0: t_224 }
+| { TAG: "CreditsOrSlimeTransform"; _0: t_225 }
+| { TAG: "LucyAxeMessage"; _0: t_226 }
+| { TAG: "PiggyBankVoidLensUpdate"; _0: t_257 }
+| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: t_228 }
+| { TAG: "HaveDryadDoStardewAnimation"; _0: t_229 }
+| { TAG: "ItemDropShimmeredUpdate"; _0: t_230 }
 | { TAG: "ShimmerEffectOrCoinLuck"; _0: t_49 }
-| { TAG: "LoadoutSwitch"; _0: t_230 }
-| { TAG: "ItemDropProtectedUpdate"; _0: t_231 }
+| { TAG: "LoadoutSwitch"; _0: t_231 }
+| { TAG: "ItemDropProtectedUpdate"; _0: t_232 }
 | { TAG: "DeadCellsDisplayJarTryPlacing"; _0: t_80 }
 | { TAG: "PlayerSpectate"; _0: t_92 }
 | { TAG: "ItemDropClear"; _0: t_84 }
@@ -5625,10 +6067,12 @@ declare type t_237 =
 | { TAG: "SectionRequest"; _0: t_95 }
 | { TAG: "ItemDropPosition"; _0: t_85 }
 | { TAG: "HostToken"; _0: t_82 }
-| { TAG: "ServerInfo"; _0: t_252 }
-| { TAG: "PlayerPlatformInfo"; _0: t_253 };
+| { TAG: "ServerInfo"; _0: t_258 }
+| { TAG: "PlayerPlatformInfo"; _0: t_259 };
 
-declare type t_238 = {
+declare type t_24 = NetModuleLoad;
+
+declare type t_240 = {
     readonly time: number;
     readonly dayAndMoonInfo: number;
     readonly moonPhase: number;
@@ -5707,7 +6151,7 @@ declare type t_238 = {
     readonly extraSpawnPoints: Int_t[];
 };
 
-declare type t_239 = {
+declare type t_241 = {
     readonly playerId: number;
     readonly control: control_2;
     readonly direction: direction_4;
@@ -5737,9 +6181,7 @@ declare type t_239 = {
     readonly lastItemUseAttemptSuccess: boolean;
 };
 
-declare type t_24 = NetModuleLoad;
-
-declare type t_240 = {
+declare type t_242 = {
     readonly itemDropId: number;
     readonly x: number;
     readonly y: number;
@@ -5751,13 +6193,13 @@ declare type t_240 = {
     readonly itemId: number
 };
 
-declare type t_241 = {
+declare type t_243 = {
     readonly itemDropId: number;
     readonly owner: number;
     readonly position: Float_t;
 };
 
-declare type t_242 = {
+declare type t_244 = {
     readonly npcSlotId: number;
     readonly npcTypeId: number;
     readonly x: number;
@@ -5778,7 +6220,7 @@ declare type t_242 = {
     readonly shimmerTransparency: boolean;
 };
 
-declare type t_243 = {
+declare type t_245 = {
     readonly projectileId: number;
     readonly x: number;
     readonly y: number;
@@ -5794,7 +6236,7 @@ declare type t_243 = {
     readonly projectileUuid: (undefined | number)
 };
 
-declare type t_244 = {
+declare type t_246 = {
     readonly npcId: number;
     readonly damage: number;
     readonly knockback: number;
@@ -5802,15 +6244,23 @@ declare type t_244 = {
     readonly critical: boolean
 };
 
-declare type t_245 = { readonly projectileId: number; readonly owner: number };
+declare type t_247 = { readonly projectileId: number; readonly owner: number };
 
-declare type t_246 = { readonly itemDropId: number };
+declare type t_248 = { readonly itemDropId: number };
 
-declare type t_247 = { readonly playerId: number; readonly dodge: dodge_2 };
+declare type t_249 = {
+    readonly playerId: number;
+    readonly itemRotation: number;
+    readonly itemAnimation: number
+};
 
-declare type t_248 = { readonly npcId: number; readonly playerId: number };
+declare type t_25 = { readonly npcId: number; readonly buffType: number };
 
-declare type t_249 =
+declare type t_250 = { readonly playerId: number; readonly dodge: dodge_2 };
+
+declare type t_251 = { readonly npcId: number; readonly playerId: number };
+
+declare type t_252 =
 | { TAG: "Liquid"; _0: liquid_5 }
 | { TAG: "ClientText"; _0: commandId_3; _1: message_3 }
 | { TAG: "ServerText"; _0: playerId_3; _1: NetworkText; _2: Color }
@@ -5828,21 +6278,54 @@ declare type t_249 =
 | { TAG: "LeashedEntity"; _0: leashedEntityMessage_2 }
 | { TAG: "UnbreakableWallScan"; _0: unbreakableWallScan_2 };
 
-declare type t_25 = { readonly npcId: number; readonly buffType: number };
+declare type t_253 = {
+    readonly itemId: number;
+    readonly color: color_2 | undefined;
+    readonly damage: number | undefined;
+    readonly knockback: number | undefined;
+    readonly useAnimation: number | undefined;
+    readonly useTime: number | undefined;
+    readonly shoot: number | undefined;
+    readonly shootSpeed: number | undefined;
+    readonly width: number | undefined;
+    readonly height: number | undefined;
+    readonly scale: number | undefined;
+    readonly ammo: number | undefined;
+    readonly useAmmo: number | undefined;
+    readonly notAmmo: boolean | undefined
+};
 
-declare type t_250 = t_240;
+declare type t_254 = t_242;
 
-declare type t_251 = {
+declare type t_255 = { readonly id: number; readonly anchor: anchor_2 };
+
+declare type t_256 = {
+    readonly target: number;
+    readonly deathReason: t_44;
+    readonly damage: number;
+    readonly hitDirection: number;
+    readonly critical: boolean;
+    readonly pvp: boolean;
+    readonly cooldownCounter: number
+};
+
+declare type t_257 = {
     readonly playerId: number; 
     readonly piggyBankProj: (undefined | TrackedProjectileReference_t_2); 
     readonly voidLensChest: (undefined | TrackedProjectileReference_t_2)
 };
 
-declare type t_252 = void;
+declare type t_258 = void;
 
-declare type t_253 = { readonly playerId: number; readonly platformId: PlatformId_t_2 };
+declare type t_259 = { readonly playerId: number; readonly platformId: PlatformId_t_2 };
 
-declare type t_254 =
+declare type t_26 = {
+    readonly npcId: number;
+    readonly buffs: number[];
+    readonly buffTimes: number[];
+};
+
+declare type t_260 =
 | "ConnectRequest"
 | "Disconnect"
 | "PlayerSlotSet"
@@ -6004,14 +6487,14 @@ declare type t_254 =
 | "ServerInfo"
 | "PlayerPlatformInfo";
 
-declare type t_255 =
+declare type t_261 =
     { TAG: "ConnectRequest"; _0: t_114 }
 | { TAG: "Disconnect"; _0: t_115 }
 | { TAG: "PlayerSlotSet"; _0: t_116 }
 | { TAG: "PlayerInfo"; _0: t_100 }
 | { TAG: "PlayerInventorySlot"; _0: t_102 }
 | { TAG: "WorldDataRequest"; _0: t_117 }
-| { TAG: "WorldInfo"; _0: t_256 }
+| { TAG: "WorldInfo"; _0: t_262 }
 | { TAG: "InitialTileSectionsRequest"; _0: t_83 }
 | { TAG: "Status"; _0: t_118 }
 | { TAG: "TileSectionSend"; _0: t_68 }
@@ -6042,7 +6525,7 @@ declare type t_255 =
 | { TAG: "PasswordSend"; _0: t_135 }
 | { TAG: "ItemOwnerRemove"; _0: t_21 }
 | { TAG: "NpcTalk"; _0: t_136 }
-| { TAG: "PlayerAnimation"; _0: t_137 }
+| { TAG: "PlayerAnimation"; _0: t_249 }
 | { TAG: "PlayerMana"; _0: t_138 }
 | { TAG: "ManaEffect"; _0: t_139 }
 | { TAG: "PlayerTeam"; _0: t_140 }
@@ -6088,67 +6571,67 @@ declare type t_255 =
 | { TAG: "ItemForceIntoNearestChest"; _0: t_86 }
 | { TAG: "TileEntityUpdate"; _0: t_172 }
 | { TAG: "TileEntityPlace"; _0: t_173 }
-| { TAG: "ItemDropModify"; _0: t_174 }
+| { TAG: "ItemDropModify"; _0: t_253 }
 | { TAG: "ItemFramePlace"; _0: t_175 }
 | { TAG: "ItemDropInstancedUpdate"; _0: t_176 }
-| { TAG: "EmoteBubble"; _0: t_177 }
-| { TAG: "ExtraValueSync"; _0: t_178 }
-| { TAG: "SocialHandshake"; _0: t_179 }
-| { TAG: "Unused"; _0: t_180 }
-| { TAG: "PortalKill"; _0: t_181 }
-| { TAG: "PlayerTeleportPortal"; _0: t_182 }
-| { TAG: "NpcKilledNotification"; _0: t_183 }
-| { TAG: "EventNotification"; _0: t_184 }
-| { TAG: "MinionTargetUpdate"; _0: t_185 }
-| { TAG: "NpcTeleportPortal"; _0: t_186 }
-| { TAG: "ShieldStrengthsUpdate"; _0: t_187 }
-| { TAG: "NebulaLevelUp"; _0: t_188 }
-| { TAG: "MoonLordCountdown"; _0: t_189 }
-| { TAG: "NpcShopItem"; _0: t_190 }
-| { TAG: "GemLockToggle"; _0: t_191 }
-| { TAG: "SmokePoof"; _0: t_192 }
-| { TAG: "ChatMessageSmart"; _0: t_193 }
-| { TAG: "WiredCannonShot"; _0: t_194 }
-| { TAG: "MassWireOperation"; _0: t_195 }
-| { TAG: "MassWireOperationPay"; _0: t_196 }
-| { TAG: "PartyToggle"; _0: t_197 }
-| { TAG: "TreeGrowFx"; _0: t_198 }
-| { TAG: "CrystalInvasionStart"; _0: t_199 }
-| { TAG: "CrystalInvasionWipeAll"; _0: t_200 }
-| { TAG: "MinionAttackTargetUpdate"; _0: t_201 }
-| { TAG: "CrystalInvasionSendWaitTime"; _0: t_202 }
-| { TAG: "PlayerDamage"; _0: t_203 }
-| { TAG: "PlayerDeath"; _0: t_204 }
-| { TAG: "CombatTextCreate"; _0: t_205 }
-| { TAG: "Emoji"; _0: t_206 }
+| { TAG: "EmoteBubble"; _0: t_255 }
+| { TAG: "ExtraValueSync"; _0: t_179 }
+| { TAG: "SocialHandshake"; _0: t_180 }
+| { TAG: "Unused"; _0: t_181 }
+| { TAG: "PortalKill"; _0: t_182 }
+| { TAG: "PlayerTeleportPortal"; _0: t_183 }
+| { TAG: "NpcKilledNotification"; _0: t_184 }
+| { TAG: "EventNotification"; _0: t_185 }
+| { TAG: "MinionTargetUpdate"; _0: t_186 }
+| { TAG: "NpcTeleportPortal"; _0: t_187 }
+| { TAG: "ShieldStrengthsUpdate"; _0: t_188 }
+| { TAG: "NebulaLevelUp"; _0: t_189 }
+| { TAG: "MoonLordCountdown"; _0: t_190 }
+| { TAG: "NpcShopItem"; _0: t_191 }
+| { TAG: "GemLockToggle"; _0: t_192 }
+| { TAG: "SmokePoof"; _0: t_193 }
+| { TAG: "ChatMessageSmart"; _0: t_194 }
+| { TAG: "WiredCannonShot"; _0: t_195 }
+| { TAG: "MassWireOperation"; _0: t_196 }
+| { TAG: "MassWireOperationPay"; _0: t_197 }
+| { TAG: "PartyToggle"; _0: t_198 }
+| { TAG: "TreeGrowFx"; _0: t_199 }
+| { TAG: "CrystalInvasionStart"; _0: t_200 }
+| { TAG: "CrystalInvasionWipeAll"; _0: t_201 }
+| { TAG: "MinionAttackTargetUpdate"; _0: t_202 }
+| { TAG: "CrystalInvasionSendWaitTime"; _0: t_203 }
+| { TAG: "PlayerDamage"; _0: t_256 }
+| { TAG: "PlayerDeath"; _0: t_205 }
+| { TAG: "CombatTextCreate"; _0: t_206 }
+| { TAG: "Emoji"; _0: t_207 }
 | { TAG: "TileEntityDisplayDollItemSync"; _0: t_59 }
-| { TAG: "TileEntityInteractionRequest"; _0: t_207 }
-| { TAG: "WeaponsRackTryPlacing"; _0: t_208 }
-| { TAG: "TileEntityHatRackItemSync"; _0: t_209 }
-| { TAG: "TilePickingSync"; _0: t_210 }
-| { TAG: "RevengeMarkerSync"; _0: t_211 }
-| { TAG: "RevengeMarkerRemove"; _0: t_212 }
-| { TAG: "GolfBallLandInCup"; _0: t_213 }
-| { TAG: "ClientFinishConnectingToServer"; _0: t_214 }
-| { TAG: "NpcFishOut"; _0: t_215 }
-| { TAG: "NpcTamper"; _0: t_216 }
-| { TAG: "LegacySoundPlay"; _0: t_217 }
-| { TAG: "FoodPlatterTryPlacing"; _0: t_218 }
+| { TAG: "TileEntityInteractionRequest"; _0: t_208 }
+| { TAG: "WeaponsRackTryPlacing"; _0: t_209 }
+| { TAG: "TileEntityHatRackItemSync"; _0: t_210 }
+| { TAG: "TilePickingSync"; _0: t_211 }
+| { TAG: "RevengeMarkerSync"; _0: t_212 }
+| { TAG: "RevengeMarkerRemove"; _0: t_213 }
+| { TAG: "GolfBallLandInCup"; _0: t_214 }
+| { TAG: "ClientFinishConnectingToServer"; _0: t_215 }
+| { TAG: "NpcFishOut"; _0: t_216 }
+| { TAG: "NpcTamper"; _0: t_217 }
+| { TAG: "LegacySoundPlay"; _0: t_218 }
+| { TAG: "FoodPlatterTryPlacing"; _0: t_219 }
 | { TAG: "PlayerLuckFactorsUpdate"; _0: t_91 }
-| { TAG: "PlayerDead"; _0: t_219 }
-| { TAG: "CavernMonsterTypeSync"; _0: t_220 }
-| { TAG: "NpcBuffRemovalRequest"; _0: t_221 }
-| { TAG: "ClientSyncedInventory"; _0: t_222 }
-| { TAG: "CountsAsHostForGameplaySet"; _0: t_223 }
-| { TAG: "CreditsOrSlimeTransform"; _0: t_224 }
-| { TAG: "LucyAxeMessage"; _0: t_225 }
-| { TAG: "PiggyBankVoidLensUpdate"; _0: t_226 }
-| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: t_227 }
-| { TAG: "HaveDryadDoStardewAnimation"; _0: t_228 }
-| { TAG: "ItemDropShimmeredUpdate"; _0: t_229 }
+| { TAG: "PlayerDead"; _0: t_220 }
+| { TAG: "CavernMonsterTypeSync"; _0: t_221 }
+| { TAG: "NpcBuffRemovalRequest"; _0: t_222 }
+| { TAG: "ClientSyncedInventory"; _0: t_223 }
+| { TAG: "CountsAsHostForGameplaySet"; _0: t_224 }
+| { TAG: "CreditsOrSlimeTransform"; _0: t_225 }
+| { TAG: "LucyAxeMessage"; _0: t_226 }
+| { TAG: "PiggyBankVoidLensUpdate"; _0: t_227 }
+| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: t_228 }
+| { TAG: "HaveDryadDoStardewAnimation"; _0: t_229 }
+| { TAG: "ItemDropShimmeredUpdate"; _0: t_230 }
 | { TAG: "ShimmerEffectOrCoinLuck"; _0: t_49 }
-| { TAG: "LoadoutSwitch"; _0: t_230 }
-| { TAG: "ItemDropProtectedUpdate"; _0: t_231 }
+| { TAG: "LoadoutSwitch"; _0: t_231 }
+| { TAG: "ItemDropProtectedUpdate"; _0: t_232 }
 | { TAG: "DeadCellsDisplayJarTryPlacing"; _0: t_80 }
 | { TAG: "PlayerSpectate"; _0: t_92 }
 | { TAG: "ItemDropClear"; _0: t_84 }
@@ -6162,11 +6645,11 @@ declare type t_255 =
 | { TAG: "SectionRequest"; _0: t_95 }
 | { TAG: "ItemDropPosition"; _0: t_85 }
 | { TAG: "HostToken"; _0: t_82 }
-| { TAG: "DamageNPCAck"; _0: t_232 }
-| { TAG: "ServerInfo"; _0: t_233 }
-| { TAG: "PlayerPlatformInfo"; _0: t_234 };
+| { TAG: "DamageNPCAck"; _0: t_233 }
+| { TAG: "ServerInfo"; _0: t_263 }
+| { TAG: "PlayerPlatformInfo"; _0: t_264 };
 
-declare type t_256 = {
+declare type t_262 = {
     readonly time: number;
     readonly dayAndMoonInfo: number;
     readonly moonPhase: number;
@@ -6249,11 +6732,435 @@ declare type t_256 = {
     readonly extraSpawnPoints: Int_t[];
 };
 
-declare type t_26 = {
-    readonly npcId: number;
-    readonly buffs: number[];
-    readonly buffTimes: number[];
+declare type t_263 = void;
+
+declare type t_264 = { readonly playerId: number; readonly platformId: PlatformId_t_3 };
+
+declare type t_265 =
+    { TAG: "ConnectRequest"; _0: t_114 }
+| { TAG: "Disconnect"; _0: t_115 }
+| { TAG: "PlayerSlotSet"; _0: t_116 }
+| { TAG: "PlayerInfo"; _0: t_100 }
+| { TAG: "PlayerInventorySlot"; _0: t_102 }
+| { TAG: "WorldDataRequest"; _0: t_117 }
+| { TAG: "WorldInfo"; _0: t_266 }
+| { TAG: "InitialTileSectionsRequest"; _0: t_83 }
+| { TAG: "Status"; _0: t_118 }
+| { TAG: "TileSectionSend"; _0: t_68 }
+| { TAG: "TileSectionFrame"; _0: t_119 }
+| { TAG: "PlayerSpawn"; _0: t_101 }
+| { TAG: "PlayerUpdate"; _0: t_99 }
+| { TAG: "PlayerActive"; _0: t_120 }
+| { TAG: "PlayerHealth"; _0: t_121 }
+| { TAG: "TileModify"; _0: t_122 }
+| { TAG: "TimeSet"; _0: t_123 }
+| { TAG: "DoorUse"; _0: t_124 }
+| { TAG: "TileSquareSend"; _0: t_69 }
+| { TAG: "ItemDropUpdate"; _0: t_18 }
+| { TAG: "ItemOwner"; _0: t_20 }
+| { TAG: "NpcUpdate"; _0: t_110 }
+| { TAG: "NpcItemStrike"; _0: t_125 }
+| { TAG: "ProjectileSync"; _0: t_105 }
+| { TAG: "NpcStrike"; _0: t_126 }
+| { TAG: "ProjectileDestroy"; _0: t_127 }
+| { TAG: "PvpToggle"; _0: t_128 }
+| { TAG: "ChestOpen"; _0: t_129 }
+| { TAG: "ChestItem"; _0: t_130 }
+| { TAG: "ActiveContainerSync"; _0: t_131 }
+| { TAG: "ChestPlace"; _0: t_132 }
+| { TAG: "HealEffect"; _0: t_133 }
+| { TAG: "Zones"; _0: t_78 }
+| { TAG: "PasswordRequired"; _0: t_134 }
+| { TAG: "PasswordSend"; _0: t_135 }
+| { TAG: "ItemOwnerRemove"; _0: t_21 }
+| { TAG: "NpcTalk"; _0: t_136 }
+| { TAG: "PlayerAnimation"; _0: t_249 }
+| { TAG: "PlayerMana"; _0: t_138 }
+| { TAG: "ManaEffect"; _0: t_139 }
+| { TAG: "PlayerTeam"; _0: t_140 }
+| { TAG: "SignRead"; _0: t_141 }
+| { TAG: "SignNew"; _0: t_142 }
+| { TAG: "LiquidSet"; _0: t_143 }
+| { TAG: "PlayerSpawnSelf"; _0: t_144 }
+| { TAG: "PlayerBuffsSet"; _0: t_40 }
+| { TAG: "NpcSpecialEffect"; _0: t_145 }
+| { TAG: "ChestOrTempleUnlock"; _0: t_146 }
+| { TAG: "NpcBuffAdd"; _0: t_147 }
+| { TAG: "NpcBuffUpdate"; _0: t_26 }
+| { TAG: "PlayerBuffAdd"; _0: t_148 }
+| { TAG: "NpcNameUpdate"; _0: t_149 }
+| { TAG: "GoodEvilUpdate"; _0: t_150 }
+| { TAG: "HarpPlay"; _0: t_151 }
+| { TAG: "SwitchHit"; _0: t_152 }
+| { TAG: "NpcHomeUpdate"; _0: t_153 }
+| { TAG: "BossOrInvasionSpawn"; _0: t_154 }
+| { TAG: "PlayerDodge"; _0: t_45 }
+| { TAG: "TilePaint"; _0: t_155 }
+| { TAG: "WallPaint"; _0: t_156 }
+| { TAG: "Teleport"; _0: t_56 }
+| { TAG: "PlayerHealOther"; _0: t_157 }
+| { TAG: "DimensionsUpdate"; _0: t_158 }
+| { TAG: "ClientUuid"; _0: t_159 }
+| { TAG: "ChestName"; _0: t_160 }
+| { TAG: "NpcCatch"; _0: t_27 }
+| { TAG: "NpcRelease"; _0: t_161 }
+| { TAG: "TravellingMerchantInventory"; _0: t_71 }
+| { TAG: "TeleportationPotion"; _0: t_57 }
+| { TAG: "AnglerQuest"; _0: t_162 }
+| { TAG: "AnglerQuestComplete"; _0: t_163 }
+| { TAG: "AnglerQuestsCompletedAmount"; _0: t_164 }
+| { TAG: "TemporaryAnimationCreate"; _0: t_165 }
+| { TAG: "InvasionProgressReport"; _0: t_166 }
+| { TAG: "ObjectPlace"; _0: t_167 }
+| { TAG: "PlayerChestIndexSync"; _0: t_168 }
+| { TAG: "CombatNumberCreate"; _0: t_169 }
+| { TAG: "NetModuleLoad"; _0: t_23 }
+| { TAG: "NpcKillCount"; _0: t_170 }
+| { TAG: "PlayerStealth"; _0: t_171 }
+| { TAG: "ItemForceIntoNearestChest"; _0: t_86 }
+| { TAG: "TileEntityUpdate"; _0: t_172 }
+| { TAG: "TileEntityPlace"; _0: t_173 }
+| { TAG: "ItemDropModify"; _0: t_253 }
+| { TAG: "ItemFramePlace"; _0: t_175 }
+| { TAG: "ItemDropInstancedUpdate"; _0: t_176 }
+| { TAG: "EmoteBubble"; _0: t_255 }
+| { TAG: "ExtraValueSync"; _0: t_179 }
+| { TAG: "SocialHandshake"; _0: t_180 }
+| { TAG: "Unused"; _0: t_181 }
+| { TAG: "PortalKill"; _0: t_182 }
+| { TAG: "PlayerTeleportPortal"; _0: t_183 }
+| { TAG: "NpcKilledNotification"; _0: t_184 }
+| { TAG: "EventNotification"; _0: t_185 }
+| { TAG: "MinionTargetUpdate"; _0: t_186 }
+| { TAG: "NpcTeleportPortal"; _0: t_187 }
+| { TAG: "ShieldStrengthsUpdate"; _0: t_188 }
+| { TAG: "NebulaLevelUp"; _0: t_189 }
+| { TAG: "MoonLordCountdown"; _0: t_190 }
+| { TAG: "NpcShopItem"; _0: t_191 }
+| { TAG: "GemLockToggle"; _0: t_192 }
+| { TAG: "SmokePoof"; _0: t_193 }
+| { TAG: "ChatMessageSmart"; _0: t_194 }
+| { TAG: "WiredCannonShot"; _0: t_195 }
+| { TAG: "MassWireOperation"; _0: t_196 }
+| { TAG: "MassWireOperationPay"; _0: t_197 }
+| { TAG: "PartyToggle"; _0: t_198 }
+| { TAG: "TreeGrowFx"; _0: t_199 }
+| { TAG: "CrystalInvasionStart"; _0: t_200 }
+| { TAG: "CrystalInvasionWipeAll"; _0: t_201 }
+| { TAG: "MinionAttackTargetUpdate"; _0: t_202 }
+| { TAG: "CrystalInvasionSendWaitTime"; _0: t_203 }
+| { TAG: "PlayerDamage"; _0: t_256 }
+| { TAG: "PlayerDeath"; _0: t_205 }
+| { TAG: "CombatTextCreate"; _0: t_206 }
+| { TAG: "Emoji"; _0: t_207 }
+| { TAG: "TileEntityDisplayDollItemSync"; _0: t_59 }
+| { TAG: "TileEntityInteractionRequest"; _0: t_208 }
+| { TAG: "WeaponsRackTryPlacing"; _0: t_209 }
+| { TAG: "TileEntityHatRackItemSync"; _0: t_210 }
+| { TAG: "TilePickingSync"; _0: t_211 }
+| { TAG: "RevengeMarkerSync"; _0: t_212 }
+| { TAG: "RevengeMarkerRemove"; _0: t_213 }
+| { TAG: "GolfBallLandInCup"; _0: t_214 }
+| { TAG: "ClientFinishConnectingToServer"; _0: t_215 }
+| { TAG: "NpcFishOut"; _0: t_216 }
+| { TAG: "NpcTamper"; _0: t_217 }
+| { TAG: "LegacySoundPlay"; _0: t_218 }
+| { TAG: "FoodPlatterTryPlacing"; _0: t_219 }
+| { TAG: "PlayerLuckFactorsUpdate"; _0: t_91 }
+| { TAG: "PlayerDead"; _0: t_220 }
+| { TAG: "CavernMonsterTypeSync"; _0: t_221 }
+| { TAG: "NpcBuffRemovalRequest"; _0: t_222 }
+| { TAG: "ClientSyncedInventory"; _0: t_223 }
+| { TAG: "CountsAsHostForGameplaySet"; _0: t_224 }
+| { TAG: "CreditsOrSlimeTransform"; _0: t_225 }
+| { TAG: "LucyAxeMessage"; _0: t_226 }
+| { TAG: "PiggyBankVoidLensUpdate"; _0: t_227 }
+| { TAG: "DungeonDefendersEventAttemptSkipWait"; _0: t_228 }
+| { TAG: "HaveDryadDoStardewAnimation"; _0: t_229 }
+| { TAG: "ItemDropShimmeredUpdate"; _0: t_230 }
+| { TAG: "ShimmerEffectOrCoinLuck"; _0: t_49 }
+| { TAG: "LoadoutSwitch"; _0: t_231 }
+| { TAG: "ItemDropProtectedUpdate"; _0: t_232 }
+| { TAG: "DeadCellsDisplayJarTryPlacing"; _0: t_80 }
+| { TAG: "PlayerSpectate"; _0: t_92 }
+| { TAG: "ItemDropClear"; _0: t_84 }
+| { TAG: "PlayerItemUseSound"; _0: t_90 }
+| { TAG: "NpcHurtByDebuff"; _0: t_88 }
+| { TAG: "Ping"; _0: t_89 }
+| { TAG: "ChestResize"; _0: t_79 }
+| { TAG: "LeashedEntityAnchorInsertItem"; _0: t_87 }
+| { TAG: "PlayerTeamUpdate"; _0: t_94 }
+| { TAG: "PlayerTeamSwapSpawn"; _0: t_93 }
+| { TAG: "SectionRequest"; _0: t_95 }
+| { TAG: "ItemDropPosition"; _0: t_85 }
+| { TAG: "HostToken"; _0: t_82 }
+| { TAG: "DamageNPCAck"; _0: t_233 }
+| { TAG: "ServerInfo"; _0: t_263 }
+| { TAG: "PlayerPlatformInfo"; _0: t_264 };
+
+declare type t_266 = {
+    readonly time: number;
+    readonly dayAndMoonInfo: number;
+    readonly moonPhase: number;
+    readonly maxTilesX: number;
+    readonly maxTilesY: number;
+    readonly spawnX: number;
+    readonly spawnY: number;
+    readonly worldSurface: number;
+    readonly rockLayer: number;
+    readonly worldId: number;
+    readonly worldName: string;
+    readonly gameMode: number;
+    readonly worldUniqueId: worldUniqueId_4;
+    readonly worldGeneratorVersion: bigint;
+    readonly moonType: number;
+    readonly treeBackground: number;
+    readonly treeBackground2: number;
+    readonly treeBackground3: number;
+    readonly treeBackground4: number;
+    readonly corruptionBackground: number;
+    readonly jungleBackground: number;
+    readonly snowBackground: number;
+    readonly hallowBackground: number;
+    readonly crimsonBackground: number;
+    readonly desertBackground: number;
+    readonly oceanBackground: number;
+    readonly mushroomBackground: number;
+    readonly underworldBackground: number;
+    readonly iceBackStyle: number;
+    readonly jungleBackStyle: number;
+    readonly hellBackStyle: number;
+    readonly windSpeedSet: number;
+    readonly cloudNumber: number;
+    readonly tree1: number;
+    readonly tree2: number;
+    readonly tree3: number;
+    readonly treeStyle1: number;
+    readonly treeStyle2: number;
+    readonly treeStyle3: number;
+    readonly treeStyle4: number;
+    readonly caveBack1: number;
+    readonly caveBack2: number;
+    readonly caveBack3: number;
+    readonly caveBackStyle1: number;
+    readonly caveBackStyle2: number;
+    readonly caveBackStyle3: number;
+    readonly caveBackStyle4: number;
+    readonly forest1TreeTopStyle: number;
+    readonly forest2TreeTopStyle: number;
+    readonly forest3TreeTopStyle: number;
+    readonly forest4TreeTopStyle: number;
+    readonly corruptionTreeTopStyle: number;
+    readonly jungleTreeTopStyle: number;
+    readonly snowTreeTopStyle: number;
+    readonly hallowTreeTopStyle: number;
+    readonly crimsonTreeTopStyle: number;
+    readonly desertTreeTopStyle: number;
+    readonly oceanTreeTopStyle: number;
+    readonly glowingMushroomTreeTopStyle: number;
+    readonly underworldTreeTopStyle: number;
+    readonly rain: number;
+    readonly eventInfo: eventInfo_4;
+    readonly lowTiles: boolean;
+    readonly forceHalloweenForever: boolean;
+    readonly forceChristmasForever: boolean;
+    readonly moreLightningSeed: boolean;
+    readonly noLightningSeed: boolean;
+    readonly sundialCooldown: number;
+    readonly moondialCooldown: number;
+    readonly copperOreTier: number;
+    readonly ironOreTier: number;
+    readonly silverOreTier: number;
+    readonly goldOreTier: number;
+    readonly cobaltOreTier: number;
+    readonly mythrilOreTier: number;
+    readonly adamantiteOreTier: number;
+    readonly invasionType: number;
+    readonly lobbyId: bigint;
+    readonly sandstormSeverity: number;
+    readonly extraSpawnPoints: Int_t[];
+    readonly dungeonX: number;
+    readonly dungeonY: number;
 };
+
+declare type t_267 =
+| "ConnectRequest"
+| "Disconnect"
+| "PlayerSlotSet"
+| "PlayerInfo"
+| "PlayerInventorySlot"
+| "WorldDataRequest"
+| "WorldInfo"
+| "InitialTileSectionsRequest"
+| "Status"
+| "TileSectionSend"
+| "TileSectionFrame"
+| "PlayerSpawn"
+| "PlayerUpdate"
+| "PlayerActive"
+| "PlayerHealth"
+| "TileModify"
+| "TimeSet"
+| "DoorUse"
+| "TileSquareSend"
+| "ItemDropUpdate"
+| "ItemOwner"
+| "NpcUpdate"
+| "NpcItemStrike"
+| "ProjectileSync"
+| "NpcStrike"
+| "ProjectileDestroy"
+| "PvpToggle"
+| "ChestOpen"
+| "ChestItem"
+| "ActiveContainerSync"
+| "ChestPlace"
+| "HealEffect"
+| "Zones"
+| "PasswordRequired"
+| "PasswordSend"
+| "ItemOwnerRemove"
+| "NpcTalk"
+| "PlayerAnimation"
+| "PlayerMana"
+| "ManaEffect"
+| "PlayerTeam"
+| "SignRead"
+| "SignNew"
+| "LiquidSet"
+| "PlayerSpawnSelf"
+| "PlayerBuffsSet"
+| "NpcSpecialEffect"
+| "ChestOrTempleUnlock"
+| "NpcBuffAdd"
+| "NpcBuffUpdate"
+| "PlayerBuffAdd"
+| "NpcNameUpdate"
+| "GoodEvilUpdate"
+| "HarpPlay"
+| "SwitchHit"
+| "NpcHomeUpdate"
+| "BossOrInvasionSpawn"
+| "PlayerDodge"
+| "TilePaint"
+| "WallPaint"
+| "Teleport"
+| "PlayerHealOther"
+| "DimensionsUpdate"
+| "ClientUuid"
+| "ChestName"
+| "NpcCatch"
+| "NpcRelease"
+| "TravellingMerchantInventory"
+| "TeleportationPotion"
+| "AnglerQuest"
+| "AnglerQuestComplete"
+| "AnglerQuestsCompletedAmount"
+| "TemporaryAnimationCreate"
+| "InvasionProgressReport"
+| "ObjectPlace"
+| "PlayerChestIndexSync"
+| "CombatNumberCreate"
+| "NetModuleLoad"
+| "NpcKillCount"
+| "PlayerStealth"
+| "ItemForceIntoNearestChest"
+| "TileEntityUpdate"
+| "TileEntityPlace"
+| "ItemDropModify"
+| "ItemFramePlace"
+| "ItemDropInstancedUpdate"
+| "EmoteBubble"
+| "ExtraValueSync"
+| "SocialHandshake"
+| "Unused"
+| "PortalKill"
+| "PlayerTeleportPortal"
+| "NpcKilledNotification"
+| "EventNotification"
+| "MinionTargetUpdate"
+| "NpcTeleportPortal"
+| "ShieldStrengthsUpdate"
+| "NebulaLevelUp"
+| "MoonLordCountdown"
+| "NpcShopItem"
+| "GemLockToggle"
+| "SmokePoof"
+| "ChatMessageSmart"
+| "WiredCannonShot"
+| "MassWireOperation"
+| "MassWireOperationPay"
+| "PartyToggle"
+| "TreeGrowFx"
+| "CrystalInvasionStart"
+| "CrystalInvasionWipeAll"
+| "MinionAttackTargetUpdate"
+| "CrystalInvasionSendWaitTime"
+| "PlayerDamage"
+| "PlayerDeath"
+| "CombatTextCreate"
+| "Emoji"
+| "TileEntityDisplayDollItemSync"
+| "TileEntityInteractionRequest"
+| "WeaponsRackTryPlacing"
+| "TileEntityHatRackItemSync"
+| "TilePickingSync"
+| "RevengeMarkerSync"
+| "RevengeMarkerRemove"
+| "GolfBallLandInCup"
+| "ClientFinishConnectingToServer"
+| "NpcFishOut"
+| "NpcTamper"
+| "LegacySoundPlay"
+| "FoodPlatterTryPlacing"
+| "PlayerLuckFactorsUpdate"
+| "PlayerDead"
+| "CavernMonsterTypeSync"
+| "NpcBuffRemovalRequest"
+| "ClientSyncedInventory"
+| "CountsAsHostForGameplaySet"
+| "CreditsOrSlimeTransform"
+| "LucyAxeMessage"
+| "PiggyBankVoidLensUpdate"
+| "DungeonDefendersEventAttemptSkipWait"
+| "HaveDryadDoStardewAnimation"
+| "ItemDropShimmeredUpdate"
+| "ShimmerEffectOrCoinLuck"
+| "LoadoutSwitch"
+| "ItemDropProtectedUpdate"
+| "DeadCellsDisplayJarTryPlacing"
+| "PlayerSpectate"
+| "ItemDropClear"
+| "PlayerItemUseSound"
+| "NpcHurtByDebuff"
+| "Ping"
+| "ChestResize"
+| "LeashedEntityAnchorInsertItem"
+| "PlayerTeamUpdate"
+| "PlayerTeamSwapSpawn"
+| "SectionRequest"
+| "ItemDropPosition"
+| "HostToken"
+| "DamageNPCAck"
+| "ServerInfo"
+| "PlayerPlatformInfo";
+
+declare type t_268 = {
+    readonly itemId: number;
+    readonly color: color_3 | undefined;
+    readonly damage: number | undefined;
+    readonly knockback: number | undefined;
+    readonly useAnimation: number | undefined;
+    readonly useTime: number | undefined;
+    readonly shoot: number | undefined;
+    readonly shootSpeed: number | undefined;
+    readonly scale: number | undefined;
+    readonly ammo: number | undefined;
+    readonly useAmmo: number | undefined;
+    readonly notAmmo: boolean | undefined
+};
+
+declare type t_269 = { readonly id: number; readonly anchor: anchor_3 };
 
 declare type t_27 = { readonly npcId: number };
 
@@ -6311,7 +7218,8 @@ declare type t_37 = void;
 declare type t_38 = {
     readonly playerId: number;
     readonly itemRotation: number;
-    readonly itemAnimation: number
+    readonly itemAnimation: number;
+    readonly itemAnimationMax: number
 };
 
 declare type t_39 = {
@@ -6733,6 +7641,16 @@ declare type tagNpcChange = { readonly ownerId: number; readonly npcIndex: numbe
 
 declare type tagNpcChange_2 = { readonly ownerId: number; readonly npcIndex: number };
 
+declare type target =
+| { TAG: "Npc" | "Player"; _0: number }
+| { TAG: "Projectile"; _0: t_178 }
+| "Unanchored";
+
+declare type target_2 =
+| { TAG: "Npc" | "Player"; _0: number }
+| { TAG: "Projectile"; _0: t_106 }
+| "Unanchored";
+
 export declare namespace TeleportationPotionPacket {
     export {
         teleportType_2 as teleportType,
@@ -7073,17 +7991,17 @@ declare const toBuffer_104: (_1: t_111) => toBuffer_104;
 
 declare const toBuffer_105: (packet: t_113, fromServer: boolean) => toBufferResult;
 
-declare const toBuffer_106: (packet: t_237, fromServer: boolean) => toBufferResult_2;
+declare const toBuffer_106: (packet: t_239, fromServer: boolean) => toBufferResult_2;
 
-declare const toBuffer_107: (packet: t_255, fromServer: boolean) => toBufferResult_3;
+declare const toBuffer_107: (packet: t_261, fromServer: boolean) => toBufferResult_3;
 
 declare type toBuffer_108 = toBufferOk_100 | toBufferError_100;
 
-declare const toBuffer_108: (_1: t_256) => toBuffer_108;
+declare const toBuffer_108: (_1: t_262) => toBuffer_108;
 
 declare type toBuffer_109 = { TAG: "Ok"; _0: Buffer } | { TAG: "Error"; _0: PackError };
 
-declare const toBuffer_109: (_1: t_232) => toBuffer_109;
+declare const toBuffer_109: (_1: t_233) => toBuffer_109;
 
 declare type toBuffer_11 = toBufferOk_11 | toBufferError_11;
 
@@ -7103,11 +8021,29 @@ declare const toBuffer_112: (_1: t_127) => toBuffer_112;
 
 declare type toBuffer_113 = { TAG: "Ok"; _0: Buffer } | { TAG: "Error"; _0: PackError };
 
-declare const toBuffer_113: (_1: t_233) => toBuffer_113;
+declare const toBuffer_113: (value: t_234, fromServer: boolean) => toBuffer_113;
 
 declare type toBuffer_114 = { TAG: "Ok"; _0: Buffer } | { TAG: "Error"; _0: PackError };
 
-declare const toBuffer_114: (_1: t_234) => toBuffer_114;
+declare const toBuffer_114: (_1: t_235) => toBuffer_114;
+
+declare const toBuffer_115: (packet: t_265, fromServer: boolean) => toBufferResult_4;
+
+declare type toBuffer_116 = toBufferOk_101 | toBufferError_101;
+
+declare const toBuffer_116: (_1: t_268) => toBuffer_116;
+
+declare type toBuffer_117 = { TAG: "Ok"; _0: Buffer } | { TAG: "Error"; _0: PackError };
+
+declare const toBuffer_117: (_1: t_269) => toBuffer_117;
+
+declare type toBuffer_118 = { TAG: "Ok"; _0: Buffer } | { TAG: "Error"; _0: PackError };
+
+declare const toBuffer_118: (_1: t_236) => toBuffer_118;
+
+declare type toBuffer_119 = toBufferOk_102 | toBufferError_102;
+
+declare const toBuffer_119: (_1: t_266) => toBuffer_119;
 
 declare type toBuffer_12 = toBufferOk_12 | toBufferError_12;
 
@@ -7499,6 +8435,10 @@ declare type toBufferError_10 = { TAG: "Error"; _0: PackError };
 
 declare type toBufferError_100 = { TAG: "Error"; _0: PackError };
 
+declare type toBufferError_101 = { TAG: "Error"; _0: PackError };
+
+declare type toBufferError_102 = { TAG: "Error"; _0: PackError };
+
 declare type toBufferError_11 = { TAG: "Error"; _0: PackError };
 
 declare type toBufferError_12 = { TAG: "Error"; _0: PackError };
@@ -7698,6 +8638,10 @@ declare type toBufferOk = { TAG: "Ok"; _0: Buffer };
 declare type toBufferOk_10 = { TAG: "Ok"; _0: Buffer };
 
 declare type toBufferOk_100 = { TAG: "Ok"; _0: Buffer };
+
+declare type toBufferOk_101 = { TAG: "Ok"; _0: Buffer };
+
+declare type toBufferOk_102 = { TAG: "Ok"; _0: Buffer };
 
 declare type toBufferOk_11 = { TAG: "Ok"; _0: Buffer };
 
@@ -7908,15 +8852,22 @@ declare type toBufferResult_3 =
 | "NotImplemented"
 | { TAG: "Error"; _0: PackError };
 
+declare type toBufferResult_4 =
+| { TAG: "Ok"; _0: Buffer }
+| "NotImplemented"
+| { TAG: "Error"; _0: PackError };
+
 declare function toByte(t: t_96): number;
 
 declare const toInt: (self: t_106) => number;
 
 declare function toInt_2(packetType: t_112): number;
 
-declare function toInt_3(packetType: t_236): number;
+declare function toInt_3(packetType: t_238): number;
 
-declare function toInt_4(packetType: t_254): number;
+declare function toInt_4(packetType: t_260): number;
+
+declare function toInt_5(packetType: t_267): number;
 
 declare type toLatestIfNeeded =
 | "PacketStructureIsSame"
@@ -7928,11 +8879,18 @@ declare type toLatestIfNeeded_2 =
 | { TAG: "ConvertedToLatest"; _0: t_113 }
 | "DiscardAsNotExists";
 
+declare type toLatestIfNeeded_3 =
+| "PacketStructureIsSame"
+| { TAG: "ConvertedToLatest"; _0: t_113 }
+| "DiscardAsNotExists";
+
 declare const toPacketName: (packet: t_113) => string;
 
-declare const toPacketName_2: (packet: t_237) => string;
+declare const toPacketName_2: (packet: t_239) => string;
 
-declare const toPacketName_3: (packet: t_255) => string;
+declare const toPacketName_3: (packet: t_261) => string;
+
+declare const toPacketName_4: (packet: t_265) => string;
 
 declare function toString_2(data: CreativePower): string;
 
@@ -8087,7 +9045,7 @@ export declare namespace WorldInfoV1457Packet {
     export {
         eventInfo_3 as eventInfo,
         worldUniqueId_3 as worldUniqueId,
-        t_256 as t,
+        t_262 as t,
         parseOk_101 as parseOk,
         parseError_102 as parseError,
         parse_110 as parse,
@@ -8097,11 +9055,27 @@ export declare namespace WorldInfoV1457Packet {
     }
 }
 
+export declare namespace WorldInfoV1458Packet {
+    export {
+        eventInfo_4 as eventInfo,
+        worldUniqueId_4 as worldUniqueId,
+        t_266 as t,
+        parseOk_103 as parseOk,
+        parseError_104 as parseError,
+        parse_121 as parse,
+        toBufferOk_102 as toBufferOk,
+        toBufferError_102 as toBufferError,
+        toBuffer_119 as toBuffer
+    }
+}
+
 declare type worldUniqueId = number[];
 
 declare type worldUniqueId_2 = number[];
 
 declare type worldUniqueId_3 = number[];
+
+declare type worldUniqueId_4 = number[];
 
 export declare namespace ZonesPacket {
     export {

@@ -340,6 +340,8 @@ function fromInt(n) {
       return "ServerInfo";
     case 164:
       return "PlayerPlatformInfo";
+    case 165:
+      return "CustomServerAck";
     default:
       return;
   }
@@ -666,6 +668,8 @@ function toInt(self) {
       return 163;
     case "PlayerPlatformInfo":
       return 164;
+    case "CustomServerAck":
+      return 165;
   }
 }
 function packetName(packetType) {
@@ -990,6 +994,8 @@ function packetName(packetType) {
       return "ServerInfo";
     case "PlayerPlatformInfo":
       return "PlayerPlatformInfo";
+    case "CustomServerAck":
+      return "CustomServerAck";
   }
 }
 
@@ -1107,10 +1113,10 @@ function read7BitEncodedInt(reader, context) {
     let shift = 0;
     let $$continue = true;
     while ($$continue) {
-      if (shift >= 35) {
+      let byte = reader2.readByte();
+      if (shift === 28 && byte > 15) {
         throwWithMessage("Invalid 7-bit encoded int");
       }
-      let byte = reader2.readByte();
       result = result | (byte & 127) << shift;
       if ((byte & 128) === 0) {
         $$continue = false;
@@ -4648,8 +4654,8 @@ function parse21(payload) {
   }
   let hideVisibleAccessory = e$2._0;
   let flags0 = fromByte(hideVisibleAccessory & 255);
-  let flags12 = fromByte(hideVisibleAccessory >> 8 & 255);
-  let hideVisibleAccessory$1 = fromBitFlagsPair(flags0, flags12);
+  let flags13 = fromByte(hideVisibleAccessory >> 8 & 255);
+  let hideVisibleAccessory$1 = fromBitFlagsPair(flags0, flags13);
   return {
     TAG: "Ok",
     _0: {
@@ -8391,9 +8397,9 @@ function toBuffer35(_self) {
   return data(setType(make(), toInt("PartyToggle")));
 }
 
-// src/packetv1449/PacketV1449_PlayerAnimation.js
-var PacketV1449_PlayerAnimation_exports = {};
-__export(PacketV1449_PlayerAnimation_exports, {
+// src/packet/Packet_PlayerAnimation.js
+var Packet_PlayerAnimation_exports = {};
+__export(Packet_PlayerAnimation_exports, {
   parse: () => parse37,
   toBuffer: () => toBuffer36
 });
@@ -8408,21 +8414,26 @@ function parse37(payload) {
     return e$1;
   }
   let e$2 = readInt16(reader, "itemAnimation");
-  if (e$2.TAG === "Ok") {
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readInt16(reader, "itemAnimationMax");
+  if (e$3.TAG === "Ok") {
     return {
       TAG: "Ok",
       _0: {
         playerId: e._0,
         itemRotation: e$1._0,
-        itemAnimation: e$2._0
+        itemAnimation: e$2._0,
+        itemAnimationMax: e$3._0
       }
     };
   } else {
-    return e$2;
+    return e$3;
   }
 }
 function toBuffer36(self) {
-  return data(packInt16(packSingle(packByte(setType(make(), toInt("PlayerAnimation")), self.playerId, "playerId"), self.itemRotation, "itemRotation"), self.itemAnimation, "itemAnimation"));
+  return data(packInt16(packInt16(packSingle(packByte(setType(make(), toInt("PlayerAnimation")), self.playerId, "playerId"), self.itemRotation, "itemRotation"), self.itemAnimation, "itemAnimation"), self.itemAnimationMax, "itemAnimationMax"));
 }
 
 // src/packetv1449/PacketV1449_PlayerBuffAdd.js
@@ -8627,10 +8638,16 @@ function otherFromByte(byte) {
     case 14:
       return "ChaosState3Female";
     default:
-      return;
+      return {
+        TAG: "Other",
+        _0: byte
+      };
   }
 }
 function otherToByte(other) {
+  if (typeof other === "object") {
+    return other._0;
+  }
   switch (other) {
     case "FallDamage":
       return 0;
@@ -15703,27 +15720,27 @@ function parse68(payload) {
     if (e2.TAG !== "Ok") {
       return e2;
     }
-    let flags12 = fromByte(e2._0);
+    let flags13 = fromByte(e2._0);
     let e$12 = readByte(reader, "flags2");
     if (e$12.TAG !== "Ok") {
       return e$12;
     }
-    let flags22 = fromByte(e$12._0);
+    let flags23 = fromByte(e$12._0);
     let e$22 = readByte(reader, "flags3");
     if (e$22.TAG !== "Ok") {
       return e$22;
     }
-    let active = flag1(flags12);
-    let hasWall = flag3(flags12);
-    let hasLiquid = flag4(flags12);
-    let wire = flag5(flags12);
-    let halfBrick = flag6(flags12);
-    let actuator = flag7(flags12);
-    let inActive = flag8(flags12);
-    let wire2 = flag1(flags22);
-    let wire3 = flag2(flags22);
+    let active = flag1(flags13);
+    let hasWall = flag3(flags13);
+    let hasLiquid = flag4(flags13);
+    let wire = flag5(flags13);
+    let halfBrick = flag6(flags13);
+    let actuator = flag7(flags13);
+    let inActive = flag8(flags13);
+    let wire2 = flag1(flags23);
+    let wire3 = flag2(flags23);
     let e$32;
-    if (flag3(flags22)) {
+    if (flag3(flags23)) {
       let e$42 = readByte(reader, "color");
       e$32 = e$42.TAG === "Ok" ? {
         TAG: "Ok",
@@ -15739,7 +15756,7 @@ function parse68(payload) {
       return e$32;
     }
     let e$5;
-    if (flag4(flags22)) {
+    if (flag4(flags23)) {
       let e$6 = readByte(reader, "wallColor");
       e$5 = e$6.TAG === "Ok" ? {
         TAG: "Ok",
@@ -15781,7 +15798,7 @@ function parse68(payload) {
           };
         }
         if (e$9.TAG === "Ok") {
-          let slope = ((0 + (flag5(flags22) ? 1 : 0) | 0) + (flag6(flags22) ? 2 : 0) | 0) + (flag7(flags22) ? 4 : 0) | 0;
+          let slope = ((0 + (flag5(flags23) ? 1 : 0) | 0) + (flag6(flags23) ? 2 : 0) | 0) + (flag7(flags23) ? 4 : 0) | 0;
           e$7 = {
             TAG: "Ok",
             _0: {
@@ -15845,7 +15862,7 @@ function parse68(payload) {
     if (e$14.TAG !== "Ok") {
       return e$14;
     }
-    let wire4 = flag8(flags22);
+    let wire4 = flag8(flags23);
     return {
       TAG: "Ok",
       _0: {
@@ -15915,9 +15932,9 @@ function parse68(payload) {
   }
 }
 function packTile2(writer, tile) {
-  let flags12 = fromFlags(isSome(tile.activeTile), false, isSome(tile.wall), isSome(tile.liquid), tile.wire, tile.halfBrick, tile.actuator, tile.inActive);
-  let flags22 = fromFlags(tile.wire2, tile.wire3, isSome(tile.color), isSome(tile.wallColor), mapOr(tile.activeTile, false, (tile2) => (tile2.slope & 1) === 1), mapOr(tile.activeTile, false, (tile2) => (tile2.slope & 2) === 2), mapOr(tile.activeTile, false, (tile2) => (tile2.slope & 4) === 4), tile.wire4);
-  packByte(packByte(packByte(writer, toByte(flags12), "flags1"), toByte(flags22), "flags2"), tile.coatHeader, "coatHeader");
+  let flags13 = fromFlags(isSome(tile.activeTile), false, isSome(tile.wall), isSome(tile.liquid), tile.wire, tile.halfBrick, tile.actuator, tile.inActive);
+  let flags23 = fromFlags(tile.wire2, tile.wire3, isSome(tile.color), isSome(tile.wallColor), mapOr(tile.activeTile, false, (tile2) => (tile2.slope & 1) === 1), mapOr(tile.activeTile, false, (tile2) => (tile2.slope & 2) === 2), mapOr(tile.activeTile, false, (tile2) => (tile2.slope & 4) === 4), tile.wire4);
+  packByte(packByte(packByte(writer, toByte(flags13), "flags1"), toByte(flags23), "flags2"), tile.coatHeader, "coatHeader");
   let c = tile.color;
   if (c !== void 0) {
     packByte(writer, c, "color");
@@ -18211,10 +18228,10 @@ function toBuffer99(self) {
   let ai2 = match[2];
   let ai1 = match[1];
   let ai0 = match[0];
-  let flags22 = fromFlags(isSome(ai2), false, false, false, false, false, false, false);
-  let flags = fromFlags(isSome(ai0), isSome(ai1), toByte(flags22) !== 0, isSome(self.bannerIdToRespondTo), isSome(self.damage), isSome(self.knockback), isSome(self.originalDamage), false);
+  let flags23 = fromFlags(isSome(ai2), false, false, false, false, false, false, false);
+  let flags = fromFlags(isSome(ai0), isSome(ai1), toByte(flags23) !== 0, isSome(self.bannerIdToRespondTo), isSome(self.damage), isSome(self.knockback), isSome(self.originalDamage), false);
   let writer = packByte(packInt16(packSingle(packSingle(packSingle(packSingle(packInt32(setType(make(), toInt5("ProjectileSync")), toInt11(self.projectileKey), "projectileKey"), self.position.x, "positionX"), self.position.y, "positionY"), self.velocity.x, "velocityX"), self.velocity.y, "velocityY"), self.projectileType, "projectileType"), toByte(flags), "flags");
-  let writer$1 = flag3(flags) ? packByte(writer, toByte(flags22), "flags2") : writer;
+  let writer$1 = flag3(flags) ? packByte(writer, toByte(flags23), "flags2") : writer;
   let writer$2 = ai0 !== void 0 ? packSingle(writer$1, ai0, "ai0") : writer$1;
   let writer$3 = ai1 !== void 0 ? packSingle(writer$2, ai1, "ai1") : writer$2;
   let value = self.bannerIdToRespondTo;
@@ -18238,9 +18255,9 @@ var Encode34 = {
   toBuffer: toBuffer99
 };
 
-// src/packetv1449/PacketV1449_PlayerDamage.js
-var PacketV1449_PlayerDamage_exports = {};
-__export(PacketV1449_PlayerDamage_exports, {
+// src/packet/Packet_PlayerDamage.js
+var Packet_PlayerDamage_exports = {};
+__export(Packet_PlayerDamage_exports, {
   parse: () => parse103,
   toBuffer: () => toBuffer100
 });
@@ -18254,7 +18271,8 @@ function readDamageFlags(reader) {
     TAG: "Ok",
     _0: {
       critical: flag1(flags),
-      pvp: flag2(flags)
+      pvp: flag2(flags),
+      dodgeable: flag3(flags)
     }
   };
 }
@@ -18292,6 +18310,7 @@ function parse103(payload) {
         hitDirection: e$3._0,
         critical: damageFlags.critical,
         pvp: damageFlags.pvp,
+        dodgeable: damageFlags.dodgeable,
         cooldownCounter: e$5._0
       }
     };
@@ -18300,7 +18319,7 @@ function parse103(payload) {
   }
 }
 function toBuffer100(self) {
-  let damageFlags = (self2) => toByte(fromFlags(self2.critical, self2.pvp, false, false, false, false, false, false));
+  let damageFlags = (self2) => toByte(fromFlags(self2.critical, self2.pvp, self2.dodgeable, false, false, false, false, false));
   return data(packSByte(packByte(packByte(packInt16(packDeathReason(packByte(setType(make(), toInt("PlayerDamage")), self.target, "target"), self.deathReason), self.damage, "damage"), self.hitDirection, "hitDirection"), damageFlags(self), "damageFlags"), self.cooldownCounter, "cooldownCounter"));
 }
 
@@ -18803,6 +18822,7 @@ function parse104(payload) {
   let forceChristmasForever = flag3(worldFlags);
   let moreLightningSeed = flag4(worldFlags);
   let noLightningSeed = flag5(worldFlags);
+  let noSpidersSeed = flag6(worldFlags);
   let e$64 = readByte(reader, "sundialCooldown");
   if (e$64.TAG !== "Ok") {
     return e$64;
@@ -18963,6 +18983,7 @@ function parse104(payload) {
         forceChristmasForever,
         moreLightningSeed,
         noLightningSeed,
+        noSpidersSeed,
         sundialCooldown: e$64._0,
         moondialCooldown: e$65._0,
         copperOreTier: e$66._0,
@@ -19018,7 +19039,7 @@ function packExtraSpawnPoints(writer, extraSpawnPoints) {
   return writer$1;
 }
 function toBuffer101(self) {
-  return data(packInt16(packInt16(packExtraSpawnPoints(packSingle(packUInt64(packSByte(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packByte(packEventInfo(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packUInt64(packBytes(packByte(packString(packInt32(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packInt32(setType(make(), toInt("WorldInfo")), self.time, "time"), self.dayAndMoonInfo, "dayAndMoonInfo"), self.moonPhase, "moonPhase"), self.maxTilesX, "maxTilesX"), self.maxTilesY, "maxTilesY"), self.spawnX, "spawnX"), self.spawnY, "spawnY"), self.worldSurface, "worldSurface"), self.rockLayer, "rockLayer"), self.worldId, "worldId"), self.worldName, "worldName"), self.gameMode, "gameMode"), asArray(self.worldUniqueId), "worldUniqueId"), self.worldGeneratorVersion, "worldGeneratorVersion"), self.moonType, "moonType"), self.treeBackground, "treeBackground"), self.treeBackground2, "treeBackground2"), self.treeBackground3, "treeBackground3"), self.treeBackground4, "treeBackground4"), self.corruptionBackground, "corruptionBackground"), self.jungleBackground, "jungleBackground"), self.snowBackground, "snowBackground"), self.hallowBackground, "hallowBackground"), self.crimsonBackground, "crimsonBackground"), self.desertBackground, "desertBackground"), self.oceanBackground, "oceanBackground"), self.mushroomBackground, "mushroomBackground"), self.underworldBackground, "underworldBackground"), self.iceBackStyle, "iceBackStyle"), self.jungleBackStyle, "jungleBackStyle"), self.hellBackStyle, "hellBackStyle"), self.windSpeedSet, "windSpeedSet"), self.cloudNumber, "cloudNumber"), self.tree1, "tree1"), self.tree2, "tree2"), self.tree3, "tree3"), self.treeStyle1, "treeStyle1"), self.treeStyle2, "treeStyle2"), self.treeStyle3, "treeStyle3"), self.treeStyle4, "treeStyle4"), self.caveBack1, "caveBack1"), self.caveBack2, "caveBack2"), self.caveBack3, "caveBack3"), self.caveBackStyle1, "caveBackStyle1"), self.caveBackStyle2, "caveBackStyle2"), self.caveBackStyle3, "caveBackStyle3"), self.caveBackStyle4, "caveBackStyle4"), self.forest1TreeTopStyle, "forest1TreeTopStyle"), self.forest2TreeTopStyle, "forest2TreeTopStyle"), self.forest3TreeTopStyle, "forest3TreeTopStyle"), self.forest4TreeTopStyle, "forest4TreeTopStyle"), self.corruptionTreeTopStyle, "corruptionTreeTopStyle"), self.jungleTreeTopStyle, "jungleTreeTopStyle"), self.snowTreeTopStyle, "snowTreeTopStyle"), self.hallowTreeTopStyle, "hallowTreeTopStyle"), self.crimsonTreeTopStyle, "crimsonTreeTopStyle"), self.desertTreeTopStyle, "desertTreeTopStyle"), self.oceanTreeTopStyle, "oceanTreeTopStyle"), self.glowingMushroomTreeTopStyle, "glowingMushroomTreeTopStyle"), self.underworldTreeTopStyle, "underworldTreeTopStyle"), self.rain, "rain"), self.eventInfo), toByte(fromFlags(self.lowTiles, self.forceHalloweenForever, self.forceChristmasForever, self.moreLightningSeed, self.noLightningSeed, false, false, false)), "worldFlags"), self.sundialCooldown, "sundialCooldown"), self.moondialCooldown, "moondialCooldown"), self.copperOreTier, "copperOreTier"), self.ironOreTier, "ironOreTier"), self.silverOreTier, "silverOreTier"), self.goldOreTier, "goldOreTier"), self.cobaltOreTier, "cobaltOreTier"), self.mythrilOreTier, "mythrilOreTier"), self.adamantiteOreTier, "adamantiteOreTier"), self.invasionType, "invasionType"), self.lobbyId, "lobbyId"), self.sandstormSeverity, "sandstormSeverity"), self.extraSpawnPoints), self.dungeonX, "dungeonX"), self.dungeonY, "dungeonY"));
+  return data(packInt16(packInt16(packExtraSpawnPoints(packSingle(packUInt64(packSByte(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packByte(packEventInfo(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packUInt64(packBytes(packByte(packString(packInt32(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packInt32(setType(make(), toInt("WorldInfo")), self.time, "time"), self.dayAndMoonInfo, "dayAndMoonInfo"), self.moonPhase, "moonPhase"), self.maxTilesX, "maxTilesX"), self.maxTilesY, "maxTilesY"), self.spawnX, "spawnX"), self.spawnY, "spawnY"), self.worldSurface, "worldSurface"), self.rockLayer, "rockLayer"), self.worldId, "worldId"), self.worldName, "worldName"), self.gameMode, "gameMode"), asArray(self.worldUniqueId), "worldUniqueId"), self.worldGeneratorVersion, "worldGeneratorVersion"), self.moonType, "moonType"), self.treeBackground, "treeBackground"), self.treeBackground2, "treeBackground2"), self.treeBackground3, "treeBackground3"), self.treeBackground4, "treeBackground4"), self.corruptionBackground, "corruptionBackground"), self.jungleBackground, "jungleBackground"), self.snowBackground, "snowBackground"), self.hallowBackground, "hallowBackground"), self.crimsonBackground, "crimsonBackground"), self.desertBackground, "desertBackground"), self.oceanBackground, "oceanBackground"), self.mushroomBackground, "mushroomBackground"), self.underworldBackground, "underworldBackground"), self.iceBackStyle, "iceBackStyle"), self.jungleBackStyle, "jungleBackStyle"), self.hellBackStyle, "hellBackStyle"), self.windSpeedSet, "windSpeedSet"), self.cloudNumber, "cloudNumber"), self.tree1, "tree1"), self.tree2, "tree2"), self.tree3, "tree3"), self.treeStyle1, "treeStyle1"), self.treeStyle2, "treeStyle2"), self.treeStyle3, "treeStyle3"), self.treeStyle4, "treeStyle4"), self.caveBack1, "caveBack1"), self.caveBack2, "caveBack2"), self.caveBack3, "caveBack3"), self.caveBackStyle1, "caveBackStyle1"), self.caveBackStyle2, "caveBackStyle2"), self.caveBackStyle3, "caveBackStyle3"), self.caveBackStyle4, "caveBackStyle4"), self.forest1TreeTopStyle, "forest1TreeTopStyle"), self.forest2TreeTopStyle, "forest2TreeTopStyle"), self.forest3TreeTopStyle, "forest3TreeTopStyle"), self.forest4TreeTopStyle, "forest4TreeTopStyle"), self.corruptionTreeTopStyle, "corruptionTreeTopStyle"), self.jungleTreeTopStyle, "jungleTreeTopStyle"), self.snowTreeTopStyle, "snowTreeTopStyle"), self.hallowTreeTopStyle, "hallowTreeTopStyle"), self.crimsonTreeTopStyle, "crimsonTreeTopStyle"), self.desertTreeTopStyle, "desertTreeTopStyle"), self.oceanTreeTopStyle, "oceanTreeTopStyle"), self.glowingMushroomTreeTopStyle, "glowingMushroomTreeTopStyle"), self.underworldTreeTopStyle, "underworldTreeTopStyle"), self.rain, "rain"), self.eventInfo), toByte(fromFlags(self.lowTiles, self.forceHalloweenForever, self.forceChristmasForever, self.moreLightningSeed, self.noLightningSeed, self.noSpidersSeed, false, false)), "worldFlags"), self.sundialCooldown, "sundialCooldown"), self.moondialCooldown, "moondialCooldown"), self.copperOreTier, "copperOreTier"), self.ironOreTier, "ironOreTier"), self.silverOreTier, "silverOreTier"), self.goldOreTier, "goldOreTier"), self.cobaltOreTier, "cobaltOreTier"), self.mythrilOreTier, "mythrilOreTier"), self.adamantiteOreTier, "adamantiteOreTier"), self.invasionType, "invasionType"), self.lobbyId, "lobbyId"), self.sandstormSeverity, "sandstormSeverity"), self.extraSpawnPoints), self.dungeonX, "dungeonX"), self.dungeonY, "dungeonY"));
 }
 var Encode35 = {
   packInt16,
@@ -19443,7 +19464,7 @@ function toBuffer104(self) {
 // src/Parser.js
 var Parser_exports = {};
 __export(Parser_exports, {
-  parse: () => parse163,
+  parse: () => parse165,
   parseLazy: () => parseLazy
 });
 
@@ -19478,6 +19499,239 @@ function parse108(payload) {
 }
 function toBuffer105(self) {
   return data(packByte(packByte(setType(make(), toInt("Emoji")), self.playerId, "playerId"), self.emojiId, "emojiId"));
+}
+
+// src/packet/Packet_ServerInfo.js
+var Packet_ServerInfo_exports = {};
+__export(Packet_ServerInfo_exports, {
+  parse: () => parse109,
+  toBuffer: () => toBuffer106
+});
+function parse109(payload, fromServer) {
+  if (!fromServer) {
+    return {
+      TAG: "Ok",
+      _0: "Request"
+    };
+  }
+  let reader = new packetreader_default(payload);
+  let e = readInt32(reader, "listenPort");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readString(reader, "worldName");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readString(reader, "hostName");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readUInt16(reader, "maxTilesX");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readBool(reader, "crimson");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = readInt32(reader, "gameMode");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = readByte(reader, "maxPlayers");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let e$7 = readByte(reader, "activePlayers");
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let e$8 = readString(reader, "description");
+  if (e$8.TAG !== "Ok") {
+    return e$8;
+  }
+  let e$9 = readBool(reader, "portMapped");
+  if (e$9.TAG !== "Ok") {
+    return e$9;
+  }
+  let e$10;
+  if (e$9._0) {
+    let e$11 = readString(reader, "externalAddress");
+    if (e$11.TAG === "Ok") {
+      let e$12 = readInt32(reader, "externalPort");
+      e$10 = e$12.TAG === "Ok" ? {
+        TAG: "Ok",
+        _0: {
+          address: e$11._0,
+          port: e$12._0
+        }
+      } : e$12;
+    } else {
+      e$10 = e$11;
+    }
+  } else {
+    e$10 = {
+      TAG: "Ok",
+      _0: void 0
+    };
+  }
+  if (e$10.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        TAG: "Response",
+        listenPort: e._0,
+        worldName: e$1._0,
+        hostName: e$2._0,
+        maxTilesX: e$3._0,
+        crimson: e$4._0,
+        gameMode: e$5._0,
+        maxPlayers: e$6._0,
+        activePlayers: e$7._0,
+        description: e$8._0,
+        externalEndpoint: e$10._0
+      }
+    };
+  } else {
+    return e$10;
+  }
+}
+function toBuffer106(self, fromServer) {
+  let writer = setType(make(), toInt("ServerInfo"));
+  if (typeof self !== "object") {
+    if (fromServer) {
+      return {
+        TAG: "Error",
+        _0: {
+          context: "ServerInfo",
+          error: new Error("Invalid ServerInfo direction")
+        }
+      };
+    } else {
+      return data(writer);
+    }
+  }
+  if (!fromServer) {
+    return {
+      TAG: "Error",
+      _0: {
+        context: "ServerInfo",
+        error: new Error("Invalid ServerInfo direction")
+      }
+    };
+  }
+  let writer$1 = packBool(packString(packByte(packByte(packInt32(packBool(packUInt16(packString(packString(packInt32(writer, self.listenPort, "listenPort"), self.worldName, "worldName"), self.hostName, "hostName"), self.maxTilesX, "maxTilesX"), self.crimson, "crimson"), self.gameMode, "gameMode"), self.maxPlayers, "maxPlayers"), self.activePlayers, "activePlayers"), self.description, "description"), isSome(self.externalEndpoint), "portMapped");
+  let match = self.externalEndpoint;
+  if (match !== void 0) {
+    return data(packInt32(packString(writer$1, match.address, "externalAddress"), match.port, "externalPort"));
+  } else {
+    return data(writer$1);
+  }
+}
+
+// src/packet/Packet_EmoteBubble.js
+var Packet_EmoteBubble_exports = {};
+__export(Packet_EmoteBubble_exports, {
+  parse: () => parse110,
+  toBuffer: () => toBuffer107
+});
+function parse110(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt32(reader, "id");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let id = e._0;
+  let e$1 = readByte(reader, "anchorType");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let kind = e$1._0;
+  if (kind === 255) {
+    return {
+      TAG: "Ok",
+      _0: {
+        id,
+        anchor: "Remove"
+      }
+    };
+  }
+  let e$2;
+  switch (kind) {
+    case 0:
+      e$2 = map(readUInt16(reader, "npc"), (n) => ({
+        TAG: "Npc",
+        _0: n
+      }));
+      break;
+    case 1:
+      e$2 = map(readByte(reader, "player"), (n) => ({
+        TAG: "Player",
+        _0: n
+      }));
+      break;
+    case 2:
+      e$2 = map(readInt32(reader, "projectileKey"), (n) => ({
+        TAG: "Projectile",
+        _0: fromInt11(n)
+      }));
+      break;
+    default:
+      e$2 = {
+        TAG: "Ok",
+        _0: "Unanchored"
+      };
+  }
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readUInt16(reader, "time");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readByte(reader, "emote");
+  if (e$4.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        id,
+        anchor: {
+          TAG: "Anchor",
+          target: e$2._0,
+          time: e$3._0,
+          emote: e$4._0
+        }
+      }
+    };
+  } else {
+    return e$4;
+  }
+}
+function toBuffer107(self) {
+  let writer = packInt32(setType(make(), toInt("EmoteBubble")), self.id, "id");
+  let match = self.anchor;
+  if (typeof match !== "object") {
+    return data(packByte(writer, 255, "anchorType"));
+  }
+  let target = match.target;
+  let writer$1;
+  if (typeof target !== "object") {
+    writer$1 = packByte(writer, 3, "anchorType");
+  } else {
+    switch (target.TAG) {
+      case "Npc":
+        writer$1 = packUInt16(packByte(writer, 0, "anchorType"), target._0, "npc");
+        break;
+      case "Player":
+        writer$1 = packByte(packByte(writer, 1, "anchorType"), target._0, "player");
+        break;
+      case "Projectile":
+        writer$1 = packInt32(packByte(writer, 2, "anchorType"), toInt11(target._0), "projectileKey");
+        break;
+    }
+  }
+  return data(packByte(packUInt16(writer$1, match.time, "time"), match.emote, "emote"));
 }
 
 // src/packetv1449/PacketV1449_DoorUse.js
@@ -19515,7 +19769,7 @@ function actionFromInt(self) {
       return;
   }
 }
-function parse109(payload) {
+function parse111(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "action");
   if (e.TAG !== "Ok") {
@@ -19561,12 +19815,12 @@ function parse109(payload) {
     };
   }
 }
-function toBuffer106(self) {
+function toBuffer108(self) {
   return data(packByte(packInt16(packInt16(packByte(setType(make(), toInt("DoorUse")), actionToInt(self.action), "action"), self.x, "x"), self.y, "y"), self.direction >= 0 ? 1 : 0, "direction"));
 }
 
 // src/packetv1449/PacketV1449_HarpPlay.js
-function parse110(payload) {
+function parse112(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -19585,12 +19839,12 @@ function parse110(payload) {
     return e$1;
   }
 }
-function toBuffer107(self) {
+function toBuffer109(self) {
   return data(packSingle(packByte(setType(make(), toInt("HarpPlay")), self.playerId, "playerId"), self.pitch, "pitch"));
 }
 
 // src/packetv1449/PacketV1449_ChestName.js
-function parse111(payload) {
+function parse113(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "chestId");
   if (e.TAG !== "Ok") {
@@ -19619,12 +19873,12 @@ function parse111(payload) {
     return e$3;
   }
 }
-function toBuffer108(self) {
+function toBuffer110(self) {
   return data(packString(packInt16(packInt16(packInt16(setType(make(), toInt("ChestName")), self.chestId, "chestId"), self.x, "x"), self.y, "y"), self.name, "name"));
 }
 
 // src/packetv1449/PacketV1449_ChestOpen.js
-function parse112(payload) {
+function parse114(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -19643,12 +19897,12 @@ function parse112(payload) {
     return e$1;
   }
 }
-function toBuffer109(self) {
+function toBuffer111(self) {
   return data(packInt16(packInt16(setType(make(), toInt("ChestOpen")), self.x, "x"), self.y, "y"));
 }
 
 // src/packetv1449/PacketV1449_LiquidSet.js
-function parse113(payload) {
+function parse115(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -19677,7 +19931,7 @@ function parse113(payload) {
     return e$3;
   }
 }
-function toBuffer110(self) {
+function toBuffer112(self) {
   return data(packByte(packByte(packInt16(packInt16(setType(make(), toInt("LiquidSet")), self.x, "x"), self.y, "y"), self.liquid, "liquid"), self.liquidType, "liquidType"));
 }
 
@@ -19699,7 +19953,7 @@ function toInt12(self) {
     return self._0;
   }
 }
-function parse114(payload) {
+function parse116(payload) {
   let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -19753,17 +20007,17 @@ function packImmunity(writer, immunityTime, immunityOrigin) {
     return packByte(writer, 0, "setNpcImmunity");
   }
 }
-function toBuffer111(self) {
+function toBuffer113(self) {
   return data(packImmunity(packUInt16(setType(make(), toInt("NpcTamper")), self.npcId, "npcId"), self.immunityTime, self.immunityFromPlayerId));
 }
 
 // src/packetv1457/PacketV1457_NpcStrike.js
 var PacketV1457_NpcStrike_exports = {};
 __export(PacketV1457_NpcStrike_exports, {
-  parse: () => parse115,
-  toBuffer: () => toBuffer112
+  parse: () => parse117,
+  toBuffer: () => toBuffer114
 });
-function parse115(payload) {
+function parse117(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "npcSlotId");
   if (e.TAG !== "Ok") {
@@ -19802,453 +20056,39 @@ function parse115(payload) {
     return e$5;
   }
 }
-function toBuffer112(self) {
+function toBuffer114(self) {
   return data(packBool(packByte(packSingle(packInt16(packByte(packByte(setType(make(), toInt5("NpcStrike")), self.npcSlotId, "npcSlotId"), self.generation, "generation"), self.damage, "damage"), self.knockback, "knockback"), self.direction + 1 | 0, "direction"), self.critical, "critical"));
 }
 
-// src/packetv1449/PacketV1449_HealEffect.js
-function parse116(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt16(reader, "healAmount");
-  if (e$1.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0,
-        healAmount: e$1._0
-      }
-    };
-  } else {
-    return e$1;
-  }
-}
-function toBuffer113(self) {
-  return data(packInt16(packByte(setType(make(), toInt("HealEffect")), self.playerId, "playerId"), self.healAmount, "healAmount"));
-}
-
-// src/packetv1449/PacketV1449_ManaEffect.js
-function parse117(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt16(reader, "manaAmount");
-  if (e$1.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0,
-        manaAmount: e$1._0
-      }
-    };
-  } else {
-    return e$1;
-  }
-}
-function toBuffer114(self) {
-  return data(packInt16(packByte(setType(make(), toInt("ManaEffect")), self.playerId, "playerId"), self.manaAmount, "manaAmount"));
-}
-
-// src/packetv1449/PacketV1449_NpcBuffAdd.js
-function parse118(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt16(reader, "npcId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readUInt16(reader, "buffType");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readInt16(reader, "time");
-  if (e$2.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        npcId: e._0,
-        buffType: e$1._0,
-        time: e$2._0
-      }
-    };
-  } else {
-    return e$2;
-  }
-}
-function toBuffer115(self) {
-  return data(packInt16(packUInt16(packInt16(setType(make(), toInt("NpcBuffAdd")), self.npcId, "npcId"), self.buffType, "buffType"), self.time, "time"));
-}
-
-// src/packetv1449/PacketV1449_NpcRelease.js
-function parse119(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt32(reader, "x");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt32(reader, "y");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readInt16(reader, "npcType");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readByte(reader, "style");
-  if (e$3.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        x: e._0,
-        y: e$1._0,
-        npcType: e$2._0,
-        style: e$3._0
-      }
-    };
-  } else {
-    return e$3;
-  }
-}
-function toBuffer116(self) {
-  return data(packByte(packInt16(packInt32(packInt32(setType(make(), toInt("NpcRelease")), self.x, "x"), self.y, "y"), self.npcType, "npcType"), self.style, "style"));
-}
-
-// src/packetv1449/PacketV1449_PortalKill.js
-function parse120(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readUInt16(reader, "owner");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readByte(reader, "portalColor");
-  if (e$1.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        owner: e._0,
-        portalColor: e$1._0
-      }
-    };
-  } else {
-    return e$1;
-  }
-}
-function toBuffer117(self) {
-  return data(packByte(packUInt16(setType(make(), toInt("PortalKill")), self.owner, "owner"), self.portalColor, "portalColor"));
-}
-
-// src/packetv1457/PacketV1457_ServerInfo.js
-var PacketV1457_ServerInfo_exports = {};
-__export(PacketV1457_ServerInfo_exports, {
-  Decode: () => Decode37,
-  Encode: () => Encode37,
-  parse: () => parse121,
-  toBuffer: () => toBuffer118
+// src/packet/Packet_ItemDropModify.js
+var Packet_ItemDropModify_exports = {};
+__export(Packet_ItemDropModify_exports, {
+  parse: () => parse118,
+  toBuffer: () => toBuffer115
 });
-function parse121(_payload) {
-  return {
-    TAG: "Ok",
-    _0: void 0
-  };
-}
-var Decode37 = {
-  readInt16,
-  parse: parse121
-};
-function toBuffer118(_self) {
-  return data(setType(make(), toInt5("ServerInfo")));
-}
-var Encode37 = {
-  packInt16,
-  setType,
-  data,
-  toBuffer: toBuffer118
-};
-
-// src/packetv1449/PacketV1449_EmoteBubble.js
-function parse122(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt32(reader, "id");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let id = e._0;
-  let e$1 = readByte(reader, "anchorType");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let anchorType = e$1._0;
-  if (anchorType === 255) {
-    return {
-      TAG: "Ok",
-      _0: {
-        id,
-        anchor: "Remove"
-      }
-    };
-  }
-  let e$2 = readUInt16(reader, "anchorMeta");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let anchorMeta = e$2._0;
-  let e$3 = readUInt16(reader, "time");
-  if (e$3.TAG !== "Ok") {
-    return e$3;
-  }
-  let time = e$3._0;
-  let e$4 = readByte(reader, "emote");
-  if (e$4.TAG !== "Ok") {
-    return e$4;
-  }
-  let emoteByte = e$4._0;
-  if (emoteByte !== 255) {
-    return {
-      TAG: "Ok",
-      _0: {
-        id,
-        anchor: {
-          TAG: "Anchor",
-          anchorType,
-          anchorMeta,
-          time,
-          emote: emoteByte,
-          metadata: void 0
-        }
-      }
-    };
-  }
-  let e$5 = readInt16(reader, "metadata");
-  if (e$5.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        id,
-        anchor: {
-          TAG: "Anchor",
-          anchorType,
-          anchorMeta,
-          time,
-          emote: -1,
-          metadata: e$5._0
-        }
-      }
-    };
-  } else {
-    return e$5;
-  }
-}
-function toBuffer119(self) {
-  let writer = packInt32(setType(make(), toInt("EmoteBubble")), self.id, "id");
-  let details = self.anchor;
-  if (typeof details !== "object") {
-    return data(packByte(writer, 255, "anchorType"));
-  }
-  let emoteByte = details.emote === -1 ? 255 : details.emote;
-  let writer$1 = packByte(packUInt16(packUInt16(packByte(writer, details.anchorType, "anchorType"), details.anchorMeta, "anchorMeta"), details.time, "time"), emoteByte, "emote");
-  let tmp;
-  if (details.emote === -1) {
-    let v = details.metadata;
-    tmp = packInt16(writer$1, v !== void 0 ? v : 0, "metadata");
-  } else {
-    tmp = writer$1;
-  }
-  return data(tmp);
-}
-
-// src/packetv1449/PacketV1449_PasswordSend.js
-function parse123(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readString(reader, "password");
-  if (e.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        password: e._0
-      }
-    };
-  } else {
-    return e;
-  }
-}
-function toBuffer120(self) {
-  return data(packString(setType(make(), toInt("PasswordSend")), self.password, "password"));
-}
-
-// src/packetv1457/PacketV1457_DamageNPCAck.js
-var PacketV1457_DamageNPCAck_exports = {};
-__export(PacketV1457_DamageNPCAck_exports, {
-  parse: () => parse124,
-  toBuffer: () => toBuffer121
-});
-function parse124(_payload) {
-  return {
-    TAG: "Ok",
-    _0: void 0
-  };
-}
-function toBuffer121(_self) {
-  return data(setType(make(), toInt5("DamageNPCAck")));
-}
-
-// src/packetv1449/PacketV1449_GemLockToggle.js
-function parse125(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readInt16(reader, "x");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readInt16(reader, "y");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readBool(reader, "active");
-  if (e$2.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        x: e._0,
-        y: e$1._0,
-        active: e$2._0
-      }
-    };
-  } else {
-    return e$2;
-  }
-}
-function toBuffer122(self) {
-  return data(packBool(packInt16(packInt16(setType(make(), toInt("GemLockToggle")), self.x, "x"), self.y, "y"), self.active, "active"));
-}
-
-// src/packetv1449/PacketV1449_NebulaLevelUp.js
-function parse126(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readUInt16(reader, "level");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readSingle(reader, "x");
-  if (e$2.TAG !== "Ok") {
-    return e$2;
-  }
-  let e$3 = readSingle(reader, "y");
-  if (e$3.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0,
-        level: e$1._0,
-        x: e$2._0,
-        y: e$3._0
-      }
-    };
-  } else {
-    return e$3;
-  }
-}
-function toBuffer123(self) {
-  return data(packSingle(packSingle(packUInt16(packByte(setType(make(), toInt("NebulaLevelUp")), self.playerId, "playerId"), self.level, "level"), self.x, "x"), self.y, "y"));
-}
-
-// src/packetv1449/PacketV1449_PlayerStealth.js
-function parse127(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readSingle(reader, "stealth");
-  if (e$1.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0,
-        stealth: e$1._0
-      }
-    };
-  } else {
-    return e$1;
-  }
-}
-function toBuffer124(self) {
-  return data(packSingle(packByte(setType(make(), toInt("PlayerStealth")), self.playerId, "playerId"), self.stealth, "stealth"));
-}
-
-// src/packetv1449/PacketV1449_GoodEvilUpdate.js
-function parse128(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "good");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readByte(reader, "evil");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let e$2 = readByte(reader, "blood");
-  if (e$2.TAG === "Ok") {
-    return {
-      TAG: "Ok",
-      _0: {
-        good: e._0,
-        evil: e$1._0,
-        blood: e$2._0
-      }
-    };
-  } else {
-    return e$2;
-  }
-}
-function toBuffer125(self) {
-  return data(packByte(packByte(packByte(setType(make(), toInt("GoodEvilUpdate")), self.good, "good"), self.evil, "evil"), self.blood, "blood"));
-}
-
-// src/packetv1449/PacketV1449_ItemDropModify.js
-function parseFlags2(reader, flags22) {
-  let width = flag1(flags22) ? map(readInt16(reader, "width"), (v) => v) : {
-    TAG: "Ok",
-    _0: void 0
-  };
-  if (width.TAG !== "Ok") {
-    return width;
-  }
-  let height = flag2(flags22) ? map(readInt16(reader, "height"), (v) => v) : {
-    TAG: "Ok",
-    _0: void 0
-  };
-  if (height.TAG !== "Ok") {
-    return height;
-  }
-  let scale = flag3(flags22) ? map(readSingle(reader, "scale"), (v) => v) : {
+function parseFlags2(reader, flags23) {
+  let scale = flag3(flags23) ? map(readSingle(reader, "scale"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
   if (scale.TAG !== "Ok") {
     return scale;
   }
-  let ammo = flag4(flags22) ? map(readInt16(reader, "ammo"), (v) => v) : {
+  let ammo = flag4(flags23) ? map(readInt16(reader, "ammo"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
   if (ammo.TAG !== "Ok") {
     return ammo;
   }
-  let useAmmo = flag5(flags22) ? map(readInt16(reader, "useAmmo"), (v) => v) : {
+  let useAmmo = flag5(flags23) ? map(readInt16(reader, "useAmmo"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
   if (useAmmo.TAG !== "Ok") {
     return useAmmo;
   }
-  let notAmmo = flag6(flags22) ? map(readByte(reader, "notAmmo"), (v) => v === 1) : {
+  let notAmmo = flag6(flags23) ? map(readByte(reader, "notAmmo"), (v) => v === 1) : {
     TAG: "Ok",
     _0: void 0
   };
@@ -20256,8 +20096,6 @@ function parseFlags2(reader, flags22) {
     return {
       TAG: "Ok",
       _0: [
-        width._0,
-        height._0,
         scale._0,
         ammo._0,
         useAmmo._0,
@@ -20268,7 +20106,7 @@ function parseFlags2(reader, flags22) {
     return notAmmo;
   }
 }
-function parse129(payload) {
+function parse118(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemId");
   if (e.TAG !== "Ok") {
@@ -20278,9 +20116,9 @@ function parse129(payload) {
   if (e$1.TAG !== "Ok") {
     return e$1;
   }
-  let flags12 = fromByte(e$1._0);
+  let flags13 = fromByte(e$1._0);
   let color;
-  if (flag1(flags12)) {
+  if (flag1(flags13)) {
     let e$2 = readByte(reader, "Color.r");
     if (e$2.TAG === "Ok") {
       let e$3 = readByte(reader, "Color.g");
@@ -20315,42 +20153,42 @@ function parse129(payload) {
   if (color.TAG !== "Ok") {
     return color;
   }
-  let damage = flag2(flags12) ? map(readUInt16(reader, "damage"), (v) => v) : {
+  let damage = flag2(flags13) ? map(readUInt16(reader, "damage"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
   if (damage.TAG !== "Ok") {
     return damage;
   }
-  let knockback = flag3(flags12) ? map(readSingle(reader, "knockback"), (v) => v) : {
+  let knockback = flag3(flags13) ? map(readSingle(reader, "knockback"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
   if (knockback.TAG !== "Ok") {
     return knockback;
   }
-  let useAnimation = flag4(flags12) ? map(readUInt16(reader, "useAnimation"), (v) => v) : {
+  let useAnimation = flag4(flags13) ? map(readUInt16(reader, "useAnimation"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
   if (useAnimation.TAG !== "Ok") {
     return useAnimation;
   }
-  let useTime = flag5(flags12) ? map(readUInt16(reader, "useTime"), (v) => v) : {
+  let useTime = flag5(flags13) ? map(readUInt16(reader, "useTime"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
   if (useTime.TAG !== "Ok") {
     return useTime;
   }
-  let shoot = flag6(flags12) ? map(readInt16(reader, "shoot"), (v) => v) : {
+  let shoot = flag6(flags13) ? map(readInt16(reader, "shoot"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
   if (shoot.TAG !== "Ok") {
     return shoot;
   }
-  let shootSpeed = flag7(flags12) ? map(readSingle(reader, "shootSpeed"), (v) => v) : {
+  let shootSpeed = flag7(flags13) ? map(readSingle(reader, "shootSpeed"), (v) => v) : {
     TAG: "Ok",
     _0: void 0
   };
@@ -20358,15 +20196,13 @@ function parse129(payload) {
     return shootSpeed;
   }
   let e$6;
-  if (flag8(flags12)) {
+  if (flag8(flags13)) {
     let e$7 = readByte(reader, "flags2");
     e$6 = e$7.TAG === "Ok" ? parseFlags2(reader, fromByte(e$7._0)) : e$7;
   } else {
     e$6 = {
       TAG: "Ok",
       _0: [
-        void 0,
-        void 0,
         void 0,
         void 0,
         void 0,
@@ -20389,86 +20225,484 @@ function parse129(payload) {
       useTime: useTime._0,
       shoot: shoot._0,
       shootSpeed: shootSpeed._0,
-      width: match[0],
-      height: match[1],
-      scale: match[2],
-      ammo: match[3],
-      useAmmo: match[4],
-      notAmmo: match[5]
+      scale: match[0],
+      ammo: match[1],
+      useAmmo: match[2],
+      notAmmo: match[3]
     }
   };
 }
 function flags1(self) {
-  return fromFlags(isSome(self.color), isSome(self.damage), isSome(self.knockback), isSome(self.useAnimation), isSome(self.useTime), isSome(self.shoot), isSome(self.shootSpeed), isSome(self.width) || isSome(self.height) || isSome(self.scale) || isSome(self.ammo) || isSome(self.useAmmo) || isSome(self.notAmmo));
+  return fromFlags(isSome(self.color), isSome(self.damage), isSome(self.knockback), isSome(self.useAnimation), isSome(self.useTime), isSome(self.shoot), isSome(self.shootSpeed), isSome(self.scale) || isSome(self.ammo) || isSome(self.useAmmo) || isSome(self.notAmmo));
 }
 function flags2(self) {
-  return fromFlags(isSome(self.width), isSome(self.height), isSome(self.scale), isSome(self.ammo), isSome(self.useAmmo), isSome(self.notAmmo), false, false);
+  return fromFlags(false, false, isSome(self.scale), isSome(self.ammo), isSome(self.useAmmo), isSome(self.notAmmo), false, false);
+}
+function packOptional(writer, value, pack6, field) {
+  if (value !== void 0) {
+    return pack6(writer, valFromOption(value), field);
+  } else {
+    return writer;
+  }
+}
+function toBuffer115(self) {
+  let flags = flags1(self);
+  let writer = packByte(packInt16(setType(make(), toInt("ItemDropModify")), self.itemId, "itemId"), toByte(flags), "flags1");
+  let c = self.color;
+  let writer$1 = c !== void 0 ? packByte(packByte(packByte(packByte(writer, c.r, "Color.r"), c.g, "Color.g"), c.b, "Color.b"), c.a, "Color.a") : writer;
+  let writer$2 = packOptional(packOptional(packOptional(packOptional(packOptional(packOptional(writer$1, self.damage, packUInt16, "damage"), self.knockback, packSingle, "knockback"), self.useAnimation, packUInt16, "useAnimation"), self.useTime, packUInt16, "useTime"), self.shoot, packInt16, "shoot"), self.shootSpeed, packSingle, "shootSpeed");
+  if (flag8(flags)) {
+    return data(packOptional(packOptional(packOptional(packOptional(packByte(writer$2, toByte(flags2(self)), "flags2"), self.scale, packSingle, "scale"), self.ammo, packInt16, "ammo"), self.useAmmo, packInt16, "useAmmo"), self.notAmmo, packBool, "notAmmo"));
+  } else {
+    return data(writer$2);
+  }
+}
+
+// src/packetv1449/PacketV1449_HealEffect.js
+function parse119(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "healAmount");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        healAmount: e$1._0
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+function toBuffer116(self) {
+  return data(packInt16(packByte(setType(make(), toInt("HealEffect")), self.playerId, "playerId"), self.healAmount, "healAmount"));
+}
+
+// src/packetv1449/PacketV1449_ManaEffect.js
+function parse120(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "manaAmount");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        manaAmount: e$1._0
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+function toBuffer117(self) {
+  return data(packInt16(packByte(setType(make(), toInt("ManaEffect")), self.playerId, "playerId"), self.manaAmount, "manaAmount"));
+}
+
+// src/packetv1449/PacketV1449_NpcBuffAdd.js
+function parse121(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "npcId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readUInt16(reader, "buffType");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readInt16(reader, "time");
+  if (e$2.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        npcId: e._0,
+        buffType: e$1._0,
+        time: e$2._0
+      }
+    };
+  } else {
+    return e$2;
+  }
+}
+function toBuffer118(self) {
+  return data(packInt16(packUInt16(packInt16(setType(make(), toInt("NpcBuffAdd")), self.npcId, "npcId"), self.buffType, "buffType"), self.time, "time"));
+}
+
+// src/packetv1449/PacketV1449_NpcRelease.js
+function parse122(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt32(reader, "x");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt32(reader, "y");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readInt16(reader, "npcType");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readByte(reader, "style");
+  if (e$3.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        x: e._0,
+        y: e$1._0,
+        npcType: e$2._0,
+        style: e$3._0
+      }
+    };
+  } else {
+    return e$3;
+  }
+}
+function toBuffer119(self) {
+  return data(packByte(packInt16(packInt32(packInt32(setType(make(), toInt("NpcRelease")), self.x, "x"), self.y, "y"), self.npcType, "npcType"), self.style, "style"));
+}
+
+// src/packetv1449/PacketV1449_PortalKill.js
+function parse123(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readUInt16(reader, "owner");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readByte(reader, "portalColor");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        owner: e._0,
+        portalColor: e$1._0
+      }
+    };
+  } else {
+    return e$1;
+  }
+}
+function toBuffer120(self) {
+  return data(packByte(packUInt16(setType(make(), toInt("PortalKill")), self.owner, "owner"), self.portalColor, "portalColor"));
+}
+
+// src/packet/Packet_CustomServerAck.js
+var Packet_CustomServerAck_exports = {};
+__export(Packet_CustomServerAck_exports, {
+  parse: () => parse124,
+  toBuffer: () => toBuffer121
+});
+function parse124(payload) {
+  return read7BitEncodedInt(new packetreader_default(payload), "ack");
+}
+function toBuffer121(value) {
+  return data(pack7BitEncodedInt(setType(make(), toInt("CustomServerAck")), value, "ack"));
+}
+
+// src/packetv1449/PacketV1449_PasswordSend.js
+function parse125(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readString(reader, "password");
+  if (e.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        password: e._0
+      }
+    };
+  } else {
+    return e;
+  }
+}
+function toBuffer122(self) {
+  return data(packString(setType(make(), toInt("PasswordSend")), self.password, "password"));
+}
+
+// src/packetv1457/PacketV1457_DamageNPCAck.js
+var PacketV1457_DamageNPCAck_exports = {};
+__export(PacketV1457_DamageNPCAck_exports, {
+  parse: () => parse126,
+  toBuffer: () => toBuffer123
+});
+function parse126(_payload) {
+  return {
+    TAG: "Ok",
+    _0: void 0
+  };
+}
+function toBuffer123(_self) {
+  return data(setType(make(), toInt5("DamageNPCAck")));
+}
+
+// src/packetv1449/PacketV1449_GemLockToggle.js
+function parse127(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "x");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readInt16(reader, "y");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readBool(reader, "active");
+  if (e$2.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        x: e._0,
+        y: e$1._0,
+        active: e$2._0
+      }
+    };
+  } else {
+    return e$2;
+  }
+}
+function toBuffer124(self) {
+  return data(packBool(packInt16(packInt16(setType(make(), toInt("GemLockToggle")), self.x, "x"), self.y, "y"), self.active, "active"));
+}
+
+// src/packetv1449/PacketV1449_NebulaLevelUp.js
+function parse128(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readUInt16(reader, "level");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readSingle(reader, "x");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readSingle(reader, "y");
+  if (e$3.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        level: e$1._0,
+        x: e$2._0,
+        y: e$3._0
+      }
+    };
+  } else {
+    return e$3;
+  }
+}
+function toBuffer125(self) {
+  return data(packSingle(packSingle(packUInt16(packByte(setType(make(), toInt("NebulaLevelUp")), self.playerId, "playerId"), self.level, "level"), self.x, "x"), self.y, "y"));
+}
+
+// src/packetv1449/PacketV1449_PlayerStealth.js
+function parse129(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readSingle(reader, "stealth");
+  if (e$1.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        stealth: e$1._0
+      }
+    };
+  } else {
+    return e$1;
+  }
 }
 function toBuffer126(self) {
-  let writer = packByte(packInt16(setType(make(), toInt("ItemDropModify")), self.itemId, "itemId"), toByte(flags1(self)), "flags1");
-  let c = self.color;
-  if (c !== void 0) {
-    packByte(writer, c.r, "Color.r");
-    packByte(writer, c.g, "Color.g");
-    packByte(writer, c.b, "Color.b");
-    packByte(writer, c.a, "Color.a");
+  return data(packSingle(packByte(setType(make(), toInt("PlayerStealth")), self.playerId, "playerId"), self.stealth, "stealth"));
+}
+
+// src/packet/Packet_PlayerPlatformInfo.js
+var Packet_PlayerPlatformInfo_exports = {};
+__export(Packet_PlayerPlatformInfo_exports, {
+  PlatformId: () => PlatformId2,
+  parse: () => parse131,
+  toBuffer: () => toBuffer128
+});
+
+// src/packetv1457/PacketV1457_PlayerPlatformInfo.js
+function fromInt13(n) {
+  switch (n) {
+    case 0:
+      return "None";
+    case 1:
+      return "Stadia";
+    case 2:
+      return "XBO";
+    case 3:
+      return "PSN";
+    case 4:
+      return "Editor";
+    case 5:
+      return "Nintendo";
+    case 6:
+      return "Steam";
+    case 7:
+      return "GameCenter";
+    default:
+      return;
   }
-  let v = self.damage;
-  if (v !== void 0) {
-    packUInt16(writer, v, "damage");
+}
+function toInt13(self) {
+  switch (self) {
+    case "None":
+      return 0;
+    case "Stadia":
+      return 1;
+    case "XBO":
+      return 2;
+    case "PSN":
+      return 3;
+    case "Editor":
+      return 4;
+    case "Nintendo":
+      return 5;
+    case "Steam":
+      return 6;
+    case "GameCenter":
+      return 7;
   }
-  let v$1 = self.knockback;
-  if (v$1 !== void 0) {
-    packSingle(writer, v$1, "knockback");
+}
+var PlatformId = {
+  fromInt: fromInt13,
+  toInt: toInt13
+};
+function parse130(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
   }
-  let v$2 = self.useAnimation;
-  if (v$2 !== void 0) {
-    packUInt16(writer, v$2, "useAnimation");
+  let e$1 = readByte(reader, "platformId");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
   }
-  let v$3 = self.useTime;
-  if (v$3 !== void 0) {
-    packUInt16(writer, v$3, "useTime");
+  let platformId = e$1._0;
+  let platformId$1 = fromInt13(platformId);
+  if (platformId$1 !== void 0) {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        platformId: platformId$1
+      }
+    };
+  } else {
+    return {
+      TAG: "Error",
+      _0: {
+        context: "PacketV1457_PlayerPlatformInfo.parse",
+        error: new Error("Unknown platformId " + platformId.toString())
+      }
+    };
   }
-  let v$4 = self.shoot;
-  if (v$4 !== void 0) {
-    packInt16(writer, v$4, "shoot");
+}
+function toBuffer127(self) {
+  return data(packByte(packByte(setType(make(), toInt5("PlayerPlatformInfo")), self.playerId, "playerId"), toInt13(self.platformId), "platformId"));
+}
+
+// src/packet/Packet_PlayerPlatformInfo.js
+function parse131(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
   }
-  let v$5 = self.shootSpeed;
-  if (v$5 !== void 0) {
-    packSingle(writer, v$5, "shootSpeed");
+  let e$1 = readByte(reader, "platformId");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
   }
-  if (flag8(flags1(self))) {
-    packByte(writer, toByte(flags2(self)), "flags2");
-    let v$6 = self.width;
-    if (v$6 !== void 0) {
-      packInt16(writer, v$6, "width");
-    }
-    let v$7 = self.height;
-    if (v$7 !== void 0) {
-      packInt16(writer, v$7, "height");
-    }
-    let v$8 = self.scale;
-    if (v$8 !== void 0) {
-      packSingle(writer, v$8, "scale");
-    }
-    let v$9 = self.ammo;
-    if (v$9 !== void 0) {
-      packInt16(writer, v$9, "ammo");
-    }
-    let v$10 = self.useAmmo;
-    if (v$10 !== void 0) {
-      packInt16(writer, v$10, "useAmmo");
-    }
-    let v$11 = self.notAmmo;
-    if (v$11 !== void 0) {
-      packByte(writer, v$11 ? 1 : 0, "notAmmo");
-    }
+  let platformId = PlatformId.fromInt(e$1._0);
+  if (platformId === void 0) {
+    return {
+      TAG: "Error",
+      _0: {
+        context: "platformId",
+        error: new Error("Unknown platform ID")
+      }
+    };
   }
-  return data(writer);
+  let e$2 = readString(reader, "userId");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = platformId === "Nintendo" ? readString(reader, "platformName") : {
+    TAG: "Ok",
+    _0: ""
+  };
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readBool(reader, "isHost");
+  if (e$4.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        platformId,
+        userId: e$2._0,
+        platformName: e$3._0,
+        isHost: e$4._0
+      }
+    };
+  } else {
+    return e$4;
+  }
+}
+function toBuffer128(self) {
+  let writer = packString(packByte(packByte(setType(make(), toInt("PlayerPlatformInfo")), self.playerId, "playerId"), PlatformId.toInt(self.platformId), "platformId"), self.userId, "userId");
+  let writer$1 = self.platformId === "Nintendo" ? packString(writer, self.platformName, "platformName") : writer;
+  return data(packBool(writer$1, self.isHost, "isHost"));
+}
+var PlatformId2;
+
+// src/packetv1449/PacketV1449_GoodEvilUpdate.js
+function parse132(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "good");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readByte(reader, "evil");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readByte(reader, "blood");
+  if (e$2.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        good: e._0,
+        evil: e$1._0,
+        blood: e$2._0
+      }
+    };
+  } else {
+    return e$2;
+  }
+}
+function toBuffer129(self) {
+  return data(packByte(packByte(packByte(setType(make(), toInt("GoodEvilUpdate")), self.good, "good"), self.evil, "evil"), self.blood, "blood"));
 }
 
 // src/packetv1449/PacketV1449_ItemFramePlace.js
-function parse130(payload) {
+function parse133(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -20502,12 +20736,12 @@ function parse130(payload) {
     return e$4;
   }
 }
-function toBuffer127(self) {
+function toBuffer130(self) {
   return data(packInt16(packByte(packInt16(packInt16(packInt16(setType(make(), toInt("ItemFramePlace")), self.x, "x"), self.y, "y"), self.itemId, "itemId"), self.prefix, "prefix"), self.stack, "stack"));
 }
 
 // src/packetv1449/PacketV1449_LucyAxeMessage.js
-function parse131(payload) {
+function parse134(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "source");
   if (e.TAG !== "Ok") {
@@ -20555,12 +20789,12 @@ function parse131(payload) {
     }
   };
 }
-function toBuffer128(self) {
+function toBuffer131(self) {
   return data(packInt32(packInt32(packSingle(packSingle(packByte(packByte(setType(make(), toInt("LucyAxeMessage")), self.source, "source"), self.variant, "variant"), self.velocity.x, "velocityX"), self.velocity.y, "velocityY"), self.position.x, "positionX"), self.position.y, "positionY"));
 }
 
 // src/packetv1449/PacketV1449_LegacySoundPlay.js
-function parse132(payload) {
+function parse135(payload) {
   let reader = new packetreader_default(payload);
   let e = readSingle(reader, "x");
   if (e.TAG !== "Ok") {
@@ -20615,7 +20849,7 @@ function parse132(payload) {
     return e$6;
   }
 }
-function toBuffer129(self) {
+function toBuffer132(self) {
   let flags = fromFlags(isSome(self.styleOverride), isSome(self.volumeOverride), isSome(self.pitchOverride), false, false, false, false, false);
   let writer = packByte(packUInt16(packSingle(packSingle(setType(make(), toInt("LegacySoundPlay")), self.position.x, "x"), self.position.y, "y"), self.soundIndex, "soundIndex"), toByte(flags), "flags");
   let v = self.styleOverride;
@@ -20634,7 +20868,7 @@ function toBuffer129(self) {
 }
 
 // src/packetv1449/PacketV1449_PlayerHealOther.js
-function parse133(payload) {
+function parse136(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -20653,23 +20887,23 @@ function parse133(payload) {
     return e$1;
   }
 }
-function toBuffer130(self) {
+function toBuffer133(self) {
   return data(packInt16(packByte(setType(make(), toInt("PlayerHealOther")), self.playerId, "playerId"), self.healAmount, "healAmount"));
 }
 
 // src/packetv1449/PacketV1449_PlayerSpawnSelf.js
-function parse134(_payload) {
+function parse137(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
   };
 }
-function toBuffer131(_self) {
+function toBuffer134(_self) {
   return data(setType(make(), toInt("PlayerSpawnSelf")));
 }
 
 // src/packetv1449/PacketV1449_CombatTextCreate.js
-function parse135(payload) {
+function parse138(payload) {
   let reader = new packetreader_default(payload);
   let e = readSingle(reader, "x");
   if (e.TAG !== "Ok") {
@@ -20698,12 +20932,12 @@ function parse135(payload) {
     return e$3;
   }
 }
-function toBuffer132(self) {
+function toBuffer135(self) {
   return data(packNetworkText(packColor(packSingle(packSingle(setType(make(), toInt("CombatTextCreate")), self.x, "x"), self.y, "y"), self.color, "color"), self.text, "text"));
 }
 
 // src/packetv1449/PacketV1449_NpcSpecialEffect.js
-function parse136(payload) {
+function parse139(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -20722,23 +20956,23 @@ function parse136(payload) {
     return e$1;
   }
 }
-function toBuffer133(self) {
+function toBuffer136(self) {
   return data(packByte(packByte(setType(make(), toInt("NpcSpecialEffect")), self.playerId, "playerId"), self.effectType, "effectType"));
 }
 
 // src/packetv1449/PacketV1449_PasswordRequired.js
-function parse137(_payload) {
+function parse140(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
   };
 }
-function toBuffer134(_self) {
+function toBuffer137(_self) {
   return data(setType(make(), toInt("PasswordRequired")));
 }
 
 // src/packetv1449/PacketV1449_EventNotification.js
-function parse138(payload) {
+function parse141(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "eventId");
   if (e.TAG === "Ok") {
@@ -20752,12 +20986,12 @@ function parse138(payload) {
     return e;
   }
 }
-function toBuffer135(self) {
+function toBuffer138(self) {
   return data(packInt16(setType(make(), toInt("EventNotification")), self.eventId, "eventId"));
 }
 
 // src/packetv1449/PacketV1449_GolfBallLandInCup.js
-function parse139(payload) {
+function parse142(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -20791,12 +21025,12 @@ function parse139(payload) {
     return e$4;
   }
 }
-function toBuffer136(self) {
+function toBuffer139(self) {
   return data(packUInt16(packUInt16(packUInt16(packUInt16(packByte(setType(make(), toInt("GolfBallLandInCup")), self.playerId, "playerId"), self.cupX, "cupX"), self.cupY, "cupY"), self.projId, "projId"), self.projType, "projType"));
 }
 
 // src/packetv1449/PacketV1449_MassWireOperation.js
-function parse140(payload) {
+function parse143(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "startX");
   if (e.TAG !== "Ok") {
@@ -20830,12 +21064,12 @@ function parse140(payload) {
     return e$4;
   }
 }
-function toBuffer137(self) {
+function toBuffer140(self) {
   return data(packByte(packInt16(packInt16(packInt16(packInt16(setType(make(), toInt("MassWireOperation")), self.startX, "startX"), self.startY, "startY"), self.endX, "endX"), self.endY, "endY"), self.toolMode, "toolMode"));
 }
 
 // src/packetv1449/PacketV1449_MoonLordCountdown.js
-function parse141(payload) {
+function parse144(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "maxMoonLordCountdown");
   if (e.TAG !== "Ok") {
@@ -20854,12 +21088,12 @@ function parse141(payload) {
     return e$1;
   }
 }
-function toBuffer138(self) {
+function toBuffer141(self) {
   return data(packInt32(packInt32(setType(make(), toInt("MoonLordCountdown")), self.maxMoonLordCountdown, "maxMoonLordCountdown"), self.moonLordCountdown, "moonLordCountdown"));
 }
 
 // src/packetv1449/PacketV1449_RevengeMarkerSync.js
-function parse142(payload) {
+function parse145(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "uniqueId");
   if (e.TAG !== "Ok") {
@@ -20920,17 +21154,17 @@ function parse142(payload) {
     return e$9;
   }
 }
-function toBuffer139(self) {
+function toBuffer142(self) {
   return data(packBool(packSingle(packInt32(packInt32(packInt32(packSingle(packInt32(packSingle(packSingle(packInt32(setType(make(), toInt("RevengeMarkerSync")), self.uniqueId, "uniqueId"), self.position.x, "posX"), self.position.y, "posY"), self.npcNetId, "npcNetId"), self.npcHpPercent, "npcHpPercent"), self.npcTypeAgainstDiscouragement, "npcTypeAgainstDiscouragement"), self.npcAiStyleAgainstDiscouragement, "npcAiStyleAgainstDiscouragement"), self.coinValue, "coinValue"), self.baseValue, "baseValue"), self.spawnedFromStatue, "spawnedFromStatue"));
 }
 
 // src/packetv1457/PacketV1457_ProjectileDestroy.js
 var PacketV1457_ProjectileDestroy_exports = {};
 __export(PacketV1457_ProjectileDestroy_exports, {
-  parse: () => parse143,
-  toBuffer: () => toBuffer140
+  parse: () => parse146,
+  toBuffer: () => toBuffer143
 });
-function parse143(payload) {
+function parse146(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "projectileKey");
   if (e.TAG !== "Ok") {
@@ -20956,12 +21190,12 @@ function parse143(payload) {
     return e$2;
   }
 }
-function toBuffer140(self) {
+function toBuffer143(self) {
   return data(packSingle(packSingle(packInt32(setType(make(), toInt5("ProjectileDestroy")), toInt11(self.projectileKey), "projectileKey"), self.position.x, "positionX"), self.position.y, "positionY"));
 }
 
 // src/packetv1449/PacketV1449_CombatNumberCreate.js
-function parse144(payload) {
+function parse147(payload) {
   let reader = new packetreader_default(payload);
   let e = readSingle(reader, "x");
   if (e.TAG !== "Ok") {
@@ -20990,12 +21224,12 @@ function parse144(payload) {
     return e$3;
   }
 }
-function toBuffer141(self) {
+function toBuffer144(self) {
   return data(packInt32(packColor(packSingle(packSingle(setType(make(), toInt("CombatNumberCreate")), self.x, "x"), self.y, "y"), self.color, "color"), self.amount, "amount"));
 }
 
 // src/packetv1449/PacketV1449_MinionTargetUpdate.js
-function parse145(payload) {
+function parse148(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -21019,111 +21253,12 @@ function parse145(payload) {
     return e$2;
   }
 }
-function toBuffer142(self) {
+function toBuffer145(self) {
   return data(packSingle(packSingle(packByte(setType(make(), toInt("MinionTargetUpdate")), self.playerId, "playerId"), self.x, "x"), self.y, "y"));
 }
 
-// src/packetv1457/PacketV1457_PlayerPlatformInfo.js
-var PacketV1457_PlayerPlatformInfo_exports = {};
-__export(PacketV1457_PlayerPlatformInfo_exports, {
-  Decode: () => Decode38,
-  Encode: () => Encode38,
-  PlatformId: () => PlatformId,
-  parse: () => parse146,
-  toBuffer: () => toBuffer143
-});
-function fromInt13(n) {
-  switch (n) {
-    case 0:
-      return "None";
-    case 1:
-      return "Stadia";
-    case 2:
-      return "XBO";
-    case 3:
-      return "PSN";
-    case 4:
-      return "Editor";
-    case 5:
-      return "Nintendo";
-    case 6:
-      return "Steam";
-    case 7:
-      return "GameCenter";
-    default:
-      return;
-  }
-}
-function toInt13(self) {
-  switch (self) {
-    case "None":
-      return 0;
-    case "Stadia":
-      return 1;
-    case "XBO":
-      return 2;
-    case "PSN":
-      return 3;
-    case "Editor":
-      return 4;
-    case "Nintendo":
-      return 5;
-    case "Steam":
-      return 6;
-    case "GameCenter":
-      return 7;
-  }
-}
-var PlatformId = {
-  fromInt: fromInt13,
-  toInt: toInt13
-};
-function parse146(payload) {
-  let reader = new packetreader_default(payload);
-  let e = readByte(reader, "playerId");
-  if (e.TAG !== "Ok") {
-    return e;
-  }
-  let e$1 = readByte(reader, "platformId");
-  if (e$1.TAG !== "Ok") {
-    return e$1;
-  }
-  let platformId = e$1._0;
-  let platformId$1 = fromInt13(platformId);
-  if (platformId$1 !== void 0) {
-    return {
-      TAG: "Ok",
-      _0: {
-        playerId: e._0,
-        platformId: platformId$1
-      }
-    };
-  } else {
-    return {
-      TAG: "Error",
-      _0: {
-        context: "PacketV1457_PlayerPlatformInfo.parse",
-        error: new Error("Unknown platformId " + platformId.toString())
-      }
-    };
-  }
-}
-var Decode38 = {
-  readByte,
-  parse: parse146
-};
-function toBuffer143(self) {
-  return data(packByte(packByte(setType(make(), toInt5("PlayerPlatformInfo")), self.playerId, "playerId"), toInt13(self.platformId), "platformId"));
-}
-var Encode38 = {
-  packByte,
-  setType,
-  data,
-  toBuffer: toBuffer143
-};
-
 // src/packetv1449/PacketV1449_ActiveContainerSync.js
-function parse147(payload) {
+function parse149(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "chestId");
   if (e.TAG !== "Ok") {
@@ -21161,13 +21296,13 @@ function parse147(payload) {
     return e$4;
   }
 }
-function toBuffer144(self) {
+function toBuffer146(self) {
   let writer = packByte(packInt16(packInt16(packInt16(setType(make(), toInt("ActiveContainerSync")), self.chestId, "chestId"), self.x, "x"), self.y, "y"), self.nameLength, "nameLength");
   return data(self.nameLength > 0 && self.nameLength <= 20 ? packString(writer, self.name, "name") : writer);
 }
 
 // src/packetv1449/PacketV1449_RevengeMarkerRemove.js
-function parse148(payload) {
+function parse150(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "markerId");
   if (e.TAG === "Ok") {
@@ -21181,12 +21316,12 @@ function parse148(payload) {
     return e;
   }
 }
-function toBuffer145(self) {
+function toBuffer147(self) {
   return data(packInt32(setType(make(), toInt("RevengeMarkerRemove")), self.markerId, "markerId"));
 }
 
 // src/packetv1449/PacketV1449_MassWireOperationPay.js
-function parse149(payload) {
+function parse151(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemType");
   if (e.TAG !== "Ok") {
@@ -21210,12 +21345,12 @@ function parse149(payload) {
     return e$2;
   }
 }
-function toBuffer146(self) {
+function toBuffer148(self) {
   return data(packByte(packInt16(packInt16(setType(make(), toInt("MassWireOperationPay")), self.itemType, "itemType"), self.stack, "stack"), self.playerId, "playerId"));
 }
 
 // src/packetv1449/PacketV1449_PlayerTeleportPortal.js
-function parse150(payload) {
+function parse152(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -21263,12 +21398,12 @@ function parse150(payload) {
     }
   };
 }
-function toBuffer147(self) {
+function toBuffer149(self) {
   return data(packSingle(packSingle(packSingle(packSingle(packInt16(packByte(setType(make(), toInt("PlayerTeleportPortal")), self.playerId, "playerId"), self.extraInfo, "extraInfo"), self.position.x, "positionX"), self.position.y, "positionY"), self.velocity.x, "velocityX"), self.velocity.y, "velocityY"));
 }
 
 // src/packetv1449/PacketV1449_CavernMonsterTypeSync.js
-function parse151(payload) {
+function parse153(payload) {
   let reader = new packetreader_default(payload);
   let rows = make2(2, []);
   let error;
@@ -21331,7 +21466,7 @@ function packRows(writer, rows) {
   }
   ;
 }
-function toBuffer148(self) {
+function toBuffer150(self) {
   if (self.length !== 2 || self[0].length !== 3 || self[1].length !== 3) {
     return {
       TAG: "Error",
@@ -21346,7 +21481,7 @@ function toBuffer148(self) {
 }
 
 // src/packetv1449/PacketV1449_ClientSyncedInventory.js
-function parse152(_payload) {
+function parse154(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
@@ -21354,7 +21489,7 @@ function parse152(_payload) {
 }
 
 // src/packetv1449/PacketV1449_FoodPlatterTryPlacing.js
-function parse153(payload) {
+function parse155(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "x");
   if (e.TAG !== "Ok") {
@@ -21388,12 +21523,12 @@ function parse153(payload) {
     return e$4;
   }
 }
-function toBuffer149(self) {
+function toBuffer151(self) {
   return data(packInt16(packByte(packInt16(packInt16(packInt16(setType(make(), toInt("FoodPlatterTryPlacing")), self.x, "x"), self.y, "y"), self.itemId, "itemId"), self.prefix, "prefix"), self.stack, "stack"));
 }
 
 // src/packetv1449/PacketV1449_NpcKilledNotification.js
-function parse154(payload) {
+function parse156(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG === "Ok") {
@@ -21407,12 +21542,12 @@ function parse154(payload) {
     return e;
   }
 }
-function toBuffer150(self) {
+function toBuffer152(self) {
   return data(packInt16(setType(make(), toInt("NpcKilledNotification")), self.npcId, "npcId"));
 }
 
 // src/packetv1449/PacketV1449_ShieldStrengthsUpdate.js
-function parse155(payload) {
+function parse157(payload) {
   let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "solar");
   if (e.TAG !== "Ok") {
@@ -21441,34 +21576,34 @@ function parse155(payload) {
     return e$3;
   }
 }
-function toBuffer151(self) {
+function toBuffer153(self) {
   return data(packUInt16(packUInt16(packUInt16(packUInt16(setType(make(), toInt("ShieldStrengthsUpdate")), self.solar, "solar"), self.vortex, "vortex"), self.nebula, "nebula"), self.stardust, "stardust"));
 }
 
 // src/packetv1449/PacketV1449_CrystalInvasionWipeAll.js
-function parse156(_payload) {
+function parse158(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
   };
 }
-function toBuffer152(_self) {
+function toBuffer154(_self) {
   return data(setType(make(), toInt("CrystalInvasionWipeAll")));
 }
 
 // src/packetv1457/PacketV1457_ItemDropInstancedUpdate.js
 var PacketV1457_ItemDropInstancedUpdate_exports = {};
 __export(PacketV1457_ItemDropInstancedUpdate_exports, {
-  parse: () => parse157,
-  toBuffer: () => toBuffer153
+  parse: () => parse159,
+  toBuffer: () => toBuffer155
 });
-function toBuffer153(self) {
+function toBuffer155(self) {
   return Encode.toBufferWithType(self, "ItemDropInstancedUpdate");
 }
-var parse157 = parse18;
+var parse159 = parse18;
 
 // src/packetv1457/PacketV1457_PiggyBankVoidLensUpdate.js
-function parse158(payload) {
+function parse160(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -21506,12 +21641,12 @@ function parse158(payload) {
     return e$4;
   }
 }
-function toBuffer154(self) {
+function toBuffer156(self) {
   return data(packInt16(packInt32(packInt16(packInt32(packByte(setType(make(), toInt5("PiggyBankVoidLensUpdate")), self.playerId, "playerId"), toInt11(self.piggyBankProj.projectileKey), "piggyBankProjectileKey"), self.piggyBankProj.projectileType, "piggyBankProjectileType"), toInt11(self.voidLensChest.projectileKey), "voidLensProjectileKey"), self.voidLensChest.projectileType, "voidLensProjectileType"));
 }
 
 // src/packetv1449/PacketV1449_MinionAttackTargetUpdate.js
-function parse159(payload) {
+function parse161(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -21530,12 +21665,12 @@ function parse159(payload) {
     return e$1;
   }
 }
-function toBuffer155(self) {
+function toBuffer157(self) {
   return data(packInt16(packByte(setType(make(), toInt("MinionAttackTargetUpdate")), self.playerId, "playerId"), self.targetNpcId, "targetNpcId"));
 }
 
 // src/packetv1449/PacketV1449_AnglerQuestsCompletedAmount.js
-function parse160(payload) {
+function parse162(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -21559,12 +21694,12 @@ function parse160(payload) {
     return e$2;
   }
 }
-function toBuffer156(self) {
+function toBuffer158(self) {
   return data(packInt32(packInt32(packByte(setType(make(), toInt("AnglerQuestsCompletedAmount")), self.playerId, "playerId"), self.anglerQuestsFinished, "anglerQuestsFinished"), self.golferScoreAccumulated, "golferScoreAccumulated"));
 }
 
 // src/packetv1449/PacketV1449_CrystalInvasionSendWaitTime.js
-function parse161(payload) {
+function parse163(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "timeLeftBetweenWaves");
   if (e.TAG === "Ok") {
@@ -21578,50 +21713,50 @@ function parse161(payload) {
     return e;
   }
 }
-function toBuffer157(self) {
+function toBuffer159(self) {
   return data(packInt32(setType(new packetwriter_default(), toInt("CrystalInvasionSendWaitTime")), self.timeLeftBetweenWaves, "timeLeftBetweenWaves"));
 }
 
 // src/packetv1449/PacketV1449_DungeonDefendersEventAttemptSkipWait.js
-function parse162(_payload) {
+function parse164(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
   };
 }
-function toBuffer158(_self) {
+function toBuffer160(_self) {
   return data(setType(make(), toInt("DungeonDefendersEventAttemptSkipWait")));
 }
 
 // src/Parser.js
-function addPacketContext(packetName4, err) {
+function addPacketContext(packetName5, err) {
   return {
-    context: "Packet " + packetName4 + ": " + err.context,
+    context: "Packet " + packetName5 + ": " + err.context,
     error: err.error
   };
 }
-function mapPacket(result, packetName4, fn) {
+function mapPacket(result, packetName5, fn) {
   return mapError(map(result, fn), (e) => ({
     TAG: "ReaderError",
-    _0: addPacketContext(packetName4, e)
+    _0: addPacketContext(packetName5, e)
   }));
 }
-function makeParsers(packetName4, parse185, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, _fromServer) => mapPacket(parse185(payload), packetName4, toPacket);
+function makeParsers(packetName5, parse194, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, _fromServer) => mapPacket(parse194(payload), packetName5, toPacket);
   let parseLazyWrapped = (payload, _fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse185(payload), (e) => addPacketContext(packetName4, e))))
+    _0: toLazyPacket(make4(() => mapError(parse194(payload), (e) => addPacketContext(packetName5, e))))
   });
   return {
     parse: parseWrapped,
     parseLazy: parseLazyWrapped
   };
 }
-function makeParsersWithFromServer(packetName4, parse185, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, fromServer) => mapPacket(parse185(payload, fromServer), packetName4, toPacket);
+function makeParsersWithFromServer(packetName5, parse194, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, fromServer) => mapPacket(parse194(payload, fromServer), packetName5, toPacket);
   let parseLazyWrapped = (payload, fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse185(payload, fromServer), (e) => addPacketContext(packetName4, e))))
+    _0: toLazyPacket(make4(() => mapError(parse194(payload, fromServer), (e) => addPacketContext(packetName5, e))))
   });
   return {
     parse: parseWrapped,
@@ -21629,7 +21764,7 @@ function makeParsersWithFromServer(packetName4, parse185, toPacket, toLazyPacket
   };
 }
 function getParsers(packetType, fromServer) {
-  let packetName4 = packetName(packetType);
+  let packetName5 = packetName(packetType);
   switch (packetType) {
     case "ConnectRequest":
       if (fromServer) {
@@ -21640,7 +21775,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse9, (a) => ({
+          _0: makeParsers(packetName5, parse9, (a) => ({
             TAG: "ConnectRequest",
             _0: a
           }), (a) => ({
@@ -21653,7 +21788,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse107, (a) => ({
+          _0: makeParsers(packetName5, parse107, (a) => ({
             TAG: "Disconnect",
             _0: a
           }), (a) => ({
@@ -21671,7 +21806,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse95, (a) => ({
+          _0: makeParsers(packetName5, parse95, (a) => ({
             TAG: "PlayerSlotSet",
             _0: a
           }), (a) => ({
@@ -21688,7 +21823,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerInfo":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse97, (a) => ({
+        _0: makeParsers(packetName5, parse97, (a) => ({
           TAG: "PlayerInfo",
           _0: a
         }), (a) => ({
@@ -21699,7 +21834,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerInventorySlot":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse99, (a) => ({
+        _0: makeParsers(packetName5, parse99, (a) => ({
           TAG: "PlayerInventorySlot",
           _0: a
         }), (a) => ({
@@ -21716,7 +21851,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse76, (a) => ({
+          _0: makeParsers(packetName5, parse76, (a) => ({
             TAG: "WorldDataRequest",
             _0: a
           }), (a) => ({
@@ -21729,7 +21864,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse104, (a) => ({
+          _0: makeParsers(packetName5, parse104, (a) => ({
             TAG: "WorldInfo",
             _0: a
           }), (a) => ({
@@ -21752,7 +21887,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse82, (a) => ({
+          _0: makeParsers(packetName5, parse82, (a) => ({
             TAG: "InitialTileSectionsRequest",
             _0: a
           }), (a) => ({
@@ -21765,7 +21900,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse52, (a) => ({
+          _0: makeParsers(packetName5, parse52, (a) => ({
             TAG: "Status",
             _0: a
           }), (a) => ({
@@ -21783,7 +21918,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse$13, (a) => ({
+          _0: makeParsers(packetName5, parse$13, (a) => ({
             TAG: "TileSectionSend",
             _0: a
           }), (a) => ({
@@ -21801,7 +21936,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse65, (a) => ({
+          _0: makeParsers(packetName5, parse65, (a) => ({
             TAG: "TileSectionFrame",
             _0: a
           }), (a) => ({
@@ -21818,7 +21953,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerSpawn":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse98, (a) => ({
+        _0: makeParsers(packetName5, parse98, (a) => ({
           TAG: "PlayerSpawn",
           _0: a
         }), (a) => ({
@@ -21829,7 +21964,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse96, (a) => ({
+        _0: makeParsers(packetName5, parse96, (a) => ({
           TAG: "PlayerUpdate",
           _0: a
         }), (a) => ({
@@ -21841,7 +21976,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse105, (a) => ({
+          _0: makeParsers(packetName5, parse105, (a) => ({
             TAG: "PlayerActive",
             _0: a
           }), (a) => ({
@@ -21858,7 +21993,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerHealth":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse100, (a) => ({
+        _0: makeParsers(packetName5, parse100, (a) => ({
           TAG: "PlayerHealth",
           _0: a
         }), (a) => ({
@@ -21869,7 +22004,7 @@ function getParsers(packetType, fromServer) {
     case "TileModify":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse62, (a) => ({
+        _0: makeParsers(packetName5, parse62, (a) => ({
           TAG: "TileModify",
           _0: a
         }), (a) => ({
@@ -21881,7 +22016,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse69, (a) => ({
+          _0: makeParsers(packetName5, parse69, (a) => ({
             TAG: "TimeSet",
             _0: a
           }), (a) => ({
@@ -21898,7 +22033,7 @@ function getParsers(packetType, fromServer) {
     case "DoorUse":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse109, (a) => ({
+        _0: makeParsers(packetName5, parse111, (a) => ({
           TAG: "DoorUse",
           _0: a
         }), (a) => ({
@@ -21909,7 +22044,7 @@ function getParsers(packetType, fromServer) {
     case "TileSquareSend":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse68, (a) => ({
+        _0: makeParsers(packetName5, parse68, (a) => ({
           TAG: "TileSquareSend",
           _0: a
         }), (a) => ({
@@ -21920,7 +22055,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse18, (a) => ({
+        _0: makeParsers(packetName5, parse18, (a) => ({
           TAG: "ItemDropUpdate",
           _0: a
         }), (a) => ({
@@ -21931,7 +22066,7 @@ function getParsers(packetType, fromServer) {
     case "ItemOwner":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse19, (a) => ({
+        _0: makeParsers(packetName5, parse19, (a) => ({
           TAG: "ItemOwner",
           _0: a
         }), (a) => ({
@@ -21943,7 +22078,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse106, (a) => ({
+          _0: makeParsers(packetName5, parse106, (a) => ({
             TAG: "NpcUpdate",
             _0: a
           }), (a) => ({
@@ -21960,7 +22095,7 @@ function getParsers(packetType, fromServer) {
     case "ProjectileSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse102, (a) => ({
+        _0: makeParsers(packetName5, parse102, (a) => ({
           TAG: "ProjectileSync",
           _0: a
         }), (a) => ({
@@ -21971,7 +22106,7 @@ function getParsers(packetType, fromServer) {
     case "NpcStrike":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse115, (a) => ({
+        _0: makeParsers(packetName5, parse117, (a) => ({
           TAG: "NpcStrike",
           _0: a
         }), (a) => ({
@@ -21982,7 +22117,7 @@ function getParsers(packetType, fromServer) {
     case "ProjectileDestroy":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse143, (a) => ({
+        _0: makeParsers(packetName5, parse146, (a) => ({
           TAG: "ProjectileDestroy",
           _0: a
         }), (a) => ({
@@ -21993,7 +22128,7 @@ function getParsers(packetType, fromServer) {
     case "PvpToggle":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse46, (a) => ({
+        _0: makeParsers(packetName5, parse46, (a) => ({
           TAG: "PvpToggle",
           _0: a
         }), (a) => ({
@@ -22010,7 +22145,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse112, (a) => ({
+          _0: makeParsers(packetName5, parse114, (a) => ({
             TAG: "ChestOpen",
             _0: a
           }), (a) => ({
@@ -22022,7 +22157,7 @@ function getParsers(packetType, fromServer) {
     case "ChestItem":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse5, (a) => ({
+        _0: makeParsers(packetName5, parse5, (a) => ({
           TAG: "ChestItem",
           _0: a
         }), (a) => ({
@@ -22033,7 +22168,7 @@ function getParsers(packetType, fromServer) {
     case "ActiveContainerSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse147, (a) => ({
+        _0: makeParsers(packetName5, parse149, (a) => ({
           TAG: "ActiveContainerSync",
           _0: a
         }), (a) => ({
@@ -22044,7 +22179,7 @@ function getParsers(packetType, fromServer) {
     case "ChestPlace":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse7, (a) => ({
+        _0: makeParsers(packetName5, parse7, (a) => ({
           TAG: "ChestPlace",
           _0: a
         }), (a) => ({
@@ -22055,7 +22190,7 @@ function getParsers(packetType, fromServer) {
     case "HealEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse116, (a) => ({
+        _0: makeParsers(packetName5, parse119, (a) => ({
           TAG: "HealEffect",
           _0: a
         }), (a) => ({
@@ -22066,7 +22201,7 @@ function getParsers(packetType, fromServer) {
     case "Zones":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse77, (a) => ({
+        _0: makeParsers(packetName5, parse77, (a) => ({
           TAG: "Zones",
           _0: a
         }), (a) => ({
@@ -22078,7 +22213,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse137, (a) => ({
+          _0: makeParsers(packetName5, parse140, (a) => ({
             TAG: "PasswordRequired",
             _0: a
           }), (a) => ({
@@ -22101,7 +22236,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse123, (a) => ({
+          _0: makeParsers(packetName5, parse125, (a) => ({
             TAG: "PasswordSend",
             _0: a
           }), (a) => ({
@@ -22113,7 +22248,7 @@ function getParsers(packetType, fromServer) {
     case "ItemOwnerRemove":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse20, (a) => ({
+        _0: makeParsers(packetName5, parse20, (a) => ({
           TAG: "ItemOwnerRemove",
           _0: a
         }), (a) => ({
@@ -22124,7 +22259,7 @@ function getParsers(packetType, fromServer) {
     case "NpcTalk":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse33, (a) => ({
+        _0: makeParsers(packetName5, parse33, (a) => ({
           TAG: "NpcTalk",
           _0: a
         }), (a) => ({
@@ -22135,7 +22270,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerAnimation":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse37, (a) => ({
+        _0: makeParsers(packetName5, parse37, (a) => ({
           TAG: "PlayerAnimation",
           _0: a
         }), (a) => ({
@@ -22146,7 +22281,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerMana":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse44, (a) => ({
+        _0: makeParsers(packetName5, parse44, (a) => ({
           TAG: "PlayerMana",
           _0: a
         }), (a) => ({
@@ -22157,7 +22292,7 @@ function getParsers(packetType, fromServer) {
     case "ManaEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse117, (a) => ({
+        _0: makeParsers(packetName5, parse120, (a) => ({
           TAG: "ManaEffect",
           _0: a
         }), (a) => ({
@@ -22168,7 +22303,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerTeam":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse45, (a) => ({
+        _0: makeParsers(packetName5, parse45, (a) => ({
           TAG: "PlayerTeam",
           _0: a
         }), (a) => ({
@@ -22185,7 +22320,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse49, (a) => ({
+          _0: makeParsers(packetName5, parse49, (a) => ({
             TAG: "SignRead",
             _0: a
           }), (a) => ({
@@ -22197,7 +22332,7 @@ function getParsers(packetType, fromServer) {
     case "SignNew":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse48, (a) => ({
+        _0: makeParsers(packetName5, parse48, (a) => ({
           TAG: "SignNew",
           _0: a
         }), (a) => ({
@@ -22208,7 +22343,7 @@ function getParsers(packetType, fromServer) {
     case "LiquidSet":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse113, (a) => ({
+        _0: makeParsers(packetName5, parse115, (a) => ({
           TAG: "LiquidSet",
           _0: a
         }), (a) => ({
@@ -22220,7 +22355,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse134, (a) => ({
+          _0: makeParsers(packetName5, parse137, (a) => ({
             TAG: "PlayerSpawnSelf",
             _0: a
           }), (a) => ({
@@ -22237,7 +22372,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerBuffsSet":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse39, (a) => ({
+        _0: makeParsers(packetName5, parse39, (a) => ({
           TAG: "PlayerBuffsSet",
           _0: a
         }), (a) => ({
@@ -22248,7 +22383,7 @@ function getParsers(packetType, fromServer) {
     case "NpcSpecialEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse136, (a) => ({
+        _0: makeParsers(packetName5, parse139, (a) => ({
           TAG: "NpcSpecialEffect",
           _0: a
         }), (a) => ({
@@ -22259,7 +22394,7 @@ function getParsers(packetType, fromServer) {
     case "ChestOrTempleUnlock":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse6, (a) => ({
+        _0: makeParsers(packetName5, parse6, (a) => ({
           TAG: "ChestOrTempleUnlock",
           _0: a
         }), (a) => ({
@@ -22270,7 +22405,7 @@ function getParsers(packetType, fromServer) {
     case "NpcBuffAdd":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse118, (a) => ({
+        _0: makeParsers(packetName5, parse121, (a) => ({
           TAG: "NpcBuffAdd",
           _0: a
         }), (a) => ({
@@ -22282,7 +22417,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse26, (a) => ({
+          _0: makeParsers(packetName5, parse26, (a) => ({
             TAG: "NpcBuffUpdate",
             _0: a
           }), (a) => ({
@@ -22299,7 +22434,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerBuffAdd":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse38, (a) => ({
+        _0: makeParsers(packetName5, parse38, (a) => ({
           TAG: "PlayerBuffAdd",
           _0: a
         }), (a) => ({
@@ -22310,7 +22445,7 @@ function getParsers(packetType, fromServer) {
     case "NpcNameUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, (__x) => parse31(__x, fromServer), (a) => ({
+        _0: makeParsers(packetName5, (__x) => parse31(__x, fromServer), (a) => ({
           TAG: "NpcNameUpdate",
           _0: a
         }), (a) => ({
@@ -22322,7 +22457,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse128, (a) => ({
+          _0: makeParsers(packetName5, parse132, (a) => ({
             TAG: "GoodEvilUpdate",
             _0: a
           }), (a) => ({
@@ -22339,7 +22474,7 @@ function getParsers(packetType, fromServer) {
     case "HarpPlay":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse110, (a) => ({
+        _0: makeParsers(packetName5, parse112, (a) => ({
           TAG: "HarpPlay",
           _0: a
         }), (a) => ({
@@ -22350,7 +22485,7 @@ function getParsers(packetType, fromServer) {
     case "SwitchHit":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse53, (a) => ({
+        _0: makeParsers(packetName5, parse53, (a) => ({
           TAG: "SwitchHit",
           _0: a
         }), (a) => ({
@@ -22361,7 +22496,7 @@ function getParsers(packetType, fromServer) {
     case "NpcHomeUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse29, (a) => ({
+        _0: makeParsers(packetName5, parse29, (a) => ({
           TAG: "NpcHomeUpdate",
           _0: a
         }), (a) => ({
@@ -22378,7 +22513,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse3, (a) => ({
+          _0: makeParsers(packetName5, parse3, (a) => ({
             TAG: "BossOrInvasionSpawn",
             _0: a
           }), (a) => ({
@@ -22390,7 +22525,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerDodge":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse43, (a) => ({
+        _0: makeParsers(packetName5, parse43, (a) => ({
           TAG: "PlayerDodge",
           _0: a
         }), (a) => ({
@@ -22401,7 +22536,7 @@ function getParsers(packetType, fromServer) {
     case "TilePaint":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse63, (a) => ({
+        _0: makeParsers(packetName5, parse63, (a) => ({
           TAG: "TilePaint",
           _0: a
         }), (a) => ({
@@ -22412,7 +22547,7 @@ function getParsers(packetType, fromServer) {
     case "WallPaint":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse73, (a) => ({
+        _0: makeParsers(packetName5, parse73, (a) => ({
           TAG: "WallPaint",
           _0: a
         }), (a) => ({
@@ -22423,7 +22558,7 @@ function getParsers(packetType, fromServer) {
     case "Teleport":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse54, (a) => ({
+        _0: makeParsers(packetName5, parse54, (a) => ({
           TAG: "Teleport",
           _0: a
         }), (a) => ({
@@ -22434,7 +22569,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerHealOther":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse133, (a) => ({
+        _0: makeParsers(packetName5, parse136, (a) => ({
           TAG: "PlayerHealOther",
           _0: a
         }), (a) => ({
@@ -22445,7 +22580,7 @@ function getParsers(packetType, fromServer) {
     case "DimensionsUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse13, (a) => ({
+        _0: makeParsers(packetName5, parse13, (a) => ({
           TAG: "DimensionsUpdate",
           _0: a
         }), (a) => ({
@@ -22462,7 +22597,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse101, (a) => ({
+          _0: makeParsers(packetName5, parse101, (a) => ({
             TAG: "ClientUuid",
             _0: a
           }), (a) => ({
@@ -22474,7 +22609,7 @@ function getParsers(packetType, fromServer) {
     case "ChestName":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse111, (a) => ({
+        _0: makeParsers(packetName5, parse113, (a) => ({
           TAG: "ChestName",
           _0: a
         }), (a) => ({
@@ -22491,7 +22626,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse27, (a) => ({
+          _0: makeParsers(packetName5, parse27, (a) => ({
             TAG: "NpcCatch",
             _0: a
           }), (a) => ({
@@ -22509,7 +22644,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse119, (a) => ({
+          _0: makeParsers(packetName5, parse122, (a) => ({
             TAG: "NpcRelease",
             _0: a
           }), (a) => ({
@@ -22522,7 +22657,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse70, (a) => ({
+          _0: makeParsers(packetName5, parse70, (a) => ({
             TAG: "TravellingMerchantInventory",
             _0: a
           }), (a) => ({
@@ -22539,7 +22674,7 @@ function getParsers(packetType, fromServer) {
     case "TeleportationPotion":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse55, (a) => ({
+        _0: makeParsers(packetName5, parse55, (a) => ({
           TAG: "TeleportationPotion",
           _0: a
         }), (a) => ({
@@ -22551,7 +22686,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse, (a) => ({
+          _0: makeParsers(packetName5, parse, (a) => ({
             TAG: "AnglerQuest",
             _0: a
           }), (a) => ({
@@ -22574,7 +22709,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse2, (a) => ({
+          _0: makeParsers(packetName5, parse2, (a) => ({
             TAG: "AnglerQuestComplete",
             _0: a
           }), (a) => ({
@@ -22586,7 +22721,7 @@ function getParsers(packetType, fromServer) {
     case "AnglerQuestsCompletedAmount":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse160, (a) => ({
+        _0: makeParsers(packetName5, parse162, (a) => ({
           TAG: "AnglerQuestsCompletedAmount",
           _0: a
         }), (a) => ({
@@ -22598,7 +22733,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse56, (a) => ({
+          _0: makeParsers(packetName5, parse56, (a) => ({
             TAG: "TemporaryAnimationCreate",
             _0: a
           }), (a) => ({
@@ -22616,7 +22751,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse16, (a) => ({
+          _0: makeParsers(packetName5, parse16, (a) => ({
             TAG: "InvasionProgressReport",
             _0: a
           }), (a) => ({
@@ -22633,7 +22768,7 @@ function getParsers(packetType, fromServer) {
     case "ObjectPlace":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse35, (a) => ({
+        _0: makeParsers(packetName5, parse35, (a) => ({
           TAG: "ObjectPlace",
           _0: a
         }), (a) => ({
@@ -22645,7 +22780,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse40, (a) => ({
+          _0: makeParsers(packetName5, parse40, (a) => ({
             TAG: "PlayerChestIndexSync",
             _0: a
           }), (a) => ({
@@ -22663,7 +22798,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse144, (a) => ({
+          _0: makeParsers(packetName5, parse147, (a) => ({
             TAG: "CombatNumberCreate",
             _0: a
           }), (a) => ({
@@ -22680,7 +22815,7 @@ function getParsers(packetType, fromServer) {
     case "NetModuleLoad":
       return {
         TAG: "Ok",
-        _0: makeParsersWithFromServer(packetName4, parse23, (a) => ({
+        _0: makeParsersWithFromServer(packetName5, parse23, (a) => ({
           TAG: "NetModuleLoad",
           _0: a
         }), (a) => ({
@@ -22692,7 +22827,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse30, (a) => ({
+          _0: makeParsers(packetName5, parse30, (a) => ({
             TAG: "NpcKillCount",
             _0: a
           }), (a) => ({
@@ -22709,7 +22844,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerStealth":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse127, (a) => ({
+        _0: makeParsers(packetName5, parse129, (a) => ({
           TAG: "PlayerStealth",
           _0: a
         }), (a) => ({
@@ -22720,7 +22855,7 @@ function getParsers(packetType, fromServer) {
     case "ItemForceIntoNearestChest":
       return {
         TAG: "Ok",
-        _0: makeParsersWithFromServer(packetName4, parse85, (a) => ({
+        _0: makeParsersWithFromServer(packetName5, parse85, (a) => ({
           TAG: "ItemForceIntoNearestChest",
           _0: a
         }), (a) => ({
@@ -22732,7 +22867,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse61, (a) => ({
+          _0: makeParsers(packetName5, parse61, (a) => ({
             TAG: "TileEntityUpdate",
             _0: a
           }), (a) => ({
@@ -22755,7 +22890,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse60, (a) => ({
+          _0: makeParsers(packetName5, parse60, (a) => ({
             TAG: "TileEntityPlace",
             _0: a
           }), (a) => ({
@@ -22768,7 +22903,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse129, (a) => ({
+          _0: makeParsers(packetName5, parse118, (a) => ({
             TAG: "ItemDropModify",
             _0: a
           }), (a) => ({
@@ -22791,7 +22926,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse130, (a) => ({
+          _0: makeParsers(packetName5, parse133, (a) => ({
             TAG: "ItemFramePlace",
             _0: a
           }), (a) => ({
@@ -22803,7 +22938,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropInstancedUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse157, (a) => ({
+        _0: makeParsers(packetName5, parse159, (a) => ({
           TAG: "ItemDropInstancedUpdate",
           _0: a
         }), (a) => ({
@@ -22815,7 +22950,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse122, (a) => ({
+          _0: makeParsers(packetName5, parse110, (a) => ({
             TAG: "EmoteBubble",
             _0: a
           }), (a) => ({
@@ -22832,7 +22967,7 @@ function getParsers(packetType, fromServer) {
     case "ExtraValueSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse14, (a) => ({
+        _0: makeParsers(packetName5, parse14, (a) => ({
           TAG: "ExtraValueSync",
           _0: a
         }), (a) => ({
@@ -22843,7 +22978,7 @@ function getParsers(packetType, fromServer) {
     case "SocialHandshake":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse51, (a) => ({
+        _0: makeParsers(packetName5, parse51, (a) => ({
           TAG: "SocialHandshake",
           _0: a
         }), (a) => ({
@@ -22854,7 +22989,7 @@ function getParsers(packetType, fromServer) {
     case "Unused":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse80, (a) => ({
+        _0: makeParsers(packetName5, parse80, (a) => ({
           TAG: "Unused",
           _0: a
         }), (a) => ({
@@ -22871,7 +23006,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse120, (a) => ({
+          _0: makeParsers(packetName5, parse123, (a) => ({
             TAG: "PortalKill",
             _0: a
           }), (a) => ({
@@ -22883,7 +23018,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerTeleportPortal":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse150, (a) => ({
+        _0: makeParsers(packetName5, parse152, (a) => ({
           TAG: "PlayerTeleportPortal",
           _0: a
         }), (a) => ({
@@ -22895,7 +23030,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse154, (a) => ({
+          _0: makeParsers(packetName5, parse156, (a) => ({
             TAG: "NpcKilledNotification",
             _0: a
           }), (a) => ({
@@ -22913,7 +23048,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse138, (a) => ({
+          _0: makeParsers(packetName5, parse141, (a) => ({
             TAG: "EventNotification",
             _0: a
           }), (a) => ({
@@ -22930,7 +23065,7 @@ function getParsers(packetType, fromServer) {
     case "MinionTargetUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse145, (a) => ({
+        _0: makeParsers(packetName5, parse148, (a) => ({
           TAG: "MinionTargetUpdate",
           _0: a
         }), (a) => ({
@@ -22941,7 +23076,7 @@ function getParsers(packetType, fromServer) {
     case "NpcTeleportPortal":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse34, (a) => ({
+        _0: makeParsers(packetName5, parse34, (a) => ({
           TAG: "NpcTeleportPortal",
           _0: a
         }), (a) => ({
@@ -22953,7 +23088,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse155, (a) => ({
+          _0: makeParsers(packetName5, parse157, (a) => ({
             TAG: "ShieldStrengthsUpdate",
             _0: a
           }), (a) => ({
@@ -22970,7 +23105,7 @@ function getParsers(packetType, fromServer) {
     case "NebulaLevelUp":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse126, (a) => ({
+        _0: makeParsers(packetName5, parse128, (a) => ({
           TAG: "NebulaLevelUp",
           _0: a
         }), (a) => ({
@@ -22982,7 +23117,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse141, (a) => ({
+          _0: makeParsers(packetName5, parse144, (a) => ({
             TAG: "MoonLordCountdown",
             _0: a
           }), (a) => ({
@@ -23000,7 +23135,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse32, (a) => ({
+          _0: makeParsers(packetName5, parse32, (a) => ({
             TAG: "NpcShopItem",
             _0: a
           }), (a) => ({
@@ -23023,7 +23158,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse125, (a) => ({
+          _0: makeParsers(packetName5, parse127, (a) => ({
             TAG: "GemLockToggle",
             _0: a
           }), (a) => ({
@@ -23036,7 +23171,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse50, (a) => ({
+          _0: makeParsers(packetName5, parse50, (a) => ({
             TAG: "SmokePoof",
             _0: a
           }), (a) => ({
@@ -23054,7 +23189,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse4, (a) => ({
+          _0: makeParsers(packetName5, parse4, (a) => ({
             TAG: "ChatMessageSmart",
             _0: a
           }), (a) => ({
@@ -23072,7 +23207,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse75, (a) => ({
+          _0: makeParsers(packetName5, parse75, (a) => ({
             TAG: "WiredCannonShot",
             _0: a
           }), (a) => ({
@@ -23095,7 +23230,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse140, (a) => ({
+          _0: makeParsers(packetName5, parse143, (a) => ({
             TAG: "MassWireOperation",
             _0: a
           }), (a) => ({
@@ -23108,7 +23243,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse149, (a) => ({
+          _0: makeParsers(packetName5, parse151, (a) => ({
             TAG: "MassWireOperationPay",
             _0: a
           }), (a) => ({
@@ -23131,7 +23266,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse36, (a) => ({
+          _0: makeParsers(packetName5, parse36, (a) => ({
             TAG: "PartyToggle",
             _0: a
           }), (a) => ({
@@ -23143,7 +23278,7 @@ function getParsers(packetType, fromServer) {
     case "TreeGrowFx":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse71, (a) => ({
+        _0: makeParsers(packetName5, parse71, (a) => ({
           TAG: "TreeGrowFx",
           _0: a
         }), (a) => ({
@@ -23160,7 +23295,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse12, (a) => ({
+          _0: makeParsers(packetName5, parse12, (a) => ({
             TAG: "CrystalInvasionStart",
             _0: a
           }), (a) => ({
@@ -23173,7 +23308,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse156, (a) => ({
+          _0: makeParsers(packetName5, parse158, (a) => ({
             TAG: "CrystalInvasionWipeAll",
             _0: a
           }), (a) => ({
@@ -23190,7 +23325,7 @@ function getParsers(packetType, fromServer) {
     case "MinionAttackTargetUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse159, (a) => ({
+        _0: makeParsers(packetName5, parse161, (a) => ({
           TAG: "MinionAttackTargetUpdate",
           _0: a
         }), (a) => ({
@@ -23202,7 +23337,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse161, (a) => ({
+          _0: makeParsers(packetName5, parse163, (a) => ({
             TAG: "CrystalInvasionSendWaitTime",
             _0: a
           }), (a) => ({
@@ -23219,7 +23354,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerDamage":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse103, (a) => ({
+        _0: makeParsers(packetName5, parse103, (a) => ({
           TAG: "PlayerDamage",
           _0: a
         }), (a) => ({
@@ -23230,7 +23365,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerDeath":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse42, (a) => ({
+        _0: makeParsers(packetName5, parse42, (a) => ({
           TAG: "PlayerDeath",
           _0: a
         }), (a) => ({
@@ -23242,7 +23377,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse135, (a) => ({
+          _0: makeParsers(packetName5, parse138, (a) => ({
             TAG: "CombatTextCreate",
             _0: a
           }), (a) => ({
@@ -23265,7 +23400,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse108, (a) => ({
+          _0: makeParsers(packetName5, parse108, (a) => ({
             TAG: "Emoji",
             _0: a
           }), (a) => ({
@@ -23277,7 +23412,7 @@ function getParsers(packetType, fromServer) {
     case "TileEntityDisplayDollItemSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse57, (a) => ({
+        _0: makeParsers(packetName5, parse57, (a) => ({
           TAG: "TileEntityDisplayDollItemSync",
           _0: a
         }), (a) => ({
@@ -23288,7 +23423,7 @@ function getParsers(packetType, fromServer) {
     case "TileEntityInteractionRequest":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse59, (a) => ({
+        _0: makeParsers(packetName5, parse59, (a) => ({
           TAG: "TileEntityInteractionRequest",
           _0: a
         }), (a) => ({
@@ -23305,7 +23440,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse74, (a) => ({
+          _0: makeParsers(packetName5, parse74, (a) => ({
             TAG: "WeaponsRackTryPlacing",
             _0: a
           }), (a) => ({
@@ -23317,7 +23452,7 @@ function getParsers(packetType, fromServer) {
     case "TileEntityHatRackItemSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse58, (a) => ({
+        _0: makeParsers(packetName5, parse58, (a) => ({
           TAG: "TileEntityHatRackItemSync",
           _0: a
         }), (a) => ({
@@ -23328,7 +23463,7 @@ function getParsers(packetType, fromServer) {
     case "TilePickingSync":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse64, (a) => ({
+        _0: makeParsers(packetName5, parse64, (a) => ({
           TAG: "TilePickingSync",
           _0: a
         }), (a) => ({
@@ -23340,7 +23475,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse142, (a) => ({
+          _0: makeParsers(packetName5, parse145, (a) => ({
             TAG: "RevengeMarkerSync",
             _0: a
           }), (a) => ({
@@ -23358,7 +23493,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse148, (a) => ({
+          _0: makeParsers(packetName5, parse150, (a) => ({
             TAG: "RevengeMarkerRemove",
             _0: a
           }), (a) => ({
@@ -23375,7 +23510,7 @@ function getParsers(packetType, fromServer) {
     case "GolfBallLandInCup":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse139, (a) => ({
+        _0: makeParsers(packetName5, parse142, (a) => ({
           TAG: "GolfBallLandInCup",
           _0: a
         }), (a) => ({
@@ -23387,7 +23522,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse8, (a) => ({
+          _0: makeParsers(packetName5, parse8, (a) => ({
             TAG: "ClientFinishConnectingToServer",
             _0: a
           }), (a) => ({
@@ -23410,7 +23545,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse28, (a) => ({
+          _0: makeParsers(packetName5, parse28, (a) => ({
             TAG: "NpcFishOut",
             _0: a
           }), (a) => ({
@@ -23423,7 +23558,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse114, (a) => ({
+          _0: makeParsers(packetName5, parse116, (a) => ({
             TAG: "NpcTamper",
             _0: a
           }), (a) => ({
@@ -23441,7 +23576,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse132, (a) => ({
+          _0: makeParsers(packetName5, parse135, (a) => ({
             TAG: "LegacySoundPlay",
             _0: a
           }), (a) => ({
@@ -23464,7 +23599,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse153, (a) => ({
+          _0: makeParsers(packetName5, parse155, (a) => ({
             TAG: "FoodPlatterTryPlacing",
             _0: a
           }), (a) => ({
@@ -23476,7 +23611,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerLuckFactorsUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse90, (a) => ({
+        _0: makeParsers(packetName5, parse90, (a) => ({
           TAG: "PlayerLuckFactorsUpdate",
           _0: a
         }), (a) => ({
@@ -23488,7 +23623,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse41, (a) => ({
+          _0: makeParsers(packetName5, parse41, (a) => ({
             TAG: "PlayerDead",
             _0: a
           }), (a) => ({
@@ -23506,7 +23641,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse151, (a) => ({
+          _0: makeParsers(packetName5, parse153, (a) => ({
             TAG: "CavernMonsterTypeSync",
             _0: a
           }), (a) => ({
@@ -23529,7 +23664,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse25, (a) => ({
+          _0: makeParsers(packetName5, parse25, (a) => ({
             TAG: "NpcBuffRemovalRequest",
             _0: a
           }), (a) => ({
@@ -23547,7 +23682,7 @@ function getParsers(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse152, (a) => ({
+          _0: makeParsers(packetName5, parse154, (a) => ({
             TAG: "ClientSyncedInventory",
             _0: a
           }), (a) => ({
@@ -23559,7 +23694,7 @@ function getParsers(packetType, fromServer) {
     case "CountsAsHostForGameplaySet":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse10, (a) => ({
+        _0: makeParsers(packetName5, parse10, (a) => ({
           TAG: "CountsAsHostForGameplaySet",
           _0: a
         }), (a) => ({
@@ -23570,7 +23705,7 @@ function getParsers(packetType, fromServer) {
     case "CreditsOrSlimeTransform":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse11, (a) => ({
+        _0: makeParsers(packetName5, parse11, (a) => ({
           TAG: "CreditsOrSlimeTransform",
           _0: a
         }), (a) => ({
@@ -23581,7 +23716,7 @@ function getParsers(packetType, fromServer) {
     case "LucyAxeMessage":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse131, (a) => ({
+        _0: makeParsers(packetName5, parse134, (a) => ({
           TAG: "LucyAxeMessage",
           _0: a
         }), (a) => ({
@@ -23592,7 +23727,7 @@ function getParsers(packetType, fromServer) {
     case "PiggyBankVoidLensUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse158, (a) => ({
+        _0: makeParsers(packetName5, parse160, (a) => ({
           TAG: "PiggyBankVoidLensUpdate",
           _0: a
         }), (a) => ({
@@ -23603,7 +23738,7 @@ function getParsers(packetType, fromServer) {
     case "DungeonDefendersEventAttemptSkipWait":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse162, (a) => ({
+        _0: makeParsers(packetName5, parse164, (a) => ({
           TAG: "DungeonDefendersEventAttemptSkipWait",
           _0: a
         }), (a) => ({
@@ -23614,7 +23749,7 @@ function getParsers(packetType, fromServer) {
     case "HaveDryadDoStardewAnimation":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse15, (a) => ({
+        _0: makeParsers(packetName5, parse15, (a) => ({
           TAG: "HaveDryadDoStardewAnimation",
           _0: a
         }), (a) => ({
@@ -23626,7 +23761,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse47, (a) => ({
+          _0: makeParsers(packetName5, parse47, (a) => ({
             TAG: "ShimmerEffectOrCoinLuck",
             _0: a
           }), (a) => ({
@@ -23643,7 +23778,7 @@ function getParsers(packetType, fromServer) {
     case "LoadoutSwitch":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse21, (a) => ({
+        _0: makeParsers(packetName5, parse21, (a) => ({
           TAG: "LoadoutSwitch",
           _0: a
         }), (a) => ({
@@ -23654,7 +23789,7 @@ function getParsers(packetType, fromServer) {
     case "DeadCellsDisplayJarTryPlacing":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse79, (a) => ({
+        _0: makeParsers(packetName5, parse79, (a) => ({
           TAG: "DeadCellsDisplayJarTryPlacing",
           _0: a
         }), (a) => ({
@@ -23665,7 +23800,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerSpectate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse91, (a) => ({
+        _0: makeParsers(packetName5, parse91, (a) => ({
           TAG: "PlayerSpectate",
           _0: a
         }), (a) => ({
@@ -23676,7 +23811,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropClear":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse83, (a) => ({
+        _0: makeParsers(packetName5, parse83, (a) => ({
           TAG: "ItemDropClear",
           _0: a
         }), (a) => ({
@@ -23687,7 +23822,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerItemUseSound":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse89, (a) => ({
+        _0: makeParsers(packetName5, parse89, (a) => ({
           TAG: "PlayerItemUseSound",
           _0: a
         }), (a) => ({
@@ -23698,7 +23833,7 @@ function getParsers(packetType, fromServer) {
     case "NpcHurtByDebuff":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse87, (a) => ({
+        _0: makeParsers(packetName5, parse87, (a) => ({
           TAG: "NpcHurtByDebuff",
           _0: a
         }), (a) => ({
@@ -23709,7 +23844,7 @@ function getParsers(packetType, fromServer) {
     case "Ping":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse88, (a) => ({
+        _0: makeParsers(packetName5, parse88, (a) => ({
           TAG: "Ping",
           _0: a
         }), (a) => ({
@@ -23720,7 +23855,7 @@ function getParsers(packetType, fromServer) {
     case "ChestResize":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse78, (a) => ({
+        _0: makeParsers(packetName5, parse78, (a) => ({
           TAG: "ChestResize",
           _0: a
         }), (a) => ({
@@ -23731,7 +23866,7 @@ function getParsers(packetType, fromServer) {
     case "LeashedEntityAnchorInsertItem":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse86, (a) => ({
+        _0: makeParsers(packetName5, parse86, (a) => ({
           TAG: "LeashedEntityAnchorInsertItem",
           _0: a
         }), (a) => ({
@@ -23742,7 +23877,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerTeamUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse93, (a) => ({
+        _0: makeParsers(packetName5, parse93, (a) => ({
           TAG: "PlayerTeamUpdate",
           _0: a
         }), (a) => ({
@@ -23753,7 +23888,7 @@ function getParsers(packetType, fromServer) {
     case "PlayerTeamSwapSpawn":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse92, (a) => ({
+        _0: makeParsers(packetName5, parse92, (a) => ({
           TAG: "PlayerTeamSwapSpawn",
           _0: a
         }), (a) => ({
@@ -23764,7 +23899,7 @@ function getParsers(packetType, fromServer) {
     case "SectionRequest":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse94, (a) => ({
+        _0: makeParsers(packetName5, parse94, (a) => ({
           TAG: "SectionRequest",
           _0: a
         }), (a) => ({
@@ -23775,7 +23910,7 @@ function getParsers(packetType, fromServer) {
     case "ItemDropPosition":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse84, (a) => ({
+        _0: makeParsers(packetName5, parse84, (a) => ({
           TAG: "ItemDropPosition",
           _0: a
         }), (a) => ({
@@ -23786,7 +23921,7 @@ function getParsers(packetType, fromServer) {
     case "HostToken":
       return {
         TAG: "Ok",
-        _0: makeParsers(packetName4, parse81, (a) => ({
+        _0: makeParsers(packetName5, parse81, (a) => ({
           TAG: "HostToken",
           _0: a
         }), (a) => ({
@@ -23798,7 +23933,7 @@ function getParsers(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers(packetName4, parse124, (a) => ({
+          _0: makeParsers(packetName5, parse126, (a) => ({
             TAG: "DamageNPCAck",
             _0: a
           }), (a) => ({
@@ -23813,41 +23948,38 @@ function getParsers(packetType, fromServer) {
         };
       }
     case "ServerInfo":
-      if (fromServer) {
-        return {
-          TAG: "Ok",
-          _0: makeParsers(packetName4, parse121, (a) => ({
-            TAG: "ServerInfo",
-            _0: a
-          }), (a) => ({
-            TAG: "ServerInfo",
-            _0: a
-          }))
-        };
-      } else {
-        return {
-          TAG: "Error",
-          _0: "ServerInfoFromClient"
-        };
-      }
+      return {
+        TAG: "Ok",
+        _0: makeParsersWithFromServer(packetName5, parse109, (a) => ({
+          TAG: "ServerInfo",
+          _0: a
+        }), (a) => ({
+          TAG: "ServerInfo",
+          _0: a
+        }))
+      };
     case "PlayerPlatformInfo":
-      if (fromServer) {
-        return {
-          TAG: "Error",
-          _0: "PlayerPlatformInfoFromServer"
-        };
-      } else {
-        return {
-          TAG: "Ok",
-          _0: makeParsers(packetName4, parse146, (a) => ({
-            TAG: "PlayerPlatformInfo",
-            _0: a
-          }), (a) => ({
-            TAG: "PlayerPlatformInfo",
-            _0: a
-          }))
-        };
-      }
+      return {
+        TAG: "Ok",
+        _0: makeParsers(packetName5, parse131, (a) => ({
+          TAG: "PlayerPlatformInfo",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerPlatformInfo",
+          _0: a
+        }))
+      };
+    case "CustomServerAck":
+      return {
+        TAG: "Ok",
+        _0: makeParsers(packetName5, parse124, (a) => ({
+          TAG: "CustomServerAck",
+          _0: a
+        }), (a) => ({
+          TAG: "CustomServerAck",
+          _0: a
+        }))
+      };
     default:
       return {
         TAG: "Error",
@@ -23855,7 +23987,7 @@ function getParsers(packetType, fromServer) {
       };
   }
 }
-function parse163(buffer, fromServer, ignoreOpt) {
+function parse165(buffer, fromServer, ignoreOpt) {
   let ignore = ignoreOpt !== void 0 ? ignoreOpt : [];
   let match = buffer.length;
   if (!(match > 2 || match < 0)) {
@@ -23962,12 +24094,12 @@ function parseLazy(buffer, fromServer) {
 // src/ParserV1456.js
 var ParserV1456_exports = {};
 __export(ParserV1456_exports, {
-  parse: () => parse182,
+  parse: () => parse188,
   parseLazy: () => parseLazy2
 });
 
 // src/packetv1449/PacketV1449_NpcCatch.js
-function parse164(payload) {
+function parse166(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -23986,12 +24118,12 @@ function parse164(payload) {
     return e$1;
   }
 }
-function toBuffer159(self) {
+function toBuffer161(self) {
   return data(packByte(packInt16(setType(make(), toInt("NpcCatch")), self.npcId, "npcId"), self.playerId, "playerId"));
 }
 
 // src/packetv1449/PacketV1449_NpcStrike.js
-function parse165(payload) {
+function parse167(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -24025,12 +24157,12 @@ function parse165(payload) {
     return e$4;
   }
 }
-function toBuffer160(self) {
+function toBuffer162(self) {
   return data(packByte(packByte(packSingle(packInt16(packInt16(setType(make(), toInt("NpcStrike")), self.npcId, "npcId"), self.damage, "damage"), self.knockback, "knockback"), self.direction + 1 | 0, "direction"), self.critical ? 1 : 0, "critical"));
 }
 
 // src/packetv1456/PacketV1456_ItemOwner.js
-function parse166(payload) {
+function parse168(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemDropId");
   if (e.TAG !== "Ok") {
@@ -24061,7 +24193,7 @@ function parse166(payload) {
     return e$3;
   }
 }
-function toBuffer161(self) {
+function toBuffer163(self) {
   return data(packSingle(packSingle(packByte(packInt16(setType(make(), toInt9("ItemOwner")), self.itemDropId, "itemDropId"), self.owner, "owner"), self.position.x, "positionX"), self.position.y, "positionY"));
 }
 
@@ -24103,7 +24235,7 @@ function readNpcFlags22(reader, fieldName) {
     }
   };
 }
-function parse167(payload) {
+function parse169(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcSlotId");
   if (e.TAG !== "Ok") {
@@ -24379,7 +24511,7 @@ function packReleaseOwner2(writer, releaseOwner) {
     return writer;
   }
 }
-function toBuffer162(self) {
+function toBuffer164(self) {
   return data(packReleaseOwner2(packLife2(packDifficulty2(packPlayerCountScale2(packInt16(packAi2(packByte(packByte(packUInt16(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt9("NpcUpdate")), self.npcSlotId, "npcSlotId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.target, "target"), npcFlags12(self), "npcFlags1"), npcFlags22(self), "npcFlags2"), self.ai), self.npcTypeId, "npcTypeId"), self.playerCountScale), self.difficulty), self.life), self.releaseOwner));
 }
 
@@ -24601,7 +24733,7 @@ function readEventInfo2(reader) {
     }
   };
 }
-function parse168(payload) {
+function parse170(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "time");
   if (e.TAG !== "Ok") {
@@ -25058,19 +25190,110 @@ function packExtraSpawnPoints2(writer, extraSpawnPoints) {
   });
   return writer$1;
 }
-function toBuffer163(self) {
+function toBuffer165(self) {
   return data(packExtraSpawnPoints2(packSingle(packUInt64(packSByte(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packByte(packEventInfo2(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packUInt64(packBytes(packByte(packString(packInt32(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packInt32(setType(make(), toInt9("WorldInfo")), self.time, "time"), self.dayAndMoonInfo, "dayAndMoonInfo"), self.moonPhase, "moonPhase"), self.maxTilesX, "maxTilesX"), self.maxTilesY, "maxTilesY"), self.spawnX, "spawnX"), self.spawnY, "spawnY"), self.worldSurface, "worldSurface"), self.rockLayer, "rockLayer"), self.worldId, "worldId"), self.worldName, "worldName"), self.gameMode, "gameMode"), asArray(self.worldUniqueId), "worldUniqueId"), self.worldGeneratorVersion, "worldGeneratorVersion"), self.moonType, "moonType"), self.treeBackground, "treeBackground"), self.treeBackground2, "treeBackground2"), self.treeBackground3, "treeBackground3"), self.treeBackground4, "treeBackground4"), self.corruptionBackground, "corruptionBackground"), self.jungleBackground, "jungleBackground"), self.snowBackground, "snowBackground"), self.hallowBackground, "hallowBackground"), self.crimsonBackground, "crimsonBackground"), self.desertBackground, "desertBackground"), self.oceanBackground, "oceanBackground"), self.mushroomBackground, "mushroomBackground"), self.underworldBackground, "underworldBackground"), self.iceBackStyle, "iceBackStyle"), self.jungleBackStyle, "jungleBackStyle"), self.hellBackStyle, "hellBackStyle"), self.windSpeedSet, "windSpeedSet"), self.cloudNumber, "cloudNumber"), self.tree1, "tree1"), self.tree2, "tree2"), self.tree3, "tree3"), self.treeStyle1, "treeStyle1"), self.treeStyle2, "treeStyle2"), self.treeStyle3, "treeStyle3"), self.treeStyle4, "treeStyle4"), self.caveBack1, "caveBack1"), self.caveBack2, "caveBack2"), self.caveBack3, "caveBack3"), self.caveBackStyle1, "caveBackStyle1"), self.caveBackStyle2, "caveBackStyle2"), self.caveBackStyle3, "caveBackStyle3"), self.caveBackStyle4, "caveBackStyle4"), self.forest1TreeTopStyle, "forest1TreeTopStyle"), self.forest2TreeTopStyle, "forest2TreeTopStyle"), self.forest3TreeTopStyle, "forest3TreeTopStyle"), self.forest4TreeTopStyle, "forest4TreeTopStyle"), self.corruptionTreeTopStyle, "corruptionTreeTopStyle"), self.jungleTreeTopStyle, "jungleTreeTopStyle"), self.snowTreeTopStyle, "snowTreeTopStyle"), self.hallowTreeTopStyle, "hallowTreeTopStyle"), self.crimsonTreeTopStyle, "crimsonTreeTopStyle"), self.desertTreeTopStyle, "desertTreeTopStyle"), self.oceanTreeTopStyle, "oceanTreeTopStyle"), self.glowingMushroomTreeTopStyle, "glowingMushroomTreeTopStyle"), self.underworldTreeTopStyle, "underworldTreeTopStyle"), self.rain, "rain"), self.eventInfo), toByte(fromFlags(self.lowTiles, false, false, false, false, false, false, false)), "lowTiles"), self.sundialCooldown, "sundialCooldown"), self.moondialCooldown, "moondialCooldown"), self.copperOreTier, "copperOreTier"), self.ironOreTier, "ironOreTier"), self.silverOreTier, "silverOreTier"), self.goldOreTier, "goldOreTier"), self.cobaltOreTier, "cobaltOreTier"), self.mythrilOreTier, "mythrilOreTier"), self.adamantiteOreTier, "adamantiteOreTier"), self.invasionType, "invasionType"), self.lobbyId, "lobbyId"), self.sandstormSeverity, "sandstormSeverity"), self.extraSpawnPoints));
 }
 
 // src/packetv1456/PacketV1456_ServerInfo.js
-function parse169(_payload) {
+function parse171(_payload) {
   return {
     TAG: "Ok",
     _0: void 0
   };
 }
-function toBuffer164(_self) {
+function toBuffer166(_self) {
   return data(setType(make(), toInt9("ServerInfo")));
+}
+
+// src/packetv1449/PacketV1449_EmoteBubble.js
+function parse172(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt32(reader, "id");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let id = e._0;
+  let e$1 = readByte(reader, "anchorType");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let anchorType = e$1._0;
+  if (anchorType === 255) {
+    return {
+      TAG: "Ok",
+      _0: {
+        id,
+        anchor: "Remove"
+      }
+    };
+  }
+  let e$2 = readUInt16(reader, "anchorMeta");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let anchorMeta = e$2._0;
+  let e$3 = readUInt16(reader, "time");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let time = e$3._0;
+  let e$4 = readByte(reader, "emote");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let emoteByte = e$4._0;
+  if (emoteByte !== 255) {
+    return {
+      TAG: "Ok",
+      _0: {
+        id,
+        anchor: {
+          TAG: "Anchor",
+          anchorType,
+          anchorMeta,
+          time,
+          emote: emoteByte,
+          metadata: void 0
+        }
+      }
+    };
+  }
+  let e$5 = readInt16(reader, "metadata");
+  if (e$5.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        id,
+        anchor: {
+          TAG: "Anchor",
+          anchorType,
+          anchorMeta,
+          time,
+          emote: -1,
+          metadata: e$5._0
+        }
+      }
+    };
+  } else {
+    return e$5;
+  }
+}
+function toBuffer167(self) {
+  let writer = packInt32(setType(make(), toInt("EmoteBubble")), self.id, "id");
+  let details = self.anchor;
+  if (typeof details !== "object") {
+    return data(packByte(writer, 255, "anchorType"));
+  }
+  let emoteByte = details.emote === -1 ? 255 : details.emote;
+  let writer$1 = packByte(packUInt16(packUInt16(packByte(writer, details.anchorType, "anchorType"), details.anchorMeta, "anchorMeta"), details.time, "time"), emoteByte, "emote");
+  let tmp;
+  if (details.emote === -1) {
+    let v = details.metadata;
+    tmp = packInt16(writer$1, v !== void 0 ? v : 0, "metadata");
+  } else {
+    tmp = writer$1;
+  }
+  return data(tmp);
 }
 
 // src/packetv1449/PacketV1449_PlayerDodge.js
@@ -25096,7 +25319,7 @@ function dodgeToByte2(d) {
       return 4;
   }
 }
-function parse170(payload) {
+function parse173(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -25132,12 +25355,73 @@ function parse170(payload) {
     };
   }
 }
-function toBuffer165(self) {
+function toBuffer168(self) {
   return data(packByte(packByte(setType(make(), toInt("PlayerDodge")), self.playerId, "playerId"), dodgeToByte2(self.dodge), "dodge"));
 }
 
+// src/packetv1449/PacketV1449_PlayerDamage.js
+function readDamageFlags2(reader) {
+  let e = readByte(reader, "damageFlags");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let flags = fromByte(e._0);
+  return {
+    TAG: "Ok",
+    _0: {
+      critical: flag1(flags),
+      pvp: flag2(flags)
+    }
+  };
+}
+function parse174(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "target");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readDeathReason(reader);
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readInt16(reader, "damage");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readByte(reader, "hitDirection");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readDamageFlags2(reader);
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let damageFlags = e$4._0;
+  let e$5 = readSByte(reader, "cooldownCounter");
+  if (e$5.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        target: e._0,
+        deathReason: e$1._0,
+        damage: e$2._0,
+        hitDirection: e$3._0,
+        critical: damageFlags.critical,
+        pvp: damageFlags.pvp,
+        cooldownCounter: e$5._0
+      }
+    };
+  } else {
+    return e$5;
+  }
+}
+function toBuffer169(self) {
+  let damageFlags = (self2) => toByte(fromFlags(self2.critical, self2.pvp, false, false, false, false, false, false));
+  return data(packSByte(packByte(packByte(packInt16(packDeathReason(packByte(setType(make(), toInt("PlayerDamage")), self.target, "target"), self.deathReason), self.damage, "damage"), self.hitDirection, "hitDirection"), damageFlags(self), "damageFlags"), self.cooldownCounter, "cooldownCounter"));
+}
+
 // src/packetv1456/PacketV1456_PlayerUpdate.js
-function parse171(payload) {
+function parse175(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -25397,12 +25681,12 @@ function packNetCameraTarget2(writer, netCameraTarget) {
     return writer;
   }
 }
-function toBuffer166(self) {
+function toBuffer170(self) {
   return data(packNetCameraTarget2(packPotionOfReturn2(packMountType2(packVelocity2(packSingle(packSingle(packByte(packMiscFlags32(packMiscFlags22(packMiscFlags12(packControlFlags2(packByte(setType(make(), toInt9("PlayerUpdate")), self.playerId, "playerId"), self.control, self.direction), self.pulleyDirection, self.velocity, self.vortexStealthActive, self.gravityDirection, self.shieldRaised, self.ghost, self.mountType), self.tryKeepingHoveringUp, self.isVoidVaultEnabled, self.isSitting, self.hasFinishedAnyDd2Event, self.isPettingAnimal, self.isTheAnimalBeingPetSmall, self.potionOfReturn, self.tryKeepingHoveringDown), self.isSleeping, self.autoReuseAllWeapons, self.controlDownHold, self.isOperatingAnotherEntity, self.controlUseTile, self.netCameraTarget, self.lastItemUseAttemptSuccess), self.selectedItem, "selectedItem"), self.position.x, "positionX"), self.position.y, "positionY"), self.velocity), self.mountType), self.potionOfReturn), self.netCameraTarget));
 }
 
 // src/packetv1449/PacketV1449_NpcItemStrike.js
-function parse172(payload) {
+function parse176(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "npcId");
   if (e.TAG !== "Ok") {
@@ -25421,7 +25705,7 @@ function parse172(payload) {
     return e$1;
   }
 }
-function toBuffer167(self) {
+function toBuffer171(self) {
   return data(packByte(packInt16(setType(make(), toInt("NpcItemStrike")), self.npcId, "npcId"), self.playerId, "playerId"));
 }
 
@@ -25640,7 +25924,7 @@ function leashedEntityToBuffer2(message) {
 function unbreakableWallScanToBuffer2(payload) {
   return data(packBool(packByte(packUInt16(setType(make(), toInt9("NetModuleLoad")), 14, "moduleType"), payload.playerId, "playerId"), payload.insideUnbreakableWalls, "insideUnbreakableWalls"));
 }
-function toBuffer168(self) {
+function toBuffer172(self) {
   switch (self.TAG) {
     case "Liquid":
       return liquidToBuffer2(self._0);
@@ -26684,7 +26968,7 @@ function parseUnbreakableWallScan2(reader) {
     return e$1;
   }
 }
-function parse173(payload, fromServer) {
+function parse177(payload, fromServer) {
   let reader = new packetreader_default(payload);
   let e = readUInt16(reader, "moduleType");
   if (e.TAG !== "Ok") {
@@ -26734,8 +27018,264 @@ function parse173(payload, fromServer) {
   }
 }
 
+// src/packetv1449/PacketV1449_ItemDropModify.js
+function parseFlags22(reader, flags23) {
+  let width = flag1(flags23) ? map(readInt16(reader, "width"), (v) => v) : {
+    TAG: "Ok",
+    _0: void 0
+  };
+  if (width.TAG !== "Ok") {
+    return width;
+  }
+  let height = flag2(flags23) ? map(readInt16(reader, "height"), (v) => v) : {
+    TAG: "Ok",
+    _0: void 0
+  };
+  if (height.TAG !== "Ok") {
+    return height;
+  }
+  let scale = flag3(flags23) ? map(readSingle(reader, "scale"), (v) => v) : {
+    TAG: "Ok",
+    _0: void 0
+  };
+  if (scale.TAG !== "Ok") {
+    return scale;
+  }
+  let ammo = flag4(flags23) ? map(readInt16(reader, "ammo"), (v) => v) : {
+    TAG: "Ok",
+    _0: void 0
+  };
+  if (ammo.TAG !== "Ok") {
+    return ammo;
+  }
+  let useAmmo = flag5(flags23) ? map(readInt16(reader, "useAmmo"), (v) => v) : {
+    TAG: "Ok",
+    _0: void 0
+  };
+  if (useAmmo.TAG !== "Ok") {
+    return useAmmo;
+  }
+  let notAmmo = flag6(flags23) ? map(readByte(reader, "notAmmo"), (v) => v === 1) : {
+    TAG: "Ok",
+    _0: void 0
+  };
+  if (notAmmo.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: [
+        width._0,
+        height._0,
+        scale._0,
+        ammo._0,
+        useAmmo._0,
+        notAmmo._0
+      ]
+    };
+  } else {
+    return notAmmo;
+  }
+}
+function parse178(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt16(reader, "itemId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readByte(reader, "flags1");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let flags13 = fromByte(e$1._0);
+  let color;
+  if (flag1(flags13)) {
+    let e$2 = readByte(reader, "Color.r");
+    if (e$2.TAG === "Ok") {
+      let e$3 = readByte(reader, "Color.g");
+      if (e$3.TAG === "Ok") {
+        let e$4 = readByte(reader, "Color.b");
+        if (e$4.TAG === "Ok") {
+          let e$5 = readByte(reader, "Color.a");
+          color = e$5.TAG === "Ok" ? {
+            TAG: "Ok",
+            _0: {
+              r: e$2._0,
+              g: e$3._0,
+              b: e$4._0,
+              a: e$5._0
+            }
+          } : e$5;
+        } else {
+          color = e$4;
+        }
+      } else {
+        color = e$3;
+      }
+    } else {
+      color = e$2;
+    }
+  } else {
+    color = {
+      TAG: "Ok",
+      _0: void 0
+    };
+  }
+  if (color.TAG !== "Ok") {
+    return color;
+  }
+  let damage = flag2(flags13) ? map(readUInt16(reader, "damage"), (v) => v) : {
+    TAG: "Ok",
+    _0: void 0
+  };
+  if (damage.TAG !== "Ok") {
+    return damage;
+  }
+  let knockback = flag3(flags13) ? map(readSingle(reader, "knockback"), (v) => v) : {
+    TAG: "Ok",
+    _0: void 0
+  };
+  if (knockback.TAG !== "Ok") {
+    return knockback;
+  }
+  let useAnimation = flag4(flags13) ? map(readUInt16(reader, "useAnimation"), (v) => v) : {
+    TAG: "Ok",
+    _0: void 0
+  };
+  if (useAnimation.TAG !== "Ok") {
+    return useAnimation;
+  }
+  let useTime = flag5(flags13) ? map(readUInt16(reader, "useTime"), (v) => v) : {
+    TAG: "Ok",
+    _0: void 0
+  };
+  if (useTime.TAG !== "Ok") {
+    return useTime;
+  }
+  let shoot = flag6(flags13) ? map(readInt16(reader, "shoot"), (v) => v) : {
+    TAG: "Ok",
+    _0: void 0
+  };
+  if (shoot.TAG !== "Ok") {
+    return shoot;
+  }
+  let shootSpeed = flag7(flags13) ? map(readSingle(reader, "shootSpeed"), (v) => v) : {
+    TAG: "Ok",
+    _0: void 0
+  };
+  if (shootSpeed.TAG !== "Ok") {
+    return shootSpeed;
+  }
+  let e$6;
+  if (flag8(flags13)) {
+    let e$7 = readByte(reader, "flags2");
+    e$6 = e$7.TAG === "Ok" ? parseFlags22(reader, fromByte(e$7._0)) : e$7;
+  } else {
+    e$6 = {
+      TAG: "Ok",
+      _0: [
+        void 0,
+        void 0,
+        void 0,
+        void 0,
+        void 0,
+        void 0
+      ]
+    };
+  }
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let match = e$6._0;
+  return {
+    TAG: "Ok",
+    _0: {
+      itemId: e._0,
+      color: color._0,
+      damage: damage._0,
+      knockback: knockback._0,
+      useAnimation: useAnimation._0,
+      useTime: useTime._0,
+      shoot: shoot._0,
+      shootSpeed: shootSpeed._0,
+      width: match[0],
+      height: match[1],
+      scale: match[2],
+      ammo: match[3],
+      useAmmo: match[4],
+      notAmmo: match[5]
+    }
+  };
+}
+function flags12(self) {
+  return fromFlags(isSome(self.color), isSome(self.damage), isSome(self.knockback), isSome(self.useAnimation), isSome(self.useTime), isSome(self.shoot), isSome(self.shootSpeed), isSome(self.width) || isSome(self.height) || isSome(self.scale) || isSome(self.ammo) || isSome(self.useAmmo) || isSome(self.notAmmo));
+}
+function flags22(self) {
+  return fromFlags(isSome(self.width), isSome(self.height), isSome(self.scale), isSome(self.ammo), isSome(self.useAmmo), isSome(self.notAmmo), false, false);
+}
+function toBuffer173(self) {
+  let writer = packByte(packInt16(setType(make(), toInt("ItemDropModify")), self.itemId, "itemId"), toByte(flags12(self)), "flags1");
+  let c = self.color;
+  if (c !== void 0) {
+    packByte(writer, c.r, "Color.r");
+    packByte(writer, c.g, "Color.g");
+    packByte(writer, c.b, "Color.b");
+    packByte(writer, c.a, "Color.a");
+  }
+  let v = self.damage;
+  if (v !== void 0) {
+    packUInt16(writer, v, "damage");
+  }
+  let v$1 = self.knockback;
+  if (v$1 !== void 0) {
+    packSingle(writer, v$1, "knockback");
+  }
+  let v$2 = self.useAnimation;
+  if (v$2 !== void 0) {
+    packUInt16(writer, v$2, "useAnimation");
+  }
+  let v$3 = self.useTime;
+  if (v$3 !== void 0) {
+    packUInt16(writer, v$3, "useTime");
+  }
+  let v$4 = self.shoot;
+  if (v$4 !== void 0) {
+    packInt16(writer, v$4, "shoot");
+  }
+  let v$5 = self.shootSpeed;
+  if (v$5 !== void 0) {
+    packSingle(writer, v$5, "shootSpeed");
+  }
+  if (flag8(flags12(self))) {
+    packByte(writer, toByte(flags22(self)), "flags2");
+    let v$6 = self.width;
+    if (v$6 !== void 0) {
+      packInt16(writer, v$6, "width");
+    }
+    let v$7 = self.height;
+    if (v$7 !== void 0) {
+      packInt16(writer, v$7, "height");
+    }
+    let v$8 = self.scale;
+    if (v$8 !== void 0) {
+      packSingle(writer, v$8, "scale");
+    }
+    let v$9 = self.ammo;
+    if (v$9 !== void 0) {
+      packInt16(writer, v$9, "ammo");
+    }
+    let v$10 = self.useAmmo;
+    if (v$10 !== void 0) {
+      packInt16(writer, v$10, "useAmmo");
+    }
+    let v$11 = self.notAmmo;
+    if (v$11 !== void 0) {
+      packByte(writer, v$11 ? 1 : 0, "notAmmo");
+    }
+  }
+  return data(writer);
+}
+
 // src/packetv1449/PacketV1449_ItemDropUpdate.js
-function parse174(payload) {
+function parse179(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemDropId");
   if (e.TAG !== "Ok") {
@@ -26789,12 +27329,12 @@ function parse174(payload) {
     return e$8;
   }
 }
-function toBuffer169(self) {
+function toBuffer174(self) {
   return data(packInt16(packByte(packByte(packInt16(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt("ItemDropUpdate")), self.itemDropId, "itemDropId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.stack, "stack"), self.prefix, "prefix"), self.noDelay, "noDelay"), self.itemId, "itemId"));
 }
 
 // src/packetv1449/PacketV1449_ProjectileSync.js
-function parse175(payload) {
+function parse180(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "projectileId");
   if (e.TAG !== "Ok") {
@@ -26845,7 +27385,7 @@ function parse175(payload) {
   if (e$8.TAG !== "Ok") {
     return e$8;
   }
-  let flags22 = e$8._0;
+  let flags23 = e$8._0;
   let e$10;
   if (flag1(flags)) {
     let e$11 = readSingle(reader, "ai0");
@@ -26959,7 +27499,7 @@ function parse175(payload) {
     return e$22;
   }
   let e$24;
-  if (flags22 !== void 0 && flag1(valFromOption(flags22))) {
+  if (flags23 !== void 0 && flag1(valFromOption(flags23))) {
     let e$25 = readSingle(reader, "ai2");
     e$24 = e$25.TAG === "Ok" ? {
       TAG: "Ok",
@@ -27036,12 +27576,12 @@ function packOptionalData(writer, self) {
   }
   return writer;
 }
-function toBuffer170(self) {
+function toBuffer175(self) {
   return data(packOptionalData(packInt16(packByte(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt("ProjectileSync")), self.projectileId, "projectileId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.owner, "owner"), self.projectileType, "projectileType"), self));
 }
 
 // src/packetv1449/PacketV1449_ItemOwnerRemove.js
-function parse176(payload) {
+function parse181(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemDropId");
   if (e.TAG === "Ok") {
@@ -27055,12 +27595,41 @@ function parse176(payload) {
     return e;
   }
 }
-function toBuffer171(self) {
+function toBuffer176(self) {
   return data(packInt16(setType(make(), toInt("ItemOwnerRemove")), self.itemDropId, "itemDropId"));
 }
 
+// src/packetv1449/PacketV1449_PlayerAnimation.js
+function parse182(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readByte(reader, "playerId");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readSingle(reader, "itemRotation");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readInt16(reader, "itemAnimation");
+  if (e$2.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        playerId: e._0,
+        itemRotation: e$1._0,
+        itemAnimation: e$2._0
+      }
+    };
+  } else {
+    return e$2;
+  }
+}
+function toBuffer177(self) {
+  return data(packInt16(packSingle(packByte(setType(make(), toInt("PlayerAnimation")), self.playerId, "playerId"), self.itemRotation, "itemRotation"), self.itemAnimation, "itemAnimation"));
+}
+
 // src/packetv1449/PacketV1449_ProjectileDestroy.js
-function parse177(payload) {
+function parse183(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "projectileId");
   if (e.TAG !== "Ok") {
@@ -27079,7 +27648,7 @@ function parse177(payload) {
     return e$1;
   }
 }
-function toBuffer172(self) {
+function toBuffer178(self) {
   return data(packByte(packInt16(setType(make(), toInt("ProjectileDestroy")), self.projectileId, "projectileId"), self.owner, "owner"));
 }
 
@@ -27126,7 +27695,7 @@ function toInt14(self) {
       return 7;
   }
 }
-function parse178(payload) {
+function parse184(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -27156,16 +27725,16 @@ function parse178(payload) {
     };
   }
 }
-function toBuffer173(self) {
+function toBuffer179(self) {
   return data(packByte(packByte(setType(make(), toInt9("PlayerPlatformInfo")), self.playerId, "playerId"), toInt14(self.platformId), "platformId"));
 }
 
 // src/packetv1449/PacketV1449_ItemDropInstancedUpdate.js
-var parse179 = parse174;
-var toBuffer174 = toBuffer169;
+var parse185 = parse179;
+var toBuffer180 = toBuffer174;
 
 // src/packetv1449/PacketV1449_ItemDropProtectedUpdate.js
-function parse180(payload) {
+function parse186(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt16(reader, "itemDropId");
   if (e.TAG !== "Ok") {
@@ -27224,7 +27793,7 @@ function parse180(payload) {
     return e$9;
   }
 }
-function toBuffer175(self) {
+function toBuffer181(self) {
   return data(packByte(packInt16(packByte(packByte(packInt16(packSingle(packSingle(packSingle(packSingle(packInt16(setType(make(), toInt("ItemDropProtectedUpdate")), self.itemDropId, "itemDropId"), self.x, "x"), self.y, "y"), self.vx, "vx"), self.vy, "vy"), self.stack, "stack"), self.prefix, "prefix"), self.noDelay, "noDelay"), self.itemId, "itemId"), self.timeLeftInWhichTheItemCannotBeTakenByEnemies, "timeLeftInWhichTheItemCannotBeTakenByEnemies"));
 }
 
@@ -27266,7 +27835,7 @@ function pack5(writer, self, context) {
     return packInt16(writer, -1, context + "_ownerIndex");
   }
 }
-function parse181(payload) {
+function parse187(payload) {
   let reader = new packetreader_default(payload);
   let e = readByte(reader, "playerId");
   if (e.TAG !== "Ok") {
@@ -27290,39 +27859,39 @@ function parse181(payload) {
     return e$2;
   }
 }
-function toBuffer176(self) {
+function toBuffer182(self) {
   return data(pack5(pack5(packByte(setType(make(), toInt("PiggyBankVoidLensUpdate")), self.playerId, "playerId"), self.piggyBankProj, "piggyBankProj"), self.voidLensChest, "voidLensChest"));
 }
 
 // src/ParserV1456.js
-function addPacketContext2(packetName4, err) {
+function addPacketContext2(packetName5, err) {
   return {
-    context: "Packet " + packetName4 + ": " + err.context,
+    context: "Packet " + packetName5 + ": " + err.context,
     error: err.error
   };
 }
-function mapPacket2(result, packetName4, fn) {
+function mapPacket2(result, packetName5, fn) {
   return mapError(map(result, fn), (e) => ({
     TAG: "ReaderError",
-    _0: addPacketContext2(packetName4, e)
+    _0: addPacketContext2(packetName5, e)
   }));
 }
-function makeParsers2(packetName4, parse185, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, _fromServer) => mapPacket2(parse185(payload), packetName4, toPacket);
+function makeParsers2(packetName5, parse194, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, _fromServer) => mapPacket2(parse194(payload), packetName5, toPacket);
   let parseLazyWrapped = (payload, _fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse185(payload), (e) => addPacketContext2(packetName4, e))))
+    _0: toLazyPacket(make4(() => mapError(parse194(payload), (e) => addPacketContext2(packetName5, e))))
   });
   return {
     parse: parseWrapped,
     parseLazy: parseLazyWrapped
   };
 }
-function makeParsersWithFromServer2(packetName4, parse185, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, fromServer) => mapPacket2(parse185(payload, fromServer), packetName4, toPacket);
+function makeParsersWithFromServer2(packetName5, parse194, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, fromServer) => mapPacket2(parse194(payload, fromServer), packetName5, toPacket);
   let parseLazyWrapped = (payload, fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse185(payload, fromServer), (e) => addPacketContext2(packetName4, e))))
+    _0: toLazyPacket(make4(() => mapError(parse194(payload, fromServer), (e) => addPacketContext2(packetName5, e))))
   });
   return {
     parse: parseWrapped,
@@ -27330,7 +27899,7 @@ function makeParsersWithFromServer2(packetName4, parse185, toPacket, toLazyPacke
   };
 }
 function getParsers2(packetType, fromServer) {
-  let packetName4 = packetName3(packetType);
+  let packetName5 = packetName3(packetType);
   switch (packetType) {
     case "ConnectRequest":
       if (fromServer) {
@@ -27341,7 +27910,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse9, (a) => ({
+          _0: makeParsers2(packetName5, parse9, (a) => ({
             TAG: "ConnectRequest",
             _0: a
           }), (a) => ({
@@ -27354,7 +27923,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse107, (a) => ({
+          _0: makeParsers2(packetName5, parse107, (a) => ({
             TAG: "Disconnect",
             _0: a
           }), (a) => ({
@@ -27372,7 +27941,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse95, (a) => ({
+          _0: makeParsers2(packetName5, parse95, (a) => ({
             TAG: "PlayerSlotSet",
             _0: a
           }), (a) => ({
@@ -27389,7 +27958,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerInfo":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse97, (a) => ({
+        _0: makeParsers2(packetName5, parse97, (a) => ({
           TAG: "PlayerInfo",
           _0: a
         }), (a) => ({
@@ -27400,7 +27969,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerInventorySlot":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse99, (a) => ({
+        _0: makeParsers2(packetName5, parse99, (a) => ({
           TAG: "PlayerInventorySlot",
           _0: a
         }), (a) => ({
@@ -27417,7 +27986,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse76, (a) => ({
+          _0: makeParsers2(packetName5, parse76, (a) => ({
             TAG: "WorldDataRequest",
             _0: a
           }), (a) => ({
@@ -27430,7 +27999,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse168, (a) => ({
+          _0: makeParsers2(packetName5, parse170, (a) => ({
             TAG: "WorldInfo",
             _0: a
           }), (a) => ({
@@ -27453,7 +28022,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse82, (a) => ({
+          _0: makeParsers2(packetName5, parse82, (a) => ({
             TAG: "InitialTileSectionsRequest",
             _0: a
           }), (a) => ({
@@ -27466,7 +28035,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse52, (a) => ({
+          _0: makeParsers2(packetName5, parse52, (a) => ({
             TAG: "Status",
             _0: a
           }), (a) => ({
@@ -27484,7 +28053,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse$13, (a) => ({
+          _0: makeParsers2(packetName5, parse$13, (a) => ({
             TAG: "TileSectionSend",
             _0: a
           }), (a) => ({
@@ -27502,7 +28071,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse65, (a) => ({
+          _0: makeParsers2(packetName5, parse65, (a) => ({
             TAG: "TileSectionFrame",
             _0: a
           }), (a) => ({
@@ -27519,7 +28088,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerSpawn":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse98, (a) => ({
+        _0: makeParsers2(packetName5, parse98, (a) => ({
           TAG: "PlayerSpawn",
           _0: a
         }), (a) => ({
@@ -27530,7 +28099,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse171, (a) => ({
+        _0: makeParsers2(packetName5, parse175, (a) => ({
           TAG: "PlayerUpdate",
           _0: a
         }), (a) => ({
@@ -27542,7 +28111,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse105, (a) => ({
+          _0: makeParsers2(packetName5, parse105, (a) => ({
             TAG: "PlayerActive",
             _0: a
           }), (a) => ({
@@ -27559,7 +28128,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerHealth":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse100, (a) => ({
+        _0: makeParsers2(packetName5, parse100, (a) => ({
           TAG: "PlayerHealth",
           _0: a
         }), (a) => ({
@@ -27570,7 +28139,7 @@ function getParsers2(packetType, fromServer) {
     case "TileModify":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse62, (a) => ({
+        _0: makeParsers2(packetName5, parse62, (a) => ({
           TAG: "TileModify",
           _0: a
         }), (a) => ({
@@ -27582,7 +28151,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse69, (a) => ({
+          _0: makeParsers2(packetName5, parse69, (a) => ({
             TAG: "TimeSet",
             _0: a
           }), (a) => ({
@@ -27599,7 +28168,7 @@ function getParsers2(packetType, fromServer) {
     case "DoorUse":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse109, (a) => ({
+        _0: makeParsers2(packetName5, parse111, (a) => ({
           TAG: "DoorUse",
           _0: a
         }), (a) => ({
@@ -27610,7 +28179,7 @@ function getParsers2(packetType, fromServer) {
     case "TileSquareSend":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse68, (a) => ({
+        _0: makeParsers2(packetName5, parse68, (a) => ({
           TAG: "TileSquareSend",
           _0: a
         }), (a) => ({
@@ -27621,7 +28190,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemDropUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse174, (a) => ({
+        _0: makeParsers2(packetName5, parse179, (a) => ({
           TAG: "ItemDropUpdate",
           _0: a
         }), (a) => ({
@@ -27632,7 +28201,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemOwner":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse166, (a) => ({
+        _0: makeParsers2(packetName5, parse168, (a) => ({
           TAG: "ItemOwner",
           _0: a
         }), (a) => ({
@@ -27644,7 +28213,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse167, (a) => ({
+          _0: makeParsers2(packetName5, parse169, (a) => ({
             TAG: "NpcUpdate",
             _0: a
           }), (a) => ({
@@ -27661,7 +28230,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcItemStrike":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse172, (a) => ({
+        _0: makeParsers2(packetName5, parse176, (a) => ({
           TAG: "NpcItemStrike",
           _0: a
         }), (a) => ({
@@ -27672,7 +28241,7 @@ function getParsers2(packetType, fromServer) {
     case "ProjectileSync":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse175, (a) => ({
+        _0: makeParsers2(packetName5, parse180, (a) => ({
           TAG: "ProjectileSync",
           _0: a
         }), (a) => ({
@@ -27683,7 +28252,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcStrike":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse165, (a) => ({
+        _0: makeParsers2(packetName5, parse167, (a) => ({
           TAG: "NpcStrike",
           _0: a
         }), (a) => ({
@@ -27694,7 +28263,7 @@ function getParsers2(packetType, fromServer) {
     case "ProjectileDestroy":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse177, (a) => ({
+        _0: makeParsers2(packetName5, parse183, (a) => ({
           TAG: "ProjectileDestroy",
           _0: a
         }), (a) => ({
@@ -27705,7 +28274,7 @@ function getParsers2(packetType, fromServer) {
     case "PvpToggle":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse46, (a) => ({
+        _0: makeParsers2(packetName5, parse46, (a) => ({
           TAG: "PvpToggle",
           _0: a
         }), (a) => ({
@@ -27722,7 +28291,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse112, (a) => ({
+          _0: makeParsers2(packetName5, parse114, (a) => ({
             TAG: "ChestOpen",
             _0: a
           }), (a) => ({
@@ -27734,7 +28303,7 @@ function getParsers2(packetType, fromServer) {
     case "ChestItem":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse5, (a) => ({
+        _0: makeParsers2(packetName5, parse5, (a) => ({
           TAG: "ChestItem",
           _0: a
         }), (a) => ({
@@ -27745,7 +28314,7 @@ function getParsers2(packetType, fromServer) {
     case "ActiveContainerSync":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse147, (a) => ({
+        _0: makeParsers2(packetName5, parse149, (a) => ({
           TAG: "ActiveContainerSync",
           _0: a
         }), (a) => ({
@@ -27756,7 +28325,7 @@ function getParsers2(packetType, fromServer) {
     case "ChestPlace":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse7, (a) => ({
+        _0: makeParsers2(packetName5, parse7, (a) => ({
           TAG: "ChestPlace",
           _0: a
         }), (a) => ({
@@ -27767,7 +28336,7 @@ function getParsers2(packetType, fromServer) {
     case "HealEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse116, (a) => ({
+        _0: makeParsers2(packetName5, parse119, (a) => ({
           TAG: "HealEffect",
           _0: a
         }), (a) => ({
@@ -27778,7 +28347,7 @@ function getParsers2(packetType, fromServer) {
     case "Zones":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse77, (a) => ({
+        _0: makeParsers2(packetName5, parse77, (a) => ({
           TAG: "Zones",
           _0: a
         }), (a) => ({
@@ -27790,7 +28359,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse137, (a) => ({
+          _0: makeParsers2(packetName5, parse140, (a) => ({
             TAG: "PasswordRequired",
             _0: a
           }), (a) => ({
@@ -27813,7 +28382,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse123, (a) => ({
+          _0: makeParsers2(packetName5, parse125, (a) => ({
             TAG: "PasswordSend",
             _0: a
           }), (a) => ({
@@ -27825,7 +28394,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemOwnerRemove":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse176, (a) => ({
+        _0: makeParsers2(packetName5, parse181, (a) => ({
           TAG: "ItemOwnerRemove",
           _0: a
         }), (a) => ({
@@ -27836,7 +28405,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcTalk":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse33, (a) => ({
+        _0: makeParsers2(packetName5, parse33, (a) => ({
           TAG: "NpcTalk",
           _0: a
         }), (a) => ({
@@ -27847,7 +28416,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerAnimation":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse37, (a) => ({
+        _0: makeParsers2(packetName5, parse182, (a) => ({
           TAG: "PlayerAnimation",
           _0: a
         }), (a) => ({
@@ -27858,7 +28427,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerMana":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse44, (a) => ({
+        _0: makeParsers2(packetName5, parse44, (a) => ({
           TAG: "PlayerMana",
           _0: a
         }), (a) => ({
@@ -27869,7 +28438,7 @@ function getParsers2(packetType, fromServer) {
     case "ManaEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse117, (a) => ({
+        _0: makeParsers2(packetName5, parse120, (a) => ({
           TAG: "ManaEffect",
           _0: a
         }), (a) => ({
@@ -27880,7 +28449,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerTeam":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse45, (a) => ({
+        _0: makeParsers2(packetName5, parse45, (a) => ({
           TAG: "PlayerTeam",
           _0: a
         }), (a) => ({
@@ -27897,7 +28466,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse49, (a) => ({
+          _0: makeParsers2(packetName5, parse49, (a) => ({
             TAG: "SignRead",
             _0: a
           }), (a) => ({
@@ -27909,7 +28478,7 @@ function getParsers2(packetType, fromServer) {
     case "SignNew":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse48, (a) => ({
+        _0: makeParsers2(packetName5, parse48, (a) => ({
           TAG: "SignNew",
           _0: a
         }), (a) => ({
@@ -27920,7 +28489,7 @@ function getParsers2(packetType, fromServer) {
     case "LiquidSet":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse113, (a) => ({
+        _0: makeParsers2(packetName5, parse115, (a) => ({
           TAG: "LiquidSet",
           _0: a
         }), (a) => ({
@@ -27932,7 +28501,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse134, (a) => ({
+          _0: makeParsers2(packetName5, parse137, (a) => ({
             TAG: "PlayerSpawnSelf",
             _0: a
           }), (a) => ({
@@ -27949,7 +28518,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerBuffsSet":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse39, (a) => ({
+        _0: makeParsers2(packetName5, parse39, (a) => ({
           TAG: "PlayerBuffsSet",
           _0: a
         }), (a) => ({
@@ -27960,7 +28529,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcSpecialEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse136, (a) => ({
+        _0: makeParsers2(packetName5, parse139, (a) => ({
           TAG: "NpcSpecialEffect",
           _0: a
         }), (a) => ({
@@ -27971,7 +28540,7 @@ function getParsers2(packetType, fromServer) {
     case "ChestOrTempleUnlock":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse6, (a) => ({
+        _0: makeParsers2(packetName5, parse6, (a) => ({
           TAG: "ChestOrTempleUnlock",
           _0: a
         }), (a) => ({
@@ -27982,7 +28551,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcBuffAdd":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse118, (a) => ({
+        _0: makeParsers2(packetName5, parse121, (a) => ({
           TAG: "NpcBuffAdd",
           _0: a
         }), (a) => ({
@@ -27994,7 +28563,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse26, (a) => ({
+          _0: makeParsers2(packetName5, parse26, (a) => ({
             TAG: "NpcBuffUpdate",
             _0: a
           }), (a) => ({
@@ -28011,7 +28580,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerBuffAdd":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse38, (a) => ({
+        _0: makeParsers2(packetName5, parse38, (a) => ({
           TAG: "PlayerBuffAdd",
           _0: a
         }), (a) => ({
@@ -28022,7 +28591,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcNameUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, (__x) => parse31(__x, fromServer), (a) => ({
+        _0: makeParsers2(packetName5, (__x) => parse31(__x, fromServer), (a) => ({
           TAG: "NpcNameUpdate",
           _0: a
         }), (a) => ({
@@ -28034,7 +28603,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse128, (a) => ({
+          _0: makeParsers2(packetName5, parse132, (a) => ({
             TAG: "GoodEvilUpdate",
             _0: a
           }), (a) => ({
@@ -28051,7 +28620,7 @@ function getParsers2(packetType, fromServer) {
     case "HarpPlay":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse110, (a) => ({
+        _0: makeParsers2(packetName5, parse112, (a) => ({
           TAG: "HarpPlay",
           _0: a
         }), (a) => ({
@@ -28062,7 +28631,7 @@ function getParsers2(packetType, fromServer) {
     case "SwitchHit":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse53, (a) => ({
+        _0: makeParsers2(packetName5, parse53, (a) => ({
           TAG: "SwitchHit",
           _0: a
         }), (a) => ({
@@ -28073,7 +28642,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcHomeUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse29, (a) => ({
+        _0: makeParsers2(packetName5, parse29, (a) => ({
           TAG: "NpcHomeUpdate",
           _0: a
         }), (a) => ({
@@ -28090,7 +28659,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse3, (a) => ({
+          _0: makeParsers2(packetName5, parse3, (a) => ({
             TAG: "BossOrInvasionSpawn",
             _0: a
           }), (a) => ({
@@ -28102,7 +28671,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerDodge":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse170, (a) => ({
+        _0: makeParsers2(packetName5, parse173, (a) => ({
           TAG: "PlayerDodge",
           _0: a
         }), (a) => ({
@@ -28113,7 +28682,7 @@ function getParsers2(packetType, fromServer) {
     case "TilePaint":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse63, (a) => ({
+        _0: makeParsers2(packetName5, parse63, (a) => ({
           TAG: "TilePaint",
           _0: a
         }), (a) => ({
@@ -28124,7 +28693,7 @@ function getParsers2(packetType, fromServer) {
     case "WallPaint":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse73, (a) => ({
+        _0: makeParsers2(packetName5, parse73, (a) => ({
           TAG: "WallPaint",
           _0: a
         }), (a) => ({
@@ -28135,7 +28704,7 @@ function getParsers2(packetType, fromServer) {
     case "Teleport":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse54, (a) => ({
+        _0: makeParsers2(packetName5, parse54, (a) => ({
           TAG: "Teleport",
           _0: a
         }), (a) => ({
@@ -28146,7 +28715,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerHealOther":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse133, (a) => ({
+        _0: makeParsers2(packetName5, parse136, (a) => ({
           TAG: "PlayerHealOther",
           _0: a
         }), (a) => ({
@@ -28157,7 +28726,7 @@ function getParsers2(packetType, fromServer) {
     case "DimensionsUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse13, (a) => ({
+        _0: makeParsers2(packetName5, parse13, (a) => ({
           TAG: "DimensionsUpdate",
           _0: a
         }), (a) => ({
@@ -28174,7 +28743,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse101, (a) => ({
+          _0: makeParsers2(packetName5, parse101, (a) => ({
             TAG: "ClientUuid",
             _0: a
           }), (a) => ({
@@ -28186,7 +28755,7 @@ function getParsers2(packetType, fromServer) {
     case "ChestName":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse111, (a) => ({
+        _0: makeParsers2(packetName5, parse113, (a) => ({
           TAG: "ChestName",
           _0: a
         }), (a) => ({
@@ -28203,7 +28772,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse164, (a) => ({
+          _0: makeParsers2(packetName5, parse166, (a) => ({
             TAG: "NpcCatch",
             _0: a
           }), (a) => ({
@@ -28221,7 +28790,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse119, (a) => ({
+          _0: makeParsers2(packetName5, parse122, (a) => ({
             TAG: "NpcRelease",
             _0: a
           }), (a) => ({
@@ -28234,7 +28803,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse70, (a) => ({
+          _0: makeParsers2(packetName5, parse70, (a) => ({
             TAG: "TravellingMerchantInventory",
             _0: a
           }), (a) => ({
@@ -28251,7 +28820,7 @@ function getParsers2(packetType, fromServer) {
     case "TeleportationPotion":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse55, (a) => ({
+        _0: makeParsers2(packetName5, parse55, (a) => ({
           TAG: "TeleportationPotion",
           _0: a
         }), (a) => ({
@@ -28263,7 +28832,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse, (a) => ({
+          _0: makeParsers2(packetName5, parse, (a) => ({
             TAG: "AnglerQuest",
             _0: a
           }), (a) => ({
@@ -28286,7 +28855,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse2, (a) => ({
+          _0: makeParsers2(packetName5, parse2, (a) => ({
             TAG: "AnglerQuestComplete",
             _0: a
           }), (a) => ({
@@ -28298,7 +28867,7 @@ function getParsers2(packetType, fromServer) {
     case "AnglerQuestsCompletedAmount":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse160, (a) => ({
+        _0: makeParsers2(packetName5, parse162, (a) => ({
           TAG: "AnglerQuestsCompletedAmount",
           _0: a
         }), (a) => ({
@@ -28310,7 +28879,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse56, (a) => ({
+          _0: makeParsers2(packetName5, parse56, (a) => ({
             TAG: "TemporaryAnimationCreate",
             _0: a
           }), (a) => ({
@@ -28328,7 +28897,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse16, (a) => ({
+          _0: makeParsers2(packetName5, parse16, (a) => ({
             TAG: "InvasionProgressReport",
             _0: a
           }), (a) => ({
@@ -28345,7 +28914,7 @@ function getParsers2(packetType, fromServer) {
     case "ObjectPlace":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse35, (a) => ({
+        _0: makeParsers2(packetName5, parse35, (a) => ({
           TAG: "ObjectPlace",
           _0: a
         }), (a) => ({
@@ -28357,7 +28926,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse40, (a) => ({
+          _0: makeParsers2(packetName5, parse40, (a) => ({
             TAG: "PlayerChestIndexSync",
             _0: a
           }), (a) => ({
@@ -28375,7 +28944,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse144, (a) => ({
+          _0: makeParsers2(packetName5, parse147, (a) => ({
             TAG: "CombatNumberCreate",
             _0: a
           }), (a) => ({
@@ -28392,7 +28961,7 @@ function getParsers2(packetType, fromServer) {
     case "NetModuleLoad":
       return {
         TAG: "Ok",
-        _0: makeParsersWithFromServer2(packetName4, parse173, (a) => ({
+        _0: makeParsersWithFromServer2(packetName5, parse177, (a) => ({
           TAG: "NetModuleLoad",
           _0: a
         }), (a) => ({
@@ -28404,7 +28973,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse30, (a) => ({
+          _0: makeParsers2(packetName5, parse30, (a) => ({
             TAG: "NpcKillCount",
             _0: a
           }), (a) => ({
@@ -28421,7 +28990,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerStealth":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse127, (a) => ({
+        _0: makeParsers2(packetName5, parse129, (a) => ({
           TAG: "PlayerStealth",
           _0: a
         }), (a) => ({
@@ -28432,7 +29001,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemForceIntoNearestChest":
       return {
         TAG: "Ok",
-        _0: makeParsersWithFromServer2(packetName4, parse85, (a) => ({
+        _0: makeParsersWithFromServer2(packetName5, parse85, (a) => ({
           TAG: "ItemForceIntoNearestChest",
           _0: a
         }), (a) => ({
@@ -28444,7 +29013,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse61, (a) => ({
+          _0: makeParsers2(packetName5, parse61, (a) => ({
             TAG: "TileEntityUpdate",
             _0: a
           }), (a) => ({
@@ -28467,7 +29036,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse60, (a) => ({
+          _0: makeParsers2(packetName5, parse60, (a) => ({
             TAG: "TileEntityPlace",
             _0: a
           }), (a) => ({
@@ -28480,7 +29049,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse129, (a) => ({
+          _0: makeParsers2(packetName5, parse178, (a) => ({
             TAG: "ItemDropModify",
             _0: a
           }), (a) => ({
@@ -28503,7 +29072,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse130, (a) => ({
+          _0: makeParsers2(packetName5, parse133, (a) => ({
             TAG: "ItemFramePlace",
             _0: a
           }), (a) => ({
@@ -28515,7 +29084,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemDropInstancedUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse179, (a) => ({
+        _0: makeParsers2(packetName5, parse185, (a) => ({
           TAG: "ItemDropInstancedUpdate",
           _0: a
         }), (a) => ({
@@ -28527,7 +29096,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse122, (a) => ({
+          _0: makeParsers2(packetName5, parse172, (a) => ({
             TAG: "EmoteBubble",
             _0: a
           }), (a) => ({
@@ -28544,7 +29113,7 @@ function getParsers2(packetType, fromServer) {
     case "ExtraValueSync":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse14, (a) => ({
+        _0: makeParsers2(packetName5, parse14, (a) => ({
           TAG: "ExtraValueSync",
           _0: a
         }), (a) => ({
@@ -28555,7 +29124,7 @@ function getParsers2(packetType, fromServer) {
     case "SocialHandshake":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse51, (a) => ({
+        _0: makeParsers2(packetName5, parse51, (a) => ({
           TAG: "SocialHandshake",
           _0: a
         }), (a) => ({
@@ -28566,7 +29135,7 @@ function getParsers2(packetType, fromServer) {
     case "Unused":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse80, (a) => ({
+        _0: makeParsers2(packetName5, parse80, (a) => ({
           TAG: "Unused",
           _0: a
         }), (a) => ({
@@ -28583,7 +29152,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse120, (a) => ({
+          _0: makeParsers2(packetName5, parse123, (a) => ({
             TAG: "PortalKill",
             _0: a
           }), (a) => ({
@@ -28595,7 +29164,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerTeleportPortal":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse150, (a) => ({
+        _0: makeParsers2(packetName5, parse152, (a) => ({
           TAG: "PlayerTeleportPortal",
           _0: a
         }), (a) => ({
@@ -28607,7 +29176,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse154, (a) => ({
+          _0: makeParsers2(packetName5, parse156, (a) => ({
             TAG: "NpcKilledNotification",
             _0: a
           }), (a) => ({
@@ -28625,7 +29194,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse138, (a) => ({
+          _0: makeParsers2(packetName5, parse141, (a) => ({
             TAG: "EventNotification",
             _0: a
           }), (a) => ({
@@ -28642,7 +29211,7 @@ function getParsers2(packetType, fromServer) {
     case "MinionTargetUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse145, (a) => ({
+        _0: makeParsers2(packetName5, parse148, (a) => ({
           TAG: "MinionTargetUpdate",
           _0: a
         }), (a) => ({
@@ -28653,7 +29222,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcTeleportPortal":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse34, (a) => ({
+        _0: makeParsers2(packetName5, parse34, (a) => ({
           TAG: "NpcTeleportPortal",
           _0: a
         }), (a) => ({
@@ -28665,7 +29234,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse155, (a) => ({
+          _0: makeParsers2(packetName5, parse157, (a) => ({
             TAG: "ShieldStrengthsUpdate",
             _0: a
           }), (a) => ({
@@ -28682,7 +29251,7 @@ function getParsers2(packetType, fromServer) {
     case "NebulaLevelUp":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse126, (a) => ({
+        _0: makeParsers2(packetName5, parse128, (a) => ({
           TAG: "NebulaLevelUp",
           _0: a
         }), (a) => ({
@@ -28694,7 +29263,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse141, (a) => ({
+          _0: makeParsers2(packetName5, parse144, (a) => ({
             TAG: "MoonLordCountdown",
             _0: a
           }), (a) => ({
@@ -28712,7 +29281,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse32, (a) => ({
+          _0: makeParsers2(packetName5, parse32, (a) => ({
             TAG: "NpcShopItem",
             _0: a
           }), (a) => ({
@@ -28735,7 +29304,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse125, (a) => ({
+          _0: makeParsers2(packetName5, parse127, (a) => ({
             TAG: "GemLockToggle",
             _0: a
           }), (a) => ({
@@ -28748,7 +29317,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse50, (a) => ({
+          _0: makeParsers2(packetName5, parse50, (a) => ({
             TAG: "SmokePoof",
             _0: a
           }), (a) => ({
@@ -28766,7 +29335,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse4, (a) => ({
+          _0: makeParsers2(packetName5, parse4, (a) => ({
             TAG: "ChatMessageSmart",
             _0: a
           }), (a) => ({
@@ -28784,7 +29353,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse75, (a) => ({
+          _0: makeParsers2(packetName5, parse75, (a) => ({
             TAG: "WiredCannonShot",
             _0: a
           }), (a) => ({
@@ -28807,7 +29376,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse140, (a) => ({
+          _0: makeParsers2(packetName5, parse143, (a) => ({
             TAG: "MassWireOperation",
             _0: a
           }), (a) => ({
@@ -28820,7 +29389,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse149, (a) => ({
+          _0: makeParsers2(packetName5, parse151, (a) => ({
             TAG: "MassWireOperationPay",
             _0: a
           }), (a) => ({
@@ -28843,7 +29412,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse36, (a) => ({
+          _0: makeParsers2(packetName5, parse36, (a) => ({
             TAG: "PartyToggle",
             _0: a
           }), (a) => ({
@@ -28855,7 +29424,7 @@ function getParsers2(packetType, fromServer) {
     case "TreeGrowFx":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse71, (a) => ({
+        _0: makeParsers2(packetName5, parse71, (a) => ({
           TAG: "TreeGrowFx",
           _0: a
         }), (a) => ({
@@ -28872,7 +29441,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse12, (a) => ({
+          _0: makeParsers2(packetName5, parse12, (a) => ({
             TAG: "CrystalInvasionStart",
             _0: a
           }), (a) => ({
@@ -28885,7 +29454,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse156, (a) => ({
+          _0: makeParsers2(packetName5, parse158, (a) => ({
             TAG: "CrystalInvasionWipeAll",
             _0: a
           }), (a) => ({
@@ -28902,7 +29471,7 @@ function getParsers2(packetType, fromServer) {
     case "MinionAttackTargetUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse159, (a) => ({
+        _0: makeParsers2(packetName5, parse161, (a) => ({
           TAG: "MinionAttackTargetUpdate",
           _0: a
         }), (a) => ({
@@ -28914,7 +29483,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse161, (a) => ({
+          _0: makeParsers2(packetName5, parse163, (a) => ({
             TAG: "CrystalInvasionSendWaitTime",
             _0: a
           }), (a) => ({
@@ -28931,7 +29500,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerDamage":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse103, (a) => ({
+        _0: makeParsers2(packetName5, parse174, (a) => ({
           TAG: "PlayerDamage",
           _0: a
         }), (a) => ({
@@ -28942,7 +29511,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerDeath":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse42, (a) => ({
+        _0: makeParsers2(packetName5, parse42, (a) => ({
           TAG: "PlayerDeath",
           _0: a
         }), (a) => ({
@@ -28954,7 +29523,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse135, (a) => ({
+          _0: makeParsers2(packetName5, parse138, (a) => ({
             TAG: "CombatTextCreate",
             _0: a
           }), (a) => ({
@@ -28977,7 +29546,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse108, (a) => ({
+          _0: makeParsers2(packetName5, parse108, (a) => ({
             TAG: "Emoji",
             _0: a
           }), (a) => ({
@@ -28989,7 +29558,7 @@ function getParsers2(packetType, fromServer) {
     case "TileEntityDisplayDollItemSync":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse57, (a) => ({
+        _0: makeParsers2(packetName5, parse57, (a) => ({
           TAG: "TileEntityDisplayDollItemSync",
           _0: a
         }), (a) => ({
@@ -29000,7 +29569,7 @@ function getParsers2(packetType, fromServer) {
     case "TileEntityInteractionRequest":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse59, (a) => ({
+        _0: makeParsers2(packetName5, parse59, (a) => ({
           TAG: "TileEntityInteractionRequest",
           _0: a
         }), (a) => ({
@@ -29017,7 +29586,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse74, (a) => ({
+          _0: makeParsers2(packetName5, parse74, (a) => ({
             TAG: "WeaponsRackTryPlacing",
             _0: a
           }), (a) => ({
@@ -29029,7 +29598,7 @@ function getParsers2(packetType, fromServer) {
     case "TileEntityHatRackItemSync":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse58, (a) => ({
+        _0: makeParsers2(packetName5, parse58, (a) => ({
           TAG: "TileEntityHatRackItemSync",
           _0: a
         }), (a) => ({
@@ -29040,7 +29609,7 @@ function getParsers2(packetType, fromServer) {
     case "TilePickingSync":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse64, (a) => ({
+        _0: makeParsers2(packetName5, parse64, (a) => ({
           TAG: "TilePickingSync",
           _0: a
         }), (a) => ({
@@ -29052,7 +29621,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse142, (a) => ({
+          _0: makeParsers2(packetName5, parse145, (a) => ({
             TAG: "RevengeMarkerSync",
             _0: a
           }), (a) => ({
@@ -29070,7 +29639,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse148, (a) => ({
+          _0: makeParsers2(packetName5, parse150, (a) => ({
             TAG: "RevengeMarkerRemove",
             _0: a
           }), (a) => ({
@@ -29087,7 +29656,7 @@ function getParsers2(packetType, fromServer) {
     case "GolfBallLandInCup":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse139, (a) => ({
+        _0: makeParsers2(packetName5, parse142, (a) => ({
           TAG: "GolfBallLandInCup",
           _0: a
         }), (a) => ({
@@ -29099,7 +29668,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse8, (a) => ({
+          _0: makeParsers2(packetName5, parse8, (a) => ({
             TAG: "ClientFinishConnectingToServer",
             _0: a
           }), (a) => ({
@@ -29122,7 +29691,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse28, (a) => ({
+          _0: makeParsers2(packetName5, parse28, (a) => ({
             TAG: "NpcFishOut",
             _0: a
           }), (a) => ({
@@ -29135,7 +29704,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse114, (a) => ({
+          _0: makeParsers2(packetName5, parse116, (a) => ({
             TAG: "NpcTamper",
             _0: a
           }), (a) => ({
@@ -29153,7 +29722,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse132, (a) => ({
+          _0: makeParsers2(packetName5, parse135, (a) => ({
             TAG: "LegacySoundPlay",
             _0: a
           }), (a) => ({
@@ -29176,7 +29745,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse153, (a) => ({
+          _0: makeParsers2(packetName5, parse155, (a) => ({
             TAG: "FoodPlatterTryPlacing",
             _0: a
           }), (a) => ({
@@ -29188,7 +29757,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerLuckFactorsUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse90, (a) => ({
+        _0: makeParsers2(packetName5, parse90, (a) => ({
           TAG: "PlayerLuckFactorsUpdate",
           _0: a
         }), (a) => ({
@@ -29200,7 +29769,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse41, (a) => ({
+          _0: makeParsers2(packetName5, parse41, (a) => ({
             TAG: "PlayerDead",
             _0: a
           }), (a) => ({
@@ -29217,7 +29786,7 @@ function getParsers2(packetType, fromServer) {
     case "CavernMonsterTypeSync":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse151, (a) => ({
+        _0: makeParsers2(packetName5, parse153, (a) => ({
           TAG: "CavernMonsterTypeSync",
           _0: a
         }), (a) => ({
@@ -29234,7 +29803,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse25, (a) => ({
+          _0: makeParsers2(packetName5, parse25, (a) => ({
             TAG: "NpcBuffRemovalRequest",
             _0: a
           }), (a) => ({
@@ -29252,7 +29821,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse152, (a) => ({
+          _0: makeParsers2(packetName5, parse154, (a) => ({
             TAG: "ClientSyncedInventory",
             _0: a
           }), (a) => ({
@@ -29264,7 +29833,7 @@ function getParsers2(packetType, fromServer) {
     case "CountsAsHostForGameplaySet":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse10, (a) => ({
+        _0: makeParsers2(packetName5, parse10, (a) => ({
           TAG: "CountsAsHostForGameplaySet",
           _0: a
         }), (a) => ({
@@ -29275,7 +29844,7 @@ function getParsers2(packetType, fromServer) {
     case "CreditsOrSlimeTransform":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse11, (a) => ({
+        _0: makeParsers2(packetName5, parse11, (a) => ({
           TAG: "CreditsOrSlimeTransform",
           _0: a
         }), (a) => ({
@@ -29286,7 +29855,7 @@ function getParsers2(packetType, fromServer) {
     case "LucyAxeMessage":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse131, (a) => ({
+        _0: makeParsers2(packetName5, parse134, (a) => ({
           TAG: "LucyAxeMessage",
           _0: a
         }), (a) => ({
@@ -29297,7 +29866,7 @@ function getParsers2(packetType, fromServer) {
     case "PiggyBankVoidLensUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse181, (a) => ({
+        _0: makeParsers2(packetName5, parse187, (a) => ({
           TAG: "PiggyBankVoidLensUpdate",
           _0: a
         }), (a) => ({
@@ -29308,7 +29877,7 @@ function getParsers2(packetType, fromServer) {
     case "DungeonDefendersEventAttemptSkipWait":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse162, (a) => ({
+        _0: makeParsers2(packetName5, parse164, (a) => ({
           TAG: "DungeonDefendersEventAttemptSkipWait",
           _0: a
         }), (a) => ({
@@ -29319,7 +29888,7 @@ function getParsers2(packetType, fromServer) {
     case "HaveDryadDoStardewAnimation":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse15, (a) => ({
+        _0: makeParsers2(packetName5, parse15, (a) => ({
           TAG: "HaveDryadDoStardewAnimation",
           _0: a
         }), (a) => ({
@@ -29330,7 +29899,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemDropShimmeredUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse17, (a) => ({
+        _0: makeParsers2(packetName5, parse17, (a) => ({
           TAG: "ItemDropShimmeredUpdate",
           _0: a
         }), (a) => ({
@@ -29341,7 +29910,7 @@ function getParsers2(packetType, fromServer) {
     case "ShimmerEffectOrCoinLuck":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse47, (a) => ({
+        _0: makeParsers2(packetName5, parse47, (a) => ({
           TAG: "ShimmerEffectOrCoinLuck",
           _0: a
         }), (a) => ({
@@ -29352,7 +29921,7 @@ function getParsers2(packetType, fromServer) {
     case "LoadoutSwitch":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse21, (a) => ({
+        _0: makeParsers2(packetName5, parse21, (a) => ({
           TAG: "LoadoutSwitch",
           _0: a
         }), (a) => ({
@@ -29363,7 +29932,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemDropProtectedUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse180, (a) => ({
+        _0: makeParsers2(packetName5, parse186, (a) => ({
           TAG: "ItemDropProtectedUpdate",
           _0: a
         }), (a) => ({
@@ -29374,7 +29943,7 @@ function getParsers2(packetType, fromServer) {
     case "DeadCellsDisplayJarTryPlacing":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse79, (a) => ({
+        _0: makeParsers2(packetName5, parse79, (a) => ({
           TAG: "DeadCellsDisplayJarTryPlacing",
           _0: a
         }), (a) => ({
@@ -29385,7 +29954,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerSpectate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse91, (a) => ({
+        _0: makeParsers2(packetName5, parse91, (a) => ({
           TAG: "PlayerSpectate",
           _0: a
         }), (a) => ({
@@ -29396,7 +29965,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemDropClear":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse83, (a) => ({
+        _0: makeParsers2(packetName5, parse83, (a) => ({
           TAG: "ItemDropClear",
           _0: a
         }), (a) => ({
@@ -29407,7 +29976,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerItemUseSound":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse89, (a) => ({
+        _0: makeParsers2(packetName5, parse89, (a) => ({
           TAG: "PlayerItemUseSound",
           _0: a
         }), (a) => ({
@@ -29418,7 +29987,7 @@ function getParsers2(packetType, fromServer) {
     case "NpcHurtByDebuff":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse87, (a) => ({
+        _0: makeParsers2(packetName5, parse87, (a) => ({
           TAG: "NpcHurtByDebuff",
           _0: a
         }), (a) => ({
@@ -29429,7 +29998,7 @@ function getParsers2(packetType, fromServer) {
     case "Ping":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse88, (a) => ({
+        _0: makeParsers2(packetName5, parse88, (a) => ({
           TAG: "Ping",
           _0: a
         }), (a) => ({
@@ -29440,7 +30009,7 @@ function getParsers2(packetType, fromServer) {
     case "ChestResize":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse78, (a) => ({
+        _0: makeParsers2(packetName5, parse78, (a) => ({
           TAG: "ChestResize",
           _0: a
         }), (a) => ({
@@ -29451,7 +30020,7 @@ function getParsers2(packetType, fromServer) {
     case "LeashedEntityAnchorInsertItem":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse86, (a) => ({
+        _0: makeParsers2(packetName5, parse86, (a) => ({
           TAG: "LeashedEntityAnchorInsertItem",
           _0: a
         }), (a) => ({
@@ -29462,7 +30031,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerTeamUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse93, (a) => ({
+        _0: makeParsers2(packetName5, parse93, (a) => ({
           TAG: "PlayerTeamUpdate",
           _0: a
         }), (a) => ({
@@ -29473,7 +30042,7 @@ function getParsers2(packetType, fromServer) {
     case "PlayerTeamSwapSpawn":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse92, (a) => ({
+        _0: makeParsers2(packetName5, parse92, (a) => ({
           TAG: "PlayerTeamSwapSpawn",
           _0: a
         }), (a) => ({
@@ -29484,7 +30053,7 @@ function getParsers2(packetType, fromServer) {
     case "SectionRequest":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse94, (a) => ({
+        _0: makeParsers2(packetName5, parse94, (a) => ({
           TAG: "SectionRequest",
           _0: a
         }), (a) => ({
@@ -29495,7 +30064,7 @@ function getParsers2(packetType, fromServer) {
     case "ItemDropPosition":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse84, (a) => ({
+        _0: makeParsers2(packetName5, parse84, (a) => ({
           TAG: "ItemDropPosition",
           _0: a
         }), (a) => ({
@@ -29506,7 +30075,7 @@ function getParsers2(packetType, fromServer) {
     case "HostToken":
       return {
         TAG: "Ok",
-        _0: makeParsers2(packetName4, parse81, (a) => ({
+        _0: makeParsers2(packetName5, parse81, (a) => ({
           TAG: "HostToken",
           _0: a
         }), (a) => ({
@@ -29518,7 +30087,7 @@ function getParsers2(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse169, (a) => ({
+          _0: makeParsers2(packetName5, parse171, (a) => ({
             TAG: "ServerInfo",
             _0: a
           }), (a) => ({
@@ -29541,7 +30110,7 @@ function getParsers2(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers2(packetName4, parse178, (a) => ({
+          _0: makeParsers2(packetName5, parse184, (a) => ({
             TAG: "PlayerPlatformInfo",
             _0: a
           }), (a) => ({
@@ -29552,7 +30121,7 @@ function getParsers2(packetType, fromServer) {
       }
   }
 }
-function parse182(buffer, fromServer, ignoreOpt) {
+function parse188(buffer, fromServer, ignoreOpt) {
   let ignore = ignoreOpt !== void 0 ? ignoreOpt : [];
   let match = buffer.length;
   if (!(match > 2 || match < 0)) {
@@ -29659,17 +30228,17 @@ function parseLazy2(buffer, fromServer) {
 // src/ParserV1457.js
 var ParserV1457_exports = {};
 __export(ParserV1457_exports, {
-  parse: () => parse184,
+  parse: () => parse191,
   parseLazy: () => parseLazy3
 });
 
 // src/packetv1457/PacketV1457_WorldInfo.js
 var PacketV1457_WorldInfo_exports = {};
 __export(PacketV1457_WorldInfo_exports, {
-  Decode: () => Decode39,
-  Encode: () => Encode39,
-  parse: () => parse183,
-  toBuffer: () => toBuffer177
+  Decode: () => Decode37,
+  Encode: () => Encode37,
+  parse: () => parse189,
+  toBuffer: () => toBuffer183
 });
 function readEventInfo3(reader) {
   let e = readByte(reader, "eventInfo1");
@@ -29888,7 +30457,7 @@ function readEventInfo3(reader) {
     }
   };
 }
-function parse183(payload) {
+function parse189(payload) {
   let reader = new packetreader_default(payload);
   let e = readInt32(reader, "time");
   if (e.TAG !== "Ok") {
@@ -30333,7 +30902,7 @@ function parse183(payload) {
     return e$77;
   }
 }
-var Decode39 = {
+var Decode37 = {
   readByte,
   readInt16,
   readInt32,
@@ -30343,7 +30912,7 @@ var Decode39 = {
   readSingle,
   readSByte,
   readEventInfo: readEventInfo3,
-  parse: parse183
+  parse: parse189
 };
 function packEventInfo3(writer, eventInfo) {
   let eventInfo1 = fromFlags(eventInfo.shadowOrbSmashed, eventInfo.killedBoss1, eventInfo.killedBoss2, eventInfo.killedBoss3, eventInfo.hardMode, eventInfo.killedClown, eventInfo.serverSidedCharacters, eventInfo.killedPlantBoss);
@@ -30366,46 +30935,57 @@ function packExtraSpawnPoints3(writer, extraSpawnPoints) {
   });
   return writer$1;
 }
-function toBuffer177(self) {
+function toBuffer183(self) {
   return data(packExtraSpawnPoints3(packSingle(packUInt64(packSByte(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packByte(packEventInfo3(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packUInt64(packBytes(packByte(packString(packInt32(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packInt32(setType(make(), toInt5("WorldInfo")), self.time, "time"), self.dayAndMoonInfo, "dayAndMoonInfo"), self.moonPhase, "moonPhase"), self.maxTilesX, "maxTilesX"), self.maxTilesY, "maxTilesY"), self.spawnX, "spawnX"), self.spawnY, "spawnY"), self.worldSurface, "worldSurface"), self.rockLayer, "rockLayer"), self.worldId, "worldId"), self.worldName, "worldName"), self.gameMode, "gameMode"), asArray(self.worldUniqueId), "worldUniqueId"), self.worldGeneratorVersion, "worldGeneratorVersion"), self.moonType, "moonType"), self.treeBackground, "treeBackground"), self.treeBackground2, "treeBackground2"), self.treeBackground3, "treeBackground3"), self.treeBackground4, "treeBackground4"), self.corruptionBackground, "corruptionBackground"), self.jungleBackground, "jungleBackground"), self.snowBackground, "snowBackground"), self.hallowBackground, "hallowBackground"), self.crimsonBackground, "crimsonBackground"), self.desertBackground, "desertBackground"), self.oceanBackground, "oceanBackground"), self.mushroomBackground, "mushroomBackground"), self.underworldBackground, "underworldBackground"), self.iceBackStyle, "iceBackStyle"), self.jungleBackStyle, "jungleBackStyle"), self.hellBackStyle, "hellBackStyle"), self.windSpeedSet, "windSpeedSet"), self.cloudNumber, "cloudNumber"), self.tree1, "tree1"), self.tree2, "tree2"), self.tree3, "tree3"), self.treeStyle1, "treeStyle1"), self.treeStyle2, "treeStyle2"), self.treeStyle3, "treeStyle3"), self.treeStyle4, "treeStyle4"), self.caveBack1, "caveBack1"), self.caveBack2, "caveBack2"), self.caveBack3, "caveBack3"), self.caveBackStyle1, "caveBackStyle1"), self.caveBackStyle2, "caveBackStyle2"), self.caveBackStyle3, "caveBackStyle3"), self.caveBackStyle4, "caveBackStyle4"), self.forest1TreeTopStyle, "forest1TreeTopStyle"), self.forest2TreeTopStyle, "forest2TreeTopStyle"), self.forest3TreeTopStyle, "forest3TreeTopStyle"), self.forest4TreeTopStyle, "forest4TreeTopStyle"), self.corruptionTreeTopStyle, "corruptionTreeTopStyle"), self.jungleTreeTopStyle, "jungleTreeTopStyle"), self.snowTreeTopStyle, "snowTreeTopStyle"), self.hallowTreeTopStyle, "hallowTreeTopStyle"), self.crimsonTreeTopStyle, "crimsonTreeTopStyle"), self.desertTreeTopStyle, "desertTreeTopStyle"), self.oceanTreeTopStyle, "oceanTreeTopStyle"), self.glowingMushroomTreeTopStyle, "glowingMushroomTreeTopStyle"), self.underworldTreeTopStyle, "underworldTreeTopStyle"), self.rain, "rain"), self.eventInfo), toByte(fromFlags(self.lowTiles, self.forceHalloweenForever, self.forceChristmasForever, self.moreLightningSeed, self.noLightningSeed, false, false, false)), "worldFlags"), self.sundialCooldown, "sundialCooldown"), self.moondialCooldown, "moondialCooldown"), self.copperOreTier, "copperOreTier"), self.ironOreTier, "ironOreTier"), self.silverOreTier, "silverOreTier"), self.goldOreTier, "goldOreTier"), self.cobaltOreTier, "cobaltOreTier"), self.mythrilOreTier, "mythrilOreTier"), self.adamantiteOreTier, "adamantiteOreTier"), self.invasionType, "invasionType"), self.lobbyId, "lobbyId"), self.sandstormSeverity, "sandstormSeverity"), self.extraSpawnPoints));
 }
-var Encode39 = {
+var Encode37 = {
   packInt16,
   packByte,
   packEventInfo: packEventInfo3,
   packExtraSpawnPoints: packExtraSpawnPoints3,
-  toBuffer: toBuffer177
+  toBuffer: toBuffer183
 };
 
-// src/ParserV1457.js
-function addPacketContext3(packetName4, err) {
+// src/packetv1457/PacketV1457_ServerInfo.js
+function parse190(_payload) {
   return {
-    context: "PacketV1457 " + packetName4 + ": " + err.context,
+    TAG: "Ok",
+    _0: void 0
+  };
+}
+function toBuffer184(_self) {
+  return data(setType(make(), toInt5("ServerInfo")));
+}
+
+// src/ParserV1457.js
+function addPacketContext3(packetName5, err) {
+  return {
+    context: "PacketV1457 " + packetName5 + ": " + err.context,
     error: err.error
   };
 }
-function mapPacket3(result, packetName4, fn) {
+function mapPacket3(result, packetName5, fn) {
   return mapError(map(result, fn), (e) => ({
     TAG: "ReaderError",
-    _0: addPacketContext3(packetName4, e)
+    _0: addPacketContext3(packetName5, e)
   }));
 }
-function makeParsers3(packetName4, parse185, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, _fromServer) => mapPacket3(parse185(payload), packetName4, toPacket);
+function makeParsers3(packetName5, parse194, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, _fromServer) => mapPacket3(parse194(payload), packetName5, toPacket);
   let parseLazyWrapped = (payload, _fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse185(payload), (e) => addPacketContext3(packetName4, e))))
+    _0: toLazyPacket(make4(() => mapError(parse194(payload), (e) => addPacketContext3(packetName5, e))))
   });
   return {
     parse: parseWrapped,
     parseLazy: parseLazyWrapped
   };
 }
-function makeParsersWithFromServer3(packetName4, parse185, toPacket, toLazyPacket) {
-  let parseWrapped = (payload, fromServer) => mapPacket3(parse185(payload, fromServer), packetName4, toPacket);
+function makeParsersWithFromServer3(packetName5, parse194, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, fromServer) => mapPacket3(parse194(payload, fromServer), packetName5, toPacket);
   let parseLazyWrapped = (payload, fromServer) => ({
     TAG: "Ok",
-    _0: toLazyPacket(make4(() => mapError(parse185(payload, fromServer), (e) => addPacketContext3(packetName4, e))))
+    _0: toLazyPacket(make4(() => mapError(parse194(payload, fromServer), (e) => addPacketContext3(packetName5, e))))
   });
   return {
     parse: parseWrapped,
@@ -30413,7 +30993,7 @@ function makeParsersWithFromServer3(packetName4, parse185, toPacket, toLazyPacke
   };
 }
 function getParsers3(packetType, fromServer) {
-  let packetName4 = packetName2(packetType);
+  let packetName5 = packetName2(packetType);
   switch (packetType) {
     case "ConnectRequest":
       if (fromServer) {
@@ -30424,7 +31004,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse9, (a) => ({
+          _0: makeParsers3(packetName5, parse9, (a) => ({
             TAG: "ConnectRequest",
             _0: a
           }), (a) => ({
@@ -30437,7 +31017,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse107, (a) => ({
+          _0: makeParsers3(packetName5, parse107, (a) => ({
             TAG: "Disconnect",
             _0: a
           }), (a) => ({
@@ -30455,7 +31035,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse95, (a) => ({
+          _0: makeParsers3(packetName5, parse95, (a) => ({
             TAG: "PlayerSlotSet",
             _0: a
           }), (a) => ({
@@ -30472,7 +31052,7 @@ function getParsers3(packetType, fromServer) {
     case "PlayerInfo":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse97, (a) => ({
+        _0: makeParsers3(packetName5, parse97, (a) => ({
           TAG: "PlayerInfo",
           _0: a
         }), (a) => ({
@@ -30483,7 +31063,7 @@ function getParsers3(packetType, fromServer) {
     case "PlayerInventorySlot":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse99, (a) => ({
+        _0: makeParsers3(packetName5, parse99, (a) => ({
           TAG: "PlayerInventorySlot",
           _0: a
         }), (a) => ({
@@ -30500,7 +31080,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse76, (a) => ({
+          _0: makeParsers3(packetName5, parse76, (a) => ({
             TAG: "WorldDataRequest",
             _0: a
           }), (a) => ({
@@ -30513,7 +31093,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse183, (a) => ({
+          _0: makeParsers3(packetName5, parse189, (a) => ({
             TAG: "WorldInfo",
             _0: a
           }), (a) => ({
@@ -30536,7 +31116,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse82, (a) => ({
+          _0: makeParsers3(packetName5, parse82, (a) => ({
             TAG: "InitialTileSectionsRequest",
             _0: a
           }), (a) => ({
@@ -30549,7 +31129,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse52, (a) => ({
+          _0: makeParsers3(packetName5, parse52, (a) => ({
             TAG: "Status",
             _0: a
           }), (a) => ({
@@ -30567,7 +31147,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse$13, (a) => ({
+          _0: makeParsers3(packetName5, parse$13, (a) => ({
             TAG: "TileSectionSend",
             _0: a
           }), (a) => ({
@@ -30585,7 +31165,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse65, (a) => ({
+          _0: makeParsers3(packetName5, parse65, (a) => ({
             TAG: "TileSectionFrame",
             _0: a
           }), (a) => ({
@@ -30602,7 +31182,7 @@ function getParsers3(packetType, fromServer) {
     case "PlayerSpawn":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse98, (a) => ({
+        _0: makeParsers3(packetName5, parse98, (a) => ({
           TAG: "PlayerSpawn",
           _0: a
         }), (a) => ({
@@ -30613,7 +31193,7 @@ function getParsers3(packetType, fromServer) {
     case "PlayerUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse96, (a) => ({
+        _0: makeParsers3(packetName5, parse96, (a) => ({
           TAG: "PlayerUpdate",
           _0: a
         }), (a) => ({
@@ -30625,7 +31205,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse105, (a) => ({
+          _0: makeParsers3(packetName5, parse105, (a) => ({
             TAG: "PlayerActive",
             _0: a
           }), (a) => ({
@@ -30642,7 +31222,7 @@ function getParsers3(packetType, fromServer) {
     case "PlayerHealth":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse100, (a) => ({
+        _0: makeParsers3(packetName5, parse100, (a) => ({
           TAG: "PlayerHealth",
           _0: a
         }), (a) => ({
@@ -30653,7 +31233,7 @@ function getParsers3(packetType, fromServer) {
     case "TileModify":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse62, (a) => ({
+        _0: makeParsers3(packetName5, parse62, (a) => ({
           TAG: "TileModify",
           _0: a
         }), (a) => ({
@@ -30665,7 +31245,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse69, (a) => ({
+          _0: makeParsers3(packetName5, parse69, (a) => ({
             TAG: "TimeSet",
             _0: a
           }), (a) => ({
@@ -30682,7 +31262,7 @@ function getParsers3(packetType, fromServer) {
     case "DoorUse":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse109, (a) => ({
+        _0: makeParsers3(packetName5, parse111, (a) => ({
           TAG: "DoorUse",
           _0: a
         }), (a) => ({
@@ -30693,7 +31273,7 @@ function getParsers3(packetType, fromServer) {
     case "TileSquareSend":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse68, (a) => ({
+        _0: makeParsers3(packetName5, parse68, (a) => ({
           TAG: "TileSquareSend",
           _0: a
         }), (a) => ({
@@ -30704,7 +31284,7 @@ function getParsers3(packetType, fromServer) {
     case "ItemDropUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse18, (a) => ({
+        _0: makeParsers3(packetName5, parse18, (a) => ({
           TAG: "ItemDropUpdate",
           _0: a
         }), (a) => ({
@@ -30715,7 +31295,7 @@ function getParsers3(packetType, fromServer) {
     case "ItemOwner":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse19, (a) => ({
+        _0: makeParsers3(packetName5, parse19, (a) => ({
           TAG: "ItemOwner",
           _0: a
         }), (a) => ({
@@ -30727,7 +31307,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse106, (a) => ({
+          _0: makeParsers3(packetName5, parse106, (a) => ({
             TAG: "NpcUpdate",
             _0: a
           }), (a) => ({
@@ -30744,7 +31324,7 @@ function getParsers3(packetType, fromServer) {
     case "ProjectileSync":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse102, (a) => ({
+        _0: makeParsers3(packetName5, parse102, (a) => ({
           TAG: "ProjectileSync",
           _0: a
         }), (a) => ({
@@ -30755,7 +31335,7 @@ function getParsers3(packetType, fromServer) {
     case "NpcStrike":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse115, (a) => ({
+        _0: makeParsers3(packetName5, parse117, (a) => ({
           TAG: "NpcStrike",
           _0: a
         }), (a) => ({
@@ -30766,7 +31346,7 @@ function getParsers3(packetType, fromServer) {
     case "ProjectileDestroy":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse143, (a) => ({
+        _0: makeParsers3(packetName5, parse146, (a) => ({
           TAG: "ProjectileDestroy",
           _0: a
         }), (a) => ({
@@ -30777,7 +31357,7 @@ function getParsers3(packetType, fromServer) {
     case "PvpToggle":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse46, (a) => ({
+        _0: makeParsers3(packetName5, parse46, (a) => ({
           TAG: "PvpToggle",
           _0: a
         }), (a) => ({
@@ -30794,7 +31374,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse112, (a) => ({
+          _0: makeParsers3(packetName5, parse114, (a) => ({
             TAG: "ChestOpen",
             _0: a
           }), (a) => ({
@@ -30806,7 +31386,7 @@ function getParsers3(packetType, fromServer) {
     case "ChestItem":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse5, (a) => ({
+        _0: makeParsers3(packetName5, parse5, (a) => ({
           TAG: "ChestItem",
           _0: a
         }), (a) => ({
@@ -30817,7 +31397,7 @@ function getParsers3(packetType, fromServer) {
     case "ActiveContainerSync":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse147, (a) => ({
+        _0: makeParsers3(packetName5, parse149, (a) => ({
           TAG: "ActiveContainerSync",
           _0: a
         }), (a) => ({
@@ -30828,7 +31408,7 @@ function getParsers3(packetType, fromServer) {
     case "ChestPlace":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse7, (a) => ({
+        _0: makeParsers3(packetName5, parse7, (a) => ({
           TAG: "ChestPlace",
           _0: a
         }), (a) => ({
@@ -30839,7 +31419,7 @@ function getParsers3(packetType, fromServer) {
     case "HealEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse116, (a) => ({
+        _0: makeParsers3(packetName5, parse119, (a) => ({
           TAG: "HealEffect",
           _0: a
         }), (a) => ({
@@ -30850,7 +31430,7 @@ function getParsers3(packetType, fromServer) {
     case "Zones":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse77, (a) => ({
+        _0: makeParsers3(packetName5, parse77, (a) => ({
           TAG: "Zones",
           _0: a
         }), (a) => ({
@@ -30862,7 +31442,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse137, (a) => ({
+          _0: makeParsers3(packetName5, parse140, (a) => ({
             TAG: "PasswordRequired",
             _0: a
           }), (a) => ({
@@ -30885,7 +31465,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse123, (a) => ({
+          _0: makeParsers3(packetName5, parse125, (a) => ({
             TAG: "PasswordSend",
             _0: a
           }), (a) => ({
@@ -30897,7 +31477,7 @@ function getParsers3(packetType, fromServer) {
     case "ItemOwnerRemove":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse20, (a) => ({
+        _0: makeParsers3(packetName5, parse20, (a) => ({
           TAG: "ItemOwnerRemove",
           _0: a
         }), (a) => ({
@@ -30908,7 +31488,7 @@ function getParsers3(packetType, fromServer) {
     case "NpcTalk":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse33, (a) => ({
+        _0: makeParsers3(packetName5, parse33, (a) => ({
           TAG: "NpcTalk",
           _0: a
         }), (a) => ({
@@ -30919,7 +31499,7 @@ function getParsers3(packetType, fromServer) {
     case "PlayerAnimation":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse37, (a) => ({
+        _0: makeParsers3(packetName5, parse182, (a) => ({
           TAG: "PlayerAnimation",
           _0: a
         }), (a) => ({
@@ -30930,7 +31510,7 @@ function getParsers3(packetType, fromServer) {
     case "PlayerMana":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse44, (a) => ({
+        _0: makeParsers3(packetName5, parse44, (a) => ({
           TAG: "PlayerMana",
           _0: a
         }), (a) => ({
@@ -30941,7 +31521,7 @@ function getParsers3(packetType, fromServer) {
     case "ManaEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse117, (a) => ({
+        _0: makeParsers3(packetName5, parse120, (a) => ({
           TAG: "ManaEffect",
           _0: a
         }), (a) => ({
@@ -30952,7 +31532,7 @@ function getParsers3(packetType, fromServer) {
     case "PlayerTeam":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse45, (a) => ({
+        _0: makeParsers3(packetName5, parse45, (a) => ({
           TAG: "PlayerTeam",
           _0: a
         }), (a) => ({
@@ -30969,7 +31549,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse49, (a) => ({
+          _0: makeParsers3(packetName5, parse49, (a) => ({
             TAG: "SignRead",
             _0: a
           }), (a) => ({
@@ -30981,7 +31561,7 @@ function getParsers3(packetType, fromServer) {
     case "SignNew":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse48, (a) => ({
+        _0: makeParsers3(packetName5, parse48, (a) => ({
           TAG: "SignNew",
           _0: a
         }), (a) => ({
@@ -30992,7 +31572,7 @@ function getParsers3(packetType, fromServer) {
     case "LiquidSet":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse113, (a) => ({
+        _0: makeParsers3(packetName5, parse115, (a) => ({
           TAG: "LiquidSet",
           _0: a
         }), (a) => ({
@@ -31004,7 +31584,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse134, (a) => ({
+          _0: makeParsers3(packetName5, parse137, (a) => ({
             TAG: "PlayerSpawnSelf",
             _0: a
           }), (a) => ({
@@ -31021,7 +31601,7 @@ function getParsers3(packetType, fromServer) {
     case "PlayerBuffsSet":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse39, (a) => ({
+        _0: makeParsers3(packetName5, parse39, (a) => ({
           TAG: "PlayerBuffsSet",
           _0: a
         }), (a) => ({
@@ -31032,7 +31612,7 @@ function getParsers3(packetType, fromServer) {
     case "NpcSpecialEffect":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse136, (a) => ({
+        _0: makeParsers3(packetName5, parse139, (a) => ({
           TAG: "NpcSpecialEffect",
           _0: a
         }), (a) => ({
@@ -31043,7 +31623,7 @@ function getParsers3(packetType, fromServer) {
     case "ChestOrTempleUnlock":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse6, (a) => ({
+        _0: makeParsers3(packetName5, parse6, (a) => ({
           TAG: "ChestOrTempleUnlock",
           _0: a
         }), (a) => ({
@@ -31054,7 +31634,7 @@ function getParsers3(packetType, fromServer) {
     case "NpcBuffAdd":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse118, (a) => ({
+        _0: makeParsers3(packetName5, parse121, (a) => ({
           TAG: "NpcBuffAdd",
           _0: a
         }), (a) => ({
@@ -31066,7 +31646,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse26, (a) => ({
+          _0: makeParsers3(packetName5, parse26, (a) => ({
             TAG: "NpcBuffUpdate",
             _0: a
           }), (a) => ({
@@ -31083,7 +31663,7 @@ function getParsers3(packetType, fromServer) {
     case "PlayerBuffAdd":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse38, (a) => ({
+        _0: makeParsers3(packetName5, parse38, (a) => ({
           TAG: "PlayerBuffAdd",
           _0: a
         }), (a) => ({
@@ -31094,7 +31674,7 @@ function getParsers3(packetType, fromServer) {
     case "NpcNameUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, (__x) => parse31(__x, fromServer), (a) => ({
+        _0: makeParsers3(packetName5, (__x) => parse31(__x, fromServer), (a) => ({
           TAG: "NpcNameUpdate",
           _0: a
         }), (a) => ({
@@ -31106,7 +31686,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse128, (a) => ({
+          _0: makeParsers3(packetName5, parse132, (a) => ({
             TAG: "GoodEvilUpdate",
             _0: a
           }), (a) => ({
@@ -31123,7 +31703,7 @@ function getParsers3(packetType, fromServer) {
     case "HarpPlay":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse110, (a) => ({
+        _0: makeParsers3(packetName5, parse112, (a) => ({
           TAG: "HarpPlay",
           _0: a
         }), (a) => ({
@@ -31134,7 +31714,7 @@ function getParsers3(packetType, fromServer) {
     case "SwitchHit":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse53, (a) => ({
+        _0: makeParsers3(packetName5, parse53, (a) => ({
           TAG: "SwitchHit",
           _0: a
         }), (a) => ({
@@ -31145,7 +31725,7 @@ function getParsers3(packetType, fromServer) {
     case "NpcHomeUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse29, (a) => ({
+        _0: makeParsers3(packetName5, parse29, (a) => ({
           TAG: "NpcHomeUpdate",
           _0: a
         }), (a) => ({
@@ -31162,7 +31742,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse3, (a) => ({
+          _0: makeParsers3(packetName5, parse3, (a) => ({
             TAG: "BossOrInvasionSpawn",
             _0: a
           }), (a) => ({
@@ -31174,7 +31754,7 @@ function getParsers3(packetType, fromServer) {
     case "PlayerDodge":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse43, (a) => ({
+        _0: makeParsers3(packetName5, parse43, (a) => ({
           TAG: "PlayerDodge",
           _0: a
         }), (a) => ({
@@ -31185,7 +31765,7 @@ function getParsers3(packetType, fromServer) {
     case "TilePaint":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse63, (a) => ({
+        _0: makeParsers3(packetName5, parse63, (a) => ({
           TAG: "TilePaint",
           _0: a
         }), (a) => ({
@@ -31196,7 +31776,7 @@ function getParsers3(packetType, fromServer) {
     case "WallPaint":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse73, (a) => ({
+        _0: makeParsers3(packetName5, parse73, (a) => ({
           TAG: "WallPaint",
           _0: a
         }), (a) => ({
@@ -31207,7 +31787,7 @@ function getParsers3(packetType, fromServer) {
     case "Teleport":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse54, (a) => ({
+        _0: makeParsers3(packetName5, parse54, (a) => ({
           TAG: "Teleport",
           _0: a
         }), (a) => ({
@@ -31218,7 +31798,7 @@ function getParsers3(packetType, fromServer) {
     case "PlayerHealOther":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse133, (a) => ({
+        _0: makeParsers3(packetName5, parse136, (a) => ({
           TAG: "PlayerHealOther",
           _0: a
         }), (a) => ({
@@ -31229,7 +31809,7 @@ function getParsers3(packetType, fromServer) {
     case "DimensionsUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse13, (a) => ({
+        _0: makeParsers3(packetName5, parse13, (a) => ({
           TAG: "DimensionsUpdate",
           _0: a
         }), (a) => ({
@@ -31246,7 +31826,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse101, (a) => ({
+          _0: makeParsers3(packetName5, parse101, (a) => ({
             TAG: "ClientUuid",
             _0: a
           }), (a) => ({
@@ -31258,7 +31838,7 @@ function getParsers3(packetType, fromServer) {
     case "ChestName":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse111, (a) => ({
+        _0: makeParsers3(packetName5, parse113, (a) => ({
           TAG: "ChestName",
           _0: a
         }), (a) => ({
@@ -31275,7 +31855,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse27, (a) => ({
+          _0: makeParsers3(packetName5, parse27, (a) => ({
             TAG: "NpcCatch",
             _0: a
           }), (a) => ({
@@ -31293,7 +31873,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse119, (a) => ({
+          _0: makeParsers3(packetName5, parse122, (a) => ({
             TAG: "NpcRelease",
             _0: a
           }), (a) => ({
@@ -31306,7 +31886,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse70, (a) => ({
+          _0: makeParsers3(packetName5, parse70, (a) => ({
             TAG: "TravellingMerchantInventory",
             _0: a
           }), (a) => ({
@@ -31323,7 +31903,7 @@ function getParsers3(packetType, fromServer) {
     case "TeleportationPotion":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse55, (a) => ({
+        _0: makeParsers3(packetName5, parse55, (a) => ({
           TAG: "TeleportationPotion",
           _0: a
         }), (a) => ({
@@ -31335,7 +31915,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse, (a) => ({
+          _0: makeParsers3(packetName5, parse, (a) => ({
             TAG: "AnglerQuest",
             _0: a
           }), (a) => ({
@@ -31358,7 +31938,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse2, (a) => ({
+          _0: makeParsers3(packetName5, parse2, (a) => ({
             TAG: "AnglerQuestComplete",
             _0: a
           }), (a) => ({
@@ -31370,7 +31950,7 @@ function getParsers3(packetType, fromServer) {
     case "AnglerQuestsCompletedAmount":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse160, (a) => ({
+        _0: makeParsers3(packetName5, parse162, (a) => ({
           TAG: "AnglerQuestsCompletedAmount",
           _0: a
         }), (a) => ({
@@ -31382,7 +31962,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse56, (a) => ({
+          _0: makeParsers3(packetName5, parse56, (a) => ({
             TAG: "TemporaryAnimationCreate",
             _0: a
           }), (a) => ({
@@ -31400,7 +31980,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse16, (a) => ({
+          _0: makeParsers3(packetName5, parse16, (a) => ({
             TAG: "InvasionProgressReport",
             _0: a
           }), (a) => ({
@@ -31417,7 +31997,7 @@ function getParsers3(packetType, fromServer) {
     case "ObjectPlace":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse35, (a) => ({
+        _0: makeParsers3(packetName5, parse35, (a) => ({
           TAG: "ObjectPlace",
           _0: a
         }), (a) => ({
@@ -31429,7 +32009,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse40, (a) => ({
+          _0: makeParsers3(packetName5, parse40, (a) => ({
             TAG: "PlayerChestIndexSync",
             _0: a
           }), (a) => ({
@@ -31447,7 +32027,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse144, (a) => ({
+          _0: makeParsers3(packetName5, parse147, (a) => ({
             TAG: "CombatNumberCreate",
             _0: a
           }), (a) => ({
@@ -31464,7 +32044,7 @@ function getParsers3(packetType, fromServer) {
     case "NetModuleLoad":
       return {
         TAG: "Ok",
-        _0: makeParsersWithFromServer3(packetName4, parse23, (a) => ({
+        _0: makeParsersWithFromServer3(packetName5, parse23, (a) => ({
           TAG: "NetModuleLoad",
           _0: a
         }), (a) => ({
@@ -31476,7 +32056,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse30, (a) => ({
+          _0: makeParsers3(packetName5, parse30, (a) => ({
             TAG: "NpcKillCount",
             _0: a
           }), (a) => ({
@@ -31493,7 +32073,7 @@ function getParsers3(packetType, fromServer) {
     case "PlayerStealth":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse127, (a) => ({
+        _0: makeParsers3(packetName5, parse129, (a) => ({
           TAG: "PlayerStealth",
           _0: a
         }), (a) => ({
@@ -31504,7 +32084,7 @@ function getParsers3(packetType, fromServer) {
     case "ItemForceIntoNearestChest":
       return {
         TAG: "Ok",
-        _0: makeParsersWithFromServer3(packetName4, parse85, (a) => ({
+        _0: makeParsersWithFromServer3(packetName5, parse85, (a) => ({
           TAG: "ItemForceIntoNearestChest",
           _0: a
         }), (a) => ({
@@ -31516,7 +32096,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse61, (a) => ({
+          _0: makeParsers3(packetName5, parse61, (a) => ({
             TAG: "TileEntityUpdate",
             _0: a
           }), (a) => ({
@@ -31539,7 +32119,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse60, (a) => ({
+          _0: makeParsers3(packetName5, parse60, (a) => ({
             TAG: "TileEntityPlace",
             _0: a
           }), (a) => ({
@@ -31552,7 +32132,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse129, (a) => ({
+          _0: makeParsers3(packetName5, parse178, (a) => ({
             TAG: "ItemDropModify",
             _0: a
           }), (a) => ({
@@ -31575,7 +32155,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse130, (a) => ({
+          _0: makeParsers3(packetName5, parse133, (a) => ({
             TAG: "ItemFramePlace",
             _0: a
           }), (a) => ({
@@ -31587,7 +32167,7 @@ function getParsers3(packetType, fromServer) {
     case "ItemDropInstancedUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse157, (a) => ({
+        _0: makeParsers3(packetName5, parse159, (a) => ({
           TAG: "ItemDropInstancedUpdate",
           _0: a
         }), (a) => ({
@@ -31599,7 +32179,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse122, (a) => ({
+          _0: makeParsers3(packetName5, parse172, (a) => ({
             TAG: "EmoteBubble",
             _0: a
           }), (a) => ({
@@ -31616,7 +32196,7 @@ function getParsers3(packetType, fromServer) {
     case "ExtraValueSync":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse14, (a) => ({
+        _0: makeParsers3(packetName5, parse14, (a) => ({
           TAG: "ExtraValueSync",
           _0: a
         }), (a) => ({
@@ -31627,7 +32207,7 @@ function getParsers3(packetType, fromServer) {
     case "SocialHandshake":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse51, (a) => ({
+        _0: makeParsers3(packetName5, parse51, (a) => ({
           TAG: "SocialHandshake",
           _0: a
         }), (a) => ({
@@ -31638,7 +32218,7 @@ function getParsers3(packetType, fromServer) {
     case "Unused":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse80, (a) => ({
+        _0: makeParsers3(packetName5, parse80, (a) => ({
           TAG: "Unused",
           _0: a
         }), (a) => ({
@@ -31655,7 +32235,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse120, (a) => ({
+          _0: makeParsers3(packetName5, parse123, (a) => ({
             TAG: "PortalKill",
             _0: a
           }), (a) => ({
@@ -31667,7 +32247,7 @@ function getParsers3(packetType, fromServer) {
     case "PlayerTeleportPortal":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse150, (a) => ({
+        _0: makeParsers3(packetName5, parse152, (a) => ({
           TAG: "PlayerTeleportPortal",
           _0: a
         }), (a) => ({
@@ -31679,7 +32259,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse154, (a) => ({
+          _0: makeParsers3(packetName5, parse156, (a) => ({
             TAG: "NpcKilledNotification",
             _0: a
           }), (a) => ({
@@ -31697,7 +32277,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse138, (a) => ({
+          _0: makeParsers3(packetName5, parse141, (a) => ({
             TAG: "EventNotification",
             _0: a
           }), (a) => ({
@@ -31714,7 +32294,7 @@ function getParsers3(packetType, fromServer) {
     case "MinionTargetUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse145, (a) => ({
+        _0: makeParsers3(packetName5, parse148, (a) => ({
           TAG: "MinionTargetUpdate",
           _0: a
         }), (a) => ({
@@ -31725,7 +32305,7 @@ function getParsers3(packetType, fromServer) {
     case "NpcTeleportPortal":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse34, (a) => ({
+        _0: makeParsers3(packetName5, parse34, (a) => ({
           TAG: "NpcTeleportPortal",
           _0: a
         }), (a) => ({
@@ -31737,7 +32317,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse155, (a) => ({
+          _0: makeParsers3(packetName5, parse157, (a) => ({
             TAG: "ShieldStrengthsUpdate",
             _0: a
           }), (a) => ({
@@ -31754,7 +32334,7 @@ function getParsers3(packetType, fromServer) {
     case "NebulaLevelUp":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse126, (a) => ({
+        _0: makeParsers3(packetName5, parse128, (a) => ({
           TAG: "NebulaLevelUp",
           _0: a
         }), (a) => ({
@@ -31766,7 +32346,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse141, (a) => ({
+          _0: makeParsers3(packetName5, parse144, (a) => ({
             TAG: "MoonLordCountdown",
             _0: a
           }), (a) => ({
@@ -31784,7 +32364,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse32, (a) => ({
+          _0: makeParsers3(packetName5, parse32, (a) => ({
             TAG: "NpcShopItem",
             _0: a
           }), (a) => ({
@@ -31807,7 +32387,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse125, (a) => ({
+          _0: makeParsers3(packetName5, parse127, (a) => ({
             TAG: "GemLockToggle",
             _0: a
           }), (a) => ({
@@ -31820,7 +32400,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse50, (a) => ({
+          _0: makeParsers3(packetName5, parse50, (a) => ({
             TAG: "SmokePoof",
             _0: a
           }), (a) => ({
@@ -31838,7 +32418,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse4, (a) => ({
+          _0: makeParsers3(packetName5, parse4, (a) => ({
             TAG: "ChatMessageSmart",
             _0: a
           }), (a) => ({
@@ -31856,7 +32436,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse75, (a) => ({
+          _0: makeParsers3(packetName5, parse75, (a) => ({
             TAG: "WiredCannonShot",
             _0: a
           }), (a) => ({
@@ -31879,7 +32459,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse140, (a) => ({
+          _0: makeParsers3(packetName5, parse143, (a) => ({
             TAG: "MassWireOperation",
             _0: a
           }), (a) => ({
@@ -31892,7 +32472,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse149, (a) => ({
+          _0: makeParsers3(packetName5, parse151, (a) => ({
             TAG: "MassWireOperationPay",
             _0: a
           }), (a) => ({
@@ -31915,7 +32495,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse36, (a) => ({
+          _0: makeParsers3(packetName5, parse36, (a) => ({
             TAG: "PartyToggle",
             _0: a
           }), (a) => ({
@@ -31927,7 +32507,7 @@ function getParsers3(packetType, fromServer) {
     case "TreeGrowFx":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse71, (a) => ({
+        _0: makeParsers3(packetName5, parse71, (a) => ({
           TAG: "TreeGrowFx",
           _0: a
         }), (a) => ({
@@ -31944,7 +32524,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse12, (a) => ({
+          _0: makeParsers3(packetName5, parse12, (a) => ({
             TAG: "CrystalInvasionStart",
             _0: a
           }), (a) => ({
@@ -31957,7 +32537,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse156, (a) => ({
+          _0: makeParsers3(packetName5, parse158, (a) => ({
             TAG: "CrystalInvasionWipeAll",
             _0: a
           }), (a) => ({
@@ -31974,7 +32554,7 @@ function getParsers3(packetType, fromServer) {
     case "MinionAttackTargetUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse159, (a) => ({
+        _0: makeParsers3(packetName5, parse161, (a) => ({
           TAG: "MinionAttackTargetUpdate",
           _0: a
         }), (a) => ({
@@ -31986,7 +32566,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse161, (a) => ({
+          _0: makeParsers3(packetName5, parse163, (a) => ({
             TAG: "CrystalInvasionSendWaitTime",
             _0: a
           }), (a) => ({
@@ -32003,7 +32583,7 @@ function getParsers3(packetType, fromServer) {
     case "PlayerDamage":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse103, (a) => ({
+        _0: makeParsers3(packetName5, parse174, (a) => ({
           TAG: "PlayerDamage",
           _0: a
         }), (a) => ({
@@ -32014,7 +32594,7 @@ function getParsers3(packetType, fromServer) {
     case "PlayerDeath":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse42, (a) => ({
+        _0: makeParsers3(packetName5, parse42, (a) => ({
           TAG: "PlayerDeath",
           _0: a
         }), (a) => ({
@@ -32026,7 +32606,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse135, (a) => ({
+          _0: makeParsers3(packetName5, parse138, (a) => ({
             TAG: "CombatTextCreate",
             _0: a
           }), (a) => ({
@@ -32049,7 +32629,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse108, (a) => ({
+          _0: makeParsers3(packetName5, parse108, (a) => ({
             TAG: "Emoji",
             _0: a
           }), (a) => ({
@@ -32061,7 +32641,7 @@ function getParsers3(packetType, fromServer) {
     case "TileEntityDisplayDollItemSync":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse57, (a) => ({
+        _0: makeParsers3(packetName5, parse57, (a) => ({
           TAG: "TileEntityDisplayDollItemSync",
           _0: a
         }), (a) => ({
@@ -32072,7 +32652,7 @@ function getParsers3(packetType, fromServer) {
     case "TileEntityInteractionRequest":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse59, (a) => ({
+        _0: makeParsers3(packetName5, parse59, (a) => ({
           TAG: "TileEntityInteractionRequest",
           _0: a
         }), (a) => ({
@@ -32089,7 +32669,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse74, (a) => ({
+          _0: makeParsers3(packetName5, parse74, (a) => ({
             TAG: "WeaponsRackTryPlacing",
             _0: a
           }), (a) => ({
@@ -32101,7 +32681,7 @@ function getParsers3(packetType, fromServer) {
     case "TileEntityHatRackItemSync":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse58, (a) => ({
+        _0: makeParsers3(packetName5, parse58, (a) => ({
           TAG: "TileEntityHatRackItemSync",
           _0: a
         }), (a) => ({
@@ -32112,7 +32692,7 @@ function getParsers3(packetType, fromServer) {
     case "TilePickingSync":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse64, (a) => ({
+        _0: makeParsers3(packetName5, parse64, (a) => ({
           TAG: "TilePickingSync",
           _0: a
         }), (a) => ({
@@ -32124,7 +32704,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse142, (a) => ({
+          _0: makeParsers3(packetName5, parse145, (a) => ({
             TAG: "RevengeMarkerSync",
             _0: a
           }), (a) => ({
@@ -32142,7 +32722,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse148, (a) => ({
+          _0: makeParsers3(packetName5, parse150, (a) => ({
             TAG: "RevengeMarkerRemove",
             _0: a
           }), (a) => ({
@@ -32159,7 +32739,7 @@ function getParsers3(packetType, fromServer) {
     case "GolfBallLandInCup":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse139, (a) => ({
+        _0: makeParsers3(packetName5, parse142, (a) => ({
           TAG: "GolfBallLandInCup",
           _0: a
         }), (a) => ({
@@ -32171,7 +32751,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse8, (a) => ({
+          _0: makeParsers3(packetName5, parse8, (a) => ({
             TAG: "ClientFinishConnectingToServer",
             _0: a
           }), (a) => ({
@@ -32194,7 +32774,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse28, (a) => ({
+          _0: makeParsers3(packetName5, parse28, (a) => ({
             TAG: "NpcFishOut",
             _0: a
           }), (a) => ({
@@ -32207,7 +32787,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse114, (a) => ({
+          _0: makeParsers3(packetName5, parse116, (a) => ({
             TAG: "NpcTamper",
             _0: a
           }), (a) => ({
@@ -32225,7 +32805,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse132, (a) => ({
+          _0: makeParsers3(packetName5, parse135, (a) => ({
             TAG: "LegacySoundPlay",
             _0: a
           }), (a) => ({
@@ -32248,7 +32828,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse153, (a) => ({
+          _0: makeParsers3(packetName5, parse155, (a) => ({
             TAG: "FoodPlatterTryPlacing",
             _0: a
           }), (a) => ({
@@ -32260,7 +32840,7 @@ function getParsers3(packetType, fromServer) {
     case "PlayerLuckFactorsUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse90, (a) => ({
+        _0: makeParsers3(packetName5, parse90, (a) => ({
           TAG: "PlayerLuckFactorsUpdate",
           _0: a
         }), (a) => ({
@@ -32272,7 +32852,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse41, (a) => ({
+          _0: makeParsers3(packetName5, parse41, (a) => ({
             TAG: "PlayerDead",
             _0: a
           }), (a) => ({
@@ -32289,7 +32869,7 @@ function getParsers3(packetType, fromServer) {
     case "CavernMonsterTypeSync":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse151, (a) => ({
+        _0: makeParsers3(packetName5, parse153, (a) => ({
           TAG: "CavernMonsterTypeSync",
           _0: a
         }), (a) => ({
@@ -32306,7 +32886,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse25, (a) => ({
+          _0: makeParsers3(packetName5, parse25, (a) => ({
             TAG: "NpcBuffRemovalRequest",
             _0: a
           }), (a) => ({
@@ -32324,7 +32904,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse152, (a) => ({
+          _0: makeParsers3(packetName5, parse154, (a) => ({
             TAG: "ClientSyncedInventory",
             _0: a
           }), (a) => ({
@@ -32336,7 +32916,7 @@ function getParsers3(packetType, fromServer) {
     case "CountsAsHostForGameplaySet":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse10, (a) => ({
+        _0: makeParsers3(packetName5, parse10, (a) => ({
           TAG: "CountsAsHostForGameplaySet",
           _0: a
         }), (a) => ({
@@ -32347,7 +32927,7 @@ function getParsers3(packetType, fromServer) {
     case "CreditsOrSlimeTransform":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse11, (a) => ({
+        _0: makeParsers3(packetName5, parse11, (a) => ({
           TAG: "CreditsOrSlimeTransform",
           _0: a
         }), (a) => ({
@@ -32358,7 +32938,7 @@ function getParsers3(packetType, fromServer) {
     case "LucyAxeMessage":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse131, (a) => ({
+        _0: makeParsers3(packetName5, parse134, (a) => ({
           TAG: "LucyAxeMessage",
           _0: a
         }), (a) => ({
@@ -32369,7 +32949,7 @@ function getParsers3(packetType, fromServer) {
     case "PiggyBankVoidLensUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse158, (a) => ({
+        _0: makeParsers3(packetName5, parse160, (a) => ({
           TAG: "PiggyBankVoidLensUpdate",
           _0: a
         }), (a) => ({
@@ -32380,7 +32960,7 @@ function getParsers3(packetType, fromServer) {
     case "DungeonDefendersEventAttemptSkipWait":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse162, (a) => ({
+        _0: makeParsers3(packetName5, parse164, (a) => ({
           TAG: "DungeonDefendersEventAttemptSkipWait",
           _0: a
         }), (a) => ({
@@ -32391,7 +32971,7 @@ function getParsers3(packetType, fromServer) {
     case "HaveDryadDoStardewAnimation":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse15, (a) => ({
+        _0: makeParsers3(packetName5, parse15, (a) => ({
           TAG: "HaveDryadDoStardewAnimation",
           _0: a
         }), (a) => ({
@@ -32403,7 +32983,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse47, (a) => ({
+          _0: makeParsers3(packetName5, parse47, (a) => ({
             TAG: "ShimmerEffectOrCoinLuck",
             _0: a
           }), (a) => ({
@@ -32420,7 +33000,7 @@ function getParsers3(packetType, fromServer) {
     case "LoadoutSwitch":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse21, (a) => ({
+        _0: makeParsers3(packetName5, parse21, (a) => ({
           TAG: "LoadoutSwitch",
           _0: a
         }), (a) => ({
@@ -32431,7 +33011,7 @@ function getParsers3(packetType, fromServer) {
     case "DeadCellsDisplayJarTryPlacing":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse79, (a) => ({
+        _0: makeParsers3(packetName5, parse79, (a) => ({
           TAG: "DeadCellsDisplayJarTryPlacing",
           _0: a
         }), (a) => ({
@@ -32442,7 +33022,7 @@ function getParsers3(packetType, fromServer) {
     case "PlayerSpectate":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse91, (a) => ({
+        _0: makeParsers3(packetName5, parse91, (a) => ({
           TAG: "PlayerSpectate",
           _0: a
         }), (a) => ({
@@ -32453,7 +33033,7 @@ function getParsers3(packetType, fromServer) {
     case "ItemDropClear":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse83, (a) => ({
+        _0: makeParsers3(packetName5, parse83, (a) => ({
           TAG: "ItemDropClear",
           _0: a
         }), (a) => ({
@@ -32464,7 +33044,7 @@ function getParsers3(packetType, fromServer) {
     case "PlayerItemUseSound":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse89, (a) => ({
+        _0: makeParsers3(packetName5, parse89, (a) => ({
           TAG: "PlayerItemUseSound",
           _0: a
         }), (a) => ({
@@ -32475,7 +33055,7 @@ function getParsers3(packetType, fromServer) {
     case "NpcHurtByDebuff":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse87, (a) => ({
+        _0: makeParsers3(packetName5, parse87, (a) => ({
           TAG: "NpcHurtByDebuff",
           _0: a
         }), (a) => ({
@@ -32486,7 +33066,7 @@ function getParsers3(packetType, fromServer) {
     case "Ping":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse88, (a) => ({
+        _0: makeParsers3(packetName5, parse88, (a) => ({
           TAG: "Ping",
           _0: a
         }), (a) => ({
@@ -32497,7 +33077,7 @@ function getParsers3(packetType, fromServer) {
     case "ChestResize":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse78, (a) => ({
+        _0: makeParsers3(packetName5, parse78, (a) => ({
           TAG: "ChestResize",
           _0: a
         }), (a) => ({
@@ -32508,7 +33088,7 @@ function getParsers3(packetType, fromServer) {
     case "LeashedEntityAnchorInsertItem":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse86, (a) => ({
+        _0: makeParsers3(packetName5, parse86, (a) => ({
           TAG: "LeashedEntityAnchorInsertItem",
           _0: a
         }), (a) => ({
@@ -32519,7 +33099,7 @@ function getParsers3(packetType, fromServer) {
     case "PlayerTeamUpdate":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse93, (a) => ({
+        _0: makeParsers3(packetName5, parse93, (a) => ({
           TAG: "PlayerTeamUpdate",
           _0: a
         }), (a) => ({
@@ -32530,7 +33110,7 @@ function getParsers3(packetType, fromServer) {
     case "PlayerTeamSwapSpawn":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse92, (a) => ({
+        _0: makeParsers3(packetName5, parse92, (a) => ({
           TAG: "PlayerTeamSwapSpawn",
           _0: a
         }), (a) => ({
@@ -32541,7 +33121,7 @@ function getParsers3(packetType, fromServer) {
     case "SectionRequest":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse94, (a) => ({
+        _0: makeParsers3(packetName5, parse94, (a) => ({
           TAG: "SectionRequest",
           _0: a
         }), (a) => ({
@@ -32552,7 +33132,7 @@ function getParsers3(packetType, fromServer) {
     case "ItemDropPosition":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse84, (a) => ({
+        _0: makeParsers3(packetName5, parse84, (a) => ({
           TAG: "ItemDropPosition",
           _0: a
         }), (a) => ({
@@ -32563,7 +33143,7 @@ function getParsers3(packetType, fromServer) {
     case "HostToken":
       return {
         TAG: "Ok",
-        _0: makeParsers3(packetName4, parse81, (a) => ({
+        _0: makeParsers3(packetName5, parse81, (a) => ({
           TAG: "HostToken",
           _0: a
         }), (a) => ({
@@ -32575,7 +33155,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse124, (a) => ({
+          _0: makeParsers3(packetName5, parse126, (a) => ({
             TAG: "DamageNPCAck",
             _0: a
           }), (a) => ({
@@ -32593,7 +33173,7 @@ function getParsers3(packetType, fromServer) {
       if (fromServer) {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse121, (a) => ({
+          _0: makeParsers3(packetName5, parse190, (a) => ({
             TAG: "ServerInfo",
             _0: a
           }), (a) => ({
@@ -32616,7 +33196,7 @@ function getParsers3(packetType, fromServer) {
       } else {
         return {
           TAG: "Ok",
-          _0: makeParsers3(packetName4, parse146, (a) => ({
+          _0: makeParsers3(packetName5, parse130, (a) => ({
             TAG: "PlayerPlatformInfo",
             _0: a
           }), (a) => ({
@@ -32632,7 +33212,7 @@ function getParsers3(packetType, fromServer) {
       };
   }
 }
-function parse184(buffer, fromServer, ignoreOpt) {
+function parse191(buffer, fromServer, ignoreOpt) {
   let ignore = ignoreOpt !== void 0 ? ignoreOpt : [];
   let match = buffer.length;
   if (!(match > 2 || match < 0)) {
@@ -32763,6 +33343,7 @@ __export(Packet_exports, {
   CrystalInvasionSendWaitTime: () => CrystalInvasionSendWaitTime,
   CrystalInvasionStart: () => CrystalInvasionStart,
   CrystalInvasionWipeAll: () => CrystalInvasionWipeAll,
+  CustomServerAck: () => CustomServerAck,
   DamageNPCAck: () => DamageNPCAck,
   DeadCellsDisplayJarTryPlacing: () => DeadCellsDisplayJarTryPlacing,
   DimensionsUpdate: () => DimensionsUpdate,
@@ -32900,7 +33481,7 @@ __export(Packet_exports, {
   WorldDataRequest: () => WorldDataRequest,
   WorldInfo: () => WorldInfo,
   Zones: () => Zones,
-  toBuffer: () => toBuffer178,
+  toBuffer: () => toBuffer185,
   toPacketName: () => toPacketName$1
 });
 
@@ -33251,10 +33832,37 @@ function packetTypeOf(packet) {
       return "ServerInfo";
     case "PlayerPlatformInfo":
       return "PlayerPlatformInfo";
+    case "CustomServerAck":
+      return "CustomServerAck";
   }
 }
 function directionOfPacketType(packetType) {
   switch (packetType) {
+    case "ConnectRequest":
+    case "WorldDataRequest":
+    case "InitialTileSectionsRequest":
+    case "ChestOpen":
+    case "PasswordSend":
+    case "SignRead":
+    case "BossOrInvasionSpawn":
+    case "ClientUuid":
+    case "NpcCatch":
+    case "NpcRelease":
+    case "AnglerQuestComplete":
+    case "TileEntityPlace":
+    case "ItemFramePlace":
+    case "PortalKill":
+    case "GemLockToggle":
+    case "MassWireOperation":
+    case "PartyToggle":
+    case "CrystalInvasionStart":
+    case "Emoji":
+    case "WeaponsRackTryPlacing":
+    case "NpcFishOut":
+    case "FoodPlatterTryPlacing":
+    case "NpcBuffRemovalRequest":
+    case "ClientSyncedInventory":
+      return "ClientOnly";
     case "Disconnect":
     case "PlayerSlotSet":
     case "WorldInfo":
@@ -33298,34 +33906,7 @@ function directionOfPacketType(packetType) {
     case "PlayerDead":
     case "CavernMonsterTypeSync":
     case "DamageNPCAck":
-    case "ServerInfo":
       return "ServerOnly";
-    case "ConnectRequest":
-    case "WorldDataRequest":
-    case "InitialTileSectionsRequest":
-    case "ChestOpen":
-    case "PasswordSend":
-    case "SignRead":
-    case "BossOrInvasionSpawn":
-    case "ClientUuid":
-    case "NpcCatch":
-    case "NpcRelease":
-    case "AnglerQuestComplete":
-    case "TileEntityPlace":
-    case "ItemFramePlace":
-    case "PortalKill":
-    case "GemLockToggle":
-    case "MassWireOperation":
-    case "PartyToggle":
-    case "CrystalInvasionStart":
-    case "Emoji":
-    case "WeaponsRackTryPlacing":
-    case "NpcFishOut":
-    case "FoodPlatterTryPlacing":
-    case "NpcBuffRemovalRequest":
-    case "ClientSyncedInventory":
-    case "PlayerPlatformInfo":
-      return "ClientOnly";
     default:
       return "Both";
   }
@@ -33680,12 +34261,14 @@ function packetTypeOf$1(packet) {
       return "ServerInfo";
     case "PlayerPlatformInfo":
       return "PlayerPlatformInfo";
+    case "CustomServerAck":
+      return "CustomServerAck";
   }
 }
 function toPacketName(packet) {
   return packetName(packetTypeOf$1(packet));
 }
-function toBuffer178(packet, fromServer) {
+function toBuffer185(packet, fromServer) {
   let packetType = packetTypeOf(packet);
   let err = guardDirection(packetType, fromServer);
   if (err !== void 0) {
@@ -33727,7 +34310,7 @@ function toBuffer178(packet, fromServer) {
     case "TimeSet":
       return toBufferResult(toBuffer67(packet._0));
     case "DoorUse":
-      return toBufferResult(toBuffer106(packet._0));
+      return toBufferResult(toBuffer108(packet._0));
     case "TileSquareSend":
       return toBufferResult(toBuffer66(packet._0));
     case "ItemDropUpdate":
@@ -33737,31 +34320,31 @@ function toBuffer178(packet, fromServer) {
     case "NpcUpdate":
       return toBufferResult(toBuffer103(packet._0));
     case "NpcItemStrike":
-      return toBufferResult(toBuffer167(packet._0));
+      return toBufferResult(toBuffer171(packet._0));
     case "ProjectileSync":
       return toBufferResult(toBuffer99(packet._0));
     case "NpcStrike":
-      return toBufferResult(toBuffer112(packet._0));
+      return toBufferResult(toBuffer114(packet._0));
     case "ProjectileDestroy":
-      return toBufferResult(toBuffer140(packet._0));
+      return toBufferResult(toBuffer143(packet._0));
     case "PvpToggle":
       return toBufferResult(toBuffer45(packet._0));
     case "ChestOpen":
-      return toBufferResult(toBuffer109(packet._0));
+      return toBufferResult(toBuffer111(packet._0));
     case "ChestItem":
       return toBufferResult(toBuffer5(packet._0));
     case "ActiveContainerSync":
-      return toBufferResult(toBuffer144(packet._0));
+      return toBufferResult(toBuffer146(packet._0));
     case "ChestPlace":
       return toBufferResult(toBuffer7(packet._0));
     case "HealEffect":
-      return toBufferResult(toBuffer113(packet._0));
+      return toBufferResult(toBuffer116(packet._0));
     case "Zones":
       return toBufferResult(toBuffer74(packet._0));
     case "PasswordRequired":
-      return toBufferResult(toBuffer134(packet._0));
+      return toBufferResult(toBuffer137(packet._0));
     case "PasswordSend":
-      return toBufferResult(toBuffer120(packet._0));
+      return toBufferResult(toBuffer122(packet._0));
     case "ItemOwnerRemove":
       return toBufferResult(toBuffer20(packet._0));
     case "NpcTalk":
@@ -33771,7 +34354,7 @@ function toBuffer178(packet, fromServer) {
     case "PlayerMana":
       return toBufferResult(toBuffer43(packet._0));
     case "ManaEffect":
-      return toBufferResult(toBuffer114(packet._0));
+      return toBufferResult(toBuffer117(packet._0));
     case "PlayerTeam":
       return toBufferResult(toBuffer44(packet._0));
     case "SignRead":
@@ -33779,17 +34362,17 @@ function toBuffer178(packet, fromServer) {
     case "SignNew":
       return toBufferResult(toBuffer47(packet._0));
     case "LiquidSet":
-      return toBufferResult(toBuffer110(packet._0));
+      return toBufferResult(toBuffer112(packet._0));
     case "PlayerSpawnSelf":
-      return toBufferResult(toBuffer131(packet._0));
+      return toBufferResult(toBuffer134(packet._0));
     case "PlayerBuffsSet":
       return toBufferResult(toBuffer38(packet._0));
     case "NpcSpecialEffect":
-      return toBufferResult(toBuffer133(packet._0));
+      return toBufferResult(toBuffer136(packet._0));
     case "ChestOrTempleUnlock":
       return toBufferResult(toBuffer6(packet._0));
     case "NpcBuffAdd":
-      return toBufferResult(toBuffer115(packet._0));
+      return toBufferResult(toBuffer118(packet._0));
     case "NpcBuffUpdate":
       return toBufferResult(toBuffer25(packet._0));
     case "PlayerBuffAdd":
@@ -33797,9 +34380,9 @@ function toBuffer178(packet, fromServer) {
     case "NpcNameUpdate":
       return toBufferResult(toBuffer30(packet._0));
     case "GoodEvilUpdate":
-      return toBufferResult(toBuffer125(packet._0));
+      return toBufferResult(toBuffer129(packet._0));
     case "HarpPlay":
-      return toBufferResult(toBuffer107(packet._0));
+      return toBufferResult(toBuffer109(packet._0));
     case "SwitchHit":
       return toBufferResult(toBuffer52(packet._0));
     case "NpcHomeUpdate":
@@ -33815,17 +34398,17 @@ function toBuffer178(packet, fromServer) {
     case "Teleport":
       return toBufferResult(toBuffer53(packet._0));
     case "PlayerHealOther":
-      return toBufferResult(toBuffer130(packet._0));
+      return toBufferResult(toBuffer133(packet._0));
     case "DimensionsUpdate":
       return toBufferResult(toBuffer13(packet._0));
     case "ClientUuid":
       return toBufferResult(toBuffer98(packet._0));
     case "ChestName":
-      return toBufferResult(toBuffer108(packet._0));
+      return toBufferResult(toBuffer110(packet._0));
     case "NpcCatch":
       return toBufferResult(toBuffer26(packet._0));
     case "NpcRelease":
-      return toBufferResult(toBuffer116(packet._0));
+      return toBufferResult(toBuffer119(packet._0));
     case "TravellingMerchantInventory":
       return toBufferResult(toBuffer68(packet._0));
     case "TeleportationPotion":
@@ -33835,7 +34418,7 @@ function toBuffer178(packet, fromServer) {
     case "AnglerQuestComplete":
       return toBufferResult(toBuffer2(packet._0));
     case "AnglerQuestsCompletedAmount":
-      return toBufferResult(toBuffer156(packet._0));
+      return toBufferResult(toBuffer158(packet._0));
     case "TemporaryAnimationCreate":
       return toBufferResult(toBuffer55(packet._0));
     case "InvasionProgressReport":
@@ -33845,13 +34428,13 @@ function toBuffer178(packet, fromServer) {
     case "PlayerChestIndexSync":
       return toBufferResult(toBuffer39(packet._0));
     case "CombatNumberCreate":
-      return toBufferResult(toBuffer141(packet._0));
+      return toBufferResult(toBuffer144(packet._0));
     case "NetModuleLoad":
       return toBufferResult(toBuffer22(packet._0));
     case "NpcKillCount":
       return toBufferResult(toBuffer29(packet._0));
     case "PlayerStealth":
-      return toBufferResult(toBuffer124(packet._0));
+      return toBufferResult(toBuffer126(packet._0));
     case "ItemForceIntoNearestChest":
       return toBufferResult(toBuffer82(packet._0));
     case "TileEntityUpdate":
@@ -33859,13 +34442,13 @@ function toBuffer178(packet, fromServer) {
     case "TileEntityPlace":
       return toBufferResult(toBuffer59(packet._0));
     case "ItemDropModify":
-      return toBufferResult(toBuffer126(packet._0));
+      return toBufferResult(toBuffer115(packet._0));
     case "ItemFramePlace":
-      return toBufferResult(toBuffer127(packet._0));
+      return toBufferResult(toBuffer130(packet._0));
     case "ItemDropInstancedUpdate":
-      return toBufferResult(toBuffer153(packet._0));
+      return toBufferResult(toBuffer155(packet._0));
     case "EmoteBubble":
-      return toBufferResult(toBuffer119(packet._0));
+      return toBufferResult(toBuffer107(packet._0));
     case "ExtraValueSync":
       return toBufferResult(toBuffer14(packet._0));
     case "SocialHandshake":
@@ -33873,27 +34456,27 @@ function toBuffer178(packet, fromServer) {
     case "Unused":
       return toBufferResult(toBuffer77(packet._0));
     case "PortalKill":
-      return toBufferResult(toBuffer117(packet._0));
+      return toBufferResult(toBuffer120(packet._0));
     case "PlayerTeleportPortal":
-      return toBufferResult(toBuffer147(packet._0));
+      return toBufferResult(toBuffer149(packet._0));
     case "NpcKilledNotification":
-      return toBufferResult(toBuffer150(packet._0));
+      return toBufferResult(toBuffer152(packet._0));
     case "EventNotification":
-      return toBufferResult(toBuffer135(packet._0));
+      return toBufferResult(toBuffer138(packet._0));
     case "MinionTargetUpdate":
-      return toBufferResult(toBuffer142(packet._0));
+      return toBufferResult(toBuffer145(packet._0));
     case "NpcTeleportPortal":
       return toBufferResult(toBuffer33(packet._0));
     case "ShieldStrengthsUpdate":
-      return toBufferResult(toBuffer151(packet._0));
+      return toBufferResult(toBuffer153(packet._0));
     case "NebulaLevelUp":
-      return toBufferResult(toBuffer123(packet._0));
+      return toBufferResult(toBuffer125(packet._0));
     case "MoonLordCountdown":
-      return toBufferResult(toBuffer138(packet._0));
+      return toBufferResult(toBuffer141(packet._0));
     case "NpcShopItem":
       return toBufferResult(toBuffer31(packet._0));
     case "GemLockToggle":
-      return toBufferResult(toBuffer122(packet._0));
+      return toBufferResult(toBuffer124(packet._0));
     case "SmokePoof":
       return toBufferResult(toBuffer49(packet._0));
     case "ChatMessageSmart":
@@ -33901,9 +34484,9 @@ function toBuffer178(packet, fromServer) {
     case "WiredCannonShot":
       return toBufferResult(toBuffer72(packet._0));
     case "MassWireOperation":
-      return toBufferResult(toBuffer137(packet._0));
+      return toBufferResult(toBuffer140(packet._0));
     case "MassWireOperationPay":
-      return toBufferResult(toBuffer146(packet._0));
+      return toBufferResult(toBuffer148(packet._0));
     case "PartyToggle":
       return toBufferResult(toBuffer35(packet._0));
     case "TreeGrowFx":
@@ -33911,17 +34494,17 @@ function toBuffer178(packet, fromServer) {
     case "CrystalInvasionStart":
       return toBufferResult(toBuffer12(packet._0));
     case "CrystalInvasionWipeAll":
-      return toBufferResult(toBuffer152(packet._0));
+      return toBufferResult(toBuffer154(packet._0));
     case "MinionAttackTargetUpdate":
-      return toBufferResult(toBuffer155(packet._0));
-    case "CrystalInvasionSendWaitTime":
       return toBufferResult(toBuffer157(packet._0));
+    case "CrystalInvasionSendWaitTime":
+      return toBufferResult(toBuffer159(packet._0));
     case "PlayerDamage":
       return toBufferResult(toBuffer100(packet._0));
     case "PlayerDeath":
       return toBufferResult(toBuffer41(packet._0));
     case "CombatTextCreate":
-      return toBufferResult(toBuffer132(packet._0));
+      return toBufferResult(toBuffer135(packet._0));
     case "Emoji":
       return toBufferResult(toBuffer105(packet._0));
     case "TileEntityDisplayDollItemSync":
@@ -33935,27 +34518,27 @@ function toBuffer178(packet, fromServer) {
     case "TilePickingSync":
       return toBufferResult(toBuffer63(packet._0));
     case "RevengeMarkerSync":
-      return toBufferResult(toBuffer139(packet._0));
+      return toBufferResult(toBuffer142(packet._0));
     case "RevengeMarkerRemove":
-      return toBufferResult(toBuffer145(packet._0));
+      return toBufferResult(toBuffer147(packet._0));
     case "GolfBallLandInCup":
-      return toBufferResult(toBuffer136(packet._0));
+      return toBufferResult(toBuffer139(packet._0));
     case "ClientFinishConnectingToServer":
       return toBufferResult(toBuffer8(packet._0));
     case "NpcFishOut":
       return toBufferResult(toBuffer27(packet._0));
     case "NpcTamper":
-      return toBufferResult(toBuffer111(packet._0));
+      return toBufferResult(toBuffer113(packet._0));
     case "LegacySoundPlay":
-      return toBufferResult(toBuffer129(packet._0));
+      return toBufferResult(toBuffer132(packet._0));
     case "FoodPlatterTryPlacing":
-      return toBufferResult(toBuffer149(packet._0));
+      return toBufferResult(toBuffer151(packet._0));
     case "PlayerLuckFactorsUpdate":
       return toBufferResult(toBuffer87(packet._0));
     case "PlayerDead":
       return toBufferResult(toBuffer40(packet._0));
     case "CavernMonsterTypeSync":
-      return toBufferResult(toBuffer148(packet._0));
+      return toBufferResult(toBuffer150(packet._0));
     case "NpcBuffRemovalRequest":
       return toBufferResult(toBuffer24(packet._0));
     case "ClientSyncedInventory":
@@ -33965,11 +34548,11 @@ function toBuffer178(packet, fromServer) {
     case "CreditsOrSlimeTransform":
       return toBufferResult(toBuffer11(packet._0));
     case "LucyAxeMessage":
-      return toBufferResult(toBuffer128(packet._0));
+      return toBufferResult(toBuffer131(packet._0));
     case "PiggyBankVoidLensUpdate":
-      return toBufferResult(toBuffer154(packet._0));
+      return toBufferResult(toBuffer156(packet._0));
     case "DungeonDefendersEventAttemptSkipWait":
-      return toBufferResult(toBuffer158(packet._0));
+      return toBufferResult(toBuffer160(packet._0));
     case "HaveDryadDoStardewAnimation":
       return toBufferResult(toBuffer15(packet._0));
     case "ItemDropShimmeredUpdate":
@@ -33979,7 +34562,7 @@ function toBuffer178(packet, fromServer) {
     case "LoadoutSwitch":
       return toBufferResult(toBuffer21(packet._0));
     case "ItemDropProtectedUpdate":
-      return toBufferResult(toBuffer175(packet._0));
+      return toBufferResult(toBuffer181(packet._0));
     case "DeadCellsDisplayJarTryPlacing":
       return toBufferResult(toBuffer76(packet._0));
     case "PlayerSpectate":
@@ -34007,11 +34590,13 @@ function toBuffer178(packet, fromServer) {
     case "HostToken":
       return toBufferResult(toBuffer78(packet._0));
     case "DamageNPCAck":
-      return toBufferResult(toBuffer121(packet._0));
+      return toBufferResult(toBuffer123(packet._0));
     case "ServerInfo":
-      return toBufferResult(toBuffer118(packet._0));
+      return toBufferResult(toBuffer106(packet._0, fromServer));
     case "PlayerPlatformInfo":
-      return toBufferResult(toBuffer143(packet._0));
+      return toBufferResult(toBuffer128(packet._0));
+    case "CustomServerAck":
+      return toBufferResult(toBuffer121(packet._0));
   }
 }
 function toPacketName$1(packet) {
@@ -34389,6 +34974,8 @@ function toPacketName$1(packet) {
       return "ServerInfo";
     case "PlayerPlatformInfo":
       return "PlayerPlatformInfo";
+    case "CustomServerAck":
+      return "CustomServerAck";
   }
 }
 var ConnectRequest;
@@ -34551,6 +35138,7 @@ var HostToken;
 var DamageNPCAck;
 var ServerInfo;
 var PlayerPlatformInfo;
+var CustomServerAck;
 var LazyPacket = {
   toPacketName
 };
@@ -34718,7 +35306,7 @@ __export(PacketV1456_exports, {
   WorldDataRequest: () => WorldDataRequest2,
   WorldInfo: () => WorldInfo2,
   Zones: () => Zones2,
-  toBuffer: () => toBuffer179,
+  toBuffer: () => toBuffer186,
   toPacketName: () => toPacketName$12
 });
 function packetTypeOf2(packet) {
@@ -35471,7 +36059,7 @@ function packetTypeOf$12(packet) {
 function toPacketName2(packet) {
   return packetName3(packetTypeOf$12(packet));
 }
-function toBuffer179(packet, fromServer) {
+function toBuffer186(packet, fromServer) {
   let packetType = packetTypeOf2(packet);
   let err = guardDirection2(packetType, fromServer);
   if (err !== void 0) {
@@ -35491,7 +36079,7 @@ function toBuffer179(packet, fromServer) {
     case "WorldDataRequest":
       return toBufferResult(toBuffer73(packet._0));
     case "WorldInfo":
-      return toBufferResult(toBuffer163(packet._0));
+      return toBufferResult(toBuffer165(packet._0));
     case "InitialTileSectionsRequest":
       return toBufferResult(toBuffer79(packet._0));
     case "Status":
@@ -35503,7 +36091,7 @@ function toBuffer179(packet, fromServer) {
     case "PlayerSpawn":
       return toBufferResult(toBuffer95(packet._0));
     case "PlayerUpdate":
-      return toBufferResult(toBuffer166(packet._0));
+      return toBufferResult(toBuffer170(packet._0));
     case "PlayerActive":
       return toBufferResult(toBuffer102(packet._0));
     case "PlayerHealth":
@@ -35513,51 +36101,51 @@ function toBuffer179(packet, fromServer) {
     case "TimeSet":
       return toBufferResult(toBuffer67(packet._0));
     case "DoorUse":
-      return toBufferResult(toBuffer106(packet._0));
+      return toBufferResult(toBuffer108(packet._0));
     case "TileSquareSend":
       return toBufferResult(toBuffer66(packet._0));
     case "ItemDropUpdate":
-      return toBufferResult(toBuffer169(packet._0));
+      return toBufferResult(toBuffer174(packet._0));
     case "ItemOwner":
-      return toBufferResult(toBuffer161(packet._0));
+      return toBufferResult(toBuffer163(packet._0));
     case "NpcUpdate":
-      return toBufferResult(toBuffer162(packet._0));
+      return toBufferResult(toBuffer164(packet._0));
     case "NpcItemStrike":
-      return toBufferResult(toBuffer167(packet._0));
+      return toBufferResult(toBuffer171(packet._0));
     case "ProjectileSync":
-      return toBufferResult(toBuffer170(packet._0));
+      return toBufferResult(toBuffer175(packet._0));
     case "NpcStrike":
-      return toBufferResult(toBuffer160(packet._0));
+      return toBufferResult(toBuffer162(packet._0));
     case "ProjectileDestroy":
-      return toBufferResult(toBuffer172(packet._0));
+      return toBufferResult(toBuffer178(packet._0));
     case "PvpToggle":
       return toBufferResult(toBuffer45(packet._0));
     case "ChestOpen":
-      return toBufferResult(toBuffer109(packet._0));
+      return toBufferResult(toBuffer111(packet._0));
     case "ChestItem":
       return toBufferResult(toBuffer5(packet._0));
     case "ActiveContainerSync":
-      return toBufferResult(toBuffer144(packet._0));
+      return toBufferResult(toBuffer146(packet._0));
     case "ChestPlace":
       return toBufferResult(toBuffer7(packet._0));
     case "HealEffect":
-      return toBufferResult(toBuffer113(packet._0));
+      return toBufferResult(toBuffer116(packet._0));
     case "Zones":
       return toBufferResult(toBuffer74(packet._0));
     case "PasswordRequired":
-      return toBufferResult(toBuffer134(packet._0));
+      return toBufferResult(toBuffer137(packet._0));
     case "PasswordSend":
-      return toBufferResult(toBuffer120(packet._0));
+      return toBufferResult(toBuffer122(packet._0));
     case "ItemOwnerRemove":
-      return toBufferResult(toBuffer171(packet._0));
+      return toBufferResult(toBuffer176(packet._0));
     case "NpcTalk":
       return toBufferResult(toBuffer32(packet._0));
     case "PlayerAnimation":
-      return toBufferResult(toBuffer36(packet._0));
+      return toBufferResult(toBuffer177(packet._0));
     case "PlayerMana":
       return toBufferResult(toBuffer43(packet._0));
     case "ManaEffect":
-      return toBufferResult(toBuffer114(packet._0));
+      return toBufferResult(toBuffer117(packet._0));
     case "PlayerTeam":
       return toBufferResult(toBuffer44(packet._0));
     case "SignRead":
@@ -35565,17 +36153,17 @@ function toBuffer179(packet, fromServer) {
     case "SignNew":
       return toBufferResult(toBuffer47(packet._0));
     case "LiquidSet":
-      return toBufferResult(toBuffer110(packet._0));
+      return toBufferResult(toBuffer112(packet._0));
     case "PlayerSpawnSelf":
-      return toBufferResult(toBuffer131(packet._0));
+      return toBufferResult(toBuffer134(packet._0));
     case "PlayerBuffsSet":
       return toBufferResult(toBuffer38(packet._0));
     case "NpcSpecialEffect":
-      return toBufferResult(toBuffer133(packet._0));
+      return toBufferResult(toBuffer136(packet._0));
     case "ChestOrTempleUnlock":
       return toBufferResult(toBuffer6(packet._0));
     case "NpcBuffAdd":
-      return toBufferResult(toBuffer115(packet._0));
+      return toBufferResult(toBuffer118(packet._0));
     case "NpcBuffUpdate":
       return toBufferResult(toBuffer25(packet._0));
     case "PlayerBuffAdd":
@@ -35583,9 +36171,9 @@ function toBuffer179(packet, fromServer) {
     case "NpcNameUpdate":
       return toBufferResult(toBuffer30(packet._0));
     case "GoodEvilUpdate":
-      return toBufferResult(toBuffer125(packet._0));
+      return toBufferResult(toBuffer129(packet._0));
     case "HarpPlay":
-      return toBufferResult(toBuffer107(packet._0));
+      return toBufferResult(toBuffer109(packet._0));
     case "SwitchHit":
       return toBufferResult(toBuffer52(packet._0));
     case "NpcHomeUpdate":
@@ -35593,7 +36181,7 @@ function toBuffer179(packet, fromServer) {
     case "BossOrInvasionSpawn":
       return toBufferResult(toBuffer3(packet._0));
     case "PlayerDodge":
-      return toBufferResult(toBuffer165(packet._0));
+      return toBufferResult(toBuffer168(packet._0));
     case "TilePaint":
       return toBufferResult(toBuffer62(packet._0));
     case "WallPaint":
@@ -35601,17 +36189,17 @@ function toBuffer179(packet, fromServer) {
     case "Teleport":
       return toBufferResult(toBuffer53(packet._0));
     case "PlayerHealOther":
-      return toBufferResult(toBuffer130(packet._0));
+      return toBufferResult(toBuffer133(packet._0));
     case "DimensionsUpdate":
       return toBufferResult(toBuffer13(packet._0));
     case "ClientUuid":
       return toBufferResult(toBuffer98(packet._0));
     case "ChestName":
-      return toBufferResult(toBuffer108(packet._0));
+      return toBufferResult(toBuffer110(packet._0));
     case "NpcCatch":
-      return toBufferResult(toBuffer159(packet._0));
+      return toBufferResult(toBuffer161(packet._0));
     case "NpcRelease":
-      return toBufferResult(toBuffer116(packet._0));
+      return toBufferResult(toBuffer119(packet._0));
     case "TravellingMerchantInventory":
       return toBufferResult(toBuffer68(packet._0));
     case "TeleportationPotion":
@@ -35621,7 +36209,7 @@ function toBuffer179(packet, fromServer) {
     case "AnglerQuestComplete":
       return toBufferResult(toBuffer2(packet._0));
     case "AnglerQuestsCompletedAmount":
-      return toBufferResult(toBuffer156(packet._0));
+      return toBufferResult(toBuffer158(packet._0));
     case "TemporaryAnimationCreate":
       return toBufferResult(toBuffer55(packet._0));
     case "InvasionProgressReport":
@@ -35631,13 +36219,13 @@ function toBuffer179(packet, fromServer) {
     case "PlayerChestIndexSync":
       return toBufferResult(toBuffer39(packet._0));
     case "CombatNumberCreate":
-      return toBufferResult(toBuffer141(packet._0));
+      return toBufferResult(toBuffer144(packet._0));
     case "NetModuleLoad":
-      return toBufferResult(toBuffer168(packet._0));
+      return toBufferResult(toBuffer172(packet._0));
     case "NpcKillCount":
       return toBufferResult(toBuffer29(packet._0));
     case "PlayerStealth":
-      return toBufferResult(toBuffer124(packet._0));
+      return toBufferResult(toBuffer126(packet._0));
     case "ItemForceIntoNearestChest":
       return toBufferResult(toBuffer82(packet._0));
     case "TileEntityUpdate":
@@ -35645,39 +36233,39 @@ function toBuffer179(packet, fromServer) {
     case "TileEntityPlace":
       return toBufferResult(toBuffer59(packet._0));
     case "ItemDropModify":
-      return toBufferResult(toBuffer126(packet._0));
+      return toBufferResult(toBuffer173(packet._0));
     case "ItemFramePlace":
-      return toBufferResult(toBuffer127(packet._0));
+      return toBufferResult(toBuffer130(packet._0));
     case "ItemDropInstancedUpdate":
-      return toBufferResult(toBuffer174(packet._0));
+      return toBufferResult(toBuffer180(packet._0));
     case "EmoteBubble":
-      return toBufferResult(toBuffer119(packet._0));
+      return toBufferResult(toBuffer167(packet._0));
     case "ExtraValueSync":
       return toBufferResult(toBuffer14(packet._0));
     case "SocialHandshake":
       return toBufferResult(toBuffer50(packet._0));
     case "PortalKill":
-      return toBufferResult(toBuffer117(packet._0));
+      return toBufferResult(toBuffer120(packet._0));
     case "PlayerTeleportPortal":
-      return toBufferResult(toBuffer147(packet._0));
+      return toBufferResult(toBuffer149(packet._0));
     case "NpcKilledNotification":
-      return toBufferResult(toBuffer150(packet._0));
+      return toBufferResult(toBuffer152(packet._0));
     case "EventNotification":
-      return toBufferResult(toBuffer135(packet._0));
+      return toBufferResult(toBuffer138(packet._0));
     case "MinionTargetUpdate":
-      return toBufferResult(toBuffer142(packet._0));
+      return toBufferResult(toBuffer145(packet._0));
     case "NpcTeleportPortal":
       return toBufferResult(toBuffer33(packet._0));
     case "ShieldStrengthsUpdate":
-      return toBufferResult(toBuffer151(packet._0));
+      return toBufferResult(toBuffer153(packet._0));
     case "NebulaLevelUp":
-      return toBufferResult(toBuffer123(packet._0));
+      return toBufferResult(toBuffer125(packet._0));
     case "MoonLordCountdown":
-      return toBufferResult(toBuffer138(packet._0));
+      return toBufferResult(toBuffer141(packet._0));
     case "NpcShopItem":
       return toBufferResult(toBuffer31(packet._0));
     case "GemLockToggle":
-      return toBufferResult(toBuffer122(packet._0));
+      return toBufferResult(toBuffer124(packet._0));
     case "SmokePoof":
       return toBufferResult(toBuffer49(packet._0));
     case "ChatMessageSmart":
@@ -35685,9 +36273,9 @@ function toBuffer179(packet, fromServer) {
     case "WiredCannonShot":
       return toBufferResult(toBuffer72(packet._0));
     case "MassWireOperation":
-      return toBufferResult(toBuffer137(packet._0));
+      return toBufferResult(toBuffer140(packet._0));
     case "MassWireOperationPay":
-      return toBufferResult(toBuffer146(packet._0));
+      return toBufferResult(toBuffer148(packet._0));
     case "PartyToggle":
       return toBufferResult(toBuffer35(packet._0));
     case "TreeGrowFx":
@@ -35695,17 +36283,17 @@ function toBuffer179(packet, fromServer) {
     case "CrystalInvasionStart":
       return toBufferResult(toBuffer12(packet._0));
     case "CrystalInvasionWipeAll":
-      return toBufferResult(toBuffer152(packet._0));
+      return toBufferResult(toBuffer154(packet._0));
     case "MinionAttackTargetUpdate":
-      return toBufferResult(toBuffer155(packet._0));
-    case "CrystalInvasionSendWaitTime":
       return toBufferResult(toBuffer157(packet._0));
+    case "CrystalInvasionSendWaitTime":
+      return toBufferResult(toBuffer159(packet._0));
     case "PlayerDamage":
-      return toBufferResult(toBuffer100(packet._0));
+      return toBufferResult(toBuffer169(packet._0));
     case "PlayerDeath":
       return toBufferResult(toBuffer41(packet._0));
     case "CombatTextCreate":
-      return toBufferResult(toBuffer132(packet._0));
+      return toBufferResult(toBuffer135(packet._0));
     case "Emoji":
       return toBufferResult(toBuffer105(packet._0));
     case "TileEntityDisplayDollItemSync":
@@ -35719,27 +36307,27 @@ function toBuffer179(packet, fromServer) {
     case "TilePickingSync":
       return toBufferResult(toBuffer63(packet._0));
     case "RevengeMarkerSync":
-      return toBufferResult(toBuffer139(packet._0));
+      return toBufferResult(toBuffer142(packet._0));
     case "RevengeMarkerRemove":
-      return toBufferResult(toBuffer145(packet._0));
+      return toBufferResult(toBuffer147(packet._0));
     case "GolfBallLandInCup":
-      return toBufferResult(toBuffer136(packet._0));
+      return toBufferResult(toBuffer139(packet._0));
     case "ClientFinishConnectingToServer":
       return toBufferResult(toBuffer8(packet._0));
     case "NpcFishOut":
       return toBufferResult(toBuffer27(packet._0));
     case "NpcTamper":
-      return toBufferResult(toBuffer111(packet._0));
+      return toBufferResult(toBuffer113(packet._0));
     case "LegacySoundPlay":
-      return toBufferResult(toBuffer129(packet._0));
+      return toBufferResult(toBuffer132(packet._0));
     case "FoodPlatterTryPlacing":
-      return toBufferResult(toBuffer149(packet._0));
+      return toBufferResult(toBuffer151(packet._0));
     case "PlayerLuckFactorsUpdate":
       return toBufferResult(toBuffer87(packet._0));
     case "PlayerDead":
       return toBufferResult(toBuffer40(packet._0));
     case "CavernMonsterTypeSync":
-      return toBufferResult(toBuffer148(packet._0));
+      return toBufferResult(toBuffer150(packet._0));
     case "NpcBuffRemovalRequest":
       return toBufferResult(toBuffer24(packet._0));
     case "Unused":
@@ -35750,11 +36338,11 @@ function toBuffer179(packet, fromServer) {
     case "CreditsOrSlimeTransform":
       return toBufferResult(toBuffer11(packet._0));
     case "LucyAxeMessage":
-      return toBufferResult(toBuffer128(packet._0));
+      return toBufferResult(toBuffer131(packet._0));
     case "PiggyBankVoidLensUpdate":
-      return toBufferResult(toBuffer176(packet._0));
+      return toBufferResult(toBuffer182(packet._0));
     case "DungeonDefendersEventAttemptSkipWait":
-      return toBufferResult(toBuffer158(packet._0));
+      return toBufferResult(toBuffer160(packet._0));
     case "HaveDryadDoStardewAnimation":
       return toBufferResult(toBuffer15(packet._0));
     case "ItemDropShimmeredUpdate":
@@ -35764,7 +36352,7 @@ function toBuffer179(packet, fromServer) {
     case "LoadoutSwitch":
       return toBufferResult(toBuffer21(packet._0));
     case "ItemDropProtectedUpdate":
-      return toBufferResult(toBuffer175(packet._0));
+      return toBufferResult(toBuffer181(packet._0));
     case "DeadCellsDisplayJarTryPlacing":
       return toBufferResult(toBuffer76(packet._0));
     case "PlayerSpectate":
@@ -35792,9 +36380,9 @@ function toBuffer179(packet, fromServer) {
     case "HostToken":
       return toBufferResult(toBuffer78(packet._0));
     case "ServerInfo":
-      return toBufferResult(toBuffer164(packet._0));
+      return toBufferResult(toBuffer166(packet._0));
     case "PlayerPlatformInfo":
-      return toBufferResult(toBuffer173(packet._0));
+      return toBufferResult(toBuffer179(packet._0));
   }
 }
 function toPacketName$12(packet) {
@@ -36501,7 +37089,7 @@ __export(PacketV1457_exports, {
   WorldDataRequest: () => WorldDataRequest3,
   WorldInfo: () => WorldInfo3,
   Zones: () => Zones3,
-  toBuffer: () => toBuffer180,
+  toBuffer: () => toBuffer187,
   toPacketName: () => toPacketName$13
 });
 function packetTypeOf3(packet) {
@@ -37259,7 +37847,7 @@ function packetTypeOf$13(packet) {
 function toPacketName3(packet) {
   return packetName2(packetTypeOf$13(packet));
 }
-function toBuffer180(packet, fromServer) {
+function toBuffer187(packet, fromServer) {
   let packetType = packetTypeOf3(packet);
   let err = guardDirection3(packetType, fromServer);
   if (err !== void 0) {
@@ -37279,7 +37867,7 @@ function toBuffer180(packet, fromServer) {
     case "WorldDataRequest":
       return toBufferResult(toBuffer73(packet._0));
     case "WorldInfo":
-      return toBufferResult(toBuffer177(packet._0));
+      return toBufferResult(toBuffer183(packet._0));
     case "InitialTileSectionsRequest":
       return toBufferResult(toBuffer79(packet._0));
     case "Status":
@@ -37301,7 +37889,7 @@ function toBuffer180(packet, fromServer) {
     case "TimeSet":
       return toBufferResult(toBuffer67(packet._0));
     case "DoorUse":
-      return toBufferResult(toBuffer106(packet._0));
+      return toBufferResult(toBuffer108(packet._0));
     case "TileSquareSend":
       return toBufferResult(toBuffer66(packet._0));
     case "ItemDropUpdate":
@@ -37311,41 +37899,41 @@ function toBuffer180(packet, fromServer) {
     case "NpcUpdate":
       return toBufferResult(toBuffer103(packet._0));
     case "NpcItemStrike":
-      return toBufferResult(toBuffer167(packet._0));
+      return toBufferResult(toBuffer171(packet._0));
     case "ProjectileSync":
       return toBufferResult(toBuffer99(packet._0));
     case "NpcStrike":
-      return toBufferResult(toBuffer112(packet._0));
+      return toBufferResult(toBuffer114(packet._0));
     case "ProjectileDestroy":
-      return toBufferResult(toBuffer140(packet._0));
+      return toBufferResult(toBuffer143(packet._0));
     case "PvpToggle":
       return toBufferResult(toBuffer45(packet._0));
     case "ChestOpen":
-      return toBufferResult(toBuffer109(packet._0));
+      return toBufferResult(toBuffer111(packet._0));
     case "ChestItem":
       return toBufferResult(toBuffer5(packet._0));
     case "ActiveContainerSync":
-      return toBufferResult(toBuffer144(packet._0));
+      return toBufferResult(toBuffer146(packet._0));
     case "ChestPlace":
       return toBufferResult(toBuffer7(packet._0));
     case "HealEffect":
-      return toBufferResult(toBuffer113(packet._0));
+      return toBufferResult(toBuffer116(packet._0));
     case "Zones":
       return toBufferResult(toBuffer74(packet._0));
     case "PasswordRequired":
-      return toBufferResult(toBuffer134(packet._0));
+      return toBufferResult(toBuffer137(packet._0));
     case "PasswordSend":
-      return toBufferResult(toBuffer120(packet._0));
+      return toBufferResult(toBuffer122(packet._0));
     case "ItemOwnerRemove":
       return toBufferResult(toBuffer20(packet._0));
     case "NpcTalk":
       return toBufferResult(toBuffer32(packet._0));
     case "PlayerAnimation":
-      return toBufferResult(toBuffer36(packet._0));
+      return toBufferResult(toBuffer177(packet._0));
     case "PlayerMana":
       return toBufferResult(toBuffer43(packet._0));
     case "ManaEffect":
-      return toBufferResult(toBuffer114(packet._0));
+      return toBufferResult(toBuffer117(packet._0));
     case "PlayerTeam":
       return toBufferResult(toBuffer44(packet._0));
     case "SignRead":
@@ -37353,17 +37941,17 @@ function toBuffer180(packet, fromServer) {
     case "SignNew":
       return toBufferResult(toBuffer47(packet._0));
     case "LiquidSet":
-      return toBufferResult(toBuffer110(packet._0));
+      return toBufferResult(toBuffer112(packet._0));
     case "PlayerSpawnSelf":
-      return toBufferResult(toBuffer131(packet._0));
+      return toBufferResult(toBuffer134(packet._0));
     case "PlayerBuffsSet":
       return toBufferResult(toBuffer38(packet._0));
     case "NpcSpecialEffect":
-      return toBufferResult(toBuffer133(packet._0));
+      return toBufferResult(toBuffer136(packet._0));
     case "ChestOrTempleUnlock":
       return toBufferResult(toBuffer6(packet._0));
     case "NpcBuffAdd":
-      return toBufferResult(toBuffer115(packet._0));
+      return toBufferResult(toBuffer118(packet._0));
     case "NpcBuffUpdate":
       return toBufferResult(toBuffer25(packet._0));
     case "PlayerBuffAdd":
@@ -37371,9 +37959,9 @@ function toBuffer180(packet, fromServer) {
     case "NpcNameUpdate":
       return toBufferResult(toBuffer30(packet._0));
     case "GoodEvilUpdate":
-      return toBufferResult(toBuffer125(packet._0));
+      return toBufferResult(toBuffer129(packet._0));
     case "HarpPlay":
-      return toBufferResult(toBuffer107(packet._0));
+      return toBufferResult(toBuffer109(packet._0));
     case "SwitchHit":
       return toBufferResult(toBuffer52(packet._0));
     case "NpcHomeUpdate":
@@ -37389,17 +37977,17 @@ function toBuffer180(packet, fromServer) {
     case "Teleport":
       return toBufferResult(toBuffer53(packet._0));
     case "PlayerHealOther":
-      return toBufferResult(toBuffer130(packet._0));
+      return toBufferResult(toBuffer133(packet._0));
     case "DimensionsUpdate":
       return toBufferResult(toBuffer13(packet._0));
     case "ClientUuid":
       return toBufferResult(toBuffer98(packet._0));
     case "ChestName":
-      return toBufferResult(toBuffer108(packet._0));
+      return toBufferResult(toBuffer110(packet._0));
     case "NpcCatch":
       return toBufferResult(toBuffer26(packet._0));
     case "NpcRelease":
-      return toBufferResult(toBuffer116(packet._0));
+      return toBufferResult(toBuffer119(packet._0));
     case "TravellingMerchantInventory":
       return toBufferResult(toBuffer68(packet._0));
     case "TeleportationPotion":
@@ -37409,7 +37997,7 @@ function toBuffer180(packet, fromServer) {
     case "AnglerQuestComplete":
       return toBufferResult(toBuffer2(packet._0));
     case "AnglerQuestsCompletedAmount":
-      return toBufferResult(toBuffer156(packet._0));
+      return toBufferResult(toBuffer158(packet._0));
     case "TemporaryAnimationCreate":
       return toBufferResult(toBuffer55(packet._0));
     case "InvasionProgressReport":
@@ -37419,13 +38007,13 @@ function toBuffer180(packet, fromServer) {
     case "PlayerChestIndexSync":
       return toBufferResult(toBuffer39(packet._0));
     case "CombatNumberCreate":
-      return toBufferResult(toBuffer141(packet._0));
+      return toBufferResult(toBuffer144(packet._0));
     case "NetModuleLoad":
       return toBufferResult(toBuffer22(packet._0));
     case "NpcKillCount":
       return toBufferResult(toBuffer29(packet._0));
     case "PlayerStealth":
-      return toBufferResult(toBuffer124(packet._0));
+      return toBufferResult(toBuffer126(packet._0));
     case "ItemForceIntoNearestChest":
       return toBufferResult(toBuffer82(packet._0));
     case "TileEntityUpdate":
@@ -37433,13 +38021,13 @@ function toBuffer180(packet, fromServer) {
     case "TileEntityPlace":
       return toBufferResult(toBuffer59(packet._0));
     case "ItemDropModify":
-      return toBufferResult(toBuffer126(packet._0));
+      return toBufferResult(toBuffer173(packet._0));
     case "ItemFramePlace":
-      return toBufferResult(toBuffer127(packet._0));
+      return toBufferResult(toBuffer130(packet._0));
     case "ItemDropInstancedUpdate":
-      return toBufferResult(toBuffer153(packet._0));
+      return toBufferResult(toBuffer155(packet._0));
     case "EmoteBubble":
-      return toBufferResult(toBuffer119(packet._0));
+      return toBufferResult(toBuffer167(packet._0));
     case "ExtraValueSync":
       return toBufferResult(toBuffer14(packet._0));
     case "SocialHandshake":
@@ -37447,27 +38035,27 @@ function toBuffer180(packet, fromServer) {
     case "Unused":
       return toBufferResult(toBuffer77(packet._0));
     case "PortalKill":
-      return toBufferResult(toBuffer117(packet._0));
+      return toBufferResult(toBuffer120(packet._0));
     case "PlayerTeleportPortal":
-      return toBufferResult(toBuffer147(packet._0));
+      return toBufferResult(toBuffer149(packet._0));
     case "NpcKilledNotification":
-      return toBufferResult(toBuffer150(packet._0));
+      return toBufferResult(toBuffer152(packet._0));
     case "EventNotification":
-      return toBufferResult(toBuffer135(packet._0));
+      return toBufferResult(toBuffer138(packet._0));
     case "MinionTargetUpdate":
-      return toBufferResult(toBuffer142(packet._0));
+      return toBufferResult(toBuffer145(packet._0));
     case "NpcTeleportPortal":
       return toBufferResult(toBuffer33(packet._0));
     case "ShieldStrengthsUpdate":
-      return toBufferResult(toBuffer151(packet._0));
+      return toBufferResult(toBuffer153(packet._0));
     case "NebulaLevelUp":
-      return toBufferResult(toBuffer123(packet._0));
+      return toBufferResult(toBuffer125(packet._0));
     case "MoonLordCountdown":
-      return toBufferResult(toBuffer138(packet._0));
+      return toBufferResult(toBuffer141(packet._0));
     case "NpcShopItem":
       return toBufferResult(toBuffer31(packet._0));
     case "GemLockToggle":
-      return toBufferResult(toBuffer122(packet._0));
+      return toBufferResult(toBuffer124(packet._0));
     case "SmokePoof":
       return toBufferResult(toBuffer49(packet._0));
     case "ChatMessageSmart":
@@ -37475,9 +38063,9 @@ function toBuffer180(packet, fromServer) {
     case "WiredCannonShot":
       return toBufferResult(toBuffer72(packet._0));
     case "MassWireOperation":
-      return toBufferResult(toBuffer137(packet._0));
+      return toBufferResult(toBuffer140(packet._0));
     case "MassWireOperationPay":
-      return toBufferResult(toBuffer146(packet._0));
+      return toBufferResult(toBuffer148(packet._0));
     case "PartyToggle":
       return toBufferResult(toBuffer35(packet._0));
     case "TreeGrowFx":
@@ -37485,17 +38073,17 @@ function toBuffer180(packet, fromServer) {
     case "CrystalInvasionStart":
       return toBufferResult(toBuffer12(packet._0));
     case "CrystalInvasionWipeAll":
-      return toBufferResult(toBuffer152(packet._0));
+      return toBufferResult(toBuffer154(packet._0));
     case "MinionAttackTargetUpdate":
-      return toBufferResult(toBuffer155(packet._0));
-    case "CrystalInvasionSendWaitTime":
       return toBufferResult(toBuffer157(packet._0));
+    case "CrystalInvasionSendWaitTime":
+      return toBufferResult(toBuffer159(packet._0));
     case "PlayerDamage":
-      return toBufferResult(toBuffer100(packet._0));
+      return toBufferResult(toBuffer169(packet._0));
     case "PlayerDeath":
       return toBufferResult(toBuffer41(packet._0));
     case "CombatTextCreate":
-      return toBufferResult(toBuffer132(packet._0));
+      return toBufferResult(toBuffer135(packet._0));
     case "Emoji":
       return toBufferResult(toBuffer105(packet._0));
     case "TileEntityDisplayDollItemSync":
@@ -37509,27 +38097,27 @@ function toBuffer180(packet, fromServer) {
     case "TilePickingSync":
       return toBufferResult(toBuffer63(packet._0));
     case "RevengeMarkerSync":
-      return toBufferResult(toBuffer139(packet._0));
+      return toBufferResult(toBuffer142(packet._0));
     case "RevengeMarkerRemove":
-      return toBufferResult(toBuffer145(packet._0));
+      return toBufferResult(toBuffer147(packet._0));
     case "GolfBallLandInCup":
-      return toBufferResult(toBuffer136(packet._0));
+      return toBufferResult(toBuffer139(packet._0));
     case "ClientFinishConnectingToServer":
       return toBufferResult(toBuffer8(packet._0));
     case "NpcFishOut":
       return toBufferResult(toBuffer27(packet._0));
     case "NpcTamper":
-      return toBufferResult(toBuffer111(packet._0));
+      return toBufferResult(toBuffer113(packet._0));
     case "LegacySoundPlay":
-      return toBufferResult(toBuffer129(packet._0));
+      return toBufferResult(toBuffer132(packet._0));
     case "FoodPlatterTryPlacing":
-      return toBufferResult(toBuffer149(packet._0));
+      return toBufferResult(toBuffer151(packet._0));
     case "PlayerLuckFactorsUpdate":
       return toBufferResult(toBuffer87(packet._0));
     case "PlayerDead":
       return toBufferResult(toBuffer40(packet._0));
     case "CavernMonsterTypeSync":
-      return toBufferResult(toBuffer148(packet._0));
+      return toBufferResult(toBuffer150(packet._0));
     case "NpcBuffRemovalRequest":
       return toBufferResult(toBuffer24(packet._0));
     case "ClientSyncedInventory":
@@ -37539,11 +38127,11 @@ function toBuffer180(packet, fromServer) {
     case "CreditsOrSlimeTransform":
       return toBufferResult(toBuffer11(packet._0));
     case "LucyAxeMessage":
-      return toBufferResult(toBuffer128(packet._0));
+      return toBufferResult(toBuffer131(packet._0));
     case "PiggyBankVoidLensUpdate":
-      return toBufferResult(toBuffer154(packet._0));
+      return toBufferResult(toBuffer156(packet._0));
     case "DungeonDefendersEventAttemptSkipWait":
-      return toBufferResult(toBuffer158(packet._0));
+      return toBufferResult(toBuffer160(packet._0));
     case "HaveDryadDoStardewAnimation":
       return toBufferResult(toBuffer15(packet._0));
     case "ItemDropShimmeredUpdate":
@@ -37553,7 +38141,7 @@ function toBuffer180(packet, fromServer) {
     case "LoadoutSwitch":
       return toBufferResult(toBuffer21(packet._0));
     case "ItemDropProtectedUpdate":
-      return toBufferResult(toBuffer175(packet._0));
+      return toBufferResult(toBuffer181(packet._0));
     case "DeadCellsDisplayJarTryPlacing":
       return toBufferResult(toBuffer76(packet._0));
     case "PlayerSpectate":
@@ -37581,11 +38169,11 @@ function toBuffer180(packet, fromServer) {
     case "HostToken":
       return toBufferResult(toBuffer78(packet._0));
     case "DamageNPCAck":
-      return toBufferResult(toBuffer121(packet._0));
+      return toBufferResult(toBuffer123(packet._0));
     case "ServerInfo":
-      return toBufferResult(toBuffer118(packet._0));
+      return toBufferResult(toBuffer184(packet._0));
     case "PlayerPlatformInfo":
-      return toBufferResult(toBuffer143(packet._0));
+      return toBufferResult(toBuffer127(packet._0));
   }
 }
 function toPacketName$13(packet) {
@@ -38151,9 +38739,4503 @@ var Float = {
 // src/ParserConverterV1456.js
 var ParserConverterV1456_exports = {};
 __export(ParserConverterV1456_exports, {
+  convertFromLatestIfNeeded: () => convertFromLatestIfNeeded2,
+  convertToLatestIfNeeded: () => convertToLatestIfNeeded2
+});
+
+// src/ParserConverterV1458.js
+var ParserConverterV1458_exports = {};
+__export(ParserConverterV1458_exports, {
   convertFromLatestIfNeeded: () => convertFromLatestIfNeeded,
   convertToLatestIfNeeded: () => convertToLatestIfNeeded
 });
+
+// src/ParserV1458.js
+var ParserV1458_exports = {};
+__export(ParserV1458_exports, {
+  parse: () => parse193,
+  parseLazy: () => parseLazy4
+});
+
+// src/PacketTypeV1458.js
+var PacketTypeV1458_exports = {};
+__export(PacketTypeV1458_exports, {
+  fromInt: () => fromInt16,
+  packetName: () => packetName4,
+  toInt: () => toInt15
+});
+function fromInt16(n) {
+  switch (n) {
+    case 1:
+      return "ConnectRequest";
+    case 2:
+      return "Disconnect";
+    case 3:
+      return "PlayerSlotSet";
+    case 4:
+      return "PlayerInfo";
+    case 5:
+      return "PlayerInventorySlot";
+    case 6:
+      return "WorldDataRequest";
+    case 7:
+      return "WorldInfo";
+    case 8:
+      return "InitialTileSectionsRequest";
+    case 9:
+      return "Status";
+    case 10:
+      return "TileSectionSend";
+    case 11:
+      return "TileSectionFrame";
+    case 12:
+      return "PlayerSpawn";
+    case 13:
+      return "PlayerUpdate";
+    case 14:
+      return "PlayerActive";
+    case 16:
+      return "PlayerHealth";
+    case 17:
+      return "TileModify";
+    case 18:
+      return "TimeSet";
+    case 19:
+      return "DoorUse";
+    case 20:
+      return "TileSquareSend";
+    case 21:
+      return "ItemDropUpdate";
+    case 22:
+      return "ItemOwner";
+    case 23:
+      return "NpcUpdate";
+    case 24:
+      return "NpcItemStrike";
+    case 27:
+      return "ProjectileSync";
+    case 28:
+      return "NpcStrike";
+    case 29:
+      return "ProjectileDestroy";
+    case 30:
+      return "PvpToggle";
+    case 31:
+      return "ChestOpen";
+    case 32:
+      return "ChestItem";
+    case 33:
+      return "ActiveContainerSync";
+    case 34:
+      return "ChestPlace";
+    case 35:
+      return "HealEffect";
+    case 36:
+      return "Zones";
+    case 37:
+      return "PasswordRequired";
+    case 38:
+      return "PasswordSend";
+    case 39:
+      return "ItemOwnerRemove";
+    case 40:
+      return "NpcTalk";
+    case 41:
+      return "PlayerAnimation";
+    case 42:
+      return "PlayerMana";
+    case 43:
+      return "ManaEffect";
+    case 45:
+      return "PlayerTeam";
+    case 46:
+      return "SignRead";
+    case 47:
+      return "SignNew";
+    case 48:
+      return "LiquidSet";
+    case 49:
+      return "PlayerSpawnSelf";
+    case 50:
+      return "PlayerBuffsSet";
+    case 51:
+      return "NpcSpecialEffect";
+    case 52:
+      return "ChestOrTempleUnlock";
+    case 53:
+      return "NpcBuffAdd";
+    case 54:
+      return "NpcBuffUpdate";
+    case 55:
+      return "PlayerBuffAdd";
+    case 56:
+      return "NpcNameUpdate";
+    case 57:
+      return "GoodEvilUpdate";
+    case 58:
+      return "HarpPlay";
+    case 59:
+      return "SwitchHit";
+    case 60:
+      return "NpcHomeUpdate";
+    case 61:
+      return "BossOrInvasionSpawn";
+    case 62:
+      return "PlayerDodge";
+    case 63:
+      return "TilePaint";
+    case 64:
+      return "WallPaint";
+    case 65:
+      return "Teleport";
+    case 66:
+      return "PlayerHealOther";
+    case 67:
+      return "DimensionsUpdate";
+    case 68:
+      return "ClientUuid";
+    case 69:
+      return "ChestName";
+    case 70:
+      return "NpcCatch";
+    case 71:
+      return "NpcRelease";
+    case 72:
+      return "TravellingMerchantInventory";
+    case 73:
+      return "TeleportationPotion";
+    case 74:
+      return "AnglerQuest";
+    case 75:
+      return "AnglerQuestComplete";
+    case 76:
+      return "AnglerQuestsCompletedAmount";
+    case 77:
+      return "TemporaryAnimationCreate";
+    case 78:
+      return "InvasionProgressReport";
+    case 79:
+      return "ObjectPlace";
+    case 80:
+      return "PlayerChestIndexSync";
+    case 81:
+      return "CombatNumberCreate";
+    case 82:
+      return "NetModuleLoad";
+    case 83:
+      return "NpcKillCount";
+    case 84:
+      return "PlayerStealth";
+    case 85:
+      return "ItemForceIntoNearestChest";
+    case 86:
+      return "TileEntityUpdate";
+    case 87:
+      return "TileEntityPlace";
+    case 88:
+      return "ItemDropModify";
+    case 89:
+      return "ItemFramePlace";
+    case 90:
+      return "ItemDropInstancedUpdate";
+    case 91:
+      return "EmoteBubble";
+    case 92:
+      return "ExtraValueSync";
+    case 93:
+      return "SocialHandshake";
+    case 94:
+      return "Unused";
+    case 95:
+      return "PortalKill";
+    case 96:
+      return "PlayerTeleportPortal";
+    case 97:
+      return "NpcKilledNotification";
+    case 98:
+      return "EventNotification";
+    case 99:
+      return "MinionTargetUpdate";
+    case 100:
+      return "NpcTeleportPortal";
+    case 101:
+      return "ShieldStrengthsUpdate";
+    case 102:
+      return "NebulaLevelUp";
+    case 103:
+      return "MoonLordCountdown";
+    case 104:
+      return "NpcShopItem";
+    case 105:
+      return "GemLockToggle";
+    case 106:
+      return "SmokePoof";
+    case 107:
+      return "ChatMessageSmart";
+    case 108:
+      return "WiredCannonShot";
+    case 109:
+      return "MassWireOperation";
+    case 110:
+      return "MassWireOperationPay";
+    case 111:
+      return "PartyToggle";
+    case 112:
+      return "TreeGrowFx";
+    case 113:
+      return "CrystalInvasionStart";
+    case 114:
+      return "CrystalInvasionWipeAll";
+    case 115:
+      return "MinionAttackTargetUpdate";
+    case 116:
+      return "CrystalInvasionSendWaitTime";
+    case 117:
+      return "PlayerDamage";
+    case 118:
+      return "PlayerDeath";
+    case 119:
+      return "CombatTextCreate";
+    case 120:
+      return "Emoji";
+    case 121:
+      return "TileEntityDisplayDollItemSync";
+    case 122:
+      return "TileEntityInteractionRequest";
+    case 123:
+      return "WeaponsRackTryPlacing";
+    case 124:
+      return "TileEntityHatRackItemSync";
+    case 125:
+      return "TilePickingSync";
+    case 126:
+      return "RevengeMarkerSync";
+    case 127:
+      return "RevengeMarkerRemove";
+    case 128:
+      return "GolfBallLandInCup";
+    case 129:
+      return "ClientFinishConnectingToServer";
+    case 130:
+      return "NpcFishOut";
+    case 131:
+      return "NpcTamper";
+    case 132:
+      return "LegacySoundPlay";
+    case 133:
+      return "FoodPlatterTryPlacing";
+    case 134:
+      return "PlayerLuckFactorsUpdate";
+    case 135:
+      return "PlayerDead";
+    case 136:
+      return "CavernMonsterTypeSync";
+    case 137:
+      return "NpcBuffRemovalRequest";
+    case 138:
+      return "ClientSyncedInventory";
+    case 139:
+      return "CountsAsHostForGameplaySet";
+    case 140:
+      return "CreditsOrSlimeTransform";
+    case 141:
+      return "LucyAxeMessage";
+    case 142:
+      return "PiggyBankVoidLensUpdate";
+    case 143:
+      return "DungeonDefendersEventAttemptSkipWait";
+    case 144:
+      return "HaveDryadDoStardewAnimation";
+    case 145:
+      return "ItemDropShimmeredUpdate";
+    case 146:
+      return "ShimmerEffectOrCoinLuck";
+    case 147:
+      return "LoadoutSwitch";
+    case 148:
+      return "ItemDropProtectedUpdate";
+    case 149:
+      return "DeadCellsDisplayJarTryPlacing";
+    case 150:
+      return "PlayerSpectate";
+    case 151:
+      return "ItemDropClear";
+    case 152:
+      return "PlayerItemUseSound";
+    case 153:
+      return "NpcHurtByDebuff";
+    case 154:
+      return "Ping";
+    case 155:
+      return "ChestResize";
+    case 156:
+      return "LeashedEntityAnchorInsertItem";
+    case 157:
+      return "PlayerTeamUpdate";
+    case 158:
+      return "PlayerTeamSwapSpawn";
+    case 159:
+      return "SectionRequest";
+    case 160:
+      return "ItemDropPosition";
+    case 161:
+      return "HostToken";
+    case 162:
+      return "DamageNPCAck";
+    case 163:
+      return "ServerInfo";
+    case 164:
+      return "PlayerPlatformInfo";
+    default:
+      return;
+  }
+}
+function toInt15(self) {
+  switch (self) {
+    case "ConnectRequest":
+      return 1;
+    case "Disconnect":
+      return 2;
+    case "PlayerSlotSet":
+      return 3;
+    case "PlayerInfo":
+      return 4;
+    case "PlayerInventorySlot":
+      return 5;
+    case "WorldDataRequest":
+      return 6;
+    case "WorldInfo":
+      return 7;
+    case "InitialTileSectionsRequest":
+      return 8;
+    case "Status":
+      return 9;
+    case "TileSectionSend":
+      return 10;
+    case "TileSectionFrame":
+      return 11;
+    case "PlayerSpawn":
+      return 12;
+    case "PlayerUpdate":
+      return 13;
+    case "PlayerActive":
+      return 14;
+    case "PlayerHealth":
+      return 16;
+    case "TileModify":
+      return 17;
+    case "TimeSet":
+      return 18;
+    case "DoorUse":
+      return 19;
+    case "TileSquareSend":
+      return 20;
+    case "ItemDropUpdate":
+      return 21;
+    case "ItemOwner":
+      return 22;
+    case "NpcUpdate":
+      return 23;
+    case "NpcItemStrike":
+      return 24;
+    case "ProjectileSync":
+      return 27;
+    case "NpcStrike":
+      return 28;
+    case "ProjectileDestroy":
+      return 29;
+    case "PvpToggle":
+      return 30;
+    case "ChestOpen":
+      return 31;
+    case "ChestItem":
+      return 32;
+    case "ActiveContainerSync":
+      return 33;
+    case "ChestPlace":
+      return 34;
+    case "HealEffect":
+      return 35;
+    case "Zones":
+      return 36;
+    case "PasswordRequired":
+      return 37;
+    case "PasswordSend":
+      return 38;
+    case "ItemOwnerRemove":
+      return 39;
+    case "NpcTalk":
+      return 40;
+    case "PlayerAnimation":
+      return 41;
+    case "PlayerMana":
+      return 42;
+    case "ManaEffect":
+      return 43;
+    case "PlayerTeam":
+      return 45;
+    case "SignRead":
+      return 46;
+    case "SignNew":
+      return 47;
+    case "LiquidSet":
+      return 48;
+    case "PlayerSpawnSelf":
+      return 49;
+    case "PlayerBuffsSet":
+      return 50;
+    case "NpcSpecialEffect":
+      return 51;
+    case "ChestOrTempleUnlock":
+      return 52;
+    case "NpcBuffAdd":
+      return 53;
+    case "NpcBuffUpdate":
+      return 54;
+    case "PlayerBuffAdd":
+      return 55;
+    case "NpcNameUpdate":
+      return 56;
+    case "GoodEvilUpdate":
+      return 57;
+    case "HarpPlay":
+      return 58;
+    case "SwitchHit":
+      return 59;
+    case "NpcHomeUpdate":
+      return 60;
+    case "BossOrInvasionSpawn":
+      return 61;
+    case "PlayerDodge":
+      return 62;
+    case "TilePaint":
+      return 63;
+    case "WallPaint":
+      return 64;
+    case "Teleport":
+      return 65;
+    case "PlayerHealOther":
+      return 66;
+    case "DimensionsUpdate":
+      return 67;
+    case "ClientUuid":
+      return 68;
+    case "ChestName":
+      return 69;
+    case "NpcCatch":
+      return 70;
+    case "NpcRelease":
+      return 71;
+    case "TravellingMerchantInventory":
+      return 72;
+    case "TeleportationPotion":
+      return 73;
+    case "AnglerQuest":
+      return 74;
+    case "AnglerQuestComplete":
+      return 75;
+    case "AnglerQuestsCompletedAmount":
+      return 76;
+    case "TemporaryAnimationCreate":
+      return 77;
+    case "InvasionProgressReport":
+      return 78;
+    case "ObjectPlace":
+      return 79;
+    case "PlayerChestIndexSync":
+      return 80;
+    case "CombatNumberCreate":
+      return 81;
+    case "NetModuleLoad":
+      return 82;
+    case "NpcKillCount":
+      return 83;
+    case "PlayerStealth":
+      return 84;
+    case "ItemForceIntoNearestChest":
+      return 85;
+    case "TileEntityUpdate":
+      return 86;
+    case "TileEntityPlace":
+      return 87;
+    case "ItemDropModify":
+      return 88;
+    case "ItemFramePlace":
+      return 89;
+    case "ItemDropInstancedUpdate":
+      return 90;
+    case "EmoteBubble":
+      return 91;
+    case "ExtraValueSync":
+      return 92;
+    case "SocialHandshake":
+      return 93;
+    case "Unused":
+      return 94;
+    case "PortalKill":
+      return 95;
+    case "PlayerTeleportPortal":
+      return 96;
+    case "NpcKilledNotification":
+      return 97;
+    case "EventNotification":
+      return 98;
+    case "MinionTargetUpdate":
+      return 99;
+    case "NpcTeleportPortal":
+      return 100;
+    case "ShieldStrengthsUpdate":
+      return 101;
+    case "NebulaLevelUp":
+      return 102;
+    case "MoonLordCountdown":
+      return 103;
+    case "NpcShopItem":
+      return 104;
+    case "GemLockToggle":
+      return 105;
+    case "SmokePoof":
+      return 106;
+    case "ChatMessageSmart":
+      return 107;
+    case "WiredCannonShot":
+      return 108;
+    case "MassWireOperation":
+      return 109;
+    case "MassWireOperationPay":
+      return 110;
+    case "PartyToggle":
+      return 111;
+    case "TreeGrowFx":
+      return 112;
+    case "CrystalInvasionStart":
+      return 113;
+    case "CrystalInvasionWipeAll":
+      return 114;
+    case "MinionAttackTargetUpdate":
+      return 115;
+    case "CrystalInvasionSendWaitTime":
+      return 116;
+    case "PlayerDamage":
+      return 117;
+    case "PlayerDeath":
+      return 118;
+    case "CombatTextCreate":
+      return 119;
+    case "Emoji":
+      return 120;
+    case "TileEntityDisplayDollItemSync":
+      return 121;
+    case "TileEntityInteractionRequest":
+      return 122;
+    case "WeaponsRackTryPlacing":
+      return 123;
+    case "TileEntityHatRackItemSync":
+      return 124;
+    case "TilePickingSync":
+      return 125;
+    case "RevengeMarkerSync":
+      return 126;
+    case "RevengeMarkerRemove":
+      return 127;
+    case "GolfBallLandInCup":
+      return 128;
+    case "ClientFinishConnectingToServer":
+      return 129;
+    case "NpcFishOut":
+      return 130;
+    case "NpcTamper":
+      return 131;
+    case "LegacySoundPlay":
+      return 132;
+    case "FoodPlatterTryPlacing":
+      return 133;
+    case "PlayerLuckFactorsUpdate":
+      return 134;
+    case "PlayerDead":
+      return 135;
+    case "CavernMonsterTypeSync":
+      return 136;
+    case "NpcBuffRemovalRequest":
+      return 137;
+    case "ClientSyncedInventory":
+      return 138;
+    case "CountsAsHostForGameplaySet":
+      return 139;
+    case "CreditsOrSlimeTransform":
+      return 140;
+    case "LucyAxeMessage":
+      return 141;
+    case "PiggyBankVoidLensUpdate":
+      return 142;
+    case "DungeonDefendersEventAttemptSkipWait":
+      return 143;
+    case "HaveDryadDoStardewAnimation":
+      return 144;
+    case "ItemDropShimmeredUpdate":
+      return 145;
+    case "ShimmerEffectOrCoinLuck":
+      return 146;
+    case "LoadoutSwitch":
+      return 147;
+    case "ItemDropProtectedUpdate":
+      return 148;
+    case "DeadCellsDisplayJarTryPlacing":
+      return 149;
+    case "PlayerSpectate":
+      return 150;
+    case "ItemDropClear":
+      return 151;
+    case "PlayerItemUseSound":
+      return 152;
+    case "NpcHurtByDebuff":
+      return 153;
+    case "Ping":
+      return 154;
+    case "ChestResize":
+      return 155;
+    case "LeashedEntityAnchorInsertItem":
+      return 156;
+    case "PlayerTeamUpdate":
+      return 157;
+    case "PlayerTeamSwapSpawn":
+      return 158;
+    case "SectionRequest":
+      return 159;
+    case "ItemDropPosition":
+      return 160;
+    case "HostToken":
+      return 161;
+    case "DamageNPCAck":
+      return 162;
+    case "ServerInfo":
+      return 163;
+    case "PlayerPlatformInfo":
+      return 164;
+  }
+}
+function packetName4(packetType) {
+  switch (packetType) {
+    case "ConnectRequest":
+      return "ConnectRequest";
+    case "Disconnect":
+      return "Disconnect";
+    case "PlayerSlotSet":
+      return "PlayerSlotSet";
+    case "PlayerInfo":
+      return "PlayerInfo";
+    case "PlayerInventorySlot":
+      return "PlayerInventorySlot";
+    case "WorldDataRequest":
+      return "WorldDataRequest";
+    case "WorldInfo":
+      return "WorldInfo";
+    case "InitialTileSectionsRequest":
+      return "InitialTileSectionsRequest";
+    case "Status":
+      return "Status";
+    case "TileSectionSend":
+      return "TileSectionSend";
+    case "TileSectionFrame":
+      return "TileSectionFrame";
+    case "PlayerSpawn":
+      return "PlayerSpawn";
+    case "PlayerUpdate":
+      return "PlayerUpdate";
+    case "PlayerActive":
+      return "PlayerActive";
+    case "PlayerHealth":
+      return "PlayerHealth";
+    case "TileModify":
+      return "TileModify";
+    case "TimeSet":
+      return "TimeSet";
+    case "DoorUse":
+      return "DoorUse";
+    case "TileSquareSend":
+      return "TileSquareSend";
+    case "ItemDropUpdate":
+      return "ItemDropUpdate";
+    case "ItemOwner":
+      return "ItemOwner";
+    case "NpcUpdate":
+      return "NpcUpdate";
+    case "NpcItemStrike":
+      return "NpcItemStrike";
+    case "ProjectileSync":
+      return "ProjectileSync";
+    case "NpcStrike":
+      return "NpcStrike";
+    case "ProjectileDestroy":
+      return "ProjectileDestroy";
+    case "PvpToggle":
+      return "PvpToggle";
+    case "ChestOpen":
+      return "ChestOpen";
+    case "ChestItem":
+      return "ChestItem";
+    case "ActiveContainerSync":
+      return "ActiveContainerSync";
+    case "ChestPlace":
+      return "ChestPlace";
+    case "HealEffect":
+      return "HealEffect";
+    case "Zones":
+      return "Zones";
+    case "PasswordRequired":
+      return "PasswordRequired";
+    case "PasswordSend":
+      return "PasswordSend";
+    case "ItemOwnerRemove":
+      return "ItemOwnerRemove";
+    case "NpcTalk":
+      return "NpcTalk";
+    case "PlayerAnimation":
+      return "PlayerAnimation";
+    case "PlayerMana":
+      return "PlayerMana";
+    case "ManaEffect":
+      return "ManaEffect";
+    case "PlayerTeam":
+      return "PlayerTeam";
+    case "SignRead":
+      return "SignRead";
+    case "SignNew":
+      return "SignNew";
+    case "LiquidSet":
+      return "LiquidSet";
+    case "PlayerSpawnSelf":
+      return "PlayerSpawnSelf";
+    case "PlayerBuffsSet":
+      return "PlayerBuffsSet";
+    case "NpcSpecialEffect":
+      return "NpcSpecialEffect";
+    case "ChestOrTempleUnlock":
+      return "ChestOrTempleUnlock";
+    case "NpcBuffAdd":
+      return "NpcBuffAdd";
+    case "NpcBuffUpdate":
+      return "NpcBuffUpdate";
+    case "PlayerBuffAdd":
+      return "PlayerBuffAdd";
+    case "NpcNameUpdate":
+      return "NpcNameUpdate";
+    case "GoodEvilUpdate":
+      return "GoodEvilUpdate";
+    case "HarpPlay":
+      return "HarpPlay";
+    case "SwitchHit":
+      return "SwitchHit";
+    case "NpcHomeUpdate":
+      return "NpcHomeUpdate";
+    case "BossOrInvasionSpawn":
+      return "BossOrInvasionSpawn";
+    case "PlayerDodge":
+      return "PlayerDodge";
+    case "TilePaint":
+      return "TilePaint";
+    case "WallPaint":
+      return "WallPaint";
+    case "Teleport":
+      return "Teleport";
+    case "PlayerHealOther":
+      return "PlayerHealOther";
+    case "DimensionsUpdate":
+      return "DimensionsUpdate";
+    case "ClientUuid":
+      return "ClientUuid";
+    case "ChestName":
+      return "ChestName";
+    case "NpcCatch":
+      return "NpcCatch";
+    case "NpcRelease":
+      return "NpcRelease";
+    case "TravellingMerchantInventory":
+      return "TravellingMerchantInventory";
+    case "TeleportationPotion":
+      return "TeleportationPotion";
+    case "AnglerQuest":
+      return "AnglerQuest";
+    case "AnglerQuestComplete":
+      return "AnglerQuestComplete";
+    case "AnglerQuestsCompletedAmount":
+      return "AnglerQuestsCompletedAmount";
+    case "TemporaryAnimationCreate":
+      return "TemporaryAnimationCreate";
+    case "InvasionProgressReport":
+      return "InvasionProgressReport";
+    case "ObjectPlace":
+      return "ObjectPlace";
+    case "PlayerChestIndexSync":
+      return "PlayerChestIndexSync";
+    case "CombatNumberCreate":
+      return "CombatNumberCreate";
+    case "NetModuleLoad":
+      return "NetModuleLoad";
+    case "NpcKillCount":
+      return "NpcKillCount";
+    case "PlayerStealth":
+      return "PlayerStealth";
+    case "ItemForceIntoNearestChest":
+      return "ItemForceIntoNearestChest";
+    case "TileEntityUpdate":
+      return "TileEntityUpdate";
+    case "TileEntityPlace":
+      return "TileEntityPlace";
+    case "ItemDropModify":
+      return "ItemDropModify";
+    case "ItemFramePlace":
+      return "ItemFramePlace";
+    case "ItemDropInstancedUpdate":
+      return "ItemDropInstancedUpdate";
+    case "EmoteBubble":
+      return "EmoteBubble";
+    case "ExtraValueSync":
+      return "ExtraValueSync";
+    case "SocialHandshake":
+      return "SocialHandshake";
+    case "Unused":
+      return "Unused";
+    case "PortalKill":
+      return "PortalKill";
+    case "PlayerTeleportPortal":
+      return "PlayerTeleportPortal";
+    case "NpcKilledNotification":
+      return "NpcKilledNotification";
+    case "EventNotification":
+      return "EventNotification";
+    case "MinionTargetUpdate":
+      return "MinionTargetUpdate";
+    case "NpcTeleportPortal":
+      return "NpcTeleportPortal";
+    case "ShieldStrengthsUpdate":
+      return "ShieldStrengthsUpdate";
+    case "NebulaLevelUp":
+      return "NebulaLevelUp";
+    case "MoonLordCountdown":
+      return "MoonLordCountdown";
+    case "NpcShopItem":
+      return "NpcShopItem";
+    case "GemLockToggle":
+      return "GemLockToggle";
+    case "SmokePoof":
+      return "SmokePoof";
+    case "ChatMessageSmart":
+      return "ChatMessageSmart";
+    case "WiredCannonShot":
+      return "WiredCannonShot";
+    case "MassWireOperation":
+      return "MassWireOperation";
+    case "MassWireOperationPay":
+      return "MassWireOperationPay";
+    case "PartyToggle":
+      return "PartyToggle";
+    case "TreeGrowFx":
+      return "TreeGrowFx";
+    case "CrystalInvasionStart":
+      return "CrystalInvasionStart";
+    case "CrystalInvasionWipeAll":
+      return "CrystalInvasionWipeAll";
+    case "MinionAttackTargetUpdate":
+      return "MinionAttackTargetUpdate";
+    case "CrystalInvasionSendWaitTime":
+      return "CrystalInvasionSendWaitTime";
+    case "PlayerDamage":
+      return "PlayerDamage";
+    case "PlayerDeath":
+      return "PlayerDeath";
+    case "CombatTextCreate":
+      return "CombatTextCreate";
+    case "Emoji":
+      return "Emoji";
+    case "TileEntityDisplayDollItemSync":
+      return "TileEntityDisplayDollItemSync";
+    case "TileEntityInteractionRequest":
+      return "TileEntityInteractionRequest";
+    case "WeaponsRackTryPlacing":
+      return "WeaponsRackTryPlacing";
+    case "TileEntityHatRackItemSync":
+      return "TileEntityHatRackItemSync";
+    case "TilePickingSync":
+      return "TilePickingSync";
+    case "RevengeMarkerSync":
+      return "RevengeMarkerSync";
+    case "RevengeMarkerRemove":
+      return "RevengeMarkerRemove";
+    case "GolfBallLandInCup":
+      return "GolfBallLandInCup";
+    case "ClientFinishConnectingToServer":
+      return "ClientFinishConnectingToServer";
+    case "NpcFishOut":
+      return "NpcFishOut";
+    case "NpcTamper":
+      return "NpcTamper";
+    case "LegacySoundPlay":
+      return "LegacySoundPlay";
+    case "FoodPlatterTryPlacing":
+      return "FoodPlatterTryPlacing";
+    case "PlayerLuckFactorsUpdate":
+      return "PlayerLuckFactorsUpdate";
+    case "PlayerDead":
+      return "PlayerDead";
+    case "CavernMonsterTypeSync":
+      return "CavernMonsterTypeSync";
+    case "NpcBuffRemovalRequest":
+      return "NpcBuffRemovalRequest";
+    case "ClientSyncedInventory":
+      return "ClientSyncedInventory";
+    case "CountsAsHostForGameplaySet":
+      return "CountsAsHostForGameplaySet";
+    case "CreditsOrSlimeTransform":
+      return "CreditsOrSlimeTransform";
+    case "LucyAxeMessage":
+      return "LucyAxeMessage";
+    case "PiggyBankVoidLensUpdate":
+      return "PiggyBankVoidLensUpdate";
+    case "DungeonDefendersEventAttemptSkipWait":
+      return "DungeonDefendersEventAttemptSkipWait";
+    case "HaveDryadDoStardewAnimation":
+      return "HaveDryadDoStardewAnimation";
+    case "ItemDropShimmeredUpdate":
+      return "ItemDropShimmeredUpdate";
+    case "ShimmerEffectOrCoinLuck":
+      return "ShimmerEffectOrCoinLuck";
+    case "LoadoutSwitch":
+      return "LoadoutSwitch";
+    case "ItemDropProtectedUpdate":
+      return "ItemDropProtectedUpdate";
+    case "DeadCellsDisplayJarTryPlacing":
+      return "DeadCellsDisplayJarTryPlacing";
+    case "PlayerSpectate":
+      return "PlayerSpectate";
+    case "ItemDropClear":
+      return "ItemDropClear";
+    case "PlayerItemUseSound":
+      return "PlayerItemUseSound";
+    case "NpcHurtByDebuff":
+      return "NpcHurtByDebuff";
+    case "Ping":
+      return "Ping";
+    case "ChestResize":
+      return "ChestResize";
+    case "LeashedEntityAnchorInsertItem":
+      return "LeashedEntityAnchorInsertItem";
+    case "PlayerTeamUpdate":
+      return "PlayerTeamUpdate";
+    case "PlayerTeamSwapSpawn":
+      return "PlayerTeamSwapSpawn";
+    case "SectionRequest":
+      return "SectionRequest";
+    case "ItemDropPosition":
+      return "ItemDropPosition";
+    case "HostToken":
+      return "HostToken";
+    case "DamageNPCAck":
+      return "DamageNPCAck";
+    case "ServerInfo":
+      return "ServerInfo";
+    case "PlayerPlatformInfo":
+      return "PlayerPlatformInfo";
+  }
+}
+
+// src/packetv1458/PacketV1458_WorldInfo.js
+var PacketV1458_WorldInfo_exports = {};
+__export(PacketV1458_WorldInfo_exports, {
+  Decode: () => Decode38,
+  Encode: () => Encode38,
+  parse: () => parse192,
+  toBuffer: () => toBuffer188
+});
+function readEventInfo4(reader) {
+  let e = readByte(reader, "eventInfo1");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readByte(reader, "eventInfo2");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readByte(reader, "eventInfo3");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readByte(reader, "eventInfo4");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readByte(reader, "eventInfo5");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = readByte(reader, "eventInfo6");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = readByte(reader, "eventInfo7");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let e$7 = readByte(reader, "eventInfo8");
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let e$8 = readByte(reader, "eventInfo9");
+  if (e$8.TAG !== "Ok") {
+    return e$8;
+  }
+  let e$9 = readByte(reader, "eventInfo10");
+  if (e$9.TAG !== "Ok") {
+    return e$9;
+  }
+  let eventInfo1 = fromByte(e._0);
+  let eventInfo2 = fromByte(e$1._0);
+  let eventInfo3 = fromByte(e$2._0);
+  let eventInfo4 = fromByte(e$3._0);
+  let eventInfo5 = fromByte(e$4._0);
+  let eventInfo6 = fromByte(e$5._0);
+  let eventInfo7 = fromByte(e$6._0);
+  let eventInfo8 = fromByte(e$7._0);
+  let eventInfo9 = fromByte(e$8._0);
+  let eventInfo10 = fromByte(e$9._0);
+  let shadowOrbSmashed = flag1(eventInfo1);
+  let killedBoss1 = flag2(eventInfo1);
+  let killedBoss2 = flag3(eventInfo1);
+  let killedBoss3 = flag4(eventInfo1);
+  let hardMode = flag5(eventInfo1);
+  let killedClown = flag6(eventInfo1);
+  let serverSidedCharacters = flag7(eventInfo1);
+  let killedPlantBoss = flag8(eventInfo1);
+  let killedMechBoss = flag1(eventInfo2);
+  let killedMechBoss2 = flag2(eventInfo2);
+  let killedMechBoss3 = flag3(eventInfo2);
+  let killedAnyMechBoss = flag4(eventInfo2);
+  let cloudBg = flag5(eventInfo2);
+  let crimson = flag6(eventInfo2);
+  let pumpkinMoon = flag7(eventInfo2);
+  let snowMoon = flag8(eventInfo2);
+  let expertMode = flag1(eventInfo3);
+  let fastForwardTime = flag2(eventInfo3);
+  let slimeRain = flag3(eventInfo3);
+  let killedKingSlime = flag4(eventInfo3);
+  let killedQueenBee = flag5(eventInfo3);
+  let killedFishron = flag6(eventInfo3);
+  let killedMartians = flag7(eventInfo3);
+  let killedAncientCultist = flag8(eventInfo3);
+  let killedMoonLord = flag1(eventInfo4);
+  let killedPumpking = flag2(eventInfo4);
+  let killedMourningWood = flag3(eventInfo4);
+  let killedIceQueen = flag4(eventInfo4);
+  let killedSantank = flag5(eventInfo4);
+  let killedEverscream = flag6(eventInfo4);
+  let killedGolem = flag7(eventInfo4);
+  let birthdayParty = flag8(eventInfo4);
+  let killedPirates = flag1(eventInfo5);
+  let killedFrostLegion = flag2(eventInfo5);
+  let killedGoblins = flag3(eventInfo5);
+  let sandstorm = flag4(eventInfo5);
+  let dungeonDefendersEvent = flag5(eventInfo5);
+  let killedDungeonDefendersTier1 = flag6(eventInfo5);
+  let killedDungeonDefendersTier2 = flag7(eventInfo5);
+  let killedDungeonDefendersTier3 = flag8(eventInfo5);
+  let combatBookUsed = flag1(eventInfo6);
+  let manualLanterns = flag2(eventInfo6);
+  let killedSolarTower = flag3(eventInfo6);
+  let killedVortexTower = flag4(eventInfo6);
+  let killedNebulaTower = flag5(eventInfo6);
+  let killedStardustTower = flag6(eventInfo6);
+  let forceHalloween = flag7(eventInfo6);
+  let forceChristmas = flag8(eventInfo6);
+  let boughtCat = flag1(eventInfo7);
+  let boughtDog = flag2(eventInfo7);
+  let boughtBunny = flag3(eventInfo7);
+  let freeCake = flag4(eventInfo7);
+  let drunkWorld = flag5(eventInfo7);
+  let killedEmpressOfLight = flag6(eventInfo7);
+  let killedQueenSlime = flag7(eventInfo7);
+  let getGoodWorld = flag8(eventInfo7);
+  let tenthAnniversaryWorld = flag1(eventInfo8);
+  let dontStarveWorld = flag2(eventInfo8);
+  let downedDeerClops = flag3(eventInfo8);
+  let notTheBeesWorld = flag4(eventInfo8);
+  let remixWorld = flag5(eventInfo8);
+  let unlockedSlimeBlueSpawn = flag6(eventInfo8);
+  let combatBookVolumeTwoWasUsed = flag7(eventInfo8);
+  let peddlersSatchelWasUsed = flag8(eventInfo8);
+  let unlockedSlimeGreenSpawn = flag1(eventInfo9);
+  let unlockedSlimeOldSpawn = flag2(eventInfo9);
+  let unlockedSlimePurpleSpawn = flag3(eventInfo9);
+  let unlockedSlimeRainbowSpawn = flag4(eventInfo9);
+  let unlockedSlimeRedSpawn = flag5(eventInfo9);
+  let unlockedSlimeYellowSpawn = flag6(eventInfo9);
+  let unlockedSlimeCopperSpawn = flag7(eventInfo9);
+  let fastForwardTimeToDusk = flag8(eventInfo9);
+  let noTrapsWorld = flag1(eventInfo10);
+  let zenithWorld = flag2(eventInfo10);
+  let unlockedTruffleSpawn = flag3(eventInfo10);
+  let vampireSeed = flag4(eventInfo10);
+  let infectedSeed = flag5(eventInfo10);
+  let teamBasedSpawnsSeed = flag6(eventInfo10);
+  let skyblockWorld = flag7(eventInfo10);
+  let dualDungeonsSeed = flag8(eventInfo10);
+  return {
+    TAG: "Ok",
+    _0: {
+      shadowOrbSmashed,
+      killedBoss1,
+      killedBoss2,
+      killedBoss3,
+      hardMode,
+      killedClown,
+      serverSidedCharacters,
+      killedPlantBoss,
+      killedMechBoss,
+      killedMechBoss2,
+      killedMechBoss3,
+      killedAnyMechBoss,
+      cloudBg,
+      crimson,
+      pumpkinMoon,
+      snowMoon,
+      expertMode,
+      fastForwardTime,
+      slimeRain,
+      killedKingSlime,
+      killedQueenBee,
+      killedFishron,
+      killedMartians,
+      killedAncientCultist,
+      killedMoonLord,
+      killedPumpking,
+      killedMourningWood,
+      killedIceQueen,
+      killedSantank,
+      killedEverscream,
+      killedGolem,
+      birthdayParty,
+      killedPirates,
+      killedFrostLegion,
+      killedGoblins,
+      sandstorm,
+      dungeonDefendersEvent,
+      killedDungeonDefendersTier1,
+      killedDungeonDefendersTier2,
+      killedDungeonDefendersTier3,
+      combatBookUsed,
+      manualLanterns,
+      killedSolarTower,
+      killedVortexTower,
+      killedNebulaTower,
+      killedStardustTower,
+      forceHalloween,
+      forceChristmas,
+      boughtCat,
+      boughtDog,
+      boughtBunny,
+      freeCake,
+      drunkWorld,
+      killedEmpressOfLight,
+      killedQueenSlime,
+      getGoodWorld,
+      tenthAnniversaryWorld,
+      dontStarveWorld,
+      downedDeerClops,
+      notTheBeesWorld,
+      remixWorld,
+      unlockedSlimeBlueSpawn,
+      combatBookVolumeTwoWasUsed,
+      peddlersSatchelWasUsed,
+      unlockedSlimeGreenSpawn,
+      unlockedSlimeOldSpawn,
+      unlockedSlimePurpleSpawn,
+      unlockedSlimeRainbowSpawn,
+      unlockedSlimeRedSpawn,
+      unlockedSlimeYellowSpawn,
+      unlockedSlimeCopperSpawn,
+      fastForwardTimeToDusk,
+      noTrapsWorld,
+      zenithWorld,
+      unlockedTruffleSpawn,
+      vampireSeed,
+      infectedSeed,
+      teamBasedSpawnsSeed,
+      skyblockWorld,
+      dualDungeonsSeed
+    }
+  };
+}
+function parse192(payload) {
+  let reader = new packetreader_default(payload);
+  let e = readInt32(reader, "time");
+  if (e.TAG !== "Ok") {
+    return e;
+  }
+  let e$1 = readByte(reader, "dayAndMoonInfo");
+  if (e$1.TAG !== "Ok") {
+    return e$1;
+  }
+  let e$2 = readByte(reader, "moonPhase");
+  if (e$2.TAG !== "Ok") {
+    return e$2;
+  }
+  let e$3 = readInt16(reader, "maxTilesX");
+  if (e$3.TAG !== "Ok") {
+    return e$3;
+  }
+  let e$4 = readInt16(reader, "maxTilesY");
+  if (e$4.TAG !== "Ok") {
+    return e$4;
+  }
+  let e$5 = readInt16(reader, "spawnX");
+  if (e$5.TAG !== "Ok") {
+    return e$5;
+  }
+  let e$6 = readInt16(reader, "spawnY");
+  if (e$6.TAG !== "Ok") {
+    return e$6;
+  }
+  let e$7 = readInt16(reader, "worldSurface");
+  if (e$7.TAG !== "Ok") {
+    return e$7;
+  }
+  let e$8 = readInt16(reader, "rockLayer");
+  if (e$8.TAG !== "Ok") {
+    return e$8;
+  }
+  let e$9 = readInt32(reader, "worldId");
+  if (e$9.TAG !== "Ok") {
+    return e$9;
+  }
+  let e$10 = readString(reader, "worldName");
+  if (e$10.TAG !== "Ok") {
+    return e$10;
+  }
+  let e$11 = readByte(reader, "gameMode");
+  if (e$11.TAG !== "Ok") {
+    return e$11;
+  }
+  let e$12 = readBytes(reader, 16, "worldUniqueId");
+  if (e$12.TAG !== "Ok") {
+    return e$12;
+  }
+  let worldUniqueId = fromArray2(e$12._0);
+  let e$13 = worldUniqueId !== void 0 ? {
+    TAG: "Ok",
+    _0: valFromOption(worldUniqueId)
+  } : {
+    TAG: "Error",
+    _0: {
+      context: "WorldInfo.parse.worldUniqueId",
+      error: new Error("Invalid worldUniqueId")
+    }
+  };
+  if (e$13.TAG !== "Ok") {
+    return e$13;
+  }
+  let e$14 = readUInt64(reader, "worldGeneratorVersion");
+  if (e$14.TAG !== "Ok") {
+    return e$14;
+  }
+  let e$15 = readByte(reader, "moonType");
+  if (e$15.TAG !== "Ok") {
+    return e$15;
+  }
+  let e$16 = readByte(reader, "treeBackground");
+  if (e$16.TAG !== "Ok") {
+    return e$16;
+  }
+  let e$17 = readByte(reader, "treeBackground2");
+  if (e$17.TAG !== "Ok") {
+    return e$17;
+  }
+  let e$18 = readByte(reader, "treeBackground3");
+  if (e$18.TAG !== "Ok") {
+    return e$18;
+  }
+  let e$19 = readByte(reader, "treeBackground4");
+  if (e$19.TAG !== "Ok") {
+    return e$19;
+  }
+  let e$20 = readByte(reader, "corruptionBackground");
+  if (e$20.TAG !== "Ok") {
+    return e$20;
+  }
+  let e$21 = readByte(reader, "jungleBackground");
+  if (e$21.TAG !== "Ok") {
+    return e$21;
+  }
+  let e$22 = readByte(reader, "snowBackground");
+  if (e$22.TAG !== "Ok") {
+    return e$22;
+  }
+  let e$23 = readByte(reader, "hallowBackground");
+  if (e$23.TAG !== "Ok") {
+    return e$23;
+  }
+  let e$24 = readByte(reader, "crimsonBackground");
+  if (e$24.TAG !== "Ok") {
+    return e$24;
+  }
+  let e$25 = readByte(reader, "desertBackground");
+  if (e$25.TAG !== "Ok") {
+    return e$25;
+  }
+  let e$26 = readByte(reader, "oceanBackground");
+  if (e$26.TAG !== "Ok") {
+    return e$26;
+  }
+  let e$27 = readByte(reader, "mushroomBackground");
+  if (e$27.TAG !== "Ok") {
+    return e$27;
+  }
+  let e$28 = readByte(reader, "underworldBackground");
+  if (e$28.TAG !== "Ok") {
+    return e$28;
+  }
+  let e$29 = readByte(reader, "iceBackStyle");
+  if (e$29.TAG !== "Ok") {
+    return e$29;
+  }
+  let e$30 = readByte(reader, "jungleBackStyle");
+  if (e$30.TAG !== "Ok") {
+    return e$30;
+  }
+  let e$31 = readByte(reader, "hellBackStyle");
+  if (e$31.TAG !== "Ok") {
+    return e$31;
+  }
+  let e$32 = readSingle(reader, "windSpeedSet");
+  if (e$32.TAG !== "Ok") {
+    return e$32;
+  }
+  let e$33 = readByte(reader, "cloudNumber");
+  if (e$33.TAG !== "Ok") {
+    return e$33;
+  }
+  let e$34 = readInt32(reader, "tree1");
+  if (e$34.TAG !== "Ok") {
+    return e$34;
+  }
+  let e$35 = readInt32(reader, "tree2");
+  if (e$35.TAG !== "Ok") {
+    return e$35;
+  }
+  let e$36 = readInt32(reader, "tree3");
+  if (e$36.TAG !== "Ok") {
+    return e$36;
+  }
+  let e$37 = readByte(reader, "treeStyle1");
+  if (e$37.TAG !== "Ok") {
+    return e$37;
+  }
+  let e$38 = readByte(reader, "treeStyle2");
+  if (e$38.TAG !== "Ok") {
+    return e$38;
+  }
+  let e$39 = readByte(reader, "treeStyle3");
+  if (e$39.TAG !== "Ok") {
+    return e$39;
+  }
+  let e$40 = readByte(reader, "treeStyle4");
+  if (e$40.TAG !== "Ok") {
+    return e$40;
+  }
+  let e$41 = readInt32(reader, "caveBack1");
+  if (e$41.TAG !== "Ok") {
+    return e$41;
+  }
+  let e$42 = readInt32(reader, "caveBack2");
+  if (e$42.TAG !== "Ok") {
+    return e$42;
+  }
+  let e$43 = readInt32(reader, "caveBack3");
+  if (e$43.TAG !== "Ok") {
+    return e$43;
+  }
+  let e$44 = readByte(reader, "caveBackStyle1");
+  if (e$44.TAG !== "Ok") {
+    return e$44;
+  }
+  let e$45 = readByte(reader, "caveBackStyle2");
+  if (e$45.TAG !== "Ok") {
+    return e$45;
+  }
+  let e$46 = readByte(reader, "caveBackStyle3");
+  if (e$46.TAG !== "Ok") {
+    return e$46;
+  }
+  let e$47 = readByte(reader, "caveBackStyle4");
+  if (e$47.TAG !== "Ok") {
+    return e$47;
+  }
+  let e$48 = readByte(reader, "forest1TreeTopStyle");
+  if (e$48.TAG !== "Ok") {
+    return e$48;
+  }
+  let e$49 = readByte(reader, "forest2TreeTopStyle");
+  if (e$49.TAG !== "Ok") {
+    return e$49;
+  }
+  let e$50 = readByte(reader, "forest3TreeTopStyle");
+  if (e$50.TAG !== "Ok") {
+    return e$50;
+  }
+  let e$51 = readByte(reader, "forest4TreeTopStyle");
+  if (e$51.TAG !== "Ok") {
+    return e$51;
+  }
+  let e$52 = readByte(reader, "corruptionTreeTopStyle");
+  if (e$52.TAG !== "Ok") {
+    return e$52;
+  }
+  let e$53 = readByte(reader, "jungleTreeTopStyle");
+  if (e$53.TAG !== "Ok") {
+    return e$53;
+  }
+  let e$54 = readByte(reader, "snowTreeTopStyle");
+  if (e$54.TAG !== "Ok") {
+    return e$54;
+  }
+  let e$55 = readByte(reader, "hallowTreeTopStyle");
+  if (e$55.TAG !== "Ok") {
+    return e$55;
+  }
+  let e$56 = readByte(reader, "crimsonTreeTopStyle");
+  if (e$56.TAG !== "Ok") {
+    return e$56;
+  }
+  let e$57 = readByte(reader, "desertTreeTopStyle");
+  if (e$57.TAG !== "Ok") {
+    return e$57;
+  }
+  let e$58 = readByte(reader, "oceanTreeTopStyle");
+  if (e$58.TAG !== "Ok") {
+    return e$58;
+  }
+  let e$59 = readByte(reader, "glowingMushroomTreeTopStyle");
+  if (e$59.TAG !== "Ok") {
+    return e$59;
+  }
+  let e$60 = readByte(reader, "underworldTreeTopStyle");
+  if (e$60.TAG !== "Ok") {
+    return e$60;
+  }
+  let e$61 = readSingle(reader, "rain");
+  if (e$61.TAG !== "Ok") {
+    return e$61;
+  }
+  let e$62 = readEventInfo4(reader);
+  if (e$62.TAG !== "Ok") {
+    return e$62;
+  }
+  let e$63 = readByte(reader, "worldFlags");
+  if (e$63.TAG !== "Ok") {
+    return e$63;
+  }
+  let worldFlags = fromByte(e$63._0);
+  let lowTiles = flag1(worldFlags);
+  let forceHalloweenForever = flag2(worldFlags);
+  let forceChristmasForever = flag3(worldFlags);
+  let moreLightningSeed = flag4(worldFlags);
+  let noLightningSeed = flag5(worldFlags);
+  let e$64 = readByte(reader, "sundialCooldown");
+  if (e$64.TAG !== "Ok") {
+    return e$64;
+  }
+  let e$65 = readByte(reader, "moondialCooldown");
+  if (e$65.TAG !== "Ok") {
+    return e$65;
+  }
+  let e$66 = readInt16(reader, "copperOreTier");
+  if (e$66.TAG !== "Ok") {
+    return e$66;
+  }
+  let e$67 = readInt16(reader, "ironOreTier");
+  if (e$67.TAG !== "Ok") {
+    return e$67;
+  }
+  let e$68 = readInt16(reader, "silverOreTier");
+  if (e$68.TAG !== "Ok") {
+    return e$68;
+  }
+  let e$69 = readInt16(reader, "goldOreTier");
+  if (e$69.TAG !== "Ok") {
+    return e$69;
+  }
+  let e$70 = readInt16(reader, "cobaltOreTier");
+  if (e$70.TAG !== "Ok") {
+    return e$70;
+  }
+  let e$71 = readInt16(reader, "mythrilOreTier");
+  if (e$71.TAG !== "Ok") {
+    return e$71;
+  }
+  let e$72 = readInt16(reader, "adamantiteOreTier");
+  if (e$72.TAG !== "Ok") {
+    return e$72;
+  }
+  let e$73 = readSByte(reader, "invasionType");
+  if (e$73.TAG !== "Ok") {
+    return e$73;
+  }
+  let e$74 = readUInt64(reader, "lobbyId");
+  if (e$74.TAG !== "Ok") {
+    return e$74;
+  }
+  let e$75 = readSingle(reader, "sandstormSeverity");
+  if (e$75.TAG !== "Ok") {
+    return e$75;
+  }
+  let e$76 = readByte(reader, "extraSpawnPointCount");
+  if (e$76.TAG !== "Ok") {
+    return e$76;
+  }
+  let extraSpawnPointCount = e$76._0;
+  let extraSpawnPoints = [];
+  let readExtraSpawnPoints = (_idx) => {
+    while (true) {
+      let idx = _idx;
+      if (idx >= extraSpawnPointCount) {
+        return {
+          TAG: "Ok",
+          _0: void 0
+        };
+      }
+      let e2 = readInt16(reader, `extraSpawnPointX_` + idx.toString());
+      if (e2.TAG !== "Ok") {
+        return e2;
+      }
+      let e$110 = readInt16(reader, `extraSpawnPointY_` + idx.toString());
+      if (e$110.TAG !== "Ok") {
+        return e$110;
+      }
+      extraSpawnPoints.push({
+        x: e2._0,
+        y: e$110._0
+      });
+      _idx = idx + 1 | 0;
+      continue;
+    }
+    ;
+  };
+  let e$77 = readExtraSpawnPoints(0);
+  if (e$77.TAG !== "Ok") {
+    return e$77;
+  }
+  let e$78 = readInt16(reader, "dungeonX");
+  if (e$78.TAG !== "Ok") {
+    return e$78;
+  }
+  let e$79 = readInt16(reader, "dungeonY");
+  if (e$79.TAG === "Ok") {
+    return {
+      TAG: "Ok",
+      _0: {
+        time: e._0,
+        dayAndMoonInfo: e$1._0,
+        moonPhase: e$2._0,
+        maxTilesX: e$3._0,
+        maxTilesY: e$4._0,
+        spawnX: e$5._0,
+        spawnY: e$6._0,
+        worldSurface: e$7._0,
+        rockLayer: e$8._0,
+        worldId: e$9._0,
+        worldName: e$10._0,
+        gameMode: e$11._0,
+        worldUniqueId: e$13._0,
+        worldGeneratorVersion: e$14._0,
+        moonType: e$15._0,
+        treeBackground: e$16._0,
+        treeBackground2: e$17._0,
+        treeBackground3: e$18._0,
+        treeBackground4: e$19._0,
+        corruptionBackground: e$20._0,
+        jungleBackground: e$21._0,
+        snowBackground: e$22._0,
+        hallowBackground: e$23._0,
+        crimsonBackground: e$24._0,
+        desertBackground: e$25._0,
+        oceanBackground: e$26._0,
+        mushroomBackground: e$27._0,
+        underworldBackground: e$28._0,
+        iceBackStyle: e$29._0,
+        jungleBackStyle: e$30._0,
+        hellBackStyle: e$31._0,
+        windSpeedSet: e$32._0,
+        cloudNumber: e$33._0,
+        tree1: e$34._0,
+        tree2: e$35._0,
+        tree3: e$36._0,
+        treeStyle1: e$37._0,
+        treeStyle2: e$38._0,
+        treeStyle3: e$39._0,
+        treeStyle4: e$40._0,
+        caveBack1: e$41._0,
+        caveBack2: e$42._0,
+        caveBack3: e$43._0,
+        caveBackStyle1: e$44._0,
+        caveBackStyle2: e$45._0,
+        caveBackStyle3: e$46._0,
+        caveBackStyle4: e$47._0,
+        forest1TreeTopStyle: e$48._0,
+        forest2TreeTopStyle: e$49._0,
+        forest3TreeTopStyle: e$50._0,
+        forest4TreeTopStyle: e$51._0,
+        corruptionTreeTopStyle: e$52._0,
+        jungleTreeTopStyle: e$53._0,
+        snowTreeTopStyle: e$54._0,
+        hallowTreeTopStyle: e$55._0,
+        crimsonTreeTopStyle: e$56._0,
+        desertTreeTopStyle: e$57._0,
+        oceanTreeTopStyle: e$58._0,
+        glowingMushroomTreeTopStyle: e$59._0,
+        underworldTreeTopStyle: e$60._0,
+        rain: e$61._0,
+        eventInfo: e$62._0,
+        lowTiles,
+        forceHalloweenForever,
+        forceChristmasForever,
+        moreLightningSeed,
+        noLightningSeed,
+        sundialCooldown: e$64._0,
+        moondialCooldown: e$65._0,
+        copperOreTier: e$66._0,
+        ironOreTier: e$67._0,
+        silverOreTier: e$68._0,
+        goldOreTier: e$69._0,
+        cobaltOreTier: e$70._0,
+        mythrilOreTier: e$71._0,
+        adamantiteOreTier: e$72._0,
+        invasionType: e$73._0,
+        lobbyId: e$74._0,
+        sandstormSeverity: e$75._0,
+        extraSpawnPoints,
+        dungeonX: e$78._0,
+        dungeonY: e$79._0
+      }
+    };
+  } else {
+    return e$79;
+  }
+}
+var Decode38 = {
+  readByte,
+  readInt16,
+  readInt32,
+  readUInt64,
+  readString,
+  readBytes,
+  readSingle,
+  readSByte,
+  readEventInfo: readEventInfo4,
+  parse: parse192
+};
+function packEventInfo4(writer, eventInfo) {
+  let eventInfo1 = fromFlags(eventInfo.shadowOrbSmashed, eventInfo.killedBoss1, eventInfo.killedBoss2, eventInfo.killedBoss3, eventInfo.hardMode, eventInfo.killedClown, eventInfo.serverSidedCharacters, eventInfo.killedPlantBoss);
+  let eventInfo2 = fromFlags(eventInfo.killedMechBoss, eventInfo.killedMechBoss2, eventInfo.killedMechBoss3, eventInfo.killedAnyMechBoss, eventInfo.cloudBg, eventInfo.crimson, eventInfo.pumpkinMoon, eventInfo.snowMoon);
+  let eventInfo3 = fromFlags(eventInfo.expertMode, eventInfo.fastForwardTime, eventInfo.slimeRain, eventInfo.killedKingSlime, eventInfo.killedQueenBee, eventInfo.killedFishron, eventInfo.killedMartians, eventInfo.killedAncientCultist);
+  let eventInfo4 = fromFlags(eventInfo.killedMoonLord, eventInfo.killedPumpking, eventInfo.killedMourningWood, eventInfo.killedIceQueen, eventInfo.killedSantank, eventInfo.killedEverscream, eventInfo.killedGolem, eventInfo.birthdayParty);
+  let eventInfo5 = fromFlags(eventInfo.killedPirates, eventInfo.killedFrostLegion, eventInfo.killedGoblins, eventInfo.sandstorm, eventInfo.dungeonDefendersEvent, eventInfo.killedDungeonDefendersTier1, eventInfo.killedDungeonDefendersTier2, eventInfo.killedDungeonDefendersTier3);
+  let eventInfo6 = fromFlags(eventInfo.combatBookUsed, eventInfo.manualLanterns, eventInfo.killedSolarTower, eventInfo.killedVortexTower, eventInfo.killedNebulaTower, eventInfo.killedStardustTower, eventInfo.forceHalloween, eventInfo.forceChristmas);
+  let eventInfo7 = fromFlags(eventInfo.boughtCat, eventInfo.boughtDog, eventInfo.boughtBunny, eventInfo.freeCake, eventInfo.drunkWorld, eventInfo.killedEmpressOfLight, eventInfo.killedQueenSlime, eventInfo.getGoodWorld);
+  let eventInfo8 = fromFlags(eventInfo.tenthAnniversaryWorld, eventInfo.dontStarveWorld, eventInfo.downedDeerClops, eventInfo.notTheBeesWorld, eventInfo.remixWorld, eventInfo.unlockedSlimeBlueSpawn, eventInfo.combatBookVolumeTwoWasUsed, eventInfo.peddlersSatchelWasUsed);
+  let eventInfo9 = fromFlags(eventInfo.unlockedSlimeGreenSpawn, eventInfo.unlockedSlimeOldSpawn, eventInfo.unlockedSlimePurpleSpawn, eventInfo.unlockedSlimeRainbowSpawn, eventInfo.unlockedSlimeRedSpawn, eventInfo.unlockedSlimeYellowSpawn, eventInfo.unlockedSlimeCopperSpawn, eventInfo.fastForwardTimeToDusk);
+  let eventInfo10 = fromFlags(eventInfo.noTrapsWorld, eventInfo.zenithWorld, eventInfo.unlockedTruffleSpawn, eventInfo.vampireSeed, eventInfo.infectedSeed, eventInfo.teamBasedSpawnsSeed, eventInfo.skyblockWorld, eventInfo.dualDungeonsSeed);
+  return packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(writer, toByte(eventInfo1), "eventInfo1"), toByte(eventInfo2), "eventInfo2"), toByte(eventInfo3), "eventInfo3"), toByte(eventInfo4), "eventInfo4"), toByte(eventInfo5), "eventInfo5"), toByte(eventInfo6), "eventInfo6"), toByte(eventInfo7), "eventInfo7"), toByte(eventInfo8), "eventInfo8"), toByte(eventInfo9), "eventInfo9"), toByte(eventInfo10), "eventInfo10");
+}
+function packExtraSpawnPoints4(writer, extraSpawnPoints) {
+  let writer$1 = packByte(writer, extraSpawnPoints.length, "extraSpawnPointCount");
+  extraSpawnPoints.forEach((point, idx) => {
+    let idxLabel = idx.toString();
+    packInt16(packInt16(writer$1, point.x, `extraSpawnPointX_` + idxLabel), point.y, `extraSpawnPointY_` + idxLabel);
+  });
+  return writer$1;
+}
+function toBuffer188(self) {
+  return data(packInt16(packInt16(packExtraSpawnPoints4(packSingle(packUInt64(packSByte(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packByte(packEventInfo4(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packByte(packByte(packByte(packInt32(packInt32(packInt32(packByte(packSingle(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packByte(packUInt64(packBytes(packByte(packString(packInt32(packInt16(packInt16(packInt16(packInt16(packInt16(packInt16(packByte(packByte(packInt32(setType(make(), toInt15("WorldInfo")), self.time, "time"), self.dayAndMoonInfo, "dayAndMoonInfo"), self.moonPhase, "moonPhase"), self.maxTilesX, "maxTilesX"), self.maxTilesY, "maxTilesY"), self.spawnX, "spawnX"), self.spawnY, "spawnY"), self.worldSurface, "worldSurface"), self.rockLayer, "rockLayer"), self.worldId, "worldId"), self.worldName, "worldName"), self.gameMode, "gameMode"), asArray(self.worldUniqueId), "worldUniqueId"), self.worldGeneratorVersion, "worldGeneratorVersion"), self.moonType, "moonType"), self.treeBackground, "treeBackground"), self.treeBackground2, "treeBackground2"), self.treeBackground3, "treeBackground3"), self.treeBackground4, "treeBackground4"), self.corruptionBackground, "corruptionBackground"), self.jungleBackground, "jungleBackground"), self.snowBackground, "snowBackground"), self.hallowBackground, "hallowBackground"), self.crimsonBackground, "crimsonBackground"), self.desertBackground, "desertBackground"), self.oceanBackground, "oceanBackground"), self.mushroomBackground, "mushroomBackground"), self.underworldBackground, "underworldBackground"), self.iceBackStyle, "iceBackStyle"), self.jungleBackStyle, "jungleBackStyle"), self.hellBackStyle, "hellBackStyle"), self.windSpeedSet, "windSpeedSet"), self.cloudNumber, "cloudNumber"), self.tree1, "tree1"), self.tree2, "tree2"), self.tree3, "tree3"), self.treeStyle1, "treeStyle1"), self.treeStyle2, "treeStyle2"), self.treeStyle3, "treeStyle3"), self.treeStyle4, "treeStyle4"), self.caveBack1, "caveBack1"), self.caveBack2, "caveBack2"), self.caveBack3, "caveBack3"), self.caveBackStyle1, "caveBackStyle1"), self.caveBackStyle2, "caveBackStyle2"), self.caveBackStyle3, "caveBackStyle3"), self.caveBackStyle4, "caveBackStyle4"), self.forest1TreeTopStyle, "forest1TreeTopStyle"), self.forest2TreeTopStyle, "forest2TreeTopStyle"), self.forest3TreeTopStyle, "forest3TreeTopStyle"), self.forest4TreeTopStyle, "forest4TreeTopStyle"), self.corruptionTreeTopStyle, "corruptionTreeTopStyle"), self.jungleTreeTopStyle, "jungleTreeTopStyle"), self.snowTreeTopStyle, "snowTreeTopStyle"), self.hallowTreeTopStyle, "hallowTreeTopStyle"), self.crimsonTreeTopStyle, "crimsonTreeTopStyle"), self.desertTreeTopStyle, "desertTreeTopStyle"), self.oceanTreeTopStyle, "oceanTreeTopStyle"), self.glowingMushroomTreeTopStyle, "glowingMushroomTreeTopStyle"), self.underworldTreeTopStyle, "underworldTreeTopStyle"), self.rain, "rain"), self.eventInfo), toByte(fromFlags(self.lowTiles, self.forceHalloweenForever, self.forceChristmasForever, self.moreLightningSeed, self.noLightningSeed, false, false, false)), "worldFlags"), self.sundialCooldown, "sundialCooldown"), self.moondialCooldown, "moondialCooldown"), self.copperOreTier, "copperOreTier"), self.ironOreTier, "ironOreTier"), self.silverOreTier, "silverOreTier"), self.goldOreTier, "goldOreTier"), self.cobaltOreTier, "cobaltOreTier"), self.mythrilOreTier, "mythrilOreTier"), self.adamantiteOreTier, "adamantiteOreTier"), self.invasionType, "invasionType"), self.lobbyId, "lobbyId"), self.sandstormSeverity, "sandstormSeverity"), self.extraSpawnPoints), self.dungeonX, "dungeonX"), self.dungeonY, "dungeonY"));
+}
+var Encode38 = {
+  packInt16,
+  packByte,
+  packEventInfo: packEventInfo4,
+  packExtraSpawnPoints: packExtraSpawnPoints4,
+  toBuffer: toBuffer188
+};
+
+// src/ParserV1458.js
+function addPacketContext4(packetName5, err) {
+  return {
+    context: "Packet " + packetName5 + ": " + err.context,
+    error: err.error
+  };
+}
+function mapPacket4(result, packetName5, fn) {
+  return mapError(map(result, fn), (e) => ({
+    TAG: "ReaderError",
+    _0: addPacketContext4(packetName5, e)
+  }));
+}
+function makeParsers4(packetName5, parse194, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, _fromServer) => mapPacket4(parse194(payload), packetName5, toPacket);
+  let parseLazyWrapped = (payload, _fromServer) => ({
+    TAG: "Ok",
+    _0: toLazyPacket(make4(() => mapError(parse194(payload), (e) => addPacketContext4(packetName5, e))))
+  });
+  return {
+    parse: parseWrapped,
+    parseLazy: parseLazyWrapped
+  };
+}
+function makeParsersWithFromServer4(packetName5, parse194, toPacket, toLazyPacket) {
+  let parseWrapped = (payload, fromServer) => mapPacket4(parse194(payload, fromServer), packetName5, toPacket);
+  let parseLazyWrapped = (payload, fromServer) => ({
+    TAG: "Ok",
+    _0: toLazyPacket(make4(() => mapError(parse194(payload, fromServer), (e) => addPacketContext4(packetName5, e))))
+  });
+  return {
+    parse: parseWrapped,
+    parseLazy: parseLazyWrapped
+  };
+}
+function getParsers4(packetType, fromServer) {
+  let packetName5 = packetName4(packetType);
+  switch (packetType) {
+    case "ConnectRequest":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "ConnectRequestFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse9, (a) => ({
+            TAG: "ConnectRequest",
+            _0: a
+          }), (a) => ({
+            TAG: "ConnectRequest",
+            _0: a
+          }))
+        };
+      }
+    case "Disconnect":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse107, (a) => ({
+            TAG: "Disconnect",
+            _0: a
+          }), (a) => ({
+            TAG: "Disconnect",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "DisconnectFromClient"
+        };
+      }
+    case "PlayerSlotSet":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse95, (a) => ({
+            TAG: "PlayerSlotSet",
+            _0: a
+          }), (a) => ({
+            TAG: "PlayerSlotSet",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "PlayerSlotSetFromClient"
+        };
+      }
+    case "PlayerInfo":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse97, (a) => ({
+          TAG: "PlayerInfo",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerInfo",
+          _0: a
+        }))
+      };
+    case "PlayerInventorySlot":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse99, (a) => ({
+          TAG: "PlayerInventorySlot",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerInventorySlot",
+          _0: a
+        }))
+      };
+    case "WorldDataRequest":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "WorldDataRequestFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse76, (a) => ({
+            TAG: "WorldDataRequest",
+            _0: a
+          }), (a) => ({
+            TAG: "WorldDataRequest",
+            _0: a
+          }))
+        };
+      }
+    case "WorldInfo":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse192, (a) => ({
+            TAG: "WorldInfo",
+            _0: a
+          }), (a) => ({
+            TAG: "WorldInfo",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "WorldInfoFromClient"
+        };
+      }
+    case "InitialTileSectionsRequest":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "InitialTileSectionsRequestFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse82, (a) => ({
+            TAG: "InitialTileSectionsRequest",
+            _0: a
+          }), (a) => ({
+            TAG: "InitialTileSectionsRequest",
+            _0: a
+          }))
+        };
+      }
+    case "Status":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse52, (a) => ({
+            TAG: "Status",
+            _0: a
+          }), (a) => ({
+            TAG: "Status",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "StatusFromClient"
+        };
+      }
+    case "TileSectionSend":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse$13, (a) => ({
+            TAG: "TileSectionSend",
+            _0: a
+          }), (a) => ({
+            TAG: "TileSectionSend",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "TileSectionSendFromClient"
+        };
+      }
+    case "TileSectionFrame":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse65, (a) => ({
+            TAG: "TileSectionFrame",
+            _0: a
+          }), (a) => ({
+            TAG: "TileSectionFrame",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "TileSectionFrameFromClient"
+        };
+      }
+    case "PlayerSpawn":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse98, (a) => ({
+          TAG: "PlayerSpawn",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerSpawn",
+          _0: a
+        }))
+      };
+    case "PlayerUpdate":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse96, (a) => ({
+          TAG: "PlayerUpdate",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerUpdate",
+          _0: a
+        }))
+      };
+    case "PlayerActive":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse105, (a) => ({
+            TAG: "PlayerActive",
+            _0: a
+          }), (a) => ({
+            TAG: "PlayerActive",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "PlayerActiveFromClient"
+        };
+      }
+    case "PlayerHealth":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse100, (a) => ({
+          TAG: "PlayerHealth",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerHealth",
+          _0: a
+        }))
+      };
+    case "TileModify":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse62, (a) => ({
+          TAG: "TileModify",
+          _0: a
+        }), (a) => ({
+          TAG: "TileModify",
+          _0: a
+        }))
+      };
+    case "TimeSet":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse69, (a) => ({
+            TAG: "TimeSet",
+            _0: a
+          }), (a) => ({
+            TAG: "TimeSet",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "TimeSetFromClient"
+        };
+      }
+    case "DoorUse":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse111, (a) => ({
+          TAG: "DoorUse",
+          _0: a
+        }), (a) => ({
+          TAG: "DoorUse",
+          _0: a
+        }))
+      };
+    case "TileSquareSend":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse68, (a) => ({
+          TAG: "TileSquareSend",
+          _0: a
+        }), (a) => ({
+          TAG: "TileSquareSend",
+          _0: a
+        }))
+      };
+    case "ItemDropUpdate":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse18, (a) => ({
+          TAG: "ItemDropUpdate",
+          _0: a
+        }), (a) => ({
+          TAG: "ItemDropUpdate",
+          _0: a
+        }))
+      };
+    case "ItemOwner":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse19, (a) => ({
+          TAG: "ItemOwner",
+          _0: a
+        }), (a) => ({
+          TAG: "ItemOwner",
+          _0: a
+        }))
+      };
+    case "NpcUpdate":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse106, (a) => ({
+            TAG: "NpcUpdate",
+            _0: a
+          }), (a) => ({
+            TAG: "NpcUpdate",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "NpcUpdateFromClient"
+        };
+      }
+    case "ProjectileSync":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse102, (a) => ({
+          TAG: "ProjectileSync",
+          _0: a
+        }), (a) => ({
+          TAG: "ProjectileSync",
+          _0: a
+        }))
+      };
+    case "NpcStrike":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse117, (a) => ({
+          TAG: "NpcStrike",
+          _0: a
+        }), (a) => ({
+          TAG: "NpcStrike",
+          _0: a
+        }))
+      };
+    case "ProjectileDestroy":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse146, (a) => ({
+          TAG: "ProjectileDestroy",
+          _0: a
+        }), (a) => ({
+          TAG: "ProjectileDestroy",
+          _0: a
+        }))
+      };
+    case "PvpToggle":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse46, (a) => ({
+          TAG: "PvpToggle",
+          _0: a
+        }), (a) => ({
+          TAG: "PvpToggle",
+          _0: a
+        }))
+      };
+    case "ChestOpen":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "ChestOpenFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse114, (a) => ({
+            TAG: "ChestOpen",
+            _0: a
+          }), (a) => ({
+            TAG: "ChestOpen",
+            _0: a
+          }))
+        };
+      }
+    case "ChestItem":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse5, (a) => ({
+          TAG: "ChestItem",
+          _0: a
+        }), (a) => ({
+          TAG: "ChestItem",
+          _0: a
+        }))
+      };
+    case "ActiveContainerSync":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse149, (a) => ({
+          TAG: "ActiveContainerSync",
+          _0: a
+        }), (a) => ({
+          TAG: "ActiveContainerSync",
+          _0: a
+        }))
+      };
+    case "ChestPlace":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse7, (a) => ({
+          TAG: "ChestPlace",
+          _0: a
+        }), (a) => ({
+          TAG: "ChestPlace",
+          _0: a
+        }))
+      };
+    case "HealEffect":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse119, (a) => ({
+          TAG: "HealEffect",
+          _0: a
+        }), (a) => ({
+          TAG: "HealEffect",
+          _0: a
+        }))
+      };
+    case "Zones":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse77, (a) => ({
+          TAG: "Zones",
+          _0: a
+        }), (a) => ({
+          TAG: "Zones",
+          _0: a
+        }))
+      };
+    case "PasswordRequired":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse140, (a) => ({
+            TAG: "PasswordRequired",
+            _0: a
+          }), (a) => ({
+            TAG: "PasswordRequired",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "PasswordRequiredFromClient"
+        };
+      }
+    case "PasswordSend":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "PasswordSendFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse125, (a) => ({
+            TAG: "PasswordSend",
+            _0: a
+          }), (a) => ({
+            TAG: "PasswordSend",
+            _0: a
+          }))
+        };
+      }
+    case "ItemOwnerRemove":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse20, (a) => ({
+          TAG: "ItemOwnerRemove",
+          _0: a
+        }), (a) => ({
+          TAG: "ItemOwnerRemove",
+          _0: a
+        }))
+      };
+    case "NpcTalk":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse33, (a) => ({
+          TAG: "NpcTalk",
+          _0: a
+        }), (a) => ({
+          TAG: "NpcTalk",
+          _0: a
+        }))
+      };
+    case "PlayerAnimation":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse182, (a) => ({
+          TAG: "PlayerAnimation",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerAnimation",
+          _0: a
+        }))
+      };
+    case "PlayerMana":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse44, (a) => ({
+          TAG: "PlayerMana",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerMana",
+          _0: a
+        }))
+      };
+    case "ManaEffect":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse120, (a) => ({
+          TAG: "ManaEffect",
+          _0: a
+        }), (a) => ({
+          TAG: "ManaEffect",
+          _0: a
+        }))
+      };
+    case "PlayerTeam":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse45, (a) => ({
+          TAG: "PlayerTeam",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerTeam",
+          _0: a
+        }))
+      };
+    case "SignRead":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "SignReadFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse49, (a) => ({
+            TAG: "SignRead",
+            _0: a
+          }), (a) => ({
+            TAG: "SignRead",
+            _0: a
+          }))
+        };
+      }
+    case "SignNew":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse48, (a) => ({
+          TAG: "SignNew",
+          _0: a
+        }), (a) => ({
+          TAG: "SignNew",
+          _0: a
+        }))
+      };
+    case "LiquidSet":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse115, (a) => ({
+          TAG: "LiquidSet",
+          _0: a
+        }), (a) => ({
+          TAG: "LiquidSet",
+          _0: a
+        }))
+      };
+    case "PlayerSpawnSelf":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse137, (a) => ({
+            TAG: "PlayerSpawnSelf",
+            _0: a
+          }), (a) => ({
+            TAG: "PlayerSpawnSelf",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "PlayerSpawnSelfFromClient"
+        };
+      }
+    case "PlayerBuffsSet":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse39, (a) => ({
+          TAG: "PlayerBuffsSet",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerBuffsSet",
+          _0: a
+        }))
+      };
+    case "NpcSpecialEffect":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse139, (a) => ({
+          TAG: "NpcSpecialEffect",
+          _0: a
+        }), (a) => ({
+          TAG: "NpcSpecialEffect",
+          _0: a
+        }))
+      };
+    case "ChestOrTempleUnlock":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse6, (a) => ({
+          TAG: "ChestOrTempleUnlock",
+          _0: a
+        }), (a) => ({
+          TAG: "ChestOrTempleUnlock",
+          _0: a
+        }))
+      };
+    case "NpcBuffAdd":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse121, (a) => ({
+          TAG: "NpcBuffAdd",
+          _0: a
+        }), (a) => ({
+          TAG: "NpcBuffAdd",
+          _0: a
+        }))
+      };
+    case "NpcBuffUpdate":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse26, (a) => ({
+            TAG: "NpcBuffUpdate",
+            _0: a
+          }), (a) => ({
+            TAG: "NpcBuffUpdate",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "NpcBuffUpdateFromClient"
+        };
+      }
+    case "PlayerBuffAdd":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse38, (a) => ({
+          TAG: "PlayerBuffAdd",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerBuffAdd",
+          _0: a
+        }))
+      };
+    case "NpcNameUpdate":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, (__x) => parse31(__x, fromServer), (a) => ({
+          TAG: "NpcNameUpdate",
+          _0: a
+        }), (a) => ({
+          TAG: "NpcNameUpdate",
+          _0: a
+        }))
+      };
+    case "GoodEvilUpdate":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse132, (a) => ({
+            TAG: "GoodEvilUpdate",
+            _0: a
+          }), (a) => ({
+            TAG: "GoodEvilUpdate",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "GoodEvilUpdateFromClient"
+        };
+      }
+    case "HarpPlay":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse112, (a) => ({
+          TAG: "HarpPlay",
+          _0: a
+        }), (a) => ({
+          TAG: "HarpPlay",
+          _0: a
+        }))
+      };
+    case "SwitchHit":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse53, (a) => ({
+          TAG: "SwitchHit",
+          _0: a
+        }), (a) => ({
+          TAG: "SwitchHit",
+          _0: a
+        }))
+      };
+    case "NpcHomeUpdate":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse29, (a) => ({
+          TAG: "NpcHomeUpdate",
+          _0: a
+        }), (a) => ({
+          TAG: "NpcHomeUpdate",
+          _0: a
+        }))
+      };
+    case "BossOrInvasionSpawn":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "BossOrInvasionSpawnFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse3, (a) => ({
+            TAG: "BossOrInvasionSpawn",
+            _0: a
+          }), (a) => ({
+            TAG: "BossOrInvasionSpawn",
+            _0: a
+          }))
+        };
+      }
+    case "PlayerDodge":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse43, (a) => ({
+          TAG: "PlayerDodge",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerDodge",
+          _0: a
+        }))
+      };
+    case "TilePaint":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse63, (a) => ({
+          TAG: "TilePaint",
+          _0: a
+        }), (a) => ({
+          TAG: "TilePaint",
+          _0: a
+        }))
+      };
+    case "WallPaint":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse73, (a) => ({
+          TAG: "WallPaint",
+          _0: a
+        }), (a) => ({
+          TAG: "WallPaint",
+          _0: a
+        }))
+      };
+    case "Teleport":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse54, (a) => ({
+          TAG: "Teleport",
+          _0: a
+        }), (a) => ({
+          TAG: "Teleport",
+          _0: a
+        }))
+      };
+    case "PlayerHealOther":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse136, (a) => ({
+          TAG: "PlayerHealOther",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerHealOther",
+          _0: a
+        }))
+      };
+    case "DimensionsUpdate":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse13, (a) => ({
+          TAG: "DimensionsUpdate",
+          _0: a
+        }), (a) => ({
+          TAG: "DimensionsUpdate",
+          _0: a
+        }))
+      };
+    case "ClientUuid":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "ClientUuidFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse101, (a) => ({
+            TAG: "ClientUuid",
+            _0: a
+          }), (a) => ({
+            TAG: "ClientUuid",
+            _0: a
+          }))
+        };
+      }
+    case "ChestName":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse113, (a) => ({
+          TAG: "ChestName",
+          _0: a
+        }), (a) => ({
+          TAG: "ChestName",
+          _0: a
+        }))
+      };
+    case "NpcCatch":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "NpcCatchFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse27, (a) => ({
+            TAG: "NpcCatch",
+            _0: a
+          }), (a) => ({
+            TAG: "NpcCatch",
+            _0: a
+          }))
+        };
+      }
+    case "NpcRelease":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "NpcReleaseFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse122, (a) => ({
+            TAG: "NpcRelease",
+            _0: a
+          }), (a) => ({
+            TAG: "NpcRelease",
+            _0: a
+          }))
+        };
+      }
+    case "TravellingMerchantInventory":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse70, (a) => ({
+            TAG: "TravellingMerchantInventory",
+            _0: a
+          }), (a) => ({
+            TAG: "TravellingMerchantInventory",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "TravellingMerchantInventoryFromClient"
+        };
+      }
+    case "TeleportationPotion":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse55, (a) => ({
+          TAG: "TeleportationPotion",
+          _0: a
+        }), (a) => ({
+          TAG: "TeleportationPotion",
+          _0: a
+        }))
+      };
+    case "AnglerQuest":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse, (a) => ({
+            TAG: "AnglerQuest",
+            _0: a
+          }), (a) => ({
+            TAG: "AnglerQuest",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "AnglerQuestFromClient"
+        };
+      }
+    case "AnglerQuestComplete":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "AnglerQuestCompleteFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse2, (a) => ({
+            TAG: "AnglerQuestComplete",
+            _0: a
+          }), (a) => ({
+            TAG: "AnglerQuestComplete",
+            _0: a
+          }))
+        };
+      }
+    case "AnglerQuestsCompletedAmount":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse162, (a) => ({
+          TAG: "AnglerQuestsCompletedAmount",
+          _0: a
+        }), (a) => ({
+          TAG: "AnglerQuestsCompletedAmount",
+          _0: a
+        }))
+      };
+    case "TemporaryAnimationCreate":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse56, (a) => ({
+            TAG: "TemporaryAnimationCreate",
+            _0: a
+          }), (a) => ({
+            TAG: "TemporaryAnimationCreate",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "TemporaryAnimationCreateFromClient"
+        };
+      }
+    case "InvasionProgressReport":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse16, (a) => ({
+            TAG: "InvasionProgressReport",
+            _0: a
+          }), (a) => ({
+            TAG: "InvasionProgressReport",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "InvasionProgressReportFromClient"
+        };
+      }
+    case "ObjectPlace":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse35, (a) => ({
+          TAG: "ObjectPlace",
+          _0: a
+        }), (a) => ({
+          TAG: "ObjectPlace",
+          _0: a
+        }))
+      };
+    case "PlayerChestIndexSync":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse40, (a) => ({
+            TAG: "PlayerChestIndexSync",
+            _0: a
+          }), (a) => ({
+            TAG: "PlayerChestIndexSync",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "PlayerChestIndexSyncFromClient"
+        };
+      }
+    case "CombatNumberCreate":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse147, (a) => ({
+            TAG: "CombatNumberCreate",
+            _0: a
+          }), (a) => ({
+            TAG: "CombatNumberCreate",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "CombatNumberCreateFromClient"
+        };
+      }
+    case "NetModuleLoad":
+      return {
+        TAG: "Ok",
+        _0: makeParsersWithFromServer4(packetName5, parse23, (a) => ({
+          TAG: "NetModuleLoad",
+          _0: a
+        }), (a) => ({
+          TAG: "NetModuleLoad",
+          _0: a
+        }))
+      };
+    case "NpcKillCount":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse30, (a) => ({
+            TAG: "NpcKillCount",
+            _0: a
+          }), (a) => ({
+            TAG: "NpcKillCount",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "NpcKillCountFromClient"
+        };
+      }
+    case "PlayerStealth":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse129, (a) => ({
+          TAG: "PlayerStealth",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerStealth",
+          _0: a
+        }))
+      };
+    case "ItemForceIntoNearestChest":
+      return {
+        TAG: "Ok",
+        _0: makeParsersWithFromServer4(packetName5, parse85, (a) => ({
+          TAG: "ItemForceIntoNearestChest",
+          _0: a
+        }), (a) => ({
+          TAG: "ItemForceIntoNearestChest",
+          _0: a
+        }))
+      };
+    case "TileEntityUpdate":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse61, (a) => ({
+            TAG: "TileEntityUpdate",
+            _0: a
+          }), (a) => ({
+            TAG: "TileEntityUpdate",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "TileEntityUpdateFromClient"
+        };
+      }
+    case "TileEntityPlace":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "TileEntityPlaceFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse60, (a) => ({
+            TAG: "TileEntityPlace",
+            _0: a
+          }), (a) => ({
+            TAG: "TileEntityPlace",
+            _0: a
+          }))
+        };
+      }
+    case "ItemDropModify":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse178, (a) => ({
+            TAG: "ItemDropModify",
+            _0: a
+          }), (a) => ({
+            TAG: "ItemDropModify",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "ItemDropModifyFromClient"
+        };
+      }
+    case "ItemFramePlace":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "ItemFramePlaceFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse133, (a) => ({
+            TAG: "ItemFramePlace",
+            _0: a
+          }), (a) => ({
+            TAG: "ItemFramePlace",
+            _0: a
+          }))
+        };
+      }
+    case "ItemDropInstancedUpdate":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse159, (a) => ({
+          TAG: "ItemDropInstancedUpdate",
+          _0: a
+        }), (a) => ({
+          TAG: "ItemDropInstancedUpdate",
+          _0: a
+        }))
+      };
+    case "EmoteBubble":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse172, (a) => ({
+            TAG: "EmoteBubble",
+            _0: a
+          }), (a) => ({
+            TAG: "EmoteBubble",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "EmoteBubbleFromClient"
+        };
+      }
+    case "ExtraValueSync":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse14, (a) => ({
+          TAG: "ExtraValueSync",
+          _0: a
+        }), (a) => ({
+          TAG: "ExtraValueSync",
+          _0: a
+        }))
+      };
+    case "SocialHandshake":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse51, (a) => ({
+          TAG: "SocialHandshake",
+          _0: a
+        }), (a) => ({
+          TAG: "SocialHandshake",
+          _0: a
+        }))
+      };
+    case "Unused":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse80, (a) => ({
+          TAG: "Unused",
+          _0: a
+        }), (a) => ({
+          TAG: "Unused",
+          _0: a
+        }))
+      };
+    case "PortalKill":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "PortalKillFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse123, (a) => ({
+            TAG: "PortalKill",
+            _0: a
+          }), (a) => ({
+            TAG: "PortalKill",
+            _0: a
+          }))
+        };
+      }
+    case "PlayerTeleportPortal":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse152, (a) => ({
+          TAG: "PlayerTeleportPortal",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerTeleportPortal",
+          _0: a
+        }))
+      };
+    case "NpcKilledNotification":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse156, (a) => ({
+            TAG: "NpcKilledNotification",
+            _0: a
+          }), (a) => ({
+            TAG: "NpcKilledNotification",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "NpcKilledNotificationFromClient"
+        };
+      }
+    case "EventNotification":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse141, (a) => ({
+            TAG: "EventNotification",
+            _0: a
+          }), (a) => ({
+            TAG: "EventNotification",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "EventNotificationFromClient"
+        };
+      }
+    case "MinionTargetUpdate":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse148, (a) => ({
+          TAG: "MinionTargetUpdate",
+          _0: a
+        }), (a) => ({
+          TAG: "MinionTargetUpdate",
+          _0: a
+        }))
+      };
+    case "NpcTeleportPortal":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse34, (a) => ({
+          TAG: "NpcTeleportPortal",
+          _0: a
+        }), (a) => ({
+          TAG: "NpcTeleportPortal",
+          _0: a
+        }))
+      };
+    case "ShieldStrengthsUpdate":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse157, (a) => ({
+            TAG: "ShieldStrengthsUpdate",
+            _0: a
+          }), (a) => ({
+            TAG: "ShieldStrengthsUpdate",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "ShieldStrengthsUpdateFromClient"
+        };
+      }
+    case "NebulaLevelUp":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse128, (a) => ({
+          TAG: "NebulaLevelUp",
+          _0: a
+        }), (a) => ({
+          TAG: "NebulaLevelUp",
+          _0: a
+        }))
+      };
+    case "MoonLordCountdown":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse144, (a) => ({
+            TAG: "MoonLordCountdown",
+            _0: a
+          }), (a) => ({
+            TAG: "MoonLordCountdown",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "MoonLordCountdownFromClient"
+        };
+      }
+    case "NpcShopItem":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse32, (a) => ({
+            TAG: "NpcShopItem",
+            _0: a
+          }), (a) => ({
+            TAG: "NpcShopItem",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "NpcShopItemFromClient"
+        };
+      }
+    case "GemLockToggle":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "GemLockToggleFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse127, (a) => ({
+            TAG: "GemLockToggle",
+            _0: a
+          }), (a) => ({
+            TAG: "GemLockToggle",
+            _0: a
+          }))
+        };
+      }
+    case "SmokePoof":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse50, (a) => ({
+            TAG: "SmokePoof",
+            _0: a
+          }), (a) => ({
+            TAG: "SmokePoof",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "SmokePoofFromClient"
+        };
+      }
+    case "ChatMessageSmart":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse4, (a) => ({
+            TAG: "ChatMessageSmart",
+            _0: a
+          }), (a) => ({
+            TAG: "ChatMessageSmart",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "ChatMessageSmartFromClient"
+        };
+      }
+    case "WiredCannonShot":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse75, (a) => ({
+            TAG: "WiredCannonShot",
+            _0: a
+          }), (a) => ({
+            TAG: "WiredCannonShot",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "WiredCannonShotFromClient"
+        };
+      }
+    case "MassWireOperation":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "MassWireOperationFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse143, (a) => ({
+            TAG: "MassWireOperation",
+            _0: a
+          }), (a) => ({
+            TAG: "MassWireOperation",
+            _0: a
+          }))
+        };
+      }
+    case "MassWireOperationPay":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse151, (a) => ({
+            TAG: "MassWireOperationPay",
+            _0: a
+          }), (a) => ({
+            TAG: "MassWireOperationPay",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "MassWireOperationPayFromClient"
+        };
+      }
+    case "PartyToggle":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "PartyToggleFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse36, (a) => ({
+            TAG: "PartyToggle",
+            _0: a
+          }), (a) => ({
+            TAG: "PartyToggle",
+            _0: a
+          }))
+        };
+      }
+    case "TreeGrowFx":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse71, (a) => ({
+          TAG: "TreeGrowFx",
+          _0: a
+        }), (a) => ({
+          TAG: "TreeGrowFx",
+          _0: a
+        }))
+      };
+    case "CrystalInvasionStart":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "CrystalInvasionStartFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse12, (a) => ({
+            TAG: "CrystalInvasionStart",
+            _0: a
+          }), (a) => ({
+            TAG: "CrystalInvasionStart",
+            _0: a
+          }))
+        };
+      }
+    case "CrystalInvasionWipeAll":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse158, (a) => ({
+            TAG: "CrystalInvasionWipeAll",
+            _0: a
+          }), (a) => ({
+            TAG: "CrystalInvasionWipeAll",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "CrystalInvasionWipeAllFromClient"
+        };
+      }
+    case "MinionAttackTargetUpdate":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse161, (a) => ({
+          TAG: "MinionAttackTargetUpdate",
+          _0: a
+        }), (a) => ({
+          TAG: "MinionAttackTargetUpdate",
+          _0: a
+        }))
+      };
+    case "CrystalInvasionSendWaitTime":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse163, (a) => ({
+            TAG: "CrystalInvasionSendWaitTime",
+            _0: a
+          }), (a) => ({
+            TAG: "CrystalInvasionSendWaitTime",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "CrystalInvasionSendWaitTimeFromClient"
+        };
+      }
+    case "PlayerDamage":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse174, (a) => ({
+          TAG: "PlayerDamage",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerDamage",
+          _0: a
+        }))
+      };
+    case "PlayerDeath":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse42, (a) => ({
+          TAG: "PlayerDeath",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerDeath",
+          _0: a
+        }))
+      };
+    case "CombatTextCreate":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse138, (a) => ({
+            TAG: "CombatTextCreate",
+            _0: a
+          }), (a) => ({
+            TAG: "CombatTextCreate",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "CombatTextCreateFromClient"
+        };
+      }
+    case "Emoji":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "EmojiFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse108, (a) => ({
+            TAG: "Emoji",
+            _0: a
+          }), (a) => ({
+            TAG: "Emoji",
+            _0: a
+          }))
+        };
+      }
+    case "TileEntityDisplayDollItemSync":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse57, (a) => ({
+          TAG: "TileEntityDisplayDollItemSync",
+          _0: a
+        }), (a) => ({
+          TAG: "TileEntityDisplayDollItemSync",
+          _0: a
+        }))
+      };
+    case "TileEntityInteractionRequest":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse59, (a) => ({
+          TAG: "TileEntityInteractionRequest",
+          _0: a
+        }), (a) => ({
+          TAG: "TileEntityInteractionRequest",
+          _0: a
+        }))
+      };
+    case "WeaponsRackTryPlacing":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "WeaponsRackTryPlacingFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse74, (a) => ({
+            TAG: "WeaponsRackTryPlacing",
+            _0: a
+          }), (a) => ({
+            TAG: "WeaponsRackTryPlacing",
+            _0: a
+          }))
+        };
+      }
+    case "TileEntityHatRackItemSync":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse58, (a) => ({
+          TAG: "TileEntityHatRackItemSync",
+          _0: a
+        }), (a) => ({
+          TAG: "TileEntityHatRackItemSync",
+          _0: a
+        }))
+      };
+    case "TilePickingSync":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse64, (a) => ({
+          TAG: "TilePickingSync",
+          _0: a
+        }), (a) => ({
+          TAG: "TilePickingSync",
+          _0: a
+        }))
+      };
+    case "RevengeMarkerSync":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse145, (a) => ({
+            TAG: "RevengeMarkerSync",
+            _0: a
+          }), (a) => ({
+            TAG: "RevengeMarkerSync",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "RevengeMarkerSyncFromClient"
+        };
+      }
+    case "RevengeMarkerRemove":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse150, (a) => ({
+            TAG: "RevengeMarkerRemove",
+            _0: a
+          }), (a) => ({
+            TAG: "RevengeMarkerRemove",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "RevengeMarkerRemoveFromClient"
+        };
+      }
+    case "GolfBallLandInCup":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse142, (a) => ({
+          TAG: "GolfBallLandInCup",
+          _0: a
+        }), (a) => ({
+          TAG: "GolfBallLandInCup",
+          _0: a
+        }))
+      };
+    case "ClientFinishConnectingToServer":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse8, (a) => ({
+            TAG: "ClientFinishConnectingToServer",
+            _0: a
+          }), (a) => ({
+            TAG: "ClientFinishConnectingToServer",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "ClientFinishConnectingToServerFromClient"
+        };
+      }
+    case "NpcFishOut":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "NpcFishOutFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse28, (a) => ({
+            TAG: "NpcFishOut",
+            _0: a
+          }), (a) => ({
+            TAG: "NpcFishOut",
+            _0: a
+          }))
+        };
+      }
+    case "NpcTamper":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse116, (a) => ({
+            TAG: "NpcTamper",
+            _0: a
+          }), (a) => ({
+            TAG: "NpcTamper",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "NpcTamperFromClient"
+        };
+      }
+    case "LegacySoundPlay":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse135, (a) => ({
+            TAG: "LegacySoundPlay",
+            _0: a
+          }), (a) => ({
+            TAG: "LegacySoundPlay",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "LegacySoundPlayFromClient"
+        };
+      }
+    case "FoodPlatterTryPlacing":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "FoodPlatterTryPlacingFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse155, (a) => ({
+            TAG: "FoodPlatterTryPlacing",
+            _0: a
+          }), (a) => ({
+            TAG: "FoodPlatterTryPlacing",
+            _0: a
+          }))
+        };
+      }
+    case "PlayerLuckFactorsUpdate":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse90, (a) => ({
+          TAG: "PlayerLuckFactorsUpdate",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerLuckFactorsUpdate",
+          _0: a
+        }))
+      };
+    case "PlayerDead":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse41, (a) => ({
+            TAG: "PlayerDead",
+            _0: a
+          }), (a) => ({
+            TAG: "PlayerDead",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "PlayerDeadFromClient"
+        };
+      }
+    case "CavernMonsterTypeSync":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse153, (a) => ({
+            TAG: "CavernMonsterTypeSync",
+            _0: a
+          }), (a) => ({
+            TAG: "CavernMonsterTypeSync",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "CavernMonsterTypeSyncFromClient"
+        };
+      }
+    case "NpcBuffRemovalRequest":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "NpcBuffRemovalRequestFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse25, (a) => ({
+            TAG: "NpcBuffRemovalRequest",
+            _0: a
+          }), (a) => ({
+            TAG: "NpcBuffRemovalRequest",
+            _0: a
+          }))
+        };
+      }
+    case "ClientSyncedInventory":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "ClientSyncedInventoryFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse154, (a) => ({
+            TAG: "ClientSyncedInventory",
+            _0: a
+          }), (a) => ({
+            TAG: "ClientSyncedInventory",
+            _0: a
+          }))
+        };
+      }
+    case "CountsAsHostForGameplaySet":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse10, (a) => ({
+          TAG: "CountsAsHostForGameplaySet",
+          _0: a
+        }), (a) => ({
+          TAG: "CountsAsHostForGameplaySet",
+          _0: a
+        }))
+      };
+    case "CreditsOrSlimeTransform":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse11, (a) => ({
+          TAG: "CreditsOrSlimeTransform",
+          _0: a
+        }), (a) => ({
+          TAG: "CreditsOrSlimeTransform",
+          _0: a
+        }))
+      };
+    case "LucyAxeMessage":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse134, (a) => ({
+          TAG: "LucyAxeMessage",
+          _0: a
+        }), (a) => ({
+          TAG: "LucyAxeMessage",
+          _0: a
+        }))
+      };
+    case "PiggyBankVoidLensUpdate":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse160, (a) => ({
+          TAG: "PiggyBankVoidLensUpdate",
+          _0: a
+        }), (a) => ({
+          TAG: "PiggyBankVoidLensUpdate",
+          _0: a
+        }))
+      };
+    case "DungeonDefendersEventAttemptSkipWait":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse164, (a) => ({
+          TAG: "DungeonDefendersEventAttemptSkipWait",
+          _0: a
+        }), (a) => ({
+          TAG: "DungeonDefendersEventAttemptSkipWait",
+          _0: a
+        }))
+      };
+    case "HaveDryadDoStardewAnimation":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse15, (a) => ({
+          TAG: "HaveDryadDoStardewAnimation",
+          _0: a
+        }), (a) => ({
+          TAG: "HaveDryadDoStardewAnimation",
+          _0: a
+        }))
+      };
+    case "ShimmerEffectOrCoinLuck":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse47, (a) => ({
+            TAG: "ShimmerEffectOrCoinLuck",
+            _0: a
+          }), (a) => ({
+            TAG: "ShimmerEffectOrCoinLuck",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "NotImplemented"
+        };
+      }
+    case "LoadoutSwitch":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse21, (a) => ({
+          TAG: "LoadoutSwitch",
+          _0: a
+        }), (a) => ({
+          TAG: "LoadoutSwitch",
+          _0: a
+        }))
+      };
+    case "DeadCellsDisplayJarTryPlacing":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse79, (a) => ({
+          TAG: "DeadCellsDisplayJarTryPlacing",
+          _0: a
+        }), (a) => ({
+          TAG: "DeadCellsDisplayJarTryPlacing",
+          _0: a
+        }))
+      };
+    case "PlayerSpectate":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse91, (a) => ({
+          TAG: "PlayerSpectate",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerSpectate",
+          _0: a
+        }))
+      };
+    case "ItemDropClear":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse83, (a) => ({
+          TAG: "ItemDropClear",
+          _0: a
+        }), (a) => ({
+          TAG: "ItemDropClear",
+          _0: a
+        }))
+      };
+    case "PlayerItemUseSound":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse89, (a) => ({
+          TAG: "PlayerItemUseSound",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerItemUseSound",
+          _0: a
+        }))
+      };
+    case "NpcHurtByDebuff":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse87, (a) => ({
+          TAG: "NpcHurtByDebuff",
+          _0: a
+        }), (a) => ({
+          TAG: "NpcHurtByDebuff",
+          _0: a
+        }))
+      };
+    case "Ping":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse88, (a) => ({
+          TAG: "Ping",
+          _0: a
+        }), (a) => ({
+          TAG: "Ping",
+          _0: a
+        }))
+      };
+    case "ChestResize":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse78, (a) => ({
+          TAG: "ChestResize",
+          _0: a
+        }), (a) => ({
+          TAG: "ChestResize",
+          _0: a
+        }))
+      };
+    case "LeashedEntityAnchorInsertItem":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse86, (a) => ({
+          TAG: "LeashedEntityAnchorInsertItem",
+          _0: a
+        }), (a) => ({
+          TAG: "LeashedEntityAnchorInsertItem",
+          _0: a
+        }))
+      };
+    case "PlayerTeamUpdate":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse93, (a) => ({
+          TAG: "PlayerTeamUpdate",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerTeamUpdate",
+          _0: a
+        }))
+      };
+    case "PlayerTeamSwapSpawn":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse92, (a) => ({
+          TAG: "PlayerTeamSwapSpawn",
+          _0: a
+        }), (a) => ({
+          TAG: "PlayerTeamSwapSpawn",
+          _0: a
+        }))
+      };
+    case "SectionRequest":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse94, (a) => ({
+          TAG: "SectionRequest",
+          _0: a
+        }), (a) => ({
+          TAG: "SectionRequest",
+          _0: a
+        }))
+      };
+    case "ItemDropPosition":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse84, (a) => ({
+          TAG: "ItemDropPosition",
+          _0: a
+        }), (a) => ({
+          TAG: "ItemDropPosition",
+          _0: a
+        }))
+      };
+    case "HostToken":
+      return {
+        TAG: "Ok",
+        _0: makeParsers4(packetName5, parse81, (a) => ({
+          TAG: "HostToken",
+          _0: a
+        }), (a) => ({
+          TAG: "HostToken",
+          _0: a
+        }))
+      };
+    case "DamageNPCAck":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse126, (a) => ({
+            TAG: "DamageNPCAck",
+            _0: a
+          }), (a) => ({
+            TAG: "DamageNPCAck",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "NotImplemented"
+        };
+      }
+    case "ServerInfo":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse190, (a) => ({
+            TAG: "ServerInfo",
+            _0: a
+          }), (a) => ({
+            TAG: "ServerInfo",
+            _0: a
+          }))
+        };
+      } else {
+        return {
+          TAG: "Error",
+          _0: "ServerInfoFromClient"
+        };
+      }
+    case "PlayerPlatformInfo":
+      if (fromServer) {
+        return {
+          TAG: "Error",
+          _0: "PlayerPlatformInfoFromServer"
+        };
+      } else {
+        return {
+          TAG: "Ok",
+          _0: makeParsers4(packetName5, parse130, (a) => ({
+            TAG: "PlayerPlatformInfo",
+            _0: a
+          }), (a) => ({
+            TAG: "PlayerPlatformInfo",
+            _0: a
+          }))
+        };
+      }
+    default:
+      return {
+        TAG: "Error",
+        _0: "NotImplemented"
+      };
+  }
+}
+function parse193(buffer, fromServer, ignoreOpt) {
+  let ignore = ignoreOpt !== void 0 ? ignoreOpt : [];
+  let match = buffer.length;
+  if (!(match > 2 || match < 0)) {
+    return {
+      TAG: "Error",
+      _0: {
+        TAG: "InvalidPacketLength",
+        _0: buffer.length
+      }
+    };
+  }
+  let packetType = fromInt16(buffer[2]);
+  if (packetType === void 0) {
+    return {
+      TAG: "Error",
+      _0: {
+        TAG: "InvalidPacketType",
+        _0: buffer[2]
+      }
+    };
+  }
+  if (ignore.includes(packetType)) {
+    return {
+      TAG: "Error",
+      _0: "IgnoredPacket"
+    };
+  }
+  try {
+    let parsers = getParsers4(packetType, fromServer);
+    if (parsers.TAG === "Ok") {
+      return parsers._0.parse(buffer, fromServer);
+    } else {
+      return {
+        TAG: "Error",
+        _0: parsers._0
+      };
+    }
+  } catch (raw_obj) {
+    let obj = internalToException(raw_obj);
+    if (obj.RE_EXN_ID === "JsExn") {
+      return {
+        TAG: "Error",
+        _0: {
+          TAG: "ReaderError",
+          _0: {
+            context: "ParserV1458.parse",
+            error: obj._1
+          }
+        }
+      };
+    }
+    throw obj;
+  }
+}
+function parseLazy4(buffer, fromServer) {
+  let match = buffer.length;
+  if (!(match > 2 || match < 0)) {
+    return {
+      TAG: "Error",
+      _0: {
+        TAG: "InvalidPacketLength",
+        _0: buffer.length
+      }
+    };
+  }
+  let packetType = fromInt16(buffer[2]);
+  if (packetType === void 0) {
+    return {
+      TAG: "Error",
+      _0: {
+        TAG: "InvalidPacketType",
+        _0: buffer[2]
+      }
+    };
+  }
+  try {
+    let parsers = getParsers4(packetType, fromServer);
+    if (parsers.TAG === "Ok") {
+      return parsers._0.parseLazy(buffer, fromServer);
+    } else {
+      return {
+        TAG: "Error",
+        _0: parsers._0
+      };
+    }
+  } catch (raw_obj) {
+    let obj = internalToException(raw_obj);
+    if (obj.RE_EXN_ID === "JsExn") {
+      return {
+        TAG: "Error",
+        _0: {
+          TAG: "ReaderError",
+          _0: {
+            context: "ParserV1458.parseLazy",
+            error: obj._1
+          }
+        }
+      };
+    }
+    throw obj;
+  }
+}
+
+// src/ParserConverterV1458.js
+function faceEmote(head) {
+  if (head === void 0) {
+    return;
+  }
+  switch (head) {
+    case 1:
+      return 105;
+    case 2:
+      return 101;
+    case 3:
+      return 102;
+    case 4:
+      return 107;
+    case 5:
+      return 104;
+    case 6:
+      return 103;
+    case 7:
+      return 108;
+    case 8:
+      return 111;
+    case 9:
+      return 109;
+    case 10:
+      return 110;
+    case 11:
+      return 112;
+    case 12:
+      return 113;
+    case 13:
+      return 114;
+    case 14:
+      return 115;
+    case 15:
+      return 116;
+    case 16:
+      return 117;
+    case 17:
+      return 118;
+    case 18:
+      return 119;
+    case 19:
+      return 120;
+    case 20:
+      return 121;
+    case 21:
+      return 122;
+    case 22:
+      return 123;
+    case 23:
+      return 125;
+    case 24:
+      return 130;
+    case 25:
+      return 140;
+    case 26:
+      return 141;
+    case 45:
+      return 145;
+    default:
+      return;
+  }
+}
+function convertToLatestIfNeeded(buffer, fromServer) {
+  if (buffer.length < 3) {
+    return {
+      TAG: "Error",
+      _0: {
+        TAG: "InvalidPacketLength",
+        _0: buffer.length
+      }
+    };
+  }
+  let id = buffer[2];
+  let match = fromInt16(id);
+  if (match === void 0) {
+    return {
+      TAG: "Error",
+      _0: {
+        TAG: "InvalidPacketType",
+        _0: id
+      }
+    };
+  }
+  switch (match) {
+    case "WorldInfo":
+    case "PlayerAnimation":
+    case "ItemDropModify":
+    case "EmoteBubble":
+    case "PlayerDamage":
+      break;
+    case "ServerInfo":
+    case "PlayerPlatformInfo":
+      return {
+        TAG: "Ok",
+        _0: "DiscardAsNotExists"
+      };
+    default:
+      return {
+        TAG: "Ok",
+        _0: "PacketStructureIsSame"
+      };
+  }
+  return map(parse193(buffer, fromServer, void 0), (packet) => {
+    switch (packet.TAG) {
+      case "WorldInfo":
+        let newrecord = { ...packet._0 };
+        return {
+          TAG: "ConvertedToLatest",
+          _0: {
+            TAG: "WorldInfo",
+            _0: (newrecord.noSpidersSeed = false, newrecord)
+          }
+        };
+      case "PlayerAnimation":
+        let match2 = packet._0;
+        let itemAnimation = match2.itemAnimation;
+        return {
+          TAG: "ConvertedToLatest",
+          _0: {
+            TAG: "PlayerAnimation",
+            _0: {
+              playerId: match2.playerId,
+              itemRotation: match2.itemRotation,
+              itemAnimation,
+              itemAnimationMax: itemAnimation
+            }
+          }
+        };
+      case "ItemDropModify":
+        let value = packet._0;
+        return {
+          TAG: "ConvertedToLatest",
+          _0: {
+            TAG: "ItemDropModify",
+            _0: {
+              itemId: value.itemId,
+              color: map2(value.color, (c) => ({
+                r: c.r,
+                g: c.g,
+                b: c.b,
+                a: c.a
+              })),
+              damage: value.damage,
+              knockback: value.knockback,
+              useAnimation: value.useAnimation,
+              useTime: value.useTime,
+              shoot: value.shoot,
+              shootSpeed: value.shootSpeed,
+              scale: value.scale,
+              ammo: value.ammo,
+              useAmmo: value.useAmmo,
+              notAmmo: value.notAmmo
+            }
+          }
+        };
+      case "EmoteBubble":
+        let value$1 = packet._0;
+        let bubble = (anchor) => ({
+          TAG: "ConvertedToLatest",
+          _0: {
+            TAG: "EmoteBubble",
+            _0: {
+              id: value$1.id,
+              anchor
+            }
+          }
+        });
+        let match$1 = value$1.anchor;
+        if (typeof match$1 !== "object") {
+          return {
+            TAG: "ConvertedToLatest",
+            _0: {
+              TAG: "EmoteBubble",
+              _0: {
+                id: value$1.id,
+                anchor: "Remove"
+              }
+            }
+          };
+        }
+        let emote = match$1.emote;
+        let time = match$1.time;
+        let anchorMeta = match$1.anchorMeta;
+        let anchorType = match$1.anchorType;
+        let face = emote === -1 ? faceEmote(match$1.metadata) : emote;
+        if (anchorType !== 0) {
+          if (anchorType !== 1 || !(face !== void 0 && anchorMeta <= 255)) {
+            return "DiscardAsNotExists";
+          } else {
+            return bubble({
+              TAG: "Anchor",
+              target: {
+                TAG: "Player",
+                _0: anchorMeta
+              },
+              time,
+              emote: face
+            });
+          }
+        } else if (face !== void 0) {
+          return bubble({
+            TAG: "Anchor",
+            target: {
+              TAG: "Npc",
+              _0: anchorMeta
+            },
+            time,
+            emote: face
+          });
+        } else {
+          return "DiscardAsNotExists";
+        }
+      case "PlayerDamage":
+        let value$2 = packet._0;
+        return {
+          TAG: "ConvertedToLatest",
+          _0: {
+            TAG: "PlayerDamage",
+            _0: {
+              target: value$2.target,
+              deathReason: value$2.deathReason,
+              damage: value$2.damage,
+              hitDirection: value$2.hitDirection,
+              critical: value$2.critical,
+              pvp: value$2.pvp,
+              dodgeable: true,
+              cooldownCounter: value$2.cooldownCounter
+            }
+          }
+        };
+      default:
+        return "PacketStructureIsSame";
+    }
+  });
+}
+function convertFromLatestIfNeeded(buffer, fromServer) {
+  if (buffer.length < 3) {
+    return {
+      TAG: "Error",
+      _0: {
+        TAG: "InvalidPacketLength",
+        _0: buffer.length
+      }
+    };
+  }
+  let id = buffer[2];
+  let match = fromInt(id);
+  if (match === void 0) {
+    return {
+      TAG: "Error",
+      _0: {
+        TAG: "InvalidPacketType",
+        _0: id
+      }
+    };
+  }
+  switch (match) {
+    case "WorldInfo":
+    case "PlayerAnimation":
+    case "ItemDropModify":
+    case "EmoteBubble":
+    case "PlayerDamage":
+      break;
+    case "ServerInfo":
+    case "PlayerPlatformInfo":
+    case "CustomServerAck":
+      return {
+        TAG: "Ok",
+        _0: "DiscardAsNotExists"
+      };
+    default:
+      return {
+        TAG: "Ok",
+        _0: "PacketStructureIsSame"
+      };
+  }
+  return map(parse165(buffer, fromServer, void 0), (packet) => {
+    switch (packet.TAG) {
+      case "WorldInfo":
+        return {
+          TAG: "ConvertedFromLatest",
+          _0: {
+            TAG: "WorldInfo",
+            _0: packet._0
+          }
+        };
+      case "PlayerAnimation":
+        let match2 = packet._0;
+        return {
+          TAG: "ConvertedFromLatest",
+          _0: {
+            TAG: "PlayerAnimation",
+            _0: {
+              playerId: match2.playerId,
+              itemRotation: match2.itemRotation,
+              itemAnimation: match2.itemAnimation
+            }
+          }
+        };
+      case "ItemDropModify":
+        let value = packet._0;
+        return {
+          TAG: "ConvertedFromLatest",
+          _0: {
+            TAG: "ItemDropModify",
+            _0: {
+              itemId: value.itemId,
+              color: map2(value.color, (c) => ({
+                r: c.r,
+                g: c.g,
+                b: c.b,
+                a: c.a
+              })),
+              damage: value.damage,
+              knockback: value.knockback,
+              useAnimation: value.useAnimation,
+              useTime: value.useTime,
+              shoot: value.shoot,
+              shootSpeed: value.shootSpeed,
+              width: void 0,
+              height: void 0,
+              scale: value.scale,
+              ammo: value.ammo,
+              useAmmo: value.useAmmo,
+              notAmmo: value.notAmmo
+            }
+          }
+        };
+      case "EmoteBubble":
+        let value$1 = packet._0;
+        let bubble = (anchor) => ({
+          TAG: "ConvertedFromLatest",
+          _0: {
+            TAG: "EmoteBubble",
+            _0: {
+              id: value$1.id,
+              anchor
+            }
+          }
+        });
+        let match$1 = value$1.anchor;
+        if (typeof match$1 !== "object") {
+          return {
+            TAG: "ConvertedFromLatest",
+            _0: {
+              TAG: "EmoteBubble",
+              _0: {
+                id: value$1.id,
+                anchor: "Remove"
+              }
+            }
+          };
+        }
+        let emote = match$1.emote;
+        let time = match$1.time;
+        let target = match$1.target;
+        if (typeof target !== "object") {
+          return "DiscardAsNotExists";
+        }
+        switch (target.TAG) {
+          case "Npc":
+            return bubble({
+              TAG: "Anchor",
+              anchorType: 0,
+              anchorMeta: target._0,
+              time,
+              emote,
+              metadata: void 0
+            });
+          case "Player":
+            return bubble({
+              TAG: "Anchor",
+              anchorType: 1,
+              anchorMeta: target._0,
+              time,
+              emote,
+              metadata: void 0
+            });
+          case "Projectile":
+            return "DiscardAsNotExists";
+        }
+      case "PlayerDamage":
+        let value$2 = packet._0;
+        return {
+          TAG: "ConvertedFromLatest",
+          _0: {
+            TAG: "PlayerDamage",
+            _0: {
+              target: value$2.target,
+              deathReason: value$2.deathReason,
+              damage: value$2.damage,
+              hitDirection: value$2.hitDirection,
+              critical: value$2.critical,
+              pvp: value$2.pvp,
+              cooldownCounter: value$2.cooldownCounter
+            }
+          }
+        };
+      default:
+        return "PacketStructureIsSame";
+    }
+  });
+}
+
+// src/ParserConverterV1456.js
 function ownershipFromV1456(value) {
   let match = value & 3;
   switch (match) {
@@ -38425,7 +43507,7 @@ function toLatest(packet) {
       let newrecord = { ...packet._0 };
       return {
         TAG: "WorldInfo",
-        _0: (newrecord.dungeonY = 0, newrecord.dungeonX = 0, newrecord.noLightningSeed = false, newrecord.moreLightningSeed = false, newrecord.forceChristmasForever = false, newrecord.forceHalloweenForever = false, newrecord)
+        _0: (newrecord.dungeonY = 0, newrecord.dungeonX = 0, newrecord.noSpidersSeed = false, newrecord.noLightningSeed = false, newrecord.moreLightningSeed = false, newrecord.forceChristmasForever = false, newrecord.forceHalloweenForever = false, newrecord)
       };
     case "PlayerUpdate":
       let value = packet._0;
@@ -38614,15 +43696,17 @@ function toLatest(packet) {
         TAG: "ItemDropUpdate",
         _0: itemDropFromV1456(value$9, void 0, value$9.timeLeftInWhichTheItemCannotBeTakenByEnemies)
       };
-    case "ServerInfo":
-      return {
-        TAG: "ServerInfo",
-        _0: void 0
-      };
     case "PlayerPlatformInfo":
+      let value$10 = packet._0;
       return {
         TAG: "PlayerPlatformInfo",
-        _0: packet._0
+        _0: {
+          playerId: value$10.playerId,
+          platformId: value$10.platformId,
+          userId: "",
+          platformName: "",
+          isHost: false
+        }
       };
     default:
       return;
@@ -38808,7 +43892,7 @@ function fromLatest(packet) {
       return packet;
   }
 }
-function convertToLatestIfNeeded(buffer, fromServer) {
+function convertToLatestIfNeeded2(buffer, fromServer) {
   if (buffer.length < 3) {
     return {
       TAG: "Error",
@@ -38828,12 +43912,19 @@ function convertToLatestIfNeeded(buffer, fromServer) {
       }
     };
   }
+  let exit = 0;
   switch (match) {
     case "NpcItemStrike":
       return {
         TAG: "Ok",
         _0: "DiscardAsNotExists"
       };
+    case "PlayerAnimation":
+    case "ItemDropModify":
+    case "EmoteBubble":
+    case "PlayerDamage":
+      exit = 2;
+      break;
     case "CavernMonsterTypeSync":
     case "ShimmerEffectOrCoinLuck":
       if (fromServer) {
@@ -38872,7 +43963,23 @@ function convertToLatestIfNeeded(buffer, fromServer) {
         _0: "PacketStructureIsSame"
       };
   }
-  return map(parse182(buffer, fromServer, void 0), (packet) => {
+  if (exit === 2) {
+    return map(convertToLatestIfNeeded(buffer, fromServer), (result) => {
+      if (typeof result !== "object") {
+        if (result === "PacketStructureIsSame") {
+          return "PacketStructureIsSame";
+        } else {
+          return "DiscardAsNotExists";
+        }
+      } else {
+        return {
+          TAG: "ConvertedToLatest",
+          _0: result._0
+        };
+      }
+    });
+  }
+  return map(parse188(buffer, fromServer, void 0), (packet) => {
     let packet$1 = toLatest(packet);
     if (packet$1 !== void 0) {
       return {
@@ -38884,7 +43991,7 @@ function convertToLatestIfNeeded(buffer, fromServer) {
     }
   });
 }
-function convertFromLatestIfNeeded(buffer, fromServer) {
+function convertFromLatestIfNeeded2(buffer, fromServer) {
   if (buffer.length < 3) {
     return {
       TAG: "Error",
@@ -38904,15 +44011,14 @@ function convertFromLatestIfNeeded(buffer, fromServer) {
       }
     };
   }
+  let exit = 0;
   switch (match) {
-    case "NpcItemStrike":
-    case "ItemDropShimmeredUpdate":
-    case "ItemDropProtectedUpdate":
-    case "DamageNPCAck":
-      return {
-        TAG: "Ok",
-        _0: "DiscardAsNotExists"
-      };
+    case "PlayerAnimation":
+    case "ItemDropModify":
+    case "EmoteBubble":
+    case "PlayerDamage":
+      exit = 2;
+      break;
     case "WorldInfo":
     case "PlayerUpdate":
     case "ItemDropUpdate":
@@ -38927,16 +44033,87 @@ function convertFromLatestIfNeeded(buffer, fromServer) {
     case "NetModuleLoad":
     case "ItemDropInstancedUpdate":
     case "PiggyBankVoidLensUpdate":
-    case "ServerInfo":
-    case "PlayerPlatformInfo":
       break;
+    case "ServerInfo":
+      if (!fromServer) {
+        return {
+          TAG: "Ok",
+          _0: "DiscardAsNotExists"
+        };
+      }
+      break;
+    case "PlayerPlatformInfo":
+      if (fromServer) {
+        return {
+          TAG: "Ok",
+          _0: "DiscardAsNotExists"
+        };
+      }
+      break;
+    case "NpcItemStrike":
+    case "ItemDropShimmeredUpdate":
+    case "ItemDropProtectedUpdate":
+    case "DamageNPCAck":
+    case "CustomServerAck":
+      return {
+        TAG: "Ok",
+        _0: "DiscardAsNotExists"
+      };
     default:
       return {
         TAG: "Ok",
         _0: "PacketStructureIsSame"
       };
   }
-  return map(parse163(buffer, fromServer, void 0), (packet) => {
+  if (exit === 2) {
+    return map(convertFromLatestIfNeeded(buffer, fromServer), (result) => {
+      if (typeof result !== "object") {
+        if (result === "PacketStructureIsSame") {
+          return "PacketStructureIsSame";
+        } else {
+          return "DiscardAsNotExists";
+        }
+      }
+      let packet = result._0;
+      switch (packet.TAG) {
+        case "PlayerAnimation":
+          return {
+            TAG: "ConvertedFromLatest",
+            _0: {
+              TAG: "PlayerAnimation",
+              _0: packet._0
+            }
+          };
+        case "ItemDropModify":
+          return {
+            TAG: "ConvertedFromLatest",
+            _0: {
+              TAG: "ItemDropModify",
+              _0: packet._0
+            }
+          };
+        case "EmoteBubble":
+          return {
+            TAG: "ConvertedFromLatest",
+            _0: {
+              TAG: "EmoteBubble",
+              _0: packet._0
+            }
+          };
+        case "PlayerDamage":
+          return {
+            TAG: "ConvertedFromLatest",
+            _0: {
+              TAG: "PlayerDamage",
+              _0: packet._0
+            }
+          };
+        default:
+          return "PacketStructureIsSame";
+      }
+    });
+  }
+  return map(parse165(buffer, fromServer, void 0), (packet) => {
     if (packet.TAG === "NetModuleLoad" && packet._0.TAG === "CreativeUnlocks") {
       return "DiscardAsNotExists";
     } else {
@@ -38951,10 +44128,10 @@ function convertFromLatestIfNeeded(buffer, fromServer) {
 // src/ParserConverterV1457.js
 var ParserConverterV1457_exports = {};
 __export(ParserConverterV1457_exports, {
-  convertFromLatestIfNeeded: () => convertFromLatestIfNeeded2,
-  convertToLatestIfNeeded: () => convertToLatestIfNeeded2
+  convertFromLatestIfNeeded: () => convertFromLatestIfNeeded3,
+  convertToLatestIfNeeded: () => convertToLatestIfNeeded3
 });
-function convertToLatestIfNeeded2(buffer, fromServer) {
+function convertToLatestIfNeeded3(buffer, fromServer) {
   if (buffer.length < 3) {
     return {
       TAG: "Error",
@@ -38976,7 +44153,7 @@ function convertToLatestIfNeeded2(buffer, fromServer) {
   }
   switch (match) {
     case "WorldInfo":
-      return map(parse184(buffer, fromServer, void 0), (packet) => {
+      return map(parse191(buffer, fromServer, void 0), (packet) => {
         if (packet.TAG !== "WorldInfo") {
           return "PacketStructureIsSame";
         }
@@ -38985,10 +44162,15 @@ function convertToLatestIfNeeded2(buffer, fromServer) {
           TAG: "ConvertedToLatest",
           _0: {
             TAG: "WorldInfo",
-            _0: (newrecord.dungeonY = 0, newrecord.dungeonX = 0, newrecord)
+            _0: (newrecord.dungeonY = 0, newrecord.dungeonX = 0, newrecord.noSpidersSeed = false, newrecord)
           }
         };
       });
+    case "PlayerAnimation":
+    case "ItemDropModify":
+    case "EmoteBubble":
+    case "PlayerDamage":
+      break;
     case "CavernMonsterTypeSync":
       if (fromServer) {
         return {
@@ -39001,14 +44183,34 @@ function convertToLatestIfNeeded2(buffer, fromServer) {
           _0: "DiscardAsNotExists"
         };
       }
+    case "ServerInfo":
+    case "PlayerPlatformInfo":
+      return {
+        TAG: "Ok",
+        _0: "DiscardAsNotExists"
+      };
     default:
       return {
         TAG: "Ok",
         _0: "PacketStructureIsSame"
       };
   }
+  return map(convertToLatestIfNeeded(buffer, fromServer), (result) => {
+    if (typeof result !== "object") {
+      if (result === "PacketStructureIsSame") {
+        return "PacketStructureIsSame";
+      } else {
+        return "DiscardAsNotExists";
+      }
+    } else {
+      return {
+        TAG: "ConvertedToLatest",
+        _0: result._0
+      };
+    }
+  });
 }
-function convertFromLatestIfNeeded2(buffer, fromServer) {
+function convertFromLatestIfNeeded3(buffer, fromServer) {
   if (buffer.length < 3) {
     return {
       TAG: "Error",
@@ -39019,9 +44221,18 @@ function convertFromLatestIfNeeded2(buffer, fromServer) {
     };
   }
   let match = fromInt(buffer[2]);
-  if (match !== void 0) {
-    if (match === "WorldInfo") {
-      return map(parse163(buffer, fromServer, void 0), (packet) => {
+  if (match === void 0) {
+    return {
+      TAG: "Error",
+      _0: {
+        TAG: "InvalidPacketType",
+        _0: buffer[2]
+      }
+    };
+  }
+  switch (match) {
+    case "WorldInfo":
+      return map(parse165(buffer, fromServer, void 0), (packet) => {
         if (packet.TAG === "WorldInfo") {
           return {
             TAG: "ConvertedFromLatest",
@@ -39034,22 +44245,1864 @@ function convertFromLatestIfNeeded2(buffer, fromServer) {
           return "PacketStructureIsSame";
         }
       });
-    } else {
+    case "PlayerAnimation":
+    case "ItemDropModify":
+    case "EmoteBubble":
+    case "PlayerDamage":
+      break;
+    case "ServerInfo":
+    case "PlayerPlatformInfo":
+    case "CustomServerAck":
+      return {
+        TAG: "Ok",
+        _0: "DiscardAsNotExists"
+      };
+    default:
       return {
         TAG: "Ok",
         _0: "PacketStructureIsSame"
       };
-    }
-  } else {
-    return {
-      TAG: "Error",
-      _0: {
-        TAG: "InvalidPacketType",
-        _0: buffer[2]
+  }
+  return map(convertFromLatestIfNeeded(buffer, fromServer), (result) => {
+    if (typeof result !== "object") {
+      if (result === "PacketStructureIsSame") {
+        return "PacketStructureIsSame";
+      } else {
+        return "DiscardAsNotExists";
       }
-    };
+    }
+    let packet = result._0;
+    switch (packet.TAG) {
+      case "PlayerAnimation":
+        return {
+          TAG: "ConvertedFromLatest",
+          _0: {
+            TAG: "PlayerAnimation",
+            _0: packet._0
+          }
+        };
+      case "ItemDropModify":
+        return {
+          TAG: "ConvertedFromLatest",
+          _0: {
+            TAG: "ItemDropModify",
+            _0: packet._0
+          }
+        };
+      case "EmoteBubble":
+        return {
+          TAG: "ConvertedFromLatest",
+          _0: {
+            TAG: "EmoteBubble",
+            _0: packet._0
+          }
+        };
+      case "PlayerDamage":
+        return {
+          TAG: "ConvertedFromLatest",
+          _0: {
+            TAG: "PlayerDamage",
+            _0: packet._0
+          }
+        };
+      default:
+        return "PacketStructureIsSame";
+    }
+  });
+}
+
+// src/PacketV1458.js
+var PacketV1458_exports = {};
+__export(PacketV1458_exports, {
+  ActiveContainerSync: () => ActiveContainerSync4,
+  AnglerQuest: () => AnglerQuest4,
+  AnglerQuestComplete: () => AnglerQuestComplete4,
+  AnglerQuestsCompletedAmount: () => AnglerQuestsCompletedAmount4,
+  BossOrInvasionSpawn: () => BossOrInvasionSpawn4,
+  CavernMonsterTypeSync: () => CavernMonsterTypeSync4,
+  ChatMessageSmart: () => ChatMessageSmart4,
+  ChestItem: () => ChestItem4,
+  ChestName: () => ChestName4,
+  ChestOpen: () => ChestOpen4,
+  ChestOrTempleUnlock: () => ChestOrTempleUnlock4,
+  ChestPlace: () => ChestPlace4,
+  ChestResize: () => ChestResize4,
+  ClientFinishConnectingToServer: () => ClientFinishConnectingToServer4,
+  ClientSyncedInventory: () => ClientSyncedInventory4,
+  ClientUuid: () => ClientUuid4,
+  CombatNumberCreate: () => CombatNumberCreate4,
+  CombatTextCreate: () => CombatTextCreate4,
+  ConnectRequest: () => ConnectRequest4,
+  CountsAsHostForGameplaySet: () => CountsAsHostForGameplaySet4,
+  CreditsOrSlimeTransform: () => CreditsOrSlimeTransform4,
+  CrystalInvasionSendWaitTime: () => CrystalInvasionSendWaitTime4,
+  CrystalInvasionStart: () => CrystalInvasionStart4,
+  CrystalInvasionWipeAll: () => CrystalInvasionWipeAll4,
+  DamageNPCAck: () => DamageNPCAck3,
+  DeadCellsDisplayJarTryPlacing: () => DeadCellsDisplayJarTryPlacing4,
+  DimensionsUpdate: () => DimensionsUpdate4,
+  Disconnect: () => Disconnect4,
+  DoorUse: () => DoorUse4,
+  DungeonDefendersEventAttemptSkipWait: () => DungeonDefendersEventAttemptSkipWait4,
+  Emoji: () => Emoji4,
+  EmoteBubble: () => EmoteBubble4,
+  EventNotification: () => EventNotification4,
+  ExtraValueSync: () => ExtraValueSync4,
+  FoodPlatterTryPlacing: () => FoodPlatterTryPlacing4,
+  GemLockToggle: () => GemLockToggle4,
+  GolfBallLandInCup: () => GolfBallLandInCup4,
+  GoodEvilUpdate: () => GoodEvilUpdate4,
+  HarpPlay: () => HarpPlay4,
+  HaveDryadDoStardewAnimation: () => HaveDryadDoStardewAnimation4,
+  HealEffect: () => HealEffect4,
+  HostToken: () => HostToken4,
+  InitialTileSectionsRequest: () => InitialTileSectionsRequest4,
+  InvasionProgressReport: () => InvasionProgressReport4,
+  ItemDropClear: () => ItemDropClear4,
+  ItemDropInstancedUpdate: () => ItemDropInstancedUpdate4,
+  ItemDropModify: () => ItemDropModify4,
+  ItemDropPosition: () => ItemDropPosition4,
+  ItemDropProtectedUpdate: () => ItemDropProtectedUpdate4,
+  ItemDropShimmeredUpdate: () => ItemDropShimmeredUpdate4,
+  ItemDropUpdate: () => ItemDropUpdate4,
+  ItemForceIntoNearestChest: () => ItemForceIntoNearestChest4,
+  ItemFramePlace: () => ItemFramePlace4,
+  ItemOwner: () => ItemOwner4,
+  ItemOwnerRemove: () => ItemOwnerRemove4,
+  LazyPacket: () => LazyPacket4,
+  LeashedEntityAnchorInsertItem: () => LeashedEntityAnchorInsertItem4,
+  LegacySoundPlay: () => LegacySoundPlay4,
+  LiquidSet: () => LiquidSet4,
+  LoadoutSwitch: () => LoadoutSwitch4,
+  LucyAxeMessage: () => LucyAxeMessage4,
+  ManaEffect: () => ManaEffect4,
+  MassWireOperation: () => MassWireOperation4,
+  MassWireOperationPay: () => MassWireOperationPay4,
+  MinionAttackTargetUpdate: () => MinionAttackTargetUpdate4,
+  MinionTargetUpdate: () => MinionTargetUpdate4,
+  MoonLordCountdown: () => MoonLordCountdown4,
+  NebulaLevelUp: () => NebulaLevelUp4,
+  NetModuleLoad: () => NetModuleLoad4,
+  NpcBuffAdd: () => NpcBuffAdd4,
+  NpcBuffRemovalRequest: () => NpcBuffRemovalRequest4,
+  NpcBuffUpdate: () => NpcBuffUpdate4,
+  NpcCatch: () => NpcCatch4,
+  NpcFishOut: () => NpcFishOut4,
+  NpcHomeUpdate: () => NpcHomeUpdate4,
+  NpcHurtByDebuff: () => NpcHurtByDebuff4,
+  NpcItemStrike: () => NpcItemStrike4,
+  NpcKillCount: () => NpcKillCount4,
+  NpcKilledNotification: () => NpcKilledNotification4,
+  NpcNameUpdate: () => NpcNameUpdate4,
+  NpcRelease: () => NpcRelease4,
+  NpcShopItem: () => NpcShopItem4,
+  NpcSpecialEffect: () => NpcSpecialEffect4,
+  NpcStrike: () => NpcStrike4,
+  NpcTalk: () => NpcTalk4,
+  NpcTamper: () => NpcTamper4,
+  NpcTeleportPortal: () => NpcTeleportPortal4,
+  NpcUpdate: () => NpcUpdate4,
+  ObjectPlace: () => ObjectPlace4,
+  PartyToggle: () => PartyToggle4,
+  PasswordRequired: () => PasswordRequired4,
+  PasswordSend: () => PasswordSend4,
+  PiggyBankVoidLensUpdate: () => PiggyBankVoidLensUpdate4,
+  Ping: () => Ping4,
+  PlayerActive: () => PlayerActive4,
+  PlayerAnimation: () => PlayerAnimation4,
+  PlayerBuffAdd: () => PlayerBuffAdd4,
+  PlayerBuffsSet: () => PlayerBuffsSet4,
+  PlayerChestIndexSync: () => PlayerChestIndexSync4,
+  PlayerDamage: () => PlayerDamage4,
+  PlayerDead: () => PlayerDead4,
+  PlayerDeath: () => PlayerDeath4,
+  PlayerDodge: () => PlayerDodge4,
+  PlayerHealOther: () => PlayerHealOther4,
+  PlayerHealth: () => PlayerHealth4,
+  PlayerInfo: () => PlayerInfo4,
+  PlayerInventorySlot: () => PlayerInventorySlot4,
+  PlayerItemUseSound: () => PlayerItemUseSound4,
+  PlayerLuckFactorsUpdate: () => PlayerLuckFactorsUpdate4,
+  PlayerMana: () => PlayerMana4,
+  PlayerPlatformInfo: () => PlayerPlatformInfo4,
+  PlayerSlotSet: () => PlayerSlotSet4,
+  PlayerSpawn: () => PlayerSpawn4,
+  PlayerSpawnSelf: () => PlayerSpawnSelf4,
+  PlayerSpectate: () => PlayerSpectate4,
+  PlayerStealth: () => PlayerStealth4,
+  PlayerTeam: () => PlayerTeam4,
+  PlayerTeamSwapSpawn: () => PlayerTeamSwapSpawn4,
+  PlayerTeamUpdate: () => PlayerTeamUpdate4,
+  PlayerTeleportPortal: () => PlayerTeleportPortal4,
+  PlayerUpdate: () => PlayerUpdate4,
+  PortalKill: () => PortalKill4,
+  ProjectileDestroy: () => ProjectileDestroy4,
+  ProjectileSync: () => ProjectileSync4,
+  PvpToggle: () => PvpToggle4,
+  RevengeMarkerRemove: () => RevengeMarkerRemove4,
+  RevengeMarkerSync: () => RevengeMarkerSync4,
+  SectionRequest: () => SectionRequest4,
+  ServerInfo: () => ServerInfo4,
+  ShieldStrengthsUpdate: () => ShieldStrengthsUpdate4,
+  ShimmerEffectOrCoinLuck: () => ShimmerEffectOrCoinLuck4,
+  SignNew: () => SignNew4,
+  SignRead: () => SignRead4,
+  SmokePoof: () => SmokePoof4,
+  SocialHandshake: () => SocialHandshake4,
+  Status: () => Status4,
+  SwitchHit: () => SwitchHit4,
+  Teleport: () => Teleport4,
+  TeleportationPotion: () => TeleportationPotion4,
+  TemporaryAnimationCreate: () => TemporaryAnimationCreate4,
+  TileEntityDisplayDollItemSync: () => TileEntityDisplayDollItemSync4,
+  TileEntityHatRackItemSync: () => TileEntityHatRackItemSync4,
+  TileEntityInteractionRequest: () => TileEntityInteractionRequest4,
+  TileEntityPlace: () => TileEntityPlace4,
+  TileEntityUpdate: () => TileEntityUpdate4,
+  TileModify: () => TileModify4,
+  TilePaint: () => TilePaint4,
+  TilePickingSync: () => TilePickingSync4,
+  TileSectionFrame: () => TileSectionFrame4,
+  TileSectionSend: () => TileSectionSend4,
+  TileSquareSend: () => TileSquareSend4,
+  TimeSet: () => TimeSet4,
+  TravellingMerchantInventory: () => TravellingMerchantInventory4,
+  TreeGrowFx: () => TreeGrowFx4,
+  Unused: () => Unused4,
+  WallPaint: () => WallPaint4,
+  WeaponsRackTryPlacing: () => WeaponsRackTryPlacing4,
+  WiredCannonShot: () => WiredCannonShot4,
+  WorldDataRequest: () => WorldDataRequest4,
+  WorldInfo: () => WorldInfo4,
+  Zones: () => Zones4,
+  toBuffer: () => toBuffer189,
+  toPacketName: () => toPacketName$14
+});
+function packetTypeOf4(packet) {
+  switch (packet.TAG) {
+    case "ConnectRequest":
+      return "ConnectRequest";
+    case "Disconnect":
+      return "Disconnect";
+    case "PlayerSlotSet":
+      return "PlayerSlotSet";
+    case "PlayerInfo":
+      return "PlayerInfo";
+    case "PlayerInventorySlot":
+      return "PlayerInventorySlot";
+    case "WorldDataRequest":
+      return "WorldDataRequest";
+    case "WorldInfo":
+      return "WorldInfo";
+    case "InitialTileSectionsRequest":
+      return "InitialTileSectionsRequest";
+    case "Status":
+      return "Status";
+    case "TileSectionSend":
+      return "TileSectionSend";
+    case "TileSectionFrame":
+      return "TileSectionFrame";
+    case "PlayerSpawn":
+      return "PlayerSpawn";
+    case "PlayerUpdate":
+      return "PlayerUpdate";
+    case "PlayerActive":
+      return "PlayerActive";
+    case "PlayerHealth":
+      return "PlayerHealth";
+    case "TileModify":
+      return "TileModify";
+    case "TimeSet":
+      return "TimeSet";
+    case "DoorUse":
+      return "DoorUse";
+    case "TileSquareSend":
+      return "TileSquareSend";
+    case "ItemDropUpdate":
+      return "ItemDropUpdate";
+    case "ItemOwner":
+      return "ItemOwner";
+    case "NpcUpdate":
+      return "NpcUpdate";
+    case "NpcItemStrike":
+      return "NpcItemStrike";
+    case "ProjectileSync":
+      return "ProjectileSync";
+    case "NpcStrike":
+      return "NpcStrike";
+    case "ProjectileDestroy":
+      return "ProjectileDestroy";
+    case "PvpToggle":
+      return "PvpToggle";
+    case "ChestOpen":
+      return "ChestOpen";
+    case "ChestItem":
+      return "ChestItem";
+    case "ActiveContainerSync":
+      return "ActiveContainerSync";
+    case "ChestPlace":
+      return "ChestPlace";
+    case "HealEffect":
+      return "HealEffect";
+    case "Zones":
+      return "Zones";
+    case "PasswordRequired":
+      return "PasswordRequired";
+    case "PasswordSend":
+      return "PasswordSend";
+    case "ItemOwnerRemove":
+      return "ItemOwnerRemove";
+    case "NpcTalk":
+      return "NpcTalk";
+    case "PlayerAnimation":
+      return "PlayerAnimation";
+    case "PlayerMana":
+      return "PlayerMana";
+    case "ManaEffect":
+      return "ManaEffect";
+    case "PlayerTeam":
+      return "PlayerTeam";
+    case "SignRead":
+      return "SignRead";
+    case "SignNew":
+      return "SignNew";
+    case "LiquidSet":
+      return "LiquidSet";
+    case "PlayerSpawnSelf":
+      return "PlayerSpawnSelf";
+    case "PlayerBuffsSet":
+      return "PlayerBuffsSet";
+    case "NpcSpecialEffect":
+      return "NpcSpecialEffect";
+    case "ChestOrTempleUnlock":
+      return "ChestOrTempleUnlock";
+    case "NpcBuffAdd":
+      return "NpcBuffAdd";
+    case "NpcBuffUpdate":
+      return "NpcBuffUpdate";
+    case "PlayerBuffAdd":
+      return "PlayerBuffAdd";
+    case "NpcNameUpdate":
+      return "NpcNameUpdate";
+    case "GoodEvilUpdate":
+      return "GoodEvilUpdate";
+    case "HarpPlay":
+      return "HarpPlay";
+    case "SwitchHit":
+      return "SwitchHit";
+    case "NpcHomeUpdate":
+      return "NpcHomeUpdate";
+    case "BossOrInvasionSpawn":
+      return "BossOrInvasionSpawn";
+    case "PlayerDodge":
+      return "PlayerDodge";
+    case "TilePaint":
+      return "TilePaint";
+    case "WallPaint":
+      return "WallPaint";
+    case "Teleport":
+      return "Teleport";
+    case "PlayerHealOther":
+      return "PlayerHealOther";
+    case "DimensionsUpdate":
+      return "DimensionsUpdate";
+    case "ClientUuid":
+      return "ClientUuid";
+    case "ChestName":
+      return "ChestName";
+    case "NpcCatch":
+      return "NpcCatch";
+    case "NpcRelease":
+      return "NpcRelease";
+    case "TravellingMerchantInventory":
+      return "TravellingMerchantInventory";
+    case "TeleportationPotion":
+      return "TeleportationPotion";
+    case "AnglerQuest":
+      return "AnglerQuest";
+    case "AnglerQuestComplete":
+      return "AnglerQuestComplete";
+    case "AnglerQuestsCompletedAmount":
+      return "AnglerQuestsCompletedAmount";
+    case "TemporaryAnimationCreate":
+      return "TemporaryAnimationCreate";
+    case "InvasionProgressReport":
+      return "InvasionProgressReport";
+    case "ObjectPlace":
+      return "ObjectPlace";
+    case "PlayerChestIndexSync":
+      return "PlayerChestIndexSync";
+    case "CombatNumberCreate":
+      return "CombatNumberCreate";
+    case "NetModuleLoad":
+      return "NetModuleLoad";
+    case "NpcKillCount":
+      return "NpcKillCount";
+    case "PlayerStealth":
+      return "PlayerStealth";
+    case "ItemForceIntoNearestChest":
+      return "ItemForceIntoNearestChest";
+    case "TileEntityUpdate":
+      return "TileEntityUpdate";
+    case "TileEntityPlace":
+      return "TileEntityPlace";
+    case "ItemDropModify":
+      return "ItemDropModify";
+    case "ItemFramePlace":
+      return "ItemFramePlace";
+    case "ItemDropInstancedUpdate":
+      return "ItemDropInstancedUpdate";
+    case "EmoteBubble":
+      return "EmoteBubble";
+    case "ExtraValueSync":
+      return "ExtraValueSync";
+    case "SocialHandshake":
+      return "SocialHandshake";
+    case "Unused":
+      return "Unused";
+    case "PortalKill":
+      return "PortalKill";
+    case "PlayerTeleportPortal":
+      return "PlayerTeleportPortal";
+    case "NpcKilledNotification":
+      return "NpcKilledNotification";
+    case "EventNotification":
+      return "EventNotification";
+    case "MinionTargetUpdate":
+      return "MinionTargetUpdate";
+    case "NpcTeleportPortal":
+      return "NpcTeleportPortal";
+    case "ShieldStrengthsUpdate":
+      return "ShieldStrengthsUpdate";
+    case "NebulaLevelUp":
+      return "NebulaLevelUp";
+    case "MoonLordCountdown":
+      return "MoonLordCountdown";
+    case "NpcShopItem":
+      return "NpcShopItem";
+    case "GemLockToggle":
+      return "GemLockToggle";
+    case "SmokePoof":
+      return "SmokePoof";
+    case "ChatMessageSmart":
+      return "ChatMessageSmart";
+    case "WiredCannonShot":
+      return "WiredCannonShot";
+    case "MassWireOperation":
+      return "MassWireOperation";
+    case "MassWireOperationPay":
+      return "MassWireOperationPay";
+    case "PartyToggle":
+      return "PartyToggle";
+    case "TreeGrowFx":
+      return "TreeGrowFx";
+    case "CrystalInvasionStart":
+      return "CrystalInvasionStart";
+    case "CrystalInvasionWipeAll":
+      return "CrystalInvasionWipeAll";
+    case "MinionAttackTargetUpdate":
+      return "MinionAttackTargetUpdate";
+    case "CrystalInvasionSendWaitTime":
+      return "CrystalInvasionSendWaitTime";
+    case "PlayerDamage":
+      return "PlayerDamage";
+    case "PlayerDeath":
+      return "PlayerDeath";
+    case "CombatTextCreate":
+      return "CombatTextCreate";
+    case "Emoji":
+      return "Emoji";
+    case "TileEntityDisplayDollItemSync":
+      return "TileEntityDisplayDollItemSync";
+    case "TileEntityInteractionRequest":
+      return "TileEntityInteractionRequest";
+    case "WeaponsRackTryPlacing":
+      return "WeaponsRackTryPlacing";
+    case "TileEntityHatRackItemSync":
+      return "TileEntityHatRackItemSync";
+    case "TilePickingSync":
+      return "TilePickingSync";
+    case "RevengeMarkerSync":
+      return "RevengeMarkerSync";
+    case "RevengeMarkerRemove":
+      return "RevengeMarkerRemove";
+    case "GolfBallLandInCup":
+      return "GolfBallLandInCup";
+    case "ClientFinishConnectingToServer":
+      return "ClientFinishConnectingToServer";
+    case "NpcFishOut":
+      return "NpcFishOut";
+    case "NpcTamper":
+      return "NpcTamper";
+    case "LegacySoundPlay":
+      return "LegacySoundPlay";
+    case "FoodPlatterTryPlacing":
+      return "FoodPlatterTryPlacing";
+    case "PlayerLuckFactorsUpdate":
+      return "PlayerLuckFactorsUpdate";
+    case "PlayerDead":
+      return "PlayerDead";
+    case "CavernMonsterTypeSync":
+      return "CavernMonsterTypeSync";
+    case "NpcBuffRemovalRequest":
+      return "NpcBuffRemovalRequest";
+    case "ClientSyncedInventory":
+      return "ClientSyncedInventory";
+    case "CountsAsHostForGameplaySet":
+      return "CountsAsHostForGameplaySet";
+    case "CreditsOrSlimeTransform":
+      return "CreditsOrSlimeTransform";
+    case "LucyAxeMessage":
+      return "LucyAxeMessage";
+    case "PiggyBankVoidLensUpdate":
+      return "PiggyBankVoidLensUpdate";
+    case "DungeonDefendersEventAttemptSkipWait":
+      return "DungeonDefendersEventAttemptSkipWait";
+    case "HaveDryadDoStardewAnimation":
+      return "HaveDryadDoStardewAnimation";
+    case "ItemDropShimmeredUpdate":
+      return "ItemDropShimmeredUpdate";
+    case "ShimmerEffectOrCoinLuck":
+      return "ShimmerEffectOrCoinLuck";
+    case "LoadoutSwitch":
+      return "LoadoutSwitch";
+    case "ItemDropProtectedUpdate":
+      return "ItemDropProtectedUpdate";
+    case "DeadCellsDisplayJarTryPlacing":
+      return "DeadCellsDisplayJarTryPlacing";
+    case "PlayerSpectate":
+      return "PlayerSpectate";
+    case "ItemDropClear":
+      return "ItemDropClear";
+    case "PlayerItemUseSound":
+      return "PlayerItemUseSound";
+    case "NpcHurtByDebuff":
+      return "NpcHurtByDebuff";
+    case "Ping":
+      return "Ping";
+    case "ChestResize":
+      return "ChestResize";
+    case "LeashedEntityAnchorInsertItem":
+      return "LeashedEntityAnchorInsertItem";
+    case "PlayerTeamUpdate":
+      return "PlayerTeamUpdate";
+    case "PlayerTeamSwapSpawn":
+      return "PlayerTeamSwapSpawn";
+    case "SectionRequest":
+      return "SectionRequest";
+    case "ItemDropPosition":
+      return "ItemDropPosition";
+    case "HostToken":
+      return "HostToken";
+    case "DamageNPCAck":
+      return "DamageNPCAck";
+    case "ServerInfo":
+      return "ServerInfo";
+    case "PlayerPlatformInfo":
+      return "PlayerPlatformInfo";
   }
 }
+function directionOfPacketType4(packetType) {
+  switch (packetType) {
+    case "Disconnect":
+    case "PlayerSlotSet":
+    case "WorldInfo":
+    case "Status":
+    case "TileSectionSend":
+    case "TileSectionFrame":
+    case "PlayerActive":
+    case "TimeSet":
+    case "NpcUpdate":
+    case "PasswordRequired":
+    case "PlayerSpawnSelf":
+    case "NpcBuffUpdate":
+    case "GoodEvilUpdate":
+    case "TravellingMerchantInventory":
+    case "AnglerQuest":
+    case "TemporaryAnimationCreate":
+    case "InvasionProgressReport":
+    case "PlayerChestIndexSync":
+    case "CombatNumberCreate":
+    case "NpcKillCount":
+    case "TileEntityUpdate":
+    case "ItemDropModify":
+    case "EmoteBubble":
+    case "NpcKilledNotification":
+    case "EventNotification":
+    case "ShieldStrengthsUpdate":
+    case "MoonLordCountdown":
+    case "NpcShopItem":
+    case "SmokePoof":
+    case "ChatMessageSmart":
+    case "WiredCannonShot":
+    case "MassWireOperationPay":
+    case "CrystalInvasionWipeAll":
+    case "CrystalInvasionSendWaitTime":
+    case "CombatTextCreate":
+    case "RevengeMarkerSync":
+    case "RevengeMarkerRemove":
+    case "ClientFinishConnectingToServer":
+    case "NpcTamper":
+    case "LegacySoundPlay":
+    case "PlayerDead":
+    case "CavernMonsterTypeSync":
+    case "DamageNPCAck":
+    case "ServerInfo":
+      return "ServerOnly";
+    case "ConnectRequest":
+    case "WorldDataRequest":
+    case "InitialTileSectionsRequest":
+    case "ChestOpen":
+    case "PasswordSend":
+    case "SignRead":
+    case "BossOrInvasionSpawn":
+    case "ClientUuid":
+    case "NpcCatch":
+    case "NpcRelease":
+    case "AnglerQuestComplete":
+    case "TileEntityPlace":
+    case "ItemFramePlace":
+    case "PortalKill":
+    case "GemLockToggle":
+    case "MassWireOperation":
+    case "PartyToggle":
+    case "CrystalInvasionStart":
+    case "Emoji":
+    case "WeaponsRackTryPlacing":
+    case "NpcFishOut":
+    case "FoodPlatterTryPlacing":
+    case "NpcBuffRemovalRequest":
+    case "ClientSyncedInventory":
+    case "PlayerPlatformInfo":
+      return "ClientOnly";
+    default:
+      return "Both";
+  }
+}
+function directionError4(_packetType, fromServer) {
+  return {
+    TAG: "Error",
+    _0: {
+      context: "PacketV1458.toBuffer",
+      error: new Error(fromServer ? "Cannot serialize a client-only packet from the server side" : "Cannot serialize a server-only packet from the client side")
+    }
+  };
+}
+function guardDirection4(packetType, fromServer) {
+  let match = directionOfPacketType4(packetType);
+  switch (match) {
+    case "ServerOnly":
+      if (fromServer) {
+        return;
+      } else {
+        return directionError4(packetType, fromServer);
+      }
+    case "ClientOnly":
+      if (fromServer) {
+        return directionError4(packetType, fromServer);
+      } else {
+        return;
+      }
+    case "Both":
+      return;
+  }
+}
+function packetTypeOf$14(packet) {
+  switch (packet.TAG) {
+    case "ConnectRequest":
+      return "ConnectRequest";
+    case "Disconnect":
+      return "Disconnect";
+    case "PlayerSlotSet":
+      return "PlayerSlotSet";
+    case "PlayerInfo":
+      return "PlayerInfo";
+    case "PlayerInventorySlot":
+      return "PlayerInventorySlot";
+    case "WorldDataRequest":
+      return "WorldDataRequest";
+    case "WorldInfo":
+      return "WorldInfo";
+    case "InitialTileSectionsRequest":
+      return "InitialTileSectionsRequest";
+    case "Status":
+      return "Status";
+    case "TileSectionSend":
+      return "TileSectionSend";
+    case "TileSectionFrame":
+      return "TileSectionFrame";
+    case "PlayerSpawn":
+      return "PlayerSpawn";
+    case "PlayerUpdate":
+      return "PlayerUpdate";
+    case "PlayerActive":
+      return "PlayerActive";
+    case "PlayerHealth":
+      return "PlayerHealth";
+    case "TileModify":
+      return "TileModify";
+    case "TimeSet":
+      return "TimeSet";
+    case "DoorUse":
+      return "DoorUse";
+    case "TileSquareSend":
+      return "TileSquareSend";
+    case "ItemDropUpdate":
+      return "ItemDropUpdate";
+    case "ItemOwner":
+      return "ItemOwner";
+    case "NpcUpdate":
+      return "NpcUpdate";
+    case "NpcItemStrike":
+      return "NpcItemStrike";
+    case "ProjectileSync":
+      return "ProjectileSync";
+    case "NpcStrike":
+      return "NpcStrike";
+    case "ProjectileDestroy":
+      return "ProjectileDestroy";
+    case "PvpToggle":
+      return "PvpToggle";
+    case "ChestOpen":
+      return "ChestOpen";
+    case "ChestItem":
+      return "ChestItem";
+    case "ActiveContainerSync":
+      return "ActiveContainerSync";
+    case "ChestPlace":
+      return "ChestPlace";
+    case "HealEffect":
+      return "HealEffect";
+    case "Zones":
+      return "Zones";
+    case "PasswordRequired":
+      return "PasswordRequired";
+    case "PasswordSend":
+      return "PasswordSend";
+    case "ItemOwnerRemove":
+      return "ItemOwnerRemove";
+    case "NpcTalk":
+      return "NpcTalk";
+    case "PlayerAnimation":
+      return "PlayerAnimation";
+    case "PlayerMana":
+      return "PlayerMana";
+    case "ManaEffect":
+      return "ManaEffect";
+    case "PlayerTeam":
+      return "PlayerTeam";
+    case "SignRead":
+      return "SignRead";
+    case "SignNew":
+      return "SignNew";
+    case "LiquidSet":
+      return "LiquidSet";
+    case "PlayerSpawnSelf":
+      return "PlayerSpawnSelf";
+    case "PlayerBuffsSet":
+      return "PlayerBuffsSet";
+    case "NpcSpecialEffect":
+      return "NpcSpecialEffect";
+    case "ChestOrTempleUnlock":
+      return "ChestOrTempleUnlock";
+    case "NpcBuffAdd":
+      return "NpcBuffAdd";
+    case "NpcBuffUpdate":
+      return "NpcBuffUpdate";
+    case "PlayerBuffAdd":
+      return "PlayerBuffAdd";
+    case "NpcNameUpdate":
+      return "NpcNameUpdate";
+    case "GoodEvilUpdate":
+      return "GoodEvilUpdate";
+    case "HarpPlay":
+      return "HarpPlay";
+    case "SwitchHit":
+      return "SwitchHit";
+    case "NpcHomeUpdate":
+      return "NpcHomeUpdate";
+    case "BossOrInvasionSpawn":
+      return "BossOrInvasionSpawn";
+    case "PlayerDodge":
+      return "PlayerDodge";
+    case "TilePaint":
+      return "TilePaint";
+    case "WallPaint":
+      return "WallPaint";
+    case "Teleport":
+      return "Teleport";
+    case "PlayerHealOther":
+      return "PlayerHealOther";
+    case "DimensionsUpdate":
+      return "DimensionsUpdate";
+    case "ClientUuid":
+      return "ClientUuid";
+    case "ChestName":
+      return "ChestName";
+    case "NpcCatch":
+      return "NpcCatch";
+    case "NpcRelease":
+      return "NpcRelease";
+    case "TravellingMerchantInventory":
+      return "TravellingMerchantInventory";
+    case "TeleportationPotion":
+      return "TeleportationPotion";
+    case "AnglerQuest":
+      return "AnglerQuest";
+    case "AnglerQuestComplete":
+      return "AnglerQuestComplete";
+    case "AnglerQuestsCompletedAmount":
+      return "AnglerQuestsCompletedAmount";
+    case "TemporaryAnimationCreate":
+      return "TemporaryAnimationCreate";
+    case "InvasionProgressReport":
+      return "InvasionProgressReport";
+    case "ObjectPlace":
+      return "ObjectPlace";
+    case "PlayerChestIndexSync":
+      return "PlayerChestIndexSync";
+    case "CombatNumberCreate":
+      return "CombatNumberCreate";
+    case "NetModuleLoad":
+      return "NetModuleLoad";
+    case "NpcKillCount":
+      return "NpcKillCount";
+    case "PlayerStealth":
+      return "PlayerStealth";
+    case "ItemForceIntoNearestChest":
+      return "ItemForceIntoNearestChest";
+    case "TileEntityUpdate":
+      return "TileEntityUpdate";
+    case "TileEntityPlace":
+      return "TileEntityPlace";
+    case "ItemDropModify":
+      return "ItemDropModify";
+    case "ItemFramePlace":
+      return "ItemFramePlace";
+    case "ItemDropInstancedUpdate":
+      return "ItemDropInstancedUpdate";
+    case "EmoteBubble":
+      return "EmoteBubble";
+    case "ExtraValueSync":
+      return "ExtraValueSync";
+    case "SocialHandshake":
+      return "SocialHandshake";
+    case "Unused":
+      return "Unused";
+    case "PortalKill":
+      return "PortalKill";
+    case "PlayerTeleportPortal":
+      return "PlayerTeleportPortal";
+    case "NpcKilledNotification":
+      return "NpcKilledNotification";
+    case "EventNotification":
+      return "EventNotification";
+    case "MinionTargetUpdate":
+      return "MinionTargetUpdate";
+    case "NpcTeleportPortal":
+      return "NpcTeleportPortal";
+    case "ShieldStrengthsUpdate":
+      return "ShieldStrengthsUpdate";
+    case "NebulaLevelUp":
+      return "NebulaLevelUp";
+    case "MoonLordCountdown":
+      return "MoonLordCountdown";
+    case "NpcShopItem":
+      return "NpcShopItem";
+    case "GemLockToggle":
+      return "GemLockToggle";
+    case "SmokePoof":
+      return "SmokePoof";
+    case "ChatMessageSmart":
+      return "ChatMessageSmart";
+    case "WiredCannonShot":
+      return "WiredCannonShot";
+    case "MassWireOperation":
+      return "MassWireOperation";
+    case "MassWireOperationPay":
+      return "MassWireOperationPay";
+    case "PartyToggle":
+      return "PartyToggle";
+    case "TreeGrowFx":
+      return "TreeGrowFx";
+    case "CrystalInvasionStart":
+      return "CrystalInvasionStart";
+    case "CrystalInvasionWipeAll":
+      return "CrystalInvasionWipeAll";
+    case "MinionAttackTargetUpdate":
+      return "MinionAttackTargetUpdate";
+    case "CrystalInvasionSendWaitTime":
+      return "CrystalInvasionSendWaitTime";
+    case "PlayerDamage":
+      return "PlayerDamage";
+    case "PlayerDeath":
+      return "PlayerDeath";
+    case "CombatTextCreate":
+      return "CombatTextCreate";
+    case "Emoji":
+      return "Emoji";
+    case "TileEntityDisplayDollItemSync":
+      return "TileEntityDisplayDollItemSync";
+    case "TileEntityInteractionRequest":
+      return "TileEntityInteractionRequest";
+    case "WeaponsRackTryPlacing":
+      return "WeaponsRackTryPlacing";
+    case "TileEntityHatRackItemSync":
+      return "TileEntityHatRackItemSync";
+    case "TilePickingSync":
+      return "TilePickingSync";
+    case "RevengeMarkerSync":
+      return "RevengeMarkerSync";
+    case "RevengeMarkerRemove":
+      return "RevengeMarkerRemove";
+    case "GolfBallLandInCup":
+      return "GolfBallLandInCup";
+    case "ClientFinishConnectingToServer":
+      return "ClientFinishConnectingToServer";
+    case "NpcFishOut":
+      return "NpcFishOut";
+    case "NpcTamper":
+      return "NpcTamper";
+    case "LegacySoundPlay":
+      return "LegacySoundPlay";
+    case "FoodPlatterTryPlacing":
+      return "FoodPlatterTryPlacing";
+    case "PlayerLuckFactorsUpdate":
+      return "PlayerLuckFactorsUpdate";
+    case "PlayerDead":
+      return "PlayerDead";
+    case "CavernMonsterTypeSync":
+      return "CavernMonsterTypeSync";
+    case "NpcBuffRemovalRequest":
+      return "NpcBuffRemovalRequest";
+    case "ClientSyncedInventory":
+      return "ClientSyncedInventory";
+    case "CountsAsHostForGameplaySet":
+      return "CountsAsHostForGameplaySet";
+    case "CreditsOrSlimeTransform":
+      return "CreditsOrSlimeTransform";
+    case "LucyAxeMessage":
+      return "LucyAxeMessage";
+    case "PiggyBankVoidLensUpdate":
+      return "PiggyBankVoidLensUpdate";
+    case "DungeonDefendersEventAttemptSkipWait":
+      return "DungeonDefendersEventAttemptSkipWait";
+    case "HaveDryadDoStardewAnimation":
+      return "HaveDryadDoStardewAnimation";
+    case "ItemDropShimmeredUpdate":
+      return "ItemDropShimmeredUpdate";
+    case "ShimmerEffectOrCoinLuck":
+      return "ShimmerEffectOrCoinLuck";
+    case "LoadoutSwitch":
+      return "LoadoutSwitch";
+    case "ItemDropProtectedUpdate":
+      return "ItemDropProtectedUpdate";
+    case "DeadCellsDisplayJarTryPlacing":
+      return "DeadCellsDisplayJarTryPlacing";
+    case "PlayerSpectate":
+      return "PlayerSpectate";
+    case "ItemDropClear":
+      return "ItemDropClear";
+    case "PlayerItemUseSound":
+      return "PlayerItemUseSound";
+    case "NpcHurtByDebuff":
+      return "NpcHurtByDebuff";
+    case "Ping":
+      return "Ping";
+    case "ChestResize":
+      return "ChestResize";
+    case "LeashedEntityAnchorInsertItem":
+      return "LeashedEntityAnchorInsertItem";
+    case "PlayerTeamUpdate":
+      return "PlayerTeamUpdate";
+    case "PlayerTeamSwapSpawn":
+      return "PlayerTeamSwapSpawn";
+    case "SectionRequest":
+      return "SectionRequest";
+    case "ItemDropPosition":
+      return "ItemDropPosition";
+    case "HostToken":
+      return "HostToken";
+    case "DamageNPCAck":
+      return "DamageNPCAck";
+    case "ServerInfo":
+      return "ServerInfo";
+    case "PlayerPlatformInfo":
+      return "PlayerPlatformInfo";
+  }
+}
+function toPacketName4(packet) {
+  return packetName4(packetTypeOf$14(packet));
+}
+function toBuffer189(packet, fromServer) {
+  let packetType = packetTypeOf4(packet);
+  let err = guardDirection4(packetType, fromServer);
+  if (err !== void 0) {
+    return err;
+  }
+  switch (packet.TAG) {
+    case "ConnectRequest":
+      return toBufferResult(toBuffer9(packet._0));
+    case "Disconnect":
+      return toBufferResult(toBuffer104(packet._0));
+    case "PlayerSlotSet":
+      return toBufferResult(toBuffer92(packet._0));
+    case "PlayerInfo":
+      return toBufferResult(toBuffer94(packet._0));
+    case "PlayerInventorySlot":
+      return toBufferResult(toBuffer96(packet._0));
+    case "WorldDataRequest":
+      return toBufferResult(toBuffer73(packet._0));
+    case "WorldInfo":
+      return toBufferResult(toBuffer188(packet._0));
+    case "InitialTileSectionsRequest":
+      return toBufferResult(toBuffer79(packet._0));
+    case "Status":
+      return toBufferResult(toBuffer51(packet._0));
+    case "TileSectionSend":
+      return toBufferResult(toBuffer65(packet._0));
+    case "TileSectionFrame":
+      return toBufferResult(toBuffer64(packet._0));
+    case "PlayerSpawn":
+      return toBufferResult(toBuffer95(packet._0));
+    case "PlayerUpdate":
+      return toBufferResult(toBuffer93(packet._0));
+    case "PlayerActive":
+      return toBufferResult(toBuffer102(packet._0));
+    case "PlayerHealth":
+      return toBufferResult(toBuffer97(packet._0));
+    case "TileModify":
+      return toBufferResult(toBuffer61(packet._0));
+    case "TimeSet":
+      return toBufferResult(toBuffer67(packet._0));
+    case "DoorUse":
+      return toBufferResult(toBuffer108(packet._0));
+    case "TileSquareSend":
+      return toBufferResult(toBuffer66(packet._0));
+    case "ItemDropUpdate":
+      return toBufferResult(toBuffer18(packet._0));
+    case "ItemOwner":
+      return toBufferResult(toBuffer19(packet._0));
+    case "NpcUpdate":
+      return toBufferResult(toBuffer103(packet._0));
+    case "NpcItemStrike":
+      return toBufferResult(toBuffer171(packet._0));
+    case "ProjectileSync":
+      return toBufferResult(toBuffer99(packet._0));
+    case "NpcStrike":
+      return toBufferResult(toBuffer114(packet._0));
+    case "ProjectileDestroy":
+      return toBufferResult(toBuffer143(packet._0));
+    case "PvpToggle":
+      return toBufferResult(toBuffer45(packet._0));
+    case "ChestOpen":
+      return toBufferResult(toBuffer111(packet._0));
+    case "ChestItem":
+      return toBufferResult(toBuffer5(packet._0));
+    case "ActiveContainerSync":
+      return toBufferResult(toBuffer146(packet._0));
+    case "ChestPlace":
+      return toBufferResult(toBuffer7(packet._0));
+    case "HealEffect":
+      return toBufferResult(toBuffer116(packet._0));
+    case "Zones":
+      return toBufferResult(toBuffer74(packet._0));
+    case "PasswordRequired":
+      return toBufferResult(toBuffer137(packet._0));
+    case "PasswordSend":
+      return toBufferResult(toBuffer122(packet._0));
+    case "ItemOwnerRemove":
+      return toBufferResult(toBuffer20(packet._0));
+    case "NpcTalk":
+      return toBufferResult(toBuffer32(packet._0));
+    case "PlayerAnimation":
+      return toBufferResult(toBuffer177(packet._0));
+    case "PlayerMana":
+      return toBufferResult(toBuffer43(packet._0));
+    case "ManaEffect":
+      return toBufferResult(toBuffer117(packet._0));
+    case "PlayerTeam":
+      return toBufferResult(toBuffer44(packet._0));
+    case "SignRead":
+      return toBufferResult(toBuffer48(packet._0));
+    case "SignNew":
+      return toBufferResult(toBuffer47(packet._0));
+    case "LiquidSet":
+      return toBufferResult(toBuffer112(packet._0));
+    case "PlayerSpawnSelf":
+      return toBufferResult(toBuffer134(packet._0));
+    case "PlayerBuffsSet":
+      return toBufferResult(toBuffer38(packet._0));
+    case "NpcSpecialEffect":
+      return toBufferResult(toBuffer136(packet._0));
+    case "ChestOrTempleUnlock":
+      return toBufferResult(toBuffer6(packet._0));
+    case "NpcBuffAdd":
+      return toBufferResult(toBuffer118(packet._0));
+    case "NpcBuffUpdate":
+      return toBufferResult(toBuffer25(packet._0));
+    case "PlayerBuffAdd":
+      return toBufferResult(toBuffer37(packet._0));
+    case "NpcNameUpdate":
+      return toBufferResult(toBuffer30(packet._0));
+    case "GoodEvilUpdate":
+      return toBufferResult(toBuffer129(packet._0));
+    case "HarpPlay":
+      return toBufferResult(toBuffer109(packet._0));
+    case "SwitchHit":
+      return toBufferResult(toBuffer52(packet._0));
+    case "NpcHomeUpdate":
+      return toBufferResult(toBuffer28(packet._0));
+    case "BossOrInvasionSpawn":
+      return toBufferResult(toBuffer3(packet._0));
+    case "PlayerDodge":
+      return toBufferResult(toBuffer42(packet._0));
+    case "TilePaint":
+      return toBufferResult(toBuffer62(packet._0));
+    case "WallPaint":
+      return toBufferResult(toBuffer70(packet._0));
+    case "Teleport":
+      return toBufferResult(toBuffer53(packet._0));
+    case "PlayerHealOther":
+      return toBufferResult(toBuffer133(packet._0));
+    case "DimensionsUpdate":
+      return toBufferResult(toBuffer13(packet._0));
+    case "ClientUuid":
+      return toBufferResult(toBuffer98(packet._0));
+    case "ChestName":
+      return toBufferResult(toBuffer110(packet._0));
+    case "NpcCatch":
+      return toBufferResult(toBuffer26(packet._0));
+    case "NpcRelease":
+      return toBufferResult(toBuffer119(packet._0));
+    case "TravellingMerchantInventory":
+      return toBufferResult(toBuffer68(packet._0));
+    case "TeleportationPotion":
+      return toBufferResult(toBuffer54(packet._0));
+    case "AnglerQuest":
+      return toBufferResult(toBuffer(packet._0));
+    case "AnglerQuestComplete":
+      return toBufferResult(toBuffer2(packet._0));
+    case "AnglerQuestsCompletedAmount":
+      return toBufferResult(toBuffer158(packet._0));
+    case "TemporaryAnimationCreate":
+      return toBufferResult(toBuffer55(packet._0));
+    case "InvasionProgressReport":
+      return toBufferResult(toBuffer16(packet._0));
+    case "ObjectPlace":
+      return toBufferResult(toBuffer34(packet._0));
+    case "PlayerChestIndexSync":
+      return toBufferResult(toBuffer39(packet._0));
+    case "CombatNumberCreate":
+      return toBufferResult(toBuffer144(packet._0));
+    case "NetModuleLoad":
+      return toBufferResult(toBuffer22(packet._0));
+    case "NpcKillCount":
+      return toBufferResult(toBuffer29(packet._0));
+    case "PlayerStealth":
+      return toBufferResult(toBuffer126(packet._0));
+    case "ItemForceIntoNearestChest":
+      return toBufferResult(toBuffer82(packet._0));
+    case "TileEntityUpdate":
+      return toBufferResult(toBuffer60(packet._0));
+    case "TileEntityPlace":
+      return toBufferResult(toBuffer59(packet._0));
+    case "ItemDropModify":
+      return toBufferResult(toBuffer173(packet._0));
+    case "ItemFramePlace":
+      return toBufferResult(toBuffer130(packet._0));
+    case "ItemDropInstancedUpdate":
+      return toBufferResult(toBuffer155(packet._0));
+    case "EmoteBubble":
+      return toBufferResult(toBuffer167(packet._0));
+    case "ExtraValueSync":
+      return toBufferResult(toBuffer14(packet._0));
+    case "SocialHandshake":
+      return toBufferResult(toBuffer50(packet._0));
+    case "Unused":
+      return toBufferResult(toBuffer77(packet._0));
+    case "PortalKill":
+      return toBufferResult(toBuffer120(packet._0));
+    case "PlayerTeleportPortal":
+      return toBufferResult(toBuffer149(packet._0));
+    case "NpcKilledNotification":
+      return toBufferResult(toBuffer152(packet._0));
+    case "EventNotification":
+      return toBufferResult(toBuffer138(packet._0));
+    case "MinionTargetUpdate":
+      return toBufferResult(toBuffer145(packet._0));
+    case "NpcTeleportPortal":
+      return toBufferResult(toBuffer33(packet._0));
+    case "ShieldStrengthsUpdate":
+      return toBufferResult(toBuffer153(packet._0));
+    case "NebulaLevelUp":
+      return toBufferResult(toBuffer125(packet._0));
+    case "MoonLordCountdown":
+      return toBufferResult(toBuffer141(packet._0));
+    case "NpcShopItem":
+      return toBufferResult(toBuffer31(packet._0));
+    case "GemLockToggle":
+      return toBufferResult(toBuffer124(packet._0));
+    case "SmokePoof":
+      return toBufferResult(toBuffer49(packet._0));
+    case "ChatMessageSmart":
+      return toBufferResult(toBuffer4(packet._0));
+    case "WiredCannonShot":
+      return toBufferResult(toBuffer72(packet._0));
+    case "MassWireOperation":
+      return toBufferResult(toBuffer140(packet._0));
+    case "MassWireOperationPay":
+      return toBufferResult(toBuffer148(packet._0));
+    case "PartyToggle":
+      return toBufferResult(toBuffer35(packet._0));
+    case "TreeGrowFx":
+      return toBufferResult(toBuffer69(packet._0));
+    case "CrystalInvasionStart":
+      return toBufferResult(toBuffer12(packet._0));
+    case "CrystalInvasionWipeAll":
+      return toBufferResult(toBuffer154(packet._0));
+    case "MinionAttackTargetUpdate":
+      return toBufferResult(toBuffer157(packet._0));
+    case "CrystalInvasionSendWaitTime":
+      return toBufferResult(toBuffer159(packet._0));
+    case "PlayerDamage":
+      return toBufferResult(toBuffer169(packet._0));
+    case "PlayerDeath":
+      return toBufferResult(toBuffer41(packet._0));
+    case "CombatTextCreate":
+      return toBufferResult(toBuffer135(packet._0));
+    case "Emoji":
+      return toBufferResult(toBuffer105(packet._0));
+    case "TileEntityDisplayDollItemSync":
+      return toBufferResult(toBuffer56(packet._0));
+    case "TileEntityInteractionRequest":
+      return toBufferResult(toBuffer58(packet._0));
+    case "WeaponsRackTryPlacing":
+      return toBufferResult(toBuffer71(packet._0));
+    case "TileEntityHatRackItemSync":
+      return toBufferResult(toBuffer57(packet._0));
+    case "TilePickingSync":
+      return toBufferResult(toBuffer63(packet._0));
+    case "RevengeMarkerSync":
+      return toBufferResult(toBuffer142(packet._0));
+    case "RevengeMarkerRemove":
+      return toBufferResult(toBuffer147(packet._0));
+    case "GolfBallLandInCup":
+      return toBufferResult(toBuffer139(packet._0));
+    case "ClientFinishConnectingToServer":
+      return toBufferResult(toBuffer8(packet._0));
+    case "NpcFishOut":
+      return toBufferResult(toBuffer27(packet._0));
+    case "NpcTamper":
+      return toBufferResult(toBuffer113(packet._0));
+    case "LegacySoundPlay":
+      return toBufferResult(toBuffer132(packet._0));
+    case "FoodPlatterTryPlacing":
+      return toBufferResult(toBuffer151(packet._0));
+    case "PlayerLuckFactorsUpdate":
+      return toBufferResult(toBuffer87(packet._0));
+    case "PlayerDead":
+      return toBufferResult(toBuffer40(packet._0));
+    case "CavernMonsterTypeSync":
+      return toBufferResult(toBuffer150(packet._0));
+    case "NpcBuffRemovalRequest":
+      return toBufferResult(toBuffer24(packet._0));
+    case "ClientSyncedInventory":
+      return "NotImplemented";
+    case "CountsAsHostForGameplaySet":
+      return toBufferResult(toBuffer10(packet._0));
+    case "CreditsOrSlimeTransform":
+      return toBufferResult(toBuffer11(packet._0));
+    case "LucyAxeMessage":
+      return toBufferResult(toBuffer131(packet._0));
+    case "PiggyBankVoidLensUpdate":
+      return toBufferResult(toBuffer156(packet._0));
+    case "DungeonDefendersEventAttemptSkipWait":
+      return toBufferResult(toBuffer160(packet._0));
+    case "HaveDryadDoStardewAnimation":
+      return toBufferResult(toBuffer15(packet._0));
+    case "ItemDropShimmeredUpdate":
+      return toBufferResult(toBuffer17(packet._0));
+    case "ShimmerEffectOrCoinLuck":
+      return toBufferResult(toBuffer46(packet._0));
+    case "LoadoutSwitch":
+      return toBufferResult(toBuffer21(packet._0));
+    case "ItemDropProtectedUpdate":
+      return toBufferResult(toBuffer181(packet._0));
+    case "DeadCellsDisplayJarTryPlacing":
+      return toBufferResult(toBuffer76(packet._0));
+    case "PlayerSpectate":
+      return toBufferResult(toBuffer88(packet._0));
+    case "ItemDropClear":
+      return toBufferResult(toBuffer80(packet._0));
+    case "PlayerItemUseSound":
+      return toBufferResult(toBuffer86(packet._0));
+    case "NpcHurtByDebuff":
+      return toBufferResult(toBuffer84(packet._0));
+    case "Ping":
+      return toBufferResult(toBuffer85(packet._0));
+    case "ChestResize":
+      return toBufferResult(toBuffer75(packet._0));
+    case "LeashedEntityAnchorInsertItem":
+      return toBufferResult(toBuffer83(packet._0));
+    case "PlayerTeamUpdate":
+      return toBufferResult(toBuffer90(packet._0));
+    case "PlayerTeamSwapSpawn":
+      return toBufferResult(toBuffer89(packet._0));
+    case "SectionRequest":
+      return toBufferResult(toBuffer91(packet._0));
+    case "ItemDropPosition":
+      return toBufferResult(toBuffer81(packet._0));
+    case "HostToken":
+      return toBufferResult(toBuffer78(packet._0));
+    case "DamageNPCAck":
+      return toBufferResult(toBuffer123(packet._0));
+    case "ServerInfo":
+      return toBufferResult(toBuffer184(packet._0));
+    case "PlayerPlatformInfo":
+      return toBufferResult(toBuffer127(packet._0));
+  }
+}
+function toPacketName$14(packet) {
+  switch (packet.TAG) {
+    case "ConnectRequest":
+      return "ConnectRequest";
+    case "Disconnect":
+      return `Disconnect(reason: "` + packet._0.reason.toString() + `)"`;
+    case "PlayerSlotSet":
+      return "PlayerSlotSet";
+    case "PlayerInfo":
+      return "PlayerInfo";
+    case "PlayerInventorySlot":
+      return "PlayerInventorySlot";
+    case "WorldDataRequest":
+      return "WorldDataRequest";
+    case "WorldInfo":
+      return "WorldInfo";
+    case "InitialTileSectionsRequest":
+      return "InitialTileSectionsRequest";
+    case "Status":
+      return "Status";
+    case "TileSectionSend":
+      return "TileSectionSend";
+    case "TileSectionFrame":
+      return "TileSectionFrame";
+    case "PlayerSpawn":
+      return "PlayerSpawn";
+    case "PlayerUpdate":
+      return "PlayerUpdate";
+    case "PlayerActive":
+      return "PlayerActive";
+    case "PlayerHealth":
+      return "PlayerHealth";
+    case "TileModify":
+      return "TileModify";
+    case "TimeSet":
+      return "TimeSet";
+    case "DoorUse":
+      return "DoorUse";
+    case "TileSquareSend":
+      return "TileSquareSend";
+    case "ItemDropUpdate":
+      return "ItemDropUpdate";
+    case "ItemOwner":
+      return "ItemOwner";
+    case "NpcUpdate":
+      let match = packet._0;
+      return `NpcUpdate(npcSlotId: ` + match.npcSlotId.toString() + `, npcTypeId: ` + match.npcTypeId.toString() + `, x: ` + match.x.toString() + `, y: ` + match.y.toString() + `, vx: ` + match.vx.toString() + `, vy: ` + match.vy.toString() + `, target: ` + match.target.toString() + `, directionX: ` + string_of_bool(match.directionX) + `, directionY: ` + string_of_bool(match.directionY) + `)`;
+    case "NpcItemStrike":
+      return "NpcItemStrike";
+    case "ProjectileSync":
+      return "ProjectileSync";
+    case "NpcStrike":
+      return "NpcStrike";
+    case "ProjectileDestroy":
+      return "ProjectileDestroy";
+    case "PvpToggle":
+      return "PvpToggle";
+    case "ChestOpen":
+      return "ChestOpen";
+    case "ChestItem":
+      return "ChestItem";
+    case "ActiveContainerSync":
+      return "ActiveContainerSync";
+    case "ChestPlace":
+      return "ChestPlace";
+    case "HealEffect":
+      return "HealEffect";
+    case "Zones":
+      return "Zones";
+    case "PasswordRequired":
+      return "PasswordRequired";
+    case "PasswordSend":
+      return "PasswordSend";
+    case "ItemOwnerRemove":
+      return "ItemOwnerRemove";
+    case "NpcTalk":
+      return "NpcTalk";
+    case "PlayerAnimation":
+      return "PlayerAnimation";
+    case "PlayerMana":
+      return "PlayerMana";
+    case "ManaEffect":
+      return "ManaEffect";
+    case "PlayerTeam":
+      return "PlayerTeam";
+    case "SignRead":
+      return "SignRead";
+    case "SignNew":
+      return "SignNew";
+    case "LiquidSet":
+      return "LiquidSet";
+    case "PlayerSpawnSelf":
+      return "PlayerSpawnSelf";
+    case "PlayerBuffsSet":
+      return "PlayerBuffsSet";
+    case "NpcSpecialEffect":
+      return "NpcSpecialEffect";
+    case "ChestOrTempleUnlock":
+      return "ChestOrTempleUnlock";
+    case "NpcBuffAdd":
+      return "NpcBuffAdd";
+    case "NpcBuffUpdate":
+      return "NpcBuffUpdate";
+    case "PlayerBuffAdd":
+      return "PlayerBuffAdd";
+    case "NpcNameUpdate":
+      return "NpcNameUpdate";
+    case "GoodEvilUpdate":
+      return "GoodEvilUpdate";
+    case "HarpPlay":
+      return "HarpPlay";
+    case "SwitchHit":
+      return "SwitchHit";
+    case "NpcHomeUpdate":
+      return "NpcHomeUpdate";
+    case "BossOrInvasionSpawn":
+      return "BossOrInvasionSpawn";
+    case "PlayerDodge":
+      return "PlayerDodge";
+    case "TilePaint":
+      return "TilePaint";
+    case "WallPaint":
+      return "WallPaint";
+    case "Teleport":
+      return "Teleport";
+    case "PlayerHealOther":
+      return "PlayerHealOther";
+    case "DimensionsUpdate":
+      return "DimensionsUpdate";
+    case "ClientUuid":
+      return "ClientUuid";
+    case "ChestName":
+      return "ChestName";
+    case "NpcCatch":
+      return "NpcCatch";
+    case "NpcRelease":
+      return "NpcRelease";
+    case "TravellingMerchantInventory":
+      return "TravellingMerchantInventory";
+    case "TeleportationPotion":
+      return "TeleportationPotion";
+    case "AnglerQuest":
+      return "AnglerQuest";
+    case "AnglerQuestComplete":
+      return "AnglerQuestComplete";
+    case "AnglerQuestsCompletedAmount":
+      return "AnglerQuestsCompletedAmount";
+    case "TemporaryAnimationCreate":
+      return "TemporaryAnimationCreate";
+    case "InvasionProgressReport":
+      return "InvasionProgressReport";
+    case "ObjectPlace":
+      return "ObjectPlace";
+    case "PlayerChestIndexSync":
+      return "PlayerChestIndexSync";
+    case "CombatNumberCreate":
+      return "CombatNumberCreate";
+    case "NetModuleLoad":
+      let netModuleLoad = packet._0;
+      let tmp;
+      switch (netModuleLoad.TAG) {
+        case "Liquid":
+          tmp = "Liquid";
+          break;
+        case "ClientText":
+          tmp = "ClientText(" + netModuleLoad._1 + ")";
+          break;
+        case "ServerText":
+          tmp = "ServerText(" + netModuleLoad._1.text + ")";
+          break;
+        case "Ping":
+          tmp = "Ping";
+          break;
+        case "Ambience":
+          tmp = "Ambience";
+          break;
+        case "Bestiary":
+          tmp = "Bestiary";
+          break;
+        case "CreativeUnlocks":
+          tmp = "CreativeUnlocks";
+          break;
+        case "CreativePower":
+          tmp = `CreativePower { ` + toString$2(netModuleLoad._0) + ` }`;
+          break;
+        case "CreativeUnlocksPlayerReport":
+          tmp = "CreativeUnlocksPlayerReport";
+          break;
+        case "TeleportPylon":
+          tmp = "TeleportPylon";
+          break;
+        case "Particles":
+          tmp = "Particles";
+          break;
+        case "CreativePowerPermissions":
+          tmp = "CreativePowerPermissions";
+          break;
+        case "Banners":
+          tmp = "Banners";
+          break;
+        case "CraftingRequests":
+          tmp = "CraftingRequests";
+          break;
+        case "LeashedEntity":
+          tmp = "LeashedEntity";
+          break;
+        case "UnbreakableWallScan":
+          tmp = "UnbreakableWallScan";
+          break;
+      }
+      return "NetModuleLoad(" + tmp + ")";
+    case "NpcKillCount":
+      return "NpcKillCount";
+    case "PlayerStealth":
+      return "PlayerStealth";
+    case "ItemForceIntoNearestChest":
+      return "ItemForceIntoNearestChest";
+    case "TileEntityUpdate":
+      return "TileEntityUpdate";
+    case "TileEntityPlace":
+      return "TileEntityPlace";
+    case "ItemDropModify":
+      return "ItemDropModify";
+    case "ItemFramePlace":
+      return "ItemFramePlace";
+    case "ItemDropInstancedUpdate":
+      return "ItemDropInstancedUpdate";
+    case "EmoteBubble":
+      return "EmoteBubble";
+    case "ExtraValueSync":
+      return "ExtraValueSync";
+    case "SocialHandshake":
+      return "SocialHandshake";
+    case "Unused":
+      return "Unused";
+    case "PortalKill":
+      return "PortalKill";
+    case "PlayerTeleportPortal":
+      return "PlayerTeleportPortal";
+    case "NpcKilledNotification":
+      return "NpcKilledNotification";
+    case "EventNotification":
+      return "EventNotification";
+    case "MinionTargetUpdate":
+      return "MinionTargetUpdate";
+    case "NpcTeleportPortal":
+      return "NpcTeleportPortal";
+    case "ShieldStrengthsUpdate":
+      return "ShieldStrengthsUpdate";
+    case "NebulaLevelUp":
+      return "NebulaLevelUp";
+    case "MoonLordCountdown":
+      return "MoonLordCountdown";
+    case "NpcShopItem":
+      return "NpcShopItem";
+    case "GemLockToggle":
+      return "GemLockToggle";
+    case "SmokePoof":
+      return "SmokePoof";
+    case "ChatMessageSmart":
+      return "ChatMessageSmart";
+    case "WiredCannonShot":
+      return "WiredCannonShot";
+    case "MassWireOperation":
+      return "MassWireOperation";
+    case "MassWireOperationPay":
+      return "MassWireOperationPay";
+    case "PartyToggle":
+      return "PartyToggle";
+    case "TreeGrowFx":
+      return "TreeGrowFx";
+    case "CrystalInvasionStart":
+      return "CrystalInvasionStart";
+    case "CrystalInvasionWipeAll":
+      return "CrystalInvasionWipeAll";
+    case "MinionAttackTargetUpdate":
+      return "MinionAttackTargetUpdate";
+    case "CrystalInvasionSendWaitTime":
+      return "CrystalInvasionSendWaitTime";
+    case "PlayerDamage":
+      return "PlayerDamage";
+    case "PlayerDeath":
+      return "PlayerDeath";
+    case "CombatTextCreate":
+      return "CombatTextCreate";
+    case "Emoji":
+      return "Emoji";
+    case "TileEntityDisplayDollItemSync":
+      return "TileEntityDisplayDollItemSync";
+    case "TileEntityInteractionRequest":
+      return "TileEntityInteractionRequest";
+    case "WeaponsRackTryPlacing":
+      return "WeaponsRackTryPlacing";
+    case "TileEntityHatRackItemSync":
+      return "TileEntityHatRackItemSync";
+    case "TilePickingSync":
+      return "TilePickingSync";
+    case "RevengeMarkerSync":
+      return "RevengeMarkerSync";
+    case "RevengeMarkerRemove":
+      return "RevengeMarkerRemove";
+    case "GolfBallLandInCup":
+      return "GolfBallLandInCup";
+    case "ClientFinishConnectingToServer":
+      return "ClientFinishConnectingToServer";
+    case "NpcFishOut":
+      return "NpcFishOut";
+    case "NpcTamper":
+      return "NpcTamper";
+    case "LegacySoundPlay":
+      return "LegacySoundPlay";
+    case "FoodPlatterTryPlacing":
+      return "FoodPlatterTryPlacing";
+    case "PlayerLuckFactorsUpdate":
+      return "PlayerLuckFactorsUpdate";
+    case "PlayerDead":
+      return "PlayerDead";
+    case "CavernMonsterTypeSync":
+      return "CavernMonsterTypeSync";
+    case "NpcBuffRemovalRequest":
+      return "NpcBuffRemovalRequest";
+    case "ClientSyncedInventory":
+      return "ClientSyncedInventory";
+    case "CountsAsHostForGameplaySet":
+      return "CountsAsHostForGameplaySet";
+    case "CreditsOrSlimeTransform":
+      return "CreditsOrSlimeTransform";
+    case "LucyAxeMessage":
+      return "LucyAxeMessage";
+    case "PiggyBankVoidLensUpdate":
+      return "PiggyBankVoidLensUpdate";
+    case "DungeonDefendersEventAttemptSkipWait":
+      return "DungeonDefendersEventAttemptSkipWait";
+    case "HaveDryadDoStardewAnimation":
+      return "HaveDryadDoStardewAnimation";
+    case "ItemDropShimmeredUpdate":
+      return "ItemDropShimmeredUpdate";
+    case "ShimmerEffectOrCoinLuck":
+      return "ShimmerEffectOrCoinLuck";
+    case "LoadoutSwitch":
+      return "LoadoutSwitch";
+    case "ItemDropProtectedUpdate":
+      return "ItemDropProtectedUpdate";
+    case "DeadCellsDisplayJarTryPlacing":
+      return "DeadCellsDisplayJarTryPlacing";
+    case "PlayerSpectate":
+      return "PlayerSpectate";
+    case "ItemDropClear":
+      return "ItemDropClear";
+    case "PlayerItemUseSound":
+      return "PlayerItemUseSound";
+    case "NpcHurtByDebuff":
+      return "NpcHurtByDebuff";
+    case "Ping":
+      return "Ping";
+    case "ChestResize":
+      return "ChestResize";
+    case "LeashedEntityAnchorInsertItem":
+      return "LeashedEntityAnchorInsertItem";
+    case "PlayerTeamUpdate":
+      return "PlayerTeamUpdate";
+    case "PlayerTeamSwapSpawn":
+      return "PlayerTeamSwapSpawn";
+    case "SectionRequest":
+      return "SectionRequest";
+    case "ItemDropPosition":
+      return "ItemDropPosition";
+    case "HostToken":
+      return "HostToken";
+    case "DamageNPCAck":
+      return "DamageNPCAck";
+    case "ServerInfo":
+      return "ServerInfo";
+    case "PlayerPlatformInfo":
+      return "PlayerPlatformInfo";
+  }
+}
+var ConnectRequest4;
+var Disconnect4;
+var PlayerSlotSet4;
+var PlayerInfo4;
+var PlayerInventorySlot4;
+var WorldDataRequest4;
+var WorldInfo4;
+var InitialTileSectionsRequest4;
+var Status4;
+var TileSectionSend4;
+var TileSectionFrame4;
+var PlayerSpawn4;
+var PlayerUpdate4;
+var PlayerActive4;
+var PlayerHealth4;
+var TileModify4;
+var TimeSet4;
+var DoorUse4;
+var TileSquareSend4;
+var ItemDropUpdate4;
+var ItemOwner4;
+var NpcUpdate4;
+var NpcItemStrike4;
+var ProjectileSync4;
+var NpcStrike4;
+var ProjectileDestroy4;
+var PvpToggle4;
+var ChestOpen4;
+var ChestItem4;
+var ActiveContainerSync4;
+var ChestPlace4;
+var HealEffect4;
+var Zones4;
+var PasswordRequired4;
+var PasswordSend4;
+var ItemOwnerRemove4;
+var NpcTalk4;
+var PlayerAnimation4;
+var PlayerMana4;
+var ManaEffect4;
+var PlayerTeam4;
+var SignRead4;
+var SignNew4;
+var LiquidSet4;
+var PlayerSpawnSelf4;
+var PlayerBuffsSet4;
+var NpcSpecialEffect4;
+var ChestOrTempleUnlock4;
+var NpcBuffAdd4;
+var NpcBuffUpdate4;
+var PlayerBuffAdd4;
+var NpcNameUpdate4;
+var GoodEvilUpdate4;
+var HarpPlay4;
+var SwitchHit4;
+var NpcHomeUpdate4;
+var BossOrInvasionSpawn4;
+var PlayerDodge4;
+var TilePaint4;
+var WallPaint4;
+var Teleport4;
+var PlayerHealOther4;
+var DimensionsUpdate4;
+var ClientUuid4;
+var ChestName4;
+var NpcCatch4;
+var NpcRelease4;
+var TravellingMerchantInventory4;
+var TeleportationPotion4;
+var AnglerQuest4;
+var AnglerQuestComplete4;
+var AnglerQuestsCompletedAmount4;
+var TemporaryAnimationCreate4;
+var InvasionProgressReport4;
+var ObjectPlace4;
+var PlayerChestIndexSync4;
+var CombatNumberCreate4;
+var NetModuleLoad4;
+var NpcKillCount4;
+var PlayerStealth4;
+var ItemForceIntoNearestChest4;
+var TileEntityUpdate4;
+var TileEntityPlace4;
+var ItemDropModify4;
+var ItemFramePlace4;
+var ItemDropInstancedUpdate4;
+var EmoteBubble4;
+var ExtraValueSync4;
+var SocialHandshake4;
+var Unused4;
+var PortalKill4;
+var PlayerTeleportPortal4;
+var NpcKilledNotification4;
+var EventNotification4;
+var MinionTargetUpdate4;
+var NpcTeleportPortal4;
+var ShieldStrengthsUpdate4;
+var NebulaLevelUp4;
+var MoonLordCountdown4;
+var NpcShopItem4;
+var GemLockToggle4;
+var SmokePoof4;
+var ChatMessageSmart4;
+var WiredCannonShot4;
+var MassWireOperation4;
+var MassWireOperationPay4;
+var PartyToggle4;
+var TreeGrowFx4;
+var CrystalInvasionStart4;
+var CrystalInvasionWipeAll4;
+var MinionAttackTargetUpdate4;
+var CrystalInvasionSendWaitTime4;
+var PlayerDamage4;
+var PlayerDeath4;
+var CombatTextCreate4;
+var Emoji4;
+var TileEntityDisplayDollItemSync4;
+var TileEntityInteractionRequest4;
+var WeaponsRackTryPlacing4;
+var TileEntityHatRackItemSync4;
+var TilePickingSync4;
+var RevengeMarkerSync4;
+var RevengeMarkerRemove4;
+var GolfBallLandInCup4;
+var ClientFinishConnectingToServer4;
+var NpcFishOut4;
+var NpcTamper4;
+var LegacySoundPlay4;
+var FoodPlatterTryPlacing4;
+var PlayerLuckFactorsUpdate4;
+var PlayerDead4;
+var CavernMonsterTypeSync4;
+var NpcBuffRemovalRequest4;
+var ClientSyncedInventory4;
+var CountsAsHostForGameplaySet4;
+var CreditsOrSlimeTransform4;
+var LucyAxeMessage4;
+var PiggyBankVoidLensUpdate4;
+var DungeonDefendersEventAttemptSkipWait4;
+var HaveDryadDoStardewAnimation4;
+var ItemDropShimmeredUpdate4;
+var ShimmerEffectOrCoinLuck4;
+var LoadoutSwitch4;
+var ItemDropProtectedUpdate4;
+var DeadCellsDisplayJarTryPlacing4;
+var PlayerSpectate4;
+var ItemDropClear4;
+var PlayerItemUseSound4;
+var NpcHurtByDebuff4;
+var Ping4;
+var ChestResize4;
+var LeashedEntityAnchorInsertItem4;
+var PlayerTeamUpdate4;
+var PlayerTeamSwapSpawn4;
+var SectionRequest4;
+var ItemDropPosition4;
+var HostToken4;
+var DamageNPCAck3;
+var ServerInfo4;
+var PlayerPlatformInfo4;
+var LazyPacket4 = {
+  toPacketName: toPacketName4
+};
 export {
   PacketV1449_AnglerQuestComplete_exports as AnglerQuestCompletePacket,
   PacketV1449_AnglerQuest_exports as AnglerQuestPacket,
@@ -39069,11 +46122,13 @@ export {
   CreativePowers_exports as CreativePowers,
   PacketV1449_CreditsOrSlimeTransform_exports as CreditsOrSlimeTransformPacket,
   PacketV1449_CrystalInvasionStart_exports as CrystalInvasionStartPacket,
+  Packet_CustomServerAck_exports as CustomServerAckPacket,
   PacketV1457_DamageNPCAck_exports as DamageNPCAckPacket,
   PacketV1456_DeadCellsDisplayJarTryPlacing_exports as DeadCellsDisplayJarTryPlacingPacket,
   PacketV1456_DebugCommand_exports as DebugCommandPacket,
   PacketV1449_DimensionsUpdate_exports as DimensionsUpdatePacket,
   PacketV1449_Disconnect_exports as DisconnectPacket,
+  Packet_EmoteBubble_exports as EmoteBubblePacket,
   ErrorAwarePacketWriter_exports as ErrorAwarePacketWriter,
   PacketV1449_ExtraValueSync_exports as ExtraValueSyncPacket,
   PacketV1449_HaveDryadDoStardewAnimation_exports as HaveDryadDoStardewAnimationPacket,
@@ -39082,6 +46137,7 @@ export {
   PacketV1449_InvasionProgressReport_exports as InvasionProgressReportPacket,
   PacketV1456_ItemDropClear_exports as ItemDropClearPacket,
   PacketV1457_ItemDropInstancedUpdate_exports as ItemDropInstancedUpdatePacket,
+  Packet_ItemDropModify_exports as ItemDropModifyPacket,
   PacketV1456_ItemDropPosition_exports as ItemDropPositionPacket,
   PacketV1449_ItemDropShimmeredUpdate_exports as ItemDropShimmeredUpdatePacket,
   PacketV1457_ItemDropUpdate_exports as ItemDropUpdatePacket,
@@ -39110,21 +46166,25 @@ export {
   PacketType_exports as PacketType,
   PacketTypeV1456_exports as PacketTypeV1456,
   PacketTypeV1457_exports as PacketTypeV1457,
+  PacketTypeV1458_exports as PacketTypeV1458,
   PacketV1456_exports as PacketV1456,
   PacketV1457_exports as PacketV1457,
+  PacketV1458_exports as PacketV1458,
   Parser_exports as Parser,
   ParserConverterV1456_exports as ParserConverterV1456,
   ParserConverterV1457_exports as ParserConverterV1457,
+  ParserConverterV1458_exports as ParserConverterV1458,
   ParserV1456_exports as ParserV1456,
   ParserV1457_exports as ParserV1457,
+  ParserV1458_exports as ParserV1458,
   PacketV1449_PartyToggle_exports as PartyTogglePacket,
   PacketV1456_Ping_exports as PingPacket,
   PacketV1449_PlayerActive_exports as PlayerActivePacket,
-  PacketV1449_PlayerAnimation_exports as PlayerAnimationPacket,
+  Packet_PlayerAnimation_exports as PlayerAnimationPacket,
   PacketV1449_PlayerBuffAdd_exports as PlayerBuffAddPacket,
   PacketV1456_PlayerBuffsSet_exports as PlayerBuffsSetPacket,
   PacketV1449_PlayerChestIndexSync_exports as PlayerChestIndexSyncPacket,
-  PacketV1449_PlayerDamage_exports as PlayerDamagePacket,
+  Packet_PlayerDamage_exports as PlayerDamagePacket,
   PacketV1449_PlayerDead_exports as PlayerDeadPacket,
   PacketV1449_PlayerDeath_exports as PlayerDeathPacket,
   PlayerDeathReason_exports as PlayerDeathReason,
@@ -39135,7 +46195,7 @@ export {
   PacketV1456_PlayerItemUseSound_exports as PlayerItemUseSoundPacket,
   PacketV1456_PlayerLuckFactorsUpdate_exports as PlayerLuckFactorsUpdatePacket,
   PacketV1449_PlayerMana_exports as PlayerManaPacket,
-  PacketV1457_PlayerPlatformInfo_exports as PlayerPlatformInfoPacket,
+  Packet_PlayerPlatformInfo_exports as PlayerPlatformInfoPacket,
   PacketV1449_PlayerSlotSet_exports as PlayerSlotSetPacket,
   PacketV1456_PlayerSpawn_exports as PlayerSpawnPacket,
   PacketV1456_PlayerSpectate_exports as PlayerSpectatePacket,
@@ -39149,7 +46209,7 @@ export {
   PacketV1457_ProjectileSync_exports as ProjectileSyncPacket,
   PacketV1449_PvpToggle_exports as PvpTogglePacket,
   PacketV1456_SectionRequest_exports as SectionRequestPacket,
-  PacketV1457_ServerInfo_exports as ServerInfoPacket,
+  Packet_ServerInfo_exports as ServerInfoPacket,
   PacketV1456_ShimmerEffectOrCoinLuck_exports as ShimmerEffectOrCoinLuckPacket,
   PacketV1449_SignNew_exports as SignNewPacket,
   PacketV1449_SignRead_exports as SignReadPacket,
@@ -39181,5 +46241,6 @@ export {
   PacketV1449_WorldDataRequest_exports as WorldDataRequestPacket,
   Packet_WorldInfo_exports as WorldInfoPacket,
   PacketV1457_WorldInfo_exports as WorldInfoV1457Packet,
+  PacketV1458_WorldInfo_exports as WorldInfoV1458Packet,
   PacketV1456_Zones_exports as ZonesPacket
 };

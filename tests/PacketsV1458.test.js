@@ -6,10 +6,10 @@ import * as Stdlib_JsExn from "@rescript/runtime/lib/es6/Stdlib_JsExn.js";
 import * as Stdlib_Option from "@rescript/runtime/lib/es6/Stdlib_Option.js";
 import * as Packet$TerrariaPacket from "../src/Packet.js";
 import * as Parser$TerrariaPacket from "../src/Parser.js";
-import * as PacketType$TerrariaPacket from "../src/PacketType.js";
 import * as PacketV1457$TerrariaPacket from "../src/PacketV1457.js";
 import * as ParserV1457$TerrariaPacket from "../src/ParserV1457.js";
 import * as PacketTypeV1457$TerrariaPacket from "../src/PacketTypeV1457.js";
+import * as PacketTypeV1458$TerrariaPacket from "../src/PacketTypeV1458.js";
 import * as ParserConverter$TerrariaPacket from "../src/ParserConverter.js";
 import * as Packet_WorldInfo$TerrariaPacket from "../src/packet/Packet_WorldInfo.js";
 import * as ParserConverterV1456$TerrariaPacket from "../src/ParserConverterV1456.js";
@@ -285,7 +285,7 @@ Zora.test("WorldInfo converts between 1.4.5.7 and 1.4.5.8 without changing older
 
 Zora.test("1.4.5.8 keeps packet IDs and the generic connection version codec", t => {
   for (let id = 0; id <= 255; ++id) {
-    let latest = Stdlib_Option.map(PacketType$TerrariaPacket.fromInt(id), PacketType$TerrariaPacket.packetName);
+    let latest = Stdlib_Option.map(PacketTypeV1458$TerrariaPacket.fromInt(id), PacketTypeV1458$TerrariaPacket.packetName);
     let previous = Stdlib_Option.map(PacketTypeV1457$TerrariaPacket.fromInt(id), PacketTypeV1457$TerrariaPacket.packetName);
     t.equal(latest, previous);
   }
